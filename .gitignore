@@ -1,0 +1,9 @@
+bin
+obj
+*ReSharper*
+*.suo
+*.user
+build/Output
+*.userprefs
+test-results
+packages
