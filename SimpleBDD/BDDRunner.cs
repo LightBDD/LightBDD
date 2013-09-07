@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace SimpleBDD
 {
@@ -30,9 +31,17 @@ namespace SimpleBDD
 		/// <param name="steps">List of steps to execute in order.</param>
 		public void RunScenario(params Action[] steps)
 		{
+			PrintScenario();
+
 			int i = 0;
 			foreach (Action step in steps)
 				PerformStep(step, ++i, steps.Length);
+		}
+
+		private void PrintScenario()
+		{
+			var callingMethodName = new StackTrace().GetFrame(2).GetMethod().Name;
+			Console.WriteLine("SCENARIO: {0}", TextFormatter.Format(callingMethodName));
 		}
 
 		private void PerformStep(Action step, int stepNumber, int totalStepCount)
