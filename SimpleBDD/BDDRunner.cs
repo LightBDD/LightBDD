@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using SimpleBDD.Notification;
 
 namespace SimpleBDD
 {
@@ -8,6 +9,14 @@ namespace SimpleBDD
 	/// </summary>
 	public class BDDRunner
 	{
+		/// <summary>
+		/// Initializes runner with ConsoleProgressNotifier.
+		/// </summary>
+		public BDDRunner()
+		{
+			ProgressNotifier = new ConsoleProgressNotifier();
+		}
+
 		/// <summary>
 		/// Runs test scenario by executing given steps in order.
 		/// If given step throws, other are not executed.
@@ -41,13 +50,18 @@ namespace SimpleBDD
 		private void PrintScenario()
 		{
 			var callingMethodName = new StackTrace().GetFrame(2).GetMethod().Name;
-			Console.WriteLine("SCENARIO: {0}", TextFormatter.Format(callingMethodName));
+			ProgressNotifier.NotifyScenarioStart(TextFormatter.Format(callingMethodName));
 		}
 
 		private void PerformStep(Action step, int stepNumber, int totalStepCount)
 		{
-			Console.WriteLine("STEP {0}/{1}: {2}", stepNumber, totalStepCount, TextFormatter.Format(step.Method.Name));
+			ProgressNotifier.NotifyStepStart(TextFormatter.Format(step.Method.Name), stepNumber, totalStepCount);
 			step();
 		}
+
+		/// <summary>
+		/// Scenario execution progress notifier.
+		/// </summary>
+		public IProgressNotifier ProgressNotifier { get; set; }
 	}
 }

@@ -37,6 +37,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BDDRunner.cs" />
+    <Compile Include="Notification\ConsoleProgressNotifier.cs" />
+    <Compile Include="Notification\IProgressNotifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextFormatter.cs" />
   </ItemGroup>
