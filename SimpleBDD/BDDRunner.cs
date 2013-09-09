@@ -38,25 +38,29 @@ namespace SimpleBDD
 		/// </code>
 		/// </summary>
 		/// <param name="steps">List of steps to execute in order.</param>
-		public void RunScenario(params Action[] steps)
+		public ScenarioResult RunScenario(params Action[] steps)
 		{
-			PrintScenario();
+			var result = new ScenarioResult(GetScenarioName()) {Status = ResultStatus.Passed};
+			ProgressNotifier.NotifyScenarioStart(result.ScenarioName);
 
 			int i = 0;
 			foreach (Action step in steps)
-				PerformStep(step, ++i, steps.Length);
+				result.AddStep(PerformStep(step, ++i, steps.Length));
+			return result;
 		}
 
-		private void PrintScenario()
+		private string GetScenarioName()
 		{
 			var callingMethodName = new StackTrace().GetFrame(2).GetMethod().Name;
-			ProgressNotifier.NotifyScenarioStart(TextFormatter.Format(callingMethodName));
+			return TextFormatter.Format(callingMethodName);
 		}
 
-		private void PerformStep(Action step, int stepNumber, int totalStepCount)
+		private StepResult PerformStep(Action step, int stepNumber, int totalStepCount)
 		{
-			ProgressNotifier.NotifyStepStart(TextFormatter.Format(step.Method.Name), stepNumber, totalStepCount);
+			var stepName = TextFormatter.Format(step.Method.Name);
+			ProgressNotifier.NotifyStepStart(stepName, stepNumber, totalStepCount);
 			step();
+			return new StepResult(stepNumber, totalStepCount, stepName, ResultStatus.Passed);
 		}
 
 		/// <summary>

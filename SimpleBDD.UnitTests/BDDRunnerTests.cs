@@ -40,6 +40,19 @@ namespace SimpleBDD.UnitTests
 			progressNotifier.AssertWasCalled(n => n.NotifyStepStart("Step two", 2, 2));
 		}
 
+		[Test]
+		public void Should_collect_and_return_scenario_result()
+		{
+			var result = _subject.RunScenario(Step_one,Step_two);
+			Assert.That(result.ScenarioName, Is.EqualTo("Should collect and return scenario result"));
+			Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
+			Assert.That(result.Steps, Is.EqualTo(new[]
+			{
+			    new StepResult(1, 2, "Step one", ResultStatus.Passed),
+			    new StepResult(2, 2, "Step two", ResultStatus.Passed)
+			}));
+		}
+
 		void Step_one() { }
 		void Step_two() { }
 	}
