@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using SimpleBDD.Notification;
+using SimpleBDD.Results;
 
 namespace SimpleBDD
 {

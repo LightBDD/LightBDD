@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using Rhino.Mocks;
 using SimpleBDD.Notification;
+using SimpleBDD.Results;
 
 namespace SimpleBDD.UnitTests
 {
