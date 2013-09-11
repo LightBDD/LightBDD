@@ -20,7 +20,7 @@ namespace SimpleBDD.Results
 		/// <summary>
 		/// Step status.
 		/// </summary>
-		public ResultStatus Status { get; private set; }
+		public ResultStatus Status { get; set; }
 
 		/// <summary>
 		/// Initializes step result with all data.

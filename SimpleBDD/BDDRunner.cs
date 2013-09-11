@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using SimpleBDD.Notification;
 using SimpleBDD.Results;
 
@@ -15,8 +17,19 @@ namespace SimpleBDD
 		/// </summary>
 		public BDDRunner()
 		{
+			StoryResult = new StoryResult();
 			ProgressNotifier = new ConsoleProgressNotifier();
 		}
+
+		/// <summary>
+		/// Scenario execution progress notifier.
+		/// </summary>
+		public IProgressNotifier ProgressNotifier { get; set; }
+
+		/// <summary>
+		/// Returns story result.
+		/// </summary>
+		public StoryResult StoryResult { get; private set; }
 
 		/// <summary>
 		/// Runs test scenario by executing given steps in order.
@@ -39,15 +52,27 @@ namespace SimpleBDD
 		/// </code>
 		/// </summary>
 		/// <param name="steps">List of steps to execute in order.</param>
-		public ScenarioResult RunScenario(params Action[] steps)
+		public void RunScenario(params Action[] steps)
 		{
-			var result = new ScenarioResult(GetScenarioName()) {Status = ResultStatus.Passed};
-			ProgressNotifier.NotifyScenarioStart(result.ScenarioName);
+			var scenarioName = GetScenarioName();
+			ProgressNotifier.NotifyScenarioStart(scenarioName);
 
+			var stepsToExecute = PrepareStepsToExecute(steps).ToArray();
+			try
+			{
+				foreach (var step in stepsToExecute)
+					PerformStep(step);
+			}
+			finally
+			{
+				StoryResult.AddScenario(new ScenarioResult(scenarioName, stepsToExecute.Select(s => s.Result)));
+			}
+		}
+
+		private IEnumerable<Step> PrepareStepsToExecute(Action[] steps)
+		{
 			int i = 0;
-			foreach (Action step in steps)
-				result.AddStep(PerformStep(step, ++i, steps.Length));
-			return result;
+			return steps.Select(step => new Step(step, ++i, steps.Length));
 		}
 
 		private string GetScenarioName()
@@ -56,17 +81,10 @@ namespace SimpleBDD
 			return TextFormatter.Format(callingMethodName);
 		}
 
-		private StepResult PerformStep(Action step, int stepNumber, int totalStepCount)
+		private void PerformStep(Step step)
 		{
-			var stepName = TextFormatter.Format(step.Method.Name);
-			ProgressNotifier.NotifyStepStart(stepName, stepNumber, totalStepCount);
-			step();
-			return new StepResult(stepNumber, totalStepCount, stepName, ResultStatus.Passed);
+			ProgressNotifier.NotifyStepStart(step.Result.Name, step.Result.StepNumber, step.Result.TotalStepsCount);
+			step.Invoke();
 		}
-
-		/// <summary>
-		/// Scenario execution progress notifier.
-		/// </summary>
-		public IProgressNotifier ProgressNotifier { get; set; }
 	}
 }

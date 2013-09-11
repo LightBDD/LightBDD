@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SimpleBDD.Results
 {
@@ -19,16 +20,19 @@ namespace SimpleBDD.Results
 		/// <summary>
 		/// Initializes scenario result with name.
 		/// </summary>
-		/// <param name="scenarioName"></param>
-		public ScenarioResult(string scenarioName)
+		/// <param name="scenarioName">Scenario name.</param>
+		/// <param name="steps">Steps results.</param>
+		public ScenarioResult(string scenarioName, IEnumerable<StepResult> steps)
 		{
 			ScenarioName = scenarioName;
+			_steps = steps.ToArray();
+			Status = _steps.Select(s => s.Status).OrderByDescending(s => s).FirstOrDefault();
 		}
 
 		/// <summary>
 		/// Scenario name.
 		/// </summary>
-		public string ScenarioName { get; private set; }
+		public string ScenarioName { get; set; }
 
 		/// <summary>
 		/// Scenario status.
@@ -41,15 +45,6 @@ namespace SimpleBDD.Results
 		public IEnumerable<StepResult> Steps
 		{
 			get { return _steps; }
-		}
-
-		/// <summary>
-		/// Adds new step to scenario.
-		/// </summary>
-		/// <param name="step">Step to add.</param>
-		public void AddStep(StepResult step)
-		{
-			_steps.Add(step);
 		}
 	}
 }

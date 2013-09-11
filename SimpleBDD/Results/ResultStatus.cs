@@ -14,12 +14,12 @@ namespace SimpleBDD.Results
 		/// </summary>
 		Passed,
 		/// <summary>
-		/// Failed
-		/// </summary>
-		Failed,
-		/// <summary>
 		/// Ignored / skipped
 		/// </summary>
-		Ignored
+		Ignored,
+		/// <summary>
+		/// Failed
+		/// </summary>
+		Failed
 	}
 }

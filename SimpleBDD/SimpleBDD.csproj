@@ -43,6 +43,8 @@
     <Compile Include="Results\ResultStatus.cs" />
     <Compile Include="Results\ScenarioResult.cs" />
     <Compile Include="Results\StepResult.cs" />
+    <Compile Include="Results\StoryResult.cs" />
+    <Compile Include="Step.cs" />
     <Compile Include="TextFormatter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
