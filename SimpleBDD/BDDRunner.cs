@@ -13,15 +13,6 @@ namespace SimpleBDD
 	public class BDDRunner
 	{
 		/// <summary>
-		/// Initializes runner with ConsoleProgressNotifier.
-		/// </summary>
-		public BDDRunner()
-		{
-			StoryResult = new StoryResult();
-			ProgressNotifier = new ConsoleProgressNotifier();
-		}
-
-		/// <summary>
 		/// Scenario execution progress notifier.
 		/// </summary>
 		public IProgressNotifier ProgressNotifier { get; set; }
@@ -30,6 +21,15 @@ namespace SimpleBDD
 		/// Returns story result.
 		/// </summary>
 		public StoryResult StoryResult { get; private set; }
+
+		/// <summary>
+		/// Initializes runner with ConsoleProgressNotifier.
+		/// </summary>
+		public BDDRunner()
+		{
+			StoryResult = new StoryResult();
+			ProgressNotifier = new ConsoleProgressNotifier();
+		}
 
 		/// <summary>
 		/// Runs test scenario by executing given steps in order.
@@ -69,12 +69,6 @@ namespace SimpleBDD
 			}
 		}
 
-		private IEnumerable<Step> PrepareStepsToExecute(Action[] steps)
-		{
-			int i = 0;
-			return steps.Select(step => new Step(step, ++i, steps.Length));
-		}
-
 		private string GetScenarioName()
 		{
 			var callingMethodName = new StackTrace().GetFrame(2).GetMethod().Name;
@@ -85,6 +79,12 @@ namespace SimpleBDD
 		{
 			ProgressNotifier.NotifyStepStart(step.Result.Name, step.Result.StepNumber, step.Result.TotalStepsCount);
 			step.Invoke();
+		}
+
+		private IEnumerable<Step> PrepareStepsToExecute(Action[] steps)
+		{
+			int i = 0;
+			return steps.Select(step => new Step(step, ++i, steps.Length));
 		}
 	}
 }

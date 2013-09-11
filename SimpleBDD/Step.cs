@@ -7,6 +7,7 @@ namespace SimpleBDD
 	internal class Step
 	{
 		private readonly Action _action;
+		public StepResult Result { get; private set; }
 
 		public Step(Action action, int stepNumber, int totalStepsCount)
 		{
@@ -37,7 +38,5 @@ namespace SimpleBDD
 				throw;
 			}
 		}
-
-		public StepResult Result { get; private set; }
 	}
 }

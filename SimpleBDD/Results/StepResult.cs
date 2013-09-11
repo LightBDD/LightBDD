@@ -9,14 +9,6 @@ namespace SimpleBDD.Results
 	public class StepResult
 	{
 		/// <summary>
-		/// Step number.
-		/// </summary>
-		public int StepNumber { get; private set; }
-		/// <summary>
-		/// Total number of steps.
-		/// </summary>
-		public int TotalStepsCount { get; private set; }
-		/// <summary>
 		/// Step name.
 		/// </summary>
 		public string Name { get; private set; }
@@ -24,6 +16,15 @@ namespace SimpleBDD.Results
 		/// Step status.
 		/// </summary>
 		public ResultStatus Status { get; set; }
+
+		/// <summary>
+		/// Step number.
+		/// </summary>
+		public int StepNumber { get; private set; }
+		/// <summary>
+		/// Total number of steps.
+		/// </summary>
+		public int TotalStepsCount { get; private set; }
 
 		/// <summary>
 		/// Initializes step result with all data.

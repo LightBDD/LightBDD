@@ -19,6 +19,8 @@ namespace SimpleBDD.Results.Formatters
 	/// </summary>
 	public class PlainTextResultFormatter : IResultFormatter
 	{
+		#region IResultFormatter Members
+
 		/// <summary>
 		/// Formats story result.
 		/// </summary>
@@ -30,6 +32,8 @@ namespace SimpleBDD.Results.Formatters
 				FormatScenario(builder, scenario);
 			return builder.ToString();
 		}
+
+		#endregion
 
 		private void FormatScenario(StringBuilder builder, ScenarioResult scenario)
 		{

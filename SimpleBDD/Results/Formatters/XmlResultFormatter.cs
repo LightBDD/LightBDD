@@ -7,6 +7,8 @@ namespace SimpleBDD.Results.Formatters
 	/// </summary>
 	public class XmlResultFormatter : IResultFormatter
 	{
+		#region IResultFormatter Members
+
 		/// <summary>
 		/// Formats story result.
 		/// </summary>
@@ -15,5 +17,7 @@ namespace SimpleBDD.Results.Formatters
 		{
 			return XmlSerializer.SerializeToString(result);
 		}
+
+		#endregion
 	}
 }

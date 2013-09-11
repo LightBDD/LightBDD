@@ -7,6 +7,8 @@ namespace SimpleBDD.Notification
 	/// </summary>
 	public class ConsoleProgressNotifier : IProgressNotifier
 	{
+		#region IProgressNotifier Members
+
 		/// <summary>
 		/// Notifies that scenario has been started.
 		/// </summary>
@@ -26,5 +28,7 @@ namespace SimpleBDD.Notification
 		{
 			Console.WriteLine("STEP {0}/{1}: {2}", stepNumber, totalStepCount, stepName);
 		}
+
+		#endregion
 	}
 }

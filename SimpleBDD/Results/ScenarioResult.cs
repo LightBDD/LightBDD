@@ -13,6 +13,24 @@ namespace SimpleBDD.Results
 		private readonly IList<StepResult> _steps = new List<StepResult>();
 
 		/// <summary>
+		/// Scenario name.
+		/// </summary>
+		public string ScenarioName { get; set; }
+
+		/// <summary>
+		/// Scenario status.
+		/// </summary>
+		public ResultStatus Status { get; set; }
+
+		/// <summary>
+		/// Scenario steps.
+		/// </summary>
+		public IEnumerable<StepResult> Steps
+		{
+			get { return _steps; }
+		}
+
+		/// <summary>
 		/// Default constructor.
 		/// </summary>
 		public ScenarioResult()
@@ -29,24 +47,6 @@ namespace SimpleBDD.Results
 			ScenarioName = scenarioName;
 			_steps = steps.ToArray();
 			Status = _steps.Select(s => s.Status).OrderByDescending(s => s).FirstOrDefault();
-		}
-
-		/// <summary>
-		/// Scenario name.
-		/// </summary>
-		public string ScenarioName { get; set; }
-
-		/// <summary>
-		/// Scenario status.
-		/// </summary>
-		public ResultStatus Status { get; set; }
-
-		/// <summary>
-		/// Scenario steps.
-		/// </summary>
-		public IEnumerable<StepResult> Steps
-		{
-			get { return _steps; }
 		}
 	}
 }

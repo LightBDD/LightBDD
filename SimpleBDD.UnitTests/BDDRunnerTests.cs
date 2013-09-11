@@ -11,6 +11,13 @@ namespace SimpleBDD.UnitTests
 	public class BDDRunnerTests
 	{
 		private BDDRunner _subject;
+		void Step_one() { }
+		void Step_two() { }
+		void Step_throwing_exception() { throw new Exception(); }
+		void Step_with_ignore_assertion() { Assert.Ignore(); }
+		void Step_with_inconclusive_assertion() { Assert.Inconclusive(); }
+
+		#region Setup/Teardown
 
 		[SetUp]
 		public void SetUp()
@@ -18,10 +25,86 @@ namespace SimpleBDD.UnitTests
 			_subject = new BDDRunner();
 		}
 
+		#endregion
+
 		[Test]
-		public void Should_use_console_progress_by_default()
+		public void Should_collect_scenario_result()
 		{
-			Assert.That(_subject.ProgressNotifier, Is.InstanceOf<ConsoleProgressNotifier>());
+			_subject.RunScenario(Step_one, Step_two);
+			var result = _subject.StoryResult.Scenarios.Single();
+			Assert.That(result.ScenarioName, Is.EqualTo("Should collect scenario result"));
+			Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
+			Assert.That(result.Steps, Is.EqualTo(new[]
+				{
+					new StepResult(1, 2, "Step one", ResultStatus.Passed),
+					new StepResult(2, 2, "Step two", ResultStatus.Passed)
+				}));
+		}
+
+		[Test]
+		public void Should_collect_scenario_result_for_failing_scenario()
+		{
+			try
+			{
+				_subject.RunScenario(Step_one, Step_throwing_exception, Step_two);
+			}
+			catch (Exception)
+			{
+			}
+
+			var result = _subject.StoryResult.Scenarios.Single();
+			Assert.That(result.ScenarioName, Is.EqualTo("Should collect scenario result for failing scenario"));
+			Assert.That(result.Status, Is.EqualTo(ResultStatus.Failed));
+			Assert.That(result.Steps, Is.EqualTo(new[]
+				{
+					new StepResult(1, 3, "Step one", ResultStatus.Passed),
+					new StepResult(2, 3, "Step throwing exception", ResultStatus.Failed),
+					new StepResult(3, 3, "Step two", ResultStatus.NotRun)
+				}));
+		}
+
+		[Test]
+		public void Should_collect_scenario_result_for_ignored_scenario_steps()
+		{
+			try
+			{
+				_subject.RunScenario(Step_one, Step_with_ignore_assertion, Step_two);
+			}
+			catch (Exception)
+			{
+			}
+
+			var result = _subject.StoryResult.Scenarios.Single();
+			Assert.That(result.ScenarioName, Is.EqualTo("Should collect scenario result for ignored scenario steps"));
+			Assert.That(result.Status, Is.EqualTo(ResultStatus.Ignored));
+			Assert.That(result.Steps, Is.EqualTo(new[]
+				{
+					new StepResult(1, 3, "Step one", ResultStatus.Passed),
+					new StepResult(2, 3, "Step with ignore assertion", ResultStatus.Ignored),
+					new StepResult(3, 3, "Step two", ResultStatus.NotRun)
+				}));
+		}
+
+		[Test]
+		public void Should_collect_scenario_result_for_inconclusive_scenario_steps()
+		{
+			try
+			{
+				_subject.RunScenario(Step_one, Step_with_inconclusive_assertion, Step_two);
+			}
+			catch (Exception)
+			{
+			}
+
+			var result = _subject.StoryResult.Scenarios.Single();
+			Assert.That(result.ScenarioName, Is.EqualTo("Should collect scenario result for inconclusive scenario steps"));
+			Assert.That(result.Status, Is.EqualTo(ResultStatus.Ignored));
+			Assert.That(result.Steps, Is.EqualTo(new[]
+				{
+					new StepResult(1, 3, "Step one", ResultStatus.Passed),
+					new StepResult(2, 3, "Step with inconclusive assertion", ResultStatus.Ignored),
+					new StepResult(3, 3, "Step two", ResultStatus.NotRun)
+				}));
 		}
 
 		[Test]
@@ -44,20 +127,6 @@ namespace SimpleBDD.UnitTests
 		}
 
 		[Test]
-		public void Should_collect_scenario_result()
-		{
-			_subject.RunScenario(Step_one, Step_two);
-			var result = _subject.StoryResult.Scenarios.Single();
-			Assert.That(result.ScenarioName, Is.EqualTo("Should collect scenario result"));
-			Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
-			Assert.That(result.Steps, Is.EqualTo(new[]
-			{
-			    new StepResult(1, 2, "Step one", ResultStatus.Passed),
-			    new StepResult(2, 2, "Step two", ResultStatus.Passed)
-			}));
-		}
-
-		[Test]
 		public void Should_pass_exception_to_runner_caller()
 		{
 			Assert.Throws<Exception>(() => _subject.RunScenario(Step_throwing_exception));
@@ -76,75 +145,9 @@ namespace SimpleBDD.UnitTests
 		}
 
 		[Test]
-		public void Should_collect_scenario_result_for_failing_scenario()
+		public void Should_use_console_progress_by_default()
 		{
-			try
-			{
-				_subject.RunScenario(Step_one, Step_throwing_exception, Step_two);
-			}
-			catch (Exception)
-			{
-			}
-
-			var result = _subject.StoryResult.Scenarios.Single();
-			Assert.That(result.ScenarioName, Is.EqualTo("Should collect scenario result for failing scenario"));
-			Assert.That(result.Status, Is.EqualTo(ResultStatus.Failed));
-			Assert.That(result.Steps, Is.EqualTo(new[]
-			{
-			    new StepResult(1, 3, "Step one", ResultStatus.Passed),
-			    new StepResult(2, 3, "Step throwing exception", ResultStatus.Failed),
-			    new StepResult(3, 3, "Step two", ResultStatus.NotRun)
-			}));
+			Assert.That(_subject.ProgressNotifier, Is.InstanceOf<ConsoleProgressNotifier>());
 		}
-
-		[Test]
-		public void Should_collect_scenario_result_for_inconclusive_scenario_steps()
-		{
-			try
-			{
-				_subject.RunScenario(Step_one, Step_with_inconclusive_assertion, Step_two);
-			}
-			catch (Exception)
-			{
-			}
-
-			var result = _subject.StoryResult.Scenarios.Single();
-			Assert.That(result.ScenarioName, Is.EqualTo("Should collect scenario result for inconclusive scenario steps"));
-			Assert.That(result.Status, Is.EqualTo(ResultStatus.Ignored));
-			Assert.That(result.Steps, Is.EqualTo(new[]
-			{
-			    new StepResult(1, 3, "Step one", ResultStatus.Passed),
-			    new StepResult(2, 3, "Step with inconclusive assertion", ResultStatus.Ignored),
-			    new StepResult(3, 3, "Step two", ResultStatus.NotRun)
-			}));
-		}
-
-		[Test]
-		public void Should_collect_scenario_result_for_ignored_scenario_steps()
-		{
-			try
-			{
-				_subject.RunScenario(Step_one, Step_with_ignore_assertion, Step_two);
-			}
-			catch (Exception)
-			{
-			}
-
-			var result = _subject.StoryResult.Scenarios.Single();
-			Assert.That(result.ScenarioName, Is.EqualTo("Should collect scenario result for ignored scenario steps"));
-			Assert.That(result.Status, Is.EqualTo(ResultStatus.Ignored));
-			Assert.That(result.Steps, Is.EqualTo(new[]
-			{
-			    new StepResult(1, 3, "Step one", ResultStatus.Passed),
-			    new StepResult(2, 3, "Step with ignore assertion", ResultStatus.Ignored),
-			    new StepResult(3, 3, "Step two", ResultStatus.NotRun)
-			}));
-		}
-
-		void Step_one() { }
-		void Step_two() { }
-		void Step_throwing_exception() { throw new Exception(); }
-		void Step_with_ignore_assertion() { Assert.Ignore(); }
-		void Step_with_inconclusive_assertion() { Assert.Inconclusive(); }
 	}
 }
