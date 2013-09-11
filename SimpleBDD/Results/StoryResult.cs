@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace SimpleBDD.Results
@@ -5,6 +6,7 @@ namespace SimpleBDD.Results
 	/// <summary>
 	/// Story results containing list of scenarios.
 	/// </summary>
+	[Serializable]
 	public class StoryResult
 	{
 		private readonly List<ScenarioResult> _scenarios = new List<ScenarioResult>();

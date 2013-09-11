@@ -1,8 +1,11 @@
+using System;
+
 namespace SimpleBDD.Results
 {
 	/// <summary>
 	/// Step result containing step name, its number in a list and its status.
 	/// </summary>
+	[Serializable]
 	public class StepResult
 	{
 		/// <summary>
@@ -81,6 +84,11 @@ namespace SimpleBDD.Results
 				result = (result * 397) ^ Status.GetHashCode();
 				return result;
 			}
+		}
+
+		public override string ToString()
+		{
+			return string.Format("{0}/{1} {2}: {3}", StepNumber, TotalStepsCount, Name, Status);
 		}
 	}
 }

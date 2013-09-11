@@ -1,4 +1,5 @@
 using System;
+using NUnit.Framework;
 using SimpleBDD.Results;
 
 namespace SimpleBDD
@@ -19,6 +20,16 @@ namespace SimpleBDD
 			{
 				_action();
 				Result.Status = ResultStatus.Passed;
+			}
+			catch (IgnoreException)
+			{
+				Result.Status = ResultStatus.Ignored;
+				throw;
+			}
+			catch (InconclusiveException)
+			{
+				Result.Status = ResultStatus.Ignored;
+				throw;
 			}
 			catch (Exception)
 			{

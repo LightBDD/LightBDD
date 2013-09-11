@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,6 +7,7 @@ namespace SimpleBDD.Results
 	/// <summary>
 	/// Scenario result containing name, status and list of steps.
 	/// </summary>
+	[Serializable]
 	public class ScenarioResult
 	{
 		private readonly IList<StepResult> _steps = new List<StepResult>();

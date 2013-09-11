@@ -1,8 +1,11 @@
+using System;
+
 namespace SimpleBDD.Results
 {
 	/// <summary>
 	/// Represents status of test / scenario.
 	/// </summary>
+	[Serializable]
 	public enum ResultStatus
 	{
 		/// <summary>
