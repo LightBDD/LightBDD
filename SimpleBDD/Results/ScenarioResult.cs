@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Serialization;
 
 namespace SimpleBDD.Results
 {
@@ -10,25 +11,23 @@ namespace SimpleBDD.Results
 	[Serializable]
 	public class ScenarioResult
 	{
-		private readonly IList<StepResult> _steps = new List<StepResult>();
-
 		/// <summary>
 		/// Scenario name.
 		/// </summary>
+		[XmlAttribute(AttributeName = "Name")]
 		public string ScenarioName { get; set; }
 
 		/// <summary>
 		/// Scenario status.
 		/// </summary>
+		[XmlAttribute(AttributeName = "Status")]
 		public ResultStatus Status { get; set; }
 
 		/// <summary>
 		/// Scenario steps.
 		/// </summary>
-		public IEnumerable<StepResult> Steps
-		{
-			get { return _steps; }
-		}
+		[XmlElement(ElementName = "Steps")]
+		public StepResult[] Steps { get; set; }
 
 		/// <summary>
 		/// Default constructor.
@@ -45,8 +44,8 @@ namespace SimpleBDD.Results
 		public ScenarioResult(string scenarioName, IEnumerable<StepResult> steps)
 		{
 			ScenarioName = scenarioName;
-			_steps = steps.ToArray();
-			Status = _steps.Select(s => s.Status).OrderByDescending(s => s).FirstOrDefault();
+			Steps = steps.ToArray();
+			Status = Steps.Select(s => s.Status).OrderByDescending(s => s).FirstOrDefault();
 		}
 	}
 }

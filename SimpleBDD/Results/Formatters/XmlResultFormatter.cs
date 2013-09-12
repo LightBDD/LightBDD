@@ -1,4 +1,5 @@
-using ServiceStack.Text;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace SimpleBDD.Results.Formatters
 {
@@ -15,7 +16,11 @@ namespace SimpleBDD.Results.Formatters
 		/// <param name="result">Result to format.</param>
 		public string Format(StoryResult result)
 		{
-			return XmlSerializer.SerializeToString(result);
+			using (var stream = new StringWriter())
+			{
+				new XmlSerializer(typeof(StoryResult)).Serialize(stream, result);
+				return stream.GetStringBuilder().ToString();
+			}
 		}
 
 		#endregion

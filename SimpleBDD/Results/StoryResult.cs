@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace SimpleBDD.Results
 {
@@ -9,15 +10,19 @@ namespace SimpleBDD.Results
 	[Serializable]
 	public class StoryResult
 	{
-		private readonly List<ScenarioResult> _scenarios = new List<ScenarioResult>();
+		/// <summary>
+		/// Default constructor.
+		/// </summary>
+		public StoryResult()
+		{
+			Scenarios = new List<ScenarioResult>();
+		}
 
 		/// <summary>
-		/// List of scenarios for this story.
+		/// Scenarios.
 		/// </summary>
-		public IEnumerable<ScenarioResult> Scenarios
-		{
-			get { return _scenarios; }
-		}
+		[XmlElement(ElementName = "Scenarios")]
+		public List<ScenarioResult> Scenarios { get; set; }
 
 		/// <summary>
 		/// Adds scenario result.
@@ -25,7 +30,7 @@ namespace SimpleBDD.Results
 		/// <param name="scenarioResult">Scenario to add.</param>
 		public void AddScenario(ScenarioResult scenarioResult)
 		{
-			_scenarios.Add(scenarioResult);
+			Scenarios.Add(scenarioResult);
 		}
 	}
 }

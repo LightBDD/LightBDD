@@ -1,4 +1,5 @@
 using System;
+using System.Xml.Serialization;
 
 namespace SimpleBDD.Results
 {
@@ -11,20 +12,24 @@ namespace SimpleBDD.Results
 		/// <summary>
 		/// Step name.
 		/// </summary>
-		public string Name { get; private set; }
+		[XmlAttribute(AttributeName = "Name")]
+		public string Name { get; set; }
 		/// <summary>
 		/// Step status.
 		/// </summary>
+		[XmlAttribute(AttributeName = "Status")]
 		public ResultStatus Status { get; set; }
 
 		/// <summary>
 		/// Step number.
 		/// </summary>
-		public int StepNumber { get; private set; }
+		[XmlAttribute(AttributeName = "StepNumber")]
+		public int StepNumber { get; set; }
 		/// <summary>
 		/// Total number of steps.
 		/// </summary>
-		public int TotalStepsCount { get; private set; }
+		[XmlAttribute(AttributeName = "TotalStepsCount")]
+		public int TotalStepsCount { get; set; }
 
 		/// <summary>
 		/// Initializes step result with all data.
@@ -39,6 +44,14 @@ namespace SimpleBDD.Results
 			TotalStepsCount = totalStepsCount;
 			Name = stepName;
 			Status = stepStatus;
+		}
+
+		/// <summary>
+		/// Default constructor;
+		/// </summary>
+		public StepResult()
+		{
+
 		}
 
 		/// <summary>
