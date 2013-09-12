@@ -22,7 +22,7 @@ namespace SimpleBDD.UnitTests
 		[SetUp]
 		public void SetUp()
 		{
-			_subject = new BDDRunner();
+			_subject = new BDDRunner(typeof(BDDRunnerTests));
 		}
 
 		#endregion

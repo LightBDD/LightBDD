@@ -1,5 +1,6 @@
 ﻿// ReSharper disable CheckNamespace
 
+using System;
 using System.IO;
 using NUnit.Framework;
 using SimpleBDD.Example.Services;
@@ -20,13 +21,14 @@ namespace SimpleBDD.Example
 		[TestFixtureSetUp]
 		public void FixtureSetUp()
 		{
-			_bddRunner = new BDDRunner();
+			_bddRunner = new BDDRunner(typeof(LoginFeature));
 		}
 
 		[TestFixtureTearDown]
 		public void FixtureTearDown()
 		{
-			File.WriteAllText("LoginFeature.xml", new XmlResultFormatter().Format(_bddRunner.StoryResult));
+			_bddRunner.SaveResults();
+			Console.WriteLine("Acceptance test results are written to: {0}", _bddRunner.ResultWriter.ResultPath);
 		}
 
 		private void Given_user_is_about_to_login()

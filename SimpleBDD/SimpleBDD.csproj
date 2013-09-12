@@ -51,6 +51,7 @@
     <Compile Include="Results\ScenarioResult.cs" />
     <Compile Include="Results\StepResult.cs" />
     <Compile Include="Results\StoryResult.cs" />
+    <Compile Include="ResultWriter.cs" />
     <Compile Include="Step.cs" />
     <Compile Include="Results\Formatters\IResultFormatter.cs" />
     <Compile Include="Results\Formatters\XmlResultFormatter.cs" />
