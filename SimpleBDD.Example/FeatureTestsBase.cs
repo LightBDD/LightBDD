@@ -4,18 +4,18 @@ namespace SimpleBDD.Example
 {
 	public abstract class FeatureTestsBase
 	{
-		protected BDDRunner _runner;
+		protected BDDRunner Runner { get; private set; }
 
 		[TestFixtureSetUp]
 		public void FixtureSetUp()
 		{
-			_runner = new BDDRunner(GetType());
+			Runner = new BDDRunner(GetType());
 		}
 
 		[TestFixtureTearDown]
 		public void FixtureTearDown()
 		{
-			AcceptanceTests.Summary.AddResult(_runner.Result);
+			AcceptanceTests.Summary.AddResult(Runner.Result);
 		}
 	}
 }

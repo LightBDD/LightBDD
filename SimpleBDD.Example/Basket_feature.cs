@@ -12,7 +12,7 @@ I want to add products to basket")]
 		[Test]
 		public void No_product_in_stock()
 		{
-			_runner.RunScenario(
+			Runner.RunScenario(
 				Given_product_is_out_of_stock,
 				When_customer_adds_it_to_basket,
 				Then_product_addition_is_unsuccessful,
@@ -22,7 +22,7 @@ I want to add products to basket")]
 		[Test]
 		public void Successful_addition()
 		{
-			_runner.RunScenario(
+			Runner.RunScenario(
 				Given_product_is_in_stock,
 				When_customer_adds_it_to_basket,
 				Then_product_addition_is_successful,
