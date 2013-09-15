@@ -20,7 +20,7 @@ namespace SimpleBDD.UnitTests.Results.Formatters
 		[Test]
 		public void Should_format_xml()
 		{
-			var result = new FeatureResult();
+			var result = new FeatureResult("Feature name", "feature\nlong description");
 			result.AddScenario(new ScenarioResult("name", new[] { new StepResult(1, "step1", ResultStatus.Passed), new StepResult(2, "step2", ResultStatus.Ignored) }));
 			result.AddScenario(new ScenarioResult("name2", new[] { new StepResult(1, "step3", ResultStatus.Passed), new StepResult(2, "step4", ResultStatus.Failed) }));
 			var text = _subject.Format(result);
@@ -28,7 +28,9 @@ namespace SimpleBDD.UnitTests.Results.Formatters
 
 			const string expectedText = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <TestResults>
-  <Feature>
+  <Feature Name=""Feature name"">
+    <Description>feature
+long description</Description>
     <Scenario Status=""Ignored"" Name=""name"">
       <Step Status=""Passed"" Number=""1"" Name=""step1"" />
       <Step Status=""Ignored"" Number=""2"" Name=""step2"" />

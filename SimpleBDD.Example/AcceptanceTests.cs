@@ -3,7 +3,7 @@
 namespace SimpleBDD.Example
 {
 	[SetUpFixture]
-	public class SummaryContext
+	public class AcceptanceTests
 	{
 		public static TestResultsSummary Summary { get; private set; }
 

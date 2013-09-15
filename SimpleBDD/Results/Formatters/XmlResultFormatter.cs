@@ -38,6 +38,8 @@ namespace SimpleBDD.Results.Formatters
 		private XElement ToXElement(IFeatureResult feature)
 		{
 			return new XElement("Feature",
+				new XAttribute("Name", feature.Name),
+				new XElement("Description", feature.Description),
 				feature.Scenarios.Select(ToXElement).Cast<object>().ToArray());
 		}
 

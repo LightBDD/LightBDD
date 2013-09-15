@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using NUnit.Framework;
 using SimpleBDD.Naming;
 using SimpleBDD.Notification;
 using SimpleBDD.Results;
@@ -14,7 +15,6 @@ namespace SimpleBDD
 	/// </summary>
 	public class BDDRunner
 	{
-		private readonly Type _context;
 		private readonly FeatureResult _result;
 
 		/// <summary>
@@ -35,9 +35,16 @@ namespace SimpleBDD
 		/// </summary>
 		public BDDRunner(Type testClass)
 		{
-			_context = testClass;
-			_result = new FeatureResult();
+			_result = new FeatureResult(NameFormatter.Format(testClass.Name), GetFeatureDescription(testClass));
 			ProgressNotifier = new ConsoleProgressNotifier();
+		}
+
+		private string GetFeatureDescription(Type testClass)
+		{
+			return testClass.GetCustomAttributes(typeof(DescriptionAttribute), true)
+				.OfType<DescriptionAttribute>()
+				.Select(a => a.Description)
+				.SingleOrDefault();
 		}
 
 		/// <summary>

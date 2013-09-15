@@ -3,7 +3,11 @@
 namespace SimpleBDD.Example
 {
 	[TestFixture]
-	public partial class LoginFeature
+	[Description(
+@"In order to access personal data
+As an user
+I want to login into system")]
+	public partial class Login_feature
 	{
 		[Test]
 		public void Successful_login()

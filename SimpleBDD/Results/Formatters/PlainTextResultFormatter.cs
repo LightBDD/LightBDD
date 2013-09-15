@@ -23,6 +23,14 @@ namespace SimpleBDD.Results.Formatters
 
 		private void FormatFeature(StringBuilder builder, IFeatureResult feature)
 		{
+			if (builder.Length > 0)
+				builder.AppendLine();
+
+			builder.Append("Feature: ").AppendLine(feature.Name);
+
+			if (!string.IsNullOrWhiteSpace(feature.Description))
+				builder.Append(feature.Description).AppendLine();
+
 			foreach (var scenario in feature.Scenarios)
 				FormatScenario(builder, scenario);
 		}
@@ -33,10 +41,10 @@ namespace SimpleBDD.Results.Formatters
 		{
 			if (builder.Length > 0)
 				builder.AppendLine();
-			builder.Append("Scenario: ").Append(scenario.Name).Append(" - ").AppendLine(scenario.Status.ToString());
+			builder.Append("\tScenario: ").Append(scenario.Name).Append(" - ").AppendLine(scenario.Status.ToString());
 			foreach (var step in scenario.Steps)
 			{
-				builder.Append("\tStep ")
+				builder.Append("\t\tStep ")
 					   .Append(step.Number).Append(": ")
 					   .Append(step.Name).Append(" - ").AppendLine(step.Status.ToString());
 			}
