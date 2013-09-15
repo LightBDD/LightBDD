@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using SimpleBDD.Notification;
 using SimpleBDD.Results;
+using SimpleBDD.Results.Implementation;
 
 namespace SimpleBDD.UnitTests
 {
@@ -31,7 +32,7 @@ namespace SimpleBDD.UnitTests
 		public void Should_collect_scenario_result()
 		{
 			_subject.RunScenario(Step_one, Step_two);
-			var result = _subject.FeatureResult.Scenarios.Single();
+			var result = _subject.Result.Scenarios.Single();
 			Assert.That(result.ScenarioName, Is.EqualTo("Should collect scenario result"));
 			Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
 			Assert.That(result.Steps, Is.EqualTo(new[]
@@ -52,7 +53,7 @@ namespace SimpleBDD.UnitTests
 			{
 			}
 
-			var result = _subject.FeatureResult.Scenarios.Single();
+			var result = _subject.Result.Scenarios.Single();
 			Assert.That(result.ScenarioName, Is.EqualTo("Should collect scenario result for failing scenario"));
 			Assert.That(result.Status, Is.EqualTo(ResultStatus.Failed));
 			Assert.That(result.Steps, Is.EqualTo(new[]
@@ -74,7 +75,7 @@ namespace SimpleBDD.UnitTests
 			{
 			}
 
-			var result = _subject.FeatureResult.Scenarios.Single();
+			var result = _subject.Result.Scenarios.Single();
 			Assert.That(result.ScenarioName, Is.EqualTo("Should collect scenario result for ignored scenario steps"));
 			Assert.That(result.Status, Is.EqualTo(ResultStatus.Ignored));
 			Assert.That(result.Steps, Is.EqualTo(new[]
@@ -96,7 +97,7 @@ namespace SimpleBDD.UnitTests
 			{
 			}
 
-			var result = _subject.FeatureResult.Scenarios.Single();
+			var result = _subject.Result.Scenarios.Single();
 			Assert.That(result.ScenarioName, Is.EqualTo("Should collect scenario result for inconclusive scenario steps"));
 			Assert.That(result.Status, Is.EqualTo(ResultStatus.Ignored));
 			Assert.That(result.Steps, Is.EqualTo(new[]

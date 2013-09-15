@@ -13,7 +13,7 @@ namespace SimpleBDD.Results.Formatters
 		/// Formats feature results.
 		/// </summary>
 		/// <param name="features">Features to format.</param>
-		public string Format(params FeatureResult[] features)
+		public string Format(params IFeatureResult[] features)
 		{
 			var builder = new StringBuilder();
 			foreach (var feature in features)
@@ -21,7 +21,7 @@ namespace SimpleBDD.Results.Formatters
 			return builder.ToString();
 		}
 
-		private void FormatFeature(StringBuilder builder, FeatureResult feature)
+		private void FormatFeature(StringBuilder builder, IFeatureResult feature)
 		{
 			foreach (var scenario in feature.Scenarios)
 				FormatScenario(builder, scenario);
@@ -29,7 +29,7 @@ namespace SimpleBDD.Results.Formatters
 
 		#endregion
 
-		private void FormatScenario(StringBuilder builder, ScenarioResult scenario)
+		private void FormatScenario(StringBuilder builder, IScenarioResult scenario)
 		{
 			if (builder.Length > 0)
 				builder.AppendLine();

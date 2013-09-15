@@ -1,13 +1,13 @@
 using System;
 using System.Xml.Serialization;
 
-namespace SimpleBDD.Results
+namespace SimpleBDD.Results.Implementation
 {
 	/// <summary>
 	/// Step result containing step name, its number in a list and its status.
 	/// </summary>
 	[Serializable]
-	public class StepResult
+	public class StepResult : IStepResult
 	{
 		/// <summary>
 		/// Step name.

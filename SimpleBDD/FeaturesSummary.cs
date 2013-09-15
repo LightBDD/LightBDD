@@ -13,7 +13,7 @@ namespace SimpleBDD
 	public class FeaturesSummary
 	{
 		private readonly IResultFormatter _formatter;
-		private readonly IList<FeatureResult> _features = new List<FeatureResult>();
+		private readonly IList<IFeatureResult> _features = new List<IFeatureResult>();
 
 		/// <summary>
 		/// Default constructor. Uses XmlResultFormatter.
@@ -36,7 +36,7 @@ namespace SimpleBDD
 		/// Adds feature result to summary.
 		/// </summary>
 		/// <param name="result">Feature result to add.</param>
-		public void AddResults(FeatureResult result)
+		public void AddResults(IFeatureResult result)
 		{
 			_features.Add(result);
 		}
@@ -44,7 +44,7 @@ namespace SimpleBDD
 		/// <summary>
 		/// Returns all collected features.
 		/// </summary>
-		public IEnumerable<FeatureResult> Features { get { return _features; } }
+		public IEnumerable<IFeatureResult> Features { get { return _features; } }
 		/// <summary>
 		/// Saves feature summary to specified file, using formatter defined in constructor.
 		/// </summary>

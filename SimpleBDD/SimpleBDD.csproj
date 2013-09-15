@@ -47,10 +47,13 @@
     <Compile Include="Notification\IProgressNotifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\Formatters\PlainTextResultFormatter.cs" />
+    <Compile Include="Results\IFeatureResult.cs" />
+    <Compile Include="Results\IScenarioResult.cs" />
+    <Compile Include="Results\IStepResult.cs" />
     <Compile Include="Results\ResultStatus.cs" />
-    <Compile Include="Results\ScenarioResult.cs" />
-    <Compile Include="Results\StepResult.cs" />
-    <Compile Include="Results\FeatureResult.cs" />
+    <Compile Include="Results\Implementation\ScenarioResult.cs" />
+    <Compile Include="Results\Implementation\StepResult.cs" />
+    <Compile Include="Results\Implementation\FeatureResult.cs" />
     <Compile Include="FeaturesSummary.cs" />
     <Compile Include="Step.cs" />
     <Compile Include="Results\Formatters\IResultFormatter.cs" />

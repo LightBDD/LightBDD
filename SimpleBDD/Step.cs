@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using SimpleBDD.Results;
+using SimpleBDD.Results.Implementation;
 
 namespace SimpleBDD
 {

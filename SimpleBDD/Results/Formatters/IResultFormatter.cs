@@ -9,6 +9,6 @@ namespace SimpleBDD.Results.Formatters
 		/// Formats feature results.
 		/// </summary>
 		/// <param name="features">Features to format.</param>
-		string Format(params FeatureResult[] features);
+		string Format(params IFeatureResult[] features);
 	}
 }

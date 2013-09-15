@@ -2,35 +2,31 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace SimpleBDD.Results
+namespace SimpleBDD.Results.Implementation
 {
 	/// <summary>
 	/// Story results containing list of scenarios.
 	/// </summary>
 	[Serializable]
-	public class FeatureResult
+	public class FeatureResult : IFeatureResult
 	{
 		/// <summary>
 		/// Default constructor.
 		/// </summary>
 		public FeatureResult()
 		{
-			Scenarios = new List<ScenarioResult>();
+			ScenarioList = new List<ScenarioResult>();
 		}
 
 		/// <summary>
 		/// Scenarios.
 		/// </summary>
 		[XmlElement(ElementName = "Scenario")]
-		public List<ScenarioResult> Scenarios { get; set; }
+		public List<ScenarioResult> ScenarioList { get; set; }
 
 		/// <summary>
-		/// Adds scenario result.
+		/// Returns executed scenarios for given feature.
 		/// </summary>
-		/// <param name="scenarioResult">Scenario to add.</param>
-		public void AddScenario(ScenarioResult scenarioResult)
-		{
-			Scenarios.Add(scenarioResult);
-		}
+		public IEnumerable<IScenarioResult> Scenarios { get { return ScenarioList; } }
 	}
 }

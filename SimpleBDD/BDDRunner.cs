@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using SimpleBDD.Notification;
 using SimpleBDD.Results;
+using SimpleBDD.Results.Implementation;
 
 namespace SimpleBDD
 {
@@ -13,6 +14,7 @@ namespace SimpleBDD
 	public class BDDRunner
 	{
 		private readonly Type _context;
+		private readonly FeatureResult _result;
 
 		/// <summary>
 		/// Scenario execution progress notifier.
@@ -20,9 +22,12 @@ namespace SimpleBDD
 		public IProgressNotifier ProgressNotifier { get; set; }
 
 		/// <summary>
-		/// Returns story result.
+		/// Returns feature execution result.
 		/// </summary>
-		public FeatureResult FeatureResult { get; private set; }
+		public IFeatureResult Result
+		{
+			get { return _result; }
+		}
 
 		/// <summary>
 		/// Initializes runner with ConsoleProgressNotifier.
@@ -30,7 +35,7 @@ namespace SimpleBDD
 		public BDDRunner(Type testClass)
 		{
 			_context = testClass;
-			FeatureResult = new FeatureResult();
+			_result = new FeatureResult();
 			ProgressNotifier = new ConsoleProgressNotifier();
 		}
 
@@ -68,7 +73,7 @@ namespace SimpleBDD
 			}
 			finally
 			{
-				FeatureResult.AddScenario(new ScenarioResult(scenarioName, stepsToExecute.Select(s => s.Result)));
+				_result.ScenarioList.Add(new ScenarioResult(scenarioName, stepsToExecute.Select(s => s.Result)));
 			}
 		}
 
