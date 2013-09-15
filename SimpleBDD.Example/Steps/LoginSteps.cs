@@ -10,7 +10,7 @@ namespace SimpleBDD.Example
 		private const string _validUserName = "admin";
 		private const string _validPassword = "password";
 
-		private BDDRunner _bddRunner;
+		private BDDRunner _runner;
 		private LoginRequest _loginRequest;
 		private LoginService _loginService;
 		private LoginResult _loginResult;
@@ -18,13 +18,13 @@ namespace SimpleBDD.Example
 		[TestFixtureSetUp]
 		public void FixtureSetUp()
 		{
-			_bddRunner = new BDDRunner(typeof(Login_feature));
+			_runner = new BDDRunner(GetType());
 		}
 
 		[TestFixtureTearDown]
 		public void FixtureTearDown()
 		{
-			AcceptanceTests.Summary.AddResult(_bddRunner.Result);
+			AcceptanceTests.Summary.AddResult(_runner.Result);
 		}
 
 		private void Given_user_is_about_to_login()

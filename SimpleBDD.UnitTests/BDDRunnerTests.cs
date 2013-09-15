@@ -12,6 +12,8 @@ namespace SimpleBDD.UnitTests
 	public class BDDRunnerTests
 	{
 		private BDDRunner _subject;
+		private IProgressNotifier _progressNotifier;
+
 		void Step_one() { }
 		void Step_two() { }
 		void Step_throwing_exception() { throw new Exception(); }
@@ -23,7 +25,8 @@ namespace SimpleBDD.UnitTests
 		[SetUp]
 		public void SetUp()
 		{
-			_subject = new BDDRunner(typeof(BDDRunnerTests));
+			_progressNotifier = MockRepository.GenerateMock<IProgressNotifier>();
+			_subject = new BDDRunner(GetType(), _progressNotifier);
 		}
 
 		#endregion
@@ -46,7 +49,7 @@ namespace SimpleBDD.UnitTests
 		public void Should_collect_scenario_result_for_explicitly_named_scenario()
 		{
 			const string scenarioName = "my scenario";
-			_subject.RunScenario(scenarioName,Step_one, Step_two);
+			_subject.RunScenario(scenarioName, Step_one, Step_two);
 			var result = _subject.Result.Scenarios.Single();
 			Assert.That(result.Name, Is.EqualTo(scenarioName));
 			Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
@@ -124,22 +127,24 @@ namespace SimpleBDD.UnitTests
 		}
 
 		[Test]
+		public void Should_display_feature_name()
+		{
+
+		}
+
+		[Test]
 		public void Should_display_scenario_name()
 		{
-			var progressNotifier = MockRepository.GenerateMock<IProgressNotifier>();
-			_subject.ProgressNotifier = progressNotifier;
 			_subject.RunScenario();
-			progressNotifier.AssertWasCalled(n => n.NotifyScenarioStart("Should display scenario name"));
+			_progressNotifier.AssertWasCalled(n => n.NotifyScenarioStart("Should display scenario name"));
 		}
 
 		[Test]
 		public void Should_display_steps()
 		{
-			var progressNotifier = MockRepository.GenerateMock<IProgressNotifier>();
-			_subject.ProgressNotifier = progressNotifier;
 			_subject.RunScenario(Step_one, Step_two);
-			progressNotifier.AssertWasCalled(n => n.NotifyStepStart("Step one", 1, 2));
-			progressNotifier.AssertWasCalled(n => n.NotifyStepStart("Step two", 2, 2));
+			_progressNotifier.AssertWasCalled(n => n.NotifyStepStart("Step one", 1, 2));
+			_progressNotifier.AssertWasCalled(n => n.NotifyStepStart("Step two", 2, 2));
 		}
 
 		[Test]
@@ -163,7 +168,7 @@ namespace SimpleBDD.UnitTests
 		[Test]
 		public void Should_use_console_progress_by_default()
 		{
-			Assert.That(_subject.ProgressNotifier, Is.InstanceOf<ConsoleProgressNotifier>());
+			Assert.That(new BDDRunner(GetType()).ProgressNotifier, Is.InstanceOf<ConsoleProgressNotifier>());
 		}
 	}
 }

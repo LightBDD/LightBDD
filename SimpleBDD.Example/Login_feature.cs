@@ -12,7 +12,7 @@ I want to login into system")]
 		[Test]
 		public void Successful_login()
 		{
-			_bddRunner.RunScenario(
+			_runner.RunScenario(
 
 				Given_user_is_about_to_login,
 				Given_user_entered_valid_login,
@@ -25,7 +25,7 @@ I want to login into system")]
 		[Test]
 		public void Wrong_login_provided_causes_login_to_fail()
 		{
-			_bddRunner.RunScenario(
+			_runner.RunScenario(
 
 				Given_user_is_about_to_login,
 				Given_user_entered_invalid_login,
@@ -38,7 +38,7 @@ I want to login into system")]
 		[Test]
 		public void Wrong_password_provided_causes_login_to_fail()
 		{
-			_bddRunner.RunScenario(
+			_runner.RunScenario(
 
 				Given_user_is_about_to_login,
 				Given_user_entered_valid_login,

@@ -18,9 +18,9 @@ namespace SimpleBDD
 		private readonly FeatureResult _result;
 
 		/// <summary>
-		/// Scenario execution progress notifier.
+		/// Progress notifier.
 		/// </summary>
-		public IProgressNotifier ProgressNotifier { get; set; }
+		public IProgressNotifier ProgressNotifier { get; private set; }
 
 		/// <summary>
 		/// Returns feature execution result.
@@ -31,12 +31,23 @@ namespace SimpleBDD
 		}
 
 		/// <summary>
-		/// Initializes runner with ConsoleProgressNotifier.
+		/// Initializes runner for given test class type with ConsoleProgressNotifier.
 		/// </summary>
+		/// <param name="testClass">Test class type.</param>
 		public BDDRunner(Type testClass)
+			: this(testClass, new ConsoleProgressNotifier())
+		{
+		}
+
+		/// <summary>
+		/// Initializes runner for given test class type with given progress notifier.
+		/// </summary>
+		/// <param name="testClass">Test class type.</param>
+		/// <param name="progressNotifier">Progress notifier.</param>
+		public BDDRunner(Type testClass, IProgressNotifier progressNotifier)
 		{
 			_result = new FeatureResult(NameFormatter.Format(testClass.Name), GetFeatureDescription(testClass));
-			ProgressNotifier = new ConsoleProgressNotifier();
+			ProgressNotifier = progressNotifier;
 		}
 
 		private string GetFeatureDescription(Type testClass)
