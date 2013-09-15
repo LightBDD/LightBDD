@@ -1,10 +1,8 @@
-﻿// ReSharper disable CheckNamespace
-
-using System.Linq;
+﻿using System.Linq;
 using NUnit.Framework;
 using SimpleBDD.Example.Domain;
 
-namespace SimpleBDD.Example
+namespace SimpleBDD.Example.Features
 {
 	public partial class Basket_feature : FeatureTestsBase
 	{
@@ -64,4 +62,3 @@ namespace SimpleBDD.Example
 		#endregion
 	}
 }
-// ReSharper restore CheckNamespace

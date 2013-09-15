@@ -1,9 +1,7 @@
-﻿// ReSharper disable CheckNamespace
-
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using SimpleBDD.Example.Services;
 
-namespace SimpleBDD.Example
+namespace SimpleBDD.Example.Features
 {
 	public partial class Login_feature : FeatureTestsBase
 	{
@@ -68,4 +66,3 @@ namespace SimpleBDD.Example
 		}
 	}
 }
-// ReSharper restore CheckNamespace

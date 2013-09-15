@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace SimpleBDD.Example
+namespace SimpleBDD.Example.Features
 {
 	[TestFixture]
 	[Description(

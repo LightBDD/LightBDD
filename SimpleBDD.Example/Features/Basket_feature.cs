@@ -1,12 +1,12 @@
 ﻿using NUnit.Framework;
 
-namespace SimpleBDD.Example
+namespace SimpleBDD.Example.Features
 {
-	[TestFixture]
 	[Description(
 		@"In order to buy products
 As a customer
 I want to add products to basket")]
+	[TestFixture]
 	public partial class Basket_feature
 	{
 		[Test]
