@@ -17,6 +17,11 @@ namespace SimpleBDD.Example
 			_stock.Add("product");
 		}
 
+		private void Given_product_is_out_of_stock()
+		{
+			//It is not added, so it is out of stock
+		}
+
 		private void When_customer_adds_it_to_basket()
 		{
 			_transferResult = _stock.TransferToBasket(_basket, "product");
@@ -30,11 +35,6 @@ namespace SimpleBDD.Example
 		private void Then_basket_contains_product()
 		{
 			Assert.That(_basket.Products.Contains("product"), Is.True);
-		}
-
-		private void Given_product_is_out_of_stock()
-		{			
-			//It is not added, so it is out of stock
 		}
 
 		private void Then_product_addition_is_unsuccessful()

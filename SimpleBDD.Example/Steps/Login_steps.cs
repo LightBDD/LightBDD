@@ -31,6 +31,16 @@ namespace SimpleBDD.Example
 			_loginRequest.Password = _validPassword;
 		}
 
+		private void Given_user_entered_invalid_login()
+		{
+			_loginRequest.UserName = "invalid user";
+		}
+
+		private void Given_user_entered_invalid_password()
+		{
+			_loginRequest.Password = "invalid password";
+		}
+
 		private void When_user_clicked_login_button()
 		{
 			_loginResult = _loginService.Login(_loginRequest);
@@ -47,11 +57,6 @@ namespace SimpleBDD.Example
 			Assert.That(_loginResult.ResultMessage, Is.EqualTo(expectedMessage));
 		}
 
-		private void Given_user_entered_invalid_login()
-		{
-			_loginRequest.UserName = "invalid user";
-		}
-
 		private void Then_login_is_unsuccessful()
 		{
 			Assert.That(_loginResult.IsSuccessful, Is.False);
@@ -60,11 +65,6 @@ namespace SimpleBDD.Example
 		private void Then_invalid_login_or_password_error_message_is_returned()
 		{
 			Assert.That(_loginResult.ResultMessage, Is.EqualTo("Invalid user name or password."));
-		}
-
-		private void Given_user_entered_invalid_password()
-		{
-			_loginRequest.Password = "invalid password";
 		}
 	}
 }
