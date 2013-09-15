@@ -1,0 +1,1 @@
+Please put all of those zip files in [USER_PATH]\Documents\Visual Studio [VERSION]\Templates\ItemTemplates\ folder without unpacking.

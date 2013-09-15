@@ -15,7 +15,7 @@ namespace SimpleBDD.Example
 		[TestFixtureTearDown]
 		public void FixtureTearDown()
 		{
-			AcceptanceTests.Summary.AddResult(Runner.Result);
+			FeatureTests.Summary.AddResult(Runner.Result);
 		}
 	}
 }
