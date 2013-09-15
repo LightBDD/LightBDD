@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using SimpleBDD.Results;
 using SimpleBDD.Results.Formatters;
 
@@ -50,7 +51,7 @@ namespace SimpleBDD
 		/// <param name="filePath">Output file path.</param>
 		public void SaveSummary(string filePath)
 		{
-			File.WriteAllText(filePath, _formatter.Format(_features.ToArray()));
+			File.WriteAllText(filePath, _formatter.Format(_features.ToArray()), Encoding.UTF8);
 		}
 	}
 }

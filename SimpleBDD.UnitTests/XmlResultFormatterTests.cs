@@ -25,7 +25,7 @@ namespace SimpleBDD.UnitTests
 			var text = _subject.Format(result);
 			Console.WriteLine(text);
 
-			const string expectedText = @"<?xml version=""1.0"" encoding=""utf-16""?>
+			const string expectedText = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <TestResults xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
   <Feature>
     <Scenario Name=""name"" Status=""Ignored"">

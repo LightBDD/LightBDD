@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace SimpleBDD.Results.Formatters
@@ -26,10 +27,12 @@ namespace SimpleBDD.Results.Formatters
 		/// <param name="features">Features to format.</param>
 		public string Format(params FeatureResult[] features)
 		{
-			using (var writer = new StringWriter())
+			using (var memory = new MemoryStream())
+			using (var stream = new StreamWriter(memory))
 			{
-				new XmlSerializer(typeof(TestResults)).Serialize(writer, new TestResults { Features = features.ToArray() });
-				return writer.GetStringBuilder().ToString();
+				new XmlSerializer(typeof(TestResults)).Serialize(stream, new TestResults { Features = features.ToArray() });
+				stream.Flush();
+				return Encoding.Default.GetString(memory.ToArray());
 			}
 		}
 
