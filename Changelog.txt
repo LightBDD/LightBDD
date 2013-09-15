@@ -1,0 +1,17 @@
+LightBDD
+===========================================
+
+Version 1.1.0
+-------------------------------------------
++ added PlainTextResultFormatter and XmlResultFormatter to format test results
++ added TestResultsSummary class to collect all results and save them to xml file
++ added detection of feature name based on test class name
++ added feature description based on [Description] attribute
++ added Visual Studio Project Item templates to create base test classes and feature test classes
+
+Version 1.0.0
+-------------------------------------------
++ implemented BDDRunner with RunScenario method
++ added detection of scenario name based on calling method name
++ added step name formatting
++ added progress notification (on console)
