@@ -18,11 +18,6 @@ namespace SimpleBDD.Results
 		/// <summary>
 		/// Step number.
 		/// </summary>
-		int StepNumber { get; set; }
-
-		/// <summary>
-		/// Total number of steps.
-		/// </summary>
-		int TotalStepsCount { get; set; }
+		int Number { get; set; }
 	}
 }

@@ -37,7 +37,7 @@ namespace SimpleBDD.Results.Formatters
 			foreach (var step in scenario.Steps)
 			{
 				builder.Append("\tStep ")
-					   .Append(step.StepNumber).Append("/").Append(step.TotalStepsCount).Append(": ")
+					   .Append(step.Number).Append(": ")
 					   .Append(step.Name).Append(" - ").AppendLine(step.Status.ToString());
 			}
 		}

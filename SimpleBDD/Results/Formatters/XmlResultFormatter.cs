@@ -53,7 +53,7 @@ namespace SimpleBDD.Results.Formatters
 		{
 			return new XElement("Step",
 				new XAttribute("Status", step.Status.ToString()),
-				new XAttribute("Number", step.StepNumber),
+				new XAttribute("Number", step.Number),
 				new XAttribute("Name", step.Name));
 		}
 

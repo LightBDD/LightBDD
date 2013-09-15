@@ -11,10 +11,10 @@ namespace SimpleBDD
 		private readonly Action _action;
 		public StepResult Result { get; private set; }
 
-		public Step(Action action, int stepNumber, int totalStepsCount)
+		public Step(Action action, int stepNumber)
 		{
 			_action = action;
-			Result = new StepResult(stepNumber, totalStepsCount, NameFormatter.Format(action.Method.Name), ResultStatus.NotRun);
+			Result = new StepResult(stepNumber, NameFormatter.Format(action.Method.Name), ResultStatus.NotRun);
 		}
 
 		public void Invoke()

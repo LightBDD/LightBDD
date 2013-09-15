@@ -37,8 +37,8 @@ namespace SimpleBDD.UnitTests
 			Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
 			Assert.That(result.Steps, Is.EqualTo(new[]
 			{
-				new StepResult(1, 2, "Step one", ResultStatus.Passed),
-				new StepResult(2, 2, "Step two", ResultStatus.Passed)
+				new StepResult(1, "Step one", ResultStatus.Passed),
+				new StepResult(2, "Step two", ResultStatus.Passed)
 			}));
 		}
 
@@ -58,9 +58,9 @@ namespace SimpleBDD.UnitTests
 			Assert.That(result.Status, Is.EqualTo(ResultStatus.Failed));
 			Assert.That(result.Steps, Is.EqualTo(new[]
 			{
-				new StepResult(1, 3, "Step one", ResultStatus.Passed),
-				new StepResult(2, 3, "Step throwing exception", ResultStatus.Failed),
-				new StepResult(3, 3, "Step two", ResultStatus.NotRun)
+				new StepResult(1, "Step one", ResultStatus.Passed),
+				new StepResult(2, "Step throwing exception", ResultStatus.Failed),
+				new StepResult(3, "Step two", ResultStatus.NotRun)
 			}));
 		}
 
@@ -80,9 +80,9 @@ namespace SimpleBDD.UnitTests
 			Assert.That(result.Status, Is.EqualTo(ResultStatus.Ignored));
 			Assert.That(result.Steps, Is.EqualTo(new[]
 			{
-				new StepResult(1, 3, "Step one", ResultStatus.Passed),
-				new StepResult(2, 3, "Step with ignore assertion", ResultStatus.Ignored),
-				new StepResult(3, 3, "Step two", ResultStatus.NotRun)
+				new StepResult(1, "Step one", ResultStatus.Passed),
+				new StepResult(2, "Step with ignore assertion", ResultStatus.Ignored),
+				new StepResult(3, "Step two", ResultStatus.NotRun)
 			}));
 		}
 
@@ -102,9 +102,9 @@ namespace SimpleBDD.UnitTests
 			Assert.That(result.Status, Is.EqualTo(ResultStatus.Ignored));
 			Assert.That(result.Steps, Is.EqualTo(new[]
 			{
-				new StepResult(1, 3, "Step one", ResultStatus.Passed),
-				new StepResult(2, 3, "Step with inconclusive assertion", ResultStatus.Ignored),
-				new StepResult(3, 3, "Step two", ResultStatus.NotRun)
+				new StepResult(1, "Step one", ResultStatus.Passed),
+				new StepResult(2, "Step with inconclusive assertion", ResultStatus.Ignored),
+				new StepResult(3, "Step two", ResultStatus.NotRun)
 			}));
 		}
 

@@ -4,12 +4,10 @@ namespace SimpleBDD.Results.Implementation
 	{
 		public string Name { get; set; }
 		public ResultStatus Status { get; set; }
-		public int StepNumber { get; set; }
-		public int TotalStepsCount { get; set; }
-		public StepResult(int stepNumber, int totalStepsCount, string stepName, ResultStatus stepStatus)
+		public int Number { get; set; }
+		public StepResult(int stepNumber, string stepName, ResultStatus stepStatus)
 		{
-			StepNumber = stepNumber;
-			TotalStepsCount = totalStepsCount;
+			Number = stepNumber;
 			Name = stepName;
 			Status = stepStatus;
 		}
@@ -17,7 +15,7 @@ namespace SimpleBDD.Results.Implementation
 		{
 			if (ReferenceEquals(null, other)) return false;
 			if (ReferenceEquals(this, other)) return true;
-			return other.StepNumber == StepNumber && other.TotalStepsCount == TotalStepsCount && Equals(other.Name, Name) && Equals(other.Status, Status);
+			return other.Number == Number && Equals(other.Name, Name) && Equals(other.Status, Status);
 		}
 		public override bool Equals(object obj)
 		{
@@ -30,8 +28,7 @@ namespace SimpleBDD.Results.Implementation
 		{
 			unchecked
 			{
-				int result = StepNumber;
-				result = (result * 397) ^ TotalStepsCount;
+				int result = Number;
 				result = (result * 397) ^ (Name != null ? Name.GetHashCode() : 0);
 				result = (result * 397) ^ Status.GetHashCode();
 				return result;
@@ -40,7 +37,7 @@ namespace SimpleBDD.Results.Implementation
 
 		public override string ToString()
 		{
-			return string.Format("{0}/{1} {2}: {3}", StepNumber, TotalStepsCount, Name, Status);
+			return string.Format("{0} {1}: {2}", Number, Name, Status);
 		}
 	}
 }

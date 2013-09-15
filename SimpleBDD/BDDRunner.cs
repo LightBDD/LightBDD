@@ -70,7 +70,7 @@ namespace SimpleBDD
 			try
 			{
 				foreach (var step in stepsToExecute)
-					PerformStep(step);
+					PerformStep(step, stepsToExecute.Length);
 			}
 			finally
 			{
@@ -84,16 +84,16 @@ namespace SimpleBDD
 			return NameFormatter.Format(callingMethodName);
 		}
 
-		private void PerformStep(Step step)
+		private void PerformStep(Step step, int totalCount)
 		{
-			ProgressNotifier.NotifyStepStart(step.Result.Name, step.Result.StepNumber, step.Result.TotalStepsCount);
+			ProgressNotifier.NotifyStepStart(step.Result.Name, step.Result.Number, totalCount);
 			step.Invoke();
 		}
 
 		private IEnumerable<Step> PrepareStepsToExecute(Action[] steps)
 		{
 			int i = 0;
-			return steps.Select(step => new Step(step, ++i, steps.Length));
+			return steps.Select(step => new Step(step, ++i));
 		}
 	}
 }
