@@ -22,12 +22,7 @@ namespace SimpleBDD
 		/// <summary>
 		/// Returns story result.
 		/// </summary>
-		public StoryResult StoryResult { get; private set; }
-
-		/// <summary>
-		/// Results writer allowing to save story result to file.
-		/// </summary>
-		public ResultWriter ResultWriter { get; private set; }
+		public FeatureResult FeatureResult { get; private set; }
 
 		/// <summary>
 		/// Initializes runner with ConsoleProgressNotifier.
@@ -35,9 +30,8 @@ namespace SimpleBDD
 		public BDDRunner(Type testClass)
 		{
 			_context = testClass;
-			StoryResult = new StoryResult();
+			FeatureResult = new FeatureResult();
 			ProgressNotifier = new ConsoleProgressNotifier();
-			ResultWriter = new ResultWriter(testClass.Name);
 		}
 
 		/// <summary>
@@ -74,7 +68,7 @@ namespace SimpleBDD
 			}
 			finally
 			{
-				StoryResult.AddScenario(new ScenarioResult(scenarioName, stepsToExecute.Select(s => s.Result)));
+				FeatureResult.AddScenario(new ScenarioResult(scenarioName, stepsToExecute.Select(s => s.Result)));
 			}
 		}
 
@@ -94,14 +88,6 @@ namespace SimpleBDD
 		{
 			int i = 0;
 			return steps.Select(step => new Step(step, ++i, steps.Length));
-		}
-
-		/// <summary>
-		/// Saves story results to file.
-		/// </summary>
-		public void SaveResults()
-		{
-			ResultWriter.Save(StoryResult);
 		}
 	}
 }

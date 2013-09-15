@@ -3,22 +3,28 @@ using System.Text;
 namespace SimpleBDD.Results.Formatters
 {
 	/// <summary>
-	/// Formats story result as plain text.
+	/// Formats feature results as plain text.
 	/// </summary>
 	public class PlainTextResultFormatter : IResultFormatter
 	{
 		#region IResultFormatter Members
 
 		/// <summary>
-		/// Formats story result.
+		/// Formats feature results.
 		/// </summary>
-		/// <param name="result">Result to format.</param>
-		public string Format(StoryResult result)
+		/// <param name="features">Features to format.</param>
+		public string Format(params FeatureResult[] features)
 		{
 			var builder = new StringBuilder();
-			foreach (var scenario in result.Scenarios)
-				FormatScenario(builder, scenario);
+			foreach (var feature in features)
+				FormatFeature(builder, feature);
 			return builder.ToString();
+		}
+
+		private void FormatFeature(StringBuilder builder, FeatureResult feature)
+		{
+			foreach (var scenario in feature.Scenarios)
+				FormatScenario(builder, scenario);
 		}
 
 		#endregion
@@ -31,8 +37,8 @@ namespace SimpleBDD.Results.Formatters
 			foreach (var step in scenario.Steps)
 			{
 				builder.Append("\tStep ")
-				       .Append(step.StepNumber).Append("/").Append(step.TotalStepsCount).Append(": ")
-				       .Append(step.Name).Append(" - ").AppendLine(step.Status.ToString());
+					   .Append(step.StepNumber).Append("/").Append(step.TotalStepsCount).Append(": ")
+					   .Append(step.Name).Append(" - ").AppendLine(step.Status.ToString());
 			}
 		}
 	}

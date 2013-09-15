@@ -45,6 +45,7 @@
     <Compile Include="Steps\LoginSteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\LoginRequest.cs" />
+    <Compile Include="SummaryContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SimpleBDD\SimpleBDD.csproj">

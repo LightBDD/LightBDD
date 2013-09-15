@@ -8,12 +8,12 @@ namespace SimpleBDD.Results
 	/// Story results containing list of scenarios.
 	/// </summary>
 	[Serializable]
-	public class StoryResult
+	public class FeatureResult
 	{
 		/// <summary>
 		/// Default constructor.
 		/// </summary>
-		public StoryResult()
+		public FeatureResult()
 		{
 			Scenarios = new List<ScenarioResult>();
 		}
@@ -21,7 +21,7 @@ namespace SimpleBDD.Results
 		/// <summary>
 		/// Scenarios.
 		/// </summary>
-		[XmlElement(ElementName = "Scenarios")]
+		[XmlElement(ElementName = "Scenario")]
 		public List<ScenarioResult> Scenarios { get; set; }
 
 		/// <summary>

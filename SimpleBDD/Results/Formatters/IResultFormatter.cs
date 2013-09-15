@@ -6,9 +6,9 @@ namespace SimpleBDD.Results.Formatters
 	public interface IResultFormatter
 	{
 		/// <summary>
-		/// Formats story result.
+		/// Formats feature results.
 		/// </summary>
-		/// <param name="result">Result to format.</param>
-		string Format(StoryResult result);
+		/// <param name="features">Features to format.</param>
+		string Format(params FeatureResult[] features);
 	}
 }

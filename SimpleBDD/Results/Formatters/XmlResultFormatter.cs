@@ -1,25 +1,35 @@
+using System;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace SimpleBDD.Results.Formatters
 {
 	/// <summary>
-	/// Formats story result as xml.
+	/// Formats feature results as xml.
 	/// </summary>
 	public class XmlResultFormatter : IResultFormatter
 	{
-		#region IResultFormatter Members
-
-		/// <summary>
-		/// Formats story result.
-		/// </summary>
-		/// <param name="result">Result to format.</param>
-		public string Format(StoryResult result)
+		#region Internals
+		[Serializable]
+		public class TestResults
 		{
-			using (var stream = new StringWriter())
+			[XmlElement("Feature")]
+			public FeatureResult[] Features { get; set; }
+		}
+		#endregion
+
+		#region IResultFormatter Members
+		/// <summary>
+		/// Formats feature results.
+		/// </summary>
+		/// <param name="features">Features to format.</param>
+		public string Format(params FeatureResult[] features)
+		{
+			using (var writer = new StringWriter())
 			{
-				new XmlSerializer(typeof(StoryResult)).Serialize(stream, result);
-				return stream.GetStringBuilder().ToString();
+				new XmlSerializer(typeof(TestResults)).Serialize(writer, new TestResults { Features = features.ToArray() });
+				return writer.GetStringBuilder().ToString();
 			}
 		}
 

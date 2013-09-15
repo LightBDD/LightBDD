@@ -26,7 +26,7 @@ namespace SimpleBDD.Results
 		/// <summary>
 		/// Scenario steps.
 		/// </summary>
-		[XmlElement(ElementName = "Steps")]
+		[XmlElement(ElementName = "Step")]
 		public StepResult[] Steps { get; set; }
 
 		/// <summary>

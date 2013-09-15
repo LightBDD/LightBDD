@@ -50,8 +50,8 @@
     <Compile Include="Results\ResultStatus.cs" />
     <Compile Include="Results\ScenarioResult.cs" />
     <Compile Include="Results\StepResult.cs" />
-    <Compile Include="Results\StoryResult.cs" />
-    <Compile Include="ResultWriter.cs" />
+    <Compile Include="Results\FeatureResult.cs" />
+    <Compile Include="FeaturesSummary.cs" />
     <Compile Include="Step.cs" />
     <Compile Include="Results\Formatters\IResultFormatter.cs" />
     <Compile Include="Results\Formatters\XmlResultFormatter.cs" />
