@@ -11,11 +11,15 @@ namespace SimpleBDD.UnitTests.Results.Formatters
 	{
 		private IResultFormatter _subject;
 
+		#region Setup/Teardown
+
 		[SetUp]
 		public void SetUp()
 		{
 			_subject = new XmlResultFormatter();
 		}
+
+		#endregion
 
 		[Test]
 		public void Should_format_xml()

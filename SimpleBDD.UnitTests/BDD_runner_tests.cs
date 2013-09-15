@@ -134,21 +134,6 @@ namespace SimpleBDD.UnitTests
 		}
 
 		[Test]
-		public void Should_display_scenario_name()
-		{
-			_subject.RunScenario();
-			_progressNotifier.AssertWasCalled(n => n.NotifyScenarioStart("Should display scenario name"));
-		}
-
-		[Test]
-		public void Should_display_steps()
-		{
-			_subject.RunScenario(Step_one, Step_two);
-			_progressNotifier.AssertWasCalled(n => n.NotifyStepStart("Step one", 1, 2));
-			_progressNotifier.AssertWasCalled(n => n.NotifyStepStart("Step two", 2, 2));
-		}
-
-		[Test]
 		public void Should_display_scenario_failure()
 		{
 			try { _subject.RunScenario(Step_throwing_exception); }
@@ -173,10 +158,25 @@ namespace SimpleBDD.UnitTests
 		}
 
 		[Test]
+		public void Should_display_scenario_name()
+		{
+			_subject.RunScenario();
+			_progressNotifier.AssertWasCalled(n => n.NotifyScenarioStart("Should display scenario name"));
+		}
+
+		[Test]
 		public void Should_display_scenario_success()
 		{
 			_subject.RunScenario(Step_one);
 			_progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(ResultStatus.Passed));
+		}
+
+		[Test]
+		public void Should_display_steps()
+		{
+			_subject.RunScenario(Step_one, Step_two);
+			_progressNotifier.AssertWasCalled(n => n.NotifyStepStart("Step one", 1, 2));
+			_progressNotifier.AssertWasCalled(n => n.NotifyStepStart("Step two", 2, 2));
 		}
 
 		[Test]

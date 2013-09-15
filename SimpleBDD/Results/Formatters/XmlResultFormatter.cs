@@ -12,6 +12,7 @@ namespace SimpleBDD.Results.Formatters
 	public class XmlResultFormatter : IResultFormatter
 	{
 		#region IResultFormatter Members
+
 		/// <summary>
 		/// Formats feature results.
 		/// </summary>
@@ -27,6 +28,8 @@ namespace SimpleBDD.Results.Formatters
 				return Encoding.Default.GetString(memory.ToArray());
 			}
 		}
+
+		#endregion
 
 		private XDocument ToXDocument(IEnumerable<IFeatureResult> features)
 		{
@@ -58,7 +61,5 @@ namespace SimpleBDD.Results.Formatters
 				new XAttribute("Number", step.Number),
 				new XAttribute("Name", step.Name));
 		}
-
-		#endregion
 	}
 }

@@ -12,9 +12,13 @@ namespace SimpleBDD.Results.Implementation
 			Name = name;
 		}
 
+		#region IFeatureResult Members
+
 		public IEnumerable<IScenarioResult> Scenarios { get { return _scenarios; } }
 		public string Name { get; private set; }
 		public string Description { get; private set; }
+
+		#endregion
 
 		public void AddScenario(IScenarioResult scenario)
 		{

@@ -8,9 +8,9 @@ namespace SimpleBDD.Results
 	public interface IFeatureResult
 	{
 		/// <summary>
-		/// Returns executed scenarios for given feature.
+		/// Feature description.
 		/// </summary>
-		IEnumerable<IScenarioResult> Scenarios { get; }
+		string Description { get; }
 
 		/// <summary>
 		/// Feature name.
@@ -18,8 +18,8 @@ namespace SimpleBDD.Results
 		string Name { get; }
 
 		/// <summary>
-		/// Feature description.
+		/// Returns executed scenarios for given feature.
 		/// </summary>
-		string Description { get; }
+		IEnumerable<IScenarioResult> Scenarios { get; }
 	}
 }

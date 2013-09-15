@@ -55,14 +55,6 @@ namespace SimpleBDD
 			ProgressNotifier.NotifyFeatureStart(_result.Name, _result.Description);
 		}
 
-		private string GetFeatureDescription(Type testClass)
-		{
-			return testClass.GetCustomAttributes(typeof(DescriptionAttribute), true)
-				.OfType<DescriptionAttribute>()
-				.Select(a => a.Description)
-				.SingleOrDefault();
-		}
-
 		/// <summary>
 		/// Runs test scenario by executing given steps in order.
 		/// If given step throws, other are not executed.
@@ -128,6 +120,14 @@ namespace SimpleBDD
 				_result.AddScenario(result);
 				ProgressNotifier.NotifyScenarioFinished(result.Status);
 			}
+		}
+
+		private string GetFeatureDescription(Type testClass)
+		{
+			return testClass.GetCustomAttributes(typeof(DescriptionAttribute), true)
+			                .OfType<DescriptionAttribute>()
+			                .Select(a => a.Description)
+			                .SingleOrDefault();
 		}
 
 		private string GetScenarioName()

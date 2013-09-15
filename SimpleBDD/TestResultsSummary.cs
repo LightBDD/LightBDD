@@ -16,6 +16,11 @@ namespace SimpleBDD
 		private readonly IList<IFeatureResult> _results = new List<IFeatureResult>();
 
 		/// <summary>
+		/// Returns all collected results.
+		/// </summary>
+		public IEnumerable<IFeatureResult> Results { get { return _results; } }
+
+		/// <summary>
 		/// Default constructor. Uses XmlResultFormatter.
 		/// </summary>
 		public TestResultsSummary()
@@ -40,11 +45,6 @@ namespace SimpleBDD
 		{
 			_results.Add(result);
 		}
-
-		/// <summary>
-		/// Returns all collected results.
-		/// </summary>
-		public IEnumerable<IFeatureResult> Results { get { return _results; } }
 
 		/// <summary>
 		/// Saves test results summary to specified file, using formatter defined in constructor.

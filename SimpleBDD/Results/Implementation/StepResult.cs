@@ -2,15 +2,21 @@ namespace SimpleBDD.Results.Implementation
 {
 	internal class StepResult : IStepResult
 	{
-		public string Name { get; set; }
-		public ResultStatus Status { get; set; }
-		public int Number { get; set; }
 		public StepResult(int stepNumber, string stepName, ResultStatus stepStatus)
 		{
 			Number = stepNumber;
 			Name = stepName;
 			Status = stepStatus;
 		}
+
+		#region IStepResult Members
+
+		public string Name { get; set; }
+		public ResultStatus Status { get; set; }
+		public int Number { get; set; }
+
+		#endregion
+
 		public bool Equals(StepResult other)
 		{
 			if (ReferenceEquals(null, other)) return false;

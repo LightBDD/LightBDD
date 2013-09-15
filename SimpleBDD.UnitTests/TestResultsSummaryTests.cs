@@ -14,12 +14,16 @@ namespace SimpleBDD.UnitTests
 		private TestResultsSummary _subject;
 		private IResultFormatter _formatter;
 
+		#region Setup/Teardown
+
 		[SetUp]
 		public void SetUp()
 		{
 			_formatter = MockRepository.GenerateMock<IResultFormatter>();
 			_subject = new TestResultsSummary(_formatter);
 		}
+
+		#endregion
 
 		[Test]
 		public void Should_add_results()

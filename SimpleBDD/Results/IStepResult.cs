@@ -11,13 +11,13 @@ namespace SimpleBDD.Results
 		string Name { get; set; }
 
 		/// <summary>
-		/// Step status.
-		/// </summary>
-		ResultStatus Status { get; set; }
-
-		/// <summary>
 		/// Step number.
 		/// </summary>
 		int Number { get; set; }
+
+		/// <summary>
+		/// Step status.
+		/// </summary>
+		ResultStatus Status { get; set; }
 	}
 }

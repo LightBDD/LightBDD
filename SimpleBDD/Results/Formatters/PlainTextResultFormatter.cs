@@ -21,6 +21,8 @@ namespace SimpleBDD.Results.Formatters
 			return builder.ToString();
 		}
 
+		#endregion
+
 		private void FormatFeature(StringBuilder builder, IFeatureResult feature)
 		{
 			if (builder.Length > 0)
@@ -29,13 +31,11 @@ namespace SimpleBDD.Results.Formatters
 			builder.Append("Feature: ").AppendLine(feature.Name);
 
 			if (!string.IsNullOrWhiteSpace(feature.Description))
-				builder.Append(feature.Description).AppendLine();
+				builder.Append("\t").Append(feature.Description.Replace("\n", "\n\t")).AppendLine();
 
 			foreach (var scenario in feature.Scenarios)
 				FormatScenario(builder, scenario);
 		}
-
-		#endregion
 
 		private void FormatScenario(StringBuilder builder, IScenarioResult scenario)
 		{

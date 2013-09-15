@@ -5,27 +5,14 @@ using SimpleBDD.Example.Services;
 
 namespace SimpleBDD.Example
 {
-	public partial class Login_feature
+	public partial class Login_feature : FeatureTestsBase
 	{
 		private const string _validUserName = "admin";
 		private const string _validPassword = "password";
 
-		private BDDRunner _runner;
 		private LoginRequest _loginRequest;
 		private LoginService _loginService;
 		private LoginResult _loginResult;
-
-		[TestFixtureSetUp]
-		public void FixtureSetUp()
-		{
-			_runner = new BDDRunner(GetType());
-		}
-
-		[TestFixtureTearDown]
-		public void FixtureTearDown()
-		{
-			AcceptanceTests.Summary.AddResult(_runner.Result);
-		}
 
 		private void Given_user_is_about_to_login()
 		{
