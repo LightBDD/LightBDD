@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using SimpleBDD.Naming;
 using SimpleBDD.Results;
 using SimpleBDD.Results.Implementation;
 
@@ -13,7 +14,7 @@ namespace SimpleBDD
 		public Step(Action action, int stepNumber, int totalStepsCount)
 		{
 			_action = action;
-			Result = new StepResult(stepNumber, totalStepsCount, TextFormatter.Format(action.Method.Name), ResultStatus.NotRun);
+			Result = new StepResult(stepNumber, totalStepsCount, NameFormatter.Format(action.Method.Name), ResultStatus.NotRun);
 		}
 
 		public void Invoke()

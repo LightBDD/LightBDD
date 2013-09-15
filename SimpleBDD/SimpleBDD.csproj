@@ -59,7 +59,7 @@
     <Compile Include="Step.cs" />
     <Compile Include="Results\Formatters\IResultFormatter.cs" />
     <Compile Include="Results\Formatters\XmlResultFormatter.cs" />
-    <Compile Include="TextFormatter.cs" />
+    <Compile Include="Naming\NameFormatter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

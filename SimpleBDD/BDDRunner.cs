@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using SimpleBDD.Naming;
 using SimpleBDD.Notification;
 using SimpleBDD.Results;
 using SimpleBDD.Results.Implementation;
@@ -80,7 +81,7 @@ namespace SimpleBDD
 		private string GetScenarioName()
 		{
 			var callingMethodName = new StackTrace().GetFrame(2).GetMethod().Name;
-			return TextFormatter.Format(callingMethodName);
+			return NameFormatter.Format(callingMethodName);
 		}
 
 		private void PerformStep(Step step)

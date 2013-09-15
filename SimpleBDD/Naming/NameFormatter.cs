@@ -1,9 +1,9 @@
-﻿namespace SimpleBDD
+﻿namespace SimpleBDD.Naming
 {
 	/// <summary>
 	/// Formats name into readable text.
 	/// </summary>
-	public static class TextFormatter
+	public static class NameFormatter
 	{
 		/// <summary>
 		/// Formats name into readable text.

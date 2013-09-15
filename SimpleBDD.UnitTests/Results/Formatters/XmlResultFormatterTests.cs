@@ -4,7 +4,7 @@ using SimpleBDD.Results;
 using SimpleBDD.Results.Formatters;
 using SimpleBDD.Results.Implementation;
 
-namespace SimpleBDD.UnitTests
+namespace SimpleBDD.UnitTests.Results.Formatters
 {
 	[TestFixture]
 	public class XmlResultFormatterTests
