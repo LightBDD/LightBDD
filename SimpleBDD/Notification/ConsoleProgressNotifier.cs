@@ -1,9 +1,10 @@
 using System;
+using SimpleBDD.Results;
 
 namespace SimpleBDD.Notification
 {
 	/// <summary>
-	/// Progress notifier using console for displying progress.
+	/// Progress notifier using console for displaying progress.
 	/// </summary>
 	public class ConsoleProgressNotifier : IProgressNotifier
 	{
@@ -15,7 +16,7 @@ namespace SimpleBDD.Notification
 		/// <param name="scenarioName">Scenario name.</param>
 		public void NotifyScenarioStart(string scenarioName)
 		{
-			Console.WriteLine(string.Format("SCENARIO: {0}", scenarioName));
+			Console.WriteLine("SCENARIO: {0}", scenarioName);
 		}
 
 		/// <summary>
@@ -26,7 +27,28 @@ namespace SimpleBDD.Notification
 		/// <param name="totalStepCount">Total number of steps.</param>
 		public void NotifyStepStart(string stepName, int stepNumber, int totalStepCount)
 		{
-			Console.WriteLine("STEP {0}/{1}: {2}", stepNumber, totalStepCount, stepName);
+			Console.WriteLine("  STEP {0}/{1}: {2}", stepNumber, totalStepCount, stepName);
+		}
+
+		/// <summary>
+		/// Notifies that feature has been started.
+		/// </summary>
+		/// <param name="featureName">Feature name.</param>
+		/// <param name="featureDescription">Feature description.</param>
+		public void NotifyFeatureStart(string featureName, string featureDescription)
+		{
+			Console.WriteLine("FEATURE {0}:", featureName);
+			if (!string.IsNullOrWhiteSpace(featureDescription))
+				Console.WriteLine("  {0}", featureDescription.Replace("\n", "\n  "));
+		}
+
+		/// <summary>
+		/// Notifies that scenario has been finished with given status.
+		/// </summary>
+		/// <param name="status">Status.</param>
+		public void NotifyScenarioFinished(ResultStatus status)
+		{
+			Console.WriteLine("  SCENARIO RESULT: {0}", status);
 		}
 
 		#endregion

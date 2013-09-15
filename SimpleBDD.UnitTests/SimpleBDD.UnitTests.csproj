@@ -42,7 +42,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BDDRunnerTests.cs" />
+    <Compile Include="BDD_runner_tests.cs" />
     <Compile Include="TestResultsSummaryTests.cs" />
     <Compile Include="Results\Formatters\PlainTextFormatterTests.cs" />
     <Compile Include="Naming\NameFormatterTests.cs" />

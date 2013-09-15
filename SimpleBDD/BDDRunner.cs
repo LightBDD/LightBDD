@@ -32,6 +32,8 @@ namespace SimpleBDD
 
 		/// <summary>
 		/// Initializes runner for given test class type with ConsoleProgressNotifier.
+		/// Given testClass type Name is used as feature name.
+		/// If test class is annotated with [Description] attribute, it's content is used as feature description.
 		/// </summary>
 		/// <param name="testClass">Test class type.</param>
 		public BDDRunner(Type testClass)
@@ -41,6 +43,8 @@ namespace SimpleBDD
 
 		/// <summary>
 		/// Initializes runner for given test class type with given progress notifier.
+		/// Given testClass type Name is used as feature name.
+		/// If test class is annotated with [Description] attribute, it's content is used as feature description.
 		/// </summary>
 		/// <param name="testClass">Test class type.</param>
 		/// <param name="progressNotifier">Progress notifier.</param>
@@ -48,6 +52,7 @@ namespace SimpleBDD
 		{
 			_result = new FeatureResult(NameFormatter.Format(testClass.Name), GetFeatureDescription(testClass));
 			ProgressNotifier = progressNotifier;
+			ProgressNotifier.NotifyFeatureStart(_result.Name, _result.Description);
 		}
 
 		private string GetFeatureDescription(Type testClass)
@@ -119,7 +124,9 @@ namespace SimpleBDD
 			}
 			finally
 			{
-				_result.AddScenario(new ScenarioResult(scenarioName, stepsToExecute.Select(s => s.Result)));
+				var result = new ScenarioResult(scenarioName, stepsToExecute.Select(s => s.Result));
+				_result.AddScenario(result);
+				ProgressNotifier.NotifyScenarioFinished(result.Status);
 			}
 		}
 

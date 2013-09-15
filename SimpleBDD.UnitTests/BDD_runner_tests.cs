@@ -9,7 +9,8 @@ using SimpleBDD.Results.Implementation;
 namespace SimpleBDD.UnitTests
 {
 	[TestFixture]
-	public class BDDRunnerTests
+	[Description("Runner tests description")]
+	public class BDD_runner_tests
 	{
 		private BDDRunner _subject;
 		private IProgressNotifier _progressNotifier;
@@ -129,7 +130,7 @@ namespace SimpleBDD.UnitTests
 		[Test]
 		public void Should_display_feature_name()
 		{
-
+			_progressNotifier.AssertWasCalled(n => n.NotifyFeatureStart("BDD runner tests", "Runner tests description"));
 		}
 
 		[Test]
@@ -145,6 +146,37 @@ namespace SimpleBDD.UnitTests
 			_subject.RunScenario(Step_one, Step_two);
 			_progressNotifier.AssertWasCalled(n => n.NotifyStepStart("Step one", 1, 2));
 			_progressNotifier.AssertWasCalled(n => n.NotifyStepStart("Step two", 2, 2));
+		}
+
+		[Test]
+		public void Should_display_scenario_failure()
+		{
+			try { _subject.RunScenario(Step_throwing_exception); }
+			catch { }
+			_progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(ResultStatus.Failed));
+		}
+
+		[Test]
+		public void Should_display_scenario_ignored()
+		{
+			try { _subject.RunScenario(Step_with_ignore_assertion); }
+			catch { }
+			_progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(ResultStatus.Ignored));
+		}
+
+		[Test]
+		public void Should_display_scenario_inconclusive()
+		{
+			try { _subject.RunScenario(Step_with_inconclusive_assertion); }
+			catch { }
+			_progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(ResultStatus.Ignored));
+		}
+
+		[Test]
+		public void Should_display_scenario_success()
+		{
+			_subject.RunScenario(Step_one);
+			_progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(ResultStatus.Passed));
 		}
 
 		[Test]
@@ -166,7 +198,7 @@ namespace SimpleBDD.UnitTests
 		}
 
 		[Test]
-		public void Should_use_console_progress_by_default()
+		public void Should_use_console_progress_notifier_by_default()
 		{
 			Assert.That(new BDDRunner(GetType()).ProgressNotifier, Is.InstanceOf<ConsoleProgressNotifier>());
 		}
