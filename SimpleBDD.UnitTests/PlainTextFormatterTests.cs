@@ -20,8 +20,8 @@ namespace SimpleBDD.UnitTests
 		public void Should_format_plain_text()
 		{
 			var result = new FeatureResult();
-			result.ScenarioList.Add(new ScenarioResult("name", new[] { new StepResult(1, 2, "step1", ResultStatus.Passed), new StepResult(2, 2, "step2", ResultStatus.Ignored) }));
-			result.ScenarioList.Add(new ScenarioResult("name2", new[] { new StepResult(1, 2, "step3", ResultStatus.Passed), new StepResult(2, 2, "step4", ResultStatus.Failed) }));
+			result.AddScenario(new ScenarioResult("name", new[] { new StepResult(1, 2, "step1", ResultStatus.Passed), new StepResult(2, 2, "step2", ResultStatus.Ignored) }));
+			result.AddScenario(new ScenarioResult("name2", new[] { new StepResult(1, 2, "step3", ResultStatus.Passed), new StepResult(2, 2, "step4", ResultStatus.Failed) }));
 			var text = _subject.Format(result);
 			const string expectedText = @"Scenario: name - Ignored
 	Step 1/2: step1 - Passed

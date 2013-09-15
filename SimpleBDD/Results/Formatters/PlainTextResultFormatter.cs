@@ -33,7 +33,7 @@ namespace SimpleBDD.Results.Formatters
 		{
 			if (builder.Length > 0)
 				builder.AppendLine();
-			builder.Append("Scenario: ").Append(scenario.ScenarioName).Append(" - ").AppendLine(scenario.Status.ToString());
+			builder.Append("Scenario: ").Append(scenario.Name).Append(" - ").AppendLine(scenario.Status.ToString());
 			foreach (var step in scenario.Steps)
 			{
 				builder.Append("\tStep ")

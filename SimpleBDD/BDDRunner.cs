@@ -73,7 +73,7 @@ namespace SimpleBDD
 			}
 			finally
 			{
-				_result.ScenarioList.Add(new ScenarioResult(scenarioName, stepsToExecute.Select(s => s.Result)));
+				_result.AddScenario(new ScenarioResult(scenarioName, stepsToExecute.Select(s => s.Result)));
 			}
 		}
 

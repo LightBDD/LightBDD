@@ -21,21 +21,21 @@ namespace SimpleBDD.UnitTests
 		public void Should_format_xml()
 		{
 			var result = new FeatureResult();
-			result.ScenarioList.Add(new ScenarioResult("name", new[] { new StepResult(1, 2, "step1", ResultStatus.Passed), new StepResult(2, 2, "step2", ResultStatus.Ignored) }));
-			result.ScenarioList.Add(new ScenarioResult("name2", new[] { new StepResult(1, 2, "step3", ResultStatus.Passed), new StepResult(2, 2, "step4", ResultStatus.Failed) }));
+			result.AddScenario(new ScenarioResult("name", new[] { new StepResult(1, 2, "step1", ResultStatus.Passed), new StepResult(2, 2, "step2", ResultStatus.Ignored) }));
+			result.AddScenario(new ScenarioResult("name2", new[] { new StepResult(1, 2, "step3", ResultStatus.Passed), new StepResult(2, 2, "step4", ResultStatus.Failed) }));
 			var text = _subject.Format(result);
 			Console.WriteLine(text);
 
 			const string expectedText = @"<?xml version=""1.0"" encoding=""utf-8""?>
-<TestResults xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
+<TestResults>
   <Feature>
-    <Scenario Name=""name"" Status=""Ignored"">
-      <Step Name=""step1"" Status=""Passed"" StepNumber=""1"" TotalStepsCount=""2"" />
-      <Step Name=""step2"" Status=""Ignored"" StepNumber=""2"" TotalStepsCount=""2"" />
+    <Scenario Status=""Ignored"" Name=""name"">
+      <Step Status=""Passed"" Number=""1"" Name=""step1"" />
+      <Step Status=""Ignored"" Number=""2"" Name=""step2"" />
     </Scenario>
-    <Scenario Name=""name2"" Status=""Failed"">
-      <Step Name=""step3"" Status=""Passed"" StepNumber=""1"" TotalStepsCount=""2"" />
-      <Step Name=""step4"" Status=""Failed"" StepNumber=""2"" TotalStepsCount=""2"" />
+    <Scenario Status=""Failed"" Name=""name2"">
+      <Step Status=""Passed"" Number=""1"" Name=""step3"" />
+      <Step Status=""Failed"" Number=""2"" Name=""step4"" />
     </Scenario>
   </Feature>
 </TestResults>";

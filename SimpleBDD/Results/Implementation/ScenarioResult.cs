@@ -1,55 +1,18 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Serialization;
 
 namespace SimpleBDD.Results.Implementation
 {
-	/// <summary>
-	/// Scenario result containing name, status and list of steps.
-	/// </summary>
-	[Serializable]
-	public class ScenarioResult : IScenarioResult
+	internal class ScenarioResult : IScenarioResult
 	{
-		/// <summary>
-		/// Scenario name.
-		/// </summary>
-		[XmlAttribute(AttributeName = "Name")]
-		public string ScenarioName { get; set; }
-
-		/// <summary>
-		/// Scenario status.
-		/// </summary>
-		[XmlAttribute(AttributeName = "Status")]
+		public string Name { get; set; }
 		public ResultStatus Status { get; set; }
+		public IEnumerable<IStepResult> Steps { get; private set; }
 
-		/// <summary>
-		/// Scenario steps.
-		/// </summary>
-		public IEnumerable<IStepResult> Steps { get { return StepList; } }
-
-		/// <summary>
-		/// Scenario steps.
-		/// </summary>
-		[XmlElement(ElementName = "Step")]
-		public List<StepResult> StepList { get; set; }
-
-		/// <summary>
-		/// Default constructor.
-		/// </summary>
-		public ScenarioResult()
-		{
-		}
-
-		/// <summary>
-		/// Initializes scenario result with name.
-		/// </summary>
-		/// <param name="scenarioName">Scenario name.</param>
-		/// <param name="steps">Steps results.</param>
 		public ScenarioResult(string scenarioName, IEnumerable<StepResult> steps)
 		{
-			ScenarioName = scenarioName;
-			StepList = steps.ToList();
+			Name = scenarioName;
+			Steps = steps.ToArray();
 			Status = Steps.Select(s => s.Status).OrderByDescending(s => s).FirstOrDefault();
 		}
 	}

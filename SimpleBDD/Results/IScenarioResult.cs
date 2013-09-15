@@ -10,7 +10,7 @@ namespace SimpleBDD.Results
 		/// <summary>
 		/// Scenario name.
 		/// </summary>
-		string ScenarioName { get; }
+		string Name { get; }
 		/// <summary>
 		/// Scenario status.
 		/// </summary>
