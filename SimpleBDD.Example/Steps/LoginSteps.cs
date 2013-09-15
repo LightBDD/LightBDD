@@ -24,7 +24,7 @@ namespace SimpleBDD.Example
 		[TestFixtureTearDown]
 		public void FixtureTearDown()
 		{
-			SummaryContext.Summary.AddResults(_bddRunner.Result);
+			SummaryContext.Summary.AddResult(_bddRunner.Result);
 		}
 
 		private void Given_user_is_about_to_login()

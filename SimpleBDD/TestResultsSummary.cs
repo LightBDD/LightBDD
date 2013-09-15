@@ -8,17 +8,17 @@ using SimpleBDD.Results.Formatters;
 namespace SimpleBDD
 {
 	/// <summary>
-	/// Tests summary class for collecting feature results and saving it to specified file.
+	/// Tests results summary class for collecting feature results and saving it to specified file.
 	/// </summary>
-	public class FeaturesSummary
+	public class TestResultsSummary
 	{
 		private readonly IResultFormatter _formatter;
-		private readonly IList<IFeatureResult> _features = new List<IFeatureResult>();
+		private readonly IList<IFeatureResult> _results = new List<IFeatureResult>();
 
 		/// <summary>
 		/// Default constructor. Uses XmlResultFormatter.
 		/// </summary>
-		public FeaturesSummary()
+		public TestResultsSummary()
 			: this(new XmlResultFormatter())
 		{
 		}
@@ -27,7 +27,7 @@ namespace SimpleBDD
 		/// Constructor allowing to define formatter type.
 		/// </summary>
 		/// <param name="formatter">Results formatter.</param>
-		public FeaturesSummary(IResultFormatter formatter)
+		public TestResultsSummary(IResultFormatter formatter)
 		{
 			_formatter = formatter;
 		}
@@ -36,22 +36,23 @@ namespace SimpleBDD
 		/// Adds feature result to summary.
 		/// </summary>
 		/// <param name="result">Feature result to add.</param>
-		public void AddResults(IFeatureResult result)
+		public void AddResult(IFeatureResult result)
 		{
-			_features.Add(result);
+			_results.Add(result);
 		}
 
 		/// <summary>
-		/// Returns all collected features.
+		/// Returns all collected results.
 		/// </summary>
-		public IEnumerable<IFeatureResult> Features { get { return _features; } }
+		public IEnumerable<IFeatureResult> Results { get { return _results; } }
+
 		/// <summary>
-		/// Saves feature summary to specified file, using formatter defined in constructor.
+		/// Saves test results summary to specified file, using formatter defined in constructor.
 		/// </summary>
 		/// <param name="filePath">Output file path.</param>
 		public void SaveSummary(string filePath)
 		{
-			File.WriteAllText(filePath, _formatter.Format(_features.ToArray()), Encoding.UTF8);
+			File.WriteAllText(filePath, _formatter.Format(_results.ToArray()), Encoding.UTF8);
 		}
 	}
 }

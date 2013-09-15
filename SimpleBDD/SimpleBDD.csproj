@@ -55,7 +55,7 @@
     <Compile Include="Results\Implementation\ScenarioResult.cs" />
     <Compile Include="Results\Implementation\StepResult.cs" />
     <Compile Include="Results\Implementation\FeatureResult.cs" />
-    <Compile Include="FeaturesSummary.cs" />
+    <Compile Include="TestResultsSummary.cs" />
     <Compile Include="Step.cs" />
     <Compile Include="Results\Formatters\IResultFormatter.cs" />
     <Compile Include="Results\Formatters\XmlResultFormatter.cs" />

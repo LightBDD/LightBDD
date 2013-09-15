@@ -5,12 +5,12 @@ namespace SimpleBDD.Example
 	[SetUpFixture]
 	public class SummaryContext
 	{
-		public static FeaturesSummary Summary { get; private set; }
+		public static TestResultsSummary Summary { get; private set; }
 
 		[SetUp]
 		public void SetUp()
 		{
-			Summary = new FeaturesSummary();
+			Summary = new TestResultsSummary();
 		}
 
 		[TearDown]

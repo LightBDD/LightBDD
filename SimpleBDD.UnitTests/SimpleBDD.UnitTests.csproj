@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BDDRunnerTests.cs" />
+    <Compile Include="TestResultsSummaryTests.cs" />
     <Compile Include="Results\Formatters\PlainTextFormatterTests.cs" />
     <Compile Include="Naming\NameFormatterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
