@@ -43,6 +43,21 @@ namespace SimpleBDD.UnitTests
 		}
 
 		[Test]
+		public void Should_collect_scenario_result_for_explicitly_named_scenario()
+		{
+			const string scenarioName = "my scenario";
+			_subject.RunScenario(scenarioName,Step_one, Step_two);
+			var result = _subject.Result.Scenarios.Single();
+			Assert.That(result.Name, Is.EqualTo(scenarioName));
+			Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
+			Assert.That(result.Steps, Is.EqualTo(new[]
+			{
+				new StepResult(1, "Step one", ResultStatus.Passed),
+				new StepResult(2, "Step two", ResultStatus.Passed)
+			}));
+		}
+
+		[Test]
 		public void Should_collect_scenario_result_for_failing_scenario()
 		{
 			try
