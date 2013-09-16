@@ -1,44 +1,44 @@
 Lightweight Behavior Driven Development test framework.
 ===========
 
-Have you ever been using BDD methodology? Yes? - cool.  
+Have you ever been using the BDD methodology? Yes? - cool.  
 Now, have you tried to write stories or acceptance criteria using tools like [SpecFlow](http://www.specflow.org/) or [Fitnesse](http://fitnesse.org/)?  
-If you did (or have used other similar frameworks) perhaps you had come to the point when the tests project contained tens of scenarios or you had multiple projects with a lot of acceptance tests.  
-You might have also come to the point when you had to modify those tests because of requirements change, or adjust them to the modified class interfaces after refactoring.  
-It is no longer fun, isn't it?
+If you have (or have used other similar frameworks) perhaps you came to the point where the test projects contained tens of scenarios or you had multiple projects with a lot of acceptance tests.  
+You might have also come to the point where you had to modify those tests because the requirements changed, or adjust them to the modified class interfaces after refactoring.  
+It is no longer fun, is it?
 
-The difficulty with these frameworks is that they are using totally different language than the one in which code is written.  
-Because of that, they tries to provide translation layers between text in which stories are written and code in which stories are executed.  
-This additional layer is becomes a root of most of problems with maintaining tests, mostly because it lacks integration with development tools, which means that there is no support for refactoring, code analysis (like showing unused methods) etc, or good integrated environment for running those tests.
+The difficulty with these frameworks is that they are using a totally different language than the one in which the code is written.  
+Because of that, they try to provide translation layers between the text in which the stories are written and code in which the stories are executed.  
+This additional layer is becomes the root of most problems when maintaining tests, mostly because it lacks integration with development tools, which means that there is no support for refactoring, code analysis (like showing unused methods) etc, or a good integrated environment for running those tests.
 
 ## Project description
-**The purpose of this project** is to provide framework which would be as close to the development environment as possible (so developers would be able to use all of the standard development tools to maintain it), but also offering tests easy to read by people who are not experts in writing code, easy to track during longer execution, and easy to summarize.
+**The purpose of this project** is to provide framework which would be as close to the development environment as possible (so developers would be able to use all of the standard development tools to maintain it), but also offering easy to read tests by people who are not experts in writing code, easier to track during longer execution, and easy to summarize.
 
 ### Features
-* Native support for refactoring, code analysis (like finding unused methods), test running and all features that Visual Studio / Intellisense / Resharper offers during code development,
+* Native support for refactoring, code analysis (like finding unused methods), test running and all features that Visual Studio / Intellisense / Resharper offer during code development,
 * Easy to read scenario definitions,
 * Scenario steps execution tracking, usable during longer test execution,
 * Feature result summary available in XML or Plain text format,
 * VS Project Item templates for feature test files.
 
 ### Tests structure and conventions
-**LightBDD** bases on [NUnit](http://www.nunit.org/) framework which makes it very easy to adapt.
+**LightBDD** is based on the [NUnit](http://www.nunit.org/) framework which makes it very easy to adapt.
 
 TestFixture classes are treated as **Features**, where
 * class name corresponds to feature name,
 * [Description] attribute applied on class corresponds to feature description (narration).
 
-Test methods are treated as **Scenarios**, where method name corresponds to scenario name.
+Test methods are treated as **Scenarios**, where the method name corresponds to scenario name.
 
-Test method body is a single call to **BDDRunner.RunScenario()** with list of methods to execute in specified order, which are treated as **Steps**, where:
+The test method body is a single call to **BDDRunner.RunScenario()** with list of methods to execute in specified order, which are treated as **Steps**, where:
 * method name corresponds to step name.
 
 Steps behavior is interpreted as following:
-* if all steps exits without exception, the scenario finishes with status **passed**,
-* if given step has **Assert.Ignore()** or **Assert.Inconclusive()**, other steps are not executed and scenario finishes with status **ignored**,
-* if given step throws any exception, other steps are not executed and scenario finishes with status **failed**.
+* if all steps exit without exception, the scenario finishes with status **passed**,
+* if a given step has **Assert.Ignore()** or **Assert.Inconclusive()**, other steps are not executed and the scenario finishes with status **ignored**,
+* if a given step throws any exception, other steps are not executed and scenario finishes with status **failed**.
 
-**Naming convention** for all names using by **LightBDD** is that `_` character is replaced with *white space* - for more details see [NameFormatter](https://github.com/Suremaker/LightBDD/blob/master/LightBDD/Naming/NameFormatter.cs).
+The **naming convention** for all names using by **LightBDD** is that the `_` character is replaced with *white space* - for more details see [NameFormatter](https://github.com/Suremaker/LightBDD/blob/master/LightBDD/Naming/NameFormatter.cs).
 
 ### Example 
 ```C#
