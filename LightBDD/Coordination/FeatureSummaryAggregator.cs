@@ -11,6 +11,11 @@ namespace LightBDD.Coordination
 		private readonly TestResultsSummary _summary;
 
 		/// <summary>
+		/// File path where summary would be saved.
+		/// </summary>
+		public string FilePath { get; private set; }
+
+		/// <summary>
 		/// Default constructor, using XmlResultsFormatter for summary formatting and "FeaturesSummary.xml" for FilePath.
 		/// </summary>
 		public FeatureSummaryAggregator()
@@ -22,16 +27,13 @@ namespace LightBDD.Coordination
 		/// </summary>
 		/// <param name="resultFormatter">Formatter.</param>
 		/// <param name="filePath">Output file path.</param>
-		private FeatureSummaryAggregator(IResultFormatter resultFormatter, string filePath)
+		public FeatureSummaryAggregator(IResultFormatter resultFormatter, string filePath)
 		{
 			_summary = new TestResultsSummary(resultFormatter);
 			FilePath = filePath;
 		}
 
-		/// <summary>
-		/// File path where summary would be saved.
-		/// </summary>
-		public string FilePath { get; private set; }
+		#region IFeatureAggregator Members
 
 		/// <summary>
 		/// Aggregates given feature.
@@ -50,5 +52,7 @@ namespace LightBDD.Coordination
 		{
 			_summary.SaveSummary(FilePath);
 		}
+
+		#endregion
 	}
 }

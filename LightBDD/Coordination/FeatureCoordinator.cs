@@ -12,10 +12,10 @@ namespace LightBDD.Coordination
 	{
 		private static readonly FeatureCoordinator _instance = new FeatureCoordinator();
 
-		private FeatureCoordinator()
-		{
-			Aggregator = new FeatureSummaryAggregator();
-		}
+		/// <summary>
+		/// Coordinator instance.
+		/// </summary>
+		public static FeatureCoordinator Instance { get { return _instance; } }
 
 		/// <summary>
 		/// Aggregator used to collect feature results.
@@ -24,10 +24,10 @@ namespace LightBDD.Coordination
 		/// </summary>
 		public IFeatureAggregator Aggregator { get; set; }
 
-		/// <summary>
-		/// Coordinator instance.
-		/// </summary>
-		public static FeatureCoordinator Instance { get { return _instance; } }
+		private FeatureCoordinator()
+		{
+			Aggregator = new FeatureSummaryAggregator();
+		}
 
 		/// <summary>
 		/// Adds feature to aggregator.

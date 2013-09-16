@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using LightBDD.Coordination;
 using LightBDD.Naming;
 using LightBDD.Notification;
 using LightBDD.Results;
