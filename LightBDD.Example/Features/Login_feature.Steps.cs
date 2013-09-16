@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace LightBDD.Example.Features
 {
-	public partial class Login_feature : FeatureTestsBase
+	public partial class Login_feature : FeatureFixture
 	{
 		private const string _validUserName = "admin";
 		private const string _validPassword = "password";

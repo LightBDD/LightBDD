@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace LightBDD.Example.Features
 {
-	public partial class Basket_feature : FeatureTestsBase
+	public partial class Basket_feature : FeatureFixture
 	{
 		private Stock _stock;
 		private Basket _basket;
