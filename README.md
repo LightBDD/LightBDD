@@ -63,7 +63,7 @@ public partial class Login_feature //feature name
 	}
 }
 ```
-The above example shows feature *partial* class containing only scenraio definitions, which makes it easy to read.
+The above example shows feature *partial* class containing only scenario definitions, which makes it easy to read.
 
 All method implementations are separated and put in other file.
 ```C#

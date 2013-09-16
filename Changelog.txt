@@ -1,6 +1,13 @@
 LightBDD
 ===========================================
 
+Version 1.1.1
+-------------------------------------------
++ introduced TestCoordinator and FeatureSummaryAggregator
++ introduced FeatureFixture base class for feature tests
++ with usage of FeatureFixture, no additional classes are needed to create in order to save result summary
++ simplified Visual Studio Project Item Templates
+
 Version 1.1.0
 -------------------------------------------
 + added PlainTextResultFormatter and XmlResultFormatter to format test results
