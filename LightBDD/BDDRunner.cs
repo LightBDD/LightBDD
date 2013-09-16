@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using LightBDD.Coordination;
 using LightBDD.Naming;
 using LightBDD.Notification;
 using LightBDD.Results;
@@ -125,9 +126,9 @@ namespace LightBDD
 		private string GetFeatureDescription(Type testClass)
 		{
 			return testClass.GetCustomAttributes(typeof(DescriptionAttribute), true)
-			                .OfType<DescriptionAttribute>()
-			                .Select(a => a.Description)
-			                .SingleOrDefault();
+				.OfType<DescriptionAttribute>()
+				.Select(a => a.Description)
+				.SingleOrDefault();
 		}
 
 		private string GetScenarioName()
@@ -142,7 +143,7 @@ namespace LightBDD
 			step.Invoke();
 		}
 
-		private IEnumerable<Step> PrepareStepsToExecute(Action[] steps)
+		private IEnumerable<Step> PrepareStepsToExecute(IEnumerable<Action> steps)
 		{
 			int i = 0;
 			return steps.Select(step => new Step(step, ++i));

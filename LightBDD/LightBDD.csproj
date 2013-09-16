@@ -44,6 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BDDRunner.cs" />
+    <Compile Include="FeatureFixture.cs" />
+    <Compile Include="Coordination\FeatureSummaryAggregator.cs" />
+    <Compile Include="Coordination\IFeatureAggregator.cs" />
     <Compile Include="Notification\ConsoleProgressNotifier.cs" />
     <Compile Include="Notification\IProgressNotifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -55,6 +58,7 @@
     <Compile Include="Results\Implementation\ScenarioResult.cs" />
     <Compile Include="Results\Implementation\StepResult.cs" />
     <Compile Include="Results\Implementation\FeatureResult.cs" />
+    <Compile Include="Coordination\FeatureCoordinator.cs" />
     <Compile Include="TestResultsSummary.cs" />
     <Compile Include="Step.cs" />
     <Compile Include="Results\Formatters\IResultFormatter.cs" />
