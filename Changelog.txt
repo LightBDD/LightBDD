@@ -1,6 +1,12 @@
 LightBDD
 ===========================================
 
+Version 1.1.2
+-------------------------------------------
++ fixed scenario name display for LightBDD being compiled in Release mode,
++ introduced [Label] attribute allowing to apply label on feature test class or scenario method (like ticket number)
++ adjusted result formatters and progress notifiers to include label
+
 Version 1.1.1
 -------------------------------------------
 + introduced TestCoordinator and FeatureSummaryAggregator

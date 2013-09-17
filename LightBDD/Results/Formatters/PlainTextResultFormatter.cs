@@ -28,7 +28,10 @@ namespace LightBDD.Results.Formatters
 			if (builder.Length > 0)
 				builder.AppendLine();
 
-			builder.Append("Feature: ").AppendLine(feature.Name);
+			builder.Append("Feature: ");
+			if (!string.IsNullOrWhiteSpace(feature.Label))
+				builder.Append("[").Append(feature.Label).Append("] ");
+			builder.AppendLine(feature.Name);
 
 			if (!string.IsNullOrWhiteSpace(feature.Description))
 				builder.Append("\t").Append(feature.Description.Replace("\n", "\n\t")).AppendLine();
@@ -41,7 +44,10 @@ namespace LightBDD.Results.Formatters
 		{
 			if (builder.Length > 0)
 				builder.AppendLine();
-			builder.Append("\tScenario: ").Append(scenario.Name).Append(" - ").AppendLine(scenario.Status.ToString());
+			builder.Append("\tScenario: ");
+			if (!string.IsNullOrWhiteSpace(scenario.Label))
+				builder.Append("[").Append(scenario.Label).Append("] ");
+			builder.Append(scenario.Name).Append(" - ").AppendLine(scenario.Status.ToString());
 			foreach (var step in scenario.Steps)
 			{
 				builder.Append("\t\tStep ")

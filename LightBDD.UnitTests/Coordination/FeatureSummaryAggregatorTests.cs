@@ -33,7 +33,7 @@ namespace LightBDD.UnitTests.Coordination
 		public void Should_add_and_save_results()
 		{
 			const string expectedText = "some expected text";
-			var feature = new FeatureResult("name", "description");
+			var feature = new FeatureResult("name", "description", "label");
 			try
 			{
 				_formatter.Stub(f => f.Format(Arg<IFeatureResult[]>.Matches(l => l.Contains(feature)))).Return(expectedText);

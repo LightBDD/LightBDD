@@ -5,10 +5,11 @@ namespace LightBDD.Results.Implementation
 {
 	internal class ScenarioResult : IScenarioResult
 	{
-		public ScenarioResult(string scenarioName, IEnumerable<StepResult> steps)
+		public ScenarioResult(string scenarioName, IEnumerable<StepResult> steps, string label)
 		{
 			Name = scenarioName;
 			Steps = steps.ToArray();
+			Label = label;
 			Status = Steps.Select(s => s.Status).OrderByDescending(s => s).FirstOrDefault();
 		}
 
@@ -17,6 +18,7 @@ namespace LightBDD.Results.Implementation
 		public string Name { get; set; }
 		public ResultStatus Status { get; set; }
 		public IEnumerable<IStepResult> Steps { get; private set; }
+		public string Label { get; private set; }
 
 		#endregion
 	}

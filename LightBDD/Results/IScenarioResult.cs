@@ -19,5 +19,9 @@ namespace LightBDD.Results
 		/// Scenario steps.
 		/// </summary>
 		IEnumerable<IStepResult> Steps { get; }
+		/// <summary>
+		/// [Label] attribute associated to scenario.
+		/// </summary>
+		string Label { get; }
 	}
 }

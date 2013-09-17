@@ -24,7 +24,7 @@ namespace LightBDD.UnitTests.Coordination
 		[Test]
 		public void Should_add_feature()
 		{
-			var feature = new FeatureResult("name", "desc");
+			var feature = new FeatureResult("name", "desc", "label");
 			FeatureCoordinator.Instance.AddFeature(feature);
 			_aggregator.AssertWasCalled(a => a.AddFeature(feature));
 		}

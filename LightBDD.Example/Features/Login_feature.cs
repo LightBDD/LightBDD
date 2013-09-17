@@ -7,9 +7,11 @@ namespace LightBDD.Example.Features
 @"In order to access personal data
 As an user
 I want to login into system")]
+	[Label("Story-1")]
 	public partial class Login_feature
 	{
 		[Test]
+		[Label("Ticket-1")]
 		public void Successful_login()
 		{
 			Runner.RunScenario(
@@ -23,6 +25,7 @@ I want to login into system")]
 		}
 
 		[Test]
+		[Label("Ticket-2")]
 		public void Wrong_login_provided_causes_login_to_fail()
 		{
 			Runner.RunScenario(

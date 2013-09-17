@@ -11,6 +11,7 @@ namespace LightBDD.UnitTests
 {
 	[TestFixture]
 	[Description("Runner tests description")]
+	[Label("Ticket-1")]
 	public class BDD_runner_tests
 	{
 		private BDDRunner _subject;
@@ -32,6 +33,15 @@ namespace LightBDD.UnitTests
 		}
 
 		#endregion
+
+		[Test]
+		[Label("Label 1")]
+		public void Should_include_labels_in_result()
+		{
+			_subject.RunScenario(Step_one, Step_two);
+			Assert.That(_subject.Result.Label, Is.EqualTo("Ticket-1"));
+			Assert.That(_subject.Result.Scenarios.Single().Label, Is.EqualTo("Label 1"));
+		}
 
 		[Test]
 		[MethodImpl(MethodImplOptions.NoInlining)]
@@ -135,7 +145,7 @@ namespace LightBDD.UnitTests
 		[Test]
 		public void Should_display_feature_name()
 		{
-			_progressNotifier.AssertWasCalled(n => n.NotifyFeatureStart("BDD runner tests", "Runner tests description"));
+			_progressNotifier.AssertWasCalled(n => n.NotifyFeatureStart("BDD runner tests", "Runner tests description", "Ticket-1"));
 		}
 
 		[Test]
@@ -163,11 +173,12 @@ namespace LightBDD.UnitTests
 		}
 
 		[Test]
+		[Label("Ticket-2")]
 		[MethodImpl(MethodImplOptions.NoInlining)]
 		public void Should_display_scenario_name()
 		{
 			_subject.RunScenario();
-			_progressNotifier.AssertWasCalled(n => n.NotifyScenarioStart("Should display scenario name"));
+			_progressNotifier.AssertWasCalled(n => n.NotifyScenarioStart("Should display scenario name", "Ticket-2"));
 		}
 
 		[Test]

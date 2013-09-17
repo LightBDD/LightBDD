@@ -23,15 +23,15 @@ namespace LightBDD.UnitTests.Results.Formatters
 		[Test]
 		public void Should_format_feature_with_description()
 		{
-			var result = new FeatureResult("My feature","My feature\r\nlong description");
-			result.AddScenario(new ScenarioResult("name", new[] { new StepResult(1, "step1", ResultStatus.Passed), new StepResult(2, "step2", ResultStatus.Ignored) }));
-			result.AddScenario(new ScenarioResult("name2", new[] { new StepResult(1, "step3", ResultStatus.Passed), new StepResult(2, "step4", ResultStatus.Failed) }));
+			var result = new FeatureResult("My feature", "My feature\r\nlong description", "Label 1");
+			result.AddScenario(new ScenarioResult("name", new[] { new StepResult(1, "step1", ResultStatus.Passed), new StepResult(2, "step2", ResultStatus.Ignored) }, "Label 2"));
+			result.AddScenario(new ScenarioResult("name2", new[] { new StepResult(1, "step3", ResultStatus.Passed), new StepResult(2, "step4", ResultStatus.Failed) }, null));
 			var text = _subject.Format(result);
-			const string expectedText = @"Feature: My feature
+			const string expectedText = @"Feature: [Label 1] My feature
 	My feature
 	long description
 
-	Scenario: name - Ignored
+	Scenario: [Label 2] name - Ignored
 		Step 1: step1 - Passed
 		Step 2: step2 - Ignored
 
@@ -43,10 +43,10 @@ namespace LightBDD.UnitTests.Results.Formatters
 		}
 
 		[Test]
-		public void Should_format_feature_without_description()
+		public void Should_format_feature_without_description_nor_label()
 		{
-			var result = new FeatureResult("My feature", null);
-			result.AddScenario(new ScenarioResult("name", new[] { new StepResult(1, "step1", ResultStatus.Passed), new StepResult(2, "step2", ResultStatus.Ignored) }));
+			var result = new FeatureResult("My feature", null, null);
+			result.AddScenario(new ScenarioResult("name", new[] { new StepResult(1, "step1", ResultStatus.Passed), new StepResult(2, "step2", ResultStatus.Ignored) }, null));
 			var text = _subject.Format(result);
 			const string expectedText = @"Feature: My feature
 

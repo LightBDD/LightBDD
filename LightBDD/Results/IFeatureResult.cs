@@ -21,5 +21,10 @@ namespace LightBDD.Results
 		/// Returns executed scenarios for given feature.
 		/// </summary>
 		IEnumerable<IScenarioResult> Scenarios { get; }
+
+		/// <summary>
+		/// [Label] attribute associated to feature.
+		/// </summary>
+		string Label { get; }
 	}
 }

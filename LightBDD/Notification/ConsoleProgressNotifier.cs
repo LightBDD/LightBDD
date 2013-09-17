@@ -14,9 +14,17 @@ namespace LightBDD.Notification
 		/// Notifies that scenario has been started.
 		/// </summary>
 		/// <param name="scenarioName">Scenario name.</param>
-		public void NotifyScenarioStart(string scenarioName)
+		/// <param name="label">Scenario label.</param>
+		public void NotifyScenarioStart(string scenarioName, string label)
 		{
-			Console.WriteLine("SCENARIO: {0}", scenarioName);
+			Console.WriteLine("SCENARIO: {0}{1}", FormatLabelText(label), scenarioName);
+		}
+
+		private static string FormatLabelText(string label)
+		{
+			return string.IsNullOrWhiteSpace(label)
+				? string.Empty
+				: string.Format("[{0}] ", label);
 		}
 
 		/// <summary>
@@ -35,9 +43,10 @@ namespace LightBDD.Notification
 		/// </summary>
 		/// <param name="featureName">Feature name.</param>
 		/// <param name="featureDescription">Feature description.</param>
-		public void NotifyFeatureStart(string featureName, string featureDescription)
+		/// <param name="label">Feature label.</param>
+		public void NotifyFeatureStart(string featureName, string featureDescription, string label)
 		{
-			Console.WriteLine("FEATURE {0}:", featureName);
+			Console.WriteLine("FEATURE: {0}{1}", FormatLabelText(label), featureName);
 			if (!string.IsNullOrWhiteSpace(featureDescription))
 				Console.WriteLine("  {0}", featureDescription.Replace("\n", "\n  "));
 		}

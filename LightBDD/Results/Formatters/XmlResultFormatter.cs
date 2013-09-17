@@ -40,18 +40,33 @@ namespace LightBDD.Results.Formatters
 
 		private XElement ToXElement(IFeatureResult feature)
 		{
-			return new XElement("Feature",
-				new XAttribute("Name", feature.Name),
-				new XElement("Description", feature.Description),
-				feature.Scenarios.Select(ToXElement).Cast<object>().ToArray());
+			var objects = new List<object> { new XAttribute("Name", feature.Name) };
+
+			if (!string.IsNullOrWhiteSpace(feature.Label))
+				objects.Add(new XAttribute("Label", feature.Label));
+
+			if (!string.IsNullOrWhiteSpace(feature.Description))
+				objects.Add(new XElement("Description", feature.Description));
+
+			objects.Add(feature.Scenarios.Select(ToXElement).Cast<object>().ToArray());
+
+			return new XElement("Feature", objects);
 		}
 
 		private XElement ToXElement(IScenarioResult scenario)
 		{
-			return new XElement("Scenario",
+			var objects = new List<object>
+			{
 				new XAttribute("Status", scenario.Status.ToString()),
-				new XAttribute("Name", scenario.Name),
-				scenario.Steps.Select(ToXElement).Cast<object>().ToArray());
+				new XAttribute("Name", scenario.Name)
+			};
+
+			if (!string.IsNullOrWhiteSpace(scenario.Label))
+				objects.Add(new XAttribute("Label", scenario.Label));
+
+			objects.Add(scenario.Steps.Select(ToXElement).Cast<object>().ToArray());
+
+			return new XElement("Scenario", objects);
 		}
 
 		private XElement ToXElement(IStepResult step)

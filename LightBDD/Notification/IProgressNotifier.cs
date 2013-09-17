@@ -12,7 +12,8 @@ namespace LightBDD.Notification
 		/// </summary>
 		/// <param name="featureName">Feature name.</param>
 		/// <param name="featureDescription">Feature description.</param>
-		void NotifyFeatureStart(string featureName, string featureDescription);
+		/// <param name="label">Feature label.</param>
+		void NotifyFeatureStart(string featureName, string featureDescription, string label);
 
 		/// <summary>
 		/// Notifies that scenario has been finished with given status.
@@ -24,7 +25,8 @@ namespace LightBDD.Notification
 		/// Notifies that scenario has been started.
 		/// </summary>
 		/// <param name="scenarioName">Scenario name.</param>
-		void NotifyScenarioStart(string scenarioName);
+		/// <param name="label">Scenario label.</param>
+		void NotifyScenarioStart(string scenarioName, string label);
 
 		/// <summary>
 		/// Notifies that step has been started.

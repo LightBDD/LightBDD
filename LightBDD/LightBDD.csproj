@@ -47,6 +47,7 @@
     <Compile Include="FeatureFixture.cs" />
     <Compile Include="Coordination\FeatureSummaryAggregator.cs" />
     <Compile Include="Coordination\IFeatureAggregator.cs" />
+    <Compile Include="LabelAttribute.cs" />
     <Compile Include="Notification\ConsoleProgressNotifier.cs" />
     <Compile Include="Notification\IProgressNotifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
