@@ -164,6 +164,14 @@ namespace LightBDD
 				.SingleOrDefault();
 		}
 
+		private string GetLabel(MemberInfo member)
+		{
+			return member.GetCustomAttributes(typeof(LabelAttribute), true)
+			             .OfType<LabelAttribute>()
+			             .Select(a => a.Label)
+			             .SingleOrDefault();
+		}
+
 		[MethodImpl(MethodImplOptions.NoInlining)]
 		private MethodBase GetScenarioMethod()
 		{
@@ -173,14 +181,6 @@ namespace LightBDD
 		private string GetScenarioName(MethodBase method)
 		{
 			return NameFormatter.Format(method.Name);
-		}
-
-		private string GetLabel(MemberInfo member)
-		{
-			return member.GetCustomAttributes(typeof(LabelAttribute), true)
-				.OfType<LabelAttribute>()
-				.Select(a => a.Label)
-				.SingleOrDefault();
 		}
 
 		private void PerformStep(Step step, int totalCount)

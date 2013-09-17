@@ -35,15 +35,6 @@ namespace LightBDD.UnitTests
 		#endregion
 
 		[Test]
-		[Label("Label 1")]
-		public void Should_include_labels_in_result()
-		{
-			_subject.RunScenario(Step_one, Step_two);
-			Assert.That(_subject.Result.Label, Is.EqualTo("Ticket-1"));
-			Assert.That(_subject.Result.Scenarios.Single().Label, Is.EqualTo("Label 1"));
-		}
-
-		[Test]
 		[MethodImpl(MethodImplOptions.NoInlining)]
 		public void Should_collect_scenario_result()
 		{
@@ -194,6 +185,15 @@ namespace LightBDD.UnitTests
 			_subject.RunScenario(Step_one, Step_two);
 			_progressNotifier.AssertWasCalled(n => n.NotifyStepStart("Step one", 1, 2));
 			_progressNotifier.AssertWasCalled(n => n.NotifyStepStart("Step two", 2, 2));
+		}
+
+		[Test]
+		[Label("Label 1")]
+		public void Should_include_labels_in_result()
+		{
+			_subject.RunScenario(Step_one, Step_two);
+			Assert.That(_subject.Result.Label, Is.EqualTo("Ticket-1"));
+			Assert.That(_subject.Result.Scenarios.Single().Label, Is.EqualTo("Label 1"));
 		}
 
 		[Test]

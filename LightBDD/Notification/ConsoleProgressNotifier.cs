@@ -20,13 +20,6 @@ namespace LightBDD.Notification
 			Console.WriteLine("SCENARIO: {0}{1}", FormatLabelText(label), scenarioName);
 		}
 
-		private static string FormatLabelText(string label)
-		{
-			return string.IsNullOrWhiteSpace(label)
-				? string.Empty
-				: string.Format("[{0}] ", label);
-		}
-
 		/// <summary>
 		/// Notifies that step has been started.
 		/// </summary>
@@ -61,5 +54,12 @@ namespace LightBDD.Notification
 		}
 
 		#endregion
+
+		private static string FormatLabelText(string label)
+		{
+			return string.IsNullOrWhiteSpace(label)
+				       ? string.Empty
+				       : string.Format("[{0}] ", label);
+		}
 	}
 }

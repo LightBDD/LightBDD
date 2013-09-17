@@ -8,6 +8,11 @@ namespace LightBDD.Results
 	public interface IScenarioResult
 	{
 		/// <summary>
+		/// [Label] attribute associated to scenario.
+		/// </summary>
+		string Label { get; }
+
+		/// <summary>
 		/// Scenario name.
 		/// </summary>
 		string Name { get; }
@@ -19,9 +24,5 @@ namespace LightBDD.Results
 		/// Scenario steps.
 		/// </summary>
 		IEnumerable<IStepResult> Steps { get; }
-		/// <summary>
-		/// [Label] attribute associated to scenario.
-		/// </summary>
-		string Label { get; }
 	}
 }
