@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using LightBDD.Naming;
 using LightBDD.Notification;
 using LightBDD.Results;
@@ -77,6 +78,7 @@ namespace LightBDD
 		/// </code>
 		/// </summary>
 		/// <param name="steps">List of steps to execute in order.</param>
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		public void RunScenario(params Action[] steps)
 		{
 			RunScenario(GetScenarioName(), steps);
@@ -130,6 +132,7 @@ namespace LightBDD
 				.SingleOrDefault();
 		}
 
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		private string GetScenarioName()
 		{
 			var callingMethodName = new StackTrace().GetFrame(2).GetMethod().Name;

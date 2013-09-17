@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using LightBDD.Notification;
 using LightBDD.Results;
 using LightBDD.Results.Implementation;
@@ -33,6 +34,7 @@ namespace LightBDD.UnitTests
 		#endregion
 
 		[Test]
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		public void Should_collect_scenario_result()
 		{
 			_subject.RunScenario(Step_one, Step_two);
@@ -62,6 +64,7 @@ namespace LightBDD.UnitTests
 		}
 
 		[Test]
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		public void Should_collect_scenario_result_for_failing_scenario()
 		{
 			try
@@ -84,6 +87,7 @@ namespace LightBDD.UnitTests
 		}
 
 		[Test]
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		public void Should_collect_scenario_result_for_ignored_scenario_steps()
 		{
 			try
@@ -106,6 +110,7 @@ namespace LightBDD.UnitTests
 		}
 
 		[Test]
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		public void Should_collect_scenario_result_for_inconclusive_scenario_steps()
 		{
 			try
@@ -158,6 +163,7 @@ namespace LightBDD.UnitTests
 		}
 
 		[Test]
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		public void Should_display_scenario_name()
 		{
 			_subject.RunScenario();
