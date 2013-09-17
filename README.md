@@ -26,9 +26,12 @@ This additional layer is becomes the root of most problems when maintaining test
 
 TestFixture classes are treated as **Features**, where
 * class name corresponds to feature name,
-* [Description] attribute applied on class corresponds to feature description (narration).
+* [Description] attribute applied on class corresponds to feature description (narration),
+* [Label] attribute applied on class can be used to correlate feature with ticket number.
 
-Test methods are treated as **Scenarios**, where the method name corresponds to scenario name.
+Test methods are treated as **Scenarios**, where
+* the method name corresponds to scenario name,
+* [Label] attribute applied on method can be used to correlate scenario with ticket number.
 
 The test method body is a single call to **BDDRunner.RunScenario()** with list of methods to execute in specified order, which are treated as **Steps**, where:
 * method name corresponds to step name.
@@ -47,9 +50,11 @@ The **naming convention** for all names using by **LightBDD** is that the `_` ch
 @"In order to access personal data
 As an user
 I want to login into system")] //feature description
+[Label("Story-1")]
 public partial class Login_feature //feature name
 {
 	[Test]
+	[Label("Ticket-1")]
 	public void Successful_login() //scenario name
 	{
 		Runner.RunScenario(
@@ -89,7 +94,7 @@ With using partial classes, it is possible to keep all methods describing steps 
 
 ### Example console output during tests execution:
 ```
-SCENARIO: Successful login
+SCENARIO: [Ticket-1] Successful login
   STEP 1/6: Given user is about to login
   STEP 2/6: Given user entered valid login
   STEP 3/6: Given user entered valid password
@@ -103,11 +108,11 @@ SCENARIO: Successful login
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <TestResults>
-  <Feature Name="Login feature">
+  <Feature Name="Login feature" Label="Story-1">
     <Description>In order to access personal data
 As an user
 I want to login into system</Description>
-    <Scenario Status="Passed" Name="Successful login">
+    <Scenario Status="Passed" Name="Successful login" Label="Ticket-1">
       <Step Status="Passed" Number="1" Name="Given user is about to login" />
       <Step Status="Passed" Number="2" Name="Given user entered valid login" />
       <Step Status="Passed" Number="3" Name="Given user entered valid password" />
