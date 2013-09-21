@@ -53,7 +53,7 @@ The above example shows feature *partial* class containing only scenario definit
 
 All method implementations are separated and put in other file.
 ```C#
-public partial class Login_feature : FeatureTestsBase
+public partial class Login_feature : FeatureFixture
 {
 	private const string _validUserName = "admin";
 	private const string _validPassword = "password";
