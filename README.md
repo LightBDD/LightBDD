@@ -107,12 +107,13 @@ I want to login into system</Description>
 
 For full example, please see [LightBDD.Example](https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example) project.
 
+## Download
+It is possible to download package using [NuGet](http://nuget.org): `PM> Install-Package LightBDD`   
+or to clone sources from git: `git clone git://github.com/Suremaker/Spring.FluentContext.git`
+
 ## VS Project Item Templates
 **LightBDD** project offers also set of templates that can be installed in Visual Studio.
 Please check [Templates](https://github.com/Suremaker/LightBDD/tree/master/Templates) folder for details how to install them.
-
-## Download
-It is possible to download package using [NuGet](http://nuget.org): `PM> Install-Package LightBDD`
 
 ## Limitations
 In order to display scenario names properly, the project containing feature classes has to be compiled in **Debug** mode or the scenario method has to have **[MethodImpl(MethodImplOptions.NoInlining)]** attribute, or **BDDRunner.RunScenarios()** with has to be called with explicit scenario name.
