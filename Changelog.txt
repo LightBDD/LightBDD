@@ -1,6 +1,11 @@
 LightBDD
 ===========================================
 
+Version 1.1.3
+-------------------------------------------
++ added StatusDetails to IStepResult and IScenarioResult
++ modified XmlResultFormatter, PlainTextResultFormatter and ConsoleProgressNotifier to include StatusDetails
+
 Version 1.1.2
 -------------------------------------------
 + fixed scenario name display for LightBDD being compiled in Release mode,

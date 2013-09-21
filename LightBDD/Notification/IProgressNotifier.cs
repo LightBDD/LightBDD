@@ -16,10 +16,11 @@ namespace LightBDD.Notification
 		void NotifyFeatureStart(string featureName, string featureDescription, string label);
 
 		/// <summary>
-		/// Notifies that scenario has been finished with given status.
+		/// Notifies that scenario has been finished with given status and optional details.
 		/// </summary>
 		/// <param name="status">Status.</param>
-		void NotifyScenarioFinished(ResultStatus status);
+		/// <param name="statusDetails">Status details. May be null.</param>
+		void NotifyScenarioFinished(ResultStatus status, string statusDetails = null);
 
 		/// <summary>
 		/// Notifies that scenario has been started.

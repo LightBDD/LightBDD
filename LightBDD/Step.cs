@@ -9,12 +9,13 @@ namespace LightBDD
 	internal class Step
 	{
 		private readonly Action _action;
-		public StepResult Result { get; private set; }
+		private readonly StepResult _result;
+		public IStepResult Result { get { return _result; } }
 
 		public Step(Action action, int stepNumber)
 		{
 			_action = action;
-			Result = new StepResult(stepNumber, NameFormatter.Format(action.Method.Name), ResultStatus.NotRun);
+			_result = new StepResult(stepNumber, NameFormatter.Format(action.Method.Name), ResultStatus.NotRun);
 		}
 
 		public void Invoke()
@@ -22,21 +23,21 @@ namespace LightBDD
 			try
 			{
 				_action();
-				Result.Status = ResultStatus.Passed;
+				_result.SetStatus(ResultStatus.Passed);
 			}
-			catch (IgnoreException)
+			catch (IgnoreException e)
 			{
-				Result.Status = ResultStatus.Ignored;
+				_result.SetStatus(ResultStatus.Ignored, e.Message);
 				throw;
 			}
-			catch (InconclusiveException)
+			catch (InconclusiveException e)
 			{
-				Result.Status = ResultStatus.Ignored;
+				_result.SetStatus(ResultStatus.Ignored, e.Message);
 				throw;
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
-				Result.Status = ResultStatus.Failed;
+				_result.SetStatus(ResultStatus.Failed, e.Message);
 				throw;
 			}
 		}

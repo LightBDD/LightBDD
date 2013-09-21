@@ -152,7 +152,7 @@ namespace LightBDD
 			{
 				var result = new ScenarioResult(scenarioName, stepsToExecute.Select(s => s.Result), label);
 				_result.AddScenario(result);
-				ProgressNotifier.NotifyScenarioFinished(result.Status);
+				ProgressNotifier.NotifyScenarioFinished(result.Status, result.StatusDetails);
 			}
 		}
 
@@ -167,9 +167,9 @@ namespace LightBDD
 		private string GetLabel(MemberInfo member)
 		{
 			return member.GetCustomAttributes(typeof(LabelAttribute), true)
-			             .OfType<LabelAttribute>()
-			             .Select(a => a.Label)
-			             .SingleOrDefault();
+				.OfType<LabelAttribute>()
+				.Select(a => a.Label)
+				.SingleOrDefault();
 		}
 
 		[MethodImpl(MethodImplOptions.NoInlining)]

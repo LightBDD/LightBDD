@@ -45,6 +45,8 @@
     <Compile Include="BDD_runner_tests.cs" />
     <Compile Include="Coordination\FeatureCoordinatorTests.cs" />
     <Compile Include="Coordination\FeatureSummaryAggregatorTests.cs" />
+    <Compile Include="SomeSteps.cs" />
+    <Compile Include="StepTests.cs" />
     <Compile Include="TestResultsSummaryTests.cs" />
     <Compile Include="Results\Formatters\PlainTextFormatterTests.cs" />
     <Compile Include="Naming\NameFormatterTests.cs" />

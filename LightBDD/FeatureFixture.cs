@@ -9,6 +9,9 @@ namespace LightBDD
 	/// </summary>
 	public abstract class FeatureFixture
 	{
+		/// <summary>
+		/// BDD Runner that should be used to run feature tests.
+		/// </summary>
 		protected BDDRunner Runner { get; private set; }
 
 		/// <summary>

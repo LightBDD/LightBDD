@@ -45,12 +45,15 @@ namespace LightBDD.Notification
 		}
 
 		/// <summary>
-		/// Notifies that scenario has been finished with given status.
+		/// Notifies that scenario has been finished with given status and optional details.
 		/// </summary>
 		/// <param name="status">Status.</param>
-		public void NotifyScenarioFinished(ResultStatus status)
+		/// <param name="statusDetails">Status details. May be null.</param>
+		public void NotifyScenarioFinished(ResultStatus status, string statusDetails)
 		{
 			Console.WriteLine("  SCENARIO RESULT: {0}", status);
+			if (!string.IsNullOrWhiteSpace(statusDetails))
+				Console.WriteLine("    {0}", statusDetails.Replace("\n", "\n    "));
 		}
 
 		#endregion
@@ -58,8 +61,8 @@ namespace LightBDD.Notification
 		private static string FormatLabelText(string label)
 		{
 			return string.IsNullOrWhiteSpace(label)
-				       ? string.Empty
-				       : string.Format("[{0}] ", label);
+					   ? string.Empty
+					   : string.Format("[{0}] ", label);
 		}
 	}
 }

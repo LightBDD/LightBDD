@@ -12,16 +12,10 @@ namespace LightBDD.UnitTests
 	[TestFixture]
 	[Description("Runner tests description")]
 	[Label("Ticket-1")]
-	public class BDD_runner_tests
+	public class BDD_runner_tests : SomeSteps
 	{
 		private BDDRunner _subject;
 		private IProgressNotifier _progressNotifier;
-
-		void Step_one() { }
-		void Step_two() { }
-		void Step_throwing_exception() { throw new Exception(); }
-		void Step_with_ignore_assertion() { Assert.Ignore(); }
-		void Step_with_inconclusive_assertion() { Assert.Inconclusive(); }
 
 		#region Setup/Teardown
 
@@ -75,6 +69,7 @@ namespace LightBDD.UnitTests
 			catch
 			{
 			}
+			const string expectedStatusDetails = "exception text";
 
 			var result = _subject.Result.Scenarios.Single();
 			Assert.That(result.Name, Is.EqualTo("Should collect scenario result for failing scenario"));
@@ -82,9 +77,10 @@ namespace LightBDD.UnitTests
 			Assert.That(result.Steps, Is.EqualTo(new[]
 			{
 				new StepResult(1, "Step one", ResultStatus.Passed),
-				new StepResult(2, "Step throwing exception", ResultStatus.Failed),
+				new StepResult(2, "Step throwing exception", ResultStatus.Failed, expectedStatusDetails),
 				new StepResult(3, "Step two", ResultStatus.NotRun)
 			}));
+			Assert.That(result.StatusDetails, Is.EqualTo(expectedStatusDetails));
 		}
 
 		[Test]
@@ -98,6 +94,7 @@ namespace LightBDD.UnitTests
 			catch
 			{
 			}
+			const string expectedStatusDetails = "some reason";
 
 			var result = _subject.Result.Scenarios.Single();
 			Assert.That(result.Name, Is.EqualTo("Should collect scenario result for ignored scenario steps"));
@@ -105,9 +102,10 @@ namespace LightBDD.UnitTests
 			Assert.That(result.Steps, Is.EqualTo(new[]
 			{
 				new StepResult(1, "Step one", ResultStatus.Passed),
-				new StepResult(2, "Step with ignore assertion", ResultStatus.Ignored),
+				new StepResult(2, "Step with ignore assertion", ResultStatus.Ignored, expectedStatusDetails),
 				new StepResult(3, "Step two", ResultStatus.NotRun)
 			}));
+			Assert.That(result.StatusDetails, Is.EqualTo(expectedStatusDetails));
 		}
 
 		[Test]
@@ -121,6 +119,7 @@ namespace LightBDD.UnitTests
 			catch
 			{
 			}
+			const string expectedStatusDetails = "some reason";
 
 			var result = _subject.Result.Scenarios.Single();
 			Assert.That(result.Name, Is.EqualTo("Should collect scenario result for inconclusive scenario steps"));
@@ -128,9 +127,10 @@ namespace LightBDD.UnitTests
 			Assert.That(result.Steps, Is.EqualTo(new[]
 			{
 				new StepResult(1, "Step one", ResultStatus.Passed),
-				new StepResult(2, "Step with inconclusive assertion", ResultStatus.Ignored),
+				new StepResult(2, "Step with inconclusive assertion", ResultStatus.Ignored, expectedStatusDetails),
 				new StepResult(3, "Step two", ResultStatus.NotRun)
 			}));
+			Assert.That(result.StatusDetails, Is.EqualTo(expectedStatusDetails));
 		}
 
 		[Test]
@@ -142,25 +142,22 @@ namespace LightBDD.UnitTests
 		[Test]
 		public void Should_display_scenario_failure()
 		{
-			try { _subject.RunScenario(Step_throwing_exception); }
-			catch { }
-			_progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(ResultStatus.Failed));
+			var ex = Assert.Throws<InvalidOperationException>(() => _subject.RunScenario(Step_throwing_exception));
+			_progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(ResultStatus.Failed, ex.Message));
 		}
 
 		[Test]
 		public void Should_display_scenario_ignored()
 		{
-			try { _subject.RunScenario(Step_with_ignore_assertion); }
-			catch { }
-			_progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(ResultStatus.Ignored));
+			var ex = Assert.Throws<IgnoreException>(() => _subject.RunScenario(Step_with_ignore_assertion));
+			_progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(ResultStatus.Ignored, ex.Message));
 		}
 
 		[Test]
 		public void Should_display_scenario_inconclusive()
 		{
-			try { _subject.RunScenario(Step_with_inconclusive_assertion); }
-			catch { }
-			_progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(ResultStatus.Ignored));
+			var ex = Assert.Throws<InconclusiveException>(() => _subject.RunScenario(Step_with_inconclusive_assertion));
+			_progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(ResultStatus.Ignored, ex.Message));
 		}
 
 		[Test]
@@ -199,7 +196,7 @@ namespace LightBDD.UnitTests
 		[Test]
 		public void Should_pass_exception_to_runner_caller()
 		{
-			Assert.Throws<Exception>(() => _subject.RunScenario(Step_throwing_exception));
+			Assert.Throws<InvalidOperationException>(() => _subject.RunScenario(Step_throwing_exception));
 		}
 
 		[Test]

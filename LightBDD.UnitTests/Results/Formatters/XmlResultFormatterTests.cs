@@ -25,8 +25,8 @@ namespace LightBDD.UnitTests.Results.Formatters
 		public void Should_format_xml()
 		{
 			var result = new FeatureResult("Feature name", "feature\nlong description", "Label 1");
-			result.AddScenario(new ScenarioResult("name", new[] { new StepResult(1, "step1", ResultStatus.Passed), new StepResult(2, "step2", ResultStatus.Ignored) }, "Label 2"));
-			result.AddScenario(new ScenarioResult("name2", new[] { new StepResult(1, "step3", ResultStatus.Passed), new StepResult(2, "step4", ResultStatus.Failed) }, null));
+			result.AddScenario(new ScenarioResult("name", new[] { new StepResult(1, "step1", ResultStatus.Passed), new StepResult(2, "step2", ResultStatus.Ignored, "Not implemented yet") }, "Label 2"));
+			result.AddScenario(new ScenarioResult("name2", new[] { new StepResult(1, "step3", ResultStatus.Passed), new StepResult(2, "step4", ResultStatus.Failed,"  Expected: True\n  But was: False") }, null));
 			var text = _subject.Format(result);
 			Console.WriteLine(text);
 
@@ -38,10 +38,13 @@ long description</Description>
     <Scenario Status=""Ignored"" Name=""name"" Label=""Label 2"">
       <Step Status=""Passed"" Number=""1"" Name=""step1"" />
       <Step Status=""Ignored"" Number=""2"" Name=""step2"" />
+      <StatusDetails>Not implemented yet</StatusDetails>
     </Scenario>
     <Scenario Status=""Failed"" Name=""name2"">
       <Step Status=""Passed"" Number=""1"" Name=""step3"" />
       <Step Status=""Failed"" Number=""2"" Name=""step4"" />
+      <StatusDetails>  Expected: True
+  But was: False</StatusDetails>
     </Scenario>
   </Feature>
 </TestResults>";
@@ -49,7 +52,7 @@ long description</Description>
 		}
 
 		[Test]
-		public void Should_format_xml_without_description_nor_label()
+		public void Should_format_xml_without_description_nor_label_nor_details()
 		{
 			var result = new FeatureResult("Feature name", null, null);
 			result.AddScenario(new ScenarioResult("name", new[] { new StepResult(1, "step1", ResultStatus.Passed), new StepResult(2, "step2", ResultStatus.Ignored) }, null));

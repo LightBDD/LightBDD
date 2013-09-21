@@ -24,18 +24,18 @@ namespace LightBDD.UnitTests.Results.Formatters
 		public void Should_format_feature_with_description()
 		{
 			var result = new FeatureResult("My feature", "My feature\r\nlong description", "Label 1");
-			result.AddScenario(new ScenarioResult("name", new[] { new StepResult(1, "step1", ResultStatus.Passed), new StepResult(2, "step2", ResultStatus.Ignored) }, "Label 2"));
-			result.AddScenario(new ScenarioResult("name2", new[] { new StepResult(1, "step3", ResultStatus.Passed), new StepResult(2, "step4", ResultStatus.Failed) }, null));
+			result.AddScenario(new ScenarioResult("name", new[] { new StepResult(1, "step1", ResultStatus.Passed), new StepResult(2, "step2", ResultStatus.Ignored, "Not implemented yet") }, "Label 2"));
+			result.AddScenario(new ScenarioResult("name2", new[] { new StepResult(1, "step3", ResultStatus.Passed), new StepResult(2, "step4", ResultStatus.Failed, "  Expected: True\n  But was: False") }, null));
 			var text = _subject.Format(result);
 			const string expectedText = @"Feature: [Label 1] My feature
 	My feature
 	long description
 
-	Scenario: [Label 2] name - Ignored
+	Scenario: [Label 2] name - Ignored (Not implemented yet)
 		Step 1: step1 - Passed
 		Step 2: step2 - Ignored
 
-	Scenario: name2 - Failed
+	Scenario: name2 - Failed (Expected: True But was: False)
 		Step 1: step3 - Passed
 		Step 2: step4 - Failed
 ";
@@ -43,7 +43,7 @@ namespace LightBDD.UnitTests.Results.Formatters
 		}
 
 		[Test]
-		public void Should_format_feature_without_description_nor_label()
+		public void Should_format_feature_without_description_nor_label_nor_details()
 		{
 			var result = new FeatureResult("My feature", null, null);
 			result.AddScenario(new ScenarioResult("name", new[] { new StepResult(1, "step1", ResultStatus.Passed), new StepResult(2, "step2", ResultStatus.Ignored) }, null));

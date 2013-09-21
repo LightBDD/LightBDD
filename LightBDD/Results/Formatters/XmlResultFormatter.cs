@@ -66,6 +66,9 @@ namespace LightBDD.Results.Formatters
 
 			objects.Add(scenario.Steps.Select(ToXElement).Cast<object>().ToArray());
 
+			if (!string.IsNullOrWhiteSpace(scenario.StatusDetails))
+				objects.Add(new XElement("StatusDetails", scenario.StatusDetails));
+
 			return new XElement("Scenario", objects);
 		}
 
