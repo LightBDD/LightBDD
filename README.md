@@ -22,26 +22,7 @@ This additional layer is becomes the root of most problems when maintaining test
 * VS Project Item templates for feature test files.
 
 ### Tests structure and conventions
-**LightBDD** is based on the [NUnit](http://www.nunit.org/) framework which makes it very easy to adapt.
-
-TestFixture classes are treated as **Features**, where
-* class name corresponds to feature name,
-* [Description] attribute applied on class corresponds to feature description (narration),
-* [Label] attribute applied on class can be used to correlate feature with ticket number.
-
-Test methods are treated as **Scenarios**, where
-* the method name corresponds to scenario name,
-* [Label] attribute applied on method can be used to correlate scenario with ticket number.
-
-The test method body is a single call to **BDDRunner.RunScenario()** with list of methods to execute in specified order, which are treated as **Steps**, where:
-* method name corresponds to step name.
-
-Steps behavior is interpreted as following:
-* if all steps exit without exception, the scenario finishes with status **passed**,
-* if a given step has **Assert.Ignore()** or **Assert.Inconclusive()**, other steps are not executed and the scenario finishes with status **ignored**,
-* if a given step throws any exception, other steps are not executed and scenario finishes with status **failed**.
-
-The **naming convention** for all names using by **LightBDD** is that the `_` character is replaced with *white space* - for more details see [NameFormatter](https://github.com/Suremaker/LightBDD/blob/master/LightBDD/Naming/NameFormatter.cs).
+**LightBDD** is based on the [NUnit](http://www.nunit.org/) framework which makes it very easy to learn and use - please see [Tests structure and conventions](https://github.com/Suremaker/LightBDD/wiki/Tests-structure-and-conventions) wiki section for details.
 
 ### Example 
 ```C#
@@ -135,3 +116,6 @@ It is possible to download package using [NuGet](http://nuget.org): `PM> Install
 
 ## Limitations
 In order to display scenario names properly, the project containing feature classes has to be compiled in **Debug** mode or the scenario method has to have **[MethodImpl(MethodImplOptions.NoInlining)]** attribute, or **BDDRunner.RunScenarios()** with has to be called with explicit scenario name.
+
+## Wiki
+Please check project [wiki](https://github.com/Suremaker/LightBDD/wiki) for more details.
