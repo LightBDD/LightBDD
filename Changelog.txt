@@ -3,7 +3,7 @@ LightBDD
 
 Version 1.1.3
 -------------------------------------------
-+ added StatusDetails to IStepResult and IScenarioResult
++ added StatusDetails to IStepResult and IScenarioResult, providing details for Failed/Ignored status
 + modified XmlResultFormatter, PlainTextResultFormatter and ConsoleProgressNotifier to include StatusDetails
 
 Version 1.1.2

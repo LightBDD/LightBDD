@@ -1,0 +1,127 @@
+LightBDD Quick Start:
+#####################################
+
+Visual Studio Project Item Templates:
+-------------------------------------
+
+Template zip files are included within this package.
+Please copy them without unpacking to Visual Studio ItemTemplates folder:
+
+From: packages\LightBDD 1.1.3\Templates
+To: [USER_PATH]\Documents\Visual Studio [VERSION]\Templates\ItemTemplates\Visual C#
+
+Acceptance tests creation:
+-------------------------------------
+
+Acceptance tests should consist of two files:
+
+1. Acceptance tests definition part containing:
+* optional feature description and label,
+* list of scenario methods with optional label and body with Runner executing scenario steps 
+
+[TestFixture]
+[Description(
+@"In order to access personal data
+As an user
+I want to login into system")]
+[Label("Story-1")]
+public partial class Login_feature
+{
+	[Test]
+	[Label("Ticket-1")]
+	public void Successful_login()
+	{
+		Runner.RunScenario(
+
+			Given_user_is_about_to_login,
+			Given_user_entered_valid_login,
+			Given_user_entered_valid_password,
+			When_user_clicked_login_button,
+			Then_login_is_successful,
+			Then_welcome_message_is_returned_containing_user_name);
+	}
+}
+
+2. Implementation part containing:
+* implementation of all step methods
+* set up / tear down methods
+* inheritance of FeatureFixture base class (it is strongly recommended, however it is possible also to not have it - please use then LightBDD: Standalone Feature Test Class item template, or see Feature Fixture implementation: https://github.com/Suremaker/LightBDD/blob/master/LightBDD/FeatureFixture.cs).
+
+public partial class Login_feature : FeatureFixture
+{
+	/* scenario data */
+	/* set up / tear down methods */
+
+	private void Given_user_is_about_to_login()
+	{
+		_loginService = new LoginService();
+		_loginService.AddUser(_validUserName, _validPassword);
+		_loginRequest = new LoginRequest();
+	}
+	
+	private void When_user_clicked_login_button()
+	{
+		_loginResult = _loginService.Login(_loginRequest);
+	}
+
+	private void Then_login_is_successful()
+	{
+		Assert.That(_loginResult.IsSuccessful, Is.True);
+	}
+
+	/* other step definitions */
+}
+
+Please note that with usage of provided ItemTemplates, feature class parts would be nicely grouped in Visual Studio.
+
+Test running:
+-------------------------------------
+LightBDD bases on NUnit, so the tests can be run in the same way as regular NUnit tests.
+
+During run, the test progress would be printed on console, like:
+
+FEATURE: [Story-1] Login feature
+  In order to access personal data
+  As an user
+  I want to login into system
+
+SCENARIO: InvokeMethod
+  STEP 1/6: Given user is about to login
+  STEP 2/6: Given user entered valid login
+  STEP 3/6: Given user entered valid password
+  STEP 4/6: When user clicked login button
+  STEP 5/6: Then login is successful
+  STEP 6/6: Then welcome message is returned containing user name
+  SCENARIO RESULT: Passed
+
+After all tests are finished, FeaturesSummary.xml would be created in project bin folder with xml summary like:
+<?xml version="1.0" encoding="utf-8"?>
+<TestResults>  
+  <Feature Name="Login feature" Label="Story-1">
+    <Description>In order to access personal data
+As an user
+I want to login into system</Description>
+    <Scenario Status="Passed" Name="Successful login" Label="Ticket-1">
+      <Step Status="Passed" Number="1" Name="Given user is about to login" />
+      <Step Status="Passed" Number="2" Name="Given user entered valid login" />
+      <Step Status="Passed" Number="3" Name="Given user entered valid password" />
+      <Step Status="Passed" Number="4" Name="When user clicked login button" />
+      <Step Status="Passed" Number="5" Name="Then login is successful" />
+      <Step Status="Passed" Number="6" Name="Then welcome message is returned containing user name" />
+    </Scenario>    
+  </Feature>
+</TestResults>
+
+Conventions:
+-------------------------------------
+* each feature should be represented as separate class with [TestFixture] attribute, where class name is feature name,
+* each scenario should be represented as method with [Test] attribute, where method name is feature name,
+* scenario method should call BDDRunner class RunScenario method with list of Given/When/Then methods representing steps to execute
+* all names should use underscores, that make them a little bit easier to read in code, but they are also transformed to readable text during execution.
+
+More details:
+-------------------------------------
+For more details, please check:
+* project web site: https://github.com/Suremaker/LightBDD
+* project wiki: https://github.com/Suremaker/LightBDD/wiki
+* example project: https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example
