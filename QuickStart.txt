@@ -85,7 +85,7 @@ FEATURE: [Story-1] Login feature
   As an user
   I want to login into system
 
-SCENARIO: InvokeMethod
+SCENARIO: [Ticket-1] Successful login
   STEP 1/6: Given user is about to login
   STEP 2/6: Given user entered valid login
   STEP 3/6: Given user entered valid password
