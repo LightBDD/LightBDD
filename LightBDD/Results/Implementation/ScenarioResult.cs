@@ -14,15 +14,6 @@ namespace LightBDD.Results.Implementation
 			SetStatus();
 		}
 
-		private void SetStatus()
-		{
-			var stepsResult = Steps.OrderByDescending(s => s.Status).FirstOrDefault();
-			if (stepsResult == null)
-				return;
-			Status = stepsResult.Status;
-			StatusDetails = stepsResult.StatusDetails;
-		}
-
 		#region IScenarioResult Members
 
 		public string Name { get; private set; }
@@ -32,5 +23,14 @@ namespace LightBDD.Results.Implementation
 		public string Label { get; private set; }
 
 		#endregion
+
+		private void SetStatus()
+		{
+			var stepsResult = Steps.OrderByDescending(s => s.Status).FirstOrDefault();
+			if (stepsResult == null)
+				return;
+			Status = stepsResult.Status;
+			StatusDetails = stepsResult.StatusDetails;
+		}
 	}
 }

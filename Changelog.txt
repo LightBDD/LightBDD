@@ -1,6 +1,10 @@
 LightBDD
 ===========================================
 
+Version 1.1.4
+-------------------------------------------
++ extended FeatureFixture with CreateProgressNotifier() method allowing to specify IProgressNotifier used by BDDRunner.
+
 Version 1.1.3
 -------------------------------------------
 + added StatusDetails to IStepResult and IScenarioResult, providing details for Failed/Ignored status

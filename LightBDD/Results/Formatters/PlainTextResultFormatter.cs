@@ -9,6 +9,7 @@ namespace LightBDD.Results.Formatters
 	public class PlainTextResultFormatter : IResultFormatter
 	{
 		private static readonly Regex _whiteSpaceCleanup = new Regex("\\s+", RegexOptions.Compiled);
+
 		#region IResultFormatter Members
 
 		/// <summary>
@@ -24,6 +25,19 @@ namespace LightBDD.Results.Formatters
 		}
 
 		#endregion
+
+		private static void FormatDetails(StringBuilder builder, IScenarioResult scenario)
+		{
+			if (string.IsNullOrWhiteSpace(scenario.StatusDetails))
+				builder.AppendLine();
+			else
+				builder.Append(" (").Append(FormatDetailsText(scenario.StatusDetails)).AppendLine(")");
+		}
+
+		private static string FormatDetailsText(string statusDetails)
+		{
+			return _whiteSpaceCleanup.Replace(statusDetails.Trim(), " ");
+		}
 
 		private void FormatFeature(StringBuilder builder, IFeatureResult feature)
 		{
@@ -54,22 +68,9 @@ namespace LightBDD.Results.Formatters
 			foreach (var step in scenario.Steps)
 			{
 				builder.Append("\t\tStep ")
-					   .Append(step.Number).Append(": ")
-					   .Append(step.Name).Append(" - ").AppendLine(step.Status.ToString());
+				       .Append(step.Number).Append(": ")
+				       .Append(step.Name).Append(" - ").AppendLine(step.Status.ToString());
 			}
-		}
-
-		private static void FormatDetails(StringBuilder builder, IScenarioResult scenario)
-		{
-			if (string.IsNullOrWhiteSpace(scenario.StatusDetails))
-				builder.AppendLine();
-			else
-				builder.Append(" (").Append(FormatDetailsText(scenario.StatusDetails)).AppendLine(")");
-		}
-
-		private static string FormatDetailsText(string statusDetails)
-		{
-			return _whiteSpaceCleanup.Replace(statusDetails.Trim(), " ");
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using LightBDD.Coordination;
+using LightBDD.Notification;
 using NUnit.Framework;
 
 namespace LightBDD
@@ -20,7 +21,7 @@ namespace LightBDD
 		[TestFixtureSetUp]
 		public void FixtureSetUp()
 		{
-			Runner = new BDDRunner(GetType());
+			Runner = new BDDRunner(GetType(), CreateProgressNotifier());
 		}
 
 		/// <summary>
@@ -31,5 +32,12 @@ namespace LightBDD
 		{
 			FeatureCoordinator.Instance.AddFeature(Runner.Result);
 		}
+
+		/// <summary>
+		/// Creates progress notifier used later by BDDRunner.
+		/// Default implementation returns ConsoleProgressNotifier.
+		/// </summary>
+		/// <returns>progress notifier.</returns>
+		protected virtual IProgressNotifier CreateProgressNotifier() { return new ConsoleProgressNotifier(); }
 	}
 }

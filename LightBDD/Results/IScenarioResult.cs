@@ -20,15 +20,17 @@ namespace LightBDD.Results
 		/// Scenario status.
 		/// </summary>
 		ResultStatus Status { get; }
-		/// <summary>
-		/// Scenario steps.
-		/// </summary>
-		IEnumerable<IStepResult> Steps { get; }
+
 		/// <summary>
 		/// Status details.
 		/// It is useful for ignored or failed tests.
 		/// It may be null if no additional details are provided.
 		/// </summary>
 		string StatusDetails { get; }
+
+		/// <summary>
+		/// Scenario steps.
+		/// </summary>
+		IEnumerable<IStepResult> Steps { get; }
 	}
 }

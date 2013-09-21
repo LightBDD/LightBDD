@@ -19,14 +19,6 @@ namespace LightBDD.Results.Implementation
 
 		#endregion
 
-		protected bool Equals(StepResult other)
-		{
-			return string.Equals(Name, other.Name)
-				&& Status == other.Status
-				&& string.Equals(StatusDetails, other.StatusDetails)
-				&& Number == other.Number;
-		}
-
 		public override bool Equals(object obj)
 		{
 			if (ReferenceEquals(null, obj)) return false;
@@ -47,6 +39,12 @@ namespace LightBDD.Results.Implementation
 			}
 		}
 
+		public void SetStatus(ResultStatus status, string statusDetails = null)
+		{
+			Status = status;
+			StatusDetails = statusDetails;
+		}
+
 		public override string ToString()
 		{
 			var details = string.Empty;
@@ -56,10 +54,12 @@ namespace LightBDD.Results.Implementation
 			return string.Format("{0} {1}: {2}{3}", Number, Name, Status, details);
 		}
 
-		public void SetStatus(ResultStatus status, string statusDetails = null)
+		protected bool Equals(StepResult other)
 		{
-			Status = status;
-			StatusDetails = statusDetails;
+			return string.Equals(Name, other.Name)
+			       && Status == other.Status
+			       && string.Equals(StatusDetails, other.StatusDetails)
+			       && Number == other.Number;
 		}
 	}
 }
