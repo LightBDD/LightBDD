@@ -13,8 +13,8 @@ namespace LightBDD.MbUnit.UnitTests
 	[Description("desc")]
 	public class Runner_tests : SomeSteps
 	{
-		private BDDRunner _subject;
 		private IProgressNotifier _progressNotifier;
+		private BDDRunner _subject;
 
 		#region Setup/Teardown
 
@@ -51,13 +51,10 @@ namespace LightBDD.MbUnit.UnitTests
 			Assert.AreEqual(expectedStatusDetails, result.StatusDetails);
 		}
 
-		private void AssertStep(IEnumerable<IStepResult> steps, int number, string name, ResultStatus status, string statusDetails = null)
+		[Test]
+		public void Should_display_feature_name_using_description()
 		{
-			var result = steps.ToArray()[number - 1];
-			Assert.AreEqual(name, result.Name);
-			Assert.AreEqual(number, result.Number);
-			Assert.AreEqual(status, result.Status);
-			Assert.AreEqual(statusDetails, result.StatusDetails);
+			_progressNotifier.AssertWasCalled(n => n.NotifyFeatureStart("Runner tests", "desc", null));
 		}
 
 		[Test]
@@ -67,10 +64,13 @@ namespace LightBDD.MbUnit.UnitTests
 			_progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(ResultStatus.Ignored, ex.Message));
 		}
 
-		[Test]
-		public void Should_display_feature_name_using_description()
+		private void AssertStep(IEnumerable<IStepResult> steps, int number, string name, ResultStatus status, string statusDetails = null)
 		{
-			_progressNotifier.AssertWasCalled(n => n.NotifyFeatureStart("Runner tests", "desc", null));
+			var result = steps.ToArray()[number - 1];
+			Assert.AreEqual(name, result.Name);
+			Assert.AreEqual(number, result.Number);
+			Assert.AreEqual(status, result.Status);
+			Assert.AreEqual(statusDetails, result.StatusDetails);
 		}
 	}
 }

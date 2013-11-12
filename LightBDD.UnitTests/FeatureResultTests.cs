@@ -12,11 +12,15 @@ namespace LightBDD.UnitTests
 	{
 		private FeatureResult _subject;
 
+		#region Setup/Teardown
+
 		[SetUp]
 		public void SetUp()
 		{
 			_subject = new FeatureResult("name", "desc", "label");
 		}
+
+		#endregion
 
 		[Test]
 		public void Should_add_result_be_thread_safe()

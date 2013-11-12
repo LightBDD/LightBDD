@@ -15,6 +15,15 @@ namespace LightBDD.NUnit.UnitTests
 		private BDDRunner _subject;
 		private IProgressNotifier _progressNotifier;
 
+		private void AssertStep(IEnumerable<IStepResult> steps, int number, string name, ResultStatus status, string statusDetails = null)
+		{
+			var result = steps.ToArray()[number - 1];
+			Assert.That(result.Name, Is.EqualTo(name));
+			Assert.That(result.Number, Is.EqualTo(number));
+			Assert.That(result.Status, Is.EqualTo(status));
+			Assert.That(result.StatusDetails, Is.EqualTo(statusDetails));
+		}
+
 		#region Setup/Teardown
 
 		[SetUp]
@@ -48,13 +57,10 @@ namespace LightBDD.NUnit.UnitTests
 			Assert.That(result.StatusDetails, Is.EqualTo(expectedStatusDetails));
 		}
 
-		private void AssertStep(IEnumerable<IStepResult> steps, int number, string name, ResultStatus status, string statusDetails = null)
+		[Test]
+		public void Should_display_feature_name_using_description()
 		{
-			var result = steps.ToArray()[number - 1];
-			Assert.That(result.Name, Is.EqualTo(name));
-			Assert.That(result.Number, Is.EqualTo(number));
-			Assert.That(result.Status, Is.EqualTo(status));
-			Assert.That(result.StatusDetails, Is.EqualTo(statusDetails));
+			_progressNotifier.AssertWasCalled(n => n.NotifyFeatureStart("Runner tests", "desc", null));
 		}
 
 		[Test]
@@ -62,12 +68,6 @@ namespace LightBDD.NUnit.UnitTests
 		{
 			var ex = Assert.Throws<InconclusiveException>(() => _subject.RunScenario(Step_with_inconclusive_assertion));
 			_progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(ResultStatus.Ignored, ex.Message));
-		}
-
-		[Test]
-		public void Should_display_feature_name_using_description()
-		{
-			_progressNotifier.AssertWasCalled(n => n.NotifyFeatureStart("Runner tests", "desc", null));
 		}
 	}
 }

@@ -48,12 +48,6 @@ namespace LightBDD
 			_results.Add(result);
 		}
 
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		private IEnumerable<IFeatureResult> GetResults()
-		{
-			return _results.ToArray();
-		}
-
 		/// <summary>
 		/// Saves test results summary to specified file, using formatter defined in constructor.
 		/// </summary>
@@ -61,6 +55,12 @@ namespace LightBDD
 		public void SaveSummary(string filePath)
 		{
 			File.WriteAllText(filePath, _formatter.Format(_results.ToArray()), Encoding.UTF8);
+		}
+
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		private IEnumerable<IFeatureResult> GetResults()
+		{
+			return _results.ToArray();
 		}
 	}
 }

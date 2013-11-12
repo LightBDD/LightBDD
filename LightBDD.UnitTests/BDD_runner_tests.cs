@@ -44,18 +44,6 @@ namespace LightBDD.UnitTests
 		}
 
 		[Test]
-		public void Should_run_scenario_be_thread_safe()
-		{
-			var scenarios = new List<string>();
-			for (int i = 0; i < 3000; ++i)
-				scenarios.Add(i.ToString(CultureInfo.InvariantCulture));
-
-			scenarios.AsParallel().ForAll(scenario => _subject.RunScenario(scenario, Step_one, Step_two));
-
-			Assert.That(_subject.Result.Scenarios.Select(s => s.Name).ToArray(), Is.EquivalentTo(scenarios));
-		}
-
-		[Test]
 		public void Should_collect_scenario_result_for_explicitly_named_scenario()
 		{
 			const string scenarioName = "my scenario";
@@ -190,6 +178,18 @@ namespace LightBDD.UnitTests
 		public void Should_pass_inconclusive_exception_to_runner_caller()
 		{
 			Assert.Throws<InconclusiveException>(() => _subject.RunScenario(Step_with_inconclusive_assertion));
+		}
+
+		[Test]
+		public void Should_run_scenario_be_thread_safe()
+		{
+			var scenarios = new List<string>();
+			for (int i = 0; i < 3000; ++i)
+				scenarios.Add(i.ToString(CultureInfo.InvariantCulture));
+
+			scenarios.AsParallel().ForAll(scenario => _subject.RunScenario(scenario, Step_one, Step_two));
+
+			Assert.That(_subject.Result.Scenarios.Select(s => s.Name).ToArray(), Is.EquivalentTo(scenarios));
 		}
 
 		[Test]

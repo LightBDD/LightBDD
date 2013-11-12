@@ -56,6 +56,14 @@ namespace LightBDD
 			ProgressNotifier.NotifyFeatureStart(_result.Name, _result.Description, _result.Label);
 		}
 
+		private static string GetFeatureDescriptionFromAttribute(Type testClass)
+		{
+			return testClass.GetCustomAttributes(typeof(FeatureDescriptionAttribute), true)
+			                .OfType<FeatureDescriptionAttribute>()
+			                .Select(a => a.Description)
+			                .SingleOrDefault();
+		}
+
 		/// <summary>
 		/// Runs test scenario by executing given steps in order.
 		/// If given step throws, other are not executed.
@@ -155,11 +163,6 @@ namespace LightBDD
 			}
 		}
 
-		private string GetFeatureDescription(Type testClass)
-		{
-			return GetFeatureDescriptionFromAttribute(testClass) ?? GetImplementationSpecificFeatureDescription(testClass);
-		}
-
 		/// <summary>
 		/// Returns implementation specific feature description or null if such is not provided.
 		/// </summary>
@@ -167,12 +170,14 @@ namespace LightBDD
 		/// <returns>Feature description or null.</returns>
 		protected abstract string GetImplementationSpecificFeatureDescription(Type testClass);
 
-		private static string GetFeatureDescriptionFromAttribute(Type testClass)
+		/// <summary>
+		/// Maps implementation specific exception to ResultStatus.
+		/// </summary>
+		protected abstract ResultStatus MapExceptionToStatus(Type exceptionType);
+
+		private string GetFeatureDescription(Type testClass)
 		{
-			return testClass.GetCustomAttributes(typeof(FeatureDescriptionAttribute), true)
-				.OfType<FeatureDescriptionAttribute>()
-				.Select(a => a.Description)
-				.SingleOrDefault();
+			return GetFeatureDescriptionFromAttribute(testClass) ?? GetImplementationSpecificFeatureDescription(testClass);
 		}
 
 		private string GetLabel(MemberInfo member)
@@ -205,10 +210,5 @@ namespace LightBDD
 			int i = 0;
 			return steps.Select(step => new Step(step, ++i, MapExceptionToStatus));
 		}
-
-		/// <summary>
-		/// Maps implementation specific exception to ResultStatus.
-		/// </summary>
-		protected abstract ResultStatus MapExceptionToStatus(Type exceptionType);
 	}
 }
