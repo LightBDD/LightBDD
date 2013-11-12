@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using LightBDD.Results;
 using LightBDD.Results.Formatters;
@@ -18,7 +19,7 @@ namespace LightBDD
 		/// <summary>
 		/// Returns all collected results.
 		/// </summary>
-		public IEnumerable<IFeatureResult> Results { get { return _results; } }
+		public IEnumerable<IFeatureResult> Results { get { return GetResults(); } }
 
 		/// <summary>
 		/// Default constructor. Uses XmlResultFormatter.
@@ -41,9 +42,16 @@ namespace LightBDD
 		/// Adds feature result to summary.
 		/// </summary>
 		/// <param name="result">Feature result to add.</param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void AddResult(IFeatureResult result)
 		{
 			_results.Add(result);
+		}
+
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		private IEnumerable<IFeatureResult> GetResults()
+		{
+			return _results.ToArray();
 		}
 
 		/// <summary>

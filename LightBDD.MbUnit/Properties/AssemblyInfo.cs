@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
+
 [assembly: AssemblyTitle("LightBDD.MbUnit")]
 [assembly: AssemblyDescription("Lightweight Behavior Driven Development Test Framework for MbUnit")]
 [assembly: AssemblyConfiguration("")]

@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
+
 [assembly: AssemblyTitle("LightBDD.NUnit")]
 [assembly: AssemblyDescription("Lightweight Behavior Driven Development Test Framework for NUnit")]
 [assembly: AssemblyConfiguration("")]

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace LightBDD.Results.Implementation
 {
@@ -14,17 +15,22 @@ namespace LightBDD.Results.Implementation
 		}
 
 		#region IFeatureResult Members
-
-		public IEnumerable<IScenarioResult> Scenarios { get { return _scenarios; } }
+		public IEnumerable<IScenarioResult> Scenarios { get { return GetScenarios(); } }
 		public string Label { get; private set; }
 		public string Name { get; private set; }
 		public string Description { get; private set; }
-
 		#endregion
 
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void AddScenario(IScenarioResult scenario)
 		{
 			_scenarios.Add(scenario);
+		}
+
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		private IEnumerable<IScenarioResult> GetScenarios()
+		{
+			return _scenarios.ToArray();
 		}
 	}
 }

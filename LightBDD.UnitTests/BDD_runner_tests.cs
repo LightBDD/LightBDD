@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using LightBDD.Notification;
 using LightBDD.Results;
@@ -39,6 +41,18 @@ namespace LightBDD.UnitTests
 				new StepResult(1, "Step one", ResultStatus.Passed),
 				new StepResult(2, "Step two", ResultStatus.Passed)
 			}));
+		}
+
+		[Test]
+		public void Should_run_scenario_be_thread_safe()
+		{
+			var scenarios = new List<string>();
+			for (int i = 0; i < 3000; ++i)
+				scenarios.Add(i.ToString(CultureInfo.InvariantCulture));
+
+			scenarios.AsParallel().ForAll(scenario => _subject.RunScenario(scenario, Step_one, Step_two));
+
+			Assert.That(_subject.Result.Scenarios.Select(s => s.Name).ToArray(), Is.EquivalentTo(scenarios));
 		}
 
 		[Test]

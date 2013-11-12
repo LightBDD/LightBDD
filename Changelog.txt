@@ -5,6 +5,7 @@ Version 1.1.5
 ------------------------------------------
 + extracted NUnit related code to LightBDD.NUnit
 + introduced LightBDD.MbUnit to add support for MbUnit framework
++ made runner thread safe which allows to use Runner.RunScenario() in parallel
 
 Version 1.1.4
 -------------------------------------------

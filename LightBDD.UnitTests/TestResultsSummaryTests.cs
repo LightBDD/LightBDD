@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using LightBDD.Results;
 using LightBDD.Results.Formatters;
 using LightBDD.Results.Implementation;
@@ -32,6 +35,23 @@ namespace LightBDD.UnitTests
 			_subject.AddResult(featureResult);
 
 			Assert.That(_subject.Results, Is.EqualTo(new[] { featureResult }));
+		}
+
+		[Test]
+		public void Should_add_result_be_thread_safe()
+		{
+			var results = new List<FeatureResult>();
+
+			for (int i = 0; i < 1000; ++i)
+				results.Add(new FeatureResult(
+					i.ToString(CultureInfo.InvariantCulture),
+					i.ToString(CultureInfo.InvariantCulture),
+					i.ToString(CultureInfo.InvariantCulture)));
+
+			results.AsParallel().ForAll(r => _subject.AddResult(r));
+
+			foreach (var result in results)
+				Assert.That(_subject.Results.Contains(result), string.Format("Result {0} is missing", result.Name));
 		}
 
 		[Test]
