@@ -19,7 +19,8 @@ This additional layer is becomes the root of most problems when maintaining test
 * Easy to read scenario definitions,
 * Scenario steps execution tracking, usable during longer test execution,
 * Feature result summary available in XML or Plain text format,
-* VS Project Item templates for feature test files.
+* VS Project Item templates for feature test files,
+* Integrated with [NUnit](http://www.nunit.org/) and [MbUnit](https://code.google.com/p/mb-unit/)
 
 ### Tests structure and conventions
 **LightBDD** is based on the [NUnit](http://www.nunit.org/) framework which makes it very easy to learn and use - please see [Tests structure and conventions](https://github.com/Suremaker/LightBDD/wiki/Tests-structure-and-conventions) wiki section for details.
@@ -109,7 +110,7 @@ For full example, please see [LightBDD.Example](https://github.com/Suremaker/Lig
 
 ## Download
 It is possible to download package using [NuGet](http://nuget.org): `PM> Install-Package LightBDD`   
-or to clone sources from git: `git clone git://github.com/Suremaker/Spring.FluentContext.git`
+or to clone sources from git: `git clone git://github.com/Suremaker/LightBDD.git`
 
 ## VS Project Item Templates
 **LightBDD** project offers also set of templates that can be installed in Visual Studio.
