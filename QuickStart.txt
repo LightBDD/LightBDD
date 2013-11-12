@@ -20,7 +20,7 @@ Acceptance tests should consist of two files:
 * list of scenario methods with optional label and body with Runner executing scenario steps 
 
 [TestFixture]
-[Description(
+[FeatureDescription(
 @"In order to access personal data
 As an user
 I want to login into system")]

@@ -20,7 +20,7 @@ This additional layer is becomes the root of most problems when maintaining test
 * Scenario steps execution tracking, usable during longer test execution,
 * Feature result summary available in XML or Plain text format,
 * VS Project Item templates for feature test files,
-* Integrated with [NUnit](http://www.nunit.org/) and [MbUnit](https://code.google.com/p/mb-unit/)
+* Integrated with [NUnit](http://www.nunit.org/) and [MbUnit](https://code.google.com/p/mb-unit/) frameworks.
 
 ### Tests structure and conventions
 **LightBDD** is based on the [NUnit](http://www.nunit.org/) framework which makes it very easy to learn and use - please see [Tests structure and conventions](https://github.com/Suremaker/LightBDD/wiki/Tests-structure-and-conventions) wiki section for details.
@@ -28,7 +28,7 @@ This additional layer is becomes the root of most problems when maintaining test
 ### Example 
 ```C#
 [TestFixture]
-[Description(
+[FeatureDescription(
 @"In order to access personal data
 As an user
 I want to login into system")] //feature description
