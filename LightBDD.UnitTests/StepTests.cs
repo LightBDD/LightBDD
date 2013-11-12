@@ -7,10 +7,17 @@ namespace LightBDD.UnitTests
 	[TestFixture]
 	public class StepTests : SomeSteps
 	{
+		private ResultStatus Map(Type exception)
+		{
+			return exception == typeof (IgnoreException) || exception == typeof (InconclusiveException)
+				? ResultStatus.Ignored
+				: ResultStatus.Failed;
+		}
+
 		[Test]
 		public void Should_assert_ignore_mark_step_ignored()
 		{
-			var step = new Step(Step_with_ignore_assertion, 1);
+			var step = new Step(Step_with_ignore_assertion, 1, Map);
 			var ex = Assert.Throws<IgnoreException>(step.Invoke);
 			Assert.That(step.Result.Status, Is.EqualTo(ResultStatus.Ignored));
 			Assert.That(step.Result.StatusDetails, Is.EqualTo(ex.Message));
@@ -19,7 +26,7 @@ namespace LightBDD.UnitTests
 		[Test]
 		public void Should_assert_inconclusive_mark_step_ignored()
 		{
-			var step = new Step(Step_with_inconclusive_assertion, 1);
+			var step = new Step(Step_with_inconclusive_assertion, 1, Map);
 			var ex = Assert.Throws<InconclusiveException>(step.Invoke);
 			Assert.That(step.Result.Status, Is.EqualTo(ResultStatus.Ignored));
 			Assert.That(step.Result.StatusDetails, Is.EqualTo(ex.Message));
@@ -28,7 +35,7 @@ namespace LightBDD.UnitTests
 		[Test]
 		public void Should_exception_mark_step_failed()
 		{
-			var step = new Step(Step_throwing_exception, 1);
+			var step = new Step(Step_throwing_exception, 1, Map);
 			var ex = Assert.Throws<InvalidOperationException>(step.Invoke);
 			Assert.That(step.Result.Status, Is.EqualTo(ResultStatus.Failed));
 			Assert.That(step.Result.StatusDetails, Is.EqualTo(ex.Message));
@@ -37,14 +44,14 @@ namespace LightBDD.UnitTests
 		[Test]
 		public void Should_format_regular_method_name()
 		{
-			var step = new Step(Step_one, 1);
+			var step = new Step(Step_one, 1, Map);
 			Assert.That(step.Result.Name, Is.EqualTo("Step one"));
 		}
 
 		[Test]
 		public void Should_mark_step_not_run()
 		{
-			var step = new Step(Step_one, 1);
+			var step = new Step(Step_one, 1, Map);
 			Assert.That(step.Result.Status, Is.EqualTo(ResultStatus.NotRun));
 			Assert.That(step.Result.StatusDetails, Is.Null);
 		}
@@ -52,7 +59,7 @@ namespace LightBDD.UnitTests
 		[Test]
 		public void Should_passing_action_mark_step_passed()
 		{
-			var step = new Step(Step_one, 1);
+			var step = new Step(Step_one, 1, Map);
 			step.Invoke();
 			Assert.That(step.Result.Status, Is.EqualTo(ResultStatus.Passed));
 			Assert.That(step.Result.StatusDetails, Is.Null);

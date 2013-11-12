@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("LightBDD.Example")]
+[assembly: AssemblyTitle("LightBDD.NUnit.UnitTests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("LightBDD.Example")]
-[assembly: AssemblyCopyright("Copyright © 2013, Wojciech Kotlarski")]
+[assembly: AssemblyProduct("LightBDD.NUnit.UnitTests")]
+[assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("71a2dde0-db33-4a72-a76c-ff976045d05a")]
+[assembly: Guid("b9abcecb-44f1-4261-8f56-012d8b1442e4")]
 
 // Version information for an assembly consists of the following four values:
 //

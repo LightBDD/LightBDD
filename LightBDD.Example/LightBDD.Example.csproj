@@ -55,6 +55,10 @@
     <Compile Include="Services\LoginRequest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LightBDD.NUnit\LightBDD.NUnit.csproj">
+      <Project>{B97EF26C-EF54-4A85-9C0E-1F65283712D7}</Project>
+      <Name>LightBDD.NUnit</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LightBDD\LightBDD.csproj">
       <Project>{C8406FF5-FF97-4B66-A789-CBD97263FAC4}</Project>
       <Name>LightBDD</Name>

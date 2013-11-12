@@ -1,0 +1,73 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using LightBDD.Notification;
+using LightBDD.Results;
+using LightBDD.UnitTests;
+using NUnit.Framework;
+using Rhino.Mocks;
+
+namespace LightBDD.NUnit.UnitTests
+{
+	[TestFixture]
+	[Description("desc")]
+	public class Runner_tests : SomeSteps
+	{
+		private BDDRunner _subject;
+		private IProgressNotifier _progressNotifier;
+
+		#region Setup/Teardown
+
+		[SetUp]
+		public void SetUp()
+		{
+			_progressNotifier = MockRepository.GenerateMock<IProgressNotifier>();
+			_subject = new BDDRunner(GetType(), _progressNotifier);
+		}
+
+		#endregion
+
+		[Test]
+		public void Should_collect_scenario_result_for_inconclusive_scenario_steps()
+		{
+			try
+			{
+				_subject.RunScenario(Step_one, Step_with_inconclusive_assertion, Step_two);
+			}
+			catch
+			{
+			}
+			const string expectedStatusDetails = "some reason";
+
+			var result = _subject.Result.Scenarios.Single();
+			Assert.That(result.Name, Is.EqualTo("Should collect scenario result for inconclusive scenario steps"));
+			Assert.That(result.Status, Is.EqualTo(ResultStatus.Ignored));
+			Assert.That(result.Steps.Count(), Is.EqualTo(3));
+			AssertStep(result.Steps, 1, "Step one", ResultStatus.Passed);
+			AssertStep(result.Steps, 2, "Step with inconclusive assertion", ResultStatus.Ignored, expectedStatusDetails);
+			AssertStep(result.Steps, 3, "Step two", ResultStatus.NotRun);
+			Assert.That(result.StatusDetails, Is.EqualTo(expectedStatusDetails));
+		}
+
+		private void AssertStep(IEnumerable<IStepResult> steps, int number, string name, ResultStatus status, string statusDetails = null)
+		{
+			var result = steps.ToArray()[number - 1];
+			Assert.That(result.Name, Is.EqualTo(name));
+			Assert.That(result.Number, Is.EqualTo(number));
+			Assert.That(result.Status, Is.EqualTo(status));
+			Assert.That(result.StatusDetails, Is.EqualTo(statusDetails));
+		}
+
+		[Test]
+		public void Should_display_scenario_inconclusive()
+		{
+			var ex = Assert.Throws<InconclusiveException>(() => _subject.RunScenario(Step_with_inconclusive_assertion));
+			_progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(ResultStatus.Ignored, ex.Message));
+		}
+
+		[Test]
+		public void Should_display_feature_name_using_description()
+		{
+			_progressNotifier.AssertWasCalled(n => n.NotifyFeatureStart("Runner tests", "desc", null));
+		}
+	}
+}

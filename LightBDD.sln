@@ -16,11 +16,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{46559B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B3AFFD69-36B4-43D6-A6AA-72914D15055C}"
 	ProjectSection(SolutionItems) = preProject
+		AssemblyVersion.cs = AssemblyVersion.cs
 		Changelog.txt = Changelog.txt
 		LICENSE.txt = LICENSE.txt
 		QuickStart.txt = QuickStart.txt
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.NUnit", "LightBDD.NUnit\LightBDD.NUnit.csproj", "{B97EF26C-EF54-4A85-9C0E-1F65283712D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.MbUnit", "LightBDD.MbUnit\LightBDD.MbUnit.csproj", "{437A2166-4A07-4F85-AA15-8A0518007093}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.NUnit.UnitTests", "LightBDD.NUnit.UnitTests\LightBDD.NUnit.UnitTests.csproj", "{F5F0EA17-7722-44E5-8977-6A8D58381C17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.MbUnit.UnitTests", "LightBDD.MbUnit.UnitTests\LightBDD.MbUnit.UnitTests.csproj", "{149B2AE3-6B7F-4F05-8344-E763490DA848}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DD1450B8-8CA1-4819-A2F6-92DF98DEA0A5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{8028A964-3C61-4531-8F62-721DC29B7102}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,8 +53,30 @@ Global
 		{1DA8DA63-2CED-4A91-85F1-CC913190050F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DA8DA63-2CED-4A91-85F1-CC913190050F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DA8DA63-2CED-4A91-85F1-CC913190050F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B97EF26C-EF54-4A85-9C0E-1F65283712D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B97EF26C-EF54-4A85-9C0E-1F65283712D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B97EF26C-EF54-4A85-9C0E-1F65283712D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B97EF26C-EF54-4A85-9C0E-1F65283712D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{437A2166-4A07-4F85-AA15-8A0518007093}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{437A2166-4A07-4F85-AA15-8A0518007093}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{437A2166-4A07-4F85-AA15-8A0518007093}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{437A2166-4A07-4F85-AA15-8A0518007093}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5F0EA17-7722-44E5-8977-6A8D58381C17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5F0EA17-7722-44E5-8977-6A8D58381C17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5F0EA17-7722-44E5-8977-6A8D58381C17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5F0EA17-7722-44E5-8977-6A8D58381C17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{149B2AE3-6B7F-4F05-8344-E763490DA848}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{149B2AE3-6B7F-4F05-8344-E763490DA848}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{149B2AE3-6B7F-4F05-8344-E763490DA848}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{149B2AE3-6B7F-4F05-8344-E763490DA848}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{149B2AE3-6B7F-4F05-8344-E763490DA848} = {DD1450B8-8CA1-4819-A2F6-92DF98DEA0A5}
+		{F5F0EA17-7722-44E5-8977-6A8D58381C17} = {DD1450B8-8CA1-4819-A2F6-92DF98DEA0A5}
+		{1DA8DA63-2CED-4A91-85F1-CC913190050F} = {DD1450B8-8CA1-4819-A2F6-92DF98DEA0A5}
+		{994D78CA-0CB3-4DE2-95E1-60BA11EB1E78} = {8028A964-3C61-4531-8F62-721DC29B7102}
 	EndGlobalSection
 EndGlobal

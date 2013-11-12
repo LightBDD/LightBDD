@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using LightBDD.Notification;
 using LightBDD.Results;
 using LightBDD.Results.Implementation;
@@ -10,11 +9,11 @@ using Rhino.Mocks;
 namespace LightBDD.UnitTests
 {
 	[TestFixture]
-	[Description("Runner tests description")]
+	[FeatureDescription("Runner tests description")]
 	[Label("Ticket-1")]
 	public class BDD_runner_tests : SomeSteps
 	{
-		private BDDRunner _subject;
+		private AbstractBDDRunner _subject;
 		private IProgressNotifier _progressNotifier;
 
 		#region Setup/Teardown
@@ -23,13 +22,12 @@ namespace LightBDD.UnitTests
 		public void SetUp()
 		{
 			_progressNotifier = MockRepository.GenerateMock<IProgressNotifier>();
-			_subject = new BDDRunner(GetType(), _progressNotifier);
+			_subject = new TestableBDDRunner(GetType(), _progressNotifier);
 		}
 
 		#endregion
 
 		[Test]
-		[MethodImpl(MethodImplOptions.NoInlining)]
 		public void Should_collect_scenario_result()
 		{
 			_subject.RunScenario(Step_one, Step_two);
@@ -59,7 +57,6 @@ namespace LightBDD.UnitTests
 		}
 
 		[Test]
-		[MethodImpl(MethodImplOptions.NoInlining)]
 		public void Should_collect_scenario_result_for_failing_scenario()
 		{
 			try
@@ -84,7 +81,6 @@ namespace LightBDD.UnitTests
 		}
 
 		[Test]
-		[MethodImpl(MethodImplOptions.NoInlining)]
 		public void Should_collect_scenario_result_for_ignored_scenario_steps()
 		{
 			try
@@ -108,30 +104,7 @@ namespace LightBDD.UnitTests
 			Assert.That(result.StatusDetails, Is.EqualTo(expectedStatusDetails));
 		}
 
-		[Test]
-		[MethodImpl(MethodImplOptions.NoInlining)]
-		public void Should_collect_scenario_result_for_inconclusive_scenario_steps()
-		{
-			try
-			{
-				_subject.RunScenario(Step_one, Step_with_inconclusive_assertion, Step_two);
-			}
-			catch
-			{
-			}
-			const string expectedStatusDetails = "some reason";
 
-			var result = _subject.Result.Scenarios.Single();
-			Assert.That(result.Name, Is.EqualTo("Should collect scenario result for inconclusive scenario steps"));
-			Assert.That(result.Status, Is.EqualTo(ResultStatus.Ignored));
-			Assert.That(result.Steps, Is.EqualTo(new[]
-			{
-				new StepResult(1, "Step one", ResultStatus.Passed),
-				new StepResult(2, "Step with inconclusive assertion", ResultStatus.Ignored, expectedStatusDetails),
-				new StepResult(3, "Step two", ResultStatus.NotRun)
-			}));
-			Assert.That(result.StatusDetails, Is.EqualTo(expectedStatusDetails));
-		}
 
 		[Test]
 		public void Should_display_feature_name()
@@ -153,16 +126,10 @@ namespace LightBDD.UnitTests
 			_progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(ResultStatus.Ignored, ex.Message));
 		}
 
-		[Test]
-		public void Should_display_scenario_inconclusive()
-		{
-			var ex = Assert.Throws<InconclusiveException>(() => _subject.RunScenario(Step_with_inconclusive_assertion));
-			_progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(ResultStatus.Ignored, ex.Message));
-		}
+
 
 		[Test]
 		[Label("Ticket-2")]
-		[MethodImpl(MethodImplOptions.NoInlining)]
 		public void Should_display_scenario_name()
 		{
 			_subject.RunScenario();
@@ -214,7 +181,7 @@ namespace LightBDD.UnitTests
 		[Test]
 		public void Should_use_console_progress_notifier_by_default()
 		{
-			Assert.That(new BDDRunner(GetType()).ProgressNotifier, Is.InstanceOf<ConsoleProgressNotifier>());
+			Assert.That(new TestableBDDRunner(GetType()).ProgressNotifier, Is.InstanceOf<ConsoleProgressNotifier>());
 		}
 	}
 }

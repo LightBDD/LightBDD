@@ -8,14 +8,13 @@ using LightBDD.Naming;
 using LightBDD.Notification;
 using LightBDD.Results;
 using LightBDD.Results.Implementation;
-using NUnit.Framework;
 
 namespace LightBDD
 {
 	/// <summary>
-	/// Allows to execute behavior test scenarios.
+	/// Abstract class for executing behavior test scenarios.
 	/// </summary>
-	public class BDDRunner
+	public abstract class AbstractBDDRunner
 	{
 		private readonly FeatureResult _result;
 
@@ -35,10 +34,10 @@ namespace LightBDD
 		/// <summary>
 		/// Initializes runner for given test class type with ConsoleProgressNotifier.
 		/// Given testClass type Name is used as feature name.
-		/// If test class is annotated with [Description] attribute, it's content is used as feature description.
+		/// If test class is annotated with [FeatureDescription] attribute or implementation specific description attribute, it's content is used as feature description.
 		/// </summary>
 		/// <param name="testClass">Test class type.</param>
-		public BDDRunner(Type testClass)
+		protected AbstractBDDRunner(Type testClass)
 			: this(testClass, new ConsoleProgressNotifier())
 		{
 		}
@@ -46,11 +45,11 @@ namespace LightBDD
 		/// <summary>
 		/// Initializes runner for given test class type with given progress notifier.
 		/// Given testClass type Name is used as feature name.
-		/// If test class is annotated with [Description] attribute, it's content is used as feature description.
+		/// If test class is annotated with [FeatureDescription] attribute or implementation specific description attribute, it's content is used as feature description.
 		/// </summary>
 		/// <param name="testClass">Test class type.</param>
 		/// <param name="progressNotifier">Progress notifier.</param>
-		public BDDRunner(Type testClass, IProgressNotifier progressNotifier)
+		protected AbstractBDDRunner(Type testClass, IProgressNotifier progressNotifier)
 		{
 			_result = new FeatureResult(NameFormatter.Format(testClass.Name), GetFeatureDescription(testClass), GetLabel(testClass));
 			ProgressNotifier = progressNotifier;
@@ -62,7 +61,7 @@ namespace LightBDD
 		/// If given step throws, other are not executed.
 		/// Scenario name is determined on method name in which RunScenario() method was called.<br/>
 		/// Scenario labels are determined on [Label] attributes applied on method in which RunScenario() method was called.<br/>
-		/// Please note that test project has to be compiled in DEBUG mode, or test method has to have [MethodImpl(MethodImplOptions.NoInlining)] attribute in order to properly determine scenario name.
+		/// Please note that test project has to be compiled in DEBUG mode (assembly has [Debuggable(true, true)] attribute), or test method has to have [MethodImpl(MethodImplOptions.NoInlining)] attribute in order to properly determine scenario name.
 		/// Step name is determined on corresponding action name.<br/>
 		/// Example usage:
 		/// <code>
@@ -158,8 +157,20 @@ namespace LightBDD
 
 		private string GetFeatureDescription(Type testClass)
 		{
-			return testClass.GetCustomAttributes(typeof(DescriptionAttribute), true)
-				.OfType<DescriptionAttribute>()
+			return GetFeatureDescriptionFromAttribute(testClass) ?? GetImplementationSpecificFeatureDescription(testClass);
+		}
+
+		/// <summary>
+		/// Returns implementation specific feature description or null if such is not provided.
+		/// </summary>
+		/// <param name="testClass">Class to analyze.</param>
+		/// <returns>Feature description or null.</returns>
+		protected abstract string GetImplementationSpecificFeatureDescription(Type testClass);
+
+		private static string GetFeatureDescriptionFromAttribute(Type testClass)
+		{
+			return testClass.GetCustomAttributes(typeof(FeatureDescriptionAttribute), true)
+				.OfType<FeatureDescriptionAttribute>()
 				.Select(a => a.Description)
 				.SingleOrDefault();
 		}
@@ -192,7 +203,12 @@ namespace LightBDD
 		private IEnumerable<Step> PrepareStepsToExecute(IEnumerable<Action> steps)
 		{
 			int i = 0;
-			return steps.Select(step => new Step(step, ++i));
+			return steps.Select(step => new Step(step, ++i, MapExceptionToStatus));
 		}
+
+		/// <summary>
+		/// Maps implementation specific exception to ResultStatus.
+		/// </summary>
+		protected abstract ResultStatus MapExceptionToStatus(Type exceptionType);
 	}
 }

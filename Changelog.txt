@@ -1,6 +1,11 @@
 LightBDD
 ===========================================
 
+Version 1.1.5
+------------------------------------------
++ extracted NUnit related code to LightBDD.NUnit
++ introduced LightBDD.MbUnit to add support for MbUnit framework
+
 Version 1.1.4
 -------------------------------------------
 + extended FeatureFixture with CreateProgressNotifier() method allowing to specify IProgressNotifier used by BDDRunner.

@@ -47,11 +47,13 @@
     <Compile Include="Coordination\FeatureSummaryAggregatorTests.cs" />
     <Compile Include="SomeSteps.cs" />
     <Compile Include="StepTests.cs" />
+    <Compile Include="TestableBDDRunner.cs" />
     <Compile Include="TestResultsSummaryTests.cs" />
     <Compile Include="Results\Formatters\PlainTextFormatterTests.cs" />
     <Compile Include="Naming\NameFormatterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\Formatters\XmlResultFormatterTests.cs" />
+    <Compile Include="Tests_with_dedicated_feature_description.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LightBDD\LightBDD.csproj">
