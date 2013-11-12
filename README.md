@@ -1,4 +1,4 @@
-Lightweight Behavior Driven Development test framework.
+Lightweight Behavior Driven Development test framework (LightBDD)
 ===========
 
 Have you ever been using the BDD methodology? Yes? - cool.  
@@ -109,7 +109,9 @@ I want to login into system</Description>
 For full example, please see [LightBDD.Example](https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example) project.
 
 ## Download
-It is possible to download package using [NuGet](http://nuget.org): `PM> Install-Package LightBDD`   
+It is possible to download package using [NuGet](http://nuget.org):  
+`PM> Install-Package LightBDD` for main package using NUnit  
+`PM> Install-Package LightBDD.MbUnit` for package using MbUnit  
 or to clone sources from git: `git clone git://github.com/Suremaker/LightBDD.git`
 
 ## VS Project Item Templates
