@@ -49,11 +49,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -66,10 +61,6 @@
     <ProjectReference Include="..\LightBDD.MbUnit\LightBDD.MbUnit.csproj">
       <Project>{437A2166-4A07-4F85-AA15-8A0518007093}</Project>
       <Name>LightBDD.MbUnit</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LightBDD.UnitTests\LightBDD.UnitTests.csproj">
-      <Project>{1DA8DA63-2CED-4A91-85F1-CC913190050F}</Project>
-      <Name>LightBDD.UnitTests</Name>
     </ProjectReference>
     <ProjectReference Include="..\LightBDD\LightBDD.csproj">
       <Project>{C8406FF5-FF97-4B66-A789-CBD97263FAC4}</Project>
