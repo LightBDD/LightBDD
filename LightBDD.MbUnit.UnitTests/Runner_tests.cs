@@ -3,7 +3,6 @@ using System.Linq;
 using Gallio.Framework;
 using LightBDD.Notification;
 using LightBDD.Results;
-using LightBDD.UnitTests;
 using MbUnit.Framework;
 using Rhino.Mocks;
 
@@ -11,7 +10,7 @@ namespace LightBDD.MbUnit.UnitTests
 {
 	[TestFixture]
 	[Description("desc")]
-	public class Runner_tests : SomeSteps
+	public class Runner_tests
 	{
 		private IProgressNotifier _progressNotifier;
 		private BDDRunner _subject;
@@ -26,6 +25,10 @@ namespace LightBDD.MbUnit.UnitTests
 		}
 
 		#endregion
+
+		public void Step_one() { }
+		public void Step_two() { }
+		public void Step_with_inconclusive_assertion() { Assert.Inconclusive("some reason"); }
 
 		[Test]
 		public void Should_collect_scenario_result_for_inconclusive_scenario_steps()
