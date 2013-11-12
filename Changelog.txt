@@ -1,7 +1,7 @@
 LightBDD
 ===========================================
 
-Version 1.1.5
+Version 1.2.0
 ------------------------------------------
 + extracted NUnit related code to LightBDD.NUnit
 + introduced LightBDD.MbUnit to add support for MbUnit framework
