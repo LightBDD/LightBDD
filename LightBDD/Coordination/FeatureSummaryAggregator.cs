@@ -1,4 +1,6 @@
-﻿using LightBDD.Results;
+﻿using System.IO;
+using System.Reflection;
+using LightBDD.Results;
 using LightBDD.Results.Formatters;
 
 namespace LightBDD.Coordination
@@ -16,12 +18,21 @@ namespace LightBDD.Coordination
 		public string FilePath { get; private set; }
 
 		/// <summary>
-		/// Default constructor, using XmlResultsFormatter for summary formatting and "FeaturesSummary.xml" for FilePath.
+		/// Default constructor, using XmlResultsFormatter for summary formatting and default summary path (see GetDefaultSummaryPath()).
 		/// </summary>
 		public FeatureSummaryAggregator()
-			: this(new XmlResultFormatter(), "FeaturesSummary.xml")
+			: this(new XmlResultFormatter(), GetDefaultSummaryPath())
 		{
 		}
+
+		/// <summary>
+		/// returns path to "FeaturesSummary.xml" located in place where LightBDD dll is.
+		/// </summary>
+		public static string GetDefaultSummaryPath()
+		{
+			return Path.Combine(Path.GetDirectoryName(typeof (FeatureSummaryAggregator).Assembly.Location), "FeaturesSummary.xml");
+		}
+
 		/// <summary>
 		/// Constructor allowing to specify result formatter and output file path. 
 		/// </summary>
