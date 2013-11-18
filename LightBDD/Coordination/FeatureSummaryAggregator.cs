@@ -26,11 +26,11 @@ namespace LightBDD.Coordination
 		}
 
 		/// <summary>
-		/// returns path to "FeaturesSummary.xml" located in place where LightBDD dll is.
+		/// returns path to "FeaturesSummary.xml" located current directory.
 		/// </summary>
 		public static string GetDefaultSummaryPath()
 		{
-			return Path.Combine(Path.GetDirectoryName(typeof (FeatureSummaryAggregator).Assembly.Location), "FeaturesSummary.xml");
+			return Path.GetFullPath("FeaturesSummary.xml");
 		}
 
 		/// <summary>
