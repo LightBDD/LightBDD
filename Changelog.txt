@@ -1,6 +1,10 @@
 LightBDD
 ===========================================
 
+Version 1.2.1
+-----------------------------------------
++ added HtmlResultFormatter
+
 Version 1.2.0
 ------------------------------------------
 + extracted NUnit related code to LightBDD.NUnit
