@@ -39,7 +39,7 @@ public partial class Login_feature //feature name
 	[Label("Ticket-1")]
 	public void Successful_login() //scenario name
 	{
-		Runner.RunScenario(
+		BDDRunner.RunScenario(
 
 			Given_user_is_about_to_login, //scenario steps
 			Given_user_entered_valid_login,
