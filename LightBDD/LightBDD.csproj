@@ -62,6 +62,7 @@
     <Compile Include="Results\Implementation\StepResult.cs" />
     <Compile Include="Results\Implementation\FeatureResult.cs" />
     <Compile Include="Coordination\FeatureCoordinator.cs" />
+    <Compile Include="TestMetadataProvider.cs" />
     <Compile Include="TestResultsSummary.cs" />
     <Compile Include="Step.cs" />
     <Compile Include="Results\Formatters\IResultFormatter.cs" />

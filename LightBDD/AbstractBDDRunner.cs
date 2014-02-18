@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using LightBDD.Naming;
 using LightBDD.Notification;
 using LightBDD.Results;
 using LightBDD.Results.Implementation;
@@ -17,6 +16,7 @@ namespace LightBDD
 	public abstract class AbstractBDDRunner
 	{
 		private readonly FeatureResult _result;
+		private readonly TestMetadataProvider _metadataProvider;
 
 		/// <summary>
 		/// Progress notifier.
@@ -32,36 +32,32 @@ namespace LightBDD
 		}
 
 		/// <summary>
-		/// Initializes runner for given test class type with ConsoleProgressNotifier.
-		/// Given testClass type Name is used as feature name.
+		/// Initializes runner for given feature test class type with ConsoleProgressNotifier.
+		/// Given featureTestClass type Name is used as feature name.
 		/// If test class is annotated with [FeatureDescription] attribute or implementation specific description attribute, it's content is used as feature description.
 		/// </summary>
-		/// <param name="testClass">Test class type.</param>
-		protected AbstractBDDRunner(Type testClass)
-			: this(testClass, new ConsoleProgressNotifier())
+		/// <param name="featureTestClass">Test class type.</param>
+		/// <param name="metadataProvider">Test metadata provider.</param>
+		protected AbstractBDDRunner(Type featureTestClass, TestMetadataProvider metadataProvider)
+			: this(featureTestClass, metadataProvider, new ConsoleProgressNotifier())
 		{
 		}
 
 		/// <summary>
-		/// Initializes runner for given test class type with given progress notifier.
-		/// Given testClass type Name is used as feature name.
+		/// Initializes runner for given feature test class type with given progress notifier.
+		/// Given featureTestClass type Name is used as feature name.
 		/// If test class is annotated with [FeatureDescription] attribute or implementation specific description attribute, it's content is used as feature description.
 		/// </summary>
-		/// <param name="testClass">Test class type.</param>
+		/// <param name="featureTestClass">Test class type.</param>
 		/// <param name="progressNotifier">Progress notifier.</param>
-		protected AbstractBDDRunner(Type testClass, IProgressNotifier progressNotifier)
+		/// <param name="metadataProvider">Test metadata provider.</param>
+		protected AbstractBDDRunner(Type featureTestClass, TestMetadataProvider metadataProvider, IProgressNotifier progressNotifier)
 		{
-			_result = new FeatureResult(NameFormatter.Format(testClass.Name), GetFeatureDescription(testClass), GetLabel(testClass));
+			_metadataProvider = metadataProvider;
 			ProgressNotifier = progressNotifier;
-			ProgressNotifier.NotifyFeatureStart(_result.Name, _result.Description, _result.Label);
-		}
 
-		private static string GetFeatureDescriptionFromAttribute(Type testClass)
-		{
-			return testClass.GetCustomAttributes(typeof(FeatureDescriptionAttribute), true)
-			                .OfType<FeatureDescriptionAttribute>()
-			                .Select(a => a.Description)
-			                .SingleOrDefault();
+			_result = new FeatureResult(_metadataProvider.GetFeatureName(featureTestClass), _metadataProvider.GetFeatureDescription(featureTestClass), _metadataProvider.GetFeatureLabel(featureTestClass));
+			ProgressNotifier.NotifyFeatureStart(_result.Name, _result.Description, _result.Label);
 		}
 
 		/// <summary>
@@ -92,7 +88,7 @@ namespace LightBDD
 		public void RunScenario(params Action[] steps)
 		{
 			var method = GetScenarioMethod();
-			RunScenario(GetScenarioName(method), GetLabel(method), steps);
+			RunScenario(_metadataProvider.GetScenarioName(method), _metadataProvider.GetScenarioLabel(method), steps);
 		}
 
 		/// <summary>
@@ -164,39 +160,14 @@ namespace LightBDD
 		}
 
 		/// <summary>
-		/// Returns implementation specific feature description or null if such is not provided.
-		/// </summary>
-		/// <param name="testClass">Class to analyze.</param>
-		/// <returns>Feature description or null.</returns>
-		protected abstract string GetImplementationSpecificFeatureDescription(Type testClass);
-
-		/// <summary>
 		/// Maps implementation specific exception to ResultStatus.
 		/// </summary>
 		protected abstract ResultStatus MapExceptionToStatus(Type exceptionType);
-
-		private string GetFeatureDescription(Type testClass)
-		{
-			return GetFeatureDescriptionFromAttribute(testClass) ?? GetImplementationSpecificFeatureDescription(testClass);
-		}
-
-		private string GetLabel(MemberInfo member)
-		{
-			return member.GetCustomAttributes(typeof(LabelAttribute), true)
-				.OfType<LabelAttribute>()
-				.Select(a => a.Label)
-				.SingleOrDefault();
-		}
 
 		[MethodImpl(MethodImplOptions.NoInlining)]
 		private MethodBase GetScenarioMethod()
 		{
 			return new StackTrace().GetFrame(2).GetMethod();
-		}
-
-		private string GetScenarioName(MethodBase method)
-		{
-			return NameFormatter.Format(method.Name);
 		}
 
 		private void PerformStep(Step step, int totalCount)

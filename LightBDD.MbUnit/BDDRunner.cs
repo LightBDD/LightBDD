@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Linq;
 using Gallio.Framework;
 using LightBDD.Notification;
 using LightBDD.Results;
-using MbUnit.Framework;
 
 namespace LightBDD
 {
@@ -17,9 +15,9 @@ namespace LightBDD
 		/// Given testClass type Name is used as feature name.
 		/// If test class is annotated with [FeatureDescription] or [Description] attribute, it's content is used as feature description.
 		/// </summary>
-		/// <param name="testClass">Test class type.</param>
-		public BDDRunner(Type testClass)
-			: base(testClass)
+		/// <param name="featureTestClass">Test class type.</param>
+		public BDDRunner(Type featureTestClass)
+			: base(featureTestClass, MbUnitTestMetadataProvider.Instance)
 		{
 		}
 
@@ -28,25 +26,11 @@ namespace LightBDD
 		/// Given testClass type Name is used as feature name.
 		/// If test class is annotated with [FeatureDescription] or [Description] attribute, it's content is used as feature description.
 		/// </summary>
-		/// <param name="testClass">Test class type.</param>
+		/// <param name="featureTestClass">Test class type.</param>
 		/// <param name="progressNotifier">Progress notifier.</param>
-		public BDDRunner(Type testClass, IProgressNotifier progressNotifier)
-			: base(testClass, progressNotifier)
+		public BDDRunner(Type featureTestClass, IProgressNotifier progressNotifier)
+			: base(featureTestClass, MbUnitTestMetadataProvider.Instance, progressNotifier)
 		{
-		}
-
-		/// <summary>
-		/// Returns implementation specific feature description or null if such is not provided.
-		/// If test class is annotated with [Description] attribute, it's content is used as feature description.
-		/// </summary>
-		/// <param name="testClass">Class to analyze.</param>
-		/// <returns>Feature description or null.</returns>
-		protected override string GetImplementationSpecificFeatureDescription(Type testClass)
-		{
-			return testClass.GetCustomAttributes(typeof(DescriptionAttribute), true)
-				.OfType<DescriptionAttribute>()
-				.Select(a => a.Description)
-				.SingleOrDefault();
 		}
 
 		/// <summary>

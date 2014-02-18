@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Reflection;
 using LightBDD.Results;
 using LightBDD.Results.Formatters;
 

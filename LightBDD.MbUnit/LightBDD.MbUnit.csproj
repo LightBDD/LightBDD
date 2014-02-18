@@ -55,6 +55,7 @@
     </Compile>
     <Compile Include="BDDRunner.cs" />
     <Compile Include="FeatureFixture.cs" />
+    <Compile Include="MbUnitTestMetadataProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
