@@ -107,7 +107,7 @@ I want to login into system</Description>
 </TestResults>
 ```
 
-For full example, please see [LightBDD.Example](https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example) project.
+For full example, please see [LightBDD.Example](https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example) or [LightBDD.ParallelizableExample](https://github.com/Suremaker/LightBDD/tree/master/LightBDD.ParallelizableExample) project.
 
 ## Download
 It is possible to download package using [NuGet](http://nuget.org):  
