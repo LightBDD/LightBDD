@@ -1,6 +1,12 @@
 LightBDD
 ===========================================
 
+Version 1.3.0
+----------------------------------------
++ added RunScenario() methods accepting shared context which allows to run tests safely in parallel
++ added examples for parallel test execution
++ added examples showing LightBDD behavior in case of test failure
+
 Version 1.2.1
 -----------------------------------------
 + added HtmlResultFormatter

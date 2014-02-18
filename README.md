@@ -18,6 +18,7 @@ This additional layer is becomes the root of most problems when maintaining test
 * Native support for refactoring, code analysis (like finding unused methods), test running and all features that Visual Studio / Intellisense / Resharper offer during code development,
 * Easy to read scenario definitions,
 * Scenario steps execution tracking, usable during longer test execution,
+* Possibility to run steps with dedicated shared context, allowing to run tests safely in parallel,
 * Feature result summary available in XML, HTML or Plain text format,
 * VS Project Item templates for feature test files,
 * Integrated with [NUnit](http://www.nunit.org/) and [MbUnit](https://code.google.com/p/mb-unit/) frameworks.
