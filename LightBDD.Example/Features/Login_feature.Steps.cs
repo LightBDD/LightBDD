@@ -29,6 +29,11 @@ namespace LightBDD.Example.Features
 			_loginRequest.Password = _validPassword;
 		}
 
+		private void Given_user_entered_anonymous_login()
+		{
+			_loginRequest.UserName = "anonymous";
+		}
+
 		private void Given_user_entered_invalid_login()
 		{
 			_loginRequest.UserName = "invalid user";
@@ -46,7 +51,7 @@ namespace LightBDD.Example.Features
 
 		private void Then_login_is_successful()
 		{
-			Assert.That(_loginResult.IsSuccessful, Is.True);
+			Assert.That(_loginResult.IsSuccessful, Is.True, "Login should succeeded");
 		}
 
 		private void Then_welcome_message_is_returned_containing_user_name()

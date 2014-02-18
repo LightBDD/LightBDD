@@ -69,6 +69,15 @@ namespace LightBDD
 		}
 
 		/// <summary>
+		/// Returns step name which bases on name of scenario step method.
+		/// </summary>
+		/// <returns>Step name.</returns>
+		public string GetStepName(MethodBase stepMethod)
+		{
+			return NameFormatter.Format(stepMethod.Name);
+		}
+
+		/// <summary>
 		/// Returns implementation specific feature description or null if such is not provided.
 		/// </summary>
 		/// <param name="testClass">Class to analyze.</param>

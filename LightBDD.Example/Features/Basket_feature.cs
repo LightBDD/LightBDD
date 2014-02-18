@@ -19,6 +19,9 @@ I want to add products to basket")]
 				Then_basket_does_not_contain_product);
 		}
 
+		/// <summary>
+		/// This test presents how LightBDD treats tests with Inconclusive / Ignore asserts
+		/// </summary>
 		[Test]
 		public void Successful_addition()
 		{

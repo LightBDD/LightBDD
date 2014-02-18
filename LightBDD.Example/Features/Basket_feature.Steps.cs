@@ -48,7 +48,7 @@ namespace LightBDD.Example.Features
 		private void Then_product_is_removed_from_stock()
 		{
 			Assert.Ignore("Product removal from stock is not implemented yet");
-			//Assert.That(_stock.Products.Contains("product"), Is.False);
+			Assert.That(_stock.Products.Contains("product"), Is.False);
 		}
 
 		#region Setup/Teardown

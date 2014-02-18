@@ -1,5 +1,4 @@
 using System;
-using LightBDD.Naming;
 using LightBDD.Results;
 using LightBDD.Results.Implementation;
 
@@ -12,11 +11,11 @@ namespace LightBDD
 		private readonly StepResult _result;
 		public IStepResult Result { get { return _result; } }
 
-		public Step(Action action, int stepNumber, Func<Type, ResultStatus> mapping)
+		public Step(Action action, string stepName, int stepNumber, Func<Type, ResultStatus> mapping)
 		{
 			_action = action;
 			_mapping = mapping;
-			_result = new StepResult(stepNumber, NameFormatter.Format(action.Method.Name), ResultStatus.NotRun);
+			_result = new StepResult(stepNumber, stepName, ResultStatus.NotRun);
 		}
 
 		public void Invoke()
