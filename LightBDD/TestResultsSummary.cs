@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -11,6 +12,7 @@ namespace LightBDD
 	/// <summary>
 	/// Tests results summary class for collecting feature results and saving it to specified file.
 	/// </summary>
+	[Obsolete("This class is obsolete and would be deleted in next release. Please use LightBDD.SummaryGeneration.SummaryGenerator / SummaryOutput instead.")]
 	public class TestResultsSummary
 	{
 		private readonly IResultFormatter _formatter;

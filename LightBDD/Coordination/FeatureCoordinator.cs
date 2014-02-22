@@ -19,14 +19,32 @@ namespace LightBDD.Coordination
 
 		/// <summary>
 		/// Aggregator used to collect feature results.
-		/// It can be customized - the best time to set it is before any tests run (like in class with [SetUpFixture] attribute).
-		/// By default, FeatureSummaryAggregator is used.
+		/// 
+		/// By default, SummaryGenerator is used, which configuration is read from app.config file.
+		/// The following code presents how default SummaryGenerator can be configured:
+		/// <code>
+		/// &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+		///&lt;configuration&gt;
+		///  &lt;configSections&gt;
+		///    &lt;section name="lightbdd" type="LightBDD.Configuration.LightBDDConfiguration, LightBDD"/&gt;
+		///  &lt;/configSections&gt;
+		///  &lt;lightbdd&gt;
+		///    &lt;summaryWriters&gt;
+		///      &lt;!-- FeatureSummary.xml is added by default. Use &lt;clear /&gt; to remove it.--&gt;
+		///      &lt;add formatter="LightBDD.Results.Formatters.PlainTextResultFormatter, LightBDD" output="FeatureSummary.txt"/&gt;
+		///      &lt;add formatter="LightBDD.Results.Formatters.HtmlResultFormatter, LightBDD" output="FeatureSummary.html"/&gt;
+		///    &lt;/summaryWriters&gt;
+		///  &lt;/lightbdd&gt;
+		///&lt;/configuration&gt;
+		/// </code>
+		/// 
+		/// It is also possible to customize aggregator by redefining it's value - the best time to set it is before any tests run (like in class with [SetUpFixture] attribute).
 		/// </summary>
 		public IFeatureAggregator Aggregator { get; set; }
 
 		private FeatureCoordinator()
 		{
-			Aggregator = new FeatureSummaryAggregator();
+			Aggregator = SummaryGeneratorFactory.Create();
 		}
 
 		/// <summary>

@@ -35,6 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
@@ -45,6 +46,10 @@
       <Link>Properties\AssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="AbstractBDDRunner.cs" />
+    <Compile Include="Configuration\LightBDDConfiguration.cs" />
+    <Compile Include="Configuration\SummaryWriterCollection.cs" />
+    <Compile Include="Configuration\SummaryWriterElement.cs" />
+    <Compile Include="Coordination\SummaryGeneratorFactory.cs" />
     <Compile Include="Coordination\FeatureSummaryAggregator.cs" />
     <Compile Include="Coordination\IFeatureAggregator.cs" />
     <Compile Include="FeatureDescriptionAttribute.cs" />
@@ -62,6 +67,9 @@
     <Compile Include="Results\Implementation\StepResult.cs" />
     <Compile Include="Results\Implementation\FeatureResult.cs" />
     <Compile Include="Coordination\FeatureCoordinator.cs" />
+    <Compile Include="SummaryGeneration\ISummaryWriter.cs" />
+    <Compile Include="SummaryGeneration\SummaryGenerator.cs" />
+    <Compile Include="SummaryGeneration\SummaryFileWriter.cs" />
     <Compile Include="TestMetadataProvider.cs" />
     <Compile Include="TestResultsSummary.cs" />
     <Compile Include="Step.cs" />

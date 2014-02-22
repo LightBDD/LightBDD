@@ -1,6 +1,17 @@
 LightBDD
 ===========================================
 
+Version 1.4.0
+----------------------------------------
++ fixed PlainTextResultFormatter to be usable for feature summary generation
++ changed PlainTextResultFormatter to display status details below steps
++ added SummaryFileWriter allowing to save feature results summary to file in specified format
++ added SummaryGenerator with multiple summary writers support to aggregate and save feature results
++ added support for feature summary format/file name configuration in app.config file.
++ modified FeatureCoordinator to use SummaryGenerator as default Aggregator and use app.config to configure it
++ obsoleted TestResultsSummary and FeatureSummaryAggregator classes
++ modified example project to present how to use feature summary with app.config
+
 Version 1.3.0
 ----------------------------------------
 + added RunScenario() methods accepting shared context which allows to run tests safely in parallel

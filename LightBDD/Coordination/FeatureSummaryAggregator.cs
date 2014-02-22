@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using LightBDD.Results;
 using LightBDD.Results.Formatters;
 
@@ -7,6 +8,7 @@ namespace LightBDD.Coordination
 	/// <summary>
 	/// Feature summary aggregator allowing to collect feature results in order to save summary in output file.
 	/// </summary>
+	[Obsolete("This class is obsolete and would be deleted in next release. Please use LightBDD.SummaryGeneration.SummaryGenerator instead.")]
 	public class FeatureSummaryAggregator : IFeatureAggregator
 	{
 		private readonly TestResultsSummary _summary;
