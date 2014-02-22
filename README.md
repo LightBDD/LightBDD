@@ -121,7 +121,12 @@ or to clone sources from git: `git clone git://github.com/Suremaker/LightBDD.git
 Please check [Templates](https://github.com/Suremaker/LightBDD/tree/master/Templates) folder for details how to install them.
 
 ## Limitations
-In order to display scenario names properly, the project containing feature classes has to be compiled in **Debug** mode or the scenario method has to have **[MethodImpl(MethodImplOptions.NoInlining)]** attribute, or **BDDRunner.RunScenarios()** with has to be called with explicit scenario name.
+In order to display scenario names properly, the project containing feature classes has to be compiled in **Debug** mode or with **[assembly: Debuggable(true, true)]** attribute or scenario methods have to have **[MethodImpl(MethodImplOptions.NoInlining)]** attribute applied, or **BDDRunner.RunScenarios()** has to be called with explicit scenario name.
 
 ## Wiki
 Please check project [wiki](https://github.com/Suremaker/LightBDD/wiki) for more details.
+
+## Debugging LightBDD from NuGet packages
+
+Since 1.4.0.0 version, nuget packages for LightBDD are being pushed together with symbol packages.
+The [The easy way to publish NuGet packages with sources](http://blog.davidebbo.com/2011/04/easy-way-to-publish-nuget-packages-with.html) article describes how to enable debugging with symbols downlaoded from **SymbolSource.org** in *What the package Consumer needs to do* section.
