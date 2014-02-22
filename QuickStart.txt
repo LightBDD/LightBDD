@@ -7,7 +7,7 @@ Visual Studio Project Item Templates:
 Template zip files are included within this package.
 Please copy them without unpacking to Visual Studio ItemTemplates folder:
 
-From: packages\LightBDD 1.1.4\Templates
+From: packages\LightBDD [VERSION]\Templates
 To: [USER_PATH]\Documents\Visual Studio [VERSION]\Templates\ItemTemplates\Visual C#
 
 Acceptance tests creation:
@@ -94,7 +94,7 @@ SCENARIO: [Ticket-1] Successful login
   STEP 6/6: Then welcome message is returned containing user name
   SCENARIO RESULT: Passed
 
-After all tests are finished, FeaturesSummary.xml would be created in project bin folder with xml summary like:
+After all tests are finished, FeaturesSummary.xml would be created in project bin folder with xml summary (it is possible to customize summary file format and location in app.config file) like:
 <?xml version="1.0" encoding="utf-8"?>
 <TestResults>  
   <Feature Name="Login feature" Label="Story-1">

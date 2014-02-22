@@ -20,6 +20,7 @@ This additional layer is becomes the root of most problems when maintaining test
 * Scenario steps execution tracking, usable during longer test execution,
 * Possibility to run steps with dedicated shared context, allowing to run tests safely in parallel,
 * Feature result summary available in XML, HTML or Plain text format,
+* Possibility to configure multiple result summaries in app.config file,
 * VS Project Item templates for feature test files,
 * Integrated with [NUnit](http://www.nunit.org/) and [MbUnit](https://code.google.com/p/mb-unit/) frameworks.
 
