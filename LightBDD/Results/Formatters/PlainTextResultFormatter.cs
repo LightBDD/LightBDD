@@ -1,5 +1,5 @@
+using System;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace LightBDD.Results.Formatters
 {
@@ -8,8 +8,6 @@ namespace LightBDD.Results.Formatters
 	/// </summary>
 	public class PlainTextResultFormatter : IResultFormatter
 	{
-		private static readonly Regex _whiteSpaceCleanup = new Regex("\\s+", RegexOptions.Compiled);
-
 		#region IResultFormatter Members
 
 		/// <summary>
@@ -29,14 +27,12 @@ namespace LightBDD.Results.Formatters
 		private static void FormatDetails(StringBuilder builder, IScenarioResult scenario)
 		{
 			if (string.IsNullOrWhiteSpace(scenario.StatusDetails))
-				builder.AppendLine();
-			else
-				builder.Append(" (").Append(FormatDetailsText(scenario.StatusDetails)).AppendLine(")");
-		}
+				return;
 
-		private static string FormatDetailsText(string statusDetails)
-		{
-			return _whiteSpaceCleanup.Replace(statusDetails.Trim(), " ");
+			builder.AppendLine();
+			builder.Append("\t\tDetails: ");
+			builder.Append(scenario.StatusDetails.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t\t\t"));
+			builder.AppendLine();
 		}
 
 		private void FormatFeature(StringBuilder builder, IFeatureResult feature)
@@ -50,7 +46,7 @@ namespace LightBDD.Results.Formatters
 			builder.AppendLine(feature.Name);
 
 			if (!string.IsNullOrWhiteSpace(feature.Description))
-				builder.Append("\t").Append(feature.Description.Replace("\n", "\n\t")).AppendLine();
+				builder.Append("\t").Append(feature.Description.Replace(Environment.NewLine, Environment.NewLine + "\t")).AppendLine();
 
 			foreach (var scenario in feature.Scenarios)
 				FormatScenario(builder, scenario);
@@ -63,14 +59,14 @@ namespace LightBDD.Results.Formatters
 			builder.Append("\tScenario: ");
 			if (!string.IsNullOrWhiteSpace(scenario.Label))
 				builder.Append("[").Append(scenario.Label).Append("] ");
-			builder.Append(scenario.Name).Append(" - ").Append(scenario.Status);
-			FormatDetails(builder, scenario);
+			builder.Append(scenario.Name).Append(" - ").Append(scenario.Status).AppendLine();
 			foreach (var step in scenario.Steps)
 			{
 				builder.Append("\t\tStep ")
-				       .Append(step.Number).Append(": ")
-				       .Append(step.Name).Append(" - ").AppendLine(step.Status.ToString());
+					   .Append(step.Number).Append(": ")
+					   .Append(step.Name).Append(" - ").AppendLine(step.Status.ToString());
 			}
+			FormatDetails(builder, scenario);
 		}
 	}
 }

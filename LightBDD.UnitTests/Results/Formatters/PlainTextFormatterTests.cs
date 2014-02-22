@@ -1,4 +1,5 @@
-﻿using LightBDD.Results;
+﻿using System;
+using LightBDD.Results;
 using LightBDD.Results.Formatters;
 using LightBDD.Results.Implementation;
 using NUnit.Framework;
@@ -23,21 +24,26 @@ namespace LightBDD.UnitTests.Results.Formatters
 		[Test]
 		public void Should_format_feature_with_description()
 		{
-			var result = new FeatureResult("My feature", "My feature\r\nlong description", "Label 1");
+			var result = new FeatureResult("My feature", string.Format("My feature{0}long description", Environment.NewLine), "Label 1");
 			result.AddScenario(new ScenarioResult("name", new[] { new StepResult(1, "step1", ResultStatus.Passed), new StepResult(2, "step2", ResultStatus.Ignored, "Not implemented yet") }, "Label 2"));
-			result.AddScenario(new ScenarioResult("name2", new[] { new StepResult(1, "step3", ResultStatus.Passed), new StepResult(2, "step4", ResultStatus.Failed, "  Expected: True\n  But was: False") }, null));
+			result.AddScenario(new ScenarioResult("name2", new[] { new StepResult(1, "step3", ResultStatus.Passed), new StepResult(2, "step4", ResultStatus.Failed, string.Format("  Expected: True{0}  But was: False", Environment.NewLine)) }, null));
 			var text = _subject.Format(result);
 			const string expectedText = @"Feature: [Label 1] My feature
 	My feature
 	long description
 
-	Scenario: [Label 2] name - Ignored (Not implemented yet)
+	Scenario: [Label 2] name - Ignored
 		Step 1: step1 - Passed
 		Step 2: step2 - Ignored
 
-	Scenario: name2 - Failed (Expected: True But was: False)
+		Details: Not implemented yet
+
+	Scenario: name2 - Failed
 		Step 1: step3 - Passed
 		Step 2: step4 - Failed
+
+		Details: Expected: True
+			  But was: False
 ";
 			Assert.That(text, Is.EqualTo(expectedText));
 		}
