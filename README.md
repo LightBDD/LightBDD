@@ -129,4 +129,4 @@ Please check project [wiki](https://github.com/Suremaker/LightBDD/wiki) for more
 ## Debugging LightBDD from NuGet packages
 
 Since 1.4.0.0 version, nuget packages for LightBDD are being pushed together with symbol packages.
-The [The easy way to publish NuGet packages with sources](http://blog.davidebbo.com/2011/04/easy-way-to-publish-nuget-packages-with.html) article describes how to enable debugging with symbols downlaoded from **SymbolSource.org** in *What the package Consumer needs to do* section.
+[The easy way to publish NuGet packages with sources](http://blog.davidebbo.com/2011/04/easy-way-to-publish-nuget-packages-with.html) article describes how to enable debugging with symbols downloaded from **SymbolSource.org**. Please check *What the package Consumer needs to do* article section for details.
