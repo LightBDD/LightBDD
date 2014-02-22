@@ -1,7 +1,9 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using LightBDD.ParallelizableExample.Domain;
 using MbUnit.Framework;
+[assembly: Debuggable(true, true)]
 
 namespace LightBDD.ParallelizableExample.Features
 {
