@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestResults>
+  <Feature Name="Basket feature">
+    <Description>In order to buy products
+As a customer
+I want to add products to basket</Description>
+    <Scenario Status="Passed" Name="No product in stock">
+      <Step Status="Passed" Number="1" Name="Given product is out of stock" />
+      <Step Status="Passed" Number="2" Name="When customer adds it to basket" />
+      <Step Status="Passed" Number="3" Name="Then product addition is unsuccessful" />
+      <Step Status="Passed" Number="4" Name="Then basket does not contain product" />
+    </Scenario>
+    <Scenario Status="Ignored" Name="Successful addition">
+      <Step Status="Passed" Number="1" Name="Given product is in stock" />
+      <Step Status="Passed" Number="2" Name="When customer adds it to basket" />
+      <Step Status="Passed" Number="3" Name="Then product addition is successful" />
+      <Step Status="Passed" Number="4" Name="Then basket contains product" />
+      <Step Status="Ignored" Number="5" Name="Then product is removed from stock" />
+      <StatusDetails>Product removal from stock is not implemented yet</StatusDetails>
+    </Scenario>
+  </Feature>
+  <Feature Name="Login feature" Label="Story-1">
+    <Description>In order to access personal data
+As an user
+I want to login into system</Description>
+    <Scenario Status="Failed" Name="Anonymous login name should allow to log in">
+      <Step Status="Passed" Number="1" Name="Given user is about to login" />
+      <Step Status="Passed" Number="2" Name="Given user entered anonymous login" />
+      <Step Status="Passed" Number="3" Name="When user clicked login button" />
+      <Step Status="Failed" Number="4" Name="Then login is successful" />
+      <Step Status="NotRun" Number="5" Name="Then welcome message is returned containing user name" />
+      <StatusDetails>  Login should succeeded
+  Expected: True
+  But was:  False
+</StatusDetails>
+    </Scenario>
+    <Scenario Status="Passed" Name="Successful login" Label="Ticket-1">
+      <Step Status="Passed" Number="1" Name="Given user is about to login" />
+      <Step Status="Passed" Number="2" Name="Given user entered valid login" />
+      <Step Status="Passed" Number="3" Name="Given user entered valid password" />
+      <Step Status="Passed" Number="4" Name="When user clicked login button" />
+      <Step Status="Passed" Number="5" Name="Then login is successful" />
+      <Step Status="Passed" Number="6" Name="Then welcome message is returned containing user name" />
+    </Scenario>
+    <Scenario Status="Passed" Name="Wrong login provided causes login to fail" Label="Ticket-2">
+      <Step Status="Passed" Number="1" Name="Given user is about to login" />
+      <Step Status="Passed" Number="2" Name="Given user entered invalid login" />
+      <Step Status="Passed" Number="3" Name="Given user entered valid password" />
+      <Step Status="Passed" Number="4" Name="When user clicked login button" />
+      <Step Status="Passed" Number="5" Name="Then login is unsuccessful" />
+      <Step Status="Passed" Number="6" Name="Then invalid login or password error message is returned" />
+    </Scenario>
+    <Scenario Status="Passed" Name="Wrong password provided causes login to fail">
+      <Step Status="Passed" Number="1" Name="Given user is about to login" />
+      <Step Status="Passed" Number="2" Name="Given user entered valid login" />
+      <Step Status="Passed" Number="3" Name="Given user entered invalid password" />
+      <Step Status="Passed" Number="4" Name="When user clicked login button" />
+      <Step Status="Passed" Number="5" Name="Then login is unsuccessful" />
+      <Step Status="Passed" Number="6" Name="Then invalid login or password error message is returned" />
+    </Scenario>
+  </Feature>
+</TestResults>

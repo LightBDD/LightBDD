@@ -1,0 +1,59 @@
+﻿Feature: Basket feature
+	In order to buy products
+	As a customer
+	I want to add products to basket
+
+	Scenario: No product in stock - Passed
+		Step 1: Given product is out of stock - Passed
+		Step 2: When customer adds it to basket - Passed
+		Step 3: Then product addition is unsuccessful - Passed
+		Step 4: Then basket does not contain product - Passed
+
+	Scenario: Successful addition - Ignored
+		Step 1: Given product is in stock - Passed
+		Step 2: When customer adds it to basket - Passed
+		Step 3: Then product addition is successful - Passed
+		Step 4: Then basket contains product - Passed
+		Step 5: Then product is removed from stock - Ignored
+
+		Details: Product removal from stock is not implemented yet
+
+Feature: [Story-1] Login feature
+	In order to access personal data
+	As an user
+	I want to login into system
+
+	Scenario: Anonymous login name should allow to log in - Failed
+		Step 1: Given user is about to login - Passed
+		Step 2: Given user entered anonymous login - Passed
+		Step 3: When user clicked login button - Passed
+		Step 4: Then login is successful - Failed
+		Step 5: Then welcome message is returned containing user name - NotRun
+
+		Details: Login should succeeded
+			  Expected: True
+			  But was:  False
+
+	Scenario: [Ticket-1] Successful login - Passed
+		Step 1: Given user is about to login - Passed
+		Step 2: Given user entered valid login - Passed
+		Step 3: Given user entered valid password - Passed
+		Step 4: When user clicked login button - Passed
+		Step 5: Then login is successful - Passed
+		Step 6: Then welcome message is returned containing user name - Passed
+
+	Scenario: [Ticket-2] Wrong login provided causes login to fail - Passed
+		Step 1: Given user is about to login - Passed
+		Step 2: Given user entered invalid login - Passed
+		Step 3: Given user entered valid password - Passed
+		Step 4: When user clicked login button - Passed
+		Step 5: Then login is unsuccessful - Passed
+		Step 6: Then invalid login or password error message is returned - Passed
+
+	Scenario: Wrong password provided causes login to fail - Passed
+		Step 1: Given user is about to login - Passed
+		Step 2: Given user entered valid login - Passed
+		Step 3: Given user entered invalid password - Passed
+		Step 4: When user clicked login button - Passed
+		Step 5: Then login is unsuccessful - Passed
+		Step 6: Then invalid login or password error message is returned - Passed
