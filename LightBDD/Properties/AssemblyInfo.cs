@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("LightBDD")]
-[assembly: AssemblyDescription("Lightweight Behavior Driven Development Test Framework (core)")]
+[assembly: AssemblyDescription("Lightweight Behavior Driven Development Test Framework Core")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("LightBDD")]

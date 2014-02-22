@@ -1,1 +1,1 @@
-Please put all of those zip files in [USER_PATH]\Documents\Visual Studio [VERSION]\Templates\ItemTemplates\Visual C# folder without unpacking.
+Please put all of zip files from MbUnit or NUnit folder in [USER_PATH]\Documents\Visual Studio [VERSION]\Templates\ItemTemplates\Visual C# folder without unpacking.

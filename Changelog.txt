@@ -11,6 +11,7 @@ Version 1.4.0
 + modified FeatureCoordinator to use SummaryGenerator as default Aggregator and use app.config to configure it
 + obsoleted TestResultsSummary and FeatureSummaryAggregator classes
 + modified example project to present how to use feature summary with app.config
++ modified way the NuGet packages are created so symbol packages are now generated as well
 
 Version 1.3.0
 ----------------------------------------

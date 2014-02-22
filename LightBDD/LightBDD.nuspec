@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>LightBDD.Core</id>
+    <version>$version$</version>
+    <title>LightBDD.Core</title>
+    <authors>Wojciech Kotlarski</authors>
+    <owners>Wojciech Kotlarski</owners>
+    <licenseUrl>http://opensource.org/licenses/BSD-2-Clause</licenseUrl>
+    <projectUrl>https://github.com/Suremaker/LightBDD</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Allows creating acceptance tests in developer friendly environment.
+
+Features:
+* Native support for refactoring, code analysis (like finding unused methods), test running and all features that Visual Studio / Intellisense / Resharper offer during code development,
+* Easy to read scenario definitions,
+* Scenario steps execution tracking, usable during longer test execution,
+* Possibility to run steps with dedicated shared context, allowing to run tests safely in parallel,
+* Feature result summary available in XML, HTML or Plain text format,
+* Possibility to configure multiple result summaries in app.config file,
+* VS Project Item templates for feature test files.</description>
+	<summary>$description$</summary>
+    <releaseNotes>+ fixed PlainTextResultFormatter to be usable for feature summary generation
++ changed PlainTextResultFormatter to display status details below steps
++ added SummaryFileWriter allowing to save feature results summary to file in specified format
++ added SummaryGenerator with multiple summary writers support to aggregate and save feature results
++ added support for feature summary format/file name configuration in app.config file.
++ modified FeatureCoordinator to use SummaryGenerator as default Aggregator and use app.config to configure it
++ obsoleted TestResultsSummary and FeatureSummaryAggregator classes
++ modified example project to present how to use feature summary with app.config
++ modified way the NuGet packages are created so symbol packages are now generated as well</releaseNotes>
+    <copyright>Copyright © Wojciech Kotlarski 2013-2014</copyright>
+    <tags>bdd tdd testing framework behavior driven development acceptance mbunit</tags>
+	<language>en-US</language>
+	<dependencies>
+		<group targetFramework=".NETFramework4.0"/>
+    </dependencies>
+  </metadata>
+  <files>
+	<file src="..\Changelog.txt" target="." />
+	<file src="..\LICENSE.txt" target="." />
+  </files>
+</package>
