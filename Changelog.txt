@@ -1,6 +1,11 @@
 LightBDD
 ===========================================
 
+Version 1.5.0
+----------------------------------------
++ introduced IScenarioBuilder fluent interface for scenario creation, added NewScenario() method to AbstractBDDRunner
++ obsoleted all RunScenario() methods that allows to provide scenarioName or label
+
 Version 1.4.0
 ----------------------------------------
 + fixed PlainTextResultFormatter to be usable for feature summary generation

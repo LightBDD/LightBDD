@@ -2,7 +2,7 @@ using System;
 using LightBDD.Results;
 using LightBDD.Results.Implementation;
 
-namespace LightBDD
+namespace LightBDD.Execution
 {
 	internal class Step
 	{

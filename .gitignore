@@ -8,3 +8,4 @@ build/Output
 test-results
 packages
 NuGet
+OpenCover

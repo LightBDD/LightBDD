@@ -52,6 +52,13 @@
     <Compile Include="Coordination\SummaryGeneratorFactory.cs" />
     <Compile Include="Coordination\FeatureSummaryAggregator.cs" />
     <Compile Include="Coordination\IFeatureAggregator.cs" />
+    <Compile Include="Execution\IScenarioBuilder.cs" />
+    <Compile Include="Execution\IScenarioExecutor.cs" />
+    <Compile Include="Execution\IStepsConverter.cs" />
+    <Compile Include="Execution\ScenarioBuilder.cs" />
+    <Compile Include="Execution\ScenarioExecutor.cs" />
+    <Compile Include="Execution\Step.cs" />
+    <Compile Include="Execution\StepsConverter.cs" />
     <Compile Include="FeatureDescriptionAttribute.cs" />
     <Compile Include="LabelAttribute.cs" />
     <Compile Include="Notification\ConsoleProgressNotifier.cs" />
@@ -72,7 +79,6 @@
     <Compile Include="SummaryGeneration\SummaryFileWriter.cs" />
     <Compile Include="TestMetadataProvider.cs" />
     <Compile Include="TestResultsSummary.cs" />
-    <Compile Include="Step.cs" />
     <Compile Include="Results\Formatters\IResultFormatter.cs" />
     <Compile Include="Results\Formatters\XmlResultFormatter.cs" />
     <Compile Include="Naming\NameFormatter.cs" />
