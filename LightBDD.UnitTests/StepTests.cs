@@ -1,6 +1,7 @@
 ﻿using System;
 using LightBDD.Execution;
 using LightBDD.Results;
+using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 
 namespace LightBDD.UnitTests

@@ -3,6 +3,7 @@ using System.Linq;
 using LightBDD.Notification;
 using LightBDD.Results;
 using LightBDD.UnitTests;
+using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 using Rhino.Mocks;
 

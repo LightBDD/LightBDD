@@ -5,6 +5,7 @@ using System.Linq;
 using LightBDD.Notification;
 using LightBDD.Results;
 using LightBDD.Results.Implementation;
+using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -160,8 +161,6 @@ namespace LightBDD.UnitTests
             var ex = Assert.Throws<IgnoreException>(() => _subject.RunScenario(Step_with_ignore_assertion));
             _progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(ResultStatus.Ignored, ex.Message));
         }
-
-
 
         [Test]
         [Label("Ticket-2")]

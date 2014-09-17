@@ -5,7 +5,7 @@ using LightBDD.Notification;
 using LightBDD.Results;
 using NUnit.Framework;
 
-namespace LightBDD.UnitTests
+namespace LightBDD.UnitTests.Notification
 {
     [TestFixture]
     public class ConsoleProgressNotifierTests

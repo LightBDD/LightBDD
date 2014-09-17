@@ -5,7 +5,7 @@ using LightBDD.Results;
 using LightBDD.Results.Implementation;
 using NUnit.Framework;
 
-namespace LightBDD.UnitTests
+namespace LightBDD.UnitTests.Results
 {
 	[TestFixture]
 	public class FeatureResultTests

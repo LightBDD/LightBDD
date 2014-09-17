@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using NUnit.Framework;
 
-namespace LightBDD.UnitTests
+namespace LightBDD.UnitTests.Helpers
 {
 	public class SomeSteps
 	{

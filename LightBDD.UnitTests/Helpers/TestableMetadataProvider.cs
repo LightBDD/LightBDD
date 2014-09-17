@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Linq;
 using NUnit.Framework;
 
-namespace LightBDD.UnitTests
+namespace LightBDD.UnitTests.Helpers
 {
     internal class TestableMetadataProvider : TestMetadataProvider
     {

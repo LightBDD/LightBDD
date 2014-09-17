@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using LightBDD.Notification;
 using LightBDD.Results;
 using NUnit.Framework;
 
-namespace LightBDD.UnitTests
+namespace LightBDD.UnitTests.Helpers
 {
     class TestableBDDRunner : AbstractBDDRunner
     {

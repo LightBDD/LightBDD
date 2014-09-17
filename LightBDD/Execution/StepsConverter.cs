@@ -39,7 +39,16 @@ namespace LightBDD.Execution
         {
             var paramName = stepExpression.Parameters[0].Name;
             var methodExpression = (MethodCallExpression)stepExpression.Body;
-            return paramName+" "+_metadataProvider.GetStepName(methodExpression.Method);
+            var arguments = methodExpression.Arguments.Select(GetArgumentValue).ToArray();
+            return _metadataProvider.GetStepName(paramName, methodExpression.Method, arguments);
+        }
+
+        private object GetArgumentValue(Expression expression)
+        {
+            var constant = expression as ConstantExpression;
+            if (constant != null)
+                return constant.Value;
+            throw new ArgumentException("Unsupported argument expression: " + expression.GetType());
         }
 
         private Action Compile<T>(Expression<Action<T>> step, T context)
