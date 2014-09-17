@@ -52,6 +52,7 @@
     <Compile Include="Coordination\SummaryGeneratorFactory.cs" />
     <Compile Include="Coordination\FeatureSummaryAggregator.cs" />
     <Compile Include="Coordination\IFeatureAggregator.cs" />
+    <Compile Include="Execution\ICustomizedScenarioBuilder.cs" />
     <Compile Include="Execution\IScenarioBuilder.cs" />
     <Compile Include="Execution\IScenarioExecutor.cs" />
     <Compile Include="Execution\IStepsConverter.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Results\Implementation\StepResult.cs" />
     <Compile Include="Results\Implementation\FeatureResult.cs" />
     <Compile Include="Coordination\FeatureCoordinator.cs" />
+    <Compile Include="StepContext.cs" />
     <Compile Include="SummaryGeneration\ISummaryWriter.cs" />
     <Compile Include="SummaryGeneration\SummaryGenerator.cs" />
     <Compile Include="SummaryGeneration\SummaryFileWriter.cs" />

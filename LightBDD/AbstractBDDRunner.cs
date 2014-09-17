@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using LightBDD.Execution;
@@ -66,9 +67,9 @@ namespace LightBDD
         /// <summary>
         /// Runs test scenario with by executing given steps in order, where all steps share context of <c>TContext</c> type instantiated with default constructor.
         /// If given step throws, other are not executed.
-        /// Scenario name is determined on method name in which RunScenario() method was called.<br/>
+        /// Scenario name is determined on the method name in which RunScenario() method was called.<br/>
         /// Scenario labels are determined on [Label] attributes applied on method in which RunScenario() method was called.<br/>
-        /// Please note that test project has to be compiled in DEBUG mode (assembly has [Debuggable(true, true)] attribute), or test method has to have [MethodImpl(MethodImplOptions.NoInlining)] attribute in order to properly determine scenario name.
+        /// Please note that test project has to be compiled in DEBUG mode (assembly has [Debuggable(true, true)] attribute), or calling method has to have [MethodImpl(MethodImplOptions.NoInlining)] attribute in order to properly determine scenario name.
         /// Step name is determined on corresponding action name.<br/>
         /// Example usage:
         /// <code>
@@ -91,7 +92,7 @@ namespace LightBDD
         [MethodImpl(MethodImplOptions.NoInlining)]
         public void RunScenario<TContext>(params Action<TContext>[] steps) where TContext : new()
         {
-            NewScenario(GetScenarioMethod()).Execute(steps);
+            NewScenario(GetScenarioMethod()).RunSimpleSteps(steps);
         }
 
         /// <summary>
@@ -121,7 +122,7 @@ namespace LightBDD
         public void RunScenario<TContext>(string scenarioName, params Action<TContext>[] steps) where TContext : new()
         {
             NewScenario(scenarioName)
-                .Execute(steps);
+                .RunSimpleSteps(steps);
         }
 
         /// <summary>
@@ -153,15 +154,15 @@ namespace LightBDD
         {
             NewScenario(scenarioName)
                 .WithLabel(label)
-                .Execute(steps);
+                .RunSimpleSteps(steps);
         }
 
         /// <summary>
         /// Runs test scenario by executing given steps in order, where all steps share given <c>context</c> instance of <c>TContext</c> type.
         /// If given step throws, other are not executed.
-        /// Scenario name is determined on method name in which RunScenario() method was called.<br/>
+        /// Scenario name is determined on the method name in which RunScenario() method was called.<br/>
         /// Scenario labels are determined on [Label] attributes applied on method in which RunScenario() method was called.<br/>
-        /// Please note that test project has to be compiled in DEBUG mode (assembly has [Debuggable(true, true)] attribute), or test method has to have [MethodImpl(MethodImplOptions.NoInlining)] attribute in order to properly determine scenario name.
+        /// Please note that test project has to be compiled in DEBUG mode (assembly has [Debuggable(true, true)] attribute), or calling method has to have [MethodImpl(MethodImplOptions.NoInlining)] attribute in order to properly determine scenario name.
         /// Step name is determined on corresponding action name.<br/>
         /// Example usage:
         /// <code>
@@ -185,7 +186,7 @@ namespace LightBDD
         [MethodImpl(MethodImplOptions.NoInlining)]
         public void RunScenario<TContext>(TContext context, params Action<TContext>[] steps)
         {
-            NewScenario(GetScenarioMethod()).Execute(context, steps);
+            NewScenario(GetScenarioMethod()).RunSimpleSteps(context, steps);
         }
 
         /// <summary>
@@ -215,7 +216,7 @@ namespace LightBDD
         [Obsolete("This method is obsolete and would be deleted in next release. Please use NewScenario(scenarioName).Execute(context, steps) instead.")]
         public void RunScenario<TContext>(TContext context, string scenarioName, params Action<TContext>[] steps)
         {
-            NewScenario(scenarioName).Execute(context, steps);
+            NewScenario(scenarioName).RunSimpleSteps(context, steps);
         }
 
         /// <summary>
@@ -248,15 +249,15 @@ namespace LightBDD
         {
             NewScenario(scenarioName)
                 .WithLabel(label)
-                .Execute(context, steps);
+                .RunSimpleSteps(context, steps);
         }
 
         /// <summary>
         /// Runs test scenario by executing given steps in order.
         /// If given step throws, other are not executed.
-        /// Scenario name is determined on method name in which RunScenario() method was called.<br/>
+        /// Scenario name is determined on the method name in which RunScenario() method was called.<br/>
         /// Scenario labels are determined on [Label] attributes applied on method in which RunScenario() method was called.<br/>
-        /// Please note that test project has to be compiled in DEBUG mode (assembly has [Debuggable(true, true)] attribute), or test method has to have [MethodImpl(MethodImplOptions.NoInlining)] attribute in order to properly determine scenario name.
+        /// Please note that test project has to be compiled in DEBUG mode (assembly has [Debuggable(true, true)] attribute), or calling method has to have [MethodImpl(MethodImplOptions.NoInlining)] attribute in order to properly determine scenario name.
         /// Step name is determined on corresponding action name.<br/>
         /// Example usage:
         /// <code>
@@ -278,7 +279,19 @@ namespace LightBDD
         [MethodImpl(MethodImplOptions.NoInlining)]
         public void RunScenario(params Action[] steps)
         {
-            NewScenario(GetScenarioMethod()).Execute(steps);
+            NewScenario(GetScenarioMethod()).RunSimpleSteps(steps);
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public void RunFormalizedScenario(params Expression<Action<StepContext>>[] steps)
+        {
+            NewScenario(GetScenarioMethod()).RunFormalizedSteps(steps);
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public void RunFormalizedScenario<TContext>(params Expression<Action<TContext>>[] steps) where TContext : new()
+        {
+            NewScenario(GetScenarioMethod()).RunFormalizedSteps(steps);
         }
 
         /// <summary>
@@ -306,7 +319,7 @@ namespace LightBDD
         [Obsolete("This method is obsolete and would be deleted in next release. Please use NewScenario(scenarioName).Execute(steps) instead.")]
         public void RunScenario(string scenarioName, params Action[] steps)
         {
-            NewScenario(scenarioName).Execute(steps);
+            NewScenario(scenarioName).RunSimpleSteps(steps);
         }
 
         /// <summary>
@@ -337,7 +350,7 @@ namespace LightBDD
         {
             NewScenario(scenarioName)
                 .WithLabel(label)
-                .Execute(steps);
+                .RunSimpleSteps(steps);
         }
 
         /// <summary>
@@ -363,12 +376,41 @@ namespace LightBDD
         /// </summary>
         /// <param name="scenarioName">Name of scenario.</param>
         /// <returns>Scenario builder.</returns>
-        public IScenarioBuilder NewScenario(string scenarioName)
+        public ICustomizedScenarioBuilder NewScenario(string scenarioName)
         {
             return new ScenarioBuilder(_stepsConverter, _executor, scenarioName);
         }
 
-        private IScenarioBuilder NewScenario(MethodBase scenarioMethod)
+        /// <summary>
+        /// Starts new scenario build process, where scenario name is determined on the method name in which NewScenario() method was called.<br/>
+        /// Scenario labels are determined on [Label] attributes applied on method in which NewScenario() method was called.<br/>
+        /// Please note that test project has to be compiled in DEBUG mode (assembly has [Debuggable(true, true)] attribute), or calling method has to have [MethodImpl(MethodImplOptions.NoInlining)] attribute in order to properly determine scenario name.
+        /// 
+        /// Scenario build process can be finalized later by calling one of Run*() family methods.<br/>
+        /// Example usage:
+        /// <code>
+        /// [Test]
+        /// [Label("Ticket-1")]
+        /// public void Successful_login()
+        /// {
+        ///     _bddRunner.NewScenario()
+        ///         .RunSimpleSteps(
+        ///             Given_user_is_about_to_login,
+        ///             Given_user_entered_valid_login,
+        ///             Given_user_entered_valid_password,
+        ///             When_user_clicked_login_button,
+        ///             Then_login_is_successful,
+        ///             Then_welcome_message_is_returned_containing_user_name);
+        /// }
+        /// </code>
+        /// </summary>
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public IScenarioBuilder NewScenario()
+        {
+            return NewScenario(GetScenarioMethod());
+        }
+
+        private ICustomizedScenarioBuilder NewScenario(MethodBase scenarioMethod)
         {
             return NewScenario(_metadataProvider.GetScenarioName(scenarioMethod))
                 .WithLabel(_metadataProvider.GetScenarioLabel(scenarioMethod));
