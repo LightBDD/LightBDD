@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using LightBDD.Notification;
 using LightBDD.Results;
 using LightBDD.Results.Implementation;
@@ -63,6 +64,72 @@ namespace LightBDD.UnitTests
                 new StepResult(2, "INSERT Method with parameters where param \"abc_123\" is first param on list", ResultStatus.Passed),
                 new StepResult(3, "OTHERS Method with parameters where param \"abc\" is \"5\" [lastParam: \"other param\"]", ResultStatus.Passed)
             }));
+        }
+
+        [Test]
+        [TestCase("abc")]
+        [TestCase("prod-A")]
+        public void Should_capture_method_parameter(string product)
+        {
+            _subject.RunFormalizedScenario(call => Product_is_available_in_product_storage(product));
+
+            var result = _subject.Result.Scenarios.Single();
+            Assert.That(result.Steps, Is.EqualTo(new[]
+            {
+                new StepResult(1, string.Format("CALL Product \"{0}\" is available in product storage",product), ResultStatus.Passed)
+            }));
+        }
+
+        [Test]
+        public void Should_capture_local_variable()
+        {
+            string name = GetType().Name;
+            _subject.RunFormalizedScenario(call => Product_is_available_in_product_storage(name));
+
+            var result = _subject.Result.Scenarios.Single();
+            Assert.That(result.Steps, Is.EqualTo(new[]
+            {
+                new StepResult(1, string.Format("CALL Product \"{0}\" is available in product storage",name), ResultStatus.Passed)
+            }));
+        }
+
+        [Test]
+        public void Should_capture_method_call()
+        {
+            _subject.RunFormalizedScenario(call => Product_is_available_in_product_storage(GetType().ToString()));
+
+            var result = _subject.Result.Scenarios.Single();
+            Assert.That(result.Steps, Is.EqualTo(new[]
+            {
+                new StepResult(1, string.Format("CALL Product \"{0}\" is available in product storage",GetType()), ResultStatus.Passed)
+            }));
+        }
+
+        [Test]
+        [Ignore("Not implemented yet")]
+        public void Should_capture_parameters_just_before_call()
+        {
+            int x = 5;
+            _subject.RunFormalizedScenario(
+                when => Set_value(ref x, 3),
+                then => Values_equal(3, x));
+
+            var result = _subject.Result.Scenarios.Single();
+            Assert.That(result.Steps, Is.EqualTo(new[]
+            {
+                new StepResult(1, "WHEN Set value [i: \"5\"] [val: \"3\"]", ResultStatus.Passed),
+                new StepResult(2, "THEN Values equal [expected: \"3\"] [actual: \"3\"]", ResultStatus.Passed)
+            }));
+        }
+
+        private void Values_equal(int expected, int actual)
+        {
+            Assert.That(actual, Is.EqualTo(expected));
+        }
+
+        private void Set_value(ref int i, int val)
+        {
+            i = val;
         }
 
         private void Method_with_parameters_where_param_is_VALUE(string param, int value, string lastParam)
