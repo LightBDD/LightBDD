@@ -45,14 +45,17 @@
   <ItemGroup>
     <Compile Include="BDD_runner_tests.cs" />
     <Compile Include="BDD_runner_tests_with_context.cs" />
+    <Compile Include="ConsoleProgressNotifierTests.cs" />
     <Compile Include="Coordination\FeatureCoordinatorTests.cs" />
     <Compile Include="Coordination\FeatureSummaryAggregatorTests.cs" />
     <Compile Include="FeatureResultTests.cs" />
+    <Compile Include="Results\StepResultTests.cs" />
     <Compile Include="SomeSteps.cs" />
     <Compile Include="StepTests.cs" />
     <Compile Include="SummaryGeneration\SummaryFileWriterTests.cs" />
     <Compile Include="SummaryGeneration\SummaryGeneratorTests.cs" />
     <Compile Include="TestableBDDRunner.cs" />
+    <Compile Include="TestableMetadataProvider.cs" />
     <Compile Include="TestResultsSummaryTests.cs" />
     <Compile Include="Results\Formatters\PlainTextFormatterTests.cs" />
     <Compile Include="Naming\NameFormatterTests.cs" />

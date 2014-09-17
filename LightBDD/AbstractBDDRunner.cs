@@ -55,6 +55,13 @@ namespace LightBDD
         /// <param name="metadataProvider">Test metadata provider.</param>
         protected AbstractBDDRunner(Type featureTestClass, TestMetadataProvider metadataProvider, IProgressNotifier progressNotifier)
         {
+            if(featureTestClass==null)
+                throw new ArgumentNullException("featureTestClass");
+            if (metadataProvider == null)
+                throw new ArgumentNullException("metadataProvider");
+            if (progressNotifier == null)
+                throw new ArgumentNullException("progressNotifier");
+
             _metadataProvider = metadataProvider;
             ProgressNotifier = progressNotifier;
             _stepsConverter = new StepsConverter(_metadataProvider, MapExceptionToStatus);

@@ -12,6 +12,8 @@ namespace LightBDD.Execution
 
         public ScenarioBuilder(IStepsConverter stepsConverter, IScenarioExecutor executor, string scenarioName)
         {
+            if (string.IsNullOrWhiteSpace(scenarioName))
+                throw new ArgumentException("Unable to create scenario without name");
             _stepsConverter = stepsConverter;
             _executor = executor;
             _scenarioName = scenarioName;
@@ -40,7 +42,7 @@ namespace LightBDD.Execution
 
         public void RunFormalizedSteps<TContext>(params Expression<Action<TContext>>[] steps) where TContext : new()
         {
-            _executor.Execute(_scenarioName, _label, _stepsConverter.Convert(new TContext(),steps));
+            _executor.Execute(_scenarioName, _label, _stepsConverter.Convert(new TContext(), steps));
         }
 
         public void RunSimpleSteps(params Action[] steps)
