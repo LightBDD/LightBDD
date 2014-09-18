@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 using LightBDD.Naming;
 
 namespace LightBDD
@@ -87,7 +85,7 @@ namespace LightBDD
         /// <returns>Feature description or null.</returns>
         protected abstract string GetImplementationSpecificFeatureDescription(Type testClass);
 
-        public string GetStepName(string actionType, MethodBase stepMethod, object[] methodArguments)
+        public string GetStepNameFormat(string actionType, MethodInfo stepMethod)
         {
             var name = NameFormatter.Format(stepMethod.Name);
             var sb = new StringBuilder();
@@ -95,7 +93,7 @@ namespace LightBDD
 
             var replacements = stepMethod
                 .GetParameters()
-                .Select((param, index) => ToArgumentReplacement(name, param, methodArguments[index]))
+                .Select((param, index) => ToArgumentReplacement(name, param, index))
                 .OrderBy(r => r.Position)
                 .ToArray();
             int lastPos = 0;
@@ -111,16 +109,16 @@ namespace LightBDD
             return sb.ToString();
         }
 
-        private ArgumentReplacement ToArgumentReplacement(string name, ParameterInfo parameterInfo, object value)
+        private ArgumentReplacement ToArgumentReplacement(string name, ParameterInfo parameterInfo, int argumentIndex)
         {
             string paramName = parameterInfo.Name;
             int position = FindArgument(name, paramName.ToUpperInvariant(), StringComparison.Ordinal);
             if (position >= 0)
-                return new ArgumentReplacement(position, string.Format("\"{0}\"", value), paramName.Length);
+                return new ArgumentReplacement(position, string.Format("\"{{{0}}}\"", argumentIndex), paramName.Length);
             position = FindArgument(name, paramName, StringComparison.OrdinalIgnoreCase);
             if (position >= 0)
-                return new ArgumentReplacement(position + paramName.Length, string.Format(" \"{0}\"", value), 0);
-            return new ArgumentReplacement(name.Length, string.Format(" [{0}: \"{1}\"]", paramName, value), 0);
+                return new ArgumentReplacement(position + paramName.Length, string.Format(" \"{{{0}}}\"", argumentIndex), 0);
+            return new ArgumentReplacement(name.Length, string.Format(" [{0}: \"{{{1}}}\"]", paramName, argumentIndex), 0);
         }
 
         private int FindArgument(string name, string argument, StringComparison stringComparison)

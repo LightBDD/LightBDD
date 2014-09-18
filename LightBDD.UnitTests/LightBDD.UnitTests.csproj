@@ -48,13 +48,14 @@
     <Compile Include="BDD_runner_tests_with_context.cs" />
     <Compile Include="Coordination\FeatureCoordinatorTests.cs" />
     <Compile Include="Coordination\FeatureSummaryAggregatorTests.cs" />
+    <Compile Include="Execution\ParameterizedStepTests.cs" />
+    <Compile Include="Execution\StepTests.cs" />
     <Compile Include="Helpers\SomeSteps.cs" />
     <Compile Include="Helpers\TestableBDDRunner.cs" />
     <Compile Include="Helpers\TestableMetadataProvider.cs" />
     <Compile Include="Notification\ConsoleProgressNotifierTests.cs" />
     <Compile Include="Results\FeatureResultTests.cs" />
     <Compile Include="Results\StepResultTests.cs" />
-    <Compile Include="StepTests.cs" />
     <Compile Include="SummaryGeneration\SummaryFileWriterTests.cs" />
     <Compile Include="SummaryGeneration\SummaryGeneratorTests.cs" />
     <Compile Include="TestResultsSummaryTests.cs" />

@@ -1,7 +1,4 @@
-﻿using NUnit.Framework;
-using LightBDD;
-
-namespace LightBDD.Example.Features
+﻿namespace LightBDD.Example.Features
 {
     public partial class Invoice_feature : FeatureFixture
     {

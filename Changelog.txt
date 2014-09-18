@@ -5,6 +5,10 @@ Version 1.5.0
 ----------------------------------------
 + introduced IScenarioBuilder fluent interface for scenario creation, added NewScenario() method to AbstractBDDRunner
 + obsoleted all RunScenario() methods that allows to provide scenarioName or label
++ corrected HtmlResultFormatter to escape HTML specific characters in displayed text
++ implemented argument insertion to parameterized steps
++ added support for proper capture of mutable step arguments
+
 
 Version 1.4.0
 ----------------------------------------

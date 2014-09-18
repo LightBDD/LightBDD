@@ -106,20 +106,41 @@ namespace LightBDD.UnitTests
         }
 
         [Test]
-        [Ignore("Not implemented yet")]
-        public void Should_capture_parameters_just_before_call()
+        public void Should_not_allow_steps_with_ref_parameters()
         {
             int x = 5;
+            var ex = Assert.Throws<ArgumentException>(() => _subject.RunFormalizedScenario(when => Set_value(ref x, 3)));
+            Assert.That(ex.Message, Is.StringStarting("Steps accepting ref or out parameters are not supported:"));
+        }
+
+        [Test]
+        public void Should_not_allow_steps_with_out_parameters()
+        {
+            int x;
+            var ex = Assert.Throws<ArgumentException>(() => _subject.RunFormalizedScenario(when => int.TryParse("abc", out x)));
+            Assert.That(ex.Message, Is.StringStarting("Steps accepting ref or out parameters are not supported:"));
+        }
+        [Test]
+        public void Should_capture_parameters_just_before_call_and_evaluate_them_once()
+        {
+            int x = 0;
             _subject.RunFormalizedScenario(
-                when => Set_value(ref x, 3),
-                then => Values_equal(3, x));
+                then => Values_equal(1, Add(ref x)),
+                then => Values_equal(2, Add(ref x)),
+                then => Values_equal(3, Add(ref x)));
 
             var result = _subject.Result.Scenarios.Single();
             Assert.That(result.Steps, Is.EqualTo(new[]
             {
-                new StepResult(1, "WHEN Set value [i: \"5\"] [val: \"3\"]", ResultStatus.Passed),
-                new StepResult(2, "THEN Values equal [expected: \"3\"] [actual: \"3\"]", ResultStatus.Passed)
+                new StepResult(1, "THEN Values equal [expected: \"1\"] [actual: \"1\"]", ResultStatus.Passed),
+                new StepResult(2, "THEN Values equal [expected: \"2\"] [actual: \"2\"]", ResultStatus.Passed),
+                new StepResult(3, "THEN Values equal [expected: \"3\"] [actual: \"3\"]", ResultStatus.Passed)
             }));
+        }
+
+        private int Add(ref int x)
+        {
+            return ++x;
         }
 
         private void Values_equal(int expected, int actual)

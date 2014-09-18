@@ -17,46 +17,51 @@ namespace LightBDD.Execution
             _metadataProvider = metadataProvider;
         }
 
-        public IEnumerable<Step> Convert(IEnumerable<Action> steps)
+        public IEnumerable<IStep> Convert(IEnumerable<Action> steps)
         {
             int i = 0;
             return steps.Select(step => new Step(step, _metadataProvider.GetStepName(step.Method), ++i, _mapExceptionToStatus));
         }
 
-        public IEnumerable<Step> Convert<TContext>(TContext context, IEnumerable<Action<TContext>> steps)
+        public IEnumerable<IStep> Convert<TContext>(TContext context, IEnumerable<Action<TContext>> steps)
         {
             int i = 0;
             return steps.Select(step => new Step(() => step(context), _metadataProvider.GetStepName(step.Method), ++i, _mapExceptionToStatus));
         }
 
-        public IEnumerable<Step> Convert<TContext>(TContext context, IEnumerable<Expression<Action<TContext>>> steps)
+        public IEnumerable<IStep> Convert<TContext>(TContext context, IEnumerable<Expression<Action<TContext>>> steps)
         {
             int i = 0;
-            return steps.Select(step => new Step(Compile(step, context), GetStepName(step), ++i, _mapExceptionToStatus));
+            return steps.Select(step => CreateStep(context, step, ++i));
         }
 
-        private string GetStepName<T>(Expression<Action<T>> stepExpression)
+        private IStep CreateStep<TContext>(TContext context, Expression<Action<TContext>> stepExpression, int stepNumber)
         {
             var paramName = stepExpression.Parameters[0].Name;
             var methodExpression = stepExpression.Body as MethodCallExpression;
             if (methodExpression == null)
                 throw new ArgumentException("Unsupported step expression. Expected MethodCallExpression, got: " + stepExpression);
-            var arguments = methodExpression.Arguments.Select(GetArgumentValue).ToArray();
-            return _metadataProvider.GetStepName(paramName, methodExpression.Method, arguments);
+
+            if (methodExpression.Method.GetParameters().Any(p => p.IsOut || p.ParameterType.IsByRef))
+                throw new ArgumentException("Steps accepting ref or out parameters are not supported: " + stepExpression);
+            var stepNameFormat = _metadataProvider.GetStepNameFormat(paramName, methodExpression.Method);
+
+            var action = CompileAction<TContext>(methodExpression, stepExpression.Parameters[0]);
+            var arguments = methodExpression.Arguments.Select(arg => CompileArgument<TContext>(arg, stepExpression.Parameters[0])).ToArray();
+            return new ParameterizedStep<TContext>(context, action, arguments, stepNameFormat, stepNumber, _mapExceptionToStatus);
         }
 
-        private object GetArgumentValue(Expression expression)
+        private Func<TContext, object> CompileArgument<TContext>(Expression argumentExpression, ParameterExpression contextParameter)
         {
-            var constant = expression as ConstantExpression;
-            if (constant != null)
-                return constant.Value;
-            return Expression.Lambda<Func<object>>(Expression.Convert(expression, typeof(object))).Compile().Invoke();
+            return Expression.Lambda<Func<TContext, object>>(Expression.Convert(argumentExpression, typeof(object)), contextParameter).Compile();
         }
 
-        private Action Compile<T>(Expression<Action<T>> step, T context)
+        private static Action<TContext, object[]> CompileAction<TContext>(MethodCallExpression methodCall, ParameterExpression contextParameter)
         {
-            var compiled = step.Compile();
-            return () => compiled(context);
+            var param = Expression.Parameter(typeof(object[]), "args");
+            var args = methodCall.Arguments.Select((arg, index) => Expression.Convert(Expression.ArrayAccess(param, Expression.Constant(index)), arg.Type));
+            var methodCallExpression = Expression.Call(methodCall.Object, methodCall.Method, args);
+            return Expression.Lambda<Action<TContext, object[]>>(methodCallExpression, contextParameter, param).Compile();
         }
     }
 }
