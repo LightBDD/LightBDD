@@ -77,7 +77,7 @@
     <Compile Include="Results\Implementation\StepResult.cs" />
     <Compile Include="Results\Implementation\FeatureResult.cs" />
     <Compile Include="Coordination\FeatureCoordinator.cs" />
-    <Compile Include="StepContext.cs" />
+    <Compile Include="StepType.cs" />
     <Compile Include="SummaryGeneration\ISummaryWriter.cs" />
     <Compile Include="SummaryGeneration\SummaryGenerator.cs" />
     <Compile Include="SummaryGeneration\SummaryFileWriter.cs" />

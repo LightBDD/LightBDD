@@ -55,7 +55,7 @@ namespace LightBDD
         /// <param name="metadataProvider">Test metadata provider.</param>
         protected AbstractBDDRunner(Type featureTestClass, TestMetadataProvider metadataProvider, IProgressNotifier progressNotifier)
         {
-            if(featureTestClass==null)
+            if (featureTestClass == null)
                 throw new ArgumentNullException("featureTestClass");
             if (metadataProvider == null)
                 throw new ArgumentNullException("metadataProvider");
@@ -290,13 +290,13 @@ namespace LightBDD
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public void RunFormalizedScenario(params Expression<Action<StepContext>>[] steps)
+        public void RunFormalizedScenario(params Expression<Action<StepType>>[] steps)
         {
             NewScenario(GetScenarioMethod()).RunFormalizedSteps(steps);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public void RunFormalizedScenario<TContext>(params Expression<Action<TContext>>[] steps) where TContext : new()
+        public void RunFormalizedScenario<TContext>(params Expression<Action<StepType, TContext>>[] steps) where TContext : new()
         {
             NewScenario(GetScenarioMethod()).RunFormalizedSteps(steps);
         }

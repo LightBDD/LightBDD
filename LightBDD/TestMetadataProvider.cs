@@ -85,11 +85,11 @@ namespace LightBDD
         /// <returns>Feature description or null.</returns>
         protected abstract string GetImplementationSpecificFeatureDescription(Type testClass);
 
-        public string GetStepNameFormat(string actionType, MethodInfo stepMethod)
+        public string GetStepNameFormat(string stepType, MethodInfo stepMethod)
         {
             var name = NameFormatter.Format(stepMethod.Name);
             var sb = new StringBuilder();
-            sb.Append(actionType.ToUpperInvariant()).Append(' ');
+            sb.Append(stepType.ToUpperInvariant()).Append(' ');
 
             var replacements = stepMethod
                 .GetParameters()

@@ -61,8 +61,8 @@ namespace LightBDD.UnitTests.Execution
 
             var step = new ParameterizedStep<Context>(
                 _context,
-                (ctx, args) => ctx.Step_one((string)args[0]),
-                new Func<Context, object>[] { ctx => "abc" },
+                (type, ctx, args) => ctx.Step_one((string)args[0]),
+                new Func<StepType, Context, object>[] { (type, ctx) => "abc" },
                 "Step_one {0}", stepNumber, Map);
 
             step.Invoke(_progressNotifier, totalStepCount);
@@ -77,8 +77,8 @@ namespace LightBDD.UnitTests.Execution
 
             var step = new ParameterizedStep<Context>(
                 _context,
-                (ctx, args) => ctx.Step_one((string)args[0]),
-                new Func<Context, object>[] { ctx => argument },
+                (type, ctx, args) => ctx.Step_one((string)args[0]),
+                new Func<StepType, Context, object>[] { (type, ctx) => argument },
                 "Step_one {0}", stepNumber, Map);
 
             step.Invoke(_progressNotifier, 100);
@@ -97,8 +97,8 @@ namespace LightBDD.UnitTests.Execution
 
             var step = new ParameterizedStep<Context>(
                 _context,
-                (ctx, args) => ctx.Step_with_ignore_assertion((string)args[0]),
-                new Func<Context, object>[] { ctx => "abc" },
+                (type, ctx, args) => ctx.Step_with_ignore_assertion((string)args[0]),
+                new Func<StepType, Context, object>[] { (type, ctx) => "abc" },
                 "Step_with_ignore_assertion {0}", stepNumber, Map);
 
             var ex = Assert.Throws<IgnoreException>(() => step.Invoke(_progressNotifier, 100));
@@ -115,8 +115,8 @@ namespace LightBDD.UnitTests.Execution
 
             var step = new ParameterizedStep<Context>(
                 _context,
-                (ctx, args) => ctx.Step_with_inconclusive_assertion((string)args[0]),
-                new Func<Context, object>[] { ctx => "abc" },
+                (type, ctx, args) => ctx.Step_with_inconclusive_assertion((string)args[0]),
+                new Func<StepType, Context, object>[] { (type, ctx) => "abc" },
                 "Step_with_inconclusive_assertion {0}", stepNumber, Map);
 
             var ex = Assert.Throws<InconclusiveException>(() => step.Invoke(_progressNotifier, 100));
@@ -133,15 +133,15 @@ namespace LightBDD.UnitTests.Execution
 
             var step = new ParameterizedStep<Context>(
                 _context,
-                (ctx, args) => ctx.Step_with_exception((string)args[0]),
-                new Func<Context, object>[] { ctx => "abc" },
+                (type, ctx, args) => ctx.Step_with_exception((string)args[0]),
+                new Func<StepType, Context, object>[] { (type, ctx) => "abc" },
                 "Step_with_exception {0}", stepNumber, Map);
 
             var ex = Assert.Throws<InvalidOperationException>(() => step.Invoke(_progressNotifier, 100));
 
             Assert.That(step.GetResult().Name, Is.EqualTo("Step_with_exception abc"));
             Assert.That(step.GetResult().Number, Is.EqualTo(stepNumber));
-            Assert.That(step.GetResult().Status, Is.EqualTo(ResultStatus.Ignored));
+            Assert.That(step.GetResult().Status, Is.EqualTo(ResultStatus.Failed));
             Assert.That(step.GetResult().StatusDetails, Is.EqualTo(ex.Message));
             Assert.That(ex.Message, Is.EqualTo("abc"));
         }
@@ -153,8 +153,8 @@ namespace LightBDD.UnitTests.Execution
 
             var step = new ParameterizedStep<Context>(
                 _context,
-                (ctx, args) => ctx.Step_one((string)args[0]),
-                new Func<Context, object>[] { ctx => "abc" },
+                (type, ctx, args) => ctx.Step_one((string)args[0]),
+                new Func<StepType, Context, object>[] { (type, ctx) => "abc" },
                 "Step_one {0}", stepNumber, Map);
 
             Assert.That(step.GetResult().Name, Is.EqualTo("Step_one <?>"));
@@ -170,8 +170,8 @@ namespace LightBDD.UnitTests.Execution
 
             var step = new ParameterizedStep<Context>(
                 _context,
-                (ctx, args) => ctx.Step_one((string)args[0]),
-                new Func<Context, object>[] { ctx => ThrowException() },
+                (type, ctx, args) => ctx.Step_one((string)args[0]),
+                new Func<StepType, Context, object>[] { (type, ctx) => ThrowException() },
                 "Step_one {0}", stepNumber, Map);
 
             var ex = Assert.Throws<InvalidOperationException>(() => step.Invoke(_progressNotifier, 100));

@@ -3,7 +3,7 @@
 namespace LightBDD.Example.Features
 {
     [FeatureDescription(
-        @"In order to pay for products
+@"In order to pay for products
 As a customer
 I want to receive invoice for bought items")]
     [TestFixture]

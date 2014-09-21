@@ -9,15 +9,15 @@ namespace LightBDD.Execution
     internal class ParameterizedStep<TContext> : IStep
     {
         private readonly TContext _context;
-        private readonly Action<TContext, object[]> _action;
-        private readonly Func<TContext, object>[] _parameters;
+        private readonly Action<StepType, TContext, object[]> _action;
+        private readonly Func<StepType, TContext, object>[] _parameters;
         private readonly string _stepNameFormat;
         private readonly int _stepNumber;
         private readonly Func<Type, ResultStatus> _mapping;
         private StepResult _result;
         public IStepResult GetResult() { return _result; }
 
-        public ParameterizedStep(TContext context, Action<TContext, object[]> action, Func<TContext, object>[] parameters, string stepNameFormat, int stepNumber, Func<Type, ResultStatus> mapping)
+        public ParameterizedStep(TContext context, Action<StepType, TContext, object[]> action, Func<StepType, TContext, object>[] parameters, string stepNameFormat, int stepNumber, Func<Type, ResultStatus> mapping)
         {
             _context = context;
             _action = action;
@@ -25,19 +25,19 @@ namespace LightBDD.Execution
             _stepNameFormat = stepNameFormat;
             _stepNumber = stepNumber;
             _mapping = mapping;
-            _result = new StepResult(stepNumber, string.Format(stepNameFormat, parameters.Select(p => (object)"<?>").ToArray()), ResultStatus.NotRun);
+            _result = new StepResult(stepNumber, string.Format(stepNameFormat, GetNotEvaluatedParameters()), ResultStatus.NotRun);
         }
 
         public void Invoke(IProgressNotifier progressNotifier, int totalCount)
         {
             try
             {
-                var paramValues = _parameters.Select(p => p.Invoke(_context)).ToArray();
+                var paramValues = EvaluateParameters();
                 var stepName = string.Format(_stepNameFormat, paramValues);
                 _result = new StepResult(_stepNumber, stepName, ResultStatus.NotRun);
 
                 progressNotifier.NotifyStepStart(stepName, _stepNumber, totalCount);
-                _action(_context, paramValues);
+                _action(StepType.Default, _context, paramValues);
 
                 _result.SetStatus(ResultStatus.Passed);
             }
@@ -46,6 +46,16 @@ namespace LightBDD.Execution
                 _result.SetStatus(_mapping(e.GetType()), e.Message);
                 throw;
             }
+        }
+
+        private object[] EvaluateParameters()
+        {
+            return _parameters.Select(p => p.Invoke(StepType.Default, _context)).ToArray();
+        }
+
+        private object[] GetNotEvaluatedParameters()
+        {
+            return _parameters.Select(p => (object)"<?>").ToArray();
         }
     }
 }

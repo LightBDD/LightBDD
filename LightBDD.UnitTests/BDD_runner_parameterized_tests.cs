@@ -120,6 +120,7 @@ namespace LightBDD.UnitTests
             var ex = Assert.Throws<ArgumentException>(() => _subject.RunFormalizedScenario(when => int.TryParse("abc", out x)));
             Assert.That(ex.Message, Is.StringStarting("Steps accepting ref or out parameters are not supported:"));
         }
+
         [Test]
         public void Should_capture_parameters_just_before_call_and_evaluate_them_once()
         {
@@ -135,6 +136,29 @@ namespace LightBDD.UnitTests
                 new StepResult(1, "THEN Values equal [expected: \"1\"] [actual: \"1\"]", ResultStatus.Passed),
                 new StepResult(2, "THEN Values equal [expected: \"2\"] [actual: \"2\"]", ResultStatus.Passed),
                 new StepResult(3, "THEN Values equal [expected: \"3\"] [actual: \"3\"]", ResultStatus.Passed)
+            }));
+        }
+
+        [Test]
+        [Label("LABEL-73")]
+        public void Should_collect_scenario_result_for_parameterized_steps_executed_on_context()
+        {
+            _subject.RunFormalizedScenario<GWTContext>(
+                (given, ctx) => ctx.Product_is_available_in_product_storage("wooden desk"),
+                (when, ctx) => ctx.Customer_orders_this_product(),
+                (then, ctx) => ctx.Customer_receives_invoice_for_product_in_amount_pounds("wooden desk", 62),
+                (then, ctx) => ctx.Product_is_sent_to_customer());
+
+            var result = _subject.Result.Scenarios.Single();
+            Assert.That(result.Name, Is.EqualTo("Should collect scenario result for parameterized steps executed on context"));
+            Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
+            Assert.That(result.Label, Is.EqualTo("LABEL-73"));
+            Assert.That(result.Steps, Is.EqualTo(new[]
+            {
+                new StepResult(1, "GIVEN Product \"wooden desk\" is available in product storage", ResultStatus.Passed),
+                new StepResult(2, "WHEN Customer orders this product", ResultStatus.Passed),
+                new StepResult(3, "THEN Customer receives invoice for product \"wooden desk\" in amount \"62\" pounds", ResultStatus.Passed),
+                new StepResult(4, "THEN Product is sent to customer", ResultStatus.Passed)
             }));
         }
 
@@ -178,6 +202,27 @@ namespace LightBDD.UnitTests
         }
 
         private void Product_is_sent_to_customer()
+        {
+        }
+    }
+
+    class GWTContext
+    {
+        public void Product_is_available_in_product_storage(string product)
+        {
+
+        }
+
+        public void Customer_orders_this_product()
+        {
+
+        }
+
+        public void Customer_receives_invoice_for_product_in_amount_pounds(string product, int amount)
+        {
+        }
+
+        public void Product_is_sent_to_customer()
         {
         }
     }

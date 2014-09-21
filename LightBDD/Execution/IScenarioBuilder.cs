@@ -75,7 +75,7 @@ namespace LightBDD.Execution
         /// <param name="steps">List of steps to execute in order.</param>
         void RunSimpleSteps<TContext>(TContext context, params Action<TContext>[] steps);
 
-        void RunFormalizedSteps(params Expression<Action<StepContext>>[] steps);
-        void RunFormalizedSteps<TContext>(params Expression<Action<TContext>>[] steps) where TContext : new();
+        void RunFormalizedSteps(params Expression<Action<StepType>>[] steps);
+        void RunFormalizedSteps<TContext>(params Expression<Action<StepType, TContext>>[] steps) where TContext : new();
     }
 }

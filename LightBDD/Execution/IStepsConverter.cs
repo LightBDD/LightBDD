@@ -8,6 +8,7 @@ namespace LightBDD.Execution
     {
         IEnumerable<IStep> Convert(IEnumerable<Action> steps);
         IEnumerable<IStep> Convert<TContext>(TContext context, IEnumerable<Action<TContext>> steps);
-        IEnumerable<IStep> Convert<TContext>(TContext context, IEnumerable<Expression<Action<TContext>>> steps);
+        IEnumerable<IStep> Convert<TContext>(TContext context, IEnumerable<Expression<Action<StepType,TContext>>> steps);
+        IEnumerable<IStep> Convert(IEnumerable<Expression<Action<StepType>>> steps);
     }
 }

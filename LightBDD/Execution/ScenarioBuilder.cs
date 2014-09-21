@@ -35,12 +35,12 @@ namespace LightBDD.Execution
             _executor.Execute(_scenarioName, _label, _stepsConverter.Convert(context, steps));
         }
 
-        public void RunFormalizedSteps(params Expression<Action<StepContext>>[] steps)
+        public void RunFormalizedSteps(params Expression<Action<StepType>>[] steps)
         {
-            RunFormalizedSteps<StepContext>(steps);
+            _executor.Execute(_scenarioName, _label, _stepsConverter.Convert(steps));
         }
 
-        public void RunFormalizedSteps<TContext>(params Expression<Action<TContext>>[] steps) where TContext : new()
+        public void RunFormalizedSteps<TContext>(params Expression<Action<StepType,TContext>>[] steps) where TContext : new()
         {
             _executor.Execute(_scenarioName, _label, _stepsConverter.Convert(new TContext(), steps));
         }
