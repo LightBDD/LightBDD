@@ -24,7 +24,7 @@ namespace LightBDD.Execution
             return this;
         }
 
-        public void RunFormalizedSteps(params Expression<Action<StepType>>[] steps)
+        public void Run(params Expression<Action<StepType>>[] steps)
         {
             _executor.Execute(_scenario, _stepsConverter.Convert(steps));
         }
@@ -39,7 +39,7 @@ namespace LightBDD.Execution
             return new ScenarioBuilder<TContext>(_stepsConverter, _executor, _scenario, instance);
         }
 
-        public void RunSimpleSteps(params Action[] steps)
+        public void Run(params Action[] steps)
         {
             _executor.Execute(_scenario, _stepsConverter.Convert(steps));
         }
@@ -60,12 +60,12 @@ namespace LightBDD.Execution
             _context = context;
         }
 
-        public void RunFormalizedSteps(params Expression<Action<StepType, TContext>>[] steps)
+        public void Run(params Expression<Action<StepType, TContext>>[] steps)
         {
             _executor.Execute(_scenario, _stepsConverter.Convert(_context, steps));
         }
 
-        public void RunSimpleSteps(params Action<TContext>[] steps)
+        public void Run(params Action<TContext>[] steps)
         {
             _executor.Execute(_scenario, _stepsConverter.Convert(_context, steps));
         }

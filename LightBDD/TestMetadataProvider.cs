@@ -85,6 +85,19 @@ namespace LightBDD
         /// <returns>Feature description or null.</returns>
         protected abstract string GetImplementationSpecificFeatureDescription(Type testClass);
 
+        /// <summary>
+        /// Returns step name format which starts with capitalized <c>stepType</c> and bases on name of scenario step method.<br/>
+        /// If method is parameterized, the step name would contain format parameters {n} that would be replaced with argument values during step execution.<br/>
+        /// Please note that rules for placing parameter values in step name are as follows, where first matching rule would be used:
+        /// <list type="bullet">
+        /// <item><description>it will replace first occurrence of variable name written in capital letters (<c>void Price_is_AMOUNT_dollars(int amount)</c> => <c>Price is "27" dollars</c>)</description></item>
+        /// <item><description>it will placed after first occurrence of variable name (<c>void Product_is_in_stock(string product)</c> => <c>Product "desk" is in stock</c>)</description></item>
+        /// <item><description>it will placed at the end of step name (<c>void Product_is_in_stock(string productId)</c> => <c>Product is in stock [productId: "ABC123"]</c>)</description></item>
+        /// </list>
+        /// </summary>
+        /// <param name="stepType">Step type like given, when, then, and etc.</param>
+        /// <param name="stepMethod">Step method.</param>
+        /// <returns>Step name.</returns>
         public string GetStepNameFormat(string stepType, MethodInfo stepMethod)
         {
             var name = NameFormatter.Format(stepMethod.Name);

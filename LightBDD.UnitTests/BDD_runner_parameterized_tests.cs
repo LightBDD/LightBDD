@@ -30,7 +30,7 @@ namespace LightBDD.UnitTests
         [Label("LABEL-57")]
         public void Should_collect_scenario_result_for_parameterized_steps()
         {
-            _subject.RunFormalizedScenario(
+            _subject.RunScenario(
                 given => Product_is_available_in_product_storage("wooden desk"),
                 when => Customer_orders_this_product(),
                 then => Customer_receives_invoice_for_product_in_amount_pounds("wooden desk", 62),
@@ -52,7 +52,7 @@ namespace LightBDD.UnitTests
         [Test]
         public void Should_collect_scenario_result_with_steps_parameters_inserted_in_proper_places()
         {
-            _subject.RunFormalizedScenario(
+            _subject.RunScenario(
                 replace => Method_with_parameters_where_param_has_PARAM_value("abc"),
                 insert => Method_with_parameters_where_param_is_first_param_on_list("abc_123"),
                 others => Method_with_parameters_where_param_is_VALUE("abc", 5, "other param"));
@@ -71,7 +71,7 @@ namespace LightBDD.UnitTests
         [TestCase("prod-A")]
         public void Should_capture_method_parameter(string product)
         {
-            _subject.RunFormalizedScenario(call => Product_is_available_in_product_storage(product));
+            _subject.RunScenario(call => Product_is_available_in_product_storage(product));
 
             var result = _subject.Result.Scenarios.Single();
             Assert.That(result.Steps, Is.EqualTo(new[]
@@ -84,7 +84,7 @@ namespace LightBDD.UnitTests
         public void Should_capture_local_variable()
         {
             string name = GetType().Name;
-            _subject.RunFormalizedScenario(call => Product_is_available_in_product_storage(name));
+            _subject.RunScenario(call => Product_is_available_in_product_storage(name));
 
             var result = _subject.Result.Scenarios.Single();
             Assert.That(result.Steps, Is.EqualTo(new[]
@@ -96,7 +96,7 @@ namespace LightBDD.UnitTests
         [Test]
         public void Should_capture_method_call()
         {
-            _subject.RunFormalizedScenario(call => Product_is_available_in_product_storage(GetType().ToString()));
+            _subject.RunScenario(call => Product_is_available_in_product_storage(GetType().ToString()));
 
             var result = _subject.Result.Scenarios.Single();
             Assert.That(result.Steps, Is.EqualTo(new[]
@@ -109,7 +109,7 @@ namespace LightBDD.UnitTests
         public void Should_not_allow_steps_with_ref_parameters()
         {
             int x = 5;
-            var ex = Assert.Throws<ArgumentException>(() => _subject.RunFormalizedScenario(when => Set_value(ref x, 3)));
+            var ex = Assert.Throws<ArgumentException>(() => _subject.RunScenario(when => Set_value(ref x, 3)));
             Assert.That(ex.Message, Is.StringStarting("Steps accepting ref or out parameters are not supported:"));
         }
 
@@ -117,7 +117,7 @@ namespace LightBDD.UnitTests
         public void Should_not_allow_steps_with_out_parameters()
         {
             int x;
-            var ex = Assert.Throws<ArgumentException>(() => _subject.RunFormalizedScenario(when => int.TryParse("abc", out x)));
+            var ex = Assert.Throws<ArgumentException>(() => _subject.RunScenario(when => int.TryParse("abc", out x)));
             Assert.That(ex.Message, Is.StringStarting("Steps accepting ref or out parameters are not supported:"));
         }
 
@@ -125,7 +125,7 @@ namespace LightBDD.UnitTests
         public void Should_capture_parameters_just_before_call_and_evaluate_them_once()
         {
             int x = 0;
-            _subject.RunFormalizedScenario(
+            _subject.RunScenario(
                 then => Values_equal(1, Add(ref x)),
                 then => Values_equal(2, Add(ref x)),
                 then => Values_equal(3, Add(ref x)));
@@ -143,7 +143,7 @@ namespace LightBDD.UnitTests
         [Label("LABEL-73")]
         public void Should_collect_scenario_result_for_parameterized_steps_executed_on_context()
         {
-            _subject.RunFormalizedScenario<GWTContext>(
+            _subject.RunScenario<GWTContext>(
                 (given, ctx) => ctx.Product_is_available_in_product_storage("wooden desk"),
                 (when, ctx) => ctx.Customer_orders_this_product(),
                 (then, ctx) => ctx.Customer_receives_invoice_for_product_in_amount_pounds("wooden desk", 62),

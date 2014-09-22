@@ -47,7 +47,7 @@ namespace LightBDD.UnitTests
         [Test]
         public void Should_collect_scenario_result_via_fluent_interfaces()
         {
-            _subject.NewScenario().RunSimpleSteps(Step_one, Step_two);
+            _subject.NewScenario().Run(Step_one, Step_two);
 
             var result = _subject.Result.Scenarios.Single();
             Assert.That(result.Name, Is.EqualTo("Should collect scenario result via fluent interfaces"));
@@ -166,7 +166,7 @@ namespace LightBDD.UnitTests
         [Label("Ticket-2")]
         public void Should_display_scenario_name()
         {
-            _subject.RunScenario();
+            _subject.RunScenario(Step_one);
             _progressNotifier.AssertWasCalled(n => n.NotifyScenarioStart("Should display scenario name", "Ticket-2"));
         }
 

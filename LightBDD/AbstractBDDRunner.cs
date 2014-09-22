@@ -72,19 +72,20 @@ namespace LightBDD
         }
 
         /// <summary>
-        /// Runs test scenario with by executing given steps in order, where all steps share context of <c>TContext</c> type instantiated with default constructor.
-        /// If given step throws, other are not executed.
-        /// Scenario name is determined on the method name in which RunScenario() method was called.<br/>
-        /// Scenario labels are determined on [Label] attributes applied on method in which RunScenario() method was called.<br/>
-        /// Please note that test project has to be compiled in DEBUG mode (assembly has [Debuggable(true, true)] attribute), or calling method has to have [MethodImpl(MethodImplOptions.NoInlining)] attribute in order to properly determine scenario name.
+        /// Runs test scenario with by executing given steps in order, where all steps share context of <c>TContext</c> type instantiated with default constructor.<br/>
+        /// If given step throws, other are not executed.<br/>
+        /// Scenario name is determined on the method name in which <c>RunScenario()</c> method was called.<br/>
+        /// Scenario label is determined on <c>[Label]</c> attribute applied on method in which <c>RunScenario()</c> method was called.<br/>
+        /// Please note that test project has to be compiled in DEBUG mode (assembly has <c>[assembly:Debuggable(true, true)]</c> attribute), or calling method has to have <c>[MethodImpl(MethodImplOptions.NoInlining)]</c> attribute in order to properly determine scenario name.<br/>
         /// Step name is determined on corresponding action name.<br/>
+        ///
         /// Example usage:
         /// <code>
         /// [Test]
         /// [Label("Ticket-1")]
         /// public void Successful_login()
         /// {
-        ///     _bddRunner.RunScenario&lt;LoginContext&gt;(
+        ///     Runner.RunScenario&lt;LoginContext&gt;(
         ///         Given_user_is_about_to_login,
         ///         Given_user_entered_valid_login,
         ///         Given_user_entered_valid_password,
@@ -92,6 +93,10 @@ namespace LightBDD
         ///         Then_login_is_successful,
         ///         Then_welcome_message_is_returned_containing_user_name);
         /// }
+        /// </code>
+        /// Expected step signature:
+        /// <code>
+        /// void Given_user_is_about_to_login(LoginContext context) { /* ... */ }
         /// </code>
         /// </summary>
         /// <typeparam name="TContext">Type of context that would be shared between all steps.</typeparam>
@@ -101,20 +106,21 @@ namespace LightBDD
         {
             NewScenario(GetScenarioMethod())
                 .WithContext<TContext>()
-                .RunSimpleSteps(steps);
+                .Run(steps);
         }
 
         /// <summary>
-        /// Runs test scenario by executing given steps in order, where all steps share context of <c>TContext</c> type instantiated with default constructor.
-        /// If given step throws, other are not executed.
-        /// Scenario name is specified in parameter list.
+        /// Runs test scenario by executing given steps in order, where all steps share context of <c>TContext</c> type instantiated with default constructor.<br/>
+        /// If given step throws, other are not executed.<br/>
+        /// Scenario name is specified in parameter list.<br/>
         /// Step name is determined on corresponding action name.<br/>
+        /// 
         /// Example usage:
         /// <code>
         /// [Test]
         /// public void Successful_login()
         /// {
-        ///     _bddRunner.RunScenario&lt;LoginContext&gt;("My successful login",
+        ///     Runner.RunScenario&lt;LoginContext&gt;("My successful login",
         ///         Given_user_is_about_to_login,
         ///         Given_user_entered_valid_login,
         ///         Given_user_entered_valid_password,
@@ -123,29 +129,33 @@ namespace LightBDD
         ///         Then_welcome_message_is_returned_containing_user_name);
         /// }
         /// </code>
+        /// Expected step signature:
+        /// <code>
+        /// void Given_user_is_about_to_login(LoginContext context) { /* ... */ }
+        /// </code>
         /// </summary>
         /// <typeparam name="TContext">Type of context that would be shared between all steps.</typeparam>
         /// <param name="scenarioName">Scenario name.</param>
         /// <param name="steps">List of steps to execute in order.</param>
-        [Obsolete("This method is obsolete and would be deleted in next release. Please use NewScenario(scenarioName).Execute(steps) instead.")]
+        [Obsolete("This method is obsolete and would be deleted in next release. Please use NewScenario(scenarioName).WithContext<TContext>().Run(steps) instead.")]
         public void RunScenario<TContext>(string scenarioName, params Action<TContext>[] steps) where TContext : new()
         {
             NewScenario(scenarioName)
                 .WithContext<TContext>()
-                .RunSimpleSteps(steps);
+                .Run(steps);
         }
 
         /// <summary>
-        /// Runs test scenario by executing given steps in order, where all steps share context of <c>TContext</c> type instantiated with default constructor.
-        /// If given step throws, other are not executed.
-        /// Scenario name is specified in parameter list.
+        /// Runs test scenario by executing given steps in order, where all steps share context of <c>TContext</c> type instantiated with default constructor.<br/>
+        /// If given step throws, other are not executed.<br/>
+        /// Scenario name is specified in parameter list.<br/>
         /// Step name is determined on corresponding action name.<br/>
         /// Example usage:
         /// <code>
         /// [Test]
         /// public void Successful_login()
         /// {
-        ///     _bddRunner.RunScenario&lt;LoginContext&gt;("My successful login", "Ticket-1",
+        ///     Runner.RunScenario&lt;LoginContext&gt;("My successful login", "Ticket-1",
         ///         Given_user_is_about_to_login,
         ///         Given_user_entered_valid_login,
         ///         Given_user_entered_valid_password,
@@ -153,27 +163,31 @@ namespace LightBDD
         ///         Then_login_is_successful,
         ///         Then_welcome_message_is_returned_containing_user_name);
         /// }
+        /// </code>
+        /// Expected step signature:
+        /// <code>
+        /// void Given_user_is_about_to_login(LoginContext context) { /* ... */ }
         /// </code>
         /// </summary>
         /// <typeparam name="TContext">Type of context that would be shared between all steps.</typeparam>
         /// <param name="scenarioName">Scenario name.</param>
         /// <param name="label">Label associated with this scenario.</param>
         /// <param name="steps">List of steps to execute in order.</param>
-        [Obsolete("This method is obsolete and would be deleted in next release. Please use NewScenario(scenarioName).WithLabel(label).Execute(steps) instead.")]
+        [Obsolete("This method is obsolete and would be deleted in next release. Please use NewScenario(scenarioName).WithLabel(label).WithContext<TContext>().Run(steps) instead.")]
         public void RunScenario<TContext>(string scenarioName, string label, params Action<TContext>[] steps) where TContext : new()
         {
             NewScenario(scenarioName)
                 .WithLabel(label)
                 .WithContext<TContext>()
-                .RunSimpleSteps(steps);
+                .Run(steps);
         }
 
         /// <summary>
         /// Runs test scenario by executing given steps in order, where all steps share given <c>context</c> instance of <c>TContext</c> type.
-        /// If given step throws, other are not executed.
-        /// Scenario name is determined on the method name in which RunScenario() method was called.<br/>
-        /// Scenario labels are determined on [Label] attributes applied on method in which RunScenario() method was called.<br/>
-        /// Please note that test project has to be compiled in DEBUG mode (assembly has [Debuggable(true, true)] attribute), or calling method has to have [MethodImpl(MethodImplOptions.NoInlining)] attribute in order to properly determine scenario name.
+        /// If given step throws, other are not executed.<br/>
+        /// Scenario name is determined on the method name in which <c>RunScenario()</c> method was called.<br/>
+        /// Scenario label is determined on <c>[Label]</c> attribute applied on method in which <c>RunScenario()</c> method was called.<br/>
+        /// Please note that test project has to be compiled in DEBUG mode (assembly has <c>[assembly:Debuggable(true, true)]</c> attribute), or calling method has to have <c>[MethodImpl(MethodImplOptions.NoInlining)]</c> attribute in order to properly determine scenario name.<br/>
         /// Step name is determined on corresponding action name.<br/>
         /// Example usage:
         /// <code>
@@ -181,7 +195,7 @@ namespace LightBDD
         /// [Label("Ticket-1")]
         /// public void Successful_login()
         /// {
-        ///     _bddRunner.RunScenario(new LoginContext(),
+        ///     Runner.RunScenario(new LoginContext(),
         ///         Given_user_is_about_to_login,
         ///         Given_user_entered_valid_login,
         ///         Given_user_entered_valid_password,
@@ -189,6 +203,10 @@ namespace LightBDD
         ///         Then_login_is_successful,
         ///         Then_welcome_message_is_returned_containing_user_name);
         /// }
+        /// </code>
+        /// Expected step signature:
+        /// <code>
+        /// void Given_user_is_about_to_login(LoginContext context) { /* ... */ }
         /// </code>
         /// </summary>
         /// <typeparam name="TContext">Type of context that would be shared between all steps.</typeparam>
@@ -199,20 +217,20 @@ namespace LightBDD
         {
             NewScenario(GetScenarioMethod())
                 .WithContext(context)
-                .RunSimpleSteps(steps);
+                .Run(steps);
         }
 
         /// <summary>
-        /// Runs test scenario by executing given steps in order, where all steps share given <c>context</c> instance of <c>TContext</c> type.
-        /// If given step throws, other are not executed.
-        /// Scenario name is specified in parameter list.
+        /// Runs test scenario by executing given steps in order, where all steps share given <c>context</c> instance of <c>TContext</c> type.<br/>
+        /// If given step throws, other are not executed.<br/>
+        /// Scenario name is specified in parameter list.<br/>
         /// Step name is determined on corresponding action name.<br/>
         /// Example usage:
         /// <code>
         /// [Test]
         /// public void Successful_login()
         /// {
-        ///     _bddRunner.RunScenario(new LoginContext(), "My successful login",
+        ///     Runner.RunScenario(new LoginContext(), "My successful login",
         ///         Given_user_is_about_to_login,
         ///         Given_user_entered_valid_login,
         ///         Given_user_entered_valid_password,
@@ -221,30 +239,34 @@ namespace LightBDD
         ///         Then_welcome_message_is_returned_containing_user_name);
         /// }
         /// </code>
+        /// Expected step signature:
+        /// <code>
+        /// void Given_user_is_about_to_login(LoginContext context) { /* ... */ }
+        /// </code>
         /// </summary>
         /// <typeparam name="TContext">Type of context that would be shared between all steps.</typeparam>
         /// <param name="context">Context instance that would be shared between all steps.</param>
         /// <param name="scenarioName">Scenario name.</param>
         /// <param name="steps">List of steps to execute in order.</param>
-        [Obsolete("This method is obsolete and would be deleted in next release. Please use NewScenario(scenarioName).Execute(context, steps) instead.")]
+        [Obsolete("This method is obsolete and would be deleted in next release. Please use NewScenario(scenarioName).WithContext(context).Run(steps) instead.")]
         public void RunScenario<TContext>(TContext context, string scenarioName, params Action<TContext>[] steps)
         {
             NewScenario(scenarioName)
                 .WithContext(context)
-                .RunSimpleSteps(steps);
+                .Run(steps);
         }
 
         /// <summary>
-        /// Runs test scenario by executing given steps in order, where all steps share given <c>context</c> instance of <c>TContext</c> type.
-        /// If given step throws, other are not executed.
-        /// Scenario name is specified in parameter list.
+        /// Runs test scenario by executing given steps in order, where all steps share given <c>context</c> instance of <c>TContext</c> type.<br/>
+        /// If given step throws, other are not executed.<br/>
+        /// Scenario name is specified in parameter list.<br/>
         /// Step name is determined on corresponding action name.<br/>
         /// Example usage:
         /// <code>
         /// [Test]
         /// public void Successful_login()
         /// {
-        ///     _bddRunner.RunScenario(new LoginContext(), "My successful login", "Ticket-1",
+        ///     Runner.RunScenario(new LoginContext(), "My successful login", "Ticket-1",
         ///         Given_user_is_about_to_login,
         ///         Given_user_entered_valid_login,
         ///         Given_user_entered_valid_password,
@@ -252,6 +274,10 @@ namespace LightBDD
         ///         Then_login_is_successful,
         ///         Then_welcome_message_is_returned_containing_user_name);
         /// }
+        /// </code>
+        /// Expected step signature:
+        /// <code>
+        /// void Given_user_is_about_to_login(LoginContext context) { /* ... */ }
         /// </code>
         /// </summary>
         /// <typeparam name="TContext">Type of context that would be shared between all steps.</typeparam>
@@ -259,21 +285,21 @@ namespace LightBDD
         /// <param name="scenarioName">Scenario name.</param>
         /// <param name="label">Label associated with this scenario.</param>
         /// <param name="steps">List of steps to execute in order.</param>
-        [Obsolete("This method is obsolete and would be deleted in next release. Please use NewScenario(scenarioName).WithLabel(label).Execute(context, steps) instead.")]
+        [Obsolete("This method is obsolete and would be deleted in next release. Please use NewScenario(scenarioName).WithLabel(label).WithContext(context).Run(steps) instead.")]
         public void RunScenario<TContext>(TContext context, string scenarioName, string label, params Action<TContext>[] steps)
         {
             NewScenario(scenarioName)
                 .WithLabel(label)
                 .WithContext(context)
-                .RunSimpleSteps(steps);
+                .Run(steps);
         }
 
         /// <summary>
-        /// Runs test scenario by executing given steps in order.
-        /// If given step throws, other are not executed.
-        /// Scenario name is determined on the method name in which RunScenario() method was called.<br/>
-        /// Scenario labels are determined on [Label] attributes applied on method in which RunScenario() method was called.<br/>
-        /// Please note that test project has to be compiled in DEBUG mode (assembly has [Debuggable(true, true)] attribute), or calling method has to have [MethodImpl(MethodImplOptions.NoInlining)] attribute in order to properly determine scenario name.
+        /// Runs test scenario by executing given steps in order.<br/>
+        /// If given step throws, other are not executed.<br/>
+        /// Scenario name is determined on the method name in which <c>RunScenario()</c> method was called.<br/>
+        /// Scenario label is determined on <c>[Label]</c> attribute applied on method in which <c>RunScenario()</c> method was called.<br/>
+        /// Please note that test project has to be compiled in DEBUG mode (assembly has <c>[assembly:Debuggable(true, true)]</c> attribute), or calling method has to have <c>[MethodImpl(MethodImplOptions.NoInlining)]</c> attribute in order to properly determine scenario name.<br/>
         /// Step name is determined on corresponding action name.<br/>
         /// Example usage:
         /// <code>
@@ -281,7 +307,7 @@ namespace LightBDD
         /// [Label("Ticket-1")]
         /// public void Successful_login()
         /// {
-        ///     _bddRunner.RunScenario(
+        ///     Runner.RunScenario(
         ///         Given_user_is_about_to_login,
         ///         Given_user_entered_valid_login,
         ///         Given_user_entered_valid_password,
@@ -289,40 +315,114 @@ namespace LightBDD
         ///         Then_login_is_successful,
         ///         Then_welcome_message_is_returned_containing_user_name);
         /// }
+        /// </code>
+        /// Expected step signature:
+        /// <code>
+        /// void Given_user_is_about_to_login() { /* ... */ }
         /// </code>
         /// </summary>
         /// <param name="steps">List of steps to execute in order.</param>
         [MethodImpl(MethodImplOptions.NoInlining)]
         public void RunScenario(params Action[] steps)
         {
-            NewScenario(GetScenarioMethod()).RunSimpleSteps(steps);
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        public void RunFormalizedScenario(params Expression<Action<StepType>>[] steps)
-        {
-            NewScenario(GetScenarioMethod()).RunFormalizedSteps(steps);
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        public void RunFormalizedScenario<TContext>(params Expression<Action<StepType, TContext>>[] steps) where TContext : new()
-        {
-            NewScenario(GetScenarioMethod())
-                .WithContext<TContext>()
-                .RunFormalizedSteps(steps);
+            NewScenario(GetScenarioMethod()).Run(steps);
         }
 
         /// <summary>
-        /// Runs test scenario by executing given steps in order.
-        /// If given step throws, other are not executed.
-        /// Scenario name is specified in parameter list.
+        /// Runs test scenario by executing given steps in order.<br/>
+        /// If given step throws, other are not executed.<br/>
+        /// Scenario name is determined on the method name in which <c>RunScenario()</c> method was called.<br/>
+        /// Scenario label is determined on <c>[Label]</c> attribute applied on method in which <c>RunScenario()</c> method was called.<br/>
+        /// Please note that test project has to be compiled in DEBUG mode (assembly has <c>[assembly:Debuggable(true, true)]</c> attribute), or calling method has to have <c>[MethodImpl(MethodImplOptions.NoInlining)]</c> attribute in order to properly determine scenario name.<br/>
+        /// Step name is determined on lambda parameter reflecting action type keyword, corresponding action name and passed list of parameters to called method.<br/>
+        /// Please note that rules for placing parameter values in step name are as follows, where first matching rule would be used:
+        /// <list type="bullet">
+        /// <item><description>it will replace first occurrence of variable name written in capital letters (<c>void Price_is_AMOUNT_dollars(int amount)</c> => <c>Price is "27" dollars</c>)</description></item>
+        /// <item><description>it will placed after first occurrence of variable name (<c>void Product_is_in_stock(string product)</c> => <c>Product "desk" is in stock</c>)</description></item>
+        /// <item><description>it will placed at the end of step name (<c>void Product_is_in_stock(string productId)</c> => <c>Product is in stock [productId: "ABC123"]</c>)</description></item>
+        /// </list>
+        /// Example usage:
+        /// <code>
+        /// [Test]
+        /// [Label("Ticket-1")]
+        /// public void Receiving_invoice_for_products()
+        /// {
+        ///     Runner.RunScenario(
+        ///         given => Product_is_available_in_products_storage("wooden desk"),
+        ///         and => Product_is_available_in_products_storage("wooden shelf"),
+        ///         when => Customer_buys_product("wooden desk"),
+        ///         and => Customer_buys_product("wooden shelf"),
+        ///         then => Invoice_is_sent_to_customer(),
+        ///         and => Invoice_contains_product_with_price_of_AMOUNT_pounds("wooden desk", 62),
+        ///         and => Invoice_contains_product_with_price_of_AMOUNT_pounds("wooden shelf", 37));
+        /// }
+        /// </code>
+        /// Expected step signature:
+        /// <code>
+        /// void Product_is_available_in_products_storage(string product) { /* ... */ }
+        /// </code>
+        /// </summary>
+        /// <param name="steps">List of steps to execute in order.</param>
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public void RunScenario(params Expression<Action<StepType>>[] steps)
+        {
+            NewScenario(GetScenarioMethod()).Run(steps);
+        }
+
+        /// <summary>
+        /// Runs test scenario by executing given steps in order, where all steps share context of <c>TContext</c> type instantiated with default constructor.<br/>
+        /// If given step throws, other are not executed.<br/>
+        /// Scenario name is determined on the method name in which <c>RunScenario()</c> method was called.<br/>
+        /// Scenario label is determined on <c>[Label]</c> attribute applied on method in which <c>RunScenario()</c> method was called.<br/>
+        /// Please note that test project has to be compiled in DEBUG mode (assembly has <c>[assembly:Debuggable(true, true)]</c> attribute), or calling method has to have <c>[MethodImpl(MethodImplOptions.NoInlining)]</c> attribute in order to properly determine scenario name.<br/>
+        /// Step name is determined on lambda parameter reflecting action type keyword, corresponding action name and passed list of parameters to called method.<br/>
+        /// It is suggested that step methods belongs to <c>TContext</c> type, however it is not enforced.<br/>
+        /// Please note that rules for placing parameter values in step name are as follows, where first matching rule would be used:
+        /// <list type="bullet">
+        /// <item><description>it will replace first occurrence of variable name written in capital letters (<c>void Price_is_AMOUNT_dollars(int amount)</c> => <c>Price is "27" dollars</c>)</description></item>
+        /// <item><description>it will placed after first occurrence of variable name (<c>void Product_is_in_stock(string product)</c> => <c>Product "desk" is in stock</c>)</description></item>
+        /// <item><description>it will placed at the end of step name (<c>void Product_is_in_stock(string productId)</c> => <c>Product is in stock [productId: "ABC123"]</c>)</description></item>
+        /// </list>
+        /// Example usage:
+        /// <code>
+        /// [Test]
+        /// [Label("Ticket-5")]
+        /// public void Should_dispatch_product_after_payment_is_finalized()
+        /// {
+        ///     Runner.RunScenario&lt;SpeditionContext&gt;(
+        ///         (given, ctx) => ctx.There_is_an_active_customer_with_id("ABC-123"),
+        ///         (given, ctx) => ctx.Customer_has_product_in_basket("wooden shelf"),
+        ///         (given, ctx) => ctx.Customer_has_product_in_basket("wooden desk"),
+        ///         (when, ctx) => ctx.Customer_payment_has_been_finalized(),
+        ///         (then, ctx) => ctx.Product_has_been_dispatched_to_customer("wooden shelf"),
+        ///         (then, ctx) => ctx.Product_has_been_dispatched_to_customer("wooden desk"));
+        /// }
+        /// </code>
+        /// Expected step signature:
+        /// <code>
+        /// void Customer_has_product_in_basket(string product) { /* ... */ }
+        /// </code>
+        /// </summary>
+        /// <param name="steps">List of steps to execute in order.</param>
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public void RunScenario<TContext>(params Expression<Action<StepType, TContext>>[] steps) where TContext : new()
+        {
+            NewScenario(GetScenarioMethod())
+                .WithContext<TContext>()
+                .Run(steps);
+        }
+
+        /// <summary>
+        /// Runs test scenario by executing given steps in order.<br/>
+        /// If given step throws, other are not executed.<br/>
+        /// Scenario name is specified in parameter list.<br/>
         /// Step name is determined on corresponding action name.<br/>
         /// Example usage:
         /// <code>
         /// [Test]
         /// public void Successful_login()
         /// {
-        ///     _bddRunner.RunScenario("My successful login",
+        ///     Runner.RunScenario("My successful login",
         ///         Given_user_is_about_to_login,
         ///         Given_user_entered_valid_login,
         ///         Given_user_entered_valid_password,
@@ -331,26 +431,30 @@ namespace LightBDD
         ///         Then_welcome_message_is_returned_containing_user_name);
         /// }
         /// </code>
+        /// Expected step signature:
+        /// <code>
+        /// void Given_user_is_about_to_login() { /* ... */ }
+        /// </code>
         /// </summary>
         /// <param name="scenarioName">Scenario name.</param>
         /// <param name="steps">List of steps to execute in order.</param>
-        [Obsolete("This method is obsolete and would be deleted in next release. Please use NewScenario(scenarioName).Execute(steps) instead.")]
+        [Obsolete("This method is obsolete and would be deleted in next release. Please use NewScenario(scenarioName).Run(steps) instead.")]
         public void RunScenario(string scenarioName, params Action[] steps)
         {
-            NewScenario(scenarioName).RunSimpleSteps(steps);
+            NewScenario(scenarioName).Run(steps);
         }
 
         /// <summary>
-        /// Runs test scenario by executing given steps in order.
-        /// If given step throws, other are not executed.
-        /// Scenario name is specified in parameter list.
+        /// Runs test scenario by executing given steps in order.<br/>
+        /// If given step throws, other are not executed.<br/>
+        /// Scenario name is specified in parameter list.<br/>
         /// Step name is determined on corresponding action name.<br/>
         /// Example usage:
         /// <code>
         /// [Test]
         /// public void Successful_login()
         /// {
-        ///     _bddRunner.RunScenario("My successful login", "Ticket-1",
+        ///     Runner.RunScenario("My successful login", "Ticket-1",
         ///         Given_user_is_about_to_login,
         ///         Given_user_entered_valid_login,
         ///         Given_user_entered_valid_password,
@@ -358,31 +462,35 @@ namespace LightBDD
         ///         Then_login_is_successful,
         ///         Then_welcome_message_is_returned_containing_user_name);
         /// }
+        /// </code>
+        /// Expected step signature:
+        /// <code>
+        /// void Given_user_is_about_to_login() { /* ... */ }
         /// </code>
         /// </summary>
         /// <param name="scenarioName">Scenario name.</param>
         /// <param name="label">Label associated with this scenario.</param>
         /// <param name="steps">List of steps to execute in order.</param>
-        [Obsolete("This method is obsolete and would be deleted in next release. Please use NewScenario(scenarioName).WithLabel(label).Execute(steps) instead.")]
+        [Obsolete("This method is obsolete and would be deleted in next release. Please use NewScenario(scenarioName).WithLabel(label).Run(steps) instead.")]
         public void RunScenario(string scenarioName, string label, params Action[] steps)
         {
             NewScenario(scenarioName)
                 .WithLabel(label)
-                .RunSimpleSteps(steps);
+                .Run(steps);
         }
 
         /// <summary>
-        /// Starts new scenario build process, where scenario name is specified by scenarioName parameter.
-        /// Method returns scenario builder object allowing to specify optional Label and execution of scenario steps.
-        /// Build process is finished with Execute() method. Please note that scenario would not be added to result list, until Execute() method is called.
+        /// Starts new scenario build process, where scenario name is specified by <c>scenarioName</c> parameter.<br/>
+        /// Method returns scenario builder object allowing to specify optional label and execution of scenario steps.<br/>
+        /// Build process is finished with calling one of <c>Run()</c> method family. Please note that scenario would not be added to result list, until <c>Run()</c> method is called.<br/>
         /// Example usage:
         /// <code>
         /// [Test]
         /// public void Successful_login()
         /// {
-        ///     _bddRunner.NewScenario("My successful login")
+        ///     Runner.NewScenario("My successful login")
         ///         .WithLabel("Ticket-1")
-        ///         .Execute(
+        ///         .Run(
         ///             Given_user_is_about_to_login,
         ///             Given_user_entered_valid_login,
         ///             Given_user_entered_valid_password,
@@ -400,19 +508,19 @@ namespace LightBDD
         }
 
         /// <summary>
-        /// Starts new scenario build process, where scenario name is determined on the method name in which NewScenario() method was called.<br/>
-        /// Scenario labels are determined on [Label] attributes applied on method in which NewScenario() method was called.<br/>
-        /// Please note that test project has to be compiled in DEBUG mode (assembly has [Debuggable(true, true)] attribute), or calling method has to have [MethodImpl(MethodImplOptions.NoInlining)] attribute in order to properly determine scenario name.
+        /// Starts new scenario build process, where scenario name is determined on the method name in which <c>NewScenario()</c> method was called.<br/>
+        /// Scenario label is determined on <c>[Label]</c> attribute applied on method in which <c>RunScenario()</c> method was called.<br/>
+        /// Please note that test project has to be compiled in DEBUG mode (assembly has <c>[assembly:Debuggable(true, true)]</c> attribute), or calling method has to have <c>[MethodImpl(MethodImplOptions.NoInlining)]</c> attribute in order to properly determine scenario name.<br/>
         /// 
-        /// Scenario build process can be finalized later by calling one of Run*() family methods.<br/>
+        /// Scenario build process can be finalized later by calling one of <c>Run()</c> method family.<br/>
         /// Example usage:
         /// <code>
         /// [Test]
         /// [Label("Ticket-1")]
         /// public void Successful_login()
         /// {
-        ///     _bddRunner.NewScenario()
-        ///         .RunSimpleSteps(
+        ///     Runner.NewScenario()
+        ///         .Run(
         ///             Given_user_is_about_to_login,
         ///             Given_user_entered_valid_login,
         ///             Given_user_entered_valid_password,

@@ -13,9 +13,9 @@
         /// [Test]
         /// public void Successful_login()
         /// {
-        ///     _bddRunner.NewScenario("My successful login")
+        ///     Runner.NewScenario("My successful login")
         ///         .WithLabel("Ticket-1")
-        ///         .Execute(
+        ///         .Run(
         ///             Given_user_is_about_to_login,
         ///             Given_user_entered_valid_login,
         ///             Given_user_entered_valid_password,

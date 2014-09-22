@@ -7,12 +7,14 @@ namespace LightBDD.Example.Features
 As a customer
 I want to receive invoice for bought items")]
     [TestFixture]
+    [Label("Story-1")]
     public partial class Invoice_feature
     {
         [Test]
+        [Label("Ticket-1")]
         public void Receiving_invoice_for_products()
         {
-            Runner.RunFormalizedScenario(
+            Runner.RunScenario(
                 given => Product_is_available_in_products_storage("wooden desk"),
                 and => Product_is_available_in_products_storage("wooden shelf"),
                 when => Customer_buys_product("wooden desk"),
