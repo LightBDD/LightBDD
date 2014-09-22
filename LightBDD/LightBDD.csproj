@@ -58,6 +58,7 @@
     <Compile Include="Execution\IStep.cs" />
     <Compile Include="Execution\IStepsConverter.cs" />
     <Compile Include="Execution\ParameterizedStep.cs" />
+    <Compile Include="Execution\Scenario.cs" />
     <Compile Include="Execution\ScenarioBuilder.cs" />
     <Compile Include="Execution\ScenarioExecutor.cs" />
     <Compile Include="Execution\Step.cs" />

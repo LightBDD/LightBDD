@@ -6,7 +6,7 @@ namespace LightBDD.Execution
 {
     internal interface IScenarioExecutor
     {
-        void Execute(string scenarioName, string label, IEnumerable<IStep> steps);
+        void Execute(Scenario scenario, IEnumerable<IStep> steps);
         event Action<IScenarioResult> ScenarioExecuted;
     }
 }

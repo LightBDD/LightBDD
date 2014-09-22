@@ -99,7 +99,9 @@ namespace LightBDD
         [MethodImpl(MethodImplOptions.NoInlining)]
         public void RunScenario<TContext>(params Action<TContext>[] steps) where TContext : new()
         {
-            NewScenario(GetScenarioMethod()).RunSimpleSteps(steps);
+            NewScenario(GetScenarioMethod())
+                .WithContext<TContext>()
+                .RunSimpleSteps(steps);
         }
 
         /// <summary>
@@ -129,6 +131,7 @@ namespace LightBDD
         public void RunScenario<TContext>(string scenarioName, params Action<TContext>[] steps) where TContext : new()
         {
             NewScenario(scenarioName)
+                .WithContext<TContext>()
                 .RunSimpleSteps(steps);
         }
 
@@ -161,6 +164,7 @@ namespace LightBDD
         {
             NewScenario(scenarioName)
                 .WithLabel(label)
+                .WithContext<TContext>()
                 .RunSimpleSteps(steps);
         }
 
@@ -193,7 +197,9 @@ namespace LightBDD
         [MethodImpl(MethodImplOptions.NoInlining)]
         public void RunScenario<TContext>(TContext context, params Action<TContext>[] steps)
         {
-            NewScenario(GetScenarioMethod()).RunSimpleSteps(context, steps);
+            NewScenario(GetScenarioMethod())
+                .WithContext(context)
+                .RunSimpleSteps(steps);
         }
 
         /// <summary>
@@ -223,7 +229,9 @@ namespace LightBDD
         [Obsolete("This method is obsolete and would be deleted in next release. Please use NewScenario(scenarioName).Execute(context, steps) instead.")]
         public void RunScenario<TContext>(TContext context, string scenarioName, params Action<TContext>[] steps)
         {
-            NewScenario(scenarioName).RunSimpleSteps(context, steps);
+            NewScenario(scenarioName)
+                .WithContext(context)
+                .RunSimpleSteps(steps);
         }
 
         /// <summary>
@@ -256,7 +264,8 @@ namespace LightBDD
         {
             NewScenario(scenarioName)
                 .WithLabel(label)
-                .RunSimpleSteps(context, steps);
+                .WithContext(context)
+                .RunSimpleSteps(steps);
         }
 
         /// <summary>
@@ -298,7 +307,9 @@ namespace LightBDD
         [MethodImpl(MethodImplOptions.NoInlining)]
         public void RunFormalizedScenario<TContext>(params Expression<Action<StepType, TContext>>[] steps) where TContext : new()
         {
-            NewScenario(GetScenarioMethod()).RunFormalizedSteps(steps);
+            NewScenario(GetScenarioMethod())
+                .WithContext<TContext>()
+                .RunFormalizedSteps(steps);
         }
 
         /// <summary>
