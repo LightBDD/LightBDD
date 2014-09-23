@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Web.UI;
 using LightBDD.Formatters;
@@ -12,6 +14,10 @@ namespace LightBDD.Results.Formatters
     /// </summary>
     public class HtmlResultFormatter : IResultFormatter
     {
+        private class Html5Tag
+        {
+            public const string Section = "section";
+        }
         private readonly string _styles;
 
         /// <summary>
@@ -41,11 +47,85 @@ namespace LightBDD.Results.Formatters
             {
                 writer.NewLine = "";
                 WriteHeader(writer);
-                WriteFeatures(writer, features);
+                WriteExecutionSummary(writer, features);
+                WriteFeatureList(writer, features);
+                WriteFeatureDetails(writer, features);
                 WriteFooter(writer);
                 writer.Flush();
                 return Encoding.Default.GetString(memory.ToArray());
             }
+        }
+
+        private void WriteExecutionSummary(HtmlTextWriter writer, IFeatureResult[] features)
+        {
+            writer.RenderBeginTag(Html5Tag.Section);
+            WriteTag(writer, HtmlTextWriterTag.H1, null, "Execution summary");
+            WriteTag(writer, HtmlTextWriterTag.Table, "summary", () =>
+            {
+                WriteKeyValueTableRow(writer, "Test execution start time:", (features.GetTestExecutionStartTime() ?? DateTimeOffset.UtcNow).ToString("yyyy-MM-dd HH:mm:ss UTC"));
+                WriteKeyValueTableRow(writer, "Test execution time:", features.GetTestExecutionTime().FormatPretty());
+                WriteKeyValueTableRow(writer, "Number of features:", features.Length.ToString(CultureInfo.InvariantCulture));
+                WriteKeyValueTableRow(writer, "Number of scenarios:", features.SelectMany(f => f.Scenarios).Count());
+                WriteKeyValueTableRow(writer, "Passed scenarios:", features.SelectMany(f => f.Scenarios).Count(s => s.Status == ResultStatus.Passed));
+                WriteKeyValueTableRow(writer, "Ignored scenarios:", features.SelectMany(f => f.Scenarios).Count(s => s.Status == ResultStatus.Ignored));
+                WriteKeyValueTableRow(writer, "Failed scenarios:", features.SelectMany(f => f.Scenarios).Count(s => s.Status == ResultStatus.Failed), "alert");
+            });
+            writer.RenderEndTag();
+        }
+
+        private void WriteKeyValueTableRow(HtmlTextWriter writer, string key, int value, string classNameIfNotZero = null)
+        {
+            WriteKeyValueTableRow(writer, key, value.ToString(CultureInfo.InvariantCulture), value != 0 ? classNameIfNotZero : null);
+        }
+
+        private void WriteKeyValueTableRow(HtmlTextWriter writer, string key, string value, string className = null)
+        {
+            WriteTag(writer, HtmlTextWriterTag.Tr, null, () =>
+            {
+                WriteTag(writer, HtmlTextWriterTag.Th, null, key);
+                WriteTag(writer, HtmlTextWriterTag.Td, className, value);
+            });
+        }
+
+        private void WriteFeatureList(HtmlTextWriter writer, IFeatureResult[] features)
+        {
+            writer.RenderBeginTag(Html5Tag.Section);
+            WriteTag(writer, HtmlTextWriterTag.H1, null, "Feature summary");
+            WriteTag(writer, HtmlTextWriterTag.Table, "features", () =>
+            {
+                WriteTableHeaders(writer, "Feature", "Scenarios", "Passed", "Ignored", "Failed", "Duration");
+                foreach (var feature in features)
+                {
+                    WriteTag(writer, HtmlTextWriterTag.Tr, null, () =>
+                    {
+                        WriteTag(writer, HtmlTextWriterTag.Td, null, () =>
+                        {
+                            WriteTag(writer, HtmlTextWriterTag.Span, "label", feature.Label);
+                            writer.WriteEncodedText(feature.Name);
+                        });
+                        WriteTag(writer, HtmlTextWriterTag.Td, null, feature.Scenarios.Count().ToString(CultureInfo.InvariantCulture));
+                        WriteTag(writer, HtmlTextWriterTag.Td, null, feature.Scenarios.Count(s => s.Status == ResultStatus.Passed).ToString(CultureInfo.InvariantCulture));
+                        WriteTag(writer, HtmlTextWriterTag.Td, null, feature.Scenarios.Count(s => s.Status == ResultStatus.Ignored).ToString(CultureInfo.InvariantCulture));
+                        WriteNumericTagWithOptionalClass(writer, HtmlTextWriterTag.Td, "alert", feature.Scenarios.Count(s => s.Status == ResultStatus.Failed));
+                        WriteTag(writer, HtmlTextWriterTag.Td, null, feature.Scenarios.GetTestExecutionTime().FormatPretty());
+                    });
+                }
+            });
+            writer.RenderEndTag();
+        }
+
+        private void WriteNumericTagWithOptionalClass(HtmlTextWriter writer, HtmlTextWriterTag tag, string classNameIfNotZero, int value)
+        {
+            WriteTag(writer, tag, value != 0 ? classNameIfNotZero : null, value.ToString(CultureInfo.InvariantCulture));
+        }
+
+        private void WriteTableHeaders(HtmlTextWriter writer, params string[] headers)
+        {
+            WriteTag(writer, HtmlTextWriterTag.Tr, null, () =>
+            {
+                foreach (var header in headers)
+                    WriteTag(writer, HtmlTextWriterTag.Th, null, header);
+            });
         }
 
         private void WriteFooter(HtmlTextWriter writer)
@@ -72,10 +152,13 @@ namespace LightBDD.Results.Formatters
             writer.RenderBeginTag(HtmlTextWriterTag.Body);
         }
 
-        private void WriteFeatures(HtmlTextWriter writer, IEnumerable<IFeatureResult> features)
+        private void WriteFeatureDetails(HtmlTextWriter writer, IEnumerable<IFeatureResult> features)
         {
+            writer.RenderBeginTag(Html5Tag.Section);
+            WriteTag(writer, HtmlTextWriterTag.H1, null, "Feature details");
             foreach (var feature in features)
                 WriteFeature(writer, feature);
+            writer.RenderEndTag();
         }
 
         private void WriteFeature(HtmlTextWriter writer, IFeatureResult feature)
@@ -136,7 +219,8 @@ namespace LightBDD.Results.Formatters
 
         private void WriteTag(HtmlTextWriter writer, HtmlTextWriterTag tag, string className, Action contentRenderer)
         {
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, className);
+            if (className != null)
+                writer.AddAttribute(HtmlTextWriterAttribute.Class, className);
             writer.RenderBeginTag(tag);
             contentRenderer();
             writer.RenderEndTag();

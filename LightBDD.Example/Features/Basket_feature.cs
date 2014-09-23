@@ -25,7 +25,7 @@ I want to add products to basket")]
         /// This test presents how LightBDD treats tests with Inconclusive / Ignore asserts
         /// </summary>
         [Test]
-        [Label("Ticket-6")]
+        [Label("Ticket-7")]
         public void Successful_addition()
         {
             Runner.RunScenario(

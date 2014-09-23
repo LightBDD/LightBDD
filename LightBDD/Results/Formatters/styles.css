@@ -17,3 +17,8 @@
 .details{margin-top: 0.5em;font-style: italic;color: red;white-space: pre-wrap;font-size: x-small;}
 .step{margin-left: 1em;}
 .duration{color: #0000cd;font-size: smaller;padding-left: 1em;font-family: monospace;vertical-align: middle;}
+th{ text-align: right;vertical-align: middle;}
+td{ text-align: left;vertical-align: middle;}
+table,th,td{ font-size: medium;}
+table.features td{ text-align: right;}
+td.alert{ color: red;font-weight: bold;}
