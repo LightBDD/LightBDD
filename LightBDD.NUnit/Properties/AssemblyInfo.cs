@@ -8,4 +8,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("LightBDD.NUnit")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+[assembly: ComVisible(false)]
 [assembly: Guid("a2a3492d-cfc5-4fb3-b57c-a8d30a2cf60b")]

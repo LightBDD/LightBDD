@@ -19,7 +19,6 @@ namespace LightBDD.Results.Formatters
 		/// <param name="features">Features to format.</param>
 		public string Format(params IFeatureResult[] features)
 		{
-
 			using (var memory = new MemoryStream())
 			using (var stream = new StreamWriter(memory))
 			{
