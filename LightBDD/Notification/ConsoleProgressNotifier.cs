@@ -1,4 +1,5 @@
 using System;
+using LightBDD.Formatters;
 using LightBDD.Results;
 
 namespace LightBDD.Notification
@@ -38,7 +39,7 @@ namespace LightBDD.Notification
         /// <param name="totalStepCount">Total step count</param>
         public void NotifyStepFinished(IStepResult stepResult, int totalStepCount)
         {
-            Console.WriteLine("  STEP {0}/{1}: {2} after {3}", stepResult.Number, totalStepCount, stepResult.Status, stepResult.ExecutionTime);
+            Console.WriteLine("  STEP {0}/{1}: {2} after {3}", stepResult.Number, totalStepCount, stepResult.Status, stepResult.ExecutionTime.FormatPretty());
         }
 
         /// <summary>
@@ -59,7 +60,7 @@ namespace LightBDD.Notification
         /// </summary>
         public void NotifyScenarioFinished(IScenarioResult scenarioResult)
         {
-            Console.WriteLine("  SCENARIO RESULT: {0} after {1}", scenarioResult.Status, scenarioResult.ExecutionTime);
+            Console.WriteLine("  SCENARIO RESULT: {0} after {1}", scenarioResult.Status, scenarioResult.ExecutionTime.FormatPretty());
             if (!string.IsNullOrWhiteSpace(scenarioResult.StatusDetails))
                 Console.WriteLine("    {0}", scenarioResult.StatusDetails.Replace("\n", "\n    "));
         }

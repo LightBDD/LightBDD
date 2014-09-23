@@ -66,6 +66,7 @@
     <Compile Include="Execution\Step.cs" />
     <Compile Include="Execution\StepsConverter.cs" />
     <Compile Include="FeatureDescriptionAttribute.cs" />
+    <Compile Include="Formatters\TimeFormatter.cs" />
     <Compile Include="LabelAttribute.cs" />
     <Compile Include="Notification\ConsoleProgressNotifier.cs" />
     <Compile Include="Notification\IProgressNotifier.cs" />

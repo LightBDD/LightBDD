@@ -6,6 +6,7 @@ using LightBDD.Results;
 using LightBDD.Results.Implementation;
 using NUnit.Framework;
 using Rhino.Mocks;
+using LightBDD.Formatters;
 
 namespace LightBDD.UnitTests.Notification
 {
@@ -116,7 +117,7 @@ namespace LightBDD.UnitTests.Notification
         public void NotifyScenarioFinished_should_print_scenario_result(ResultStatus status)
         {
             var executionTime = new TimeSpan(0, 0, 27);
-            string expectedText = string.Format("  SCENARIO RESULT: {0} after {1}{2}", status, executionTime, Environment.NewLine);
+            string expectedText = string.Format("  SCENARIO RESULT: {0} after {1}{2}", status, executionTime.FormatPretty(), Environment.NewLine);
 
             var result = MockRepository.GenerateMock<IScenarioResult>();
             result.Stub(r => r.Status).Return(status);
@@ -136,7 +137,7 @@ namespace LightBDD.UnitTests.Notification
             var executionTime = new TimeSpan(0, 0, 27);
             string details = @"expected: A
 got: B";
-            string expectedText = string.Format("  SCENARIO RESULT: {0} after {1}{2}    expected: A{2}    got: B{2}", status, executionTime, Environment.NewLine);
+            string expectedText = string.Format("  SCENARIO RESULT: {0} after {1}{2}    expected: A{2}    got: B{2}", status, executionTime.FormatPretty(), Environment.NewLine);
 
             var result = MockRepository.GenerateMock<IScenarioResult>();
             result.Stub(r => r.Status).Return(status);
@@ -168,7 +169,7 @@ got: B";
 
             var resultStatus = ResultStatus.Failed;
             var executionTime = new TimeSpan(0, 0, 0, 0, 127);
-            string expectedText = string.Format("  STEP {0}/{1}: {2} after {3}{4}", stepNumber, totalStepCount, resultStatus, executionTime, Environment.NewLine);
+            string expectedText = string.Format("  STEP {0}/{1}: {2} after {3}{4}", stepNumber, totalStepCount, resultStatus, executionTime.FormatPretty(), Environment.NewLine);
 
             _subject.NotifyStepFinished(new StepResult(stepNumber, stepName, resultStatus).SetExecutionTime(executionTime), totalStepCount);
             Assert.That(_buffer.ToString(), Is.EqualTo(expectedText));
