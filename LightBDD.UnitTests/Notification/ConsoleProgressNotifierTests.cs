@@ -3,7 +3,9 @@ using System.IO;
 using System.Text;
 using LightBDD.Notification;
 using LightBDD.Results;
+using LightBDD.Results.Implementation;
 using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace LightBDD.UnitTests.Notification
 {
@@ -113,9 +115,14 @@ namespace LightBDD.UnitTests.Notification
         [TestCase(ResultStatus.NotRun)]
         public void NotifyScenarioFinished_should_print_scenario_result(ResultStatus status)
         {
-            string expectedText = string.Format("  SCENARIO RESULT: {0}{1}", status, Environment.NewLine);
+            var executionTime = new TimeSpan(0, 0, 27);
+            string expectedText = string.Format("  SCENARIO RESULT: {0} after {1}{2}", status, executionTime, Environment.NewLine);
 
-            _subject.NotifyScenarioFinished(status);
+            var result = MockRepository.GenerateMock<IScenarioResult>();
+            result.Stub(r => r.Status).Return(status);
+            result.Stub(r => r.ExecutionTime).Return(executionTime);
+
+            _subject.NotifyScenarioFinished(result);
             Assert.That(_buffer.ToString(), Is.EqualTo(expectedText));
         }
 
@@ -126,11 +133,17 @@ namespace LightBDD.UnitTests.Notification
         [TestCase(ResultStatus.NotRun)]
         public void NotifyScenarioFinished_should_print_scenario_result_with_provided_details(ResultStatus status)
         {
+            var executionTime = new TimeSpan(0, 0, 27);
             string details = @"expected: A
 got: B";
-            string expectedText = string.Format("  SCENARIO RESULT: {0}{1}    expected: A{1}    got: B{1}", status, Environment.NewLine);
+            string expectedText = string.Format("  SCENARIO RESULT: {0} after {1}{2}    expected: A{2}    got: B{2}", status, executionTime, Environment.NewLine);
 
-            _subject.NotifyScenarioFinished(status, details);
+            var result = MockRepository.GenerateMock<IScenarioResult>();
+            result.Stub(r => r.Status).Return(status);
+            result.Stub(r => r.ExecutionTime).Return(executionTime);
+            result.Stub(r => r.StatusDetails).Return(details);
+
+            _subject.NotifyScenarioFinished(result);
             Assert.That(_buffer.ToString(), Is.EqualTo(expectedText));
         }
 
@@ -143,6 +156,21 @@ got: B";
             string expectedText = string.Format("  STEP {0}/{1}: {2}{3}", stepNumber, totalStepCount, stepName, Environment.NewLine);
 
             _subject.NotifyStepStart(stepName, stepNumber, totalStepCount);
+            Assert.That(_buffer.ToString(), Is.EqualTo(expectedText));
+        }
+
+        [Test]
+        public void NotifyStepFinished_should_print_step_details()
+        {
+            string stepName = "scenario name";
+            var stepNumber = 12;
+            var totalStepCount = 19;
+
+            var resultStatus = ResultStatus.Failed;
+            var executionTime = new TimeSpan(0, 0, 0, 0, 127);
+            string expectedText = string.Format("  STEP {0}/{1}: {2} after {3}{4}", stepNumber, totalStepCount, resultStatus, executionTime, Environment.NewLine);
+
+            _subject.NotifyStepFinished(new StepResult(stepNumber, stepName, resultStatus).SetExecutionTime(executionTime), totalStepCount);
             Assert.That(_buffer.ToString(), Is.EqualTo(expectedText));
         }
     }

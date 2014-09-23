@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using LightBDD.Execution;
 using LightBDD.Notification;
 using LightBDD.Results;
@@ -86,6 +87,60 @@ namespace LightBDD.UnitTests.Execution
             step.Invoke(_progressNotifier, 100);
             Assert.That(step.GetResult().Status, Is.EqualTo(ResultStatus.Passed));
             Assert.That(step.GetResult().StatusDetails, Is.Null);
+        }
+
+        [Test]
+        public void Should_measure_step_execution_time()
+        {
+            var step = new Step(Step_one, "step", 1, Map);
+            var watch = new Stopwatch();
+            var startTime = DateTimeOffset.UtcNow;
+            watch.Start();
+            step.Invoke(_progressNotifier, 100);
+            watch.Stop();
+            Assert.That(step.GetResult().ExecutionTime, Is.LessThanOrEqualTo(watch.Elapsed));
+            Assert.That(step.GetResult().ExecutionStart, Is.GreaterThanOrEqualTo(startTime).And.LessThan(startTime.Add(watch.Elapsed)));
+        }
+
+        [Test]
+        public void Should_measure_step_execution_time_for_failed_steps()
+        {
+            var step = new Step(Step_throwing_exception, "step", 1, Map);
+            var watch = new Stopwatch();
+            var startTime = DateTimeOffset.UtcNow;
+            watch.Start();
+
+            try { step.Invoke(_progressNotifier, 100); }
+            catch { }
+
+            watch.Stop();
+            Assert.That(step.GetResult().ExecutionTime, Is.LessThanOrEqualTo(watch.Elapsed));
+            Assert.That(step.GetResult().ExecutionStart, Is.GreaterThanOrEqualTo(startTime).And.LessThan(startTime.Add(watch.Elapsed)));
+        }
+
+        [Test]
+        public void Should_notify_step_finish()
+        {
+            const string stepName = "step";
+            const int stepNumber = 1;
+            const int totalStepCount = 100;
+
+            var step = new Step(Step_one, stepName, stepNumber, Map);
+            step.Invoke(_progressNotifier, totalStepCount);
+            _progressNotifier.AssertWasCalled(n => n.NotifyStepFinished(step.GetResult(), totalStepCount));
+        }
+
+        [Test]
+        public void Should_notify_step_finish_for_failed_steps()
+        {
+            const string stepName = "step";
+            const int stepNumber = 1;
+            const int totalStepCount = 100;
+
+            var step = new Step(Step_throwing_exception, stepName, stepNumber, Map);
+            try { step.Invoke(_progressNotifier, 100); }
+            catch { }
+            _progressNotifier.AssertWasCalled(n => n.NotifyStepFinished(step.GetResult(), totalStepCount));
         }
     }
 }

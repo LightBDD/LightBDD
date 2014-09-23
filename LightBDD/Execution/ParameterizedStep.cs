@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using LightBDD.Notification;
 using LightBDD.Results;
@@ -37,7 +38,7 @@ namespace LightBDD.Execution
                 _result = new StepResult(_stepNumber, stepName, ResultStatus.NotRun);
 
                 progressNotifier.NotifyStepStart(stepName, _stepNumber, totalCount);
-                _action(StepType.Default, _context, paramValues);
+                MeasuredInvoke(paramValues);
 
                 _result.SetStatus(ResultStatus.Passed);
             }
@@ -45,6 +46,25 @@ namespace LightBDD.Execution
             {
                 _result.SetStatus(_mapping(e.GetType()), e.Message);
                 throw;
+            }
+            finally
+            {
+                progressNotifier.NotifyStepFinished(_result, totalCount);
+            }
+        }
+
+        private void MeasuredInvoke(object[] paramValues)
+        {
+            var watch = new Stopwatch();
+            try
+            {
+                _result.SetExecutionStart(DateTimeOffset.UtcNow);
+                watch.Start();
+                _action(StepType.Default, _context, paramValues);
+            }
+            finally
+            {
+                _result.SetExecutionTime(watch.Elapsed);
             }
         }
 

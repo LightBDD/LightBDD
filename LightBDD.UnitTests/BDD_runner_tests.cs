@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using LightBDD.Notification;
@@ -140,7 +141,41 @@ namespace LightBDD.UnitTests
             Assert.That(result.StatusDetails, Is.EqualTo(expectedStatusDetails));
         }
 
+        [Test]
+        public void Should_capture_scenario_execution_time()
+        {
+            var watch = new Stopwatch();
+            var startTime = DateTimeOffset.UtcNow;
+            watch.Start();
 
+            _subject.RunScenario(Step_one, Step_two);
+            var result = _subject.Result.Scenarios.Single();
+
+            watch.Stop();
+            Assert.That(result.ExecutionTime, Is.LessThanOrEqualTo(watch.Elapsed));
+            Assert.That(result.ExecutionStart, Is.GreaterThanOrEqualTo(startTime).And.LessThan(startTime.Add(watch.Elapsed)));
+        }
+
+        [Test]
+        public void Should_capture_scenario_execution_time_for_failed_scenarios()
+        {
+            var watch = new Stopwatch();
+            var startTime = DateTimeOffset.UtcNow;
+            watch.Start();
+
+            try
+            {
+                _subject.RunScenario(Step_one, Step_with_ignore_assertion, Step_two);
+            }
+            catch
+            {
+            }
+            var result = _subject.Result.Scenarios.Single();
+
+            watch.Stop();
+            Assert.That(result.ExecutionTime, Is.LessThanOrEqualTo(watch.Elapsed));
+            Assert.That(result.ExecutionStart, Is.GreaterThanOrEqualTo(startTime).And.LessThan(startTime.Add(watch.Elapsed)));
+        }
 
         [Test]
         public void Should_display_feature_name()
@@ -152,14 +187,14 @@ namespace LightBDD.UnitTests
         public void Should_display_scenario_failure()
         {
             var ex = Assert.Throws<InvalidOperationException>(() => _subject.RunScenario(Step_throwing_exception));
-            _progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(ResultStatus.Failed, ex.Message));
+            _progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(Arg<IScenarioResult>.Matches(r => r.Status == ResultStatus.Failed && r.StatusDetails == ex.Message)));
         }
 
         [Test]
         public void Should_display_scenario_ignored()
         {
             var ex = Assert.Throws<IgnoreException>(() => _subject.RunScenario(Step_with_ignore_assertion));
-            _progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(ResultStatus.Ignored, ex.Message));
+            _progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(Arg<IScenarioResult>.Matches(r => r.Status == ResultStatus.Ignored && r.StatusDetails == ex.Message)));
         }
 
         [Test]
@@ -174,7 +209,7 @@ namespace LightBDD.UnitTests
         public void Should_display_scenario_success()
         {
             _subject.RunScenario(Step_one);
-            _progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(ResultStatus.Passed));
+            _progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(Arg<IScenarioResult>.Matches(r => r.Status == ResultStatus.Passed)));
         }
 
         [Test]

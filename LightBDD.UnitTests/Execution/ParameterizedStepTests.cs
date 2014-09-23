@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using LightBDD.Execution;
 using LightBDD.Notification;
 using LightBDD.Results;
@@ -180,6 +181,74 @@ namespace LightBDD.UnitTests.Execution
             Assert.That(step.GetResult().Number, Is.EqualTo(stepNumber));
             Assert.That(step.GetResult().Status, Is.EqualTo(ResultStatus.Failed));
             Assert.That(step.GetResult().StatusDetails, Is.EqualTo(ex.Message));
+        }
+
+        [Test]
+        public void Should_measure_step_execution_time()
+        {
+            var step = new ParameterizedStep<Context>(
+                _context,
+                (type, ctx, args) => ctx.Step_one((string)args[0]),
+                new Func<StepType, Context, object>[] { (type, ctx) => "abc" },
+                "Step_one {0}", 1, Map);
+
+            var watch = new Stopwatch();
+            var startTime = DateTimeOffset.UtcNow;
+            watch.Start();
+            step.Invoke(_progressNotifier, 100);
+            watch.Stop();
+            Assert.That(step.GetResult().ExecutionTime, Is.LessThanOrEqualTo(watch.Elapsed));
+            Assert.That(step.GetResult().ExecutionStart, Is.GreaterThanOrEqualTo(startTime).And.LessThan(startTime.Add(watch.Elapsed)));
+        }
+
+        [Test]
+        public void Should_measure_step_execution_time_for_steps_throwing_exception()
+        {
+            var step = new ParameterizedStep<Context>(
+                _context,
+                (type, ctx, args) => ctx.Step_with_exception((string)args[0]),
+                new Func<StepType, Context, object>[] { (type, ctx) => "abc" },
+                "Step_with_exception {0}", 1, Map);
+
+            var watch = new Stopwatch();
+            var startTime = DateTimeOffset.UtcNow;
+            watch.Start();
+            try { step.Invoke(_progressNotifier, 100); }
+            catch { }
+            watch.Stop();
+            Assert.That(step.GetResult().ExecutionTime, Is.LessThanOrEqualTo(watch.Elapsed));
+            Assert.That(step.GetResult().ExecutionStart, Is.GreaterThanOrEqualTo(startTime).And.LessThan(startTime.Add(watch.Elapsed)));
+        }
+
+        [Test]
+        public void Should_notify_step_finish()
+        {
+            const int totalStepCount = 100;
+
+            var step = new ParameterizedStep<Context>(
+                _context,
+                (type, ctx, args) => ctx.Step_one((string)args[0]),
+                new Func<StepType, Context, object>[] { (type, ctx) => "abc" },
+                "Step_one {0}", 1, Map);
+
+            step.Invoke(_progressNotifier, totalStepCount);
+            _progressNotifier.AssertWasCalled(n => n.NotifyStepFinished(step.GetResult(), totalStepCount));
+        }
+
+        [Test]
+        public void Should_notify_step_finish_for_steps_throwing_exception()
+        {
+            const int totalStepCount = 100;
+
+            var step = new ParameterizedStep<Context>(
+                _context,
+                (type, ctx, args) => ctx.Step_with_exception((string)args[0]),
+                new Func<StepType, Context, object>[] { (type, ctx) => "abc" },
+                "Step_with_exception {0}", 1, Map);
+
+            try { step.Invoke(_progressNotifier, 100); }
+            catch { }
+            _progressNotifier.AssertWasCalled(n => n.NotifyStepFinished(step.GetResult(), totalStepCount));
         }
 
         private object ThrowException()

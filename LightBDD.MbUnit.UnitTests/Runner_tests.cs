@@ -8,72 +8,72 @@ using Rhino.Mocks;
 
 namespace LightBDD.MbUnit.UnitTests
 {
-	[TestFixture]
-	[Description("desc")]
-	public class Runner_tests
-	{
-		private IProgressNotifier _progressNotifier;
-		private BDDRunner _subject;
+    [TestFixture]
+    [Description("desc")]
+    public class Runner_tests
+    {
+        private IProgressNotifier _progressNotifier;
+        private BDDRunner _subject;
 
-		#region Setup/Teardown
+        #region Setup/Teardown
 
-		[SetUp]
-		public void SetUp()
-		{
-			_progressNotifier = MockRepository.GenerateMock<IProgressNotifier>();
-			_subject = new BDDRunner(GetType(), _progressNotifier);
-		}
+        [SetUp]
+        public void SetUp()
+        {
+            _progressNotifier = MockRepository.GenerateMock<IProgressNotifier>();
+            _subject = new BDDRunner(GetType(), _progressNotifier);
+        }
 
-		#endregion
+        #endregion
 
-		public void Step_one() { }
-		public void Step_two() { }
-		public void Step_with_inconclusive_assertion() { Assert.Inconclusive("some reason"); }
+        public void Step_one() { }
+        public void Step_two() { }
+        public void Step_with_inconclusive_assertion() { Assert.Inconclusive("some reason"); }
 
-		[Test]
-		public void Should_collect_scenario_result_for_inconclusive_scenario_steps()
-		{
-			try
-			{
-				_subject.RunScenario(Step_one, Step_with_inconclusive_assertion, Step_two);
-			}
-			catch
-			{
-			}
-			const string expectedStatusDetails = "some reason";
+        [Test]
+        public void Should_collect_scenario_result_for_inconclusive_scenario_steps()
+        {
+            try
+            {
+                _subject.RunScenario(Step_one, Step_with_inconclusive_assertion, Step_two);
+            }
+            catch
+            {
+            }
+            const string expectedStatusDetails = "some reason";
 
-			var result = _subject.Result.Scenarios.Single();
-			Assert.AreEqual("Should collect scenario result for inconclusive scenario steps", result.Name);
-			Assert.AreEqual(ResultStatus.Ignored, result.Status);
+            var result = _subject.Result.Scenarios.Single();
+            Assert.AreEqual("Should collect scenario result for inconclusive scenario steps", result.Name);
+            Assert.AreEqual(ResultStatus.Ignored, result.Status);
 
-			Assert.AreEqual(3, result.Steps.Count());
-			AssertStep(result.Steps, 1, "Step one", ResultStatus.Passed);
-			AssertStep(result.Steps, 2, "Step with inconclusive assertion", ResultStatus.Ignored, expectedStatusDetails);
-			AssertStep(result.Steps, 3, "Step two", ResultStatus.NotRun);
+            Assert.AreEqual(3, result.Steps.Count());
+            AssertStep(result.Steps, 1, "Step one", ResultStatus.Passed);
+            AssertStep(result.Steps, 2, "Step with inconclusive assertion", ResultStatus.Ignored, expectedStatusDetails);
+            AssertStep(result.Steps, 3, "Step two", ResultStatus.NotRun);
 
-			Assert.AreEqual(expectedStatusDetails, result.StatusDetails);
-		}
+            Assert.AreEqual(expectedStatusDetails, result.StatusDetails);
+        }
 
-		[Test]
-		public void Should_display_feature_name_using_description()
-		{
-			_progressNotifier.AssertWasCalled(n => n.NotifyFeatureStart("Runner tests", "desc", null));
-		}
+        [Test]
+        public void Should_display_feature_name_using_description()
+        {
+            _progressNotifier.AssertWasCalled(n => n.NotifyFeatureStart("Runner tests", "desc", null));
+        }
 
-		[Test]
-		public void Should_display_scenario_inconclusive()
-		{
-			var ex = Assert.Throws<TestInconclusiveException>(() => _subject.RunScenario(Step_with_inconclusive_assertion));
-			_progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(ResultStatus.Ignored, ex.Message));
-		}
+        [Test]
+        public void Should_display_scenario_inconclusive()
+        {
+            var ex = Assert.Throws<TestInconclusiveException>(() => _subject.RunScenario(Step_with_inconclusive_assertion));
+            _progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(Arg<IScenarioResult>.Matches(r => r.Status == ResultStatus.Ignored && r.StatusDetails == ex.Message)));
+        }
 
-		private void AssertStep(IEnumerable<IStepResult> steps, int number, string name, ResultStatus status, string statusDetails = null)
-		{
-			var result = steps.ToArray()[number - 1];
-			Assert.AreEqual(name, result.Name);
-			Assert.AreEqual(number, result.Number);
-			Assert.AreEqual(status, result.Status);
-			Assert.AreEqual(statusDetails, result.StatusDetails);
-		}
-	}
+        private void AssertStep(IEnumerable<IStepResult> steps, int number, string name, ResultStatus status, string statusDetails = null)
+        {
+            var result = steps.ToArray()[number - 1];
+            Assert.AreEqual(name, result.Name);
+            Assert.AreEqual(number, result.Number);
+            Assert.AreEqual(status, result.Status);
+            Assert.AreEqual(statusDetails, result.StatusDetails);
+        }
+    }
 }

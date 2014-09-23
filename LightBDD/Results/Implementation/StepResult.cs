@@ -1,3 +1,5 @@
+using System;
+
 namespace LightBDD.Results.Implementation
 {
     internal class StepResult : IStepResult
@@ -15,14 +17,29 @@ namespace LightBDD.Results.Implementation
         public string Name { get; private set; }
         public ResultStatus Status { get; private set; }
         public string StatusDetails { get; private set; }
+        public TimeSpan ExecutionTime { get; private set; }
+        public DateTimeOffset ExecutionStart { get; private set; }
         public int Number { get; private set; }
 
         #endregion
 
-        public void SetStatus(ResultStatus status, string statusDetails = null)
+        public StepResult SetExecutionTime(TimeSpan executionTime)
+        {
+            ExecutionTime = executionTime;
+            return this;
+        }
+
+        public StepResult SetExecutionStart(DateTimeOffset executionStart)
+        {
+            ExecutionStart = executionStart;
+            return this;
+        }
+
+        public StepResult SetStatus(ResultStatus status, string statusDetails = null)
         {
             Status = status;
             StatusDetails = statusDetails;
+            return this;
         }
 
         public override bool Equals(object obj)

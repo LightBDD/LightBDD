@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using LightBDD.Notification;
 using LightBDD.Results;
@@ -22,17 +23,25 @@ namespace LightBDD.Execution
             _progressNotifier.NotifyScenarioStart(scenario.Name, scenario.Label);
             var stepsToExecute = steps.ToArray();
 
+            var watch = new Stopwatch();
+            var scenarioStartTime = DateTimeOffset.UtcNow;
             try
             {
+                watch.Start();
                 foreach (var step in stepsToExecute)
                     step.Invoke(_progressNotifier, stepsToExecute.Length);
             }
             finally
             {
-                var result = new ScenarioResult(scenario.Name, stepsToExecute.Select(s => s.GetResult()), scenario.Label);
+                watch.Stop();
+                var result = new ScenarioResult(scenario.Name, stepsToExecute.Select(s => s.GetResult()), scenario.Label)
+                .SetExecutionStart(scenarioStartTime)
+                .SetExecutionTime(watch.Elapsed);
+
                 if (ScenarioExecuted != null)
                     ScenarioExecuted.Invoke(result);
-                _progressNotifier.NotifyScenarioFinished(result.Status, result.StatusDetails);
+
+                _progressNotifier.NotifyScenarioFinished(result);
             }
         }
     }
