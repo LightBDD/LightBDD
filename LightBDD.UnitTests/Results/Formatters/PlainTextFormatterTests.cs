@@ -33,7 +33,8 @@ namespace LightBDD.UnitTests.Results.Formatters
             result.AddScenario(new ScenarioResult("name2", new[]
             {
                 new StepResult(1, "step3", ResultStatus.Passed).SetExecutionTime(new TimeSpan(0, 0, 0, 2, 107)), 
-                new StepResult(2, "step4", ResultStatus.Failed, string.Format("  Expected: True{0}  But was: False", Environment.NewLine)).SetExecutionTime(new TimeSpan(0, 0, 0, 0, 50))
+                new StepResult(2, "step4", ResultStatus.Failed, string.Format("  Expected: True{0}  But was: False", Environment.NewLine)).SetExecutionTime(new TimeSpan(0, 0, 0, 0, 50)),
+                new StepResult(3, "step5", ResultStatus.NotRun)
             }, null).SetExecutionTime(new TimeSpan(0, 0, 0, 2, 157)));
             var text = _subject.Format(result);
             const string expectedText = @"Feature: [Label 1] My feature
@@ -49,6 +50,7 @@ namespace LightBDD.UnitTests.Results.Formatters
 	Scenario: name2 - Failed (2s 157ms)
 		Step 1: step3 - Passed (2s 107ms)
 		Step 2: step4 - Failed (50ms)
+		Step 3: step5 - NotRun
 
 		Details: Expected: True
 			  But was: False

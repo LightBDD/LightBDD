@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using LightBDD.Formatters;
 using LightBDD.Notification;
 using LightBDD.Results;
 using LightBDD.Results.Implementation;
 using NUnit.Framework;
 using Rhino.Mocks;
-using LightBDD.Formatters;
 
 namespace LightBDD.UnitTests.Notification
 {

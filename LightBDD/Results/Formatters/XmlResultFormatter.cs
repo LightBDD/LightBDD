@@ -63,8 +63,10 @@ namespace LightBDD.Results.Formatters
             if (!string.IsNullOrWhiteSpace(scenario.Label))
                 objects.Add(new XAttribute("Label", scenario.Label));
 
-            objects.Add(new XAttribute("ExecutionStart", scenario.ExecutionStart));
-            objects.Add(new XAttribute("ExecutionTime", scenario.ExecutionTime));
+            if (scenario.ExecutionStart != null)
+                objects.Add(new XAttribute("ExecutionStart", scenario.ExecutionStart));
+            if (scenario.ExecutionTime != null)
+                objects.Add(new XAttribute("ExecutionTime", scenario.ExecutionTime));
             objects.Add(scenario.Steps.Select(ToXElement).Cast<object>().ToArray());
 
             if (!string.IsNullOrWhiteSpace(scenario.StatusDetails))
@@ -75,12 +77,17 @@ namespace LightBDD.Results.Formatters
 
         private XElement ToXElement(IStepResult step)
         {
-            return new XElement("Step",
-                new XAttribute("Status", step.Status.ToString()),
-                new XAttribute("Number", step.Number),
-                new XAttribute("Name", step.Name),
-                new XAttribute("ExecutionStart", step.ExecutionStart),
-                new XAttribute("ExecutionTime", step.ExecutionTime));
+            var objects = new List<object>
+                {
+                    new XAttribute("Status", step.Status.ToString()),
+                    new XAttribute("Number", step.Number),
+                    new XAttribute("Name", step.Name)
+                };
+            if (step.ExecutionStart != null)
+                objects.Add(new XAttribute("ExecutionStart", step.ExecutionStart));
+            if (step.ExecutionTime != null)
+                objects.Add(new XAttribute("ExecutionTime", step.ExecutionTime));
+            return new XElement("Step", objects);
         }
     }
 }

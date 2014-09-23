@@ -33,7 +33,8 @@ namespace LightBDD.UnitTests.Results.Formatters
             result.AddScenario(new ScenarioResult("name2", new[]
             {
                 new StepResult(1, "step3", ResultStatus.Passed).SetExecutionTime(TimeSpan.FromMilliseconds(150)).SetExecutionStart(_startDate.AddSeconds(2)), 
-                new StepResult(2, "step4", ResultStatus.Failed,"  Expected: True\n  But was: False").SetExecutionTime(TimeSpan.FromMilliseconds(250)).SetExecutionStart(_startDate.AddSeconds(3))
+                new StepResult(2, "step4", ResultStatus.Failed,"  Expected: True\n  But was: False").SetExecutionTime(TimeSpan.FromMilliseconds(250)).SetExecutionStart(_startDate.AddSeconds(3)),
+                new StepResult(3, "step5", ResultStatus.NotRun)
             }, null).SetExecutionTime(TimeSpan.FromMilliseconds(400)).SetExecutionStart(_startDate.AddSeconds(1)));
             var text = _subject.Format(result);
             Console.WriteLine(text);
@@ -51,6 +52,7 @@ long description</Description>
     <Scenario Status=""Failed"" Name=""name2"" ExecutionStart=""2014-09-23T19:21:58.055Z"" ExecutionTime=""PT0.4S"">
       <Step Status=""Passed"" Number=""1"" Name=""step3"" ExecutionStart=""2014-09-23T19:21:59.055Z"" ExecutionTime=""PT0.15S"" />
       <Step Status=""Failed"" Number=""2"" Name=""step4"" ExecutionStart=""2014-09-23T19:22:00.055Z"" ExecutionTime=""PT0.25S"" />
+      <Step Status=""NotRun"" Number=""3"" Name=""step5"" />
       <StatusDetails>  Expected: True
   But was: False</StatusDetails>
     </Scenario>

@@ -20,8 +20,8 @@ namespace LightBDD.Results.Implementation
         public string Name { get; private set; }
         public ResultStatus Status { get; private set; }
         public IEnumerable<IStepResult> Steps { get; private set; }
-        public TimeSpan ExecutionTime { get; private set; }
-        public DateTimeOffset ExecutionStart { get; private set; }
+        public TimeSpan? ExecutionTime { get; private set; }
+        public DateTimeOffset? ExecutionStart { get; private set; }
         public string StatusDetails { get; private set; }
         public string Label { get; private set; }
 

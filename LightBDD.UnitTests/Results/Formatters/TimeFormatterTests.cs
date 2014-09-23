@@ -1,7 +1,6 @@
 ﻿using System;
 using LightBDD.Formatters;
 using NUnit.Framework;
-using LightBDD.Results.Formatters;
 
 namespace LightBDD.UnitTests.Results.Formatters
 {

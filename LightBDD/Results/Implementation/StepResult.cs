@@ -17,8 +17,8 @@ namespace LightBDD.Results.Implementation
         public string Name { get; private set; }
         public ResultStatus Status { get; private set; }
         public string StatusDetails { get; private set; }
-        public TimeSpan ExecutionTime { get; private set; }
-        public DateTimeOffset ExecutionStart { get; private set; }
+        public TimeSpan? ExecutionTime { get; private set; }
+        public DateTimeOffset? ExecutionStart { get; private set; }
         public int Number { get; private set; }
 
         #endregion

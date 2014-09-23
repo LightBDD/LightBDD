@@ -14,6 +14,12 @@ namespace LightBDD.Formatters
             new Tuple<string, int, Func<TimeSpan, int>>("s", 2, ts => ts.Seconds),
             new Tuple<string, int, Func<TimeSpan, int>>("ms", 3, ts => ts.Milliseconds)
         };
+
+        public static string FormatPretty(this TimeSpan? ts)
+        {
+            return ts.HasValue ? ts.Value.FormatPretty() : string.Empty;
+        }
+
         public static string FormatPretty(this TimeSpan ts)
         {
             if (ts.Ticks == 0)

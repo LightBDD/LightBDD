@@ -198,7 +198,7 @@ namespace LightBDD.UnitTests.Execution
             step.Invoke(_progressNotifier, 100);
             watch.Stop();
             Assert.That(step.GetResult().ExecutionTime, Is.LessThanOrEqualTo(watch.Elapsed));
-            Assert.That(step.GetResult().ExecutionStart, Is.GreaterThanOrEqualTo(startTime).And.LessThanOrEqualTo(startTime.Add(watch.Elapsed)));
+            Assert.That(step.GetResult().ExecutionStart, Is.GreaterThanOrEqualTo(startTime).And.LessThanOrEqualTo(startTime.AddSeconds(1)));
         }
 
         [Test]
@@ -217,7 +217,7 @@ namespace LightBDD.UnitTests.Execution
             catch { }
             watch.Stop();
             Assert.That(step.GetResult().ExecutionTime, Is.LessThanOrEqualTo(watch.Elapsed));
-            Assert.That(step.GetResult().ExecutionStart, Is.GreaterThanOrEqualTo(startTime).And.LessThanOrEqualTo(startTime.Add(watch.Elapsed)));
+            Assert.That(step.GetResult().ExecutionStart, Is.GreaterThanOrEqualTo(startTime).And.LessThanOrEqualTo(startTime.AddSeconds(1)));
         }
 
         [Test]

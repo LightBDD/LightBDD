@@ -60,12 +60,18 @@ namespace LightBDD.Results.Formatters
             builder.Append("\tScenario: ");
             if (!string.IsNullOrWhiteSpace(scenario.Label))
                 builder.Append("[").Append(scenario.Label).Append("] ");
-            builder.Append(scenario.Name).Append(" - ").Append(scenario.Status).Append(" (").Append(scenario.ExecutionTime.FormatPretty()).Append(")").AppendLine();
+            builder.Append(scenario.Name).Append(" - ").Append(scenario.Status);
+            if (scenario.ExecutionTime != null)
+                builder.Append(" (").Append(scenario.ExecutionTime.FormatPretty()).Append(")");
+            builder.AppendLine();
             foreach (var step in scenario.Steps)
             {
                 builder.Append("\t\tStep ")
                        .Append(step.Number).Append(": ")
-                       .Append(step.Name).Append(" - ").Append(step.Status.ToString()).Append(" (").Append(step.ExecutionTime.FormatPretty()).AppendLine(")");
+                       .Append(step.Name).Append(" - ").Append(step.Status.ToString());
+                if (step.ExecutionTime != null)
+                    builder.Append(" (").Append(step.ExecutionTime.FormatPretty()).Append(")");
+                builder.AppendLine();
             }
             FormatDetails(builder, scenario);
         }

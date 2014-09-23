@@ -31,12 +31,14 @@ namespace LightBDD.Results
 
         /// <summary>
         /// Step execution time.
+        /// Null if step was not run.
         /// </summary>
-        TimeSpan ExecutionTime { get; }
+        TimeSpan? ExecutionTime { get; }
 
         /// <summary>
         /// Time when step method execution started.
+        /// Null if step was not run.
         /// </summary>
-        DateTimeOffset ExecutionStart { get; }
+        DateTimeOffset? ExecutionStart { get; }
     }
 }

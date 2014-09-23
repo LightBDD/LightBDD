@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Web.UI;
+using LightBDD.Formatters;
 
 namespace LightBDD.Results.Formatters
 {
@@ -107,6 +108,8 @@ namespace LightBDD.Results.Formatters
                     WriteStatus(writer, scenario.Status);
                     WriteTag(writer, HtmlTextWriterTag.Span, "label", scenario.Label);
                     writer.WriteEncodedText(scenario.Name);
+                    if (scenario.ExecutionTime != null)
+                        WriteTag(writer, HtmlTextWriterTag.Span, "duration", string.Format(" ({0})", scenario.ExecutionTime.FormatPretty()));
                 });
                 foreach (var step in scenario.Steps)
                     WriteStep(writer, step);
@@ -121,6 +124,8 @@ namespace LightBDD.Results.Formatters
                 WriteStatus(writer, step.Status);
                 WriteTag(writer, HtmlTextWriterTag.Span, "number", string.Format("{0}.", step.Number));
                 writer.WriteEncodedText(step.Name);
+                if (step.ExecutionTime != null)
+                    WriteTag(writer, HtmlTextWriterTag.Span, "duration", string.Format(" ({0})", step.ExecutionTime.FormatPretty()));
             });
         }
 

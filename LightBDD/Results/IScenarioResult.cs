@@ -36,12 +36,14 @@ namespace LightBDD.Results
 
         /// <summary>
         /// Scenario execution time.
+        /// Null if scenario was not run.
         /// </summary>
-        TimeSpan ExecutionTime { get; }
+        TimeSpan? ExecutionTime { get; }
 
         /// <summary>
         /// Time when scenario execution started.
+        /// Null if scenario was not run.
         /// </summary>
-        DateTimeOffset ExecutionStart { get; }
+        DateTimeOffset? ExecutionStart { get; }
     }
 }

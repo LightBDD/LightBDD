@@ -9,10 +9,11 @@
 .label:before{content: '[';}
 .number{padding: 0.2em;}
 .scenario{margin-bottom: 1em;}
-.status{font-size: x-small;font-weight: bold;border: 1px solid #777777;padding: 0.2em;margin-right: 0.2em;width: 4em;display: inline-block;}
+.status{font-size: x-small;font-weight: bold;border: 1px solid #777777;padding: 0.2em;margin: 0.1em;margin-right: 0.2em;width: 4em;display: inline-block;vertical-align: middle;}
 .passed{background-color: #aaffaa;}
 .failed{background-color: #ffaaaa;}
 .ignored{background-color: #ffffaa;}
 .notrun{background-color: #aaaaaa;}
 .details{margin-top: 0.5em;font-style: italic;color: red;white-space: pre-wrap;font-size: x-small;}
 .step{margin-left: 1em;}
+.duration{color: #0000cd;font-size: smaller;padding-left: 1em;font-family: monospace;vertical-align: middle;}
