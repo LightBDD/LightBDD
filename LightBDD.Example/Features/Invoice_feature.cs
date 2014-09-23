@@ -7,11 +7,11 @@ namespace LightBDD.Example.Features
 As a customer
 I want to receive invoice for bought items")]
     [TestFixture]
-    [Label("Story-1")]
+    [Label("Story-2")]
     public partial class Invoice_feature
     {
         [Test]
-        [Label("Ticket-1")]
+        [Label("Ticket-4")]
         public void Receiving_invoice_for_products()
         {
             Runner.RunScenario(
