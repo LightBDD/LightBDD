@@ -37,5 +37,10 @@ namespace LightBDD.Results
         {
             return results.Aggregate(TimeSpan.Zero, (current, s) => current + s.ExecutionTime.GetValueOrDefault());
         }
+
+        public static int CountScenarios(this IFeatureResult feature, ResultStatus resultStatus)
+        {
+            return feature.Scenarios.Count(s => s.Status == resultStatus);
+        }
     }
 }
