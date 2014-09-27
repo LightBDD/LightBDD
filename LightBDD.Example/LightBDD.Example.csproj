@@ -54,6 +54,10 @@
     <Compile Include="Features\Login_feature.Steps.cs">
       <DependentUpon>Login_feature.cs</DependentUpon>
     </Compile>
+    <Compile Include="Features\Payment_feature.cs" />
+    <Compile Include="Features\Payment_feature.Steps.cs">
+      <DependentUpon>Payment_feature.cs</DependentUpon>
+    </Compile>
     <Compile Include="Features\Product_spedition_feature.cs" />
     <Compile Include="Services\LoginResult.cs" />
     <Compile Include="Services\LoginService.cs" />

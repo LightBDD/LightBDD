@@ -150,6 +150,7 @@ namespace LightBDD.Results.Formatters.Html
             _writer.WriteCheckbox("showPassed", "Passed", true);
             _writer.WriteCheckbox("showFailed", "Failed", true);
             _writer.WriteCheckbox("showIgnored", "Ignored", true);
+            _writer.WriteCheckbox("showNotRun", "Not Run", true);
         }
 
         private void WriteFeature(IFeatureResult feature)
@@ -158,7 +159,7 @@ namespace LightBDD.Results.Formatters.Html
             {
                 _writer.WriteTag(HtmlTextWriterTag.Div, "header", () =>
                 {
-                    _writer.WriteTag(HtmlTextWriterTag.Div, "title", () =>
+                    _writer.WriteTag(HtmlTextWriterTag.H2, "title", () =>
                     {
                         _writer.WriteTag(HtmlTextWriterTag.Span, "label", feature.Label);
                         _writer.WriteEncodedText(feature.Name);
@@ -178,6 +179,10 @@ namespace LightBDD.Results.Formatters.Html
             var builder = new StringBuilder("feature");
             foreach (var result in Enum.GetValues(typeof(ResultStatus)).Cast<ResultStatus>().Where(result => feature.CountScenarios(result) > 0))
                 builder.Append(" ").Append(GetStatusClass(result));
+
+            if (!feature.Scenarios.Any())
+                builder.Append(" ").Append(GetStatusClass(ResultStatus.NotRun));
+
             return builder.ToString();
         }
 
@@ -185,7 +190,7 @@ namespace LightBDD.Results.Formatters.Html
         {
             _writer.WriteTag(HtmlTextWriterTag.Div, "scenario " + GetStatusClass(scenario.Status), () =>
             {
-                _writer.WriteTag(HtmlTextWriterTag.Div, "title", () =>
+                _writer.WriteTag(HtmlTextWriterTag.H3, "title", () =>
                 {
                     WriteStatus(scenario.Status);
                     _writer.WriteTag(HtmlTextWriterTag.Span, "label", scenario.Label);

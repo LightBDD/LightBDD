@@ -1,6 +1,6 @@
 ﻿body{color: #222222;font-family: Arial;}
 .feature{margin-bottom: 1em;padding: 0.2em;}
-.title{font-weight: bold;vertical-align: middle;}
+.title{font-weight: bold;vertical-align: middle;font-size: large;margin: 0;margin-bottom: 0.5em;}
 .feature,.scenario{ display: none;}
 .feature > .header{width: 20%;display: inline-block;vertical-align: top;}
 .feature > .scenarios{width: 80%;display: inline-block;vertical-align: top;}
@@ -24,10 +24,8 @@ table,th,td{ font-size: small;}
 table.features td{ text-align: right;}
 td.alert{ color: red;font-weight: bold;}
 article{ margin-left: 3em;}
-.filter{ margin-bottom: 1em; font-weight: bold; }
-#showPassed:checked ~ * .scenario.passed { display: block;}
-#showFailed:checked ~ * .scenario.failed { display: block;}
-#showIgnored:checked ~ * .scenario.ignored { display: block;}
-#showPassed:checked ~ .feature.passed { display: block;}
-#showFailed:checked ~ .feature.failed { display: block;}
-#showIgnored:checked ~ .feature.ignored { display: block;}
+.filter{ margin:0 0.3em 0.5em 0; font-weight: bold;font-style: italic; display: inline-block;}
+#showPassed:checked ~ * .scenario.passed, #showPassed:checked ~ .feature.passed { display: block;}
+#showFailed:checked ~ * .scenario.failed, #showFailed:checked ~ .feature.failed { display: block;}
+#showIgnored:checked ~ * .scenario.ignored, #showIgnored:checked ~ .feature.ignored { display: block;}
+#showNotRun:checked ~ * .scenario.notrun, #showNotRun:checked ~ .feature.notrun { display: block;}
