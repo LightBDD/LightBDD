@@ -45,7 +45,7 @@ public partial class Login_feature //feature name
 	{
 		Runner.RunScenario(
 
-			Given_user_is_about_to_login, //scenario steps
+			Given_user_is_about_to_login, //steps
 			Given_user_entered_valid_login,
 			Given_user_entered_valid_password,
 			When_user_clicked_login_button,
@@ -68,7 +68,7 @@ public partial class Invoice_feature
 	{
 		Runner.RunScenario(
 
-			given => Product_is_available_in_products_storage("wooden desk"), //scenario steps
+			given => Product_is_available_in_products_storage("wooden desk"), //steps
 			and => Product_is_available_in_products_storage("wooden shelf"),
 			when => Customer_buys_product("wooden desk"),
 			and => Customer_buys_product("wooden shelf"),
