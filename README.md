@@ -82,7 +82,7 @@ The above example shows feature *partial* classes containing only scenario defin
 The **Login_feature** class uses simplified syntax for defining scenario steps.
 The **Invoice_feature** class uses extended syntax that separates action type (given, when, then) from step method and allows to use parameterized steps.
 
-All method implementations are separated and put in other file.
+All method implementations are separated and put in other files.
 ```C#
 public partial class Login_feature : FeatureFixture
 {
