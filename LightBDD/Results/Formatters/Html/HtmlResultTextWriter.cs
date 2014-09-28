@@ -146,12 +146,12 @@ namespace LightBDD.Results.Formatters.Html
 
         private void WriteStatusFilter()
         {
-            _writer.WriteTag(HtmlTextWriterTag.Span, "filter", "Filter: ");
-            _writer.WriteCheckbox("showPassed", "Passed", true);
-            _writer.WriteCheckbox("showFailed", "Failed", true);
-            _writer.WriteCheckbox("showIgnored", "Ignored", true);
-            _writer.WriteCheckbox("showNotRun", "Not Run", true);
-            _writer.WriteBreak();
+            _writer.WriteTag(HtmlTextWriterTag.Span, "filter", "Filter:")
+                   .WriteSpace().WriteCheckbox("showPassed", "Passed", true)
+                   .WriteSpace().WriteCheckbox("showFailed", "Failed", true)
+                   .WriteSpace().WriteCheckbox("showIgnored", "Ignored", true)
+                   .WriteSpace().WriteCheckbox("showNotRun", "Not Run", true)
+                   .WriteBreak();
         }
 
         private void WriteFeature(IFeatureResult feature, int index)
@@ -207,6 +207,8 @@ namespace LightBDD.Results.Formatters.Html
 
         private void WriteLabel(string label)
         {
+            if (label == null)
+                return;
             _writer.WriteTag(HtmlTextWriterTag.Span, "label", label)
                 .WriteSpace();
         }

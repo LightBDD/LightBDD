@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net40\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
@@ -41,6 +44,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BDD_runner_parameterized_tests.cs" />
@@ -55,6 +59,7 @@
     <Compile Include="Helpers\TestableMetadataProvider.cs" />
     <Compile Include="Notification\ConsoleProgressNotifierTests.cs" />
     <Compile Include="Results\FeatureResultTests.cs" />
+    <Compile Include="Results\Formatters\HtmlResultFormatterTests.cs" />
     <Compile Include="Results\Formatters\TimeFormatterTests.cs" />
     <Compile Include="Results\StepResultTests.cs" />
     <Compile Include="SummaryGeneration\SummaryFileWriterTests.cs" />
