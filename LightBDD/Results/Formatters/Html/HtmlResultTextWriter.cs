@@ -84,7 +84,7 @@ namespace LightBDD.Results.Formatters.Html
             {
                 _writer.WriteTag(HtmlTextWriterTag.Td, null, () =>
                 {
-                    _writer.WriteTag(HtmlTextWriterTag.Span, "label", feature.Label);
+                    WriteLabel(feature.Label);
                     _writer.WriteEncodedText(feature.Name);
                 });
                 _writer.WriteTag(HtmlTextWriterTag.Td, null, feature.Scenarios.Count().ToString(CultureInfo.InvariantCulture));
@@ -151,6 +151,7 @@ namespace LightBDD.Results.Formatters.Html
             _writer.WriteCheckbox("showFailed", "Failed", true);
             _writer.WriteCheckbox("showIgnored", "Ignored", true);
             _writer.WriteCheckbox("showNotRun", "Not Run", true);
+            _writer.WriteBreak();
         }
 
         private void WriteFeature(IFeatureResult feature)
@@ -161,7 +162,7 @@ namespace LightBDD.Results.Formatters.Html
                 {
                     _writer.WriteTag(HtmlTextWriterTag.H2, "title", () =>
                     {
-                        _writer.WriteTag(HtmlTextWriterTag.Span, "label", feature.Label);
+                        WriteLabel(feature.Label);
                         _writer.WriteEncodedText(feature.Name);
                     });
                     _writer.WriteTag(HtmlTextWriterTag.Div, "description", feature.Description);
@@ -193,10 +194,9 @@ namespace LightBDD.Results.Formatters.Html
                 _writer.WriteTag(HtmlTextWriterTag.H3, "title", () =>
                 {
                     WriteStatus(scenario.Status);
-                    _writer.WriteTag(HtmlTextWriterTag.Span, "label", scenario.Label);
+                    WriteLabel(scenario.Label);
                     _writer.WriteEncodedText(scenario.Name);
-                    if (scenario.ExecutionTime != null)
-                        _writer.WriteTag(HtmlTextWriterTag.Span, "duration", string.Format(" ({0})", scenario.ExecutionTime.FormatPretty()));
+                    WriteDuration(scenario.ExecutionTime);
                 });
                 foreach (var step in scenario.Steps)
                     WriteStep(step);
@@ -204,21 +204,32 @@ namespace LightBDD.Results.Formatters.Html
             });
         }
 
+        private void WriteLabel(string label)
+        {
+            _writer.WriteTag(HtmlTextWriterTag.Span, "label", label)
+                .WriteSpace();
+        }
+
         private void WriteStep(IStepResult step)
         {
             _writer.WriteTag(HtmlTextWriterTag.Div, "step", () =>
             {
                 WriteStatus(step.Status);
-                _writer.WriteTag(HtmlTextWriterTag.Span, "number", string.Format("{0}.", step.Number));
-                _writer.WriteEncodedText(step.Name);
-                if (step.ExecutionTime != null)
-                    _writer.WriteTag(HtmlTextWriterTag.Span, "duration", string.Format(" ({0})", step.ExecutionTime.FormatPretty()));
+                _writer.WriteEncodedText(string.Format("{0}. {1}", step.Number, step.Name));
+                WriteDuration(step.ExecutionTime);
             });
+        }
+
+        private void WriteDuration(TimeSpan? executionTime)
+        {
+            if (executionTime != null)
+                _writer.WriteSpace().WriteTag(HtmlTextWriterTag.Span, "duration", string.Format("({0})", executionTime.FormatPretty()));
         }
 
         private void WriteStatus(ResultStatus status)
         {
-            _writer.WriteTag(HtmlTextWriterTag.Div, "status " + GetStatusClass(status), status.ToString());
+            _writer.WriteTag(HtmlTextWriterTag.Span, "status " + GetStatusClass(status), status.ToString())
+                   .WriteSpace();
         }
 
         private static string GetStatusClass(ResultStatus status)
