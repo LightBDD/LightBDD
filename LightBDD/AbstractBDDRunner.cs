@@ -72,7 +72,7 @@ namespace LightBDD
         }
 
         /// <summary>
-        /// Runs test scenario with by executing given steps in order, where all steps share context of <c>TContext</c> type instantiated with default constructor.<br/>
+        /// Runs test scenario by executing given steps in specified order, where all steps share context of <c>TContext</c> type instantiated with default constructor.<br/>
         /// If given step throws, other are not executed.<br/>
         /// Scenario name is determined on the method name in which <c>RunScenario()</c> method was called.<br/>
         /// Scenario label is determined on <c>[Label]</c> attribute applied on method in which <c>RunScenario()</c> method was called.<br/>
@@ -110,7 +110,7 @@ namespace LightBDD
         }
 
         /// <summary>
-        /// Runs test scenario by executing given steps in order, where all steps share context of <c>TContext</c> type instantiated with default constructor.<br/>
+        /// Runs test scenario by executing given steps in specified order, where all steps share context of <c>TContext</c> type instantiated with default constructor.<br/>
         /// If given step throws, other are not executed.<br/>
         /// Scenario name is specified in parameter list.<br/>
         /// Step name is determined on corresponding action name.<br/>
@@ -146,9 +146,9 @@ namespace LightBDD
         }
 
         /// <summary>
-        /// Runs test scenario by executing given steps in order, where all steps share context of <c>TContext</c> type instantiated with default constructor.<br/>
+        /// Runs test scenario by executing given steps in specified order, where all steps share context of <c>TContext</c> type instantiated with default constructor.<br/>
         /// If given step throws, other are not executed.<br/>
-        /// Scenario name is specified in parameter list.<br/>
+        /// Scenario name and label are specified in parameter list.<br/>
         /// Step name is determined on corresponding action name.<br/>
         /// Example usage:
         /// <code>
@@ -183,7 +183,7 @@ namespace LightBDD
         }
 
         /// <summary>
-        /// Runs test scenario by executing given steps in order, where all steps share given <c>context</c> instance of <c>TContext</c> type.
+        /// Runs test scenario by executing given steps in specified order, where all steps share given <c>context</c> instance of <c>TContext</c> type.
         /// If given step throws, other are not executed.<br/>
         /// Scenario name is determined on the method name in which <c>RunScenario()</c> method was called.<br/>
         /// Scenario label is determined on <c>[Label]</c> attribute applied on method in which <c>RunScenario()</c> method was called.<br/>
@@ -221,7 +221,7 @@ namespace LightBDD
         }
 
         /// <summary>
-        /// Runs test scenario by executing given steps in order, where all steps share given <c>context</c> instance of <c>TContext</c> type.<br/>
+        /// Runs test scenario by executing given steps in specified order, where all steps share given <c>context</c> instance of <c>TContext</c> type.<br/>
         /// If given step throws, other are not executed.<br/>
         /// Scenario name is specified in parameter list.<br/>
         /// Step name is determined on corresponding action name.<br/>
@@ -257,9 +257,9 @@ namespace LightBDD
         }
 
         /// <summary>
-        /// Runs test scenario by executing given steps in order, where all steps share given <c>context</c> instance of <c>TContext</c> type.<br/>
+        /// Runs test scenario by executing given steps in specified order, where all steps share given <c>context</c> instance of <c>TContext</c> type.<br/>
         /// If given step throws, other are not executed.<br/>
-        /// Scenario name is specified in parameter list.<br/>
+        /// Scenario name and label are specified in parameter list.<br/>
         /// Step name is determined on corresponding action name.<br/>
         /// Example usage:
         /// <code>
@@ -295,7 +295,7 @@ namespace LightBDD
         }
 
         /// <summary>
-        /// Runs test scenario by executing given steps in order.<br/>
+        /// Runs test scenario by executing given steps in specified order.<br/>
         /// If given step throws, other are not executed.<br/>
         /// Scenario name is determined on the method name in which <c>RunScenario()</c> method was called.<br/>
         /// Scenario label is determined on <c>[Label]</c> attribute applied on method in which <c>RunScenario()</c> method was called.<br/>
@@ -329,7 +329,7 @@ namespace LightBDD
         }
 
         /// <summary>
-        /// Runs test scenario by executing given steps in order.<br/>
+        /// Runs test scenario by executing given steps in specified order.<br/>
         /// If given step throws, other are not executed.<br/>
         /// Scenario name is determined on the method name in which <c>RunScenario()</c> method was called.<br/>
         /// Scenario label is determined on <c>[Label]</c> attribute applied on method in which <c>RunScenario()</c> method was called.<br/>
@@ -370,13 +370,13 @@ namespace LightBDD
         }
 
         /// <summary>
-        /// Runs test scenario by executing given steps in order, where all steps share context of <c>TContext</c> type instantiated with default constructor.<br/>
+        /// Runs test scenario by executing given steps in specified order, where all steps share context of <c>TContext</c> type instantiated with default constructor.<br/>
         /// If given step throws, other are not executed.<br/>
         /// Scenario name is determined on the method name in which <c>RunScenario()</c> method was called.<br/>
         /// Scenario label is determined on <c>[Label]</c> attribute applied on method in which <c>RunScenario()</c> method was called.<br/>
         /// Please note that test project has to be compiled in DEBUG mode (assembly has <c>[assembly:Debuggable(true, true)]</c> attribute), or calling method has to have <c>[MethodImpl(MethodImplOptions.NoInlining)]</c> attribute in order to properly determine scenario name.<br/>
         /// Step name is determined on lambda parameter reflecting action type keyword, corresponding action name and passed list of parameters to called method.<br/>
-        /// It is suggested that step methods belongs to <c>TContext</c> type, however it is not enforced.<br/>
+        /// It is suggested that step methods belongs to <c>TContext</c> type, however it is not required.<br/>
         /// Please note that rules for placing parameter values in step name are as follows, where first matching rule would be used:
         /// <list type="bullet">
         /// <item><description>it will replace first occurrence of variable name written in capital letters (<c>void Price_is_AMOUNT_dollars(int amount)</c> => <c>Price is "27" dollars</c>)</description></item>
@@ -413,7 +413,7 @@ namespace LightBDD
         }
 
         /// <summary>
-        /// Runs test scenario by executing given steps in order.<br/>
+        /// Runs test scenario by executing given steps in specified order.<br/>
         /// If given step throws, other are not executed.<br/>
         /// Scenario name is specified in parameter list.<br/>
         /// Step name is determined on corresponding action name.<br/>
@@ -445,9 +445,9 @@ namespace LightBDD
         }
 
         /// <summary>
-        /// Runs test scenario by executing given steps in order.<br/>
+        /// Runs test scenario by executing given steps in specified order.<br/>
         /// If given step throws, other are not executed.<br/>
-        /// Scenario name is specified in parameter list.<br/>
+        /// Scenario name and label are specified in parameter list.<br/>
         /// Step name is determined on corresponding action name.<br/>
         /// Example usage:
         /// <code>
@@ -482,7 +482,8 @@ namespace LightBDD
         /// <summary>
         /// Starts new scenario build process, where scenario name is specified by <c>scenarioName</c> parameter.<br/>
         /// Method returns scenario builder object allowing to specify optional label and execution of scenario steps.<br/>
-        /// Build process is finished with calling one of <c>Run()</c> method family. Please note that scenario would not be added to result list, until <c>Run()</c> method is called.<br/>
+        /// Build process is finished with calling one of <c>Run()</c> method family.<br/>
+        /// Please note that scenario would not be added to result list, until <c>Run()</c> method is called.<br/>
         /// Example usage:
         /// <code>
         /// [Test]
@@ -513,6 +514,7 @@ namespace LightBDD
         /// Please note that test project has to be compiled in DEBUG mode (assembly has <c>[assembly:Debuggable(true, true)]</c> attribute), or calling method has to have <c>[MethodImpl(MethodImplOptions.NoInlining)]</c> attribute in order to properly determine scenario name.<br/>
         /// 
         /// Scenario build process can be finalized later by calling one of <c>Run()</c> method family.<br/>
+        /// Please note that scenario would not be added to result list, until <c>Run()</c> method is called.<br/>
         /// Example usage:
         /// <code>
         /// [Test]

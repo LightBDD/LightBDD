@@ -1,62 +1,95 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TestResults>
-  <Feature Name="Basket feature">
+  <Feature Name="Basket feature" Label="Story-4">
     <Description>In order to buy products
 As a customer
 I want to add products to basket</Description>
-    <Scenario Status="Passed" Name="No product in stock">
-      <Step Status="Passed" Number="1" Name="Given product is out of stock" />
-      <Step Status="Passed" Number="2" Name="When customer adds it to basket" />
-      <Step Status="Passed" Number="3" Name="Then product addition is unsuccessful" />
-      <Step Status="Passed" Number="4" Name="Then basket does not contain product" />
+    <Scenario Status="Passed" Name="No product in stock" Label="Ticket-6" ExecutionStart="2014-09-28T17:21:25.0071423Z" ExecutionTime="PT0.028193S">
+      <Step Status="Passed" Number="1" Name="Given product is out of stock" ExecutionStart="2014-09-28T17:21:25.0101443Z" ExecutionTime="PT0.0001385S" />
+      <Step Status="Passed" Number="2" Name="When customer adds it to basket" ExecutionStart="2014-09-28T17:21:25.0271556Z" ExecutionTime="PT0.0005014S" />
+      <Step Status="Passed" Number="3" Name="Then product addition is unsuccessful" ExecutionStart="2014-09-28T17:21:25.0281563Z" ExecutionTime="PT0.0028811S" />
+      <Step Status="Passed" Number="4" Name="Then basket does not contain product" ExecutionStart="2014-09-28T17:21:25.0331587Z" ExecutionTime="PT0.0010174S" />
     </Scenario>
-    <Scenario Status="Ignored" Name="Successful addition">
-      <Step Status="Passed" Number="1" Name="Given product is in stock" />
-      <Step Status="Passed" Number="2" Name="When customer adds it to basket" />
-      <Step Status="Passed" Number="3" Name="Then product addition is successful" />
-      <Step Status="Passed" Number="4" Name="Then basket contains product" />
-      <Step Status="Ignored" Number="5" Name="Then product is removed from stock" />
+    <Scenario Status="Ignored" Name="Successful addition" Label="Ticket-7" ExecutionStart="2014-09-28T17:21:25.0701818Z" ExecutionTime="PT0.0057418S">
+      <Step Status="Passed" Number="1" Name="Given product is in stock" ExecutionStart="2014-09-28T17:21:25.0701818Z" ExecutionTime="PT0.0003349S" />
+      <Step Status="Passed" Number="2" Name="When customer adds it to basket" ExecutionStart="2014-09-28T17:21:25.0711839Z" ExecutionTime="PT0.0001889S" />
+      <Step Status="Passed" Number="3" Name="Then product addition is successful" ExecutionStart="2014-09-28T17:21:25.0711839Z" ExecutionTime="PT0.0004772S" />
+      <Step Status="Passed" Number="4" Name="Then basket contains product" ExecutionStart="2014-09-28T17:21:25.0721845Z" ExecutionTime="PT0.0002803S" />
+      <Step Status="Ignored" Number="5" Name="Then product is removed from stock" ExecutionStart="2014-09-28T17:21:25.0731852Z" ExecutionTime="PT0.0010785S" />
       <StatusDetails>Product removal from stock is not implemented yet</StatusDetails>
+    </Scenario>
+  </Feature>
+  <Feature Name="Invoice feature" Label="Story-2">
+    <Description>In order to pay for products
+As a customer
+I want to receive invoice for bought items</Description>
+    <Scenario Status="Ignored" Name="Receiving invoice for products" Label="Ticket-4" ExecutionStart="2014-09-28T17:21:25.4054065Z" ExecutionTime="PT0.0083743S">
+      <Step Status="Passed" Number="1" Name="GIVEN Product &quot;wooden desk&quot; is available in products storage" ExecutionStart="2014-09-28T17:21:25.4104099Z" ExecutionTime="PT0.0001707S" />
+      <Step Status="Passed" Number="2" Name="AND Product &quot;wooden shelf&quot; is available in products storage" ExecutionStart="2014-09-28T17:21:25.4104099Z" ExecutionTime="PT0.0000018S" />
+      <Step Status="Passed" Number="3" Name="WHEN Customer buys product &quot;wooden desk&quot;" ExecutionStart="2014-09-28T17:21:25.4114096Z" ExecutionTime="PT0.0001287S" />
+      <Step Status="Passed" Number="4" Name="AND Customer buys product &quot;wooden shelf&quot;" ExecutionStart="2014-09-28T17:21:25.4124093Z" ExecutionTime="PT0.0000023S" />
+      <Step Status="Ignored" Number="5" Name="THEN Invoice is sent to customer" ExecutionStart="2014-09-28T17:21:25.4124093Z" ExecutionTime="PT0.0008229S" />
+      <Step Status="NotRun" Number="6" Name="AND Invoice contains product &quot;&lt;?&gt;&quot; with price of &quot;&lt;?&gt;&quot; pounds" />
+      <Step Status="NotRun" Number="7" Name="AND Invoice contains product &quot;&lt;?&gt;&quot; with price of &quot;&lt;?&gt;&quot; pounds" />
+      <StatusDetails>Not implemented yet</StatusDetails>
     </Scenario>
   </Feature>
   <Feature Name="Login feature" Label="Story-1">
     <Description>In order to access personal data
 As an user
 I want to login into system</Description>
-    <Scenario Status="Failed" Name="Anonymous login name should allow to log in">
-      <Step Status="Passed" Number="1" Name="Given user is about to login" />
-      <Step Status="Passed" Number="2" Name="Given user entered anonymous login" />
-      <Step Status="Passed" Number="3" Name="When user clicked login button" />
-      <Step Status="Failed" Number="4" Name="Then login is successful" />
+    <Scenario Status="Failed" Name="Anonymous login name should allow to log in" Label="Ticket-3" ExecutionStart="2014-09-28T17:21:25.4184166Z" ExecutionTime="PT0.0095429S">
+      <Step Status="Passed" Number="1" Name="Given user is about to login" ExecutionStart="2014-09-28T17:21:25.4184166Z" ExecutionTime="PT0.0007664S" />
+      <Step Status="Passed" Number="2" Name="Given user entered anonymous login" ExecutionStart="2014-09-28T17:21:25.4204156Z" ExecutionTime="PT0.0002813S" />
+      <Step Status="Passed" Number="3" Name="When user clicked login button" ExecutionStart="2014-09-28T17:21:25.4204156Z" ExecutionTime="PT0.0010687S" />
+      <Step Status="Failed" Number="4" Name="Then login is successful" ExecutionStart="2014-09-28T17:21:25.4224169Z" ExecutionTime="PT0.0050602S" />
       <Step Status="NotRun" Number="5" Name="Then welcome message is returned containing user name" />
       <StatusDetails>  Login should succeeded
   Expected: True
   But was:  False
 </StatusDetails>
     </Scenario>
-    <Scenario Status="Passed" Name="Successful login" Label="Ticket-1">
-      <Step Status="Passed" Number="1" Name="Given user is about to login" />
-      <Step Status="Passed" Number="2" Name="Given user entered valid login" />
-      <Step Status="Passed" Number="3" Name="Given user entered valid password" />
-      <Step Status="Passed" Number="4" Name="When user clicked login button" />
-      <Step Status="Passed" Number="5" Name="Then login is successful" />
-      <Step Status="Passed" Number="6" Name="Then welcome message is returned containing user name" />
+    <Scenario Status="Passed" Name="Successful login" Label="Ticket-1" ExecutionStart="2014-09-28T17:21:25.4424302Z" ExecutionTime="PT0.0188269S">
+      <Step Status="Passed" Number="1" Name="Given user is about to login" ExecutionStart="2014-09-28T17:21:25.4484332Z" ExecutionTime="PT0.0000107S" />
+      <Step Status="Passed" Number="2" Name="Given user entered valid login" ExecutionStart="2014-09-28T17:21:25.4494344Z" ExecutionTime="PT0.0002309S" />
+      <Step Status="Passed" Number="3" Name="Given user entered valid password" ExecutionStart="2014-09-28T17:21:25.4504345Z" ExecutionTime="PT0.000306S" />
+      <Step Status="Passed" Number="4" Name="When user clicked login button" ExecutionStart="2014-09-28T17:21:25.4514361Z" ExecutionTime="PT0.0001264S" />
+      <Step Status="Passed" Number="5" Name="Then login is successful" ExecutionStart="2014-09-28T17:21:25.4514361Z" ExecutionTime="PT0.0000051S" />
+      <Step Status="Passed" Number="6" Name="Then welcome message is returned containing user name" ExecutionStart="2014-09-28T17:21:25.4524354Z" ExecutionTime="PT0.0088599S" />
     </Scenario>
-    <Scenario Status="Passed" Name="Wrong login provided causes login to fail" Label="Ticket-2">
-      <Step Status="Passed" Number="1" Name="Given user is about to login" />
-      <Step Status="Passed" Number="2" Name="Given user entered invalid login" />
-      <Step Status="Passed" Number="3" Name="Given user entered valid password" />
-      <Step Status="Passed" Number="4" Name="When user clicked login button" />
-      <Step Status="Passed" Number="5" Name="Then login is unsuccessful" />
-      <Step Status="Passed" Number="6" Name="Then invalid login or password error message is returned" />
+    <Scenario Status="Passed" Name="Wrong login provided causes login to fail" Label="Ticket-2" ExecutionStart="2014-09-28T17:21:25.4634441Z" ExecutionTime="PT0.0039485S">
+      <Step Status="Passed" Number="1" Name="Given user is about to login" ExecutionStart="2014-09-28T17:21:25.4644452Z" ExecutionTime="PT0.0000023S" />
+      <Step Status="Passed" Number="2" Name="Given user entered invalid login" ExecutionStart="2014-09-28T17:21:25.4644452Z" ExecutionTime="PT0.0002033S" />
+      <Step Status="Passed" Number="3" Name="Given user entered valid password" ExecutionStart="2014-09-28T17:21:25.4654468Z" ExecutionTime="PT0.0000027S" />
+      <Step Status="Passed" Number="4" Name="When user clicked login button" ExecutionStart="2014-09-28T17:21:25.4664452Z" ExecutionTime="PT0.0000013S" />
+      <Step Status="Passed" Number="5" Name="Then login is unsuccessful" ExecutionStart="2014-09-28T17:21:25.4664452Z" ExecutionTime="PT0.0002164S" />
+      <Step Status="Passed" Number="6" Name="Then invalid login or password error message is returned" ExecutionStart="2014-09-28T17:21:25.4674454Z" ExecutionTime="PT0.0002094S" />
     </Scenario>
-    <Scenario Status="Passed" Name="Wrong password provided causes login to fail">
-      <Step Status="Passed" Number="1" Name="Given user is about to login" />
-      <Step Status="Passed" Number="2" Name="Given user entered valid login" />
-      <Step Status="Passed" Number="3" Name="Given user entered invalid password" />
-      <Step Status="Passed" Number="4" Name="When user clicked login button" />
-      <Step Status="Passed" Number="5" Name="Then login is unsuccessful" />
-      <Step Status="Passed" Number="6" Name="Then invalid login or password error message is returned" />
+    <Scenario Status="Passed" Name="Wrong password provided causes login to fail" Label="Ticket-2" ExecutionStart="2014-09-28T17:21:25.4694481Z" ExecutionTime="PT0.0068045S">
+      <Step Status="Passed" Number="1" Name="Given user is about to login" ExecutionStart="2014-09-28T17:21:25.4694481Z" ExecutionTime="PT0.0000018S" />
+      <Step Status="Passed" Number="2" Name="Given user entered valid login" ExecutionStart="2014-09-28T17:21:25.4734507Z" ExecutionTime="PT0.0000004S" />
+      <Step Status="Passed" Number="3" Name="Given user entered invalid password" ExecutionStart="2014-09-28T17:21:25.4744514Z" ExecutionTime="PT0.0002365S" />
+      <Step Status="Passed" Number="4" Name="When user clicked login button" ExecutionStart="2014-09-28T17:21:25.4754516Z" ExecutionTime="PT0.0000046S" />
+      <Step Status="Passed" Number="5" Name="Then login is unsuccessful" ExecutionStart="2014-09-28T17:21:25.4754516Z" ExecutionTime="PT0.0000013S" />
+      <Step Status="Passed" Number="6" Name="Then invalid login or password error message is returned" ExecutionStart="2014-09-28T17:21:25.4764523Z" ExecutionTime="PT0.0000032S" />
+    </Scenario>
+  </Feature>
+  <Feature Name="Payment feature" Label="Story-5">
+    <Description>In order to get desired products
+As a customer
+I want to pay for products in basket</Description>
+  </Feature>
+  <Feature Name="Product spedition feature" Label="Story-3">
+    <Description>In order to deliver products to customer effectively
+As a spedition manager
+I want to dispatch products to customer as soon as the payment is finalized</Description>
+    <Scenario Status="Passed" Name="Should dispatch product after payment is finalized" Label="Ticket-5" ExecutionStart="2014-09-28T17:21:25.490462Z" ExecutionTime="PT0.003474S">
+      <Step Status="Passed" Number="1" Name="GIVEN There is an active customer with id &quot;ABC-123&quot;" ExecutionStart="2014-09-28T17:21:25.4914627Z" ExecutionTime="PT0.0001642S" />
+      <Step Status="Passed" Number="2" Name="GIVEN Customer has product &quot;wooden shelf&quot; in basket" ExecutionStart="2014-09-28T17:21:25.4914627Z" ExecutionTime="PT0.0001156S" />
+      <Step Status="Passed" Number="3" Name="GIVEN Customer has product &quot;wooden desk&quot; in basket" ExecutionStart="2014-09-28T17:21:25.4924634Z" ExecutionTime="PT0.0000027S" />
+      <Step Status="Passed" Number="4" Name="WHEN Customer payment has been finalized" ExecutionStart="2014-09-28T17:21:25.4924634Z" ExecutionTime="PT0.0001306S" />
+      <Step Status="Passed" Number="5" Name="THEN Product &quot;wooden shelf&quot; has been dispatched to customer" ExecutionStart="2014-09-28T17:21:25.4934636Z" ExecutionTime="PT0.0001133S" />
+      <Step Status="Passed" Number="6" Name="THEN Product &quot;wooden desk&quot; has been dispatched to customer" ExecutionStart="2014-09-28T17:21:25.4944647Z" ExecutionTime="PT0.0000023S" />
     </Scenario>
   </Feature>
 </TestResults>

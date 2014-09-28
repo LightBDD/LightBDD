@@ -10,7 +10,7 @@ namespace LightBDD.Results
     internal static class FeatureResultExtensions
     {
         /// <summary>
-        /// Returns time when first scenario has started executing, basing on Scenario ExecutionStart property.
+        /// Returns time when first scenario has started executing based on Scenario ExecutionStart property.
         /// If no scenarios have been executed, null is returned.
         /// </summary>
         public static DateTimeOffset? GetTestExecutionStartTime(this IEnumerable<IFeatureResult> results)
@@ -23,7 +23,7 @@ namespace LightBDD.Results
         }
 
         /// <summary>
-        /// Return total test execution time based on Scenario ExecutionTime property.
+        /// Returns total test execution time based on Scenario ExecutionTime property.
         /// </summary>
         public static TimeSpan GetTestExecutionTime(this IEnumerable<IFeatureResult> results)
         {
@@ -31,13 +31,16 @@ namespace LightBDD.Results
         }
 
         /// <summary>
-        /// Return total test execution time based on Scenario ExecutionTime property.
+        /// Returns total test execution time based on Scenario ExecutionTime property.
         /// </summary>
         public static TimeSpan GetTestExecutionTime(this IEnumerable<IScenarioResult> results)
         {
             return results.Aggregate(TimeSpan.Zero, (current, s) => current + s.ExecutionTime.GetValueOrDefault());
         }
 
+        /// <summary>
+        /// Counts scenarios that belongs to given feature and have given status.
+        /// </summary>
         public static int CountScenarios(this IFeatureResult feature, ResultStatus resultStatus)
         {
             return feature.Scenarios.Count(s => s.Status == resultStatus);

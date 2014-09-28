@@ -7,7 +7,7 @@ using System.Xml.Linq;
 namespace LightBDD.Results.Formatters
 {
     /// <summary>
-    /// Formats feature results as xml.
+    /// Formats feature results as XML.
     /// </summary>
     public class XmlResultFormatter : IResultFormatter
     {

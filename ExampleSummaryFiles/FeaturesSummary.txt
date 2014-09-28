@@ -1,59 +1,93 @@
-﻿Feature: Basket feature
+﻿Feature: [Story-4] Basket feature
 	In order to buy products
 	As a customer
 	I want to add products to basket
 
-	Scenario: No product in stock - Passed
-		Step 1: Given product is out of stock - Passed
-		Step 2: When customer adds it to basket - Passed
-		Step 3: Then product addition is unsuccessful - Passed
-		Step 4: Then basket does not contain product - Passed
+	Scenario: [Ticket-6] No product in stock - Passed (28ms)
+		Step 1: Given product is out of stock - Passed (<1ms)
+		Step 2: When customer adds it to basket - Passed (<1ms)
+		Step 3: Then product addition is unsuccessful - Passed (2ms)
+		Step 4: Then basket does not contain product - Passed (1ms)
 
-	Scenario: Successful addition - Ignored
-		Step 1: Given product is in stock - Passed
-		Step 2: When customer adds it to basket - Passed
-		Step 3: Then product addition is successful - Passed
-		Step 4: Then basket contains product - Passed
-		Step 5: Then product is removed from stock - Ignored
+	Scenario: [Ticket-7] Successful addition - Ignored (5ms)
+		Step 1: Given product is in stock - Passed (<1ms)
+		Step 2: When customer adds it to basket - Passed (<1ms)
+		Step 3: Then product addition is successful - Passed (<1ms)
+		Step 4: Then basket contains product - Passed (<1ms)
+		Step 5: Then product is removed from stock - Ignored (1ms)
 
 		Details: Product removal from stock is not implemented yet
+
+Feature: [Story-2] Invoice feature
+	In order to pay for products
+	As a customer
+	I want to receive invoice for bought items
+
+	Scenario: [Ticket-4] Receiving invoice for products - Ignored (8ms)
+		Step 1: GIVEN Product "wooden desk" is available in products storage - Passed (<1ms)
+		Step 2: AND Product "wooden shelf" is available in products storage - Passed (<1ms)
+		Step 3: WHEN Customer buys product "wooden desk" - Passed (<1ms)
+		Step 4: AND Customer buys product "wooden shelf" - Passed (<1ms)
+		Step 5: THEN Invoice is sent to customer - Ignored (<1ms)
+		Step 6: AND Invoice contains product "<?>" with price of "<?>" pounds - NotRun
+		Step 7: AND Invoice contains product "<?>" with price of "<?>" pounds - NotRun
+
+		Details: Not implemented yet
 
 Feature: [Story-1] Login feature
 	In order to access personal data
 	As an user
 	I want to login into system
 
-	Scenario: Anonymous login name should allow to log in - Failed
-		Step 1: Given user is about to login - Passed
-		Step 2: Given user entered anonymous login - Passed
-		Step 3: When user clicked login button - Passed
-		Step 4: Then login is successful - Failed
+	Scenario: [Ticket-3] Anonymous login name should allow to log in - Failed (9ms)
+		Step 1: Given user is about to login - Passed (<1ms)
+		Step 2: Given user entered anonymous login - Passed (<1ms)
+		Step 3: When user clicked login button - Passed (1ms)
+		Step 4: Then login is successful - Failed (5ms)
 		Step 5: Then welcome message is returned containing user name - NotRun
 
 		Details: Login should succeeded
 			  Expected: True
 			  But was:  False
 
-	Scenario: [Ticket-1] Successful login - Passed
-		Step 1: Given user is about to login - Passed
-		Step 2: Given user entered valid login - Passed
-		Step 3: Given user entered valid password - Passed
-		Step 4: When user clicked login button - Passed
-		Step 5: Then login is successful - Passed
-		Step 6: Then welcome message is returned containing user name - Passed
+	Scenario: [Ticket-1] Successful login - Passed (18ms)
+		Step 1: Given user is about to login - Passed (<1ms)
+		Step 2: Given user entered valid login - Passed (<1ms)
+		Step 3: Given user entered valid password - Passed (<1ms)
+		Step 4: When user clicked login button - Passed (<1ms)
+		Step 5: Then login is successful - Passed (<1ms)
+		Step 6: Then welcome message is returned containing user name - Passed (8ms)
 
-	Scenario: [Ticket-2] Wrong login provided causes login to fail - Passed
-		Step 1: Given user is about to login - Passed
-		Step 2: Given user entered invalid login - Passed
-		Step 3: Given user entered valid password - Passed
-		Step 4: When user clicked login button - Passed
-		Step 5: Then login is unsuccessful - Passed
-		Step 6: Then invalid login or password error message is returned - Passed
+	Scenario: [Ticket-2] Wrong login provided causes login to fail - Passed (3ms)
+		Step 1: Given user is about to login - Passed (<1ms)
+		Step 2: Given user entered invalid login - Passed (<1ms)
+		Step 3: Given user entered valid password - Passed (<1ms)
+		Step 4: When user clicked login button - Passed (<1ms)
+		Step 5: Then login is unsuccessful - Passed (<1ms)
+		Step 6: Then invalid login or password error message is returned - Passed (<1ms)
 
-	Scenario: Wrong password provided causes login to fail - Passed
-		Step 1: Given user is about to login - Passed
-		Step 2: Given user entered valid login - Passed
-		Step 3: Given user entered invalid password - Passed
-		Step 4: When user clicked login button - Passed
-		Step 5: Then login is unsuccessful - Passed
-		Step 6: Then invalid login or password error message is returned - Passed
+	Scenario: [Ticket-2] Wrong password provided causes login to fail - Passed (6ms)
+		Step 1: Given user is about to login - Passed (<1ms)
+		Step 2: Given user entered valid login - Passed (<1ms)
+		Step 3: Given user entered invalid password - Passed (<1ms)
+		Step 4: When user clicked login button - Passed (<1ms)
+		Step 5: Then login is unsuccessful - Passed (<1ms)
+		Step 6: Then invalid login or password error message is returned - Passed (<1ms)
+
+Feature: [Story-5] Payment feature
+	In order to get desired products
+	As a customer
+	I want to pay for products in basket
+
+Feature: [Story-3] Product spedition feature
+	In order to deliver products to customer effectively
+	As a spedition manager
+	I want to dispatch products to customer as soon as the payment is finalized
+
+	Scenario: [Ticket-5] Should dispatch product after payment is finalized - Passed (3ms)
+		Step 1: GIVEN There is an active customer with id "ABC-123" - Passed (<1ms)
+		Step 2: GIVEN Customer has product "wooden shelf" in basket - Passed (<1ms)
+		Step 3: GIVEN Customer has product "wooden desk" in basket - Passed (<1ms)
+		Step 4: WHEN Customer payment has been finalized - Passed (<1ms)
+		Step 5: THEN Product "wooden shelf" has been dispatched to customer - Passed (<1ms)
+		Step 6: THEN Product "wooden desk" has been dispatched to customer - Passed (<1ms)

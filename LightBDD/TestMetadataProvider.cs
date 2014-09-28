@@ -134,7 +134,7 @@ namespace LightBDD
             return new ArgumentReplacement(name.Length, string.Format(" [{0}: \"{{{1}}}\"]", paramName, argumentIndex), 0);
         }
 
-        private int FindArgument(string name, string argument, StringComparison stringComparison)
+        private static int FindArgument(string name, string argument, StringComparison stringComparison)
         {
             int pos = 0;
             while ((pos = name.IndexOf(argument, pos, stringComparison)) >= 0)

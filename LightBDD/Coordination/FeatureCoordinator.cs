@@ -4,7 +4,7 @@ using LightBDD.Results;
 namespace LightBDD.Coordination
 {
 	/// <summary>
-	/// Feature coordinator singleton class allowing to collect feature results, pass them to specified aggregator and notify it when tests finish.
+	/// Feature coordinator singleton class allowing to collect feature results, pass them to specified aggregator and notify it when all tests finished.
 	/// It allows to customize aggregator - by default it is FeatureSummaryAggregator that saves feature results to XML.
 	/// This class guarantees aggregator notification on AppDomain unload, but offers also method to notify aggregator manually.
 	/// </summary>

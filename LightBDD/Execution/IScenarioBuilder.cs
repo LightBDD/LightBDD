@@ -24,7 +24,7 @@ namespace LightBDD.Execution
         IScenarioBuilder<TContext> WithContext<TContext>(TContext instance);
 
         /// <summary>
-        /// Completes scenario build process and runs given steps in order.<br/>
+        /// Completes scenario build process and runs given steps in specified order.<br/>
         /// If any step throws, other are not executed and exception is propagated to calling method.
         /// Example usage:
         /// <code>
@@ -49,7 +49,7 @@ namespace LightBDD.Execution
         /// <param name="steps">List of steps to execute in order.</param>
         void Run(params Action[] steps);
         /// <summary>
-        /// Completes scenario build process and runs given steps in order.<br/>
+        /// Completes scenario build process and runs given steps in specified order.<br/>
         /// If any step throws, other are not executed and exception is propagated to calling method.<br/>
         /// Step name is determined on lambda parameter reflecting action type keyword, corresponding action name and passed list of parameters to called method.<br/>
         /// Please note that rules for placing parameter values in step name are as follows, where first matching rule would be used:
@@ -92,7 +92,7 @@ namespace LightBDD.Execution
     public interface IScenarioBuilder<TContext>
     {
         /// <summary>
-        /// Completes scenario build process and executes given steps in order, where all steps share context of <c>TContext</c> type instantiated with default constructor.<br/>
+        /// Completes scenario build process and executes given steps in specified order, where all steps share context of <c>TContext</c> type instantiated with default constructor.<br/>
         /// If any step throws, other are not executed and exception is propagated to calling method.<br/>
         /// Example usage:
         /// <code>
@@ -118,10 +118,10 @@ namespace LightBDD.Execution
         /// <param name="steps">List of steps to execute in order.</param>
         void Run(params Action<TContext>[] steps);
         /// <summary>
-        /// Completes scenario build process and executes given steps in order, where all steps share context of <c>TContext</c> type instantiated with default constructor.<br/>
+        /// Completes scenario build process and executes given steps in specified order, where all steps share context of <c>TContext</c> type instantiated with default constructor.<br/>
         /// If any step throws, other are not executed and exception is propagated to calling method.<br/>
         /// Step name is determined on lambda parameter reflecting action type keyword, corresponding action name and passed list of parameters to called method.<br/>
-        /// It is suggested that step methods belongs to <c>TContext</c> type, however it is not enforced.<br/>
+        /// It is suggested that step methods belongs to <c>TContext</c> type, however it is not required.<br/>
         /// Please note that rules for placing parameter values in step name are as follows, where first matching rule would be used:
         /// <list type="bullet">
         /// <item><description>it will replace first occurrence of variable name written in capital letters (<c>void Price_is_AMOUNT_dollars(int amount)</c> => <c>Price is "27" dollars</c>)</description></item>

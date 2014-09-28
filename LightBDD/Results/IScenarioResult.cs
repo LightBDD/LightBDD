@@ -17,6 +17,7 @@ namespace LightBDD.Results
         /// Scenario name.
         /// </summary>
         string Name { get; }
+
         /// <summary>
         /// Scenario status.
         /// </summary>
