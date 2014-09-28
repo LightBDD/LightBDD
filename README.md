@@ -1,14 +1,14 @@
 Lightweight Behavior Driven Development test framework (LightBDD)
 ===========
 
-Have you ever been using the BDD methodology? Yes? - cool.  
-Now, have you tried to write stories or acceptance criteria using tools like [SpecFlow](http://www.specflow.org/) or [Fitnesse](http://fitnesse.org/)?  
-If you have (or have used other similar frameworks) perhaps you came to the point where the test projects contained tens of scenarios or you had multiple projects with a lot of acceptance tests.  
-You might have also come to the point where you had to modify those tests because the requirements changed, or adjust them to the modified class interfaces after refactoring.  
+Have you ever been using the BDD methodology? Yes? - cool.
+Now, have you tried to write stories or acceptance criteria using tools like [SpecFlow](http://www.specflow.org/) or [Fitnesse](http://fitnesse.org/)?
+If you have (or have used other similar frameworks) perhaps you came to the point where the test projects contained tens of scenarios or you had multiple projects with a lot of acceptance tests.
+You might have also come to the point where you had to modify those tests because the requirements changed, or adjust them to the modified class interfaces after refactoring.
 It is no longer fun, is it?
 
-The difficulty with these frameworks is that they are using a totally different language than the one in which the code is written.  
-Because of that, they try to provide translation layers between the text in which the stories are written and code in which the stories are executed.  
+The difficulty with these frameworks is that they are using a totally different language than the one in which the code is written.
+Because of that, they try to provide translation layers between the text in which the stories are written and code in which the stories are executed.
 This additional layer becomes the root of most problems when maintaining tests, mostly because it lacks integration with development tools, which means that there is no support for refactoring, code analysis (like showing unused methods) etc, or a good integrated environment for running those tests.
 
 ## Project description
@@ -18,7 +18,9 @@ This additional layer becomes the root of most problems when maintaining tests, 
 * Native support for refactoring, code analysis (like finding unused methods), test running and all features that Visual Studio / Intellisense / Resharper offer during code development,
 * Easy to read scenario definitions,
 * Scenario steps execution tracking, usable during longer test execution,
+* Scenario steps execution time measurement,
 * Possibility to run steps with dedicated shared context, allowing to run tests safely in parallel,
+* Possibility to run parameterized steps with smart rules of inserting argument values to formatted step name,
 * Feature result summary available in XML, HTML or Plain text format,
 * Possibility to configure multiple result summaries in app.config file,
 * VS Project Item templates for feature test files,
@@ -51,8 +53,34 @@ public partial class Login_feature //feature name
 			Then_welcome_message_is_returned_containing_user_name);
 	}
 }
+
+[FeatureDescription(
+@"In order to pay for products
+As a customer
+I want to receive invoice for bought items")] //feature description
+[TestFixture]
+[Label("Story-2")]
+public partial class Invoice_feature
+{
+	[Test]
+	[Label("Ticket-2")]
+	public void Receiving_invoice_for_products() //scenario name
+	{
+		Runner.RunScenario(
+
+			given => Product_is_available_in_products_storage("wooden desk"), //scenario steps written in way allowing to pass additional parameters
+			and => Product_is_available_in_products_storage("wooden shelf"),
+			when => Customer_buys_product("wooden desk"),
+			and => Customer_buys_product("wooden shelf"),
+			then => Invoice_is_sent_to_customer(),
+			and => Invoice_contains_product_with_price_of_AMOUNT_pounds("wooden desk", 62),
+			and => Invoice_contains_product_with_price_of_AMOUNT_pounds("wooden shelf", 37));
+	}
+}
 ```
-The above example shows feature *partial* class containing only scenario definitions, which makes it easy to read.
+The above example shows feature *partial* classes containing only scenario definitions, which makes it easy to read.
+The **Login_feature** class uses simplified syntax for defining scenario steps.
+The **Invoice_feature** class uses extended syntax that separates action type (given, when, then) from step method and allows to use parameterized steps.
 
 All method implementations are separated and put in other file.
 ```C#
@@ -73,6 +101,18 @@ public partial class Login_feature : FeatureFixture
 	}
 	/* ... */	
 }
+
+public partial class Invoice_feature : FeatureFixture
+{
+	private void Product_is_available_in_products_storage(string product) { /* ... */ }
+
+	private void Customer_buys_product(string product) { /* ... */ }
+
+	private void Invoice_is_sent_to_customer() { /* ... */ }
+
+	private void Invoice_contains_product_with_price_of_AMOUNT_pounds(string product, int amount) { /* ... */ }
+	/* ... */
+}
 ```
 With using partial classes, it is possible to keep all methods describing steps as **private**, which allows Resharper to mark them if they are no longer used.
 
@@ -80,12 +120,35 @@ With using partial classes, it is possible to keep all methods describing steps 
 ```
 SCENARIO: [Ticket-1] Successful login
   STEP 1/6: Given user is about to login
+  STEP 1/6: Passed after <1ms
   STEP 2/6: Given user entered valid login
+  STEP 2/6: Passed after <1ms
   STEP 3/6: Given user entered valid password
+  STEP 3/6: Passed after <1ms
   STEP 4/6: When user clicked login button
+  STEP 4/6: Passed after <1ms
   STEP 5/6: Then login is successful
+  STEP 5/6: Passed after <1ms
   STEP 6/6: Then welcome message is returned containing user name
-  SCENARIO RESULT: Passed
+  STEP 6/6: Passed after 8ms
+  SCENARIO RESULT: Passed after 13ms
+
+SCENARIO: [Ticket-2] Receiving invoice for products
+  STEP 1/7: GIVEN Product "wooden desk" is available in products storage
+  STEP 1/7: Passed after 128ms
+  STEP 2/7: AND Product "wooden shelf" is available in products storage
+  STEP 2/7: Passed after 967ms
+  STEP 3/7: WHEN Customer buys product "wooden desk"
+  STEP 3/7: Passed after 443ms
+  STEP 4/7: AND Customer buys product "wooden shelf"
+  STEP 4/7: Passed after 671ms
+  STEP 5/7: THEN Invoice is sent to customer
+  STEP 5/7: Passed after 258ms
+  STEP 6/7: AND Invoice contains product "wooden desk" with price of "62" pounds
+  STEP 6/7: Passed after <1ms
+  STEP 7/7: AND Invoice contains product "wooden shelf" with price of "37" pounds
+  STEP 7/7: Passed after <1ms
+  SCENARIO RESULT: Passed after 2s 484ms
 ```
 
 ### Example summary output file after all tests execution:
@@ -96,13 +159,27 @@ SCENARIO: [Ticket-1] Successful login
     <Description>In order to access personal data
 As an user
 I want to login into system</Description>
-    <Scenario Status="Passed" Name="Successful login" Label="Ticket-1">
-      <Step Status="Passed" Number="1" Name="Given user is about to login" />
-      <Step Status="Passed" Number="2" Name="Given user entered valid login" />
-      <Step Status="Passed" Number="3" Name="Given user entered valid password" />
-      <Step Status="Passed" Number="4" Name="When user clicked login button" />
-      <Step Status="Passed" Number="5" Name="Then login is successful" />
-      <Step Status="Passed" Number="6" Name="Then welcome message is returned containing user name" />
+    <Scenario Status="Passed" Name="Successful login" Label="Ticket-1" ExecutionStart="2014-09-28T19:41:28.7527844Z" ExecutionTime="PT0.0132717S">
+      <Step Status="Passed" Number="1" Name="Given user is about to login" ExecutionStart="2014-09-28T19:41:28.7527844Z" ExecutionTime="PT0.0000083S" />
+      <Step Status="Passed" Number="2" Name="Given user entered valid login" ExecutionStart="2014-09-28T19:41:28.7538126Z" ExecutionTime="PT0.0002164S" />
+      <Step Status="Passed" Number="3" Name="Given user entered valid password" ExecutionStart="2014-09-28T19:41:28.7548179Z" ExecutionTime="PT0.0003335S" />
+      <Step Status="Passed" Number="4" Name="When user clicked login button" ExecutionStart="2014-09-28T19:41:28.7558172Z" ExecutionTime="PT0.0001609S" />
+      <Step Status="Passed" Number="5" Name="Then login is successful" ExecutionStart="2014-09-28T19:41:28.7568179Z" ExecutionTime="PT0.0000065S" />
+      <Step Status="Passed" Number="6" Name="Then welcome message is returned containing user name" ExecutionStart="2014-09-28T19:41:28.7568179Z" ExecutionTime="PT0.0084508S" />
+    </Scenario>
+  </Feature>
+  <Feature Name="Invoice feature" Label="Story-2">
+    <Description>In order to pay for products
+As a customer
+I want to receive invoice for bought items</Description>
+    <Scenario Status="Passed" Name="Receiving invoice for products" Label="Ticket-2" ExecutionStart="2014-09-28T19:41:26.2284318Z" ExecutionTime="PT2.4848353S">
+      <Step Status="Passed" Number="1" Name="GIVEN Product &quot;wooden desk&quot; is available in products storage" ExecutionStart="2014-09-28T19:41:26.2324345Z" ExecutionTime="PT0.1283159S" />
+      <Step Status="Passed" Number="2" Name="AND Product &quot;wooden shelf&quot; is available in products storage" ExecutionStart="2014-09-28T19:41:26.3632131Z" ExecutionTime="PT0.967444S" />
+      <Step Status="Passed" Number="3" Name="WHEN Customer buys product &quot;wooden desk&quot;" ExecutionStart="2014-09-28T19:41:27.3329005Z" ExecutionTime="PT0.4434324S" />
+      <Step Status="Passed" Number="4" Name="AND Customer buys product &quot;wooden shelf&quot;" ExecutionStart="2014-09-28T19:41:27.777977Z" ExecutionTime="PT0.6719727S" />
+      <Step Status="Passed" Number="5" Name="THEN Invoice is sent to customer" ExecutionStart="2014-09-28T19:41:28.4521988Z" ExecutionTime="PT0.2587129S" />
+      <Step Status="Passed" Number="6" Name="AND Invoice contains product &quot;wooden desk&quot; with price of &quot;62&quot; pounds" ExecutionStart="2014-09-28T19:41:28.7115779Z" ExecutionTime="PT0.0003046S" />
+      <Step Status="Passed" Number="7" Name="AND Invoice contains product &quot;wooden shelf&quot; with price of &quot;37&quot; pounds" ExecutionStart="2014-09-28T19:41:28.7125804Z" ExecutionTime="PT0.0000065S" />
     </Scenario>
   </Feature>
 </TestResults>
