@@ -70,22 +70,22 @@ namespace LightBDD.Results.Formatters.Html
                 _writer.WriteTag(HtmlTextWriterTag.H1, null, "Feature summary");
                 _writer.WriteTag(Html5Tag.Article, null, () =>
                     _writer.WriteTag(HtmlTextWriterTag.Table, "features", () =>
-                    {
-                        WriteTableHeaders("Feature", "Scenarios", "Passed", "Ignored", "Failed", "Duration");
-                        foreach (var feature in features)
-                            WriteFeatureSummary(feature);
-                    }));
+                        {
+                            WriteTableHeaders("Feature", "Scenarios", "Passed", "Ignored", "Failed", "Duration");
+                            for (int index = 0; index < features.Length; index++)
+                                WriteFeatureSummary(features[index], index + 1);
+                        }));
             });
         }
 
-        private void WriteFeatureSummary(IFeatureResult feature)
+        private void WriteFeatureSummary(IFeatureResult feature, int index)
         {
             _writer.WriteTag(HtmlTextWriterTag.Tr, null, () =>
             {
                 _writer.WriteTag(HtmlTextWriterTag.Td, null, () =>
                 {
                     WriteLabel(feature.Label);
-                    _writer.WriteEncodedText(feature.Name);
+                    _writer.WriteLink("#feature" + index, feature.Name);
                 });
                 _writer.WriteTag(HtmlTextWriterTag.Td, null, feature.Scenarios.Count().ToString(CultureInfo.InvariantCulture));
                 _writer.WriteTag(HtmlTextWriterTag.Td, null, feature.CountScenarios(ResultStatus.Passed).ToString(CultureInfo.InvariantCulture));
@@ -133,14 +133,14 @@ namespace LightBDD.Results.Formatters.Html
             _writer.RenderBeginTag(HtmlTextWriterTag.Body);
         }
 
-        private void WriteFeatureDetails(IEnumerable<IFeatureResult> features)
+        private void WriteFeatureDetails(IFeatureResult[] features)
         {
             _writer.WriteTag(Html5Tag.Section, null, () =>
             {
                 _writer.WriteTag(HtmlTextWriterTag.H1, null, "Feature details");
                 WriteStatusFilter();
-                foreach (var feature in features)
-                    WriteFeature(feature);
+                for (var i = 0; i < features.Length; ++i)
+                    WriteFeature(features[i], i + 1);
             });
         }
 
@@ -154,12 +154,13 @@ namespace LightBDD.Results.Formatters.Html
             _writer.WriteBreak();
         }
 
-        private void WriteFeature(IFeatureResult feature)
+        private void WriteFeature(IFeatureResult feature, int index)
         {
             _writer.WriteTag(Html5Tag.Article, GetFeatureClasses(feature), () =>
             {
                 _writer.WriteTag(HtmlTextWriterTag.Div, "header", () =>
                 {
+                    _writer.AddAttribute(HtmlTextWriterAttribute.Id, "feature" + index);
                     _writer.WriteTag(HtmlTextWriterTag.H2, "title", () =>
                     {
                         WriteLabel(feature.Label);

@@ -39,6 +39,15 @@ namespace LightBDD.Results.Formatters.Html
             return writer;
         }
 
+        public static HtmlTextWriter WriteLink(this HtmlTextWriter writer, string href, string content)
+        {
+            writer.AddAttribute(HtmlTextWriterAttribute.Href, href);
+            writer.RenderBeginTag(HtmlTextWriterTag.A);
+            writer.WriteContent(content);
+            writer.RenderEndTag();
+            return writer;
+        }
+
         public static HtmlTextWriter WriteTag(this HtmlTextWriter writer, HtmlTextWriterTag tag, string className, string content, bool escapeContent = true)
         {
             if (content == null)
