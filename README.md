@@ -68,7 +68,7 @@ public partial class Invoice_feature
 	{
 		Runner.RunScenario(
 
-			given => Product_is_available_in_products_storage("wooden desk"), //scenario steps written in way allowing to pass additional parameters
+			given => Product_is_available_in_products_storage("wooden desk"), //scenario steps
 			and => Product_is_available_in_products_storage("wooden shelf"),
 			when => Customer_buys_product("wooden desk"),
 			and => Customer_buys_product("wooden shelf"),
