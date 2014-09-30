@@ -27,7 +27,7 @@ This additional layer becomes the root of most problems when maintaining tests, 
 * Integrated with [NUnit](http://www.nunit.org/) and [MbUnit](https://code.google.com/p/mb-unit/) frameworks.
 
 ### Tests structure and conventions
-**LightBDD** is based on the [NUnit](http://www.nunit.org/)/[MbUnit](https://code.google.com/p/mb-unit/) frameworks which makes it very easy to learn and use - please see [Tests structure and conventions](https://github.com/Suremaker/LightBDD/wiki/Tests-structure-and-conventions) wiki section for details.
+**LightBDD** is based on the [NUnit](http://www.nunit.org/)/[MbUnit](https://code.google.com/p/mb-unit/) frameworks which makes it very easy to learn and use - please see [Tests Structure and Conventions](https://github.com/Suremaker/LightBDD/wiki/02-Tests-structure-and-conventions) wiki section for details.
 
 ### Example 
 ```C#
