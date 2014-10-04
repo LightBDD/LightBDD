@@ -73,9 +73,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\FeatureResultExtensions.cs" />
     <Compile Include="Results\Formatters\HtmlResultFormatter.cs" />
+    <Compile Include="Results\Formatters\Html\Html.cs" />
     <Compile Include="Results\Formatters\Html\Html5Tag.cs" />
     <Compile Include="Results\Formatters\Html\HtmlResultTextWriter.cs" />
     <Compile Include="Results\Formatters\Html\HtmlTextWriterExtensions.cs" />
+    <Compile Include="Results\Formatters\Html\IHtmlNode.cs" />
+    <Compile Include="Results\Formatters\Html\TagBuilder.cs" />
+    <Compile Include="Results\Formatters\Html\TextBuilder.cs" />
     <Compile Include="Results\Formatters\PlainTextResultFormatter.cs" />
     <Compile Include="Results\IFeatureResult.cs" />
     <Compile Include="Results\IScenarioResult.cs" />

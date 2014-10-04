@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -29,151 +30,133 @@ namespace LightBDD.Results.Formatters.Html
             _writer.Dispose();
         }
 
-        private void WriteExecutionSummary(IFeatureResult[] features)
+        private static IHtmlNode WriteExecutionSummary(IFeatureResult[] features)
         {
-            _writer.WriteTag(Html5Tag.Section, null, () =>
+            return Html.Tag(Html5Tag.Section).Content(
+                Html.Tag(HtmlTextWriterTag.H1).Content("Execution summary"),
+                Html.Tag(Html5Tag.Article).Content(
+                    Html.Tag(HtmlTextWriterTag.Table).Class("summary").Content(
+                        GetKeyValueTableRow("Test execution start time:", (features.GetTestExecutionStartTime() ?? DateTimeOffset.UtcNow).ToString("yyyy-MM-dd HH:mm:ss UTC")),
+                        GetKeyValueTableRow("Test execution time:", features.GetTestExecutionTime().FormatPretty()),
+                        GetKeyValueTableRow("Number of features:", features.Length.ToString(CultureInfo.InvariantCulture)),
+                        GetKeyValueTableRow("Number of scenarios:", features.SelectMany(f => f.Scenarios).Count()),
+                        GetKeyValueTableRow("Passed scenarios:", features.Sum(f => f.CountScenarios(ResultStatus.Passed))),
+                        GetKeyValueTableRow("Ignored scenarios:", features.Sum(f => f.CountScenarios(ResultStatus.Ignored))),
+                        GetKeyValueTableRow("Failed scenarios:", features.Sum(f => f.CountScenarios(ResultStatus.Failed)), "alert")
+                        )));
+        }
+
+        private static IHtmlNode GetKeyValueTableRow(string key, string value)
+        {
+            return Html.Tag(HtmlTextWriterTag.Tr).Content(
+                Html.Tag(HtmlTextWriterTag.Th).Content(key),
+                Html.Tag(HtmlTextWriterTag.Td).Content(value));
+        }
+
+        private static IHtmlNode GetKeyValueTableRow(string key, int value, string classNameIfNotZero = null)
+        {
+            var valueTag = Html.Tag(HtmlTextWriterTag.Td).Content(value.ToString(CultureInfo.InvariantCulture));
+
+            if (classNameIfNotZero != null && value != 0)
+                valueTag.Class(classNameIfNotZero);
+
+            return Html.Tag(HtmlTextWriterTag.Tr).Content(
+                Html.Tag(HtmlTextWriterTag.Th).Content(key),
+                valueTag);
+        }
+
+        private static IHtmlNode WriteFeatureList(IFeatureResult[] features)
+        {
+            return Html.Tag(Html5Tag.Section).Content(
+                Html.Tag(HtmlTextWriterTag.H1).Content("Feature summary"),
+                Html.Tag(Html5Tag.Article).Content(
+                    Html.Tag(HtmlTextWriterTag.Table).Class("features").Content(
+                        GetSummaryTable(features))));
+        }
+
+        private static IEnumerable<IHtmlNode> GetSummaryTable(IFeatureResult[] features)
+        {
+            yield return GetSummaryTableHeaders("Feature", "Scenarios", "Passed", "Ignored", "Failed", "Duration");
+            for (int index = 0; index < features.Length; index++)
+                yield return GetFeatureSummary(features[index], index + 1);
+        }
+
+        private static IHtmlNode GetFeatureSummary(IFeatureResult feature, int index)
+        {
+            return Html.Tag(HtmlTextWriterTag.Tr).Content(
+                Html.Tag(HtmlTextWriterTag.Td).Content(
+                    Html.Tag(HtmlTextWriterTag.A).Href("#feature" + index).Content(feature.Name),
+                    GetLabel(feature.Label)),
+                Html.Tag(HtmlTextWriterTag.Td).Content(feature.Scenarios.Count().ToString(CultureInfo.InvariantCulture)),
+                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountScenarios(ResultStatus.Passed).ToString(CultureInfo.InvariantCulture)),
+                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountScenarios(ResultStatus.Ignored).ToString(CultureInfo.InvariantCulture)),
+                GetNumericTagWithOptionalClass(HtmlTextWriterTag.Td, "alert", feature.CountScenarios(ResultStatus.Failed)),
+                Html.Tag(HtmlTextWriterTag.Td).Content(feature.Scenarios.GetTestExecutionTime().FormatPretty()));
+        }
+
+        private static IHtmlNode GetNumericTagWithOptionalClass(HtmlTextWriterTag tag, string className, int value)
+        {
+            var node = Html.Tag(tag).Content(value.ToString(CultureInfo.InvariantCulture));
+            if (value != 0)
+                node.Class(className);
+            return node;
+        }
+
+        private static IHtmlNode GetLabel(string label)
+        {
+            return Html.Tag(HtmlTextWriterTag.Span)
+                .Class("label")
+                .Content(string.IsNullOrWhiteSpace(label) ? string.Empty : string.Format("[{0}]", label.Trim()))
+                .SpaceBefore()
+                .SkipEmpty();
+        }
+
+        private static IHtmlNode GetSummaryTableHeaders(params string[] headers)
+        {
+            return Html.Tag(HtmlTextWriterTag.Tr)
+                       .Content(headers.Select(header => Html.Tag(HtmlTextWriterTag.Th).Content(header)));
+        }
+
+        private static IHtmlNode WriteFeatureDetails(IFeatureResult[] features)
+        {
+            return Html.Tag(Html5Tag.Section).Content(
+                GetFeatureDetailsContent(features));
+        }
+
+        private static IEnumerable<IHtmlNode> GetFeatureDetailsContent(IFeatureResult[] features)
+        {
+            yield return Html.Tag(HtmlTextWriterTag.H1).Content("Feature details");
+            foreach (var htmlNode in GetFilterNodes())
+                yield return htmlNode;
+
+            for (var i = 0; i < features.Length; ++i)
+                yield return GetFeatureDetails(features[i], i + 1);
+        }
+
+        private static IEnumerable<IHtmlNode> GetFilterNodes()
+        {
+            return new[]
             {
-                _writer.WriteTag(HtmlTextWriterTag.H1, null, "Execution summary");
-                _writer.WriteTag(Html5Tag.Article, null, () =>
-                    _writer.WriteTag(HtmlTextWriterTag.Table, "summary", () =>
-                    {
-                        WriteKeyValueTableRow("Test execution start time:", (features.GetTestExecutionStartTime() ?? DateTimeOffset.UtcNow).ToString("yyyy-MM-dd HH:mm:ss UTC"));
-                        WriteKeyValueTableRow("Test execution time:", features.GetTestExecutionTime().FormatPretty());
-                        WriteKeyValueTableRow("Number of features:", features.Length.ToString(CultureInfo.InvariantCulture));
-                        WriteKeyValueTableRow("Number of scenarios:", features.SelectMany(f => f.Scenarios).Count());
-                        WriteKeyValueTableRow("Passed scenarios:", features.Sum(f => f.CountScenarios(ResultStatus.Passed)));
-                        WriteKeyValueTableRow("Ignored scenarios:", features.Sum(f => f.CountScenarios(ResultStatus.Ignored)));
-                        WriteKeyValueTableRow("Failed scenarios:", features.Sum(f => f.CountScenarios(ResultStatus.Failed)), "alert");
-                    }));
-            });
+                Html.Tag(HtmlTextWriterTag.Span).Class("filter").Content("Filter:"),
+                Html.Checkbox().Id("showPassed").Content("Passed").Checked().SpaceBefore(),
+                Html.Checkbox().Id("showFailed").Content("Failed").Checked().SpaceBefore(),
+                Html.Checkbox().Id("showIgnored").Content("Ignored").Checked().SpaceBefore(),
+                Html.Checkbox().Id("showNotRun").Content("Not Run").Checked().SpaceBefore(),
+                Html.Br()
+            };
         }
 
-        private void WriteKeyValueTableRow(string key, int value, string classNameIfNotZero = null)
+        private static IHtmlNode GetFeatureDetails(IFeatureResult feature, int index)
         {
-            WriteKeyValueTableRow(key, value.ToString(CultureInfo.InvariantCulture), value != 0 ? classNameIfNotZero : null);
-        }
-
-        private void WriteKeyValueTableRow(string key, string value, string className = null)
-        {
-            _writer.WriteTag(HtmlTextWriterTag.Tr, null, () =>
-            {
-                _writer.WriteTag(HtmlTextWriterTag.Th, null, key);
-                _writer.WriteTag(HtmlTextWriterTag.Td, className, value);
-            });
-        }
-
-        private void WriteFeatureList(IFeatureResult[] features)
-        {
-            _writer.WriteTag(Html5Tag.Section, null, () =>
-            {
-                _writer.WriteTag(HtmlTextWriterTag.H1, null, "Feature summary");
-                _writer.WriteTag(Html5Tag.Article, null, () =>
-                    _writer.WriteTag(HtmlTextWriterTag.Table, "features", () =>
-                        {
-                            WriteTableHeaders("Feature", "Scenarios", "Passed", "Ignored", "Failed", "Duration");
-                            for (int index = 0; index < features.Length; index++)
-                                WriteFeatureSummary(features[index], index + 1);
-                        }));
-            });
-        }
-
-        private void WriteFeatureSummary(IFeatureResult feature, int index)
-        {
-            _writer.WriteTag(HtmlTextWriterTag.Tr, null, () =>
-            {
-                _writer.WriteTag(HtmlTextWriterTag.Td, null, () =>
-                {
-                    _writer.WriteLink("#feature" + index, feature.Name);
-                    WriteLabel(feature.Label);
-                });
-                _writer.WriteTag(HtmlTextWriterTag.Td, null, feature.Scenarios.Count().ToString(CultureInfo.InvariantCulture));
-                _writer.WriteTag(HtmlTextWriterTag.Td, null, feature.CountScenarios(ResultStatus.Passed).ToString(CultureInfo.InvariantCulture));
-                _writer.WriteTag(HtmlTextWriterTag.Td, null, feature.CountScenarios(ResultStatus.Ignored).ToString(CultureInfo.InvariantCulture));
-                WriteNumericTagWithOptionalClass(HtmlTextWriterTag.Td, "alert", feature.CountScenarios(ResultStatus.Failed));
-                _writer.WriteTag(HtmlTextWriterTag.Td, null, feature.Scenarios.GetTestExecutionTime().FormatPretty());
-            });
-        }
-
-        private void WriteNumericTagWithOptionalClass(HtmlTextWriterTag tag, string classNameIfNotZero, int value)
-        {
-            _writer.WriteTag(tag, value != 0 ? classNameIfNotZero : null, value.ToString(CultureInfo.InvariantCulture));
-        }
-
-        private void WriteTableHeaders(params string[] headers)
-        {
-            _writer.WriteTag(HtmlTextWriterTag.Tr, null, () =>
-            {
-                foreach (var header in headers)
-                    _writer.WriteTag(HtmlTextWriterTag.Th, null, header);
-            });
-        }
-
-        private void WriteFooter()
-        {
-            _writer.RenderEndTag();
-            _writer.RenderEndTag();
-        }
-
-        private void WriteHeader()
-        {
-            _writer.WriteLine("<!DOCTYPE HTML>");
-            _writer.RenderBeginTag(HtmlTextWriterTag.Html);
-            _writer.RenderBeginTag(HtmlTextWriterTag.Head);
-
-            _writer.AddAttribute("charset", "UTF-8");
-            _writer.RenderBeginTag(HtmlTextWriterTag.Meta);
-            _writer.RenderEndTag();
-
-            _writer.WriteTag(HtmlTextWriterTag.Title, null, "Summary");
-
-            _writer.WriteTag(HtmlTextWriterTag.Style, null, _styles, false);
-
-            _writer.RenderEndTag();
-            _writer.RenderBeginTag(HtmlTextWriterTag.Body);
-        }
-
-        private void WriteFeatureDetails(IFeatureResult[] features)
-        {
-            _writer.WriteTag(Html5Tag.Section, null, () =>
-            {
-                _writer.WriteTag(HtmlTextWriterTag.H1, null, "Feature details");
-                WriteStatusFilter();
-                for (var i = 0; i < features.Length; ++i)
-                    WriteFeature(features[i], i + 1);
-            });
-        }
-
-        private void WriteStatusFilter()
-        {
-            _writer.WriteTag(HtmlTextWriterTag.Span, "filter", "Filter:")
-                   .WriteSpace().WriteCheckbox("showPassed", "Passed", true)
-                   .WriteSpace().WriteCheckbox("showFailed", "Failed", true)
-                   .WriteSpace().WriteCheckbox("showIgnored", "Ignored", true)
-                   .WriteSpace().WriteCheckbox("showNotRun", "Not Run", true)
-                   .WriteBreak();
-        }
-
-        private void WriteFeature(IFeatureResult feature, int index)
-        {
-            _writer.WriteTag(Html5Tag.Article, GetFeatureClasses(feature), () =>
-                {
-                    _writer.WriteCheckbox("toggle", true);
-                    _writer.WriteTag(HtmlTextWriterTag.Div, "header", () =>
-                    {
-                        _writer.AddAttribute(HtmlTextWriterAttribute.Id, "feature" + index);
-                        _writer.WriteTag(HtmlTextWriterTag.H2, "title", () =>
-                        {
-                            _writer.WriteEncodedText(feature.Name);
-                            WriteLabel(feature.Label);
-                        });
-                        _writer.WriteTag(HtmlTextWriterTag.Div, "description", feature.Description);
-                    });
-                    _writer.WriteTag(HtmlTextWriterTag.Div, "scenarios", () =>
-                    {
-                        foreach (var scenario in feature.Scenarios)
-                            WriteScenario(scenario);
-                    });
-                });
+            return Html.Tag(Html5Tag.Article).Class(GetFeatureClasses(feature)).Content(
+                Html.Checkbox().Class("toggle").Checked(),
+                Html.Tag(HtmlTextWriterTag.Div).Class("header").Content(
+                    Html.Tag(HtmlTextWriterTag.H2).Id("feature" + index).Class("title").Content(
+                        Html.Text(feature.Name).Escape().Trim(),
+                        GetLabel(feature.Label)),
+                    Html.Tag(HtmlTextWriterTag.Div).Class("description").Content(feature.Description)),
+                Html.Tag(HtmlTextWriterTag.Div).Class("scenarios").Content(
+                    feature.Scenarios.Select(GetScenario)));
         }
 
         private static string GetFeatureClasses(IFeatureResult feature)
@@ -188,53 +171,42 @@ namespace LightBDD.Results.Formatters.Html
             return builder.ToString();
         }
 
-        private void WriteScenario(IScenarioResult scenario)
+        private static IHtmlNode GetScenario(IScenarioResult scenario)
         {
-            _writer.WriteTag(HtmlTextWriterTag.Div, "scenario " + GetStatusClass(scenario.Status), () =>
-            {
-                _writer.WriteCheckbox("toggle", true);
-                _writer.WriteTag(HtmlTextWriterTag.H3, "title", () =>
-                {
-                    WriteStatus(scenario.Status);
-                    _writer.WriteEncodedText(scenario.Name);
-                    WriteLabel(scenario.Label);
-                    WriteDuration(scenario.ExecutionTime);
-                });
-
-                foreach (var step in scenario.Steps)
-                    WriteStep(step);
-                _writer.WriteTag(HtmlTextWriterTag.Div, "details", scenario.StatusDetails);
-            });
+            return Html.Tag(HtmlTextWriterTag.Div).Class("scenario " + GetStatusClass(scenario.Status)).Content(
+                Html.Checkbox().Class("toggle").Checked(),
+                Html.Tag(HtmlTextWriterTag.H3).Class("title").Content(
+                    GetStatus(scenario.Status),
+                    Html.Text(scenario.Name).Escape().Trim(),
+                    GetLabel(scenario.Label),
+                    GetDuration(scenario.ExecutionTime)),
+                Html.Tag(HtmlTextWriterTag.Div).Content(scenario.Steps.Select(GetStep)),
+                Html.Tag(HtmlTextWriterTag.Div).Class("details").Content(scenario.StatusDetails).SkipEmpty());
         }
 
-        private void WriteLabel(string label)
+        private static IHtmlNode GetDuration(TimeSpan? executionTime)
         {
-            if (string.IsNullOrWhiteSpace(label))
-                return;
-            _writer.WriteSpace()
-                   .WriteTag(HtmlTextWriterTag.Span, "label", string.Format("[{0}]", label.Trim()));
+            return Html.Tag(HtmlTextWriterTag.Span)
+                .Class("duration")
+                .Content(executionTime != null ? string.Format("({0})", executionTime.FormatPretty()) : string.Empty)
+                .SkipEmpty()
+                .SpaceBefore();
         }
 
-        private void WriteStep(IStepResult step)
+        private static IHtmlNode GetStatus(ResultStatus status)
         {
-            _writer.WriteTag(HtmlTextWriterTag.Div, "step", () =>
-            {
-                WriteStatus(step.Status);
-                _writer.WriteEncodedText(string.Format("{0}. {1}", step.Number, step.Name));
-                WriteDuration(step.ExecutionTime);
-            });
+            return Html.Tag(HtmlTextWriterTag.Span)
+                .Class("status " + GetStatusClass(status))
+                .Content(status.ToString())
+                .SpaceAfter();
         }
 
-        private void WriteDuration(TimeSpan? executionTime)
+        private static IHtmlNode GetStep(IStepResult step)
         {
-            if (executionTime != null)
-                _writer.WriteSpace().WriteTag(HtmlTextWriterTag.Span, "duration", string.Format("({0})", executionTime.FormatPretty()));
-        }
-
-        private void WriteStatus(ResultStatus status)
-        {
-            _writer.WriteTag(HtmlTextWriterTag.Span, "status " + GetStatusClass(status), status.ToString())
-                   .WriteSpace();
+            return Html.Tag(HtmlTextWriterTag.Div).Class("step").Content(
+                GetStatus(step.Status),
+                Html.Text(string.Format("{0}. {1}", step.Number, step.Name)).Escape().Trim(),
+                GetDuration(step.ExecutionTime));
         }
 
         private static string GetStatusClass(ResultStatus status)
@@ -245,12 +217,20 @@ namespace LightBDD.Results.Formatters.Html
         public void Write(IFeatureResult[] features)
         {
             _writer.NewLine = "";
-            WriteHeader();
-            WriteExecutionSummary(features);
-            WriteFeatureList(features);
-            WriteFeatureDetails(features);
-            WriteFooter();
-            _writer.Flush();
+
+            _writer
+                .WriteTag(Html.Text("<!DOCTYPE HTML>"))
+                .WriteTag(Html.Tag(HtmlTextWriterTag.Html).Content(
+                    Html.Tag(HtmlTextWriterTag.Head).Content(
+                        Html.Tag(HtmlTextWriterTag.Meta).Attribute("charset", "UTF-8"),
+                        Html.Tag(HtmlTextWriterTag.Title).Content("Summary"),
+                        Html.Tag(HtmlTextWriterTag.Style).Content(_styles, false, false)),
+                    Html.Tag(HtmlTextWriterTag.Body).Content(
+                        WriteExecutionSummary(features),
+                        WriteFeatureList(features),
+                        WriteFeatureDetails(features)
+                        )))
+                .Flush();
         }
     }
 }
