@@ -156,7 +156,8 @@ namespace LightBDD.Results.Formatters.Html
         private void WriteFeature(IFeatureResult feature, int index)
         {
             _writer.WriteTag(Html5Tag.Article, GetFeatureClasses(feature), () =>
-            {
+                {
+                    _writer.WriteCheckbox("toggle",true);
                 _writer.WriteTag(HtmlTextWriterTag.Div, "header", () =>
                 {
                     _writer.AddAttribute(HtmlTextWriterAttribute.Id, "feature" + index);
@@ -191,6 +192,7 @@ namespace LightBDD.Results.Formatters.Html
         {
             _writer.WriteTag(HtmlTextWriterTag.Div, "scenario " + GetStatusClass(scenario.Status), () =>
             {
+                _writer.WriteCheckbox("toggle", true);
                 _writer.WriteTag(HtmlTextWriterTag.H3, "title", () =>
                 {
                     WriteStatus(scenario.Status);
@@ -198,6 +200,7 @@ namespace LightBDD.Results.Formatters.Html
                     _writer.WriteEncodedText(scenario.Name);
                     WriteDuration(scenario.ExecutionTime);
                 });
+                
                 foreach (var step in scenario.Steps)
                     WriteStep(step);
                 _writer.WriteTag(HtmlTextWriterTag.Div, "details", scenario.StatusDetails);

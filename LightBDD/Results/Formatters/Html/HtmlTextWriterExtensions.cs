@@ -23,6 +23,17 @@ namespace LightBDD.Results.Formatters.Html
             return writer;
         }
 
+        public static HtmlTextWriter WriteCheckbox(this HtmlTextWriter writer, string className,bool isChecked)
+        {
+            writer.AddAttribute(HtmlTextWriterAttribute.Type, "checkbox");
+            writer.WriteClassName(className);
+            if (isChecked)
+                writer.AddAttribute(HtmlTextWriterAttribute.Checked, null);
+            writer.RenderBeginTag(HtmlTextWriterTag.Input);
+            writer.RenderEndTag();
+            return writer;
+        }
+
         public static HtmlTextWriter WriteCheckbox(this HtmlTextWriter writer, string id, string label, bool isChecked)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "checkbox");
