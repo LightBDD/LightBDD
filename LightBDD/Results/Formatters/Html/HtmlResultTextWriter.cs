@@ -83,8 +83,8 @@ namespace LightBDD.Results.Formatters.Html
             {
                 _writer.WriteTag(HtmlTextWriterTag.Td, null, () =>
                 {
-                    WriteLabel(feature.Label);
                     _writer.WriteLink("#feature" + index, feature.Name);
+                    WriteLabel(feature.Label);
                 });
                 _writer.WriteTag(HtmlTextWriterTag.Td, null, feature.Scenarios.Count().ToString(CultureInfo.InvariantCulture));
                 _writer.WriteTag(HtmlTextWriterTag.Td, null, feature.CountScenarios(ResultStatus.Passed).ToString(CultureInfo.InvariantCulture));
@@ -157,23 +157,23 @@ namespace LightBDD.Results.Formatters.Html
         {
             _writer.WriteTag(Html5Tag.Article, GetFeatureClasses(feature), () =>
                 {
-                    _writer.WriteCheckbox("toggle",true);
-                _writer.WriteTag(HtmlTextWriterTag.Div, "header", () =>
-                {
-                    _writer.AddAttribute(HtmlTextWriterAttribute.Id, "feature" + index);
-                    _writer.WriteTag(HtmlTextWriterTag.H2, "title", () =>
+                    _writer.WriteCheckbox("toggle", true);
+                    _writer.WriteTag(HtmlTextWriterTag.Div, "header", () =>
                     {
-                        WriteLabel(feature.Label);
-                        _writer.WriteEncodedText(feature.Name);
+                        _writer.AddAttribute(HtmlTextWriterAttribute.Id, "feature" + index);
+                        _writer.WriteTag(HtmlTextWriterTag.H2, "title", () =>
+                        {
+                            _writer.WriteEncodedText(feature.Name);
+                            WriteLabel(feature.Label);
+                        });
+                        _writer.WriteTag(HtmlTextWriterTag.Div, "description", feature.Description);
                     });
-                    _writer.WriteTag(HtmlTextWriterTag.Div, "description", feature.Description);
+                    _writer.WriteTag(HtmlTextWriterTag.Div, "scenarios", () =>
+                    {
+                        foreach (var scenario in feature.Scenarios)
+                            WriteScenario(scenario);
+                    });
                 });
-                _writer.WriteTag(HtmlTextWriterTag.Div, "scenarios", () =>
-                {
-                    foreach (var scenario in feature.Scenarios)
-                        WriteScenario(scenario);
-                });
-            });
         }
 
         private static string GetFeatureClasses(IFeatureResult feature)
@@ -196,11 +196,11 @@ namespace LightBDD.Results.Formatters.Html
                 _writer.WriteTag(HtmlTextWriterTag.H3, "title", () =>
                 {
                     WriteStatus(scenario.Status);
-                    WriteLabel(scenario.Label);
                     _writer.WriteEncodedText(scenario.Name);
+                    WriteLabel(scenario.Label);
                     WriteDuration(scenario.ExecutionTime);
                 });
-                
+
                 foreach (var step in scenario.Steps)
                     WriteStep(step);
                 _writer.WriteTag(HtmlTextWriterTag.Div, "details", scenario.StatusDetails);
@@ -209,10 +209,10 @@ namespace LightBDD.Results.Formatters.Html
 
         private void WriteLabel(string label)
         {
-            if (label == null)
+            if (string.IsNullOrWhiteSpace(label))
                 return;
-            _writer.WriteTag(HtmlTextWriterTag.Span, "label", label)
-                .WriteSpace();
+            _writer.WriteSpace()
+                   .WriteTag(HtmlTextWriterTag.Span, "label", string.Format("[{0}]", label.Trim()));
         }
 
         private void WriteStep(IStepResult step)

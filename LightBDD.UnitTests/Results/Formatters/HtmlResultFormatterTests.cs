@@ -52,13 +52,13 @@ Ignored scenarios: 1
 Failed scenarios: 1
 Feature summary
 Feature Scenarios Passed Ignored Failed Duration
-Label 1 My feature 2 0 1 1 1m 04s
+My feature [Label 1] 2 0 1 1 1m 04s
 Feature details
 Filter: Passed Failed Ignored Not Run
-Label 1 My feature
+My feature [Label 1]
 My feature
 long description
-Ignored Label 2 name (1m 02s)
+Ignored name [Label 2] (1m 02s)
 Passed 1. step1 (1m 01s)
 Ignored 2. step2 (1s 100ms)
 Not implemented yet
@@ -206,10 +206,11 @@ Passed 1. step1 (20ms)";
             _current.Append(text);
             return this;
         }
-        public string ToString()
+
+        public override string ToString()
         {
             EnsureNewLine();//to flush current
-            return string.Join("\n", _lines);
+            return string.Join(Environment.NewLine, _lines);
         }
     }
 }
