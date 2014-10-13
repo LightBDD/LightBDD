@@ -1,11 +1,12 @@
-﻿*{color: #222222;font-family: Arial;}
-html{font-size: 11pt;}
-.status{font-size:8pt;}
+﻿*{color: #222222;font-family: Arial, sans-serif;-webkit-print-color-adjust:exact;}
+html{font-size: 10pt;}
+.status{font-size:7pt;}
 h1{ font-size: 1.60em;}
 h2{ font-size: 1.40em;}
 h3{ font-size: 1.20em;}
 .feature{margin-bottom: 1em;padding: 0.2em;}
-.title{font-weight: bold;vertical-align: middle;margin: 0;margin-bottom: 0.5em;}
+.title{font-weight: bold;vertical-align: middle;margin: 0;}
+.steps{margin-top: 0.5em;}
 .feature .header{width: 25%;display: inline-block;vertical-align: top;}
 .feature .scenarios{width: auto;display: inline-block;vertical-align: top;}
 .toggle, .scenario .title{display:inline-block}
@@ -14,7 +15,7 @@ h3{ font-size: 1.20em;}
 .description{font-style: italic;color: #222222;white-space: pre-wrap;}
 .label{color: #222277;padding: 0.2em;}
 .scenario{ margin-bottom: 1em;}
-.status{font-weight: bold;border: 1px solid #777777;padding: 0.2em;margin-right: 0.2em;width: 4em;display: inline-block;vertical-align: middle;}
+.status{font-weight: bold;border: 1px solid #777777;padding: 0.2em;margin-right: 0.2em;width: 4em; display: inline-block;vertical-align: middle;text-align: center;}
 .status.passed{background-color: #aaffaa;}
 .status.failed{background-color: #ffaaaa;}
 .status.ignored{background-color: #ffffaa;}
@@ -28,7 +29,7 @@ table,th,td{ font-size: 1em;}
 table.features td{ text-align: right;}
 table.features td:first-of-type, table.features th:first-of-type{ text-align: left;}
 td.alert{ color: #ff5555;font-weight: bold;}
-article{ margin-left: 3em;}
+article{ margin-left: 1em;}
 .filter{ margin:0 0.3em 0.5em 0; font-weight: bold;font-style: italic; display: inline-block;}
 #showPassed:not(:checked) ~ * .scenario.passed, #showPassed:not(:checked) ~ .feature.passed { display: none;}
 #showFailed:not(:checked) ~ * .scenario.failed, #showFailed:not(:checked) ~ .feature.failed { display: none;}
@@ -38,3 +39,7 @@ article{ margin-left: 3em;}
 #showFailed:checked ~ * .scenario.failed, #showFailed:checked ~ .feature.failed { display: block;}
 #showIgnored:checked ~ * .scenario.ignored, #showIgnored:checked ~ .feature.ignored { display: block;}
 #showNotRun:checked ~ * .scenario.notrun, #showNotRun:checked ~ .feature.notrun { display: block;}
+input { vertical-align: middle;}
+a{ text-decoration: none;}
+a:hover{ text-decoration: underline;}
+a:hover,label:hover{ color: #662266;}

@@ -76,6 +76,11 @@ namespace LightBDD.Results.Formatters.Html
             return Attribute(HtmlTextWriterAttribute.Id, id);
         }
 
+        public TagBuilder For(string forTag)
+        {
+            return Attribute(HtmlTextWriterAttribute.For, forTag);
+        }
+
         public TagBuilder Checked()
         {
             return Attribute(HtmlTextWriterAttribute.Checked, null);
