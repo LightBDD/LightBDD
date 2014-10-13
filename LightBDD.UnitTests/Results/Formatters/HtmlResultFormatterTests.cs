@@ -48,11 +48,16 @@ Test execution time: 1m 04s
 Number of features: 1
 Number of scenarios: 2
 Passed scenarios: 0
-Ignored scenarios: 1
 Failed scenarios: 1
+Ignored scenarios: 1
+Number of steps: 5
+Passed steps: 2
+Failed steps: 1
+Ignored steps: 1
+Not Run steps: 1
 Feature summary
-Feature Scenarios Passed Ignored Failed Duration
-My feature [Label 1] 2 0 1 1 1m 04s
+Feature Scenarios Passed Failed Ignored Steps Passed Failed Ignored Not Run Duration
+My feature [Label 1] 2 0 1 1 5 2 1 1 1 1m 04s
 Feature details
 Filter: Passed Failed Ignored Not Run
 My feature [Label 1]
@@ -89,11 +94,16 @@ Test execution time: 25ms
 Number of features: 1
 Number of scenarios: 1
 Passed scenarios: 0
-Ignored scenarios: 1
 Failed scenarios: 0
+Ignored scenarios: 1
+Number of steps: 2
+Passed steps: 1
+Failed steps: 0
+Ignored steps: 1
+Not Run steps: 0
 Feature summary
-Feature Scenarios Passed Ignored Failed Duration
-My feature 1 0 1 0 25ms
+Feature Scenarios Passed Failed Ignored Steps Passed Failed Ignored Not Run Duration
+My feature 1 0 0 1 2 1 0 1 0 25ms
 Feature details
 Filter: Passed Failed Ignored Not Run
 My feature
@@ -125,12 +135,17 @@ Test execution time: 40ms
 Number of features: 2
 Number of scenarios: 2
 Passed scenarios: 2
-Ignored scenarios: 0
 Failed scenarios: 0
+Ignored scenarios: 0
+Number of steps: 2
+Passed steps: 2
+Failed steps: 0
+Ignored steps: 0
+Not Run steps: 0
 Feature summary
-Feature Scenarios Passed Ignored Failed Duration
-My feature 1 1 0 0 20ms
-My feature2 1 1 0 0 20ms
+Feature Scenarios Passed Failed Ignored Steps Passed Failed Ignored Not Run Duration
+My feature 1 1 0 0 1 1 0 0 0 20ms
+My feature2 1 1 0 0 1 1 0 0 0 20ms
 Feature details
 Filter: Passed Failed Ignored Not Run
 My feature

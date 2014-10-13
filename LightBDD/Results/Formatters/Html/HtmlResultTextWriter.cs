@@ -36,13 +36,18 @@ namespace LightBDD.Results.Formatters.Html
                 Html.Tag(HtmlTextWriterTag.H1).Content("Execution summary"),
                 Html.Tag(Html5Tag.Article).Content(
                     Html.Tag(HtmlTextWriterTag.Table).Class("summary").Content(
-                        GetKeyValueTableRow("Test execution start time:", (features.GetTestExecutionStartTime() ?? DateTimeOffset.UtcNow).ToString("yyyy-MM-dd HH:mm:ss UTC")),
+                        GetKeyValueTableRow("Test execution start time:", features.GetTestExecutionStartTime().ToString("yyyy-MM-dd HH:mm:ss UTC")),
                         GetKeyValueTableRow("Test execution time:", features.GetTestExecutionTime().FormatPretty()),
                         GetKeyValueTableRow("Number of features:", features.Length.ToString(CultureInfo.InvariantCulture)),
-                        GetKeyValueTableRow("Number of scenarios:", features.SelectMany(f => f.Scenarios).Count()),
-                        GetKeyValueTableRow("Passed scenarios:", features.Sum(f => f.CountScenarios(ResultStatus.Passed))),
-                        GetKeyValueTableRow("Ignored scenarios:", features.Sum(f => f.CountScenarios(ResultStatus.Ignored))),
-                        GetKeyValueTableRow("Failed scenarios:", features.Sum(f => f.CountScenarios(ResultStatus.Failed)), "alert")
+                        GetKeyValueTableRow("Number of scenarios:", features.CountScenarios()),
+                        GetKeyValueTableRow("Passed scenarios:", features.CountScenariosWithStatus(ResultStatus.Passed)),
+                        GetKeyValueTableRow("Failed scenarios:", features.CountScenariosWithStatus(ResultStatus.Failed), "alert"),
+                        GetKeyValueTableRow("Ignored scenarios:", features.CountScenariosWithStatus(ResultStatus.Ignored)),
+                        GetKeyValueTableRow("Number of steps:", features.CountSteps()),
+                        GetKeyValueTableRow("Passed steps:", features.CountStepsWithStatus(ResultStatus.Passed)),
+                        GetKeyValueTableRow("Failed steps:", features.CountStepsWithStatus(ResultStatus.Failed), "alert"),
+                        GetKeyValueTableRow("Ignored steps:", features.CountStepsWithStatus(ResultStatus.Ignored)),
+                        GetKeyValueTableRow("Not Run steps:", features.CountStepsWithStatus(ResultStatus.NotRun))
                         )));
         }
 
@@ -76,7 +81,7 @@ namespace LightBDD.Results.Formatters.Html
 
         private static IEnumerable<IHtmlNode> GetSummaryTable(IFeatureResult[] features)
         {
-            yield return GetSummaryTableHeaders("Feature", "Scenarios", "Passed", "Ignored", "Failed", "Duration");
+            yield return GetSummaryTableHeaders("Feature", "Scenarios", "Passed", "Failed", "Ignored", "Steps", "Passed", "Failed", "Ignored", "Not Run", "Duration");
             for (int index = 0; index < features.Length; index++)
                 yield return GetFeatureSummary(features[index], index + 1);
         }
@@ -87,10 +92,18 @@ namespace LightBDD.Results.Formatters.Html
                 Html.Tag(HtmlTextWriterTag.Td).Content(
                     Html.Tag(HtmlTextWriterTag.A).Href("#feature" + index).Content(feature.Name),
                     GetLabel(feature.Label)),
+
                 Html.Tag(HtmlTextWriterTag.Td).Content(feature.Scenarios.Count().ToString(CultureInfo.InvariantCulture)),
-                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountScenarios(ResultStatus.Passed).ToString(CultureInfo.InvariantCulture)),
-                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountScenarios(ResultStatus.Ignored).ToString(CultureInfo.InvariantCulture)),
-                GetNumericTagWithOptionalClass(HtmlTextWriterTag.Td, "alert", feature.CountScenarios(ResultStatus.Failed)),
+                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountScenariosWithStatus(ResultStatus.Passed).ToString(CultureInfo.InvariantCulture)),
+                GetNumericTagWithOptionalClass(HtmlTextWriterTag.Td, "alert", feature.CountScenariosWithStatus(ResultStatus.Failed)),
+                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountScenariosWithStatus(ResultStatus.Ignored).ToString(CultureInfo.InvariantCulture)),
+
+                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountSteps().ToString(CultureInfo.InvariantCulture)),
+                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountStepsWithStatus(ResultStatus.Passed).ToString(CultureInfo.InvariantCulture)),
+                GetNumericTagWithOptionalClass(HtmlTextWriterTag.Td, "alert", feature.CountStepsWithStatus(ResultStatus.Failed)),
+                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountStepsWithStatus(ResultStatus.Ignored).ToString(CultureInfo.InvariantCulture)),
+                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountStepsWithStatus(ResultStatus.NotRun).ToString(CultureInfo.InvariantCulture)),
+
                 Html.Tag(HtmlTextWriterTag.Td).Content(feature.Scenarios.GetTestExecutionTime().FormatPretty()));
         }
 
@@ -162,7 +175,7 @@ namespace LightBDD.Results.Formatters.Html
         private static string GetFeatureClasses(IFeatureResult feature)
         {
             var builder = new StringBuilder("feature");
-            foreach (var result in Enum.GetValues(typeof(ResultStatus)).Cast<ResultStatus>().Where(result => feature.CountScenarios(result) > 0))
+            foreach (var result in Enum.GetValues(typeof(ResultStatus)).Cast<ResultStatus>().Where(result => feature.CountScenariosWithStatus(result) > 0))
                 builder.Append(" ").Append(GetStatusClass(result));
 
             if (!feature.Scenarios.Any())
