@@ -152,15 +152,20 @@ namespace LightBDD.Results.Formatters.Html
             {
                 Html.Tag(HtmlTextWriterTag.Span).Class("filter").Content("Filter:"),
                 Html.Checkbox().Id("showPassed").Checked().SpaceBefore(),
-                Html.Tag(HtmlTextWriterTag.Label).Content("Passed").For("showPassed"),
+                Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(),Html.Text("Passed")).For("showPassed"),
                 Html.Checkbox().Id("showFailed").Checked().SpaceBefore(),
-                Html.Tag(HtmlTextWriterTag.Label).Content("Failed").For("showFailed"),
+                Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(),Html.Text("Failed")).For("showFailed"),
                 Html.Checkbox().Id("showIgnored").Checked().SpaceBefore(),
-                Html.Tag(HtmlTextWriterTag.Label).Content("Ignored").For("showIgnored"),
+                Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(),Html.Text("Ignored")).For("showIgnored"),
                 Html.Checkbox().Id("showNotRun").Checked().SpaceBefore(),
-                Html.Tag(HtmlTextWriterTag.Label).Content("Not Run").For("showNotRun"),
+                Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(),Html.Text("Not Run")).For("showNotRun"),
                 Html.Br()
             };
+        }
+
+        private static IHtmlNode GetCheckBoxTag()
+        {
+            return Html.Tag(HtmlTextWriterTag.Span).Class("chbox");
         }
 
         private static IHtmlNode GetFeatureDetails(IFeatureResult feature, int index)
@@ -169,7 +174,7 @@ namespace LightBDD.Results.Formatters.Html
                 Html.Checkbox().Class("toggle").Id("toggle" + index).Checked(),
                 Html.Tag(HtmlTextWriterTag.Div).Class("header").Content(
                     Html.Tag(HtmlTextWriterTag.H2).Id("feature" + index).Class("title").Content(
-                        Html.Tag(HtmlTextWriterTag.Label).For("toggle" + index).Content(feature.Name),
+                        Html.Tag(HtmlTextWriterTag.Label).For("toggle" + index).Content(GetCheckBoxTag(), Html.Text(feature.Name)),
                         GetLabel(feature.Label)),
                     Html.Tag(HtmlTextWriterTag.Div).Class("description").Content(feature.Description)),
                 Html.Tag(HtmlTextWriterTag.Div).Class("scenarios").Content(
@@ -194,8 +199,10 @@ namespace LightBDD.Results.Formatters.Html
             return Html.Tag(HtmlTextWriterTag.Div).Class("scenario " + GetStatusClass(scenario.Status)).Content(
                 Html.Checkbox().Id(toggleId).Class("toggle").Checked(),
                 Html.Tag(HtmlTextWriterTag.H3).Class("title").Content(
-                    GetStatus(scenario.Status),
-                    Html.Tag(HtmlTextWriterTag.Label).For(toggleId).Content(scenario.Name),
+                    Html.Tag(HtmlTextWriterTag.Label).For(toggleId).Content(
+                        GetCheckBoxTag(),
+                        GetStatus(scenario.Status),
+                        Html.Text(scenario.Name)),
                     GetLabel(scenario.Label),
                     GetDuration(scenario.ExecutionTime)),
                 Html.Tag(HtmlTextWriterTag.Div).Content(scenario.Steps.Select(GetStep)),
