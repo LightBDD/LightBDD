@@ -143,7 +143,11 @@ namespace LightBDD.Results.Formatters.Html
                 yield return htmlNode;
 
             for (var i = 0; i < features.Length; ++i)
+            {
                 yield return GetFeatureDetails(features[i], i + 1);
+                yield return Html.Br();
+            }
+            yield return Html.Br();
         }
 
         private static IEnumerable<IHtmlNode> GetFilterNodes()

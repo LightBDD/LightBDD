@@ -47,3 +47,5 @@ input[type="checkbox"]{ display: none;}
 .chbox:before{display: inline-block; border: 1px solid #777777;padding: 0.1em;margin-right: 0.5em; border: 1px solid #777777;font-weight: bold;text-align: center;vertical-align: middle;width: 1em;}
 input[type="checkbox"]:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "\2715";}
 input[type="checkbox"]:checked + * .chbox:before{ background-color: #eeeeee;content: "\2713";}
+input[type="checkbox"].toggle:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "\22bd";}
+input[type="checkbox"].toggle:checked + * .chbox:before{ background-color: #eeeeee;content: "\22bc";}
