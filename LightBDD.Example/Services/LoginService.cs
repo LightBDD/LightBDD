@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace LightBDD.Example.Services
 {
-	internal class LoginService
+    public class LoginService
 	{
 		readonly IDictionary<string, string> _users = new Dictionary<string, string>();
 		public void AddUser(string userName, string password)

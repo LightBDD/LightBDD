@@ -1,6 +1,6 @@
 namespace LightBDD.Example.Services
 {
-	internal class LoginResult
+    public class LoginResult
 	{
 		public bool IsSuccessful { get; private set; }
 
