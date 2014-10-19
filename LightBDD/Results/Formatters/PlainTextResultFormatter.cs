@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using LightBDD.Formatters;
 
@@ -18,6 +20,7 @@ namespace LightBDD.Results.Formatters
         public string Format(params IFeatureResult[] features)
         {
             var builder = new StringBuilder();
+            FormatSummary(builder, features);
             foreach (var feature in features)
                 FormatFeature(builder, feature);
             return builder.ToString();
@@ -36,7 +39,7 @@ namespace LightBDD.Results.Formatters
             builder.AppendLine();
         }
 
-        private void FormatFeature(StringBuilder builder, IFeatureResult feature)
+        private static void FormatFeature(StringBuilder builder, IFeatureResult feature)
         {
             if (builder.Length > 0)
                 builder.AppendLine();
@@ -53,7 +56,7 @@ namespace LightBDD.Results.Formatters
                 FormatScenario(builder, scenario);
         }
 
-        private void FormatScenario(StringBuilder builder, IScenarioResult scenario)
+        private static void FormatScenario(StringBuilder builder, IScenarioResult scenario)
         {
             if (builder.Length > 0)
                 builder.AppendLine();
@@ -74,6 +77,31 @@ namespace LightBDD.Results.Formatters
                 builder.AppendLine();
             }
             FormatDetails(builder, scenario);
+        }
+
+        private static void FormatSummary(StringBuilder builder, IFeatureResult[] features)
+        {
+            builder.AppendLine("Summary:");
+            var summary = new Dictionary<string, object>
+            {
+                {"Test execution start time", features.GetTestExecutionStartTime().ToString("yyyy-MM-dd HH:mm:ss UTC")},
+                {"Test execution time", features.GetTestExecutionTime().FormatPretty()},
+                {"Number of features", features.Length},
+                {"Number of scenarios", features.CountScenarios()},
+                {"Passed scenarios", features.CountScenariosWithStatus(ResultStatus.Passed)},
+                {"Failed scenarios", features.CountScenariosWithStatus(ResultStatus.Failed)},
+                {"Ignored scenarios", features.CountScenariosWithStatus(ResultStatus.Ignored)},
+                {"Number of steps", features.CountSteps()},
+                {"Passed steps", features.CountStepsWithStatus(ResultStatus.Passed)},
+                {"Failed steps", features.CountStepsWithStatus(ResultStatus.Failed)},
+                {"Ignored steps", features.CountStepsWithStatus(ResultStatus.Ignored)},
+                {"Not Run steps", features.CountStepsWithStatus(ResultStatus.NotRun)}
+            };
+
+            var maxLength = summary.Keys.Max(k => k.Length);
+            var format = string.Format("\t{{0,-{0}}}: {{1}}\n", maxLength);
+            foreach (var row in summary)
+                builder.AppendFormat(format, row.Key, row.Value);
         }
     }
 }

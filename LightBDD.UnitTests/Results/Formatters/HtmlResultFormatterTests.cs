@@ -5,7 +5,6 @@ using System.Text;
 using HtmlAgilityPack;
 using LightBDD.Results;
 using LightBDD.Results.Formatters;
-using LightBDD.Results.Implementation;
 using NUnit.Framework;
 
 namespace LightBDD.UnitTests.Results.Formatters
@@ -14,7 +13,6 @@ namespace LightBDD.UnitTests.Results.Formatters
     public class HtmlResultFormatterTests
     {
         private IResultFormatter _subject;
-        private DateTimeOffset _startDate = new DateTimeOffset(2014, 09, 23, 19, 21, 57, 55, TimeSpan.Zero);
         #region Setup/Teardown
 
         [SetUp]
@@ -28,18 +26,7 @@ namespace LightBDD.UnitTests.Results.Formatters
         [Test]
         public void Should_format_feature_with_description()
         {
-            var result = new FeatureResult("My feature", string.Format("My feature{0}long description", Environment.NewLine), "Label 1");
-            result.AddScenario(new ScenarioResult("name", new[]
-                {
-                    new StepResult(1, "step1", ResultStatus.Passed).SetExecutionTime(new TimeSpan(0, 1, 1)).SetExecutionStart(_startDate.AddSeconds(2)), 
-                    new StepResult(2, "step2", ResultStatus.Ignored, "Not implemented yet").SetExecutionTime(new TimeSpan(0, 0, 0, 1, 100)).SetExecutionStart(_startDate.AddSeconds(3))
-                }, "Label 2").SetExecutionTime(new TimeSpan(0, 0, 1, 2, 100)).SetExecutionStart(_startDate.AddSeconds(1)));
-            result.AddScenario(new ScenarioResult("name2", new[]
-                {
-                    new StepResult(1, "step3", ResultStatus.Passed).SetExecutionTime(new TimeSpan(0, 0, 0, 2, 107)).SetExecutionStart(_startDate.AddSeconds(5)), 
-                    new StepResult(2, "step4", ResultStatus.Failed, string.Format("  Expected: True{0}  But was: False", Environment.NewLine)).SetExecutionTime(new TimeSpan(0, 0, 0, 0, 50)).SetExecutionStart(_startDate.AddSeconds(6)),
-                    new StepResult(3, "step5", ResultStatus.NotRun)
-                }, null).SetExecutionTime(new TimeSpan(0, 0, 0, 2, 157)).SetExecutionStart(_startDate.AddSeconds(4)));
+            var result = ResultFormatterTestData.GetFeatureResultWithDescription();
 
             var text = FormatAndExtractText(result);
             const string expectedText = @"Execution summary
@@ -79,12 +66,7 @@ Expected: True
         [Test]
         public void Should_format_feature_without_description_nor_label_nor_details()
         {
-            var result = new FeatureResult("My feature", null, null);
-            result.AddScenario(new ScenarioResult("name", new[]
-                {
-                    new StepResult(1, "step1", ResultStatus.Passed).SetExecutionTime(TimeSpan.FromMilliseconds(20)).SetExecutionStart(_startDate.AddSeconds(2)), 
-                    new StepResult(2, "step2", ResultStatus.Ignored).SetExecutionTime(TimeSpan.FromMilliseconds(5)).SetExecutionStart(_startDate.AddSeconds(3))
-                }, null).SetExecutionTime(TimeSpan.FromMilliseconds(25)).SetExecutionStart(_startDate.AddSeconds(1)));
+            var result = ResultFormatterTestData.GetFeatureResultWithoutDescriptionNorLabelNorDetails();
 
             var text = FormatAndExtractText(result);
 
@@ -114,21 +96,10 @@ Ignored 2. step2 (5ms)";
         }
 
         [Test]
-        public void Multiple_features_should_be_separated_by_new_line()
+        public void Should_format_multiple_features()
         {
-            var feature1 = new FeatureResult("My feature", null, null);
-            feature1.AddScenario(new ScenarioResult("scenario1", new[]
-                {
-                    new StepResult(1, "step1", ResultStatus.Passed).SetExecutionTime(TimeSpan.FromMilliseconds(20)).SetExecutionStart(_startDate.AddSeconds(2))
-                }, null).SetExecutionTime(TimeSpan.FromMilliseconds(20)).SetExecutionStart(_startDate.AddSeconds(1)));
-
-            var feature2 = new FeatureResult("My feature2", null, null);
-            feature2.AddScenario(new ScenarioResult("scenario1", new[]
-                {
-                    new StepResult(1, "step1", ResultStatus.Passed).SetExecutionTime(TimeSpan.FromMilliseconds(20)).SetExecutionStart(_startDate.AddSeconds(5))
-                }, null).SetExecutionTime(TimeSpan.FromMilliseconds(20)).SetExecutionStart(_startDate.AddSeconds(4)));
-
-            var text = FormatAndExtractText(feature1, feature2);
+            var results = ResultFormatterTestData.GetMultipleFeatureResults();
+            var text = FormatAndExtractText(results);
             const string expectedText = @"Execution summary
 Test execution start time: 2014-09-23 19:21:58 UTC
 Test execution time: 40ms

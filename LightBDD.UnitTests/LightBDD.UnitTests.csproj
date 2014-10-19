@@ -60,6 +60,7 @@
     <Compile Include="Notification\ConsoleProgressNotifierTests.cs" />
     <Compile Include="Results\FeatureResultTests.cs" />
     <Compile Include="Results\Formatters\HtmlResultFormatterTests.cs" />
+    <Compile Include="Results\Formatters\ResultFormatterTestData.cs" />
     <Compile Include="Results\Formatters\TimeFormatterTests.cs" />
     <Compile Include="Results\StepResultTests.cs" />
     <Compile Include="SummaryGeneration\SummaryFileWriterTests.cs" />

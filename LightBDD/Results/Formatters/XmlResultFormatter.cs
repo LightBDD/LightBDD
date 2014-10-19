@@ -30,14 +30,15 @@ namespace LightBDD.Results.Formatters
 
         #endregion
 
-        private XDocument ToXDocument(IEnumerable<IFeatureResult> features)
+        private static XDocument ToXDocument(IFeatureResult[] features)
         {
             return new XDocument(
                 new XDeclaration("1.0", "utf-8", null),
-                new XElement("TestResults", features.Select(ToXElement).Cast<object>().ToArray()));
+                new XElement("TestResults",
+                    Enumerable.Repeat(ToSummaryXElement(features), 1).Concat(features.Select(ToXElement)).Cast<object>().ToArray()));
         }
 
-        private XElement ToXElement(IFeatureResult feature)
+        private static XElement ToXElement(IFeatureResult feature)
         {
             var objects = new List<object> { new XAttribute("Name", feature.Name) };
 
@@ -52,7 +53,7 @@ namespace LightBDD.Results.Formatters
             return new XElement("Feature", objects);
         }
 
-        private XElement ToXElement(IScenarioResult scenario)
+        private static XElement ToXElement(IScenarioResult scenario)
         {
             var objects = new List<object>
             {
@@ -75,19 +76,46 @@ namespace LightBDD.Results.Formatters
             return new XElement("Scenario", objects);
         }
 
-        private XElement ToXElement(IStepResult step)
+        private static XElement ToXElement(IStepResult step)
         {
             var objects = new List<object>
-                {
-                    new XAttribute("Status", step.Status.ToString()),
-                    new XAttribute("Number", step.Number),
-                    new XAttribute("Name", step.Name)
-                };
+            {
+                new XAttribute("Status", step.Status.ToString()),
+                new XAttribute("Number", step.Number),
+                new XAttribute("Name", step.Name)
+            };
             if (step.ExecutionStart != null)
                 objects.Add(new XAttribute("ExecutionStart", step.ExecutionStart));
             if (step.ExecutionTime != null)
                 objects.Add(new XAttribute("ExecutionTime", step.ExecutionTime));
             return new XElement("Step", objects);
+        }
+
+        private static XElement ToSummaryXElement(IFeatureResult[] features)
+        {
+            var objects = new List<object>
+            {
+                new XAttribute("TestExecutionStart", features.GetTestExecutionStartTime()),
+                new XAttribute("TestExecutionTime", features.GetTestExecutionTime()),
+                new XElement("Features", new object[] { new XAttribute("Count",features.Length) }),
+                new XElement("Scenarios", new object[]
+                {
+                    new XAttribute("Count",features.CountScenarios()),
+                    new XAttribute("Passed",features.CountScenariosWithStatus(ResultStatus.Passed)),
+                    new XAttribute("Failed",features.CountScenariosWithStatus(ResultStatus.Failed)),
+                    new XAttribute("Ignored",features.CountScenariosWithStatus(ResultStatus.Ignored)),
+                }),
+                new XElement("Steps", new object[]
+                {
+                    new XAttribute("Count",features.CountSteps()),
+                    new XAttribute("Passed",features.CountStepsWithStatus(ResultStatus.Passed)),
+                    new XAttribute("Failed",features.CountStepsWithStatus(ResultStatus.Failed)),
+                    new XAttribute("Ignored",features.CountStepsWithStatus(ResultStatus.Ignored)),
+                    new XAttribute("NotRun",features.CountStepsWithStatus(ResultStatus.NotRun))
+                })
+            };
+
+            return new XElement("Summary", objects);
         }
     }
 }
