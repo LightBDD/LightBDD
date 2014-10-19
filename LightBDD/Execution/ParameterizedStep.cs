@@ -18,6 +18,7 @@ namespace LightBDD.Execution
         private StepResult _result;
         public IStepResult GetResult() { return _result; }
 
+        [DebuggerStepThrough]
         public ParameterizedStep(TContext context, Action<StepType, TContext, object[]> action, Func<StepType, TContext, object>[] parameters, string stepNameFormat, int stepNumber, Func<Type, ResultStatus> mapping)
         {
             _context = context;
@@ -29,18 +30,12 @@ namespace LightBDD.Execution
             _result = new StepResult(stepNumber, string.Format(stepNameFormat, GetNotEvaluatedParameters()), ResultStatus.NotRun);
         }
 
+        [DebuggerStepThrough]
         public void Invoke(IProgressNotifier progressNotifier, int totalCount)
         {
             try
             {
-                var paramValues = EvaluateParameters();
-                var stepName = string.Format(_stepNameFormat, paramValues);
-                _result = new StepResult(_stepNumber, stepName, ResultStatus.NotRun);
-
-                progressNotifier.NotifyStepStart(stepName, _stepNumber, totalCount);
-                MeasuredInvoke(paramValues);
-
-                _result.SetStatus(ResultStatus.Passed);
+                InvokeStep(progressNotifier, totalCount);
             }
             catch (Exception e)
             {
@@ -53,6 +48,25 @@ namespace LightBDD.Execution
             }
         }
 
+        private void InvokeStep(IProgressNotifier progressNotifier, int totalCount)
+        {
+            var paramValues = EvaluateParameters();
+            InvokeStep(paramValues, progressNotifier, totalCount);
+        }
+
+        [DebuggerStepThrough]
+        private void InvokeStep(object[] paramValues, IProgressNotifier progressNotifier, int totalCount)
+        {
+            var stepName = string.Format(_stepNameFormat, paramValues);
+            _result = new StepResult(_stepNumber, stepName, ResultStatus.NotRun);
+
+            progressNotifier.NotifyStepStart(stepName, _stepNumber, totalCount);
+            MeasuredInvoke(paramValues);
+
+            _result.SetStatus(ResultStatus.Passed);
+        }
+
+        [DebuggerStepThrough]
         private void MeasuredInvoke(object[] paramValues)
         {
             var watch = new Stopwatch();
@@ -70,12 +84,21 @@ namespace LightBDD.Execution
 
         private object[] EvaluateParameters()
         {
-            return _parameters.Select(p => p.Invoke(StepType.Default, _context)).ToArray();
+            var result = new object[_parameters.Length];
+            for (int index = 0; index < _parameters.Length; index++)
+                result[index] = _parameters[index].Invoke(StepType.Default, _context);
+            return result;
         }
 
+        [DebuggerStepThrough]
         private object[] GetNotEvaluatedParameters()
         {
             return _parameters.Select(p => (object)"<?>").ToArray();
+        }
+
+        public override string ToString()
+        {
+            return _result.ToString();
         }
     }
 }

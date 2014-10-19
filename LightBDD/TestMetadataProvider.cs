@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -9,6 +10,7 @@ namespace LightBDD
     /// <summary>
     /// Test metadata provider allows to retrieve scenario and feature metadata such as descriptions, labels or names.
     /// </summary>
+    [DebuggerStepThrough]
     public abstract class TestMetadataProvider
     {
         /// <summary>
@@ -151,6 +153,7 @@ namespace LightBDD
         }
     }
 
+    [DebuggerStepThrough]
     internal class ArgumentReplacement
     {
         public ArgumentReplacement(int position, string value, int charactersToReplace)

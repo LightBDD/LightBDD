@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.ConstrainedExecution;
 using LightBDD.Results;
 
@@ -9,6 +10,7 @@ namespace LightBDD.Coordination
     /// It allows to customize aggregator - by default it is FeatureSummaryAggregator that saves feature results to XML.
     /// This class guarantees aggregator notification on AppDomain unload, but offers also method to notify aggregator manually.
     /// </summary>
+    [DebuggerStepThrough]
     public class FeatureCoordinator : CriticalFinalizerObject
     {
         private static readonly FeatureCoordinator _instance = new FeatureCoordinator();

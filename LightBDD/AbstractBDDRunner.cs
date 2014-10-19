@@ -13,6 +13,7 @@ namespace LightBDD
     /// <summary>
     /// Abstract class for executing behavior test scenarios.
     /// </summary>
+    [DebuggerStepThrough]
     public abstract class AbstractBDDRunner
     {
         private readonly FeatureResult _result;

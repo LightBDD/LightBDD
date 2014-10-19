@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq.Expressions;
 
 namespace LightBDD.Execution
 {
+    [DebuggerStepThrough]
     internal class ScenarioBuilder : ICustomizedScenarioBuilder
     {
         private readonly IStepsConverter _stepsConverter;
@@ -45,6 +47,7 @@ namespace LightBDD.Execution
         }
     }
 
+    [DebuggerStepThrough]
     internal class ScenarioBuilder<TContext> : IScenarioBuilder<TContext>
     {
         private readonly IStepsConverter _stepsConverter;

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using LightBDD.Results;
 
 namespace LightBDD.Execution
 {
+    [DebuggerStepThrough]
     internal class StepsConverter : IStepsConverter
     {
         private readonly Func<Type, ResultStatus> _mapExceptionToStatus;
