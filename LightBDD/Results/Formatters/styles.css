@@ -1,6 +1,8 @@
 ﻿*{color: #222222;font-family: Arial, sans-serif;-webkit-print-color-adjust:exact;}
 html{font-size: 11pt;}
-.status,.chbox:before{font-size:0.6em;}
+.chbox:before{font-size:0.6em;}
+.status{ font-size: x-small;}
+.step .status{font-size: xx-small;}
 h1{ font-size: 1.60em;}
 h2{ font-size: 1.40em;}
 h3{ font-size: 1.20em;}
