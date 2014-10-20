@@ -24,10 +24,10 @@ This additional layer becomes the root of most problems when maintaining tests, 
 * Feature result summary available in XML, HTML or Plain text format,
 * Possibility to configure multiple result summaries in app.config file,
 * VS Project Item templates for feature test files,
-* Integrated with [NUnit](http://www.nunit.org/) and [MbUnit](https://code.google.com/p/mb-unit/) frameworks.
+* Integrated with [NUnit](http://www.nunit.org/), [MbUnit](https://code.google.com/p/mb-unit/) and [MsTest](http://msdn.microsoft.com/en-us/library/ms243147) frameworks.
 
 ### Tests structure and conventions
-**LightBDD** is based on the [NUnit](http://www.nunit.org/)/[MbUnit](https://code.google.com/p/mb-unit/) frameworks which makes it very easy to learn and use - please see [Tests structure and conventions](https://github.com/Suremaker/LightBDD/wiki/Tests-structure-and-conventions) wiki section for details.
+**LightBDD** is integrated with well known testing frameworks ([NUnit](http://www.nunit.org/), [MbUnit](https://code.google.com/p/mb-unit/) and [MsTest](http://msdn.microsoft.com/en-us/library/ms243147)) which makes it very easy to learn, adapt and use - please see [Tests structure and conventions](https://github.com/Suremaker/LightBDD/wiki/Tests-structure-and-conventions) wiki section for details.
 
 ### Example 
 ```C#
@@ -118,6 +118,11 @@ With using partial classes, it is possible to keep all methods describing steps 
 
 ### Example console output during tests execution:
 ```
+FEATURE: [Story-1] Login feature
+  In order to access personal data
+  As an user
+  I want to login into system
+
 SCENARIO: [Ticket-1] Successful login
   STEP 1/6: Given user is about to login
   STEP 1/6: Passed after <1ms
@@ -132,6 +137,11 @@ SCENARIO: [Ticket-1] Successful login
   STEP 6/6: Then welcome message is returned containing user name
   STEP 6/6: Passed after 8ms
   SCENARIO RESULT: Passed after 13ms
+
+FEATURE: [Story-2] Invoice feature
+  In order to pay for products
+  As a customer
+  I want to receive invoice for bought items
 
 SCENARIO: [Ticket-2] Receiving invoice for products
   STEP 1/7: GIVEN Product "wooden desk" is available in products storage
@@ -155,37 +165,46 @@ SCENARIO: [Ticket-2] Receiving invoice for products
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <TestResults>
-  <Feature Name="Login feature" Label="Story-1">
-    <Description>In order to access personal data
-As an user
-I want to login into system</Description>
-    <Scenario Status="Passed" Name="Successful login" Label="Ticket-1" ExecutionStart="2014-09-28T19:41:28.7527844Z" ExecutionTime="PT0.0132717S">
-      <Step Status="Passed" Number="1" Name="Given user is about to login" ExecutionStart="2014-09-28T19:41:28.7527844Z" ExecutionTime="PT0.0000083S" />
-      <Step Status="Passed" Number="2" Name="Given user entered valid login" ExecutionStart="2014-09-28T19:41:28.7538126Z" ExecutionTime="PT0.0002164S" />
-      <Step Status="Passed" Number="3" Name="Given user entered valid password" ExecutionStart="2014-09-28T19:41:28.7548179Z" ExecutionTime="PT0.0003335S" />
-      <Step Status="Passed" Number="4" Name="When user clicked login button" ExecutionStart="2014-09-28T19:41:28.7558172Z" ExecutionTime="PT0.0001609S" />
-      <Step Status="Passed" Number="5" Name="Then login is successful" ExecutionStart="2014-09-28T19:41:28.7568179Z" ExecutionTime="PT0.0000065S" />
-      <Step Status="Passed" Number="6" Name="Then welcome message is returned containing user name" ExecutionStart="2014-09-28T19:41:28.7568179Z" ExecutionTime="PT0.0084508S" />
-    </Scenario>
-  </Feature>
+  <Summary TestExecutionStart="2014-10-20T21:07:26.9080605Z" TestExecutionTime="PT0.061447S">
+    <Features Count="2" />
+    <Scenarios Count="2" Passed="2" Failed="0" Ignored="0" />
+    <Steps Count="13" Passed="13" Failed="0" Ignored="0" NotRun="0" />
+  </Summary>
   <Feature Name="Invoice feature" Label="Story-2">
     <Description>In order to pay for products
 As a customer
 I want to receive invoice for bought items</Description>
-    <Scenario Status="Passed" Name="Receiving invoice for products" Label="Ticket-2" ExecutionStart="2014-09-28T19:41:26.2284318Z" ExecutionTime="PT2.4848353S">
-      <Step Status="Passed" Number="1" Name="GIVEN Product &quot;wooden desk&quot; is available in products storage" ExecutionStart="2014-09-28T19:41:26.2324345Z" ExecutionTime="PT0.1283159S" />
-      <Step Status="Passed" Number="2" Name="AND Product &quot;wooden shelf&quot; is available in products storage" ExecutionStart="2014-09-28T19:41:26.3632131Z" ExecutionTime="PT0.967444S" />
-      <Step Status="Passed" Number="3" Name="WHEN Customer buys product &quot;wooden desk&quot;" ExecutionStart="2014-09-28T19:41:27.3329005Z" ExecutionTime="PT0.4434324S" />
-      <Step Status="Passed" Number="4" Name="AND Customer buys product &quot;wooden shelf&quot;" ExecutionStart="2014-09-28T19:41:27.777977Z" ExecutionTime="PT0.6719727S" />
-      <Step Status="Passed" Number="5" Name="THEN Invoice is sent to customer" ExecutionStart="2014-09-28T19:41:28.4521988Z" ExecutionTime="PT0.2587129S" />
-      <Step Status="Passed" Number="6" Name="AND Invoice contains product &quot;wooden desk&quot; with price of &quot;62&quot; pounds" ExecutionStart="2014-09-28T19:41:28.7115779Z" ExecutionTime="PT0.0003046S" />
-      <Step Status="Passed" Number="7" Name="AND Invoice contains product &quot;wooden shelf&quot; with price of &quot;37&quot; pounds" ExecutionStart="2014-09-28T19:41:28.7125804Z" ExecutionTime="PT0.0000065S" />
+    <Scenario Status="Passed" Name="Receiving invoice for products" Label="Ticket-4" ExecutionStart="2014-10-20T21:07:26.9080605Z" ExecutionTime="PT0.0226216S">
+      <Step Status="Passed" Number="1" Name="GIVEN Product &quot;wooden desk&quot; is available in products storage" ExecutionStart="2014-10-20T21:07:26.9130638Z" ExecutionTime="PT0.0001623S" />
+      <Step Status="Passed" Number="2" Name="AND Product &quot;wooden shelf&quot; is available in products storage" ExecutionStart="2014-10-20T21:07:26.9270732Z" ExecutionTime="PT0.0000023S" />
+      <Step Status="Passed" Number="3" Name="WHEN Customer buys product &quot;wooden desk&quot;" ExecutionStart="2014-10-20T21:07:26.9280734Z" ExecutionTime="PT0.0001609S" />
+      <Step Status="Passed" Number="4" Name="AND Customer buys product &quot;wooden shelf&quot;" ExecutionStart="2014-10-20T21:07:26.9280734Z" ExecutionTime="PT0.0000032S" />
+      <Step Status="Passed" Number="5" Name="THEN Invoice is sent to customer" ExecutionStart="2014-10-20T21:07:26.9290745Z" ExecutionTime="PT0.0001203S" />
+      <Step Status="Passed" Number="6" Name="AND Invoice contains product &quot;wooden desk&quot; with price of &quot;62&quot; pounds" ExecutionStart="2014-10-20T21:07:26.9290745Z" ExecutionTime="PT0.0001292S" />
+      <Step Status="Passed" Number="7" Name="AND Invoice contains product &quot;wooden shelf&quot; with price of &quot;37&quot; pounds" ExecutionStart="2014-10-20T21:07:26.9300761Z" ExecutionTime="PT0.0000027S" />
+    </Scenario>
+  </Feature>
+  <Feature Name="Login feature" Label="Story-1">
+    <Description>In order to access personal data
+As an user
+I want to login into system</Description>
+    <Scenario Status="Passed" Name="Successful login" Label="Ticket-1" ExecutionStart="2014-10-20T21:07:27.1092638Z" ExecutionTime="PT0.0388254S">
+      <Step Status="Passed" Number="1" Name="Given user is about to login" ExecutionStart="2014-10-20T21:07:27.1132656Z" ExecutionTime="PT0.0167375S" />
+      <Step Status="Passed" Number="2" Name="Given user entered valid login" ExecutionStart="2014-10-20T21:07:27.1302779Z" ExecutionTime="PT0.0003176S" />
+      <Step Status="Passed" Number="3" Name="Given user entered valid password" ExecutionStart="2014-10-20T21:07:27.1312767Z" ExecutionTime="PT0.0003004S" />
+      <Step Status="Passed" Number="4" Name="When user clicked login button" ExecutionStart="2014-10-20T21:07:27.1322773Z" ExecutionTime="PT0.0014676S" />
+      <Step Status="Passed" Number="5" Name="Then login is successful" ExecutionStart="2014-10-20T21:07:27.1342801Z" ExecutionTime="PT0.0030612S" />
+      <Step Status="Passed" Number="6" Name="Then welcome message is returned containing user name" ExecutionStart="2014-10-20T21:07:27.1382823Z" ExecutionTime="PT0.0095448S" />
     </Scenario>
   </Feature>
 </TestResults>
 ```
 
-For full example, please see [LightBDD.Example](https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example) or [LightBDD.ParallelizableExample](https://github.com/Suremaker/LightBDD/tree/master/LightBDD.ParallelizableExample) project.
+For full example, please see corresponding example projects:
+* https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example
+* https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example.AcceptanceTests.NUnit
+* https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example.AcceptanceTests.MbUnit
+* https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example.AcceptanceTests.MsTest
 
 ## Download
 It is possible to download package using [NuGet](http://nuget.org):  
