@@ -143,11 +143,7 @@ namespace LightBDD.Results.Formatters.Html
                 yield return htmlNode;
 
             for (var i = 0; i < features.Length; ++i)
-            {
                 yield return GetFeatureDetails(features[i], i + 1);
-                yield return Html.Br();
-            }
-            yield return Html.Br();
         }
 
         private static IEnumerable<IHtmlNode> GetFilterNodes()
@@ -182,7 +178,8 @@ namespace LightBDD.Results.Formatters.Html
                         GetLabel(feature.Label)),
                     Html.Tag(HtmlTextWriterTag.Div).Class("description").Content(feature.Description)),
                 Html.Tag(HtmlTextWriterTag.Div).Class("scenarios").Content(
-                    feature.Scenarios.Select((s, i) => GetScenario(s, index, i))));
+                    feature.Scenarios.Select((s, i) => GetScenario(s, index, i))),
+                Html.Br());
         }
 
         private static string GetFeatureClasses(IFeatureResult feature)
@@ -210,7 +207,8 @@ namespace LightBDD.Results.Formatters.Html
                     GetLabel(scenario.Label),
                     GetDuration(scenario.ExecutionTime)),
                 Html.Tag(HtmlTextWriterTag.Div).Content(scenario.Steps.Select(GetStep)),
-                Html.Tag(HtmlTextWriterTag.Div).Class("details").Content(scenario.StatusDetails).SkipEmpty());
+                Html.Tag(HtmlTextWriterTag.Div).Class("details").Content(scenario.StatusDetails).SkipEmpty(),
+                Html.Br());
         }
 
         private static IHtmlNode GetDuration(TimeSpan? executionTime)

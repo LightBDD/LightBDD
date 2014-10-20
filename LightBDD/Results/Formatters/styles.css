@@ -11,7 +11,7 @@ h3{ font-size: 1.20em;}
 .feature .scenarios{width: auto;display: inline-block;vertical-align: top;}
 .scenario .title{display:inline-block}
 .toggle:not(:checked) ~ .scenarios { display: none;}
-.toggle:not(:checked) + h3 ~ * { display: none;}
+.toggle:not(:checked) + h3 ~ div { display: none;}
 .description{font-style: italic;color: #222222;white-space: pre-wrap;}
 .label{color: #222277;padding: 0.2em;}
 .scenario{ margin-bottom: 1em;}
