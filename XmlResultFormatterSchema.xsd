@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="TestResults">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Summary" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Features" minOccurs="1" maxOccurs="1">
+                <xs:complexType>
+                  <xs:attribute name="Count" type="xs:int" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Scenarios" minOccurs="1" maxOccurs="1">
+                <xs:complexType>
+                  <xs:attribute name="Count" type="xs:int" use="required" />
+                  <xs:attribute name="Passed" type="xs:int" use="required" />
+                  <xs:attribute name="Failed" type="xs:int" use="required" />
+                  <xs:attribute name="Ignored" type="xs:int" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Steps" minOccurs="1" maxOccurs="1">
+                <xs:complexType>
+                  <xs:attribute name="Count" type="xs:int" use="required" />
+                  <xs:attribute name="Passed" type="xs:int" use="required" />
+                  <xs:attribute name="Failed" type="xs:int" use="required" />
+                  <xs:attribute name="Ignored" type="xs:int" use="required" />
+                  <xs:attribute name="NotRun" type="xs:int" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="TestExecutionStart" type="xs:dateTime" use="required"/>
+            <xs:attribute name="TestExecutionTime" type="xs:duration" use="required"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Feature" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+              <xs:element name="Scenario" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Step" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:attribute name="Status" type="ResultStatus" use="required"/>
+                        <xs:attribute name="Number" type="xs:int" use="required"/>
+                        <xs:attribute name="Name" type="xs:string" use="required"/>
+                        <xs:attribute name="ExecutionStart" type="xs:dateTime" use="optional"/>
+                        <xs:attribute name="ExecutionTime" type="xs:duration" use="optional"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="StatusDetails" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                  </xs:sequence>
+                  <xs:attribute name="Status" type="ResultStatus" use="required"/>
+                  <xs:attribute name="Name" type="xs:string" use="required"/>
+                  <xs:attribute name="Label" type="xs:string" use="optional"/>
+                  <xs:attribute name="ExecutionStart" type="xs:dateTime" use="required"/>
+                  <xs:attribute name="ExecutionTime" type="xs:duration" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="Name" type="xs:string" use="required"/>
+            <xs:attribute name="Label" type="xs:string" use="optional"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="ResultStatus">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Passed"/>
+      <xs:enumeration value="Failed"/>
+      <xs:enumeration value="Ignored"/>
+      <xs:enumeration value="NotRun"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

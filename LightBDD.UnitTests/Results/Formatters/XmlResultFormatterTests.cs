@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Xml.Linq;
+using System.Xml.Schema;
 using LightBDD.Results.Formatters;
 using NUnit.Framework;
 
@@ -8,7 +10,16 @@ namespace LightBDD.UnitTests.Results.Formatters
     public class XmlResultFormatterTests
     {
         private IResultFormatter _subject;
+        private static XmlSchemaSet _schema;
+
         #region Setup/Teardown
+
+        [TestFixtureSetUp]
+        public void FixtureSetUp()
+        {
+            _schema = new XmlSchemaSet();
+            _schema.Add("", "XmlResultFormatterSchema.xsd");
+        }
 
         [SetUp]
         public void SetUp()
@@ -50,6 +61,7 @@ long description</Description>
   </Feature>
 </TestResults>";
             Assert.That(text, Is.EqualTo(expectedText));
+            ValidateWithSchema(text);
         }
 
         [Test]
@@ -74,6 +86,7 @@ long description</Description>
   </Feature>
 </TestResults>";
             Assert.That(text, Is.EqualTo(expectedText));
+            ValidateWithSchema(text);
         }
 
         [Test]
@@ -102,6 +115,12 @@ long description</Description>
   </Feature>
 </TestResults>";
             Assert.That(text, Is.EqualTo(expectedText));
+            ValidateWithSchema(text);
+        }
+
+        private static void ValidateWithSchema(string xml)
+        {
+            XDocument.Parse(xml).Validate(_schema, (o, e) => Assert.Fail(e.Message));
         }
     }
 }

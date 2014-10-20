@@ -21,6 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE.txt = LICENSE.txt
 		QuickStart.txt = QuickStart.txt
 		README.md = README.md
+		XmlResultFormatterSchema.xsd = XmlResultFormatterSchema.xsd
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.NUnit", "LightBDD.NUnit\LightBDD.NUnit.csproj", "{B97EF26C-EF54-4A85-9C0E-1F65283712D7}"

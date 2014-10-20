@@ -99,9 +99,9 @@ namespace LightBDD.Results.Formatters
             };
 
             var maxLength = summary.Keys.Max(k => k.Length);
-            var format = string.Format("\t{{0,-{0}}}: {{1}}\n", maxLength);
+            var format = string.Format("\t{{0,-{0}}}: {{1}}", maxLength);
             foreach (var row in summary)
-                builder.AppendFormat(format, row.Key, row.Value);
+                builder.AppendFormat(format, row.Key, row.Value).AppendLine();
         }
     }
 }

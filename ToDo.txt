@@ -1,5 +1,3 @@
-1) Create an xsd schema for XmlResultFormatter
-
 2.0:
 * remove obsolete methods
 * rename LightBDD to LightBDD.Core
