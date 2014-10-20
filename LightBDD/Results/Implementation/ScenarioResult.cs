@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace LightBDD.Results.Implementation
 {
+    [DebuggerStepThrough]
     internal class ScenarioResult : IScenarioResult
     {
         public ScenarioResult(string scenarioName, IEnumerable<IStepResult> steps, string label)

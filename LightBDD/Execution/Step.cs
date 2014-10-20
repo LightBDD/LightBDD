@@ -6,6 +6,7 @@ using LightBDD.Results.Implementation;
 
 namespace LightBDD.Execution
 {
+    [DebuggerStepThrough]
     internal class Step : IStep
     {
         private readonly Action _action;
@@ -53,6 +54,11 @@ namespace LightBDD.Execution
             {
                 _result.SetExecutionTime(watch.Elapsed);
             }
+        }
+
+        public override string ToString()
+        {
+            return _result.ToString();
         }
     }
 }

@@ -18,6 +18,7 @@ namespace LightBDD.Execution
             _progressNotifier = progressNotifier;
         }
 
+        [DebuggerStepThrough]
         public void Execute(Scenario scenario, IEnumerable<IStep> steps)
         {
             _progressNotifier.NotifyScenarioStart(scenario.Name, scenario.Label);
@@ -28,8 +29,7 @@ namespace LightBDD.Execution
             try
             {
                 watch.Start();
-                foreach (var step in stepsToExecute)
-                    step.Invoke(_progressNotifier, stepsToExecute.Length);
+                ExecuteSteps(stepsToExecute);
             }
             finally
             {
@@ -43,6 +43,12 @@ namespace LightBDD.Execution
 
                 _progressNotifier.NotifyScenarioFinished(result);
             }
+        }
+
+        private void ExecuteSteps(IStep[] stepsToExecute)
+        {
+            foreach (var step in stepsToExecute)
+                step.Invoke(_progressNotifier, stepsToExecute.Length);
         }
     }
 }

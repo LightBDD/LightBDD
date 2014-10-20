@@ -24,24 +24,22 @@ Features:
 * NUnit integration.</description>
 	<summary>$description$</summary>
     <releaseNotes>Summary:
-+ fluent interface for scenario creation
-+ parameterized steps support
-+ capturing execution start and duration of scenarios and steps (https://github.com/Suremaker/LightBDD/issues/5)
-+ improvements to HtmlResultFormatter
++ added integration with MsTest framework
++ multiple improvements to Feature Summary generators
++ improved debugging experience of LightBDD scenarios
++ added XmlResultFormatterSchema.xsd
++ better support for mixing steps of simplified and extended syntax
 Details:
-+ introduced IScenarioBuilder/ICustomizedScenarioBuilder fluent interfaces for scenario creation, added NewScenario() methods to AbstractBDDRunner
-+ added support for parameterized steps in AbstractBDDRunner.RunScenario() / IScenarioBuilder.Run() methods
-+ implemented argument insertion to parameterized step name
-+ added support for proper capture of mutable step arguments
-+ obsoleted all RunScenario() methods that allows to provide scenarioName or label
-+ added execution start and execution time capture for steps and scenarios
-+ altered IProgressNotifier.NotifyScenarioFinished() to accept IScenarioResult
-+ added IProgressNotifier.NotifyStepFinished()
-+ extended ConsoleProgressNotifier and PlainTextResultFormatter/XmlResultFormatter/HtmlResultFormatter to display execution times for steps and scenarios
-+ extended HtmlResultFormatter to generate Execution and Feature summary
-+ extended HtmlResultFormatter to generate filtering by status options for scenarios/features
-+ corrected HttpResultFormatter styles for better experience of copying summary reports into Word documents
-+ corrected HtmlResultFormatter to escape HTML specific characters in displayed text</releaseNotes>
++ extended HtmlResultFormatter to display switch to show/hide each feature and scenario details
++ extended HtmlResultFormatter to provide detailed summary about executed steps
++ improved HtmlResultFormatter css styles, added labels to check boxes
++ extended TestMetadataProvider to format stepType before is added to step name (allows to use methods like _ => Then_value_is(5))
++ reorganized example projects to show the same tests in different test frameworks
++ added integration with MsTest framework => LightBDD.MsTest
++ extended FeatureCoordinator with OnBeforeFinish / OnAfterFinish events
++ improved debugging experience of LightBDD scenarios
++ extended PlainTextResultFormatter and XmlResultFormatter to include summary blocks like in HtmlResultFormatter
++ added XmlResultFormatterSchema.xsd for FeaturesSummary.xml output xml file</releaseNotes>
     <copyright>Copyright © Wojciech Kotlarski 2013-2014</copyright>
     <tags>bdd tdd testing framework behavior driven development acceptance criteria nunit</tags>
 	<language>en-US</language>
@@ -56,6 +54,7 @@ Details:
 	<file src="..\LICENSE.txt" target="." />
 	<file src="..\README.md" target="." />
 	<file src="..\QuickStart.txt" target="readme.txt" />
-	<file src="..\Templates\NUnit\*" target="Templates" />
+	<file src="..\XmlResultFormatterSchema.xsd" target="." />
+	<file src="..\Templates\LightBDD NUnit\*" target="Templates\LightBDD NUnit" />
   </files>
 </package>

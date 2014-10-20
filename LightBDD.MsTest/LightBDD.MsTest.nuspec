@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Wojciech Kotlarski</authors>
+    <owners>Wojciech Kotlarski</owners>
+    <licenseUrl>http://opensource.org/licenses/BSD-2-Clause</licenseUrl>
+    <projectUrl>https://github.com/Suremaker/LightBDD</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Allows creating acceptance tests in developer friendly environment.
+
+Features:
+* Native support for refactoring, code analysis (like finding unused methods), test running and all features that Visual Studio / Intellisense / Resharper offer during code development,
+* Easy to read scenario definitions,
+* Scenario steps execution tracking, usable during longer test execution,
+* Scenario steps execution time measurement,
+* Possibility to run steps with dedicated shared context, allowing to run tests safely in parallel,
+* Possibility to run parametrized steps with smart rules of inserting argument values to formatted step name,
+* Feature result summary available in XML, HTML or Plain text format,
+* Possibility to configure multiple result summaries in app.config file,
+* VS Project Item templates for feature test files,
+* MsTest integration.</description>
+	<summary>$description$</summary>
+    <releaseNotes>Summary:
++ added integration with MsTest framework
++ multiple improvements to Feature Summary generators
++ improved debugging experience of LightBDD scenarios
++ added XmlResultFormatterSchema.xsd
++ better support for mixing steps of simplified and extended syntax
+Details:
++ extended HtmlResultFormatter to display switch to show/hide each feature and scenario details
++ extended HtmlResultFormatter to provide detailed summary about executed steps
++ improved HtmlResultFormatter css styles, added labels to check boxes
++ extended TestMetadataProvider to format stepType before is added to step name (allows to use methods like _ => Then_value_is(5))
++ reorganized example projects to show the same tests in different test frameworks
++ added integration with MsTest framework => LightBDD.MsTest
++ extended FeatureCoordinator with OnBeforeFinish / OnAfterFinish events
++ improved debugging experience of LightBDD scenarios
++ extended PlainTextResultFormatter and XmlResultFormatter to include summary blocks like in HtmlResultFormatter
++ added XmlResultFormatterSchema.xsd for FeaturesSummary.xml output xml file</releaseNotes>
+    <copyright>Copyright © Wojciech Kotlarski 2013-2014</copyright>
+    <tags>bdd tdd testing framework behavior driven development acceptance criteria mstest</tags>
+	<language>en-US</language>
+	<dependencies>
+		<group targetFramework=".NETFramework4.0">
+			<dependency id="LightBDD.Core" version="$version$" />
+		</group>
+    </dependencies>
+  </metadata>
+  <files>
+	<file src="..\Changelog.txt" target="." />
+	<file src="..\LICENSE.txt" target="." />
+	<file src="..\README.md" target="." />
+	<file src="..\QuickStart.txt" target="readme.txt" />
+	<file src="..\XmlResultFormatterSchema.xsd" target="." />
+	<file src="..\Templates\LightBDD MsTest\*" target="Templates\LightBDD MsTest" />
+  </files>
+</package>

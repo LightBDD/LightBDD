@@ -1,6 +1,26 @@
 LightBDD
 ===========================================
 
+Version 1.5.1
+----------------------------------------
+Summary:
++ added integration with MsTest framework
++ multiple improvements to Feature Summary generators
++ improved debugging experience of LightBDD scenarios
++ added XmlResultFormatterSchema.xsd
++ better support for mixing steps of simplified and extended syntax
+Details:
++ extended HtmlResultFormatter to display switch to show/hide each feature and scenario details
++ extended HtmlResultFormatter to provide detailed summary about executed steps
++ improved HtmlResultFormatter css styles, added labels to check boxes
++ extended TestMetadataProvider to format stepType before is added to step name (allows to use methods like _ => Then_value_is(5))
++ reorganized example projects to show the same tests in different test frameworks
++ added integration with MsTest framework => LightBDD.MsTest
++ extended FeatureCoordinator with OnBeforeFinish / OnAfterFinish events
++ improved debugging experience of LightBDD scenarios
++ extended PlainTextResultFormatter and XmlResultFormatter to include summary blocks like in HtmlResultFormatter
++ added XmlResultFormatterSchema.xsd for FeaturesSummary.xml output xml file
+
 Version 1.5.0
 ----------------------------------------
 Summary:
@@ -20,7 +40,7 @@ Details:
 + extended ConsoleProgressNotifier and PlainTextResultFormatter/XmlResultFormatter/HtmlResultFormatter to display execution times for steps and scenarios
 + extended HtmlResultFormatter to generate Execution and Feature summary
 + extended HtmlResultFormatter to generate filtering by status options for scenarios/features
-+ corrected HttpResultFormatter styles for better experience of copying summary reports into Word documents
++ corrected HtmlpResultFormatter styles for better experience of copying summary reports into Word documents
 + corrected HtmlResultFormatter to escape HTML specific characters in displayed text
 
 Version 1.4.0

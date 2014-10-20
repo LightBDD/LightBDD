@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics;
 
 namespace LightBDD.Results.Implementation
 {
+    [DebuggerStepThrough]
     internal class StepResult : IStepResult
     {
         public StepResult(int stepNumber, string stepName, ResultStatus stepStatus, string statusDetails = null)

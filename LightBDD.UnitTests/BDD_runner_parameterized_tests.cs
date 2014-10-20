@@ -50,6 +50,25 @@ namespace LightBDD.UnitTests
         }
 
         [Test]
+        public void Should_allow_to_reuse_existing_steps_with_action_type()
+        {
+            _subject.RunScenario(
+                _ => Given_product_is_available_in_product_storage("wooden desk"),
+                _ => When_customer_orders_this_product(),
+                _ => Then_customer_receives_invoice_for_product_in_amount_pounds("wooden desk", 62),
+                _ => Then_product_is_sent_to_customer());
+
+            var result = _subject.Result.Scenarios.Single();
+            Assert.That(result.Steps, Is.EqualTo(new[]
+            {
+                new StepResult(1, "Given product \"wooden desk\" is available in product storage", ResultStatus.Passed),
+                new StepResult(2, "When customer orders this product", ResultStatus.Passed),
+                new StepResult(3, "Then customer receives invoice for product \"wooden desk\" in amount \"62\" pounds", ResultStatus.Passed),
+                new StepResult(4, "Then product is sent to customer", ResultStatus.Passed)
+            }));
+        }
+
+        [Test]
         public void Should_collect_scenario_result_with_steps_parameters_inserted_in_proper_places()
         {
             _subject.RunScenario(
@@ -202,6 +221,22 @@ namespace LightBDD.UnitTests
         }
 
         private void Product_is_sent_to_customer()
+        {
+        }
+
+        private void Given_product_is_available_in_product_storage(string product)
+        {
+        }
+
+        private void When_customer_orders_this_product()
+        {
+        }
+
+        private void Then_customer_receives_invoice_for_product_in_amount_pounds(string product, int amount)
+        {
+        }
+
+        private void Then_product_is_sent_to_customer()
         {
         }
     }

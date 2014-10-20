@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{068B1D33-8E36-4E4E-9E0C-2660594E6727}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LightBDD.Example.AcceptanceTests.MsTest</RootNamespace>
+    <AssemblyName>LightBDD.Example.AcceptanceTests.MsTest</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Features\Basket_feature.cs" />
+    <Compile Include="Features\Basket_feature.Steps.cs">
+      <DependentUpon>Basket_feature.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Contacts_management.cs" />
+    <Compile Include="Features\Contacts_management.Steps.cs">
+      <DependentUpon>Contacts_management.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Invoice_feature.cs" />
+    <Compile Include="Features\Invoice_feature.Steps.cs">
+      <DependentUpon>Invoice_feature.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Login_feature.cs" />
+    <Compile Include="Features\Login_feature.Steps.cs">
+      <DependentUpon>Login_feature.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Payment_feature.cs" />
+    <Compile Include="Features\Payment_feature.Steps.cs">
+      <DependentUpon>Payment_feature.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Product_spedition_feature.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LightBDD.Example\LightBDD.Example.csproj">
+      <Project>{994D78CA-0CB3-4DE2-95E1-60BA11EB1E78}</Project>
+      <Name>LightBDD.Example</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LightBDD.MsTest\LightBDD.MsTest.csproj">
+      <Project>{14094347-12CB-49E4-B81E-4AC3370A96F5}</Project>
+      <Name>LightBDD.MsTest</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LightBDD\LightBDD.csproj">
+      <Project>{C8406FF5-FF97-4B66-A789-CBD97263FAC4}</Project>
+      <Name>LightBDD</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

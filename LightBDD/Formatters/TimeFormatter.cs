@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
 namespace LightBDD.Formatters
 {
+    [DebuggerStepThrough]
     internal static class TimeFormatter
     {
         private static readonly Tuple<string, int, Func<TimeSpan, int>>[] _formatters = new[]

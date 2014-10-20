@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -9,6 +10,7 @@ namespace LightBDD
     /// <summary>
     /// Test metadata provider allows to retrieve scenario and feature metadata such as descriptions, labels or names.
     /// </summary>
+    [DebuggerStepThrough]
     public abstract class TestMetadataProvider
     {
         /// <summary>
@@ -86,7 +88,7 @@ namespace LightBDD
         protected abstract string GetImplementationSpecificFeatureDescription(Type testClass);
 
         /// <summary>
-        /// Returns step name format which starts with capitalized <c>stepType</c> and bases on name of scenario step method.<br/>
+        /// Returns step name format which starts with formatted and capitalized <c>stepType</c> and bases on name of scenario step method.<br/>
         /// If method is parameterized, the step name would contain format parameters {n} that would be replaced with argument values during step execution.<br/>
         /// Please note that rules for placing parameter values in step name are as follows, where first matching rule would be used:
         /// <list type="bullet">
@@ -102,7 +104,10 @@ namespace LightBDD
         {
             var name = NameFormatter.Format(stepMethod.Name);
             var sb = new StringBuilder();
-            sb.Append(stepType.ToUpperInvariant()).Append(' ');
+
+            var stepTypeName = NameFormatter.Format(stepType).ToUpperInvariant();
+            if (!string.IsNullOrWhiteSpace(stepTypeName))
+                sb.Append(stepTypeName).Append(' ');
 
             var replacements = stepMethod
                 .GetParameters()
@@ -122,7 +127,7 @@ namespace LightBDD
             return sb.ToString();
         }
 
-        private ArgumentReplacement ToArgumentReplacement(string name, ParameterInfo parameterInfo, int argumentIndex)
+        private static ArgumentReplacement ToArgumentReplacement(string name, ParameterInfo parameterInfo, int argumentIndex)
         {
             string paramName = parameterInfo.Name;
             int position = FindArgument(name, paramName.ToUpperInvariant(), StringComparison.Ordinal);
@@ -148,6 +153,7 @@ namespace LightBDD
         }
     }
 
+    [DebuggerStepThrough]
     internal class ArgumentReplacement
     {
         public ArgumentReplacement(int position, string value, int charactersToReplace)

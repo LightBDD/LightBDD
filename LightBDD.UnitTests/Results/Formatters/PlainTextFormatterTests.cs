@@ -1,7 +1,5 @@
 ﻿using System;
-using LightBDD.Results;
 using LightBDD.Results.Formatters;
-using LightBDD.Results.Implementation;
 using NUnit.Framework;
 
 namespace LightBDD.UnitTests.Results.Formatters
@@ -24,20 +22,24 @@ namespace LightBDD.UnitTests.Results.Formatters
         [Test]
         public void Should_format_feature_with_description()
         {
-            var result = new FeatureResult("My feature", string.Format("My feature{0}long description", Environment.NewLine), "Label 1");
-            result.AddScenario(new ScenarioResult("name", new[]
-            {
-                new StepResult(1, "step1", ResultStatus.Passed).SetExecutionTime(new TimeSpan(0, 1, 1)), 
-                new StepResult(2, "step2", ResultStatus.Ignored, "Not implemented yet").SetExecutionTime(new TimeSpan(0, 0, 0, 1, 100))
-            }, "Label 2").SetExecutionTime(new TimeSpan(0, 0, 1, 2, 100)));
-            result.AddScenario(new ScenarioResult("name2", new[]
-            {
-                new StepResult(1, "step3", ResultStatus.Passed).SetExecutionTime(new TimeSpan(0, 0, 0, 2, 107)), 
-                new StepResult(2, "step4", ResultStatus.Failed, string.Format("  Expected: True{0}  But was: False", Environment.NewLine)).SetExecutionTime(new TimeSpan(0, 0, 0, 0, 50)),
-                new StepResult(3, "step5", ResultStatus.NotRun)
-            }, null).SetExecutionTime(new TimeSpan(0, 0, 0, 2, 157)));
+            var result = ResultFormatterTestData.GetFeatureResultWithDescription();
             var text = _subject.Format(result);
-            const string expectedText = @"Feature: [Label 1] My feature
+            Console.WriteLine(text);
+            const string expectedText = @"Summary:
+	Test execution start time: 2014-09-23 19:21:58 UTC
+	Test execution time      : 1m 04s
+	Number of features       : 1
+	Number of scenarios      : 2
+	Passed scenarios         : 0
+	Failed scenarios         : 1
+	Ignored scenarios        : 1
+	Number of steps          : 5
+	Passed steps             : 2
+	Failed steps             : 1
+	Ignored steps            : 1
+	Not Run steps            : 1
+
+Feature: [Label 1] My feature
 	My feature
 	long description
 
@@ -61,14 +63,24 @@ namespace LightBDD.UnitTests.Results.Formatters
         [Test]
         public void Should_format_feature_without_description_nor_label_nor_details()
         {
-            var result = new FeatureResult("My feature", null, null);
-            result.AddScenario(new ScenarioResult("name", new[]
-            {
-                new StepResult(1, "step1", ResultStatus.Passed).SetExecutionTime(TimeSpan.FromMilliseconds(20)), 
-                new StepResult(2, "step2", ResultStatus.Ignored).SetExecutionTime(TimeSpan.FromMilliseconds(5))
-            }, null).SetExecutionTime(TimeSpan.FromMilliseconds(25)));
+            var result = ResultFormatterTestData.GetFeatureResultWithoutDescriptionNorLabelNorDetails();
             var text = _subject.Format(result);
-            const string expectedText = @"Feature: My feature
+            Console.WriteLine(text);
+            const string expectedText = @"Summary:
+	Test execution start time: 2014-09-23 19:21:58 UTC
+	Test execution time      : 25ms
+	Number of features       : 1
+	Number of scenarios      : 1
+	Passed scenarios         : 0
+	Failed scenarios         : 0
+	Ignored scenarios        : 1
+	Number of steps          : 2
+	Passed steps             : 1
+	Failed steps             : 0
+	Ignored steps            : 1
+	Not Run steps            : 0
+
+Feature: My feature
 
 	Scenario: name - Ignored (25ms)
 		Step 1: step1 - Passed (20ms)
@@ -78,22 +90,27 @@ namespace LightBDD.UnitTests.Results.Formatters
         }
 
         [Test]
-        public void Multiple_features_should_be_separated_by_new_line()
+        public void Should_format_multiple_features()
         {
-            var feature1 = new FeatureResult("My feature", null, null);
-            feature1.AddScenario(new ScenarioResult("scenario1", new[]
-            {
-                new StepResult(1, "step1", ResultStatus.Passed).SetExecutionTime(TimeSpan.FromMilliseconds(20))
-            }, null).SetExecutionTime(TimeSpan.FromMilliseconds(20)));
+            var results = ResultFormatterTestData.GetMultipleFeatureResults();
 
-            var feature2 = new FeatureResult("My feature2", null, null);
-            feature2.AddScenario(new ScenarioResult("scenario1", new[]
-            {
-                new StepResult(1, "step1", ResultStatus.Passed).SetExecutionTime(TimeSpan.FromMilliseconds(20))
-            }, null).SetExecutionTime(TimeSpan.FromMilliseconds(20)));
+            var text = _subject.Format(results);
+            Console.WriteLine(text);
+            const string expectedText = @"Summary:
+	Test execution start time: 2014-09-23 19:21:58 UTC
+	Test execution time      : 40ms
+	Number of features       : 2
+	Number of scenarios      : 2
+	Passed scenarios         : 2
+	Failed scenarios         : 0
+	Ignored scenarios        : 0
+	Number of steps          : 2
+	Passed steps             : 2
+	Failed steps             : 0
+	Ignored steps            : 0
+	Not Run steps            : 0
 
-            var text = _subject.Format(feature1, feature2);
-            const string expectedText = @"Feature: My feature
+Feature: My feature
 
 	Scenario: scenario1 - Passed (20ms)
 		Step 1: step1 - Passed (20ms)

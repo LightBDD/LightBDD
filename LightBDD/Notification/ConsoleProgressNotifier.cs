@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using LightBDD.Formatters;
 using LightBDD.Results;
 
@@ -7,6 +8,7 @@ namespace LightBDD.Notification
     /// <summary>
     /// Progress notifier using console for displaying progress.
     /// </summary>
+    [DebuggerStepThrough]
     public class ConsoleProgressNotifier : IProgressNotifier
     {
         #region IProgressNotifier Members

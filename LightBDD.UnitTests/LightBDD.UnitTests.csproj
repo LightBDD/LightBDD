@@ -45,6 +45,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BDD_runner_parameterized_tests.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="Notification\ConsoleProgressNotifierTests.cs" />
     <Compile Include="Results\FeatureResultTests.cs" />
     <Compile Include="Results\Formatters\HtmlResultFormatterTests.cs" />
+    <Compile Include="Results\Formatters\ResultFormatterTestData.cs" />
     <Compile Include="Results\Formatters\TimeFormatterTests.cs" />
     <Compile Include="Results\StepResultTests.cs" />
     <Compile Include="SummaryGeneration\SummaryFileWriterTests.cs" />
@@ -78,6 +80,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\XmlResultFormatterSchema.xsd">
+      <Link>XmlResultFormatterSchema.xsd</Link>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
