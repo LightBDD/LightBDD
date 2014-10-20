@@ -5,7 +5,7 @@ Visual Studio Project Item Templates:
 -------------------------------------
 
 Template zip files are included within this package.
-Please copy them without unpacking to Visual Studio ItemTemplates folder:
+Please copy them together with LightBDD [TEST_FRAMEWORK] folder to Visual Studio ItemTemplates folder:
 
 From: packages\LightBDD [VERSION]\Templates
 To: [USER_PATH]\Documents\Visual Studio [VERSION]\Templates\ItemTemplates\Visual C#

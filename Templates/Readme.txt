@@ -1,1 +1,2 @@
-Please put all of zip files from MbUnit or NUnit folder in [USER_PATH]\Documents\Visual Studio [VERSION]\Templates\ItemTemplates\Visual C# folder without unpacking.
+Please copy all/chosen folders located in Templates folder into [USER_PATH]\Documents\Visual Studio [VERSION]\Templates\ItemTemplates\Visual C# folder.
+Item templates would appear in Visual Studio in Visual C# Items group.
