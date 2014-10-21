@@ -1,6 +1,10 @@
 LightBDD
 ===========================================
 
+Version 1.5.1.1
+----------------------------------------
++ corrected HtmlResultFormatter to display long blocks of scenarios properly
+
 Version 1.5.1
 ----------------------------------------
 Summary:

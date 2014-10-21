@@ -10,7 +10,7 @@ h3{ font-size: 1.20em;}
 .title{font-weight: bold;vertical-align: middle;margin: 0;}
 .steps{margin-top: 0.5em;}
 .feature .header{width: 25%;display: inline-block;vertical-align: top;}
-.feature .scenarios{width: auto;display: inline-block;vertical-align: top;}
+.feature .scenarios{width: 75%;display: inline-block;vertical-align: top;}
 .scenario .title{display:inline-block}
 .toggle:not(:checked) ~ .scenarios { display: none;}
 .toggle:not(:checked) + h3 ~ div { display: none;}
