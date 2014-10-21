@@ -1,6 +1,6 @@
 ﻿Summary:
-	Test execution start time: 2014-10-20 22:10:08 UTC
-	Test execution time      : 132ms
+	Test execution start time: 2014-10-21 09:48:37 UTC
+	Test execution time      : 90ms
 	Number of features       : 6
 	Number of scenarios      : 11
 	Passed scenarios         : 8
@@ -17,18 +17,18 @@ Feature: [Story-4] Basket feature
 	As a customer
 	I want to add products to basket
 
-	Scenario: [Ticket-6] No product in stock - Passed (41ms)
+	Scenario: [Ticket-6] No product in stock - Passed (22ms)
 		Step 1: Given product is out of stock - Passed (<1ms)
 		Step 2: When customer adds it to basket - Passed (<1ms)
-		Step 3: Then product addition is unsuccessful - Passed (3ms)
-		Step 4: Then basket does not contain product - Passed (1ms)
+		Step 3: Then product addition is unsuccessful - Passed (2ms)
+		Step 4: Then basket does not contain product - Passed (<1ms)
 
-	Scenario: [Ticket-7] Successful addition - Ignored (6ms)
+	Scenario: [Ticket-7] Successful addition - Ignored (4ms)
 		Step 1: Given product is in stock - Passed (<1ms)
 		Step 2: When customer adds it to basket - Passed (<1ms)
 		Step 3: Then product addition is successful - Passed (<1ms)
 		Step 4: Then basket contains product - Passed (<1ms)
-		Step 5: Then product is removed from stock - Ignored (1ms)
+		Step 5: Then product is removed from stock - Ignored (<1ms)
 
 		Details: Product removal from stock is not implemented yet
 
@@ -37,28 +37,28 @@ Feature: [Story-6] Contacts management
 	As an application user
 	I want to add, browse and remove my contacts
 
-	Scenario: [Ticket-8] Contact book should allow me to add multiple contacts - Passed (19ms)
+	Scenario: [Ticket-8] Contact book should allow me to add multiple contacts - Passed (14ms)
 		Step 1: Given my contact book is empty - Passed (<1ms)
 		Step 2: When I add new contacts - Passed (1ms)
-		Step 3: Then all of expected contacts would be available in contact book - Passed (14ms)
+		Step 3: Then all of expected contacts would be available in contact book - Passed (11ms)
 
-	Scenario: [Ticket-9] Contact book should allow me to remove all contacts - Passed (7ms)
-		Step 1: Given my contact book is filled with many contacts - Passed (3ms)
+	Scenario: [Ticket-9] Contact book should allow me to remove all contacts - Passed (5ms)
+		Step 1: Given my contact book is filled with many contacts - Passed (2ms)
 		Step 2: When I clear it - Passed (<1ms)
 		Step 3: Then contact book is empty - Passed (1ms)
 
-	Scenario: [Ticket-9] Contact book should allow me to remove contacts - Passed (17ms)
+	Scenario: [Ticket-9] Contact book should allow me to remove contacts - Passed (16ms)
 		Step 1: Given my contact book is filled with contacts - Passed (<1ms)
 		Step 2: When I remove contact - Passed (<1ms)
-		Step 3: Then contact book does not contain removed contact any more - Passed (5ms)
-		Step 4: Then contact book still contains other contacts - Passed (7ms)
+		Step 3: Then contact book does not contain removed contact any more - Passed (4ms)
+		Step 4: Then contact book still contains other contacts - Passed (6ms)
 
 Feature: [Story-2] Invoice feature
 	In order to pay for products
 	As a customer
 	I want to receive invoice for bought items
 
-	Scenario: [Ticket-4] Receiving invoice for products - Ignored (8ms)
+	Scenario: [Ticket-4] Receiving invoice for products - Ignored (6ms)
 		Step 1: GIVEN Product "wooden desk" is available in products storage - Passed (<1ms)
 		Step 2: AND Product "wooden shelf" is available in products storage - Passed (<1ms)
 		Step 3: WHEN Customer buys product "wooden desk" - Passed (<1ms)
@@ -74,10 +74,10 @@ Feature: [Story-1] Login feature
 	As an user
 	I want to login into system
 
-	Scenario: [Ticket-3] Anonymous login name should allow to log in - Failed (9ms)
+	Scenario: [Ticket-3] Anonymous login name should allow to log in - Failed (7ms)
 		Step 1: Given user is about to login - Passed (<1ms)
 		Step 2: Given user entered anonymous login - Passed (<1ms)
-		Step 3: When user clicked login button - Passed (1ms)
+		Step 3: When user clicked login button - Passed (<1ms)
 		Step 4: Then login is successful - Failed (4ms)
 		Step 5: Then welcome message is returned containing user name - NotRun
 
@@ -85,7 +85,7 @@ Feature: [Story-1] Login feature
 			  Expected: True
 			  But was:  False
 
-	Scenario: [Ticket-1] Successful login - Passed (5ms)
+	Scenario: [Ticket-1] Successful login - Passed (3ms)
 		Step 1: Given user is about to login - Passed (<1ms)
 		Step 2: Given user entered valid login - Passed (<1ms)
 		Step 3: Given user entered valid password - Passed (<1ms)
@@ -93,7 +93,7 @@ Feature: [Story-1] Login feature
 		Step 5: Then login is successful - Passed (<1ms)
 		Step 6: Then welcome message is returned containing user name - Passed (1ms)
 
-	Scenario: [Ticket-2] Wrong login provided causes login to fail - Passed (3ms)
+	Scenario: [Ticket-2] Wrong login provided causes login to fail - Passed (4ms)
 		Step 1: Given user is about to login - Passed (<1ms)
 		Step 2: Given user entered invalid login - Passed (<1ms)
 		Step 3: Given user entered valid password - Passed (<1ms)
@@ -119,7 +119,7 @@ Feature: [Story-3] Product spedition feature
 	As a spedition manager
 	I want to dispatch products to customer as soon as the payment is finalized
 
-	Scenario: [Ticket-5] Should dispatch product after payment is finalized - Passed (12ms)
+	Scenario: [Ticket-5] Should dispatch product after payment is finalized - Passed (2ms)
 		Step 1: GIVEN There is an active customer with id "ABC-123" - Passed (<1ms)
 		Step 2: GIVEN Customer has product "wooden shelf" in basket - Passed (<1ms)
 		Step 3: GIVEN Customer has product "wooden desk" in basket - Passed (<1ms)

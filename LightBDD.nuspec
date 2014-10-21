@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>LightBDD</id>
-    <version>1.5.1.0</version>
+    <version>1.5.1.1</version>
     <title>LightBDD</title>
     <authors>Wojciech Kotlarski</authors>
     <owners>Wojciech Kotlarski</owners>
@@ -45,7 +45,7 @@ Details:
 	<language>en-US</language>
 	<dependencies>
 		<group targetFramework=".NETFramework4.0">
-			<dependency id="LightBDD.NUnit" version="1.5.1.0" />
+			<dependency id="LightBDD.NUnit" version="1.5.1.1" />
 		</group>
     </dependencies>
   </metadata>
