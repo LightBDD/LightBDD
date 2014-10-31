@@ -39,11 +39,11 @@ namespace LightBDD.UnitTests.Results.Formatters
 	Ignored steps            : 1
 	Not Run steps            : 1
 
-Feature: [Label 1] My feature
+Feature: My feature [Label 1]
 	My feature
 	long description
 
-	Scenario: [Label 2] name - Ignored (1m 02s)
+	Scenario: name [Label 2] - Ignored (1m 02s)
 		Step 1: step1 - Passed (1m 01s)
 		Step 2: step2 - Ignored (1s 100ms)
 

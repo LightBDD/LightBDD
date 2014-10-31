@@ -4,6 +4,7 @@ LightBDD
 Version 1.5.2
 ----------------------------------------
 + changed parameterized steps to always display constant parameter values, even if step has not been executed
++ changed PlainTextFormatter to put labels after feature/scenario name, like HtmlResultFormatter does
 
 Version 1.5.1.1
 ----------------------------------------

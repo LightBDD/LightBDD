@@ -45,9 +45,10 @@ namespace LightBDD.Results.Formatters
                 builder.AppendLine();
 
             builder.Append("Feature: ");
+            builder.Append(feature.Name);
             if (!string.IsNullOrWhiteSpace(feature.Label))
-                builder.Append("[").Append(feature.Label).Append("] ");
-            builder.AppendLine(feature.Name);
+                builder.Append(" [").Append(feature.Label).Append("]");
+            builder.AppendLine();
 
             if (!string.IsNullOrWhiteSpace(feature.Description))
                 builder.Append("\t").Append(feature.Description.Replace(Environment.NewLine, Environment.NewLine + "\t")).AppendLine();
@@ -61,9 +62,11 @@ namespace LightBDD.Results.Formatters
             if (builder.Length > 0)
                 builder.AppendLine();
             builder.Append("\tScenario: ");
+            builder.Append(scenario.Name);
             if (!string.IsNullOrWhiteSpace(scenario.Label))
-                builder.Append("[").Append(scenario.Label).Append("] ");
-            builder.Append(scenario.Name).Append(" - ").Append(scenario.Status);
+                builder.Append(" [").Append(scenario.Label).Append("]");
+            builder.Append(" - ").Append(scenario.Status);
+
             if (scenario.ExecutionTime != null)
                 builder.Append(" (").Append(scenario.ExecutionTime.FormatPretty()).Append(")");
             builder.AppendLine();
