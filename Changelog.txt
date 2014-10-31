@@ -1,6 +1,10 @@
 LightBDD
 ===========================================
 
+Version 1.5.2
+----------------------------------------
++ changed parameterized steps to always display constant parameter values, even if step has not been executed
+
 Version 1.5.1.1
 ----------------------------------------
 + corrected HtmlResultFormatter to display long blocks of scenarios properly

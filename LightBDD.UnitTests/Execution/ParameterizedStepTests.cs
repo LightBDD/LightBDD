@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using LightBDD.Execution;
+using LightBDD.Execution.Parameters;
 using LightBDD.Notification;
 using LightBDD.Results;
 using NUnit.Framework;
@@ -63,7 +64,7 @@ namespace LightBDD.UnitTests.Execution
             var step = new ParameterizedStep<Context>(
                 _context,
                 (type, ctx, args) => ctx.Step_one((string)args[0]),
-                new Func<StepType, Context, object>[] { (type, ctx) => "abc" },
+                new []{CreateParam("abc")},
                 "Step_one {0}", stepNumber, Map);
 
             step.Invoke(_progressNotifier, totalStepCount);
@@ -79,7 +80,7 @@ namespace LightBDD.UnitTests.Execution
             var step = new ParameterizedStep<Context>(
                 _context,
                 (type, ctx, args) => ctx.Step_one((string)args[0]),
-                new Func<StepType, Context, object>[] { (type, ctx) => argument },
+                new[] { CreateParam(argument) },
                 "Step_one {0}", stepNumber, Map);
 
             step.Invoke(_progressNotifier, 100);
@@ -99,7 +100,7 @@ namespace LightBDD.UnitTests.Execution
             var step = new ParameterizedStep<Context>(
                 _context,
                 (type, ctx, args) => ctx.Step_with_ignore_assertion((string)args[0]),
-                new Func<StepType, Context, object>[] { (type, ctx) => "abc" },
+                new[] { CreateParam("abc") },
                 "Step_with_ignore_assertion {0}", stepNumber, Map);
 
             var ex = Assert.Throws<IgnoreException>(() => step.Invoke(_progressNotifier, 100));
@@ -117,7 +118,7 @@ namespace LightBDD.UnitTests.Execution
             var step = new ParameterizedStep<Context>(
                 _context,
                 (type, ctx, args) => ctx.Step_with_inconclusive_assertion((string)args[0]),
-                new Func<StepType, Context, object>[] { (type, ctx) => "abc" },
+                new[] { CreateParam("abc") },
                 "Step_with_inconclusive_assertion {0}", stepNumber, Map);
 
             var ex = Assert.Throws<InconclusiveException>(() => step.Invoke(_progressNotifier, 100));
@@ -135,7 +136,7 @@ namespace LightBDD.UnitTests.Execution
             var step = new ParameterizedStep<Context>(
                 _context,
                 (type, ctx, args) => ctx.Step_with_exception((string)args[0]),
-                new Func<StepType, Context, object>[] { (type, ctx) => "abc" },
+                new[] { CreateParam("abc") },
                 "Step_with_exception {0}", stepNumber, Map);
 
             var ex = Assert.Throws<InvalidOperationException>(() => step.Invoke(_progressNotifier, 100));
@@ -155,10 +156,10 @@ namespace LightBDD.UnitTests.Execution
             var step = new ParameterizedStep<Context>(
                 _context,
                 (type, ctx, args) => ctx.Step_one((string)args[0]),
-                new Func<StepType, Context, object>[] { (type, ctx) => "abc" },
+                new[] { CreateParam("abc","def") },
                 "Step_one {0}", stepNumber, Map);
 
-            Assert.That(step.GetResult().Name, Is.EqualTo("Step_one <?>"));
+            Assert.That(step.GetResult().Name, Is.EqualTo("Step_one def"));
             Assert.That(step.GetResult().Number, Is.EqualTo(stepNumber));
             Assert.That(step.GetResult().Status, Is.EqualTo(ResultStatus.NotRun));
             Assert.That(step.GetResult().StatusDetails, Is.Null);
@@ -172,12 +173,12 @@ namespace LightBDD.UnitTests.Execution
             var step = new ParameterizedStep<Context>(
                 _context,
                 (type, ctx, args) => ctx.Step_one((string)args[0]),
-                new Func<StepType, Context, object>[] { (type, ctx) => ThrowException() },
+                new[] { CreateParam(ThrowException,"not-evaluated") },
                 "Step_one {0}", stepNumber, Map);
 
             var ex = Assert.Throws<InvalidOperationException>(() => step.Invoke(_progressNotifier, 100));
 
-            Assert.That(step.GetResult().Name, Is.EqualTo("Step_one <?>"));
+            Assert.That(step.GetResult().Name, Is.EqualTo("Step_one not-evaluated"));
             Assert.That(step.GetResult().Number, Is.EqualTo(stepNumber));
             Assert.That(step.GetResult().Status, Is.EqualTo(ResultStatus.Failed));
             Assert.That(step.GetResult().StatusDetails, Is.EqualTo(ex.Message));
@@ -189,7 +190,7 @@ namespace LightBDD.UnitTests.Execution
             var step = new ParameterizedStep<Context>(
                 _context,
                 (type, ctx, args) => ctx.Step_one((string)args[0]),
-                new Func<StepType, Context, object>[] { (type, ctx) => "abc" },
+                new[] { CreateParam("abc") },
                 "Step_one {0}", 1, Map);
 
             var watch = new Stopwatch();
@@ -207,7 +208,7 @@ namespace LightBDD.UnitTests.Execution
             var step = new ParameterizedStep<Context>(
                 _context,
                 (type, ctx, args) => ctx.Step_with_exception((string)args[0]),
-                new Func<StepType, Context, object>[] { (type, ctx) => "abc" },
+                new[] { CreateParam("abc") },
                 "Step_with_exception {0}", 1, Map);
 
             var watch = new Stopwatch();
@@ -228,7 +229,7 @@ namespace LightBDD.UnitTests.Execution
             var step = new ParameterizedStep<Context>(
                 _context,
                 (type, ctx, args) => ctx.Step_one((string)args[0]),
-                new Func<StepType, Context, object>[] { (type, ctx) => "abc" },
+                new[] { CreateParam("abc") },
                 "Step_one {0}", 1, Map);
 
             step.Invoke(_progressNotifier, totalStepCount);
@@ -243,7 +244,7 @@ namespace LightBDD.UnitTests.Execution
             var step = new ParameterizedStep<Context>(
                 _context,
                 (type, ctx, args) => ctx.Step_with_exception((string)args[0]),
-                new Func<StepType, Context, object>[] { (type, ctx) => "abc" },
+                new[] { CreateParam("abc") },
                 "Step_with_exception {0}", 1, Map);
 
             try { step.Invoke(_progressNotifier, 100); }
@@ -254,6 +255,37 @@ namespace LightBDD.UnitTests.Execution
         private object ThrowException()
         {
             throw new InvalidOperationException();
+        }
+
+        private static IStepParameter<Context> CreateParam(object value, string notEvaluated = "<?>")
+        {
+            return CreateParam(() => value, notEvaluated);
+        }
+
+        private static IStepParameter<Context> CreateParam(Func<object> valueFn, string notEvaluated = "<?>")
+        {
+            return new TestableParameter(valueFn,notEvaluated);
+        }
+
+        class TestableParameter:IStepParameter<Context>{
+            private readonly Func<object> _valueFn;
+            private readonly object _defaultValue;
+
+            public TestableParameter(Func<object> valueFn, object defaultValue)
+            {
+                _valueFn = valueFn;
+                _defaultValue = defaultValue;
+            }
+
+            public object Evaluate(Context context)
+            {
+                return _valueFn();
+            }
+
+            public object GetNotEvaluatedValue()
+            {
+                return _defaultValue;
+            }
         }
     }
 }

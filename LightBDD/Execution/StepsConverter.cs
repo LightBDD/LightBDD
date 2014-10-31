@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using LightBDD.Execution.Parameters;
 using LightBDD.Results;
 
 namespace LightBDD.Execution
@@ -67,9 +68,14 @@ namespace LightBDD.Execution
             return new ParameterizedStep<TContext>(context, action, arguments, stepNameFormat, stepNumber, _mapExceptionToStatus);
         }
 
-        private static Func<StepType, TContext, object> CompileArgument<TContext>(Expression argumentExpression, ParameterExpression stepTypeParameter, ParameterExpression contextParameter)
+        private static IStepParameter<TContext> CompileArgument<TContext>(Expression argumentExpression, ParameterExpression stepTypeParameter, ParameterExpression contextParameter)
         {
-            return Expression.Lambda<Func<StepType, TContext, object>>(Expression.Convert(argumentExpression, typeof(object)), stepTypeParameter, contextParameter).Compile();
+            var expression = argumentExpression as ConstantExpression;
+            if (expression != null)
+                return new ConstantStepParameter<TContext>(expression.Value);
+
+            var compiledParam = Expression.Lambda<Func<StepType, TContext, object>>(Expression.Convert(argumentExpression, typeof (object)), stepTypeParameter, contextParameter).Compile();
+            return new MutableStepParameter<TContext>(compiledParam);
         }
 
         private static Action<StepType, TContext, object[]> CompileAction<TContext>(MethodCallExpression methodCall, ParameterExpression stepTypeParameter, ParameterExpression contextParameter)

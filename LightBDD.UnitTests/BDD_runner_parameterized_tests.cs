@@ -181,6 +181,134 @@ namespace LightBDD.UnitTests
             }));
         }
 
+        [Test]
+        [TestCase("desk")]
+        public void Should_print_not_evaluated_parameters_if_step_was_not_executed_yet(string product)
+        {
+            try
+            {
+                _subject.RunScenario(
+                    given => Customer_has_bought_product(product),
+                    when => Customer_gives_it_back(),
+                    then => Product_is_put_back_to_product_storage(product),
+                    and => Customer_gets_money_back());
+            }
+            catch { }
+
+            var result = _subject.Result.Scenarios.Single();
+            Assert.That(result.Steps, Is.EqualTo(new[]
+            {
+                new StepResult(1, string.Format("GIVEN Customer has bought product \"{0}\"",product), ResultStatus.Passed),
+                new StepResult(2, "WHEN Customer gives it back", ResultStatus.Ignored,"Not implemented yet"),
+                new StepResult(3, "THEN Product \"<?>\" is put back to product storage", ResultStatus.NotRun),
+                new StepResult(4, "AND Customer gets money back", ResultStatus.NotRun)
+            }));
+        }
+
+        [Test]
+        public void Should_capture_constant_parameters_even_if_step_was_not_executed_yet()
+        {
+            try
+            {
+                _subject.RunScenario(
+                    given => Customer_has_bought_product("desk"),
+                    when => Customer_gives_it_back(),
+                    then => Product_is_put_back_to_product_storage("desk"),
+                    and => Customer_gets_money_back());
+            }
+            catch { }
+
+            var result = _subject.Result.Scenarios.Single();
+            Assert.That(result.Steps, Is.EqualTo(new[]
+            {
+                new StepResult(1, "GIVEN Customer has bought product \"desk\"", ResultStatus.Passed),
+                new StepResult(2, "WHEN Customer gives it back", ResultStatus.Ignored,"Not implemented yet"),
+                new StepResult(3, "THEN Product \"desk\" is put back to product storage", ResultStatus.NotRun),
+                new StepResult(4, "AND Customer gets money back", ResultStatus.NotRun)
+            }));
+        }
+
+        [Test]
+        public void Should_capture_constant_parameters_of_different_type_even_if_step_was_not_executed_yet()
+        {
+            try
+            {
+                _subject.RunScenario(
+                    call => Ignored_method(),
+                    call => Method_with_parameter("abc"),
+                    call => Method_with_parameter(1),
+                    call => Method_with_parameter(3.5),
+                    call => Method_with_parameter(null),
+                    call => Method_with_parameter(22.67m),
+                    call => Method_with_parameter('a'),
+                    call => Method_with_parameter(typeof(object)),
+                    call => Method_with_parameter_and_OTHER("abc", new DateTime(2014, 05, 31)));
+            }
+            catch { }
+
+            var result = _subject.Result.Scenarios.Single();
+            Assert.That(result.Steps, Is.EqualTo(new[]
+            {
+                new StepResult(1, "CALL Ignored method", ResultStatus.Ignored,"ignored"),
+                new StepResult(2, "CALL Method with parameter \"abc\"", ResultStatus.NotRun),
+                new StepResult(3, "CALL Method with parameter \"1\"", ResultStatus.NotRun),
+                new StepResult(4, "CALL Method with parameter \"3.5\"", ResultStatus.NotRun),
+                new StepResult(5, "CALL Method with parameter \"\"", ResultStatus.NotRun),
+                new StepResult(6, "CALL Method with parameter \"22.67\"", ResultStatus.NotRun),
+                new StepResult(7, "CALL Method with parameter \"a\"", ResultStatus.NotRun),
+                new StepResult(8, "CALL Method with parameter \"System.Object\"", ResultStatus.NotRun),
+                new StepResult(9, "CALL Method with parameter \"abc\" and \"<?>\"", ResultStatus.NotRun)
+            }));
+        }
+
+        [Test]
+        public void Should_capture_parameters_formatted_with_invariant_culture()
+        {
+            _subject.RunScenario(
+                call => Method_with_parameter(1234234),
+                call => Method_with_parameter(3.53),
+                call => Method_with_parameter(22.67m),
+                call => Method_with_parameter(new DateTime(2014, 05, 31, 17, 31, 27)));
+
+            var result = _subject.Result.Scenarios.Single();
+            Assert.That(result.Steps, Is.EqualTo(new[]
+            {
+                new StepResult(1, "CALL Method with parameter \"1234234\"", ResultStatus.Passed),
+                new StepResult(2, "CALL Method with parameter \"3.53\"", ResultStatus.Passed),
+                new StepResult(3, "CALL Method with parameter \"22.67\"", ResultStatus.Passed),
+                new StepResult(4, "CALL Method with parameter \"05/31/2014 17:31:27\"", ResultStatus.Passed)
+            }));
+        }
+
+        private void Method_with_parameter_and_OTHER(object parameter, object other){}
+        private void Method_with_parameter(double parameter) { }
+        private void Method_with_parameter(decimal parameter) { }
+        private void Method_with_parameter(char parameter) { }
+        private void Method_with_parameter(int parameter) { }
+        private void Method_with_parameter(object parameter) { }
+
+        private void Ignored_method()
+        {
+            Assert.Ignore("ignored");
+        }
+
+        private void Customer_gets_money_back()
+        {
+        }
+
+        private void Product_is_put_back_to_product_storage(string product)
+        {
+        }
+
+        private void Customer_gives_it_back()
+        {
+            Assert.Ignore("Not implemented yet");
+        }
+
+        private void Customer_has_bought_product(string product)
+        {
+        }
+
         private int Add(ref int x)
         {
             return ++x;

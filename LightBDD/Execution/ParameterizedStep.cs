@@ -1,6 +1,8 @@
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
+using LightBDD.Execution.Parameters;
 using LightBDD.Notification;
 using LightBDD.Results;
 using LightBDD.Results.Implementation;
@@ -11,7 +13,7 @@ namespace LightBDD.Execution
     {
         private readonly TContext _context;
         private readonly Action<StepType, TContext, object[]> _action;
-        private readonly Func<StepType, TContext, object>[] _parameters;
+        private readonly IStepParameter<TContext>[] _parameters;
         private readonly string _stepNameFormat;
         private readonly int _stepNumber;
         private readonly Func<Type, ResultStatus> _mapping;
@@ -19,7 +21,7 @@ namespace LightBDD.Execution
         public IStepResult GetResult() { return _result; }
 
         [DebuggerStepThrough]
-        public ParameterizedStep(TContext context, Action<StepType, TContext, object[]> action, Func<StepType, TContext, object>[] parameters, string stepNameFormat, int stepNumber, Func<Type, ResultStatus> mapping)
+        public ParameterizedStep(TContext context, Action<StepType, TContext, object[]> action, IStepParameter<TContext>[] parameters, string stepNameFormat, int stepNumber, Func<Type, ResultStatus> mapping)
         {
             _context = context;
             _action = action;
@@ -27,7 +29,7 @@ namespace LightBDD.Execution
             _stepNameFormat = stepNameFormat;
             _stepNumber = stepNumber;
             _mapping = mapping;
-            _result = new StepResult(stepNumber, string.Format(stepNameFormat, GetNotEvaluatedParameters()), ResultStatus.NotRun);
+            _result = new StepResult(stepNumber, string.Format(CultureInfo.InvariantCulture, stepNameFormat, GetNotEvaluatedParameters()), ResultStatus.NotRun);
         }
 
         [DebuggerStepThrough]
@@ -57,7 +59,7 @@ namespace LightBDD.Execution
         [DebuggerStepThrough]
         private void InvokeStep(object[] paramValues, IProgressNotifier progressNotifier, int totalCount)
         {
-            var stepName = string.Format(_stepNameFormat, paramValues);
+            var stepName = string.Format(CultureInfo.InvariantCulture, _stepNameFormat, paramValues);
             _result = new StepResult(_stepNumber, stepName, ResultStatus.NotRun);
 
             progressNotifier.NotifyStepStart(stepName, _stepNumber, totalCount);
@@ -86,14 +88,14 @@ namespace LightBDD.Execution
         {
             var result = new object[_parameters.Length];
             for (int index = 0; index < _parameters.Length; index++)
-                result[index] = _parameters[index].Invoke(StepType.Default, _context);
+                result[index] = _parameters[index].Evaluate(_context);
             return result;
         }
 
         [DebuggerStepThrough]
         private object[] GetNotEvaluatedParameters()
         {
-            return _parameters.Select(p => (object)"<?>").ToArray();
+            return _parameters.Select(p => p.GetNotEvaluatedValue()).ToArray();
         }
 
         public override string ToString()
