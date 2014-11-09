@@ -15,5 +15,9 @@ namespace LightBDD.Naming
         /// Decorates parameter value.
         /// </summary>
         string DecorateParameterValue(IStepParameter parameter);
+        /// <summary>
+        /// Decorates name format.
+        /// </summary>
+        string DecorateNameFormat(string nameFormat);
     }
 }

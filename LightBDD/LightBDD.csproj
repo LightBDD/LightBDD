@@ -82,6 +82,7 @@
     <Compile Include="Results\Formatters\Html\Html.cs" />
     <Compile Include="Results\Formatters\Html\Html5Tag.cs" />
     <Compile Include="Results\Formatters\Html\HtmlResultTextWriter.cs" />
+    <Compile Include="Results\Formatters\Html\HtmlStepNameDecorator.cs" />
     <Compile Include="Results\Formatters\Html\HtmlTextWriterExtensions.cs" />
     <Compile Include="Results\Formatters\Html\IHtmlNode.cs" />
     <Compile Include="Results\Formatters\Html\TagBuilder.cs" />

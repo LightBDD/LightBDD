@@ -11,7 +11,7 @@ namespace LightBDD.UnitTests.Naming
         [Test]
         [TestCase("aBcdef12", "aBcdef12")]
         [TestCase(null, "")]
-        public void Should_format_step_name(string stepTypeName, string expected)
+        public void Should_format_step_type_name(string stepTypeName, string expected)
         {
             Assert.That(StepNameDecorators.Default.DecorateStepTypeName(stepTypeName), Is.EqualTo(expected));
         }
@@ -26,6 +26,14 @@ namespace LightBDD.UnitTests.Naming
             stepParameter.Stub(p => p.FormattedValue).Return(value);
             stepParameter.Stub(p => p.IsEvaluated).Return(isEvaluated);
             Assert.That(StepNameDecorators.Default.DecorateParameterValue(stepParameter), Is.EqualTo(expected));
+        }
+
+        [Test]
+        [TestCase("aBcdef12", "aBcdef12")]
+        [TestCase(null, "")]
+        public void Should_format_step_name_format(string nameFormat, string expected)
+        {
+            Assert.That(StepNameDecorators.Default.DecorateNameFormat(nameFormat), Is.EqualTo(expected));
         }
     }
 }

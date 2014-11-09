@@ -26,7 +26,7 @@ namespace LightBDD.Results.Implementation
             var builder = new StringBuilder();
             if (!string.IsNullOrWhiteSpace(StepTypeName))
                 builder.Append(decorator.DecorateStepTypeName(StepTypeName)).Append(" ");
-            builder.AppendFormat(NameFormat, Parameters.Select(decorator.DecorateParameterValue).Cast<object>().ToArray());
+            builder.AppendFormat(decorator.DecorateNameFormat(NameFormat), Parameters.Select(decorator.DecorateParameterValue).Cast<object>().ToArray());
             return builder.ToString();
         }
     }

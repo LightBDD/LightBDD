@@ -6,11 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Web.UI;
 using LightBDD.Formatters;
+using LightBDD.Naming;
 
 namespace LightBDD.Results.Formatters.Html
 {
     internal class HtmlResultTextWriter : IDisposable
     {
+        private static readonly IStepNameDecorator _stepNameDecorator = new HtmlStepNameDecorator();
         private readonly HtmlTextWriter _writer;
         private readonly string _styles = ReadStyles();
         public HtmlResultTextWriter(Stream outputStream)
@@ -232,7 +234,7 @@ namespace LightBDD.Results.Formatters.Html
         {
             return Html.Tag(HtmlTextWriterTag.Div).Class("step").Content(
                 GetStatus(step.Status),
-                Html.Text(string.Format("{0}. {1}", step.Number, step.Name)).Escape().Trim(),
+                Html.Text(string.Format("{0}. {1}", step.Number, step.StepName.Format(_stepNameDecorator))).Trim(),
                 GetDuration(step.ExecutionTime));
         }
 

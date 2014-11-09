@@ -51,3 +51,6 @@ input[type="checkbox"]:not(:checked) + * .chbox:before{ background-color: #ffeee
 input[type="checkbox"]:checked + * .chbox:before{ background-color: #eeeeee;content: "\2713";}
 input[type="checkbox"].toggle:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "\22bd";}
 input[type="checkbox"].toggle:checked + * .chbox:before{ background-color: #eeeeee;content: "\22bc";}
+.stepType{ font-style: italic;}
+.stepParam{ color: #aa00aa;}
+.stepParamUnknown{ color: #aa55aa;}

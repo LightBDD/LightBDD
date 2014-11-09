@@ -15,5 +15,10 @@ namespace LightBDD.Naming
         {
             return parameter.FormattedValue ?? string.Empty;
         }
+
+        public string DecorateNameFormat(string nameFormat)
+        {
+            return nameFormat ?? string.Empty;
+        }
     }
 }
