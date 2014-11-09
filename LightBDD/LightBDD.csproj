@@ -71,6 +71,9 @@
     <Compile Include="FeatureDescriptionAttribute.cs" />
     <Compile Include="Formatters\TimeFormatter.cs" />
     <Compile Include="LabelAttribute.cs" />
+    <Compile Include="Naming\DefaultStepNameDecorator.cs" />
+    <Compile Include="Naming\IStepNameDecorator.cs" />
+    <Compile Include="Naming\StepNameDecorators.cs" />
     <Compile Include="Notification\ConsoleProgressNotifier.cs" />
     <Compile Include="Notification\IProgressNotifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -85,7 +88,11 @@
     <Compile Include="Results\Formatters\Html\TextBuilder.cs" />
     <Compile Include="Results\Formatters\PlainTextResultFormatter.cs" />
     <Compile Include="Results\IFeatureResult.cs" />
+    <Compile Include="Results\Implementation\StepName.cs" />
+    <Compile Include="Results\Implementation\StepParameter.cs" />
     <Compile Include="Results\IScenarioResult.cs" />
+    <Compile Include="Results\IStepName.cs" />
+    <Compile Include="Results\IStepParameter.cs" />
     <Compile Include="Results\IStepResult.cs" />
     <Compile Include="Results\ResultStatus.cs" />
     <Compile Include="Results\Implementation\ScenarioResult.cs" />

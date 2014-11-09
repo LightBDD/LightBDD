@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using LightBDD.Notification;
 using LightBDD.Results;
-using LightBDD.Results.Implementation;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -58,10 +57,10 @@ namespace LightBDD.UnitTests
             Assert.That(result.Name, Is.EqualTo("Should collect results for scenario with shared context passed explicitly"));
             Assert.That(result.Label, Is.EqualTo("Label-1"));
             Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
-            Assert.That(result.Steps, Is.EqualTo(new[]
+            StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResult(1, "Step checking shared value eq 3", ResultStatus.Passed)
-            }));
+                new StepResultExpectation(1, "Step checking shared value eq 3", ResultStatus.Passed)
+            });
         }
 
         [Test]
@@ -76,11 +75,11 @@ namespace LightBDD.UnitTests
             Assert.That(result.Name, Is.EqualTo("Should collect results for scenario with shared context"));
             Assert.That(result.Label, Is.EqualTo("Label-12"));
             Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
-            Assert.That(result.Steps, Is.EqualTo(new[]
+            StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResult(1, "Given shared value is 5", ResultStatus.Passed),
-                new StepResult(2, "Then shared value is passed to second step and still match 5", ResultStatus.Passed)
-            }));
+                new StepResultExpectation(1, "Given shared value is 5", ResultStatus.Passed),
+                new StepResultExpectation(2, "Then shared value is passed to second step and still match 5", ResultStatus.Passed)
+            });
         }
 
         [Test]
@@ -97,11 +96,11 @@ namespace LightBDD.UnitTests
             Assert.That(result.Name, Is.EqualTo(scenarioName));
             Assert.That(result.Label, Is.EqualTo(label));
             Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
-            Assert.That(result.Steps, Is.EqualTo(new[]
+            StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResult(1, "Given shared value is 5", ResultStatus.Passed),
-                new StepResult(2, "Then shared value is passed to second step and still match 5", ResultStatus.Passed)
-            }));
+                new StepResultExpectation(1, "Given shared value is 5", ResultStatus.Passed),
+                new StepResultExpectation(2, "Then shared value is passed to second step and still match 5", ResultStatus.Passed)
+            });
         }
 
         [Test]
@@ -117,11 +116,11 @@ namespace LightBDD.UnitTests
             Assert.That(result.Name, Is.EqualTo(scenarioName));
             Assert.That(result.Label, Is.Null);
             Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
-            Assert.That(result.Steps, Is.EqualTo(new[]
+            StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResult(1, "Given shared value is 5", ResultStatus.Passed),
-                new StepResult(2, "Then shared value is passed to second step and still match 5", ResultStatus.Passed)
-            }));
+                new StepResultExpectation(1, "Given shared value is 5", ResultStatus.Passed),
+                new StepResultExpectation(2, "Then shared value is passed to second step and still match 5", ResultStatus.Passed)
+            });
         }
 
         [Test]
@@ -137,10 +136,10 @@ namespace LightBDD.UnitTests
             Assert.That(result.Name, Is.EqualTo(scenarioName));
             Assert.That(result.Label, Is.EqualTo(label));
             Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
-            Assert.That(result.Steps, Is.EqualTo(new[]
+            StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResult(1, "Step checking shared value eq 3", ResultStatus.Passed)
-            }));
+                new StepResultExpectation(1, "Step checking shared value eq 3", ResultStatus.Passed)
+            });
         }
 
         [Test]
@@ -155,10 +154,10 @@ namespace LightBDD.UnitTests
             Assert.That(result.Name, Is.EqualTo(scenarioName));
             Assert.That(result.Label, Is.Null);
             Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
-            Assert.That(result.Steps, Is.EqualTo(new[]
+            StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResult(1, "Step checking shared value eq 3", ResultStatus.Passed)
-            }));
+                new StepResultExpectation(1, "Step checking shared value eq 3", ResultStatus.Passed)
+            });
         }
 
         private void Step_checking_shared_value_eq_3(CustomContext ctx)

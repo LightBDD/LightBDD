@@ -2,7 +2,6 @@
 using System.Linq;
 using LightBDD.Notification;
 using LightBDD.Results;
-using LightBDD.Results.Implementation;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -40,13 +39,13 @@ namespace LightBDD.UnitTests
             Assert.That(result.Name, Is.EqualTo("Should collect scenario result for parameterized steps"));
             Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
             Assert.That(result.Label, Is.EqualTo("LABEL-57"));
-            Assert.That(result.Steps, Is.EqualTo(new[]
+            StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResult(1, "GIVEN Product \"wooden desk\" is available in product storage", ResultStatus.Passed),
-                new StepResult(2, "WHEN Customer orders this product", ResultStatus.Passed),
-                new StepResult(3, "THEN Customer receives invoice for product \"wooden desk\" in amount \"62\" pounds", ResultStatus.Passed),
-                new StepResult(4, "THEN Product is sent to customer", ResultStatus.Passed)
-            }));
+                new StepResultExpectation(1, "GIVEN Product \"wooden desk\" is available in product storage", ResultStatus.Passed),
+                new StepResultExpectation(2, "WHEN Customer orders this product", ResultStatus.Passed),
+                new StepResultExpectation(3, "THEN Customer receives invoice for product \"wooden desk\" in amount \"62\" pounds", ResultStatus.Passed),
+                new StepResultExpectation(4, "THEN Product is sent to customer", ResultStatus.Passed)
+            });
         }
 
         [Test]
@@ -59,13 +58,13 @@ namespace LightBDD.UnitTests
                 _ => Then_product_is_sent_to_customer());
 
             var result = _subject.Result.Scenarios.Single();
-            Assert.That(result.Steps, Is.EqualTo(new[]
+            StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResult(1, "Given product \"wooden desk\" is available in product storage", ResultStatus.Passed),
-                new StepResult(2, "When customer orders this product", ResultStatus.Passed),
-                new StepResult(3, "Then customer receives invoice for product \"wooden desk\" in amount \"62\" pounds", ResultStatus.Passed),
-                new StepResult(4, "Then product is sent to customer", ResultStatus.Passed)
-            }));
+                new StepResultExpectation(1, "Given product \"wooden desk\" is available in product storage", ResultStatus.Passed),
+                new StepResultExpectation(2, "When customer orders this product", ResultStatus.Passed),
+                new StepResultExpectation(3, "Then customer receives invoice for product \"wooden desk\" in amount \"62\" pounds", ResultStatus.Passed),
+                new StepResultExpectation(4, "Then product is sent to customer", ResultStatus.Passed)
+            });
         }
 
         [Test]
@@ -77,12 +76,12 @@ namespace LightBDD.UnitTests
                 others => Method_with_parameters_where_param_is_VALUE("abc", 5, "other param"));
 
             var result = _subject.Result.Scenarios.Single();
-            Assert.That(result.Steps, Is.EqualTo(new[]
+            StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResult(1, "REPLACE Method with parameters where param has \"abc\" value", ResultStatus.Passed),
-                new StepResult(2, "INSERT Method with parameters where param \"abc_123\" is first param on list", ResultStatus.Passed),
-                new StepResult(3, "OTHERS Method with parameters where param \"abc\" is \"5\" [lastParam: \"other param\"]", ResultStatus.Passed)
-            }));
+                new StepResultExpectation(1, "REPLACE Method with parameters where param has \"abc\" value", ResultStatus.Passed),
+                new StepResultExpectation(2, "INSERT Method with parameters where param \"abc_123\" is first param on list", ResultStatus.Passed),
+                new StepResultExpectation(3, "OTHERS Method with parameters where param \"abc\" is \"5\" [lastParam: \"other param\"]", ResultStatus.Passed)
+            });
         }
 
         [Test]
@@ -93,10 +92,10 @@ namespace LightBDD.UnitTests
             _subject.RunScenario(call => Product_is_available_in_product_storage(product));
 
             var result = _subject.Result.Scenarios.Single();
-            Assert.That(result.Steps, Is.EqualTo(new[]
+            StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResult(1, string.Format("CALL Product \"{0}\" is available in product storage",product), ResultStatus.Passed)
-            }));
+                new StepResultExpectation(1, string.Format("CALL Product \"{0}\" is available in product storage",product), ResultStatus.Passed)
+            });
         }
 
         [Test]
@@ -106,10 +105,10 @@ namespace LightBDD.UnitTests
             _subject.RunScenario(call => Product_is_available_in_product_storage(name));
 
             var result = _subject.Result.Scenarios.Single();
-            Assert.That(result.Steps, Is.EqualTo(new[]
+            StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResult(1, string.Format("CALL Product \"{0}\" is available in product storage",name), ResultStatus.Passed)
-            }));
+                new StepResultExpectation(1, string.Format("CALL Product \"{0}\" is available in product storage",name), ResultStatus.Passed)
+            });
         }
 
         [Test]
@@ -118,10 +117,10 @@ namespace LightBDD.UnitTests
             _subject.RunScenario(call => Product_is_available_in_product_storage(GetType().ToString()));
 
             var result = _subject.Result.Scenarios.Single();
-            Assert.That(result.Steps, Is.EqualTo(new[]
+            StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResult(1, string.Format("CALL Product \"{0}\" is available in product storage",GetType()), ResultStatus.Passed)
-            }));
+                new StepResultExpectation(1, string.Format("CALL Product \"{0}\" is available in product storage",GetType()), ResultStatus.Passed)
+            });
         }
 
         [Test]
@@ -150,12 +149,12 @@ namespace LightBDD.UnitTests
                 then => Values_equal(3, Add(ref x)));
 
             var result = _subject.Result.Scenarios.Single();
-            Assert.That(result.Steps, Is.EqualTo(new[]
+            StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResult(1, "THEN Values equal [expected: \"1\"] [actual: \"1\"]", ResultStatus.Passed),
-                new StepResult(2, "THEN Values equal [expected: \"2\"] [actual: \"2\"]", ResultStatus.Passed),
-                new StepResult(3, "THEN Values equal [expected: \"3\"] [actual: \"3\"]", ResultStatus.Passed)
-            }));
+                new StepResultExpectation(1, "THEN Values equal [expected: \"1\"] [actual: \"1\"]", ResultStatus.Passed),
+                new StepResultExpectation(2, "THEN Values equal [expected: \"2\"] [actual: \"2\"]", ResultStatus.Passed),
+                new StepResultExpectation(3, "THEN Values equal [expected: \"3\"] [actual: \"3\"]", ResultStatus.Passed)
+            });
         }
 
         [Test]
@@ -172,13 +171,13 @@ namespace LightBDD.UnitTests
             Assert.That(result.Name, Is.EqualTo("Should collect scenario result for parameterized steps executed on context"));
             Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
             Assert.That(result.Label, Is.EqualTo("LABEL-73"));
-            Assert.That(result.Steps, Is.EqualTo(new[]
+            StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResult(1, "GIVEN Product \"wooden desk\" is available in product storage", ResultStatus.Passed),
-                new StepResult(2, "WHEN Customer orders this product", ResultStatus.Passed),
-                new StepResult(3, "THEN Customer receives invoice for product \"wooden desk\" in amount \"62\" pounds", ResultStatus.Passed),
-                new StepResult(4, "THEN Product is sent to customer", ResultStatus.Passed)
-            }));
+                new StepResultExpectation(1, "GIVEN Product \"wooden desk\" is available in product storage", ResultStatus.Passed),
+                new StepResultExpectation(2, "WHEN Customer orders this product", ResultStatus.Passed),
+                new StepResultExpectation(3, "THEN Customer receives invoice for product \"wooden desk\" in amount \"62\" pounds", ResultStatus.Passed),
+                new StepResultExpectation(4, "THEN Product is sent to customer", ResultStatus.Passed)
+            });
         }
 
         [Test]
@@ -196,13 +195,13 @@ namespace LightBDD.UnitTests
             catch { }
 
             var result = _subject.Result.Scenarios.Single();
-            Assert.That(result.Steps, Is.EqualTo(new[]
+            StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResult(1, string.Format("GIVEN Customer has bought product \"{0}\"",product), ResultStatus.Passed),
-                new StepResult(2, "WHEN Customer gives it back", ResultStatus.Ignored,"Not implemented yet"),
-                new StepResult(3, "THEN Product \"<?>\" is put back to product storage", ResultStatus.NotRun),
-                new StepResult(4, "AND Customer gets money back", ResultStatus.NotRun)
-            }));
+                new StepResultExpectation(1, string.Format("GIVEN Customer has bought product \"{0}\"",product), ResultStatus.Passed),
+                new StepResultExpectation(2, "WHEN Customer gives it back", ResultStatus.Ignored,"Not implemented yet"),
+                new StepResultExpectation(3, "THEN Product \"<?>\" is put back to product storage", ResultStatus.NotRun),
+                new StepResultExpectation(4, "AND Customer gets money back", ResultStatus.NotRun)
+            });
         }
 
         [Test]
@@ -219,13 +218,13 @@ namespace LightBDD.UnitTests
             catch { }
 
             var result = _subject.Result.Scenarios.Single();
-            Assert.That(result.Steps, Is.EqualTo(new[]
+            StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResult(1, "GIVEN Customer has bought product \"desk\"", ResultStatus.Passed),
-                new StepResult(2, "WHEN Customer gives it back", ResultStatus.Ignored,"Not implemented yet"),
-                new StepResult(3, "THEN Product \"desk\" is put back to product storage", ResultStatus.NotRun),
-                new StepResult(4, "AND Customer gets money back", ResultStatus.NotRun)
-            }));
+                new StepResultExpectation(1, "GIVEN Customer has bought product \"desk\"", ResultStatus.Passed),
+                new StepResultExpectation(2, "WHEN Customer gives it back", ResultStatus.Ignored,"Not implemented yet"),
+                new StepResultExpectation(3, "THEN Product \"desk\" is put back to product storage", ResultStatus.NotRun),
+                new StepResultExpectation(4, "AND Customer gets money back", ResultStatus.NotRun)
+            });
         }
 
         [Test]
@@ -247,18 +246,18 @@ namespace LightBDD.UnitTests
             catch { }
 
             var result = _subject.Result.Scenarios.Single();
-            Assert.That(result.Steps, Is.EqualTo(new[]
+            StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResult(1, "CALL Ignored method", ResultStatus.Ignored,"ignored"),
-                new StepResult(2, "CALL Method with parameter \"abc\"", ResultStatus.NotRun),
-                new StepResult(3, "CALL Method with parameter \"1\"", ResultStatus.NotRun),
-                new StepResult(4, "CALL Method with parameter \"3.5\"", ResultStatus.NotRun),
-                new StepResult(5, "CALL Method with parameter \"\"", ResultStatus.NotRun),
-                new StepResult(6, "CALL Method with parameter \"22.67\"", ResultStatus.NotRun),
-                new StepResult(7, "CALL Method with parameter \"a\"", ResultStatus.NotRun),
-                new StepResult(8, "CALL Method with parameter \"System.Object\"", ResultStatus.NotRun),
-                new StepResult(9, "CALL Method with parameter \"abc\" and \"<?>\"", ResultStatus.NotRun)
-            }));
+                new StepResultExpectation(1, "CALL Ignored method", ResultStatus.Ignored,"ignored"),
+                new StepResultExpectation(2, "CALL Method with parameter \"abc\"", ResultStatus.NotRun),
+                new StepResultExpectation(3, "CALL Method with parameter \"1\"", ResultStatus.NotRun),
+                new StepResultExpectation(4, "CALL Method with parameter \"3.5\"", ResultStatus.NotRun),
+                new StepResultExpectation(5, "CALL Method with parameter \"\"", ResultStatus.NotRun),
+                new StepResultExpectation(6, "CALL Method with parameter \"22.67\"", ResultStatus.NotRun),
+                new StepResultExpectation(7, "CALL Method with parameter \"a\"", ResultStatus.NotRun),
+                new StepResultExpectation(8, "CALL Method with parameter \"System.Object\"", ResultStatus.NotRun),
+                new StepResultExpectation(9, "CALL Method with parameter \"abc\" and \"<?>\"", ResultStatus.NotRun)
+            });
         }
 
         [Test]
@@ -271,16 +270,16 @@ namespace LightBDD.UnitTests
                 call => Method_with_parameter(new DateTime(2014, 05, 31, 17, 31, 27)));
 
             var result = _subject.Result.Scenarios.Single();
-            Assert.That(result.Steps, Is.EqualTo(new[]
+            StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResult(1, "CALL Method with parameter \"1234234\"", ResultStatus.Passed),
-                new StepResult(2, "CALL Method with parameter \"3.53\"", ResultStatus.Passed),
-                new StepResult(3, "CALL Method with parameter \"22.67\"", ResultStatus.Passed),
-                new StepResult(4, "CALL Method with parameter \"05/31/2014 17:31:27\"", ResultStatus.Passed)
-            }));
+                new StepResultExpectation(1, "CALL Method with parameter \"1234234\"", ResultStatus.Passed),
+                new StepResultExpectation(2, "CALL Method with parameter \"3.53\"", ResultStatus.Passed),
+                new StepResultExpectation(3, "CALL Method with parameter \"22.67\"", ResultStatus.Passed),
+                new StepResultExpectation(4, "CALL Method with parameter \"05/31/2014 17:31:27\"", ResultStatus.Passed)
+            });
         }
 
-        private void Method_with_parameter_and_OTHER(object parameter, object other){}
+        private void Method_with_parameter_and_OTHER(object parameter, object other) { }
         private void Method_with_parameter(double parameter) { }
         private void Method_with_parameter(decimal parameter) { }
         private void Method_with_parameter(char parameter) { }

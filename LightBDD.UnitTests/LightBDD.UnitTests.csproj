@@ -56,8 +56,10 @@
     <Compile Include="Execution\ParameterizedStepTests.cs" />
     <Compile Include="Execution\StepTests.cs" />
     <Compile Include="Helpers\SomeSteps.cs" />
+    <Compile Include="Helpers\StepResultExpectation.cs" />
     <Compile Include="Helpers\TestableBDDRunner.cs" />
     <Compile Include="Helpers\TestableMetadataProvider.cs" />
+    <Compile Include="Naming\StepNameDefaultDecoratorTests.cs" />
     <Compile Include="Notification\ConsoleProgressNotifierTests.cs" />
     <Compile Include="Results\FeatureResultTests.cs" />
     <Compile Include="Results\Formatters\HtmlResultFormatterTests.cs" />

@@ -88,8 +88,8 @@ namespace LightBDD
         protected abstract string GetImplementationSpecificFeatureDescription(Type testClass);
 
         /// <summary>
-        /// Returns step name format which starts with formatted and capitalized <c>stepType</c> and bases on name of scenario step method.<br/>
-        /// If method is parameterized, the step name would contain format parameters {n} that would be replaced with argument values during step execution.<br/>
+        /// Returns step name format which bases on name of scenario step method and method parameters.<br/>
+        /// If method is parameterized, the step name would contain format parameters {n} that would be replaced with argument values (where {0} refers to first argument) during step execution.<br/>
         /// Please note that rules for placing parameter values in step name are as follows, where first matching rule would be used:
         /// <list type="bullet">
         /// <item><description>it will replace first occurrence of variable name written in capital letters (<c>void Price_is_AMOUNT_dollars(int amount)</c> => <c>Price is "27" dollars</c>)</description></item>
@@ -97,17 +97,12 @@ namespace LightBDD
         /// <item><description>it will placed at the end of step name (<c>void Product_is_in_stock(string productId)</c> => <c>Product is in stock [productId: "ABC123"]</c>)</description></item>
         /// </list>
         /// </summary>
-        /// <param name="stepType">Step type like given, when, then, and etc.</param>
         /// <param name="stepMethod">Step method.</param>
         /// <returns>Step name.</returns>
-        public string GetStepNameFormat(string stepType, MethodInfo stepMethod)
+        public string GetStepNameFormat(MethodInfo stepMethod)
         {
             var name = NameFormatter.Format(stepMethod.Name);
             var sb = new StringBuilder();
-
-            var stepTypeName = NameFormatter.Format(stepType).ToUpperInvariant();
-            if (!string.IsNullOrWhiteSpace(stepTypeName))
-                sb.Append(stepTypeName).Append(' ');
 
             var replacements = stepMethod
                 .GetParameters()
@@ -125,6 +120,31 @@ namespace LightBDD
 
             sb.Append(name.Substring(lastPos));
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// This method is obsoleted.
+        /// Please use string GetStepNameFormat(MethodInfo stepMethod)
+        /// </summary>
+        [Obsolete("Please use string GetStepNameFormat(MethodInfo stepMethod)")]
+        public string GetStepNameFormat(string stepType, MethodInfo stepMethod)
+        {
+            stepType = GetStepTypeName(stepType);
+
+            var format = GetStepNameFormat(stepMethod);
+            return string.IsNullOrWhiteSpace(stepType)
+            ? format
+            : StepNameDecorators.Default.DecorateStepTypeName(stepType) + " " + format;
+        }
+
+        /// <summary>
+        /// Returns formatted and capitalized step type name or string.Empty if step is meaningless.
+        /// </summary>
+        /// <param name="stepType"></param>
+        /// <returns></returns>
+        public string GetStepTypeName(string stepType)
+        {
+            return string.IsNullOrWhiteSpace(stepType) ? string.Empty : NameFormatter.Format(stepType).ToUpperInvariant().Trim();
         }
 
         private static ArgumentReplacement ToArgumentReplacement(string name, ParameterInfo parameterInfo, int argumentIndex)

@@ -14,9 +14,9 @@ namespace LightBDD.Execution.Parameters
             return _value;
         }
 
-        public object GetNotEvaluatedValue()
+        public bool IsSafelyEvaluable()
         {
-            return _value;
+            return true;
         }
     }
 }

@@ -16,9 +16,9 @@ namespace LightBDD.Execution.Parameters
             return _function(StepType.Default, context);
         }
 
-        public object GetNotEvaluatedValue()
+        public bool IsSafelyEvaluable()
         {
-            return "<?>";
+            return false;
         }
     }
 }

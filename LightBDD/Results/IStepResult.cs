@@ -40,5 +40,10 @@ namespace LightBDD.Results
         /// Null if step was not run.
         /// </summary>
         DateTimeOffset? ExecutionStart { get; }
+
+        /// <summary>
+        /// Returns step name details.
+        /// </summary>
+        IStepName StepName { get; }
     }
 }

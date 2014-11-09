@@ -64,8 +64,8 @@ namespace LightBDD.UnitTests.Execution
             var step = new ParameterizedStep<Context>(
                 _context,
                 (type, ctx, args) => ctx.Step_one((string)args[0]),
-                new []{CreateParam("abc")},
-                "Step_one {0}", stepNumber, Map);
+                new[] { CreateParam("abc") },
+                "CALL", "Step_one {0}", stepNumber, Map);
 
             step.Invoke(_progressNotifier, totalStepCount);
             _progressNotifier.AssertWasCalled(n => n.NotifyStepStart(stepName, stepNumber, totalStepCount));
@@ -81,12 +81,12 @@ namespace LightBDD.UnitTests.Execution
                 _context,
                 (type, ctx, args) => ctx.Step_one((string)args[0]),
                 new[] { CreateParam(argument) },
-                "Step_one {0}", stepNumber, Map);
+                "CALL", "Step_one {0}", stepNumber, Map);
 
             step.Invoke(_progressNotifier, 100);
             Assert.That(_context.StepOneValue, Is.EqualTo(argument));
 
-            Assert.That(step.GetResult().Name, Is.EqualTo("Step_one abc"));
+            Assert.That(step.GetResult().Name, Is.EqualTo("CALL Step_one abc"));
             Assert.That(step.GetResult().Number, Is.EqualTo(stepNumber));
             Assert.That(step.GetResult().Status, Is.EqualTo(ResultStatus.Passed));
             Assert.That(step.GetResult().StatusDetails, Is.Null);
@@ -101,10 +101,10 @@ namespace LightBDD.UnitTests.Execution
                 _context,
                 (type, ctx, args) => ctx.Step_with_ignore_assertion((string)args[0]),
                 new[] { CreateParam("abc") },
-                "Step_with_ignore_assertion {0}", stepNumber, Map);
+                "CALL", "Step_with_ignore_assertion {0}", stepNumber, Map);
 
             var ex = Assert.Throws<IgnoreException>(() => step.Invoke(_progressNotifier, 100));
-            Assert.That(step.GetResult().Name, Is.EqualTo("Step_with_ignore_assertion abc"));
+            Assert.That(step.GetResult().Name, Is.EqualTo("CALL Step_with_ignore_assertion abc"));
             Assert.That(step.GetResult().Number, Is.EqualTo(stepNumber));
             Assert.That(step.GetResult().Status, Is.EqualTo(ResultStatus.Ignored));
             Assert.That(step.GetResult().StatusDetails, Is.EqualTo(ex.Message));
@@ -119,10 +119,10 @@ namespace LightBDD.UnitTests.Execution
                 _context,
                 (type, ctx, args) => ctx.Step_with_inconclusive_assertion((string)args[0]),
                 new[] { CreateParam("abc") },
-                "Step_with_inconclusive_assertion {0}", stepNumber, Map);
+                "CALL", "Step_with_inconclusive_assertion {0}", stepNumber, Map);
 
             var ex = Assert.Throws<InconclusiveException>(() => step.Invoke(_progressNotifier, 100));
-            Assert.That(step.GetResult().Name, Is.EqualTo("Step_with_inconclusive_assertion abc"));
+            Assert.That(step.GetResult().Name, Is.EqualTo("CALL Step_with_inconclusive_assertion abc"));
             Assert.That(step.GetResult().Number, Is.EqualTo(stepNumber));
             Assert.That(step.GetResult().Status, Is.EqualTo(ResultStatus.Ignored));
             Assert.That(step.GetResult().StatusDetails, Is.EqualTo(ex.Message));
@@ -137,11 +137,11 @@ namespace LightBDD.UnitTests.Execution
                 _context,
                 (type, ctx, args) => ctx.Step_with_exception((string)args[0]),
                 new[] { CreateParam("abc") },
-                "Step_with_exception {0}", stepNumber, Map);
+                "CALL", "Step_with_exception {0}", stepNumber, Map);
 
             var ex = Assert.Throws<InvalidOperationException>(() => step.Invoke(_progressNotifier, 100));
 
-            Assert.That(step.GetResult().Name, Is.EqualTo("Step_with_exception abc"));
+            Assert.That(step.GetResult().Name, Is.EqualTo("CALL Step_with_exception abc"));
             Assert.That(step.GetResult().Number, Is.EqualTo(stepNumber));
             Assert.That(step.GetResult().Status, Is.EqualTo(ResultStatus.Failed));
             Assert.That(step.GetResult().StatusDetails, Is.EqualTo(ex.Message));
@@ -149,17 +149,34 @@ namespace LightBDD.UnitTests.Execution
         }
 
         [Test]
-        public void Should_return_not_run_result_with_unknown_parameters()
+        public void Should_return_not_run_result_with_unknown_unsafe_parameters()
         {
             const int stepNumber = 1;
 
             var step = new ParameterizedStep<Context>(
                 _context,
                 (type, ctx, args) => ctx.Step_one((string)args[0]),
-                new[] { CreateParam("abc","def") },
-                "Step_one {0}", stepNumber, Map);
+                new[] { CreateParam("abc", false) },
+                "CALL", "Step_one {0}", stepNumber, Map);
 
-            Assert.That(step.GetResult().Name, Is.EqualTo("Step_one def"));
+            Assert.That(step.GetResult().Name, Is.EqualTo("CALL Step_one <?>"));
+            Assert.That(step.GetResult().Number, Is.EqualTo(stepNumber));
+            Assert.That(step.GetResult().Status, Is.EqualTo(ResultStatus.NotRun));
+            Assert.That(step.GetResult().StatusDetails, Is.Null);
+        }
+
+        [Test]
+        public void Should_return_not_run_result_with_safe_parameters()
+        {
+            const int stepNumber = 1;
+
+            var step = new ParameterizedStep<Context>(
+                _context,
+                (type, ctx, args) => ctx.Step_one((string)args[0]),
+                new[] { CreateParam("abc") },
+                "CALL", "Step_one {0}", stepNumber, Map);
+
+            Assert.That(step.GetResult().Name, Is.EqualTo("CALL Step_one abc"));
             Assert.That(step.GetResult().Number, Is.EqualTo(stepNumber));
             Assert.That(step.GetResult().Status, Is.EqualTo(ResultStatus.NotRun));
             Assert.That(step.GetResult().StatusDetails, Is.Null);
@@ -173,12 +190,12 @@ namespace LightBDD.UnitTests.Execution
             var step = new ParameterizedStep<Context>(
                 _context,
                 (type, ctx, args) => ctx.Step_one((string)args[0]),
-                new[] { CreateParam(ThrowException,"not-evaluated") },
-                "Step_one {0}", stepNumber, Map);
+                new[] { CreateParam(ThrowException, false) },
+                "CALL", "Step_one {0}", stepNumber, Map);
 
             var ex = Assert.Throws<InvalidOperationException>(() => step.Invoke(_progressNotifier, 100));
 
-            Assert.That(step.GetResult().Name, Is.EqualTo("Step_one not-evaluated"));
+            Assert.That(step.GetResult().Name, Is.EqualTo("CALL Step_one <?>"));
             Assert.That(step.GetResult().Number, Is.EqualTo(stepNumber));
             Assert.That(step.GetResult().Status, Is.EqualTo(ResultStatus.Failed));
             Assert.That(step.GetResult().StatusDetails, Is.EqualTo(ex.Message));
@@ -191,7 +208,7 @@ namespace LightBDD.UnitTests.Execution
                 _context,
                 (type, ctx, args) => ctx.Step_one((string)args[0]),
                 new[] { CreateParam("abc") },
-                "Step_one {0}", 1, Map);
+                "CALL", "Step_one {0}", 1, Map);
 
             var watch = new Stopwatch();
             var startTime = DateTimeOffset.UtcNow;
@@ -209,7 +226,7 @@ namespace LightBDD.UnitTests.Execution
                 _context,
                 (type, ctx, args) => ctx.Step_with_exception((string)args[0]),
                 new[] { CreateParam("abc") },
-                "Step_with_exception {0}", 1, Map);
+                "CALL", "Step_with_exception {0}", 1, Map);
 
             var watch = new Stopwatch();
             var startTime = DateTimeOffset.UtcNow;
@@ -230,7 +247,7 @@ namespace LightBDD.UnitTests.Execution
                 _context,
                 (type, ctx, args) => ctx.Step_one((string)args[0]),
                 new[] { CreateParam("abc") },
-                "Step_one {0}", 1, Map);
+                "CALL", "Step_one {0}", 1, Map);
 
             step.Invoke(_progressNotifier, totalStepCount);
             _progressNotifier.AssertWasCalled(n => n.NotifyStepFinished(step.GetResult(), totalStepCount));
@@ -245,7 +262,7 @@ namespace LightBDD.UnitTests.Execution
                 _context,
                 (type, ctx, args) => ctx.Step_with_exception((string)args[0]),
                 new[] { CreateParam("abc") },
-                "Step_with_exception {0}", 1, Map);
+                "CALL", "Step_with_exception {0}", 1, Map);
 
             try { step.Invoke(_progressNotifier, 100); }
             catch { }
@@ -257,24 +274,25 @@ namespace LightBDD.UnitTests.Execution
             throw new InvalidOperationException();
         }
 
-        private static IStepParameter<Context> CreateParam(object value, string notEvaluated = "<?>")
+        private static IStepParameter<Context> CreateParam(object value, bool isSafelyEvaluable = true)
         {
-            return CreateParam(() => value, notEvaluated);
+            return CreateParam(() => value, isSafelyEvaluable);
         }
 
-        private static IStepParameter<Context> CreateParam(Func<object> valueFn, string notEvaluated = "<?>")
+        private static IStepParameter<Context> CreateParam(Func<object> valueFn, bool isSafelyEvaluable = true)
         {
-            return new TestableParameter(valueFn,notEvaluated);
+            return new TestableParameter(valueFn, isSafelyEvaluable);
         }
 
-        class TestableParameter:IStepParameter<Context>{
+        class TestableParameter : IStepParameter<Context>
+        {
             private readonly Func<object> _valueFn;
-            private readonly object _defaultValue;
+            private readonly bool _isSafelyEvaluable;
 
-            public TestableParameter(Func<object> valueFn, object defaultValue)
+            public TestableParameter(Func<object> valueFn, bool isSafelyEvaluable = true)
             {
                 _valueFn = valueFn;
-                _defaultValue = defaultValue;
+                _isSafelyEvaluable = isSafelyEvaluable;
             }
 
             public object Evaluate(Context context)
@@ -282,9 +300,9 @@ namespace LightBDD.UnitTests.Execution
                 return _valueFn();
             }
 
-            public object GetNotEvaluatedValue()
+            public bool IsSafelyEvaluable()
             {
-                return _defaultValue;
+                return _isSafelyEvaluable;
             }
         }
     }

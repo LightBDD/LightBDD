@@ -5,7 +5,6 @@ using System.Globalization;
 using System.Linq;
 using LightBDD.Notification;
 using LightBDD.Results;
-using LightBDD.Results.Implementation;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -19,6 +18,7 @@ namespace LightBDD.UnitTests
     {
         private AbstractBDDRunner _subject;
         private IProgressNotifier _progressNotifier;
+        private const int UtcNowClockPrecisionInMs=15;
 
         #region Setup/Teardown
 
@@ -38,11 +38,12 @@ namespace LightBDD.UnitTests
             var result = _subject.Result.Scenarios.Single();
             Assert.That(result.Name, Is.EqualTo("Should collect scenario result"));
             Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
-            Assert.That(result.Steps, Is.EqualTo(new[]
+            
+            StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResult(1, "Step one", ResultStatus.Passed),
-                new StepResult(2, "Step two", ResultStatus.Passed)
-            }));
+                new StepResultExpectation(1, "Step one",  ResultStatus.Passed),
+                new StepResultExpectation(2, "Step two", ResultStatus.Passed)
+            });
         }
 
         [Test]
@@ -53,11 +54,11 @@ namespace LightBDD.UnitTests
             var result = _subject.Result.Scenarios.Single();
             Assert.That(result.Name, Is.EqualTo("Should collect scenario result via fluent interfaces"));
             Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
-            Assert.That(result.Steps, Is.EqualTo(new[]
+            StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResult(1, "Step one", ResultStatus.Passed),
-                new StepResult(2, "Step two", ResultStatus.Passed)
-            }));
+                new StepResultExpectation(1, "Step one", ResultStatus.Passed),
+                new StepResultExpectation(2, "Step two", ResultStatus.Passed)
+            });
         }
 
         [Test]
@@ -69,11 +70,11 @@ namespace LightBDD.UnitTests
             Assert.That(result.Name, Is.EqualTo(scenarioName));
             Assert.That(result.Label, Is.Null);
             Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
-            Assert.That(result.Steps, Is.EqualTo(new[]
+            StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResult(1, "Step one", ResultStatus.Passed),
-                new StepResult(2, "Step two", ResultStatus.Passed)
-            }));
+                new StepResultExpectation(1, "Step one", ResultStatus.Passed),
+                new StepResultExpectation(2, "Step two", ResultStatus.Passed)
+            });
         }
 
         [Test]
@@ -86,11 +87,11 @@ namespace LightBDD.UnitTests
             Assert.That(result.Name, Is.EqualTo(scenarioName));
             Assert.That(result.Label, Is.EqualTo(scenarioLabel));
             Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
-            Assert.That(result.Steps, Is.EqualTo(new[]
+            StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResult(1, "Step one", ResultStatus.Passed),
-                new StepResult(2, "Step two", ResultStatus.Passed)
-            }));
+                new StepResultExpectation(1, "Step one", ResultStatus.Passed),
+                new StepResultExpectation(2, "Step two", ResultStatus.Passed)
+            });
         }
 
         [Test]
@@ -108,12 +109,12 @@ namespace LightBDD.UnitTests
             var result = _subject.Result.Scenarios.Single();
             Assert.That(result.Name, Is.EqualTo("Should collect scenario result for failing scenario"));
             Assert.That(result.Status, Is.EqualTo(ResultStatus.Failed));
-            Assert.That(result.Steps, Is.EqualTo(new[]
+            StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResult(1, "Step one", ResultStatus.Passed),
-                new StepResult(2, "Step throwing exception", ResultStatus.Failed, expectedStatusDetails),
-                new StepResult(3, "Step two", ResultStatus.NotRun)
-            }));
+                new StepResultExpectation(1, "Step one", ResultStatus.Passed),
+                new StepResultExpectation(2, "Step throwing exception", ResultStatus.Failed, expectedStatusDetails),
+                new StepResultExpectation(3, "Step two", ResultStatus.NotRun)
+            });
             Assert.That(result.StatusDetails, Is.EqualTo(expectedStatusDetails));
         }
 
@@ -132,12 +133,12 @@ namespace LightBDD.UnitTests
             var result = _subject.Result.Scenarios.Single();
             Assert.That(result.Name, Is.EqualTo("Should collect scenario result for ignored scenario steps"));
             Assert.That(result.Status, Is.EqualTo(ResultStatus.Ignored));
-            Assert.That(result.Steps, Is.EqualTo(new[]
+            StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResult(1, "Step one", ResultStatus.Passed),
-                new StepResult(2, "Step with ignore assertion", ResultStatus.Ignored, expectedStatusDetails),
-                new StepResult(3, "Step two", ResultStatus.NotRun)
-            }));
+                new StepResultExpectation(1, "Step one", ResultStatus.Passed),
+                new StepResultExpectation(2, "Step with ignore assertion", ResultStatus.Ignored, expectedStatusDetails),
+                new StepResultExpectation(3, "Step two", ResultStatus.NotRun)
+            });
             Assert.That(result.StatusDetails, Is.EqualTo(expectedStatusDetails));
         }
 
@@ -153,7 +154,10 @@ namespace LightBDD.UnitTests
 
             watch.Stop();
             Assert.That(result.ExecutionTime, Is.LessThanOrEqualTo(watch.Elapsed));
-            Assert.That(result.ExecutionStart, Is.GreaterThanOrEqualTo(startTime).And.LessThan(startTime.Add(watch.Elapsed)));
+            Assert.That(result.ExecutionStart, Is
+                .GreaterThanOrEqualTo(startTime)
+                .And
+                .LessThan(startTime.Add(watch.Elapsed).Add(TimeSpan.FromMilliseconds(UtcNowClockPrecisionInMs))));
         }
 
         [Test]
@@ -162,7 +166,6 @@ namespace LightBDD.UnitTests
             var watch = new Stopwatch();
             var startTime = DateTimeOffset.UtcNow;
             watch.Start();
-
             try
             {
                 _subject.RunScenario(Step_one, Step_with_ignore_assertion, Step_two);
@@ -174,7 +177,10 @@ namespace LightBDD.UnitTests
 
             watch.Stop();
             Assert.That(result.ExecutionTime, Is.LessThanOrEqualTo(watch.Elapsed));
-            Assert.That(result.ExecutionStart, Is.GreaterThanOrEqualTo(startTime).And.LessThan(startTime.Add(watch.Elapsed)));
+            Assert.That(result.ExecutionStart, Is
+                .GreaterThanOrEqualTo(startTime)
+                .And
+                .LessThan(startTime.Add(watch.Elapsed).Add(TimeSpan.FromMilliseconds(UtcNowClockPrecisionInMs))));
         }
 
         [Test]

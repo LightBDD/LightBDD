@@ -18,7 +18,7 @@ namespace LightBDD.Execution
         {
             _action = action;
             _mapping = mapping;
-            _result = new StepResult(stepNumber, stepName, ResultStatus.NotRun);
+            _result = new StepResult(stepNumber, new StepName(stepName), ResultStatus.NotRun);
         }
 
         public void Invoke(IProgressNotifier progressNotifier, int totalCount)
