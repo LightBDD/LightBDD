@@ -4,7 +4,6 @@ using System.Linq;
 using LightBDD.Coordination;
 using LightBDD.Results;
 using LightBDD.Results.Formatters;
-using LightBDD.Results.Implementation;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -33,7 +32,7 @@ namespace LightBDD.UnitTests.Coordination
 		public void Should_add_and_save_results()
 		{
 			const string expectedText = "some expected text";
-			var feature = new FeatureResult("name", "description", "label");
+			var feature = MockRepository.GenerateMock<IFeatureResult>();
 			try
 			{
 				_formatter.Stub(f => f.Format(Arg<IFeatureResult[]>.Matches(l => l.Contains(feature)))).Return(expectedText);

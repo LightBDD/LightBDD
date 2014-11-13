@@ -62,10 +62,9 @@ namespace LightBDD.Execution
         [DebuggerStepThrough]
         private void InvokeStep(object[] paramValues, IProgressNotifier progressNotifier, int totalCount)
         {
-            var stepName = string.Format(CultureInfo.InvariantCulture, _stepNameFormat, paramValues);
             _result = new StepResult(_stepNumber, new StepName(_stepNameFormat, _formattedStepTypeName, GetEvaluatedParameterDetails(paramValues)), ResultStatus.NotRun);
 
-            progressNotifier.NotifyStepStart(stepName, _stepNumber, totalCount);
+            progressNotifier.NotifyStepStart(_result.Name, _stepNumber, totalCount);
             MeasuredInvoke(paramValues);
 
             _result.SetStatus(ResultStatus.Passed);

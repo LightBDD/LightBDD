@@ -4,7 +4,7 @@ using System.Text;
 using LightBDD.Formatters;
 using LightBDD.Notification;
 using LightBDD.Results;
-using LightBDD.Results.Implementation;
+using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -171,7 +171,8 @@ got: B";
             var executionTime = new TimeSpan(0, 0, 0, 0, 127);
             string expectedText = string.Format("  STEP {0}/{1}: {2} after {3}{4}", stepNumber, totalStepCount, resultStatus, executionTime.FormatPretty(), Environment.NewLine);
 
-            _subject.NotifyStepFinished(new StepResult(stepNumber, new StepName(stepName), resultStatus).SetExecutionTime(executionTime), totalStepCount);
+            var result = Mocks.CreateStepResult(stepNumber, stepName, resultStatus, executionTime);
+            _subject.NotifyStepFinished(result, totalStepCount);
             Assert.That(_buffer.ToString(), Is.EqualTo(expectedText));
         }
     }

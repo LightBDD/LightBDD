@@ -1,6 +1,6 @@
 ﻿using LightBDD.Results;
-using LightBDD.Results.Implementation;
 using LightBDD.SummaryGeneration;
+using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -26,7 +26,7 @@ namespace LightBDD.UnitTests.SummaryGeneration
 		[Test]
 		public void Should_add_and_save_results()
 		{
-			var feature = new FeatureResult("name", "description", "label");
+			var feature = Mocks.CreateFeatureResult("name", "description", "label");
 			_subject.AddFeature(feature);
 			_subject.Finished();
 			_writer.AssertWasCalled(w => w.Save(new IFeatureResult[] { feature }));

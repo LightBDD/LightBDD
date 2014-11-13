@@ -48,24 +48,24 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BDD_runner_concurrency_tests.cs" />
     <Compile Include="BDD_runner_parameterized_tests.cs" />
     <Compile Include="BDD_runner_tests.cs" />
     <Compile Include="BDD_runner_tests_with_context.cs" />
     <Compile Include="Coordination\FeatureCoordinatorTests.cs" />
     <Compile Include="Coordination\FeatureSummaryAggregatorTests.cs" />
-    <Compile Include="Execution\ParameterizedStepTests.cs" />
-    <Compile Include="Execution\StepTests.cs" />
+    <Compile Include="Helpers\Mocks.cs" />
+    <Compile Include="Helpers\NoNotifier.cs" />
     <Compile Include="Helpers\SomeSteps.cs" />
     <Compile Include="Helpers\StepResultExpectation.cs" />
     <Compile Include="Helpers\TestableBDDRunner.cs" />
     <Compile Include="Helpers\TestableMetadataProvider.cs" />
     <Compile Include="Naming\StepNameDefaultDecoratorTests.cs" />
     <Compile Include="Notification\ConsoleProgressNotifierTests.cs" />
-    <Compile Include="Results\FeatureResultTests.cs" />
+    <Compile Include="BDD_runner_progress_notification_tests.cs" />
     <Compile Include="Results\Formatters\HtmlResultFormatterTests.cs" />
     <Compile Include="Results\Formatters\ResultFormatterTestData.cs" />
     <Compile Include="Results\Formatters\TimeFormatterTests.cs" />
-    <Compile Include="Results\StepResultTests.cs" />
     <Compile Include="SummaryGeneration\SummaryFileWriterTests.cs" />
     <Compile Include="SummaryGeneration\SummaryGeneratorTests.cs" />
     <Compile Include="TestResultsSummaryTests.cs" />
@@ -73,7 +73,8 @@
     <Compile Include="Naming\NameFormatterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\Formatters\XmlResultFormatterTests.cs" />
-    <Compile Include="Tests_with_dedicated_feature_description.cs" />
+    <Compile Include="BDD_runner_tests_with_dedicated_feature_description.cs" />
+    <Compile Include="BDD_runner_time_measurement_tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LightBDD\LightBDD.csproj">

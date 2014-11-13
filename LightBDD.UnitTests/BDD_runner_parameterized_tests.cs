@@ -12,15 +12,13 @@ namespace LightBDD.UnitTests
     public class BDD_runner_parameterized_tests
     {
         private AbstractBDDRunner _subject;
-        private IProgressNotifier _progressNotifier;
 
         #region Setup/Teardown
 
         [SetUp]
         public void SetUp()
         {
-            _progressNotifier = MockRepository.GenerateMock<IProgressNotifier>();
-            _subject = new TestableBDDRunner(GetType(), _progressNotifier);
+            _subject = new TestableBDDRunner(GetType(), MockRepository.GenerateMock<IProgressNotifier>());
         }
 
         #endregion
@@ -45,6 +43,33 @@ namespace LightBDD.UnitTests
                 new StepResultExpectation(2, "WHEN Customer orders this product", ResultStatus.Passed),
                 new StepResultExpectation(3, "THEN Customer receives invoice for product \"wooden desk\" in amount \"62\" pounds", ResultStatus.Passed),
                 new StepResultExpectation(4, "THEN Product is sent to customer", ResultStatus.Passed)
+            });
+        }
+
+        [Test]
+        public void Should_collect_scenario_result_for_failed_parameterized_steps()
+        {
+            try
+            {
+                _subject.RunScenario(
+                    given => Customer_has_bought_product("wooden desk"),
+                    and => Product_has_usage_marks("wooden desk"),
+                    when => Customer_gives_it_back(),
+                    then => Product_is_not_accepted("wooden desk"));
+            }
+            catch (NotImplementedException) { }
+
+            var result = _subject.Result.Scenarios.Single();
+            Assert.That(result.Name, Is.EqualTo("Should collect scenario result for failed parameterized steps"));
+            Assert.That(result.Status, Is.EqualTo(ResultStatus.Failed));
+            Assert.That(result.StatusDetails, Is.EqualTo("Product usage verification is not implemented yet"));
+            Assert.That(result.Label, Is.Null);
+            StepResultExpectation.Assert(result.Steps, new[]
+            {
+                new StepResultExpectation(1, "GIVEN Customer has bought product \"wooden desk\"", ResultStatus.Passed),
+                new StepResultExpectation(2, "AND Product \"wooden desk\" has usage marks", ResultStatus.Failed,"Product usage verification is not implemented yet"),
+                new StepResultExpectation(3, "WHEN Customer gives it back", ResultStatus.NotRun),
+                new StepResultExpectation(4, "THEN Product \"wooden desk\" is not accepted", ResultStatus.NotRun)
             });
         }
 
@@ -296,6 +321,15 @@ namespace LightBDD.UnitTests
         }
 
         private void Product_is_put_back_to_product_storage(string product)
+        {
+        }
+
+        private void Product_has_usage_marks(string product)
+        {
+            throw new NotImplementedException("Product usage verification is not implemented yet");
+        }
+
+        private void Product_is_not_accepted(string product)
         {
         }
 

@@ -3,8 +3,8 @@ using System.IO;
 using System.Linq;
 using LightBDD.Results;
 using LightBDD.Results.Formatters;
-using LightBDD.Results.Implementation;
 using LightBDD.SummaryGeneration;
+using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -35,7 +35,7 @@ namespace LightBDD.UnitTests.SummaryGeneration
 		public void Should_save_results_to_file_even_if_directory_does_not_exist()
 		{
 			const string expectedText = "some expected text";
-			var feature = new FeatureResult("name", "description", "label");
+			var feature = Mocks.CreateFeatureResult("name", "description", "label");
 			try
 			{
 				_formatter.Stub(f => f.Format(Arg<IFeatureResult[]>.Matches(l => l.Contains(feature)))).Return(expectedText);

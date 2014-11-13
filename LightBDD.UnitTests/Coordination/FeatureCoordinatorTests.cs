@@ -1,6 +1,6 @@
 ﻿using System;
 using LightBDD.Coordination;
-using LightBDD.Results.Implementation;
+using LightBDD.Results;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -25,7 +25,7 @@ namespace LightBDD.UnitTests.Coordination
         [Test]
         public void Should_add_feature()
         {
-            var feature = new FeatureResult("name", "desc", "label");
+            var feature = MockRepository.GenerateMock<IFeatureResult>();
             FeatureCoordinator.Instance.AddFeature(feature);
             _aggregator.AssertWasCalled(a => a.AddFeature(feature));
         }

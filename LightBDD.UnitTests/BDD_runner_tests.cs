@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using LightBDD.Notification;
@@ -17,16 +16,13 @@ namespace LightBDD.UnitTests
     public class BDD_runner_tests : SomeSteps
     {
         private AbstractBDDRunner _subject;
-        private IProgressNotifier _progressNotifier;
-        private const int UtcNowClockPrecisionInMs=15;
 
         #region Setup/Teardown
 
         [SetUp]
         public void SetUp()
         {
-            _progressNotifier = MockRepository.GenerateMock<IProgressNotifier>();
-            _subject = new TestableBDDRunner(GetType(), _progressNotifier);
+            _subject = new TestableBDDRunner(GetType(), MockRepository.GenerateMock<IProgressNotifier>());
         }
 
         #endregion
@@ -38,7 +34,7 @@ namespace LightBDD.UnitTests
             var result = _subject.Result.Scenarios.Single();
             Assert.That(result.Name, Is.EqualTo("Should collect scenario result"));
             Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
-            
+
             StepResultExpectation.Assert(result.Steps, new[]
             {
                 new StepResultExpectation(1, "Step one",  ResultStatus.Passed),
@@ -140,90 +136,6 @@ namespace LightBDD.UnitTests
                 new StepResultExpectation(3, "Step two", ResultStatus.NotRun)
             });
             Assert.That(result.StatusDetails, Is.EqualTo(expectedStatusDetails));
-        }
-
-        [Test]
-        public void Should_capture_scenario_execution_time()
-        {
-            var watch = new Stopwatch();
-            var startTime = DateTimeOffset.UtcNow;
-            watch.Start();
-
-            _subject.RunScenario(Step_one, Step_two);
-            var result = _subject.Result.Scenarios.Single();
-
-            watch.Stop();
-            Assert.That(result.ExecutionTime, Is.LessThanOrEqualTo(watch.Elapsed));
-            Assert.That(result.ExecutionStart, Is
-                .GreaterThanOrEqualTo(startTime)
-                .And
-                .LessThan(startTime.Add(watch.Elapsed).Add(TimeSpan.FromMilliseconds(UtcNowClockPrecisionInMs))));
-        }
-
-        [Test]
-        public void Should_capture_scenario_execution_time_for_failed_scenarios()
-        {
-            var watch = new Stopwatch();
-            var startTime = DateTimeOffset.UtcNow;
-            watch.Start();
-            try
-            {
-                _subject.RunScenario(Step_one, Step_with_ignore_assertion, Step_two);
-            }
-            catch
-            {
-            }
-            var result = _subject.Result.Scenarios.Single();
-
-            watch.Stop();
-            Assert.That(result.ExecutionTime, Is.LessThanOrEqualTo(watch.Elapsed));
-            Assert.That(result.ExecutionStart, Is
-                .GreaterThanOrEqualTo(startTime)
-                .And
-                .LessThan(startTime.Add(watch.Elapsed).Add(TimeSpan.FromMilliseconds(UtcNowClockPrecisionInMs))));
-        }
-
-        [Test]
-        public void Should_display_feature_name()
-        {
-            _progressNotifier.AssertWasCalled(n => n.NotifyFeatureStart("BDD runner tests", "Runner tests description", "Ticket-1"));
-        }
-
-        [Test]
-        public void Should_display_scenario_failure()
-        {
-            var ex = Assert.Throws<InvalidOperationException>(() => _subject.RunScenario(Step_throwing_exception));
-            _progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(Arg<IScenarioResult>.Matches(r => r.Status == ResultStatus.Failed && r.StatusDetails == ex.Message)));
-        }
-
-        [Test]
-        public void Should_display_scenario_ignored()
-        {
-            var ex = Assert.Throws<IgnoreException>(() => _subject.RunScenario(Step_with_ignore_assertion));
-            _progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(Arg<IScenarioResult>.Matches(r => r.Status == ResultStatus.Ignored && r.StatusDetails == ex.Message)));
-        }
-
-        [Test]
-        [Label("Ticket-2")]
-        public void Should_display_scenario_name()
-        {
-            _subject.RunScenario(Step_one);
-            _progressNotifier.AssertWasCalled(n => n.NotifyScenarioStart("Should display scenario name", "Ticket-2"));
-        }
-
-        [Test]
-        public void Should_display_scenario_success()
-        {
-            _subject.RunScenario(Step_one);
-            _progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(Arg<IScenarioResult>.Matches(r => r.Status == ResultStatus.Passed)));
-        }
-
-        [Test]
-        public void Should_display_steps()
-        {
-            _subject.RunScenario(Step_one, Step_two);
-            _progressNotifier.AssertWasCalled(n => n.NotifyStepStart("Step one", 1, 2));
-            _progressNotifier.AssertWasCalled(n => n.NotifyStepStart("Step two", 2, 2));
         }
 
         [Test]

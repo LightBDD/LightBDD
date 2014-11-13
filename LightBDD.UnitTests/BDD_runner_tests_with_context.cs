@@ -13,15 +13,13 @@ namespace LightBDD.UnitTests
     public class BDD_runner_tests_with_context
     {
         private AbstractBDDRunner _subject;
-        private IProgressNotifier _progressNotifier;
 
         #region Setup/Teardown
 
         [SetUp]
         public void SetUp()
         {
-            _progressNotifier = MockRepository.GenerateMock<IProgressNotifier>();
-            _subject = new TestableBDDRunner(GetType(), _progressNotifier);
+            _subject = new TestableBDDRunner(GetType(), MockRepository.GenerateMock<IProgressNotifier>());
         }
 
         #endregion
