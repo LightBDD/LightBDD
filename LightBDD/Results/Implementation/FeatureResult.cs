@@ -34,5 +34,12 @@ namespace LightBDD.Results.Implementation
         {
             return _scenarios.ToArray();
         }
+
+        public override string ToString()
+        {
+            return string.IsNullOrWhiteSpace(Label) 
+            ? Name 
+            : string.Format("{0} [{1}]", Name, Label);
+        }
     }
 }

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
+using LightBDD.Formatters;
 
 namespace LightBDD.Results.Implementation
 {
@@ -48,6 +50,18 @@ namespace LightBDD.Results.Implementation
         {
             ExecutionStart = executionStart;
             return this;
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append(Name);
+            if (!string.IsNullOrWhiteSpace(Label))
+                sb.Append(" [").Append(Label).Append("]");
+            sb.Append(": ").Append(Status);
+            if (StatusDetails != null)
+                sb.Append(" (").Append(StatusDetails).Append(")");
+            return sb.ToString();
         }
     }
 }

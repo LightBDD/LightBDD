@@ -213,5 +213,21 @@ namespace LightBDD.UnitTests
             var ex = Assert.Throws<ArgumentNullException>(() => new TestableBDDRunner(typeof(BDD_runner_tests), new TestableMetadataProvider(), null));
             Assert.That(ex.Message, Is.StringContaining("progressNotifier"));
         }
+
+        [Test]
+        public void Execution_results_should_print_user_friendly_output()
+        {
+            _subject.NewScenario("a").WithLabel("Label-1").Run(Step_one,Step_two);
+            try { _subject.NewScenario("b").Run(call => Step_throwing_exception_MESSAGE("abc")); }
+            catch { }
+
+            var result = _subject.Result;
+            var scenarios = result.Scenarios.ToArray();
+
+            Assert.That(result.ToString(), Is.EqualTo("BDD runner tests [Ticket-1]"));
+            Assert.That(scenarios.Select(s => s.ToString()).ToArray(), Is.EqualTo(new[] { "a [Label-1]: Passed", "b: Failed (abc)" }));
+            Assert.That(scenarios[0].Steps.Select(s => s.ToString()).ToArray(), Is.EqualTo(new[] { "1 Step one: Passed", "2 Step two: Passed" }));
+            Assert.That(scenarios[1].Steps.Select(s => s.ToString()).ToArray(), Is.EqualTo(new[] { "1 CALL Step throwing exception \"abc\": Failed (abc)"}));
+        }
     }
 }

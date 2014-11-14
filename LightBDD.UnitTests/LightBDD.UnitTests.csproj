@@ -57,6 +57,7 @@
     <Compile Include="Helpers\Mocks.cs" />
     <Compile Include="Helpers\NoNotifier.cs" />
     <Compile Include="Helpers\SomeSteps.cs" />
+    <Compile Include="Helpers\StepParameterExpectation.cs" />
     <Compile Include="Helpers\StepResultExpectation.cs" />
     <Compile Include="Helpers\TestableBDDRunner.cs" />
     <Compile Include="Helpers\TestableMetadataProvider.cs" />

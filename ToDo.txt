@@ -1,3 +1,11 @@
+* step parameter capture as culture variant
+* step parameter formatting by attributes
+* add step bypass option
+* HTML report: link to scenario / link to filtered scenarios
+* An advanced HTML/JS report based on XML data
+* Ability to define step 'macros'/groups that could be reused in multiple scenarios
+* [pre][post] attributes for placing argument in step name
+
 2.0:
 * remove obsolete methods
 * rename LightBDD to LightBDD.Core

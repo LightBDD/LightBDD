@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Notification;
 using LightBDD.Results;
@@ -9,7 +10,7 @@ using Rhino.Mocks;
 namespace LightBDD.UnitTests
 {
     [TestFixture]
-    public class BDD_runner_parameterized_tests
+    public class BDD_runner_parameterized_tests : SomeSteps
     {
         private AbstractBDDRunner _subject;
 
@@ -302,6 +303,40 @@ namespace LightBDD.UnitTests
                 new StepResultExpectation(3, "CALL Method with parameter \"22.67\"", ResultStatus.Passed),
                 new StepResultExpectation(4, "CALL Method with parameter \"05/31/2014 17:31:27\"", ResultStatus.Passed)
             });
+        }
+
+        [Test]
+        public void Should_capture_step_name_details()
+        {
+            try
+            {
+                _subject.RunScenario(
+                    call => Method_with_parameter(42),
+                    call => Step_throwing_exception_MESSAGE("abc"),
+                    call => Method_with_parameter(34),
+                    call => Method_with_parameter(TimeSpan.FromSeconds(10)));
+            }
+            catch (InvalidOperationException) { }
+            var steps = _subject.Result.Scenarios.Single().Steps.ToArray();
+            AssertStepName(steps[0], "CALL", "Method with parameter \"{0}\"", new StepParameterExpectation("42", true));
+            AssertStepName(steps[1], "CALL", "Step throwing exception \"{0}\"", new StepParameterExpectation("abc", true));
+            AssertStepName(steps[2], "CALL", "Method with parameter \"{0}\"", new StepParameterExpectation("34", true));
+            AssertStepName(steps[3], "CALL", "Method with parameter \"{0}\"", new StepParameterExpectation("<?>", false));
+        }
+
+        private static void AssertStepName(IStepResult step, string stepTypeName, string nameFormat, params StepParameterExpectation[] expectedParameters)
+        {
+            Assert.That(step.StepName, Is.Not.Null);
+            Assert.That(step.StepName.NameFormat, Is.EqualTo(nameFormat));
+            Assert.That(step.StepName.StepTypeName, Is.EqualTo(stepTypeName));
+            AssertStepParameters(step.StepName.Parameters, expectedParameters);
+        }
+
+        private static void AssertStepParameters(IEnumerable<IStepParameter> parameters, IEnumerable<StepParameterExpectation> expectedParameters)
+        {
+            var actual = parameters.Select(p => string.Format("Value={0}, Evaluated={1}", p.FormattedValue, p.IsEvaluated)).ToArray();
+            var expected = expectedParameters.Select(p => string.Format("Value={0}, Evaluated={1}", p.FormattedValue, p.IsEvaluated)).ToArray();
+            Assert.That(actual, Is.EqualTo(expected));
         }
 
         private void Method_with_parameter_and_OTHER(object parameter, object other) { }
