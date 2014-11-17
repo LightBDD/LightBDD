@@ -43,9 +43,10 @@ Failed steps: 1
 Ignored steps: 1
 Not Run steps: 1
 Feature summary
-Feature Scenarios Passed Failed Ignored Steps Passed Failed Ignored Not Run Duration
-My feature [Label 1] 2 0 1 1 5 2 1 1 1 1m 04s
+Feature Scenarios Passed Failed Ignored Steps Passed Failed Ignored Not Run Duration Average
+My feature [Label 1] 2 0 1 1 5 2 1 1 1 1m 04s 32s 128ms
 Feature details
+Toggle: Features Scenarios
 Filter: Passed Failed Ignored Not Run
 My feature [Label 1]
 My feature
@@ -84,9 +85,10 @@ Failed steps: 0
 Ignored steps: 1
 Not Run steps: 0
 Feature summary
-Feature Scenarios Passed Failed Ignored Steps Passed Failed Ignored Not Run Duration
-My feature 1 0 0 1 2 1 0 1 0 25ms
+Feature Scenarios Passed Failed Ignored Steps Passed Failed Ignored Not Run Duration Average
+My feature 1 0 0 1 2 1 0 1 0 25ms 25ms
 Feature details
+Toggle: Features Scenarios
 Filter: Passed Failed Ignored Not Run
 My feature
 Ignored name (25ms)
@@ -114,10 +116,11 @@ Failed steps: 0
 Ignored steps: 0
 Not Run steps: 0
 Feature summary
-Feature Scenarios Passed Failed Ignored Steps Passed Failed Ignored Not Run Duration
-My feature 1 1 0 0 1 1 0 0 0 20ms
-My feature2 1 1 0 0 1 1 0 0 0 20ms
+Feature Scenarios Passed Failed Ignored Steps Passed Failed Ignored Not Run Duration Average
+My feature 1 1 0 0 1 1 0 0 0 20ms 20ms
+My feature2 1 1 0 0 1 1 0 0 0 20ms 20ms
 Feature details
+Toggle: Features Scenarios
 Filter: Passed Failed Ignored Not Run
 My feature
 Passed scenario1 (20ms)
@@ -155,7 +158,7 @@ Passed 1. step1 (20ms)";
 
     class HtmlToPlainTextFormatter
     {
-        private readonly IEnumerable<string> _blockElements = new[] { "div", "tr", "table", "section", "article", "h1", "h2", "h3" };
+        private readonly IEnumerable<string> _blockElements = new[] { "div", "tr", "table", "section", "article", "h1", "h2", "h3", "br" };
         private readonly IEnumerable<string> _inlineElements = new[] { "td", "th" };//browsers are treating td/th in special way while for span they put no spaces when copied to clipboard
         private readonly List<string> _lines = new List<string>();
         private readonly StringBuilder _current = new StringBuilder();

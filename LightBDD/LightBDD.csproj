@@ -111,9 +111,11 @@
     <Compile Include="Naming\NameFormatter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Results\Formatters\styles.css" />
+    <EmbeddedResource Include="Results\Formatters\Html\styles.css" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Results\Formatters\Html\scripts.js" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -9,14 +9,15 @@ h3{ font-size: 1.20em;}
 .feature{margin-bottom: 1em;padding: 0.2em;}
 .title{font-weight: bold;vertical-align: middle;margin: 0;}
 .steps{margin-top: 0.5em;}
-.feature .header{width: 25%;display: inline-block;vertical-align: top;}
-.feature .scenarios{width: 75%;display: inline-block;vertical-align: top;}
+.feature .header{vertical-align: top;}
+.feature .scenarios{vertical-align: top;margin: 1em 0 1em 2em;}
+.feature:nth-child(even) { background: #eeeeee; }
+.feature:nth-child(odd) { background: #dddddd; }
 .scenario .title{display:inline-block}
-.toggle:not(:checked) ~ .scenarios { display: none;}
-.toggle:not(:checked) + h3 ~ div { display: none;}
+.toggleF:not(:checked) ~ .scenarios { display: none;}
+.toggleS:not(:checked) + h3 ~ div { display: none;}
 .description{font-style: italic;color: #222222;white-space: pre-wrap;}
 .label{color: #222277;padding: 0.2em;}
-.scenario{ margin-bottom: 1em;}
 .status{font-weight: bold;border: 1px solid #777777;padding: 0.2em;margin-right: 0.2em;width: 4em; display: inline-block;vertical-align: middle;text-align: center;}
 .status.passed{background-color: #aaffaa;}
 .status.failed{background-color: #ffaaaa;}
@@ -25,6 +26,7 @@ h3{ font-size: 1.20em;}
 .details{margin-top: 0.5em;font-style: italic;color: #ff5555;white-space: pre-wrap;font-size: x-small;}
 .step{margin: 0.2em;margin-left: 2em;}
 .duration{color: #0000cd;font-size: 0.8em;font-family: monospace;vertical-align: middle;}
+th,td{ white-space: nowrap;}
 th{ text-align: right;vertical-align: middle;}
 td{ text-align: left;vertical-align: middle;}
 table,th,td{ font-size: 1em;}
@@ -32,7 +34,7 @@ table.features td{ text-align: right;}
 table.features td:first-of-type, table.features th:first-of-type{ text-align: left;}
 td.alert{ color: #ff5555;font-weight: bold;}
 article{ margin-left: 1em;}
-.filter{ margin:0 0.3em 0.5em 0; font-weight: bold;font-style: italic; display: inline-block;}
+.options{ margin:0 0.3em 0.5em 0; font-weight: bold;font-style: italic; display: inline-block;min-width: 4em;text-align: right;}
 #showPassed:not(:checked) ~ * .scenario.passed, #showPassed:not(:checked) ~ .feature.passed { display: none;}
 #showFailed:not(:checked) ~ * .scenario.failed, #showFailed:not(:checked) ~ .feature.failed { display: none;}
 #showIgnored:not(:checked) ~ * .scenario.ignored, #showIgnored:not(:checked) ~ .feature.ignored { display: none;}

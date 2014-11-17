@@ -40,6 +40,14 @@ namespace LightBDD.Results
         }
 
         /// <summary>
+        /// Returns average test execution time based on Scenario ExecutionTime property.
+        /// </summary>
+        public static TimeSpan GetTestAverageExecutionTime(this IEnumerable<IScenarioResult> results)
+        {
+            return TimeSpan.FromTicks((long)results.Select(s => s.ExecutionTime.GetValueOrDefault().Ticks).DefaultIfEmpty(0).Average());
+        }
+
+        /// <summary>
         /// Counts scenarios that belongs to given feature and have given status.
         /// </summary>
         public static int CountScenariosWithStatus(this IFeatureResult result, ResultStatus resultStatus)
