@@ -1,10 +1,13 @@
 * step parameter capture as culture variant
 * step parameter formatting by attributes
 * add step bypass option
-* HTML report: link to scenario / link to filtered scenarios
+* HTML report: link to scenario / link to filtered scenarios, step parameter decorator as stream writer
 * An advanced HTML/JS report based on XML data
 * Ability to define step 'macros'/groups that could be reused in multiple scenarios
 * [pre][post] attributes for placing argument in step name
+* FeatureCoordinator and 2 seconds to close / FeatureCoordiantor – ensure it fires once. Warning on execution longer than 1 sec
+* HTML report: Break text if needed (feature name/label/description)
+* group features by namespace or Category attribute
 
 2.0:
 * remove obsolete methods
