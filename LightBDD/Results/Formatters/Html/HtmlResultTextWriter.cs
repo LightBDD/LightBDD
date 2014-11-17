@@ -78,19 +78,41 @@ namespace LightBDD.Results.Formatters.Html
             return Html.Tag(Html5Tag.Section).Content(
                 Html.Tag(HtmlTextWriterTag.H1).Content("Feature summary"),
                 Html.Tag(Html5Tag.Article).Content(
-                    Html.Tag(HtmlTextWriterTag.Table).Class("features").Content(
+                    Html.Tag(HtmlTextWriterTag.Table).Id("featuresSummary").Class("features").Content(
                         GetSummaryTable(features))));
         }
 
         private static IEnumerable<IHtmlNode> GetSummaryTable(IFeatureResult[] features)
         {
-            yield return GetSummaryTableHeaders("Feature", "Scenarios", "Passed", "Failed", "Ignored", "Steps", "Passed", "Failed", "Ignored", "Not Run", "Duration","Average");
-            for (int index = 0; index < features.Length; index++)
-                yield return GetFeatureSummary(features[index], index + 1);
+            var sortable = "sortable";
+            var sortableMinor = "sortable minor";
+            var hidden = "hidden";
+
+            yield return GetSummaryTableHeaders(
+                Tuple.Create("Feature", sortable, "sortTable('featuresSummary',0,false,this)"),
+                Tuple.Create("Scenarios", sortable, "sortTable('featuresSummary',1,true,this)"),
+                Tuple.Create("Passed", sortableMinor, "sortTable('featuresSummary',2,true,this)"),
+                Tuple.Create("Failed", sortableMinor, "sortTable('featuresSummary',3,true,this)"),
+                Tuple.Create("Ignored", sortableMinor, "sortTable('featuresSummary',4,true,this)"),
+                Tuple.Create("Steps", sortable, "sortTable('featuresSummary',5,true,this)"),
+                Tuple.Create("Passed", sortableMinor, "sortTable('featuresSummary',6,true,this)"),
+                Tuple.Create("Failed", sortableMinor, "sortTable('featuresSummary',7,true,this)"),
+                Tuple.Create("Ignored", sortableMinor, "sortTable('featuresSummary',8,true,this)"),
+                Tuple.Create("Not Run", sortableMinor, "sortTable('featuresSummary',9,true,this)"),
+                Tuple.Create("Duration", sortable, "sortTable('featuresSummary',11,true,this)"),
+                Tuple.Create("", hidden, ""),
+                Tuple.Create("Average", sortableMinor, "sortTable('featuresSummary',13,true,this)"),
+                Tuple.Create("", hidden, "")
+                );
+            yield return Html.Tag(HtmlTextWriterTag.Tbody).Content(features.Select((t, index) => GetFeatureSummary(t, index + 1)));
+
         }
 
         private static IHtmlNode GetFeatureSummary(IFeatureResult feature, int index)
         {
+            var testExecutionTime = feature.Scenarios.GetTestExecutionTime();
+            var testAverageExecutionTime = feature.Scenarios.GetTestAverageExecutionTime();
+
             return Html.Tag(HtmlTextWriterTag.Tr).Content(
                 Html.Tag(HtmlTextWriterTag.Td).Content(
                     Html.Tag(HtmlTextWriterTag.A).Href("#feature" + index).Content(feature.Name),
@@ -107,8 +129,10 @@ namespace LightBDD.Results.Formatters.Html
                 Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountStepsWithStatus(ResultStatus.Ignored).ToString(CultureInfo.InvariantCulture)),
                 Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountStepsWithStatus(ResultStatus.NotRun).ToString(CultureInfo.InvariantCulture)),
 
-                Html.Tag(HtmlTextWriterTag.Td).Content(feature.Scenarios.GetTestExecutionTime().FormatPretty()),
-                Html.Tag(HtmlTextWriterTag.Td).Content(feature.Scenarios.GetTestAverageExecutionTime().FormatPretty())
+                Html.Tag(HtmlTextWriterTag.Td).Content(testExecutionTime.FormatPretty()),
+                Html.Tag(HtmlTextWriterTag.Td).Class("hidden").Content(testExecutionTime.Ticks.ToString(CultureInfo.InvariantCulture)),
+                Html.Tag(HtmlTextWriterTag.Td).Content(testAverageExecutionTime.FormatPretty()),
+                Html.Tag(HtmlTextWriterTag.Td).Class("hidden").Content(testAverageExecutionTime.Ticks.ToString(CultureInfo.InvariantCulture))
                 );
         }
 
@@ -129,10 +153,14 @@ namespace LightBDD.Results.Formatters.Html
                 .SkipEmpty();
         }
 
-        private static IHtmlNode GetSummaryTableHeaders(params string[] headers)
+        private static IHtmlNode GetSummaryTableHeaders(params Tuple<string,string,string>[] headers)
         {
-            return Html.Tag(HtmlTextWriterTag.Tr)
-                       .Content(headers.Select(header => Html.Tag(HtmlTextWriterTag.Th).Content(header)));
+            return Html.Tag(HtmlTextWriterTag.Thead).Content(
+                Html.Tag(HtmlTextWriterTag.Tr).Content(headers.Select(header =>
+                    Html.Tag(HtmlTextWriterTag.Th)
+                        .Class(header.Item2)
+                        .Content(header.Item1)
+                        .OnClick(header.Item3))));
         }
 
         private static IHtmlNode WriteFeatureDetails(IFeatureResult[] features)
