@@ -48,14 +48,14 @@ My feature [Label 1] 2 0 1 1 5 2 1 1 1 1m 04s 642570000 32s 128ms 321285000
 Feature details
 Toggle: Features Scenarios
 Filter: Passed Failed Ignored Not Run
-My feature [Label 1]
+My feature [Label 1][&#8734;link]
 My feature
 long description
-Ignored name [Label 2] (1m 02s)
+Ignored name [Label 2] (1m 02s)[&#8734;link]
 Passed 1. step1 (1m 01s)
 Ignored 2. step2 (1s 100ms)
 Not implemented yet
-Failed name2 (2s 157ms)
+Failed name2 (2s 157ms)[&#8734;link]
 Passed 1. step3 (2s 107ms)
 Failed 2. step4 (50ms)
 NotRun 3. step5
@@ -90,8 +90,8 @@ My feature 1 0 0 1 2 1 0 1 0 25ms 250000 25ms 250000
 Feature details
 Toggle: Features Scenarios
 Filter: Passed Failed Ignored Not Run
-My feature
-Ignored name (25ms)
+My feature[&#8734;link]
+Ignored name (25ms)[&#8734;link]
 Passed 1. step1 (20ms)
 Ignored 2. step2 (5ms)";
             Assert.That(text, Is.EqualTo(expectedText));
@@ -122,11 +122,11 @@ My feature2 1 1 0 0 1 1 0 0 0 20ms 200000 20ms 200000
 Feature details
 Toggle: Features Scenarios
 Filter: Passed Failed Ignored Not Run
-My feature
-Passed scenario1 (20ms)
+My feature[&#8734;link]
+Passed scenario1 (20ms)[&#8734;link]
 Passed 1. step1 (20ms)
-My feature2
-Passed scenario1 (20ms)
+My feature2[&#8734;link]
+Passed scenario1 (20ms)[&#8734;link]
 Passed 1. step1 (20ms)";
             Assert.That(text, Is.EqualTo(expectedText));
         }

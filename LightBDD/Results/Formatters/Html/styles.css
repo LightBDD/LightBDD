@@ -13,7 +13,6 @@ h3{ font-size: 1.20em;}
 .feature .scenarios{vertical-align: top;margin: 1em 0 1em 2em;}
 .feature:nth-child(even) { background: #eeeeee; }
 .feature:nth-child(odd) { background: #dddddd; }
-.scenario .title{display:inline-block}
 .toggleF:not(:checked) ~ .scenarios { display: none;}
 .toggleS:not(:checked) + h3 ~ div { display: none;}
 .description{font-style: italic;color: #222222;white-space: pre-wrap;}
@@ -50,6 +49,8 @@ input { vertical-align: middle;}
 a{ text-decoration: none;}
 a:hover{ text-decoration: underline;}
 .smallLink, a:hover,label:hover,.sortable:hover{ color: #662266;}
+.smallLink{ display: none;}
+.title:hover .smallLink { display: inline;}
 input[type="checkbox"]{ display: none;}
 .chbox:before{display: inline-block; border: 1px solid #777777;padding: 0.1em;margin-right: 0.5em; border: 1px solid #777777;font-weight: bold;text-align: center;vertical-align: middle;width: 1em;}
 input[type="checkbox"]:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "\2715";}

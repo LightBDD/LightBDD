@@ -233,7 +233,7 @@ namespace LightBDD.Results.Formatters.Html
 
         private static IHtmlNode GetSmallLink(string link)
         {
-            return Html.Tag(HtmlTextWriterTag.A).Class("smallLink").Href("#" + link).Content("[&#8734;]", false, false);
+            return Html.Tag(HtmlTextWriterTag.A).Class("smallLink").Href("#" + link).Content("[&#8734;link]", false, false);
         }
 
         private static string GetFeatureClasses(IFeatureResult feature)
@@ -251,7 +251,7 @@ namespace LightBDD.Results.Formatters.Html
         private static IHtmlNode GetScenario(IScenarioResult scenario, int featureIndex, int scenarioIndex)
         {
             var toggleId = string.Format("toggle{0}_{1}", featureIndex, scenarioIndex);
-            var scenarioId = string.Format("scenario{0}_{1}", featureIndex, scenarioIndex);
+            var scenarioId = string.Format("scenario{0}_{1}", featureIndex, scenarioIndex + 1);
             return Html.Tag(HtmlTextWriterTag.Div).Class("scenario " + GetStatusClass(scenario.Status)).Content(
                 Html.Checkbox().Id(toggleId).Class("toggleS").Checked(),
                 Html.Tag(HtmlTextWriterTag.H3).Id(scenarioId).Class("title").Content(
