@@ -153,7 +153,7 @@ namespace LightBDD.Results.Formatters.Html
                 .SkipEmpty();
         }
 
-        private static IHtmlNode GetSummaryTableHeaders(params Tuple<string,string,string>[] headers)
+        private static IHtmlNode GetSummaryTableHeaders(params Tuple<string, string, string>[] headers)
         {
             return Html.Tag(HtmlTextWriterTag.Thead).Content(
                 Html.Tag(HtmlTextWriterTag.Tr).Content(headers.Select(header =>
@@ -224,10 +224,16 @@ namespace LightBDD.Results.Formatters.Html
                 Html.Tag(HtmlTextWriterTag.Div).Class("header").Content(
                     Html.Tag(HtmlTextWriterTag.H2).Id("feature" + index).Class("title").Content(
                         Html.Tag(HtmlTextWriterTag.Label).For("toggle" + index).Content(GetCheckBoxTag(), Html.Text(feature.Name)),
-                        GetLabel(feature.Label)),
+                        GetLabel(feature.Label),
+                        GetSmallLink("feature" + index)),
                     Html.Tag(HtmlTextWriterTag.Div).Class("description").Content(feature.Description)),
                 Html.Tag(HtmlTextWriterTag.Div).Class("scenarios").Content(
                     feature.Scenarios.Select((s, i) => GetScenario(s, index, i))));
+        }
+
+        private static IHtmlNode GetSmallLink(string link)
+        {
+            return Html.Tag(HtmlTextWriterTag.A).Class("smallLink").Href("#" + link).Content("[&#8734;]", false, false);
         }
 
         private static string GetFeatureClasses(IFeatureResult feature)
@@ -245,15 +251,17 @@ namespace LightBDD.Results.Formatters.Html
         private static IHtmlNode GetScenario(IScenarioResult scenario, int featureIndex, int scenarioIndex)
         {
             var toggleId = string.Format("toggle{0}_{1}", featureIndex, scenarioIndex);
+            var scenarioId = string.Format("scenario{0}_{1}", featureIndex, scenarioIndex);
             return Html.Tag(HtmlTextWriterTag.Div).Class("scenario " + GetStatusClass(scenario.Status)).Content(
                 Html.Checkbox().Id(toggleId).Class("toggleS").Checked(),
-                Html.Tag(HtmlTextWriterTag.H3).Class("title").Content(
+                Html.Tag(HtmlTextWriterTag.H3).Id(scenarioId).Class("title").Content(
                     Html.Tag(HtmlTextWriterTag.Label).For(toggleId).Content(
                         GetCheckBoxTag(),
                         GetStatus(scenario.Status),
                         Html.Text(scenario.Name)),
                     GetLabel(scenario.Label),
-                    GetDuration(scenario.ExecutionTime)),
+                    GetDuration(scenario.ExecutionTime),
+                    GetSmallLink(scenarioId)),
                 Html.Tag(HtmlTextWriterTag.Div).Content(scenario.Steps.Select(GetStep)),
                 Html.Tag(HtmlTextWriterTag.Div).Class("details").Content(scenario.StatusDetails).SkipEmpty(),
                 Html.Br());

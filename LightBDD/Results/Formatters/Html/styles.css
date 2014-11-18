@@ -25,7 +25,7 @@ h3{ font-size: 1.20em;}
 .status.notrun{background-color: #aaaaaa;}
 .details{margin-top: 0.5em;font-style: italic;color: #ff5555;white-space: pre-wrap;font-size: x-small;}
 .step{margin: 0.2em;margin-left: 2em;}
-.duration{color: #0000cd;font-size: 0.8em;font-family: monospace;vertical-align: middle;}
+.smallLink,.duration{color: #0000cd;font-size: 0.8em;font-family: monospace;vertical-align: middle;}
 th,td{ white-space: nowrap;}
 th{ text-align: right;vertical-align: middle;}
 th.minor{ font-weight: normal;}
@@ -49,7 +49,7 @@ article{ margin-left: 1em;}
 input { vertical-align: middle;}
 a{ text-decoration: none;}
 a:hover{ text-decoration: underline;}
-a:hover,label:hover,.sortable:hover{ color: #662266;}
+.smallLink, a:hover,label:hover,.sortable:hover{ color: #662266;}
 input[type="checkbox"]{ display: none;}
 .chbox:before{display: inline-block; border: 1px solid #777777;padding: 0.1em;margin-right: 0.5em; border: 1px solid #777777;font-weight: bold;text-align: center;vertical-align: middle;width: 1em;}
 input[type="checkbox"]:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "\2715";}
