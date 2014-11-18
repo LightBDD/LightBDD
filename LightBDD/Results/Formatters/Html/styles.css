@@ -1,11 +1,11 @@
 ﻿*{color: #222222;font-family: Arial, sans-serif;-webkit-print-color-adjust:exact;}
 html{font-size: 11pt;}
 .chbox:before{font-size:0.6em;}
-.status{ font-size: x-small;}
+.status{ font-size: x-small;height: 1.2em;vertical-align: middle;line-height: 1.2em;}
 .step .status{font-size: xx-small;}
-h1{ font-size: 1.60em;}
-h2{ font-size: 1.40em;}
-h3{ font-size: 1.20em;}
+h1{ font-size: 1.40em;}
+h2{ font-size: 1.20em;}
+h3{ font-size: 1.00em;}
 .feature{margin-bottom: 1em;padding: 0.2em;}
 .title{font-weight: bold;vertical-align: middle;margin: 0;}
 .title,.description,.step{ word-wrap: break-word;}
@@ -14,6 +14,7 @@ h3{ font-size: 1.20em;}
 .feature .scenarios{vertical-align: top;margin: 1em 0 1em 2em;}
 .feature:nth-child(even) { background: #eeeeee; }
 .feature:nth-child(odd) { background: #dddddd; }
+.scenario{ margin-bottom: 1px;}
 .toggleF:not(:checked) ~ .scenarios { display: none;}
 .toggleS:not(:checked) + h3 ~ * { display: none;}
 .description{font-style: italic;color: #222222;white-space: pre-wrap;margin-top: 0.5em;}
@@ -53,7 +54,7 @@ a:hover{ text-decoration: underline;}
 .smallLink{ display: none;}
 .title:hover .smallLink { display: inline;}
 input[type="checkbox"]{ display: none;}
-.chbox:before{display: inline-block; border: 1px solid #777777;padding: 0.1em;margin-right: 0.5em; border: 1px solid #777777;font-weight: bold;text-align: center;vertical-align: middle;width: 1em;}
+.chbox:before{display: inline-block; border: 1px solid #777777;padding: 0.1em;margin-right: 0.5em; font-weight: bold;text-align: center;vertical-align: middle;width: 1em;}
 input[type="checkbox"]:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "\2715";}
 input[type="checkbox"]:checked + * .chbox:before{ background-color: #eeeeee;content: "\2713";}
 input[type="checkbox"].toggle:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "\22bd";}
