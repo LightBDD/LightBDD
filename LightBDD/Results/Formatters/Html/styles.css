@@ -8,6 +8,7 @@ h2{ font-size: 1.40em;}
 h3{ font-size: 1.20em;}
 .feature{margin-bottom: 1em;padding: 0.2em;}
 .title{font-weight: bold;vertical-align: middle;margin: 0;}
+.title,.description,.step{ word-wrap: break-word;}
 .steps{margin-top: 0.5em;}
 .feature .header{vertical-align: top;}
 .feature .scenarios{vertical-align: top;margin: 1em 0 1em 2em;}
