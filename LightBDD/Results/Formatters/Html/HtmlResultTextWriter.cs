@@ -220,7 +220,7 @@ namespace LightBDD.Results.Formatters.Html
         private static IHtmlNode GetFeatureDetails(IFeatureResult feature, int index)
         {
             return Html.Tag(Html5Tag.Article).Class(GetFeatureClasses(feature)).Content(
-                Html.Checkbox().Class("toggleF").Id("toggle" + index).Checked(),
+                Html.Checkbox().Class("toggle toggleF").Id("toggle" + index).Checked(),
                 Html.Tag(HtmlTextWriterTag.Div).Class("header").Content(
                     Html.Tag(HtmlTextWriterTag.H2).Id("feature" + index).Class("title").Content(
                         Html.Tag(HtmlTextWriterTag.Label).For("toggle" + index).Content(GetCheckBoxTag(), Html.Text(feature.Name)),
@@ -253,7 +253,7 @@ namespace LightBDD.Results.Formatters.Html
             var toggleId = string.Format("toggle{0}_{1}", featureIndex, scenarioIndex);
             var scenarioId = string.Format("scenario{0}_{1}", featureIndex, scenarioIndex + 1);
             return Html.Tag(HtmlTextWriterTag.Div).Class("scenario " + GetStatusClass(scenario.Status)).Content(
-                Html.Checkbox().Id(toggleId).Class("toggleS").Checked(),
+                Html.Checkbox().Id(toggleId).Class("toggle toggleS").Checked(),
                 Html.Tag(HtmlTextWriterTag.H3).Id(scenarioId).Class("title").Content(
                     Html.Tag(HtmlTextWriterTag.Label).For(toggleId).Content(
                         GetCheckBoxTag(),

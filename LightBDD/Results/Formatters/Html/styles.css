@@ -1,38 +1,39 @@
 ﻿*{color: #222222;font-family: Arial, sans-serif;-webkit-print-color-adjust:exact;}
 html{font-size: 11pt;}
-.chbox:before{font-size:0.6em;}
-.status{ font-size: x-small;height: 1.2em;vertical-align: middle;line-height: 1.2em;}
+.title *{ line-height: 1em;}
+label * { line-height: 1em;}
+.chbox:before{font-size:0.8em;}
+.status{ font-size: x-small;height: 1.2em;line-height: 1.2em;}
 .step .status{font-size: xx-small;}
 h1{ font-size: 1.40em;}
 h2{ font-size: 1.20em;}
 h3{ font-size: 1.00em;}
 .feature{margin-bottom: 1em;padding: 0.2em;}
-.title{font-weight: bold;vertical-align: middle;margin: 0;}
+.title{font-weight: bold;margin: 0;}
 .title,.description,.step{ word-wrap: break-word;}
 .steps{margin-top: 0.5em;}
-.feature .header{vertical-align: top;}
-.feature .scenarios{vertical-align: top;margin: 1em 0 1em 2em;}
+.feature .scenarios{margin: 1em 0 1em 2em;}
 .feature:nth-child(even) { background: #eeeeee; }
 .feature:nth-child(odd) { background: #dddddd; }
 .scenario{ margin-bottom: 1px;}
 .toggleF:not(:checked) ~ .scenarios { display: none;}
 .toggleS:not(:checked) + h3 ~ * { display: none;}
 .description{font-style: italic;color: #222222;white-space: pre-wrap;margin-top: 0.5em;}
-.label{color: #222277;padding: 0.2em;}
-.status{font-weight: bold;border: 1px solid #777777;padding: 0.2em;margin-right: 0.2em;width: 4em; display: inline-block;vertical-align: middle;text-align: center;}
+.label{color: #222277;}
+.status{font-weight: bold;border: 1px solid #777777;padding: 0.2em;margin-right: 0.2em;width: 4em; display: inline-block;text-align: center;}
 .status.passed{background-color: #aaffaa;}
 .status.failed{background-color: #ffaaaa;}
 .status.ignored{background-color: #ffffaa;}
 .status.notrun{background-color: #aaaaaa;}
 .details{margin-top: 0.5em;font-style: italic;color: #ff5555;white-space: pre-wrap;font-size: x-small;}
 .step{margin: 0.2em;margin-left: 2em;}
-.smallLink,.duration{color: #0000cd;font-size: 0.8em;font-family: monospace;vertical-align: middle;}
+.smallLink,.duration{color: #0000cd;font-size: 0.8em;font-family: monospace;}
 th,td{ white-space: nowrap;}
-th{ text-align: right;vertical-align: middle;}
+th{ text-align: right;}
 th.minor{ font-weight: normal;}
 .hidden{ display: none;}
 .sortable{ cursor: default;}
-td{ text-align: left;vertical-align: middle;}
+td{ text-align: left;}
 table,th,td{ font-size: 1em;}
 table.features td{ text-align: right;}
 table.features td:first-of-type, table.features th:first-of-type{ text-align: left;}
@@ -47,14 +48,13 @@ article{ margin-left: 1em;}
 #showFailed:checked ~ * .scenario.failed, #showFailed:checked ~ .feature.failed { display: block;}
 #showIgnored:checked ~ * .scenario.ignored, #showIgnored:checked ~ .feature.ignored { display: block;}
 #showNotRun:checked ~ * .scenario.notrun, #showNotRun:checked ~ .feature.notrun { display: block;}
-input { vertical-align: middle;}
 a{ text-decoration: none;}
 a:hover{ text-decoration: underline;}
 .smallLink, a:hover,label:hover,.sortable:hover{ color: #662266;}
 .smallLink{ display: none;}
 .title:hover .smallLink { display: inline;}
 input[type="checkbox"]{ display: none;}
-.chbox:before{display: inline-block; border: 1px solid #777777;padding: 0.1em;margin-right: 0.5em; font-weight: bold;text-align: center;vertical-align: middle;width: 1em;}
+.chbox:before{display: inline-block; border: 1px solid #777777;margin-right: 0.5em;font-weight: bold;text-align: center;width: 1.2em;height: 1.2em;line-height: 1.2em;vertical-align: middle;}
 input[type="checkbox"]:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "\2715";}
 input[type="checkbox"]:checked + * .chbox:before{ background-color: #eeeeee;content: "\2713";}
 input[type="checkbox"].toggle:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "\22bd";}
@@ -62,3 +62,4 @@ input[type="checkbox"].toggle:checked + * .chbox:before{ background-color: #eeee
 .stepType{ font-style: italic;}
 .stepParam{ color: #aa00aa;}
 .stepParamUnknown{ color: #aa55aa;}
+label{ display: inline-block;}
