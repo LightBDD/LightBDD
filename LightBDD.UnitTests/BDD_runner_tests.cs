@@ -115,6 +115,70 @@ namespace LightBDD.UnitTests
         }
 
         [Test]
+        public void Should_collect_scenario_result_for_passing_scenario_with_bypassed_steps()
+        {
+            _subject.RunScenario(Step_one, Step_with_bypass, Step_with_bypass2, Step_two);
+
+            var result = _subject.Result.Scenarios.Single();
+            Assert.That(result.Name, Is.EqualTo("Should collect scenario result for passing scenario with bypassed steps"));
+            Assert.That(result.Status, Is.EqualTo(ResultStatus.Bypassed));
+            StepResultExpectation.Assert(result.Steps, new[]
+            {
+                new StepResultExpectation(1, "Step one", ResultStatus.Passed),
+                new StepResultExpectation(2, "Step with bypass", ResultStatus.Bypassed, BypassReason),
+                new StepResultExpectation(3, "Step with bypass2", ResultStatus.Bypassed, BypassReason2),
+                new StepResultExpectation(4, "Step two", ResultStatus.Passed)
+            });
+            Assert.That(result.StatusDetails, Is.EqualTo(BypassReason2));
+        }
+
+        [Test]
+        public void Should_collect_scenario_result_for_failing_scenario_with_bypassed_steps()
+        {
+            try
+            {
+                _subject.RunScenario(Step_one, Step_with_bypass, Step_with_bypass2, Step_throwing_exception, Step_two);
+            }
+            catch { }
+
+            var result = _subject.Result.Scenarios.Single();
+            Assert.That(result.Name, Is.EqualTo("Should collect scenario result for failing scenario with bypassed steps"));
+            Assert.That(result.Status, Is.EqualTo(ResultStatus.Failed));
+            StepResultExpectation.Assert(result.Steps, new[]
+            {
+                new StepResultExpectation(1, "Step one", ResultStatus.Passed),
+                new StepResultExpectation(2, "Step with bypass", ResultStatus.Bypassed, BypassReason),
+                new StepResultExpectation(3, "Step with bypass2", ResultStatus.Bypassed, BypassReason2),
+                new StepResultExpectation(4, "Step throwing exception", ResultStatus.Failed, ExceptionText),
+                new StepResultExpectation(5, "Step two", ResultStatus.NotRun)
+            });
+            Assert.That(result.StatusDetails, Is.EqualTo(ExceptionText));
+        }
+
+        [Test]
+        public void Should_collect_scenario_result_for_ignored_scenario_with_bypassed_steps()
+        {
+            try
+            {
+                _subject.RunScenario(Step_one, Step_with_bypass, Step_with_bypass2, Step_with_ignore_assertion, Step_two);
+            }
+            catch { }
+
+            var result = _subject.Result.Scenarios.Single();
+            Assert.That(result.Name, Is.EqualTo("Should collect scenario result for ignored scenario with bypassed steps"));
+            Assert.That(result.Status, Is.EqualTo(ResultStatus.Ignored));
+            StepResultExpectation.Assert(result.Steps, new[]
+            {
+                new StepResultExpectation(1, "Step one", ResultStatus.Passed),
+                new StepResultExpectation(2, "Step with bypass", ResultStatus.Bypassed, BypassReason),
+                new StepResultExpectation(3, "Step with bypass2", ResultStatus.Bypassed, BypassReason2),
+                new StepResultExpectation(4, "Step with ignore assertion", ResultStatus.Ignored, IgnoreReason),
+                new StepResultExpectation(5, "Step two", ResultStatus.NotRun)
+            });
+            Assert.That(result.StatusDetails, Is.EqualTo(IgnoreReason));
+        }
+
+        [Test]
         public void Should_collect_scenario_result_for_ignored_scenario_steps()
         {
             try

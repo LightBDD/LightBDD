@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using LightBDD.Formatters;
 
 namespace LightBDD.Results.Implementation
 {
@@ -33,7 +32,7 @@ namespace LightBDD.Results.Implementation
 
         private void SetStatus()
         {
-            var stepsResult = Steps.OrderByDescending(s => s.Status).FirstOrDefault();
+            var stepsResult = Steps.Reverse().OrderByDescending(s => s.Status).FirstOrDefault();
             if (stepsResult == null)
                 return;
             Status = stepsResult.Status;

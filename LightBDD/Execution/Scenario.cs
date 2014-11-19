@@ -1,4 +1,4 @@
-﻿namespace LightBDD.Execution
+namespace LightBDD.Execution
 {
     internal class Scenario
     {

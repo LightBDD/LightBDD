@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using LightBDD.Assertion.Exceptions;
 using LightBDD.Execution.Parameters;
 using LightBDD.Notification;
 using LightBDD.Results;
@@ -41,6 +42,10 @@ namespace LightBDD.Execution
             try
             {
                 InvokeStep(progressNotifier, totalCount);
+            }
+            catch (StepBypassException e)
+            {
+                _result.SetStatus(ResultStatus.Bypassed, e.Message);
             }
             catch (Exception e)
             {

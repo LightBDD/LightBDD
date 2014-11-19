@@ -58,7 +58,7 @@ namespace LightBDD.UnitTests
                     when => Customer_gives_it_back(),
                     then => Product_is_not_accepted("wooden desk"));
             }
-            catch (NotImplementedException) { }
+            catch { }
 
             var result = _subject.Result.Scenarios.Single();
             Assert.That(result.Name, Is.EqualTo("Should collect scenario result for failed parameterized steps"));
@@ -71,6 +71,74 @@ namespace LightBDD.UnitTests
                 new StepResultExpectation(2, "AND Product \"wooden desk\" has usage marks", ResultStatus.Failed,"Product usage verification is not implemented yet"),
                 new StepResultExpectation(3, "WHEN Customer gives it back", ResultStatus.NotRun),
                 new StepResultExpectation(4, "THEN Product \"wooden desk\" is not accepted", ResultStatus.NotRun)
+            });
+        }
+
+        [Test]
+        public void Should_collect_scenario_result_for_parameterized_steps_with_bypassed_steps()
+        {
+            _subject.RunScenario(
+                call => Step_one(),
+                call => Step_with_bypass(),
+                call => Step_two());
+
+            var result = _subject.Result.Scenarios.Single();
+            Assert.That(result.Name, Is.EqualTo("Should collect scenario result for parameterized steps with bypassed steps"));
+            Assert.That(result.Status, Is.EqualTo(ResultStatus.Bypassed));
+            Assert.That(result.StatusDetails, Is.EqualTo(BypassReason));
+            StepResultExpectation.Assert(result.Steps, new[]
+            {
+                new StepResultExpectation(1, "CALL Step one", ResultStatus.Passed),
+                new StepResultExpectation(2, "CALL Step with bypass", ResultStatus.Bypassed, BypassReason),
+                new StepResultExpectation(3, "CALL Step two", ResultStatus.Passed)
+            });
+        }
+
+        [Test]
+        public void Should_collect_scenario_result_for_failed_parameterized_steps_with_bypassed_steps()
+        {
+            try
+            {
+                _subject.RunScenario(
+                    call => Step_one(),
+                    call => Step_with_bypass(),
+                    call => Step_throwing_exception());
+            }
+            catch { }
+
+            var result = _subject.Result.Scenarios.Single();
+            Assert.That(result.Name, Is.EqualTo("Should collect scenario result for failed parameterized steps with bypassed steps"));
+            Assert.That(result.Status, Is.EqualTo(ResultStatus.Failed));
+            Assert.That(result.StatusDetails, Is.EqualTo(ExceptionText));
+            StepResultExpectation.Assert(result.Steps, new[]
+            {
+                new StepResultExpectation(1, "CALL Step one", ResultStatus.Passed),
+                new StepResultExpectation(2, "CALL Step with bypass", ResultStatus.Bypassed, BypassReason),
+                new StepResultExpectation(3, "CALL Step throwing exception", ResultStatus.Failed, ExceptionText)
+            });
+        }
+
+        [Test]
+        public void Should_collect_scenario_result_for_ignored_parameterized_steps_with_bypassed_steps()
+        {
+            try
+            {
+                _subject.RunScenario(
+                    call => Step_one(),
+                    call => Step_with_bypass(),
+                    call => Step_with_ignore_assertion());
+            }
+            catch { }
+
+            var result = _subject.Result.Scenarios.Single();
+            Assert.That(result.Name, Is.EqualTo("Should collect scenario result for ignored parameterized steps with bypassed steps"));
+            Assert.That(result.Status, Is.EqualTo(ResultStatus.Ignored));
+            Assert.That(result.StatusDetails, Is.EqualTo(IgnoreReason));
+            StepResultExpectation.Assert(result.Steps, new[]
+            {
+                new StepResultExpectation(1, "CALL Step one", ResultStatus.Passed),
+                new StepResultExpectation(2, "CALL Step with bypass", ResultStatus.Bypassed, BypassReason),
+                new StepResultExpectation(3, "CALL Step with ignore assertion", ResultStatus.Ignored, IgnoreReason)
             });
         }
 

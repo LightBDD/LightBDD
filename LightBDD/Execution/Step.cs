@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using LightBDD.Assertion.Exceptions;
 using LightBDD.Notification;
 using LightBDD.Results;
 using LightBDD.Results.Implementation;
@@ -29,6 +30,10 @@ namespace LightBDD.Execution
                 _result.SetExecutionStart(DateTimeOffset.UtcNow);
                 MeasuredInvoke();
                 _result.SetStatus(ResultStatus.Passed);
+            }
+            catch (StepBypassException e)
+            {
+                _result.SetStatus(ResultStatus.Bypassed, e.Message);
             }
             catch (Exception e)
             {

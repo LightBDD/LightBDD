@@ -48,6 +48,8 @@
       <Link>Properties\AssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="AbstractBDDRunner.cs" />
+    <Compile Include="Assertion\Exceptions\StepBypassException.cs" />
+    <Compile Include="Assertion\Step.cs" />
     <Compile Include="Configuration\LightBDDConfiguration.cs" />
     <Compile Include="Configuration\SummaryWriterCollection.cs" />
     <Compile Include="Configuration\SummaryWriterElement.cs" />
