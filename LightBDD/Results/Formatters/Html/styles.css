@@ -3,7 +3,7 @@ html{font-size: 11pt;}
 .title *{ line-height: 1em;}
 label * { line-height: 1em;}
 .chbox:before{font-size:0.8em;}
-.status{ font-size: x-small;height: 1.2em;line-height: 1.2em;}
+.status{ font-size: x-small;height: 1.2em;line-height: 1.2em;vertical-align: middle;}
 .step .status{font-size: xx-small;}
 h1{ font-size: 1.40em;}
 h2{ font-size: 1.20em;}
