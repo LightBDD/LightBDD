@@ -44,10 +44,12 @@ namespace LightBDD.Results.Formatters.Html
                         GetKeyValueTableRow("Number of features:", features.Length.ToString(CultureInfo.InvariantCulture)),
                         GetKeyValueTableRow("Number of scenarios:", features.CountScenarios()),
                         GetKeyValueTableRow("Passed scenarios:", features.CountScenariosWithStatus(ResultStatus.Passed)),
+                        GetKeyValueTableRow("Bypassed scenarios:", features.CountScenariosWithStatus(ResultStatus.Bypassed)),
                         GetKeyValueTableRow("Failed scenarios:", features.CountScenariosWithStatus(ResultStatus.Failed), "alert"),
                         GetKeyValueTableRow("Ignored scenarios:", features.CountScenariosWithStatus(ResultStatus.Ignored)),
                         GetKeyValueTableRow("Number of steps:", features.CountSteps()),
                         GetKeyValueTableRow("Passed steps:", features.CountStepsWithStatus(ResultStatus.Passed)),
+                        GetKeyValueTableRow("Bypassed steps:", features.CountStepsWithStatus(ResultStatus.Bypassed)),
                         GetKeyValueTableRow("Failed steps:", features.CountStepsWithStatus(ResultStatus.Failed), "alert"),
                         GetKeyValueTableRow("Ignored steps:", features.CountStepsWithStatus(ResultStatus.Ignored)),
                         GetKeyValueTableRow("Not Run steps:", features.CountStepsWithStatus(ResultStatus.NotRun))
@@ -92,16 +94,18 @@ namespace LightBDD.Results.Formatters.Html
                 Tuple.Create("Feature", sortable, "sortTable('featuresSummary',0,false,this)"),
                 Tuple.Create("Scenarios", sortable, "sortTable('featuresSummary',1,true,this)"),
                 Tuple.Create("Passed", sortableMinor, "sortTable('featuresSummary',2,true,this)"),
-                Tuple.Create("Failed", sortableMinor, "sortTable('featuresSummary',3,true,this)"),
-                Tuple.Create("Ignored", sortableMinor, "sortTable('featuresSummary',4,true,this)"),
-                Tuple.Create("Steps", sortable, "sortTable('featuresSummary',5,true,this)"),
-                Tuple.Create("Passed", sortableMinor, "sortTable('featuresSummary',6,true,this)"),
-                Tuple.Create("Failed", sortableMinor, "sortTable('featuresSummary',7,true,this)"),
-                Tuple.Create("Ignored", sortableMinor, "sortTable('featuresSummary',8,true,this)"),
-                Tuple.Create("Not Run", sortableMinor, "sortTable('featuresSummary',9,true,this)"),
-                Tuple.Create("Duration", sortable, "sortTable('featuresSummary',11,true,this)"),
+                Tuple.Create("Bypassed", sortableMinor, "sortTable('featuresSummary',3,true,this)"),
+                Tuple.Create("Failed", sortableMinor, "sortTable('featuresSummary',4,true,this)"),
+                Tuple.Create("Ignored", sortableMinor, "sortTable('featuresSummary',5,true,this)"),
+                Tuple.Create("Steps", sortable, "sortTable('featuresSummary',6,true,this)"),
+                Tuple.Create("Passed", sortableMinor, "sortTable('featuresSummary',7,true,this)"),
+                Tuple.Create("Bypassed", sortableMinor, "sortTable('featuresSummary',8,true,this)"),
+                Tuple.Create("Failed", sortableMinor, "sortTable('featuresSummary',9,true,this)"),
+                Tuple.Create("Ignored", sortableMinor, "sortTable('featuresSummary',10,true,this)"),
+                Tuple.Create("Not Run", sortableMinor, "sortTable('featuresSummary',11,true,this)"),
+                Tuple.Create("Duration", sortable, "sortTable('featuresSummary',13,true,this)"),
                 Tuple.Create("", hidden, ""),
-                Tuple.Create("Average", sortableMinor, "sortTable('featuresSummary',13,true,this)"),
+                Tuple.Create("Average", sortableMinor, "sortTable('featuresSummary',15,true,this)"),
                 Tuple.Create("", hidden, "")
                 );
             yield return Html.Tag(HtmlTextWriterTag.Tbody).Content(features.Select((t, index) => GetFeatureSummary(t, index + 1)));
@@ -120,11 +124,13 @@ namespace LightBDD.Results.Formatters.Html
 
                 Html.Tag(HtmlTextWriterTag.Td).Content(feature.Scenarios.Count().ToString(CultureInfo.InvariantCulture)),
                 Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountScenariosWithStatus(ResultStatus.Passed).ToString(CultureInfo.InvariantCulture)),
+                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountScenariosWithStatus(ResultStatus.Bypassed).ToString(CultureInfo.InvariantCulture)),
                 GetNumericTagWithOptionalClass(HtmlTextWriterTag.Td, "alert", feature.CountScenariosWithStatus(ResultStatus.Failed)),
                 Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountScenariosWithStatus(ResultStatus.Ignored).ToString(CultureInfo.InvariantCulture)),
 
                 Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountSteps().ToString(CultureInfo.InvariantCulture)),
                 Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountStepsWithStatus(ResultStatus.Passed).ToString(CultureInfo.InvariantCulture)),
+                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountStepsWithStatus(ResultStatus.Bypassed).ToString(CultureInfo.InvariantCulture)),
                 GetNumericTagWithOptionalClass(HtmlTextWriterTag.Td, "alert", feature.CountStepsWithStatus(ResultStatus.Failed)),
                 Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountStepsWithStatus(ResultStatus.Ignored).ToString(CultureInfo.InvariantCulture)),
                 Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountStepsWithStatus(ResultStatus.NotRun).ToString(CultureInfo.InvariantCulture)),
@@ -189,6 +195,8 @@ namespace LightBDD.Results.Formatters.Html
                 Html.Tag(HtmlTextWriterTag.Span).Class("options").Content("Filter:"),
                 Html.Checkbox().Id("showPassed").Checked().SpaceBefore(),
                 Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(),Html.Text("Passed")).For("showPassed"),
+                Html.Checkbox().Id("showBypassed").Checked().SpaceBefore(),
+                Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(),Html.Text("Bypassed")).For("showBypassed"),
                 Html.Checkbox().Id("showFailed").Checked().SpaceBefore(),
                 Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(),Html.Text("Failed")).For("showFailed"),
                 Html.Checkbox().Id("showIgnored").Checked().SpaceBefore(),
@@ -263,8 +271,13 @@ namespace LightBDD.Results.Formatters.Html
                     GetDuration(scenario.ExecutionTime),
                     GetSmallLink(scenarioId)),
                 Html.Tag(HtmlTextWriterTag.Div).Content(scenario.Steps.Select(GetStep)),
-                Html.Tag(HtmlTextWriterTag.Div).Class("details").Content(scenario.StatusDetails).SkipEmpty(),
+                GetStatusDetails(scenario.StatusDetails),
                 Html.Br());
+        }
+
+        private static TagBuilder GetStatusDetails(string statusDetails)
+        {
+            return Html.Tag(HtmlTextWriterTag.Div).Class("details").Content(statusDetails).SkipEmpty();
         }
 
         private static IHtmlNode GetDuration(TimeSpan? executionTime)
@@ -289,7 +302,8 @@ namespace LightBDD.Results.Formatters.Html
             return Html.Tag(HtmlTextWriterTag.Div).Class("step").Content(
                 GetStatus(step.Status),
                 Html.Text(string.Format("{0}. {1}", step.Number, step.StepName.Format(_stepNameDecorator))).Trim(),
-                GetDuration(step.ExecutionTime));
+                GetDuration(step.ExecutionTime),
+                GetStatusDetails(step.StatusDetails));
         }
 
         private static string GetStatusClass(ResultStatus status)

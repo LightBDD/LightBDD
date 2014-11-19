@@ -16,7 +16,7 @@ namespace LightBDD.UnitTests.Results.Formatters
                     Mocks.CreateStepResult(2, "step2", ResultStatus.Ignored, _startDate.AddSeconds(3), new TimeSpan(0, 0, 0, 1, 100), "Not implemented yet")),
 
                 Mocks.CreateScenarioResult("name2", null, _startDate.AddSeconds(4), new TimeSpan(0, 0, 0, 2, 157),
-                    Mocks.CreateStepResult(1, "step3", ResultStatus.Passed, _startDate.AddSeconds(5), new TimeSpan(0, 0, 0, 2, 107)),
+                    Mocks.CreateStepResult(1, "step3", ResultStatus.Bypassed, _startDate.AddSeconds(5), new TimeSpan(0, 0, 0, 2, 107),"bypass reason"),
                     Mocks.CreateStepResult(2, "step4", ResultStatus.Failed, _startDate.AddSeconds(6), new TimeSpan(0, 0, 0, 0, 50), string.Format("  Expected: True{0}  But was: False", Environment.NewLine)),
                     Mocks.CreateStepResult(3, "step5", ResultStatus.NotRun)));
         }

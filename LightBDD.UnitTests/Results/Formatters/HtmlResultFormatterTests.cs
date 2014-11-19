@@ -35,19 +35,21 @@ Test execution time: 1m 04s
 Number of features: 1
 Number of scenarios: 2
 Passed scenarios: 0
+Bypassed scenarios: 0
 Failed scenarios: 1
 Ignored scenarios: 1
 Number of steps: 5
-Passed steps: 2
+Passed steps: 1
+Bypassed steps: 1
 Failed steps: 1
 Ignored steps: 1
 Not Run steps: 1
 Feature summary
-Feature Scenarios Passed Failed Ignored Steps Passed Failed Ignored Not Run Duration Average
-My feature [Label 1] 2 0 1 1 5 2 1 1 1 1m 04s 642570000 32s 128ms 321285000
+Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Average
+My feature [Label 1] 2 0 0 1 1 5 1 1 1 1 1 1m 04s 642570000 32s 128ms 321285000
 Feature details
 Toggle: Features Scenarios
-Filter: Passed Failed Ignored Not Run
+Filter: Passed Bypassed Failed Ignored Not Run
 My feature [Label 1][&#8734;link]
 My feature
 long description
@@ -55,9 +57,13 @@ Ignored name [Label 2] (1m 02s)[&#8734;link]
 Passed 1. step1 (1m 01s)
 Ignored 2. step2 (1s 100ms)
 Not implemented yet
+Not implemented yet
 Failed name2 (2s 157ms)[&#8734;link]
-Passed 1. step3 (2s 107ms)
+Bypassed 1. step3 (2s 107ms)
+bypass reason
 Failed 2. step4 (50ms)
+Expected: True
+  But was: False
 NotRun 3. step5
 Expected: True
   But was: False";
@@ -77,19 +83,21 @@ Test execution time: 25ms
 Number of features: 1
 Number of scenarios: 1
 Passed scenarios: 0
+Bypassed scenarios: 0
 Failed scenarios: 0
 Ignored scenarios: 1
 Number of steps: 2
 Passed steps: 1
+Bypassed steps: 0
 Failed steps: 0
 Ignored steps: 1
 Not Run steps: 0
 Feature summary
-Feature Scenarios Passed Failed Ignored Steps Passed Failed Ignored Not Run Duration Average
-My feature 1 0 0 1 2 1 0 1 0 25ms 250000 25ms 250000
+Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Average
+My feature 1 0 0 0 1 2 1 0 0 1 0 25ms 250000 25ms 250000
 Feature details
 Toggle: Features Scenarios
-Filter: Passed Failed Ignored Not Run
+Filter: Passed Bypassed Failed Ignored Not Run
 My feature[&#8734;link]
 Ignored name (25ms)[&#8734;link]
 Passed 1. step1 (20ms)
@@ -108,20 +116,22 @@ Test execution time: 40ms
 Number of features: 2
 Number of scenarios: 2
 Passed scenarios: 2
+Bypassed scenarios: 0
 Failed scenarios: 0
 Ignored scenarios: 0
 Number of steps: 2
 Passed steps: 2
+Bypassed steps: 0
 Failed steps: 0
 Ignored steps: 0
 Not Run steps: 0
 Feature summary
-Feature Scenarios Passed Failed Ignored Steps Passed Failed Ignored Not Run Duration Average
-My feature 1 1 0 0 1 1 0 0 0 20ms 200000 20ms 200000
-My feature2 1 1 0 0 1 1 0 0 0 20ms 200000 20ms 200000
+Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Average
+My feature 1 1 0 0 0 1 1 0 0 0 0 20ms 200000 20ms 200000
+My feature2 1 1 0 0 0 1 1 0 0 0 0 20ms 200000 20ms 200000
 Feature details
 Toggle: Features Scenarios
-Filter: Passed Failed Ignored Not Run
+Filter: Passed Bypassed Failed Ignored Not Run
 My feature[&#8734;link]
 Passed scenario1 (20ms)[&#8734;link]
 Passed 1. step1 (20ms)

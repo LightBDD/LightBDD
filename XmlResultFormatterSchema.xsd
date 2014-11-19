@@ -15,6 +15,7 @@
                 <xs:complexType>
                   <xs:attribute name="Count" type="xs:int" use="required" />
                   <xs:attribute name="Passed" type="xs:int" use="required" />
+                  <xs:attribute name="Bypassed" type="xs:int" use="required" />
                   <xs:attribute name="Failed" type="xs:int" use="required" />
                   <xs:attribute name="Ignored" type="xs:int" use="required" />
                 </xs:complexType>
@@ -23,6 +24,7 @@
                 <xs:complexType>
                   <xs:attribute name="Count" type="xs:int" use="required" />
                   <xs:attribute name="Passed" type="xs:int" use="required" />
+                  <xs:attribute name="Bypassed" type="xs:int" use="required" />
                   <xs:attribute name="Failed" type="xs:int" use="required" />
                   <xs:attribute name="Ignored" type="xs:int" use="required" />
                   <xs:attribute name="NotRun" type="xs:int" use="required" />
@@ -42,6 +44,9 @@
                   <xs:sequence>
                     <xs:element name="Step" minOccurs="0" maxOccurs="unbounded">
                       <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="StatusDetails" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                        </xs:sequence>
                         <xs:attribute name="Status" type="ResultStatus" use="required"/>
                         <xs:attribute name="Number" type="xs:int" use="required"/>
                         <xs:attribute name="Name" type="xs:string" use="required"/>
@@ -69,6 +74,7 @@
   <xs:simpleType name="ResultStatus">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Passed"/>
+      <xs:enumeration value="Bypassed"/>
       <xs:enumeration value="Failed"/>
       <xs:enumeration value="Ignored"/>
       <xs:enumeration value="NotRun"/>

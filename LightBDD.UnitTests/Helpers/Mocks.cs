@@ -49,7 +49,7 @@ namespace LightBDD.UnitTests.Helpers
             result.Stub(r => r.ExecutionTime).Return(executionTime);
             result.Stub(r => r.Label).Return(label);
             result.Stub(r => r.Status).Return(steps.Max(s => s.Status));
-            result.Stub(r => r.StatusDetails).Return(steps.Select(s => s.StatusDetails).FirstOrDefault(d => d != null));
+            result.Stub(r => r.StatusDetails).Return(steps.Reverse().Select(s => s.StatusDetails).FirstOrDefault(d => d != null));
             return result;
         }
 

@@ -27,6 +27,7 @@ h3{ font-size: 1.00em;}
 .status.bypassed{background-color: #aaaaff;}
 .status.notrun{background-color: #aaaaaa;}
 .details{margin-top: 0.5em;font-style: italic;color: #ff5555;white-space: pre-wrap;font-size: x-small;}
+.step .details { margin-left: 6em;}
 .step{margin: 0.2em;margin-left: 2.5em;}
 .smallLink,.duration{color: #0000cd;font-size: 0.8em;font-family: monospace;}
 th,td{ white-space: nowrap;}
@@ -42,10 +43,12 @@ td.alert{ color: #ff5555;font-weight: bold;}
 article{ margin-left: 1em;}
 .options{ margin:0 0.3em 0.5em 0; font-weight: bold;font-style: italic; display: inline-block;min-width: 4em;text-align: right;}
 #showPassed:not(:checked) ~ * .scenario.passed, #showPassed:not(:checked) ~ .feature.passed { display: none;}
+#showBypassed:not(:checked) ~ * .scenario.bypassed, #showBypassed:not(:checked) ~ .feature.bypassed { display: none;}
 #showFailed:not(:checked) ~ * .scenario.failed, #showFailed:not(:checked) ~ .feature.failed { display: none;}
 #showIgnored:not(:checked) ~ * .scenario.ignored, #showIgnored:not(:checked) ~ .feature.ignored { display: none;}
 #showNotRun:not(:checked) ~ * .scenario.notrun, #showNotRun:not(:checked) ~ .feature.notrun { display: none;}
 #showPassed:checked ~ * .scenario.passed, #showPassed:checked ~ .feature.passed { display: block;}
+#showBypassed:checked ~ * .scenario.bypassed, #showBypassed:checked ~ .feature.bypassed { display: block;}
 #showFailed:checked ~ * .scenario.failed, #showFailed:checked ~ .feature.failed { display: block;}
 #showIgnored:checked ~ * .scenario.ignored, #showIgnored:checked ~ .feature.ignored { display: block;}
 #showNotRun:checked ~ * .scenario.notrun, #showNotRun:checked ~ .feature.notrun { display: block;}

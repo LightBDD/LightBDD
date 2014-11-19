@@ -40,20 +40,27 @@ namespace LightBDD.UnitTests.Results.Formatters
 <TestResults>
   <Summary TestExecutionStart=""2014-09-23T19:21:58.055Z"" TestExecutionTime=""PT1M4.257S"">
     <Features Count=""1"" />
-    <Scenarios Count=""2"" Passed=""0"" Failed=""1"" Ignored=""1"" />
-    <Steps Count=""5"" Passed=""2"" Failed=""1"" Ignored=""1"" NotRun=""1"" />
+    <Scenarios Count=""2"" Passed=""0"" Bypassed=""0"" Failed=""1"" Ignored=""1"" />
+    <Steps Count=""5"" Passed=""1"" Bypassed=""1"" Failed=""1"" Ignored=""1"" NotRun=""1"" />
   </Summary>
   <Feature Name=""My feature"" Label=""Label 1"">
     <Description>My feature
 long description</Description>
     <Scenario Status=""Ignored"" Name=""name"" Label=""Label 2"" ExecutionStart=""2014-09-23T19:21:58.055Z"" ExecutionTime=""PT1M2.1S"">
       <Step Status=""Passed"" Number=""1"" Name=""step1"" ExecutionStart=""2014-09-23T19:21:59.055Z"" ExecutionTime=""PT1M1S"" />
-      <Step Status=""Ignored"" Number=""2"" Name=""step2"" ExecutionStart=""2014-09-23T19:22:00.055Z"" ExecutionTime=""PT1.1S"" />
+      <Step Status=""Ignored"" Number=""2"" Name=""step2"" ExecutionStart=""2014-09-23T19:22:00.055Z"" ExecutionTime=""PT1.1S"">
+        <StatusDetails>Not implemented yet</StatusDetails>
+      </Step>
       <StatusDetails>Not implemented yet</StatusDetails>
     </Scenario>
     <Scenario Status=""Failed"" Name=""name2"" ExecutionStart=""2014-09-23T19:22:01.055Z"" ExecutionTime=""PT2.157S"">
-      <Step Status=""Passed"" Number=""1"" Name=""step3"" ExecutionStart=""2014-09-23T19:22:02.055Z"" ExecutionTime=""PT2.107S"" />
-      <Step Status=""Failed"" Number=""2"" Name=""step4"" ExecutionStart=""2014-09-23T19:22:03.055Z"" ExecutionTime=""PT0.05S"" />
+      <Step Status=""Bypassed"" Number=""1"" Name=""step3"" ExecutionStart=""2014-09-23T19:22:02.055Z"" ExecutionTime=""PT2.107S"">
+        <StatusDetails>bypass reason</StatusDetails>
+      </Step>
+      <Step Status=""Failed"" Number=""2"" Name=""step4"" ExecutionStart=""2014-09-23T19:22:03.055Z"" ExecutionTime=""PT0.05S"">
+        <StatusDetails>  Expected: True
+  But was: False</StatusDetails>
+      </Step>
       <Step Status=""NotRun"" Number=""3"" Name=""step5"" />
       <StatusDetails>  Expected: True
   But was: False</StatusDetails>
@@ -75,8 +82,8 @@ long description</Description>
 <TestResults>
   <Summary TestExecutionStart=""2014-09-23T19:21:58.055Z"" TestExecutionTime=""PT0.025S"">
     <Features Count=""1"" />
-    <Scenarios Count=""1"" Passed=""0"" Failed=""0"" Ignored=""1"" />
-    <Steps Count=""2"" Passed=""1"" Failed=""0"" Ignored=""1"" NotRun=""0"" />
+    <Scenarios Count=""1"" Passed=""0"" Bypassed=""0"" Failed=""0"" Ignored=""1"" />
+    <Steps Count=""2"" Passed=""1"" Bypassed=""0"" Failed=""0"" Ignored=""1"" NotRun=""0"" />
   </Summary>
   <Feature Name=""My feature"">
     <Scenario Status=""Ignored"" Name=""name"" ExecutionStart=""2014-09-23T19:21:58.055Z"" ExecutionTime=""PT0.025S"">
@@ -100,8 +107,8 @@ long description</Description>
 <TestResults>
   <Summary TestExecutionStart=""2014-09-23T19:21:58.055Z"" TestExecutionTime=""PT0.04S"">
     <Features Count=""2"" />
-    <Scenarios Count=""2"" Passed=""2"" Failed=""0"" Ignored=""0"" />
-    <Steps Count=""2"" Passed=""2"" Failed=""0"" Ignored=""0"" NotRun=""0"" />
+    <Scenarios Count=""2"" Passed=""2"" Bypassed=""0"" Failed=""0"" Ignored=""0"" />
+    <Steps Count=""2"" Passed=""2"" Bypassed=""0"" Failed=""0"" Ignored=""0"" NotRun=""0"" />
   </Summary>
   <Feature Name=""My feature"">
     <Scenario Status=""Passed"" Name=""scenario1"" ExecutionStart=""2014-09-23T19:21:58.055Z"" ExecutionTime=""PT0.02S"">

@@ -39,6 +39,16 @@ namespace LightBDD.Results.Formatters
             builder.AppendLine();
         }
 
+        private static void FormatDetails(StringBuilder builder, IStepResult step)
+        {
+            if (string.IsNullOrWhiteSpace(step.StatusDetails))
+                return;
+
+            builder.Append("\t\t\tDetails: ");
+            builder.Append(step.StatusDetails.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t\t\t\t"));
+            builder.AppendLine();
+        }
+
         private static void FormatFeature(StringBuilder builder, IFeatureResult feature)
         {
             if (builder.Length > 0)
@@ -78,6 +88,7 @@ namespace LightBDD.Results.Formatters
                 if (step.ExecutionTime != null)
                     builder.Append(" (").Append(step.ExecutionTime.FormatPretty()).Append(")");
                 builder.AppendLine();
+                FormatDetails(builder, step);
             }
             FormatDetails(builder, scenario);
         }
@@ -92,10 +103,12 @@ namespace LightBDD.Results.Formatters
                 {"Number of features", features.Length},
                 {"Number of scenarios", features.CountScenarios()},
                 {"Passed scenarios", features.CountScenariosWithStatus(ResultStatus.Passed)},
+                {"Bypassed scenarios", features.CountScenariosWithStatus(ResultStatus.Bypassed)},
                 {"Failed scenarios", features.CountScenariosWithStatus(ResultStatus.Failed)},
                 {"Ignored scenarios", features.CountScenariosWithStatus(ResultStatus.Ignored)},
                 {"Number of steps", features.CountSteps()},
                 {"Passed steps", features.CountStepsWithStatus(ResultStatus.Passed)},
+                {"Bypassed steps", features.CountStepsWithStatus(ResultStatus.Bypassed)},
                 {"Failed steps", features.CountStepsWithStatus(ResultStatus.Failed)},
                 {"Ignored steps", features.CountStepsWithStatus(ResultStatus.Ignored)},
                 {"Not Run steps", features.CountStepsWithStatus(ResultStatus.NotRun)}
