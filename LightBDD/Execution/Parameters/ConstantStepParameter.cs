@@ -1,22 +1,33 @@
+using System;
+using System.Diagnostics;
+
 namespace LightBDD.Execution.Parameters
 {
+    [DebuggerStepThrough]
     internal class ConstantStepParameter<TContext> : IStepParameter<TContext>
     {
-        private readonly object _value;
+        private readonly Func<object, string> _formatFunction;
 
-        public ConstantStepParameter(object value)
+        public ConstantStepParameter(object value, Func<object, string> formatFunction)
         {
-            _value = value;
+            Value = value;
+            _formatFunction = formatFunction;
         }
 
-        public object Evaluate(TContext context)
+        public void Evaluate(TContext context)
         {
-            return _value;
         }
 
-        public bool IsSafelyEvaluable()
+        public bool IsEvaluated { get { return true; } }
+        public object Value { get; private set; }
+        public string Format()
         {
-            return true;
+            return _formatFunction(Value);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0}", Value);
         }
     }
 }

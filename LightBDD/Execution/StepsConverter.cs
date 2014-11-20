@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using LightBDD.Execution.Parameters;
 using LightBDD.Results;
 
@@ -65,18 +66,20 @@ namespace LightBDD.Execution
             var stepTypeName = _metadataProvider.GetStepTypeName(stepTypeParameter.Name);
 
             var action = CompileAction<TContext>(methodExpression, stepTypeParameter, contextParameter);
-            var arguments = methodExpression.Arguments.Select(arg => CompileArgument<TContext>(arg, stepTypeParameter, contextParameter)).ToArray();
+            var methodParameterInfo = methodExpression.Method.GetParameters();
+            var arguments = methodExpression.Arguments.Select((arg, index) => CompileArgument<TContext>(arg, stepTypeParameter, contextParameter, methodParameterInfo[index])).ToArray();
             return new ParameterizedStep<TContext>(context, action, arguments, stepTypeName, stepNameFormat, stepNumber, _mapExceptionToStatus);
         }
 
-        private static IStepParameter<TContext> CompileArgument<TContext>(Expression argumentExpression, ParameterExpression stepTypeParameter, ParameterExpression contextParameter)
+        private IStepParameter<TContext> CompileArgument<TContext>(Expression argumentExpression, ParameterExpression stepTypeParameter, ParameterExpression contextParameter, ParameterInfo parameterInfo)
         {
+            var formatter = _metadataProvider.GetStepParameterFormatter(parameterInfo);
             var expression = argumentExpression as ConstantExpression;
             if (expression != null)
-                return new ConstantStepParameter<TContext>(expression.Value);
+                return new ConstantStepParameter<TContext>(expression.Value, formatter);
 
             var compiledParam = Expression.Lambda<Func<StepType, TContext, object>>(Expression.Convert(argumentExpression, typeof(object)), stepTypeParameter, contextParameter).Compile();
-            return new MutableStepParameter<TContext>(compiledParam);
+            return new MutableStepParameter<TContext>(compiledParam, formatter);
         }
 
         private static Action<StepType, TContext, object[]> CompileAction<TContext>(MethodCallExpression methodCall, ParameterExpression stepTypeParameter, ParameterExpression contextParameter)

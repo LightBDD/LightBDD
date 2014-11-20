@@ -77,6 +77,7 @@
     <Compile Include="Results\Formatters\XmlResultFormatterTests.cs" />
     <Compile Include="BDD_runner_tests_with_dedicated_feature_description.cs" />
     <Compile Include="BDD_runner_time_measurement_tests.cs" />
+    <Compile Include="TestSuiteSetup.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LightBDD\LightBDD.csproj">

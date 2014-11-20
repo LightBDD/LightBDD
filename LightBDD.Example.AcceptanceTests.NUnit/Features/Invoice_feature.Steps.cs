@@ -17,7 +17,7 @@ namespace LightBDD.Example.AcceptanceTests.NUnit.Features
             Assert.Inconclusive("Not implemented yet");
         }
 
-        private void Invoice_contains_product_with_price_of_AMOUNT_pounds(string product, int amount)
+        private void Invoice_contains_product_with_price_of_AMOUNT(string product, [Format("{0:£0.00#}")]decimal amount)
         {
         }
     }

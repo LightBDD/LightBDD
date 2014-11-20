@@ -20,8 +20,8 @@ I want to receive invoice for bought items")]
                 when => Customer_buys_product("wooden desk"),
                 and => Customer_buys_product("wooden shelf"),
                 then => Invoice_is_sent_to_customer(),
-                and => Invoice_contains_product_with_price_of_AMOUNT_pounds("wooden desk", 62),
-                and => Invoice_contains_product_with_price_of_AMOUNT_pounds("wooden shelf", 37));
+                and => Invoice_contains_product_with_price_of_AMOUNT("wooden desk", 62),
+                and => Invoice_contains_product_with_price_of_AMOUNT("wooden shelf", 37));
         }
     }
 }

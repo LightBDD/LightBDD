@@ -72,6 +72,7 @@
     <Compile Include="Execution\StepsConverter.cs" />
     <Compile Include="FeatureCategoryAttribute.cs" />
     <Compile Include="FeatureDescriptionAttribute.cs" />
+    <Compile Include="FormatAttribute.cs" />
     <Compile Include="Formatters\TimeFormatter.cs" />
     <Compile Include="LabelAttribute.cs" />
     <Compile Include="Naming\DefaultStepNameDecorator.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Naming\StepNameDecorators.cs" />
     <Compile Include="Notification\ConsoleProgressNotifier.cs" />
     <Compile Include="Notification\IProgressNotifier.cs" />
+    <Compile Include="ParameterFormatterAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\FeatureSummaryExtensions.cs" />
     <Compile Include="Results\Formatters\HtmlResultFormatter.cs" />

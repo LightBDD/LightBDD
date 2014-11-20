@@ -41,7 +41,7 @@ namespace LightBDD.Results.Formatters.Html
                     Html.Tag(HtmlTextWriterTag.Table).Class("summary").Content(
                         GetKeyValueTableRow("Test execution start time:", features.GetTestExecutionStartTime().ToString("yyyy-MM-dd HH:mm:ss UTC")),
                         GetKeyValueTableRow("Test execution time:", features.GetTestExecutionTime().FormatPretty()),
-                        GetKeyValueTableRow("Number of features:", features.Length.ToString(CultureInfo.InvariantCulture)),
+                        GetKeyValueTableRow("Number of features:", features.Length.ToString()),
                         GetKeyValueTableRow("Number of scenarios:", features.CountScenarios()),
                         GetKeyValueTableRow("Passed scenarios:", features.CountScenariosWithStatus(ResultStatus.Passed)),
                         GetKeyValueTableRow("Bypassed scenarios:", features.CountScenariosWithStatus(ResultStatus.Bypassed)),
@@ -65,7 +65,7 @@ namespace LightBDD.Results.Formatters.Html
 
         private static IHtmlNode GetKeyValueTableRow(string key, int value, string classNameIfNotZero = null)
         {
-            var valueTag = Html.Tag(HtmlTextWriterTag.Td).Content(value.ToString(CultureInfo.InvariantCulture));
+            var valueTag = Html.Tag(HtmlTextWriterTag.Td).Content(value.ToString());
 
             if (classNameIfNotZero != null && value != 0)
                 valueTag.Class(classNameIfNotZero);
@@ -122,29 +122,29 @@ namespace LightBDD.Results.Formatters.Html
                     Html.Tag(HtmlTextWriterTag.A).Href("#feature" + index).Content(feature.Name),
                     GetLabel(feature.Label)),
 
-                Html.Tag(HtmlTextWriterTag.Td).Content(feature.Scenarios.Count().ToString(CultureInfo.InvariantCulture)),
-                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountScenariosWithStatus(ResultStatus.Passed).ToString(CultureInfo.InvariantCulture)),
-                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountScenariosWithStatus(ResultStatus.Bypassed).ToString(CultureInfo.InvariantCulture)),
+                Html.Tag(HtmlTextWriterTag.Td).Content(feature.Scenarios.Count().ToString()),
+                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountScenariosWithStatus(ResultStatus.Passed).ToString()),
+                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountScenariosWithStatus(ResultStatus.Bypassed).ToString()),
                 GetNumericTagWithOptionalClass(HtmlTextWriterTag.Td, "alert", feature.CountScenariosWithStatus(ResultStatus.Failed)),
-                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountScenariosWithStatus(ResultStatus.Ignored).ToString(CultureInfo.InvariantCulture)),
+                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountScenariosWithStatus(ResultStatus.Ignored).ToString()),
 
-                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountSteps().ToString(CultureInfo.InvariantCulture)),
-                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountStepsWithStatus(ResultStatus.Passed).ToString(CultureInfo.InvariantCulture)),
-                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountStepsWithStatus(ResultStatus.Bypassed).ToString(CultureInfo.InvariantCulture)),
+                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountSteps().ToString()),
+                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountStepsWithStatus(ResultStatus.Passed).ToString()),
+                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountStepsWithStatus(ResultStatus.Bypassed).ToString()),
                 GetNumericTagWithOptionalClass(HtmlTextWriterTag.Td, "alert", feature.CountStepsWithStatus(ResultStatus.Failed)),
-                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountStepsWithStatus(ResultStatus.Ignored).ToString(CultureInfo.InvariantCulture)),
-                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountStepsWithStatus(ResultStatus.NotRun).ToString(CultureInfo.InvariantCulture)),
+                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountStepsWithStatus(ResultStatus.Ignored).ToString()),
+                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountStepsWithStatus(ResultStatus.NotRun).ToString()),
 
                 Html.Tag(HtmlTextWriterTag.Td).Content(testExecutionTime.FormatPretty()),
-                Html.Tag(HtmlTextWriterTag.Td).Class("hidden").Content(testExecutionTime.Ticks.ToString(CultureInfo.InvariantCulture)),
+                Html.Tag(HtmlTextWriterTag.Td).Class("hidden").Content(testExecutionTime.Ticks.ToString()),
                 Html.Tag(HtmlTextWriterTag.Td).Content(testAverageExecutionTime.FormatPretty()),
-                Html.Tag(HtmlTextWriterTag.Td).Class("hidden").Content(testAverageExecutionTime.Ticks.ToString(CultureInfo.InvariantCulture))
+                Html.Tag(HtmlTextWriterTag.Td).Class("hidden").Content(testAverageExecutionTime.Ticks.ToString())
                 );
         }
 
         private static IHtmlNode GetNumericTagWithOptionalClass(HtmlTextWriterTag tag, string className, int value)
         {
-            var node = Html.Tag(tag).Content(value.ToString(CultureInfo.InvariantCulture));
+            var node = Html.Tag(tag).Content(value.ToString());
             if (value != 0)
                 node.Class(className);
             return node;

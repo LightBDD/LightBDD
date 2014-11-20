@@ -60,17 +60,17 @@ namespace LightBDD.Execution
 
         private void InvokeStep(IProgressNotifier progressNotifier, int totalCount)
         {
-            var paramValues = EvaluateParameters();
-            InvokeStep(paramValues, progressNotifier, totalCount);
+            EvaluateParameters();
+            InvokeStepWithEvaluatedParameters(progressNotifier, totalCount);
         }
 
         [DebuggerStepThrough]
-        private void InvokeStep(object[] paramValues, IProgressNotifier progressNotifier, int totalCount)
+        private void InvokeStepWithEvaluatedParameters(IProgressNotifier progressNotifier, int totalCount)
         {
-            _result = new StepResult(_stepNumber, new StepName(_stepNameFormat, _formattedStepTypeName, GetEvaluatedParameterDetails(paramValues)), ResultStatus.NotRun);
+            _result = new StepResult(_stepNumber, new StepName(_stepNameFormat, _formattedStepTypeName, GetEvaluatedParameterDetails()), ResultStatus.NotRun);
 
             progressNotifier.NotifyStepStart(_result.Name, _stepNumber, totalCount);
-            MeasuredInvoke(paramValues);
+            MeasuredInvoke(_parameters.Select(p => p.Value).ToArray());
 
             _result.SetStatus(ResultStatus.Passed);
         }
@@ -91,12 +91,10 @@ namespace LightBDD.Execution
             }
         }
 
-        private object[] EvaluateParameters()
+        private void EvaluateParameters()
         {
-            var result = new object[_parameters.Length];
-            for (int index = 0; index < _parameters.Length; index++)
-                result[index] = _parameters[index].Evaluate(_context);
-            return result;
+            foreach (var parameter in _parameters)
+                parameter.Evaluate(_context);
         }
 
         [DebuggerStepThrough]
@@ -108,19 +106,13 @@ namespace LightBDD.Execution
         [DebuggerStepThrough]
         private IStepParameter CreateStepParameterDetails(IStepParameter<TContext> parameter)
         {
-            return new StepParameter(parameter.IsSafelyEvaluable(), parameter.IsSafelyEvaluable() ? FormatParameterValue(parameter.Evaluate(_context)) : "<?>");
+            return new StepParameter(parameter.IsEvaluated, parameter.Format());
         }
 
         [DebuggerStepThrough]
-        private static string FormatParameterValue(object value)
+        private IStepParameter[] GetEvaluatedParameterDetails()
         {
-            return string.Format(CultureInfo.InvariantCulture, "{0}", value);
-        }
-
-        [DebuggerStepThrough]
-        private static IStepParameter[] GetEvaluatedParameterDetails(IEnumerable<object> paramValues)
-        {
-            return paramValues.Select(value => (IStepParameter)new StepParameter(true, FormatParameterValue(value))).ToArray();
+            return _parameters.Select(param => (IStepParameter)new StepParameter(true, param.Format())).ToArray();
         }
 
         public override string ToString()

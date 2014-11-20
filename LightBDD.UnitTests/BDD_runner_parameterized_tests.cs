@@ -392,6 +392,30 @@ namespace LightBDD.UnitTests
             AssertStepName(steps[3], "CALL", "Method with parameter \"{0}\"", new StepParameterExpectation("<?>", false));
         }
 
+        [Test]
+        public void Should_capture_step_name_with_parameters_having_custom_formatters()
+        {
+            _subject.RunScenario(call => Method_with_amount_percentage_and_other_value(42, 42, 42));
+
+            var steps = _subject.Result.Scenarios.Single().Steps.ToArray();
+            StepResultExpectation.Assert(steps, new[]
+            {
+                new StepResultExpectation(1, "CALL Method with amount \"$42.00\" percentage \"42%\" and other value \"42\"", ResultStatus.Passed)
+            });
+
+            AssertStepName(steps[0], "CALL", "Method with amount \"{0}\" percentage \"{1}\" and other value \"{2}\"",
+                new StepParameterExpectation("$42.00", true),
+                new StepParameterExpectation("42%", true),
+                new StepParameterExpectation("42", true));
+        }
+
+        [Test]
+        public void Should_not_allow_to_use_multiple_parameter_formatters_at_once()
+        {
+            var ex = Assert.Throws<InvalidOperationException>(() => _subject.RunScenario(call => Step_with_multiple_formatters_on_one_parameter("abc")));
+            Assert.That(ex.Message, Is.EqualTo("Parameter can contain only one attribute ParameterFormatterAttribute. Parameter: parameter, Detected attributes: FormatAttribute, OtherFormatter"));
+        }
+
         private static void AssertStepName(IStepResult step, string stepTypeName, string nameFormat, params StepParameterExpectation[] expectedParameters)
         {
             Assert.That(step.StepName, Is.Not.Null);
@@ -503,8 +527,25 @@ namespace LightBDD.UnitTests
         private void Then_product_is_sent_to_customer()
         {
         }
-    }
 
+        private void Method_with_amount_percentage_and_other_value(
+            [Format("{0:$0.00}")] decimal amount,
+            [Format("{0:0\\%}")] decimal percentage,
+            decimal value)
+        {
+        }
+
+        private void Step_with_multiple_formatters_on_one_parameter([Format("{0}"), OtherFormatter]string parameter)
+        {
+        }
+    }
+    class OtherFormatter : ParameterFormatterAttribute
+    {
+        public override string Format(object parameter)
+        {
+            return "abc";
+        }
+    }
     class GWTContext
     {
         public void Product_is_available_in_product_storage(string product)

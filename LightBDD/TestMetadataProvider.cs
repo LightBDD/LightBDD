@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -172,6 +173,27 @@ namespace LightBDD
         public string GetStepTypeName(string stepType)
         {
             return string.IsNullOrWhiteSpace(stepType) ? string.Empty : NameFormatter.Format(stepType).ToUpperInvariant().Trim();
+        }
+
+        /// <summary>
+        /// Returns step parameter formatter from associated ParameterFormatterAttribute or default one.
+        /// </summary>
+        public Func<object, string> GetStepParameterFormatter(ParameterInfo parameterInfo)
+        {
+            Func<object, string> defaultFormatter = o => string.Format("{0}", o);
+
+            var formatters = parameterInfo.GetCustomAttributes(typeof(ParameterFormatterAttribute), true)
+                .OfType<ParameterFormatterAttribute>().ToArray();
+
+            if (formatters.Length > 1)
+                throw new InvalidOperationException(string.Format(
+                    "Parameter can contain only one attribute ParameterFormatterAttribute. Parameter: {0}, Detected attributes: {1}",
+                    parameterInfo.Name,
+                    string.Join(", ", formatters.Select(f => f.GetType().Name))));
+
+            return formatters.Length == 1
+                ? formatters[0].Format
+                : defaultFormatter;
         }
 
         private static ArgumentReplacement ToArgumentReplacement(string name, ParameterInfo parameterInfo, int argumentIndex)

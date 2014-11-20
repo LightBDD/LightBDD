@@ -2,7 +2,9 @@ namespace LightBDD.Execution.Parameters
 {
     internal interface IStepParameter<TContext>
     {
-        object Evaluate(TContext context);
-        bool IsSafelyEvaluable();
+        void Evaluate(TContext context);
+        bool IsEvaluated { get; }
+        object Value { get; }
+        string Format();
     }
 }
