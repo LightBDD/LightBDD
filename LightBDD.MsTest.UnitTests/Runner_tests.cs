@@ -9,7 +9,9 @@ namespace LightBDD.MsTest.UnitTests
 {
     [TestClass]
     [FeatureDescription("desc")]
-    public class Runner_tests 
+    [FeatureCategory("Category B")]
+    [FeatureCategory("Category A")]
+    public class Runner_tests
     {
         private IProgressNotifier _progressNotifier;
         private BDDRunner _subject;
@@ -54,9 +56,15 @@ namespace LightBDD.MsTest.UnitTests
         }
 
         [TestMethod]
-        public void Should_display_feature_name_using_description()
+        public void Should_display_feature_name_using_generic_description()
         {
             _progressNotifier.AssertWasCalled(n => n.NotifyFeatureStart("Runner tests", "desc", null));
+        }
+
+        [TestMethod]
+        public void Should_capture_feature_category_using_generic_category_attribute()
+        {
+            CollectionAssert.AreEqual(new[] { "Category A", "Category B" }, _subject.Result.Categories.ToArray());
         }
 
         [TestMethod]

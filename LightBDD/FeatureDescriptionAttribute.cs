@@ -20,7 +20,6 @@ namespace LightBDD
         /// <summary>
         /// Constructor allowing to associate description.
         /// </summary>
-        /// <param name="description"></param>
         public FeatureDescriptionAttribute(string description)
         {
             Description = description;

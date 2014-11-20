@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -18,10 +19,17 @@ namespace LightBDD
         /// </summary>
         protected static string ExtractAttributePropertyValue<TAttribute>(MemberInfo member, Func<TAttribute, string> valueExtractor) where TAttribute : Attribute
         {
+            return ExtractAttributePropertyValues(member, valueExtractor).SingleOrDefault();
+        }
+
+        /// <summary>
+        /// Retrieves specified attribute property value for all attribute instances applied on given member.
+        /// </summary>
+        protected static IEnumerable<string> ExtractAttributePropertyValues<TAttribute>(MemberInfo member, Func<TAttribute, string> valueExtractor) where TAttribute : Attribute
+        {
             return member.GetCustomAttributes(typeof(TAttribute), true)
                 .OfType<TAttribute>()
-                .Select(valueExtractor)
-                .SingleOrDefault();
+                .Select(valueExtractor);
         }
 
         /// <summary>
@@ -51,6 +59,18 @@ namespace LightBDD
         public string GetFeatureName(Type featureTestClass)
         {
             return NameFormatter.Format(featureTestClass.Name);
+        }
+
+        /// <summary>
+        /// Retrieves feature categories from [FeatureCategory] attribute as well as from implementation specific sources.
+        /// </summary>
+        /// <returns>Feature categories</returns>
+        public IEnumerable<string> GetFeatureCategories(Type featureTestClass)
+        {
+            return ExtractAttributePropertyValues<FeatureCategoryAttribute>(featureTestClass, a => a.Name)
+                .Concat(GetImplementationSpecificFeatureCategories(featureTestClass))
+                .Distinct()
+                .OrderBy(c => c);
         }
 
         /// <summary>
@@ -86,6 +106,13 @@ namespace LightBDD
         /// <param name="testClass">Class to analyze.</param>
         /// <returns>Feature description or null.</returns>
         protected abstract string GetImplementationSpecificFeatureDescription(Type testClass);
+
+        /// <summary>
+        /// Returns implementation specific feature categories or empty collection if no categories are provided.
+        /// </summary>
+        /// <param name="testClass">Class to analyze.</param>
+        /// <returns>Feature categories or empty collection.</returns>
+        protected abstract IEnumerable<string> GetImplementationSpecificFeatureCategories(Type testClass);
 
         /// <summary>
         /// Returns step name format which bases on name of scenario step method and method parameters.<br/>

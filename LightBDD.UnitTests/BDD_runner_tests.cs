@@ -28,6 +28,15 @@ namespace LightBDD.UnitTests
         #endregion
 
         [Test]
+        public void Should_collect_feature_details()
+        {
+            Assert.That(_subject.Result.Name,Is.EqualTo("BDD runner tests"));
+            Assert.That(_subject.Result.Label,Is.EqualTo("Ticket-1"));
+            Assert.That(_subject.Result.Description, Is.EqualTo("Runner tests description"));
+            Assert.That(_subject.Result.Categories, Is.Empty);
+        }
+
+        [Test]
         public void Should_collect_scenario_result()
         {
             _subject.RunScenario(Step_one, Step_two);

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 
@@ -12,6 +13,11 @@ namespace LightBDD.UnitTests.Helpers
                             .OfType<DescriptionAttribute>()
                             .Select(a => a.Description)
                             .SingleOrDefault();
+        }
+
+        protected override IEnumerable<string> GetImplementationSpecificFeatureCategories(Type testClass)
+        {
+            return ExtractAttributePropertyValues<CategoryAttribute>(testClass, a => a.Name);
         }
     }
 }

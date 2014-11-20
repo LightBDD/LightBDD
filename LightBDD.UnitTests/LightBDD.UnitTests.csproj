@@ -51,6 +51,7 @@
     <Compile Include="BDD_runner_concurrency_tests.cs" />
     <Compile Include="BDD_runner_parameterized_tests.cs" />
     <Compile Include="BDD_runner_tests.cs" />
+    <Compile Include="BDD_runner_tests_with_categories.cs" />
     <Compile Include="BDD_runner_tests_with_context.cs" />
     <Compile Include="Coordination\FeatureCoordinatorTests.cs" />
     <Compile Include="Coordination\FeatureSummaryAggregatorTests.cs" />

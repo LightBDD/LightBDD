@@ -66,7 +66,11 @@ namespace LightBDD
             _metadataProvider = metadataProvider;
             ProgressNotifier = progressNotifier;
             _stepsConverter = new StepsConverter(_metadataProvider, MapExceptionToStatus);
-            _result = new FeatureResult(_metadataProvider.GetFeatureName(featureTestClass), _metadataProvider.GetFeatureDescription(featureTestClass), _metadataProvider.GetFeatureLabel(featureTestClass));
+            _result = new FeatureResult(
+                _metadataProvider.GetFeatureName(featureTestClass),
+                _metadataProvider.GetFeatureDescription(featureTestClass),
+                _metadataProvider.GetFeatureLabel(featureTestClass),
+                _metadataProvider.GetFeatureCategories(featureTestClass));
             _executor = new ScenarioExecutor(ProgressNotifier);
             _executor.ScenarioExecuted += _result.AddScenario;
             ProgressNotifier.NotifyFeatureStart(_result.Name, _result.Description, _result.Label);
