@@ -301,8 +301,7 @@ namespace LightBDD.Results.Formatters.Html
             return Html.Tag(HtmlTextWriterTag.Div).Class("step").Content(
                 GetStatus(step.Status),
                 Html.Text(string.Format("{0}. {1}", step.Number, step.StepName.Format(_stepNameDecorator))).Trim(),
-                GetDuration(step.ExecutionTime),
-                GetStatusDetails(step.StatusDetails));
+                GetDuration(step.ExecutionTime));
         }
 
         private static string GetStatusClass(ResultStatus status)

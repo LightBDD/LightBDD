@@ -51,7 +51,7 @@ long description</Description>
       <Step Status=""Ignored"" Number=""2"" Name=""step2"" ExecutionStart=""2014-09-23T19:22:00.055Z"" ExecutionTime=""PT1.1S"">
         <StatusDetails>Not implemented yet</StatusDetails>
       </Step>
-      <StatusDetails>Not implemented yet</StatusDetails>
+      <StatusDetails>Step 2: Not implemented yet</StatusDetails>
     </Scenario>
     <Scenario Status=""Failed"" Name=""name2"" ExecutionStart=""2014-09-23T19:22:01.055Z"" ExecutionTime=""PT2.157S"">
       <Step Status=""Bypassed"" Number=""1"" Name=""step3"" ExecutionStart=""2014-09-23T19:22:02.055Z"" ExecutionTime=""PT2.107S"">
@@ -62,8 +62,9 @@ long description</Description>
   But was: False</StatusDetails>
       </Step>
       <Step Status=""NotRun"" Number=""3"" Name=""step5"" />
-      <StatusDetails>  Expected: True
-  But was: False</StatusDetails>
+      <StatusDetails>Step 1: bypass reason
+Step 2: Expected: True
+	  But was: False</StatusDetails>
     </Scenario>
   </Feature>
 </TestResults>";

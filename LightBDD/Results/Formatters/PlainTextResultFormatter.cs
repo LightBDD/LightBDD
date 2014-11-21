@@ -33,20 +33,10 @@ namespace LightBDD.Results.Formatters
             if (string.IsNullOrWhiteSpace(scenario.StatusDetails))
                 return;
 
-            builder.AppendLine();
-            builder.Append("\t\tDetails: ");
-            builder.Append(scenario.StatusDetails.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t\t\t"));
-            builder.AppendLine();
-        }
-
-        private static void FormatDetails(StringBuilder builder, IStepResult step)
-        {
-            if (string.IsNullOrWhiteSpace(step.StatusDetails))
-                return;
-
-            builder.Append("\t\t\tDetails: ");
-            builder.Append(step.StatusDetails.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t\t\t\t"));
-            builder.AppendLine();
+            builder.AppendLine("\t\tDetails:")
+                   .Append("\t\t\t")
+                   .Append(scenario.StatusDetails.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t\t\t"))
+                   .AppendLine();
         }
 
         private static void FormatFeature(StringBuilder builder, IFeatureResult feature)
@@ -88,7 +78,6 @@ namespace LightBDD.Results.Formatters
                 if (step.ExecutionTime != null)
                     builder.Append(" (").Append(step.ExecutionTime.FormatPretty()).Append(")");
                 builder.AppendLine();
-                FormatDetails(builder, step);
             }
             FormatDetails(builder, scenario);
         }

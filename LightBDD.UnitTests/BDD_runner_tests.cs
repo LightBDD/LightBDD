@@ -30,8 +30,8 @@ namespace LightBDD.UnitTests
         [Test]
         public void Should_collect_feature_details()
         {
-            Assert.That(_subject.Result.Name,Is.EqualTo("BDD runner tests"));
-            Assert.That(_subject.Result.Label,Is.EqualTo("Ticket-1"));
+            Assert.That(_subject.Result.Name, Is.EqualTo("BDD runner tests"));
+            Assert.That(_subject.Result.Label, Is.EqualTo("Ticket-1"));
             Assert.That(_subject.Result.Description, Is.EqualTo("Runner tests description"));
             Assert.That(_subject.Result.Categories, Is.Empty);
         }
@@ -120,7 +120,7 @@ namespace LightBDD.UnitTests
                 new StepResultExpectation(2, "Step throwing exception", ResultStatus.Failed, expectedStatusDetails),
                 new StepResultExpectation(3, "Step two", ResultStatus.NotRun)
             });
-            Assert.That(result.StatusDetails, Is.EqualTo(expectedStatusDetails));
+            Assert.That(result.StatusDetails, Is.EqualTo("Step 2: " + expectedStatusDetails));
         }
 
         [Test]
@@ -138,7 +138,9 @@ namespace LightBDD.UnitTests
                 new StepResultExpectation(3, "Step with bypass2", ResultStatus.Bypassed, BypassReason2),
                 new StepResultExpectation(4, "Step two", ResultStatus.Passed)
             });
-            Assert.That(result.StatusDetails, Is.EqualTo(BypassReason2));
+            Assert.That(result.StatusDetails, Is.EqualTo(
+                "Step 2: " + BypassReason + Environment.NewLine +
+                "Step 3: " + BypassReason2));
         }
 
         [Test]
@@ -161,7 +163,10 @@ namespace LightBDD.UnitTests
                 new StepResultExpectation(4, "Step throwing exception", ResultStatus.Failed, ExceptionText),
                 new StepResultExpectation(5, "Step two", ResultStatus.NotRun)
             });
-            Assert.That(result.StatusDetails, Is.EqualTo(ExceptionText));
+            Assert.That(result.StatusDetails, Is.EqualTo(
+                "Step 2: " + BypassReason + Environment.NewLine +
+                "Step 3: " + BypassReason2 + Environment.NewLine +
+                "Step 4: " + ExceptionText));
         }
 
         [Test]
@@ -184,7 +189,10 @@ namespace LightBDD.UnitTests
                 new StepResultExpectation(4, "Step with ignore assertion", ResultStatus.Ignored, IgnoreReason),
                 new StepResultExpectation(5, "Step two", ResultStatus.NotRun)
             });
-            Assert.That(result.StatusDetails, Is.EqualTo(IgnoreReason));
+            Assert.That(result.StatusDetails, Is.EqualTo(
+                "Step 2: " + BypassReason + Environment.NewLine +
+                "Step 3: " + BypassReason2 + Environment.NewLine +
+                "Step 4: " + IgnoreReason));
         }
 
         [Test]
@@ -208,7 +216,7 @@ namespace LightBDD.UnitTests
                 new StepResultExpectation(2, "Step with ignore assertion", ResultStatus.Ignored, expectedStatusDetails),
                 new StepResultExpectation(3, "Step two", ResultStatus.NotRun)
             });
-            Assert.That(result.StatusDetails, Is.EqualTo(expectedStatusDetails));
+            Assert.That(result.StatusDetails, Is.EqualTo("Step 2: " + expectedStatusDetails));
         }
 
         [Test]
@@ -290,7 +298,7 @@ namespace LightBDD.UnitTests
         [Test]
         public void Execution_results_should_print_user_friendly_output()
         {
-            _subject.NewScenario("a").WithLabel("Label-1").Run(Step_one,Step_two);
+            _subject.NewScenario("a").WithLabel("Label-1").Run(Step_one, Step_two);
             try { _subject.NewScenario("b").Run(call => Step_throwing_exception_MESSAGE("abc")); }
             catch { }
 
@@ -298,9 +306,9 @@ namespace LightBDD.UnitTests
             var scenarios = result.Scenarios.ToArray();
 
             Assert.That(result.ToString(), Is.EqualTo("BDD runner tests [Ticket-1]"));
-            Assert.That(scenarios.Select(s => s.ToString()).ToArray(), Is.EqualTo(new[] { "a [Label-1]: Passed", "b: Failed (abc)" }));
+            Assert.That(scenarios.Select(s => s.ToString()).ToArray(), Is.EqualTo(new[] { "a [Label-1]: Passed", "b: Failed (Step 1: abc)" }));
             Assert.That(scenarios[0].Steps.Select(s => s.ToString()).ToArray(), Is.EqualTo(new[] { "1 Step one: Passed", "2 Step two: Passed" }));
-            Assert.That(scenarios[1].Steps.Select(s => s.ToString()).ToArray(), Is.EqualTo(new[] { "1 CALL Step throwing exception \"abc\": Failed (abc)"}));
+            Assert.That(scenarios[1].Steps.Select(s => s.ToString()).ToArray(), Is.EqualTo(new[] { "1 CALL Step throwing exception \"abc\": Failed (abc)" }));
         }
     }
 }

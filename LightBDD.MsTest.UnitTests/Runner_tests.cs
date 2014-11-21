@@ -52,7 +52,7 @@ namespace LightBDD.MsTest.UnitTests
             AssertStep(result.Steps, 2, "Step with inconclusive assertion", ResultStatus.Ignored, expectedStatusDetails);
             AssertStep(result.Steps, 3, "Step two", ResultStatus.NotRun);
 
-            Assert.AreEqual(expectedStatusDetails, result.StatusDetails);
+            Assert.AreEqual("Step 2: " + expectedStatusDetails, result.StatusDetails);
         }
 
         [TestMethod]
@@ -77,7 +77,7 @@ namespace LightBDD.MsTest.UnitTests
             }
             catch (AssertInconclusiveException ex)
             {
-                _progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(Arg<IScenarioResult>.Matches(r => r.Status == ResultStatus.Ignored && r.StatusDetails == ex.Message)));
+                _progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(Arg<IScenarioResult>.Matches(r => r.Status == ResultStatus.Ignored && r.StatusDetails == "Step 1: " + ex.Message)));
             }
         }
 

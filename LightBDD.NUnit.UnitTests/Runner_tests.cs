@@ -54,7 +54,7 @@ namespace LightBDD.NUnit.UnitTests
             AssertStep(result.Steps, 1, "Step one", ResultStatus.Passed);
             AssertStep(result.Steps, 2, "Step with inconclusive assertion", ResultStatus.Ignored, expectedStatusDetails);
             AssertStep(result.Steps, 3, "Step two", ResultStatus.NotRun);
-            Assert.That(result.StatusDetails, Is.EqualTo(expectedStatusDetails));
+            Assert.That(result.StatusDetails, Is.EqualTo("Step 2: " + expectedStatusDetails));
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace LightBDD.NUnit.UnitTests
         public void Should_display_scenario_inconclusive()
         {
             var ex = Assert.Throws<InconclusiveException>(() => _subject.RunScenario(Step_with_inconclusive_assertion));
-            _progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(Arg<IScenarioResult>.Matches(r => r.Status == ResultStatus.Ignored && r.StatusDetails == ex.Message)));
+            _progressNotifier.AssertWasCalled(n => n.NotifyScenarioFinished(Arg<IScenarioResult>.Matches(r => r.Status == ResultStatus.Ignored && r.StatusDetails == "Step 1: " + ex.Message)));
         }
     }
 }

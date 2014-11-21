@@ -36,7 +36,19 @@ namespace LightBDD.Results.Implementation
             if (stepsResult == null)
                 return;
             Status = stepsResult.Status;
-            StatusDetails = stepsResult.StatusDetails;
+
+            var sb = new StringBuilder();
+            foreach (var step in Steps.Where(s => s.StatusDetails != null))
+            {
+                if (sb.Length > 0)
+                    sb.AppendLine();
+
+                sb.Append("Step ")
+                  .Append(step.Number)
+                  .Append(": ")
+                  .Append(step.StatusDetails.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t"));
+            }
+            StatusDetails = sb.Length > 0 ? sb.ToString() : null;
         }
 
         public ScenarioResult SetExecutionTime(TimeSpan executionTime)

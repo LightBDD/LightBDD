@@ -63,7 +63,7 @@ namespace LightBDD.UnitTests
             var result = _subject.Result.Scenarios.Single();
             Assert.That(result.Name, Is.EqualTo("Should collect scenario result for failed parameterized steps"));
             Assert.That(result.Status, Is.EqualTo(ResultStatus.Failed));
-            Assert.That(result.StatusDetails, Is.EqualTo("Product usage verification is not implemented yet"));
+            Assert.That(result.StatusDetails, Is.EqualTo("Step 2: Product usage verification is not implemented yet"));
             Assert.That(result.Label, Is.Null);
             StepResultExpectation.Assert(result.Steps, new[]
             {
@@ -85,7 +85,7 @@ namespace LightBDD.UnitTests
             var result = _subject.Result.Scenarios.Single();
             Assert.That(result.Name, Is.EqualTo("Should collect scenario result for parameterized steps with bypassed steps"));
             Assert.That(result.Status, Is.EqualTo(ResultStatus.Bypassed));
-            Assert.That(result.StatusDetails, Is.EqualTo(BypassReason));
+            Assert.That(result.StatusDetails, Is.EqualTo("Step 2: " + BypassReason));
             StepResultExpectation.Assert(result.Steps, new[]
             {
                 new StepResultExpectation(1, "CALL Step one", ResultStatus.Passed),
@@ -109,7 +109,7 @@ namespace LightBDD.UnitTests
             var result = _subject.Result.Scenarios.Single();
             Assert.That(result.Name, Is.EqualTo("Should collect scenario result for failed parameterized steps with bypassed steps"));
             Assert.That(result.Status, Is.EqualTo(ResultStatus.Failed));
-            Assert.That(result.StatusDetails, Is.EqualTo(ExceptionText));
+            Assert.That(result.StatusDetails, Is.EqualTo("Step 2: " + BypassReason + Environment.NewLine + "Step 3: " + ExceptionText));
             StepResultExpectation.Assert(result.Steps, new[]
             {
                 new StepResultExpectation(1, "CALL Step one", ResultStatus.Passed),
@@ -133,7 +133,7 @@ namespace LightBDD.UnitTests
             var result = _subject.Result.Scenarios.Single();
             Assert.That(result.Name, Is.EqualTo("Should collect scenario result for ignored parameterized steps with bypassed steps"));
             Assert.That(result.Status, Is.EqualTo(ResultStatus.Ignored));
-            Assert.That(result.StatusDetails, Is.EqualTo(IgnoreReason));
+            Assert.That(result.StatusDetails, Is.EqualTo("Step 2: " + BypassReason + Environment.NewLine + "Step 3: " + IgnoreReason));
             StepResultExpectation.Assert(result.Steps, new[]
             {
                 new StepResultExpectation(1, "CALL Step one", ResultStatus.Passed),

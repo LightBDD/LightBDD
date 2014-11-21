@@ -56,17 +56,14 @@ long description
 Ignored name [Label 2] (1m 02s)[&#8734;link]
 Passed 1. step1 (1m 01s)
 Ignored 2. step2 (1s 100ms)
-Not implemented yet
-Not implemented yet
+Step 2: Not implemented yet
 Failed name2 (2s 157ms)[&#8734;link]
 Bypassed 1. step3 (2s 107ms)
-bypass reason
 Failed 2. step4 (50ms)
-Expected: True
-  But was: False
 NotRun 3. step5
-Expected: True
-  But was: False";
+Step 1: bypass reason
+Step 2: Expected: True
+	  But was: False";
             Assert.That(text, Is.EqualTo(expectedText));
         }
 

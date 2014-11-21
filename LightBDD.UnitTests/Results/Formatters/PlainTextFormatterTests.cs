@@ -48,20 +48,17 @@ Feature: My feature [Label 1]
 	Scenario: name [Label 2] - Ignored (1m 02s)
 		Step 1: step1 - Passed (1m 01s)
 		Step 2: step2 - Ignored (1s 100ms)
-			Details: Not implemented yet
-
-		Details: Not implemented yet
+		Details:
+			Step 2: Not implemented yet
 
 	Scenario: name2 - Failed (2s 157ms)
 		Step 1: step3 - Bypassed (2s 107ms)
-			Details: bypass reason
 		Step 2: step4 - Failed (50ms)
-			Details: Expected: True
-				  But was: False
 		Step 3: step5 - NotRun
-
-		Details: Expected: True
-			  But was: False
+		Details:
+			Step 1: bypass reason
+			Step 2: Expected: True
+				  But was: False
 ";
             Assert.That(text, Is.EqualTo(expectedText));
         }
