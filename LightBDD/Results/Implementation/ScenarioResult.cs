@@ -9,11 +9,14 @@ namespace LightBDD.Results.Implementation
     [DebuggerStepThrough]
     internal class ScenarioResult : IScenarioResult
     {
-        public ScenarioResult(string scenarioName, IEnumerable<IStepResult> steps, string label)
+        private readonly string[] _categories;
+
+        public ScenarioResult(string scenarioName, IEnumerable<IStepResult> steps, string label, string[] categories)
         {
             Name = scenarioName;
             Steps = steps.ToArray();
             Label = label;
+            _categories = categories;
 
             SetStatus();
         }
@@ -27,7 +30,7 @@ namespace LightBDD.Results.Implementation
         public DateTimeOffset? ExecutionStart { get; private set; }
         public string StatusDetails { get; private set; }
         public string Label { get; private set; }
-
+        public IEnumerable<string> Categories { get { return _categories; } }
         #endregion
 
         private void SetStatus()

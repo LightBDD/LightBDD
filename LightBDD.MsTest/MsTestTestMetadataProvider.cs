@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD
 {
@@ -19,13 +21,14 @@ namespace LightBDD
         }
 
         /// <summary>
-        /// Always returns empty collection - MsTest framework does not have dedicated category attribute for test classes.
+        /// Returns implementation specific scenario categories or empty collection if no categories are provided.
+        /// If test class is annotated with [Category] attribute, it's content is used as scenario category.
         /// </summary>
-        /// <param name="testClass">Class to analyze.</param>
-        /// <returns>Empty collection.</returns>
-        protected override IEnumerable<string> GetImplementationSpecificFeatureCategories(Type testClass)
+        /// <param name="scenarioMethod">Scenario method to analyze.</param>
+        /// <returns>Scenario categories or empty collection.</returns>
+        protected override IEnumerable<string> GetImplementationSpecificScenarioCategories(MethodBase scenarioMethod)
         {
-            return Enumerable.Empty<string>();
+            return ExtractAttributes<TestCategoryAttribute>(scenarioMethod).SelectMany(a => a.TestCategories);
         }
     }
 }

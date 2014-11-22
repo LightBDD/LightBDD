@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using NUnit.Framework;
 
 namespace LightBDD
@@ -20,14 +21,14 @@ namespace LightBDD
         }
 
         /// <summary>
-        /// Returns implementation specific feature categories or empty collection if no categories are provided.
-        /// If test class is annotated with [Category] attribute, it's content is used as feature category.
+        /// Returns implementation specific scenario categories or empty collection if no categories are provided.
+        /// If test class is annotated with [Category] attribute, it's content is used as scenario category.
         /// </summary>
-        /// <param name="testClass">Class to analyze.</param>
-        /// <returns>Feature categories or empty collection.</returns>
-        protected override IEnumerable<string> GetImplementationSpecificFeatureCategories(Type testClass)
+        /// <param name="scenarioMethod">Scenario method to analyze.</param>
+        /// <returns>Scenario categories or empty collection.</returns>
+        protected override IEnumerable<string> GetImplementationSpecificScenarioCategories(MethodBase scenarioMethod)
         {
-            return ExtractAttributePropertyValues<CategoryAttribute>(testClass, c => c.Name);
+            return ExtractAttributePropertyValues<CategoryAttribute>(scenarioMethod, a => a.Name);
         }
     }
 }

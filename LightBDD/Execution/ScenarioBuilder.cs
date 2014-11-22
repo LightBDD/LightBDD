@@ -26,6 +26,12 @@ namespace LightBDD.Execution
             return this;
         }
 
+        public ICustomizedScenarioBuilder WithCategories(params string[] categories)
+        {
+            _scenario.Categories = categories;
+            return this;
+        }
+
         public void Run(params Expression<Action<StepType>>[] steps)
         {
             _executor.Execute(_scenario, _stepsConverter.Convert(steps));

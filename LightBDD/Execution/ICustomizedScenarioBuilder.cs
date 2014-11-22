@@ -28,5 +28,12 @@
         /// <param name="label">Label to associate with scenario.</param>
         /// <returns>Scenario builder</returns>
         ICustomizedScenarioBuilder WithLabel(string label);
+
+        /// <summary>
+        /// Associates list of categories with scenario.
+        /// </summary>
+        /// <param name="categories">Categories to associate.</param>
+        /// <returns>Scenario builder</returns>
+        ICustomizedScenarioBuilder WithCategories(params string[] categories);
     }
 }

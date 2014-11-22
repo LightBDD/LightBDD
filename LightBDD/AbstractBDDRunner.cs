@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -69,8 +70,7 @@ namespace LightBDD
             _result = new FeatureResult(
                 _metadataProvider.GetFeatureName(featureTestClass),
                 _metadataProvider.GetFeatureDescription(featureTestClass),
-                _metadataProvider.GetFeatureLabel(featureTestClass),
-                _metadataProvider.GetFeatureCategories(featureTestClass));
+                _metadataProvider.GetFeatureLabel(featureTestClass));
             _executor = new ScenarioExecutor(ProgressNotifier);
             _executor.ScenarioExecuted += _result.AddScenario;
             ProgressNotifier.NotifyFeatureStart(_result.Name, _result.Description, _result.Label);
@@ -546,7 +546,8 @@ namespace LightBDD
         private ICustomizedScenarioBuilder NewScenario(MethodBase scenarioMethod)
         {
             return NewScenario(_metadataProvider.GetScenarioName(scenarioMethod))
-                .WithLabel(_metadataProvider.GetScenarioLabel(scenarioMethod));
+                .WithLabel(_metadataProvider.GetScenarioLabel(scenarioMethod))
+                .WithCategories(_metadataProvider.GetScenarioCategories(scenarioMethod).ToArray());
         }
 
         /// <summary>

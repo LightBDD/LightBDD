@@ -9,7 +9,7 @@ using Rhino.Mocks;
 namespace LightBDD.NUnit.UnitTests
 {
     [TestFixture]
-    [Description("desc"), Category("Category A"), Category("Category B"), FeatureCategory("Category C")]
+    [Description("desc")]
     public class Runner_tests : SomeSteps
     {
         private BDDRunner _subject;
@@ -64,9 +64,11 @@ namespace LightBDD.NUnit.UnitTests
         }
 
         [Test]
+        [Category("Category A"), Category("Category B"), ScenarioCategory("Category C")]
         public void Should_capture_feature_category_using_generic_category_attribute()
         {
-            Assert.That(_subject.Result.Categories.ToArray(), Is.EqualTo(new[] { "Category A", "Category B", "Category C" }));
+            _subject.RunScenario(call => Step_one());
+            Assert.That(_subject.Result.Scenarios.Single().Categories.ToArray(), Is.EqualTo(new[] { "Category A", "Category B", "Category C" }));
         }
 
         [Test]

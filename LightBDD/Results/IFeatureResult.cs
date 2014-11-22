@@ -26,10 +26,5 @@ namespace LightBDD.Results
         /// Returns executed scenarios for given feature.
         /// </summary>
         IEnumerable<IScenarioResult> Scenarios { get; }
-
-        /// <summary>
-        /// Returns categories which feature is associated with.
-        /// </summary>
-        IEnumerable<string> Categories { get; }
     }
 }

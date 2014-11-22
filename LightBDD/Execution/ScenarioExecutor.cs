@@ -34,7 +34,7 @@ namespace LightBDD.Execution
             finally
             {
                 watch.Stop();
-                var result = new ScenarioResult(scenario.Name, stepsToExecute.Select(s => s.GetResult()), scenario.Label)
+                var result = new ScenarioResult(scenario.Name, stepsToExecute.Select(s => s.GetResult()), scenario.Label, scenario.Categories)
                 .SetExecutionStart(scenarioStartTime)
                 .SetExecutionTime(watch.Elapsed);
 

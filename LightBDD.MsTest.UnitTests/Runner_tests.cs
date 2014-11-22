@@ -9,8 +9,6 @@ namespace LightBDD.MsTest.UnitTests
 {
     [TestClass]
     [FeatureDescription("desc")]
-    [FeatureCategory("Category B")]
-    [FeatureCategory("Category A")]
     public class Runner_tests
     {
         private IProgressNotifier _progressNotifier;
@@ -62,9 +60,14 @@ namespace LightBDD.MsTest.UnitTests
         }
 
         [TestMethod]
+        [ScenarioCategory("Category B")]
+        [ScenarioCategory("Category A")]
+        [TestCategory("Category C")]
+        [TestCategory("Category D")]
         public void Should_capture_feature_category_using_generic_category_attribute()
         {
-            CollectionAssert.AreEqual(new[] { "Category A", "Category B" }, _subject.Result.Categories.ToArray());
+            _subject.RunScenario(call => Step_one());
+            CollectionAssert.AreEqual(new[] { "Category A", "Category B", "Category C", "Category D" }, _subject.Result.Scenarios.Single().Categories.ToArray());
         }
 
         [TestMethod]

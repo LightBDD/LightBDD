@@ -33,7 +33,6 @@ namespace LightBDD.UnitTests
             Assert.That(_subject.Result.Name, Is.EqualTo("BDD runner tests"));
             Assert.That(_subject.Result.Label, Is.EqualTo("Ticket-1"));
             Assert.That(_subject.Result.Description, Is.EqualTo("Runner tests description"));
-            Assert.That(_subject.Result.Categories, Is.Empty);
         }
 
         [Test]
@@ -43,6 +42,7 @@ namespace LightBDD.UnitTests
             var result = _subject.Result.Scenarios.Single();
             Assert.That(result.Name, Is.EqualTo("Should collect scenario result"));
             Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
+            Assert.That(result.Categories, Is.Empty);
 
             StepResultExpectation.Assert(result.Steps, new[]
             {
@@ -51,6 +51,15 @@ namespace LightBDD.UnitTests
             });
         }
 
+        [Test]
+        [Category("Category A"), Category("Category B"), ScenarioCategory("Category C")]
+        public void Should_capture_all_categories()
+        {
+            _subject.RunScenario(Step_one);
+            Assert.That(
+                _subject.Result.Scenarios.Single().Categories.ToArray(),
+                Is.EquivalentTo(new[] { "Category A", "Category B", "Category C" }));
+        }
         [Test]
         public void Should_collect_scenario_result_via_fluent_interfaces()
         {

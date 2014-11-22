@@ -46,5 +46,10 @@ namespace LightBDD.Results
         /// Null if scenario was not run.
         /// </summary>
         DateTimeOffset? ExecutionStart { get; }
+
+        /// <summary>
+        /// Returns categories associated with scenario.
+        /// </summary>
+        IEnumerable<string> Categories { get; }
     }
 }

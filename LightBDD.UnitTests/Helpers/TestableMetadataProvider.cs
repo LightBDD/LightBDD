@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
 
 namespace LightBDD.UnitTests.Helpers
@@ -15,9 +16,9 @@ namespace LightBDD.UnitTests.Helpers
                             .SingleOrDefault();
         }
 
-        protected override IEnumerable<string> GetImplementationSpecificFeatureCategories(Type testClass)
+        protected override IEnumerable<string> GetImplementationSpecificScenarioCategories(MethodBase scenarioMethod)
         {
-            return ExtractAttributePropertyValues<CategoryAttribute>(testClass, a => a.Name);
+            return ExtractAttributePropertyValues<CategoryAttribute>(scenarioMethod, a => a.Name);
         }
     }
 }

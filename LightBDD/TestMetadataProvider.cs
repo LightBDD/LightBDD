@@ -27,9 +27,14 @@ namespace LightBDD
         /// </summary>
         protected static IEnumerable<string> ExtractAttributePropertyValues<TAttribute>(MemberInfo member, Func<TAttribute, string> valueExtractor) where TAttribute : Attribute
         {
-            return member.GetCustomAttributes(typeof(TAttribute), true)
-                .OfType<TAttribute>()
-                .Select(valueExtractor);
+            return ExtractAttributes<TAttribute>(member).Select(valueExtractor);
+        }
+        /// <summary>
+        /// Retrieves specified attributes applied on given member.
+        /// </summary>
+        protected static IEnumerable<TAttribute> ExtractAttributes<TAttribute>(MemberInfo member) where TAttribute : Attribute
+        {
+            return member.GetCustomAttributes(typeof(TAttribute), true).OfType<TAttribute>();
         }
 
         /// <summary>
@@ -62,13 +67,13 @@ namespace LightBDD
         }
 
         /// <summary>
-        /// Retrieves feature categories from [FeatureCategory] attribute as well as from implementation specific sources.
+        /// Retrieves scenario categories from [ScenarioCategory] attribute as well as from implementation specific sources.
         /// </summary>
-        /// <returns>Feature categories</returns>
-        public IEnumerable<string> GetFeatureCategories(Type featureTestClass)
+        /// <returns>Scenario categories</returns>
+        public IEnumerable<string> GetScenarioCategories(MethodBase scenarioMethod)
         {
-            return ExtractAttributePropertyValues<FeatureCategoryAttribute>(featureTestClass, a => a.Name)
-                .Concat(GetImplementationSpecificFeatureCategories(featureTestClass))
+            return ExtractAttributePropertyValues<ScenarioCategoryAttribute>(scenarioMethod, a => a.Name)
+                .Concat(GetImplementationSpecificScenarioCategories(scenarioMethod))
                 .Distinct()
                 .OrderBy(c => c);
         }
@@ -108,11 +113,11 @@ namespace LightBDD
         protected abstract string GetImplementationSpecificFeatureDescription(Type testClass);
 
         /// <summary>
-        /// Returns implementation specific feature categories or empty collection if no categories are provided.
+        /// Returns implementation specific scenario categories or empty collection if no categories are provided.
         /// </summary>
-        /// <param name="testClass">Class to analyze.</param>
-        /// <returns>Feature categories or empty collection.</returns>
-        protected abstract IEnumerable<string> GetImplementationSpecificFeatureCategories(Type testClass);
+        /// <param name="scenarioMethod">Scenario method to analyze.</param>
+        /// <returns>Scenario categories or empty collection.</returns>
+        protected abstract IEnumerable<string> GetImplementationSpecificScenarioCategories(MethodBase scenarioMethod);
 
         /// <summary>
         /// Returns step name format which bases on name of scenario step method and method parameters.<br/>
@@ -188,7 +193,7 @@ namespace LightBDD
                 throw new InvalidOperationException(string.Format(
                     "Parameter can contain only one attribute ParameterFormatterAttribute. Parameter: {0}, Detected attributes: {1}",
                     parameterInfo.Name,
-                    string.Join(", ", formatters.Select(f => f.GetType().Name))));
+                    string.Join(", ", formatters.Select(f => f.GetType().Name).OrderBy(n => n))));
 
             return formatters.Length == 1
                 ? formatters[0].Format
