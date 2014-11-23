@@ -40,3 +40,17 @@ function sortTable(tableId, columnIdx, numeric, toggle) {
     }
     store = null;
 }
+function filterCategory(categoryIdx) {
+    var filter = function(tag,className) {
+        var elements = document.getElementsByTagName(tag);
+        for (var i = elements.length - 1; i >= 0; i--) {
+            if (elements[i].classList.contains(className)) {
+                var x = elements[i].dataset.categories.indexOf(categoryIdx) >= 0;
+                elements[i].dataset.categoryFilter = x;
+            }
+        }
+    };
+
+    filter('div', 'scenario');
+    filter('article', 'feature');
+}

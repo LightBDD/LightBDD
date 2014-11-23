@@ -91,6 +91,11 @@ namespace LightBDD.Results.Formatters.Html
             return Attribute(HtmlTextWriterAttribute.Onclick, jsCode);
         }
 
+        public TagBuilder Name(string name)
+        {
+            return Attribute(HtmlTextWriterAttribute.Name, name);
+        }
+
         public TagBuilder SpaceBefore()
         {
             _spaceBefore = true;

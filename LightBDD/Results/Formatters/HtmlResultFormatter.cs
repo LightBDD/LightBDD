@@ -16,9 +16,9 @@ namespace LightBDD.Results.Formatters
         public string Format(params IFeatureResult[] features)
         {
             using (var memory = new MemoryStream())
-            using (var writer = new HtmlResultTextWriter(memory))
+            using (var writer = new HtmlResultTextWriter(memory,features))
             {
-                writer.Write(features);
+                writer.Write();
                 return Encoding.Default.GetString(memory.ToArray());
             }
         }

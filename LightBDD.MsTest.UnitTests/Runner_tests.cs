@@ -64,7 +64,7 @@ namespace LightBDD.MsTest.UnitTests
         [ScenarioCategory("Category A")]
         [TestCategory("Category C")]
         [TestCategory("Category D")]
-        public void Should_capture_feature_category_using_generic_category_attribute()
+        public void Should_capture_feature_category_using_category_attributes()
         {
             _subject.RunScenario(call => Step_one());
             CollectionAssert.AreEqual(new[] { "Category A", "Category B", "Category C", "Category D" }, _subject.Result.Scenarios.Single().Categories.ToArray());

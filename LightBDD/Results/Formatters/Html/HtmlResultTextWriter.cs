@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -15,9 +16,14 @@ namespace LightBDD.Results.Formatters.Html
         private readonly HtmlTextWriter _writer;
         private readonly string _styles = ReadResource("LightBDD.Results.Formatters.Html.styles.css");
         private readonly string _scripts = ReadResource("LightBDD.Results.Formatters.Html.scripts.js");
-        public HtmlResultTextWriter(Stream outputStream)
+        private readonly IFeatureResult[] _features;
+        private readonly string[] _categories;
+
+        public HtmlResultTextWriter(Stream outputStream, IFeatureResult[] features)
         {
             _writer = new HtmlTextWriter(new StreamWriter(outputStream), "");
+            _features = features;
+            _categories = features.SelectMany(f => f.Scenarios).SelectMany(s => s.Categories).Distinct().OrderBy(c => c).ToArray();
         }
 
         private static string ReadResource(string path)
@@ -32,26 +38,26 @@ namespace LightBDD.Results.Formatters.Html
             _writer.Dispose();
         }
 
-        private static IHtmlNode WriteExecutionSummary(IFeatureResult[] features)
+        private IHtmlNode WriteExecutionSummary()
         {
             return Html.Tag(Html5Tag.Section).Content(
                 Html.Tag(HtmlTextWriterTag.H1).Content("Execution summary"),
                 Html.Tag(Html5Tag.Article).Content(
                     Html.Tag(HtmlTextWriterTag.Table).Class("summary").Content(
-                        GetKeyValueTableRow("Test execution start time:", features.GetTestExecutionStartTime().ToString("yyyy-MM-dd HH:mm:ss UTC")),
-                        GetKeyValueTableRow("Test execution time:", features.GetTestExecutionTime().FormatPretty()),
-                        GetKeyValueTableRow("Number of features:", features.Length.ToString()),
-                        GetKeyValueTableRow("Number of scenarios:", features.CountScenarios()),
-                        GetKeyValueTableRow("Passed scenarios:", features.CountScenariosWithStatus(ResultStatus.Passed)),
-                        GetKeyValueTableRow("Bypassed scenarios:", features.CountScenariosWithStatus(ResultStatus.Bypassed)),
-                        GetKeyValueTableRow("Failed scenarios:", features.CountScenariosWithStatus(ResultStatus.Failed), "alert"),
-                        GetKeyValueTableRow("Ignored scenarios:", features.CountScenariosWithStatus(ResultStatus.Ignored)),
-                        GetKeyValueTableRow("Number of steps:", features.CountSteps()),
-                        GetKeyValueTableRow("Passed steps:", features.CountStepsWithStatus(ResultStatus.Passed)),
-                        GetKeyValueTableRow("Bypassed steps:", features.CountStepsWithStatus(ResultStatus.Bypassed)),
-                        GetKeyValueTableRow("Failed steps:", features.CountStepsWithStatus(ResultStatus.Failed), "alert"),
-                        GetKeyValueTableRow("Ignored steps:", features.CountStepsWithStatus(ResultStatus.Ignored)),
-                        GetKeyValueTableRow("Not Run steps:", features.CountStepsWithStatus(ResultStatus.NotRun))
+                        GetKeyValueTableRow("Test execution start time:", _features.GetTestExecutionStartTime().ToString("yyyy-MM-dd HH:mm:ss UTC")),
+                        GetKeyValueTableRow("Test execution time:", _features.GetTestExecutionTime().FormatPretty()),
+                        GetKeyValueTableRow("Number of features:", _features.Length.ToString()),
+                        GetKeyValueTableRow("Number of scenarios:", _features.CountScenarios()),
+                        GetKeyValueTableRow("Passed scenarios:", _features.CountScenariosWithStatus(ResultStatus.Passed)),
+                        GetKeyValueTableRow("Bypassed scenarios:", _features.CountScenariosWithStatus(ResultStatus.Bypassed)),
+                        GetKeyValueTableRow("Failed scenarios:", _features.CountScenariosWithStatus(ResultStatus.Failed), "alert"),
+                        GetKeyValueTableRow("Ignored scenarios:", _features.CountScenariosWithStatus(ResultStatus.Ignored)),
+                        GetKeyValueTableRow("Number of steps:", _features.CountSteps()),
+                        GetKeyValueTableRow("Passed steps:", _features.CountStepsWithStatus(ResultStatus.Passed)),
+                        GetKeyValueTableRow("Bypassed steps:", _features.CountStepsWithStatus(ResultStatus.Bypassed)),
+                        GetKeyValueTableRow("Failed steps:", _features.CountStepsWithStatus(ResultStatus.Failed), "alert"),
+                        GetKeyValueTableRow("Ignored steps:", _features.CountStepsWithStatus(ResultStatus.Ignored)),
+                        GetKeyValueTableRow("Not Run steps:", _features.CountStepsWithStatus(ResultStatus.NotRun))
                         )));
         }
 
@@ -74,16 +80,16 @@ namespace LightBDD.Results.Formatters.Html
                 valueTag);
         }
 
-        private static IHtmlNode WriteFeatureList(IFeatureResult[] features)
+        private IHtmlNode WriteFeatureList()
         {
             return Html.Tag(Html5Tag.Section).Content(
                 Html.Tag(HtmlTextWriterTag.H1).Content("Feature summary"),
                 Html.Tag(Html5Tag.Article).Content(
                     Html.Tag(HtmlTextWriterTag.Table).Id("featuresSummary").Class("features").Content(
-                        GetSummaryTable(features))));
+                        GetSummaryTable())));
         }
 
-        private static IEnumerable<IHtmlNode> GetSummaryTable(IFeatureResult[] features)
+        private IEnumerable<IHtmlNode> GetSummaryTable()
         {
             var sortable = "sortable";
             var sortableMinor = "sortable minor";
@@ -107,7 +113,7 @@ namespace LightBDD.Results.Formatters.Html
                 Tuple.Create("Average", sortableMinor, "sortTable('featuresSummary',15,true,this)"),
                 Tuple.Create("", hidden, "")
                 );
-            yield return Html.Tag(HtmlTextWriterTag.Tbody).Content(features.Select((t, index) => GetFeatureSummary(t, index + 1)));
+            yield return Html.Tag(HtmlTextWriterTag.Tbody).Content(_features.Select((t, index) => GetFeatureSummary(t, index + 1)));
 
         }
 
@@ -168,23 +174,42 @@ namespace LightBDD.Results.Formatters.Html
                         .OnClick(header.Item3))));
         }
 
-        private static IHtmlNode WriteFeatureDetails(IFeatureResult[] features)
+        private IHtmlNode WriteFeatureDetails()
         {
             return Html.Tag(Html5Tag.Section).Content(
-                GetFeatureDetailsContent(features));
+                GetFeatureDetailsContent());
         }
 
-        private static IEnumerable<IHtmlNode> GetFeatureDetailsContent(IFeatureResult[] features)
+        private IEnumerable<IHtmlNode> GetFeatureDetailsContent()
         {
             yield return Html.Tag(HtmlTextWriterTag.H1).Content("Feature details");
+
             foreach (var htmlNode in GetFilterNodes())
                 yield return htmlNode;
 
             foreach (var htmlNode in GetOptionsNodes())
                 yield return htmlNode;
 
-            for (var i = 0; i < features.Length; ++i)
-                yield return GetFeatureDetails(features[i], i + 1);
+            foreach (var htmlNode in GetCategoryFilterNodes())
+                yield return htmlNode;
+
+            for (var i = 0; i < _features.Length; ++i)
+                yield return GetFeatureDetails(_features[i], i + 1);
+        }
+
+        private IEnumerable<IHtmlNode> GetCategoryFilterNodes()
+        {
+            if (_categories.Length == 0)
+                yield break;
+            yield return Html.Tag(HtmlTextWriterTag.Span).Class("options").Content("Categories:");
+            for (int index = 0; index < _categories.Length; index++)
+            {
+                var category = _categories[index];
+                var categoryRadioId = string.Format("category{0}Radio", index);
+                yield return Html.Tag(HtmlTextWriterTag.Span).Content(
+                        Html.Radio().Id(categoryRadioId).Name("category").OnClick(string.Format("filterCategory({0})", index)).SpaceBefore(),
+                        Html.Tag(HtmlTextWriterTag.Label).For(categoryRadioId).Content(category));
+            }
         }
 
         private static IEnumerable<IHtmlNode> GetOptionsNodes()
@@ -224,9 +249,9 @@ namespace LightBDD.Results.Formatters.Html
             return Html.Tag(HtmlTextWriterTag.Span).Class("chbox");
         }
 
-        private static IHtmlNode GetFeatureDetails(IFeatureResult feature, int index)
+        private IHtmlNode GetFeatureDetails(IFeatureResult feature, int index)
         {
-            return Html.Tag(Html5Tag.Article).Class(GetFeatureClasses(feature)).Content(
+            return Html.Tag(Html5Tag.Article).Class(GetFeatureClasses(feature)).Attribute("data-categories", GetScenarioCategories(feature)).Content(
                 Html.Checkbox().Class("toggle toggleF").Id("toggle" + index).Checked(),
                 Html.Tag(HtmlTextWriterTag.Div).Class("header").Content(
                     Html.Tag(HtmlTextWriterTag.H2).Id("feature" + index).Class("title").Content(
@@ -255,11 +280,11 @@ namespace LightBDD.Results.Formatters.Html
             return builder.ToString();
         }
 
-        private static IHtmlNode GetScenario(IScenarioResult scenario, int featureIndex, int scenarioIndex)
+        private IHtmlNode GetScenario(IScenarioResult scenario, int featureIndex, int scenarioIndex)
         {
             var toggleId = string.Format("toggle{0}_{1}", featureIndex, scenarioIndex);
             var scenarioId = string.Format("scenario{0}_{1}", featureIndex, scenarioIndex + 1);
-            return Html.Tag(HtmlTextWriterTag.Div).Class("scenario " + GetStatusClass(scenario.Status)).Content(
+            return Html.Tag(HtmlTextWriterTag.Div).Class("scenario " + GetStatusClass(scenario.Status)).Attribute("data-categories", GetScenarioCategories(scenario)).Content(
                 Html.Checkbox().Id(toggleId).Class("toggle toggleS").Checked(),
                 Html.Tag(HtmlTextWriterTag.H3).Id(scenarioId).Class("title").Content(
                     Html.Tag(HtmlTextWriterTag.Label).For(toggleId).Content(
@@ -269,9 +294,25 @@ namespace LightBDD.Results.Formatters.Html
                     GetLabel(scenario.Label),
                     GetDuration(scenario.ExecutionTime),
                     GetSmallLink(scenarioId)),
+                Html.Tag(HtmlTextWriterTag.Div).Content(scenario.Categories.Select(c=>Html.Tag(HtmlTextWriterTag.Div).Content(c))),
                 Html.Tag(HtmlTextWriterTag.Div).Content(scenario.Steps.Select(GetStep)),
                 GetStatusDetails(scenario.StatusDetails),
                 Html.Br());
+        }
+
+        private string GetScenarioCategories(IScenarioResult scenario)
+        {
+            return GetScenarioCategories(scenario.Categories);
+        }
+
+        private string GetScenarioCategories(IEnumerable<string> categories)
+        {
+            return string.Join(" ", categories.Select(cat => Array.FindIndex(_categories, c => c == cat).ToString(CultureInfo.InvariantCulture)));
+        }
+
+        private string GetScenarioCategories(IFeatureResult feature)
+        {
+            return GetScenarioCategories(feature.Scenarios.SelectMany(s => s.Categories).Distinct());
         }
 
         private static TagBuilder GetStatusDetails(string statusDetails)
@@ -309,7 +350,7 @@ namespace LightBDD.Results.Formatters.Html
             return status.ToString().ToLowerInvariant();
         }
 
-        public void Write(IFeatureResult[] features)
+        public void Write()
         {
             _writer.NewLine = "";
 
@@ -322,9 +363,9 @@ namespace LightBDD.Results.Formatters.Html
                         Html.Tag(HtmlTextWriterTag.Style).Content(_styles, false, false),
                         Html.Tag(HtmlTextWriterTag.Script).Content(_scripts, false, false)),
                     Html.Tag(HtmlTextWriterTag.Body).Content(
-                        WriteExecutionSummary(features),
-                        WriteFeatureList(features),
-                        WriteFeatureDetails(features)
+                        WriteExecutionSummary(),
+                        WriteFeatureList(),
+                        WriteFeatureDetails()
                         )))
                 .Flush();
         }

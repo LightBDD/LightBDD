@@ -12,6 +12,7 @@ I want to login into system")]
     {
         [Test]
         [Label("Ticket-1")]
+        [ScenarioCategory(Categories.Security)]
         public void Successful_login()
         {
             Runner.RunScenario(
@@ -26,6 +27,7 @@ I want to login into system")]
 
         [Test]
         [Label("Ticket-2")]
+        [ScenarioCategory(Categories.Security)]
         public void Wrong_login_provided_causes_login_to_fail()
         {
             Runner.RunScenario(

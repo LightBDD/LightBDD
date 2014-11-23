@@ -9,6 +9,11 @@ namespace LightBDD.Results.Formatters.Html
             return Tag(HtmlTextWriterTag.Input).Attribute(HtmlTextWriterAttribute.Type, "checkbox");
         }
 
+        public static TagBuilder Radio()
+        {
+            return Tag(HtmlTextWriterTag.Input).Attribute(HtmlTextWriterAttribute.Type, "radio");
+        }
+
         public static TagBuilder Tag(HtmlTextWriterTag tag)
         {
             return new TagBuilder(writer => writer.RenderBeginTag(tag));

@@ -12,6 +12,8 @@ I want to dispatch products to customer as soon as the payment is finalized")]
     {
         [Test]
         [Label("Ticket-5")]
+        [ScenarioCategory(Categories.Sales)]
+        [ScenarioCategory(Categories.Delivery)]
         public void Should_dispatch_product_after_payment_is_finalized()
         {
             Runner.RunScenario<SpeditionContext>(

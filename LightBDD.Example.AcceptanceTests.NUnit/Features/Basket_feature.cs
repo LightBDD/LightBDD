@@ -12,6 +12,7 @@ I want to add products to basket")]
     {
         [Test]
         [Label("Ticket-6")]
+        [ScenarioCategory(Categories.Sales)]
         public void No_product_in_stock()
         {
             Runner.RunScenario(
@@ -26,6 +27,7 @@ I want to add products to basket")]
         /// </summary>
         [Test]
         [Label("Ticket-7")]
+        [ScenarioCategory(Categories.Sales)]
         public void Successful_addition()
         {
             Runner.RunScenario(
