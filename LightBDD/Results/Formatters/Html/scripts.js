@@ -46,8 +46,7 @@ function filterCategory(categoryIdx) {
         var elements = document.getElementsByTagName(tag);
         for (var i = elements.length - 1; i >= 0; i--) {
             if (elements[i].classList.contains(className)) {
-                var x = elements[i].dataset.categories.indexOf(categoryIdx) >= 0;
-                elements[i].dataset.categoryFilter = x;
+                elements[i].dataset.categoryFilter = elements[i].dataset.categories.indexOf(categoryIdx) >= 0;
             }
         }
     };
@@ -113,6 +112,12 @@ function applyFilter() {
         return false;
     };
 
-    applyTo('div', 'scenario', function (scenario) { scenario.dataset.filtered = statusFilter(scenario) && categoryFilter(scenario); });
-    applyTo('article', 'feature', function (feature) { feature.dataset.filtered = childFilter(feature); });
+    applyTo('div', 'scenario', function (scenario) {
+        scenario.dataset.filtered = statusFilter(scenario) && categoryFilter(scenario);
+        scenario.className = scenario.className; //IE fix
+    });
+    applyTo('article', 'feature', function(feature) {
+        feature.dataset.filtered = childFilter(feature);
+        feature.className = feature.className; //IE fix
+    });
 }
