@@ -1,7 +1,6 @@
 Current:
 * HTML report: link to filtered scenarios, step parameter decorator as stream writer
 * FeatureCoordinator and 2 seconds to close / FeatureCoordiantor – ensure it fires once. Warning on execution longer than 1 sec
-* deal with Not Run feature
 
 Future:
 * An advanced HTML/JS report based on XML data

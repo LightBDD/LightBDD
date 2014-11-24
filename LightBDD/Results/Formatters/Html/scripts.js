@@ -82,9 +82,16 @@ function applyFilter() {
     var statusFilterValues = getFilterValues('statusFilter');
     var categoryFilterValues = getFilterValues('categoryFilter');
 
-    var statusFilter = function (scenario) {
+    var statusFilter = function (element) {
         return statusFilterValues.asQueryable()
-            .where(function (s) { return scenario.classList.contains(s); })
+            .where(function (s) { return element.classList.contains(s); })
+            .any();
+    };
+
+    var childFilter = function (feature) {
+        return feature.getElementsByTagName('div')
+            .asQueryable()
+            .where(function (ch) { return ch.classList.contains('scenario') && ch.dataset.filtered == 'true'; })
             .any();
     };
 
@@ -92,6 +99,7 @@ function applyFilter() {
 
     if (categoryFilterValues.length == 0 || categoryFilterValues[0] === 'all') {
         categoryFilter = function (scenario) { return true; };
+        childFilter = statusFilter;
     } else if (categoryFilterValues[0] === 'without') {
         categoryFilter = function (scenario) { return scenario.dataset.categories == ''; };
     } else {
@@ -101,13 +109,6 @@ function applyFilter() {
                 .any();
         };
     }
-
-    var childFilter = function (feature) {
-        return feature.getElementsByTagName('div')
-            .asQueryable()
-            .where(function (ch) { return ch.classList.contains('scenario') && ch.dataset.filtered == 'true'; })
-            .any();
-    };
 
     applyTo('div', 'scenario', function (scenario) {
         scenario.dataset.filtered = statusFilter(scenario) && categoryFilter(scenario);
