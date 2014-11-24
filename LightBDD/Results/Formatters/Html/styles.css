@@ -11,7 +11,8 @@ h3{ font-size: 1.00em;}
 .feature{margin-bottom: 1em;padding: 0.2em;}
 .title{font-weight: bold;margin: 0;}
 .title,.description,.step{ word-wrap: break-word;}
-.steps{margin-top: 0.5em;}
+.steps,.categories{margin-top: 0.5em;}
+.categories { font-style: italic;color: #0000cd}
 .feature .scenarios{margin: 1em 0 1em 2em;}
 .feature:nth-child(even) { background: #eeeeee; }
 .feature:nth-child(odd) { background: #dddddd; }
@@ -27,8 +28,7 @@ h3{ font-size: 1.00em;}
 .status.bypassed{background-color: #aaaaff;}
 .status.notrun{background-color: #aaaaaa;}
 .details{margin-top: 0.5em;font-style: italic;color: #ff5555;white-space: pre-wrap;font-size: x-small;}
-.step .details { margin-left: 6em;}
-.step{margin: 0.2em;margin-left: 2.5em;}
+.step, .categories{margin: 0.2em;margin-left: 2.5em;}
 .smallLink,.duration{color: #0000cd;font-size: 0.8em;font-family: monospace;}
 th,td{ white-space: nowrap;}
 th{ text-align: right;}

@@ -88,7 +88,13 @@ function applyFilter() {
         return false;
     };
 
-    var categoryFilter = function (scenario) {
+    var categoryFilter = null;
+
+    if (categoryFilterValues[0] === 'all')
+        categoryFilter = function (scenario) { return true; }
+    else if (categoryFilterValues[0] === 'without')
+        categoryFilter = function (scenario) { return scenario.dataset.categories == ''; }
+    else categoryFilter = function (scenario) {
         for (var i = categoryFilterValues.length - 1; i >= 0; i--) {
             if (scenario.dataset.categories.indexOf(categoryFilterValues[i]) >= 0)
                 return true;

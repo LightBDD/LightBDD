@@ -81,8 +81,10 @@ namespace LightBDD.Results.Formatters.Html
             return Attribute(HtmlTextWriterAttribute.For, forTag);
         }
 
-        public TagBuilder Checked()
+        public TagBuilder Checked(bool isChecked=true)
         {
+            if (!isChecked) 
+                return this;
             return Attribute(HtmlTextWriterAttribute.Checked, null);
         }
 

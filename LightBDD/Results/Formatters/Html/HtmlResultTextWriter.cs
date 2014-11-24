@@ -202,14 +202,20 @@ namespace LightBDD.Results.Formatters.Html
             if (_categories.Length == 0)
                 yield break;
             yield return Html.Tag(HtmlTextWriterTag.Span).Class("options").Content("Categories:");
+            yield return GetCategoryFilterNode("all", "All", true);
+
             for (int index = 0; index < _categories.Length; index++)
-            {
-                var category = _categories[index];
-                var categoryRadioId = string.Format("category{0}Radio", index);
-                yield return Html.Tag(HtmlTextWriterTag.Span).Content(
-                        Html.Radio().Id(categoryRadioId).Name("categoryFilter").Attribute("data-filter-value",index.ToString(CultureInfo.InvariantCulture)).OnClick("applyFilter()").SpaceBefore(),
-                        Html.Tag(HtmlTextWriterTag.Label).For(categoryRadioId).Content(category));
-            }
+                yield return GetCategoryFilterNode(index.ToString(CultureInfo.InvariantCulture), _categories[index]);
+
+            yield return GetCategoryFilterNode("without", "Without category");
+        }
+
+        private static TagBuilder GetCategoryFilterNode(string categoryId, string categoryName, bool selected = false)
+        {
+            var categoryRadioId = string.Format("category{0}Radio", categoryId);
+            return Html.Tag(HtmlTextWriterTag.Span).Content(
+                Html.Radio().Id(categoryRadioId).Name("categoryFilter").Attribute("data-filter-value", categoryId).OnClick("applyFilter()").Checked(selected).SpaceBefore(),
+                Html.Tag(HtmlTextWriterTag.Label).For(categoryRadioId).Content(categoryName));
         }
 
         private static IEnumerable<IHtmlNode> GetStatusFilterNodes()
@@ -299,7 +305,7 @@ namespace LightBDD.Results.Formatters.Html
                     GetLabel(scenario.Label),
                     GetDuration(scenario.ExecutionTime),
                     GetSmallLink(scenarioId)),
-                Html.Tag(HtmlTextWriterTag.Div).Content(scenario.Categories.Select(c => Html.Tag(HtmlTextWriterTag.Div).Content(c))),
+                Html.Tag(HtmlTextWriterTag.Div).Class("categories").Content(string.Join(", ", scenario.Categories)).SkipEmpty(),
                 Html.Tag(HtmlTextWriterTag.Div).Content(scenario.Steps.Select(GetStep)),
                 GetStatusDetails(scenario.StatusDetails),
                 Html.Br());
