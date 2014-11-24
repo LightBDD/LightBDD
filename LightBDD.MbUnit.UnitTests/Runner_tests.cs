@@ -9,7 +9,7 @@ using Rhino.Mocks;
 namespace LightBDD.MbUnit.UnitTests
 {
     [TestFixture]
-    [Description("desc")]
+    [Description("desc"), Category("Category D"), ScenarioCategory("Category E")]
     public class Runner_tests
     {
         private IProgressNotifier _progressNotifier;
@@ -65,7 +65,7 @@ namespace LightBDD.MbUnit.UnitTests
         public void Should_capture_feature_category_using_generic_category_attribute()
         {
             _subject.RunScenario(call => Step_one());
-            Assert.AreElementsEqual(new[] { "Category A", "Category B", "Category C" }, _subject.Result.Scenarios.Single().Categories.ToArray());
+            Assert.AreElementsEqual(new[] { "Category A", "Category B", "Category C", "Category D", "Category E" }, _subject.Result.Scenarios.Single().Categories.ToArray());
         }
 
         [Test]

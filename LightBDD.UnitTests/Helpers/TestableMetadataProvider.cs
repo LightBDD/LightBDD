@@ -16,9 +16,9 @@ namespace LightBDD.UnitTests.Helpers
                             .SingleOrDefault();
         }
 
-        protected override IEnumerable<string> GetImplementationSpecificScenarioCategories(MethodBase scenarioMethod)
+        protected override IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member)
         {
-            return ExtractAttributePropertyValues<CategoryAttribute>(scenarioMethod, a => a.Name);
+            return ExtractAttributePropertyValues<CategoryAttribute>(member, a => a.Name);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using LightBDD.Naming;
 using LightBDD.Results;
 using Rhino.Mocks;
@@ -50,6 +51,7 @@ namespace LightBDD.UnitTests.Helpers
             result.Stub(r => r.Label).Return(label);
             result.Stub(r => r.Status).Return(steps.Max(s => s.Status));
             result.Stub(r => r.StatusDetails).Return(string.Join(Environment.NewLine, steps.Where(s => s.StatusDetails != null).Select(s => string.Format("Step {0}: {1}", s.Number, s.StatusDetails.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t")))));
+            result.Stub(r => r.Categories).Return(new string[0]);
             return result;
         }
 

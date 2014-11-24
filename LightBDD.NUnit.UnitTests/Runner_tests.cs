@@ -10,6 +10,7 @@ namespace LightBDD.NUnit.UnitTests
 {
     [TestFixture]
     [Description("desc")]
+    [Category("Category D"), ScenarioCategory("Category E")]
     public class Runner_tests : SomeSteps
     {
         private BDDRunner _subject;
@@ -68,7 +69,7 @@ namespace LightBDD.NUnit.UnitTests
         public void Should_capture_feature_category_using_generic_category_attribute()
         {
             _subject.RunScenario(call => Step_one());
-            Assert.That(_subject.Result.Scenarios.Single().Categories.ToArray(), Is.EqualTo(new[] { "Category A", "Category B", "Category C" }));
+            Assert.That(_subject.Result.Scenarios.Single().Categories.ToArray(), Is.EqualTo(new[] { "Category A", "Category B", "Category C", "Category D", "Category E" }));
         }
 
         [Test]

@@ -24,11 +24,11 @@ namespace LightBDD
         /// Returns implementation specific scenario categories or empty collection if no categories are provided.
         /// If test class is annotated with [Category] attribute, it's content is used as scenario category.
         /// </summary>
-        /// <param name="scenarioMethod">Scenario method to analyze.</param>
+        /// <param name="member">Scenario method or feature test class to analyze.</param>
         /// <returns>Scenario categories or empty collection.</returns>
-        protected override IEnumerable<string> GetImplementationSpecificScenarioCategories(MethodBase scenarioMethod)
+        protected override IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member)
         {
-            return ExtractAttributePropertyValues<CategoryAttribute>(scenarioMethod, a => a.Category);
+            return ExtractAttributePropertyValues<CategoryAttribute>(member, a => a.Category);
         }
     }
 }

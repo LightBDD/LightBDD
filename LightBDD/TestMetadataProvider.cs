@@ -73,7 +73,9 @@ namespace LightBDD
         public IEnumerable<string> GetScenarioCategories(MethodBase scenarioMethod)
         {
             return ExtractAttributePropertyValues<ScenarioCategoryAttribute>(scenarioMethod, a => a.Name)
+                .Concat(ExtractAttributePropertyValues<ScenarioCategoryAttribute>(scenarioMethod.DeclaringType, a => a.Name))
                 .Concat(GetImplementationSpecificScenarioCategories(scenarioMethod))
+                .Concat(GetImplementationSpecificScenarioCategories(scenarioMethod.DeclaringType))
                 .Distinct()
                 .OrderBy(c => c);
         }
@@ -115,9 +117,9 @@ namespace LightBDD
         /// <summary>
         /// Returns implementation specific scenario categories or empty collection if no categories are provided.
         /// </summary>
-        /// <param name="scenarioMethod">Scenario method to analyze.</param>
+        /// <param name="member">Scenario method or feature test class to analyze.</param>
         /// <returns>Scenario categories or empty collection.</returns>
-        protected abstract IEnumerable<string> GetImplementationSpecificScenarioCategories(MethodBase scenarioMethod);
+        protected abstract IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member);
 
         /// <summary>
         /// Returns step name format which bases on name of scenario step method and method parameters.<br/>

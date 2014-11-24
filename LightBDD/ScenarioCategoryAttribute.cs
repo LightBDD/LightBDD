@@ -9,7 +9,7 @@ namespace LightBDD
     ///
     /// If given implementation supports alternative category attributes, and both are applied on scenario method, all of them would be used.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
     public class ScenarioCategoryAttribute : Attribute
     {
         /// <summary>
