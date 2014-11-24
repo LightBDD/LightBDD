@@ -57,8 +57,8 @@ input[type="checkbox"],input[type="radio"]{ display: none;}
 .chbox:before{display: inline-block; border: 1px solid #777777;margin-right: 0.5em;font-weight: bold;text-align: center;width: 1.2em;height: 1.2em;line-height: 1.2em;vertical-align: middle;}
 input[type="checkbox"]:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "\2715";}
 input[type="checkbox"]:checked + * .chbox:before{ background-color: #eeeeee;content: "\2713";}
-input[type="checkbox"].toggle:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "\22bd";}
-input[type="checkbox"].toggle:checked + * .chbox:before{ background-color: #eeeeee;content: "\22bc";}
+input[type="checkbox"].toggle:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "v";}
+input[type="checkbox"].toggle:checked + * .chbox:before{ background-color: #eeeeee;content: "^";}
 input[type="radio"]:not(:checked) + * .chbox:before{border-radius: 50%; background-color: #eeeeee;content: " ";}
 input[type="radio"]:checked + * .chbox:before{border-radius: 50%; background-color: #eeeeee;content: "\2713";}
 .stepType{ font-style: italic;}
