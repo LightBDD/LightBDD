@@ -183,76 +183,73 @@ namespace LightBDD.Results.Formatters.Html
         private IEnumerable<IHtmlNode> GetFeatureDetailsContent()
         {
             yield return Html.Tag(HtmlTextWriterTag.H1).Content("Feature details");
-
-            foreach (var htmlNode in GetToggleNodes())
-                yield return htmlNode;
-
-            foreach (var htmlNode in GetStatusFilterNodes())
-                yield return htmlNode;
-
-            foreach (var htmlNode in GetCategoryFilterNodes())
-                yield return htmlNode;
+            yield return GetToggleNodes();
+            yield return GetStatusFilterNodes();
+            yield return GetCategoryFilterNodes();
 
             for (var i = 0; i < _features.Length; ++i)
                 yield return GetFeatureDetails(_features[i], i + 1);
         }
 
-        private IEnumerable<IHtmlNode> GetCategoryFilterNodes()
+        private IHtmlNode GetCategoryFilterNodes()
         {
             if (_categories.Length == 0)
-                yield break;
-            yield return Html.Tag(HtmlTextWriterTag.Span).Class("options").Content("Categories:");
-            yield return GetCategoryFilterNode("all", "All", true);
+                return Html.Nothing();
 
-            for (int index = 0; index < _categories.Length; index++)
-                yield return GetCategoryFilterNode(index.ToString(CultureInfo.InvariantCulture), _categories[index]);
+            var categories = Enumerable.Repeat(GetCategoryFilterNode("all", "All", true), 1)
+                .Concat(_categories.Select((c, i) => GetCategoryFilterNode(i.ToString(CultureInfo.InvariantCulture), c)))
+                .Concat(Enumerable.Repeat(GetCategoryFilterNode("without", "Without category"), 1));
 
-            yield return GetCategoryFilterNode("without", "Without category");
+            return Html.Tag(HtmlTextWriterTag.Div).Class("options").Content(
+                    Html.Tag(HtmlTextWriterTag.Span).Content("Categories:"),
+                    Html.Tag(HtmlTextWriterTag.Span).Content(categories));
         }
 
-        private static TagBuilder GetCategoryFilterNode(string categoryId, string categoryName, bool selected = false)
+        private static IHtmlNode GetCategoryFilterNode(string categoryId, string categoryName, bool selected = false)
         {
-            var categoryRadioId = string.Format("category{0}Radio", categoryId);
-            return Html.Tag(HtmlTextWriterTag.Span).Content(
-                Html.Radio().Id(categoryRadioId).Name("categoryFilter").Attribute("data-filter-value", categoryId).OnClick("applyFilter()").Checked(selected).SpaceBefore(),
-                Html.Tag(HtmlTextWriterTag.Label).For(categoryRadioId).Content(categoryName));
+            return GetOptionNode(
+                string.Format("category{0}Radio", categoryId),
+                Html.Radio().Name("categoryFilter").Attribute("data-filter-value", categoryId).OnClick("applyFilter()").Checked(selected).SpaceBefore(),
+                categoryName);
         }
 
-        private static IEnumerable<IHtmlNode> GetStatusFilterNodes()
+        private static IHtmlNode GetStatusFilterNodes()
         {
-            return new[]
-                {
-                    Html.Tag(HtmlTextWriterTag.Span).Class("options").Content("Filter:"),
-                    GetStatusFilter("showPassed", ResultStatus.Passed),
-                    Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(), Html.Text("Passed")).For("showPassed"),
-                    GetStatusFilter("showBypassed", ResultStatus.Bypassed),
-                    Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(), Html.Text("Bypassed")).For("showBypassed"),
-                    GetStatusFilter("showFailed", ResultStatus.Failed),
-                    Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(), Html.Text("Failed")).For("showFailed"),
-                    GetStatusFilter("showIgnored", ResultStatus.Ignored),
-                    Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(), Html.Text("Ignored")).For("showIgnored"),
-                    GetStatusFilter("showNotRun", ResultStatus.NotRun),
-                    Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(), Html.Text("Not Run")).For("showNotRun"),
-                    Html.Br()
-                };
+            return Html.Tag(HtmlTextWriterTag.Div).Class("options").Content(
+                Html.Tag(HtmlTextWriterTag.Span).Content("Filter:"),
+                Html.Tag(HtmlTextWriterTag.Span).Content(
+                    GetOptionNode("showPassed", GetStatusFilter(ResultStatus.Passed), "Passed"),
+                    GetOptionNode("showBypassed", GetStatusFilter(ResultStatus.Bypassed), "Bypassed"),
+                    GetOptionNode("showFailed", GetStatusFilter(ResultStatus.Failed), "Failed"),
+                    GetOptionNode("showIgnored", GetStatusFilter(ResultStatus.Ignored), "Ignored"),
+                    GetOptionNode("showNotRun", GetStatusFilter(ResultStatus.NotRun), "Not Run")));
         }
 
-        private static TagBuilder GetStatusFilter(string id, ResultStatus value)
+        private static TagBuilder GetStatusFilter(ResultStatus value)
         {
-            return Html.Checkbox().Id(id).Name("statusFilter").Attribute("data-filter-value", value.ToString().ToLower()).Checked().OnClick("applyFilter()").SpaceBefore();
+            return Html.Checkbox().Name("statusFilter").Attribute("data-filter-value", value.ToString().ToLower()).Checked().OnClick("applyFilter()").SpaceBefore();
         }
 
-        private static IEnumerable<IHtmlNode> GetToggleNodes()
+        private static IHtmlNode GetToggleNodes()
         {
-            return new[]
-            {
-                Html.Tag(HtmlTextWriterTag.Span).Class("options").Content("Toggle:"),
-                Html.Checkbox().Id("toggleFeatures").Checked().SpaceBefore().OnClick("checkAll('toggleF',toggleFeatures.checked)"),
-                Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(),Html.Text("Features")).For("toggleFeatures"),
-                Html.Checkbox().Id("toggleScenarios").Checked().SpaceBefore().OnClick("checkAll('toggleS',toggleScenarios.checked)"),
-                Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(),Html.Text("Scenarios")).For("toggleScenarios"),
-                Html.Br()
-            };
+            return Html.Tag(HtmlTextWriterTag.Div).Class("options").Content(
+                Html.Tag(HtmlTextWriterTag.Span).Content("Toggle:"),
+                Html.Tag(HtmlTextWriterTag.Span).Content(
+                GetOptionNode(
+                    "toggleFeatures",
+                    Html.Checkbox().Checked().SpaceBefore().OnClick("checkAll('toggleF',toggleFeatures.checked)"),
+                    "Features"),
+
+                GetOptionNode(
+                    "toggleScenarios",
+                    Html.Checkbox().Checked().SpaceBefore().OnClick("checkAll('toggleS',toggleScenarios.checked)"),
+                    "Scenarios")));
+        }
+
+        private static IHtmlNode GetOptionNode(string elementId, TagBuilder element, string labelContent)
+        {
+            return Html.Tag(HtmlTextWriterTag.Div).Class("option").Content(element.Id(elementId),
+                Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(),Html.Text(labelContent)).For(elementId));
         }
 
         private static IHtmlNode GetCheckBoxTag()

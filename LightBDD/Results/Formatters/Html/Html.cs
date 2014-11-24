@@ -33,5 +33,10 @@ namespace LightBDD.Results.Formatters.Html
         {
             return Text("<br/>");
         }
+
+        public static IHtmlNode Nothing()
+        {
+            return Tag(HtmlTextWriterTag.Div).SkipEmpty();
+        }
     }
 }
