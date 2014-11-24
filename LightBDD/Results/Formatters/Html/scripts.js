@@ -41,20 +41,6 @@ function sortTable(tableId, columnIdx, numeric, toggle) {
     store = null;
 }
 
-function filterCategory(categoryIdx) {
-    var filter = function (tag, className) {
-        var elements = document.getElementsByTagName(tag);
-        for (var i = elements.length - 1; i >= 0; i--) {
-            if (elements[i].classList.contains(className)) {
-                elements[i].dataset.categoryFilter = elements[i].dataset.categories.indexOf(categoryIdx) >= 0;
-            }
-        }
-    };
-
-    filter('div', 'scenario');
-    filter('article', 'feature');
-}
-
 function applyFilter() {
     var getFilterValues = function (elementsName) {
         var result = [];
@@ -89,10 +75,10 @@ function applyFilter() {
 
     var categoryFilter = null;
 
-    if (categoryFilterValues[0] === 'all')
-        categoryFilter = function (scenario) { return true; }
+    if (categoryFilterValues.length == 0 || categoryFilterValues[0] === 'all')
+        categoryFilter = function (scenario) { return true; };
     else if (categoryFilterValues[0] === 'without')
-        categoryFilter = function (scenario) { return scenario.dataset.categories == ''; }
+        categoryFilter = function (scenario) { return scenario.dataset.categories == ''; };
     else categoryFilter = function (scenario) {
         for (var i = categoryFilterValues.length - 1; i >= 0; i--) {
             if (scenario.dataset.categories.indexOf(categoryFilterValues[i]) >= 0)
@@ -116,7 +102,7 @@ function applyFilter() {
         scenario.dataset.filtered = statusFilter(scenario) && categoryFilter(scenario);
         scenario.className = scenario.className; //IE fix
     });
-    applyTo('article', 'feature', function(feature) {
+    applyTo('article', 'feature', function (feature) {
         feature.dataset.filtered = childFilter(feature);
         feature.className = feature.className; //IE fix
     });
