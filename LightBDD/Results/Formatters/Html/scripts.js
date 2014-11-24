@@ -40,8 +40,9 @@ function sortTable(tableId, columnIdx, numeric, toggle) {
     }
     store = null;
 }
+
 function filterCategory(categoryIdx) {
-    var filter = function(tag,className) {
+    var filter = function (tag, className) {
         var elements = document.getElementsByTagName(tag);
         for (var i = elements.length - 1; i >= 0; i--) {
             if (elements[i].classList.contains(className)) {
@@ -53,4 +54,59 @@ function filterCategory(categoryIdx) {
 
     filter('div', 'scenario');
     filter('article', 'feature');
+}
+
+function applyFilter() {
+    var getFilterValues = function (elementsName) {
+        var result = [];
+        var elems = document.getElementsByName(elementsName);
+        for (var i = elems.length - 1; i >= 0; i--) {
+            if (elems[i].checked) {
+                result.push(elems[i].dataset.filterValue);
+            }
+        }
+        return result;
+    };
+
+    var applyTo = function (tag, className, filter) {
+        var elements = document.getElementsByTagName(tag);
+        for (var i = elements.length - 1; i >= 0; i--) {
+            if (elements[i].classList.contains(className)) {
+                filter(elements[i]);
+            }
+        }
+    };
+
+    var statusFilterValues = getFilterValues('statusFilter');
+    var categoryFilterValues = getFilterValues('categoryFilter');
+
+    var statusFilter = function (scenario) {
+        for (var i = statusFilterValues.length - 1; i >= 0; i--) {
+            if (scenario.classList.contains(statusFilterValues[i]))
+                return true;
+        }
+        return false;
+    };
+
+    var categoryFilter = function (scenario) {
+        for (var i = categoryFilterValues.length - 1; i >= 0; i--) {
+            if (scenario.dataset.categories.indexOf(categoryFilterValues[i]) >= 0)
+                return true;
+        }
+        return false;
+    };
+
+    var childFilter = function (feature) {
+        var children = feature.getElementsByTagName('div');
+        for (var i = children.length - 1; i >= 0; i--) {
+            if (children[i].classList.contains('scenario')) {
+                if (children[i].dataset.filtered == 'true')
+                    return true;
+            }
+        }
+        return false;
+    };
+
+    applyTo('div', 'scenario', function (scenario) { scenario.dataset.filtered = statusFilter(scenario) && categoryFilter(scenario); });
+    applyTo('article', 'feature', function (feature) { feature.dataset.filtered = childFilter(feature); });
 }

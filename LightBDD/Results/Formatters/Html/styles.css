@@ -42,17 +42,7 @@ table.features td:first-of-type, table.features th:first-of-type{ text-align: le
 td.alert{ color: #ff5555;font-weight: bold;}
 article{ margin-left: 1em;}
 .options{ margin:0 0.3em 0.5em 0; font-weight: bold;font-style: italic; display: inline-block;min-width: 4em;text-align: right;}
-.feature[data-category-filter="false"],.scenario[data-category-filter="false"] { display: none;}
-#showPassed:not(:checked)  ~ * .scenario.passed[data-category-filter="true"], #showPassed:not(:checked)  ~ .feature.passed[data-category-filter="true"] { display: none;}
-#showBypassed:not(:checked)  ~ * .scenario.bypassed[data-category-filter="true"], #showBypassed:not(:checked)  ~ .feature.bypassed[data-category-filter="true"] { display: none;}
-#showFailed:not(:checked)  ~ * .scenario.failed[data-category-filter="true"], #showFailed:not(:checked)  ~ .feature.failed[data-category-filter="true"] { display: none;}
-#showIgnored:not(:checked)  ~ * .scenario.ignored[data-category-filter="true"], #showIgnored:not(:checked)  ~ .feature.ignored[data-category-filter="true"] { display: none;}
-#showNotRun:not(:checked)  ~ * .scenario.notrun[data-category-filter="true"], #showNotRun:not(:checked)  ~ .feature.notrun[data-category-filter="true"] { display: none;}
-#showPassed:checked  ~ * .scenario.passed[data-category-filter="true"], #showPassed:checked  ~ .feature.passed[data-category-filter="true"] { display: block;}
-#showBypassed:checked  ~ * .scenario.bypassed[data-category-filter="true"], #showBypassed:checked  ~ .feature.bypassed[data-category-filter="true"] { display: block;}
-#showFailed:checked  ~ * .scenario.failed[data-category-filter="true"], #showFailed:checked  ~ .feature.failed[data-category-filter="true"] { display: block;}
-#showIgnored:checked  ~ * .scenario.ignored[data-category-filter="true"], #showIgnored:checked  ~ .feature.ignored[data-category-filter="true"] { display: block;}
-#showNotRun:checked  ~ * .scenario.notrun[data-category-filter="true"], #showNotRun:checked  ~ .feature.notrun[data-category-filter="true"] { display: block;}
+.feature[data-filtered="false"],.scenario[data-filtered="false"] { display: none;}
 a{ text-decoration: none;}
 a:hover{ text-decoration: underline;}
 .smallLink, a:hover,label:hover,.sortable:hover{ color: #662266;}

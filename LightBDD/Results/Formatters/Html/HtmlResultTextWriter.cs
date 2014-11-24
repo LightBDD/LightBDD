@@ -184,10 +184,10 @@ namespace LightBDD.Results.Formatters.Html
         {
             yield return Html.Tag(HtmlTextWriterTag.H1).Content("Feature details");
 
-            foreach (var htmlNode in GetFilterNodes())
+            foreach (var htmlNode in GetToggleNodes())
                 yield return htmlNode;
 
-            foreach (var htmlNode in GetOptionsNodes())
+            foreach (var htmlNode in GetStatusFilterNodes())
                 yield return htmlNode;
 
             foreach (var htmlNode in GetCategoryFilterNodes())
@@ -207,31 +207,36 @@ namespace LightBDD.Results.Formatters.Html
                 var category = _categories[index];
                 var categoryRadioId = string.Format("category{0}Radio", index);
                 yield return Html.Tag(HtmlTextWriterTag.Span).Content(
-                        Html.Radio().Id(categoryRadioId).Name("category").OnClick(string.Format("filterCategory({0})", index)).SpaceBefore(),
+                        Html.Radio().Id(categoryRadioId).Name("categoryFilter").Attribute("data-filter-value",index.ToString(CultureInfo.InvariantCulture)).OnClick("applyFilter()").SpaceBefore(),
                         Html.Tag(HtmlTextWriterTag.Label).For(categoryRadioId).Content(category));
             }
         }
 
-        private static IEnumerable<IHtmlNode> GetOptionsNodes()
+        private static IEnumerable<IHtmlNode> GetStatusFilterNodes()
         {
             return new[]
-            {
-                Html.Tag(HtmlTextWriterTag.Span).Class("options").Content("Filter:"),
-                Html.Checkbox().Id("showPassed").Checked().SpaceBefore(),
-                Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(),Html.Text("Passed")).For("showPassed"),
-                Html.Checkbox().Id("showBypassed").Checked().SpaceBefore(),
-                Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(),Html.Text("Bypassed")).For("showBypassed"),
-                Html.Checkbox().Id("showFailed").Checked().SpaceBefore(),
-                Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(),Html.Text("Failed")).For("showFailed"),
-                Html.Checkbox().Id("showIgnored").Checked().SpaceBefore(),
-                Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(),Html.Text("Ignored")).For("showIgnored"),
-                Html.Checkbox().Id("showNotRun").Checked().SpaceBefore(),
-                Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(),Html.Text("Not Run")).For("showNotRun"),
-                Html.Br()
-            };
+                {
+                    Html.Tag(HtmlTextWriterTag.Span).Class("options").Content("Filter:"),
+                    GetStatusFilter("showPassed", ResultStatus.Passed),
+                    Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(), Html.Text("Passed")).For("showPassed"),
+                    GetStatusFilter("showBypassed", ResultStatus.Bypassed),
+                    Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(), Html.Text("Bypassed")).For("showBypassed"),
+                    GetStatusFilter("showFailed", ResultStatus.Failed),
+                    Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(), Html.Text("Failed")).For("showFailed"),
+                    GetStatusFilter("showIgnored", ResultStatus.Ignored),
+                    Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(), Html.Text("Ignored")).For("showIgnored"),
+                    GetStatusFilter("showNotRun", ResultStatus.NotRun),
+                    Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(), Html.Text("Not Run")).For("showNotRun"),
+                    Html.Br()
+                };
         }
 
-        private static IEnumerable<IHtmlNode> GetFilterNodes()
+        private static TagBuilder GetStatusFilter(string id, ResultStatus value)
+        {
+            return Html.Checkbox().Id(id).Name("statusFilter").Attribute("data-filter-value", value.ToString().ToLower()).Checked().OnClick("applyFilter()").SpaceBefore();
+        }
+
+        private static IEnumerable<IHtmlNode> GetToggleNodes()
         {
             return new[]
             {
@@ -294,7 +299,7 @@ namespace LightBDD.Results.Formatters.Html
                     GetLabel(scenario.Label),
                     GetDuration(scenario.ExecutionTime),
                     GetSmallLink(scenarioId)),
-                Html.Tag(HtmlTextWriterTag.Div).Content(scenario.Categories.Select(c=>Html.Tag(HtmlTextWriterTag.Div).Content(c))),
+                Html.Tag(HtmlTextWriterTag.Div).Content(scenario.Categories.Select(c => Html.Tag(HtmlTextWriterTag.Div).Content(c))),
                 Html.Tag(HtmlTextWriterTag.Div).Content(scenario.Steps.Select(GetStep)),
                 GetStatusDetails(scenario.StatusDetails),
                 Html.Br());
