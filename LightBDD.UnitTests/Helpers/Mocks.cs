@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
 using LightBDD.Naming;
 using LightBDD.Results;
 using Rhino.Mocks;

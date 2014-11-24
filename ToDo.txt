@@ -1,6 +1,5 @@
 Current:
 * HTML report: link to filtered scenarios, step parameter decorator as stream writer
-* clean namespaces, description
 * check naming, visibility and location
 
 Future:

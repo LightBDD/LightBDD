@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Runtime.ConstrainedExecution;
 using LightBDD.Formatters;
 using LightBDD.Results;
-using LightBDD.SummaryGeneration;
 
 namespace LightBDD.Coordination
 {
