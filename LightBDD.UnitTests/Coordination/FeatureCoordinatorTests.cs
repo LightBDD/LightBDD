@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Threading;
 using LightBDD.Coordination;
 using LightBDD.Results;
+using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -9,7 +11,16 @@ namespace LightBDD.UnitTests.Coordination
     [TestFixture]
     public class FeatureCoordinatorTests
     {
+        private class TestableFeatureCoordinator : FeatureCoordinator
+        {
+            public TestableFeatureCoordinator(IFeatureAggregator aggregator)
+                : base(aggregator)
+            {
+            }
+        };
+
         private IFeatureAggregator _aggregator;
+        private TestableFeatureCoordinator _subject;
 
         #region Setup/Teardown
 
@@ -17,23 +28,104 @@ namespace LightBDD.UnitTests.Coordination
         public void SetUp()
         {
             _aggregator = MockRepository.GenerateMock<IFeatureAggregator>();
-            FeatureCoordinator.Instance.Aggregator = _aggregator;
+            _subject = new TestableFeatureCoordinator(_aggregator);
         }
 
         #endregion
 
         [Test]
+        public void Should_default_instance_be_available()
+        {
+            Assert.That(FeatureCoordinator.Instance, Is.Not.Null);
+        }
+
+        [Test]
+        public void Should_not_allow_to_finish_twice()
+        {
+            _subject.Finished();
+            var ex = Assert.Throws<ObjectDisposedException>(() => _subject.Finished());
+            Assert.That(ex.Message, Is.StringContaining("FeatureCoordinator work is already finished."));
+        }
+
+        [Test]
+        public void Should_not_allow_to_add_features_after_finished()
+        {
+            _subject.Finished();
+            var ex = Assert.Throws<ObjectDisposedException>(() => _subject.AddFeature(MockRepository.GenerateMock<IFeatureResult>()));
+            Assert.That(ex.Message, Is.StringContaining("FeatureCoordinator work is already finished."));
+        }
+
+        [Test]
+        public void Should_finish_on_finalize()
+        {
+            _subject = null;
+            GC.Collect(GC.MaxGeneration);
+            GC.WaitForPendingFinalizers();
+            _aggregator.AssertWasCalled(a => a.Finished());
+        }
+
+        [Test]
+        public void Should_trace_warning_if_finalization_takes_longer_than_1_and_half_second()
+        {
+            _subject.OnBeforeFinish += () => Thread.Sleep(1550);
+            using (var console = new TraceInterceptor())
+            {
+                _subject = null;
+                GC.Collect(GC.MaxGeneration);
+                GC.WaitForPendingFinalizers();
+                Assert.That(console.GetCapturedText(), Is.StringContaining("WARNING: Please consider to call FeatureCoordinator.Instance.Finished() manually, otherwise if execution time reach 2 seconds, .NET framework will kill aggregation process."));
+            }
+        }
+
+        [Test]
+        public void Should_trace_error_if_exception_is_thrown_during_finalization()
+        {
+            _subject.OnBeforeFinish += () => { throw new NotImplementedException("abc"); };
+            using (var console = new TraceInterceptor())
+            {
+                _subject = null;
+                GC.Collect(GC.MaxGeneration);
+                GC.WaitForPendingFinalizers();
+                Assert.That(console.GetCapturedText(), Is.StringContaining("Summary aggregation failed: System.NotImplementedException: abc"));
+            }
+        }
+
+        [Test]
+        public void Should_not_print_warning_if_finalization_takes_less_than_1_and_half_second()
+        {
+            _subject.OnBeforeFinish += () => Thread.Sleep(1450);
+            using (var console = new TraceInterceptor())
+            {
+                _subject = null;
+                GC.Collect(GC.MaxGeneration);
+                GC.WaitForPendingFinalizers();
+                Assert.That(console.GetCapturedText(), Is.Not.StringContaining("WARNING: Please consider"));
+            }
+        }
+
+        [Test]
+        public void Should_not_print_warning_if_finalization_takes_more_than_1_and_half_second_but_is_called_manually()
+        {
+            _subject.OnBeforeFinish += () => Thread.Sleep(1550);
+            using (var console = new TraceInterceptor())
+            {
+                _subject.Finished();
+                Assert.That(console.GetCapturedText(), Is.Empty);
+            }
+        }
+
+        [Test]
         public void Should_add_feature()
         {
             var feature = MockRepository.GenerateMock<IFeatureResult>();
-            FeatureCoordinator.Instance.AddFeature(feature);
+            _subject.AddFeature(feature);
             _aggregator.AssertWasCalled(a => a.AddFeature(feature));
         }
 
         [Test]
         public void Should_finish()
         {
-            FeatureCoordinator.Instance.Finished();
+            _subject.Finished();
             _aggregator.AssertWasCalled(a => a.Finished());
         }
 
@@ -46,15 +138,15 @@ namespace LightBDD.UnitTests.Coordination
                 _aggregator.AssertWasNotCalled(a => a.Finished());
                 called = true;
             };
-            FeatureCoordinator.Instance.OnBeforeFinish += action;
+            _subject.OnBeforeFinish += action;
             try
             {
-                FeatureCoordinator.Instance.Finished();
+                _subject.Finished();
                 Assert.True(called);
             }
             finally
             {
-                FeatureCoordinator.Instance.OnBeforeFinish -= action;
+                _subject.OnBeforeFinish -= action;
             }
         }
 
@@ -67,15 +159,15 @@ namespace LightBDD.UnitTests.Coordination
                 _aggregator.AssertWasCalled(a => a.Finished());
                 called = true;
             };
-            FeatureCoordinator.Instance.OnAfterFinish += action;
+            _subject.OnAfterFinish += action;
             try
             {
-                FeatureCoordinator.Instance.Finished();
+                _subject.Finished();
                 Assert.True(called);
             }
             finally
             {
-                FeatureCoordinator.Instance.OnAfterFinish -= action;
+                _subject.OnAfterFinish -= action;
             }
         }
     }

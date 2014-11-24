@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Text;
 using LightBDD.Formatters;
 using LightBDD.Notification;
 using LightBDD.Results;
@@ -13,23 +11,20 @@ namespace LightBDD.UnitTests.Notification
     [TestFixture]
     public class ConsoleProgressNotifierTests
     {
-        private TextWriter _originalOut;
-        private StringBuilder _buffer;
+        private ConsoleInterceptor _console;
         private IProgressNotifier _subject;
 
         [SetUp]
         public void SetUp()
         {
-            _originalOut = Console.Out;
-            _buffer = new StringBuilder();
-            Console.SetOut(new StringWriter(_buffer));
+            _console = new ConsoleInterceptor();
             _subject = new ConsoleProgressNotifier();
         }
 
         [TearDown]
         public void TearDown()
         {
-            Console.SetOut(_originalOut);
+            _console.Dispose();
         }
 
         [Test]
@@ -41,7 +36,7 @@ namespace LightBDD.UnitTests.Notification
             string expectedText = string.Format("FEATURE: [{0}] {1}{2}  {3}{2}", label, featureName, Environment.NewLine, featureDescription);
 
             _subject.NotifyFeatureStart(featureName, featureDescription, label);
-            Assert.That(_buffer.ToString(), Is.EqualTo(expectedText));
+            Assert.That(_console.GetCapturedText(), Is.EqualTo(expectedText));
         }
 
         [Test]
@@ -55,7 +50,7 @@ namespace LightBDD.UnitTests.Notification
             string expectedText = string.Format("FEATURE: {0}{1}  {2}{1}", featureName, Environment.NewLine, featureDescription);
 
             _subject.NotifyFeatureStart(featureName, featureDescription, emptyLabel);
-            Assert.That(_buffer.ToString(), Is.EqualTo(expectedText));
+            Assert.That(_console.GetCapturedText(), Is.EqualTo(expectedText));
         }
 
         [Test]
@@ -69,7 +64,7 @@ namespace LightBDD.UnitTests.Notification
             string expectedText = string.Format("FEATURE: [{0}] {1}{2}", label, featureName, Environment.NewLine);
 
             _subject.NotifyFeatureStart(featureName, emptyDescription, label);
-            Assert.That(_buffer.ToString(), Is.EqualTo(expectedText));
+            Assert.That(_console.GetCapturedText(), Is.EqualTo(expectedText));
         }
 
         [Test]
@@ -82,7 +77,7 @@ namespace LightBDD.UnitTests.Notification
             string expectedText = string.Format("FEATURE: {0}{1}", featureName, Environment.NewLine);
 
             _subject.NotifyFeatureStart(featureName, emptyDetails, emptyDetails);
-            Assert.That(_buffer.ToString(), Is.EqualTo(expectedText));
+            Assert.That(_console.GetCapturedText(), Is.EqualTo(expectedText));
         }
 
         [Test]
@@ -93,7 +88,7 @@ namespace LightBDD.UnitTests.Notification
             string expectedText = string.Format("SCENARIO: [{0}] {1}{2}", label, scenarioName, Environment.NewLine);
 
             _subject.NotifyScenarioStart(scenarioName, label);
-            Assert.That(_buffer.ToString(), Is.EqualTo(expectedText));
+            Assert.That(_console.GetCapturedText(), Is.EqualTo(expectedText));
         }
 
         [Test]
@@ -106,7 +101,7 @@ namespace LightBDD.UnitTests.Notification
             string expectedText = string.Format("SCENARIO: {0}{1}", scenarioName, Environment.NewLine);
 
             _subject.NotifyScenarioStart(scenarioName, emptyLabel);
-            Assert.That(_buffer.ToString(), Is.EqualTo(expectedText));
+            Assert.That(_console.GetCapturedText(), Is.EqualTo(expectedText));
         }
 
         [Test]
@@ -124,7 +119,7 @@ namespace LightBDD.UnitTests.Notification
             result.Stub(r => r.ExecutionTime).Return(executionTime);
 
             _subject.NotifyScenarioFinished(result);
-            Assert.That(_buffer.ToString(), Is.EqualTo(expectedText));
+            Assert.That(_console.GetCapturedText(), Is.EqualTo(expectedText));
         }
 
         [Test]
@@ -145,7 +140,7 @@ got: B";
             result.Stub(r => r.StatusDetails).Return(details);
 
             _subject.NotifyScenarioFinished(result);
-            Assert.That(_buffer.ToString(), Is.EqualTo(expectedText));
+            Assert.That(_console.GetCapturedText(), Is.EqualTo(expectedText));
         }
 
         [Test]
@@ -157,7 +152,7 @@ got: B";
             string expectedText = string.Format("  STEP {0}/{1}: {2}{3}", stepNumber, totalStepCount, stepName, Environment.NewLine);
 
             _subject.NotifyStepStart(stepName, stepNumber, totalStepCount);
-            Assert.That(_buffer.ToString(), Is.EqualTo(expectedText));
+            Assert.That(_console.GetCapturedText(), Is.EqualTo(expectedText));
         }
 
         [Test]
@@ -173,7 +168,7 @@ got: B";
 
             var result = Mocks.CreateStepResult(stepNumber, stepName, resultStatus, executionTime);
             _subject.NotifyStepFinished(result, totalStepCount);
-            Assert.That(_buffer.ToString(), Is.EqualTo(expectedText));
+            Assert.That(_console.GetCapturedText(), Is.EqualTo(expectedText));
         }
     }
 }

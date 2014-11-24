@@ -54,6 +54,7 @@
     <Compile Include="BDD_runner_tests_with_context.cs" />
     <Compile Include="Coordination\FeatureCoordinatorTests.cs" />
     <Compile Include="Coordination\FeatureSummaryAggregatorTests.cs" />
+    <Compile Include="Helpers\ConsoleInterceptor.cs" />
     <Compile Include="Helpers\Mocks.cs" />
     <Compile Include="Helpers\NoNotifier.cs" />
     <Compile Include="Helpers\SomeSteps.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Helpers\StepResultExpectation.cs" />
     <Compile Include="Helpers\TestableBDDRunner.cs" />
     <Compile Include="Helpers\TestableMetadataProvider.cs" />
+    <Compile Include="Helpers\TraceInterceptor.cs" />
     <Compile Include="Naming\StepNameDefaultDecoratorTests.cs" />
     <Compile Include="Notification\ConsoleProgressNotifierTests.cs" />
     <Compile Include="BDD_runner_progress_notification_tests.cs" />

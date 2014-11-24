@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.ConstrainedExecution;
+using LightBDD.Formatters;
 using LightBDD.Results;
+using LightBDD.SummaryGeneration;
 
 namespace LightBDD.Coordination
 {
@@ -13,7 +15,8 @@ namespace LightBDD.Coordination
     [DebuggerStepThrough]
     public class FeatureCoordinator : CriticalFinalizerObject
     {
-        private static readonly FeatureCoordinator _instance = new FeatureCoordinator();
+        private static readonly FeatureCoordinator _instance = new FeatureCoordinator(SummaryGeneratorFactory.Create());
+        private bool _finished;
 
         /// <summary>
         /// Event emitted just before Aggregator.Finished() method is called;
@@ -54,9 +57,13 @@ namespace LightBDD.Coordination
         /// </summary>
         public IFeatureAggregator Aggregator { get; set; }
 
-        private FeatureCoordinator()
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        /// <param name="aggregator">Aggregator to use.</param>
+        protected FeatureCoordinator(IFeatureAggregator aggregator)
         {
-            Aggregator = SummaryGeneratorFactory.Create();
+            Aggregator = aggregator;
         }
 
         /// <summary>
@@ -65,6 +72,7 @@ namespace LightBDD.Coordination
         /// <param name="feature">Feature to aggregate.</param>
         public void AddFeature(IFeatureResult feature)
         {
+            VerifyFinishedState();
             Aggregator.AddFeature(feature);
         }
 
@@ -74,11 +82,25 @@ namespace LightBDD.Coordination
         /// </summary>
         public void Finished()
         {
-            if (OnBeforeFinish != null)
-                OnBeforeFinish();
-            Aggregator.Finished();
-            if (OnAfterFinish != null)
-                OnAfterFinish();
+            VerifyFinishedState();
+            try
+            {
+                if (OnBeforeFinish != null)
+                    OnBeforeFinish();
+                Aggregator.Finished();
+                if (OnAfterFinish != null)
+                    OnAfterFinish();
+            }
+            finally
+            {
+                _finished = true;
+            }
+        }
+
+        private void VerifyFinishedState()
+        {
+            if (_finished)
+                throw new ObjectDisposedException("FeatureCoordinator work is already finished.");
         }
 
         /// <summary>
@@ -88,10 +110,20 @@ namespace LightBDD.Coordination
         {
             try
             {
+                if (_finished)
+                    return;
+
+                var sw = new Stopwatch();
+                sw.Start();
                 Finished();
+                sw.Stop();
+                Trace.TraceInformation("Summary aggregation took {0}", sw.Elapsed.FormatPretty());
+                if (sw.Elapsed > TimeSpan.FromMilliseconds(1500))
+                    Trace.TraceWarning("WARNING: Please consider to call FeatureCoordinator.Instance.Finished() manually, otherwise if execution time reach 2 seconds, .NET framework will kill aggregation process.");
             }
-            catch
+            catch (Exception e)
             {
+                Trace.TraceError("Summary aggregation failed: {0}", e);
             }
         }
     }

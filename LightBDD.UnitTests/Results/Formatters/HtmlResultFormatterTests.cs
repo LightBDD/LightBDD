@@ -48,8 +48,15 @@ Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Average
 My feature [Label 1] 2 0 0 1 1 5 1 1 1 1 1 1m 04s 642570000 32s 128ms 321285000
 Feature details
-Toggle: Features Scenarios
-Filter: Passed Bypassed Failed Ignored Not Run
+Toggle:
+ Features
+ Scenarios
+Filter:
+ Passed
+ Bypassed
+ Failed
+ Ignored
+ Not Run
 My feature [Label 1][&#8734;link]
 My feature
 long description
@@ -93,8 +100,15 @@ Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Average
 My feature 1 0 0 0 1 2 1 0 0 1 0 25ms 250000 25ms 250000
 Feature details
-Toggle: Features Scenarios
-Filter: Passed Bypassed Failed Ignored Not Run
+Toggle:
+ Features
+ Scenarios
+Filter:
+ Passed
+ Bypassed
+ Failed
+ Ignored
+ Not Run
 My feature[&#8734;link]
 Ignored name (25ms)[&#8734;link]
 Passed 1. step1 (20ms)
@@ -127,8 +141,15 @@ Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ig
 My feature 1 1 0 0 0 1 1 0 0 0 0 20ms 200000 20ms 200000
 My feature2 1 1 0 0 0 1 1 0 0 0 0 20ms 200000 20ms 200000
 Feature details
-Toggle: Features Scenarios
-Filter: Passed Bypassed Failed Ignored Not Run
+Toggle:
+ Features
+ Scenarios
+Filter:
+ Passed
+ Bypassed
+ Failed
+ Ignored
+ Not Run
 My feature[&#8734;link]
 Passed scenario1 (20ms)[&#8734;link]
 Passed 1. step1 (20ms)
