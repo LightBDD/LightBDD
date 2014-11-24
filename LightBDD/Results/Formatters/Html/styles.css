@@ -39,6 +39,7 @@ td{ text-align: left;}
 table,th,td{ font-size: 1em;}
 table.features td{ text-align: right;}
 table.features td:first-of-type, table.features th:first-of-type{ text-align: left;}
+table.features td:first-of-type{white-space: normal;}
 td.alert{ color: #ff5555;font-weight: bold;}
 article{ margin-left: 1em;}
 .options{ margin-bottom: 0.2em;}

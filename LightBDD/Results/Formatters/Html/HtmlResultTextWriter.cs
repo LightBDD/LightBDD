@@ -17,13 +17,23 @@ namespace LightBDD.Results.Formatters.Html
         private readonly string _styles = ReadResource("LightBDD.Results.Formatters.Html.styles.css");
         private readonly string _scripts = ReadResource("LightBDD.Results.Formatters.Html.scripts.js");
         private readonly IFeatureResult[] _features;
-        private readonly string[] _categories;
+        private readonly IDictionary<string, string> _categories;
 
         public HtmlResultTextWriter(Stream outputStream, IFeatureResult[] features)
         {
             _writer = new HtmlTextWriter(new StreamWriter(outputStream), "");
             _features = features;
-            _categories = features.SelectMany(f => f.Scenarios).SelectMany(s => s.Categories).Distinct().OrderBy(c => c).ToArray();
+            _categories = GroupCategories(features);
+        }
+
+        private static Dictionary<string, string> GroupCategories(IEnumerable<IFeatureResult> features)
+        {
+            return features
+                .SelectMany(f => f.Scenarios)
+                .SelectMany(s => s.Categories)
+                .Distinct()
+                .Select((c, i) => new KeyValuePair<string, string>(c, string.Format("_{0}_", i)))
+                .ToDictionary(kv => kv.Key, kv => kv.Value);
         }
 
         private static string ReadResource(string path)
@@ -193,11 +203,11 @@ namespace LightBDD.Results.Formatters.Html
 
         private IHtmlNode GetCategoryFilterNodes()
         {
-            if (_categories.Length == 0)
+            if (_categories.Count == 0)
                 return Html.Nothing();
 
             var categories = Enumerable.Repeat(GetCategoryFilterNode("all", "All", true), 1)
-                .Concat(_categories.Select((c, i) => GetCategoryFilterNode(i.ToString(CultureInfo.InvariantCulture), c)))
+                .Concat(_categories.OrderBy(cat => cat.Key).Select(cat => GetCategoryFilterNode(cat.Value, cat.Key)))
                 .Concat(Enumerable.Repeat(GetCategoryFilterNode("without", "Without category"), 1));
 
             return Html.Tag(HtmlTextWriterTag.Div).Class("options").Content(
@@ -208,7 +218,7 @@ namespace LightBDD.Results.Formatters.Html
         private static IHtmlNode GetCategoryFilterNode(string categoryId, string categoryName, bool selected = false)
         {
             return GetOptionNode(
-                string.Format("category{0}Radio", categoryId),
+                string.Format("category{0}radio", categoryId),
                 Html.Radio().Name("categoryFilter").Attribute("data-filter-value", categoryId).OnClick("applyFilter()").Checked(selected).SpaceBefore(),
                 categoryName);
         }
@@ -249,7 +259,7 @@ namespace LightBDD.Results.Formatters.Html
         private static IHtmlNode GetOptionNode(string elementId, TagBuilder element, string labelContent)
         {
             return Html.Tag(HtmlTextWriterTag.Div).Class("option").Content(element.Id(elementId),
-                Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(),Html.Text(labelContent)).For(elementId));
+                Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(), Html.Text(labelContent)).For(elementId));
         }
 
         private static IHtmlNode GetCheckBoxTag()
@@ -259,7 +269,7 @@ namespace LightBDD.Results.Formatters.Html
 
         private IHtmlNode GetFeatureDetails(IFeatureResult feature, int index)
         {
-            return Html.Tag(Html5Tag.Article).Class(GetFeatureClasses(feature)).Attribute("data-categories", GetScenarioCategories(feature)).Content(
+            return Html.Tag(Html5Tag.Article).Class(GetFeatureClasses(feature)).Content(
                 Html.Checkbox().Class("toggle toggleF").Id("toggle" + index).Checked(),
                 Html.Tag(HtmlTextWriterTag.Div).Class("header").Content(
                     Html.Tag(HtmlTextWriterTag.H2).Id("feature" + index).Class("title").Content(
@@ -315,12 +325,7 @@ namespace LightBDD.Results.Formatters.Html
 
         private string GetScenarioCategories(IEnumerable<string> categories)
         {
-            return string.Join(" ", categories.Select(cat => Array.FindIndex(_categories, c => c == cat).ToString(CultureInfo.InvariantCulture)));
-        }
-
-        private string GetScenarioCategories(IFeatureResult feature)
-        {
-            return GetScenarioCategories(feature.Scenarios.SelectMany(s => s.Categories).Distinct());
+            return string.Join(" ", categories.Select(cat => _categories[cat]));
         }
 
         private static TagBuilder GetStatusDetails(string statusDetails)
