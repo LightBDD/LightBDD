@@ -68,6 +68,8 @@ namespace LightBDD.Results.Formatters
                 objects.Add(new XAttribute("ExecutionStart", scenario.ExecutionStart));
             if (scenario.ExecutionTime != null)
                 objects.Add(new XAttribute("ExecutionTime", scenario.ExecutionTime));
+            if (scenario.Categories.Any())
+                objects.Add(scenario.Categories.Select(c => new XElement("Category", new XAttribute("Name", c))).Cast<object>().ToArray());
             objects.Add(scenario.Steps.Select(ToXElement).Cast<object>().ToArray());
 
             if (!string.IsNullOrWhiteSpace(scenario.StatusDetails))
@@ -106,7 +108,7 @@ namespace LightBDD.Results.Formatters
                     new XAttribute("Passed",features.CountScenariosWithStatus(ResultStatus.Passed)),
                     new XAttribute("Bypassed",features.CountScenariosWithStatus(ResultStatus.Bypassed)),
                     new XAttribute("Failed",features.CountScenariosWithStatus(ResultStatus.Failed)),
-                    new XAttribute("Ignored",features.CountScenariosWithStatus(ResultStatus.Ignored)),
+                    new XAttribute("Ignored",features.CountScenariosWithStatus(ResultStatus.Ignored))
                 }),
                 new XElement("Steps", new object[]
                 {

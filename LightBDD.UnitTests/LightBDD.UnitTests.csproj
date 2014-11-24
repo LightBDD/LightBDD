@@ -54,6 +54,7 @@
     <Compile Include="BDD_runner_tests_with_context.cs" />
     <Compile Include="Coordination\FeatureCoordinatorTests.cs" />
     <Compile Include="Coordination\FeatureSummaryAggregatorTests.cs" />
+    <Compile Include="Formatters\TimeFormatterTests.cs" />
     <Compile Include="Helpers\ConsoleInterceptor.cs" />
     <Compile Include="Helpers\Mocks.cs" />
     <Compile Include="Helpers\NoNotifier.cs" />
@@ -68,7 +69,6 @@
     <Compile Include="BDD_runner_progress_notification_tests.cs" />
     <Compile Include="Results\Formatters\HtmlResultFormatterTests.cs" />
     <Compile Include="Results\Formatters\ResultFormatterTestData.cs" />
-    <Compile Include="Results\Formatters\TimeFormatterTests.cs" />
     <Compile Include="SummaryGeneration\SummaryFileWriterTests.cs" />
     <Compile Include="SummaryGeneration\SummaryGeneratorTests.cs" />
     <Compile Include="TestResultsSummaryTests.cs" />

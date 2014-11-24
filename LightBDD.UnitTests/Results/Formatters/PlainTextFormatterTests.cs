@@ -46,12 +46,14 @@ Feature: My feature [Label 1]
 	long description
 
 	Scenario: name [Label 2] - Ignored (1m 02s)
+		Categories: categoryA
 		Step 1: step1 - Passed (1m 01s)
 		Step 2: step2 - Ignored (1s 100ms)
 		Details:
 			Step 2: Not implemented yet
 
 	Scenario: name2 - Failed (2s 157ms)
+		Categories: categoryB, categoryC
 		Step 1: step3 - Bypassed (2s 107ms)
 		Step 2: step4 - Failed (50ms)
 		Step 3: step5 - NotRun
@@ -120,11 +122,13 @@ Feature: My feature
 Feature: My feature
 
 	Scenario: scenario1 - Passed (20ms)
+		Categories: categoryA
 		Step 1: step1 - Passed (20ms)
 
 Feature: My feature2
 
 	Scenario: scenario1 - Passed (20ms)
+		Categories: categoryB
 		Step 1: step1 - Passed (20ms)
 ";
             Assert.That(text, Is.EqualTo(expectedText));

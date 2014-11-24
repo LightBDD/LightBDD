@@ -41,7 +41,7 @@ namespace LightBDD.UnitTests.Helpers
             return name;
         }
 
-        public static IScenarioResult CreateScenarioResult(string name, string label, DateTimeOffset executionStart, TimeSpan executionTime, params IStepResult[] steps)
+        public static IScenarioResult CreateScenarioResult(string name, string label, DateTimeOffset executionStart, TimeSpan executionTime, string[] categories, params IStepResult[] steps)
         {
             var result = MockRepository.GenerateMock<IScenarioResult>();
             result.Stub(r => r.Name).Return(name);
@@ -51,7 +51,7 @@ namespace LightBDD.UnitTests.Helpers
             result.Stub(r => r.Label).Return(label);
             result.Stub(r => r.Status).Return(steps.Max(s => s.Status));
             result.Stub(r => r.StatusDetails).Return(string.Join(Environment.NewLine, steps.Where(s => s.StatusDetails != null).Select(s => string.Format("Step {0}: {1}", s.Number, s.StatusDetails.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t")))));
-            result.Stub(r => r.Categories).Return(new string[0]);
+            result.Stub(r => r.Categories).Return(categories ?? new string[0]);
             return result;
         }
 

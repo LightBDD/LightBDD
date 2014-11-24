@@ -42,6 +42,11 @@
               <xs:element name="Scenario" minOccurs="0" maxOccurs="unbounded">
                 <xs:complexType>
                   <xs:sequence>
+                    <xs:element name="Category" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:attribute name="Name" type="xs:string" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
                     <xs:element name="Step" minOccurs="0" maxOccurs="unbounded">
                       <xs:complexType>
                         <xs:sequence>

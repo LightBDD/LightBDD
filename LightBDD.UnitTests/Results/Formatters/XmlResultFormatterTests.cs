@@ -47,6 +47,7 @@ namespace LightBDD.UnitTests.Results.Formatters
     <Description>My feature
 long description</Description>
     <Scenario Status=""Ignored"" Name=""name"" Label=""Label 2"" ExecutionStart=""2014-09-23T19:21:58.055Z"" ExecutionTime=""PT1M2.1S"">
+      <Category Name=""categoryA"" />
       <Step Status=""Passed"" Number=""1"" Name=""step1"" ExecutionStart=""2014-09-23T19:21:59.055Z"" ExecutionTime=""PT1M1S"" />
       <Step Status=""Ignored"" Number=""2"" Name=""step2"" ExecutionStart=""2014-09-23T19:22:00.055Z"" ExecutionTime=""PT1.1S"">
         <StatusDetails>Not implemented yet</StatusDetails>
@@ -54,6 +55,8 @@ long description</Description>
       <StatusDetails>Step 2: Not implemented yet</StatusDetails>
     </Scenario>
     <Scenario Status=""Failed"" Name=""name2"" ExecutionStart=""2014-09-23T19:22:01.055Z"" ExecutionTime=""PT2.157S"">
+      <Category Name=""categoryB"" />
+      <Category Name=""categoryC"" />
       <Step Status=""Bypassed"" Number=""1"" Name=""step3"" ExecutionStart=""2014-09-23T19:22:02.055Z"" ExecutionTime=""PT2.107S"">
         <StatusDetails>bypass reason</StatusDetails>
       </Step>
@@ -113,11 +116,13 @@ Step 2: Expected: True
   </Summary>
   <Feature Name=""My feature"">
     <Scenario Status=""Passed"" Name=""scenario1"" ExecutionStart=""2014-09-23T19:21:58.055Z"" ExecutionTime=""PT0.02S"">
+      <Category Name=""categoryA"" />
       <Step Status=""Passed"" Number=""1"" Name=""step1"" ExecutionStart=""2014-09-23T19:21:59.055Z"" ExecutionTime=""PT0.02S"" />
     </Scenario>
   </Feature>
   <Feature Name=""My feature2"">
     <Scenario Status=""Passed"" Name=""scenario1"" ExecutionStart=""2014-09-23T19:22:01.055Z"" ExecutionTime=""PT0.02S"">
+      <Category Name=""categoryB"" />
       <Step Status=""Passed"" Number=""1"" Name=""step1"" ExecutionStart=""2014-09-23T19:22:02.055Z"" ExecutionTime=""PT0.02S"" />
     </Scenario>
   </Feature>

@@ -70,6 +70,10 @@ namespace LightBDD.Results.Formatters
             if (scenario.ExecutionTime != null)
                 builder.Append(" (").Append(scenario.ExecutionTime.FormatPretty()).Append(")");
             builder.AppendLine();
+
+            if (scenario.Categories.Any())
+                builder.Append("\t\tCategories: ").AppendLine(string.Join(", ", scenario.Categories));
+
             foreach (var step in scenario.Steps)
             {
                 builder.Append("\t\tStep ")

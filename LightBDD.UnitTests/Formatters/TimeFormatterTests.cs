@@ -2,7 +2,7 @@
 using LightBDD.Formatters;
 using NUnit.Framework;
 
-namespace LightBDD.UnitTests.Results.Formatters
+namespace LightBDD.UnitTests.Formatters
 {
     [TestFixture]
     public class TimeFormatterTests
