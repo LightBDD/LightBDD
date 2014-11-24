@@ -71,6 +71,7 @@
     <Compile Include="Results\Formatters\ResultFormatterTestData.cs" />
     <Compile Include="SummaryGeneration\SummaryFileWriterTests.cs" />
     <Compile Include="SummaryGeneration\SummaryGeneratorTests.cs" />
+    <Compile Include="TestMetadataProviderTests.cs" />
     <Compile Include="TestResultsSummaryTests.cs" />
     <Compile Include="Results\Formatters\PlainTextFormatterTests.cs" />
     <Compile Include="Naming\NameFormatterTests.cs" />

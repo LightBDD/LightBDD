@@ -1,6 +1,7 @@
 Current:
 * HTML report: link to filtered scenarios, step parameter decorator as stream writer
-* HTML writer tests for categories
+* clean namespaces, description
+* check naming, visibility and location
 
 Future:
 * An advanced HTML/JS report based on XML data
