@@ -39,18 +39,17 @@ td{ text-align: left;}
 table,th,td{ font-size: 1em;}
 table.features td{ text-align: right;}
 table.features td:first-of-type, table.features th:first-of-type{ text-align: left;}
-table.features td:first-of-type{white-space: normal;}
+table.features td:first-of-type{white-space: normal;word-wrap:break-word;}
 td.alert{ color: #ff5555;font-weight: bold;}
 article{ margin-left: 1em;}
 .options{ margin-bottom: 0.2em;}
-.options:last-of-type{ margin-bottom: 0.8em;}
 .options > span{ display: table-cell;}
 .options > span:first-child{ font-weight: bold;font-style: italic; min-width: 6em;text-align: right;padding-right: 0.5em;}
 .option{ display: inline-block;margin-right: 0.5em;}
 .feature[data-filtered="false"],.scenario[data-filtered="false"] { display: none;}
 a{ text-decoration: none;}
 a:hover{ text-decoration: underline;}
-.smallLink, a:hover,label:hover,.sortable:hover{ color: #662266;}
+#optionsLink, .smallLink, a:hover,label:hover,.sortable:hover{ color: #662266;}
 .smallLink{ display: none;}
 .title:hover .smallLink { display: inline;}
 input[type="checkbox"],input[type="radio"]{ display: none;}
@@ -65,3 +64,5 @@ input[type="radio"]:checked + * .chbox:before{border-radius: 50%; background-col
 .stepParam{ color: #aa00aa;}
 .stepParamUnknown{ color: #aa55aa;}
 label{ display: inline-block;}
+.optionsPanel #optionsLink {display: block; visibility: hidden;margin: 0.1em 0 0.5em 6em;font-weight: bold;}
+.optionsPanel:hover #optionsLink{ visibility: visible;}

@@ -192,9 +192,11 @@ namespace LightBDD.Results.Formatters.Html
         private IEnumerable<IHtmlNode> GetFeatureDetailsContent()
         {
             yield return Html.Tag(HtmlTextWriterTag.H1).Content("Feature details");
-            yield return GetToggleNodes();
-            yield return GetStatusFilterNodes();
-            yield return GetCategoryFilterNodes();
+            yield return Html.Tag(HtmlTextWriterTag.Div).Class("optionsPanel").Content(
+                GetToggleNodes(),
+                GetStatusFilterNodes(),
+                GetCategoryFilterNodes(),
+                Html.Tag(HtmlTextWriterTag.A).Href("#").Content("[&#8734;filtered feature details link]", false, false).Id("optionsLink"));
 
             for (var i = 0; i < _features.Length; ++i)
                 yield return GetFeatureDetails(_features[i], i + 1);
@@ -280,7 +282,7 @@ namespace LightBDD.Results.Formatters.Html
                     feature.Scenarios.Select((s, i) => GetScenario(s, index, i))));
         }
 
-        private static IHtmlNode GetSmallLink(string link)
+        private static TagBuilder GetSmallLink(string link)
         {
             return Html.Tag(HtmlTextWriterTag.A).Class("smallLink").Href("#" + link).Content("[&#8734;link]", false, false);
         }
@@ -377,7 +379,8 @@ namespace LightBDD.Results.Formatters.Html
                     Html.Tag(HtmlTextWriterTag.Body).Content(
                         WriteExecutionSummary(),
                         WriteFeatureList(),
-                        WriteFeatureDetails()
+                        WriteFeatureDetails(),
+                        Html.Tag(HtmlTextWriterTag.Script).Content("applyOptionsFromLink();", false, false)
                         )))
                 .Flush();
         }

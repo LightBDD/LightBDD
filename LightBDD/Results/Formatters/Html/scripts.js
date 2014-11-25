@@ -33,6 +33,7 @@ function checkAll(checkBoxClass, checked) {
         .asQueryable()
         .where(function (b) { return b.classList.contains(checkBoxClass); })
         .do(function (b) { b.checked = checked; });
+    updateOptionsLink();
 }
 function sortTable(tableId, columnIdx, numeric, toggle) {
     var direction = toggle.dataset.dir === 'true';
@@ -118,4 +119,64 @@ function applyFilter() {
         feature.dataset.filtered = childFilter(feature);
         feature.className = feature.className; //IE fix
     });
+    updateOptionsLink();
+}
+
+function updateOptionsLink() {
+    var options = [];
+
+    var check = function (element, option) {
+        if (!document.getElementById(element).checked)
+            options.push(option + '=0');
+    }
+
+    check('toggleFeatures', 'tf');
+    check('toggleScenarios', 'ts');
+
+    check('showPassed', 'fp');
+    check('showBypassed', 'fb');
+    check('showFailed', 'ff');
+    check('showIgnored', 'fi');
+    check('showNotRun', 'fn');
+
+    document.getElementsByName('categoryFilter')
+        .asQueryable()
+        .where(function (c) { return c.checked; })
+        .do(function (c) { options.push('cat=' + c.dataset.filterValue); });
+
+    var query = options.join('&');
+    var current = location.search;
+    var idx = current.indexOf('?');
+    var link = (idx >= 0 ? current.substring(0, idx) : current) + '?' + query;
+
+    document.getElementById('optionsLink').href = link;
+}
+
+function applyOptionsFromLink() {
+    var getParam = function (param) {
+        var regex = new RegExp("[\\?&]" + param + "=([^&#]*)");
+        var results = regex.exec(location.search);
+        return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, " "));
+    };
+
+    var applyToCheckbox = function (element, param) {
+        if(getParam(param)==='0')
+            document.getElementById(element).click();
+    };
+
+    applyToCheckbox('toggleFeatures', 'tf');
+    applyToCheckbox('toggleScenarios', 'ts');
+    applyToCheckbox('showPassed', 'fp');
+    applyToCheckbox('showBypassed', 'fb');
+    applyToCheckbox('showFailed', 'ff');
+    applyToCheckbox('showIgnored', 'fi');
+    applyToCheckbox('showNotRun', 'fn');
+
+    var cat = getParam('cat');
+    if (cat !== null) {
+        document.getElementsByName('categoryFilter')
+        .asQueryable()
+        .where(function (c) { return c.dataset.filterValue===cat; })
+        .do(function (c) { c.click(); });
+    }
 }
