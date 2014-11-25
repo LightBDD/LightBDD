@@ -65,7 +65,11 @@ function sortTable(tableId, columnIdx, numeric, toggle) {
     store.asQueryable().do(function (row) { tbl.appendChild(row[1]); });
 }
 
+var initialized = false;
 function applyFilter() {
+    if (!initialized)
+        return;
+
     var getFilterValues = function (elementsName) {
         return document.getElementsByName(elementsName)
             .asQueryable()
@@ -123,12 +127,15 @@ function applyFilter() {
 }
 
 function updateOptionsLink() {
+    if (!initialized)
+        return;
+
     var options = [];
 
     var check = function (element, option) {
         if (!document.getElementById(element).checked)
             options.push(option + '=0');
-    }
+    };
 
     check('toggleFeatures', 'tf');
     check('toggleScenarios', 'ts');
@@ -142,25 +149,31 @@ function updateOptionsLink() {
     document.getElementsByName('categoryFilter')
         .asQueryable()
         .where(function (c) { return c.checked; })
-        .do(function (c) { options.push('cat=' + c.dataset.filterValue); });
+        .do(function (c) { options.push('cat=' + c.dataset.filterName); });
 
     var query = options.join('&');
     var current = location.search;
     var idx = current.indexOf('?');
     var link = (idx >= 0 ? current.substring(0, idx) : current) + '?' + query;
 
-    document.getElementById('optionsLink').href = link;
+    document.getElementsByTagName('a').asQueryable()
+        .where(function (a) { return a.classList.contains('shareable'); })
+        .do(function (a) {
+            var href = a.href;
+            var i = href.indexOf('#');
+            a.href = link + (i >= 0 ? href.substring(i) : '');
+        });
 }
 
 function applyOptionsFromLink() {
     var getParam = function (param) {
         var regex = new RegExp("[\\?&]" + param + "=([^&#]*)");
         var results = regex.exec(location.search);
-        return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, " "));
+        return results === null ? null : decodeURIComponent(results[1]);
     };
 
     var applyToCheckbox = function (element, param) {
-        if(getParam(param)==='0')
+        if (getParam(param) === '0')
             document.getElementById(element).click();
     };
 
@@ -173,10 +186,13 @@ function applyOptionsFromLink() {
     applyToCheckbox('showNotRun', 'fn');
 
     var cat = getParam('cat');
+
     if (cat !== null) {
         document.getElementsByName('categoryFilter')
         .asQueryable()
-        .where(function (c) { return c.dataset.filterValue===cat; })
+        .where(function (c) { return c.dataset.filterName === cat; })
         .do(function (c) { c.click(); });
     }
+    initialized = true;
+    applyFilter();
 }

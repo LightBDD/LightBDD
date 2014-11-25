@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Web;
 using System.Web.UI;
 using LightBDD.Formatters;
 using LightBDD.Naming;
@@ -196,7 +197,7 @@ namespace LightBDD.Results.Formatters.Html
                 GetToggleNodes(),
                 GetStatusFilterNodes(),
                 GetCategoryFilterNodes(),
-                Html.Tag(HtmlTextWriterTag.A).Href("#").Content("[&#8734;filtered feature details link]", false, false).Id("optionsLink"));
+                Html.Tag(HtmlTextWriterTag.A).Class("shareable").Href("").Content("[&#8734;filtered feature details link]", false, false).Id("optionsLink"));
 
             for (var i = 0; i < _features.Length; ++i)
                 yield return GetFeatureDetails(_features[i], i + 1);
@@ -207,9 +208,9 @@ namespace LightBDD.Results.Formatters.Html
             if (_categories.Count == 0)
                 return Html.Nothing();
 
-            var categories = Enumerable.Repeat(GetCategoryFilterNode("all", "All", true), 1)
+            var categories = Enumerable.Repeat(GetCategoryFilterNode("all", "-all-", true), 1)
                 .Concat(_categories.OrderBy(cat => cat.Key).Select(cat => GetCategoryFilterNode(cat.Value, cat.Key)))
-                .Concat(Enumerable.Repeat(GetCategoryFilterNode("without", "Without category"), 1));
+                .Concat(Enumerable.Repeat(GetCategoryFilterNode("without", "-without category-"), 1));
 
             return Html.Tag(HtmlTextWriterTag.Div).Class("options").Content(
                     Html.Tag(HtmlTextWriterTag.Span).Content("Categories:"),
@@ -220,7 +221,12 @@ namespace LightBDD.Results.Formatters.Html
         {
             return GetOptionNode(
                 string.Format("category{0}radio", categoryId),
-                Html.Radio().Name("categoryFilter").Attribute("data-filter-value", categoryId).OnClick("applyFilter()").Checked(selected).SpaceBefore(),
+                Html.Radio().Name("categoryFilter")
+                    .Attribute("data-filter-value", categoryId)
+                    .Attribute("data-filter-name", HttpUtility.UrlEncode(categoryName))
+                    .OnClick("applyFilter()")
+                    .Checked(selected)
+                    .SpaceBefore(),
                 categoryName);
         }
 
@@ -284,7 +290,7 @@ namespace LightBDD.Results.Formatters.Html
 
         private static TagBuilder GetSmallLink(string link)
         {
-            return Html.Tag(HtmlTextWriterTag.A).Class("smallLink").Href("#" + link).Content("[&#8734;link]", false, false);
+            return Html.Tag(HtmlTextWriterTag.A).Class("smallLink shareable").Href("#" + link).Content("[&#8734;link]", false, false);
         }
 
         private static string GetFeatureClasses(IFeatureResult feature)
