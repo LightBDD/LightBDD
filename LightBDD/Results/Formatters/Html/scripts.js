@@ -172,9 +172,10 @@ function applyOptionsFromLink() {
         return results === null ? null : decodeURIComponent(results[1]);
     };
 
-    var applyToCheckbox = function (element, param) {
-        if (getParam(param) === '0')
-            document.getElementById(element).click();
+    var applyToCheckbox = function (elementId, param) {
+        var element = document.getElementById(elementId);
+        element.checked = (getParam(param) === '0'); //set opposite value
+        element.click(); //toggle it
     };
 
     applyToCheckbox('toggleFeatures', 'tf');
