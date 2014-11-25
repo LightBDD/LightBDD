@@ -58,11 +58,12 @@ Filter:
  Ignored
  Not Run
 Categories:
- All
+ -all-
  categoryA
  categoryB
  categoryC
- Without category
+ -without category-
+[&#8734;filtered feature details link]
 My feature [Label 1][&#8734;link]
 My feature
 long description
@@ -78,7 +79,8 @@ Failed 2. step4 (50ms)
 NotRun 3. step5
 Step 1: bypass reason
 Step 2: Expected: True
-	  But was: False";
+	  But was: False
+applyOptionsFromLink();";
             Assert.That(text, Is.EqualTo(expectedText));
         }
 
@@ -117,10 +119,12 @@ Filter:
  Failed
  Ignored
  Not Run
+[&#8734;filtered feature details link]
 My feature[&#8734;link]
 Ignored name (25ms)[&#8734;link]
 Passed 1. step1 (20ms)
-Ignored 2. step2 (5ms)";
+Ignored 2. step2 (5ms)
+applyOptionsFromLink();";
             Assert.That(text, Is.EqualTo(expectedText));
         }
 
@@ -159,10 +163,11 @@ Filter:
  Ignored
  Not Run
 Categories:
- All
+ -all-
  categoryA
  categoryB
- Without category
+ -without category-
+[&#8734;filtered feature details link]
 My feature[&#8734;link]
 Passed scenario1 (20ms)[&#8734;link]
 categoryA
@@ -170,7 +175,8 @@ Passed 1. step1 (20ms)
 My feature2[&#8734;link]
 Passed scenario1 (20ms)[&#8734;link]
 categoryB
-Passed 1. step1 (20ms)";
+Passed 1. step1 (20ms)
+applyOptionsFromLink();";
             Assert.That(text, Is.EqualTo(expectedText));
         }
 

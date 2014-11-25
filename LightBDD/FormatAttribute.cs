@@ -4,7 +4,7 @@
     /// Attribute allowing to define how step parameter should be formatted.
     /// FormatAttribute uses current CultureInfo to format parameters.
     /// </summary>
-    public sealed class FormatAttribute : ParameterFormatterAttribute
+    public class FormatAttribute : ParameterFormatterAttribute
     {
         private readonly string _format;
 
