@@ -1,0 +1,8 @@
+1. html report is html5 compliant
+2. html report can be copied to word
+3. html report can be copied to e-mail
+4. html report can be printed nicely
+5. html report works fine on Chrome, Firefox, Opera, Safari, IE and it is readable in Android
+6. assembly versions are bumped up
+7. changelog is updated
+8. nuspec files are updated
