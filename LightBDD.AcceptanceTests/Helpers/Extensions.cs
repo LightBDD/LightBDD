@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
@@ -50,6 +51,22 @@ namespace LightBDD.AcceptanceTests.Helpers
         public static bool HasClassName(this IWebElement element, string className)
         {
             return element.GetClassNames().Any(c => c == className);
+        }
+
+        public static void ClickWithWait(this IWebElement element)
+        {
+            element.Click();
+            Thread.Sleep(250);
+        }
+
+        public static IWebElement FindLabelByText(this ChromeDriver driver, string text)
+        {
+            return driver.FindElementsByTagName("label").Single(l => l.Text == text);
+        }
+
+        public static IWebElement FindLabelTarget(this ChromeDriver driver, IWebElement label)
+        {
+            return driver.FindElementById(label.GetAttribute("for"));
         }
     }
 }

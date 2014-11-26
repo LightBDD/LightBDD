@@ -7,6 +7,7 @@ using LightBDD.AcceptanceTests.Helpers.Builders;
 using LightBDD.Results;
 using LightBDD.Results.Formatters;
 using NUnit.Framework;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
 namespace LightBDD.AcceptanceTests.Features
@@ -92,8 +93,7 @@ namespace LightBDD.AcceptanceTests.Features
 
         private void ClickLabeledButton(string buttonId)
         {
-            _driver.FindElementsByTagName("label").Single(l => l.GetAttribute("for") == buttonId).Click();
-            Thread.Sleep(250);
+            _driver.FindElementsByTagName("label").Single(l => l.GetAttribute("for") == buttonId).ClickWithWait();
         }
 
         private static string ToFeatureToggle(int feature)
@@ -133,9 +133,19 @@ namespace LightBDD.AcceptanceTests.Features
             ClickLabeledButton("toggleScenarios");
         }
 
-        private void a_filter_button_is_clicked(ResultStatus filter)
+        private void the_scenario_filter_button_is_SELECTED([SelectedFormat]bool selected)
         {
-            ClickLabeledButton(string.Format("show{0}", filter));
+            Assert.That(_driver.FindElementById("toggleScenarios").Selected, Is.EqualTo(selected));
+        }
+
+        private void a_filter_status_button_is_clicked(ResultStatus status)
+        {
+            ClickLabeledButton(string.Format("show{0}", status));
+        }
+
+        private void the_filter_status_button_is_SELECTED(ResultStatus status, [SelectedFormat]bool selected)
+        {
+            Assert.That(_driver.FindElementById(string.Format("show{0}", status)).Selected, Is.EqualTo(selected));
         }
 
         private void all_scenarios_with_status_are_VISIBLE(ResultStatus status, [VisibleFormat]bool visible)
@@ -162,8 +172,13 @@ namespace LightBDD.AcceptanceTests.Features
 
         private void a_category_filter_button_is_clicked(string category)
         {
-            _driver.FindElementsByTagName("label").Single(l => l.Text == category).Click();
-            Thread.Sleep(250);
+            _driver.FindLabelByText(category).ClickWithWait();
+        }
+
+        private void the_category_filter_button_is_SELECTED(string category, [SelectedFormat]bool selected)
+        {
+            var label = _driver.FindLabelByText(category);
+            Assert.That(_driver.FindLabelTarget(label).Selected, Is.EqualTo(selected));
         }
 
         private void the_feature_scenario_is_VISIBLE(int feature, int scenario, [VisibleFormat]bool visible)
@@ -189,6 +204,48 @@ namespace LightBDD.AcceptanceTests.Features
         private void the_feature_has_scenario_result_of_status(string feature, ResultStatus status)
         {
             _resultBuilder.ForFeature(feature).NewScenario(status);
+        }
+
+        private void the_options_link_is_VISIBLE([VisibleFormat]bool visible)
+        {
+            Assert.That(_driver.FindElementById("optionsLink").Displayed, Is.EqualTo(visible));
+        }
+
+        private void the_options_link_is_clicked()
+        {
+            _driver.FindElementById("optionsLink").ClickWithWait();
+        }
+
+        private void the_page_is_redirected_to_url_with_query_part()
+        {
+            Assert.That(_driver.Url, Is.StringContaining("?"));
+        }
+
+        private void the_Feature_Summary_table_is_sorted_ASCENDING_by_column([OrderFormat]bool ascending, int column)
+        {
+            var values = _driver
+                .FindElementById("featuresSummary")
+                .FindElements(By.TagName("tr"))
+                .Skip(1)
+                .Select(tr => tr.FindElements(By.TagName("td")).Where(td => td.Displayed).ElementAt(column - 1).Text)
+                .ToArray();
+
+            if (ascending)
+                Assert.That(values, Is.EqualTo(values.OrderBy(v => v).ToArray()));
+            else
+                Assert.That(values, Is.EqualTo(values.OrderByDescending(v => v).ToArray()));
+        }
+
+        private void the_Feature_Summary_table_column_is_clicked(int column)
+        {
+            _driver
+                .FindElementById("featuresSummary")
+                .FindElements(By.TagName("tr"))
+                .First()
+                .FindElements(By.TagName("th"))
+                .Where(th => th.Displayed)
+                .ElementAt(column - 1)
+                .ClickWithWait();
         }
     }
 }

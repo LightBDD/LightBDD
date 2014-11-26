@@ -61,6 +61,8 @@
     <Compile Include="Helpers\Builders\ScenarioBuilder.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\Mocks.cs" />
+    <Compile Include="Helpers\OrderFormatAttribute.cs" />
+    <Compile Include="Helpers\SelectedFormatAttribute.cs" />
     <Compile Include="Helpers\VisibleFormatAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
