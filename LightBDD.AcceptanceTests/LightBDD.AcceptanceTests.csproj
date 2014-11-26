@@ -55,6 +55,10 @@
     <Compile Include="Features\HTML_report_feature.Steps.cs">
       <DependentUpon>HTML_report_feature.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ArrayFormatAttribute.cs" />
+    <Compile Include="Helpers\Builders\FeatureBuilder.cs" />
+    <Compile Include="Helpers\Builders\ResultBuilder.cs" />
+    <Compile Include="Helpers\Builders\ScenarioBuilder.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\Mocks.cs" />
     <Compile Include="Helpers\VisibleFormatAttribute.cs" />

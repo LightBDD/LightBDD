@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using LightBDD.AcceptanceTests.Helpers;
+using LightBDD.AcceptanceTests.Helpers.Builders;
 using LightBDD.Results;
 using LightBDD.Results.Formatters;
 using NUnit.Framework;
@@ -15,23 +16,20 @@ namespace LightBDD.AcceptanceTests.Features
         private string _htmlFileName;
         private ChromeDriver _driver;
         private IFeatureResult[] _features;
+        private ResultBuilder _resultBuilder;
 
         [TestFixtureSetUp]
         public void FeatureSetup()
         {
-            _features = new[]
-            {
-                CreateFeature(ResultStatus.Passed, ResultStatus.Bypassed, ResultStatus.Ignored, ResultStatus.Failed,ResultStatus.NotRun),
-                CreateFeature(ResultStatus.Passed),
-                CreateFeature(ResultStatus.Bypassed), CreateFeature(ResultStatus.Ignored),
-                CreateFeature(ResultStatus.Failed),
-                CreateFeature(ResultStatus.NotRun)
-            };
-
-            var htmlText = new HtmlResultFormatter().Format(_features);
-            _htmlFileName = Path.GetFullPath(Guid.NewGuid().ToString() + ".html");
-            File.WriteAllText(_htmlFileName, htmlText);
             _driver = new ChromeDriver();
+        }
+
+        [SetUp]
+        public void ScenarioSetUp()
+        {
+            _features = null;
+            _htmlFileName = Path.GetFullPath(Guid.NewGuid() + ".html");
+            _resultBuilder = new ResultBuilder();
         }
 
         [TestFixtureTearDown]
@@ -44,20 +42,27 @@ namespace LightBDD.AcceptanceTests.Features
             }
         }
 
-        private IFeatureResult CreateFeature(params ResultStatus[] scenarios)
+        private void a_various_features_with_scenarios_and_categories()
         {
-            return Mocks.CreateFeatureResult("feat", "descr", "label",
-                scenarios.Select((s, i) => Mocks.CreateScenarioResult(
-                    "scenario" + i.ToString(),
-                    "label",
-                    DateTimeOffset.Now,
-                    TimeSpan.FromSeconds(2),
-                    new[] { "categoryA", "categoryB" },
-                    Mocks.CreateStepResult(1, "step1", ResultStatus.Passed, TimeSpan.FromSeconds(1)),
-                    Mocks.CreateStepResult(2, "step2", s, TimeSpan.FromSeconds(1)))).ToArray());
+            var feature = _resultBuilder.NewFeature("featureA");
+            feature.NewScenario(ResultStatus.Passed).WithCategories("catA", "catB");
+            feature.NewScenario(ResultStatus.Bypassed).WithCategories("catA", "catB");
+            feature.NewScenario(ResultStatus.Ignored).WithCategories("catA", "catB");
+            feature.NewScenario(ResultStatus.Failed).WithCategories("catA", "catB");
+            _resultBuilder.NewFeature("featureB").NewScenario(ResultStatus.Passed);
+            _resultBuilder.NewFeature("featureC").NewScenario(ResultStatus.Bypassed);
+            _resultBuilder.NewFeature("featureD").NewScenario(ResultStatus.Ignored);
+            _resultBuilder.NewFeature("featureE").NewScenario(ResultStatus.Failed);
         }
 
-        private void an_opened_html_report()
+        private void a_html_report_is_created()
+        {
+            _features = _resultBuilder.Build();
+            var htmlText = new HtmlResultFormatter().Format(_features.ToArray());
+            File.WriteAllText(_htmlFileName, htmlText);
+        }
+
+        private void a_html_report_is_opened()
         {
             _driver.Navigate().GoToUrl(_htmlFileName);
         }
@@ -153,6 +158,37 @@ namespace LightBDD.AcceptanceTests.Features
             var elements = _driver.FindFeatures().Where(f => f.GetClassNames().SequenceEqual(expected)).ToArray();
             Assert.That(elements, Is.Not.Empty);
             Assert.That(elements.All(s => s.Displayed == visible));
+        }
+
+        private void a_category_filter_button_is_clicked(string category)
+        {
+            _driver.FindElementsByTagName("label").Single(l => l.Text == category).Click();
+            Thread.Sleep(250);
+        }
+
+        private void the_feature_scenario_is_VISIBLE(int feature, int scenario, [VisibleFormat]bool visible)
+        {
+            Assert.That(_driver.FindFeature(feature).FindScenario(scenario).Displayed, Is.EqualTo(visible));
+        }
+
+        private void the_feature_is_VISIBLE(int feature, [VisibleFormat]bool visible)
+        {
+            Assert.That(_driver.FindFeature(feature).Displayed, Is.EqualTo(visible));
+        }
+
+        private void a_feature_result(string feature)
+        {
+            _resultBuilder.NewFeature(feature);
+        }
+
+        private void the_feature_has_scenario_result_of_status_and_categories(string feature, ResultStatus status, [ArrayFormat]params string[] categories)
+        {
+            _resultBuilder.ForFeature(feature).NewScenario(status).WithCategories(categories);
+        }
+
+        private void the_feature_has_scenario_result_of_status(string feature, ResultStatus status)
+        {
+            _resultBuilder.ForFeature(feature).NewScenario(status);
         }
     }
 }

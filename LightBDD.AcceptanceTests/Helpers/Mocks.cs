@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using LightBDD.Naming;
 using LightBDD.Results;
+using NUnit.Framework;
 using Rhino.Mocks;
 
 namespace LightBDD.AcceptanceTests.Helpers
