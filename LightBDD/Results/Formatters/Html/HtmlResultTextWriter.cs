@@ -192,12 +192,12 @@ namespace LightBDD.Results.Formatters.Html
 
         private IEnumerable<IHtmlNode> GetFeatureDetailsContent()
         {
-            yield return Html.Tag(HtmlTextWriterTag.H1).Content("Feature details");
+            yield return Html.Tag(HtmlTextWriterTag.H1).Id("featureDetails").Content(Html.Text("Feature details"), GetSmallLink("featureDetails"));
             yield return Html.Tag(HtmlTextWriterTag.Div).Class("optionsPanel").Content(
                 GetToggleNodes(),
                 GetStatusFilterNodes(),
                 GetCategoryFilterNodes(),
-                Html.Tag(HtmlTextWriterTag.A).Class("shareable").Href("").Content("[&#8734;filtered feature details link]", false, false).Id("optionsLink"));
+                Html.Tag(HtmlTextWriterTag.A).Class("shareable").Href("").Content("[&#8734;filtered link]", false, false).Id("optionsLink"));
 
             for (var i = 0; i < _features.Length; ++i)
                 yield return GetFeatureDetails(_features[i], i + 1);
@@ -265,7 +265,7 @@ namespace LightBDD.Results.Formatters.Html
 
         private static IHtmlNode GetOptionNode(string elementId, TagBuilder element, string labelContent)
         {
-            return Html.Tag(HtmlTextWriterTag.Div).Class("option").Content(element.Id(elementId),
+            return Html.Tag(HtmlTextWriterTag.Span).Class("option").Content(element.Id(elementId),
                 Html.Tag(HtmlTextWriterTag.Label).Content(GetCheckBoxTag(), Html.Text(labelContent)).For(elementId));
         }
 

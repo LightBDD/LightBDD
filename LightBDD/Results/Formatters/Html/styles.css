@@ -51,7 +51,7 @@ a{ text-decoration: none;}
 a:hover{ text-decoration: underline;}
 #optionsLink, .smallLink, a:hover,label:hover,.sortable:hover{ color: #662266;}
 .smallLink{ display: none;}
-.title:hover .smallLink { display: inline;}
+*:hover > .smallLink { display: inline;}
 input[type="checkbox"],input[type="radio"]{ display: none;}
 .chbox:before{display: inline-block; border: 1px solid #777777;margin-right: 0.5em;font-weight: bold;text-align: center;width: 1.2em;height: 1.2em;line-height: 1.2em;vertical-align: middle;}
 input[type="checkbox"]:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "\2715";}

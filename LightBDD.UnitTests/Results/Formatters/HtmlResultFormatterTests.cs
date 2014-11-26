@@ -47,23 +47,11 @@ Not Run steps: 1
 Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Average
 My feature [Label 1] 2 0 0 1 1 5 1 1 1 1 1 1m 04s 642570000 32s 128ms 321285000
-Feature details
-Toggle:
- Features
- Scenarios
-Filter:
- Passed
- Bypassed
- Failed
- Ignored
- Not Run
-Categories:
- -all-
- categoryA
- categoryB
- categoryC
- -without category-
-[&#8734;filtered feature details link]
+Feature details[&#8734;link]
+Toggle: Features Scenarios
+Filter: Passed Bypassed Failed Ignored Not Run
+Categories: -all- categoryA categoryB categoryC -without category-
+[&#8734;filtered link]
 My feature [Label 1][&#8734;link]
 My feature
 long description
@@ -109,17 +97,10 @@ Not Run steps: 0
 Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Average
 My feature 1 0 0 0 1 2 1 0 0 1 0 25ms 250000 25ms 250000
-Feature details
-Toggle:
- Features
- Scenarios
-Filter:
- Passed
- Bypassed
- Failed
- Ignored
- Not Run
-[&#8734;filtered feature details link]
+Feature details[&#8734;link]
+Toggle: Features Scenarios
+Filter: Passed Bypassed Failed Ignored Not Run
+[&#8734;filtered link]
 My feature[&#8734;link]
 Ignored name (25ms)[&#8734;link]
 Passed 1. step1 (20ms)
@@ -152,22 +133,11 @@ Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Average
 My feature 1 1 0 0 0 1 1 0 0 0 0 20ms 200000 20ms 200000
 My feature2 1 1 0 0 0 1 1 0 0 0 0 20ms 200000 20ms 200000
-Feature details
-Toggle:
- Features
- Scenarios
-Filter:
- Passed
- Bypassed
- Failed
- Ignored
- Not Run
-Categories:
- -all-
- categoryA
- categoryB
- -without category-
-[&#8734;filtered feature details link]
+Feature details[&#8734;link]
+Toggle: Features Scenarios
+Filter: Passed Bypassed Failed Ignored Not Run
+Categories: -all- categoryA categoryB -without category-
+[&#8734;filtered link]
 My feature[&#8734;link]
 Passed scenario1 (20ms)[&#8734;link]
 categoryA
