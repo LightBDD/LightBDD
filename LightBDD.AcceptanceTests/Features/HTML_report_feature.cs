@@ -121,6 +121,34 @@ I want to have HTML report")]
         }
 
         [Test]
+        [TestCase(ResultStatus.Bypassed)]
+        [TestCase(ResultStatus.Passed)]
+        [TestCase(ResultStatus.Failed)]
+        [TestCase(ResultStatus.Ignored)]
+        public void Should_filter_by_status_when_there_is_no_categories_filter_bar(ResultStatus status)
+        {
+            Runner.RunScenario(
+                given => a_various_features_with_scenarios_but_no_categories(),
+                and => a_html_report_is_created(),
+
+                when => a_html_report_is_opened(),
+                then => all_features_are_VISIBLE(true),
+                and => all_scenarios_are_VISIBLE(true),
+                and => all_steps_are_VISIBLE(true),
+
+                when => a_filter_status_button_is_clicked(status),
+                then => all_scenarios_with_status_are_VISIBLE(status, false),
+                and => all_scenarios_with_status_other_than_STATUS_are_VISIBLE(status, true),
+                and => all_features_having_all_scenarios_of_status_are_VISIBLE(status, false),
+
+                when => a_filter_status_button_is_clicked(status),
+                and => all_features_are_VISIBLE(true),
+                and => all_scenarios_are_VISIBLE(true),
+                and => all_steps_are_VISIBLE(true)
+                );
+        }
+
+        [Test]
         public void Should_filter_by_category()
         {
             Runner.RunScenario(

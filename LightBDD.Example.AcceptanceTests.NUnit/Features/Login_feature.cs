@@ -42,6 +42,7 @@ I want to login into system")]
 
         [Test]
         [Label("Ticket-2")]
+        [ScenarioCategory(Categories.Security)]
         public void Wrong_password_provided_causes_login_to_fail()
         {
             Runner.RunScenario(
@@ -59,6 +60,7 @@ I want to login into system")]
         /// </summary>
         [Test]
         [Label("Ticket-3")]
+        [ScenarioCategory(Categories.Security)]
         public void Anonymous_login_name_should_allow_to_log_in()
         {
             Runner.RunScenario(

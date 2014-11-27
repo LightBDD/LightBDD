@@ -35,6 +35,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Categories.cs" />
     <Compile Include="Features\Basket_feature.cs" />
     <Compile Include="Features\Basket_feature.Steps.cs">
       <DependentUpon>Basket_feature.cs</DependentUpon>

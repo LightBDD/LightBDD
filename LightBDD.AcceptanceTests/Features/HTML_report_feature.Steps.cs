@@ -55,6 +55,19 @@ namespace LightBDD.AcceptanceTests.Features
             _resultBuilder.NewFeature("featureE").NewScenario(ResultStatus.Failed);
         }
 
+        private void a_various_features_with_scenarios_but_no_categories()
+        {
+            var feature = _resultBuilder.NewFeature("featureA");
+            feature.NewScenario(ResultStatus.Passed);
+            feature.NewScenario(ResultStatus.Bypassed);
+            feature.NewScenario(ResultStatus.Ignored);
+            feature.NewScenario(ResultStatus.Failed);
+            _resultBuilder.NewFeature("featureB").NewScenario(ResultStatus.Passed);
+            _resultBuilder.NewFeature("featureC").NewScenario(ResultStatus.Bypassed);
+            _resultBuilder.NewFeature("featureD").NewScenario(ResultStatus.Ignored);
+            _resultBuilder.NewFeature("featureE").NewScenario(ResultStatus.Failed);
+        }
+
         private void a_html_report_is_created()
         {
             _features = _resultBuilder.Build();

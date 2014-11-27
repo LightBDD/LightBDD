@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using LightBDD.Example.Domain;
+using LightBDD.Execution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 [assembly: Debuggable(true, true)]
@@ -73,11 +74,11 @@ namespace LightBDD.Example.AcceptanceTests.MsTest.Features
         private void AddSomeContacts(ScenarioContext ctx)
         {
             ctx.AddedContacts = new[]
-			{
-				new Contact("Jack", "123-456-789"),
-				new Contact("Samantha", "321-654-987"),
-				new Contact("Josh", "132-465-798")
-			};
+            {
+                new Contact("Jack", "123-456-789"),
+                new Contact("Samantha", "321-654-987"),
+                new Contact("Josh", "132-465-798")
+            };
 
             foreach (var contact in ctx.AddedContacts)
                 ctx.ContactBook.AddContact(contact.Name, contact.PhoneNumber);
@@ -91,7 +92,9 @@ namespace LightBDD.Example.AcceptanceTests.MsTest.Features
 
         private void When_I_clear_it(ScenarioContext ctx)
         {
-            ctx.ContactBook.Clear();
+            foreach (var contact in ctx.ContactBook.Contacts.ToArray())
+                ctx.ContactBook.Remove(contact.Name);
+            StepExecution.Bypass("Contact book clearing is not implemented yet. Contacts are removed one by one.");
         }
 
         private void Then_contact_book_is_empty(ScenarioContext ctx)

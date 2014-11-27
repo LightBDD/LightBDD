@@ -16,11 +16,6 @@ namespace LightBDD.Example.Domain
 			_contacts.Remove(name);
 		}
 
-		public void Clear()
-		{
-			_contacts.Clear();
-		}
-
 		public IEnumerable<Contact> Contacts { get { return _contacts.Values; } }
 	}
 }

@@ -12,6 +12,7 @@ I want to receive invoice for bought items")]
     {
         [TestMethod]
         [Label("Ticket-4")]
+        [ScenarioCategory(Categories.Sales)]
         public void Receiving_invoice_for_products()
         {
             Runner.RunScenario(
