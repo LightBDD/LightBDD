@@ -1,6 +1,3 @@
-Current:
-* check naming, visibility and location
-
 Future:
 * specify CultureInfo in app config
 * step parameter decorator as stream writer

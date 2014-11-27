@@ -8,7 +8,7 @@ namespace LightBDD.Execution
     public static class StepExecution
     {
         /// <summary>
-        /// Bypasses step being currently executed and continues execution of current scenario, allowing to execute all remaining steps.
+        /// Bypasses currently executed step and continues execution of current scenario, allowing to execute all remaining steps.
         /// The status of bypassed step would be <c>ResultStatus.Bypassed</c> and the overall status of scenario would be <c>ResultStatus.Bypassed</c>,
         /// unless any further step is failed or ignored.<br/>
         /// 
