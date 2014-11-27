@@ -7,6 +7,9 @@ Future:
 * [pre][post] attributes for placing argument in step name
 * group features by namespace
 * HTML writer to work on streams?
+* added LightBDD version to reports?
+* add step name details to XML report
+* correct problem with mbunit inserting \n instead of \r\n on Windows (reports)
 
 2.0:
 * remove obsolete methods

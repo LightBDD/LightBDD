@@ -4,6 +4,7 @@
 4. html report can be printed nicely
 5. html report works fine on Chrome, Firefox, Opera, Safari, IE and it is readable in Android
 6. scenario steps debugging is smooth
-7. assembly versions are bumped up
-8. changelog is updated
-9. nuspec files are updated
+7. code coverage
+8. assembly versions are bumped up
+9. changelog is updated
+10. nuspec files are updated
