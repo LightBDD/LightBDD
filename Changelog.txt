@@ -1,10 +1,36 @@
 LightBDD
 ===========================================
 
-Version 1.5.2
+Version 1.6.0
 ----------------------------------------
-+ changed parameterized steps to always display constant parameter values, even if step has not been executed
-+ changed PlainTextFormatter to put labels after feature/scenario name, like HtmlResultFormatter does
+Summary:
++ major improvements to Html features report summary (HtmlResultFormatter),
++ added ability to bypass step execution without stopping scenario execution,
++ added ability to specify custom formatting rules for step parameters,
++ added ability to annotate scenarios with categories
+
+Details:
++ added ability to bypass step execution without stopping scenario execution (StepExecution.Bypass() method)
++ added ability to specify custom formatting rules for step parameters (Format/ParameterFormatter Attributes)
++ added ability to annotate scenarios with categories (ScenarioCategoryAttribute and implementation specific attributes)
++ changed Scenario level StatusDetails property to aggregate all step status details
++ changed FeatureCoordinator to allow only one Finished() method call and report it's finalizer execution time and failures with System.Diagnostics.Trace()
++ enhanced parameterized steps to always capture constant parameter values, even if step has not been executed
++ enhanced IStepResult with StepName property providing detailed information on step name like base format, parameter list or step type (added IStepName, IStepNameDecorator, StepNameDecorators types)
++ HtmlResultFormatter: reorganized HTML output to support longer text in features and scenarios
++ HtmlResultFormatter: enhanced report to highlight step type and parameters
++ HtmlResultFormatter: added option to expand/collapse all features and/or scenarios
++ HtmlResultFormatter: added option to filter scenarios by category
++ HtmlResultFormatter: made Feature Summary table columns sortable
++ HtmlResultFormatter: added shareable link for speficic feature, scenario, Feature Details section and whole document, all preserving current filters selection
++ HtmlResultFormatter: added Average Duration column to Feature Summary block
++ HtmlResultFormatter: changed expand-collapse symbols to standard ones, to display them properly on android browsers
++ XmlResultFormatter: added step level StatusDetails element
++ PlainTextFormatter: labels are now printed after feature/scenario name, like in HtmlResultFormatter
++ all formatters: added information about scenario categories
++ TestMetadataProvider: added GetStepTypeName method
++ TestMetadataProvider: removed stepType from GetStepNameFormat signature, obsoleted version with stepType
++ added DebuggerStepThrough to implementation specific metadata provider
 
 Version 1.5.1.1
 ----------------------------------------
