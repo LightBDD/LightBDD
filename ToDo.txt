@@ -1,9 +1,9 @@
 Current:
-* step parameter decorator as stream writer
 * check naming, visibility and location
 
 Future:
 * specify CultureInfo in app config
+* step parameter decorator as stream writer
 * performance improvement
 * An advanced HTML/JS report based on XML data
 * Ability to define step 'macros'/groups that could be reused in multiple scenarios

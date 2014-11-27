@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD
 {
+    [DebuggerStepThrough]
     internal class MsTestTestMetadataProvider : TestMetadataProvider
     {
         public static readonly TestMetadataProvider Instance = new MsTestTestMetadataProvider();

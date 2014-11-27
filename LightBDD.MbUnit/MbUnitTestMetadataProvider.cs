@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using MbUnit.Framework;
 
 namespace LightBDD
 {
+    [DebuggerStepThrough]
     internal class MbUnitTestMetadataProvider : TestMetadataProvider
     {
         public static readonly TestMetadataProvider Instance = new MbUnitTestMetadataProvider();
