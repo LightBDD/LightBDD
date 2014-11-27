@@ -1,4 +1,5 @@
-﻿using MbUnit.Framework;
+﻿using LightBDD.Formatting.Parameters;
+using MbUnit.Framework;
 
 namespace LightBDD.Example.AcceptanceTests.MbUnit.Features
 {

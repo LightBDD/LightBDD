@@ -1,5 +1,5 @@
 ﻿using System;
-using LightBDD.Formatters;
+using LightBDD.Formatting.Helpers;
 using NUnit.Framework;
 
 namespace LightBDD.UnitTests.Formatters

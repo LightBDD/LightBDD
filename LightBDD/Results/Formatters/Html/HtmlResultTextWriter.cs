@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.UI;
-using LightBDD.Formatters;
+using LightBDD.Formatting.Helpers;
 using LightBDD.Naming;
 
 namespace LightBDD.Results.Formatters.Html

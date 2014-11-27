@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using LightBDD.Formatting.Parameters;
 
 namespace LightBDD.AcceptanceTests.Helpers
 {

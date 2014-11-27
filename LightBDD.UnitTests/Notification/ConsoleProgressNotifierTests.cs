@@ -1,5 +1,5 @@
 ﻿using System;
-using LightBDD.Formatters;
+using LightBDD.Formatting.Helpers;
 using LightBDD.Notification;
 using LightBDD.Results;
 using LightBDD.UnitTests.Helpers;

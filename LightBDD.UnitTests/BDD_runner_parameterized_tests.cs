@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using LightBDD.Formatting.Parameters;
 using LightBDD.Notification;
 using LightBDD.Results;
 using LightBDD.UnitTests.Helpers;

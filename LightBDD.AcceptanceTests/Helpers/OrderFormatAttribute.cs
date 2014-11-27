@@ -1,3 +1,5 @@
+using LightBDD.Formatting.Parameters;
+
 namespace LightBDD.AcceptanceTests.Helpers
 {
     internal class OrderFormatAttribute : ParameterFormatterAttribute

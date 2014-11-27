@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.ConstrainedExecution;
-using LightBDD.Formatters;
+using LightBDD.Formatting.Helpers;
 using LightBDD.Results;
 
 namespace LightBDD.Coordination

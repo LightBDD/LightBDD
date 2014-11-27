@@ -1,6 +1,6 @@
 using System;
 using System.Diagnostics;
-using LightBDD.Formatters;
+using LightBDD.Formatting.Helpers;
 using LightBDD.Results;
 
 namespace LightBDD.Notification

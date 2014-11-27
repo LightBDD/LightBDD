@@ -1,5 +1,5 @@
 using System;
-using LightBDD.Assertion;
+using LightBDD.Execution;
 using NUnit.Framework;
 
 namespace LightBDD.UnitTests.Helpers
@@ -17,7 +17,7 @@ namespace LightBDD.UnitTests.Helpers
         public void Step_two() { }
         public void Step_with_ignore_assertion() { Assert.Ignore(IgnoreReason); }
         public void Step_with_inconclusive_assertion() { Assert.Inconclusive("some reason"); }
-        public void Step_with_bypass() { Step.Bypass(BypassReason); }
-        public void Step_with_bypass2() { Step.Bypass(BypassReason2); }
+        public void Step_with_bypass() { StepExecution.Bypass(BypassReason); }
+        public void Step_with_bypass2() { StepExecution.Bypass(BypassReason2); }
     }
 }
