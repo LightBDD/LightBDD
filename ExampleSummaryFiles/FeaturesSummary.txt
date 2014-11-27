@@ -1,91 +1,100 @@
 ﻿Summary:
-	Test execution start time: 2014-10-21 09:48:37 UTC
-	Test execution time      : 90ms
+	Test execution start time: 2014-11-27 21:34:27 UTC
+	Test execution time      : 113ms
 	Number of features       : 6
 	Number of scenarios      : 11
-	Passed scenarios         : 8
+	Passed scenarios         : 7
+	Bypassed scenarios       : 1
 	Failed scenarios         : 1
 	Ignored scenarios        : 2
 	Number of steps          : 55
-	Passed steps             : 49
+	Passed steps             : 48
+	Bypassed steps           : 1
 	Failed steps             : 1
 	Ignored steps            : 2
 	Not Run steps            : 3
 
-Feature: [Story-4] Basket feature
+Feature: Basket feature [Story-4]
 	In order to buy products
 	As a customer
 	I want to add products to basket
 
-	Scenario: [Ticket-6] No product in stock - Passed (22ms)
+	Scenario: No product in stock [Ticket-6] - Passed (28ms)
+		Categories: Sales
 		Step 1: Given product is out of stock - Passed (<1ms)
 		Step 2: When customer adds it to basket - Passed (<1ms)
-		Step 3: Then product addition is unsuccessful - Passed (2ms)
-		Step 4: Then basket does not contain product - Passed (<1ms)
+		Step 3: Then product addition is unsuccessful - Passed (3ms)
+		Step 4: Then basket does not contain product - Passed (1ms)
 
-	Scenario: [Ticket-7] Successful addition - Ignored (4ms)
+	Scenario: Successful addition [Ticket-7] - Ignored (5ms)
+		Categories: Sales
 		Step 1: Given product is in stock - Passed (<1ms)
 		Step 2: When customer adds it to basket - Passed (<1ms)
 		Step 3: Then product addition is successful - Passed (<1ms)
 		Step 4: Then basket contains product - Passed (<1ms)
-		Step 5: Then product is removed from stock - Ignored (<1ms)
+		Step 5: Then product is removed from stock - Ignored (1ms)
+		Details:
+			Step 5: Product removal from stock is not implemented yet
 
-		Details: Product removal from stock is not implemented yet
-
-Feature: [Story-6] Contacts management
+Feature: Contacts management [Story-6]
 	In order to maintain my contact book
 	As an application user
 	I want to add, browse and remove my contacts
 
-	Scenario: [Ticket-8] Contact book should allow me to add multiple contacts - Passed (14ms)
+	Scenario: Contact book should allow me to add multiple contacts [Ticket-8] - Passed (20ms)
 		Step 1: Given my contact book is empty - Passed (<1ms)
 		Step 2: When I add new contacts - Passed (1ms)
-		Step 3: Then all of expected contacts would be available in contact book - Passed (11ms)
+		Step 3: Then all of expected contacts would be available in contact book - Passed (15ms)
 
-	Scenario: [Ticket-9] Contact book should allow me to remove all contacts - Passed (5ms)
+	Scenario: Contact book should allow me to remove all contacts [Ticket-9] - Bypassed (7ms)
 		Step 1: Given my contact book is filled with many contacts - Passed (2ms)
-		Step 2: When I clear it - Passed (<1ms)
+		Step 2: When I clear it - Bypassed (1ms)
 		Step 3: Then contact book is empty - Passed (1ms)
+		Details:
+			Step 2: Contact book clearing is not implemented yet. Contacts are removed one by one.
 
-	Scenario: [Ticket-9] Contact book should allow me to remove contacts - Passed (16ms)
+	Scenario: Contact book should allow me to remove contacts [Ticket-9] - Passed (14ms)
 		Step 1: Given my contact book is filled with contacts - Passed (<1ms)
 		Step 2: When I remove contact - Passed (<1ms)
-		Step 3: Then contact book does not contain removed contact any more - Passed (4ms)
-		Step 4: Then contact book still contains other contacts - Passed (6ms)
+		Step 3: Then contact book does not contain removed contact any more - Passed (5ms)
+		Step 4: Then contact book still contains other contacts - Passed (5ms)
 
-Feature: [Story-2] Invoice feature
+Feature: Invoice feature [Story-2]
 	In order to pay for products
 	As a customer
 	I want to receive invoice for bought items
 
-	Scenario: [Ticket-4] Receiving invoice for products - Ignored (6ms)
+	Scenario: Receiving invoice for products [Ticket-4] - Ignored (10ms)
+		Categories: Sales
 		Step 1: GIVEN Product "wooden desk" is available in products storage - Passed (<1ms)
 		Step 2: AND Product "wooden shelf" is available in products storage - Passed (<1ms)
 		Step 3: WHEN Customer buys product "wooden desk" - Passed (<1ms)
 		Step 4: AND Customer buys product "wooden shelf" - Passed (<1ms)
 		Step 5: THEN Invoice is sent to customer - Ignored (<1ms)
-		Step 6: AND Invoice contains product "<?>" with price of "<?>" pounds - NotRun
-		Step 7: AND Invoice contains product "<?>" with price of "<?>" pounds - NotRun
+		Step 6: AND Invoice contains product "wooden desk" with price of "£62,00" - NotRun
+		Step 7: AND Invoice contains product "wooden shelf" with price of "£37,00" - NotRun
+		Details:
+			Step 5: Not implemented yet
 
-		Details: Not implemented yet
-
-Feature: [Story-1] Login feature
+Feature: Login feature [Story-1]
 	In order to access personal data
 	As an user
 	I want to login into system
 
-	Scenario: [Ticket-3] Anonymous login name should allow to log in - Failed (7ms)
+	Scenario: Anonymous login name should allow to log in [Ticket-3] - Failed (9ms)
+		Categories: Security
 		Step 1: Given user is about to login - Passed (<1ms)
 		Step 2: Given user entered anonymous login - Passed (<1ms)
-		Step 3: When user clicked login button - Passed (<1ms)
+		Step 3: When user clicked login button - Passed (1ms)
 		Step 4: Then login is successful - Failed (4ms)
 		Step 5: Then welcome message is returned containing user name - NotRun
+		Details:
+			Step 4: Login should succeeded
+				  Expected: True
+				  But was:  False
 
-		Details: Login should succeeded
-			  Expected: True
-			  But was:  False
-
-	Scenario: [Ticket-1] Successful login - Passed (3ms)
+	Scenario: Successful login [Ticket-1] - Passed (5ms)
+		Categories: Security
 		Step 1: Given user is about to login - Passed (<1ms)
 		Step 2: Given user entered valid login - Passed (<1ms)
 		Step 3: Given user entered valid password - Passed (<1ms)
@@ -93,7 +102,8 @@ Feature: [Story-1] Login feature
 		Step 5: Then login is successful - Passed (<1ms)
 		Step 6: Then welcome message is returned containing user name - Passed (1ms)
 
-	Scenario: [Ticket-2] Wrong login provided causes login to fail - Passed (4ms)
+	Scenario: Wrong login provided causes login to fail [Ticket-2] - Passed (3ms)
+		Categories: Security
 		Step 1: Given user is about to login - Passed (<1ms)
 		Step 2: Given user entered invalid login - Passed (<1ms)
 		Step 3: Given user entered valid password - Passed (<1ms)
@@ -101,7 +111,8 @@ Feature: [Story-1] Login feature
 		Step 5: Then login is unsuccessful - Passed (<1ms)
 		Step 6: Then invalid login or password error message is returned - Passed (<1ms)
 
-	Scenario: [Ticket-2] Wrong password provided causes login to fail - Passed (2ms)
+	Scenario: Wrong password provided causes login to fail [Ticket-2] - Passed (3ms)
+		Categories: Security
 		Step 1: Given user is about to login - Passed (<1ms)
 		Step 2: Given user entered valid login - Passed (<1ms)
 		Step 3: Given user entered invalid password - Passed (<1ms)
@@ -109,17 +120,18 @@ Feature: [Story-1] Login feature
 		Step 5: Then login is unsuccessful - Passed (<1ms)
 		Step 6: Then invalid login or password error message is returned - Passed (<1ms)
 
-Feature: [Story-5] Payment feature
+Feature: Payment feature [Story-5]
 	In order to get desired products
 	As a customer
 	I want to pay for products in basket
 
-Feature: [Story-3] Product spedition feature
+Feature: Product spedition feature [Story-3]
 	In order to deliver products to customer effectively
 	As a spedition manager
 	I want to dispatch products to customer as soon as the payment is finalized
 
-	Scenario: [Ticket-5] Should dispatch product after payment is finalized - Passed (2ms)
+	Scenario: Should dispatch product after payment is finalized [Ticket-5] - Passed (3ms)
+		Categories: Delivery, Sales
 		Step 1: GIVEN There is an active customer with id "ABC-123" - Passed (<1ms)
 		Step 2: GIVEN Customer has product "wooden shelf" in basket - Passed (<1ms)
 		Step 3: GIVEN Customer has product "wooden desk" in basket - Passed (<1ms)

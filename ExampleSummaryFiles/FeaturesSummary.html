@@ -1,67 +1,280 @@
 ﻿<!DOCTYPE HTML><html><head><meta charset="UTF-8" /><title>Summary</title><style>*{color: #222222;font-family: Arial, sans-serif;-webkit-print-color-adjust:exact;}
 html{font-size: 11pt;}
-.chbox:before{font-size:0.6em;}
-.status{ font-size: x-small;}
+.title *{ line-height: 1em;}
+label * { line-height: 1em;}
+.chbox:before{font-size:0.8em;}
+.status{ font-size: x-small;height: 1.2em;line-height: 1.2em;vertical-align: middle;}
 .step .status{font-size: xx-small;}
-h1{ font-size: 1.60em;}
-h2{ font-size: 1.40em;}
-h3{ font-size: 1.20em;}
+h1{ font-size: 1.40em;}
+h2{ font-size: 1.20em;}
+h3{ font-size: 1.00em;}
 .feature{margin-bottom: 1em;padding: 0.2em;}
-.title{font-weight: bold;vertical-align: middle;margin: 0;}
-.steps{margin-top: 0.5em;}
-.feature .header{width: 25%;display: inline-block;vertical-align: top;}
-.feature .scenarios{width: 75%;display: inline-block;vertical-align: top;}
-.scenario .title{display:inline-block}
-.toggle:not(:checked) ~ .scenarios { display: none;}
-.toggle:not(:checked) + h3 ~ div { display: none;}
-.description{font-style: italic;color: #222222;white-space: pre-wrap;}
-.label{color: #222277;padding: 0.2em;}
-.scenario{ margin-bottom: 1em;}
-.status{font-weight: bold;border: 1px solid #777777;padding: 0.2em;margin-right: 0.2em;width: 4em; display: inline-block;vertical-align: middle;text-align: center;}
+.title{font-weight: bold;margin: 0;}
+.title,.description,.step{ word-wrap: break-word;}
+.steps,.categories{margin-top: 0.5em;}
+.categories { font-style: italic;color: #0000cd}
+.feature .scenarios{margin: 1em 0 1em 2em;}
+.feature:nth-child(even) { background: #eeeeee; }
+.feature:nth-child(odd) { background: #dddddd; }
+.scenario{ margin-bottom: 1px;}
+.toggleF:not(:checked) ~ .scenarios { display: none;}
+.toggleS:not(:checked) + h3 ~ * { display: none;}
+.description{font-style: italic;color: #222222;white-space: pre-wrap;margin-top: 0.5em;}
+.label{color: #222277;}
+.status{font-weight: bold;border: 1px solid #777777;padding: 0.2em;margin-right: 0.2em;width: 5em; display: inline-block;text-align: center;}
 .status.passed{background-color: #aaffaa;}
 .status.failed{background-color: #ffaaaa;}
 .status.ignored{background-color: #ffffaa;}
+.status.bypassed{background-color: #aaaaff;}
 .status.notrun{background-color: #aaaaaa;}
 .details{margin-top: 0.5em;font-style: italic;color: #ff5555;white-space: pre-wrap;font-size: x-small;}
-.step{margin: 0.2em;margin-left: 2em;}
-.duration{color: #0000cd;font-size: 0.8em;font-family: monospace;vertical-align: middle;}
-th{ text-align: right;vertical-align: middle;}
-td{ text-align: left;vertical-align: middle;}
+.step, .categories{margin: 0.2em;margin-left: 2.5em;}
+.smallLink,.duration{color: #0000cd;font-size: 0.8em;font-family: monospace;}
+th,td{ white-space: nowrap;}
+th{ text-align: right;}
+th.minor{ font-weight: normal;}
+.hidden{ display: none;}
+.sortable{ cursor: default;}
+td{ text-align: left;}
 table,th,td{ font-size: 1em;}
 table.features td{ text-align: right;}
 table.features td:first-of-type, table.features th:first-of-type{ text-align: left;}
+table.features td:first-of-type{white-space: normal;word-wrap:break-word;}
 td.alert{ color: #ff5555;font-weight: bold;}
 article{ margin-left: 1em;}
-.filter{ margin:0 0.3em 0.5em 0; font-weight: bold;font-style: italic; display: inline-block;}
-#showPassed:not(:checked) ~ * .scenario.passed, #showPassed:not(:checked) ~ .feature.passed { display: none;}
-#showFailed:not(:checked) ~ * .scenario.failed, #showFailed:not(:checked) ~ .feature.failed { display: none;}
-#showIgnored:not(:checked) ~ * .scenario.ignored, #showIgnored:not(:checked) ~ .feature.ignored { display: none;}
-#showNotRun:not(:checked) ~ * .scenario.notrun, #showNotRun:not(:checked) ~ .feature.notrun { display: none;}
-#showPassed:checked ~ * .scenario.passed, #showPassed:checked ~ .feature.passed { display: block;}
-#showFailed:checked ~ * .scenario.failed, #showFailed:checked ~ .feature.failed { display: block;}
-#showIgnored:checked ~ * .scenario.ignored, #showIgnored:checked ~ .feature.ignored { display: block;}
-#showNotRun:checked ~ * .scenario.notrun, #showNotRun:checked ~ .feature.notrun { display: block;}
-input { vertical-align: middle;}
+.options{ margin-bottom: 0.2em;}
+.options > span{ display: table-cell;}
+.options > span:first-child{ font-weight: bold;font-style: italic; min-width: 6em;text-align: right;padding-right: 0.5em;}
+.option{ display: inline-block;margin-right: 0.5em;}
+.feature[data-filtered="false"],.scenario[data-filtered="false"] { display: none;}
 a{ text-decoration: none;}
 a:hover{ text-decoration: underline;}
-a:hover,label:hover{ color: #662266;}
-input[type="checkbox"]{ display: none;}
-.chbox:before{display: inline-block; border: 1px solid #777777;padding: 0.1em;margin-right: 0.5em; border: 1px solid #777777;font-weight: bold;text-align: center;vertical-align: middle;width: 1em;}
+#optionsLink, .smallLink, a:hover,label:hover,.sortable:hover{ color: #662266;}
+.smallLink{ display: none;}
+*:hover > .smallLink { display: inline;}
+input[type="checkbox"],input[type="radio"]{ display: none;}
+.chbox:before{display: inline-block; border: 1px solid #777777;margin-right: 0.5em;font-weight: bold;text-align: center;width: 1.2em;height: 1.2em;line-height: 1.2em;vertical-align: middle;}
 input[type="checkbox"]:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "\2715";}
 input[type="checkbox"]:checked + * .chbox:before{ background-color: #eeeeee;content: "\2713";}
-input[type="checkbox"].toggle:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "\22bd";}
-input[type="checkbox"].toggle:checked + * .chbox:before{ background-color: #eeeeee;content: "\22bc";}</style></head><body><Section><h1>Execution summary</h1><Article><table class="summary"><tr><th>Test execution start time:</th><td>2014-10-21 09:48:37 UTC</td></tr><tr><th>Test execution time:</th><td>90ms</td></tr><tr><th>Number of features:</th><td>6</td></tr><tr><th>Number of scenarios:</th><td>11</td></tr><tr><th>Passed scenarios:</th><td>8</td></tr><tr><th>Failed scenarios:</th><td class="alert">1</td></tr><tr><th>Ignored scenarios:</th><td>2</td></tr><tr><th>Number of steps:</th><td>55</td></tr><tr><th>Passed steps:</th><td>49</td></tr><tr><th>Failed steps:</th><td class="alert">1</td></tr><tr><th>Ignored steps:</th><td>2</td></tr><tr><th>Not Run steps:</th><td>3</td></tr></table></Article></Section><Section><h1>Feature summary</h1><Article><table class="features"><tr><th>Feature</th><th>Scenarios</th><th>Passed</th><th>Failed</th><th>Ignored</th><th>Steps</th><th>Passed</th><th>Failed</th><th>Ignored</th><th>Not Run</th><th>Duration</th></tr><tr><td><a href="#feature1">Basket feature</a> <span class="label">[Story-4]</span></td><td>2</td><td>1</td><td>0</td><td>1</td><td>9</td><td>8</td><td>0</td><td>1</td><td>0</td><td>27ms</td></tr><tr><td><a href="#feature2">Contacts management</a> <span class="label">[Story-6]</span></td><td>3</td><td>3</td><td>0</td><td>0</td><td>10</td><td>10</td><td>0</td><td>0</td><td>0</td><td>36ms</td></tr><tr><td><a href="#feature3">Invoice feature</a> <span class="label">[Story-2]</span></td><td>1</td><td>0</td><td>0</td><td>1</td><td>7</td><td>4</td><td>0</td><td>1</td><td>2</td><td>6ms</td></tr><tr><td><a href="#feature4">Login feature</a> <span class="label">[Story-1]</span></td><td>4</td><td>3</td><td class="alert">1</td><td>0</td><td>23</td><td>21</td><td class="alert">1</td><td>0</td><td>1</td><td>18ms</td></tr><tr><td><a href="#feature5">Payment feature</a> <span class="label">[Story-5]</span></td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0ms</td></tr><tr><td><a href="#feature6">Product spedition feature</a> <span class="label">[Story-3]</span></td><td>1</td><td>1</td><td>0</td><td>0</td><td>6</td><td>6</td><td>0</td><td>0</td><td>0</td><td>2ms</td></tr></table></Article></Section><Section><h1>Feature details</h1><span class="filter">Filter:</span> <input type="checkbox" id="showPassed" checked /><label for="showPassed"><span class="chbox"></span>Passed</label> <input type="checkbox" id="showFailed" checked /><label for="showFailed"><span class="chbox"></span>Failed</label> <input type="checkbox" id="showIgnored" checked /><label for="showIgnored"><span class="chbox"></span>Ignored</label> <input type="checkbox" id="showNotRun" checked /><label for="showNotRun"><span class="chbox"></span>Not Run</label><br/><Article class="feature passed ignored"><input type="checkbox" class="toggle" id="toggle1" checked /><div class="header"><h2 id="feature1" class="title"><label for="toggle1"><span class="chbox"></span>Basket feature</label> <span class="label">[Story-4]</span></h2><div class="description">In order to buy products
+input[type="checkbox"].toggle:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "v";}
+input[type="checkbox"].toggle:checked + * .chbox:before{ background-color: #eeeeee;content: "^";}
+input[type="radio"]:not(:checked) + * .chbox:before{border-radius: 50%; background-color: #eeeeee;content: " ";}
+input[type="radio"]:checked + * .chbox:before{border-radius: 50%; background-color: #eeeeee;content: "\2713";}
+.stepType{ font-style: italic;}
+.stepParam{ color: #aa00aa;}
+.stepParamUnknown{ color: #aa55aa;}
+label{ display: inline-block;}
+.optionsPanel #optionsLink {display: block; visibility: hidden;margin: 0.1em 0 0.5em 6em;font-weight: bold;}
+.optionsPanel:hover #optionsLink{ visibility: visible;}</style><script>function Queryable(array) {
+    this._source = array;
+    this._where = function (value) { return true; };
+    this.where = function (predicate) { this._where = predicate; return this; };
+    this.do = function (action) {
+        var srcLength = this._source.length;
+        for (var i = 0; i < srcLength; ++i) {
+            if (this._where(this._source[i]))
+                action(this._source[i]);
+        }
+    };
+    this.any = function () {
+        var srcLength = this._source.length;
+        for (var i = 0; i < srcLength; ++i) {
+            if (this._where(this._source[i]))
+                return true;
+        }
+        return false;
+    };
+    this.toArray = function (select) {
+        var result = [];
+        this.do(function (o) { result.push(select(o)); });
+        return result;
+    };
+}
+
+Object.prototype.asQueryable = function () {
+    return new Queryable(this);
+};
+
+function checkAll(checkBoxClass, checked) {
+    document.getElementsByTagName('input')
+        .asQueryable()
+        .where(function (b) { return b.classList.contains(checkBoxClass); })
+        .do(function (b) { b.checked = checked; });
+    updateOptionsLink();
+}
+function sortTable(tableId, columnIdx, numeric, toggle) {
+    var direction = toggle.dataset.dir === 'true';
+    toggle.dataset.dir = !direction;
+
+    var sortMethod;
+    var parseMethod;
+    var checkMethod;
+    if (numeric) {
+        sortMethod = direction ? function (x, y) { return x[0] - y[0]; } : function (x, y) { return y[0] - x[0]; };
+        parseMethod = function (x) { return parseFloat(x); };
+        checkMethod = function (x) { return !isNaN(x); };
+    } else {
+        sortMethod = direction
+            ? function (x, y) { return (x[0] > y[0]) ? 1 : ((x[0] < y[0]) ? -1 : 0); }
+            : function (x, y) { return (x[0] < y[0]) ? 1 : ((x[0] > y[0]) ? -1 : 0); };
+        parseMethod = function (x) { return x; };
+        checkMethod = function (x) { return true; };
+    }
+
+    var tbl = document.getElementById(tableId).tBodies[0];
+    var store = [];
+    tbl.rows.asQueryable()
+        .do(function (row) {
+            var sortnr = parseMethod(row.cells[columnIdx].textContent || row.cells[columnIdx].innerText);
+            if (checkMethod(sortnr)) store.push([sortnr, row]);
+        });
+    store.sort(sortMethod);
+    store.asQueryable().do(function (row) { tbl.appendChild(row[1]); });
+}
+
+var initialized = false;
+function applyFilter() {
+    if (!initialized)
+        return;
+
+    var getFilterValues = function (elementsName) {
+        return document.getElementsByName(elementsName)
+            .asQueryable()
+            .where(function (e) { return e.checked; })
+            .toArray(function (e) { return e.dataset.filterValue; });
+    };
+
+    var applyTo = function (tag, className, filter) {
+        document.getElementsByTagName(tag)
+            .asQueryable()
+            .where(function (e) { return e.classList.contains(className); })
+            .do(filter);
+    };
+
+    var statusFilterValues = getFilterValues('statusFilter');
+    var categoryFilterValues = getFilterValues('categoryFilter');
+
+    var statusFilter = function (element) {
+        return statusFilterValues.asQueryable()
+            .where(function (s) { return element.classList.contains(s); })
+            .any();
+    };
+
+    var childFilter = function (feature) {
+        return feature.getElementsByTagName('div')
+            .asQueryable()
+            .where(function (ch) { return ch.classList.contains('scenario') && ch.dataset.filtered == 'true'; })
+            .any();
+    };
+
+    var categoryFilter = null;
+
+    if (categoryFilterValues.length == 0 || categoryFilterValues[0] === 'all') {
+        categoryFilter = function (scenario) { return true; };
+        childFilter = statusFilter;
+    } else if (categoryFilterValues[0] === 'without') {
+        categoryFilter = function (scenario) { return scenario.dataset.categories == ''; };
+    } else {
+        categoryFilter = function (scenario) {
+            return categoryFilterValues.asQueryable()
+                .where(function (c) { return scenario.dataset.categories.indexOf(c) >= 0; })
+                .any();
+        };
+    }
+
+    applyTo('div', 'scenario', function (scenario) {
+        scenario.dataset.filtered = statusFilter(scenario) && categoryFilter(scenario);
+        scenario.className = scenario.className; //IE fix
+    });
+    applyTo('article', 'feature', function (feature) {
+        feature.dataset.filtered = childFilter(feature);
+        feature.className = feature.className; //IE fix
+    });
+    updateOptionsLink();
+}
+
+function updateOptionsLink() {
+    if (!initialized)
+        return;
+
+    var options = [];
+
+    var check = function (element, option) {
+        if (!document.getElementById(element).checked)
+            options.push(option + '=0');
+    };
+
+    check('toggleFeatures', 'tf');
+    check('toggleScenarios', 'ts');
+
+    check('showPassed', 'fp');
+    check('showBypassed', 'fb');
+    check('showFailed', 'ff');
+    check('showIgnored', 'fi');
+    check('showNotRun', 'fn');
+
+    document.getElementsByName('categoryFilter')
+        .asQueryable()
+        .where(function (c) { return c.checked; })
+        .do(function (c) { options.push('cat=' + c.dataset.filterName); });
+
+    var query = options.join('&');
+    var current = location.search;
+    var idx = current.indexOf('?');
+    var link = (idx >= 0 ? current.substring(0, idx) : current) + '?' + query;
+
+    document.getElementsByTagName('a').asQueryable()
+        .where(function (a) { return a.classList.contains('shareable'); })
+        .do(function (a) {
+            var href = a.href;
+            var i = href.indexOf('#');
+            a.href = link + (i >= 0 ? href.substring(i) : '');
+        });
+}
+
+function applyOptionsFromLink() {
+    var getParam = function (param) {
+        var regex = new RegExp("[\\?&]" + param + "=([^&#]*)");
+        var results = regex.exec(location.search);
+        return results === null ? null : decodeURIComponent(results[1]);
+    };
+
+    var applyToCheckbox = function (elementId, param) {
+        var element = document.getElementById(elementId);
+        element.checked = (getParam(param) === '0'); //set opposite value
+        element.click(); //toggle it
+    };
+
+    applyToCheckbox('toggleFeatures', 'tf');
+    applyToCheckbox('toggleScenarios', 'ts');
+    applyToCheckbox('showPassed', 'fp');
+    applyToCheckbox('showBypassed', 'fb');
+    applyToCheckbox('showFailed', 'ff');
+    applyToCheckbox('showIgnored', 'fi');
+    applyToCheckbox('showNotRun', 'fn');
+
+    var cat = getParam('cat');
+
+    if (cat !== null) {
+        document.getElementsByName('categoryFilter')
+        .asQueryable()
+        .where(function (c) { return c.dataset.filterName === cat; })
+        .do(function (c) { c.click(); });
+    }
+    initialized = true;
+    applyFilter();
+}</script></head><body><Section><h1>Execution summary</h1><Article><table class="summary"><tr><th>Test execution start time:</th><td>2014-11-27 21:34:27 UTC</td></tr><tr><th>Test execution time:</th><td>113ms</td></tr><tr><th>Number of features:</th><td>6</td></tr><tr><th>Number of scenarios:</th><td>11</td></tr><tr><th>Passed scenarios:</th><td>7</td></tr><tr><th>Bypassed scenarios:</th><td>1</td></tr><tr><th>Failed scenarios:</th><td class="alert">1</td></tr><tr><th>Ignored scenarios:</th><td>2</td></tr><tr><th>Number of steps:</th><td>55</td></tr><tr><th>Passed steps:</th><td>48</td></tr><tr><th>Bypassed steps:</th><td>1</td></tr><tr><th>Failed steps:</th><td class="alert">1</td></tr><tr><th>Ignored steps:</th><td>2</td></tr><tr><th>Not Run steps:</th><td>3</td></tr></table></Article></Section><Section><h1>Feature summary</h1><Article><table id="featuresSummary" class="features"><thead><tr><th class="sortable" onclick="sortTable(&#39;featuresSummary&#39;,0,false,this)">Feature</th><th class="sortable" onclick="sortTable(&#39;featuresSummary&#39;,1,true,this)">Scenarios</th><th class="sortable minor" onclick="sortTable(&#39;featuresSummary&#39;,2,true,this)">Passed</th><th class="sortable minor" onclick="sortTable(&#39;featuresSummary&#39;,3,true,this)">Bypassed</th><th class="sortable minor" onclick="sortTable(&#39;featuresSummary&#39;,4,true,this)">Failed</th><th class="sortable minor" onclick="sortTable(&#39;featuresSummary&#39;,5,true,this)">Ignored</th><th class="sortable" onclick="sortTable(&#39;featuresSummary&#39;,6,true,this)">Steps</th><th class="sortable minor" onclick="sortTable(&#39;featuresSummary&#39;,7,true,this)">Passed</th><th class="sortable minor" onclick="sortTable(&#39;featuresSummary&#39;,8,true,this)">Bypassed</th><th class="sortable minor" onclick="sortTable(&#39;featuresSummary&#39;,9,true,this)">Failed</th><th class="sortable minor" onclick="sortTable(&#39;featuresSummary&#39;,10,true,this)">Ignored</th><th class="sortable minor" onclick="sortTable(&#39;featuresSummary&#39;,11,true,this)">Not Run</th><th class="sortable" onclick="sortTable(&#39;featuresSummary&#39;,13,true,this)">Duration</th><th class="hidden" onclick=""></th><th class="sortable minor" onclick="sortTable(&#39;featuresSummary&#39;,15,true,this)">Average</th><th class="hidden" onclick=""></th></tr></thead><tbody><tr><td><a href="#feature1">Basket feature</a> <span class="label">[Story-4]</span></td><td>2</td><td>1</td><td>0</td><td>0</td><td>1</td><td>9</td><td>8</td><td>0</td><td>0</td><td>1</td><td>0</td><td>34ms</td><td class="hidden">347563</td><td>17ms</td><td class="hidden">173781</td></tr><tr><td><a href="#feature2">Contacts management</a> <span class="label">[Story-6]</span></td><td>3</td><td>2</td><td>1</td><td>0</td><td>0</td><td>10</td><td>9</td><td>1</td><td>0</td><td>0</td><td>0</td><td>42ms</td><td class="hidden">421583</td><td>14ms</td><td class="hidden">140527</td></tr><tr><td><a href="#feature3">Invoice feature</a> <span class="label">[Story-2]</span></td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>7</td><td>4</td><td>0</td><td>0</td><td>1</td><td>2</td><td>10ms</td><td class="hidden">105249</td><td>10ms</td><td class="hidden">105249</td></tr><tr><td><a href="#feature4">Login feature</a> <span class="label">[Story-1]</span></td><td>4</td><td>3</td><td>0</td><td class="alert">1</td><td>0</td><td>23</td><td>21</td><td>0</td><td class="alert">1</td><td>0</td><td>1</td><td>21ms</td><td class="hidden">217905</td><td>5ms</td><td class="hidden">54476</td></tr><tr><td><a href="#feature5">Payment feature</a> <span class="label">[Story-5]</span></td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0ms</td><td class="hidden">0</td><td>0ms</td><td class="hidden">0</td></tr><tr><td><a href="#feature6">Product spedition feature</a> <span class="label">[Story-3]</span></td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>6</td><td>6</td><td>0</td><td>0</td><td>0</td><td>0</td><td>3ms</td><td class="hidden">39914</td><td>3ms</td><td class="hidden">39914</td></tr></tbody></table></Article></Section><Section><h1 id="featureDetails">Feature details<a class="smallLink shareable" href="#featureDetails">[&#8734;link]</a></h1><div class="optionsPanel"><div class="options"><span>Toggle:</span><span><span class="option"> <input type="checkbox" checked onclick="checkAll(&#39;toggleF&#39;,toggleFeatures.checked)" id="toggleFeatures" /><label for="toggleFeatures"><span class="chbox"></span>Features</label></span><span class="option"> <input type="checkbox" checked onclick="checkAll(&#39;toggleS&#39;,toggleScenarios.checked)" id="toggleScenarios" /><label for="toggleScenarios"><span class="chbox"></span>Scenarios</label></span></span></div><div class="options"><span>Filter:</span><span><span class="option"> <input type="checkbox" name="statusFilter" data-filter-value="passed" checked onclick="applyFilter()" id="showPassed" /><label for="showPassed"><span class="chbox"></span>Passed</label></span><span class="option"> <input type="checkbox" name="statusFilter" data-filter-value="bypassed" checked onclick="applyFilter()" id="showBypassed" /><label for="showBypassed"><span class="chbox"></span>Bypassed</label></span><span class="option"> <input type="checkbox" name="statusFilter" data-filter-value="failed" checked onclick="applyFilter()" id="showFailed" /><label for="showFailed"><span class="chbox"></span>Failed</label></span><span class="option"> <input type="checkbox" name="statusFilter" data-filter-value="ignored" checked onclick="applyFilter()" id="showIgnored" /><label for="showIgnored"><span class="chbox"></span>Ignored</label></span><span class="option"> <input type="checkbox" name="statusFilter" data-filter-value="notrun" checked onclick="applyFilter()" id="showNotRun" /><label for="showNotRun"><span class="chbox"></span>Not Run</label></span></span></div><div class="options"><span>Categories:</span><span><span class="option"> <input type="radio" name="categoryFilter" data-filter-value="all" data-filter-name="-all-" onclick="applyFilter()" checked id="categoryallradio" /><label for="categoryallradio"><span class="chbox"></span>-all-</label></span><span class="option"> <input type="radio" name="categoryFilter" data-filter-value="_2_" data-filter-name="Delivery" onclick="applyFilter()" id="category_2_radio" /><label for="category_2_radio"><span class="chbox"></span>Delivery</label></span><span class="option"> <input type="radio" name="categoryFilter" data-filter-value="_0_" data-filter-name="Sales" onclick="applyFilter()" id="category_0_radio" /><label for="category_0_radio"><span class="chbox"></span>Sales</label></span><span class="option"> <input type="radio" name="categoryFilter" data-filter-value="_1_" data-filter-name="Security" onclick="applyFilter()" id="category_1_radio" /><label for="category_1_radio"><span class="chbox"></span>Security</label></span><span class="option"> <input type="radio" name="categoryFilter" data-filter-value="without" data-filter-name="-without+category-" onclick="applyFilter()" id="categorywithoutradio" /><label for="categorywithoutradio"><span class="chbox"></span>-without category-</label></span></span></div><a class="shareable" href="" id="optionsLink">[&#8734;filtered link]</a></div><Article class="feature passed ignored"><input type="checkbox" class="toggle toggleF" id="toggle1" checked /><div class="header"><h2 id="feature1" class="title"><label for="toggle1"><span class="chbox"></span>Basket feature</label> <span class="label">[Story-4]</span><a class="smallLink shareable" href="#feature1">[&#8734;link]</a></h2><div class="description">In order to buy products
 As a customer
-I want to add products to basket</div></div><div class="scenarios"><div class="scenario passed"><input type="checkbox" id="toggle1_0" class="toggle" checked /><h3 class="title"><label for="toggle1_0"><span class="chbox"></span><span class="status passed">Passed</span> No product in stock</label> <span class="label">[Ticket-6]</span> <span class="duration">(22ms)</span></h3><div><div class="step"><span class="status passed">Passed</span> 1. Given product is out of stock <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 2. When customer adds it to basket <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 3. Then product addition is unsuccessful <span class="duration">(2ms)</span></div><div class="step"><span class="status passed">Passed</span> 4. Then basket does not contain product <span class="duration">(&lt;1ms)</span></div></div><br/></div><div class="scenario ignored"><input type="checkbox" id="toggle1_1" class="toggle" checked /><h3 class="title"><label for="toggle1_1"><span class="chbox"></span><span class="status ignored">Ignored</span> Successful addition</label> <span class="label">[Ticket-7]</span> <span class="duration">(4ms)</span></h3><div><div class="step"><span class="status passed">Passed</span> 1. Given product is in stock <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 2. When customer adds it to basket <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 3. Then product addition is successful <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 4. Then basket contains product <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status ignored">Ignored</span> 5. Then product is removed from stock <span class="duration">(&lt;1ms)</span></div></div><div class="details">Product removal from stock is not implemented yet</div><br/></div></div><br/></Article><Article class="feature passed"><input type="checkbox" class="toggle" id="toggle2" checked /><div class="header"><h2 id="feature2" class="title"><label for="toggle2"><span class="chbox"></span>Contacts management</label> <span class="label">[Story-6]</span></h2><div class="description">In order to maintain my contact book
+I want to add products to basket</div></div><div class="scenarios"><div class="scenario passed" data-categories="_0_"><input type="checkbox" id="toggle1_0" class="toggle toggleS" checked /><h3 id="scenario1_1" class="title"><label for="toggle1_0"><span class="chbox"></span><span class="status passed">Passed</span> No product in stock</label> <span class="label">[Ticket-6]</span> <span class="duration">(28ms)</span><a class="smallLink shareable" href="#scenario1_1">[&#8734;link]</a></h3><div class="categories">Sales</div><div><div class="step"><span class="status passed">Passed</span> 1. Given product is out of stock <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 2. When customer adds it to basket <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 3. Then product addition is unsuccessful <span class="duration">(3ms)</span></div><div class="step"><span class="status passed">Passed</span> 4. Then basket does not contain product <span class="duration">(1ms)</span></div></div><br/></div><div class="scenario ignored" data-categories="_0_"><input type="checkbox" id="toggle1_1" class="toggle toggleS" checked /><h3 id="scenario1_2" class="title"><label for="toggle1_1"><span class="chbox"></span><span class="status ignored">Ignored</span> Successful addition</label> <span class="label">[Ticket-7]</span> <span class="duration">(5ms)</span><a class="smallLink shareable" href="#scenario1_2">[&#8734;link]</a></h3><div class="categories">Sales</div><div><div class="step"><span class="status passed">Passed</span> 1. Given product is in stock <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 2. When customer adds it to basket <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 3. Then product addition is successful <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 4. Then basket contains product <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status ignored">Ignored</span> 5. Then product is removed from stock <span class="duration">(1ms)</span></div></div><div class="details">Step 5: Product removal from stock is not implemented yet</div><br/></div></div></Article><Article class="feature passed bypassed"><input type="checkbox" class="toggle toggleF" id="toggle2" checked /><div class="header"><h2 id="feature2" class="title"><label for="toggle2"><span class="chbox"></span>Contacts management</label> <span class="label">[Story-6]</span><a class="smallLink shareable" href="#feature2">[&#8734;link]</a></h2><div class="description">In order to maintain my contact book
 As an application user
-I want to add, browse and remove my contacts</div></div><div class="scenarios"><div class="scenario passed"><input type="checkbox" id="toggle2_0" class="toggle" checked /><h3 class="title"><label for="toggle2_0"><span class="chbox"></span><span class="status passed">Passed</span> Contact book should allow me to add multiple contacts</label> <span class="label">[Ticket-8]</span> <span class="duration">(14ms)</span></h3><div><div class="step"><span class="status passed">Passed</span> 1. Given my contact book is empty <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 2. When I add new contacts <span class="duration">(1ms)</span></div><div class="step"><span class="status passed">Passed</span> 3. Then all of expected contacts would be available in contact book <span class="duration">(11ms)</span></div></div><br/></div><div class="scenario passed"><input type="checkbox" id="toggle2_1" class="toggle" checked /><h3 class="title"><label for="toggle2_1"><span class="chbox"></span><span class="status passed">Passed</span> Contact book should allow me to remove all contacts</label> <span class="label">[Ticket-9]</span> <span class="duration">(5ms)</span></h3><div><div class="step"><span class="status passed">Passed</span> 1. Given my contact book is filled with many contacts <span class="duration">(2ms)</span></div><div class="step"><span class="status passed">Passed</span> 2. When I clear it <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 3. Then contact book is empty <span class="duration">(1ms)</span></div></div><br/></div><div class="scenario passed"><input type="checkbox" id="toggle2_2" class="toggle" checked /><h3 class="title"><label for="toggle2_2"><span class="chbox"></span><span class="status passed">Passed</span> Contact book should allow me to remove contacts</label> <span class="label">[Ticket-9]</span> <span class="duration">(16ms)</span></h3><div><div class="step"><span class="status passed">Passed</span> 1. Given my contact book is filled with contacts <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 2. When I remove contact <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 3. Then contact book does not contain removed contact any more <span class="duration">(4ms)</span></div><div class="step"><span class="status passed">Passed</span> 4. Then contact book still contains other contacts <span class="duration">(6ms)</span></div></div><br/></div></div><br/></Article><Article class="feature ignored"><input type="checkbox" class="toggle" id="toggle3" checked /><div class="header"><h2 id="feature3" class="title"><label for="toggle3"><span class="chbox"></span>Invoice feature</label> <span class="label">[Story-2]</span></h2><div class="description">In order to pay for products
+I want to add, browse and remove my contacts</div></div><div class="scenarios"><div class="scenario passed" data-categories=""><input type="checkbox" id="toggle2_0" class="toggle toggleS" checked /><h3 id="scenario2_1" class="title"><label for="toggle2_0"><span class="chbox"></span><span class="status passed">Passed</span> Contact book should allow me to add multiple contacts</label> <span class="label">[Ticket-8]</span> <span class="duration">(20ms)</span><a class="smallLink shareable" href="#scenario2_1">[&#8734;link]</a></h3><div><div class="step"><span class="status passed">Passed</span> 1. Given my contact book is empty <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 2. When I add new contacts <span class="duration">(1ms)</span></div><div class="step"><span class="status passed">Passed</span> 3. Then all of expected contacts would be available in contact book <span class="duration">(15ms)</span></div></div><br/></div><div class="scenario bypassed" data-categories=""><input type="checkbox" id="toggle2_1" class="toggle toggleS" checked /><h3 id="scenario2_2" class="title"><label for="toggle2_1"><span class="chbox"></span><span class="status bypassed">Bypassed</span> Contact book should allow me to remove all contacts</label> <span class="label">[Ticket-9]</span> <span class="duration">(7ms)</span><a class="smallLink shareable" href="#scenario2_2">[&#8734;link]</a></h3><div><div class="step"><span class="status passed">Passed</span> 1. Given my contact book is filled with many contacts <span class="duration">(2ms)</span></div><div class="step"><span class="status bypassed">Bypassed</span> 2. When I clear it <span class="duration">(1ms)</span></div><div class="step"><span class="status passed">Passed</span> 3. Then contact book is empty <span class="duration">(1ms)</span></div></div><div class="details">Step 2: Contact book clearing is not implemented yet. Contacts are removed one by one.</div><br/></div><div class="scenario passed" data-categories=""><input type="checkbox" id="toggle2_2" class="toggle toggleS" checked /><h3 id="scenario2_3" class="title"><label for="toggle2_2"><span class="chbox"></span><span class="status passed">Passed</span> Contact book should allow me to remove contacts</label> <span class="label">[Ticket-9]</span> <span class="duration">(14ms)</span><a class="smallLink shareable" href="#scenario2_3">[&#8734;link]</a></h3><div><div class="step"><span class="status passed">Passed</span> 1. Given my contact book is filled with contacts <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 2. When I remove contact <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 3. Then contact book does not contain removed contact any more <span class="duration">(5ms)</span></div><div class="step"><span class="status passed">Passed</span> 4. Then contact book still contains other contacts <span class="duration">(5ms)</span></div></div><br/></div></div></Article><Article class="feature ignored"><input type="checkbox" class="toggle toggleF" id="toggle3" checked /><div class="header"><h2 id="feature3" class="title"><label for="toggle3"><span class="chbox"></span>Invoice feature</label> <span class="label">[Story-2]</span><a class="smallLink shareable" href="#feature3">[&#8734;link]</a></h2><div class="description">In order to pay for products
 As a customer
-I want to receive invoice for bought items</div></div><div class="scenarios"><div class="scenario ignored"><input type="checkbox" id="toggle3_0" class="toggle" checked /><h3 class="title"><label for="toggle3_0"><span class="chbox"></span><span class="status ignored">Ignored</span> Receiving invoice for products</label> <span class="label">[Ticket-4]</span> <span class="duration">(6ms)</span></h3><div><div class="step"><span class="status passed">Passed</span> 1. GIVEN Product &quot;wooden desk&quot; is available in products storage <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 2. AND Product &quot;wooden shelf&quot; is available in products storage <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 3. WHEN Customer buys product &quot;wooden desk&quot; <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 4. AND Customer buys product &quot;wooden shelf&quot; <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status ignored">Ignored</span> 5. THEN Invoice is sent to customer <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status notrun">NotRun</span> 6. AND Invoice contains product &quot;&lt;?&gt;&quot; with price of &quot;&lt;?&gt;&quot; pounds</div><div class="step"><span class="status notrun">NotRun</span> 7. AND Invoice contains product &quot;&lt;?&gt;&quot; with price of &quot;&lt;?&gt;&quot; pounds</div></div><div class="details">Not implemented yet</div><br/></div></div><br/></Article><Article class="feature passed failed"><input type="checkbox" class="toggle" id="toggle4" checked /><div class="header"><h2 id="feature4" class="title"><label for="toggle4"><span class="chbox"></span>Login feature</label> <span class="label">[Story-1]</span></h2><div class="description">In order to access personal data
+I want to receive invoice for bought items</div></div><div class="scenarios"><div class="scenario ignored" data-categories="_0_"><input type="checkbox" id="toggle3_0" class="toggle toggleS" checked /><h3 id="scenario3_1" class="title"><label for="toggle3_0"><span class="chbox"></span><span class="status ignored">Ignored</span> Receiving invoice for products</label> <span class="label">[Ticket-4]</span> <span class="duration">(10ms)</span><a class="smallLink shareable" href="#scenario3_1">[&#8734;link]</a></h3><div class="categories">Sales</div><div><div class="step"><span class="status passed">Passed</span> 1. <span class="stepType">GIVEN</span> Product &quot;<span class="stepParam">wooden desk</span>&quot; is available in products storage <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 2. <span class="stepType">AND</span> Product &quot;<span class="stepParam">wooden shelf</span>&quot; is available in products storage <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 3. <span class="stepType">WHEN</span> Customer buys product &quot;<span class="stepParam">wooden desk</span>&quot; <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 4. <span class="stepType">AND</span> Customer buys product &quot;<span class="stepParam">wooden shelf</span>&quot; <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status ignored">Ignored</span> 5. <span class="stepType">THEN</span> Invoice is sent to customer <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status notrun">NotRun</span> 6. <span class="stepType">AND</span> Invoice contains product &quot;<span class="stepParam">wooden desk</span>&quot; with price of &quot;<span class="stepParam">&#163;62,00</span>&quot;</div><div class="step"><span class="status notrun">NotRun</span> 7. <span class="stepType">AND</span> Invoice contains product &quot;<span class="stepParam">wooden shelf</span>&quot; with price of &quot;<span class="stepParam">&#163;37,00</span>&quot;</div></div><div class="details">Step 5: Not implemented yet</div><br/></div></div></Article><Article class="feature passed failed"><input type="checkbox" class="toggle toggleF" id="toggle4" checked /><div class="header"><h2 id="feature4" class="title"><label for="toggle4"><span class="chbox"></span>Login feature</label> <span class="label">[Story-1]</span><a class="smallLink shareable" href="#feature4">[&#8734;link]</a></h2><div class="description">In order to access personal data
 As an user
-I want to login into system</div></div><div class="scenarios"><div class="scenario failed"><input type="checkbox" id="toggle4_0" class="toggle" checked /><h3 class="title"><label for="toggle4_0"><span class="chbox"></span><span class="status failed">Failed</span> Anonymous login name should allow to log in</label> <span class="label">[Ticket-3]</span> <span class="duration">(7ms)</span></h3><div><div class="step"><span class="status passed">Passed</span> 1. Given user is about to login <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 2. Given user entered anonymous login <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 3. When user clicked login button <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status failed">Failed</span> 4. Then login is successful <span class="duration">(4ms)</span></div><div class="step"><span class="status notrun">NotRun</span> 5. Then welcome message is returned containing user name</div></div><div class="details">Login should succeeded
-  Expected: True
-  But was:  False</div><br/></div><div class="scenario passed"><input type="checkbox" id="toggle4_1" class="toggle" checked /><h3 class="title"><label for="toggle4_1"><span class="chbox"></span><span class="status passed">Passed</span> Successful login</label> <span class="label">[Ticket-1]</span> <span class="duration">(3ms)</span></h3><div><div class="step"><span class="status passed">Passed</span> 1. Given user is about to login <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 2. Given user entered valid login <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 3. Given user entered valid password <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 4. When user clicked login button <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 5. Then login is successful <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 6. Then welcome message is returned containing user name <span class="duration">(1ms)</span></div></div><br/></div><div class="scenario passed"><input type="checkbox" id="toggle4_2" class="toggle" checked /><h3 class="title"><label for="toggle4_2"><span class="chbox"></span><span class="status passed">Passed</span> Wrong login provided causes login to fail</label> <span class="label">[Ticket-2]</span> <span class="duration">(4ms)</span></h3><div><div class="step"><span class="status passed">Passed</span> 1. Given user is about to login <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 2. Given user entered invalid login <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 3. Given user entered valid password <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 4. When user clicked login button <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 5. Then login is unsuccessful <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 6. Then invalid login or password error message is returned <span class="duration">(&lt;1ms)</span></div></div><br/></div><div class="scenario passed"><input type="checkbox" id="toggle4_3" class="toggle" checked /><h3 class="title"><label for="toggle4_3"><span class="chbox"></span><span class="status passed">Passed</span> Wrong password provided causes login to fail</label> <span class="label">[Ticket-2]</span> <span class="duration">(2ms)</span></h3><div><div class="step"><span class="status passed">Passed</span> 1. Given user is about to login <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 2. Given user entered valid login <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 3. Given user entered invalid password <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 4. When user clicked login button <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 5. Then login is unsuccessful <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 6. Then invalid login or password error message is returned <span class="duration">(&lt;1ms)</span></div></div><br/></div></div><br/></Article><Article class="feature notrun"><input type="checkbox" class="toggle" id="toggle5" checked /><div class="header"><h2 id="feature5" class="title"><label for="toggle5"><span class="chbox"></span>Payment feature</label> <span class="label">[Story-5]</span></h2><div class="description">In order to get desired products
+I want to login into system</div></div><div class="scenarios"><div class="scenario failed" data-categories="_1_"><input type="checkbox" id="toggle4_0" class="toggle toggleS" checked /><h3 id="scenario4_1" class="title"><label for="toggle4_0"><span class="chbox"></span><span class="status failed">Failed</span> Anonymous login name should allow to log in</label> <span class="label">[Ticket-3]</span> <span class="duration">(9ms)</span><a class="smallLink shareable" href="#scenario4_1">[&#8734;link]</a></h3><div class="categories">Security</div><div><div class="step"><span class="status passed">Passed</span> 1. Given user is about to login <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 2. Given user entered anonymous login <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 3. When user clicked login button <span class="duration">(1ms)</span></div><div class="step"><span class="status failed">Failed</span> 4. Then login is successful <span class="duration">(4ms)</span></div><div class="step"><span class="status notrun">NotRun</span> 5. Then welcome message is returned containing user name</div></div><div class="details">Step 4: Login should succeeded
+	  Expected: True
+	  But was:  False</div><br/></div><div class="scenario passed" data-categories="_1_"><input type="checkbox" id="toggle4_1" class="toggle toggleS" checked /><h3 id="scenario4_2" class="title"><label for="toggle4_1"><span class="chbox"></span><span class="status passed">Passed</span> Successful login</label> <span class="label">[Ticket-1]</span> <span class="duration">(5ms)</span><a class="smallLink shareable" href="#scenario4_2">[&#8734;link]</a></h3><div class="categories">Security</div><div><div class="step"><span class="status passed">Passed</span> 1. Given user is about to login <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 2. Given user entered valid login <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 3. Given user entered valid password <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 4. When user clicked login button <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 5. Then login is successful <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 6. Then welcome message is returned containing user name <span class="duration">(1ms)</span></div></div><br/></div><div class="scenario passed" data-categories="_1_"><input type="checkbox" id="toggle4_2" class="toggle toggleS" checked /><h3 id="scenario4_3" class="title"><label for="toggle4_2"><span class="chbox"></span><span class="status passed">Passed</span> Wrong login provided causes login to fail</label> <span class="label">[Ticket-2]</span> <span class="duration">(3ms)</span><a class="smallLink shareable" href="#scenario4_3">[&#8734;link]</a></h3><div class="categories">Security</div><div><div class="step"><span class="status passed">Passed</span> 1. Given user is about to login <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 2. Given user entered invalid login <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 3. Given user entered valid password <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 4. When user clicked login button <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 5. Then login is unsuccessful <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 6. Then invalid login or password error message is returned <span class="duration">(&lt;1ms)</span></div></div><br/></div><div class="scenario passed" data-categories="_1_"><input type="checkbox" id="toggle4_3" class="toggle toggleS" checked /><h3 id="scenario4_4" class="title"><label for="toggle4_3"><span class="chbox"></span><span class="status passed">Passed</span> Wrong password provided causes login to fail</label> <span class="label">[Ticket-2]</span> <span class="duration">(3ms)</span><a class="smallLink shareable" href="#scenario4_4">[&#8734;link]</a></h3><div class="categories">Security</div><div><div class="step"><span class="status passed">Passed</span> 1. Given user is about to login <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 2. Given user entered valid login <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 3. Given user entered invalid password <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 4. When user clicked login button <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 5. Then login is unsuccessful <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 6. Then invalid login or password error message is returned <span class="duration">(&lt;1ms)</span></div></div><br/></div></div></Article><Article class="feature notrun"><input type="checkbox" class="toggle toggleF" id="toggle5" checked /><div class="header"><h2 id="feature5" class="title"><label for="toggle5"><span class="chbox"></span>Payment feature</label> <span class="label">[Story-5]</span><a class="smallLink shareable" href="#feature5">[&#8734;link]</a></h2><div class="description">In order to get desired products
 As a customer
-I want to pay for products in basket</div></div><div class="scenarios"></div><br/></Article><Article class="feature passed"><input type="checkbox" class="toggle" id="toggle6" checked /><div class="header"><h2 id="feature6" class="title"><label for="toggle6"><span class="chbox"></span>Product spedition feature</label> <span class="label">[Story-3]</span></h2><div class="description">In order to deliver products to customer effectively
+I want to pay for products in basket</div></div><div class="scenarios"></div></Article><Article class="feature passed"><input type="checkbox" class="toggle toggleF" id="toggle6" checked /><div class="header"><h2 id="feature6" class="title"><label for="toggle6"><span class="chbox"></span>Product spedition feature</label> <span class="label">[Story-3]</span><a class="smallLink shareable" href="#feature6">[&#8734;link]</a></h2><div class="description">In order to deliver products to customer effectively
 As a spedition manager
-I want to dispatch products to customer as soon as the payment is finalized</div></div><div class="scenarios"><div class="scenario passed"><input type="checkbox" id="toggle6_0" class="toggle" checked /><h3 class="title"><label for="toggle6_0"><span class="chbox"></span><span class="status passed">Passed</span> Should dispatch product after payment is finalized</label> <span class="label">[Ticket-5]</span> <span class="duration">(2ms)</span></h3><div><div class="step"><span class="status passed">Passed</span> 1. GIVEN There is an active customer with id &quot;ABC-123&quot; <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 2. GIVEN Customer has product &quot;wooden shelf&quot; in basket <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 3. GIVEN Customer has product &quot;wooden desk&quot; in basket <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 4. WHEN Customer payment has been finalized <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 5. THEN Product &quot;wooden shelf&quot; has been dispatched to customer <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 6. THEN Product &quot;wooden desk&quot; has been dispatched to customer <span class="duration">(&lt;1ms)</span></div></div><br/></div></div><br/></Article></Section></body></html>
+I want to dispatch products to customer as soon as the payment is finalized</div></div><div class="scenarios"><div class="scenario passed" data-categories="_2_ _0_"><input type="checkbox" id="toggle6_0" class="toggle toggleS" checked /><h3 id="scenario6_1" class="title"><label for="toggle6_0"><span class="chbox"></span><span class="status passed">Passed</span> Should dispatch product after payment is finalized</label> <span class="label">[Ticket-5]</span> <span class="duration">(3ms)</span><a class="smallLink shareable" href="#scenario6_1">[&#8734;link]</a></h3><div class="categories">Delivery, Sales</div><div><div class="step"><span class="status passed">Passed</span> 1. <span class="stepType">GIVEN</span> There is an active customer with id &quot;<span class="stepParam">ABC-123</span>&quot; <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 2. <span class="stepType">GIVEN</span> Customer has product &quot;<span class="stepParam">wooden shelf</span>&quot; in basket <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 3. <span class="stepType">GIVEN</span> Customer has product &quot;<span class="stepParam">wooden desk</span>&quot; in basket <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 4. <span class="stepType">WHEN</span> Customer payment has been finalized <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 5. <span class="stepType">THEN</span> Product &quot;<span class="stepParam">wooden shelf</span>&quot; has been dispatched to customer <span class="duration">(&lt;1ms)</span></div><div class="step"><span class="status passed">Passed</span> 6. <span class="stepType">THEN</span> Product &quot;<span class="stepParam">wooden desk</span>&quot; has been dispatched to customer <span class="duration">(&lt;1ms)</span></div></div><br/></div></div></Article></Section><script>applyOptionsFromLink();</script></body></html>
