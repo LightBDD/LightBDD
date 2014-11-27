@@ -7,10 +7,11 @@ Summary:
 + major improvements to Html features report summary (HtmlResultFormatter),
 + added ability to bypass step execution without stopping scenario execution,
 + added ability to specify custom formatting rules for step parameters,
-+ added ability to annotate scenarios with categories
++ added ability to annotate scenarios with categories,
++ many smaller improvements.
 
 Details:
-+ added ability to bypass step execution without stopping scenario execution (StepExecution.Bypass() method)
++ added ability to bypass step execution without stopping scenario execution (StepExecution.Bypass() method and ResultStatus.Bypassed enum value)
 + added ability to specify custom formatting rules for step parameters (Format/ParameterFormatter Attributes)
 + added ability to annotate scenarios with categories (ScenarioCategoryAttribute and implementation specific attributes)
 + changed Scenario level StatusDetails property to aggregate all step status details
