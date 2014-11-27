@@ -24,22 +24,34 @@ Features:
 * NUnit integration.</description>
 	<summary>$description$</summary>
     <releaseNotes>Summary:
-+ added integration with MsTest framework
-+ multiple improvements to Feature Summary generators
-+ improved debugging experience of LightBDD scenarios
-+ added XmlResultFormatterSchema.xsd
-+ better support for mixing steps of simplified and extended syntax
++ major improvements to Html features report summary (HtmlResultFormatter),
++ added ability to bypass step execution without stopping scenario execution,
++ added ability to specify custom formatting rules for step parameters,
++ added ability to annotate scenarios with categories,
++ many smaller improvements.
+
 Details:
-+ extended HtmlResultFormatter to display switch to show/hide each feature and scenario details
-+ extended HtmlResultFormatter to provide detailed summary about executed steps
-+ improved HtmlResultFormatter css styles, added labels to check boxes
-+ extended TestMetadataProvider to format stepType before is added to step name (allows to use methods like _ => Then_value_is(5))
-+ reorganized example projects to show the same tests in different test frameworks
-+ added integration with MsTest framework => LightBDD.MsTest
-+ extended FeatureCoordinator with OnBeforeFinish / OnAfterFinish events
-+ improved debugging experience of LightBDD scenarios
-+ extended PlainTextResultFormatter and XmlResultFormatter to include summary blocks like in HtmlResultFormatter
-+ added XmlResultFormatterSchema.xsd for FeaturesSummary.xml output xml file</releaseNotes>
++ added ability to bypass step execution without stopping scenario execution (StepExecution.Bypass() method and ResultStatus.Bypassed enum value)
++ added ability to specify custom formatting rules for step parameters (Format/ParameterFormatter Attributes)
++ added ability to annotate scenarios with categories (ScenarioCategoryAttribute and implementation specific attributes)
++ changed Scenario level StatusDetails property to aggregate all step status details
++ changed FeatureCoordinator to allow only one Finished() method call and report it's finalizer execution time and failures with System.Diagnostics.Trace()
++ enhanced parameterized steps to always capture constant parameter values, even if step has not been executed
++ enhanced IStepResult with StepName property providing detailed information on step name like base format, parameter list or step type (added IStepName, IStepNameDecorator, StepNameDecorators types)
++ HtmlResultFormatter: reorganized HTML output to support longer text in features and scenarios
++ HtmlResultFormatter: enhanced report to highlight step type and parameters
++ HtmlResultFormatter: added option to expand/collapse all features and/or scenarios
++ HtmlResultFormatter: added option to filter scenarios by category
++ HtmlResultFormatter: made Feature Summary table columns sortable
++ HtmlResultFormatter: added shareable link for speficic feature, scenario, Feature Details section and whole document, all preserving current filters selection
++ HtmlResultFormatter: added Average Duration column to Feature Summary block
++ HtmlResultFormatter: changed expand-collapse symbols to standard ones, to display them properly on android browsers
++ XmlResultFormatter: added step level StatusDetails element
++ PlainTextFormatter: labels are now printed after feature/scenario name, like in HtmlResultFormatter
++ all formatters: added information about scenario categories
++ TestMetadataProvider: added GetStepTypeName method
++ TestMetadataProvider: removed stepType from GetStepNameFormat signature, obsoleted version with stepType
++ added DebuggerStepThrough attribute to implementation specific metadata provider</releaseNotes>
     <copyright>Copyright © Wojciech Kotlarski 2013-2014</copyright>
     <tags>bdd tdd testing framework behavior driven development acceptance criteria nunit</tags>
 	<language>en-US</language>

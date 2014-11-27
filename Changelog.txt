@@ -31,7 +31,7 @@ Details:
 + all formatters: added information about scenario categories
 + TestMetadataProvider: added GetStepTypeName method
 + TestMetadataProvider: removed stepType from GetStepNameFormat signature, obsoleted version with stepType
-+ added DebuggerStepThrough to implementation specific metadata provider
++ added DebuggerStepThrough attribute to implementation specific metadata provider
 
 Version 1.5.1.1
 ----------------------------------------
