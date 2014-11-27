@@ -51,7 +51,8 @@ Details:
 + all formatters: added information about scenario categories
 + TestMetadataProvider: added GetStepTypeName method
 + TestMetadataProvider: removed stepType from GetStepNameFormat signature, obsoleted version with stepType
-+ added DebuggerStepThrough attribute to implementation specific metadata provider</releaseNotes>
++ added DebuggerStepThrough attribute to implementation specific metadata provider
++ exposed TimeFormatter extensions for pretty time span formatting</releaseNotes>
     <copyright>Copyright © Wojciech Kotlarski 2013-2014</copyright>
     <tags>bdd tdd testing framework behavior driven development acceptance criteria mbunit</tags>
 	<language>en-US</language>

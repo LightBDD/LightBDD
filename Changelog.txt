@@ -32,6 +32,7 @@ Details:
 + TestMetadataProvider: added GetStepTypeName method
 + TestMetadataProvider: removed stepType from GetStepNameFormat signature, obsoleted version with stepType
 + added DebuggerStepThrough attribute to implementation specific metadata provider
++ exposed TimeFormatter extensions for pretty time span formatting
 
 Version 1.5.1.1
 ----------------------------------------
