@@ -1,4 +1,8 @@
 Update docs with Categories
+Provide more details on Format attribute failures….
+Include failing steps that does not ‘parse’
+FeatureDescription override on child class
+Mark ignored and bypassed number in color, put a direct links to filtered content in summary
 
 Future:
 * specify CultureInfo in app config
