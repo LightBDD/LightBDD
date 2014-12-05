@@ -1,3 +1,5 @@
+Update docs with Categories
+
 Future:
 * specify CultureInfo in app config
 * step parameter decorator as stream writer
