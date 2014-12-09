@@ -36,8 +36,8 @@ Number of features: 1
 Number of scenarios: 2
 Passed scenarios: 0
 Bypassed scenarios: 0
-Failed scenarios: 1
-Ignored scenarios: 1
+Failed scenarios: 1 (see details)
+Ignored scenarios: 1 (see details)
 Number of steps: 5
 Passed steps: 1
 Bypassed steps: 1
@@ -87,7 +87,7 @@ Number of scenarios: 1
 Passed scenarios: 0
 Bypassed scenarios: 0
 Failed scenarios: 0
-Ignored scenarios: 1
+Ignored scenarios: 1 (see details)
 Number of steps: 2
 Passed steps: 1
 Bypassed steps: 0

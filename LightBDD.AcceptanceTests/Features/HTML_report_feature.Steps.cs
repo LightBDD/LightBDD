@@ -150,6 +150,11 @@ namespace LightBDD.AcceptanceTests.Features
             Assert.That(_driver.FindElementById("toggleScenarios").Selected, Is.EqualTo(selected));
         }
 
+        private void the_feature_filter_button_is_SELECTED([SelectedFormat]bool selected)
+        {
+            Assert.That(_driver.FindElementById("toggleFeatures").Selected, Is.EqualTo(selected));
+        }
+
         private void a_filter_status_button_is_clicked(ResultStatus status)
         {
             ClickLabeledButton(string.Format("show{0}", status));
@@ -185,6 +190,13 @@ namespace LightBDD.AcceptanceTests.Features
         private void a_category_filter_button_is_clicked(string category)
         {
             _driver.FindLabelByText(category).ClickWithWait();
+        }
+
+        private void the_link_to_details_of_STATUS_scenarios_is_clicked(ResultStatus status)
+        {
+            _driver.FindElementsByTagName("table").First(t => t.HasClassName("summary"))
+                .FindElements(By.TagName("td")).First(td => td.FindElements(By.TagName("span")).Any(span => span.HasClassName(status.ToString().ToLower() + "Alert")))
+                .FindElements(By.TagName("a")).First().ClickWithWait();
         }
 
         private void the_category_filter_button_is_SELECTED(string category, [SelectedFormat]bool selected)

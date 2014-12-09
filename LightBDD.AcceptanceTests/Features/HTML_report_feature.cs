@@ -339,5 +339,66 @@ I want to have HTML report")]
                 then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(true, 13)
                 );
         }
+
+        [Test]
+        public void Should_show_details_of_non_passed_scenarios()
+        {
+            Runner.RunScenario(
+                given => a_feature_result("featureA"),
+                and => the_feature_has_scenario_result_of_status("featureA", ResultStatus.Failed),
+                and => the_feature_has_scenario_result_of_status("featureA", ResultStatus.Ignored),
+                and => the_feature_has_scenario_result_of_status("featureA", ResultStatus.Bypassed),
+                and => a_html_report_is_created(),
+
+                when => a_html_report_is_opened(),
+                then => all_features_are_VISIBLE(true),
+                and => all_scenarios_are_VISIBLE(true),
+                and => all_steps_are_VISIBLE(true),
+
+                when => the_link_to_details_of_STATUS_scenarios_is_clicked(ResultStatus.Failed),
+                then => the_page_is_redirected_to_url_with_query_part(),
+                and => the_filter_status_button_is_SELECTED(ResultStatus.Passed, false),
+                and => the_filter_status_button_is_SELECTED(ResultStatus.Failed, true),
+                and => the_filter_status_button_is_SELECTED(ResultStatus.Ignored, false),
+                and => the_filter_status_button_is_SELECTED(ResultStatus.Bypassed, false),
+                and => the_filter_status_button_is_SELECTED(ResultStatus.NotRun, false),
+                and => the_feature_filter_button_is_SELECTED(true),
+                and => the_scenario_filter_button_is_SELECTED(false),
+
+                and => the_feature_scenario_is_VISIBLE(1, 1, true),
+                and => the_feature_scenario_is_VISIBLE(1, 2, false),
+                and => the_feature_scenario_is_VISIBLE(1, 3, false),
+                and => all_steps_are_VISIBLE(false),
+
+                when => the_link_to_details_of_STATUS_scenarios_is_clicked(ResultStatus.Ignored),
+                then => the_page_is_redirected_to_url_with_query_part(),
+                and => the_filter_status_button_is_SELECTED(ResultStatus.Passed, false),
+                and => the_filter_status_button_is_SELECTED(ResultStatus.Failed, false),
+                and => the_filter_status_button_is_SELECTED(ResultStatus.Ignored, true),
+                and => the_filter_status_button_is_SELECTED(ResultStatus.Bypassed, false),
+                and => the_filter_status_button_is_SELECTED(ResultStatus.NotRun, false),
+                and => the_feature_filter_button_is_SELECTED(true),
+                and => the_scenario_filter_button_is_SELECTED(false),
+
+                and => the_feature_scenario_is_VISIBLE(1, 1, false),
+                and => the_feature_scenario_is_VISIBLE(1, 2, true),
+                and => the_feature_scenario_is_VISIBLE(1, 3, false),
+                and => all_steps_are_VISIBLE(false),
+
+                when => the_link_to_details_of_STATUS_scenarios_is_clicked(ResultStatus.Bypassed),
+                then => the_page_is_redirected_to_url_with_query_part(),
+                and => the_filter_status_button_is_SELECTED(ResultStatus.Passed, false),
+                and => the_filter_status_button_is_SELECTED(ResultStatus.Failed, false),
+                and => the_filter_status_button_is_SELECTED(ResultStatus.Ignored, false),
+                and => the_filter_status_button_is_SELECTED(ResultStatus.Bypassed, true),
+                and => the_filter_status_button_is_SELECTED(ResultStatus.NotRun, false),
+                and => the_feature_filter_button_is_SELECTED(true),
+                and => the_scenario_filter_button_is_SELECTED(false),
+
+                and => the_feature_scenario_is_VISIBLE(1, 1, false),
+                and => the_feature_scenario_is_VISIBLE(1, 2, false),
+                and => the_feature_scenario_is_VISIBLE(1, 3, true),
+                and => all_steps_are_VISIBLE(false));
+        }
     }
 }

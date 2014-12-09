@@ -50,6 +50,10 @@ namespace LightBDD.Results.Formatters.Html
 
         private IHtmlNode WriteExecutionSummary()
         {
+            var bypassedScenarios = _features.CountScenariosWithStatus(ResultStatus.Bypassed);
+            var failedScenarios = _features.CountScenariosWithStatus(ResultStatus.Failed);
+            var ignoredScenarios = _features.CountScenariosWithStatus(ResultStatus.Ignored);
+
             return Html.Tag(Html5Tag.Section).Content(
                 Html.Tag(HtmlTextWriterTag.H1).Content("Execution summary"),
                 Html.Tag(Html5Tag.Article).Content(
@@ -59,16 +63,15 @@ namespace LightBDD.Results.Formatters.Html
                         GetKeyValueTableRow("Number of features:", _features.Length.ToString()),
                         GetKeyValueTableRow("Number of scenarios:", _features.CountScenarios()),
                         GetKeyValueTableRow("Passed scenarios:", _features.CountScenariosWithStatus(ResultStatus.Passed)),
-                        GetKeyValueTableRow("Bypassed scenarios:", _features.CountScenariosWithStatus(ResultStatus.Bypassed)),
-                        GetKeyValueTableRow("Failed scenarios:", _features.CountScenariosWithStatus(ResultStatus.Failed), "alert"),
-                        GetKeyValueTableRow("Ignored scenarios:", _features.CountScenariosWithStatus(ResultStatus.Ignored)),
+                        GetKeyValueTableRow("Bypassed scenarios:", bypassedScenarios, "bypassedAlert", "?ts=0&fp=0&ff=0&fi=0&fn=0#featureDetails"),
+                        GetKeyValueTableRow("Failed scenarios:", failedScenarios, "failedAlert", "?ts=0&fp=0&fb=0&fi=0&fn=0#featureDetails"),
+                        GetKeyValueTableRow("Ignored scenarios:", ignoredScenarios, "ignoredAlert", "?ts=0&fp=0&fb=0&ff=0&fn=0#featureDetails"),
                         GetKeyValueTableRow("Number of steps:", _features.CountSteps()),
                         GetKeyValueTableRow("Passed steps:", _features.CountStepsWithStatus(ResultStatus.Passed)),
-                        GetKeyValueTableRow("Bypassed steps:", _features.CountStepsWithStatus(ResultStatus.Bypassed)),
-                        GetKeyValueTableRow("Failed steps:", _features.CountStepsWithStatus(ResultStatus.Failed), "alert"),
-                        GetKeyValueTableRow("Ignored steps:", _features.CountStepsWithStatus(ResultStatus.Ignored)),
-                        GetKeyValueTableRow("Not Run steps:", _features.CountStepsWithStatus(ResultStatus.NotRun))
-                        )));
+                        GetKeyValueTableRow("Bypassed steps:", _features.CountStepsWithStatus(ResultStatus.Bypassed), "bypassedAlert"),
+                        GetKeyValueTableRow("Failed steps:", _features.CountStepsWithStatus(ResultStatus.Failed), "failedAlert"),
+                        GetKeyValueTableRow("Ignored steps:", _features.CountStepsWithStatus(ResultStatus.Ignored), "ignoredAlert"),
+                        GetKeyValueTableRow("Not Run steps:", _features.CountStepsWithStatus(ResultStatus.NotRun)))));
         }
 
         private static IHtmlNode GetKeyValueTableRow(string key, string value)
@@ -78,16 +81,23 @@ namespace LightBDD.Results.Formatters.Html
                 Html.Tag(HtmlTextWriterTag.Td).Content(value));
         }
 
-        private static IHtmlNode GetKeyValueTableRow(string key, int value, string classNameIfNotZero = null)
+        private static IHtmlNode GetKeyValueTableRow(string key, int value, string classNameIfNotZero = null, string detailsHref = null)
         {
-            var valueTag = Html.Tag(HtmlTextWriterTag.Td).Content(value.ToString());
+            var valueTag = Html.Tag(HtmlTextWriterTag.Span).Content(value.ToString());
 
             if (classNameIfNotZero != null && value != 0)
                 valueTag.Class(classNameIfNotZero);
 
+            var detailsTag = (detailsHref != null && value != 0)
+                ? Html.Tag(HtmlTextWriterTag.A)
+                    .Href(detailsHref)
+                    .Content("(see details)")
+                    .SpaceBefore()
+                : Html.Nothing();
+
             return Html.Tag(HtmlTextWriterTag.Tr).Content(
                 Html.Tag(HtmlTextWriterTag.Th).Content(key),
-                valueTag);
+                Html.Tag(HtmlTextWriterTag.Td).Content(valueTag, detailsTag));
         }
 
         private IHtmlNode WriteFeatureList()
@@ -139,15 +149,15 @@ namespace LightBDD.Results.Formatters.Html
 
                 Html.Tag(HtmlTextWriterTag.Td).Content(feature.Scenarios.Count().ToString()),
                 Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountScenariosWithStatus(ResultStatus.Passed).ToString()),
-                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountScenariosWithStatus(ResultStatus.Bypassed).ToString()),
-                GetNumericTagWithOptionalClass(HtmlTextWriterTag.Td, "alert", feature.CountScenariosWithStatus(ResultStatus.Failed)),
-                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountScenariosWithStatus(ResultStatus.Ignored).ToString()),
+                GetNumericTagWithOptionalClass(HtmlTextWriterTag.Td, "bypassedAlert", feature.CountScenariosWithStatus(ResultStatus.Bypassed)),
+                GetNumericTagWithOptionalClass(HtmlTextWriterTag.Td, "failedAlert", feature.CountScenariosWithStatus(ResultStatus.Failed)),
+                GetNumericTagWithOptionalClass(HtmlTextWriterTag.Td, "ignoredAlert", feature.CountScenariosWithStatus(ResultStatus.Ignored)),
 
                 Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountSteps().ToString()),
                 Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountStepsWithStatus(ResultStatus.Passed).ToString()),
-                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountStepsWithStatus(ResultStatus.Bypassed).ToString()),
-                GetNumericTagWithOptionalClass(HtmlTextWriterTag.Td, "alert", feature.CountStepsWithStatus(ResultStatus.Failed)),
-                Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountStepsWithStatus(ResultStatus.Ignored).ToString()),
+                GetNumericTagWithOptionalClass(HtmlTextWriterTag.Td, "bypassedAlert", feature.CountStepsWithStatus(ResultStatus.Bypassed)),
+                GetNumericTagWithOptionalClass(HtmlTextWriterTag.Td, "failedAlert", feature.CountStepsWithStatus(ResultStatus.Failed)),
+                GetNumericTagWithOptionalClass(HtmlTextWriterTag.Td, "ignoredAlert", feature.CountStepsWithStatus(ResultStatus.Ignored)),
                 Html.Tag(HtmlTextWriterTag.Td).Content(feature.CountStepsWithStatus(ResultStatus.NotRun).ToString()),
 
                 Html.Tag(HtmlTextWriterTag.Td).Content(testExecutionTime.FormatPretty()),
