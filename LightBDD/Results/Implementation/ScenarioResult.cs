@@ -54,6 +54,13 @@ namespace LightBDD.Results.Implementation
             StatusDetails = sb.Length > 0 ? sb.ToString() : null;
         }
 
+        public IScenarioResult SetFailureStatus(Exception exception)
+        {
+            Status = ResultStatus.Failed;
+            StatusDetails = exception.Message;
+            return this;
+        }
+
         public ScenarioResult SetExecutionTime(TimeSpan executionTime)
         {
             ExecutionTime = executionTime;

@@ -127,6 +127,23 @@ namespace LightBDD.UnitTests.Notification
         [TestCase(ResultStatus.Ignored)]
         [TestCase(ResultStatus.Passed)]
         [TestCase(ResultStatus.NotRun)]
+        public void NotifyScenarioFinished_should_print_scenario_result_without_execution_time(ResultStatus status)
+        {
+            string expectedText = string.Format("  SCENARIO RESULT: {0}{1}", status, Environment.NewLine);
+
+            var result = MockRepository.GenerateMock<IScenarioResult>();
+            result.Stub(r => r.Status).Return(status);
+            result.Stub(r => r.ExecutionTime).Return(null);
+
+            _subject.NotifyScenarioFinished(result);
+            Assert.That(_console.GetCapturedText(), Is.EqualTo(expectedText));
+        }
+
+        [Test]
+        [TestCase(ResultStatus.Failed)]
+        [TestCase(ResultStatus.Ignored)]
+        [TestCase(ResultStatus.Passed)]
+        [TestCase(ResultStatus.NotRun)]
         public void NotifyScenarioFinished_should_print_scenario_result_with_provided_details(ResultStatus status)
         {
             var executionTime = new TimeSpan(0, 0, 27);
@@ -137,6 +154,26 @@ got: B";
             var result = MockRepository.GenerateMock<IScenarioResult>();
             result.Stub(r => r.Status).Return(status);
             result.Stub(r => r.ExecutionTime).Return(executionTime);
+            result.Stub(r => r.StatusDetails).Return(details);
+
+            _subject.NotifyScenarioFinished(result);
+            Assert.That(_console.GetCapturedText(), Is.EqualTo(expectedText));
+        }
+
+        [Test]
+        [TestCase(ResultStatus.Failed)]
+        [TestCase(ResultStatus.Ignored)]
+        [TestCase(ResultStatus.Passed)]
+        [TestCase(ResultStatus.NotRun)]
+        public void NotifyScenarioFinished_should_print_scenario_result_with_provided_details_but_no_execution_time(ResultStatus status)
+        {
+            string details = @"expected: A
+got: B";
+            string expectedText = string.Format("  SCENARIO RESULT: {0}{1}    expected: A{1}    got: B{1}", status, Environment.NewLine);
+
+            var result = MockRepository.GenerateMock<IScenarioResult>();
+            result.Stub(r => r.Status).Return(status);
+            result.Stub(r => r.ExecutionTime).Return(null);
             result.Stub(r => r.StatusDetails).Return(details);
 
             _subject.NotifyScenarioFinished(result);

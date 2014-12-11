@@ -62,7 +62,11 @@ namespace LightBDD.Notification
         /// </summary>
         public void NotifyScenarioFinished(IScenarioResult scenarioResult)
         {
-            Console.WriteLine("  SCENARIO RESULT: {0} after {1}", scenarioResult.Status, scenarioResult.ExecutionTime.FormatPretty());
+            if (scenarioResult.ExecutionTime.HasValue)
+                Console.WriteLine("  SCENARIO RESULT: {0} after {1}", scenarioResult.Status, scenarioResult.ExecutionTime.FormatPretty());
+            else
+                Console.WriteLine("  SCENARIO RESULT: {0}", scenarioResult.Status);
+
             if (!string.IsNullOrWhiteSpace(scenarioResult.StatusDetails))
                 Console.WriteLine("    {0}", scenarioResult.StatusDetails.Replace("\n", "\n    "));
         }

@@ -1,5 +1,4 @@
 Update docs with Categories
-Include failing steps that does not ‘parse’
 
 Future:
 * specify CultureInfo in app config

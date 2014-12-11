@@ -428,6 +428,22 @@ namespace LightBDD.UnitTests
             Assert.That(ex.Message, Is.EqualTo("Unable to format 'value' parameter of step 3 'Step_with_wrong_formatter': Input string was not in a correct format."));
         }
 
+        [Test]
+        public void Should_collect_results_for_not_scenarios_causing_formatting_failures()
+        {
+            try
+            {
+                _subject.RunScenario(call => Step_with_wrong_formatter(22));
+            }
+            catch { }
+
+            var result = _subject.Result.Scenarios.Single();
+            Assert.That(result.Name, Is.EqualTo("Should collect results for not scenarios causing formatting failures"));
+            Assert.That(result.Status, Is.EqualTo(ResultStatus.Failed));
+            Assert.That(result.Steps, Is.Empty);
+            Assert.That(result.StatusDetails, Is.EqualTo("Unable to format 'value' parameter of step 1 'Step_with_wrong_formatter': Input string was not in a correct format."));
+        }
+
         private static void AssertStepName(IStepResult step, string stepTypeName, string nameFormat, params StepParameterExpectation[] expectedParameters)
         {
             Assert.That(step.StepName, Is.Not.Null);

@@ -22,7 +22,7 @@ namespace LightBDD.Execution.Implementation
         public void Execute(Scenario scenario, IEnumerable<IStep> steps)
         {
             _progressNotifier.NotifyScenarioStart(scenario.Name, scenario.Label);
-            var stepsToExecute = steps.ToArray();
+            var stepsToExecute = PrepareSteps(scenario, steps);
 
             var watch = new Stopwatch();
             var scenarioStartTime = DateTimeOffset.UtcNow;
@@ -42,6 +42,26 @@ namespace LightBDD.Execution.Implementation
                     ScenarioExecuted.Invoke(result);
 
                 _progressNotifier.NotifyScenarioFinished(result);
+            }
+        }
+
+        [DebuggerStepThrough]
+        private IStep[] PrepareSteps(Scenario scenario, IEnumerable<IStep> steps)
+        {
+            try
+            {
+                return steps.ToArray();
+            }
+            catch (Exception e)
+            {
+                var result = new ScenarioResult(scenario.Name, new IStepResult[0], scenario.Label, scenario.Categories)
+                    .SetFailureStatus(e);
+
+                if (ScenarioExecuted != null)
+                    ScenarioExecuted.Invoke(result);
+
+                _progressNotifier.NotifyScenarioFinished(result);
+                throw;
             }
         }
 
