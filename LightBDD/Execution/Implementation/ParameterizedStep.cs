@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using LightBDD.Execution.Exceptions;
 using LightBDD.Execution.Implementation.Parameters;
 using LightBDD.Notification;
@@ -11,6 +12,7 @@ namespace LightBDD.Execution.Implementation
 {
     internal class ParameterizedStep<TContext> : IStep
     {
+        private readonly MethodInfo _stepMethod;
         private readonly TContext _context;
         private readonly Action<StepType, TContext, object[]> _action;
         private readonly IStepParameter<TContext>[] _parameters;
@@ -22,8 +24,9 @@ namespace LightBDD.Execution.Implementation
         public IStepResult GetResult() { return _result; }
 
         [DebuggerStepThrough]
-        public ParameterizedStep(TContext context, Action<StepType, TContext, object[]> action, IStepParameter<TContext>[] parameters, string formattedStepTypeName, string stepNameFormat, int stepNumber, Func<Type, ResultStatus> mapping)
+        public ParameterizedStep(MethodInfo stepMethod, TContext context, Action<StepType, TContext, object[]> action, IStepParameter<TContext>[] parameters, string formattedStepTypeName, string stepNameFormat, int stepNumber, Func<Type, ResultStatus> mapping)
         {
+            _stepMethod = stepMethod;
             _context = context;
             _action = action;
             _parameters = parameters;
@@ -31,7 +34,7 @@ namespace LightBDD.Execution.Implementation
             _stepNameFormat = stepNameFormat;
             _stepNumber = stepNumber;
             _mapping = mapping;
-            _result = new StepResult(stepNumber, new StepName(stepNameFormat, formattedStepTypeName, GetNotEvaluatedParameterDetails()), ResultStatus.NotRun);
+            _result = new StepResult(stepNumber, new StepName(stepNameFormat, formattedStepTypeName, GetParameterDetails()), ResultStatus.NotRun);
         }
 
         [DebuggerStepThrough]
@@ -65,7 +68,7 @@ namespace LightBDD.Execution.Implementation
         [DebuggerStepThrough]
         private void InvokeStepWithEvaluatedParameters(IProgressNotifier progressNotifier, int totalCount)
         {
-            _result = new StepResult(_stepNumber, new StepName(_stepNameFormat, _formattedStepTypeName, GetEvaluatedParameterDetails()), ResultStatus.NotRun);
+            _result = new StepResult(_stepNumber, new StepName(_stepNameFormat, _formattedStepTypeName, GetParameterDetails()), ResultStatus.NotRun);
 
             progressNotifier.NotifyStepStart(_result.Name, _stepNumber, totalCount);
             MeasuredInvoke(_parameters.Select(p => p.Value).ToArray());
@@ -96,7 +99,7 @@ namespace LightBDD.Execution.Implementation
         }
 
         [DebuggerStepThrough]
-        private IStepParameter[] GetNotEvaluatedParameterDetails()
+        private IStepParameter[] GetParameterDetails()
         {
             return _parameters.Select(CreateStepParameterDetails).ToArray();
         }
@@ -104,13 +107,14 @@ namespace LightBDD.Execution.Implementation
         [DebuggerStepThrough]
         private IStepParameter CreateStepParameterDetails(IStepParameter<TContext> parameter)
         {
-            return new StepParameter(parameter.IsEvaluated, parameter.Format());
-        }
-
-        [DebuggerStepThrough]
-        private IStepParameter[] GetEvaluatedParameterDetails()
-        {
-            return _parameters.Select(param => (IStepParameter)new StepParameter(true, param.Format())).ToArray();
+            try
+            {
+                return new StepParameter(parameter.IsEvaluated, parameter.Format());
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException(string.Format("Unable to format '{0}' parameter of step {1} '{2}': {3}", parameter.Name, _stepNumber, _stepMethod.Name, e.Message), e);
+            }
         }
 
         public override string ToString()

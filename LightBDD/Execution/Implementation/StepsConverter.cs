@@ -68,7 +68,7 @@ namespace LightBDD.Execution.Implementation
             var action = CompileAction<TContext>(methodExpression, stepTypeParameter, contextParameter);
             var methodParameterInfo = methodExpression.Method.GetParameters();
             var arguments = methodExpression.Arguments.Select((arg, index) => CompileArgument<TContext>(arg, stepTypeParameter, contextParameter, methodParameterInfo[index])).ToArray();
-            return new ParameterizedStep<TContext>(context, action, arguments, stepTypeName, stepNameFormat, stepNumber, _mapExceptionToStatus);
+            return new ParameterizedStep<TContext>(methodExpression.Method, context, action, arguments, stepTypeName, stepNameFormat, stepNumber, _mapExceptionToStatus);
         }
 
         private IStepParameter<TContext> CompileArgument<TContext>(Expression argumentExpression, ParameterExpression stepTypeParameter, ParameterExpression contextParameter, ParameterInfo parameterInfo)
@@ -76,10 +76,10 @@ namespace LightBDD.Execution.Implementation
             var formatter = _metadataProvider.GetStepParameterFormatter(parameterInfo);
             var expression = argumentExpression as ConstantExpression;
             if (expression != null)
-                return new ConstantStepParameter<TContext>(expression.Value, formatter);
+                return new ConstantStepParameter<TContext>(parameterInfo.Name, expression.Value, formatter);
 
             var compiledParam = Expression.Lambda<Func<StepType, TContext, object>>(Expression.Convert(argumentExpression, typeof(object)), stepTypeParameter, contextParameter).Compile();
-            return new MutableStepParameter<TContext>(compiledParam, formatter);
+            return new MutableStepParameter<TContext>(parameterInfo.Name, compiledParam, formatter);
         }
 
         private static Action<StepType, TContext, object[]> CompileAction<TContext>(MethodCallExpression methodCall, ParameterExpression stepTypeParameter, ParameterExpression contextParameter)

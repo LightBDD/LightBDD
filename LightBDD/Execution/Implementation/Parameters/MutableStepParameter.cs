@@ -9,8 +9,9 @@ namespace LightBDD.Execution.Implementation.Parameters
         private readonly Func<StepType, TContext, object> _function;
         private readonly Func<object, string> _formatFunction;
 
-        public MutableStepParameter(Func<StepType, TContext, object> function, Func<object, string> formatFunction)
+        public MutableStepParameter(string name, Func<StepType, TContext, object> function, Func<object, string> formatFunction)
         {
+            Name = name;
             _function = function;
             _formatFunction = formatFunction;
             IsEvaluated = false;
@@ -26,6 +27,7 @@ namespace LightBDD.Execution.Implementation.Parameters
 
         public bool IsEvaluated { get; private set; }
         public object Value { get; private set; }
+        public string Name { get; private set; }
 
         public string Format()
         {

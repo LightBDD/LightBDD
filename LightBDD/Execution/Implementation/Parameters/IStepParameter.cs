@@ -5,6 +5,7 @@ namespace LightBDD.Execution.Implementation.Parameters
         void Evaluate(TContext context);
         bool IsEvaluated { get; }
         object Value { get; }
+        string Name { get; }
         string Format();
     }
 }

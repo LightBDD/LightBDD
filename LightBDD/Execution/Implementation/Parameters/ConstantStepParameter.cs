@@ -8,8 +8,9 @@ namespace LightBDD.Execution.Implementation.Parameters
     {
         private readonly Func<object, string> _formatFunction;
 
-        public ConstantStepParameter(object value, Func<object, string> formatFunction)
+        public ConstantStepParameter(string name, object value, Func<object, string> formatFunction)
         {
+            Name = name;
             Value = value;
             _formatFunction = formatFunction;
         }
@@ -20,6 +21,8 @@ namespace LightBDD.Execution.Implementation.Parameters
 
         public bool IsEvaluated { get { return true; } }
         public object Value { get; private set; }
+        public string Name { get; private set; }
+
         public string Format()
         {
             return _formatFunction(Value);

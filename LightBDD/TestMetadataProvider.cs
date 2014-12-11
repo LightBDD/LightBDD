@@ -175,8 +175,6 @@ namespace LightBDD
         /// <summary>
         /// Returns formatted and capitalized step type name or string.Empty if step is meaningless.
         /// </summary>
-        /// <param name="stepType"></param>
-        /// <returns></returns>
         public string GetStepTypeName(string stepType)
         {
             return string.IsNullOrWhiteSpace(stepType) ? string.Empty : NameFormatter.Format(stepType).ToUpperInvariant().Trim();

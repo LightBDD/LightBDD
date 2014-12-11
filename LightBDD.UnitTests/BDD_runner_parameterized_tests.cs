@@ -417,6 +417,17 @@ namespace LightBDD.UnitTests
             Assert.That(ex.Message, Is.EqualTo("Parameter can contain only one attribute ParameterFormatterAttribute. Parameter: parameter, Detected attributes: FormatAttribute, OtherFormatter"));
         }
 
+        [Test]
+        public void Should_provide_details_about_failing_parameter_formatter()
+        {
+            var ex = Assert.Throws<ArgumentException>(() => _subject.RunScenario(
+                call => Step_one(),
+                call => Step_two(),
+                call => Step_with_wrong_formatter(32)));
+
+            Assert.That(ex.Message, Is.EqualTo("Unable to format 'value' parameter of step 3 'Step_with_wrong_formatter': Input string was not in a correct format."));
+        }
+
         private static void AssertStepName(IStepResult step, string stepTypeName, string nameFormat, params StepParameterExpectation[] expectedParameters)
         {
             Assert.That(step.StepName, Is.Not.Null);
@@ -539,6 +550,8 @@ namespace LightBDD.UnitTests
         private void Step_with_multiple_formatters_on_one_parameter([Format("{0}"), OtherFormatter]string parameter)
         {
         }
+
+        private void Step_with_wrong_formatter([Format("{0")]decimal value) { }
     }
     class OtherFormatter : ParameterFormatterAttribute
     {

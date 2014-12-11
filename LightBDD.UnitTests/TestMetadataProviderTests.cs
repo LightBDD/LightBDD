@@ -10,6 +10,7 @@ namespace LightBDD.UnitTests
         private TestMetadataProvider _subject;
 
         [ScenarioCategory("BaseC")]
+        [FeatureDescription("BaseDescription")]
         class BaseClass
         {
             [ScenarioCategory("BaseMA")]
@@ -19,6 +20,7 @@ namespace LightBDD.UnitTests
         }
 
         [ScenarioCategory("DerivedC")]
+        [FeatureDescription("DerivedDescription")]
         class DerivedClass : BaseClass
         {
             [ScenarioCategory("DerivedMB")]
@@ -31,6 +33,11 @@ namespace LightBDD.UnitTests
             {
             }
         }
+
+        [Description("base")]
+        class OtherBase{}
+        [Description("derived")]
+        class OtherDerived:OtherBase{}
 
         #region Setup/Teardown
 
@@ -64,6 +71,18 @@ namespace LightBDD.UnitTests
             Assert.That(
                 _subject.GetScenarioCategories(typeof(DerivedClass).GetMethod("MethodA")).ToArray(),
                 Is.EqualTo(new[] { "BaseC", "BaseMA" }));
+        }
+
+        [Test]
+        public void Should_collect_redefined_feature_description_from_derived_class()
+        {
+            Assert.That(_subject.GetFeatureDescription(typeof(DerivedClass)),Is.EqualTo("DerivedDescription"));
+        }
+
+        [Test]
+        public void Should_collect_redefined_description_from_derived_class()
+        {
+            Assert.That(_subject.GetFeatureDescription(typeof(OtherDerived)), Is.EqualTo("derived"));
         }
     }
 }
