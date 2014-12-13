@@ -8,6 +8,7 @@
     <owners>Wojciech Kotlarski</owners>
     <licenseUrl>http://opensource.org/licenses/BSD-2-Clause</licenseUrl>
     <projectUrl>https://github.com/Suremaker/LightBDD</projectUrl>
+	<iconUrl>https://raw.githubusercontent.com/Suremaker/LightBDD/master/logo/lightbdd.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Allows creating acceptance tests in developer friendly environment.
 
@@ -22,36 +23,11 @@ Features:
 * Possibility to configure multiple result summaries in app.config file,
 * VS Project Item templates for feature test files</description>
 	<summary>$description$</summary>
-    <releaseNotes>Summary:
-+ major improvements to Html features report summary (HtmlResultFormatter),
-+ added ability to bypass step execution without stopping scenario execution,
-+ added ability to specify custom formatting rules for step parameters,
-+ added ability to annotate scenarios with categories,
-+ many smaller improvements.
-
-Details:
-+ added ability to bypass step execution without stopping scenario execution (StepExecution.Bypass() method and ResultStatus.Bypassed enum value)
-+ added ability to specify custom formatting rules for step parameters (Format/ParameterFormatter Attributes)
-+ added ability to annotate scenarios with categories (ScenarioCategoryAttribute and implementation specific attributes)
-+ changed Scenario level StatusDetails property to aggregate all step status details
-+ changed FeatureCoordinator to allow only one Finished() method call and report it's finalizer execution time and failures with System.Diagnostics.Trace()
-+ enhanced parameterized steps to always capture constant parameter values, even if step has not been executed
-+ enhanced IStepResult with StepName property providing detailed information on step name like base format, parameter list or step type (added IStepName, IStepNameDecorator, StepNameDecorators types)
-+ HtmlResultFormatter: reorganized HTML output to support longer text in features and scenarios
-+ HtmlResultFormatter: enhanced report to highlight step type and parameters
-+ HtmlResultFormatter: added option to expand/collapse all features and/or scenarios
-+ HtmlResultFormatter: added option to filter scenarios by category
-+ HtmlResultFormatter: made Feature Summary table columns sortable
-+ HtmlResultFormatter: added shareable link for speficic feature, scenario, Feature Details section and whole document, all preserving current filters selection
-+ HtmlResultFormatter: added Average Duration column to Feature Summary block
-+ HtmlResultFormatter: changed expand-collapse symbols to standard ones, to display them properly on android browsers
-+ XmlResultFormatter: added step level StatusDetails element
-+ PlainTextFormatter: labels are now printed after feature/scenario name, like in HtmlResultFormatter
-+ all formatters: added information about scenario categories
-+ TestMetadataProvider: added GetStepTypeName method
-+ TestMetadataProvider: removed stepType from GetStepNameFormat signature, obsoleted version with stepType
-+ added DebuggerStepThrough attribute to implementation specific metadata provider
-+ exposed TimeFormatter extensions for pretty time span formatting</releaseNotes>
+    <releaseNotes>+ HtmlResultFormatter: highlighted ignored and bypassed scenarios and provided links to scenario details
++ Modified parameterized steps to provide detailed information on parameters causing format failure during scenario execution
++ Included scenarios causing initialization failure due to parameter formatting problems in reports
++ Added FormatBooleanAttribute for formatting step parameters of boolean type
++ HtmlResultFormatter: added favicon and footer to HTML report</releaseNotes>
     <copyright>Copyright © Wojciech Kotlarski 2013-2014</copyright>
     <tags>bdd tdd testing framework behavior driven development acceptance criteria</tags>
 	<language>en-US</language>
