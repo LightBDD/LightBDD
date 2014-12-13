@@ -1,6 +1,14 @@
 LightBDD
 ===========================================
 
+Version 1.6.1
+----------------------------------------
++ HtmlResultFormatter: highlighted ignored and bypassed scenarios and provided links to scenario details
++ Modified parameterized steps to provide detailed information on parameters causing format failure during scenario execution
++ Included scenarios causing initialization failure due to parameter formatting problems in reports
++ Added FormatBooleanAttribute for formatting step parameters of boolean type
++ HtmlResultFormatter: added favicon and footer to HTML report
+
 Version 1.6.0
 ----------------------------------------
 Summary:
