@@ -70,6 +70,7 @@
     <Compile Include="Execution\Implementation\ScenarioExecutor.cs" />
     <Compile Include="Execution\Implementation\Step.cs" />
     <Compile Include="Execution\Implementation\StepsConverter.cs" />
+    <Compile Include="Formatting\Parameters\FormatBooleanAttribute.cs" />
     <Compile Include="ScenarioCategoryAttribute.cs" />
     <Compile Include="FeatureDescriptionAttribute.cs" />
     <Compile Include="Formatting\Parameters\FormatAttribute.cs" />

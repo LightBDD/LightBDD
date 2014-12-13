@@ -396,18 +396,25 @@ namespace LightBDD.UnitTests
         [Test]
         public void Should_capture_step_name_with_parameters_having_custom_formatters()
         {
-            _subject.RunScenario(call => Method_with_amount_percentage_and_other_value(42, 42, 42));
+            _subject.RunScenario(
+                call => Method_with_amount_percentage_and_other_value(42, 42, 42),
+                call => Today_is_BEAUTIFUL_day(true),
+                call => Today_is_BEAUTIFUL_day(false));
 
             var steps = _subject.Result.Scenarios.Single().Steps.ToArray();
             StepResultExpectation.Assert(steps, new[]
             {
-                new StepResultExpectation(1, "CALL Method with amount \"$42.00\" percentage \"42%\" and other value \"42\"", ResultStatus.Passed)
+                new StepResultExpectation(1, "CALL Method with amount \"$42.00\" percentage \"42%\" and other value \"42\"", ResultStatus.Passed),
+                new StepResultExpectation(2, "CALL Today is \"beautiful\" day", ResultStatus.Passed),
+                new StepResultExpectation(3, "CALL Today is \"ugly\" day", ResultStatus.Passed),
             });
 
-            AssertStepName(steps[0], "CALL", "Method with amount \"{0}\" percentage \"{1}\" and other value \"{2}\"",
-                new StepParameterExpectation("$42.00", true),
-                new StepParameterExpectation("42%", true),
-                new StepParameterExpectation("42", true));
+            AssertStepName(steps[1], "CALL", "Today is \"{0}\" day", new StepParameterExpectation("beautiful", true));
+            AssertStepName(steps[2], "CALL", "Today is \"{0}\" day", new StepParameterExpectation("ugly", true));
+        }
+
+        private void Today_is_BEAUTIFUL_day([FormatBoolean("beautiful", "ugly")]bool beautiful)
+        {
         }
 
         [Test]
