@@ -1,6 +1,6 @@
 ﻿Summary:
-	Test execution start time: 2014-11-27 21:34:27 UTC
-	Test execution time      : 113ms
+	Test execution start time: 2014-12-13 19:35:22 UTC
+	Test execution time      : 107ms
 	Number of features       : 6
 	Number of scenarios      : 11
 	Passed scenarios         : 7
@@ -19,11 +19,11 @@ Feature: Basket feature [Story-4]
 	As a customer
 	I want to add products to basket
 
-	Scenario: No product in stock [Ticket-6] - Passed (28ms)
+	Scenario: No product in stock [Ticket-6] - Passed (26ms)
 		Categories: Sales
 		Step 1: Given product is out of stock - Passed (<1ms)
 		Step 2: When customer adds it to basket - Passed (<1ms)
-		Step 3: Then product addition is unsuccessful - Passed (3ms)
+		Step 3: Then product addition is unsuccessful - Passed (2ms)
 		Step 4: Then basket does not contain product - Passed (1ms)
 
 	Scenario: Successful addition [Ticket-7] - Ignored (5ms)
@@ -41,13 +41,13 @@ Feature: Contacts management [Story-6]
 	As an application user
 	I want to add, browse and remove my contacts
 
-	Scenario: Contact book should allow me to add multiple contacts [Ticket-8] - Passed (20ms)
+	Scenario: Contact book should allow me to add multiple contacts [Ticket-8] - Passed (19ms)
 		Step 1: Given my contact book is empty - Passed (<1ms)
 		Step 2: When I add new contacts - Passed (1ms)
-		Step 3: Then all of expected contacts would be available in contact book - Passed (15ms)
+		Step 3: Then all of expected contacts would be available in contact book - Passed (14ms)
 
-	Scenario: Contact book should allow me to remove all contacts [Ticket-9] - Bypassed (7ms)
-		Step 1: Given my contact book is filled with many contacts - Passed (2ms)
+	Scenario: Contact book should allow me to remove all contacts [Ticket-9] - Bypassed (8ms)
+		Step 1: Given my contact book is filled with many contacts - Passed (3ms)
 		Step 2: When I clear it - Bypassed (1ms)
 		Step 3: Then contact book is empty - Passed (1ms)
 		Details:
@@ -64,7 +64,7 @@ Feature: Invoice feature [Story-2]
 	As a customer
 	I want to receive invoice for bought items
 
-	Scenario: Receiving invoice for products [Ticket-4] - Ignored (10ms)
+	Scenario: Receiving invoice for products [Ticket-4] - Ignored (7ms)
 		Categories: Sales
 		Step 1: GIVEN Product "wooden desk" is available in products storage - Passed (<1ms)
 		Step 2: AND Product "wooden shelf" is available in products storage - Passed (<1ms)
@@ -111,7 +111,7 @@ Feature: Login feature [Story-1]
 		Step 5: Then login is unsuccessful - Passed (<1ms)
 		Step 6: Then invalid login or password error message is returned - Passed (<1ms)
 
-	Scenario: Wrong password provided causes login to fail [Ticket-2] - Passed (3ms)
+	Scenario: Wrong password provided causes login to fail [Ticket-2] - Passed (2ms)
 		Categories: Security
 		Step 1: Given user is about to login - Passed (<1ms)
 		Step 2: Given user entered valid login - Passed (<1ms)
@@ -130,7 +130,7 @@ Feature: Product spedition feature [Story-3]
 	As a spedition manager
 	I want to dispatch products to customer as soon as the payment is finalized
 
-	Scenario: Should dispatch product after payment is finalized [Ticket-5] - Passed (3ms)
+	Scenario: Should dispatch product after payment is finalized [Ticket-5] - Passed (4ms)
 		Categories: Delivery, Sales
 		Step 1: GIVEN There is an active customer with id "ABC-123" - Passed (<1ms)
 		Step 2: GIVEN Customer has product "wooden shelf" in basket - Passed (<1ms)
