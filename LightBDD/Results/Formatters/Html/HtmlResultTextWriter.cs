@@ -63,9 +63,9 @@ namespace LightBDD.Results.Formatters.Html
                         GetKeyValueTableRow("Number of features:", _features.Length.ToString()),
                         GetKeyValueTableRow("Number of scenarios:", _features.CountScenarios()),
                         GetKeyValueTableRow("Passed scenarios:", _features.CountScenariosWithStatus(ResultStatus.Passed)),
-                        GetKeyValueTableRow("Bypassed scenarios:", bypassedScenarios, "bypassedAlert", "?ts=0&fp=0&ff=0&fi=0&fn=0#featureDetails"),
-                        GetKeyValueTableRow("Failed scenarios:", failedScenarios, "failedAlert", "?ts=0&fp=0&fb=0&fi=0&fn=0#featureDetails"),
-                        GetKeyValueTableRow("Ignored scenarios:", ignoredScenarios, "ignoredAlert", "?ts=0&fp=0&fb=0&ff=0&fn=0#featureDetails"),
+                        GetKeyValueTableRow("Bypassed scenarios:", bypassedScenarios, "bypassedAlert", "bypassedDetails"),
+                        GetKeyValueTableRow("Failed scenarios:", failedScenarios, "failedAlert", "failedDetails"),
+                        GetKeyValueTableRow("Ignored scenarios:", ignoredScenarios, "ignoredAlert", "ignoredDetails"),
                         GetKeyValueTableRow("Number of steps:", _features.CountSteps()),
                         GetKeyValueTableRow("Passed steps:", _features.CountStepsWithStatus(ResultStatus.Passed)),
                         GetKeyValueTableRow("Bypassed steps:", _features.CountStepsWithStatus(ResultStatus.Bypassed), "bypassedAlert"),
@@ -81,16 +81,17 @@ namespace LightBDD.Results.Formatters.Html
                 Html.Tag(HtmlTextWriterTag.Td).Content(value));
         }
 
-        private static IHtmlNode GetKeyValueTableRow(string key, int value, string classNameIfNotZero = null, string detailsHref = null)
+        private static IHtmlNode GetKeyValueTableRow(string key, int value, string classNameIfNotZero = null, string detailsId = null)
         {
             var valueTag = Html.Tag(HtmlTextWriterTag.Span).Content(value.ToString());
 
             if (classNameIfNotZero != null && value != 0)
                 valueTag.Class(classNameIfNotZero);
 
-            var detailsTag = (detailsHref != null && value != 0)
+            var detailsTag = (detailsId != null && value != 0)
                 ? Html.Tag(HtmlTextWriterTag.A)
-                    .Href(detailsHref)
+                    .Id(detailsId)
+                    .Href("#")
                     .Content("(see details)")
                     .SpaceBefore()
                 : Html.Nothing();
@@ -396,7 +397,7 @@ namespace LightBDD.Results.Formatters.Html
                         WriteExecutionSummary(),
                         WriteFeatureList(),
                         WriteFeatureDetails(),
-                        Html.Tag(HtmlTextWriterTag.Script).Content("applyOptionsFromLink();", false, false)
+                        Html.Tag(HtmlTextWriterTag.Script).Content("initialize();", false, false)
                         )))
                 .Flush();
         }

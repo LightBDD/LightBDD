@@ -194,6 +194,21 @@ function applyOptionsFromLink() {
         .where(function (c) { return c.dataset.filterName === cat; })
         .do(function (c) { c.click(); });
     }
+
+}
+
+function applyLink(linkId, href) {
+    var link = document.getElementById(linkId);
+    if (link != null)
+        link.href = href;
+}
+
+function initialize() {
+    applyLink('bypassedDetails', '?ts=0&fp=0&ff=0&fi=0&fn=0#featureDetails');
+    applyLink('failedDetails', '?ts=0&fp=0&fb=0&fi=0&fn=0#featureDetails');
+    applyLink('ignoredDetails', '?ts=0&fp=0&fb=0&ff=0&fn=0#featureDetails');
+
+    applyOptionsFromLink();
     initialized = true;
     applyFilter();
 }
