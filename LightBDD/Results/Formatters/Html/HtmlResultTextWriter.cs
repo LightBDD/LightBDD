@@ -16,7 +16,10 @@ namespace LightBDD.Results.Formatters.Html
         private readonly HtmlTextWriter _writer;
         private readonly string _styles = ReadResource("LightBDD.Results.Formatters.Html.styles.css");
         private readonly string _scripts = ReadResource("LightBDD.Results.Formatters.Html.scripts.js");
+        private readonly string _favico = ReadBase64Resource("LightBDD.Results.Formatters.Html.lightbdd_small.ico");
+
         private readonly IFeatureResult[] _features;
+
         private readonly IDictionary<string, string> _categories;
 
         public HtmlResultTextWriter(Stream outputStream, IFeatureResult[] features)
@@ -41,6 +44,16 @@ namespace LightBDD.Results.Formatters.Html
             using (var stream = typeof(HtmlResultTextWriter).Assembly.GetManifestResourceStream(path))
             using (var reader = new StreamReader(stream))
                 return reader.ReadToEnd();
+        }
+
+        private static string ReadBase64Resource(string path)
+        {
+            using (var stream = typeof(HtmlResultTextWriter).Assembly.GetManifestResourceStream(path))
+            using (var memoryStream = new MemoryStream())
+            {
+                stream.CopyTo(memoryStream);
+                return Convert.ToBase64String(memoryStream.ToArray());
+            }
         }
 
         public void Dispose()
@@ -390,6 +403,10 @@ namespace LightBDD.Results.Formatters.Html
                 .WriteTag(Html.Tag(HtmlTextWriterTag.Html).Content(
                     Html.Tag(HtmlTextWriterTag.Head).Content(
                         Html.Tag(HtmlTextWriterTag.Meta).Attribute("charset", "UTF-8"),
+                        Html.Tag(HtmlTextWriterTag.Link)
+                            .Attribute(HtmlTextWriterAttribute.Rel, "shortcut icon")
+                            .Attribute(HtmlTextWriterAttribute.Type, "image/x-icon")
+                            .Attribute(HtmlTextWriterAttribute.Href, "data:image/ico;base64," + _favico),
                         Html.Tag(HtmlTextWriterTag.Title).Content("Summary"),
                         Html.Tag(HtmlTextWriterTag.Style).Content(_styles, false, false),
                         Html.Tag(HtmlTextWriterTag.Script).Content(_scripts, false, false)),
@@ -397,6 +414,7 @@ namespace LightBDD.Results.Formatters.Html
                         WriteExecutionSummary(),
                         WriteFeatureList(),
                         WriteFeatureDetails(),
+                        Html.Tag(HtmlTextWriterTag.Div).Class("footer").Content(Html.Text("Generated with "), Html.Tag(HtmlTextWriterTag.A).Content("LightBDD").Href("https://github.com/Suremaker/LightBDD")),
                         Html.Tag(HtmlTextWriterTag.Script).Content("initialize();", false, false)
                         )))
                 .Flush();

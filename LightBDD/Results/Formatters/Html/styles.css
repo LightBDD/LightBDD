@@ -68,3 +68,5 @@ input[type="radio"]:checked + * .chbox:before{border-radius: 50%; background-col
 label{ display: inline-block;}
 .optionsPanel #optionsLink {display: block; visibility: hidden;margin: 0.1em 0 0.5em 6em;font-weight: bold;}
 .optionsPanel:hover #optionsLink{ visibility: visible;}
+.footer{ font-size: x-small;text-align: center;}
+.footer a{ font-weight: bold;}

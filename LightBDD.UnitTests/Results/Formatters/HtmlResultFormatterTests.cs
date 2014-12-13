@@ -68,7 +68,8 @@ NotRun 3. step5
 Step 1: bypass reason
 Step 2: Expected: True
 	  But was: False
-applyOptionsFromLink();";
+Generated with LightBDD
+initialize();";
             Assert.That(text, Is.EqualTo(expectedText));
         }
 
@@ -105,7 +106,8 @@ My feature[&#8734;link]
 Ignored name (25ms)[&#8734;link]
 Passed 1. step1 (20ms)
 Ignored 2. step2 (5ms)
-applyOptionsFromLink();";
+Generated with LightBDD
+initialize();";
             Assert.That(text, Is.EqualTo(expectedText));
         }
 
@@ -146,7 +148,8 @@ My feature2[&#8734;link]
 Passed scenario1 (20ms)[&#8734;link]
 categoryB
 Passed 1. step1 (20ms)
-applyOptionsFromLink();";
+Generated with LightBDD
+initialize();";
             Assert.That(text, Is.EqualTo(expectedText));
         }
 
