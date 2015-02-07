@@ -9,3 +9,5 @@ test-results
 packages
 NuGet
 OpenCover
+reports
+TestResults
