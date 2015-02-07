@@ -86,9 +86,11 @@ namespace LightBDD.UnitTests
             const string scenarioName = "Scenario name";
             const string label = "Label-12";
 
+#pragma warning disable 0618
             _subject.RunScenario<CustomContext>(scenarioName, label,
                 Given_shared_value_is_5,
                 Then_shared_value_is_passed_to_second_step_and_still_match_5);
+#pragma warning restore 0618
 
             var result = _subject.Result.Scenarios.Single();
             Assert.That(result.Name, Is.EqualTo(scenarioName));
@@ -105,10 +107,11 @@ namespace LightBDD.UnitTests
         public void Should_collect_results_for_customized_scenario_with_shared_context_but_no_label()
         {
             const string scenarioName = "Scenario name";
-
+#pragma warning disable 0618
             _subject.RunScenario<CustomContext>(scenarioName,
                 Given_shared_value_is_5,
                 Then_shared_value_is_passed_to_second_step_and_still_match_5);
+#pragma warning restore 0618
 
             var result = _subject.Result.Scenarios.Single();
             Assert.That(result.Name, Is.EqualTo(scenarioName));
@@ -127,8 +130,10 @@ namespace LightBDD.UnitTests
             const string scenarioName = "Scenario name";
             const string label = "Label-1";
 
+#pragma warning disable 0618
             _subject.RunScenario(new CustomContext { Shared = 3 }, scenarioName, label,
                 Step_checking_shared_value_eq_3);
+#pragma warning restore 0618
 
             var result = _subject.Result.Scenarios.Single();
             Assert.That(result.Name, Is.EqualTo(scenarioName));
@@ -145,8 +150,10 @@ namespace LightBDD.UnitTests
         {
             const string scenarioName = "Scenario name";
 
+#pragma warning disable 0618
             _subject.RunScenario(new CustomContext { Shared = 3 }, scenarioName,
                 Step_checking_shared_value_eq_3);
+#pragma warning restore 0618
 
             var result = _subject.Result.Scenarios.Single();
             Assert.That(result.Name, Is.EqualTo(scenarioName));

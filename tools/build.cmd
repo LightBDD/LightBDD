@@ -1,11 +1,10 @@
 @echo off
-call:build && call:unit_test_core && call:unit_test_nunit && call:unit_test_mbunit && call:unit_test_mstest && call:acceptance_test && call:report_tests
-if %errorlevel% equ 0 echo Build finished successfully!
+call:build && call:unit_test_core && call:unit_test_nunit && call:unit_test_mbunit && call:unit_test_mstest && call:acceptance_test && call:report_tests && echo Build finished successfully!
 goto:eof
 
 :build
 call:_print Building solution
-%windir%\Microsoft.NET\Framework64\v4.0.30319\msbuild.exe LightBDD.sln /t:Clean,Build /p:Configuration=Release /m /verbosity:q /nologo
+%windir%\Microsoft.NET\Framework64\v4.0.30319\msbuild.exe LightBDD.sln /t:Clean,Build /p:Configuration=Release /m /verbosity:q /nologo /p:TreatWarningsAsErrors=true
 goto:eof
 
 :unit_test_core
@@ -86,7 +85,7 @@ goto:eof
 
 :_check_coverage
 call:_print_s Checking coverage level
-set "ACCEPTABLE_COVERAGE=99"
+set "ACCEPTABLE_COVERAGE=95"
 findstr /r "<Coverage>[0-9.]*%%</Coverage>" reports\coveragereport\Summary.xml > reports\coveragereport\_coverage.log
 for /F "tokens=2 delims=>%%" %%i in (reports\coveragereport\_coverage.log) do set "COVERAGE=%%i"
 echo Code coverage is %COVERAGE%%%
@@ -94,4 +93,5 @@ echo Code coverage is %COVERAGE%%%
 if %COVERAGE% LSS %ACCEPTABLE_COVERAGE% (
 echo ERROR: %ACCEPTABLE_COVERAGE%%% code coverage is not reached!
 exit /B 1
+)
 goto:eof

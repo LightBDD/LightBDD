@@ -79,7 +79,9 @@ namespace LightBDD.UnitTests
         public void Should_collect_scenario_result_for_explicitly_named_scenario()
         {
             const string scenarioName = "my scenario";
+#pragma warning disable 0618
             _subject.RunScenario(scenarioName, Step_one, Step_two);
+#pragma warning restore 0618
             var result = _subject.Result.Scenarios.Single();
             Assert.That(result.Name, Is.EqualTo(scenarioName));
             Assert.That(result.Label, Is.Null);
@@ -96,7 +98,9 @@ namespace LightBDD.UnitTests
         {
             const string scenarioName = "my scenario";
             const string scenarioLabel = "label";
+#pragma warning disable 0618
             _subject.RunScenario(scenarioName, scenarioLabel, Step_one, Step_two);
+#pragma warning restore 0618
             var result = _subject.Result.Scenarios.Single();
             Assert.That(result.Name, Is.EqualTo(scenarioName));
             Assert.That(result.Label, Is.EqualTo(scenarioLabel));
@@ -262,7 +266,7 @@ namespace LightBDD.UnitTests
             for (int i = 0; i < 3000; ++i)
                 scenarios.Add(i.ToString(CultureInfo.InvariantCulture));
 
-            scenarios.AsParallel().ForAll(scenario => _subject.RunScenario(scenario, Step_one, Step_two));
+            scenarios.AsParallel().ForAll(scenario => _subject.NewScenario(scenario).Run(Step_one, Step_two));
 
             Assert.That(_subject.Result.Scenarios.Select(s => s.Name).ToArray(), Is.EquivalentTo(scenarios));
         }

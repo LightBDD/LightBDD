@@ -6,6 +6,7 @@ using LightBDD.Results;
 using LightBDD.Results.Formatters;
 using NUnit.Framework;
 using Rhino.Mocks;
+#pragma warning disable 0618
 
 namespace LightBDD.UnitTests.Coordination
 {
