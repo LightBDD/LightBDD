@@ -1,0 +1,1 @@
+& $PSScriptRoot\make.ps1 -NuGetSource 'd:\dev\psmake;https://www.nuget.org/api/v2/' @args

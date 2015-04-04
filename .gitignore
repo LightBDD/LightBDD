@@ -11,3 +11,4 @@ NuGet
 OpenCover
 reports
 TestResults
+make/psmake.*
