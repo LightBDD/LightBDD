@@ -81,7 +81,7 @@ namespace LightBDD.UnitTests
 
         private static void FormatTime(string label, DateTimeOffset? start, TimeSpan? elapsed)
         {
-            Console.WriteLine("{0}: {1:HH\\:mm\\:ss.fff} + {2} -> {3:HH\\:mm\\:ss.fff}", label, start, elapsed,start+elapsed);
+            Debug.WriteLine("{0}: {1:HH\\:mm\\:ss.fff} + {2} -> {3:HH\\:mm\\:ss.fff}", label, start, elapsed,start+elapsed);
         }
 
         private void AssertStepsExecutionTimesAreDoneInOrder()

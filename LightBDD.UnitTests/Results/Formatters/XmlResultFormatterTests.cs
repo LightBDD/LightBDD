@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Xml.Linq;
 using System.Xml.Schema;
 using LightBDD.Results.Formatters;
@@ -34,7 +35,7 @@ namespace LightBDD.UnitTests.Results.Formatters
         {
             var result = ResultFormatterTestData.GetFeatureResultWithDescription();
             var text = _subject.Format(result);
-            Console.WriteLine(text);
+            Debug.WriteLine(text);
 
             const string expectedText = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <TestResults>
@@ -80,7 +81,7 @@ Step 2: Expected: True
         {
             var result = ResultFormatterTestData.GetFeatureResultWithoutDescriptionNorLabelNorDetails();
             var text = _subject.Format(result);
-            Console.WriteLine(text);
+            Debug.WriteLine(text);
 
             const string expectedText = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <TestResults>
@@ -106,7 +107,7 @@ Step 2: Expected: True
             var results = ResultFormatterTestData.GetMultipleFeatureResults();
 
             var text = _subject.Format(results);
-            Console.WriteLine(text);
+            Debug.WriteLine(text);
             const string expectedText = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <TestResults>
   <Summary TestExecutionStart=""2014-09-23T19:21:58.055Z"" TestExecutionTime=""PT0.04S"">

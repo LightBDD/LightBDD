@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using LightBDD.Results.Formatters;
 using NUnit.Framework;
 
@@ -24,7 +25,7 @@ namespace LightBDD.UnitTests.Results.Formatters
         {
             var result = ResultFormatterTestData.GetFeatureResultWithDescription();
             var text = _subject.Format(result);
-            Console.WriteLine(text);
+            Debug.WriteLine(text);
             const string expectedText = @"Summary:
 	Test execution start time: 2014-09-23 19:21:58 UTC
 	Test execution time      : 1m 04s
@@ -70,7 +71,7 @@ Feature: My feature [Label 1]
         {
             var result = ResultFormatterTestData.GetFeatureResultWithoutDescriptionNorLabelNorDetails();
             var text = _subject.Format(result);
-            Console.WriteLine(text);
+            Debug.WriteLine(text);
             const string expectedText = @"Summary:
 	Test execution start time: 2014-09-23 19:21:58 UTC
 	Test execution time      : 25ms
@@ -102,7 +103,7 @@ Feature: My feature
             var results = ResultFormatterTestData.GetMultipleFeatureResults();
 
             var text = _subject.Format(results);
-            Console.WriteLine(text);
+            Debug.WriteLine(text);
             const string expectedText = @"Summary:
 	Test execution start time: 2014-09-23 19:21:58 UTC
 	Test execution time      : 40ms

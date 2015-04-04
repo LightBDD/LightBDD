@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using HtmlAgilityPack;
@@ -160,7 +161,7 @@ initialize();";
             doc.LoadHtml(formatted);
             var body = doc.DocumentNode.SelectSingleNode("//body");
             var builder = FormatAllNodes(new HtmlToPlainTextFormatter(), body);
-            Console.WriteLine(builder.ToString());
+            Debug.WriteLine(builder.ToString());
             return builder.ToString();
         }
 

@@ -274,7 +274,8 @@ namespace LightBDD.UnitTests
         [Test]
         public void Should_use_console_progress_notifier_by_default()
         {
-            Assert.That(new TestableBDDRunner(GetType()).ProgressNotifier, Is.InstanceOf<ConsoleProgressNotifier>());
+            using (new ConsoleInterceptor())
+                Assert.That(new TestableBDDRunner(GetType()).ProgressNotifier, Is.InstanceOf<ConsoleProgressNotifier>());
         }
 
         [Test]
