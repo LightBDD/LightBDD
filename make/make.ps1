@@ -1,4 +1,4 @@
-$private:PsMakeVer = '3.0.1.0'
+$private:PsMakeVer = '3.1.0.0'
 $private:PsMakeNugetSource = $null
 
 function private:Get-NuGetArgs ($params, $defaultSource)
