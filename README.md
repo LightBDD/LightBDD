@@ -217,7 +217,13 @@ or to clone sources from git: `git clone git://github.com/Suremaker/LightBDD.git
 Please check [Templates](https://github.com/Suremaker/LightBDD/tree/master/Templates) folder for details how to install them.
 
 ## Limitations
-In order to display scenario names properly, the project containing feature classes has to be compiled in **Debug** mode or with **[assembly: Debuggable(true, true)]** attribute or scenario methods have to have **[MethodImpl(MethodImplOptions.NoInlining)]** attribute applied, or **BDDRunner.RunScenarios()** has to be called with explicit scenario name.
+In order to display scenario names properly, the project containing feature classes has to:
+* be compiled in **Debug** mode, or
+* with **[assembly: Debuggable(true, true)]** attribute, or
+* scenario methods have to have **[MethodImpl(MethodImplOptions.NoInlining)]** attribute applied, or
+* **BDDRunner.RunScenarios()** has to be called with explicit scenario name.
+
+The simplest and easisest fix for this problem is to add **[assembly: Debuggable(true, true)]** to the **AssemblyInfo.cs** in test project.
 
 ## Wiki
 Please check project [wiki](https://github.com/Suremaker/LightBDD/wiki) for more details.
