@@ -1,2 +1,5 @@
-Please copy all/chosen folders located in Templates folder into [USER_PATH]\Documents\Visual Studio [VERSION]\Templates\ItemTemplates\Visual C# folder.
-Item templates would appear in Visual Studio in Visual C# Items group.
+Please copy content of:
+* ItemTemplates folder into [USER_PATH]\Documents\Visual Studio [VERSION]\Templates\ItemTemplates\Visual C# folder,
+* ProjectTemplates folder into [USER_PATH]\Documents\Visual Studio [VERSION]\Templates\ProjectTemplates\Visual C# folder.
+
+Project/Item templates would appear in Visual Studio in Visual C# group after Visual Studio restart.

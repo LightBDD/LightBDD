@@ -3,6 +3,7 @@ obj
 *ReSharper*
 *.suo
 *.user
+*.bak
 build/Output
 *.userprefs
 test-results

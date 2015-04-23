@@ -44,6 +44,5 @@ Features:
 	<file src="..\README.md" target="." />
 	<file src="..\QuickStart.txt" target="readme.txt" />
 	<file src="..\XmlResultFormatterSchema.xsd" target="." />
-	<file src="..\Templates\LightBDD NUnit\*" target="Templates\LightBDD NUnit" />
   </files>
 </package>
