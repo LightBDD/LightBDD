@@ -6,10 +6,9 @@ namespace $rootnamespace$
 {
 	public partial class $safeitemname$
 	{
-		private BDDRunner _runner;
+		private readonly BDDRunner _runner;
 
-		[TestFixtureSetUp]
-		public void FixtureSetUp()
+		public $safeitemname$()
 		{
 			_runner = new BDDRunner(GetType());
 		}
@@ -20,15 +19,7 @@ namespace $rootnamespace$
 			FeatureCoordinator.Instance.AddFeature(_runner.Result);
 		}
 
-		private void Given_template_method()
-		{
-		}
-
-		private void When_template_method()
-		{
-		}
-
-		private void Then_template_method()
+		private void Template_method()
 		{
 		}
 	}

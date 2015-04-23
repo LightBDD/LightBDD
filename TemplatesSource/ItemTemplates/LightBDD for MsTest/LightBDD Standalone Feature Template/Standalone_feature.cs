@@ -3,20 +3,20 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace $rootnamespace$
 {
-	[FeatureDescription(
+	[Label("FEAT-1"), FeatureDescription(
 @"In order to 
 As a
 I want to ")]
 	[TestClass]
 	public partial class $safeitemname$
 	{
-		[TestMethod]
+		[Label("SCENARIO-1"), TestMethod]
 		public void Template_scenario()
 		{
 			_runner.RunScenario(
-				Given_template_method,
-				When_template_method,
-				Then_template_method);
+				given => Template_method(),
+				when => Template_method(),
+				then => Template_method());
 		}
 	}	
 }

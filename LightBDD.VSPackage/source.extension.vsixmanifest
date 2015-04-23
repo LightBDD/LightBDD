@@ -6,7 +6,8 @@
     <Description xml:space="preserve">A collection of Project / Item templates for LightBDD testing framework</Description>
     <MoreInfo>https://github.com/Suremaker/LightBDD</MoreInfo>
     <License>LICENSE.txt</License>
-    <Icon>lightbdd.ico</Icon>
+    <Icon>lightbdd_small.ico</Icon>
+    <PreviewImage>Preview.PNG</PreviewImage>
     <Tags>lightbdd bdd tdd testing framework behavior driven development acceptance criteria nunit mbunit mstest vstest</Tags>
   </Metadata>
   <Installation InstalledByMsi="false">

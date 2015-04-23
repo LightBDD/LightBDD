@@ -1,13 +1,13 @@
 <VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
   <TemplateData>
-    <Name>LightBDD.NUnit.ProjectTemplate</Name>
-    <Description>&lt;No description available&gt;</Description>
+    <Name>LightBDD MbUnit Test Project</Name>
+    <Description>A project for creating LightBDD tests based on MbUnit framework.</Description>
     <ProjectType>CSharp</ProjectType>
     <ProjectSubType>
     </ProjectSubType>
     <SortOrder>1000</SortOrder>
     <CreateNewFolder>true</CreateNewFolder>
-    <DefaultName>LightBDD.NUnit.ProjectTemplate</DefaultName>
+    <DefaultName>LightBDDTests</DefaultName>
     <ProvideDefaultName>true</ProvideDefaultName>
     <LocationField>Enabled</LocationField>
     <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
@@ -15,7 +15,7 @@
     <PromptForSaveOnCreation>true</PromptForSaveOnCreation>
   </TemplateData>
   <TemplateContent>
-    <Project TargetFileName="LightBDD.NUnit.ProjectTemplate.csproj" File="LightBDD.NUnit.ProjectTemplate.csproj" ReplaceParameters="true">
+    <Project TargetFileName="LightBDDTests.csproj" File="LightBDDTests.csproj" ReplaceParameters="true">
       <ProjectItem ReplaceParameters="true" TargetFileName="App.config">App.config</ProjectItem>
       <ProjectItem ReplaceParameters="true" TargetFileName="My_feature.cs">My_feature.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true" TargetFileName="My_feature.Steps.cs">My_feature.Steps.cs</ProjectItem>

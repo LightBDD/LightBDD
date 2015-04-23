@@ -13,15 +13,7 @@ namespace $rootnamespace$
             _runner = BDDRunnerFactory.GetRunnerFor(GetType(), () => new ConsoleProgressNotifier());
         }
 
-		private void Given_template_method()
-		{
-		}
-
-		private void When_template_method()
-		{
-		}
-
-		private void Then_template_method()
+		private void Template_method()
 		{
 		}
 	}

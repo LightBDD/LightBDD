@@ -1,16 +1,16 @@
 ﻿using LightBDD;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace $rootnamespace$
+namespace $safeprojectname$
 {
 	[Label("FEAT-1"), FeatureDescription(
 @"In order to 
 As a
 I want to ")]
-	[TestFixture]
-	public partial class $safeitemname$
+	[TestClass]
+	public partial class My_feature
 	{
-		[Label("SCENARIO-1"), Test]
+		[Label("SCENARIO-1"), TestMethod]
 		public void Template_scenario()
 		{
 			Runner.RunScenario(
@@ -18,5 +18,5 @@ I want to ")]
 				when => Template_method(),
 				then => Template_method());
 		}
-	}	
+	}
 }
