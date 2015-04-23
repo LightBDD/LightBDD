@@ -12,7 +12,7 @@
     <LocationField>Enabled</LocationField>
     <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
     <Icon>logo.ico</Icon>
-	<PromptForSaveOnCreation>true</PromptForSaveOnCreation>
+    <PromptForSaveOnCreation>true</PromptForSaveOnCreation>
   </TemplateData>
   <TemplateContent>
     <Project TargetFileName="LightBDD.NUnit.ProjectTemplate.csproj" File="LightBDD.NUnit.ProjectTemplate.csproj" ReplaceParameters="true">
@@ -30,8 +30,6 @@
     <FullClassName>NuGet.VisualStudio.TemplateWizard</FullClassName>
   </WizardExtension>
   <WizardData>
-    <packages repository="template">
-      <package id="LightBDD.NUnit" version="1.6.1.0" />
-    </packages>
+    <packages repository="template"></packages>
   </WizardData>
 </VSTemplate>

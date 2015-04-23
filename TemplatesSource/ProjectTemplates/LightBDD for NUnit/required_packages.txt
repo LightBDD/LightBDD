@@ -1,0 +1,3 @@
+NUnit
+LightBDD.Core
+LightBDD.NUnit
