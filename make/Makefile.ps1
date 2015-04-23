@@ -40,13 +40,13 @@ Define-Step -Name 'Tests' -Target 'all,test' -Body {
 }
 
 Define-Step -Name 'Packaging' -Target 'all,pack' -Body {
-	Remove-Item NuGet -Force -Recurse -ErrorAction SilentlyContinue | Out-Null
-	mkdir NuGet | Out-Null
-	.nuget\NuGet.exe pack -sym LightBDD\LightBDD.csproj -OutputDirectory NuGet -Prop Configuration=Release
-	.nuget\NuGet.exe pack -sym LightBDD.NUnit\LightBDD.NUnit.csproj -OutputDirectory NuGet -Prop Configuration=Release
-	.nuget\NuGet.exe pack -sym LightBDD.MbUnit\LightBDD.MbUnit.csproj -OutputDirectory NuGet -Prop Configuration=Release
-	.nuget\NuGet.exe pack -sym LightBDD.MsTest\LightBDD.MsTest.csproj -OutputDirectory NuGet -Prop Configuration=Release
-	.nuget\NuGet.exe pack LightBDD.nuspec -OutputDirectory NuGet
+	Remove-Item 'output' -Force -Recurse -ErrorAction SilentlyContinue | Out-Null
+	mkdir 'output' | Out-Null
+	.nuget\NuGet.exe pack -sym LightBDD\LightBDD.csproj -OutputDirectory 'output' -Prop Configuration=Release
+	.nuget\NuGet.exe pack -sym LightBDD.NUnit\LightBDD.NUnit.csproj -OutputDirectory 'output' -Prop Configuration=Release
+	.nuget\NuGet.exe pack -sym LightBDD.MbUnit\LightBDD.MbUnit.csproj -OutputDirectory 'output' -Prop Configuration=Release
+	.nuget\NuGet.exe pack -sym LightBDD.MsTest\LightBDD.MsTest.csproj -OutputDirectory 'output' -Prop Configuration=Release
+	.nuget\NuGet.exe pack LightBDD.nuspec -OutputDirectory 'output'
 }
 
 Define-Step -Name 'Prepare templates' -Target 'all,pack' -Body {
@@ -67,7 +67,7 @@ Define-Step -Name 'Prepare templates' -Target 'all,pack' -Body {
 
         foreach($package in $packages)
         {
-            $pkgFile = Get-ChildItem -Path "NuGet","Packages" -Recurse -Include "$package.*.nupkg" -Exclude "*.symbols.nupkg" | Select-Object -First 1            
+            $pkgFile = Get-ChildItem -Path "output","Packages" -Recurse -Include "$package.*.nupkg" -Exclude "*.symbols.nupkg" | Select-Object -First 1            
             if(!$pkgFile) { throw "Package $package not found!" }
             Copy-Item $pkgFile -Destination $targetDirectory
             
@@ -102,4 +102,5 @@ Define-Step -Name 'Prepare templates' -Target 'all,pack' -Body {
 
 Define-Step -Name 'Build VSIX package' -Target 'all,pack' -Body {
 	call "${env:ProgramFiles(x86)}\MSBuild\12.0\Bin\msbuild.exe" LightBDD.VSPackage.sln /t:"Clean,Build" /p:Configuration=Release /m /verbosity:m /nologo /p:TreatWarningsAsErrors=true
+    copy-item 'LightBDD.VSPackage\bin\Release\LightBDD.VSPackage.vsix' -Destination 'output'
 }

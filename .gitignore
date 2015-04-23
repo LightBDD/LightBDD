@@ -8,7 +8,7 @@ build/Output
 *.userprefs
 test-results
 packages
-NuGet
+output
 OpenCover
 reports
 TestResults
