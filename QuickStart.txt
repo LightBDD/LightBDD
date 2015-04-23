@@ -4,11 +4,8 @@ LightBDD Quick Start:
 Visual Studio Project Item Templates:
 -------------------------------------
 
-Template zip files are included within this package.
-Please copy them together with LightBDD [TEST_FRAMEWORK] folder to Visual Studio ItemTemplates folder:
-
-From: packages\LightBDD [VERSION]\Templates
-To: [USER_PATH]\Documents\Visual Studio [VERSION]\Templates\ItemTemplates\Visual C#
+Project and Item templates for LightBDD tests can be downloaded from: https://github.com/Suremaker/LightBDD/tree/master/Templates
+For VisualStudio 2013, it is possible also to install 'LightBDD for Visual Studio' extension from Visual Studio Gallery.
 
 Acceptance tests creation:
 -------------------------------------

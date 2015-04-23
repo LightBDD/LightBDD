@@ -8,6 +8,8 @@ Version 1.6.1
 + Included scenarios causing initialization failure due to parameter formatting problems in reports
 + Added FormatBooleanAttribute for formatting step parameters of boolean type
 + HtmlResultFormatter: added favicon and footer to HTML report
++ Removed Item Templates from LightBDD packages
++ Created 'LightBDD for Visual Studio' extension (available on Visual Studio Gallery)
 
 Version 1.6.0
 ----------------------------------------
