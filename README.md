@@ -23,7 +23,7 @@ This additional layer becomes the root of most problems when maintaining tests, 
 * Possibility to run parameterized steps with smart rules of inserting argument values to formatted step name,
 * Feature result summary available in XML, HTML or Plain text format,
 * Possibility to configure multiple result summaries in app.config file,
-* VS Project / Item templates for feature test files,
+* VisualStudio templates for test projects and test classes ([see details](#vs-project-item-templates)),
 * Integrated with [NUnit](http://www.nunit.org/), [MbUnit](https://code.google.com/p/mb-unit/) and [MsTest](http://msdn.microsoft.com/en-us/library/ms243147) frameworks.
 
 ### Tests structure and conventions
