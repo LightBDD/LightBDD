@@ -23,7 +23,7 @@ This additional layer becomes the root of most problems when maintaining tests, 
 * Possibility to run parameterized steps with smart rules of inserting argument values to formatted step name,
 * Feature result summary available in XML, HTML or Plain text format,
 * Possibility to configure multiple result summaries in app.config file,
-* VS Project Item templates for feature test files,
+* VS Project / Item templates for feature test files,
 * Integrated with [NUnit](http://www.nunit.org/), [MbUnit](https://code.google.com/p/mb-unit/) and [MsTest](http://msdn.microsoft.com/en-us/library/ms243147) frameworks.
 
 ### Tests structure and conventions
@@ -214,7 +214,8 @@ or to clone sources from git: `git clone git://github.com/Suremaker/LightBDD.git
 
 ## VS Project Item Templates
 **LightBDD** project offers also set of templates that can be installed in Visual Studio.
-Please check [Templates](https://github.com/Suremaker/LightBDD/tree/master/Templates) folder for details how to install them.
+They can be installed via [Visual Studio Gallery](https://visualstudiogallery.msdn.microsoft.com/99be2036-a6b3-462c-9111-3ca31a317da2) (Visual Studio 2013 only) or manually.
+For manual installation details, please check [Templates](https://github.com/Suremaker/LightBDD/tree/master/Templates) folder.
 
 ## Limitations
 In order to display scenario names properly, the project containing feature classes has to:
