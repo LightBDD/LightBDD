@@ -236,7 +236,10 @@ Since 1.4.0.0 version, nuget packages for LightBDD are being pushed together wit
 
 In short, it is needed to do two actions in Visual Studio:
 * go to TOOLS->Options->Debugging->General and uncheck 'Enable Just My Code',
-* go to TOOLS->Options->Debugging->Symbols and add 'http://srv.symbolsource.org/pdb/Public' as a symbol location.
+* go to TOOLS->Options->Debugging->General and check 'Enable source server support',
+* go to TOOLS->Options->Debugging->Symbols and add 'http://srv.symbolsource.org/pdb/Public' as a symbol location
+
+More information on: [http://www.symbolsource.org/Public/Home/VisualStudio](http://www.symbolsource.org/Public/Home/VisualStudio).
 
 ## More information about LightBDD
 
