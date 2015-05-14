@@ -234,6 +234,10 @@ Please check project [wiki](https://github.com/Suremaker/LightBDD/wiki) for more
 Since 1.4.0.0 version, nuget packages for LightBDD are being pushed together with symbol packages.
 [The easy way to publish NuGet packages with sources](http://blog.davidebbo.com/2011/04/easy-way-to-publish-nuget-packages-with.html) article describes how to enable debugging with symbols downloaded from **SymbolSource.org**. Please check *What the package Consumer needs to do* article section for details.
 
+In short, it is needed to do two actions in Visual Studio:
+* go to TOOLS->Options->Debugging->General and uncheck 'Enable Just My Code',
+* go to TOOLS->Options->Debugging->Symbols and add 'http://srv.symbolsource.org/pdb/Public' as a symbol location.
+
 ## More information about LightBDD
 
 If you are interested about background of LightBDD creation or getting insight into what is driving it's evolution, please feel free to take a look at my [blog posts](http://woitech.eu/blog/category/lightbdd/).
