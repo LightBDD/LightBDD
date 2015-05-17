@@ -324,5 +324,15 @@ namespace LightBDD.UnitTests
             Assert.That(scenarios[0].Steps.Select(s => s.ToString()).ToArray(), Is.EqualTo(new[] { "1 Step one: Passed", "2 Step two: Passed" }));
             Assert.That(scenarios[1].Steps.Select(s => s.ToString()).ToArray(), Is.EqualTo(new[] { "1 CALL Step throwing exception \"abc\": Failed (abc)" }));
         }
+
+        [Test]
+        public void AbstractBDDRunner_should_interpret_step_type_from_steps()
+        {
+            _subject.RunScenario(Given_something, When_something, Then_something);
+
+            Assert.That(
+                _subject.Result.Scenarios.First().Steps.Select(s => s.ToString()).ToArray(),
+                Is.EqualTo(new[] { "1 GIVEN something: Passed", "2 WHEN something: Passed", "3 THEN something: Passed" }));
+        }
     }
 }

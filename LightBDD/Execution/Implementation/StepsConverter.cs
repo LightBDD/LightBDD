@@ -24,46 +24,55 @@ namespace LightBDD.Execution.Implementation
         public IEnumerable<IStep> Convert(IEnumerable<Action> steps)
         {
             int i = 0;
-            return steps.Select(step => new Step(step, _metadataProvider.GetStepName(step.Method), ++i, _mapExceptionToStatus));
+            return steps.Select(step => CreateStep(step, step.Method, ++i));
         }
 
         public IEnumerable<IStep> Convert<TContext>(TContext context, IEnumerable<Action<TContext>> steps)
         {
             int i = 0;
-            return steps.Select(step => new Step(() => step(context), _metadataProvider.GetStepName(step.Method), ++i, _mapExceptionToStatus));
+            return steps.Select(step => CreateStep(() => step(context), step.Method, ++i));
         }
 
         public IEnumerable<IStep> Convert(IEnumerable<Expression<Action<StepType>>> steps)
         {
             int i = 0;
-            return steps.Select(step => CreateStep(step, ++i));
+            return steps.Select(step => CreateParameterizedStep(step, ++i));
         }
 
         public IEnumerable<IStep> Convert<TContext>(TContext context, IEnumerable<Expression<Action<StepType, TContext>>> steps)
         {
             int i = 0;
-            return steps.Select(step => CreateStep(context, step, ++i));
+            return steps.Select(step => CreateParameterizedStep(context, step, ++i));
         }
 
-        private IStep CreateStep(Expression<Action<StepType>> stepExpression, int stepNumber)
+        private Step CreateStep(Action step, MethodInfo stepMethod, int stepNumber)
+        {
+            var stepName = _metadataProvider.GetStepName(stepMethod);
+            var stepTypeName = _metadataProvider.GetStepTypeNameFromFormattedStepName(ref stepName);
+            return new Step(step, stepTypeName, stepName, stepNumber, _mapExceptionToStatus);
+        }
+
+        private IStep CreateParameterizedStep(Expression<Action<StepType>> stepExpression, int stepNumber)
         {
             var stepTypeParameter = stepExpression.Parameters[0];
             var contextParameter = Expression.Parameter(typeof(object));
-            return CreateStep((object)null, stepExpression, stepNumber, stepTypeParameter, contextParameter);
+            return CreateParameterizedStep((object)null, stepExpression, stepNumber, stepTypeParameter, contextParameter);
         }
 
-        private IStep CreateStep<TContext>(TContext context, Expression<Action<StepType, TContext>> stepExpression, int stepNumber)
+        private IStep CreateParameterizedStep<TContext>(TContext context, Expression<Action<StepType, TContext>> stepExpression, int stepNumber)
         {
             var stepTypeParameter = stepExpression.Parameters[0];
             var contextParameter = stepExpression.Parameters[1];
-            return CreateStep(context, stepExpression, stepNumber, stepTypeParameter, contextParameter);
+            return CreateParameterizedStep(context, stepExpression, stepNumber, stepTypeParameter, contextParameter);
         }
 
-        private IStep CreateStep<TExpression, TContext>(TContext context, Expression<TExpression> stepExpression, int stepNumber, ParameterExpression stepTypeParameter, ParameterExpression contextParameter)
+        private IStep CreateParameterizedStep<TExpression, TContext>(TContext context, Expression<TExpression> stepExpression, int stepNumber, ParameterExpression stepTypeParameter, ParameterExpression contextParameter)
         {
             var methodExpression = GetMethodExpression(stepExpression);
             var stepNameFormat = _metadataProvider.GetStepNameFormat(methodExpression.Method);
             var stepTypeName = _metadataProvider.GetStepTypeName(stepTypeParameter.Name);
+            if (stepTypeName == string.Empty)
+                stepTypeName = _metadataProvider.GetStepTypeNameFromFormattedStepName(ref stepNameFormat);
 
             var action = CompileAction<TContext>(methodExpression, stepTypeParameter, contextParameter);
             var methodParameterInfo = methodExpression.Method.GetParameters();

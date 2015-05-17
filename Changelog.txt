@@ -1,6 +1,10 @@
 LightBDD
 ===========================================
 
+Version 1.6.2
+----------------------------------------
++ Extended TestMetadataProvider to determine a step type name (given, when, then, setup, and) basing on step name, if type is not provided explicitly (GetStepTypeNameFromFormattedStepName)
+
 Version 1.6.1
 ----------------------------------------
 + HtmlResultFormatter: highlighted ignored and bypassed scenarios and provided links to scenario details

@@ -18,5 +18,7 @@ namespace LightBDD.Configuration
         {
             get { return (SummaryWriterCollection)this[SUMMARY_WRITERS_FIELD]; }
         }
+
+
     }
 }

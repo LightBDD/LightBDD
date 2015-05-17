@@ -155,10 +155,10 @@ namespace LightBDD.UnitTests
             var result = _subject.Result.Scenarios.Single();
             StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResultExpectation(1, "Given product \"wooden desk\" is available in product storage", ResultStatus.Passed),
-                new StepResultExpectation(2, "When customer orders this product", ResultStatus.Passed),
-                new StepResultExpectation(3, "Then customer receives invoice for product \"wooden desk\" in amount \"62\" pounds", ResultStatus.Passed),
-                new StepResultExpectation(4, "Then product is sent to customer", ResultStatus.Passed)
+                new StepResultExpectation(1, "GIVEN product \"wooden desk\" is available in product storage", ResultStatus.Passed),
+                new StepResultExpectation(2, "WHEN customer orders this product", ResultStatus.Passed),
+                new StepResultExpectation(3, "THEN customer receives invoice for product \"wooden desk\" in amount \"62\" pounds", ResultStatus.Passed),
+                new StepResultExpectation(4, "THEN product is sent to customer", ResultStatus.Passed)
             });
         }
 

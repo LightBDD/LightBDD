@@ -19,5 +19,8 @@ namespace LightBDD.UnitTests.Helpers
         public void Step_with_inconclusive_assertion() { Assert.Inconclusive("some reason"); }
         public void Step_with_bypass() { StepExecution.Bypass(BypassReason); }
         public void Step_with_bypass2() { StepExecution.Bypass(BypassReason2); }
+        public void Given_something() { }
+        public void When_something() { }
+        public void Then_something() { }
     }
 }

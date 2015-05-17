@@ -15,11 +15,11 @@ namespace LightBDD.Execution.Implementation
         private readonly StepResult _result;
         public IStepResult GetResult() { return _result; }
 
-        public Step(Action action, string stepName, int stepNumber, Func<Type, ResultStatus> mapping)
+        public Step(Action action, string stepTypeName, string stepName, int stepNumber, Func<Type, ResultStatus> mapping)
         {
             _action = action;
             _mapping = mapping;
-            _result = new StepResult(stepNumber, new StepName(stepName), ResultStatus.NotRun);
+            _result = new StepResult(stepNumber, new StepName(stepName, stepTypeName), ResultStatus.NotRun);
         }
 
         public void Invoke(IProgressNotifier progressNotifier, int totalCount)

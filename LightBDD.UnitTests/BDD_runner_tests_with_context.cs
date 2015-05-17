@@ -75,8 +75,8 @@ namespace LightBDD.UnitTests
             Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
             StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResultExpectation(1, "Given shared value is 5", ResultStatus.Passed),
-                new StepResultExpectation(2, "Then shared value is passed to second step and still match 5", ResultStatus.Passed)
+                new StepResultExpectation(1, "GIVEN shared value is 5", ResultStatus.Passed),
+                new StepResultExpectation(2, "THEN shared value is passed to second step and still match 5", ResultStatus.Passed)
             });
         }
 
@@ -98,8 +98,8 @@ namespace LightBDD.UnitTests
             Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
             StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResultExpectation(1, "Given shared value is 5", ResultStatus.Passed),
-                new StepResultExpectation(2, "Then shared value is passed to second step and still match 5", ResultStatus.Passed)
+                new StepResultExpectation(1, "GIVEN shared value is 5", ResultStatus.Passed),
+                new StepResultExpectation(2, "THEN shared value is passed to second step and still match 5", ResultStatus.Passed)
             });
         }
 
@@ -119,8 +119,8 @@ namespace LightBDD.UnitTests
             Assert.That(result.Status, Is.EqualTo(ResultStatus.Passed));
             StepResultExpectation.Assert(result.Steps, new[]
             {
-                new StepResultExpectation(1, "Given shared value is 5", ResultStatus.Passed),
-                new StepResultExpectation(2, "Then shared value is passed to second step and still match 5", ResultStatus.Passed)
+                new StepResultExpectation(1, "GIVEN shared value is 5", ResultStatus.Passed),
+                new StepResultExpectation(2, "THEN shared value is passed to second step and still match 5", ResultStatus.Passed)
             });
         }
 

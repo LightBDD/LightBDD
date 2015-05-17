@@ -181,6 +181,35 @@ namespace LightBDD
         }
 
         /// <summary>
+        /// Tries to determine a step type from it's name.
+        /// If type can be determined, it is returned, while <c>formattedStepName</c> is shortened by the extracted type.
+        /// If type cannot be found, or after extraction, the name would be empty or would contain white spaces only, a string.Empty is returned.
+        /// 
+        /// In order to successful step type determination, the <c>formattedStepName</c> has to start with a string matching any defined step types, followed by space and some non-white characters.
+        /// </summary>
+        /// <param name="formattedStepName">Formatted step name.</param>
+        /// <returns>Step type name or string.Empty</returns>
+        public string GetStepTypeNameFromFormattedStepName(ref string formattedStepName)
+        {
+            var typeNames = new[] { "given", "when", "then", "setup", "and" };
+            var name = formattedStepName;
+
+            var type = typeNames
+                .Where(n =>
+                    name.Length > n.Length &&
+                    name.StartsWith(n, StringComparison.OrdinalIgnoreCase) &&
+                    name[n.Length] == ' ')
+                .Select(GetStepTypeName)
+                .FirstOrDefault();
+
+            if (type == null || string.IsNullOrWhiteSpace(name = name.Substring(type.Length + 1)))
+                return string.Empty;
+
+            formattedStepName = name;
+            return type;
+        }
+
+        /// <summary>
         /// Returns step parameter formatter from associated ParameterFormatterAttribute or default one.
         /// </summary>
         public Func<object, string> GetStepParameterFormatter(ParameterInfo parameterInfo)
