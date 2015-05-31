@@ -42,5 +42,12 @@ namespace LightBDD.Notification
         /// <param name="stepResult">Step result.</param>
         /// <param name="totalStepCount">Total step count</param>
         void NotifyStepFinished(IStepResult stepResult, int totalStepCount);
+        /// <summary>
+        /// Notifies that step has been commented.
+        /// </summary>
+        /// <param name="comment">Comment.</param>
+        /// <param name="stepNumber">Step number starting from 1.</param>
+        /// <param name="totalStepCount">Total number of steps.</param>
+        void NotifyStepComment(int stepNumber, int totalStepCount, string comment);
     }
 }

@@ -6,6 +6,7 @@ namespace LightBDD.Execution.Implementation
     internal interface IStep
     {
         IStepResult GetResult();
-        void Invoke(IProgressNotifier progressNotifier, int totalCount);
+        void Invoke(ExecutionContext context);
+        void Comment(ExecutionContext context, string comment);
     }
 }

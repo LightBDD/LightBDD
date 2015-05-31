@@ -24,5 +24,9 @@ namespace LightBDD.UnitTests.Helpers
         public void NotifyStepFinished(IStepResult stepResult, int totalStepCount)
         {
         }
+
+        public void NotifyStepComment(int stepNumber, int totalStepCount, string comment)
+        {
+        }
     }
 }

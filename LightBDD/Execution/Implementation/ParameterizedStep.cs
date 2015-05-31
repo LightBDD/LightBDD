@@ -38,11 +38,12 @@ namespace LightBDD.Execution.Implementation
         }
 
         [DebuggerStepThrough]
-        public void Invoke(IProgressNotifier progressNotifier, int totalCount)
+        public void Invoke(ExecutionContext context)
         {
             try
             {
-                InvokeStep(progressNotifier, totalCount);
+                context.CurrentStep = this;
+                InvokeStep(context);
             }
             catch (StepBypassException e)
             {
@@ -55,22 +56,29 @@ namespace LightBDD.Execution.Implementation
             }
             finally
             {
-                progressNotifier.NotifyStepFinished(_result, totalCount);
+                context.CurrentStep = null;
+                context.ProgressNotifier.NotifyStepFinished(_result, context.TotalStepCount);
             }
         }
 
-        private void InvokeStep(IProgressNotifier progressNotifier, int totalCount)
+        public void Comment(ExecutionContext context, string comment)
+        {
+            _result.AddComment(comment);
+            context.ProgressNotifier.NotifyStepComment(_result.Number, context.TotalStepCount, comment);
+        }
+
+        private void InvokeStep(ExecutionContext context)
         {
             EvaluateParameters();
-            InvokeStepWithEvaluatedParameters(progressNotifier, totalCount);
+            InvokeStepWithEvaluatedParameters(context);
         }
 
         [DebuggerStepThrough]
-        private void InvokeStepWithEvaluatedParameters(IProgressNotifier progressNotifier, int totalCount)
+        private void InvokeStepWithEvaluatedParameters(ExecutionContext context)
         {
             _result = new StepResult(_stepNumber, new StepName(_stepNameFormat, _formattedStepTypeName, GetParameterDetails()), ResultStatus.NotRun);
 
-            progressNotifier.NotifyStepStart(_result.Name, _stepNumber, totalCount);
+            context.ProgressNotifier.NotifyStepStart(_result.Name, _stepNumber, context.TotalStepCount);
             MeasuredInvoke(_parameters.Select(p => p.Value).ToArray());
 
             _result.SetStatus(ResultStatus.Passed);

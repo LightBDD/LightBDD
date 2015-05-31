@@ -28,12 +28,14 @@ namespace LightBDD.Execution.Implementation
             var scenarioStartTime = DateTimeOffset.UtcNow;
             try
             {
+                ExecutionContext.Instance = new ExecutionContext(_progressNotifier, stepsToExecute.Length);
                 watch.Start();
                 ExecuteSteps(stepsToExecute);
             }
             finally
             {
                 watch.Stop();
+                ExecutionContext.Instance = null;
                 var result = new ScenarioResult(scenario.Name, stepsToExecute.Select(s => s.GetResult()), scenario.Label, scenario.Categories)
                 .SetExecutionStart(scenarioStartTime)
                 .SetExecutionTime(watch.Elapsed);
@@ -68,7 +70,7 @@ namespace LightBDD.Execution.Implementation
         private void ExecuteSteps(IStep[] stepsToExecute)
         {
             foreach (var step in stepsToExecute)
-                step.Invoke(_progressNotifier, stepsToExecute.Length);
+                step.Invoke(ExecutionContext.Instance);
         }
     }
 }

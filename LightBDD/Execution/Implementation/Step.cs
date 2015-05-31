@@ -22,11 +22,12 @@ namespace LightBDD.Execution.Implementation
             _result = new StepResult(stepNumber, new StepName(stepName, stepTypeName), ResultStatus.NotRun);
         }
 
-        public void Invoke(IProgressNotifier progressNotifier, int totalCount)
+        public void Invoke(ExecutionContext context)
         {
             try
             {
-                progressNotifier.NotifyStepStart(_result.Name, _result.Number, totalCount);
+                context.CurrentStep = this;
+                context.ProgressNotifier.NotifyStepStart(_result.Name, _result.Number, context.TotalStepCount);
                 _result.SetExecutionStart(DateTimeOffset.UtcNow);
                 MeasuredInvoke();
                 _result.SetStatus(ResultStatus.Passed);
@@ -42,8 +43,15 @@ namespace LightBDD.Execution.Implementation
             }
             finally
             {
-                progressNotifier.NotifyStepFinished(_result, totalCount);
+                context.CurrentStep = null;
+                context.ProgressNotifier.NotifyStepFinished(_result, context.TotalStepCount);
             }
+        }
+
+        public void Comment(ExecutionContext context, string comment)
+        {
+            _result.AddComment(comment);
+            context.ProgressNotifier.NotifyStepComment(_result.Number, context.TotalStepCount, comment);
         }
 
         private void MeasuredInvoke()

@@ -1,4 +1,5 @@
 ﻿using LightBDD.Execution.Exceptions;
+using LightBDD.Execution.Implementation;
 
 namespace LightBDD.Execution
 {
@@ -28,6 +29,17 @@ namespace LightBDD.Execution
         public static void Bypass(string reason)
         {
             throw new StepBypassException(reason);
+        }
+
+        /// <summary>
+        /// Comments currently executed step with a <c>comment</c> text.
+        /// The comment would be included on progress notifier, as well as in execution reports.
+        /// </summary>
+        /// <param name="comment"></param>
+        public static void Comment(string comment)
+        {
+            if (!string.IsNullOrWhiteSpace(comment))
+                ExecutionContext.Instance.CurrentStep.Comment(ExecutionContext.Instance, comment);
         }
     }
 }

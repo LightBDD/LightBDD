@@ -45,6 +45,17 @@ namespace LightBDD.Notification
         }
 
         /// <summary>
+        /// Notifies that step has been commented.
+        /// </summary>
+        /// <param name="comment">Comment.</param>
+        /// <param name="stepNumber">Step number starting from 1.</param>
+        /// <param name="totalStepCount">Total number of steps.</param>
+        public void NotifyStepComment(int stepNumber, int totalStepCount, string comment)
+        {
+            Console.WriteLine("  STEP {0}/{1}: # {2}", stepNumber, totalStepCount, comment);
+        }
+
+        /// <summary>
         /// Notifies that feature has been started.
         /// </summary>
         /// <param name="featureName">Feature name.</param>

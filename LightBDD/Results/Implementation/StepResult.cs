@@ -1,5 +1,8 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using LightBDD.Naming;
 
 namespace LightBDD.Results.Implementation
@@ -7,6 +10,8 @@ namespace LightBDD.Results.Implementation
     [DebuggerStepThrough]
     internal class StepResult : IStepResult
     {
+        private readonly List<string> _comments = new List<string>();
+
         public StepResult(int stepNumber, IStepName stepName, ResultStatus stepStatus, string statusDetails = null)
         {
             Number = stepNumber;
@@ -25,6 +30,7 @@ namespace LightBDD.Results.Implementation
         public DateTimeOffset? ExecutionStart { get; private set; }
         public IStepName StepName { get; private set; }
         public int Number { get; private set; }
+        public IEnumerable<string> Comments { get { return _comments; } }
 
         #endregion
 
@@ -44,6 +50,12 @@ namespace LightBDD.Results.Implementation
         {
             Status = status;
             StatusDetails = statusDetails;
+            return this;
+        }
+
+        public StepResult AddComment(string comment)
+        {
+            _comments.Add(comment);
             return this;
         }
 
