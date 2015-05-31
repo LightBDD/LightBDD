@@ -1,9 +1,11 @@
 LightBDD
 ===========================================
 
-Version 1.6.2
+Version 1.7.0
 ----------------------------------------
 + Extended TestMetadataProvider to determine a step type name (given, when, then, setup, and) basing on step name, if type is not provided explicitly (GetStepTypeNameFromFormattedStepName)
++ Extended TestMetadataProvider with NormalizeStepTypeName() method that replaces step type of consecutive steps with same type to 'AND', making scenario like GIVEN, GIVEN, WHEN, THEN => GIVEN, AND, WHEN, THEN
++ Extended lightbdd section in app.config with <stepTypes predefined="given,when..." repeatedStepReplacement="and"/> element, allowing to configure TestMetadataProvider behavior
 
 Version 1.6.1
 ----------------------------------------

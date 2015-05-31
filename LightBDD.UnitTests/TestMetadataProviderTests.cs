@@ -96,11 +96,57 @@ namespace LightBDD.UnitTests
         [TestCase("given  ", "", "given  ")]
         [TestCase("givensomething", "", "givensomething")]
         [TestCase("xgiven", "", "xgiven")]
-        public void Should_get_step_type_from_formatted_name_properly(string formattedName, string expectedType, string expectedName)
+        public void By_default_should_get_step_type_from_formatted_name_properly_according_to_standard_GWT_keywords(string formattedName, string expectedType, string expectedName)
         {
             var type = _subject.GetStepTypeNameFromFormattedStepName(ref formattedName);
             Assert.That(type, Is.EqualTo(expectedType), "type");
             Assert.That(formattedName, Is.EqualTo(expectedName), "name");
+        }
+
+        [Test]
+        [TestCase(null, "abc", null)]
+        [TestCase("abc", null, "abc")]
+        [TestCase("", "", "")]
+        [TestCase("abc", "abc", "AND")]
+        [TestCase("abc", "aBc", "AND")]
+        [TestCase("abC", "aBc", "AND")]
+        [TestCase("abc", "abcd", "abc")]
+        [TestCase("abc", "ab", "abc")]
+        [TestCase("one", "two", "one")]
+        public void By_default_should_normalize_step_type_name_to_AND_if_type_is_repeated(string currentName, string lastName, string expectedName)
+        {
+            Assert.That(_subject.NormalizeStepTypeName(currentName, lastName), Is.EqualTo(expectedName));
+        }
+
+        [Test]
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase(" \r\n\t")]
+        public void Should_disable_normalization_if_replacementString_is_empty(string repeatedStepReplacement)
+        {
+            _subject = new TestableMetadataProvider(new[] { "given", "when", "then" }, repeatedStepReplacement);
+            Assert.That(_subject.NormalizeStepTypeName("abc", "abc"), Is.EqualTo("abc"));
+        }
+
+        [Test]
+        [TestCase("call something", "CALL", "something")]
+        [TestCase("CaLl something", "CALL", "something")]
+        [TestCase("invoke something", "INVOKE", "something")]
+        [TestCase("then something", "", "then something")]
+        public void Should_allow_to_reconfigure_GetStepTypeNameFromFormattedStepName(string formattedName, string expectedType, string expectedName)
+        {
+            _subject = new TestableMetadataProvider(new[] { "call", "invoke" }, "");
+
+            var type = _subject.GetStepTypeNameFromFormattedStepName(ref formattedName);
+            Assert.That(type, Is.EqualTo(expectedType), "type");
+            Assert.That(formattedName, Is.EqualTo(expectedName), "name");
+        }
+
+        [Test]
+        public void Should_initialize_object_with_default_values()
+        {
+            Assert.That(_subject.RepeatedStepReplacement, Is.EqualTo("and"));
+            Assert.That(_subject.PredefinedStepTypes, Is.EquivalentTo(new[] { "given", "when", "then", "and", "setup" }));
         }
     }
 }

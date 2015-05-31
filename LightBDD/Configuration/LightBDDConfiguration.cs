@@ -8,6 +8,12 @@ namespace LightBDD.Configuration
     internal class LightBDDConfiguration : ConfigurationSection
     {
         private const string SUMMARY_WRITERS_FIELD = "summaryWriters";
+        private const string STEP_TYPES_FIELD = "stepTypes";
+
+        public static LightBDDConfiguration GetConfiguration()
+        {
+            return ConfigurationManager.GetSection("lightbdd") as LightBDDConfiguration ?? new LightBDDConfiguration();
+        }
 
         /// <summary>
         /// Returns summary writers collection.
@@ -19,6 +25,11 @@ namespace LightBDD.Configuration
             get { return (SummaryWriterCollection)this[SUMMARY_WRITERS_FIELD]; }
         }
 
-
+        [ConfigurationProperty(STEP_TYPES_FIELD)]
+        public StepTypesElement StepTypes
+        {
+            get { return (StepTypesElement)this[STEP_TYPES_FIELD]; }
+            set { this[STEP_TYPES_FIELD] = value; }
+        }
     }
 }

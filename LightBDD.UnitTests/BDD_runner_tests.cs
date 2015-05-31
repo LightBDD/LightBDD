@@ -328,11 +328,49 @@ namespace LightBDD.UnitTests
         [Test]
         public void AbstractBDDRunner_should_interpret_step_type_from_steps()
         {
-            _subject.RunScenario(Given_something, When_something, Then_something);
+            _subject.RunScenario(
+                Given_something,
+                When_something,
+                Then_something);
 
             Assert.That(
                 _subject.Result.Scenarios.First().Steps.Select(s => s.ToString()).ToArray(),
-                Is.EqualTo(new[] { "1 GIVEN something: Passed", "2 WHEN something: Passed", "3 THEN something: Passed" }));
+                Is.EqualTo(new[]
+                {
+                    "1 GIVEN something: Passed", 
+                    "2 WHEN something: Passed", 
+                    "3 THEN something: Passed"
+                }));
+        }
+
+        [Test]
+        public void AbstractBDDRunner_should_normalize_repeated_step_types()
+        {
+            _subject.RunScenario(
+               Given_something,
+               Given_something_else,
+               Given_something,
+               When_something,
+               When_something_else,
+               When_something,
+               Then_something,
+               Then_something_else,
+               Then_something);
+
+            Assert.That(
+                _subject.Result.Scenarios.First().Steps.Select(s => s.ToString()).ToArray(),
+                Is.EqualTo(new[]
+                {
+                    "1 GIVEN something: Passed", 
+                    "2 AND something else: Passed", 
+                    "3 AND something: Passed", 
+                    "4 WHEN something: Passed",
+                    "5 AND something else: Passed", 
+                    "6 AND something: Passed", 
+                    "7 THEN something: Passed",
+                    "8 AND something else: Passed", 
+                    "9 AND something: Passed"
+                }));
         }
     }
 }

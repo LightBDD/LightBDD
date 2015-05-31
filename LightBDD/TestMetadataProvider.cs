@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using LightBDD.Configuration;
 using LightBDD.Formatting.Parameters;
 using LightBDD.Naming;
 
@@ -15,6 +16,77 @@ namespace LightBDD
     [DebuggerStepThrough]
     public abstract class TestMetadataProvider
     {
+        /// <summary>
+        /// Predefined step types. By default, it is: given, when, then, setup, and
+        /// The predefined step types can be reconfigured in lightbdd>stepTypes>predefined config section in app.config or in TestMetadataProvider constructor.
+        /// 
+        /// The following code presents how <c>PredefinedStepTypes</c> and <c>RepeatedStepReplacement</c> can be configured:
+        /// <code>
+        /// &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+        ///&lt;configuration&gt;
+        ///  &lt;configSections&gt;
+        ///    &lt;section name="lightbdd" type="LightBDD.Configuration.LightBDDConfiguration, LightBDD"/&gt;
+        ///  &lt;/configSections&gt;
+        ///  &lt;lightbdd&gt;
+        ///    &lt;stepTypes predefined="given,when,then,setup,and" repeatedStepReplacement="and"/&gt;
+        ///  &lt;/lightbdd&gt;
+        ///&lt;/configuration&gt;
+        /// </code>
+        /// </summary>
+        public string[] PredefinedStepTypes { get; private set; }
+        /// <summary>
+        /// The repeated step replacement name, used by NormalizeStepTypeName() method.
+        /// The default value of this property is "AND", however it can be reconfigured in lightbdd>stepTypes>repeatedStepReplacement config section in app.config or in TestMetadataProvider constructor.
+        /// 
+        /// The following code presents how <c>PredefinedStepTypes</c> and <c>RepeatedStepReplacement</c> can be configured:
+        /// <code>
+        /// &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+        ///&lt;configuration&gt;
+        ///  &lt;configSections&gt;
+        ///    &lt;section name="lightbdd" type="LightBDD.Configuration.LightBDDConfiguration, LightBDD"/&gt;
+        ///  &lt;/configSections&gt;
+        ///  &lt;lightbdd&gt;
+        ///    &lt;stepTypes predefined="given,when,then,setup,and" repeatedStepReplacement="and"/&gt;
+        ///  &lt;/lightbdd&gt;
+        ///&lt;/configuration&gt;
+        /// </code>
+        /// </summary>
+        public string RepeatedStepReplacement { get; private set; }
+
+        /// <summary>
+        /// Default constructor, using "lightbdd" config section to initialize <c>PredefinedStepTypes</c> and <c>RepeatedStepReplacement</c> property values.
+        /// 
+        /// The following code presents how <c>PredefinedStepTypes</c> and <c>RepeatedStepReplacement</c> can be configured:
+        /// <code>
+        /// &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+        ///&lt;configuration&gt;
+        ///  &lt;configSections&gt;
+        ///    &lt;section name="lightbdd" type="LightBDD.Configuration.LightBDDConfiguration, LightBDD"/&gt;
+        ///  &lt;/configSections&gt;
+        ///  &lt;lightbdd&gt;
+        ///    &lt;stepTypes predefined="given,when,then,setup,and" repeatedStepReplacement="and"/&gt;
+        ///  &lt;/lightbdd&gt;
+        ///&lt;/configuration&gt;
+        /// </code>
+        /// </summary>
+        protected TestMetadataProvider()
+        {
+            var stepTypes = LightBDDConfiguration.GetConfiguration().StepTypes;
+            PredefinedStepTypes = stepTypes.Predefined.Split(',').Select(t => t.Trim()).ToArray();
+            RepeatedStepReplacement = stepTypes.RepeatedStepReplacement.Trim();
+        }
+
+        /// <summary>
+        /// Constructor allowing to specify a predefinedStepTypes and repeatedStepReplacement values, used by GetStepTypeNameFromFormattedStepName() and NormalizeStepTypeName() methods.
+        /// </summary>
+        /// <param name="predefinedStepTypes">Predefined step types</param>
+        /// <param name="repeatedStepReplacement">Repeated step replacement</param>
+        protected TestMetadataProvider(string[] predefinedStepTypes, string repeatedStepReplacement)
+        {
+            PredefinedStepTypes = predefinedStepTypes;
+            RepeatedStepReplacement = repeatedStepReplacement;
+        }
+
         /// <summary>
         /// Retrieves specified attribute property value.
         /// </summary>
@@ -185,16 +257,15 @@ namespace LightBDD
         /// If type can be determined, it is returned, while <c>formattedStepName</c> is shortened by the extracted type.
         /// If type cannot be found, or after extraction, the name would be empty or would contain white spaces only, a string.Empty is returned.
         /// 
-        /// In order to successful step type determination, the <c>formattedStepName</c> has to start with a string matching any defined step types, followed by space and some non-white characters.
+        /// In order to successful step type determination, the <c>formattedStepName</c> has to start with a string matching any step types defined by <c>PredefinedStepTypes</c> property, followed by space and some non-white characters.
         /// </summary>
         /// <param name="formattedStepName">Formatted step name.</param>
         /// <returns>Step type name or string.Empty</returns>
         public string GetStepTypeNameFromFormattedStepName(ref string formattedStepName)
         {
-            var typeNames = new[] { "given", "when", "then", "setup", "and" };
             var name = formattedStepName;
 
-            var type = typeNames
+            var type = PredefinedStepTypes
                 .Where(n =>
                     name.Length > n.Length &&
                     name.StartsWith(n, StringComparison.OrdinalIgnoreCase) &&
@@ -207,6 +278,20 @@ namespace LightBDD
 
             formattedStepName = name;
             return type;
+        }
+
+        /// <summary>
+        /// Normalizes step type name by replacing it with a <c>RepeatedStepReplacement</c> property value, if <c>stepTypeName</c> is the same like <c>lastStepTypeName</c>.
+        /// The default value of <c>RepeatedStepReplacement</c> property is "AND", however it can be reconfigured in lightbdd>stepTypes>repeatedStepReplacement config section in app.config or in TestMetadataProvider constructor.
+        /// </summary>
+        /// <param name="stepTypeName">Step type name.</param>
+        /// <param name="lastStepTypeName">Last step type name.</param>
+        /// <returns><c>stepTypeName</c> value or "and".</returns>
+        public string NormalizeStepTypeName(string stepTypeName, string lastStepTypeName)
+        {
+            return (!string.IsNullOrEmpty(stepTypeName) && !string.IsNullOrWhiteSpace(RepeatedStepReplacement) && string.Equals(stepTypeName, lastStepTypeName, StringComparison.OrdinalIgnoreCase))
+                ? GetStepTypeName(RepeatedStepReplacement)
+                : stepTypeName;
         }
 
         /// <summary>

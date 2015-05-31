@@ -8,6 +8,15 @@ namespace LightBDD.UnitTests.Helpers
 {
     internal class TestableMetadataProvider : TestMetadataProvider
     {
+        public TestableMetadataProvider()
+        {
+        }
+
+        public TestableMetadataProvider(string[] predefinedStepTypes, string repeatedStepReplacement)
+            : base(predefinedStepTypes, repeatedStepReplacement)
+        {
+        }
+
         protected override string GetImplementationSpecificFeatureDescription(Type testClass)
         {
             return testClass.GetCustomAttributes(typeof(DescriptionAttribute), true)

@@ -48,6 +48,7 @@
       <Link>Properties\AssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="AbstractBDDRunner.cs" />
+    <Compile Include="Configuration\StepTypesElement.cs" />
     <Compile Include="Execution\Exceptions\StepBypassException.cs" />
     <Compile Include="Execution\StepExecution.cs" />
     <Compile Include="Configuration\LightBDDConfiguration.cs" />

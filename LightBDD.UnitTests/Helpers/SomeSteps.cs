@@ -20,7 +20,10 @@ namespace LightBDD.UnitTests.Helpers
         public void Step_with_bypass() { StepExecution.Bypass(BypassReason); }
         public void Step_with_bypass2() { StepExecution.Bypass(BypassReason2); }
         public void Given_something() { }
+        public void Given_something_else() { }
         public void When_something() { }
+        public void When_something_else() { }
         public void Then_something() { }
+        public void Then_something_else() { }
     }
 }

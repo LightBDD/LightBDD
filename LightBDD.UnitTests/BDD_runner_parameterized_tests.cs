@@ -158,7 +158,7 @@ namespace LightBDD.UnitTests
                 new StepResultExpectation(1, "GIVEN product \"wooden desk\" is available in product storage", ResultStatus.Passed),
                 new StepResultExpectation(2, "WHEN customer orders this product", ResultStatus.Passed),
                 new StepResultExpectation(3, "THEN customer receives invoice for product \"wooden desk\" in amount \"62\" pounds", ResultStatus.Passed),
-                new StepResultExpectation(4, "THEN product is sent to customer", ResultStatus.Passed)
+                new StepResultExpectation(4, "AND product is sent to customer", ResultStatus.Passed)
             });
         }
 
@@ -449,6 +449,36 @@ namespace LightBDD.UnitTests
             Assert.That(result.Status, Is.EqualTo(ResultStatus.Failed));
             Assert.That(result.Steps, Is.Empty);
             Assert.That(result.StatusDetails, Is.EqualTo("Unable to format 'value' parameter of step 1 'Step_with_wrong_formatter': Input string was not in a correct format."));
+        }
+
+        [Test]
+        public void AbstractBDDRunner_should_normalize_repeated_step_types()
+        {
+            _subject.RunScenario(
+               _ => Given_something(),
+               _ => Given_something_else(),
+               _ => Given_something(),
+               _ => When_something(),
+               _ => When_something_else(),
+               _ => When_something(),
+               _ => Then_something(),
+               _ => Then_something_else(),
+               _ => Then_something());
+
+            Assert.That(
+                _subject.Result.Scenarios.First().Steps.Select(s => s.ToString()).ToArray(),
+                Is.EqualTo(new[]
+                {
+                    "1 GIVEN something: Passed", 
+                    "2 AND something else: Passed", 
+                    "3 AND something: Passed", 
+                    "4 WHEN something: Passed",
+                    "5 AND something else: Passed", 
+                    "6 AND something: Passed", 
+                    "7 THEN something: Passed",
+                    "8 AND something else: Passed", 
+                    "9 AND something: Passed"
+                }));
         }
 
         private static void AssertStepName(IStepResult step, string stepTypeName, string nameFormat, params StepParameterExpectation[] expectedParameters)

@@ -11,7 +11,7 @@ namespace LightBDD.Coordination
     {
         public static SummaryGenerator Create()
         {
-            var cfg = ConfigurationManager.GetSection("lightbdd") as LightBDDConfiguration ?? new LightBDDConfiguration();
+            var cfg = LightBDDConfiguration.GetConfiguration();
             return new SummaryGenerator(cfg.SummaryWriters.OfType<SummaryWriterElement>().Select(CreateSummaryOutput).ToArray());
         }
 
