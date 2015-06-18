@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using LightBDD.Execution.Exceptions;
 using LightBDD.Execution.Implementation.Parameters;
-using LightBDD.Notification;
 using LightBDD.Results;
 using LightBDD.Results.Implementation;
 

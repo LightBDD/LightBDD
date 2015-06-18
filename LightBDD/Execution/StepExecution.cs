@@ -33,13 +33,24 @@ namespace LightBDD.Execution
 
         /// <summary>
         /// Comments currently executed step with a <c>comment</c> text.
-        /// The comment would be included on progress notifier, as well as in execution reports.
+        /// The comment would be included in progress notification, as well as in execution reports.
         /// </summary>
-        /// <param name="comment"></param>
+        /// <param name="comment">Comment</param>
         public static void Comment(string comment)
         {
             if (!string.IsNullOrWhiteSpace(comment))
                 ExecutionContext.Instance.CurrentStep.Comment(ExecutionContext.Instance, comment);
+        }
+
+        /// <summary>
+        /// Comments currently executed step with a formatted comment, based on <c>format</c> and <c>args</c> parameters.
+        /// The comment would be included in progress notification, as well as in execution reports.
+        /// </summary>
+        /// <param name="format">Comment format.</param>
+        /// <param name="args">Comment format arguments.</param>
+        public static void CommentFormat(string format, params object[] args)
+        {
+            Comment(string.Format(format, args));
         }
     }
 }

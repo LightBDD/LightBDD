@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace LightBDD.Results
 {
@@ -45,5 +46,10 @@ namespace LightBDD.Results
         /// Returns step name details.
         /// </summary>
         IStepName StepName { get; }
+
+        /// <summary>
+        /// Step result comments.
+        /// </summary>
+        IEnumerable<string> Comments { get; }
     }
 }

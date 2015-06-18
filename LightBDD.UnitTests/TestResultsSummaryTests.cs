@@ -8,6 +8,7 @@ using LightBDD.Results.Formatters;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 using Rhino.Mocks;
+
 #pragma warning disable 0618
 
 namespace LightBDD.UnitTests

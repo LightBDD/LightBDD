@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Xml.Linq;
 using System.Xml.Schema;
 using LightBDD.Results.Formatters;

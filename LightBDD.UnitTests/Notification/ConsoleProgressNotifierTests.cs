@@ -186,7 +186,7 @@ got: B";
             string stepName = "scenario name";
             var stepNumber = 12;
             var totalStepCount = 19;
-            string expectedText = string.Format("  STEP {0}/{1}: {2}{3}", stepNumber, totalStepCount, stepName, Environment.NewLine);
+            string expectedText = string.Format("  STEP {0}/{1}: {2}...{3}", stepNumber, totalStepCount, stepName, Environment.NewLine);
 
             _subject.NotifyStepStart(stepName, stepNumber, totalStepCount);
             Assert.That(_console.GetCapturedText(), Is.EqualTo(expectedText));
@@ -201,10 +201,21 @@ got: B";
 
             var resultStatus = ResultStatus.Failed;
             var executionTime = new TimeSpan(0, 0, 0, 0, 127);
-            string expectedText = string.Format("  STEP {0}/{1}: {2} after {3}{4}", stepNumber, totalStepCount, resultStatus, executionTime.FormatPretty(), Environment.NewLine);
+            string expectedText = string.Format("  STEP {0}/{1}: {2} ({3} after {4}){5}", stepNumber, totalStepCount, stepName, resultStatus, executionTime.FormatPretty(), Environment.NewLine);
 
             var result = Mocks.CreateStepResult(stepNumber, stepName, resultStatus, executionTime);
             _subject.NotifyStepFinished(result, totalStepCount);
+            Assert.That(_console.GetCapturedText(), Is.EqualTo(expectedText));
+        }
+
+        [Test]
+        public void NotifyStepComment_should_print_step_comment()
+        {
+            var stepNumber = 12;
+            var totalStepCount = 19;
+            var comment = "some comment";
+            _subject.NotifyStepComment(stepNumber, totalStepCount, comment);
+            string expectedText = string.Format("  STEP {0}/{1}: // {2} //{3}", stepNumber, totalStepCount, comment, Environment.NewLine);
             Assert.That(_console.GetCapturedText(), Is.EqualTo(expectedText));
         }
     }

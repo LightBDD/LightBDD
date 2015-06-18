@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Linq;
 using LightBDD.Configuration;
 using LightBDD.Results.Formatters;

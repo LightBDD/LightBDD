@@ -1,4 +1,3 @@
-using LightBDD.Notification;
 using LightBDD.Results;
 
 namespace LightBDD.Execution.Implementation

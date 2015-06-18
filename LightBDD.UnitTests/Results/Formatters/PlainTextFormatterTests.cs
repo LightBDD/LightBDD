@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using LightBDD.Results.Formatters;
 using NUnit.Framework;
 

@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using LightBDD.Execution.Exceptions;
-using LightBDD.Notification;
 using LightBDD.Results;
 using LightBDD.Results.Implementation;
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Linq;
 using LightBDD.Execution;
 using LightBDD.Results;
@@ -24,13 +23,18 @@ namespace LightBDD.UnitTests
             .Select(i => ToScenarioBuilder(subject, i))
             .ToArray()
             .AsParallel()
-            .ForAll(b => b.Run(new Action[0]));
+            .ForAll(b => b.Run(Step_with_comment));
 
             Assert.That(subject.Result.Scenarios.Count(), Is.EqualTo(_elementsCount));
             for (int i = 0; i < _elementsCount; ++i)
             {
                 var expectedName = ToName(i);
-                Assert.That(subject.Result.Scenarios.Any(s => s.Name == expectedName), Is.True, "Missing scenario: {0}", i);
+                var scenario = subject.Result.Scenarios.FirstOrDefault(s => s.Name == expectedName);
+                Assert.That(scenario, Is.Not.Null, "Missing scenario: {0}", i);
+
+                var step = scenario.Steps.FirstOrDefault();
+                Assert.That(step, Is.Not.Null, "Missing step for scenario: {0}", i);
+                Assert.That(step.Comments.ToArray(), Is.EqualTo(new[] { "comment one", "comment 2" }), "missing comments for scenario: {0}", i);
             }
         }
 

@@ -31,7 +31,7 @@ namespace LightBDD.Notification
         /// <param name="totalStepCount">Total number of steps.</param>
         public void NotifyStepStart(string stepName, int stepNumber, int totalStepCount)
         {
-            Console.WriteLine("  STEP {0}/{1}: {2}", stepNumber, totalStepCount, stepName);
+            Console.WriteLine("  STEP {0}/{1}: {2}...", stepNumber, totalStepCount, stepName);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace LightBDD.Notification
         /// <param name="totalStepCount">Total step count</param>
         public void NotifyStepFinished(IStepResult stepResult, int totalStepCount)
         {
-            Console.WriteLine("  STEP {0}/{1}: {2} after {3}", stepResult.Number, totalStepCount, stepResult.Status, stepResult.ExecutionTime.FormatPretty());
+            Console.WriteLine("  STEP {0}/{1}: {2} ({3} after {4})", stepResult.Number, totalStepCount, stepResult.Name, stepResult.Status, stepResult.ExecutionTime.FormatPretty());
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace LightBDD.Notification
         /// <param name="totalStepCount">Total number of steps.</param>
         public void NotifyStepComment(int stepNumber, int totalStepCount, string comment)
         {
-            Console.WriteLine("  STEP {0}/{1}: # {2}", stepNumber, totalStepCount, comment);
+            Console.WriteLine("  STEP {0}/{1}: // {2} //", stepNumber, totalStepCount, comment);
         }
 
         /// <summary>

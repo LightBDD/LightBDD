@@ -82,5 +82,15 @@ namespace LightBDD.UnitTests
             _progressNotifier.AssertWasCalled(n => n.NotifyStepStart("CALL Step throwing exception \"abc\"", 2, 2));
             _progressNotifier.AssertWasCalled(n => n.NotifyStepFinished(Arg<IStepResult>.Matches(r => r.Number == 2 && r.Status == ResultStatus.Failed), Arg<int>.Is.Equal(2)));
         }
+
+        [Test]
+        public void Should_display_comment()
+        {
+            _subject.RunScenario(call => Step_with_comment());
+            _progressNotifier.AssertWasCalled(n => n.NotifyStepStart("CALL Step with comment", 1, 1));
+            _progressNotifier.AssertWasCalled(n => n.NotifyStepComment(1, 1, "comment one"));
+            _progressNotifier.AssertWasCalled(n => n.NotifyStepComment(1, 1, "comment 2"));
+            _progressNotifier.AssertWasCalled(n => n.NotifyStepFinished(Arg<IStepResult>.Matches(r => r.Number == 1 && r.Status == ResultStatus.Passed), Arg<int>.Is.Equal(1)));
+        }
     }
 }
