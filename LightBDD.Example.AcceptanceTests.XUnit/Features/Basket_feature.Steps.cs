@@ -1,9 +1,10 @@
+using System;
 using System.Linq;
 using LightBDD.Example.Domain;
 using LightBDD.Execution;
-using MbUnit.Framework;
+using Xunit;
 
-namespace LightBDD.Example.AcceptanceTests.MbUnit.Features
+namespace LightBDD.Example.AcceptanceTests.XUnit.Features
 {
     public partial class Basket_feature : FeatureFixture
     {
@@ -32,34 +33,34 @@ namespace LightBDD.Example.AcceptanceTests.MbUnit.Features
 
         private void Then_product_addition_is_successful()
         {
-            Assert.IsTrue(_transferResult);
+            Assert.True(_transferResult);
         }
 
         private void Then_basket_contains_product()
         {
-            Assert.IsTrue(_basket.Products.Contains("product"));
+            Assert.True(_basket.Products.Contains("product"));
         }
 
         private void Then_product_addition_is_unsuccessful()
         {
-            Assert.IsFalse(_transferResult);
+            Assert.False(_transferResult);
         }
 
         private void Then_basket_does_not_contain_product()
         {
-            Assert.IsFalse(_basket.Products.Contains("product"));
+            Assert.False(_basket.Products.Contains("product"));
         }
 
         private void Then_product_is_removed_from_stock()
         {
-            Assert.Inconclusive("Product removal from stock is not implemented yet");
-            Assert.IsFalse(_stock.Products.Contains("product"));
+            throw new NotImplementedException();
+            //Assert.Inconclusive("Product removal from stock is not implemented yet");
+            Assert.False(_stock.Products.Contains("product"));
         }
 
         #region Setup/Teardown
 
-        [SetUp]
-        public void SetUp()
+        public Basket_feature()
         {
             _stock = new Stock();
             _basket = new Basket();
