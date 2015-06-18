@@ -10,34 +10,85 @@ namespace LightBDD.AcceptanceTests.Helpers
     {
         public static IStepResult CreateStepResult(int stepNumber, string stepName, ResultStatus resultStatus, DateTimeOffset executionStart, TimeSpan executionTime, string statusDetails = null)
         {
-            var stepResult = CreateStepResult(stepNumber, stepName, resultStatus, executionTime);
-            stepResult.Stub(r => r.ExecutionStart).Return(executionStart);
-            stepResult.Stub(r => r.StatusDetails).Return(statusDetails);
-            return stepResult;
+            return CreateStepResult(stepNumber, stepName, resultStatus, executionTime)
+                .WithDetails(statusDetails)
+                .WithExecutionStart(executionStart);
         }
 
         public static IStepResult CreateStepResult(int stepNumber, string stepName, ResultStatus resultStatus, TimeSpan executionTime)
         {
-            var stepResult = CreateStepResult(stepNumber, stepName, resultStatus);
-            stepResult.Stub(r => r.ExecutionTime).Return(executionTime);
-            return stepResult;
+            return CreateStepResult(stepNumber, stepName, resultStatus)
+                .WithExecutionTime(executionTime);
         }
 
         public static IStepResult CreateStepResult(int stepNumber, string stepName, ResultStatus resultStatus)
         {
+            return CreateStepResult(stepNumber, resultStatus)
+                .WithStepNameDetails(stepName, stepName)
+                .WithComments();
+        }
+
+        public static IStepResult CreateStepResult(int stepNumber, ResultStatus resultStatus)
+        {
             var stepResult = MockRepository.GenerateMock<IStepResult>();
-            stepResult.Stub(r => r.Name).Return(stepName);
             stepResult.Stub(r => r.Number).Return(stepNumber);
             stepResult.Stub(r => r.Status).Return(resultStatus);
-            stepResult.Stub(r => r.StepName).Return(CreateStepName(stepName));
             return stepResult;
         }
 
-        public static IStepName CreateStepName(string stepName)
+        public static IStepResult WithComments(this IStepResult result, params string[] comments)
+        {
+            result.Stub(r => r.Comments).Return(comments);
+            return result;
+        }
+
+        public static IStepResult WithStepNameDetails(this IStepResult result, string stepName, string nameFormat, string stepTypeName = null, params string[] parameters)
+        {
+            result.Stub(r => r.StepName).Return(CreateStepName(stepName, stepTypeName, nameFormat, parameters));
+            result.Stub(r => r.Name).Return(stepName);
+            return result;
+        }
+
+        public static IStepResult WithDetails(this IStepResult result, string statusDetails)
+        {
+            result.Stub(r => r.StatusDetails).Return(statusDetails);
+            return result;
+        }
+
+        public static IStepResult WithTimes(this IStepResult result, DateTimeOffset executionStart, TimeSpan executionTime)
+        {
+            return result.WithExecutionStart(executionStart)
+                .WithExecutionTime(executionTime);
+        }
+
+        public static IStepResult WithExecutionStart(this IStepResult result, DateTimeOffset executionStart)
+        {
+            result.Stub(r => r.ExecutionStart).Return(executionStart);
+            return result;
+        }
+
+        public static IStepResult WithExecutionTime(this IStepResult result, TimeSpan executionTime)
+        {
+            result.Stub(r => r.ExecutionTime).Return(executionTime);
+            return result;
+        }
+
+        public static IStepName CreateStepName(string stepName, string stepTypeName, string nameFormat, params string[] parameters)
         {
             var name = MockRepository.GenerateMock<IStepName>();
             name.Stub(n => n.Format(Arg<IStepNameDecorator>.Is.Anything)).Return(stepName);
+            name.Stub(n => n.StepTypeName).Return(stepTypeName);
+            name.Stub(n => n.NameFormat).Return(nameFormat);
+            name.Stub(n => n.Parameters).Return(parameters.Select(CreateStepNameParameter));
             return name;
+        }
+
+        private static IStepParameter CreateStepNameParameter(string parameter)
+        {
+            var param = MockRepository.GenerateMock<IStepParameter>();
+            param.Stub(p => p.FormattedValue).Return(parameter);
+            param.Stub(p => p.IsEvaluated).Return(true);
+            return param;
         }
 
         public static IScenarioResult CreateScenarioResult(string name, string label, DateTimeOffset executionStart, TimeSpan executionTime, string[] categories, params IStepResult[] steps)

@@ -58,9 +58,12 @@ My feature
 long description
 Ignored name [Label 2] (1m 02s)[&#8734;link]
 categoryA
-Passed 1. step1 (1m 01s)
+Passed 1. call step1 ""arg1"" (1m 01s)
 Ignored 2. step2 (1s 100ms)
 Step 2: Not implemented yet
+// Step 1: multiline
+comment
+// Step 1: comment 2
 Failed name2 (2s 157ms)[&#8734;link]
 categoryB, categoryC
 Bypassed 1. step3 (2s 107ms)

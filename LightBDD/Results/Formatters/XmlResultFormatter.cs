@@ -92,7 +92,22 @@ namespace LightBDD.Results.Formatters
                 objects.Add(new XAttribute("ExecutionTime", step.ExecutionTime));
             if (step.StatusDetails != null)
                 objects.Add(new XElement("StatusDetails", step.StatusDetails));
+            objects.Add(ToXElement(step.StepName));
+            objects.Add(step.Comments.Select(c => new XElement("Comment", c)).Cast<object>().ToArray());
             return new XElement("Step", objects);
+        }
+
+        private static XElement ToXElement(IStepName stepName)
+        {
+            var objects = new List<object>();
+            if (stepName.StepTypeName != null)
+                objects.Add(new XAttribute("StepType", stepName.StepTypeName));
+            objects.Add(new XAttribute("Format", stepName.NameFormat));
+            objects.Add(stepName.Parameters.Select(p => new XElement("Parameter",
+                new XAttribute("IsEvaluated", p.IsEvaluated),
+                new XText(p.FormattedValue))).Cast<object>().ToArray());
+
+            return new XElement("StepName", objects);
         }
 
         private static XElement ToSummaryXElement(IFeatureResult[] features)
@@ -101,24 +116,18 @@ namespace LightBDD.Results.Formatters
             {
                 new XAttribute("TestExecutionStart", features.GetTestExecutionStartTime()),
                 new XAttribute("TestExecutionTime", features.GetTestExecutionTime()),
-                new XElement("Features", new object[] { new XAttribute("Count",features.Length) }),
-                new XElement("Scenarios", new object[]
-                {
-                    new XAttribute("Count",features.CountScenarios()),
-                    new XAttribute("Passed",features.CountScenariosWithStatus(ResultStatus.Passed)),
-                    new XAttribute("Bypassed",features.CountScenariosWithStatus(ResultStatus.Bypassed)),
-                    new XAttribute("Failed",features.CountScenariosWithStatus(ResultStatus.Failed)),
-                    new XAttribute("Ignored",features.CountScenariosWithStatus(ResultStatus.Ignored))
-                }),
-                new XElement("Steps", new object[]
-                {
-                    new XAttribute("Count",features.CountSteps()),
-                    new XAttribute("Passed",features.CountStepsWithStatus(ResultStatus.Passed)),
-                    new XAttribute("Bypassed",features.CountStepsWithStatus(ResultStatus.Bypassed)),
-                    new XAttribute("Failed",features.CountStepsWithStatus(ResultStatus.Failed)),
-                    new XAttribute("Ignored",features.CountStepsWithStatus(ResultStatus.Ignored)),
-                    new XAttribute("NotRun",features.CountStepsWithStatus(ResultStatus.NotRun))
-                })
+                new XElement("Features", new object[] {new XAttribute("Count", features.Length)}),
+                new XElement("Scenarios", new XAttribute("Count", features.CountScenarios()),
+                    new XAttribute("Passed", features.CountScenariosWithStatus(ResultStatus.Passed)),
+                    new XAttribute("Bypassed", features.CountScenariosWithStatus(ResultStatus.Bypassed)),
+                    new XAttribute("Failed", features.CountScenariosWithStatus(ResultStatus.Failed)),
+                    new XAttribute("Ignored", features.CountScenariosWithStatus(ResultStatus.Ignored))),
+                new XElement("Steps", new XAttribute("Count", features.CountSteps()),
+                    new XAttribute("Passed", features.CountStepsWithStatus(ResultStatus.Passed)),
+                    new XAttribute("Bypassed", features.CountStepsWithStatus(ResultStatus.Bypassed)),
+                    new XAttribute("Failed", features.CountStepsWithStatus(ResultStatus.Failed)),
+                    new XAttribute("Ignored", features.CountStepsWithStatus(ResultStatus.Ignored)),
+                    new XAttribute("NotRun", features.CountStepsWithStatus(ResultStatus.NotRun)))
             };
 
             return new XElement("Summary", objects);

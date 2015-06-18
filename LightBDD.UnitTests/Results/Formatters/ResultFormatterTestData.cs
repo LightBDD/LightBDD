@@ -12,7 +12,11 @@ namespace LightBDD.UnitTests.Results.Formatters
         {
             return Mocks.CreateFeatureResult("My feature", string.Format("My feature{0}long description", Environment.NewLine), "Label 1",
                 Mocks.CreateScenarioResult("name", "Label 2", _startDate.AddSeconds(1), new TimeSpan(0, 0, 1, 2, 100), new[] { "categoryA" },
-                    Mocks.CreateStepResult(1, "step1", ResultStatus.Passed, _startDate.AddSeconds(2), new TimeSpan(0, 1, 1)),
+                    Mocks.CreateStepResult(1, ResultStatus.Passed)
+                        .WithTimes(_startDate.AddSeconds(2), new TimeSpan(0, 1, 1))
+                        .WithStepNameDetails("call step1 \"arg1\"", "step1 \"{0}\"", "call", "arg1")
+                        .WithComments(@"multiline
+comment", "comment 2"),
                     Mocks.CreateStepResult(2, "step2", ResultStatus.Ignored, _startDate.AddSeconds(3), new TimeSpan(0, 0, 0, 1, 100), "Not implemented yet")),
 
                 Mocks.CreateScenarioResult("name2", null, _startDate.AddSeconds(4), new TimeSpan(0, 0, 0, 2, 157), new[] { "categoryB", "categoryC" },

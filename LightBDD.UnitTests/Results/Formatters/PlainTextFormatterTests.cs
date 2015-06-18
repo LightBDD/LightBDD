@@ -47,10 +47,14 @@ Feature: My feature [Label 1]
 
 	Scenario: name [Label 2] - Ignored (1m 02s)
 		Categories: categoryA
-		Step 1: step1 - Passed (1m 01s)
+		Step 1: call step1 ""arg1"" - Passed (1m 01s)
 		Step 2: step2 - Ignored (1s 100ms)
 		Details:
 			Step 2: Not implemented yet
+		Comments:
+			Step 1: multiline
+				comment
+			Step 1: comment 2
 
 	Scenario: name2 - Failed (2s 157ms)
 		Categories: categoryB, categoryC

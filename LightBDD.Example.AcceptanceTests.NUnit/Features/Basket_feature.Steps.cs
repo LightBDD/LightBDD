@@ -25,7 +25,9 @@ namespace LightBDD.Example.AcceptanceTests.NUnit.Features
 
         private void When_customer_adds_it_to_basket()
         {
-            _transferResult = _stock.TransferToBasket(_basket, "product");
+            var product = "product";
+            StepExecution.Comment(string.Format("Transferring '{0}' to the basket", product));
+            _transferResult = _stock.TransferToBasket(_basket, product);
         }
 
         private void Then_product_addition_is_successful()

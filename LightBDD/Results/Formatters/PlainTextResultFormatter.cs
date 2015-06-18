@@ -74,16 +74,41 @@ namespace LightBDD.Results.Formatters
             if (scenario.Categories.Any())
                 builder.Append("\t\tCategories: ").AppendLine(string.Join(", ", scenario.Categories));
 
+            StringBuilder commentBuilder = new StringBuilder();
             foreach (var step in scenario.Steps)
             {
-                builder.Append("\t\tStep ")
-                       .Append(step.Number).Append(": ")
-                       .Append(step.Name).Append(" - ").Append(step.Status.ToString());
-                if (step.ExecutionTime != null)
-                    builder.Append(" (").Append(step.ExecutionTime.FormatPretty()).Append(")");
-                builder.AppendLine();
+                FormatStep(builder, step);
+                CollectComments(step, commentBuilder);
             }
             FormatDetails(builder, scenario);
+            FormatComments(builder, commentBuilder);
+        }
+
+        private static void CollectComments(IStepResult step, StringBuilder commentBuilder)
+        {
+            foreach (var comment in step.Comments)
+            {
+                commentBuilder.Append("\t\t\tStep ")
+                    .Append(step.Number)
+                    .Append(": ")
+                    .AppendLine(comment.Replace(Environment.NewLine, Environment.NewLine + "\t\t\t\t"));
+            }
+        }
+
+        private static void FormatComments(StringBuilder builder, StringBuilder commentBuilder)
+        {
+            if (commentBuilder.Length > 0)
+                builder.AppendLine("\t\tComments:").Append(commentBuilder);
+        }
+
+        private static void FormatStep(StringBuilder builder, IStepResult step)
+        {
+            builder.Append("\t\tStep ")
+                .Append(step.Number).Append(": ")
+                .Append(step.Name).Append(" - ").Append(step.Status);
+            if (step.ExecutionTime != null)
+                builder.Append(" (").Append(step.ExecutionTime.FormatPretty()).Append(")");
+            builder.AppendLine();
         }
 
         private static void FormatSummary(StringBuilder builder, IFeatureResult[] features)

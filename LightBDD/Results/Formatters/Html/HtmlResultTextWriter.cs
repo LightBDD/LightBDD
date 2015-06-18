@@ -333,6 +333,7 @@ namespace LightBDD.Results.Formatters.Html
         {
             var toggleId = string.Format("toggle{0}_{1}", featureIndex, scenarioIndex);
             var scenarioId = string.Format("scenario{0}_{1}", featureIndex, scenarioIndex + 1);
+
             return Html.Tag(HtmlTextWriterTag.Div).Class("scenario " + GetStatusClass(scenario.Status)).Attribute("data-categories", GetScenarioCategories(scenario)).Content(
                 Html.Checkbox().Id(toggleId).Class("toggle toggleS").Checked(),
                 Html.Tag(HtmlTextWriterTag.H3).Id(scenarioId).Class("title").Content(
@@ -346,7 +347,14 @@ namespace LightBDD.Results.Formatters.Html
                 Html.Tag(HtmlTextWriterTag.Div).Class("categories").Content(string.Join(", ", scenario.Categories)).SkipEmpty(),
                 Html.Tag(HtmlTextWriterTag.Div).Content(scenario.Steps.Select(GetStep)),
                 GetStatusDetails(scenario.StatusDetails),
+                GetComments(scenario.Steps),
                 Html.Br());
+        }
+
+        private IHtmlNode GetComments(IEnumerable<IStepResult> steps)
+        {
+            return Html.Tag(HtmlTextWriterTag.Div).Class("comments")
+                .Content(from s in steps from c in s.Comments select Html.Tag(HtmlTextWriterTag.Div).Content(string.Format("// Step {0}: {1}", s.Number, c)));
         }
 
         private string GetScenarioCategories(IScenarioResult scenario)

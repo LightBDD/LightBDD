@@ -51,6 +51,25 @@
                       <xs:complexType>
                         <xs:sequence>
                           <xs:element name="StatusDetails" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                          <xs:element name="StepName" minOccurs="0" maxOccurs="1">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Parameter" minOccurs="0" maxOccurs="unbounded">
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:extension base="xs:string">
+                                        <xs:attribute name="IsEvaluated" type="xs:boolean" use="required">
+                                        </xs:attribute>
+                                      </xs:extension>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="StepType" type="xs:string" use="optional"/>
+                              <xs:attribute name="Format" type="xs:string" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="Comment" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
                         </xs:sequence>
                         <xs:attribute name="Status" type="ResultStatus" use="required"/>
                         <xs:attribute name="Number" type="xs:int" use="required"/>
