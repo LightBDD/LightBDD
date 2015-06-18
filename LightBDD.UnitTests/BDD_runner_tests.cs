@@ -331,7 +331,7 @@ namespace LightBDD.UnitTests
         {
             _subject.NewScenario().Run(
                 Step_one,
-                Step_with_comment,
+                Step_with_comments,
                 Step_with_other_comment);
 
             var result = _subject.Result.Scenarios.Single();
@@ -341,7 +341,7 @@ namespace LightBDD.UnitTests
             StepResultExpectation.Assert(result.Steps, new[]
             {
                 new StepResultExpectation(1, "Step one", ResultStatus.Passed),
-                new StepResultExpectation(2, "Step with comment", ResultStatus.Passed, null, "comment one", "comment 2"),
+                new StepResultExpectation(2, "Step with comments", ResultStatus.Passed, null, "comment one", "comment 2"),
                 new StepResultExpectation(3, "Step with other comment", ResultStatus.Passed, null, "other comment")
             });
         }

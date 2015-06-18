@@ -71,6 +71,7 @@
     <Compile Include="BDD_runner_progress_notification_tests.cs" />
     <Compile Include="Results\Formatters\HtmlResultFormatterTests.cs" />
     <Compile Include="Results\Formatters\ResultFormatterTestData.cs" />
+    <Compile Include="StepExecutionTests.cs" />
     <Compile Include="SummaryGeneration\SummaryFileWriterTests.cs" />
     <Compile Include="SummaryGeneration\SummaryGeneratorTests.cs" />
     <Compile Include="TestMetadataProviderTests.cs" />

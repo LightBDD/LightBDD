@@ -23,7 +23,7 @@ namespace LightBDD.UnitTests
             .Select(i => ToScenarioBuilder(subject, i))
             .ToArray()
             .AsParallel()
-            .ForAll(b => b.Run(Step_with_comment));
+            .ForAll(b => b.Run(Step_with_comments));
 
             Assert.That(subject.Result.Scenarios.Count(), Is.EqualTo(_elementsCount));
             for (int i = 0; i < _elementsCount; ++i)

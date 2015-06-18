@@ -86,10 +86,21 @@ namespace LightBDD.UnitTests
         [Test]
         public void Should_display_comment()
         {
-            _subject.RunScenario(call => Step_with_comment());
-            _progressNotifier.AssertWasCalled(n => n.NotifyStepStart("CALL Step with comment", 1, 1));
+            _subject.RunScenario(call => Step_with_comments());
+            _progressNotifier.AssertWasCalled(n => n.NotifyStepStart("CALL Step with comments", 1, 1));
             _progressNotifier.AssertWasCalled(n => n.NotifyStepComment(1, 1, "comment one"));
             _progressNotifier.AssertWasCalled(n => n.NotifyStepComment(1, 1, "comment 2"));
+            _progressNotifier.AssertWasCalled(n => n.NotifyStepFinished(Arg<IStepResult>.Matches(r => r.Number == 1 && r.Status == ResultStatus.Passed), Arg<int>.Is.Equal(1)));
+        }
+
+        [Test]
+        [TestCase(null)]
+        [TestCase("\r\n \t")]
+        public void Should_not_display_empty_comments(string comment)
+        {
+            _subject.RunScenario(call => Step_with_comment(comment));
+            _progressNotifier.AssertWasCalled(n => n.NotifyStepStart(Arg<string>.Is.Anything, Arg<int>.Is.Anything, Arg<int>.Is.Anything));
+            _progressNotifier.AssertWasNotCalled(n => n.NotifyStepComment(Arg<int>.Is.Anything, Arg<int>.Is.Anything, Arg<string>.Is.Anything));
             _progressNotifier.AssertWasCalled(n => n.NotifyStepFinished(Arg<IStepResult>.Matches(r => r.Number == 1 && r.Status == ResultStatus.Passed), Arg<int>.Is.Equal(1)));
         }
     }
