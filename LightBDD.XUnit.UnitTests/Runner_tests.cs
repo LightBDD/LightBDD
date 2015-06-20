@@ -27,7 +27,7 @@ namespace LightBDD.XUnit.UnitTests
 
         public void Step_one() { }
         public void Step_throwing_exception() { throw new Exception("some reason"); }
-        public void Step_with_inconclusive_assertion() { throw new IgnoreException("some reason"); }
+        public void Step_with_inconclusive_assertion() { ScenarioAssert.Ignore("some reason"); }
         public void Step_two() { }
 
         [Scenario]

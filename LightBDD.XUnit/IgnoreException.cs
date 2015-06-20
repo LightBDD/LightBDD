@@ -3,11 +3,11 @@
 namespace LightBDD
 {
     /// <summary>
-    /// Exception used to mark test ingored.
+    /// Exception used to mark test ignored.
     /// It works only with tests marked with [Scenario] attribute. 
     /// If thrown from tests annotated with [Fact] or [Theory] attribute, the test would fail.
     /// </summary>
-    public class IgnoreException : Exception
+    internal class IgnoreException : Exception
     {
         /// <summary>
         /// Default constructor.

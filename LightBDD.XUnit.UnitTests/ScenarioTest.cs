@@ -56,7 +56,7 @@ using System;
 public class TestClass
 {
     [Scenario]
-    public void Ignored () { throw new IgnoreException(); }
+    public void Ignored () { ScenarioAssert.Ignore(""reason""); }
 }
 ";
             ExecuteTests(code, AssertMessage<ITestSkipped>);
@@ -110,7 +110,7 @@ public class TestClass
     [Scenario]
     [InlineData(0)]
     [InlineData(1)]
-    public void IsZero (int arg) { if(arg!=0) throw new IgnoreException(); }
+    public void IsZero (int arg) { if(arg!=0) ScenarioAssert.Ignore(""reason""); }
 }
 ";
             ExecuteTests(code, sink => { AssertMessage<ITestPassed>(sink); AssertMessage<ITestSkipped>(sink); });
