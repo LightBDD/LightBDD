@@ -25,6 +25,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\LightBDD.XUnit.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,10 +35,13 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\LightBDD.XUnit.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime" />
+    <Reference Include="System.Threading.Tasks" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
       <Private>True</Private>
@@ -50,6 +54,10 @@
       <HintPath>..\packages\xunit.extensibility.core.2.0.0\lib\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="xunit.execution.desktop, Version=2.0.0.2929, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.extensibility.execution.2.0.0\lib\net45\xunit.execution.desktop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyVersion.cs">
@@ -58,8 +66,15 @@
     <Compile Include="BDDRunner.cs" />
     <Compile Include="BDDRunnerFactory.cs" />
     <Compile Include="FeatureFixture.cs" />
+    <Compile Include="IgnoreException.cs" />
+    <Compile Include="ScenarioAttribute.cs" />
     <Compile Include="XUnitTestMetadataProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XUnit\ExceptionExtensions.cs" />
+    <Compile Include="XUnit\ScenarioTestCase.cs" />
+    <Compile Include="XUnit\ScenarioTestCaseDiscoverer.cs" />
+    <Compile Include="XUnit\ScenarioTestCaseRunner.cs" />
+    <Compile Include="XUnit\ScenarioTestRunner.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

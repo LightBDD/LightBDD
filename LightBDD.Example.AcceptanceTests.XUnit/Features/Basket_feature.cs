@@ -1,6 +1,3 @@
-
-using Xunit;
-
 namespace LightBDD.Example.AcceptanceTests.XUnit.Features
 {
     [FeatureDescription(
@@ -10,7 +7,7 @@ I want to add products to basket")]
     [Label("Story-4")]
     public partial class Basket_feature
     {
-        [Fact]
+        [Scenario]
         [Label("Ticket-6")]
         [ScenarioCategory(Categories.Sales)]
         public void No_product_in_stock()
@@ -25,7 +22,7 @@ I want to add products to basket")]
         /// <summary>
         /// This test presents how LightBDD treats tests with Inconclusive / Ignore asserts
         /// </summary>
-        [Fact]
+        [Scenario]
         [Label("Ticket-7")]
         [ScenarioCategory(Categories.Sales)]
         public void Successful_addition()

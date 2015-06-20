@@ -37,7 +37,9 @@ namespace LightBDD
         /// </summary>
         protected override ResultStatus MapExceptionToStatus(Type exceptionType)
         {
-            return ResultStatus.Failed;
+            return (exceptionType == typeof(IgnoreException))
+                ? ResultStatus.Ignored
+                : ResultStatus.Failed;
         }
     }
 }

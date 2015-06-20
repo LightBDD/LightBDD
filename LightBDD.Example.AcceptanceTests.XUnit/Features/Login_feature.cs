@@ -9,7 +9,7 @@ I want to login into system")]
     [Label("Story-1")]
     public partial class Login_feature
     {
-        [Fact]
+        [Scenario]
         [Label("Ticket-1")]
         [ScenarioCategory(Categories.Security)]
         public void Successful_login()
@@ -24,7 +24,7 @@ I want to login into system")]
                 Then_welcome_message_is_returned_containing_user_name);
         }
 
-        [Fact]
+        [Scenario]
         [Label("Ticket-2")]
         [ScenarioCategory(Categories.Security)]
         public void Wrong_login_provided_causes_login_to_fail()
@@ -39,7 +39,7 @@ I want to login into system")]
                 Then_invalid_login_or_password_error_message_is_returned);
         }
 
-        [Fact]
+        [Scenario]
         [Label("Ticket-2")]
         [ScenarioCategory(Categories.Security)]
         public void Wrong_password_provided_causes_login_to_fail()
@@ -57,7 +57,7 @@ I want to login into system")]
         /// <summary>
         /// This test presents how LightBDD treats test failures
         /// </summary>
-        [Fact]
+        [Scenario]
         [Label("Ticket-3")]
         [ScenarioCategory(Categories.Security)]
         public void Anonymous_login_name_should_allow_to_log_in()

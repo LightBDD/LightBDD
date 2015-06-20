@@ -9,7 +9,7 @@ I want to receive invoice for bought items")]
     [Label("Story-2")]
     public partial class Invoice_feature
     {
-        [Fact]
+        [Scenario]
         [Label("Ticket-4")]
         [ScenarioCategory(Categories.Sales)]
         public void Receiving_invoice_for_products()

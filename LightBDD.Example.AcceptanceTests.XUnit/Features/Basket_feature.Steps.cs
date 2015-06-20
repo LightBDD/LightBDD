@@ -53,8 +53,7 @@ namespace LightBDD.Example.AcceptanceTests.XUnit.Features
 
         private void Then_product_is_removed_from_stock()
         {
-            throw new NotImplementedException();
-            //Assert.Inconclusive("Product removal from stock is not implemented yet");
+            throw new IgnoreException("Product removal from stock is not implemented yet");
             Assert.False(_stock.Products.Contains("product"));
         }
 

@@ -27,7 +27,30 @@ namespace LightBDD.XUnit.UnitTests
 
         public void Step_one() { }
         public void Step_throwing_exception() { throw new Exception("some reason"); }
+        public void Step_with_inconclusive_assertion() { throw new IgnoreException("some reason"); }
         public void Step_two() { }
+
+        [Scenario]
+        public void Should_collect_scenario_result_for_inconclusive_scenario_steps()
+        {
+            try
+            {
+                _subject.RunScenario(Step_one, Step_with_inconclusive_assertion, Step_two);
+            }
+            catch
+            {
+            }
+            const string expectedStatusDetails = "some reason";
+
+            var result = _subject.Result.Scenarios.Single();
+            Assert.Equal("Should collect scenario result for inconclusive scenario steps", result.Name);
+            Assert.Equal(ResultStatus.Ignored, result.Status);
+            Assert.Equal(3, result.Steps.Count());
+            AssertStep(result.Steps, 1, "Step one", ResultStatus.Passed);
+            AssertStep(result.Steps, 2, "Step with inconclusive assertion", ResultStatus.Ignored, expectedStatusDetails);
+            AssertStep(result.Steps, 3, "Step two", ResultStatus.NotRun);
+            Assert.Equal("Step 2: " + expectedStatusDetails, result.StatusDetails);
+        }
 
         [Fact]
         public void Should_collect_scenario_result_for_failing_steps()

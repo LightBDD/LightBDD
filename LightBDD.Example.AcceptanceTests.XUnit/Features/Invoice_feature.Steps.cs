@@ -15,8 +15,7 @@ namespace LightBDD.Example.AcceptanceTests.XUnit.Features
 
         private void Invoice_is_sent_to_customer()
         {
-            throw new NotImplementedException();
-            //Assert.Inconclusive("Not implemented yet");
+            throw new IgnoreException("Not implemented yet");
         }
 
         private void Invoice_contains_product_with_price_of_AMOUNT(string product, [Format("{0:£0.00#}")]decimal amount)

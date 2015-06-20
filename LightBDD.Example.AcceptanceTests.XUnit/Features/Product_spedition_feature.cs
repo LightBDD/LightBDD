@@ -9,7 +9,7 @@ I want to dispatch products to customer as soon as the payment is finalized")]
     [Label("Story-3")]
     public class Product_spedition_feature : FeatureFixture
     {
-        [Fact]
+        [Scenario]
         [Label("Ticket-5")]
         [ScenarioCategory(Categories.Sales)]
         [ScenarioCategory(Categories.Delivery)]

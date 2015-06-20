@@ -9,7 +9,7 @@ I want to add, browse and remove my contacts")]
     [Label("Story-6")]
     public partial class Contacts_management
     {
-        [Fact]
+        [Scenario]
         [Label("Ticket-8")]
         public void Contact_book_should_allow_me_to_add_multiple_contacts()
         {
@@ -19,7 +19,7 @@ I want to add, browse and remove my contacts")]
                 Then_all_of_expected_contacts_would_be_available_in_contact_book);
         }
 
-        [Fact]
+        [Scenario]
         [Label("Ticket-9")]
         public void Contact_book_should_allow_me_to_remove_contacts()
         {
@@ -30,7 +30,7 @@ I want to add, browse and remove my contacts")]
                 Then_contact_book_still_contains_other_contacts);
         }
 
-        [Fact]
+        [Scenario]
         [Label("Ticket-9")]
         public void Contact_book_should_allow_me_to_remove_all_contacts()
         {
