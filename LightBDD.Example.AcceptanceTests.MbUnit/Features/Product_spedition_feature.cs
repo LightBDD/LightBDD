@@ -19,25 +19,25 @@ I want to dispatch products to customer as soon as the payment is finalized")]
         {
             Runner.RunScenario<SpeditionContext>(
                 (given, ctx) => ctx.There_is_an_active_customer_with_id("ABC-123"),
-                (given, ctx) => ctx.Customer_has_product_in_basket("wooden shelf"),
-                (given, ctx) => ctx.Customer_has_product_in_basket("wooden desk"),
-                (when, ctx) => ctx.Customer_payment_has_been_finalized(),
-                (then, ctx) => ctx.Product_has_been_dispatched_to_customer("wooden shelf"),
-                (then, ctx) => ctx.Product_has_been_dispatched_to_customer("wooden desk"));
+                (and, ctx) => ctx.The_customer_has_product_in_basket("wooden shelf"),
+                (and, ctx) => ctx.The_customer_has_product_in_basket("wooden desk"),
+                (when, ctx) => ctx.The_customer_payment_finalizes(),
+                (then, ctx) => ctx.Product_should_be_dispatched_to_the_customer("wooden shelf"),
+                (and, ctx) => ctx.Product_should_be_dispatched_to_the_customer("wooden desk"));
         }
     }
 
     public class SpeditionContext
     {
-        public void Customer_has_product_in_basket(string product)
+        public void The_customer_has_product_in_basket(string product)
         {
         }
 
-        public void Customer_payment_has_been_finalized()
+        public void The_customer_payment_finalizes()
         {
         }
 
-        public void Product_has_been_dispatched_to_customer(string product)
+        public void Product_should_be_dispatched_to_the_customer(string product)
         {
         }
 

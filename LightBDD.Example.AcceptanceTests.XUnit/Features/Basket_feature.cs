@@ -14,9 +14,9 @@ I want to add products to basket")]
         {
             Runner.RunScenario(
                 Given_product_is_out_of_stock,
-                When_customer_adds_it_to_basket,
-                Then_product_addition_is_unsuccessful,
-                Then_basket_does_not_contain_product);
+                When_customer_adds_it_to_the_basket,
+                Then_the_product_addition_should_be_unsuccessful,
+                Then_the_basket_should_not_contain_the_product);
         }
 
         /// <summary>
@@ -29,10 +29,10 @@ I want to add products to basket")]
         {
             Runner.RunScenario(
                 Given_product_is_in_stock,
-                When_customer_adds_it_to_basket,
-                Then_product_addition_is_successful,
-                Then_basket_contains_product,
-                Then_product_is_removed_from_stock);
+                When_customer_adds_it_to_the_basket,
+                Then_the_product_addition_should_be_successful,
+                Then_the_basket_should_contain_the_product,
+                Then_the_product_should_be_removed_from_stock);
         }
     }
 }

@@ -23,34 +23,34 @@ namespace LightBDD.Example.AcceptanceTests.MbUnit.Features
             //It is not added, so it is out of stock
         }
 
-        private void When_customer_adds_it_to_basket()
+        private void When_customer_adds_it_to_the_basket()
         {
             var product = "product";
             StepExecution.Comment(string.Format("Transferring '{0}' to the basket", product));
             _transferResult = _stock.TransferToBasket(_basket, product);
         }
 
-        private void Then_product_addition_is_successful()
+        private void Then_the_product_addition_should_be_successful()
         {
             Assert.IsTrue(_transferResult);
         }
 
-        private void Then_basket_contains_product()
+        private void Then_the_basket_should_contain_the_product()
         {
             Assert.IsTrue(_basket.Products.Contains("product"));
         }
 
-        private void Then_product_addition_is_unsuccessful()
+        private void Then_the_product_addition_should_be_unsuccessful()
         {
             Assert.IsFalse(_transferResult);
         }
 
-        private void Then_basket_does_not_contain_product()
+        private void Then_the_basket_should_not_contain_the_product()
         {
             Assert.IsFalse(_basket.Products.Contains("product"));
         }
 
-        private void Then_product_is_removed_from_stock()
+        private void Then_the_product_should_be_removed_from_stock()
         {
             Assert.Inconclusive("Product removal from stock is not implemented yet");
             Assert.IsFalse(_stock.Products.Contains("product"));

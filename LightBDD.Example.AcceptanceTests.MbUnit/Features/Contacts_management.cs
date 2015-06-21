@@ -18,7 +18,7 @@ I want to add, browse and remove my contacts")]
             Runner.RunScenario<ScenarioContext>(
                 Given_my_contact_book_is_empty,
                 When_I_add_new_contacts,
-                Then_all_of_expected_contacts_would_be_available_in_contact_book);
+                Then_all_contacts_should_be_available_in_the_contact_book);
         }
 
         [Test]
@@ -27,9 +27,9 @@ I want to add, browse and remove my contacts")]
         {
             Runner.RunScenario<ScenarioContext>(
                 Given_my_contact_book_is_filled_with_contacts,
-                When_I_remove_contact,
-                Then_contact_book_does_not_contain_removed_contact_any_more,
-                Then_contact_book_still_contains_other_contacts);
+                When_I_remove_one_contact,
+                Then_the_contact_book_should_not_contain_removed_contact_any_more,
+                Then_the_contact_book_should_contains_all_other_contacts);
         }
 
         [Test]
@@ -39,7 +39,7 @@ I want to add, browse and remove my contacts")]
             Runner.RunScenario<ScenarioContext>(
                 Given_my_contact_book_is_filled_with_many_contacts,
                 When_I_clear_it,
-                Then_contact_book_is_empty);
+                Then_the_contact_book_should_be_empty);
         }
     }
 }

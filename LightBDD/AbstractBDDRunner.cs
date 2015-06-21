@@ -92,17 +92,17 @@ namespace LightBDD
         /// public void Successful_login()
         /// {
         ///     Runner.RunScenario&lt;LoginContext&gt;(
-        ///         Given_user_is_about_to_login,
-        ///         Given_user_entered_valid_login,
-        ///         Given_user_entered_valid_password,
-        ///         When_user_clicked_login_button,
-        ///         Then_login_is_successful,
-        ///         Then_welcome_message_is_returned_containing_user_name);
+        ///         Given_the_user_is_about_to_login,
+        ///         Given_the_user_entered_valid_login,
+        ///         Given_the_user_entered_valid_password,
+        ///         When_the_user_clicks_login_button,
+        ///         Then_the_login_operation_should_be_successful,
+        ///         Then_a_welcome_message_containing_user_name_should_be_returned);
         /// }
         /// </code>
         /// Expected step signature:
         /// <code>
-        /// void Given_user_is_about_to_login(LoginContext context) { /* ... */ }
+        /// void Given_the_user_is_about_to_login(LoginContext context) { /* ... */ }
         /// </code>
         /// </summary>
         /// <typeparam name="TContext">Type of context that would be shared between all steps.</typeparam>
@@ -127,17 +127,17 @@ namespace LightBDD
         /// public void Successful_login()
         /// {
         ///     Runner.RunScenario&lt;LoginContext&gt;("My successful login",
-        ///         Given_user_is_about_to_login,
-        ///         Given_user_entered_valid_login,
-        ///         Given_user_entered_valid_password,
-        ///         When_user_clicked_login_button,
-        ///         Then_login_is_successful,
-        ///         Then_welcome_message_is_returned_containing_user_name);
+        ///         Given_the_user_is_about_to_login,
+        ///         Given_the_user_entered_valid_login,
+        ///         Given_the_user_entered_valid_password,
+        ///         When_the_user_clicks_login_button,
+        ///         Then_the_login_operation_should_be_successful,
+        ///         Then_a_welcome_message_containing_user_name_should_be_returned);
         /// }
         /// </code>
         /// Expected step signature:
         /// <code>
-        /// void Given_user_is_about_to_login(LoginContext context) { /* ... */ }
+        /// void Given_the_user_is_about_to_login(LoginContext context) { /* ... */ }
         /// </code>
         /// </summary>
         /// <typeparam name="TContext">Type of context that would be shared between all steps.</typeparam>
@@ -162,17 +162,17 @@ namespace LightBDD
         /// public void Successful_login()
         /// {
         ///     Runner.RunScenario&lt;LoginContext&gt;("My successful login", "Ticket-1",
-        ///         Given_user_is_about_to_login,
-        ///         Given_user_entered_valid_login,
-        ///         Given_user_entered_valid_password,
-        ///         When_user_clicked_login_button,
-        ///         Then_login_is_successful,
-        ///         Then_welcome_message_is_returned_containing_user_name);
+        ///         Given_the_user_is_about_to_login,
+        ///         Given_the_user_entered_valid_login,
+        ///         Given_the_user_entered_valid_password,
+        ///         When_the_user_clicks_login_button,
+        ///         Then_the_login_operation_should_be_successful,
+        ///         Then_a_welcome_message_containing_user_name_should_be_returned);
         /// }
         /// </code>
         /// Expected step signature:
         /// <code>
-        /// void Given_user_is_about_to_login(LoginContext context) { /* ... */ }
+        /// void Given_the_user_is_about_to_login(LoginContext context) { /* ... */ }
         /// </code>
         /// </summary>
         /// <typeparam name="TContext">Type of context that would be shared between all steps.</typeparam>
@@ -202,17 +202,17 @@ namespace LightBDD
         /// public void Successful_login()
         /// {
         ///     Runner.RunScenario(new LoginContext(),
-        ///         Given_user_is_about_to_login,
-        ///         Given_user_entered_valid_login,
-        ///         Given_user_entered_valid_password,
-        ///         When_user_clicked_login_button,
-        ///         Then_login_is_successful,
-        ///         Then_welcome_message_is_returned_containing_user_name);
+        ///         Given_the_user_is_about_to_login,
+        ///         Given_the_user_entered_valid_login,
+        ///         Given_the_user_entered_valid_password,
+        ///         When_the_user_clicks_login_button,
+        ///         Then_the_login_operation_should_be_successful,
+        ///         Then_a_welcome_message_containing_user_name_should_be_returned);
         /// }
         /// </code>
         /// Expected step signature:
         /// <code>
-        /// void Given_user_is_about_to_login(LoginContext context) { /* ... */ }
+        /// void Given_the_user_is_about_to_login(LoginContext context) { /* ... */ }
         /// </code>
         /// </summary>
         /// <typeparam name="TContext">Type of context that would be shared between all steps.</typeparam>
@@ -237,17 +237,17 @@ namespace LightBDD
         /// public void Successful_login()
         /// {
         ///     Runner.RunScenario(new LoginContext(), "My successful login",
-        ///         Given_user_is_about_to_login,
-        ///         Given_user_entered_valid_login,
-        ///         Given_user_entered_valid_password,
-        ///         When_user_clicked_login_button,
-        ///         Then_login_is_successful,
-        ///         Then_welcome_message_is_returned_containing_user_name);
+        ///         Given_the_user_is_about_to_login,
+        ///         Given_the_user_entered_valid_login,
+        ///         Given_the_user_entered_valid_password,
+        ///         When_the_user_clicks_login_button,
+        ///         Then_the_login_operation_should_be_successful,
+        ///         Then_a_welcome_message_containing_user_name_should_be_returned);
         /// }
         /// </code>
         /// Expected step signature:
         /// <code>
-        /// void Given_user_is_about_to_login(LoginContext context) { /* ... */ }
+        /// void Given_the_user_is_about_to_login(LoginContext context) { /* ... */ }
         /// </code>
         /// </summary>
         /// <typeparam name="TContext">Type of context that would be shared between all steps.</typeparam>
@@ -273,17 +273,17 @@ namespace LightBDD
         /// public void Successful_login()
         /// {
         ///     Runner.RunScenario(new LoginContext(), "My successful login", "Ticket-1",
-        ///         Given_user_is_about_to_login,
-        ///         Given_user_entered_valid_login,
-        ///         Given_user_entered_valid_password,
-        ///         When_user_clicked_login_button,
-        ///         Then_login_is_successful,
-        ///         Then_welcome_message_is_returned_containing_user_name);
+        ///         Given_the_user_is_about_to_login,
+        ///         Given_the_user_entered_valid_login,
+        ///         Given_the_user_entered_valid_password,
+        ///         When_the_user_clicks_login_button,
+        ///         Then_the_login_operation_should_be_successful,
+        ///         Then_a_welcome_message_containing_user_name_should_be_returned);
         /// }
         /// </code>
         /// Expected step signature:
         /// <code>
-        /// void Given_user_is_about_to_login(LoginContext context) { /* ... */ }
+        /// void Given_the_user_is_about_to_login(LoginContext context) { /* ... */ }
         /// </code>
         /// </summary>
         /// <typeparam name="TContext">Type of context that would be shared between all steps.</typeparam>
@@ -314,17 +314,17 @@ namespace LightBDD
         /// public void Successful_login()
         /// {
         ///     Runner.RunScenario(
-        ///         Given_user_is_about_to_login,
-        ///         Given_user_entered_valid_login,
-        ///         Given_user_entered_valid_password,
-        ///         When_user_clicked_login_button,
-        ///         Then_login_is_successful,
-        ///         Then_welcome_message_is_returned_containing_user_name);
+        ///         Given_the_user_is_about_to_login,
+        ///         Given_the_user_entered_valid_login,
+        ///         Given_the_user_entered_valid_password,
+        ///         When_the_user_clicks_login_button,
+        ///         Then_the_login_operation_should_be_successful,
+        ///         Then_a_welcome_message_containing_user_name_should_be_returned);
         /// }
         /// </code>
         /// Expected step signature:
         /// <code>
-        /// void Given_user_is_about_to_login() { /* ... */ }
+        /// void Given_the_user_is_about_to_login() { /* ... */ }
         /// </code>
         /// </summary>
         /// <param name="steps">List of steps to execute in order.</param>
@@ -354,18 +354,18 @@ namespace LightBDD
         /// public void Receiving_invoice_for_products()
         /// {
         ///     Runner.RunScenario(
-        ///         given => Product_is_available_in_products_storage("wooden desk"),
-        ///         and => Product_is_available_in_products_storage("wooden shelf"),
+        ///         given => Product_is_available_in_product_storage("wooden desk"),
+        ///         and => Product_is_available_in_product_storage("wooden shelf"),
         ///         when => Customer_buys_product("wooden desk"),
         ///         and => Customer_buys_product("wooden shelf"),
-        ///         then => Invoice_is_sent_to_customer(),
+        ///         then => An_invoice_should_be_sent_to_the_customer(),
         ///         and => Invoice_contains_product_with_price_of_AMOUNT_pounds("wooden desk", 62),
         ///         and => Invoice_contains_product_with_price_of_AMOUNT_pounds("wooden shelf", 37));
         /// }
         /// </code>
         /// Expected step signature:
         /// <code>
-        /// void Product_is_available_in_products_storage(string product) { /* ... */ }
+        /// void Product_is_available_in_product_storage(string product) { /* ... */ }
         /// </code>
         /// </summary>
         /// <param name="steps">List of steps to execute in order.</param>
@@ -397,16 +397,16 @@ namespace LightBDD
         /// {
         ///     Runner.RunScenario&lt;SpeditionContext&gt;(
         ///         (given, ctx) => ctx.There_is_an_active_customer_with_id("ABC-123"),
-        ///         (given, ctx) => ctx.Customer_has_product_in_basket("wooden shelf"),
-        ///         (given, ctx) => ctx.Customer_has_product_in_basket("wooden desk"),
-        ///         (when, ctx) => ctx.Customer_payment_has_been_finalized(),
-        ///         (then, ctx) => ctx.Product_has_been_dispatched_to_customer("wooden shelf"),
-        ///         (then, ctx) => ctx.Product_has_been_dispatched_to_customer("wooden desk"));
+        ///         (and, ctx) => ctx.The_customer_has_product_in_basket("wooden shelf"),
+        ///         (and, ctx) => ctx.The_customer_has_product_in_basket("wooden desk"),
+        ///         (when, ctx) => ctx.The_customer_payment_finalizes(),
+        ///         (then, ctx) => ctx.Product_should_be_dispatched_to_the_customer("wooden shelf"),
+        ///         (and, ctx) => ctx.Product_should_be_dispatched_to_the_customer("wooden desk"));
         /// }
         /// </code>
         /// Expected step signature:
         /// <code>
-        /// void Customer_has_product_in_basket(string product) { /* ... */ }
+        /// void The_customer_has_product_in_basket(string product) { /* ... */ }
         /// </code>
         /// </summary>
         /// <param name="steps">List of steps to execute in order.</param>
@@ -429,17 +429,17 @@ namespace LightBDD
         /// public void Successful_login()
         /// {
         ///     Runner.RunScenario("My successful login",
-        ///         Given_user_is_about_to_login,
-        ///         Given_user_entered_valid_login,
-        ///         Given_user_entered_valid_password,
-        ///         When_user_clicked_login_button,
-        ///         Then_login_is_successful,
-        ///         Then_welcome_message_is_returned_containing_user_name);
+        ///         Given_the_user_is_about_to_login,
+        ///         Given_the_user_entered_valid_login,
+        ///         Given_the_user_entered_valid_password,
+        ///         When_the_user_clicks_login_button,
+        ///         Then_the_login_operation_should_be_successful,
+        ///         Then_a_welcome_message_containing_user_name_should_be_returned);
         /// }
         /// </code>
         /// Expected step signature:
         /// <code>
-        /// void Given_user_is_about_to_login() { /* ... */ }
+        /// void Given_the_user_is_about_to_login() { /* ... */ }
         /// </code>
         /// </summary>
         /// <param name="scenarioName">Scenario name.</param>
@@ -461,17 +461,17 @@ namespace LightBDD
         /// public void Successful_login()
         /// {
         ///     Runner.RunScenario("My successful login", "Ticket-1",
-        ///         Given_user_is_about_to_login,
-        ///         Given_user_entered_valid_login,
-        ///         Given_user_entered_valid_password,
-        ///         When_user_clicked_login_button,
-        ///         Then_login_is_successful,
-        ///         Then_welcome_message_is_returned_containing_user_name);
+        ///         Given_the_user_is_about_to_login,
+        ///         Given_the_user_entered_valid_login,
+        ///         Given_the_user_entered_valid_password,
+        ///         When_the_user_clicks_login_button,
+        ///         Then_the_login_operation_should_be_successful,
+        ///         Then_a_welcome_message_containing_user_name_should_be_returned);
         /// }
         /// </code>
         /// Expected step signature:
         /// <code>
-        /// void Given_user_is_about_to_login() { /* ... */ }
+        /// void Given_the_user_is_about_to_login() { /* ... */ }
         /// </code>
         /// </summary>
         /// <param name="scenarioName">Scenario name.</param>
@@ -498,12 +498,12 @@ namespace LightBDD
         ///     Runner.NewScenario("My successful login")
         ///         .WithLabel("Ticket-1")
         ///         .Run(
-        ///             Given_user_is_about_to_login,
-        ///             Given_user_entered_valid_login,
-        ///             Given_user_entered_valid_password,
-        ///             When_user_clicked_login_button,
-        ///             Then_login_is_successful,
-        ///             Then_welcome_message_is_returned_containing_user_name);
+        ///             Given_the_user_is_about_to_login,
+        ///             Given_the_user_entered_valid_login,
+        ///             Given_the_user_entered_valid_password,
+        ///             When_the_user_clicks_login_button,
+        ///             Then_the_login_operation_should_be_successful,
+        ///             Then_a_welcome_message_containing_user_name_should_be_returned);
         /// }
         /// </code>
         /// </summary>
@@ -529,12 +529,12 @@ namespace LightBDD
         /// {
         ///     Runner.NewScenario()
         ///         .Run(
-        ///             Given_user_is_about_to_login,
-        ///             Given_user_entered_valid_login,
-        ///             Given_user_entered_valid_password,
-        ///             When_user_clicked_login_button,
-        ///             Then_login_is_successful,
-        ///             Then_welcome_message_is_returned_containing_user_name);
+        ///             Given_the_user_is_about_to_login,
+        ///             Given_the_user_entered_valid_login,
+        ///             Given_the_user_entered_valid_password,
+        ///             When_the_user_clicks_login_button,
+        ///             Then_the_login_operation_should_be_successful,
+        ///             Then_a_welcome_message_containing_user_name_should_be_returned);
         /// }
         /// </code>
         /// </summary>

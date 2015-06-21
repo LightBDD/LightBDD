@@ -17,12 +17,12 @@ I want to login into system")]
         {
             Runner.RunScenario(
 
-                Given_user_is_about_to_login,
-                Given_user_entered_valid_login,
-                Given_user_entered_valid_password,
-                When_user_clicked_login_button,
-                Then_login_is_successful,
-                Then_welcome_message_is_returned_containing_user_name);
+                Given_the_user_is_about_to_login,
+                Given_the_user_entered_valid_login,
+                Given_the_user_entered_valid_password,
+                When_the_user_clicks_login_button,
+                Then_the_login_operation_should_be_successful,
+                Then_a_welcome_message_containing_user_name_should_be_returned);
         }
 
         [Test]
@@ -32,12 +32,12 @@ I want to login into system")]
         {
             Runner.RunScenario(
 
-                Given_user_is_about_to_login,
-                Given_user_entered_invalid_login,
-                Given_user_entered_valid_password,
-                When_user_clicked_login_button,
-                Then_login_is_unsuccessful,
-                Then_invalid_login_or_password_error_message_is_returned);
+                Given_the_user_is_about_to_login,
+                Given_the_user_entered_invalid_login,
+                Given_the_user_entered_valid_password,
+                When_the_user_clicks_login_button,
+                Then_the_login_operation_should_be_unsuccessful,
+                Then_an_invalid_login_or_password_error_message_should_be_returned);
         }
 
         [Test]
@@ -47,12 +47,12 @@ I want to login into system")]
         {
             Runner.RunScenario(
 
-                Given_user_is_about_to_login,
-                Given_user_entered_valid_login,
-                Given_user_entered_invalid_password,
-                When_user_clicked_login_button,
-                Then_login_is_unsuccessful,
-                Then_invalid_login_or_password_error_message_is_returned);
+                Given_the_user_is_about_to_login,
+                Given_the_user_entered_valid_login,
+                Given_the_user_entered_invalid_password,
+                When_the_user_clicks_login_button,
+                Then_the_login_operation_should_be_unsuccessful,
+                Then_an_invalid_login_or_password_error_message_should_be_returned);
         }
 
         /// <summary>
@@ -65,11 +65,11 @@ I want to login into system")]
         {
             Runner.RunScenario(
 
-                Given_user_is_about_to_login,
-                Given_user_entered_anonymous_login,
-                When_user_clicked_login_button,
-                Then_login_is_successful,
-                Then_welcome_message_is_returned_containing_user_name);
+                Given_the_user_is_about_to_login,
+                Given_the_user_entered_anonymous_login,
+                When_the_user_clicks_login_button,
+                Then_the_login_operation_should_be_successful,
+                Then_a_welcome_message_containing_user_name_should_be_returned);
         }
     }
 }

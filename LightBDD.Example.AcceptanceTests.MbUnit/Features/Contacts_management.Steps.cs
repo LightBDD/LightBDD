@@ -35,7 +35,7 @@ namespace LightBDD.Example.AcceptanceTests.MbUnit.Features
             AddSomeContacts(ctx);
         }
 
-        private void Then_all_of_expected_contacts_would_be_available_in_contact_book(ScenarioContext ctx)
+        private void Then_all_contacts_should_be_available_in_the_contact_book(ScenarioContext ctx)
         {
             Assert.AreElementsEqualIgnoringOrder(
                 ctx.AddedContacts,
@@ -49,14 +49,14 @@ namespace LightBDD.Example.AcceptanceTests.MbUnit.Features
             AddSomeContacts(ctx);
         }
 
-        private void When_I_remove_contact(ScenarioContext ctx)
+        private void When_I_remove_one_contact(ScenarioContext ctx)
         {
             ctx.RemovedContacts = ctx.ContactBook.Contacts.Take(1).ToArray();
             foreach (var contact in ctx.RemovedContacts)
                 ctx.ContactBook.Remove(contact.Name);
         }
 
-        private void Then_contact_book_does_not_contain_removed_contact_any_more(ScenarioContext ctx)
+        private void Then_the_contact_book_should_not_contain_removed_contact_any_more(ScenarioContext ctx)
         {
             Assert.AreEqual(
                 Enumerable.Empty<Contact>(),
@@ -64,7 +64,7 @@ namespace LightBDD.Example.AcceptanceTests.MbUnit.Features
                 "Contact book should not contain removed books");
         }
 
-        private void Then_contact_book_still_contains_other_contacts(ScenarioContext ctx)
+        private void Then_the_contact_book_should_contains_all_other_contacts(ScenarioContext ctx)
         {
             Assert.AreElementsEqualIgnoringOrder(
                 ctx.ContactBook.Contacts.ToArray(),
@@ -98,7 +98,7 @@ namespace LightBDD.Example.AcceptanceTests.MbUnit.Features
             StepExecution.Bypass("Contact book clearing is not implemented yet. Contacts are removed one by one.");
         }
 
-        private void Then_contact_book_is_empty(ScenarioContext ctx)
+        private void Then_the_contact_book_should_be_empty(ScenarioContext ctx)
         {
             Assert.IsEmpty(ctx.ContactBook.Contacts, "Contact book should be empty");
         }
