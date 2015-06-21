@@ -1,5 +1,5 @@
 ﻿using LightBDD;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace $rootnamespace$
 {
@@ -7,7 +7,7 @@ namespace $rootnamespace$
 	{
 		private void Template_method()
 		{
-			Assert.Inconclusive("Not implemented yet");
+			ScenarioAssert.Ignore("Not implemented yet");
 		}
 	}
 }

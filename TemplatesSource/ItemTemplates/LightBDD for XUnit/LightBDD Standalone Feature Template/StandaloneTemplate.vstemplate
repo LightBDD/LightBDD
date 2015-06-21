@@ -1,0 +1,17 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Item">
+  <TemplateData>
+    <DefaultName>My_feature.cs</DefaultName>
+    <Name>LightBDD: Standalone Feature Test Class</Name>
+    <Description>LightBDD Standalone feature tests class containing instance of BDDRunner.
+It is usefull if project will contain only one file with acceptance tests, or if it has to derive from other base class.</Description>
+    <ProjectType>CSharp</ProjectType>
+    <SortOrder>10</SortOrder>
+    <Icon>logo.ico</Icon>
+  </TemplateData>
+  <TemplateContent>
+    <References>
+    </References>
+    <ProjectItem SubType="Code" TargetFileName="$fileinputname$.cs" ReplaceParameters="true">Standalone_feature.cs</ProjectItem>
+    <ProjectItem SubType="Code" TargetFileName="$fileinputname$.cs\$fileinputname$.Steps.cs" ReplaceParameters="true">Standalone_feature.Steps.cs</ProjectItem>
+  </TemplateContent>
+</VSTemplate>

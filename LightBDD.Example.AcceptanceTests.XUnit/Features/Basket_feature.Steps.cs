@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using LightBDD.Example.Domain;
 using LightBDD.Execution;

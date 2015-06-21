@@ -6,7 +6,7 @@ namespace LightBDD
     /// Label attribute that can be applied on feature test class or scenario method.
     /// May be used to link feature/scenario with external tools by storing ticket number.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
     public class LabelAttribute : Attribute
     {
         /// <summary>

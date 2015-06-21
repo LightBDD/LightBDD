@@ -11,8 +11,7 @@ namespace LightBDD.Formatting.Helpers
     [DebuggerStepThrough]
     public static class TimeFormatter
     {
-        private static readonly Tuple<string, int, Func<TimeSpan, int>>[] _formatters = new[]
-        {
+        private static readonly Tuple<string, int, Func<TimeSpan, int>>[] _formatters = {
             new Tuple<string, int, Func<TimeSpan, int>>("d", 1, ts => ts.Days),
             new Tuple<string, int, Func<TimeSpan, int>>("h", 2, ts => ts.Hours),
             new Tuple<string, int, Func<TimeSpan, int>>("m", 2, ts => ts.Minutes),

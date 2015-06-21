@@ -1,6 +1,6 @@
 ﻿using LightBDD;
 using LightBDD.Coordination;
-using NUnit.Framework;
+using Xunit;
 
 namespace $rootnamespace$
 {
@@ -10,18 +10,12 @@ namespace $rootnamespace$
 
 		public $safeitemname$()
 		{
-			_runner = new BDDRunner(GetType());
-		}
-
-		[TestFixtureTearDown]
-		public void FixtureTearDown()
-		{
-			FeatureCoordinator.Instance.AddFeature(_runner.Result);
+			_runner = BDDRunnerFactory.GetRunnerFor(GetType(), () => new ConsoleProgressNotifier());
 		}
 
 		private void Template_method()
 		{
-			Assert.Ignore("Not implemented yet");
+			ScenarioAssert.Ignore("Not implemented yet");
 		}
 	}
 }

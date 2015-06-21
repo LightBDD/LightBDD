@@ -1,5 +1,4 @@
-﻿using System;
-using LightBDD.Formatting.Parameters;
+﻿using LightBDD.Formatting.Parameters;
 
 namespace LightBDD.Example.AcceptanceTests.XUnit.Features
 {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using LightBDD.XUnit.UnitTests.Helpers;
 using Xunit;
 using Xunit.Abstractions;

@@ -1,16 +1,15 @@
 ﻿using LightBDD;
-using MbUnit.Framework;
 
-namespace $rootnamespace$
+namespace $safeprojectname$
 {
 	[Label("FEAT-1"), FeatureDescription(
 @"In order to 
 As a
 I want to ")]
 	[TestFixture]
-	public partial class $safeitemname$
+	public partial class My_feature
 	{
-		[Label("SCENARIO-1"), Test]
+		[Label("SCENARIO-1"), Scenario]
 		public void Template_scenario()
 		{
 			Runner.RunScenario(

@@ -18,5 +18,5 @@ I want to ")]
 				when => Template_method(),
 				then => Template_method());
 		}
-	}	
+	}
 }

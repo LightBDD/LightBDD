@@ -9,7 +9,7 @@ namespace LightBDD
     ///
     /// If given implementation supports alternative description attributes, and both are applied on class, this one would be used.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Class)]
     public class FeatureDescriptionAttribute : Attribute
     {
         /// <summary>

@@ -24,7 +24,7 @@ namespace LightBDD.UnitTests.SummaryGeneration
 		public void SetUp()
 		{
 			_dirPath = Guid.NewGuid().ToString();
-			_filePath = string.Format("{0}{1}{2}", _dirPath, Path.DirectorySeparatorChar, Guid.NewGuid().ToString());
+			_filePath = string.Format("{0}{1}{2}", _dirPath, Path.DirectorySeparatorChar, Guid.NewGuid());
 			_formatter = MockRepository.GenerateMock<IResultFormatter>();
 			_subject = new SummaryFileWriter(_formatter, _filePath);
 		}

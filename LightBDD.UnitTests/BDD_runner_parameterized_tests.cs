@@ -406,7 +406,7 @@ namespace LightBDD.UnitTests
             {
                 new StepResultExpectation(1, "CALL Method with amount \"$42.00\" percentage \"42%\" and other value \"42\"", ResultStatus.Passed),
                 new StepResultExpectation(2, "CALL Today is \"beautiful\" day", ResultStatus.Passed),
-                new StepResultExpectation(3, "CALL Today is \"ugly\" day", ResultStatus.Passed),
+                new StepResultExpectation(3, "CALL Today is \"ugly\" day", ResultStatus.Passed)
             });
 
             AssertStepName(steps[1], "CALL", "Today is \"{0}\" day", new StepParameterExpectation("beautiful", true));

@@ -10,7 +10,7 @@ namespace LightBDD.XUnit.UnitTests.Helpers
     {
         public static string Compile(string code)
         {
-            var parameters = new CompilerParameters()
+            var parameters = new CompilerParameters
             {
                 OutputAssembly = string.Format("test_{0}.dll", Guid.NewGuid()),
                 IncludeDebugInformation = true

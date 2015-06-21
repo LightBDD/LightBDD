@@ -7,6 +7,7 @@ namespace $rootnamespace$
 	{
 		private void Template_method()
 		{
+			Assert.Inconclusive("Not implemented yet");
 		}
 	}
 }

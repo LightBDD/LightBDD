@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using LightBDD;
+﻿using LightBDD;
+using NUnit.Framework;
 
 namespace $rootnamespace$
 {
@@ -7,6 +7,7 @@ namespace $rootnamespace$
 	{
 		private void Template_method()
 		{
+			Assert.Ignore("Not implemented yet");
 		}
 	}
 }

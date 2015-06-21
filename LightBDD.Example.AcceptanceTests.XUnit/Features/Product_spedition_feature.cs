@@ -1,5 +1,3 @@
-using Xunit;
-
 namespace LightBDD.Example.AcceptanceTests.XUnit.Features
 {
     [FeatureDescription(
