@@ -208,12 +208,14 @@ For full example, please see corresponding example projects:
 * https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example.AcceptanceTests.XUnit
 
 ## Download
-It is possible to download package using [NuGet](http://nuget.org):  
-`PM> Install-Package LightBDD` for the main package (defaulting to LightBDD.NUnit)
-`PM> Install-Package LightBDD.NUnit` for package using NUnit
-`PM> Install-Package LightBDD.MbUnit` for package using MbUnit
-`PM> Install-Package LightBDD.MsTest` for package using MsTest
-`PM> Install-Package LightBDD.XUnit` for package using xUnit
+It is possible to download package using [NuGet](http://nuget.org): 
+
+* `PM> Install-Package LightBDD` for the main package (defaulting to LightBDD.NUnit)
+* `PM> Install-Package LightBDD.NUnit` for package using NUnit
+* `PM> Install-Package LightBDD.MbUnit` for package using MbUnit
+* `PM> Install-Package LightBDD.MsTest` for package using MsTest
+* `PM> Install-Package LightBDD.XUnit` for package using xUnit
+
 or to clone sources from git: `git clone git://github.com/Suremaker/LightBDD.git`
 
 ## VS Project Item Templates
