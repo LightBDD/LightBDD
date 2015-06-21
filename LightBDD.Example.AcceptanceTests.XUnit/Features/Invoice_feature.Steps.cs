@@ -1,9 +1,14 @@
 ﻿using LightBDD.Formatting.Parameters;
+using Xunit.Abstractions;
 
 namespace LightBDD.Example.AcceptanceTests.XUnit.Features
 {
     public partial class Invoice_feature : FeatureFixture
     {
+        public Invoice_feature(ITestOutputHelper output) : base(output)
+        {
+        }
+
         private void Product_is_available_in_product_storage(string product)
         {
         }

@@ -73,6 +73,9 @@
     <Compile Include="Execution\Implementation\Step.cs" />
     <Compile Include="Execution\Implementation\StepsConverter.cs" />
     <Compile Include="Formatting\Parameters\FormatBooleanAttribute.cs" />
+    <Compile Include="Notification\DelegatingProgressNotifier.cs" />
+    <Compile Include="Notification\SimplifiedConsoleProgressNotifier.cs" />
+    <Compile Include="Notification\TextProgressNotifier.cs" />
     <Compile Include="ScenarioCategoryAttribute.cs" />
     <Compile Include="FeatureDescriptionAttribute.cs" />
     <Compile Include="Formatting\Parameters\FormatAttribute.cs" />

@@ -1,7 +1,10 @@
+using System.Linq;
 using LightBDD.Coordination;
+using LightBDD.Notification;
 using LightBDD.Results;
 using Rhino.Mocks;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace LightBDD.XUnit.UnitTests
 {
@@ -9,11 +12,24 @@ namespace LightBDD.XUnit.UnitTests
     {
         class TestableFixture : FeatureFixture
         {
+            public TestableFixture()
+                : base(MockRepository.GenerateMock<ITestOutputHelper>())
+            {
+            }
             public new BDDRunner Runner { get { return base.Runner; } }
+
+            public new IProgressNotifier CreateProgressNotifier()
+            {
+                return base.CreateProgressNotifier();
+            }
         }
 
         class TestableFixture2 : FeatureFixture
         {
+            public TestableFixture2()
+                : base(MockRepository.GenerateMock<ITestOutputHelper>())
+            {
+            }
             public new BDDRunner Runner { get { return base.Runner; } }
         }
 
@@ -51,6 +67,15 @@ namespace LightBDD.XUnit.UnitTests
             {
                 FeatureCoordinator.Instance.Aggregator = original;
             }
+        }
+
+        [Fact]
+        public void Fixture_should_use_SimplifiedConsoleProgressNotifier_and_XUnitOutputProgressNotifier_notifiers()
+        {
+            var progressNotifier = new TestableFixture().CreateProgressNotifier();
+            var delegatingNotifier = Assert.IsType<DelegatingProgressNotifier>(progressNotifier);
+            Assert.True(delegatingNotifier.Notifiers.Any(n => n is SimplifiedConsoleProgressNotifier), "Delegating notifier does not use SimplifiedConsoleProgressNotifier");
+            Assert.True(delegatingNotifier.Notifiers.Any(n => n is XUnitOutputProgressNotifier), "Delegating notifier does not use XUnitOutputProgressNotifier");
         }
     }
 }

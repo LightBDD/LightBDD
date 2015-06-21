@@ -4,6 +4,7 @@ using System.Linq;
 using LightBDD.Example.Domain;
 using LightBDD.Execution;
 using Xunit;
+using Xunit.Abstractions;
 
 [assembly: Debuggable(true, true)]
 
@@ -23,6 +24,10 @@ namespace LightBDD.Example.AcceptanceTests.XUnit.Features
                 AddedContacts = new Contact[0];
                 RemovedContacts = new Contact[0];
             }
+        }
+
+        public Contacts_management(ITestOutputHelper output) : base(output)
+        {
         }
 
         private void Given_my_contact_book_is_empty(ScenarioContext ctx)

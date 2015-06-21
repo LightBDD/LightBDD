@@ -67,6 +67,7 @@
     <Compile Include="BDDRunnerFactory.cs" />
     <Compile Include="FeatureFixture.cs" />
     <Compile Include="IgnoreException.cs" />
+    <Compile Include="Notification\XUnitOutputProgressNotifier.cs" />
     <Compile Include="ScenarioAssert.cs" />
     <Compile Include="ScenarioAttribute.cs" />
     <Compile Include="XUnitTestMetadataProvider.cs" />

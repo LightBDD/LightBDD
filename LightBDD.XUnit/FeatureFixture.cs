@@ -1,4 +1,5 @@
 ﻿using LightBDD.Notification;
+using Xunit.Abstractions;
 
 namespace LightBDD
 {
@@ -9,6 +10,11 @@ namespace LightBDD
     public abstract class FeatureFixture
     {
         /// <summary>
+        /// A test output helper that should be used insted of Console
+        /// </summary>
+        protected ITestOutputHelper Output { get; private set; }
+
+        /// <summary>
         /// BDD Runner that should be used to run feature tests.
         /// </summary>
         protected BDDRunner Runner { get; private set; }
@@ -16,16 +22,17 @@ namespace LightBDD
         /// <summary>
         /// Creates new BDDRunner instance.
         /// </summary>
-        protected FeatureFixture()
+        protected FeatureFixture(ITestOutputHelper output)
         {
+            Output = output;
             Runner = BDDRunnerFactory.GetRunnerFor(GetType(), CreateProgressNotifier);
         }
 
         /// <summary>
         /// Creates progress notifier used later by BDDRunner.
-        /// Default implementation returns ConsoleProgressNotifier.
+        /// XUnit implementation returns XUnitOutputProgressNotifier.
         /// </summary>
         /// <returns>progress notifier.</returns>
-        protected virtual IProgressNotifier CreateProgressNotifier() { return new ConsoleProgressNotifier(); }
+        protected virtual IProgressNotifier CreateProgressNotifier() { return new DelegatingProgressNotifier(new XUnitOutputProgressNotifier(Output), SimplifiedConsoleProgressNotifier.GetInstance()); }
     }
 }

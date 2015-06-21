@@ -6,7 +6,6 @@ namespace $safeprojectname$
 @"In order to 
 As a
 I want to ")]
-	[TestFixture]
 	public partial class My_feature
 	{
 		[Label("SCENARIO-1"), Scenario]

@@ -1,3 +1,5 @@
+using Xunit.Abstractions;
+
 namespace LightBDD.Example.AcceptanceTests.XUnit.Features
 {
     [FeatureDescription(
@@ -20,6 +22,11 @@ I want to dispatch products to customer as soon as the payment is finalized")]
                 (when, ctx) => ctx.The_customer_payment_finalizes(),
                 (then, ctx) => ctx.Product_should_be_dispatched_to_the_customer("wooden shelf"),
                 (and, ctx) => ctx.Product_should_be_dispatched_to_the_customer("wooden desk"));
+        }
+
+        public Product_spedition_feature(ITestOutputHelper output)
+            : base(output)
+        {
         }
     }
 

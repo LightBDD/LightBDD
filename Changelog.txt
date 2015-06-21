@@ -8,15 +8,20 @@ Summary:
 + Added ability to add runtime comments to currently executed steps
 + Added support for xUnit.net testing framework
 + Extended XmlResultFormatter / XmlResultFormatterSchema.xsd to include step comments and step name details
++ Added new implementations of IProgressNotifier interface
 
 Details:
 + (Core)(New)(Issue #6) extended TestMetadataProvider with NormalizeStepTypeName() method that replaces step type of consecutive steps with same type to 'AND', making scenario like GIVEN, GIVEN, WHEN, THEN => GIVEN, AND, WHEN, THEN
 + (Core)(New)(Issue #6) extended lightbdd section in app.config with <stepTypes predefined="given,when..." repeatedStepReplacement="and"/> element, allowing to configure TestMetadataProvider behavior
 + (Core)(New)(Issue #7) extended StepExecution with Comment() and CommentFormat() methods, allowing to mark currently executed steps with comments
 + (Core)(New)(Issue #7) extended IProgressNotifier/ConsoleProgressNotifier with NotifyStepComment() method to notify that comment has been added to step
++ (Core)(New) added DelegatingProgressNotifier allowing to delegate notifications to multiple notifier instances
++ (Core)(New) added SimplifiedConsoleProgressNotifier allowing to display a simplified progress on console, suitable for parallel test execution
 + (XUnit)(New) added LightBDD.XUnit integration
 + (XUnit)(New) added ScenarioAssert with Ignore() method, allowing to ignore not fully implemented scenarios at runtime (integrated with 'Ignored' status in LightBDD reports)
 + (XUnit)(New) added ScenarioAttribute as a replacement for xUnit Fact/Theory attributes, allowing to mark tests with 'Skipped' status if ScenarioAssert.Ignore() method is used
++ (XUnit)(New) added XUnitOutputProgressNotifier to include execution progress on the test window in Visual Studio
++ (XUnit)(New) added FeatureFixture that uses XUnitOutputProgressNotifier and SimplifiedConsoleProgressNotifier by default
 + (Core)(Change)(Issue #6) extended TestMetadataProvider to determine a step type name (given, when, then, setup, and) basing on step name, if type is not provided explicitly (GetStepTypeNameFromFormattedStepName) (Issue #6)
 + (Core)(Change)(Issue #7) changed ConsoleProgressNotifier.NotifyStepFinished() to include name of finished step, allowing easy step tracking if progress is mixed with execution logs
 + (Core)(Change)(Issue #7) changed Html/Xml/PlainText result formatters to include step comments in reports and updated XmlResultFormatterSchema.xsd

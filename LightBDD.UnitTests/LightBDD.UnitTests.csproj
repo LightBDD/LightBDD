@@ -69,6 +69,8 @@
     <Compile Include="Naming\StepNameDefaultDecoratorTests.cs" />
     <Compile Include="Notification\ConsoleProgressNotifierTests.cs" />
     <Compile Include="BDD_runner_progress_notification_tests.cs" />
+    <Compile Include="Notification\DelegatingProgressNotifierTests.cs" />
+    <Compile Include="Notification\SimplifiedConsoleProgressNotifierTests.cs" />
     <Compile Include="Results\Formatters\HtmlResultFormatterTests.cs" />
     <Compile Include="Results\Formatters\ResultFormatterTestData.cs" />
     <Compile Include="StepExecutionTests.cs" />

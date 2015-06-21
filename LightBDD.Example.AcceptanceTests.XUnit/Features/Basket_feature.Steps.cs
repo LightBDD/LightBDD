@@ -2,6 +2,7 @@ using System.Linq;
 using LightBDD.Example.Domain;
 using LightBDD.Execution;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace LightBDD.Example.AcceptanceTests.XUnit.Features
 {
@@ -58,7 +59,7 @@ namespace LightBDD.Example.AcceptanceTests.XUnit.Features
 
         #region Setup/Teardown
 
-        public Basket_feature()
+        public Basket_feature(ITestOutputHelper output):base(output)
         {
             _stock = new Stock();
             _basket = new Basket();

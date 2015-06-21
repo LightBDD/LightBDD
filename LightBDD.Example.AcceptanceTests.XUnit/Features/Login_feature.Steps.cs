@@ -1,5 +1,6 @@
 using LightBDD.Example.Services;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace LightBDD.Example.AcceptanceTests.XUnit.Features
 {
@@ -11,6 +12,11 @@ namespace LightBDD.Example.AcceptanceTests.XUnit.Features
         private LoginRequest _loginRequest;
         private LoginService _loginService;
         private LoginResult _loginResult;
+
+        public Login_feature(ITestOutputHelper output)
+            : base(output)
+        {
+        }
 
         private void Given_the_user_is_about_to_login()
         {

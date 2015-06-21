@@ -1,16 +1,19 @@
 ﻿using LightBDD;
-using LightBDD.Coordination;
+using LightBDD.Notification;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace $rootnamespace$
 {
 	public partial class $safeitemname$
 	{
 		private readonly BDDRunner _runner;
+		private readonly ITestOutputHelper _output;
 
-		public $safeitemname$()
+		public $safeitemname$(ITestOutputHelper output)
 		{
-			_runner = BDDRunnerFactory.GetRunnerFor(GetType(), () => new ConsoleProgressNotifier());
+			_output = output;
+			_runner = BDDRunnerFactory.GetRunnerFor(GetType(), () => new DelegatingProgressNotifier(new XUnitOutputProgressNotifier(_output), SimplifiedConsoleProgressNotifier.GetInstance()));
 		}
 
 		private void Template_method()

@@ -24,5 +24,10 @@ namespace LightBDD.UnitTests.Helpers
         {
             return _buffer.ToString();
         }
+
+        public void Reset()
+        {
+            _buffer.Clear();
+        }
     }
 }
