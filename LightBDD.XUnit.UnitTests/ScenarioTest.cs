@@ -173,7 +173,7 @@ public class TestClass
         {
             var assemblyName = TestAssemblyCompiler.Compile(code);
             var sink = new MessageSink();
-            using (var xunit2 = new Xunit2(new NullSourceInformationProvider(), assemblyName))
+            using (var xunit2 = new Xunit2(new NullSourceInformationProvider(), assemblyName, null, false))
             {
                 xunit2.RunAll(sink, TestFrameworkOptions.ForDiscovery(), TestFrameworkOptions.ForExecution());
                 sink.WaitTillFinished();
