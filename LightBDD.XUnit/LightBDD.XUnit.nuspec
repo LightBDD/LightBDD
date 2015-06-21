@@ -30,7 +30,7 @@ Features:
 + Extended XmlResultFormatter / XmlResultFormatterSchema.xsd to include step comments and step name details
 + Added new implementations of IProgressNotifier interface</releaseNotes>
     <copyright>Copyright © Wojciech Kotlarski 2013-2015</copyright>
-    <tags>bdd tdd testing framework behavior driven development acceptance criteria nunit</tags>
+    <tags>bdd tdd testing framework behavior driven development acceptance criteria xunit</tags>
 	<language>en-US</language>
 	<dependencies>
 		<group targetFramework=".NETFramework4.5.1">
