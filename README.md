@@ -24,10 +24,10 @@ This additional layer becomes the root of most problems when maintaining tests, 
 * Feature result summary available in XML, HTML or Plain text format,
 * Possibility to configure multiple result summaries in app.config file,
 * VisualStudio templates for test projects and test classes ([see details](#vs-project-item-templates)),
-* Integrated with [NUnit](http://www.nunit.org/), [MbUnit](https://code.google.com/p/mb-unit/) and [MsTest](http://msdn.microsoft.com/en-us/library/ms243147) frameworks.
+* Integrated with [NUnit](http://www.nunit.org/), [MbUnit](https://code.google.com/p/mb-unit/), [MsTest](http://msdn.microsoft.com/en-us/library/ms243147) and [xUnit](http://xunit.github.io/) frameworks.
 
 ### Tests structure and conventions
-**LightBDD** is integrated with well known testing frameworks ([NUnit](http://www.nunit.org/), [MbUnit](https://code.google.com/p/mb-unit/) and [MsTest](http://msdn.microsoft.com/en-us/library/ms243147)) which makes it very easy to learn, adapt and use - please see [Tests Structure and Conventions](https://github.com/Suremaker/LightBDD/wiki/02-Tests-structure-and-conventions) wiki section for details.
+**LightBDD** is integrated with well known testing frameworks ([NUnit](http://www.nunit.org/), [MbUnit](https://code.google.com/p/mb-unit/), [MsTest](http://msdn.microsoft.com/en-us/library/ms243147) and [xUnit](http://xunit.github.io/)) which makes it very easy to learn, adapt and use - please see [Tests Structure and Conventions](https://github.com/Suremaker/LightBDD/wiki/02-Tests-structure-and-conventions) wiki section for details.
 
 ### Example 
 ```C#
@@ -124,19 +124,19 @@ FEATURE: [Story-1] Login feature
   I want to login into system
 
 SCENARIO: [Ticket-1] Successful login
-  STEP 1/6: Given user is about to login
-  STEP 1/6: Passed after <1ms
-  STEP 2/6: Given user entered valid login
-  STEP 2/6: Passed after <1ms
-  STEP 3/6: Given user entered valid password
-  STEP 3/6: Passed after <1ms
-  STEP 4/6: When user clicked login button
-  STEP 4/6: Passed after <1ms
-  STEP 5/6: Then login is successful
-  STEP 5/6: Passed after <1ms
-  STEP 6/6: Then welcome message is returned containing user name
-  STEP 6/6: Passed after 8ms
-  SCENARIO RESULT: Passed after 13ms
+  STEP 1/6: GIVEN user is about to login...
+  STEP 1/6: GIVEN user is about to login (Passed after <1ms)
+  STEP 2/6: AND user entered valid login...
+  STEP 2/6: AND user entered valid login (Passed after <1ms)
+  STEP 3/6: AND user entered valid password...
+  STEP 3/6: AND user entered valid password (Passed after <1ms)
+  STEP 4/6: WHEN user clicked login button...
+  STEP 4/6: WHEN user clicked login button (Passed after <1ms)
+  STEP 5/6: THEN login is successful...
+  STEP 5/6: THEN login is successful (Passed after <1ms)
+  STEP 6/6: AND welcome message is returned containing user name...
+  STEP 6/6: AND welcome message is returned containing user name (Passed after 8ms)
+  SCENARIO RESULT: Passed after 12ms
 
 FEATURE: [Story-2] Invoice feature
   In order to pay for products
@@ -144,20 +144,20 @@ FEATURE: [Story-2] Invoice feature
   I want to receive invoice for bought items
 
 SCENARIO: [Ticket-2] Receiving invoice for products
-  STEP 1/7: GIVEN Product "wooden desk" is available in products storage
-  STEP 1/7: Passed after 128ms
-  STEP 2/7: AND Product "wooden shelf" is available in products storage
-  STEP 2/7: Passed after 967ms
-  STEP 3/7: WHEN Customer buys product "wooden desk"
-  STEP 3/7: Passed after 443ms
-  STEP 4/7: AND Customer buys product "wooden shelf"
-  STEP 4/7: Passed after 671ms
-  STEP 5/7: THEN Invoice is sent to customer
-  STEP 5/7: Passed after 258ms
-  STEP 6/7: AND Invoice contains product "wooden desk" with price of "62" pounds
-  STEP 6/7: Passed after <1ms
-  STEP 7/7: AND Invoice contains product "wooden shelf" with price of "37" pounds
-  STEP 7/7: Passed after <1ms
+  STEP 1/7: GIVEN Product "wooden desk" is available in products storage...
+  STEP 1/7: GIVEN Product "wooden desk" is available in products storage (Passed after 128ms)
+  STEP 2/7: AND Product "wooden shelf" is available in products storage...
+  STEP 2/7: AND Product "wooden shelf" is available in products storage (Passed after 967ms)
+  STEP 3/7: WHEN Customer buys product "wooden desk"...
+  STEP 3/7: WHEN Customer buys product "wooden desk" (Passed after 443ms)
+  STEP 4/7: AND Customer buys product "wooden shelf"...
+  STEP 4/7: AND Customer buys product "wooden shelf" (Passed after 671ms)
+  STEP 5/7: THEN Invoice is sent to customer...
+  STEP 5/7: THEN Invoice is sent to customer (Passed after 258ms)
+  STEP 6/7: AND Invoice contains product "wooden desk" with price of "62" pounds...
+  STEP 6/7: AND Invoice contains product "wooden desk" with price of "62" pounds (Passed after <1ms)
+  STEP 7/7: AND Invoice contains product "wooden shelf" with price of "37" pounds...
+  STEP 7/7: AND Invoice contains product "wooden shelf" with price of "37" pounds (Passed after <1ms)
   SCENARIO RESULT: Passed after 2s 484ms
 ```
 
@@ -189,12 +189,12 @@ I want to receive invoice for bought items</Description>
 As an user
 I want to login into system</Description>
     <Scenario Status="Passed" Name="Successful login" Label="Ticket-1" ExecutionStart="2014-10-20T21:07:27.1092638Z" ExecutionTime="PT0.0388254S">
-      <Step Status="Passed" Number="1" Name="Given user is about to login" ExecutionStart="2014-10-20T21:07:27.1132656Z" ExecutionTime="PT0.0167375S" />
-      <Step Status="Passed" Number="2" Name="Given user entered valid login" ExecutionStart="2014-10-20T21:07:27.1302779Z" ExecutionTime="PT0.0003176S" />
-      <Step Status="Passed" Number="3" Name="Given user entered valid password" ExecutionStart="2014-10-20T21:07:27.1312767Z" ExecutionTime="PT0.0003004S" />
-      <Step Status="Passed" Number="4" Name="When user clicked login button" ExecutionStart="2014-10-20T21:07:27.1322773Z" ExecutionTime="PT0.0014676S" />
-      <Step Status="Passed" Number="5" Name="Then login is successful" ExecutionStart="2014-10-20T21:07:27.1342801Z" ExecutionTime="PT0.0030612S" />
-      <Step Status="Passed" Number="6" Name="Then welcome message is returned containing user name" ExecutionStart="2014-10-20T21:07:27.1382823Z" ExecutionTime="PT0.0095448S" />
+      <Step Status="Passed" Number="1" Name="GIVEN user is about to login" ExecutionStart="2014-10-20T21:07:27.1132656Z" ExecutionTime="PT0.0167375S" />
+      <Step Status="Passed" Number="2" Name="AND user entered valid login" ExecutionStart="2014-10-20T21:07:27.1302779Z" ExecutionTime="PT0.0003176S" />
+      <Step Status="Passed" Number="3" Name="AND user entered valid password" ExecutionStart="2014-10-20T21:07:27.1312767Z" ExecutionTime="PT0.0003004S" />
+      <Step Status="Passed" Number="4" Name="WHEN user clicked login button" ExecutionStart="2014-10-20T21:07:27.1322773Z" ExecutionTime="PT0.0014676S" />
+      <Step Status="Passed" Number="5" Name="THEN login is successful" ExecutionStart="2014-10-20T21:07:27.1342801Z" ExecutionTime="PT0.0030612S" />
+      <Step Status="Passed" Number="6" Name="AND welcome message is returned containing user name" ExecutionStart="2014-10-20T21:07:27.1382823Z" ExecutionTime="PT0.0095448S" />
     </Scenario>
   </Feature>
 </TestResults>
@@ -205,11 +205,15 @@ For full example, please see corresponding example projects:
 * https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example.AcceptanceTests.NUnit
 * https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example.AcceptanceTests.MbUnit
 * https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example.AcceptanceTests.MsTest
+* https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example.AcceptanceTests.XUnit
 
 ## Download
 It is possible to download package using [NuGet](http://nuget.org):  
-`PM> Install-Package LightBDD` for main package using NUnit  
-`PM> Install-Package LightBDD.MbUnit` for package using MbUnit  
+`PM> Install-Package LightBDD` for the main package (defaulting to LightBDD.NUnit)
+`PM> Install-Package LightBDD.NUnit` for package using NUnit
+`PM> Install-Package LightBDD.MbUnit` for package using MbUnit
+`PM> Install-Package LightBDD.MsTest` for package using MsTest
+`PM> Install-Package LightBDD.XUnit` for package using xUnit
 or to clone sources from git: `git clone git://github.com/Suremaker/LightBDD.git`
 
 ## VS Project Item Templates

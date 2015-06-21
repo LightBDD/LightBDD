@@ -24,12 +24,12 @@ Features:
 * VS Project Item templates for feature test files,
 * NUnit integration.</description>
 	<summary>$description$</summary>
-    <releaseNotes>+ HtmlResultFormatter: highlighted ignored and bypassed scenarios and provided links to scenario details
-+ Modified parameterized steps to provide detailed information on parameters causing format failure during scenario execution
-+ Included scenarios causing initialization failure due to parameter formatting problems in reports
-+ Added FormatBooleanAttribute for formatting step parameters of boolean type
-+ HtmlResultFormatter: added favicon and footer to HTML report</releaseNotes>
-    <copyright>Copyright © Wojciech Kotlarski 2013-2014</copyright>
+    <releaseNotes>+ Implemented scenario steps auto-grouping for consecutive steps starting with the same name type (given/when/then/setup), by replacing following steps type to 'and'
++ Added ability to add runtime comments to currently executed steps
++ Added support for xUnit.net testing framework
++ Extended XmlResultFormatter / XmlResultFormatterSchema.xsd to include step comments and step name details
++ Added new implementations of IProgressNotifier interface</releaseNotes>
+    <copyright>Copyright © Wojciech Kotlarski 2013-2015</copyright>
     <tags>bdd tdd testing framework behavior driven development acceptance criteria nunit</tags>
 	<language>en-US</language>
 	<dependencies>
