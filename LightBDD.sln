@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD", "LightBDD\LightBDD.csproj", "{C8406FF5-FF97-4B66-A789-CBD97263FAC4}"
 EndProject
@@ -57,6 +57,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.XUnit.UnitTests", "LightBDD.XUnit.UnitTests\LightBDD.XUnit.UnitTests.csproj", "{B6DDA701-B249-4536-8F3F-9270FA2D716C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.Example.AcceptanceTests.XUnit", "LightBDD.Example.AcceptanceTests.XUnit\LightBDD.Example.AcceptanceTests.XUnit.csproj", "{3219158E-B974-4B10-86A6-7E388FDA57A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.Core", "LightBDD.Core\LightBDD.Core.csproj", "{9F3D28CD-E37E-4EF8-9CBF-A785D8CA3484}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2_0", "2_0", "{9F7AA25C-CA25-4690-9416-CCCE0584E771}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.Core.UnitTests", "LightBDD.Core.UnitTests\LightBDD.Core.UnitTests.csproj", "{5B8B565E-84E5-46D5-B426-E3257707799B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -132,6 +138,14 @@ Global
 		{3219158E-B974-4B10-86A6-7E388FDA57A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3219158E-B974-4B10-86A6-7E388FDA57A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3219158E-B974-4B10-86A6-7E388FDA57A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F3D28CD-E37E-4EF8-9CBF-A785D8CA3484}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F3D28CD-E37E-4EF8-9CBF-A785D8CA3484}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F3D28CD-E37E-4EF8-9CBF-A785D8CA3484}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F3D28CD-E37E-4EF8-9CBF-A785D8CA3484}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B8B565E-84E5-46D5-B426-E3257707799B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B8B565E-84E5-46D5-B426-E3257707799B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B8B565E-84E5-46D5-B426-E3257707799B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B8B565E-84E5-46D5-B426-E3257707799B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -149,5 +163,7 @@ Global
 		{C2F6D24F-5204-49F9-B62D-F4D16223C436} = {DD1450B8-8CA1-4819-A2F6-92DF98DEA0A5}
 		{B6DDA701-B249-4536-8F3F-9270FA2D716C} = {DD1450B8-8CA1-4819-A2F6-92DF98DEA0A5}
 		{3219158E-B974-4B10-86A6-7E388FDA57A9} = {8028A964-3C61-4531-8F62-721DC29B7102}
+		{9F3D28CD-E37E-4EF8-9CBF-A785D8CA3484} = {9F7AA25C-CA25-4690-9416-CCCE0584E771}
+		{5B8B565E-84E5-46D5-B426-E3257707799B} = {9F7AA25C-CA25-4690-9416-CCCE0584E771}
 	EndGlobalSection
 EndGlobal

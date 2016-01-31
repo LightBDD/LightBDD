@@ -1,0 +1,3 @@
+Multiple LabelAttribute supported.
+AbstractBDDRunner -> CoreBddRunner
+AbstractBDDRunner.Result -> CoreBddRunner.GetFeatureResult()
