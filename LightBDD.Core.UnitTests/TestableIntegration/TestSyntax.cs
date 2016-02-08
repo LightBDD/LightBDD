@@ -9,27 +9,90 @@ namespace LightBDD.Core.UnitTests.TestableIntegration
     {
         public static void TestScenario(this IBddRunner runner, params Action[] steps)
         {
-            var coreRunner = runner.Integrate();
-            var scenario = coreRunner
+            runner.Integrate()
                 .NewScenario()
                 .WithCapturedScenarioDetails()
-                .WithSteps(steps.Select(s=>new StepDescriptor(s.Method.Name,StepInvocationHelper.FromAction(s))))
-                .Build();
-            coreRunner.RunScenarioAsync(scenario)
+                .WithSteps(steps.Select(ToStepDescriptor))
+                .RunAsync()
                 .GetAwaiter()
                 .GetResult();
         }
-    }
 
-    public static class StepInvocationHelper
-    {
-        public static Func<object, object[], Task> FromAction(Action invocation)
+        public static Tuple<Action<object>, object> ParameterizedWithConstant(Action<object> action, object argument)
         {
-            return (ctx, args) =>
+            return new Tuple<Action<object>, object>(action, argument);
+        }
+
+        public static Tuple<Action<object>, Func<object, object>> ParameterizedWithFunction(Action<object> action, Func<object> argumentFunction)
+        {
+            return new Tuple<Action<object>, Func<object, object>>(action, obj => argumentFunction());
+        }
+
+        public static void TestParameterizedScenario(
+            this IBddRunner runner,
+            params Tuple<Action<object>, object>[] steps)
+        {
+            runner.Integrate()
+                 .NewScenario()
+                 .WithCapturedScenarioDetails()
+                 .WithSteps(steps.Select(step => ToStepDescriptor(runner.Integrate(), step)))
+                 .RunAsync()
+                 .GetAwaiter()
+                 .GetResult();
+        }
+
+        public static void TestParameterizedScenario(
+            this IBddRunner runner,
+            params Tuple<Action<object>, Func<object, object>>[] steps)
+        {
+            runner.Integrate()
+                 .NewScenario()
+                 .WithCapturedScenarioDetails()
+                 .WithSteps(steps.Select(step => ToStepDescriptor(runner.Integrate(), step)))
+                 .RunAsync()
+                 .GetAwaiter()
+                 .GetResult();
+        }
+
+        private static StepDescriptor ToStepDescriptor(ICoreBddRunner runner, Tuple<Action<object>, object> step)
+        {
+            var methodInfo = step.Item1.Method;
+            var parameterInfo = methodInfo.GetParameters()[0];
+            Func<object, object[], Task> stepInvocation = (ctx, args) =>
             {
-                invocation();
+                step.Item1(args[0]);
                 return Task.FromResult(0);
             };
-        } 
+
+            return new StepDescriptor(
+                methodInfo.Name,
+                stepInvocation,
+                runner.IntegrationContext.ParameterFactory.FromConstant(parameterInfo, step.Item2));
+        }
+
+        private static StepDescriptor ToStepDescriptor(ICoreBddRunner runner, Tuple<Action<object>, Func<object, object>> step)
+        {
+            var methodInfo = step.Item1.Method;
+            var parameterInfo = methodInfo.GetParameters()[0];
+            Func<object, object[], Task> stepInvocation = (ctx, args) =>
+            {
+                step.Item1(args[0]);
+                return Task.FromResult(0);
+            };
+
+            return new StepDescriptor(
+                methodInfo.Name,
+                stepInvocation,
+                runner.IntegrationContext.ParameterFactory.FromInvocation(parameterInfo, step.Item2));
+        }
+
+        private static StepDescriptor ToStepDescriptor(Action action)
+        {
+            return new StepDescriptor(action.Method.Name, (ctx, args) =>
+            {
+                action();
+                return Task.FromResult(0);
+            });
+        }
     }
 }

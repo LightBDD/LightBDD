@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using LightBDD.Core.UnitTests.TestableIntegration;
 using Xunit;
 
@@ -37,10 +36,9 @@ namespace LightBDD.Core.UnitTests
 
             Assert.Equal(new[] { "Given_step_one", "When_step_two_throwing_exception" }, _executedSteps);
         }
-        
+
         private void Given_step_one() { _executedSteps.Add("Given_step_one"); }
         private void When_step_two() { _executedSteps.Add("When_step_two"); }
-
         private void When_step_two_throwing_exception()
         {
             _executedSteps.Add("When_step_two_throwing_exception");

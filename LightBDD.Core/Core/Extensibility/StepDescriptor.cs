@@ -1,20 +1,19 @@
 using System;
 using System.Threading.Tasks;
-using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Extensibility
 {
     public class StepDescriptor
     {
-        public StepDescriptor(string predefinedStepType, string rawName, Func<object, object[], Task> stepInvocation, params IParameterInfo[] parameterDescriptors)
+        public StepDescriptor(string predefinedStepType, string rawName, Func<object, object[], Task> stepInvocation, params ParameterDescriptor[] parameters)
         {
             RawName = rawName;
             StepInvocation = stepInvocation;
-            ParameterDescriptors = parameterDescriptors;
+            Parameters = parameters;
             PredefinedStepType = predefinedStepType;
         }
 
-        public StepDescriptor(string rawName, Func<object, object[], Task> stepInvocation, params IParameterInfo[] parameterDescriptors)
+        public StepDescriptor(string rawName, Func<object, object[], Task> stepInvocation, params ParameterDescriptor[] parameterDescriptors)
             : this(null, rawName, stepInvocation, parameterDescriptors)
         {
         }
@@ -22,6 +21,6 @@ namespace LightBDD.Core.Extensibility
         public string RawName { get; private set; }
         public string PredefinedStepType { get; private set; }
         public Func<object, object[], Task> StepInvocation { get; private set; }
-        public IParameterInfo[] ParameterDescriptors { get; private set; }
+        public ParameterDescriptor[] Parameters { get; private set; }
     }
 }

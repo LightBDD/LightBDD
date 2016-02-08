@@ -38,6 +38,14 @@
       <Link>Properties\AssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="Core\Extensibility\CoreMetadataProvider.cs" />
+    <Compile Include="Core\Extensibility\DefaultParameterDescriptorFactory.cs" />
+    <Compile Include="Core\Extensibility\Implementation\StepParameter.cs" />
+    <Compile Include="Core\Extensibility\IParameterDescriptorFactory.cs" />
+    <Compile Include="Core\Extensibility\StepNameParser.cs" />
+    <Compile Include="Core\Implementation\ScenarioExecutor.cs" />
+    <Compile Include="Core\Metadata\Implementation\NameParameterInfo.cs" />
+    <Compile Include="Core\Extensibility\ParameterDescriptor.cs" />
+    <Compile Include="Core\Metadata\INameParameterInfo.cs" />
     <Compile Include="Core\Formatting\DefaultNameFormatter.cs" />
     <Compile Include="Core\Metadata\Implementation\FeatureInfo.cs" />
     <Compile Include="Core\Helpers\Arrays.cs" />
@@ -46,13 +54,12 @@
     <Compile Include="Core\Metadata\IFeatureInfo.cs" />
     <Compile Include="Core\Extensibility\IIntegrationContext.cs" />
     <Compile Include="Core\Extensibility\IMetadataProvider.cs" />
-    <Compile Include="Core\Extensibility\Implementation\ScenarioBuilder.cs" />
+    <Compile Include="Core\Extensibility\Implementation\ScenarioRunner.cs" />
     <Compile Include="Core\Metadata\Implementation\ScenarioInfo.cs" />
     <Compile Include="Core\Metadata\Implementation\StepInfo.cs" />
     <Compile Include="Core\Formatting\INameFormatter.cs" />
     <Compile Include="Core\Metadata\INameInfo.cs" />
-    <Compile Include="Core\Metadata\IParameterInfo.cs" />
-    <Compile Include="Core\Extensibility\IScenarioBuilder.cs" />
+    <Compile Include="Core\Extensibility\IScenarioRunner.cs" />
     <Compile Include="Core\Metadata\IScenarioInfo.cs" />
     <Compile Include="Core\Metadata\IStepInfo.cs" />
     <Compile Include="Core\Metadata\IStepNameInfo.cs" />

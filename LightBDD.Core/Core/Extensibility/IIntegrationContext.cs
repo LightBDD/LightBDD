@@ -8,5 +8,6 @@ namespace LightBDD.Core.Extensibility
         IMetadataProvider MetadataProvider { get; }
         INameFormatter NameFormatter { get; }
         Func<Exception,ExecutionStatus> ExceptionToStatusMapper { get; }
+        IParameterDescriptorFactory ParameterFactory { get; }
     }
 }

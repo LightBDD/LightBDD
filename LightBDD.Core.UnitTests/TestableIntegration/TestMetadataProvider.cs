@@ -29,8 +29,8 @@ namespace LightBDD.Core.UnitTests.TestableIntegration
             return ExtractAttributePropertyValue<CustomFeatureDescriptionAttribute>(featureType, a => a.Description);
         }
 
-        public TestMetadataProvider()
-            : base(new DefaultNameFormatter())
+        public TestMetadataProvider(INameFormatter nameFormatter)
+            : base(nameFormatter)
         {
         }
     }

@@ -44,7 +44,7 @@ namespace LightBDD.Core.Execution.Results.Implementation
                     sb.AppendLine();
 
                 sb.Append("Step ")
-                    .Append(step.Number)
+                    .Append(step.Info.Number)
                     .Append(": ")
                     .Append(step.StatusDetails.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t"));
             }

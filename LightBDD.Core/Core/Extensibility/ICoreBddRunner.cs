@@ -1,13 +1,11 @@
-using System.Threading.Tasks;
 using LightBDD.Core.Execution.Results;
-using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Extensibility
 {
     public interface ICoreBddRunner
     {
+        IIntegrationContext IntegrationContext { get; }
         IFeatureResult GetFeatureResult();
-        IScenarioBuilder NewScenario();
-        Task RunScenarioAsync(IScenarioInfo scenario);
+        IScenarioRunner NewScenario();
     }
 }

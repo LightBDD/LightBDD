@@ -61,6 +61,8 @@
   <ItemGroup>
     <Compile Include="CoreBddRunner_extensibility_tests.cs" />
     <Compile Include="CoreBddRunner_feature_metadata_collection_tests.cs" />
+    <Compile Include="CoreBddRunner_parameterized_step_execution_tests.cs" />
+    <Compile Include="CoreBddRunner_parameterized_step_metadata_collection_tests.cs" />
     <Compile Include="CoreBddRunner_scenario_metadata_collection_global_category_tests.cs" />
     <Compile Include="CoreBddRunner_scenario_metadata_collection_tests.cs" />
     <Compile Include="CoreBddRunner_step_execution_tests.cs" />

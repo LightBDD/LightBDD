@@ -1,40 +1,67 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
+using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Execution.Results.Implementation;
-using LightBDD.Core.Metadata;
+using LightBDD.Core.Extensibility.Implementation;
+using LightBDD.Core.Metadata.Implementation;
 
 namespace LightBDD.Core.Implementation
 {
     internal class RunnableStep
     {
-        private readonly IStepInfo _stepInfo;
+        private readonly Func<object, object[], Task> _stepInvocation;
+        private readonly StepParameter[] _parameters;
         private readonly Func<Exception, ExecutionStatus> _exceptionToStatusMapper;
-        public StepResult Result { get; private set; }
+        private readonly StepResult _result;
+        public IStepResult Result { get { return _result; } }
 
-        public RunnableStep(IStepInfo stepInfo, int stepNumber, Func<Exception, ExecutionStatus> exceptionToStatusMapper)
+        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task> stepInvocation, StepParameter[] parameters, Func<Exception, ExecutionStatus> exceptionToStatusMapper)
         {
-            Result = new StepResult(stepInfo, stepNumber);
-            _stepInfo = stepInfo;
+            _result = new StepResult(stepInfo);
+            _stepInvocation = stepInvocation;
+            _parameters = parameters;
             _exceptionToStatusMapper = exceptionToStatusMapper;
+            UpdateNameDetails();
+        }
+
+        private void UpdateNameDetails()
+        {
+            if (!_parameters.Any())
+                return;
+
+            _result.UpdateName(_parameters.Select(p => p.FormatNameParameter()).ToArray());
         }
 
         public async Task Invoke(object context)
         {
             try
             {
-                await _stepInfo.StepMethod(context, null);
-                Result.SetStatus(ExecutionStatus.Passed);
+                EvaluateParameters(context);
+                await _stepInvocation.Invoke(context, PrepareParameters());
+                _result.SetStatus(ExecutionStatus.Passed);
             }
             catch (StepBypassException e)
             {
-                Result.SetStatus(ExecutionStatus.Bypassed, e.Message);
+                _result.SetStatus(ExecutionStatus.Bypassed, e.Message);
             }
             catch (Exception e)
             {
-                Result.SetStatus(_exceptionToStatusMapper(e), e.Message);
+                _result.SetStatus(_exceptionToStatusMapper(e), e.Message);
                 throw;
             }
+        }
+
+        private void EvaluateParameters(object context)
+        {
+            foreach (var parameter in _parameters)
+                parameter.Evaluate(context);
+        }
+
+        private object[] PrepareParameters()
+        {
+            return _parameters.Select(p => p.Value).ToArray();
         }
     }
 }

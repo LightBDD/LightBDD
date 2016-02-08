@@ -1,17 +1,18 @@
 using LightBDD.Core.Metadata;
+using LightBDD.Core.Metadata.Implementation;
 
 namespace LightBDD.Core.Execution.Results.Implementation
 {
     internal class StepResult : IStepResult
     {
-        public StepResult(IStepInfo info, int number)
+        private readonly StepInfo _info;
+
+        public StepResult(StepInfo info)
         {
-            Info = info;
-            Number = number;
+            _info = info;
         }
 
-        public IStepInfo Info { get; private set; }
-        public int Number { get; private set; }
+        public IStepInfo Info{get { return _info; }}
         public ExecutionStatus Status { get; private set; }
         public string StatusDetails { get; private set; }
 
@@ -19,6 +20,11 @@ namespace LightBDD.Core.Execution.Results.Implementation
         {
             Status = status;
             StatusDetails = details;
+        }
+
+        public void UpdateName(INameParameterInfo[] parameters)
+        {
+            _info.UpdateName(parameters);
         }
     }
 }

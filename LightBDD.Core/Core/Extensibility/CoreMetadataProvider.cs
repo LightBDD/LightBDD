@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using LightBDD.Core.Formatting;
+using LightBDD.Core.Helpers;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
 
@@ -11,10 +12,17 @@ namespace LightBDD.Core.Extensibility
     public abstract class CoreMetadataProvider : IMetadataProvider
     {
         private readonly INameFormatter _nameFormatter;
+        private readonly StepNameParser _stepNameParser;
 
         protected CoreMetadataProvider(INameFormatter nameFormatter)
         {
             _nameFormatter = nameFormatter;
+            _stepNameParser = new StepNameParser(nameFormatter);
+        }
+
+        protected INameFormatter NameFormatter
+        {
+            get { return _nameFormatter; }
         }
 
         public IFeatureInfo GetFeatureInfo(Type featureType)
@@ -26,7 +34,7 @@ namespace LightBDD.Core.Extensibility
 
         public virtual INameInfo GetScenarioName(MethodBase scenarioMethod)
         {
-            return new NameInfo(_nameFormatter.FormatName(scenarioMethod.Name));
+            return new NameInfo(_nameFormatter.FormatName(scenarioMethod.Name), Arrays<INameParameterInfo>.Empty());
         }
 
         public virtual string[] GetScenarioLabels(MethodBase scenarioMethod)
@@ -47,7 +55,15 @@ namespace LightBDD.Core.Extensibility
 
         public IStepNameInfo GetStepName(StepDescriptor stepDescriptor)
         {
-            return new StepNameInfo(stepDescriptor.PredefinedStepType, _nameFormatter.FormatName(stepDescriptor.RawName));
+            return new StepNameInfo(
+                stepDescriptor.PredefinedStepType,
+                _stepNameParser.GetStepNameFormat(stepDescriptor),
+                stepDescriptor.Parameters.Select(p => NameParameterInfo.Unknown).ToArray());
+        }
+
+        public Func<object, string> GetStepParameterFormatter(ParameterInfo parameter)
+        {
+            return value => string.Format("{0}", value);
         }
 
         protected abstract IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member);
@@ -90,7 +106,7 @@ namespace LightBDD.Core.Extensibility
 
         protected virtual INameInfo GetFeatureName(Type featureType)
         {
-            return new NameInfo(_nameFormatter.FormatName(featureType.Name));
+            return new NameInfo(_nameFormatter.FormatName(featureType.Name), Arrays<INameParameterInfo>.Empty());
         }
     }
 }
