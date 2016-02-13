@@ -3,42 +3,44 @@ using System.Linq;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Core.UnitTests.TestableIntegration;
-using Xunit;
+using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests
 {
+    [TestFixture]
     public class CoreBddRunner_scenario_metadata_collection_tests : Steps
     {
-        private readonly IBddRunner _runner;
+        private IBddRunner _runner;
 
-        public CoreBddRunner_scenario_metadata_collection_tests()
+        [SetUp]
+        public void SetUp()
         {
             _runner = new TestableBddRunner(GetType());
         }
 
-        [Fact]
+        [Test]
         public void It_should_capture_scenario_name()
         {
             _runner.TestScenario(Some_step);
             var scenario = _runner.Integrate().GetFeatureResult().GetScenarios().Single();
-            Assert.Equal("It should capture scenario name", scenario.Info.Name.ToString());
-            Assert.Empty(scenario.Info.Labels);
-            Assert.Empty(scenario.Info.Categories);
+            Assert.That(scenario.Info.Name.ToString(), Is.EqualTo("It should capture scenario name"));
+            Assert.That(scenario.Info.Labels, Is.Empty);
+            Assert.That(scenario.Info.Categories, Is.Empty);
         }
 
-        [Fact]
+        [Test]
         [Label("Ticket-1")]
         [Label("Ticket-2")]
         public void It_should_capture_scenario_name_with_labels()
         {
             _runner.TestScenario(Some_step);
             var scenario = _runner.Integrate().GetFeatureResult().GetScenarios().Single();
-            Assert.Equal("It should capture scenario name with labels", scenario.Info.Name.ToString());
-            Assert.Equal(new[] { "Ticket-1", "Ticket-2" }, scenario.Info.Labels);
-            Assert.Empty(scenario.Info.Categories);
+            Assert.That(scenario.Info.Name.ToString(), Is.EqualTo("It should capture scenario name with labels"));
+            Assert.That(scenario.Info.Labels, Is.EqualTo(new[] { "Ticket-1", "Ticket-2" }));
+            Assert.That(scenario.Info.Categories, Is.Empty);
         }
 
-        [Fact]
+        [Test]
         [Label("Ticket-1")]
         [Label("Ticket-2")]
         [ScenarioCategory("catA")]
@@ -47,12 +49,12 @@ namespace LightBDD.Core.UnitTests
         {
             _runner.TestScenario(Some_step);
             var scenario = _runner.Integrate().GetFeatureResult().GetScenarios().Single();
-            Assert.Equal("It should capture scenario name with categories", scenario.Info.Name.ToString());
-            Assert.Equal(new[] { "Ticket-1", "Ticket-2" }, scenario.Info.Labels);
-            Assert.Equal(new[] { "catA", "catB" }, scenario.Info.Categories);
+            Assert.That(scenario.Info.Name.ToString(), Is.EqualTo("It should capture scenario name with categories"));
+            Assert.That(scenario.Info.Labels, Is.EqualTo(new[] { "Ticket-1", "Ticket-2" }));
+            Assert.That(scenario.Info.Categories, Is.EqualTo(new[] { "catA", "catB" }));
         }
 
-        [Fact]
+        [Test]
         public void It_should_capture_scenario_execution_status_for_passing_steps()
         {
             _runner.TestScenario(
@@ -61,11 +63,11 @@ namespace LightBDD.Core.UnitTests
                 Then_step_three);
 
             var scenario = _runner.Integrate().GetFeatureResult().GetScenarios().Single();
-            Assert.Equal(ExecutionStatus.Passed, scenario.Status);
+            Assert.That(scenario.Status, Is.EqualTo(ExecutionStatus.Passed));
             Assert.Null(scenario.StatusDetails);
         }
 
-        [Fact]
+        [Test]
         public void It_should_capture_scenario_execution_status_for_failing_steps()
         {
             try
@@ -78,11 +80,11 @@ namespace LightBDD.Core.UnitTests
             catch { }
 
             var scenario = _runner.Integrate().GetFeatureResult().GetScenarios().Single();
-            Assert.Equal(ExecutionStatus.Failed, scenario.Status);
-            Assert.Equal("Step 2: " + ExceptionReason, scenario.StatusDetails);
+            Assert.That(scenario.Status, Is.EqualTo(ExecutionStatus.Failed));
+            Assert.That(scenario.StatusDetails, Is.EqualTo("Step 2: " + ExceptionReason));
         }
 
-        [Fact]
+        [Test]
         public void It_should_capture_scenario_status_for_passing_steps_with_bypassed_one()
         {
             _runner.TestScenario(
@@ -90,10 +92,10 @@ namespace LightBDD.Core.UnitTests
                 When_step_two_is_bypassed,
                 Then_step_three);
 
-            Assert.Equal(ExecutionStatus.Bypassed, _runner.Integrate().GetFeatureResult().GetScenarios().Single().Status);
+            Assert.That(_runner.Integrate().GetFeatureResult().GetScenarios().Single().Status, Is.EqualTo(ExecutionStatus.Bypassed));
         }
 
-        [Fact]
+        [Test]
         public void It_should_capture_scenario_status_for_ignored_steps()
         {
             try
@@ -106,10 +108,10 @@ namespace LightBDD.Core.UnitTests
             }
             catch { }
 
-            Assert.Equal(ExecutionStatus.Ignored, _runner.Integrate().GetFeatureResult().GetScenarios().Single().Status);
+            Assert.That(_runner.Integrate().GetFeatureResult().GetScenarios().Single().Status, Is.EqualTo(ExecutionStatus.Ignored));
         }
 
-        [Fact]
+        [Test]
         public void It_should_capture_scenario_execution_status_details_from_all_steps()
         {
             try
@@ -122,11 +124,11 @@ namespace LightBDD.Core.UnitTests
             catch { }
 
             var scenario = _runner.Integrate().GetFeatureResult().GetScenarios().Single();
-            Assert.Equal(ExecutionStatus.Failed, scenario.Status);
+            Assert.That(scenario.Status, Is.EqualTo(ExecutionStatus.Failed));
             var expected = "Step 2: " + BypassReason + Environment.NewLine +
                            "Step 3: " + ExceptionReason;
 
-            Assert.Equal(expected, scenario.StatusDetails);
+            Assert.That(scenario.StatusDetails, Is.EqualTo(expected));
         }
     }
 }

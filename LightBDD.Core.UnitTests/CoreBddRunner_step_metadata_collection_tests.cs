@@ -2,20 +2,22 @@ using System.Linq;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Core.UnitTests.TestableIntegration;
-using Xunit;
+using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests
 {
+    [TestFixture]
     public class CoreBddRunner_step_metadata_collection_tests : Steps
     {
-        private readonly IBddRunner _runner;
+        private IBddRunner _runner;
 
-        public CoreBddRunner_step_metadata_collection_tests()
+        [SetUp]
+        public void SetUp()
         {
             _runner = new TestableBddRunner(GetType());
         }
 
-        [Fact]
+        [Test]
         public void It_should_capture_all_steps()
         {
             _runner.TestScenario(
@@ -31,7 +33,7 @@ namespace LightBDD.Core.UnitTests
                 );
         }
 
-        [Fact]
+        [Test]
         public void It_should_capture_failed_steps()
         {
             try
@@ -51,7 +53,7 @@ namespace LightBDD.Core.UnitTests
                 );
         }
 
-        [Fact]
+        [Test]
         public void It_should_capture_bypassed_steps()
         {
             _runner.TestScenario(

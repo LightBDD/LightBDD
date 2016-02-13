@@ -1,8 +1,9 @@
 using LightBDD.Core.UnitTests.TestableIntegration;
-using Xunit;
+using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests
 {
+    [TestFixture]
     public class CoreBddRunner_feature_metadata_collection_tests
     {
         [FeatureDescription("Runner tests description")]
@@ -19,40 +20,40 @@ namespace LightBDD.Core.UnitTests
 
         class Feature_without_details { }
 
-        [Fact]
+        [Test]
         public void It_should_collect_all_feature_details()
         {
             var feature = new TestableBddRunner(typeof(Feature_with_all_details)).GetFeatureResult();
-            Assert.Equal("Feature with all details", feature.Info.Name.ToString());
-            Assert.Equal(new[] { "Ticket-1", "Ticket-2" }, feature.Info.Labels);
-            Assert.Equal("Runner tests description", feature.Info.Description);
+            Assert.That(feature.Info.Name.ToString(), Is.EqualTo("Feature with all details"));
+            Assert.That(feature.Info.Labels, Is.EqualTo(new[] { "Ticket-1", "Ticket-2" }));
+            Assert.That(feature.Info.Description, Is.EqualTo("Runner tests description"));
         }
 
-        [Fact]
+        [Test]
         public void It_should_collect_feature_with_labels()
         {
             var feature = new TestableBddRunner(typeof(Feature_with_labels)).GetFeatureResult();
-            Assert.Equal("Feature with labels", feature.Info.Name.ToString());
-            Assert.Equal(new[] { "Ticket-1", "Ticket-2" }, feature.Info.Labels);
+            Assert.That(feature.Info.Name.ToString(), Is.EqualTo("Feature with labels"));
+            Assert.That(feature.Info.Labels, Is.EqualTo(new[] { "Ticket-1", "Ticket-2" }));
             Assert.Null(feature.Info.Description);
         }
 
-        [Fact]
+        [Test]
         public void It_should_collect_feature_with_description()
         {
             var feature = new TestableBddRunner(typeof(Feature_with_description)).GetFeatureResult();
-            Assert.Equal("Feature with description", feature.Info.Name.ToString());
-            Assert.Equal("Runner tests description", feature.Info.Description);
-            Assert.Empty(feature.Info.Labels);
+            Assert.That(feature.Info.Name.ToString(), Is.EqualTo("Feature with description"));
+            Assert.That(feature.Info.Description, Is.EqualTo("Runner tests description"));
+            Assert.That(feature.Info.Labels, Is.Empty);
         }
 
-        [Fact]
+        [Test]
         public void It_should_collect_plain_feature()
         {
             var feature = new TestableBddRunner(typeof(Feature_without_details)).GetFeatureResult();
-            Assert.Equal("Feature without details", feature.Info.Name.ToString());
+            Assert.That(feature.Info.Name.ToString(), Is.EqualTo("Feature without details"));
             Assert.Null(feature.Info.Description);
-            Assert.Empty(feature.Info.Labels);
+            Assert.That(feature.Info.Labels, Is.Empty);
         }
     }
 }

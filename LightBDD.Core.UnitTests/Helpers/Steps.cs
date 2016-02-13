@@ -2,16 +2,13 @@ using System;
 using System.Globalization;
 using LightBDD.Core.Execution.Results;
 using LightBDD.Core.UnitTests.TestableIntegration;
+using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests.Helpers
 {
+    [SetCulture("")]
     public class Steps
     {
-        static Steps()
-        {
-            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
-        }
-
         public const string BypassReason = "bypass reason";
         public const string ExceptionReason = "exception reason";
         public const string IgnoreReason = "ignore reason";

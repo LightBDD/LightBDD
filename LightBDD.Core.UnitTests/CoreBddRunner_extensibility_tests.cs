@@ -2,16 +2,17 @@ using System.Linq;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Core.UnitTests.TestableIntegration;
-using Xunit;
+using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests
 {
     [CustomFeatureDescription("some description")]
     [CustomCategory("some global category")]
     [ScenarioCategory("standard global category")]
+    [TestFixture]
     public class CoreBddRunner_extensibility_tests : Steps
     {
-        [Fact]
+        [Test]
         [CustomCategory("some local category")]
         [ScenarioCategory("standard local category")]
         public void It_should_collect_custom_categories()
@@ -19,15 +20,15 @@ namespace LightBDD.Core.UnitTests
             IBddRunner runner = new TestableBddRunner(GetType());
             runner.TestScenario(Some_step);
             var scenario = runner.Integrate().GetFeatureResult().GetScenarios().Single();
-            Assert.Equal(new[] { "some global category", "some local category", "standard global category", "standard local category" }, scenario.Info.Categories);
+            Assert.That(scenario.Info.Categories, Is.EqualTo(new[] { "some global category", "some local category", "standard global category", "standard local category" }));
         }
 
-        [Fact]
+        [Test]
         public void It_should_collect_custom_feature_description()
         {
             IBddRunner runner = new TestableBddRunner(GetType());
             runner.TestScenario(Some_step);
-            Assert.Equal("some description", runner.Integrate().GetFeatureResult().Info.Description);
+            Assert.That(runner.Integrate().GetFeatureResult().Info.Description, Is.EqualTo("some description"));
         }
 
         [CustomFeatureDescription("custom description")]
@@ -36,15 +37,15 @@ namespace LightBDD.Core.UnitTests
         {
         }
 
-        [Fact]
+        [Test]
         public void It_should_collect_standard_feature_description_if_both_are_specified()
         {
             IBddRunner runner = new TestableBddRunner(typeof(Feature_with_two_descriptions));
             runner.TestScenario(Some_step);
-            Assert.Equal("standard description", runner.Integrate().GetFeatureResult().Info.Description);
+            Assert.That(runner.Integrate().GetFeatureResult().Info.Description, Is.EqualTo("standard description"));
         }
 
-        [Fact]
+        [Test]
         public void It_should_capture_step_status_with_custom_exception_mapping()
         {
             IBddRunner runner = new TestableBddRunner(GetType());

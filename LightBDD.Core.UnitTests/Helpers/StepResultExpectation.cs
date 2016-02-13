@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Execution.Results;
-using Xunit;
+using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests.Helpers
 {

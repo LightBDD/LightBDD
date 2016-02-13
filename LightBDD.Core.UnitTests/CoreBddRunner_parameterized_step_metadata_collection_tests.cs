@@ -2,20 +2,22 @@ using System.Linq;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Core.UnitTests.TestableIntegration;
-using Xunit;
+using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests
 {
+    [TestFixture]
     public class CoreBddRunner_parameterized_step_metadata_collection_tests : Steps
     {
-        private readonly IBddRunner _runner;
+        private IBddRunner _runner;
 
-        public CoreBddRunner_parameterized_step_metadata_collection_tests()
+        [SetUp]
+        public void SetUp()
         {
             _runner = new TestableBddRunner(GetType());
         }
 
-        [Fact]
+        [Test]
         public void It_should_capture_all_steps()
         {
             _runner.TestParameterizedScenario(
@@ -31,7 +33,7 @@ namespace LightBDD.Core.UnitTests
                 );
         }
 
-        [Fact]
+        [Test]
         public void It_should_capture_steps_with_parameters_inserted_in_proper_places()
         {
             _runner.TestParameterizedScenario(
@@ -49,7 +51,7 @@ namespace LightBDD.Core.UnitTests
 
         private void Method_with_appended_parameter_at_the_end_of_name(object param) { }
         private void Method_with_inserted_parameter_param_in_name(object param) { }
-        private void Method_with_replaced_parameter_PARAM_in_name(object param){}
+        private void Method_with_replaced_parameter_PARAM_in_name(object param) { }
         private void Given_step_with_parameter(object parameter) { }
         private void When_step_with_parameter(object parameter) { }
         private void Then_step_with_parameter(object parameter) { }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting;
-using Xunit;
+using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests.TestableIntegration
 {
@@ -15,7 +15,7 @@ namespace LightBDD.Core.UnitTests.TestableIntegration
         {
             return new StackTrace()
                 .GetFrames()
-                .First(f => f.GetMethod().GetCustomAttributes(true).Any(a => a is FactAttribute))
+                .First(f => f.GetMethod().GetCustomAttributes(true).Any(a => a is TestAttribute))
                 .GetMethod();
         }
 

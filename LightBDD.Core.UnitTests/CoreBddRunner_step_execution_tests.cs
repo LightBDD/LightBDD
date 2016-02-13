@@ -1,40 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using LightBDD.Core.UnitTests.TestableIntegration;
-using Xunit;
+using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests
 {
+    [TestFixture]
     public class CoreBddRunner_step_execution_tests
     {
-        private readonly IBddRunner _runner;
-        private readonly List<string> _executedSteps = new List<string>();
+        private IBddRunner _runner;
+        private List<string> _executedSteps;
 
-        public CoreBddRunner_step_execution_tests()
+        [SetUp]
+        public void SetUp()
         {
             _runner = new TestableBddRunner(GetType());
+            _executedSteps = new List<string>();
         }
 
-        [Fact]
+        [Test]
         public void Runner_should_execute_all_steps()
         {
             _runner.TestScenario(Given_step_one,
                 When_step_two,
                 Then_step_three);
 
-            Assert.Equal(new[] { "Given_step_one", "When_step_two", "Then_step_three" }, _executedSteps);
+            Assert.That(_executedSteps, Is.EqualTo(new[] { "Given_step_one", "When_step_two", "Then_step_three" }));
         }
 
-        [Fact]
+        [Test]
         public void Runner_should_propagate_step_exception_and_stop_executing_further_steps()
         {
             var ex = Assert.Throws<InvalidOperationException>(() => _runner.TestScenario(Given_step_one,
                  When_step_two_throwing_exception,
                  Then_step_three));
 
-            Assert.Equal("test", ex.Message);
+            Assert.That(ex.Message, Is.EqualTo("test"));
 
-            Assert.Equal(new[] { "Given_step_one", "When_step_two_throwing_exception" }, _executedSteps);
+            Assert.That(_executedSteps, Is.EqualTo(new[] { "Given_step_one", "When_step_two_throwing_exception" }));
         }
 
         private void Given_step_one() { _executedSteps.Add("Given_step_one"); }
