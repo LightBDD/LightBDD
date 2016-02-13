@@ -7,5 +7,6 @@ namespace LightBDD.Core.Execution.Results
         IStepInfo Info { get; }
         ExecutionStatus Status { get; }
         string StatusDetails { get; }
+        ExecutionTime ExecutionTime { get; }
     }
 }

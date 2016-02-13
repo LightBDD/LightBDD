@@ -13,3 +13,4 @@ OpenCover
 reports
 TestResults
 make/psmake.*
+.vs

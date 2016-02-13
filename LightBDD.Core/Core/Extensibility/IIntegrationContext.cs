@@ -1,4 +1,5 @@
 using System;
+using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Formatting;
 
 namespace LightBDD.Core.Extensibility

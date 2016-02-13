@@ -1,4 +1,4 @@
-namespace LightBDD
+namespace LightBDD.Core.Execution.Results
 {
     /// <summary>
     /// Represents status of test / scenario.

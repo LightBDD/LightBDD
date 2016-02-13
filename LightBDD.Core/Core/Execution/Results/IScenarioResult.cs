@@ -8,6 +8,7 @@ namespace LightBDD.Core.Execution.Results
         IScenarioInfo Info { get; }
         ExecutionStatus Status { get; }
         string StatusDetails { get;  }
+        ExecutionTime ExecutionTime { get; }
         IEnumerable<IStepResult> GetSteps();
     }
 }

@@ -13,6 +13,9 @@ namespace LightBDD.Core.Implementation
         public async Task Execute(ScenarioInfo scenario, IEnumerable<RunnableStep> steps)
         {
             var preparedSteps = steps.ToArray();
+
+            var watch = ExecutionTimeWatch.StartNew();
+
             try
             {
                 foreach (var step in preparedSteps)
@@ -20,15 +23,15 @@ namespace LightBDD.Core.Implementation
             }
             finally
             {
-                Notify(new ScenarioResult(scenario, preparedSteps.Select(s => s.Result).ToArray()));
-            }
-        }
+                watch.Stop();
 
-        private void Notify(ScenarioResult result)
-        {
-            var notifier = ScenarioExecuted;
-            if (notifier != null)
-                notifier.Invoke(result);
+                var result = new ScenarioResult(
+                    scenario,
+                    preparedSteps.Select(s => s.Result).ToArray(),
+                    watch.GetTime());
+
+                ScenarioExecuted?.Invoke(result);
+            }
         }
 
         public event Action<IScenarioResult> ScenarioExecuted;

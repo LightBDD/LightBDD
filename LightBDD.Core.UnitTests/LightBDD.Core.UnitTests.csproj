@@ -54,6 +54,7 @@
     <Compile Include="CoreBddRunner_scenario_metadata_collection_tests.cs" />
     <Compile Include="CoreBddRunner_step_execution_tests.cs" />
     <Compile Include="CoreBddRunner_step_metadata_collection_tests.cs" />
+    <Compile Include="CoreBddRunner_time_measurement_tests.cs" />
     <Compile Include="Helpers\StepResultExpectation.cs" />
     <Compile Include="Helpers\Steps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

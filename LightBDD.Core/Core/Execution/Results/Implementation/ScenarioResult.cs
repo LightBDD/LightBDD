@@ -10,21 +10,20 @@ namespace LightBDD.Core.Execution.Results.Implementation
     {
         private readonly IStepResult[] _steps;
 
-        public ScenarioResult(IScenarioInfo info, IStepResult[] steps)
+        public ScenarioResult(IScenarioInfo info, IStepResult[] steps, ExecutionTime executionTime)
         {
             Info = info;
             _steps = steps;
+            ExecutionTime = executionTime;
             CaptureStatus();
         }
 
-        public IScenarioInfo Info { get; private set; }
+        public IScenarioInfo Info { get; }
         public ExecutionStatus Status { get; private set; }
         public string StatusDetails { get; private set; }
+        public ExecutionTime ExecutionTime { get; }
 
-        public IEnumerable<IStepResult> GetSteps()
-        {
-            return _steps;
-        }
+        public IEnumerable<IStepResult> GetSteps() => _steps;
 
         private void CaptureStatus()
         {

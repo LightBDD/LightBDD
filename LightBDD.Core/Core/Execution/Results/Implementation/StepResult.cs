@@ -12,9 +12,10 @@ namespace LightBDD.Core.Execution.Results.Implementation
             _info = info;
         }
 
-        public IStepInfo Info{get { return _info; }}
+        public IStepInfo Info => _info;
         public ExecutionStatus Status { get; private set; }
         public string StatusDetails { get; private set; }
+        public ExecutionTime ExecutionTime { get; private set; }
 
         public void SetStatus(ExecutionStatus status, string details = null)
         {
@@ -25,6 +26,11 @@ namespace LightBDD.Core.Execution.Results.Implementation
         public void UpdateName(INameParameterInfo[] parameters)
         {
             _info.UpdateName(parameters);
+        }
+
+        public void SetExecutionTime(ExecutionTime executionTime)
+        {
+            ExecutionTime = executionTime;
         }
     }
 }

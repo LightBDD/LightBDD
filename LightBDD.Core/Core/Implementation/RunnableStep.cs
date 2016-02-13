@@ -15,7 +15,7 @@ namespace LightBDD.Core.Implementation
         private readonly StepParameter[] _parameters;
         private readonly Func<Exception, ExecutionStatus> _exceptionToStatusMapper;
         private readonly StepResult _result;
-        public IStepResult Result { get { return _result; } }
+        public IStepResult Result => _result;
 
         public RunnableStep(StepInfo stepInfo, Func<object, object[], Task> stepInvocation, StepParameter[] parameters, Func<Exception, ExecutionStatus> exceptionToStatusMapper)
         {
@@ -39,7 +39,7 @@ namespace LightBDD.Core.Implementation
             try
             {
                 EvaluateParameters(context);
-                await _stepInvocation.Invoke(context, PrepareParameters());
+                await TimeMeasuredInvoke(context);
                 _result.SetStatus(ExecutionStatus.Passed);
             }
             catch (StepBypassException e)
@@ -50,6 +50,19 @@ namespace LightBDD.Core.Implementation
             {
                 _result.SetStatus(_exceptionToStatusMapper(e), e.Message);
                 throw;
+            }
+        }
+
+        private async Task TimeMeasuredInvoke(object context)
+        {
+            var watch = ExecutionTimeWatch.StartNew();
+            try
+            {
+                await _stepInvocation.Invoke(context, PrepareParameters());
+            }
+            finally
+            {
+                _result.SetExecutionTime(watch.GetTime());
             }
         }
 
