@@ -28,7 +28,7 @@ namespace LightBDD.Core.UnitTests.Helpers
             string[] expected = stepResultExpectations.Select(r => string.Format("{0} {1} - {2} ({3}) // {4}", r.Number, r.Name, r.Status, r.StatusDetails, string.Join(" // ", r.Comments))).ToArray();
 
             Assert.True(actual.SequenceEqual(expected),
-                string.Format("Expected:\n{0}\n\nGot:\n{1}", string.Join("\n", expected), string.Join("\n", actual)));
+                string.Format("Expected:\r\n{0}\r\n\r\nGot:\r\n{1}", string.Join("\r\n", expected), string.Join("\r\n", actual)));
         }
     }
 }

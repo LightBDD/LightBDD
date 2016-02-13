@@ -12,6 +12,7 @@ namespace LightBDD.Core.UnitTests.Helpers
         public const string BypassReason = "bypass reason";
         public const string ExceptionReason = "exception reason";
         public const string IgnoreReason = "ignore reason";
+        public const string ParameterExceptionReason = "parameter exception";
 
         public void Some_step() { }
         public void Given_step_one() { }
@@ -23,5 +24,12 @@ namespace LightBDD.Core.UnitTests.Helpers
         public void When_step_two_ignoring_scenario() { StepExecution.Current.IgnoreScenario(IgnoreReason); }
         public void Then_step_four() { }
         public void Then_step_three_should_be_ignored() { StepExecution.Current.IgnoreScenario(IgnoreReason); }
+        public void Given_step_with_parameter(object parameter) { }
+        public void When_step_with_parameter(object parameter) { }
+        public void When_step_with_parameter_throwing_exception(object parameter) { throw new InvalidOperationException(ExceptionReason); }
+        public void Then_step_with_parameter(object parameter) { }
+
+
+        public object ThrowingParameterInvocation() { throw new InvalidOperationException(ParameterExceptionReason); }
     }
 }

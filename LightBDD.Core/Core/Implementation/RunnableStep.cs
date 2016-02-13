@@ -70,6 +70,7 @@ namespace LightBDD.Core.Implementation
         {
             foreach (var parameter in _parameters)
                 parameter.Evaluate(context);
+            UpdateNameDetails();
         }
 
         private object[] PrepareParameters()
