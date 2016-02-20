@@ -1,5 +1,4 @@
 using System;
-using LightBDD.Core.Execution.Results;
 using LightBDD.Core.UnitTests.TestableIntegration;
 using NUnit.Framework;
 
@@ -17,7 +16,7 @@ namespace LightBDD.Core.UnitTests.Helpers
         public void Some_step() { }
         public void Given_step_one() { }
         public void When_step_two() { }
-        public void When_step_two_with_comment() { StepExecution.Current.Comment(CommentReason);}
+        public void When_step_two_with_comment() { StepExecution.Current.Comment(CommentReason); }
         public void When_step_two_is_bypassed() { StepExecution.Current.Bypass(BypassReason); }
         public void When_step_two_throwing_exception() { throw new InvalidOperationException(ExceptionReason); }
         public void Then_step_three() { }
@@ -27,6 +26,12 @@ namespace LightBDD.Core.UnitTests.Helpers
         public void Then_step_three_should_be_ignored() { StepExecution.Current.IgnoreScenario(IgnoreReason); }
         public void Given_step_with_parameter(object parameter) { }
         public void When_step_with_parameter(object parameter) { }
+
+        public void When_step_with_parameter_and_comments(object parameter)
+        {
+            StepExecution.Current.Comment(CommentReason);
+            StepExecution.Current.Comment($"{parameter}");
+        }
         public void When_step_with_parameter_throwing_exception(object parameter) { throw new InvalidOperationException(ExceptionReason); }
         public void Then_step_with_parameter(object parameter) { }
 

@@ -1,5 +1,3 @@
-using LightBDD.Core.Execution.Results;
-
 namespace LightBDD.Core.UnitTests.TestableIntegration
 {
     public static class StepExecutionExtensions

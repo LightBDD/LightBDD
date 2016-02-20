@@ -9,6 +9,7 @@ namespace LightBDD.Core.Extensibility
         IScenarioRunner WithCapturedScenarioDetails();
         IScenarioRunner WithLabels(string[] labels);
         IScenarioRunner WithCategories(string[] categories);
+        IScenarioRunner WithName(string name);
         Task RunAsync();
     }
 }

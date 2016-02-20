@@ -28,9 +28,7 @@ namespace LightBDD.Core.UnitTests.TestableIntegration
             return new Tuple<Action<object>, Func<object, object>>(action, obj => argumentFunction());
         }
 
-        public static void TestParameterizedScenario(
-            this IBddRunner runner,
-            params Tuple<Action<object>, object>[] steps)
+        public static void TestParameterizedScenario(this IBddRunner runner, params Tuple<Action<object>, object>[] steps)
         {
             runner.Integrate()
                  .NewScenario()
@@ -41,13 +39,22 @@ namespace LightBDD.Core.UnitTests.TestableIntegration
                  .GetResult();
         }
 
-        public static void TestParameterizedScenario(
-            this IBddRunner runner,
-            params Tuple<Action<object>, Func<object, object>>[] steps)
+        public static void TestParameterizedScenario(this IBddRunner runner, params Tuple<Action<object>, Func<object, object>>[] steps)
         {
             runner.Integrate()
                  .NewScenario()
                  .WithCapturedScenarioDetails()
+                 .WithSteps(steps.Select(step => ToStepDescriptor(runner.Integrate(), step)))
+                 .RunAsync()
+                 .GetAwaiter()
+                 .GetResult();
+        }
+
+        public static void TestNamedParameterizedScenario(this IBddRunner runner, string name, params Tuple<Action<object>, object>[] steps)
+        {
+            runner.Integrate()
+                 .NewScenario()
+                 .WithName(name)
                  .WithSteps(steps.Select(step => ToStepDescriptor(runner.Integrate(), step)))
                  .RunAsync()
                  .GetAwaiter()

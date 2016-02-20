@@ -52,6 +52,14 @@ namespace LightBDD.Core.Extensibility.Implementation
                 .WithCategories(_metadataProvider.GetScenarioCategories(methodInfo));
         }
 
+        public IScenarioRunner WithName(string name)
+        {
+            if (name == null)
+                throw new ArgumentNullException("name");
+            _name = new NameInfo(name, Arrays<INameParameterInfo>.Empty());
+            return this;
+        }
+
         private IScenarioRunner WithName(INameInfo name)
         {
             if (name == null)
