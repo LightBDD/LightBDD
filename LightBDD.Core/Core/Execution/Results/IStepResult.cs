@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Execution.Results
@@ -8,5 +9,6 @@ namespace LightBDD.Core.Execution.Results
         ExecutionStatus Status { get; }
         string StatusDetails { get; }
         ExecutionTime ExecutionTime { get; }
+        IEnumerable<string> Comments { get; }
     }
 }

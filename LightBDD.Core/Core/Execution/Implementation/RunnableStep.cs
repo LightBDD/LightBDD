@@ -1,28 +1,30 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LightBDD.Core.Execution;
 using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Execution.Results.Implementation;
 using LightBDD.Core.Extensibility.Implementation;
 using LightBDD.Core.Metadata.Implementation;
+using LightBDD.Core.Notification;
 
-namespace LightBDD.Core.Implementation
+namespace LightBDD.Core.Execution.Implementation
 {
     internal class RunnableStep
     {
         private readonly Func<object, object[], Task> _stepInvocation;
         private readonly StepParameter[] _parameters;
         private readonly Func<Exception, ExecutionStatus> _exceptionToStatusMapper;
+        private readonly IProgressNotifier _progressNotifier;
         private readonly StepResult _result;
         public IStepResult Result => _result;
 
-        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task> stepInvocation, StepParameter[] parameters, Func<Exception, ExecutionStatus> exceptionToStatusMapper)
+        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task> stepInvocation, StepParameter[] parameters, Func<Exception, ExecutionStatus> exceptionToStatusMapper, IProgressNotifier progressNotifier)
         {
             _result = new StepResult(stepInfo);
             _stepInvocation = stepInvocation;
             _parameters = parameters;
             _exceptionToStatusMapper = exceptionToStatusMapper;
+            _progressNotifier = progressNotifier;
             UpdateNameDetails();
         }
 
@@ -34,11 +36,17 @@ namespace LightBDD.Core.Implementation
             _result.UpdateName(_parameters.Select(p => p.FormatNameParameter()).ToArray());
         }
 
-        public async Task Invoke(object context)
+        public async Task Invoke(ScenarioContext scenarioContext, object context)
         {
+            bool stepStartNotified = false;
             try
             {
+                scenarioContext.CurrentStep = this;
+
                 EvaluateParameters(context);
+                _progressNotifier.NotifyStepStart(_result.Info);
+                stepStartNotified = true;
+
                 await TimeMeasuredInvoke(context);
                 _result.SetStatus(ExecutionStatus.Passed);
             }
@@ -50,6 +58,13 @@ namespace LightBDD.Core.Implementation
             {
                 _result.SetStatus(_exceptionToStatusMapper(e), e.Message);
                 throw;
+            }
+            finally
+            {
+                scenarioContext.CurrentStep = null;
+
+                if (stepStartNotified)
+                    _progressNotifier.NotifyStepFinished(_result);
             }
         }
 
@@ -76,6 +91,12 @@ namespace LightBDD.Core.Implementation
         private object[] PrepareParameters()
         {
             return _parameters.Select(p => p.Value).ToArray();
+        }
+
+        public void Comment(string comment)
+        {
+            _result.AddComment(comment);
+            _progressNotifier.NotifyStepComment(comment);
         }
     }
 }

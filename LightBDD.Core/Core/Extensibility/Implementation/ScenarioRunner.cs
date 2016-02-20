@@ -2,29 +2,32 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Helpers;
-using LightBDD.Core.Implementation;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
+using LightBDD.Core.Notification;
 
 namespace LightBDD.Core.Extensibility.Implementation
 {
     internal class ScenarioRunner : IScenarioRunner
     {
-        private readonly IMetadataProvider _metadataProvider;
-        private readonly Func<Exception, ExecutionStatus> _exceptionToStatusMapper;
         private readonly ScenarioExecutor _scenarioExecutor;
+        private readonly IMetadataProvider _metadataProvider;
+        private readonly IProgressNotifier _progressNotifier;
+        private readonly Func<Exception, ExecutionStatus> _exceptionToStatusMapper;
         private StepDescriptor[] _steps = Arrays<StepDescriptor>.Empty();
         private INameInfo _name;
         private string[] _labels = Arrays<string>.Empty();
         private string[] _categories = Arrays<string>.Empty();
 
-        public ScenarioRunner(IMetadataProvider metadataProvider, Func<Exception, ExecutionStatus> exceptionToStatusMapper, ScenarioExecutor scenarioExecutor)
+        public ScenarioRunner(ScenarioExecutor scenarioExecutor, IMetadataProvider metadataProvider, IProgressNotifier progressNotifier, Func<Exception, ExecutionStatus> exceptionToStatusMapper)
         {
-            _metadataProvider = metadataProvider;
-            _exceptionToStatusMapper = exceptionToStatusMapper;
             _scenarioExecutor = scenarioExecutor;
+            _metadataProvider = metadataProvider;
+            _progressNotifier = progressNotifier;
+            _exceptionToStatusMapper = exceptionToStatusMapper;
         }
 
         public IScenarioRunner WithSteps(IEnumerable<StepDescriptor> steps)
@@ -35,9 +38,9 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         private RunnableStep ToRunnableStep(StepDescriptor descriptor, int stepIndex)
         {
-            var stepInfo = new StepInfo(_metadataProvider.GetStepName(descriptor), stepIndex + 1);
+            var stepInfo = new StepInfo(_metadataProvider.GetStepName(descriptor), stepIndex + 1, _steps.Length);
             var parameters = descriptor.Parameters.Select(p => new StepParameter(p)).ToArray();
-            return new RunnableStep(stepInfo, descriptor.StepInvocation, parameters, _exceptionToStatusMapper);
+            return new RunnableStep(stepInfo, descriptor.StepInvocation, parameters, _exceptionToStatusMapper, _progressNotifier);
         }
 
         public IScenarioRunner WithCapturedScenarioDetails()

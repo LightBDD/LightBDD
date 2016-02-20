@@ -4,5 +4,6 @@ namespace LightBDD.Core.Metadata
     {
         IStepNameInfo Name { get; }
         int Number { get; }
+        int Total { get; }
     }
 }

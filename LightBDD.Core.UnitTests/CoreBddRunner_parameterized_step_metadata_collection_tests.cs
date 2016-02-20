@@ -29,9 +29,9 @@ namespace LightBDD.Core.UnitTests
 
             var steps = _runner.Integrate().GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
-                new StepResultExpectation(1, "Given step with parameter \"abc\"", ExecutionStatus.Passed),
-                new StepResultExpectation(2, "When step with parameter \"123\"", ExecutionStatus.Passed),
-                new StepResultExpectation(3, "Then step with parameter \"3.15\"", ExecutionStatus.Passed)
+                new StepResultExpectation(1, 3, "Given step with parameter \"abc\"", ExecutionStatus.Passed),
+                new StepResultExpectation(2, 3, "When step with parameter \"123\"", ExecutionStatus.Passed),
+                new StepResultExpectation(3, 3, "Then step with parameter \"3.15\"", ExecutionStatus.Passed)
                 );
         }
 
@@ -45,9 +45,9 @@ namespace LightBDD.Core.UnitTests
 
             var steps = _runner.Integrate().GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
-                new StepResultExpectation(1, "Method with replaced parameter \"abc\" in name", ExecutionStatus.Passed),
-                new StepResultExpectation(2, "Method with inserted parameter param \"abc\" in name", ExecutionStatus.Passed),
-                new StepResultExpectation(3, "Method with appended parameter at the end of name [param: \"abc\"]", ExecutionStatus.Passed)
+                new StepResultExpectation(1, 3, "Method with replaced parameter \"abc\" in name", ExecutionStatus.Passed),
+                new StepResultExpectation(2, 3, "Method with inserted parameter param \"abc\" in name", ExecutionStatus.Passed),
+                new StepResultExpectation(3, 3, "Method with appended parameter at the end of name [param: \"abc\"]", ExecutionStatus.Passed)
             );
         }
 
@@ -62,9 +62,9 @@ namespace LightBDD.Core.UnitTests
 
             var steps = _runner.Integrate().GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
-                new StepResultExpectation(1, "Given step with parameter \"1\"", ExecutionStatus.Passed),
-                new StepResultExpectation(2, "When step with parameter \"abc\"", ExecutionStatus.Passed),
-                new StepResultExpectation(3, "Then step with parameter \"3.14\"", ExecutionStatus.Passed)
+                new StepResultExpectation(1, 3, "Given step with parameter \"1\"", ExecutionStatus.Passed),
+                new StepResultExpectation(2, 3, "When step with parameter \"abc\"", ExecutionStatus.Passed),
+                new StepResultExpectation(3, 3, "Then step with parameter \"3.14\"", ExecutionStatus.Passed)
                 );
         }
 
@@ -81,9 +81,9 @@ namespace LightBDD.Core.UnitTests
 
             var steps = _runner.Integrate().GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
-                new StepResultExpectation(1, "Given step with parameter \"1\"", ExecutionStatus.Passed),
-                new StepResultExpectation(2, "When step with parameter \"<?>\"", ExecutionStatus.Failed, ParameterExceptionReason),
-                new StepResultExpectation(3, "Then step with parameter \"<?>\"", ExecutionStatus.NotRun)
+                new StepResultExpectation(1, 3, "Given step with parameter \"1\"", ExecutionStatus.Passed),
+                new StepResultExpectation(2, 3, "When step with parameter \"<?>\"", ExecutionStatus.Failed, ParameterExceptionReason),
+                new StepResultExpectation(3, 3, "Then step with parameter \"<?>\"", ExecutionStatus.NotRun)
                 );
         }
 
@@ -100,9 +100,9 @@ namespace LightBDD.Core.UnitTests
 
             var steps = _runner.Integrate().GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
-                new StepResultExpectation(1, "Given step with parameter \"1\"", ExecutionStatus.Passed),
-                new StepResultExpectation(2, "When step with parameter \"abc\" throwing exception", ExecutionStatus.Failed, ExceptionReason),
-                new StepResultExpectation(3, "Then step with parameter \"<?>\"", ExecutionStatus.NotRun)
+                new StepResultExpectation(1, 3, "Given step with parameter \"1\"", ExecutionStatus.Passed),
+                new StepResultExpectation(2, 3, "When step with parameter \"abc\" throwing exception", ExecutionStatus.Failed, ExceptionReason),
+                new StepResultExpectation(3, 3, "Then step with parameter \"<?>\"", ExecutionStatus.NotRun)
                 );
         }
 

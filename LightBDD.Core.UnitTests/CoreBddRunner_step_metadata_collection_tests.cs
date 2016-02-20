@@ -28,9 +28,9 @@ namespace LightBDD.Core.UnitTests
 
             var steps = _runner.Integrate().GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
-                    new StepResultExpectation(1, "Given step one", ExecutionStatus.Passed),
-                    new StepResultExpectation(2, "When step two", ExecutionStatus.Passed),
-                    new StepResultExpectation(3, "Then step three", ExecutionStatus.Passed)
+                    new StepResultExpectation(1, 3, "Given step one", ExecutionStatus.Passed),
+                    new StepResultExpectation(2, 3, "When step two", ExecutionStatus.Passed),
+                    new StepResultExpectation(3, 3, "Then step three", ExecutionStatus.Passed)
                 );
         }
 
@@ -48,9 +48,9 @@ namespace LightBDD.Core.UnitTests
 
             var steps = _runner.Integrate().GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
-                    new StepResultExpectation(1, "Given step one", ExecutionStatus.Passed),
-                    new StepResultExpectation(2, "When step two throwing exception", ExecutionStatus.Failed, ExceptionReason),
-                    new StepResultExpectation(3, "Then step three", ExecutionStatus.NotRun)
+                    new StepResultExpectation(1, 3, "Given step one", ExecutionStatus.Passed),
+                    new StepResultExpectation(2, 3, "When step two throwing exception", ExecutionStatus.Failed, ExceptionReason),
+                    new StepResultExpectation(3, 3, "Then step three", ExecutionStatus.NotRun)
                 );
         }
 
@@ -64,9 +64,9 @@ namespace LightBDD.Core.UnitTests
 
             var steps = _runner.Integrate().GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
-                    new StepResultExpectation(1, "Given step one", ExecutionStatus.Passed),
-                    new StepResultExpectation(2, "When step two is bypassed", ExecutionStatus.Bypassed, BypassReason),
-                    new StepResultExpectation(3, "Then step three", ExecutionStatus.Passed)
+                    new StepResultExpectation(1, 3, "Given step one", ExecutionStatus.Passed),
+                    new StepResultExpectation(2, 3, "When step two is bypassed", ExecutionStatus.Bypassed, BypassReason),
+                    new StepResultExpectation(3, 3, "Then step three", ExecutionStatus.Passed)
                 );
         }
     }

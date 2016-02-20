@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Helpers;
 using LightBDD.Core.Metadata;
@@ -20,10 +21,7 @@ namespace LightBDD.Core.Extensibility
             _stepNameParser = new StepNameParser(nameFormatter);
         }
 
-        protected INameFormatter NameFormatter
-        {
-            get { return _nameFormatter; }
-        }
+        protected INameFormatter NameFormatter => _nameFormatter;
 
         public IFeatureInfo GetFeatureInfo(Type featureType)
         {
@@ -63,7 +61,7 @@ namespace LightBDD.Core.Extensibility
 
         public Func<object, string> GetStepParameterFormatter(ParameterInfo parameter)
         {
-            return value => string.Format("{0}", value);
+            return value => string.Format(ScenarioContext.GetCurrentCulture(), "{0}", value);
         }
 
         protected abstract IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member);

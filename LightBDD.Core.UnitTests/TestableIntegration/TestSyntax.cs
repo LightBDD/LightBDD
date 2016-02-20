@@ -58,10 +58,10 @@ namespace LightBDD.Core.UnitTests.TestableIntegration
         {
             var methodInfo = step.Item1.Method;
             var parameterInfo = methodInfo.GetParameters()[0];
-            Func<object, object[], Task> stepInvocation = (ctx, args) =>
+            Func<object, object[], Task> stepInvocation = async (ctx, args) =>
             {
+                await Task.Yield();
                 step.Item1(args[0]);
-                return Task.FromResult(0);
             };
 
             return new StepDescriptor(
@@ -74,10 +74,10 @@ namespace LightBDD.Core.UnitTests.TestableIntegration
         {
             var methodInfo = step.Item1.Method;
             var parameterInfo = methodInfo.GetParameters()[0];
-            Func<object, object[], Task> stepInvocation = (ctx, args) =>
+            Func<object, object[], Task> stepInvocation = async (ctx, args) =>
             {
+                await Task.Yield();
                 step.Item1(args[0]);
-                return Task.FromResult(0);
             };
 
             return new StepDescriptor(

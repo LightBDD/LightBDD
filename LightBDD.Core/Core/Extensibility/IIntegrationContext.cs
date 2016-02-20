@@ -1,6 +1,7 @@
 using System;
 using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Formatting;
+using LightBDD.Core.Notification;
 
 namespace LightBDD.Core.Extensibility
 {
@@ -10,5 +11,6 @@ namespace LightBDD.Core.Extensibility
         INameFormatter NameFormatter { get; }
         Func<Exception,ExecutionStatus> ExceptionToStatusMapper { get; }
         IParameterDescriptorFactory ParameterFactory { get; }
+        IProgressNotifier ProgressNotifier { get; }
     }
 }

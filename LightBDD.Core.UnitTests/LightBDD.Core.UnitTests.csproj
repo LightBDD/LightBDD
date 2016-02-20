@@ -9,11 +9,12 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LightBDD.Core.UnitTests</RootNamespace>
     <AssemblyName>LightBDD.Core.UnitTests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <NuGetPackageImportStamp>1cacef9a</NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,6 +51,7 @@
     <Compile Include="CoreBddRunner_feature_metadata_collection_tests.cs" />
     <Compile Include="CoreBddRunner_parameterized_step_execution_tests.cs" />
     <Compile Include="CoreBddRunner_parameterized_step_metadata_collection_tests.cs" />
+    <Compile Include="CoreBddRunner_progress_notification_tests.cs" />
     <Compile Include="CoreBddRunner_scenario_metadata_collection_global_category_tests.cs" />
     <Compile Include="CoreBddRunner_scenario_metadata_collection_tests.cs" />
     <Compile Include="CoreBddRunner_step_execution_tests.cs" />
@@ -57,7 +59,9 @@
     <Compile Include="CoreBddRunner_time_measurement_tests.cs" />
     <Compile Include="Helpers\StepResultExpectation.cs" />
     <Compile Include="Helpers\Steps.cs" />
+    <Compile Include="Naming\NameFormatterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StepExecutionTests.cs" />
     <Compile Include="TestableIntegration\CustomCategoryAttribute.cs" />
     <Compile Include="TestableIntegration\CustomFeatureDescriptionAttribute.cs" />
     <Compile Include="TestableIntegration\CustomIgnoreException.cs" />

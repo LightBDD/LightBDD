@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using LightBDD.Core.UnitTests.TestableIntegration;
 using NUnit.Framework;
 
@@ -9,7 +8,7 @@ namespace LightBDD.Core.UnitTests
     [TestFixture]
     public class CoreBddRunner_step_execution_tests
     {
-        private IBddRunner _runner;
+        private TestableBddRunner _runner;
         private List<string> _executedSteps;
 
         [SetUp]
@@ -39,6 +38,20 @@ namespace LightBDD.Core.UnitTests
             Assert.That(ex.Message, Is.EqualTo("test"));
 
             Assert.That(_executedSteps, Is.EqualTo(new[] { "Given_step_one", "When_step_two_throwing_exception" }));
+        }
+
+        [Test]
+        public void Disposed_runner_should_not_allow_creating_new_scenarios()
+        {
+            _runner.Dispose();
+            Assert.Throws<ObjectDisposedException>(() => _runner.NewScenario());
+        }
+
+        [Test]
+        public void Disposed_runner_should_not_allow_retrieving_results()
+        {
+            _runner.Dispose();
+            Assert.Throws<ObjectDisposedException>(() => _runner.GetFeatureResult());
         }
 
         private void Given_step_one() { _executedSteps.Add("Given_step_one"); }

@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using LightBDD.Core.Execution.Results;
 
-namespace LightBDD.Core.Implementation
+namespace LightBDD.Core.Execution.Implementation
 {
     class ExecutionTimeWatch
     {
