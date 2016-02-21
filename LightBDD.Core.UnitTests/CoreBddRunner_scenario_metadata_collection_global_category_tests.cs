@@ -22,7 +22,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_capture_scenario_name_with_global_categories()
         {
-            _runner.TestScenario(Some_step);
+            _runner.Test().TestScenario(Some_step);
             var scenario = _runner.Integrate().GetFeatureResult().GetScenarios().Single();
             Assert.That(scenario.Info.Categories, Is.EqualTo(new[] { "global1", "global2" }));
         }
@@ -32,7 +32,7 @@ namespace LightBDD.Core.UnitTests
         [ScenarioCategory("local2")]
         public void It_should_capture_scenario_name_with_global_and_local_categories()
         {
-            _runner.TestScenario(Some_step);
+            _runner.Test().TestScenario(Some_step);
             var scenario = _runner.Integrate().GetFeatureResult().GetScenarios().Single();
             Assert.That(scenario.Info.Categories, Is.EqualTo(new[] { "global1", "global2", "local1", "local2" }));
         }

@@ -24,18 +24,18 @@ namespace LightBDD.Core.UnitTests.Helpers
         public void When_step_two_ignoring_scenario() { StepExecution.Current.IgnoreScenario(IgnoreReason); }
         public void Then_step_four() { }
         public void Then_step_three_should_be_ignored() { StepExecution.Current.IgnoreScenario(IgnoreReason); }
-        public void Given_step_with_parameter(object parameter) { }
-        public void When_step_with_parameter(object parameter) { }
+        public void Given_step_with_parameter(string parameter) { }
+        public void When_step_with_parameter(int parameter) { }
 
-        public void When_step_with_parameter_and_comments(object parameter)
+        public void When_step_with_parameter_and_comments(int parameter)
         {
             StepExecution.Current.Comment(CommentReason);
             StepExecution.Current.Comment($"{parameter}");
         }
-        public void When_step_with_parameter_throwing_exception(object parameter) { throw new InvalidOperationException(ExceptionReason); }
-        public void Then_step_with_parameter(object parameter) { }
+        public void When_step_with_parameter_throwing_exception(int parameter) { throw new InvalidOperationException(ExceptionReason); }
+        public void Then_step_with_parameter(double parameter) { }
 
 
-        public object ThrowingParameterInvocation() { throw new InvalidOperationException(ParameterExceptionReason); }
+        public int ThrowingParameterInvocation() { throw new InvalidOperationException(ParameterExceptionReason); }
     }
 }

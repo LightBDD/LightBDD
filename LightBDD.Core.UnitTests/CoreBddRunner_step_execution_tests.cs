@@ -21,7 +21,8 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void Runner_should_execute_all_steps()
         {
-            _runner.TestScenario(Given_step_one,
+            _runner.Test().TestScenario(
+                Given_step_one,
                 When_step_two,
                 Then_step_three);
 
@@ -31,9 +32,10 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void Runner_should_propagate_step_exception_and_stop_executing_further_steps()
         {
-            var ex = Assert.Throws<InvalidOperationException>(() => _runner.TestScenario(Given_step_one,
-                 When_step_two_throwing_exception,
-                 Then_step_three));
+            var ex = Assert.Throws<InvalidOperationException>(() => _runner.Test().TestScenario(
+                Given_step_one,
+                When_step_two_throwing_exception,
+                Then_step_three));
 
             Assert.That(ex.Message, Is.EqualTo("test"));
 

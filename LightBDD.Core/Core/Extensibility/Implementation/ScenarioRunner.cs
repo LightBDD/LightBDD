@@ -39,7 +39,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         private RunnableStep ToRunnableStep(StepDescriptor descriptor, int stepIndex)
         {
             var stepInfo = new StepInfo(_metadataProvider.GetStepName(descriptor), stepIndex + 1, _steps.Length);
-            var parameters = descriptor.Parameters.Select(p => new StepParameter(p)).ToArray();
+            var parameters = descriptor.Parameters.Select(p => new StepParameter(p, _metadataProvider.GetStepParameterFormatter(p.ParameterInfo))).ToArray();
             return new RunnableStep(stepInfo, descriptor.StepInvocation, parameters, _exceptionToStatusMapper, _progressNotifier);
         }
 
@@ -55,7 +55,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         public IScenarioRunner WithName(string name)
         {
             if (name == null)
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
             _name = new NameInfo(name, Arrays<INameParameterInfo>.Empty());
             return this;
         }
@@ -63,7 +63,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         private IScenarioRunner WithName(INameInfo name)
         {
             if (name == null)
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
             _name = name;
             return this;
         }
@@ -79,7 +79,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         public IScenarioRunner WithLabels(string[] labels)
         {
             if (labels == null)
-                throw new ArgumentNullException("labels");
+                throw new ArgumentNullException(nameof(labels));
             _labels = labels;
             return this;
         }
@@ -87,15 +87,23 @@ namespace LightBDD.Core.Extensibility.Implementation
         public IScenarioRunner WithCategories(string[] categories)
         {
             if (categories == null)
-                throw new ArgumentNullException("categories");
+                throw new ArgumentNullException(nameof(categories));
             _categories = categories;
             return this;
         }
 
-        public Task RunAsync()
+        public Task RunAsynchronously()
         {
             Validate();
             return _scenarioExecutor.Execute(new ScenarioInfo(_name, _labels, _categories), _steps.Select(ToRunnableStep));
+        }
+
+        public void RunSynchronously()
+        {
+            var task = RunAsynchronously();
+            if (!task.IsCompleted)
+                throw new InvalidOperationException("Only immediately returning steps can be run synchronously");
+            task.GetAwaiter().GetResult();
         }
     }
 }

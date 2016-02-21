@@ -12,11 +12,11 @@ namespace LightBDD.Core.Extensibility.Implementation
         public bool IsEvaluated { get; private set; }
         public object Value { get; private set; }
 
-        public StepParameter(ParameterDescriptor descriptor)
+        public StepParameter(ParameterDescriptor descriptor, Func<object, string> valueFormatter)
         {
+            _valueFormatter = valueFormatter;
             RawName = descriptor.RawName;
             _valueEvaluator = descriptor.ValueEvaluator;
-            _valueFormatter = descriptor.ValueFormatter;
             if (descriptor.IsConstant)
                 Evaluate(null);
         }

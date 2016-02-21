@@ -21,7 +21,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_capture_all_steps()
         {
-            _runner.TestScenario(
+            _runner.Test().TestScenario(
                 Given_step_one,
                 When_step_two,
                 Then_step_three);
@@ -39,7 +39,7 @@ namespace LightBDD.Core.UnitTests
         {
             try
             {
-                _runner.TestScenario(
+                _runner.Test().TestScenario(
                     Given_step_one,
                     When_step_two_throwing_exception,
                     Then_step_three);
@@ -57,7 +57,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_capture_bypassed_steps()
         {
-            _runner.TestScenario(
+            _runner.Test().TestScenario(
                 Given_step_one,
                 When_step_two_is_bypassed,
                 Then_step_three);

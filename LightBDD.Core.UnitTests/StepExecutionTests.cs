@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using LightBDD.Core.Execution;
+using LightBDD.Core.Extensibility;
 using LightBDD.Core.UnitTests.TestableIntegration;
 using NUnit.Framework;
 
@@ -32,7 +33,7 @@ namespace LightBDD.Core.UnitTests
         {
             var runner = new TestableBddRunner(GetType());
 
-            runner.TestParameterizedScenario(TestSyntax.ParameterizedWithConstant(Commented_step,comment));
+            runner.Test().TestScenario(TestStep.CreateAsync(Commented_step, comment));
 
             Assert.That(runner.GetFeatureResult().GetScenarios().Single().GetSteps().Single().Comments.ToArray(), Is.Empty);
         }
@@ -44,14 +45,14 @@ namespace LightBDD.Core.UnitTests
 
             var comment = "abc";
 
-            runner.TestParameterizedScenario(TestSyntax.ParameterizedWithConstant(Commented_step, comment));
+            runner.Test().TestScenario(TestStep.CreateAsync(Commented_step, comment));
 
-            Assert.That(runner.GetFeatureResult().GetScenarios().Single().GetSteps().Single().Comments.ToArray(), Is.EqualTo(new[] {comment}));
+            Assert.That(runner.GetFeatureResult().GetScenarios().Single().GetSteps().Single().Comments.ToArray(), Is.EqualTo(new[] { comment }));
         }
 
-        private static void Commented_step(object comment)
+        private static void Commented_step(string comment)
         {
-            StepExecution.Current.Comment((string)comment);
+            StepExecution.Current.Comment(comment);
         }
     }
 }

@@ -10,6 +10,7 @@ namespace LightBDD.Core.Extensibility
         IScenarioRunner WithLabels(string[] labels);
         IScenarioRunner WithCategories(string[] categories);
         IScenarioRunner WithName(string name);
-        Task RunAsync();
+        Task RunAsynchronously();
+        void RunSynchronously();
     }
 }

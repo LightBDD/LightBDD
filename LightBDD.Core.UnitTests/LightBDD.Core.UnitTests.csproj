@@ -67,10 +67,12 @@
     <Compile Include="TestableIntegration\CustomFeatureDescriptionAttribute.cs" />
     <Compile Include="TestableIntegration\CustomIgnoreException.cs" />
     <Compile Include="TestableIntegration\StepExecutionExtensions.cs" />
+    <Compile Include="TestableIntegration\TestStep.cs" />
     <Compile Include="TestableIntegration\TestSyntax.cs" />
     <Compile Include="TestableIntegration\TestableBddRunner.cs" />
     <Compile Include="TestableIntegration\TestableIntegrationContext.cs" />
     <Compile Include="TestableIntegration\TestMetadataProvider.cs" />
+    <Compile Include="TestableIntegration\TestSyntaxRunner.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LightBDD.Core\LightBDD.Core.csproj">

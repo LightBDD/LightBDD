@@ -41,11 +41,11 @@ namespace LightBDD.Core.Extensibility
         {
             int position = FindArgument(stepName, parameterName.ToUpperInvariant(), StringComparison.Ordinal);
             if (position >= 0)
-                return new ArgumentReplacement(position, String.Format("\"{{{0}}}\"", argumentIndex), parameterName.Length);
+                return new ArgumentReplacement(position, string.Format("\"{{{0}}}\"", argumentIndex), parameterName.Length);
             position = FindArgument(stepName, parameterName, StringComparison.OrdinalIgnoreCase);
             if (position >= 0)
-                return new ArgumentReplacement(position + parameterName.Length, String.Format(" \"{{{0}}}\"", argumentIndex), 0);
-            return new ArgumentReplacement(stepName.Length, String.Format(" [{0}: \"{{{1}}}\"]", parameterName, argumentIndex), 0);
+                return new ArgumentReplacement(position + parameterName.Length, string.Format(" \"{{{0}}}\"", argumentIndex), 0);
+            return new ArgumentReplacement(stepName.Length, string.Format(" [{0}: \"{{{1}}}\"]", parameterName, argumentIndex), 0);
         }
 
         private static int FindArgument(string name, string argument, StringComparison stringComparison)

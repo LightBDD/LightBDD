@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Notification;
 using LightBDD.Core.UnitTests.Helpers;
@@ -52,12 +53,12 @@ namespace LightBDD.Core.UnitTests
         {
             var steps = new[]
             {
-                TestSyntax.ParameterizedWithConstant(Given_step_with_parameter, idx),
-                TestSyntax.ParameterizedWithConstant(When_step_with_parameter_and_comments, idx),
-                TestSyntax.ParameterizedWithConstant(Then_step_with_parameter, idx)
+                TestStep.CreateAsync(Given_step_with_parameter, idx.ToString()),
+                TestStep.CreateAsync(When_step_with_parameter_and_comments, idx),
+                TestStep.CreateAsync(Then_step_with_parameter, (double) idx)
             };
 
-            _subject.TestNamedParameterizedScenario($"Parallel scenario \"{idx}\"", steps);
+            _subject.Test().TestNamedScenario($"Parallel scenario \"{idx}\"", steps);
         }
     }
 }

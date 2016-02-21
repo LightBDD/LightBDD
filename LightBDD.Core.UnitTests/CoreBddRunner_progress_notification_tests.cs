@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Execution.Results;
+using LightBDD.Core.Extensibility;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
 using LightBDD.Core.UnitTests.Helpers;
@@ -27,7 +29,7 @@ namespace LightBDD.Core.UnitTests
             var runner = new TestableBddRunner(GetType(), progressNotifier);
             try
             {
-                runner.TestScenario(
+                runner.Test().TestScenario(
                     Given_step_one,
                     When_step_two_with_comment,
                     Then_step_three_should_throw_exception);
@@ -63,10 +65,10 @@ namespace LightBDD.Core.UnitTests
             var runner = new TestableBddRunner(GetType(), progressNotifier);
             try
             {
-                runner.TestParameterizedScenario(
-                    TestSyntax.ParameterizedWithFunction(Given_step_with_parameter, () => 1),
-                    TestSyntax.ParameterizedWithFunction(When_step_with_parameter, ThrowingParameterInvocation),
-                    TestSyntax.ParameterizedWithFunction(Then_step_with_parameter, () => 2));
+                runner.Test().TestScenario(
+                    TestStep.CreateAsync(Given_step_with_parameter, () => "abc"),
+                    TestStep.CreateAsync(When_step_with_parameter, ThrowingParameterInvocation),
+                    TestStep.CreateAsync(Then_step_with_parameter, () => 2.22));
             }
             catch
             {
@@ -77,8 +79,8 @@ namespace LightBDD.Core.UnitTests
             {
                 "Feature Start: CoreBddRunner progress notification tests [label1, label2]: feature description",
                 "Scenario Start: It should notify execution progress for parameterized steps [lab1, lab2] <category 1, category 2>",
-                "Step Start: 1/3 Given step with parameter \"1\"",
-                "Step Finish: 1/3 Given step with parameter \"1\" | Status:Passed | ExecutionTimePresent:True | Details:",
+                "Step Start: 1/3 Given step with parameter \"abc\"",
+                "Step Finish: 1/3 Given step with parameter \"abc\" | Status:Passed | ExecutionTimePresent:True | Details:",
                 "Scenario Finish: It should notify execution progress for parameterized steps [lab1, lab2] <category 1, category 2> | Status:Failed | ExecutionTimePresent:True | Steps:3 | Details:Step 2: parameter exception",
                 "Feature Finish: CoreBddRunner progress notification tests [label1, label2]: feature description | Scenarios:1"
             };

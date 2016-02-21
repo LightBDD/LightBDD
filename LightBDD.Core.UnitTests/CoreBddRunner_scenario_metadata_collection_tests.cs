@@ -22,7 +22,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_capture_scenario_name()
         {
-            _runner.TestScenario(Some_step);
+            _runner.Test().TestScenario(Some_step);
             var scenario = _runner.Integrate().GetFeatureResult().GetScenarios().Single();
             Assert.That(scenario.Info.Name.ToString(), Is.EqualTo("It should capture scenario name"));
             Assert.That(scenario.Info.Labels, Is.Empty);
@@ -34,7 +34,7 @@ namespace LightBDD.Core.UnitTests
         [Label("Ticket-2")]
         public void It_should_capture_scenario_name_with_labels()
         {
-            _runner.TestScenario(Some_step);
+            _runner.Test().TestScenario(Some_step);
             var scenario = _runner.Integrate().GetFeatureResult().GetScenarios().Single();
             Assert.That(scenario.Info.Name.ToString(), Is.EqualTo("It should capture scenario name with labels"));
             Assert.That(scenario.Info.Labels, Is.EqualTo(new[] { "Ticket-1", "Ticket-2" }));
@@ -48,7 +48,7 @@ namespace LightBDD.Core.UnitTests
         [ScenarioCategory("catB")]
         public void It_should_capture_scenario_name_with_categories()
         {
-            _runner.TestScenario(Some_step);
+            _runner.Test().TestScenario(Some_step);
             var scenario = _runner.Integrate().GetFeatureResult().GetScenarios().Single();
             Assert.That(scenario.Info.Name.ToString(), Is.EqualTo("It should capture scenario name with categories"));
             Assert.That(scenario.Info.Labels, Is.EqualTo(new[] { "Ticket-1", "Ticket-2" }));
@@ -58,7 +58,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_capture_scenario_execution_status_for_passing_steps()
         {
-            _runner.TestScenario(
+            _runner.Test().TestScenario(
                 Given_step_one,
                 When_step_two,
                 Then_step_three);
@@ -73,7 +73,7 @@ namespace LightBDD.Core.UnitTests
         {
             try
             {
-                _runner.TestScenario(
+                _runner.Test().TestScenario(
                     Given_step_one,
                     When_step_two_throwing_exception,
                     Then_step_three);
@@ -88,7 +88,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_capture_scenario_status_for_passing_steps_with_bypassed_one()
         {
-            _runner.TestScenario(
+            _runner.Test().TestScenario(
                 Given_step_one,
                 When_step_two_is_bypassed,
                 Then_step_three);
@@ -101,7 +101,7 @@ namespace LightBDD.Core.UnitTests
         {
             try
             {
-                _runner.TestScenario(
+                _runner.Test().TestScenario(
                 Given_step_one,
                 When_step_two_is_bypassed,
                 Then_step_three_should_be_ignored,
@@ -117,7 +117,7 @@ namespace LightBDD.Core.UnitTests
         {
             try
             {
-                _runner.TestScenario(
+                _runner.Test().TestScenario(
                     Given_step_one,
                     When_step_two_is_bypassed,
                     Then_step_three_should_throw_exception);

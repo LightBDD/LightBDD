@@ -28,13 +28,13 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_capture_execution_time_for_successful_scenario()
         {
-            AssertScenarioExecutionTime(() => _runner.TestScenario(Step_one, Step_two));
+            AssertScenarioExecutionTime(() => _runner.Test().TestScenario(Step_one, Step_two));
         }
 
         [Test]
         public void It_should_capture_execution_time_for_failed_scenario()
         {
-            AssertScenarioExecutionTime(() => _runner.TestScenario(Step_one, Step_throwing_exception, Step_two));
+            AssertScenarioExecutionTime(() => _runner.Test().TestScenario(Step_one, Step_throwing_exception, Step_two));
         }
 
         private void AssertScenarioExecutionTime(Action runScenario)
