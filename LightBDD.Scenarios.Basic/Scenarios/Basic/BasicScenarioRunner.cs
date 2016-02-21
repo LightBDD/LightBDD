@@ -1,0 +1,50 @@
+﻿using System;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using LightBDD.Core.Extensibility;
+
+namespace LightBDD.Scenarios.Basic
+{
+    internal class BasicScenarioRunner : IBasicScenarioRunner
+    {
+        private readonly ICoreBddRunner _coreRunner;
+
+        public BasicScenarioRunner(ICoreBddRunner coreRunner)
+        {
+            _coreRunner = coreRunner;
+        }
+
+        public void RunScenario(params Action[] steps)
+        {
+            _coreRunner
+                .NewScenario()
+                .WithCapturedScenarioDetails()
+                .WithSteps(steps.Select(ToSynchronousStep))
+                .RunSynchronously();
+        }
+
+        public Task RunScenarioAsync(params Func<Task>[] steps)
+        {
+            return _coreRunner
+                .NewScenario()
+                .WithCapturedScenarioDetails()
+                .WithSteps(steps.Select(ToAsynchronousStep))
+                .RunAsynchronously();
+        }
+
+        private StepDescriptor ToAsynchronousStep(Func<Task> step)
+        {
+            return new StepDescriptor(step.GetMethodInfo().Name, (ctx, args) => step.Invoke());
+        }
+
+        private static StepDescriptor ToSynchronousStep(Action step)
+        {
+            return new StepDescriptor(step.GetMethodInfo().Name, (ctx, args) =>
+            {
+                step.Invoke();
+                return Task.CompletedTask;
+            });
+        }
+    }
+}
