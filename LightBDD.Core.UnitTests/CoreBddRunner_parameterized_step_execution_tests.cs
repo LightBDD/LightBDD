@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using LightBDD.Core.Extensibility;
 using LightBDD.Core.UnitTests.TestableIntegration;
 using NUnit.Framework;
 

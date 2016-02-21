@@ -60,13 +60,18 @@ namespace LightBDD.Core.UnitTests.TestableIntegration
 
         public void TestNamedScenario(string name, params StepDescriptor[] steps)
         {
-            _coreRunner
+            TestNamedScenarioAsync(name, steps)
+                .GetAwaiter()
+                .GetResult();
+        }
+
+        public Task TestNamedScenarioAsync(string name, params StepDescriptor[] steps)
+        {
+            return _coreRunner
                 .NewScenario()
                 .WithName(name)
                 .WithSteps(steps)
-                .RunAsynchronously()
-                .GetAwaiter()
-                .GetResult();
+                .RunAsynchronously();
         }
     }
 }

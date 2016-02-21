@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Core.UnitTests.TestableIntegration

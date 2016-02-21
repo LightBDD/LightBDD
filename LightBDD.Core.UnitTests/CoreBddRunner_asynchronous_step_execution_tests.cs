@@ -1,4 +1,7 @@
-﻿using System.Linq;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Core.UnitTests.TestableIntegration;
 using NUnit.Framework;
@@ -6,10 +9,11 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests
 {
     [TestFixture]
-    public class CoreBddRunner_concurrency_tests : Steps
+    public class CoreBddRunner_asynchronous_step_execution_tests : Steps
     {
-        private readonly int _elementsCount = 1500;
         private TestableBddRunner _runner;
+
+        #region Setup/Teardown
 
         [SetUp]
         public void SetUp()
@@ -17,17 +21,37 @@ namespace LightBDD.Core.UnitTests
             _runner = new TestableBddRunner(GetType());
         }
 
+        #endregion
+
         [Test]
-        public void Running_scenarios_should_be_thread_safe()
+        public async Task It_should_support_asynchronous_processing_up_to_step_level()
         {
-            Enumerable.Range(0, _elementsCount)
-                .ToArray()
-                .AsParallel()
-                .ForAll(Parallel_scenario);
+            var semaphore = new SemaphoreSlim(0);
+            var stepEntered = false;
 
-            Assert.That(_runner.GetFeatureResult().GetScenarios().Count(), Is.EqualTo(_elementsCount));
+            var scenarioTask = _runner.Test().TestScenarioAsync(async () =>
+            {
+                stepEntered = true;
+                if (!await semaphore.WaitAsync(TimeSpan.FromSeconds(3)))
+                    throw new InvalidOperationException("Await failed");
+            });
 
-            for (int i = 0; i < _elementsCount; ++i)
+            Assert.That(stepEntered, Is.True);
+            semaphore.Release();
+            await scenarioTask;
+        }
+
+        [Test]
+        public async Task It_should_support_parallel_asynchronous_scenario_processing()
+        {
+            var elementsCount = 2000;
+
+            var scenarios = Enumerable.Range(0, elementsCount).Select(Parallel_scenario);
+            await Task.WhenAll(scenarios);
+
+            Assert.That(_runner.GetFeatureResult().GetScenarios().Count(), Is.EqualTo(elementsCount));
+
+            for (int i = 0; i < elementsCount; ++i)
             {
                 var expectedScenarioName = $"Parallel scenario \"{i}\"";
                 var expectedSteps = new[]
@@ -46,7 +70,7 @@ namespace LightBDD.Core.UnitTests
             }
         }
 
-        private void Parallel_scenario(int idx)
+        private Task Parallel_scenario(int idx)
         {
             var steps = new[]
             {
@@ -55,7 +79,7 @@ namespace LightBDD.Core.UnitTests
                 TestStep.CreateAsync(Then_step_with_parameter, (double) idx)
             };
 
-            _runner.Test().TestNamedScenario($"Parallel scenario \"{idx}\"", steps);
+            return _runner.Test().TestNamedScenarioAsync($"Parallel scenario \"{idx}\"", steps);
         }
     }
 }

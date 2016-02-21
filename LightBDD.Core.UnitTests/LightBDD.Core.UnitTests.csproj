@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoreBddRunner_asynchronous_step_execution_tests.cs" />
     <Compile Include="CoreBddRunner_concurrency_tests.cs" />
     <Compile Include="CoreBddRunner_extensibility_tests.cs" />
     <Compile Include="CoreBddRunner_feature_metadata_collection_tests.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="CoreBddRunner_scenario_metadata_collection_tests.cs" />
     <Compile Include="CoreBddRunner_step_execution_tests.cs" />
     <Compile Include="CoreBddRunner_step_metadata_collection_tests.cs" />
+    <Compile Include="CoreBddRunner_synchronous_step_execution_tests.cs" />
     <Compile Include="CoreBddRunner_time_measurement_tests.cs" />
     <Compile Include="Helpers\StepResultExpectation.cs" />
     <Compile Include="Helpers\Steps.cs" />
