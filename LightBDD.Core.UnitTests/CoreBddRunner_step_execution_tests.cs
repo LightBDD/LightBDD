@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using LightBDD.Core.Extensibility;
 using LightBDD.Core.UnitTests.TestableIntegration;
 using NUnit.Framework;
 
@@ -8,13 +9,13 @@ namespace LightBDD.Core.UnitTests
     [TestFixture]
     public class CoreBddRunner_step_execution_tests
     {
-        private TestableBddRunner _runner;
+        private IBddRunner _runner;
         private List<string> _executedSteps;
 
         [SetUp]
         public void SetUp()
         {
-            _runner = new TestableBddRunner(GetType());
+            _runner = TestableBddRunnerFactory.GetRunner(GetType());
             _executedSteps = new List<string>();
         }
 
@@ -45,15 +46,15 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void Disposed_runner_should_not_allow_creating_new_scenarios()
         {
-            _runner.Dispose();
-            Assert.Throws<ObjectDisposedException>(() => _runner.NewScenario());
+            _runner.Integrate().Dispose();
+            Assert.Throws<ObjectDisposedException>(() => _runner.Integrate().NewScenario());
         }
 
         [Test]
         public void Disposed_runner_should_not_allow_retrieving_results()
         {
-            _runner.Dispose();
-            Assert.Throws<ObjectDisposedException>(() => _runner.GetFeatureResult());
+            _runner.Integrate().Dispose();
+            Assert.Throws<ObjectDisposedException>(() => _runner.Integrate().GetFeatureResult());
         }
 
         private void Given_step_one() { _executedSteps.Add("Given_step_one"); }

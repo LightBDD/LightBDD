@@ -14,7 +14,7 @@ namespace LightBDD.Core.UnitTests
         [SetUp]
         public void SetUp()
         {
-            _runner = new TestableBddRunner(GetType());
+            _runner = TestableBddRunnerFactory.GetRunner(GetType());
             _executedSteps = new List<Tuple<string, object>>();
         }
 

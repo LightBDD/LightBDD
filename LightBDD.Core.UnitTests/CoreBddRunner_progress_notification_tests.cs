@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Execution.Results;
+using LightBDD.Core.Extensibility;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
 using LightBDD.Core.UnitTests.Helpers;
@@ -24,7 +25,7 @@ namespace LightBDD.Core.UnitTests
         {
             var progressNotifier = new CapturingProgressNotifier();
 
-            var runner = new TestableBddRunner(GetType(), progressNotifier);
+            var runner = TestableBddRunnerFactory.GetRunner(GetType(), progressNotifier);
             try
             {
                 runner.Test().TestScenario(
@@ -33,7 +34,7 @@ namespace LightBDD.Core.UnitTests
                     Then_step_three_should_throw_exception);
             }
             catch { }
-            runner.Dispose();
+            runner.Integrate().Dispose();
 
             string[] expected =
             {
@@ -60,7 +61,7 @@ namespace LightBDD.Core.UnitTests
         {
             var progressNotifier = new CapturingProgressNotifier();
 
-            var runner = new TestableBddRunner(GetType(), progressNotifier);
+            var runner = TestableBddRunnerFactory.GetRunner(GetType(), progressNotifier);
             try
             {
                 runner.Test().TestScenario(
@@ -71,7 +72,7 @@ namespace LightBDD.Core.UnitTests
             catch
             {
             }
-            runner.Dispose();
+            runner.Integrate().Dispose();
 
             string[] expected =
             {

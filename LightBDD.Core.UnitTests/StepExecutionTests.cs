@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using LightBDD.Core.Execution;
+using LightBDD.Core.Extensibility;
 using LightBDD.Core.UnitTests.TestableIntegration;
 using NUnit.Framework;
 
@@ -30,23 +31,23 @@ namespace LightBDD.Core.UnitTests
         [TestCase("\t\n\r ")]
         public void Comment_should_ignore_empty_comments(string comment)
         {
-            var runner = new TestableBddRunner(GetType());
+            var runner = TestableBddRunnerFactory.GetRunner(GetType());
 
             runner.Test().TestScenario(TestStep.CreateAsync(Commented_step, comment));
 
-            Assert.That(runner.GetFeatureResult().GetScenarios().Single().GetSteps().Single().Comments.ToArray(), Is.Empty);
+            Assert.That(runner.Integrate().GetFeatureResult().GetScenarios().Single().GetSteps().Single().Comments.ToArray(), Is.Empty);
         }
 
         [Test]
         public void Comment_should_record_comment_in_currently_executed_step()
         {
-            var runner = new TestableBddRunner(GetType());
+            var runner = TestableBddRunnerFactory.GetRunner(GetType());
 
             var comment = "abc";
 
             runner.Test().TestScenario(TestStep.CreateAsync(Commented_step, comment));
 
-            Assert.That(runner.GetFeatureResult().GetScenarios().Single().GetSteps().Single().Comments.ToArray(), Is.EqualTo(new[] { comment }));
+            Assert.That(runner.Integrate().GetFeatureResult().GetScenarios().Single().GetSteps().Single().Comments.ToArray(), Is.EqualTo(new[] { comment }));
         }
 
         private static void Commented_step(string comment)

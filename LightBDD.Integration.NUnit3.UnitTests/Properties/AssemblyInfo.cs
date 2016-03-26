@@ -1,16 +1,16 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using NUnit.Framework;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("LightBDD.Core.UnitTests")]
+[assembly: AssemblyTitle("LightBDD.Integration.NUnit3.UnitTests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("LightBDD.Core.UnitTests")]
+[assembly: AssemblyProduct("LightBDD.Integration.NUnit3.UnitTests")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -21,7 +21,7 @@ using NUnit.Framework;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("ad54ee78-093b-4fbb-8467-24cbc938c81b")]
+[assembly: Guid("a5ea0407-8fa8-46dc-81f3-06272275ccac")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -35,5 +35,4 @@ using NUnit.Framework;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: Parallelizable(ParallelScope.Fixtures)]
 [assembly: Debuggable(true, true)]

@@ -6,14 +6,14 @@ using LightBDD.Core.Extensibility.Implementation;
 
 namespace LightBDD.Core.Execution.Implementation
 {
-    public abstract class CoreBddRunner : IBddRunner, ICoreBddRunner, IDisposable
+    internal class CoreBddRunner : IBddRunner, ICoreBddRunner
     {
         public IIntegrationContext IntegrationContext { get; }
         private readonly FeatureResult _featureResult;
         private readonly ScenarioExecutor _scenarioExecutor;
         private bool _disposed;
 
-        protected CoreBddRunner(Type featureType, IIntegrationContext integrationContext)
+        public CoreBddRunner(Type featureType, IIntegrationContext integrationContext)
         {
             IntegrationContext = integrationContext;
             _featureResult = new FeatureResult(IntegrationContext.MetadataProvider.GetFeatureInfo(featureType));
@@ -34,6 +34,11 @@ namespace LightBDD.Core.Execution.Implementation
         {
             VerifyDisposed();
             return new ScenarioRunner(_scenarioExecutor, IntegrationContext.MetadataProvider, IntegrationContext.ProgressNotifier, IntegrationContext.ExceptionToStatusMapper);
+        }
+
+        public IBddRunner AsBddRunner()
+        {
+            return this;
         }
 
         private void VerifyDisposed()

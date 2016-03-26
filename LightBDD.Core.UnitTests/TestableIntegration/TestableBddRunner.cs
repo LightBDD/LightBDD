@@ -1,18 +1,24 @@
 ﻿using System;
 using LightBDD.Core.Execution.Implementation;
+using LightBDD.Core.Extensibility;
 using LightBDD.Core.Notification;
 
 namespace LightBDD.Core.UnitTests.TestableIntegration
 {
-    public class TestableBddRunner : CoreBddRunner
+    public class TestableBddRunnerFactory : BddRunnerFactory
     {
-        public TestableBddRunner(Type featureType, IProgressNotifier progressNotifier)
-            : base(featureType, new TestableIntegrationContext(progressNotifier))
+        private TestableBddRunnerFactory(IIntegrationContext integrationContext) : base(integrationContext)
         {
         }
 
-        public TestableBddRunner(Type featureType) : this(featureType, new NoProgressNotifier())
+        public static IBddRunner GetRunner(Type featureType, IProgressNotifier progressNotifier)
         {
+            return new TestableBddRunnerFactory(new TestableIntegrationContext(progressNotifier)).GetRunnerFor(featureType).AsBddRunner();
+        }
+
+        public static IBddRunner GetRunner(Type featureType)
+        {
+            return GetRunner(featureType, new NoProgressNotifier());
         }
     }
 }

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1071138F-3428-404A-A54E-6E9956520BEE}</ProjectGuid>
+    <ProjectGuid>{2FBDDB64-1051-4823-80A7-C823A994A37E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LightBDD.Scenarios.Basic.UnitTests</RootNamespace>
-    <AssemblyName>LightBDD.Scenarios.Basic.UnitTests</AssemblyName>
+    <RootNamespace>LightBDD.Integration.NUnit3</RootNamespace>
+    <AssemblyName>LightBDD.Integration.NUnit3</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -31,8 +31,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
+    <Reference Include="Mono.Cecil, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.Engine.3.2.0\lib\Mono.Cecil.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit-agent, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.Engine.3.2.0\lib\nunit-agent.exe</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit-agent-x86, Version=3.2.0.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\NUnit.Engine.3.2.0\lib\nunit-agent-x86.exe</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.engine, Version=3.2.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.Engine.3.2.0\lib\nunit.engine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.engine.api, Version=3.0.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.Engine.3.2.0\lib\nunit.engine.api.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=3.2.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
@@ -49,21 +65,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Basic_scenario_runner_tests.cs" />
+    <Compile Include="FeatureFixture.cs" />
+    <Compile Include="NUnit3BddRunnerFactory.cs" />
+    <Compile Include="NUnit3IntegrationContext.cs" />
+    <Compile Include="NUnit3MetadataProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\LightBDD.Core\LightBDD.Core.csproj">
-      <Project>{9f3d28cd-e37e-4ef8-9cbf-a785d8ca3484}</Project>
+      <Project>{9F3D28CD-E37E-4EF8-9CBF-A785D8CA3484}</Project>
       <Name>LightBDD.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LightBDD.Scenarios.Basic\LightBDD.Scenarios.Basic.csproj">
-      <Project>{121b928f-9831-4075-a29b-57e798a2bd22}</Project>
-      <Name>LightBDD.Scenarios.Basic</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

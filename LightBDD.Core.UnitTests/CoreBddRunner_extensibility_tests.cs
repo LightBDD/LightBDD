@@ -18,7 +18,7 @@ namespace LightBDD.Core.UnitTests
         [ScenarioCategory("standard local category")]
         public void It_should_collect_custom_categories()
         {
-            IBddRunner runner = new TestableBddRunner(GetType());
+            IBddRunner runner = TestableBddRunnerFactory.GetRunner(GetType());
             runner.Test().TestScenario(Some_step);
             var scenario = runner.Integrate().GetFeatureResult().GetScenarios().Single();
             Assert.That(scenario.Info.Categories, Is.EqualTo(new[] { "some global category", "some local category", "standard global category", "standard local category" }));
@@ -27,7 +27,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_collect_custom_feature_description()
         {
-            IBddRunner runner = new TestableBddRunner(GetType());
+            IBddRunner runner = TestableBddRunnerFactory.GetRunner(GetType());
             runner.Test().TestScenario(Some_step);
             Assert.That(runner.Integrate().GetFeatureResult().Info.Description, Is.EqualTo("some description"));
         }
@@ -41,7 +41,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_collect_standard_feature_description_if_both_are_specified()
         {
-            IBddRunner runner = new TestableBddRunner(typeof(Feature_with_two_descriptions));
+            IBddRunner runner = TestableBddRunnerFactory.GetRunner(typeof(Feature_with_two_descriptions));
             runner.Test().TestScenario(Some_step);
             Assert.That(runner.Integrate().GetFeatureResult().Info.Description, Is.EqualTo("standard description"));
         }
@@ -49,7 +49,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_capture_step_status_with_custom_exception_mapping()
         {
-            IBddRunner runner = new TestableBddRunner(GetType());
+            IBddRunner runner = TestableBddRunnerFactory.GetRunner(GetType());
             Assert.Throws<CustomIgnoreException>(() => runner.Test().TestScenario(
                 Given_step_one,
                 When_step_two_ignoring_scenario,
