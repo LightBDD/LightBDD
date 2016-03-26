@@ -17,10 +17,10 @@ namespace LightBDD.Integration.NUnit3
             var scenarioMethod = new StackTrace()
                 .GetFrames()
                 .Skip(2)
-                .Select(f=>f.GetMethod())
+                .Select(f => f.GetMethod())
                 .FirstOrDefault(f => f.GetCustomAttributes(true).Any(a => a is TestAttribute));
 
-            if(scenarioMethod==null)
+            if (scenarioMethod == null)
                 throw new InvalidOperationException("Unable to locate Scenario name. Please ensure that scenario is executed from method with [Test] attribute and [assembly:Debuggable(true, true)] attribute is present in test assembly.");
             return scenarioMethod;
         }
