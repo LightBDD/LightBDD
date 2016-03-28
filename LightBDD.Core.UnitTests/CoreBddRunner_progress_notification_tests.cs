@@ -43,7 +43,7 @@ namespace LightBDD.Core.UnitTests
                 "Step Start: 1/3 Given step one",
                 "Step Finish: 1/3 Given step one | Status:Passed | ExecutionTimePresent:True | Details:",
                 "Step Start: 2/3 When step two with comment",
-                "Step Comment: some comment",
+                "Step 2/3 Comment: some comment",
                 "Step Finish: 2/3 When step two with comment | Status:Passed | ExecutionTimePresent:True | Details:",
                 "Step Start: 3/3 Then step three should throw exception",
                 "Step Finish: 3/3 Then step three should throw exception | Status:Failed | ExecutionTimePresent:True | Details:exception reason",
@@ -122,9 +122,9 @@ namespace LightBDD.Core.UnitTests
                 _notifications.Add($"Step Finish: {FormatStep(step.Info)} | Status:{step.Status} | ExecutionTimePresent:{step.ExecutionTime != null} | Details:{step.StatusDetails}");
             }
 
-            public void NotifyStepComment(string comment)
+            public void NotifyStepComment(IStepInfo step, string comment)
             {
-                _notifications.Add($"Step Comment: {comment}");
+                _notifications.Add($"Step {step.Number}/{step.Total} Comment: {comment}");
             }
 
             private string FormatFeature(IFeatureInfo feature)

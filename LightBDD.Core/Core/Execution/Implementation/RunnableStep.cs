@@ -96,7 +96,7 @@ namespace LightBDD.Core.Execution.Implementation
         public void Comment(string comment)
         {
             _result.AddComment(comment);
-            _progressNotifier.NotifyStepComment(comment);
+            _progressNotifier.NotifyStepComment(_result.Info, comment);
         }
     }
 }

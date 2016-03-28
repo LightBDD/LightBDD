@@ -69,6 +69,7 @@
     <Compile Include="Integration\NUnit3\NUnit3BddRunnerFactory.cs" />
     <Compile Include="Integration\NUnit3\NUnit3IntegrationContext.cs" />
     <Compile Include="Integration\NUnit3\NUnit3MetadataProvider.cs" />
+    <Compile Include="Integration\NUnit3\NUnit3ProgressNotifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

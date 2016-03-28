@@ -1,4 +1,5 @@
 using LightBDD.Core.Extensibility;
+using LightBDD.Core.Notification;
 
 namespace LightBDD.Integration.XUnit2
 {
@@ -6,8 +7,9 @@ namespace LightBDD.Integration.XUnit2
     {
         public static XUnitBddRunnerFactory Instance { get; } = new XUnitBddRunnerFactory();
 
-        private XUnitBddRunnerFactory() : base(new XUnitIntegrationContext())
+        protected override IIntegrationContext CreateIntegrationContext(IProgressNotifier progressNotifier)
         {
+            return new XUnitIntegrationContext(progressNotifier);
         }
     }
 }

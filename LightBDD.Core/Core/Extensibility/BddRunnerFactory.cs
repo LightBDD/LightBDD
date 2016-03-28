@@ -1,22 +1,19 @@
 using System;
 using System.Collections.Concurrent;
 using LightBDD.Core.Execution.Implementation;
+using LightBDD.Core.Notification;
 
 namespace LightBDD.Core.Extensibility
 {
     public abstract class BddRunnerFactory
     {
         private readonly ConcurrentDictionary<Type, ICoreBddRunner> _runners = new ConcurrentDictionary<Type, ICoreBddRunner>();
-        private readonly IIntegrationContext _integrationContext;
 
-        protected BddRunnerFactory(IIntegrationContext integrationContext)
+        public ICoreBddRunner GetRunnerFor(Type featureType, Func<IProgressNotifier> progressNotifierProvider)
         {
-            _integrationContext = integrationContext;
+            return _runners.GetOrAdd(featureType, type => new CoreBddRunner(type, CreateIntegrationContext(progressNotifierProvider.Invoke())));
         }
 
-        public ICoreBddRunner GetRunnerFor(Type featureType)
-        {
-            return _runners.GetOrAdd(featureType, type => new CoreBddRunner(type, _integrationContext));
-        }
+        protected abstract IIntegrationContext CreateIntegrationContext(IProgressNotifier progressNotifier);
     }
 }

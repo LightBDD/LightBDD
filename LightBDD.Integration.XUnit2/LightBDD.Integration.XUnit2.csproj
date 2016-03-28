@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="FeatureFixture.cs" />
     <Compile Include="Integration\XUnit2\Customization\IgnoreException.cs" />
+    <Compile Include="Integration\XUnit2\XUnitProgressNotifier.cs" />
     <Compile Include="StepExecutionExtensions.cs" />
     <Compile Include="Integration\XUnit2\XUnitBddRunnerFactory.cs" />
     <Compile Include="Integration\XUnit2\XUnitIntegrationContext.cs" />

@@ -45,6 +45,7 @@
     <Compile Include="Integration\MsTest\MsTestBddRunnerFactory.cs" />
     <Compile Include="Integration\MsTest\MsTestIntegrationContext.cs" />
     <Compile Include="Integration\MsTest\MsTestMetadataProvider.cs" />
+    <Compile Include="Integration\MsTest\MsTestProgressNotifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

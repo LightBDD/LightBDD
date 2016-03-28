@@ -11,6 +11,6 @@ namespace LightBDD.Core.Notification
         public void NotifyScenarioFinished(IScenarioResult scenario) { }
         public void NotifyStepStart(IStepInfo step) { }
         public void NotifyStepFinished(IStepResult step) { }
-        public void NotifyStepComment(string comment) { }
+        public void NotifyStepComment(IStepInfo step, string comment) { }
     }
 }

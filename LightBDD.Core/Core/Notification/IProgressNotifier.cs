@@ -14,6 +14,6 @@ namespace LightBDD.Core.Notification
         void NotifyStepStart(IStepInfo step);
         void NotifyStepFinished(IStepResult step);
 
-        void NotifyStepComment(string comment);
+        void NotifyStepComment(IStepInfo step, string comment);
     }
 }

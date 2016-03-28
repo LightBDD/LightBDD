@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Extensibility;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace LightBDD.Integration.XUnit2.UnitTests
 {
@@ -74,6 +75,10 @@ namespace LightBDD.Integration.XUnit2.UnitTests
                 .GetFeatureResult()
                 .GetScenarios()
                 .Single(s => s.Info.Labels.Contains(scenarioId));
+        }
+
+        public Runner_tests(ITestOutputHelper output) : base(output)
+        {
         }
     }
 }

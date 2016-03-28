@@ -14,12 +14,12 @@ namespace LightBDD.Integration.XUnit2
         public Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
         public IProgressNotifier ProgressNotifier { get; }
 
-        public XUnitIntegrationContext()
+        public XUnitIntegrationContext(IProgressNotifier progressNotifier)
         {
             NameFormatter = new DefaultNameFormatter();
             MetadataProvider = new XUnitMetadataProvider(NameFormatter);
             ExceptionToStatusMapper = ex => (ex is IgnoreException) ? ExecutionStatus.Ignored : ExecutionStatus.Failed;
-            ProgressNotifier = new NoProgressNotifier();
+            ProgressNotifier = progressNotifier;
         }
     }
 }

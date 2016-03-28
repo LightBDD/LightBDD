@@ -46,6 +46,7 @@
     <Compile Include="Core\Extensibility\StepNameParser.cs" />
     <Compile Include="Core\Execution\Implementation\ExecutionTimeWatch.cs" />
     <Compile Include="Core\Execution\Implementation\ScenarioExecutor.cs" />
+    <Compile Include="Core\Formatting\TimeFormatter.cs" />
     <Compile Include="Core\Metadata\Implementation\NameParameterInfo.cs" />
     <Compile Include="Core\Extensibility\ParameterDescriptor.cs" />
     <Compile Include="Core\Metadata\INameParameterInfo.cs" />
@@ -71,8 +72,10 @@
     <Compile Include="Core\Extensibility\StepDescriptor.cs" />
     <Compile Include="Core\Metadata\Implementation\StepNameInfo.cs" />
     <Compile Include="Core\Extensibility\BddRunnerExtensions.cs" />
+    <Compile Include="Core\Notification\DelegatingProgressNotifier.cs" />
     <Compile Include="Core\Notification\IProgressNotifier.cs" />
     <Compile Include="Core\Notification\NoProgressNotifier.cs" />
+    <Compile Include="Core\Notification\ParallelProgressNotifier.cs" />
     <Compile Include="FeatureDescriptionAttribute.cs" />
     <Compile Include="IBddRunner.cs" />
     <Compile Include="LabelAttribute.cs" />
