@@ -1,4 +1,5 @@
-﻿using LightBDD.Core.Extensibility;
+﻿using System;
+using LightBDD.Core.Extensibility;
 using LightBDD.Core.Notification;
 using LightBDD.Integration.NUnit3;
 using NUnit.Framework;
@@ -10,9 +11,9 @@ namespace LightBDD
         private readonly ICoreBddRunner _runner;
         protected IBddRunner Runner => _runner.AsBddRunner();
 
-        protected FeatureFixture()
+        protected FeatureFixture(Func<IProgressNotifier> progressNotifierCreator = null)
         {
-            _runner = NUnit3BddRunnerFactory.Instance.GetRunnerFor(GetType(),CreateProgressNotifier);
+            _runner = NUnit3BddRunnerFactory.Instance.GetRunnerFor(GetType(), progressNotifierCreator ?? CreateProgressNotifier);
         }
 
         [OneTimeTearDown]
@@ -21,7 +22,7 @@ namespace LightBDD
             _runner.Dispose();
         }
 
-        protected virtual IProgressNotifier CreateProgressNotifier()
+        private static IProgressNotifier CreateProgressNotifier()
         {
             return new NUnit3ProgressNotifier(ParallelProgressNotifier.ProgressManager.Instance);
         }

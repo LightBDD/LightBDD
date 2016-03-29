@@ -4,11 +4,11 @@ using Xunit.Abstractions;
 
 namespace LightBDD.Integration.XUnit2
 {
-    public class XUnitProgressNotifier : ParallelProgressNotifier
+    public class XUnit2ProgressNotifier : ParallelProgressNotifier
     {
         private readonly ITestOutputHelper _outputHelper;
 
-        public XUnitProgressNotifier(ITestOutputHelper outputHelper, ProgressManager progressManager)
+        public XUnit2ProgressNotifier(ITestOutputHelper outputHelper, ProgressManager progressManager)
             : base(progressManager)
         {
             _outputHelper = outputHelper;

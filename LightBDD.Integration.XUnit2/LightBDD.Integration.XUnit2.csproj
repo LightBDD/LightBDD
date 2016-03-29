@@ -58,11 +58,11 @@
   <ItemGroup>
     <Compile Include="FeatureFixture.cs" />
     <Compile Include="Integration\XUnit2\Customization\IgnoreException.cs" />
-    <Compile Include="Integration\XUnit2\XUnitProgressNotifier.cs" />
+    <Compile Include="Integration\XUnit2\XUnit2ProgressNotifier.cs" />
     <Compile Include="StepExecutionExtensions.cs" />
-    <Compile Include="Integration\XUnit2\XUnitBddRunnerFactory.cs" />
-    <Compile Include="Integration\XUnit2\XUnitIntegrationContext.cs" />
-    <Compile Include="Integration\XUnit2\XUnitMetadataProvider.cs" />
+    <Compile Include="Integration\XUnit2\XUnit2BddRunnerFactory.cs" />
+    <Compile Include="Integration\XUnit2\XUnit2IntegrationContext.cs" />
+    <Compile Include="Integration\XUnit2\XUnit2MetadataProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScenarioAttribute.cs" />
     <Compile Include="Integration\XUnit2\Customization\ExceptionExtensions.cs" />

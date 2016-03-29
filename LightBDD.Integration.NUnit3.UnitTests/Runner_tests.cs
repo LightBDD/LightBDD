@@ -79,6 +79,12 @@ namespace LightBDD.Integration.NUnit3.UnitTests
             Assert.That(ex.Message, Is.EqualTo("Unable to locate Scenario name. Please ensure that scenario is executed from method with [Test] attribute and [assembly:Debuggable(true, true)] attribute is present in test assembly."));
         }
 
+        [Test]
+        public void Runner_should_use_NUnit3ProgressNotifier_by_default()
+        {
+            Assert.IsInstanceOf<NUnit3ProgressNotifier>(Runner.Integrate().IntegrationContext.ProgressNotifier);
+        }
+
         private void Inconclusive_step()
         {
             Assert.Inconclusive();

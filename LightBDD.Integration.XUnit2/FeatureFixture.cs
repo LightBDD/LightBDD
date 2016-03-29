@@ -1,4 +1,5 @@
-﻿using LightBDD.Core.Notification;
+﻿using System;
+using LightBDD.Core.Notification;
 using LightBDD.Integration.XUnit2;
 using Xunit.Abstractions;
 
@@ -9,15 +10,15 @@ namespace LightBDD
         protected ITestOutputHelper Output { get; }
         protected IBddRunner Runner { get; }
 
-        protected FeatureFixture(ITestOutputHelper output)
+        protected FeatureFixture(ITestOutputHelper output, Func<IProgressNotifier> progressNotifierCreator = null)
         {
             Output = output;
-            Runner = XUnitBddRunnerFactory.Instance.GetRunnerFor(GetType(), CreateProgressNotifier).AsBddRunner();
+            Runner = XUnit2BddRunnerFactory.Instance.GetRunnerFor(GetType(), progressNotifierCreator ?? CreateProgressNotifier).AsBddRunner();
         }
 
-        protected virtual IProgressNotifier CreateProgressNotifier()
+        private IProgressNotifier CreateProgressNotifier()
         {
-            return new XUnitProgressNotifier(Output, ParallelProgressNotifier.ProgressManager.Instance);
+            return new XUnit2ProgressNotifier(Output, ParallelProgressNotifier.ProgressManager.Instance);
         }
     }
 }

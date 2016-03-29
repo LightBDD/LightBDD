@@ -70,7 +70,12 @@ namespace LightBDD.Integration.MsTest.UnitTests
                     "Unable to locate Scenario name. Please ensure that scenario is executed from method with [TestMethod] attribute and [assembly:Debuggable(true, true)] attribute is present in test assembly.",
                     ex.Message);
         }
-        
+
+        [TestMethod]
+        public void Runner_should_use_MsTestProgressNotifier_by_default()
+        {
+            Assert.IsInstanceOfType(Runner.Integrate().IntegrationContext.ProgressNotifier, typeof(MsTestProgressNotifier));
+        }
 
         private void Inconclusive_step()
         {

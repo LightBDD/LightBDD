@@ -8,9 +8,9 @@ using LightBDD.Core.Formatting;
 
 namespace LightBDD.Integration.XUnit2
 {
-    internal class XUnitMetadataProvider : CoreMetadataProvider
+    internal class XUnit2MetadataProvider : CoreMetadataProvider
     {
-        public XUnitMetadataProvider(INameFormatter nameFormatter) : base(nameFormatter) { }
+        public XUnit2MetadataProvider(INameFormatter nameFormatter) : base(nameFormatter) { }
         public override MethodBase CaptureCurrentScenarioMethod()
         {
             var scenarioMethod = new StackTrace()

@@ -1,4 +1,5 @@
-﻿using LightBDD.Core.Notification;
+﻿using System;
+using LightBDD.Core.Notification;
 using LightBDD.Integration.MsTest;
 
 namespace LightBDD
@@ -7,13 +8,13 @@ namespace LightBDD
     {
         protected IBddRunner Runner { get; }
 
-        protected FeatureFixture()
+        protected FeatureFixture(Func<IProgressNotifier> progressNotifierCreator = null)
         {
-            Runner = MsTestBddRunnerFactory.Instance.GetRunnerFor(GetType(), CreateProgressNotifier)
+            Runner = MsTestBddRunnerFactory.Instance.GetRunnerFor(GetType(), progressNotifierCreator ?? CreateProgressNotifier)
                 .AsBddRunner();
         }
 
-        protected virtual IProgressNotifier CreateProgressNotifier()
+        private static IProgressNotifier CreateProgressNotifier()
         {
             return new MsTestProgressNotifier(ParallelProgressNotifier.ProgressManager.Instance);
         }

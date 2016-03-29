@@ -59,6 +59,11 @@ namespace LightBDD.Integration.XUnit2.UnitTests
                 ex.Result.Message);
         }
 
+        [Fact]
+        public void Runner_should_use_XUnit2ProgressNotifier_by_default()
+        {
+            Assert.Equal(typeof(XUnit2ProgressNotifier), Runner.Integrate().IntegrationContext.ProgressNotifier.GetType());
+        }
 
         private void Ignored_step()
         {
