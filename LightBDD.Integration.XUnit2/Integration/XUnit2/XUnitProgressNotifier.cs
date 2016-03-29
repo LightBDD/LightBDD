@@ -7,9 +7,9 @@ namespace LightBDD.Integration.XUnit2
     public class XUnitProgressNotifier : ParallelProgressNotifier
     {
         private readonly ITestOutputHelper _outputHelper;
-        private static readonly ProgressManager SharedProgress = new ProgressManager();
 
-        public XUnitProgressNotifier(ITestOutputHelper outputHelper) : base(SharedProgress)
+        public XUnitProgressNotifier(ITestOutputHelper outputHelper, ProgressManager progressManager)
+            : base(progressManager)
         {
             _outputHelper = outputHelper;
         }

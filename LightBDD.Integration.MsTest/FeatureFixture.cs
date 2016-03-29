@@ -15,7 +15,7 @@ namespace LightBDD
 
         protected virtual IProgressNotifier CreateProgressNotifier()
         {
-            return new MsTestProgressNotifier();
+            return new MsTestProgressNotifier(ParallelProgressNotifier.ProgressManager.Instance);
         }
     }
 }

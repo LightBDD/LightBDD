@@ -103,6 +103,7 @@ namespace LightBDD.Core.Notification
 
         public class ProgressManager
         {
+            public static readonly ProgressManager Instance = new ProgressManager();
             private readonly AsyncLocal<int?> _currentScenario = new AsyncLocal<int?>();
             private readonly object _sync = new object();
             private int _totalScenarios;

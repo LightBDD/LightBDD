@@ -21,6 +21,9 @@ namespace LightBDD
             _runner.Dispose();
         }
 
-        protected virtual IProgressNotifier CreateProgressNotifier() { return new NUnit3ProgressNotifier(); }
+        protected virtual IProgressNotifier CreateProgressNotifier()
+        {
+            return new NUnit3ProgressNotifier(ParallelProgressNotifier.ProgressManager.Instance);
+        }
     }
 }

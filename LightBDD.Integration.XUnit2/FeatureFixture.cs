@@ -15,6 +15,9 @@ namespace LightBDD
             Runner = XUnitBddRunnerFactory.Instance.GetRunnerFor(GetType(), CreateProgressNotifier).AsBddRunner();
         }
 
-        protected virtual IProgressNotifier CreateProgressNotifier() { return new XUnitProgressNotifier(Output); }
+        protected virtual IProgressNotifier CreateProgressNotifier()
+        {
+            return new XUnitProgressNotifier(Output, ParallelProgressNotifier.ProgressManager.Instance);
+        }
     }
 }
