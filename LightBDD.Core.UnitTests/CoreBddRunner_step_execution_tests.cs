@@ -51,10 +51,10 @@ namespace LightBDD.Core.UnitTests
         }
 
         [Test]
-        public void Disposed_runner_should_not_allow_retrieving_results()
+        public void Disposed_runner_should_allow_retrieving_results()
         {
             _runner.Integrate().Dispose();
-            Assert.Throws<ObjectDisposedException>(() => _runner.Integrate().GetFeatureResult());
+            Assert.DoesNotThrow(() => _runner.Integrate().GetFeatureResult());
         }
 
         private void Given_step_one() { _executedSteps.Add("Given_step_one"); }

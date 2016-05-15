@@ -13,7 +13,7 @@ namespace LightBDD
 
         protected FeatureFixture(Func<IProgressNotifier> progressNotifierCreator = null)
         {
-            _runner = NUnit3BddRunnerFactory.Instance.GetRunnerFor(GetType(), progressNotifierCreator ?? CreateProgressNotifier);
+            _runner = NUnit3FeatureCoordinator.GetInstance().RunnerFactory.GetRunnerFor(GetType(), progressNotifierCreator ?? CreateProgressNotifier);
         }
 
         [OneTimeTearDown]

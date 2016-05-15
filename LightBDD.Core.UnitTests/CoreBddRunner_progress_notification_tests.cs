@@ -4,9 +4,9 @@ using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
-using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Core.UnitTests.TestableIntegration;
 using NUnit.Framework;
+using Steps = LightBDD.Core.UnitTests.Helpers.Steps;
 
 namespace LightBDD.Core.UnitTests
 {

@@ -34,10 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Moq, Version=4.1.1308.2120, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moq.4.1.1308.2120\lib\net40\Moq.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="nunit.framework, Version=3.2.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.2.0\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
@@ -46,8 +42,8 @@
       <HintPath>..\packages\AutoFixture.3.43.0\lib\net40\Ploeh.AutoFixture.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Ploeh.AutoFixture.AutoMoq, Version=3.43.0.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoFixture.AutoMoq.3.43.0\lib\net40\Ploeh.AutoFixture.AutoMoq.dll</HintPath>
+    <Reference Include="Rhino.Mocks, Version=3.6.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <HintPath>..\packages\RhinoMocks.3.6\lib\Rhino.Mocks.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -73,9 +69,8 @@
     <Compile Include="CoreBddRunner_synchronous_step_execution_tests.cs" />
     <Compile Include="CoreBddRunner_time_measurement_tests.cs" />
     <Compile Include="Formatting\TimeFormatterTests.cs" />
-    <Compile Include="Helpers\StepResultExpectation.cs" />
-    <Compile Include="Helpers\Steps.cs" />
     <Compile Include="Formatting\DefaultNameFormatterTests.cs" />
+    <Compile Include="Helpers\Steps.cs" />
     <Compile Include="Notification\DelegatingProgressNotifierTests.cs" />
     <Compile Include="Notification\ParallelProgressNotifierTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -95,6 +90,10 @@
     <ProjectReference Include="..\LightBDD.Core\LightBDD.Core.csproj">
       <Project>{9F3D28CD-E37E-4EF8-9CBF-A785D8CA3484}</Project>
       <Name>LightBDD.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LightBDD.UnitTests.Helpers\LightBDD.UnitTests.Helpers.csproj">
+      <Project>{CF893093-7FC5-4688-8360-EE920C2035F3}</Project>
+      <Name>LightBDD.UnitTests.Helpers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -67,15 +67,21 @@
   <ItemGroup>
     <Compile Include="FeatureFixture.cs" />
     <Compile Include="Integration\NUnit3\NUnit3BddRunnerFactory.cs" />
+    <Compile Include="Integration\NUnit3\NUnit3FeatureCoordinator.cs" />
     <Compile Include="Integration\NUnit3\NUnit3IntegrationContext.cs" />
     <Compile Include="Integration\NUnit3\NUnit3MetadataProvider.cs" />
     <Compile Include="Integration\NUnit3\NUnit3ProgressNotifier.cs" />
+    <Compile Include="LightBddScopeAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LightBDD.Core\LightBDD.Core.csproj">
       <Project>{9F3D28CD-E37E-4EF8-9CBF-A785D8CA3484}</Project>
       <Name>LightBDD.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LightBDD.SummaryGeneration\LightBDD.SummaryGeneration.csproj">
+      <Project>{C5D8C75E-8E3B-479F-9207-5ABFC884B97F}</Project>
+      <Name>LightBDD.SummaryGeneration</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

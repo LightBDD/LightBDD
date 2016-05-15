@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Notification;
 
@@ -13,6 +14,8 @@ namespace LightBDD.Core.Extensibility
         {
             return _runners.GetOrAdd(featureType, type => new CoreBddRunner(type, CreateIntegrationContext(progressNotifierProvider.Invoke())));
         }
+
+        public IEnumerable<ICoreBddRunner> AllRunners => _runners.Values;
 
         protected abstract IIntegrationContext CreateIntegrationContext(IProgressNotifier progressNotifier);
     }

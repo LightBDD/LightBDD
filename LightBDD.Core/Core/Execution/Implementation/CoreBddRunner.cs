@@ -26,7 +26,6 @@ namespace LightBDD.Core.Execution.Implementation
 
         public IFeatureResult GetFeatureResult()
         {
-            VerifyDisposed();
             return _featureResult;
         }
 

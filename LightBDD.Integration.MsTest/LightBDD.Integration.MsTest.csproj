@@ -46,12 +46,18 @@
     <Compile Include="Integration\MsTest\MsTestIntegrationContext.cs" />
     <Compile Include="Integration\MsTest\MsTestMetadataProvider.cs" />
     <Compile Include="Integration\MsTest\MsTestProgressNotifier.cs" />
+    <Compile Include="Integration\MsTest\MsTestFeatureCoordinator.cs" />
+    <Compile Include="LightBddScope.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LightBDD.Core\LightBDD.Core.csproj">
       <Project>{9f3d28cd-e37e-4ef8-9cbf-a785d8ca3484}</Project>
       <Name>LightBDD.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LightBDD.SummaryGeneration\LightBDD.SummaryGeneration.csproj">
+      <Project>{C5D8C75E-8E3B-479F-9207-5ABFC884B97F}</Project>
+      <Name>LightBDD.SummaryGeneration</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

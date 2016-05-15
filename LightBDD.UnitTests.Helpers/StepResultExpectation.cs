@@ -3,9 +3,9 @@ using System.Linq;
 using LightBDD.Core.Execution.Results;
 using NUnit.Framework;
 
-namespace LightBDD.Core.UnitTests.Helpers
+namespace LightBDD.UnitTests.Helpers
 {
-    class StepResultExpectation
+    public class StepResultExpectation
     {
         public StepResultExpectation(int stepNumber, int totalSteps, string name, ExecutionStatus status, string details = null, params string[] comments)
         {
@@ -30,7 +30,7 @@ namespace LightBDD.Core.UnitTests.Helpers
             string[] expected = stepResultExpectations.Select(r =>$"{r.Number}:{r.TotalSteps} {r.Name} - {r.Status} ({r.StatusDetails}) // {string.Join(" // ", r.Comments)}").ToArray();
 
             Assert.True(actual.SequenceEqual(expected),
-                string.Format("Expected:\r\n{0}\r\n\r\nGot:\r\n{1}", string.Join("\r\n", expected), string.Join("\r\n", actual)));
+                $"Expected:\r\n{string.Join("\r\n", expected)}\r\n\r\nGot:\r\n{string.Join("\r\n", actual)}");
         }
     }
 }

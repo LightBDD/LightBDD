@@ -5,8 +5,6 @@ namespace LightBDD.Integration.MsTest
 {
     public class MsTestBddRunnerFactory : BddRunnerFactory
     {
-        public static MsTestBddRunnerFactory Instance { get; } = new MsTestBddRunnerFactory();
-
         protected override IIntegrationContext CreateIntegrationContext(IProgressNotifier progressNotifier)
         {
             return new MsTestIntegrationContext(progressNotifier);

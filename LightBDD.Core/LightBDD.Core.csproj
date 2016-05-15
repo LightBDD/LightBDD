@@ -38,6 +38,8 @@
     <Compile Include="..\AssemblyVersion.cs">
       <Link>Properties\AssemblyVersion.cs</Link>
     </Compile>
+    <Compile Include="Core\Coordination\FeatureCoordinator.cs" />
+    <Compile Include="Core\Coordination\IFeatureAggregator.cs" />
     <Compile Include="Core\Execution\Implementation\ScenarioContext.cs" />
     <Compile Include="Core\Execution\Results\ExecutionTime.cs" />
     <Compile Include="Core\Extensibility\BddRunnerFactory.cs" />
@@ -90,11 +92,6 @@
     <Compile Include="ScenarioCategoryAttribute.cs" />
     <Compile Include="Core\Execution\StepBypassException.cs" />
     <Compile Include="StepExecution.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Collections.Concurrent">
-      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.5\System.Collections.Concurrent.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />

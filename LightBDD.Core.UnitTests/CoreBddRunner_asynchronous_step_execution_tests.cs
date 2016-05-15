@@ -3,9 +3,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
-using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Core.UnitTests.TestableIntegration;
 using NUnit.Framework;
+using Steps = LightBDD.Core.UnitTests.Helpers.Steps;
 
 namespace LightBDD.Core.UnitTests
 {

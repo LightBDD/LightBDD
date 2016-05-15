@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
-using Moq;
 using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace LightBDD.Scenarios.Basic.UnitTests
 {
@@ -14,17 +14,15 @@ namespace LightBDD.Scenarios.Basic.UnitTests
     public class Basic_scenario_runner_tests
     {
         private StepDescriptor[] _capturedSteps;
-        private Mock<ITestableBddRunner> _mockRunner;
-        private Mock<IScenarioRunner> _mockScenarioRunner;
+        private IScenarioRunner _mockScenarioRunner;
         private ITestableBddRunner _runner;
 
         [SetUp]
         public void SetUp()
         {
             _capturedSteps = null;
-            _mockRunner = new Mock<ITestableBddRunner>(MockBehavior.Strict);
-            _mockScenarioRunner = new Mock<IScenarioRunner>(MockBehavior.Strict);
-            _runner = _mockRunner.Object;
+            _mockScenarioRunner = MockRepository.GenerateStrictMock<IScenarioRunner>();
+            _runner = MockRepository.GenerateStrictMock<ITestableBddRunner>();
         }
 
         [Test]
@@ -37,8 +35,8 @@ namespace LightBDD.Scenarios.Basic.UnitTests
 
             _runner.Basic().RunScenario(Step_one, Step_two);
 
-            _mockRunner.VerifyAll();
-            _mockScenarioRunner.VerifyAll();
+            _runner.VerifyAllExpectations();
+            _mockScenarioRunner.VerifyAllExpectations();
 
             Assert.That(_capturedSteps, Is.Not.Null);
             Assert.That(_capturedSteps.Length, Is.EqualTo(2));
@@ -73,8 +71,8 @@ namespace LightBDD.Scenarios.Basic.UnitTests
 
             await _runner.Basic().RunScenarioAsync(Step_one_async, Step_two_async);
 
-            _mockRunner.VerifyAll();
-            _mockScenarioRunner.VerifyAll();
+            _runner.VerifyAllExpectations();
+            _mockScenarioRunner.VerifyAllExpectations();
 
             Assert.That(_capturedSteps, Is.Not.Null);
             Assert.That(_capturedSteps.Length, Is.EqualTo(2));
@@ -97,34 +95,34 @@ namespace LightBDD.Scenarios.Basic.UnitTests
 
         private void ExpectRunSynchronously()
         {
-            _mockScenarioRunner.Setup(r => r.RunSynchronously());
+            _mockScenarioRunner.Expect(r => r.RunSynchronously());
         }
 
         private void ExpectWithSteps()
         {
             _mockScenarioRunner
-                .Setup(s => s.WithSteps(It.IsAny<IEnumerable<StepDescriptor>>()))
-                .Callback<IEnumerable<StepDescriptor>>(steps => _capturedSteps = steps.ToArray())
-                .Returns(_mockScenarioRunner.Object);
+                .Expect(s => s.WithSteps(Arg<IEnumerable<StepDescriptor>>.Is.Anything))
+                .WhenCalled(call => _capturedSteps = ((IEnumerable<StepDescriptor>)call.Arguments[0]).ToArray())
+                .Return(_mockScenarioRunner);
         }
 
         private void ExpectWithCapturedScenarioDetails()
         {
             _mockScenarioRunner
-                .Setup(s => s.WithCapturedScenarioDetails())
-                .Returns(_mockScenarioRunner.Object);
+                .Expect(s => s.WithCapturedScenarioDetails())
+                .Return(_mockScenarioRunner);
         }
 
         private void ExpectNewScenario()
         {
-            _mockRunner
-                .Setup(r => r.NewScenario())
-                .Returns(_mockScenarioRunner.Object);
+            _runner
+                .Expect(r => r.NewScenario())
+                .Return(_mockScenarioRunner);
         }
 
         private void ExpectRunAsynchronously()
         {
-            _mockScenarioRunner.Setup(r => r.RunAsynchronously()).Returns(Task.CompletedTask);
+            _mockScenarioRunner.Expect(r => r.RunAsynchronously()).Return(Task.CompletedTask);
         }
 
         #endregion

@@ -1,11 +1,7 @@
-using System.Linq;
-using LightBDD.Core.Execution.Results;
-using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
-using Moq;
+using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
-using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.AutoMoq;
+using Rhino.Mocks;
 
 namespace LightBDD.Core.UnitTests.Notification
 {
@@ -13,79 +9,77 @@ namespace LightBDD.Core.UnitTests.Notification
     public class DelegatingProgressNotifierTests
     {
         private DelegatingProgressNotifier _subject;
-        private Mock<IProgressNotifier>[] _notifiers;
-        private readonly IFixture _autoFixture = new Fixture().Customize(new AutoMoqCustomization());
+        private IProgressNotifier[] _notifiers;
 
         [SetUp]
         public void SetUp()
         {
-            _notifiers = new[] { new Mock<IProgressNotifier>(), new Mock<IProgressNotifier>() };
-            _subject = new DelegatingProgressNotifier(_notifiers.Select(n => n.Object).ToArray());
+            _notifiers = new[] { MockRepository.GenerateMock<IProgressNotifier>(), MockRepository.GenerateMock<IProgressNotifier>() };
+            _subject = new DelegatingProgressNotifier(_notifiers);
         }
 
         [Test]
         public void It_should_delegate_NotifyFeatureStart()
         {
-            var featureInfo = _autoFixture.Create<IFeatureInfo>();
+            var featureInfo = new Mocks.TestFeatureInfo();
             _subject.NotifyFeatureStart(featureInfo);
             foreach (var notifier in _notifiers)
-                notifier.Verify(n => n.NotifyFeatureStart(featureInfo));
+                notifier.AssertWasCalled(n => n.NotifyFeatureStart(featureInfo));
         }
 
         [Test]
         public void It_should_delegate_NotifyFeatureFinished()
         {
-            var feature = _autoFixture.Create<IFeatureResult>();
+            var feature = new Mocks.TestFeatureResult();
             _subject.NotifyFeatureFinished(feature);
             foreach (var notifier in _notifiers)
-                notifier.Verify(n => n.NotifyFeatureFinished(feature));
+                notifier.AssertWasCalled(n => n.NotifyFeatureFinished(feature));
         }
 
         [Test]
         public void It_should_delegate_NotifyStepStart()
         {
-            var stepInfo = _autoFixture.Create<IStepInfo>();
+            var stepInfo = new Mocks.TestStepInfo();
             _subject.NotifyStepStart(stepInfo);
             foreach (var notifier in _notifiers)
-                notifier.Verify(n => n.NotifyStepStart(stepInfo));
+                notifier.AssertWasCalled(n => n.NotifyStepStart(stepInfo));
         }
 
         [Test]
         public void It_should_delegate_NotifyStepFinished()
         {
-            var step = _autoFixture.Create<IStepResult>();
+            var step = new Mocks.TestStepResult();
             _subject.NotifyStepFinished(step);
             foreach (var notifier in _notifiers)
-                notifier.Verify(n => n.NotifyStepFinished(step));
+                notifier.AssertWasCalled(n => n.NotifyStepFinished(step));
         }
 
         [Test]
         public void It_should_delegate_NotifyStepComment()
         {
-            var stepInfo = _autoFixture.Create<IStepInfo>();
+            var stepInfo = new Mocks.TestStepInfo();
             var comment = "comment";
             _subject.NotifyStepComment(stepInfo, comment);
             foreach (var notifier in _notifiers)
-                notifier.Verify(n => n.NotifyStepComment(stepInfo, comment));
+                notifier.AssertWasCalled(n => n.NotifyStepComment(stepInfo, comment));
         }
 
         [Test]
         public void It_should_delegate_NotifyScenarioStart()
         {
-            var scenarioInfo = _autoFixture.Create<IScenarioInfo>();
+            var scenarioInfo = new Mocks.TestScenarioInfo();
             _subject.NotifyScenarioStart(scenarioInfo);
             foreach (var notifier in _notifiers)
-                notifier.Verify(n => n.NotifyScenarioStart(scenarioInfo));
+                notifier.AssertWasCalled(n => n.NotifyScenarioStart(scenarioInfo));
         }
 
         [Test]
         public void It_should_delegate_NotifyScenarioFinished_should_print_notification_and_update_stats()
         {
-            var scenario = _autoFixture.Create<IScenarioResult>();
+            var scenario = new Mocks.TestScenarioResult();
             _subject.NotifyScenarioFinished(scenario);
             foreach (var notifier in _notifiers)
-                notifier.Verify(n => n.NotifyScenarioFinished(scenario));
+                notifier.AssertWasCalled(n => n.NotifyScenarioFinished(scenario));
         }
-
     }
 }

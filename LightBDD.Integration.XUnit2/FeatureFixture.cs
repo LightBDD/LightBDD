@@ -13,7 +13,7 @@ namespace LightBDD
         protected FeatureFixture(ITestOutputHelper output, Func<IProgressNotifier> progressNotifierCreator = null)
         {
             Output = output;
-            Runner = XUnit2BddRunnerFactory.Instance.GetRunnerFor(GetType(), progressNotifierCreator ?? CreateProgressNotifier).AsBddRunner();
+            Runner = XUnit2FeatureCoordinator.GetInstance().RunnerFactory.GetRunnerFor(GetType(), progressNotifierCreator ?? CreateProgressNotifier).AsBddRunner();
         }
 
         private IProgressNotifier CreateProgressNotifier()
