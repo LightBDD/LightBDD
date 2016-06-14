@@ -24,7 +24,7 @@ This additional layer becomes the root of most problems when maintaining tests, 
 * Feature result summary available in XML, HTML or Plain text format,
 * Possibility to configure multiple result summaries in app.config file,
 * VisualStudio templates for test projects and test classes ([see details](#vs-project-item-templates)),
-* Integrated with [NUnit 2X/3X](http://www.nunit.org/), [MbUnit](https://code.google.com/p/mb-unit/), [MsTest](http://msdn.microsoft.com/en-us/library/ms243147) and [xUnit](http://xunit.github.io/) frameworks.
+* Integrated with [NUnit 2x/3x](http://www.nunit.org/), [MbUnit](https://code.google.com/p/mb-unit/), [MsTest](http://msdn.microsoft.com/en-us/library/ms243147) and [xUnit](http://xunit.github.io/) frameworks.
 
 ### Tests structure and conventions
 **LightBDD** is integrated with well known testing frameworks ([NUnit](http://www.nunit.org/), [MbUnit](https://code.google.com/p/mb-unit/), [MsTest](http://msdn.microsoft.com/en-us/library/ms243147) and [xUnit](http://xunit.github.io/)) which makes it very easy to learn, adapt and use - please see [Tests Structure and Conventions](https://github.com/Suremaker/LightBDD/wiki/02-Tests-structure-and-conventions) wiki section for details.
