@@ -23,12 +23,10 @@ Features:
 * Possibility to configure multiple result summaries in app.config file,
 * VS Project Item templates for feature test files</description>
 	<summary>$description$</summary>
-    <releaseNotes>+ Implemented scenario steps auto-grouping for consecutive steps starting with the same name type (given/when/then/setup), by replacing following steps type to 'and'
-+ Added ability to add runtime comments to currently executed steps
-+ Added support for xUnit.net testing framework
-+ Extended XmlResultFormatter / XmlResultFormatterSchema.xsd to include step comments and step name details
-+ Added new implementations of IProgressNotifier interface</releaseNotes>
-    <copyright>Copyright © Wojciech Kotlarski 2013-2015</copyright>
+    <releaseNotes>+ Added support for NUnit3 testing framework
++ Extended SummaryFileWriter to support paths starting with ~ for result files, where ~ is resolved to CurrentDomain.BaseDirectory
++ Modifier SummaryWriterCollection to use "~\\FeaturesSummary.xml" path for default XmlResultFormatter</releaseNotes>
+    <copyright>Copyright © Wojciech Kotlarski 2013-2016</copyright>
     <tags>bdd tdd testing framework behavior driven development acceptance criteria</tags>
 	<language>en-US</language>
 	<dependencies>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD", "LightBDD\LightBDD.csproj", "{C8406FF5-FF97-4B66-A789-CBD97263FAC4}"
 EndProject
@@ -57,6 +57,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.XUnit.UnitTests", "LightBDD.XUnit.UnitTests\LightBDD.XUnit.UnitTests.csproj", "{B6DDA701-B249-4536-8F3F-9270FA2D716C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.Example.AcceptanceTests.XUnit", "LightBDD.Example.AcceptanceTests.XUnit\LightBDD.Example.AcceptanceTests.XUnit.csproj", "{3219158E-B974-4B10-86A6-7E388FDA57A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.NUnit3", "LightBDD.NUnit3\LightBDD.NUnit3.csproj", "{CF16B106-B5DC-4463-A2DF-3F4F88B932C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.NUnit3.UnitTests", "LightBDD.NUnit3.UnitTests\LightBDD.NUnit3.UnitTests.csproj", "{4551BD9C-E381-42C0-9937-E75EFD5E8480}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.Example.AcceptanceTests.NUnit3", "LightBDD.Example.AcceptanceTests.NUnit3\LightBDD.Example.AcceptanceTests.NUnit3.csproj", "{A6C95EB4-935B-404B-9548-B811874C5424}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -132,6 +138,18 @@ Global
 		{3219158E-B974-4B10-86A6-7E388FDA57A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3219158E-B974-4B10-86A6-7E388FDA57A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3219158E-B974-4B10-86A6-7E388FDA57A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF16B106-B5DC-4463-A2DF-3F4F88B932C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF16B106-B5DC-4463-A2DF-3F4F88B932C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF16B106-B5DC-4463-A2DF-3F4F88B932C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF16B106-B5DC-4463-A2DF-3F4F88B932C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4551BD9C-E381-42C0-9937-E75EFD5E8480}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4551BD9C-E381-42C0-9937-E75EFD5E8480}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4551BD9C-E381-42C0-9937-E75EFD5E8480}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4551BD9C-E381-42C0-9937-E75EFD5E8480}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6C95EB4-935B-404B-9548-B811874C5424}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6C95EB4-935B-404B-9548-B811874C5424}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6C95EB4-935B-404B-9548-B811874C5424}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6C95EB4-935B-404B-9548-B811874C5424}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -149,5 +167,7 @@ Global
 		{C2F6D24F-5204-49F9-B62D-F4D16223C436} = {DD1450B8-8CA1-4819-A2F6-92DF98DEA0A5}
 		{B6DDA701-B249-4536-8F3F-9270FA2D716C} = {DD1450B8-8CA1-4819-A2F6-92DF98DEA0A5}
 		{3219158E-B974-4B10-86A6-7E388FDA57A9} = {8028A964-3C61-4531-8F62-721DC29B7102}
+		{4551BD9C-E381-42C0-9937-E75EFD5E8480} = {DD1450B8-8CA1-4819-A2F6-92DF98DEA0A5}
+		{A6C95EB4-935B-404B-9548-B811874C5424} = {8028A964-3C61-4531-8F62-721DC29B7102}
 	EndGlobalSection
 EndGlobal

@@ -32,13 +32,14 @@ Define-Step -Name 'Tests' -Target 'all,test' -Body {
 	$tests = @()
 	$tests += Define-NUnitTests -GroupName 'LightBDD core' -TestAssembly "LightBDD.UnitTests\bin\Release\LightBDD.UnitTests.dll"
 	$tests += Define-NUnitTests -GroupName 'LightBDD NUnit' -TestAssembly "LightBDD.NUnit.UnitTests\bin\Release\LightBDD.NUnit.UnitTests.dll"
+	$tests += Define-NUnit3Tests -GroupName 'LightBDD NUnit3' -TestAssembly "LightBDD.NUnit3.UnitTests\bin\Release\LightBDD.NUnit3.UnitTests.dll"
 	$tests += Define-MbUnitTests -GroupName 'LightBDD MbUnit' -TestAssembly "LightBDD.MbUnit.UnitTests\bin\Release\LightBDD.MbUnit.UnitTests.dll"    
 	$tests += Define-MsTests -GroupName 'LightBDD MsTest' -TestAssembly "LightBDD.MsTest.UnitTests\bin\Release\LightBDD.MsTest.UnitTests.dll"
 	$tests += Define-XUnitTests -GroupName 'LightBDD XUnit' -TestAssembly "LightBDD.XUnit.UnitTests\bin\Release\LightBDD.XUnit.UnitTests.dll"
 	$tests += Define-NUnitTests -GroupName 'LightBDD ConfigurationTests' -TestAssembly "LightBDD.ConfigurationTests\bin\Release\LightBDD.ConfigurationTests.dll"
 	$tests += Define-NUnitTests -GroupName 'LightBDD Acceptance' -TestAssembly "LightBDD.AcceptanceTests\bin\Release\LightBDD.AcceptanceTests.dll"
 
-	$tests | Run-Tests -EraseReportDirectory -Cover -CodeFilter '+[LightBDD*]* -[*Tests*]*' -TestFilter '*Tests.dll' | Generate-CoverageSummary | Check-AcceptableCoverage -AcceptableCoverage 95
+	$tests | Run-Tests -EraseReportDirectory -Cover -CodeFilter '+[LightBDD*]* -[*Tests*]*' -TestFilter '*Tests.dll' | Generate-CoverageSummary | Check-AcceptableCoverage -AcceptableCoverage 94
 }
 
 Define-Step -Name 'Packaging' -Target 'all,pack' -Body {
@@ -46,6 +47,7 @@ Define-Step -Name 'Packaging' -Target 'all,pack' -Body {
 	mkdir 'output' | Out-Null
 	.nuget\NuGet.exe pack -sym LightBDD\LightBDD.csproj -OutputDirectory 'output' -Prop Configuration=Release
 	.nuget\NuGet.exe pack -sym LightBDD.NUnit\LightBDD.NUnit.csproj -OutputDirectory 'output' -Prop Configuration=Release
+	.nuget\NuGet.exe pack -sym LightBDD.NUnit3\LightBDD.NUnit3.csproj -OutputDirectory 'output' -Prop Configuration=Release
 	.nuget\NuGet.exe pack -sym LightBDD.MbUnit\LightBDD.MbUnit.csproj -OutputDirectory 'output' -Prop Configuration=Release
 	.nuget\NuGet.exe pack -sym LightBDD.MsTest\LightBDD.MsTest.csproj -OutputDirectory 'output' -Prop Configuration=Release
 	.nuget\NuGet.exe pack -sym LightBDD.XUnit\LightBDD.XUnit.csproj -OutputDirectory 'output' -Prop Configuration=Release

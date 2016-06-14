@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Threading;
 using LightBDD.Coordination;
 using LightBDD.Results;
-using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -62,56 +60,6 @@ namespace LightBDD.UnitTests.Coordination
             GC.Collect(GC.MaxGeneration);
             GC.WaitForPendingFinalizers();
             _aggregator.AssertWasCalled(a => a.Finished());
-        }
-
-        [Test]
-        public void Should_trace_warning_if_finalization_takes_longer_than_1_and_half_second()
-        {
-            _subject.OnBeforeFinish += () => Thread.Sleep(1550);
-            using (var console = new TraceInterceptor())
-            {
-                _subject = null;
-                GC.Collect(GC.MaxGeneration);
-                GC.WaitForPendingFinalizers();
-                Assert.That(console.GetCapturedText(), Is.StringContaining("WARNING: Please consider to call FeatureCoordinator.Instance.Finished() manually, otherwise if execution time reach 2 seconds, .NET framework will kill aggregation process."));
-            }
-        }
-
-        [Test]
-        public void Should_trace_error_if_exception_is_thrown_during_finalization()
-        {
-            _subject.OnBeforeFinish += () => { throw new NotImplementedException("abc"); };
-            using (var console = new TraceInterceptor())
-            {
-                _subject = null;
-                GC.Collect(GC.MaxGeneration);
-                GC.WaitForPendingFinalizers();
-                Assert.That(console.GetCapturedText(), Is.StringContaining("Summary aggregation failed: System.NotImplementedException: abc"));
-            }
-        }
-
-        [Test]
-        public void Should_not_print_warning_if_finalization_takes_less_than_1_and_half_second()
-        {
-            _subject.OnBeforeFinish += () => Thread.Sleep(1450);
-            using (var console = new TraceInterceptor())
-            {
-                _subject = null;
-                GC.Collect(GC.MaxGeneration);
-                GC.WaitForPendingFinalizers();
-                Assert.That(console.GetCapturedText(), Is.Not.StringContaining("WARNING: Please consider"));
-            }
-        }
-
-        [Test]
-        public void Should_not_print_warning_if_finalization_takes_more_than_1_and_half_second_but_is_called_manually()
-        {
-            _subject.OnBeforeFinish += () => Thread.Sleep(1550);
-            using (var console = new TraceInterceptor())
-            {
-                _subject.Finished();
-                Assert.That(console.GetCapturedText(), Is.Empty);
-            }
         }
 
         [Test]

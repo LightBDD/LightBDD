@@ -9,11 +9,11 @@ namespace LightBDD.Configuration
     internal class SummaryWriterCollection : ConfigurationElementCollection
     {
         /// <summary>
-        /// Default constructor initializing collection with XmlResultFormatter/"FeaturesSummary.xml" writer.
+        /// Default constructor initializing collection with XmlResultFormatter/"~\\FeaturesSummary.xml" writer.
         /// </summary>
         public SummaryWriterCollection()
         {
-            BaseAdd(new SummaryWriterElement { Formatter = typeof(XmlResultFormatter), Output = "FeaturesSummary.xml" });
+            BaseAdd(new SummaryWriterElement { Formatter = typeof(XmlResultFormatter), Output = "~\\FeaturesSummary.xml" });
         }
 
         /// <summary>

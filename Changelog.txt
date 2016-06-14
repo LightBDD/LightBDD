@@ -1,6 +1,18 @@
 LightBDD
 ===========================================
 
+Version 1.7.1
+----------------------------------------
+Summary:
++ Added support for NUnit3 testing framework
++ Extended SummaryFileWriter to support paths starting with ~ for result files, where ~ is resolved to CurrentDomain.BaseDirectory
++ Modifier SummaryWriterCollection to use "~\\FeaturesSummary.xml" path for default XmlResultFormatter
+Details:
++ (NUnit3)(New)(Issue #9) Added support for NUnit3 testing framework
++ (Core)(Change) Extended SummaryFileWriter to support paths starting with ~ for result files, where ~ is resolved to CurrentDomain.BaseDirectory (that solves the issue with NUnit3 Resharper runner that does not honour working directory)
++ (Core)(Change) Modifier SummaryWriterCollection to use "~\\FeaturesSummary.xml" path for default XmlResultFormatter
++ (Core)(Change) Removed unreliable tests for FeatureCoordinator
+
 Version 1.7.0
 ----------------------------------------
 Summary:

@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A6C95EB4-935B-404B-9548-B811874C5424}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LightBDD.Example.AcceptanceTests.NUnit3</RootNamespace>
+    <AssemblyName>LightBDD.Example.AcceptanceTests.NUnit3</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=3.2.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.2.1\lib\net40\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Categories.cs" />
+    <Compile Include="Features\Basket_feature.cs" />
+    <Compile Include="Features\Basket_feature.Steps.cs">
+      <DependentUpon>Basket_feature.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Contacts_management.cs" />
+    <Compile Include="Features\Contacts_management.Steps.cs">
+      <DependentUpon>Contacts_management.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Invoice_feature.cs" />
+    <Compile Include="Features\Invoice_feature.Steps.cs">
+      <DependentUpon>Invoice_feature.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Login_feature.cs" />
+    <Compile Include="Features\Login_feature.Steps.cs">
+      <DependentUpon>Login_feature.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Payment_feature.cs" />
+    <Compile Include="Features\Payment_feature.Steps.cs">
+      <DependentUpon>Payment_feature.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Product_spedition_feature.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LightBDD.Example\LightBDD.Example.csproj">
+      <Project>{994D78CA-0CB3-4DE2-95E1-60BA11EB1E78}</Project>
+      <Name>LightBDD.Example</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LightBDD.NUnit3\LightBDD.NUnit3.csproj">
+      <Project>{CF16B106-B5DC-4463-A2DF-3F4F88B932C6}</Project>
+      <Name>LightBDD.NUnit3</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LightBDD\LightBDD.csproj">
+      <Project>{C8406FF5-FF97-4B66-A789-CBD97263FAC4}</Project>
+      <Name>LightBDD</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

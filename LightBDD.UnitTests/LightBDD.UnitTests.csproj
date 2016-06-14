@@ -65,7 +65,6 @@
     <Compile Include="Helpers\StepResultExpectation.cs" />
     <Compile Include="Helpers\TestableBDDRunner.cs" />
     <Compile Include="Helpers\TestableMetadataProvider.cs" />
-    <Compile Include="Helpers\TraceInterceptor.cs" />
     <Compile Include="Naming\StepNameDefaultDecoratorTests.cs" />
     <Compile Include="Notification\ConsoleProgressNotifierTests.cs" />
     <Compile Include="BDD_runner_progress_notification_tests.cs" />

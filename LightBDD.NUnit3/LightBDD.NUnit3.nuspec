@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Wojciech Kotlarski</authors>
+    <owners>Wojciech Kotlarski</owners>
+    <licenseUrl>http://opensource.org/licenses/BSD-2-Clause</licenseUrl>
+    <projectUrl>https://github.com/Suremaker/LightBDD</projectUrl>
+	<iconUrl>https://raw.githubusercontent.com/Suremaker/LightBDD/master/logo/lightbdd.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Allows creating acceptance tests in developer friendly environment.
+
+Features:
+* Native support for refactoring, code analysis (like finding unused methods), test running and all features that Visual Studio / Intellisense / Resharper offer during code development,
+* Easy to read scenario definitions,
+* Scenario steps execution tracking, usable during longer test execution,
+* Scenario steps execution time measurement,
+* Possibility to run steps with dedicated shared context, allowing to run tests safely in parallel,
+* Possibility to run parametrized steps with smart rules of inserting argument values to formatted step name,
+* Feature result summary available in XML, HTML or Plain text format,
+* Possibility to configure multiple result summaries in app.config file,
+* VS Project Item templates for feature test files,
+* NUnit3 integration.</description>
+	<summary>$description$</summary>
+    <releaseNotes>+ Added support for NUnit3 testing framework
++ Extended SummaryFileWriter to support paths starting with ~ for result files, where ~ is resolved to CurrentDomain.BaseDirectory
++ Modifier SummaryWriterCollection to use "~\\FeaturesSummary.xml" path for default XmlResultFormatter</releaseNotes>
+    <copyright>Copyright © Wojciech Kotlarski 2013-2016</copyright>
+    <tags>bdd tdd testing framework behavior driven development acceptance criteria nunit</tags>
+	<language>en-US</language>
+	<dependencies>
+		<group targetFramework=".NETFramework4.0">
+			<dependency id="LightBDD.Core" version="$version$" />
+		</group>
+    </dependencies>
+  </metadata>
+  <files>
+	<file src="..\Changelog.txt" target="." />
+	<file src="..\LICENSE.txt" target="." />
+	<file src="..\README.md" target="." />
+	<file src="..\QuickStart.txt" target="readme.txt" />
+	<file src="..\XmlResultFormatterSchema.xsd" target="." />
+  </files>
+</package>
