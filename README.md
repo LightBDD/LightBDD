@@ -24,7 +24,7 @@ This additional layer becomes the root of most problems when maintaining tests, 
 * Feature result summary available in XML, HTML or Plain text format,
 * Possibility to configure multiple result summaries in app.config file,
 * VisualStudio templates for test projects and test classes ([see details](#vs-project-item-templates)),
-* Integrated with [NUnit](http://www.nunit.org/), [MbUnit](https://code.google.com/p/mb-unit/), [MsTest](http://msdn.microsoft.com/en-us/library/ms243147) and [xUnit](http://xunit.github.io/) frameworks.
+* Integrated with [NUnit 2X/3X](http://www.nunit.org/), [MbUnit](https://code.google.com/p/mb-unit/), [MsTest](http://msdn.microsoft.com/en-us/library/ms243147) and [xUnit](http://xunit.github.io/) frameworks.
 
 ### Tests structure and conventions
 **LightBDD** is integrated with well known testing frameworks ([NUnit](http://www.nunit.org/), [MbUnit](https://code.google.com/p/mb-unit/), [MsTest](http://msdn.microsoft.com/en-us/library/ms243147) and [xUnit](http://xunit.github.io/)) which makes it very easy to learn, adapt and use - please see [Tests Structure and Conventions](https://github.com/Suremaker/LightBDD/wiki/02-Tests-structure-and-conventions) wiki section for details.
@@ -203,6 +203,7 @@ I want to login into system</Description>
 For full example, please see corresponding example projects:
 * https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example
 * https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example.AcceptanceTests.NUnit
+* https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example.AcceptanceTests.NUnit3
 * https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example.AcceptanceTests.MbUnit
 * https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example.AcceptanceTests.MsTest
 * https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example.AcceptanceTests.XUnit
@@ -212,6 +213,7 @@ It is possible to download package using [NuGet](http://nuget.org):
 
 * `PM> Install-Package LightBDD` for the main package (defaulting to LightBDD.NUnit)
 * `PM> Install-Package LightBDD.NUnit` for package using NUnit
+* `PM> Install-Package LightBDD.NUnit3` for package using NUnit3
 * `PM> Install-Package LightBDD.MbUnit` for package using MbUnit
 * `PM> Install-Package LightBDD.MsTest` for package using MsTest
 * `PM> Install-Package LightBDD.XUnit` for package using xUnit
