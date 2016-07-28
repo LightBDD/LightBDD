@@ -17,10 +17,11 @@ namespace LightBDD.Core.Extensibility.Implementation
         private readonly IMetadataProvider _metadataProvider;
         private readonly IProgressNotifier _progressNotifier;
         private readonly Func<Exception, ExecutionStatus> _exceptionToStatusMapper;
-        private StepDescriptor[] _steps = Arrays<StepDescriptor>.Empty();
+        private IEnumerable<StepDescriptor> _steps = Enumerable.Empty<StepDescriptor>();
         private INameInfo _name;
         private string[] _labels = Arrays<string>.Empty();
         private string[] _categories = Arrays<string>.Empty();
+        private Func<object> _contextProvider = () => null;
 
         public ScenarioRunner(ScenarioExecutor scenarioExecutor, IMetadataProvider metadataProvider, IProgressNotifier progressNotifier, Func<Exception, ExecutionStatus> exceptionToStatusMapper)
         {
@@ -32,13 +33,13 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         public IScenarioRunner WithSteps(IEnumerable<StepDescriptor> steps)
         {
-            _steps = steps.ToArray();
+            _steps = steps;
             return this;
         }
 
-        private RunnableStep ToRunnableStep(StepDescriptor descriptor, int stepIndex)
+        private RunnableStep ToRunnableStep(StepDescriptor descriptor, int stepIndex, int totalStepsCount)
         {
-            var stepInfo = new StepInfo(_metadataProvider.GetStepName(descriptor), stepIndex + 1, _steps.Length);
+            var stepInfo = new StepInfo(_metadataProvider.GetStepName(descriptor), stepIndex + 1, totalStepsCount);
             var parameters = descriptor.Parameters.Select(p => new StepParameter(p, _metadataProvider.GetStepParameterFormatter(p.ParameterInfo))).ToArray();
             return new RunnableStep(stepInfo, descriptor.StepInvocation, parameters, _exceptionToStatusMapper, _progressNotifier);
         }
@@ -57,6 +58,14 @@ namespace LightBDD.Core.Extensibility.Implementation
             if (name == null)
                 throw new ArgumentNullException(nameof(name));
             _name = new NameInfo(name, Arrays<INameParameterInfo>.Empty());
+            return this;
+        }
+
+        public IScenarioRunner WithContext(Func<object> contextProvider)
+        {
+            if (contextProvider == null)
+                throw new ArgumentNullException(nameof(contextProvider));
+            _contextProvider = contextProvider;
             return this;
         }
 
@@ -95,7 +104,13 @@ namespace LightBDD.Core.Extensibility.Implementation
         public Task RunAsynchronously()
         {
             Validate();
-            return _scenarioExecutor.Execute(new ScenarioInfo(_name, _labels, _categories), _steps.Select(ToRunnableStep));
+            return _scenarioExecutor.Execute(new ScenarioInfo(_name, _labels, _categories), ProvideSteps, _contextProvider);
+        }
+
+        private RunnableStep[] ProvideSteps()
+        {
+            var descriptors = _steps.ToArray();
+            return descriptors.Select((descriptor, stepIndex) => ToRunnableStep(descriptor, stepIndex, descriptors.Length)).ToArray();
         }
 
         public void RunSynchronously()

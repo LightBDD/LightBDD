@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.UnitTests.TestableIntegration;
@@ -108,6 +110,21 @@ namespace LightBDD.Core.UnitTests
                 new StepResultExpectation(2, 3, "When step with parameter \"5\" throwing exception", ExecutionStatus.Failed, ExceptionReason),
                 new StepResultExpectation(3, 3, "Then step with parameter \"<?>\"", ExecutionStatus.NotRun)
                 );
+        }
+
+        [Test]
+        public void It_should_capture_step_initialization_issues_in_scenario_execution_results()
+        {
+            Assert.Throws<InvalidOperationException>(() => _runner.Test().TestScenario(GetFailingStepDescriptors("some reason")));
+            var result = _runner.Integrate().GetFeatureResult().GetScenarios().Single();
+            Assert.That(result.Status, Is.EqualTo(ExecutionStatus.Failed));
+            Assert.That(result.StatusDetails, Is.EqualTo("Step initialization failed: some reason"));
+        }
+
+        public IEnumerable<StepDescriptor> GetFailingStepDescriptors(string reason)
+        {
+            yield return new StepDescriptor("test", (o, a) => Task.CompletedTask);
+            throw new ArgumentException(reason);
         }
 
         private void Method_with_appended_parameter_at_the_end_of_name(object param) { }

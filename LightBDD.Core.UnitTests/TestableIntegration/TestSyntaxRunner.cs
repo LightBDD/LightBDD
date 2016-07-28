@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
@@ -8,6 +9,7 @@ namespace LightBDD.Core.UnitTests.TestableIntegration
     internal class TestSyntaxRunner
     {
         private readonly ICoreBddRunner _coreRunner;
+        private Func<object> _contextProvider;
 
         public TestSyntaxRunner(ICoreBddRunner coreRunner)
         {
@@ -29,30 +31,45 @@ namespace LightBDD.Core.UnitTests.TestableIntegration
             TestScenarioPurelySync(steps.Select(TestStep.CreateSync).ToArray());
         }
 
-        public void TestScenario(params StepDescriptor[] steps)
+        public TestSyntaxRunner WithContext(Func<object> contextProvider)
         {
-            _coreRunner
-                .NewScenario()
-                .WithCapturedScenarioDetails()
-                .WithSteps(steps)
-                .RunAsynchronously()
-                .GetAwaiter()
-                .GetResult();
+            _contextProvider = contextProvider;
+            return this;
         }
 
+        public void TestScenario(params StepDescriptor[] steps)
+        {
+            TestScenario(steps.AsEnumerable());
+        }
+
+        public void TestScenario(IEnumerable<StepDescriptor> steps)
+        {
+            NewScenario()
+                  .WithCapturedScenarioDetails()
+                  .WithSteps(steps)
+                  .RunAsynchronously()
+                  .GetAwaiter()
+                  .GetResult();
+        }
         public Task TestScenarioAsync(params StepDescriptor[] steps)
         {
-            return _coreRunner
-                .NewScenario()
+            return NewScenario()
                 .WithCapturedScenarioDetails()
                 .WithSteps(steps)
                 .RunAsynchronously();
         }
 
+        private IScenarioRunner NewScenario()
+        {
+            var scenarioRunner = _coreRunner.NewScenario();
+            return _contextProvider != null
+                ? scenarioRunner.WithContext(_contextProvider)
+                : scenarioRunner;
+        }
+
         public void TestScenarioPurelySync(params StepDescriptor[] steps)
         {
-            _coreRunner
-                .NewScenario()
+            NewScenario()
                 .WithCapturedScenarioDetails()
                 .WithSteps(steps)
                 .RunSynchronously();

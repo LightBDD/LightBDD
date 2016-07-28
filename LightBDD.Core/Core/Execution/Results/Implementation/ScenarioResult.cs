@@ -10,12 +10,12 @@ namespace LightBDD.Core.Execution.Results.Implementation
     {
         private readonly IStepResult[] _steps;
 
-        public ScenarioResult(IScenarioInfo info, IStepResult[] steps, ExecutionTime executionTime)
+        public ScenarioResult(IScenarioInfo info, IStepResult[] steps, ExecutionTime executionTime, Exception scenarioInitializationException)
         {
             Info = info;
             _steps = steps;
             ExecutionTime = executionTime;
-            CaptureStatus();
+            CaptureStatus(scenarioInitializationException);
         }
 
         public IScenarioInfo Info { get; }
@@ -25,8 +25,15 @@ namespace LightBDD.Core.Execution.Results.Implementation
 
         public IEnumerable<IStepResult> GetSteps() => _steps;
 
-        private void CaptureStatus()
+        private void CaptureStatus(Exception scenarioInitializationException)
         {
+            if (scenarioInitializationException != null)
+            {
+                Status = ExecutionStatus.Failed;
+                StatusDetails = scenarioInitializationException.Message;
+                return;
+            }
+
             var stepsResult = GetSteps().Reverse().OrderByDescending(s => s.Status).FirstOrDefault();
             if (stepsResult == null)
                 return;

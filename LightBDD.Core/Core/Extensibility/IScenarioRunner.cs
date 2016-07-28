@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,6 +11,7 @@ namespace LightBDD.Core.Extensibility
         IScenarioRunner WithLabels(string[] labels);
         IScenarioRunner WithCategories(string[] categories);
         IScenarioRunner WithName(string name);
+        IScenarioRunner WithContext(Func<object> contextProvider);
         Task RunAsynchronously();
         void RunSynchronously();
     }

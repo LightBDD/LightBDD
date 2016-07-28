@@ -65,6 +65,7 @@
     <Compile Include="CoreBddRunner_scenario_metadata_collection_global_category_tests.cs" />
     <Compile Include="CoreBddRunner_scenario_metadata_collection_tests.cs" />
     <Compile Include="CoreBddRunner_step_execution_tests.cs" />
+    <Compile Include="CoreBddRunner_step_execution_with_context_tests.cs" />
     <Compile Include="CoreBddRunner_step_metadata_collection_tests.cs" />
     <Compile Include="CoreBddRunner_synchronous_step_execution_tests.cs" />
     <Compile Include="CoreBddRunner_time_measurement_tests.cs" />

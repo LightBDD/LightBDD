@@ -7,14 +7,18 @@ namespace LightBDD.Core.Extensibility
     {
         private ParameterDescriptor(bool isConstant, ParameterInfo parameterInfo, Func<object, object> valueEvaluator)
         {
+            if (parameterInfo == null)
+                throw new ArgumentNullException(nameof(parameterInfo));
+            if (valueEvaluator == null)
+                throw new ArgumentNullException(nameof(valueEvaluator));
             RawName = parameterInfo.Name;
             IsConstant = isConstant;
             ParameterInfo = parameterInfo;
             ValueEvaluator = valueEvaluator;
         }
 
-        public static ParameterDescriptor FromConstant(ParameterInfo parameter, object value) => new ParameterDescriptor(true, parameter, ctx => value);
-        public static ParameterDescriptor FromInvocation(ParameterInfo parameter, Func<object, object> valueEvaluator) => new ParameterDescriptor(false, parameter, valueEvaluator);
+        public static ParameterDescriptor FromConstant(ParameterInfo parameterInfo, object value) => new ParameterDescriptor(true, parameterInfo, ctx => value);
+        public static ParameterDescriptor FromInvocation(ParameterInfo parameterInfo, Func<object, object> valueEvaluator) => new ParameterDescriptor(false, parameterInfo, valueEvaluator);
 
         public string RawName { get; private set; }
         public bool IsConstant { get; private set; }

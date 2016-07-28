@@ -8,6 +8,47 @@ namespace LightBDD.Core.Execution.Implementation
     {
         private static readonly AsyncLocal<ScenarioContext> CurrentContext = new AsyncLocal<ScenarioContext>();
         private RunnableStep _currentStep;
+        public Exception ScenarioInitializationException { get; private set; }
+        public RunnableStep[] PreparedSteps { get; private set; } = Array.Empty<RunnableStep>();
+        public object ExecutionContext { get; private set; }
+
+        public void InitializeScenario(Func<RunnableStep[]> stepsProvider, Func<object> contextProvider)
+        {
+            try
+            {
+                PreparedSteps = PrepareSteps(stepsProvider);
+                ExecutionContext = CreateExecutionContext(contextProvider);
+            }
+            catch (Exception e)
+            {
+                ScenarioInitializationException = e;
+                throw;
+            }
+        }
+
+        private static RunnableStep[] PrepareSteps(Func<RunnableStep[]> stepsProvider)
+        {
+            try
+            {
+                return stepsProvider.Invoke();
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"Step initialization failed: {e.Message}", e);
+            }
+        }
+
+        private static object CreateExecutionContext(Func<object> contextProvider)
+        {
+            try
+            {
+                return contextProvider.Invoke();
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"Context initialization failed: {e.Message}", e);
+            }
+        }
 
         public static ScenarioContext Current
         {

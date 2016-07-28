@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution.Results;
@@ -18,13 +17,13 @@ namespace LightBDD.Core.Execution.Implementation
             _progressNotifier = progressNotifier;
         }
 
-        public async Task Execute(ScenarioInfo scenario, IEnumerable<RunnableStep> steps)
+        public async Task Execute(ScenarioInfo scenario, Func<RunnableStep[]> stepsProvider, Func<object> contextProvider)
         {
             var scenarioContext = new ScenarioContext();
             try
             {
                 ScenarioContext.Current = scenarioContext;
-                await ExecuteWithinSynchronizationContext(scenario, steps, scenarioContext);
+                await ExecuteWithinSynchronizationContext(scenario, stepsProvider, scenarioContext, contextProvider);
             }
             finally
             {
@@ -32,17 +31,16 @@ namespace LightBDD.Core.Execution.Implementation
             }
         }
 
-        private async Task ExecuteWithinSynchronizationContext(ScenarioInfo scenario, IEnumerable<RunnableStep> steps, ScenarioContext scenarioContext)
+        private async Task ExecuteWithinSynchronizationContext(ScenarioInfo scenario, Func<RunnableStep[]> stepsProvider, ScenarioContext scenarioContext, Func<object> contextProvider)
         {
-            var preparedSteps = steps.ToArray();
             _progressNotifier.NotifyScenarioStart(scenario);
 
             var watch = ExecutionTimeWatch.StartNew();
-
             try
             {
-                foreach (var step in preparedSteps)
-                    await step.Invoke(scenarioContext, null);
+                scenarioContext.InitializeScenario(stepsProvider, contextProvider);
+                foreach (var step in scenarioContext.PreparedSteps)
+                    await step.Invoke(scenarioContext, scenarioContext.ExecutionContext);
             }
             finally
             {
@@ -50,8 +48,9 @@ namespace LightBDD.Core.Execution.Implementation
 
                 var result = new ScenarioResult(
                     scenario,
-                    preparedSteps.Select(s => s.Result).ToArray(),
-                    watch.GetTime());
+                    scenarioContext.PreparedSteps.Select(s => s.Result).ToArray(),
+                    watch.GetTime(),
+                    scenarioContext.ScenarioInitializationException);
 
                 _progressNotifier.NotifyScenarioFinished(result);
                 ScenarioExecuted?.Invoke(result);
