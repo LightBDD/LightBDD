@@ -2,7 +2,7 @@
 {
     public static class BddRunnerExtensions
     {
-        public static ICoreBddRunner Integrate(this IBddRunner runner)
+        public static ICoreBddRunner Integrate<T>(this IBddRunner<T> runner)
         {
             return (ICoreBddRunner) runner;
         }

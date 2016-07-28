@@ -88,6 +88,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.SummaryGeneration.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.UnitTests.Helpers", "LightBDD.UnitTests.Helpers\LightBDD.UnitTests.Helpers.csproj", "{CF893093-7FC5-4688-8360-EE920C2035F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.Scenarios.Parameterized", "LightBDD.Scenarios.Parameterized\LightBDD.Scenarios.Parameterized.csproj", "{F8286654-21F9-4016-9D2C-7D384582F5E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.Scenarios.Parameterized.UnitTests", "LightBDD.Scenarios.Parameterized.UnitTests\LightBDD.Scenarios.Parameterized.UnitTests.csproj", "{600AE719-F807-42AC-9D8C-0543EC4984B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -214,6 +218,14 @@ Global
 		{CF893093-7FC5-4688-8360-EE920C2035F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF893093-7FC5-4688-8360-EE920C2035F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF893093-7FC5-4688-8360-EE920C2035F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8286654-21F9-4016-9D2C-7D384582F5E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8286654-21F9-4016-9D2C-7D384582F5E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8286654-21F9-4016-9D2C-7D384582F5E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8286654-21F9-4016-9D2C-7D384582F5E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{600AE719-F807-42AC-9D8C-0543EC4984B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{600AE719-F807-42AC-9D8C-0543EC4984B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{600AE719-F807-42AC-9D8C-0543EC4984B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{600AE719-F807-42AC-9D8C-0543EC4984B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -245,5 +257,7 @@ Global
 		{C5D8C75E-8E3B-479F-9207-5ABFC884B97F} = {9F7AA25C-CA25-4690-9416-CCCE0584E771}
 		{D1D65BF6-D7A2-4D27-B7E0-EC28ACCE27E8} = {3BBC4D5A-A69A-4D21-BDD1-6EFEBACE0C1F}
 		{CF893093-7FC5-4688-8360-EE920C2035F3} = {3BBC4D5A-A69A-4D21-BDD1-6EFEBACE0C1F}
+		{F8286654-21F9-4016-9D2C-7D384582F5E8} = {9F7AA25C-CA25-4690-9416-CCCE0584E771}
+		{600AE719-F807-42AC-9D8C-0543EC4984B8} = {3BBC4D5A-A69A-4D21-BDD1-6EFEBACE0C1F}
 	EndGlobalSection
 EndGlobal
