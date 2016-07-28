@@ -6,9 +6,14 @@ namespace LightBDD.Core.UnitTests.TestableIntegration
 {
     public class TestableBddRunnerFactory : BddRunnerFactory
     {
+        public static IBddRunner GetRunner(Type featureType, Func<IProgressNotifier> progressNotifierProvider)
+        {
+            return new TestableBddRunnerFactory().GetRunnerFor(featureType, progressNotifierProvider).AsBddRunner();
+        }
+
         public static IBddRunner GetRunner(Type featureType, IProgressNotifier progressNotifier)
         {
-            return new TestableBddRunnerFactory().GetRunnerFor(featureType, () => progressNotifier).AsBddRunner();
+            return GetRunner(featureType, () => progressNotifier);
         }
 
         public static IBddRunner GetRunner(Type featureType)

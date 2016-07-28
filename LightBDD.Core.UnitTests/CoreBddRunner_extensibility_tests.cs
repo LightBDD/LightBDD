@@ -1,6 +1,8 @@
+using System;
 using System.Linq;
 using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Extensibility;
+using LightBDD.Core.Notification;
 using LightBDD.Core.UnitTests.TestableIntegration;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
@@ -62,5 +64,29 @@ namespace LightBDD.Core.UnitTests
                 new StepResultExpectation(2, 3, "When step two ignoring scenario", ExecutionStatus.Ignored, IgnoreReason),
                 new StepResultExpectation(3, 3, "Then step three", ExecutionStatus.NotRun));
         }
+
+        [Test]
+        [TestCase(null)]
+        [TestCase(" \t\r\n")]
+        public void It_should_not_allow_to_run_scenarios_without_name(string name)
+        {
+            var exception = Assert.Throws<ArgumentException>(() => TestableBddRunnerFactory.GetRunner(GetType()).Integrate().NewScenario().WithName(name));
+            Assert.That(exception.Message, Does.StartWith("Unable to create scenario without name"));
+        }
+
+        [Test]
+        public void BddRunnerFactory_should_throw_if_runner_requested_with_null_type_parameter()
+        {
+            var ex = Assert.Throws<ArgumentNullException>(() => TestableBddRunnerFactory.GetRunner(null));
+            Assert.That(ex.Message, Does.Contain("featureType"));
+        }
+
+        [Test]
+        public void BddRunnerFactory_should_throw_if_runner_requested_with_null_progress_notifier()
+        {
+            var ex = Assert.Throws<ArgumentNullException>(() => TestableBddRunnerFactory.GetRunner(GetType(), (Func<IProgressNotifier>)null));
+            Assert.That(ex.Message, Does.Contain("progressNotifierProvider"));
+        }
+
     }
 }

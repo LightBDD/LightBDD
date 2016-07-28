@@ -17,5 +17,10 @@ namespace LightBDD.Core.Metadata.Implementation
         {
             Name = StepNameInfo.WithUpdatedParameters(Name, parameters);
         }
+
+        public override string ToString()
+        {
+            return $"{Number}/{Total} {Name}";
+        }
     }
 }

@@ -55,8 +55,8 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         public IScenarioRunner WithName(string name)
         {
-            if (name == null)
-                throw new ArgumentNullException(nameof(name));
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Unable to create scenario without name", nameof(name));
             _name = new NameInfo(name, Arrays<INameParameterInfo>.Empty());
             return this;
         }

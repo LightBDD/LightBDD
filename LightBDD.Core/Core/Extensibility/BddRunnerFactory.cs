@@ -12,6 +12,11 @@ namespace LightBDD.Core.Extensibility
 
         public ICoreBddRunner GetRunnerFor(Type featureType, Func<IProgressNotifier> progressNotifierProvider)
         {
+            if (featureType == null)
+                throw new ArgumentNullException(nameof(featureType));
+            if (progressNotifierProvider == null)
+                throw new ArgumentNullException(nameof(progressNotifierProvider));
+
             return _runners.GetOrAdd(featureType, type => new CoreBddRunner(type, CreateIntegrationContext(progressNotifierProvider.Invoke())));
         }
 

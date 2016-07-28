@@ -44,14 +44,21 @@ namespace LightBDD.Core.UnitTests
             var runner = TestableBddRunnerFactory.GetRunner(GetType());
 
             var comment = "abc";
+            var otherComment = "def";
 
-            runner.Test().TestScenario(TestStep.CreateAsync(Commented_step, comment));
+            runner.Test().TestScenario(
+                TestStep.CreateAsync(Commented_step, comment),
+                TestStep.CreateAsync(Commented_step, otherComment));
 
-            Assert.That(runner.Integrate().GetFeatureResult().GetScenarios().Single().GetSteps().Single().Comments.ToArray(), Is.EqualTo(new[] { comment }));
+            var steps = runner.Integrate().GetFeatureResult().GetScenarios().Single().GetSteps().ToArray();
+
+            Assert.That(steps[0].Comments.ToArray(), Is.EqualTo(new[] { comment, comment }));
+            Assert.That(steps[1].Comments.ToArray(), Is.EqualTo(new[] { otherComment, otherComment }));
         }
 
         private static void Commented_step(string comment)
         {
+            StepExecution.Current.Comment(comment);
             StepExecution.Current.Comment(comment);
         }
     }

@@ -56,5 +56,15 @@ namespace LightBDD.Core.Execution.Results.Implementation
             }
             return sb.Length > 0 ? sb.ToString() : null;
         }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append(Info);
+            sb.Append(": ").Append(Status);
+            if (StatusDetails != null)
+                sb.Append(" (").Append(StatusDetails).Append(")");
+            return sb.ToString();
+        }
     }
 }

@@ -41,5 +41,14 @@ namespace LightBDD.Core.Execution.Results.Implementation
         {
             _comments.Enqueue(comment);
         }
+
+        public override string ToString()
+        {
+            var details = string.Empty;
+            if (StatusDetails != null)
+                details = string.Format(" ({0})", StatusDetails);
+
+            return $"{Info}: {Status}{details}";
+        }
     }
 }

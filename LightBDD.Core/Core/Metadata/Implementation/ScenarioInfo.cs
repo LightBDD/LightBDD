@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LightBDD.Core.Metadata.Implementation
 {
@@ -11,8 +12,15 @@ namespace LightBDD.Core.Metadata.Implementation
             Categories = categories;
         }
 
-        public INameInfo Name { get; private set; }
-        public IEnumerable<string> Labels { get; private set; }
-        public IEnumerable<string> Categories { get; private set; }
+        public INameInfo Name { get; }
+        public IEnumerable<string> Labels { get; }
+        public IEnumerable<string> Categories { get; }
+
+        public override string ToString()
+        {
+            return Labels.Any()
+                ? $"[{string.Join("][", Labels)}] {Name}"
+                : Name.ToString();
+        }
     }
 }

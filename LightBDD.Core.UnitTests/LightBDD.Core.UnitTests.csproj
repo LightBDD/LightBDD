@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="CoreBddRunner_asynchronous_step_execution_tests.cs" />
     <Compile Include="CoreBddRunner_concurrency_tests.cs" />
+    <Compile Include="CoreBddRunner_execution_results_tests.cs" />
     <Compile Include="CoreBddRunner_extensibility_tests.cs" />
     <Compile Include="CoreBddRunner_feature_metadata_collection_tests.cs" />
     <Compile Include="CoreBddRunner_parameterized_step_execution_tests.cs" />
