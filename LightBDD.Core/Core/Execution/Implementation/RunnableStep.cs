@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Execution.Results.Implementation;
 using LightBDD.Core.Extensibility.Implementation;
+using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Notification;
 
@@ -33,7 +34,19 @@ namespace LightBDD.Core.Execution.Implementation
             if (!_parameters.Any())
                 return;
 
-            _result.UpdateName(_parameters.Select(p => p.FormatNameParameter()).ToArray());
+            _result.UpdateName(_parameters.Select(FormatStepParameter).ToArray());
+        }
+
+        private INameParameterInfo FormatStepParameter(StepParameter p)
+        {
+            try
+            {
+                return p.FormatNameParameter();
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"Unable to format '{p.RawName}' parameter of step '{_result.Info}': {e.Message}");
+            }
         }
 
         public async Task Invoke(ScenarioContext scenarioContext, object context)

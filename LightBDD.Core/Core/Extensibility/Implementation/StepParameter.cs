@@ -30,7 +30,9 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         public INameParameterInfo FormatNameParameter()
         {
-            return IsEvaluated ? new NameParameterInfo(true, _valueFormatter.Invoke(Value)) : NameParameterInfo.Unknown;
+            return IsEvaluated
+                ? new NameParameterInfo(true, _valueFormatter.Invoke(Value))
+                : NameParameterInfo.Unknown;
         }
 
         public override string ToString()
