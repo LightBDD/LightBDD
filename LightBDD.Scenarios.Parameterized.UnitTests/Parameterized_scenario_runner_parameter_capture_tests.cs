@@ -96,6 +96,26 @@ namespace LightBDD.Scenarios.Parameterized.UnitTests
             Assert.That(ex.Message, Does.Match($"Steps accepting ref or out parameters are not supported: _ => .*{nameof(Step_with_out_parameters)}.*"));
         }
 
+        [Test]
+        [TestCase("abc")]
+        [TestCase("def")]
+        public void It_should_capture_method_parameter(string parameter)
+        {
+            ExpectSynchronousScenarioRun();
+            Runner.Parameterized().RunScenario(_ => Some_step(parameter));
+
+            Assert.That(CapturedSteps.Single().Parameters.Single().ValueEvaluator(null), Is.EqualTo(parameter));
+        }
+
+        [Test]
+        public void It_should_capture_method_call()
+        {
+            ExpectSynchronousScenarioRun();
+            Runner.Parameterized().RunScenario(_ => Some_step(GetType().ToString()));
+
+            Assert.That(CapturedSteps.Single().Parameters.Single().ValueEvaluator(null), Is.EqualTo(GetType().ToString()));
+        }
+
         private ParameterInfo GetMethodParameterInfo(string methodName, int parameterIndex)
         {
             return GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static).GetParameters()[parameterIndex];
@@ -111,6 +131,10 @@ namespace LightBDD.Scenarios.Parameterized.UnitTests
         private static string FormatParameterInfo(ParameterInfo parameterInfo)
         {
             return $"{parameterInfo.ParameterType} {parameterInfo.Name}";
+        }
+
+        private void Some_step(string parameter)
+        {
         }
     }
 }

@@ -117,7 +117,7 @@ namespace LightBDD.UnitTests.Helpers
             {
                 Name = CreateNameInfo(name),
                 Description = description,
-                Labels = label != null ? new[] {label} : Enumerable.Empty<string>()
+                Labels = label != null ? new[] { label } : Enumerable.Empty<string>()
             };
         }
 

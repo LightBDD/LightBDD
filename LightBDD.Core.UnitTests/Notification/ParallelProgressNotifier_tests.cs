@@ -42,21 +42,7 @@ namespace LightBDD.Core.UnitTests.Notification
         #endregion
 
         private CapturingParallelProgressNotifier _notifier;
-        private readonly IFixture _autoFixture = new Fixture();
-
-        public ParallelProgressNotifier_tests()
-        {
-            _autoFixture.Register(() => new ExecutionTime(DateTimeOffset.Now, TimeSpan.FromMilliseconds(2634723)));
-            _autoFixture.Register<IFeatureInfo>(() => _autoFixture.Create<Mocks.TestFeatureInfo>());
-            _autoFixture.Register<IFeatureResult>(() => _autoFixture.Create<Mocks.TestFeatureResult>());
-            _autoFixture.Register<IScenarioInfo>(() => _autoFixture.Create<Mocks.TestScenarioInfo>());
-            _autoFixture.Register<IScenarioResult>(() => _autoFixture.Create<Mocks.TestScenarioResult>());
-            _autoFixture.Register<IStepInfo>(() => _autoFixture.Create<Mocks.TestStepInfo>());
-            _autoFixture.Register<IStepResult>(() => _autoFixture.Create<Mocks.TestStepResult>());
-            _autoFixture.Register<IStepNameInfo>(() => _autoFixture.Create<Mocks.TestStepNameInfo>());
-            _autoFixture.Register<INameInfo>(() => _autoFixture.Create<Mocks.TestNameInfo>());
-            _autoFixture.Register<INameParameterInfo>(() => _autoFixture.Create<Mocks.TestNameParameterInfo>());
-        }
+        private readonly IFixture _autoFixture = MockFixture.CreateNew();
 
         [SetUp]
         public void SetUp()
