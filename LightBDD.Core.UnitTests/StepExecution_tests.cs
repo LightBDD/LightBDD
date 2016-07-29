@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests
 {
     [TestFixture]
-    public class StepExecutionTests
+    public class StepExecution_tests
     {
         [Test]
         public void Bypass_should_throw_StepBypassException()

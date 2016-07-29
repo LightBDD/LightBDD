@@ -48,6 +48,8 @@
     <Compile Include="Core\Extensibility\Implementation\StepParameter.cs" />
     <Compile Include="Core\Execution\Implementation\ExecutionTimeWatch.cs" />
     <Compile Include="Core\Execution\Implementation\ScenarioExecutor.cs" />
+    <Compile Include="Core\Extensibility\Implementation\StepTypeProcessor.cs" />
+    <Compile Include="Core\Extensibility\StepTypeConfiguration.cs" />
     <Compile Include="Formatting\Parameters\FormatAttribute.cs" />
     <Compile Include="Formatting\Parameters\FormatBooleanAttribute.cs" />
     <Compile Include="Formatting\Parameters\FormatCollectionAttribute.cs" />

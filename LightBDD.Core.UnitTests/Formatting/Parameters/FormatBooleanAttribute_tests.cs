@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests.Formatting.Parameters
 {
     [TestFixture]
-    public class FormatBooleanAttributeTests
+    public class FormatBooleanAttribute_tests
     {
         [Test]
         public void It_should_format_boolean()

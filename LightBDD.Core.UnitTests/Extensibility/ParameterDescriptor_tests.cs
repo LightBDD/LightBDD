@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests.Extensibility
 {
     [TestFixture]
-    public class ParameterDescriptorTests
+    public class ParameterDescriptor_tests
     {
         [Test]
         public void FromConstant_should_allow_creating_constant()

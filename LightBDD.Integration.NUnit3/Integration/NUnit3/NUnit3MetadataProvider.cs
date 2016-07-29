@@ -11,7 +11,7 @@ namespace LightBDD.Integration.NUnit3
 {
     internal class NUnit3MetadataProvider : CoreMetadataProvider
     {
-        public NUnit3MetadataProvider(INameFormatter nameFormatter) : base(nameFormatter) { }
+        public NUnit3MetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration) : base(nameFormatter, stepTypeConfiguration) { }
         public override MethodBase CaptureCurrentScenarioMethod()
         {
             var scenarioMethod = new StackTrace()

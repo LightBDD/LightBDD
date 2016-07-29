@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests.Formatting
 {
     [TestFixture]
-    public class TimeFormatterTests
+    public class TimeFormatter_tests
     {
         [Test]
         [TestCase(5, 00, 00, 00, 000, 000, 800, "5d")]

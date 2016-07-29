@@ -6,7 +6,7 @@ using Rhino.Mocks;
 namespace LightBDD.Core.UnitTests.Notification
 {
     [TestFixture]
-    public class DelegatingProgressNotifierTests
+    public class DelegatingProgressNotifier_tests
     {
         private DelegatingProgressNotifier _subject;
         private IProgressNotifier[] _notifiers;

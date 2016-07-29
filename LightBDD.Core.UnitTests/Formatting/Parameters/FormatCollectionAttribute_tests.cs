@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests.Formatting.Parameters
 {
     [TestFixture]
-    public class FormatCollectionAttributeTests
+    public class FormatCollectionAttribute_tests
     {
         [Test]
         public void It_should_format_collection()

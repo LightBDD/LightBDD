@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests.Extensibility
 {
     [TestFixture]
-    public class BddRunnerExtensionsTests
+    public class BddRunnerExtensions_tests
     {
         [Test]
         public void Integrated_should_throw_if_runner_does_not_implement_ICoreBddRunner()

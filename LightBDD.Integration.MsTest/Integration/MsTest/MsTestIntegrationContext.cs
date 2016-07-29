@@ -17,7 +17,7 @@ namespace LightBDD.Integration.MsTest
         public MsTestIntegrationContext(IProgressNotifier progressNotifier)
         {
             NameFormatter = new DefaultNameFormatter();
-            MetadataProvider = new MsTestMetadataProvider(NameFormatter);
+            MetadataProvider = new MsTestMetadataProvider(NameFormatter, StepTypeConfiguration.Default);
             ExceptionToStatusMapper = ex => (ex is AssertInconclusiveException) ? ExecutionStatus.Ignored : ExecutionStatus.Failed;
             ProgressNotifier = progressNotifier;
         }

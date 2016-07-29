@@ -10,7 +10,7 @@ namespace LightBDD.Integration.XUnit2
 {
     internal class XUnit2MetadataProvider : CoreMetadataProvider
     {
-        public XUnit2MetadataProvider(INameFormatter nameFormatter) : base(nameFormatter) { }
+        public XUnit2MetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration) : base(nameFormatter, stepTypeConfiguration) { }
         public override MethodBase CaptureCurrentScenarioMethod()
         {
             var scenarioMethod = new StackTrace()

@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests.Formatting.Parameters
 {
     [TestFixture]
-    public class FormatAttributeTests
+    public class FormatAttribute_tests
     {
         [Test]
         public void It_should_use_specified_format()

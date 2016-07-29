@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests.Extensibility
 {
     [TestFixture]
-    public class StepDescriptorTests
+    public class StepDescriptor_tests
     {
         private static readonly Func<object, object[], Task> SomeStepInvocation = (o, a) => Task.CompletedTask;
 

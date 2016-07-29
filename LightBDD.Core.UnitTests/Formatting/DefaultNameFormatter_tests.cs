@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests.Formatting
 {
 	[TestFixture]
-	public class DefaultNameFormatterTests
+	public class DefaultNameFormatter_tests
 	{
 		[Test]
 		[TestCase("Should_change_underscore_to_space", "Should change underscore to space")]

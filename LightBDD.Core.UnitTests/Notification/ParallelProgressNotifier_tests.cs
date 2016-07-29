@@ -16,7 +16,7 @@ using Ploeh.AutoFixture;
 namespace LightBDD.Core.UnitTests.Notification
 {
     [TestFixture]
-    public class ParallelProgressNotifierTests
+    public class ParallelProgressNotifier_tests
     {
         #region Capturing notifier
         class CapturingParallelProgressNotifier : ParallelProgressNotifier
@@ -44,7 +44,7 @@ namespace LightBDD.Core.UnitTests.Notification
         private CapturingParallelProgressNotifier _notifier;
         private readonly IFixture _autoFixture = new Fixture();
 
-        public ParallelProgressNotifierTests()
+        public ParallelProgressNotifier_tests()
         {
             _autoFixture.Register(() => new ExecutionTime(DateTimeOffset.Now, TimeSpan.FromMilliseconds(2634723)));
             _autoFixture.Register<IFeatureInfo>(() => _autoFixture.Create<Mocks.TestFeatureInfo>());

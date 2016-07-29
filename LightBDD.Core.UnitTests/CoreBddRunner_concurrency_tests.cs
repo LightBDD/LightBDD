@@ -33,9 +33,9 @@ namespace LightBDD.Core.UnitTests
                 var expectedScenarioName = $"Parallel scenario \"{i}\"";
                 var expectedSteps = new[]
                 {
-                    $"Given step with parameter \"{i}\"",
-                    $"When step with parameter \"{i}\" and comments",
-                    $"Then step with parameter \"{i}\""
+                    $"GIVEN step with parameter \"{i}\"",
+                    $"WHEN step with parameter \"{i}\" and comments",
+                    $"THEN step with parameter \"{i}\""
                 };
                 var expectedComments = new[] { CommentReason, $"{i}" };
 

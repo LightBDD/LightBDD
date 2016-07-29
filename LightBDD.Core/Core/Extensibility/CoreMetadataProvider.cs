@@ -16,14 +16,16 @@ namespace LightBDD.Core.Extensibility
     {
         private readonly INameFormatter _nameFormatter;
         private readonly StepNameParser _stepNameParser;
+        private readonly StepTypeProcessor _stepTypeProcessor;
 
-        protected CoreMetadataProvider(INameFormatter nameFormatter)
+        protected CoreMetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration)
         {
             if (nameFormatter == null)
                 throw new ArgumentNullException(nameof(nameFormatter));
 
             _nameFormatter = nameFormatter;
             _stepNameParser = new StepNameParser(nameFormatter);
+            _stepTypeProcessor = new StepTypeProcessor(nameFormatter, stepTypeConfiguration);
         }
 
         protected INameFormatter NameFormatter => _nameFormatter;
@@ -56,11 +58,12 @@ namespace LightBDD.Core.Extensibility
                 .ToArray();
         }
 
-        public IStepNameInfo GetStepName(StepDescriptor stepDescriptor)
+        public IStepNameInfo GetStepName(StepDescriptor stepDescriptor, string lastStepTypeName)
         {
+            var formattedStepName = _stepNameParser.GetStepNameFormat(stepDescriptor.RawName, stepDescriptor.Parameters);
             return new StepNameInfo(
-                GetStepTypeName(stepDescriptor.PredefinedStepType),
-                _stepNameParser.GetStepNameFormat(stepDescriptor),
+                _stepTypeProcessor.GetStepTypeName(stepDescriptor.PredefinedStepType, ref formattedStepName, lastStepTypeName),
+                formattedStepName,
                 stepDescriptor.Parameters.Select(p => NameParameterInfo.Unknown).ToArray());
         }
 
@@ -81,10 +84,7 @@ namespace LightBDD.Core.Extensibility
                 : defaultFormatter;
         }
 
-        private string GetStepTypeName(string rawStepTypeName)
-        {
-            return string.IsNullOrWhiteSpace(rawStepTypeName) ? null : NameFormatter.FormatName(rawStepTypeName).ToUpperInvariant().Trim();
-        }
+
 
         protected abstract IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member);
 

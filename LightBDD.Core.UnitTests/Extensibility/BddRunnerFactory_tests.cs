@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests.Extensibility
 {
     [TestFixture]
-    public class BddRunnerFactoryTests
+    public class BddRunnerFactory_tests
     {
         private BddRunnerFactory _factory;
 
@@ -53,7 +53,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         public void It_should_return_all_runners()
         {
             _factory.GetRunnerFor(GetType(), () => new NoProgressNotifier());
-            _factory.GetRunnerFor(typeof(BddRunnerExtensionsTests), () => new NoProgressNotifier());
+            _factory.GetRunnerFor(typeof(BddRunnerExtensions_tests), () => new NoProgressNotifier());
             Assert.That(_factory.AllRunners.Count(), Is.EqualTo(2));
         }
     }

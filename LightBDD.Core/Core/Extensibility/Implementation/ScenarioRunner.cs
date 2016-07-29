@@ -37,13 +37,6 @@ namespace LightBDD.Core.Extensibility.Implementation
             return this;
         }
 
-        private RunnableStep ToRunnableStep(StepDescriptor descriptor, int stepIndex, int totalStepsCount)
-        {
-            var stepInfo = new StepInfo(_metadataProvider.GetStepName(descriptor), stepIndex + 1, totalStepsCount);
-            var parameters = descriptor.Parameters.Select(p => new StepParameter(p, _metadataProvider.GetStepParameterFormatter(p.ParameterInfo))).ToArray();
-            return new RunnableStep(stepInfo, descriptor.StepInvocation, parameters, _exceptionToStatusMapper, _progressNotifier);
-        }
-
         public IScenarioRunner WithCapturedScenarioDetails()
         {
             var methodInfo = _metadataProvider.CaptureCurrentScenarioMethod();
@@ -107,18 +100,36 @@ namespace LightBDD.Core.Extensibility.Implementation
             return _scenarioExecutor.Execute(new ScenarioInfo(_name, _labels, _categories), ProvideSteps, _contextProvider);
         }
 
-        private RunnableStep[] ProvideSteps()
-        {
-            var descriptors = _steps.ToArray();
-            return descriptors.Select((descriptor, stepIndex) => ToRunnableStep(descriptor, stepIndex, descriptors.Length)).ToArray();
-        }
-
         public void RunSynchronously()
         {
             var task = RunAsynchronously();
             if (!task.IsCompleted)
                 throw new InvalidOperationException("Only immediately returning steps can be run synchronously");
             task.GetAwaiter().GetResult();
+        }
+
+        private RunnableStep[] ProvideSteps()
+        {
+            var descriptors = _steps.ToArray();
+            var totalStepsCount = descriptors.Length;
+            string lastStepTypeName = null;
+            var result = new RunnableStep[totalStepsCount];
+
+            for (int i = 0; i < totalStepsCount; ++i)
+            {
+                var step = ToRunnableStep(descriptors[i], i, totalStepsCount, lastStepTypeName);
+                result[i] = step;
+                lastStepTypeName = step.Result.Info.Name.StepTypeName;
+            }
+
+            return result;
+        }
+
+        private RunnableStep ToRunnableStep(StepDescriptor descriptor, int stepIndex, int totalStepsCount, string lastStepTypeName)
+        {
+            var stepInfo = new StepInfo(_metadataProvider.GetStepName(descriptor, lastStepTypeName), stepIndex + 1, totalStepsCount);
+            var parameters = descriptor.Parameters.Select(p => new StepParameter(p, _metadataProvider.GetStepParameterFormatter(p.ParameterInfo))).ToArray();
+            return new RunnableStep(stepInfo, descriptor.StepInvocation, parameters, _exceptionToStatusMapper, _progressNotifier);
         }
     }
 }

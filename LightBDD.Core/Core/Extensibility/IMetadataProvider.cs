@@ -11,7 +11,7 @@ namespace LightBDD.Core.Extensibility
         INameInfo GetScenarioName(MethodBase scenarioMethod);
         string[] GetScenarioLabels(MethodBase scenarioMethod);
         string[] GetScenarioCategories(MethodBase scenarioMethod);
-        IStepNameInfo GetStepName(StepDescriptor stepDescriptor);
+        IStepNameInfo GetStepName(StepDescriptor stepDescriptor, string lastStepTypeName);
         Func<object, string> GetStepParameterFormatter(ParameterInfo parameterInfo);
     }
 }

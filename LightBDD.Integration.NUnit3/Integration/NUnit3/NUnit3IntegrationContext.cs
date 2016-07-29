@@ -17,7 +17,7 @@ namespace LightBDD.Integration.NUnit3
         public NUnit3IntegrationContext(IProgressNotifier progressNotifier)
         {
             NameFormatter = new DefaultNameFormatter();
-            MetadataProvider = new NUnit3MetadataProvider(NameFormatter);
+            MetadataProvider = new NUnit3MetadataProvider(NameFormatter, StepTypeConfiguration.Default);
             ExceptionToStatusMapper = ex => (ex is IgnoreException || ex is InconclusiveException) ? ExecutionStatus.Ignored : ExecutionStatus.Failed;
             ProgressNotifier = progressNotifier;
         }

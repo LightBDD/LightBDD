@@ -42,9 +42,9 @@ namespace LightBDD.Core.UnitTests
 
             Assert.That(scenarioResult.GetSteps().Select(s => s.ToString()).ToArray(), Is.EqualTo(new[]
             {
-                "1/3 Given step one: Passed",
-                "2/3 When step two: Passed",
-                "3/3 Then step three: Failed (reason)"
+                "1/3 GIVEN step one: Passed",
+                "2/3 WHEN step two: Passed",
+                "3/3 THEN step three: Failed (reason)"
             }));
         }
 

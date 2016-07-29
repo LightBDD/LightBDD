@@ -22,6 +22,8 @@ namespace LightBDD.Core.UnitTests.TestableIntegration
             return new StepDescriptor(step.Method.Name, stepInvocation, parameter);
         }
 
+        public static StepDescriptor CreateWithTypeAsync(string stepType, Action step) => new StepDescriptor(stepType, step.Method.Name, async (ctx, args) => { await Task.Yield(); step.Invoke(); });
+
         public static StepDescriptor CreateSync<TArg>(Action<TArg> step, Func<TArg> argEvaluator)
         {
             Func<object, object[], Task> stepInvocation = (ctx, args) =>

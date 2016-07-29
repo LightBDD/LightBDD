@@ -15,6 +15,7 @@ namespace LightBDD.Core.UnitTests.Helpers
 
         public void Some_step() { }
         public void Given_step_one() { }
+        public void Setup_before_steps() { }
         public void When_step_two() { }
         public void When_step_two_with_comment() { StepExecution.Current.Comment(CommentReason); }
         public void When_step_two_is_bypassed() { StepExecution.Current.Bypass(BypassReason); }

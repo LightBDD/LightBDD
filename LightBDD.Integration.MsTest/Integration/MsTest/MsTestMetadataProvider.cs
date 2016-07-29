@@ -11,7 +11,7 @@ namespace LightBDD.Integration.MsTest
 {
     internal class MsTestMetadataProvider : CoreMetadataProvider
     {
-        public MsTestMetadataProvider(INameFormatter nameFormatter) : base(nameFormatter) { }
+        public MsTestMetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration) : base(nameFormatter, stepTypeConfiguration) { }
         public override MethodBase CaptureCurrentScenarioMethod()
         {
             var scenarioMethod = new StackTrace()

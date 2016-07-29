@@ -14,14 +14,13 @@ namespace LightBDD.Core.Extensibility.Implementation
             _nameFormatter = nameFormatter;
         }
 
-        public string GetStepNameFormat(StepDescriptor stepDescriptor)
+        public string GetStepNameFormat(string stepRawName, ParameterDescriptor[] stepParameters)
         {
-            var name = _nameFormatter.FormatName(stepDescriptor.RawName);
+            var name = _nameFormatter.FormatName(stepRawName);
             var sb = new StringBuilder();
 
-            var replacements = stepDescriptor
-                .Parameters
-                .Select((param, index) => StepNameParser.ToArgumentReplacement(name, param.RawName, index))
+            var replacements = stepParameters
+                .Select((param, index) => ToArgumentReplacement(name, param.RawName, index))
                 .OrderBy(r => r.Position)
                 .ToArray();
             int lastPos = 0;
