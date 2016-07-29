@@ -13,7 +13,7 @@ namespace LightBDD.Core.Execution.Results.Implementation
             Info = info;
         }
 
-        public IFeatureInfo Info { get; private set; }
+        public IFeatureInfo Info { get; }
         public IEnumerable<IScenarioResult> GetScenarios() { return _scenarios; }
         public void AddScenario(IScenarioResult scenario) { _scenarios.Enqueue(scenario); }
 

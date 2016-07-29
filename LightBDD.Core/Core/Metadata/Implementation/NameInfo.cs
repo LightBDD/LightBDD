@@ -5,9 +5,9 @@ namespace LightBDD.Core.Metadata.Implementation
 {
     internal class NameInfo : INameInfo
     {
-        public string NameFormat { get; private set; }
+        public string NameFormat { get; }
 
-        public IEnumerable<INameParameterInfo> Parameters { get; private set; }
+        public IEnumerable<INameParameterInfo> Parameters { get; }
 
         public NameInfo(string nameFormat, INameParameterInfo[] parameters)
         {

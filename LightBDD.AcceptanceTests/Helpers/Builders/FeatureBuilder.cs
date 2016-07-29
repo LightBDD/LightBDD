@@ -13,7 +13,7 @@ namespace LightBDD.AcceptanceTests.Helpers.Builders
             Name = feature;
         }
 
-        public string Name { get; private set; }
+        public string Name { get; }
 
         public ScenarioBuilder NewScenario(ResultStatus status)
         {

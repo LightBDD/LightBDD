@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using LightBDD.Core.Execution.Implementation;
+using LightBDD.Core.Extensibility.Implementation;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Helpers;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
+using LightBDD.Formatting.Parameters;
 
 namespace LightBDD.Core.Extensibility
 {
@@ -17,6 +19,9 @@ namespace LightBDD.Core.Extensibility
 
         protected CoreMetadataProvider(INameFormatter nameFormatter)
         {
+            if (nameFormatter == null)
+                throw new ArgumentNullException(nameof(nameFormatter));
+
             _nameFormatter = nameFormatter;
             _stepNameParser = new StepNameParser(nameFormatter);
         }
@@ -54,14 +59,31 @@ namespace LightBDD.Core.Extensibility
         public IStepNameInfo GetStepName(StepDescriptor stepDescriptor)
         {
             return new StepNameInfo(
-                stepDescriptor.PredefinedStepType,
+                GetStepTypeName(stepDescriptor.PredefinedStepType),
                 _stepNameParser.GetStepNameFormat(stepDescriptor),
                 stepDescriptor.Parameters.Select(p => NameParameterInfo.Unknown).ToArray());
         }
 
-        public Func<object, string> GetStepParameterFormatter(ParameterInfo parameter)
+        public Func<object, string> GetStepParameterFormatter(ParameterInfo parameterInfo)
         {
-            return value => string.Format(ScenarioContext.GetCurrentCulture(), "{0}", value);
+            Func<object, string> defaultFormatter = value => string.Format(ScenarioContext.GetCurrentCulture(), "{0}", value);
+            var formatters = parameterInfo.GetCustomAttributes(typeof(ParameterFormatterAttribute), true)
+               .OfType<ParameterFormatterAttribute>().ToArray();
+
+            if (formatters.Length > 1)
+                throw new InvalidOperationException(string.Format(
+                    "Parameter can contain only one attribute ParameterFormatterAttribute. Parameter: {0}, Detected attributes: {1}",
+                    parameterInfo.Name,
+                    string.Join(", ", formatters.Select(f => f.GetType().Name).OrderBy(n => n))));
+
+            return formatters.Length == 1
+                ? value => formatters[0].Format(ScenarioContext.GetCurrentCulture(), value)
+                : defaultFormatter;
+        }
+
+        private string GetStepTypeName(string rawStepTypeName)
+        {
+            return string.IsNullOrWhiteSpace(rawStepTypeName) ? null : NameFormatter.FormatName(rawStepTypeName).ToUpperInvariant().Trim();
         }
 
         protected abstract IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member);

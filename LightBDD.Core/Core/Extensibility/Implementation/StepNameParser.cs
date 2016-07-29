@@ -3,9 +3,9 @@ using System.Linq;
 using System.Text;
 using LightBDD.Core.Formatting;
 
-namespace LightBDD.Core.Extensibility
+namespace LightBDD.Core.Extensibility.Implementation
 {
-    class StepNameParser
+    internal class StepNameParser
     {
         private readonly INameFormatter _nameFormatter;
 
@@ -70,9 +70,9 @@ namespace LightBDD.Core.Extensibility
                 CharactersToReplace = charactersToReplace;
             }
 
-            public int Position { get; private set; }
-            public string Value { get; private set; }
-            public int CharactersToReplace { get; private set; }
+            public int Position { get; }
+            public string Value { get; }
+            public int CharactersToReplace { get; }
         }
     }
 }

@@ -44,10 +44,14 @@
     <Compile Include="Core\Execution\Results\ExecutionTime.cs" />
     <Compile Include="Core\Extensibility\BddRunnerFactory.cs" />
     <Compile Include="Core\Extensibility\CoreMetadataProvider.cs" />
+    <Compile Include="Core\Extensibility\Implementation\StepNameParser.cs" />
     <Compile Include="Core\Extensibility\Implementation\StepParameter.cs" />
-    <Compile Include="Core\Extensibility\StepNameParser.cs" />
     <Compile Include="Core\Execution\Implementation\ExecutionTimeWatch.cs" />
     <Compile Include="Core\Execution\Implementation\ScenarioExecutor.cs" />
+    <Compile Include="Formatting\Parameters\FormatAttribute.cs" />
+    <Compile Include="Formatting\Parameters\FormatBooleanAttribute.cs" />
+    <Compile Include="Formatting\Parameters\FormatCollectionAttribute.cs" />
+    <Compile Include="Formatting\Parameters\ParameterFormatterAttribute.cs" />
     <Compile Include="Core\Formatting\TimeFormatter.cs" />
     <Compile Include="Core\Metadata\Implementation\NameParameterInfo.cs" />
     <Compile Include="Core\Extensibility\ParameterDescriptor.cs" />

@@ -11,7 +11,7 @@ namespace LightBDD.Core.Metadata.Implementation
             FormattedValue = formattedValue;
         }
 
-        public bool IsEvaluated { get; private set; }
-        public string FormattedValue { get; private set; }
+        public bool IsEvaluated { get; }
+        public string FormattedValue { get; }
     }
 }

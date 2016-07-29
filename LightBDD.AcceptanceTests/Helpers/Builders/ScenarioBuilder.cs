@@ -5,7 +5,7 @@ namespace LightBDD.AcceptanceTests.Helpers.Builders
 {
     internal class ScenarioBuilder
     {
-        public ResultStatus Status { get; private set; }
+        public ResultStatus Status { get; }
         public string[] Categories { get; private set; }
 
         public ScenarioBuilder(ResultStatus status)

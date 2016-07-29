@@ -18,7 +18,7 @@ namespace LightBDD.Core.Metadata.Implementation
             return new StepNameInfo(nameInfo.StepTypeName, nameInfo.NameFormat, parameters);
         }
 
-        public string StepTypeName { get; private set; }
+        public string StepTypeName { get; }
 
         public override string ToString()
         {

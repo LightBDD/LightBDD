@@ -70,8 +70,17 @@
     <Compile Include="CoreBddRunner_step_metadata_collection_tests.cs" />
     <Compile Include="CoreBddRunner_synchronous_step_execution_tests.cs" />
     <Compile Include="CoreBddRunner_time_measurement_tests.cs" />
+    <Compile Include="Extensibility\BddRunnerExtensionsTests.cs" />
+    <Compile Include="Extensibility\BddRunnerFactoryTests.cs" />
+    <Compile Include="Extensibility\CoreMetadataProviderTests.cs" />
+    <Compile Include="Extensibility\ParameterDescriptorTests.cs" />
+    <Compile Include="Extensibility\StepDescriptorTests.cs" />
+    <Compile Include="Formatting\Parameters\FormatAttributeTests.cs" />
+    <Compile Include="Formatting\Parameters\FormatBooleanAttributeTests.cs" />
+    <Compile Include="Formatting\Parameters\FormatCollectionAttributeTests.cs" />
     <Compile Include="Formatting\TimeFormatterTests.cs" />
     <Compile Include="Formatting\DefaultNameFormatterTests.cs" />
+    <Compile Include="Helpers\ParameterInfoHelper.cs" />
     <Compile Include="Helpers\Steps.cs" />
     <Compile Include="Notification\DelegatingProgressNotifierTests.cs" />
     <Compile Include="Notification\ParallelProgressNotifierTests.cs" />

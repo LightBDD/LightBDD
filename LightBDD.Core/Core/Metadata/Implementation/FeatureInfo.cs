@@ -12,9 +12,9 @@ namespace LightBDD.Core.Metadata.Implementation
             Description = description;
         }
 
-        public INameInfo Name { get; private set; }
-        public IEnumerable<string> Labels { get; private set; }
-        public string Description { get; private set; }
+        public INameInfo Name { get; }
+        public IEnumerable<string> Labels { get; }
+        public string Description { get; }
 
         public override string ToString()
         {
