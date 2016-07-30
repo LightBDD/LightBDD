@@ -1,8 +1,10 @@
 using System;
+using System.Linq;
+using LightBDD.Configuration;
 using LightBDD.Core.Coordination;
 using LightBDD.Core.Extensibility;
 using LightBDD.SummaryGeneration;
-using LightBDD.SummaryGeneration.Formatters;
+using LightBDD.SummaryGeneration.Configuration;
 
 namespace LightBDD.Integration.NUnit3
 {
@@ -21,9 +23,9 @@ namespace LightBDD.Integration.NUnit3
         {
         }
 
-        internal static void InstallSelf()
+        internal static void InstallSelf(LightBddConfiguration configuration)
         {
-            Install(new NUnit3FeatureCoordinator(new NUnit3BddRunnerFactory(), new FeatureSummaryGenerator(new SummaryFileWriter(new XmlResultFormatter(), "~/Reports/summary.xml"))));
+            Install(new NUnit3FeatureCoordinator(new NUnit3BddRunnerFactory(configuration), new FeatureSummaryGenerator(configuration.Get<SummaryWritersConfiguration>().ToArray())));
         }
     }
 }

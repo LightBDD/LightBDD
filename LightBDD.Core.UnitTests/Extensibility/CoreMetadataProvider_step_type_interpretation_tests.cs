@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using LightBDD.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.UnitTests.TestableIntegration;
@@ -27,7 +27,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [TestCase("\t\n\r something\t\n\r ", "", "SOMETHING")]
         public void GetStepName_should_properly_convert_predefined_step_type(string inputStepType, string lastStepType, string expectedStepType)
         {
-            var metadataProvider = new TestMetadataProvider(new DefaultNameFormatter(), StepTypeConfiguration.Default);
+            var metadataProvider = new TestMetadataProvider(new DefaultNameFormatter());
 
             var descriptor = new StepDescriptor(inputStepType, "some_test_method", (o, a) => Task.CompletedTask);
             var stepName = metadataProvider.GetStepName(descriptor, lastStepType);
@@ -51,7 +51,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [TestCase("else_my_method", "else", null, "else my method")]
         public void GetStepName_should_properly_infer_default_step_type_from_method_name(string methodName, string lastStepType, string expectedStepType, string expectedStepNameFormat)
         {
-            var metadataProvider = new TestMetadataProvider(new DefaultNameFormatter(), StepTypeConfiguration.Default);
+            var metadataProvider = new TestMetadataProvider(new DefaultNameFormatter());
 
             var descriptor = new StepDescriptor(methodName, (o, a) => Task.CompletedTask);
             var stepName = metadataProvider.GetStepName(descriptor, lastStepType);
@@ -62,7 +62,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [Test]
         public void GetStepName_should_not_extract_step_type_if_nothing_is_left_after_it()
         {
-            var metadataProvider = new TestMetadataProvider(new DefaultNameFormatter(), StepTypeConfiguration.Default);
+            var metadataProvider = new TestMetadataProvider(new DefaultNameFormatter());
 
             var descriptor = new StepDescriptor("given", (o, a) => Task.CompletedTask);
             var stepName = metadataProvider.GetStepName(descriptor, null);
@@ -76,7 +76,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [TestCase(" \r\n\t")]
         public void Should_disable_normalization_if_replacementString_is_empty(string repeatedStepReplacement)
         {
-            var metadataProvider = new TestMetadataProvider(new DefaultNameFormatter(), new StepTypeConfiguration(repeatedStepReplacement, StepTypeConfiguration.Default.PredefinedStepTypes.ToArray()));
+            var metadataProvider = new TestMetadataProvider(new DefaultNameFormatter(), new StepTypeConfiguration().UpdateRepeatedStepReplacement(repeatedStepReplacement));
 
             var stepTypeName = "given";
 
@@ -91,19 +91,12 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [TestCase("then_something", null, "then something")]
         public void Should_allow_to_reconfigure_predefined_step_types(string formattedName, string expectedType, string expectedNameFormat)
         {
-            var metadataProvider = new TestMetadataProvider(new DefaultNameFormatter(), new StepTypeConfiguration("and", "call", "invoke"));
+            var metadataProvider = new TestMetadataProvider(new DefaultNameFormatter(), new StepTypeConfiguration().UpdatePredefinedStepTypes("call", "invoke"));
 
             var descriptor = new StepDescriptor(formattedName, (o, a) => Task.CompletedTask);
             var step = metadataProvider.GetStepName(descriptor, null);
             Assert.That(step.StepTypeName, Is.EqualTo(expectedType), "type");
             Assert.That(step.NameFormat, Is.EqualTo(expectedNameFormat), "name");
-        }
-
-        [Test]
-        public void Should_initialize_object_with_default_values()
-        {
-            Assert.That(StepTypeConfiguration.Default.RepeatedStepReplacement, Is.EqualTo("and"));
-            Assert.That(StepTypeConfiguration.Default.PredefinedStepTypes, Is.EquivalentTo(new[] { "given", "when", "then", "and", "setup" }));
         }
     }
 }

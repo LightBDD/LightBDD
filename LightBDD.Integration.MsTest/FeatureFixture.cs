@@ -1,7 +1,6 @@
 ﻿using System;
 using LightBDD.Core.Notification;
 using LightBDD.Integration.MsTest;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD
 {

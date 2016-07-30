@@ -1,4 +1,5 @@
 using System;
+using LightBDD.Configuration;
 using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting;
@@ -14,10 +15,10 @@ namespace LightBDD.Integration.NUnit3
         public Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
         public IProgressNotifier ProgressNotifier { get; }
 
-        public NUnit3IntegrationContext(IProgressNotifier progressNotifier)
+        public NUnit3IntegrationContext(LightBddConfiguration configuration, IProgressNotifier progressNotifier)
         {
-            NameFormatter = new DefaultNameFormatter();
-            MetadataProvider = new NUnit3MetadataProvider(NameFormatter, StepTypeConfiguration.Default);
+            NameFormatter = configuration.Get<NameFormatterConfiguration>().Formatter;
+            MetadataProvider = new NUnit3MetadataProvider(NameFormatter, configuration.Get<StepTypeConfiguration>());
             ExceptionToStatusMapper = ex => (ex is IgnoreException || ex is InconclusiveException) ? ExecutionStatus.Ignored : ExecutionStatus.Failed;
             ProgressNotifier = progressNotifier;
         }

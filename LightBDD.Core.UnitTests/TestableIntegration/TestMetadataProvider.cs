@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using LightBDD.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting;
 using NUnit.Framework;
@@ -29,7 +30,7 @@ namespace LightBDD.Core.UnitTests.TestableIntegration
             return ExtractAttributePropertyValue<CustomFeatureDescriptionAttribute>(featureType, a => a.Description);
         }
 
-        public TestMetadataProvider(INameFormatter nameFormatter) : base(nameFormatter, StepTypeConfiguration.Default) { }
+        public TestMetadataProvider(INameFormatter nameFormatter) : base(nameFormatter, new StepTypeConfiguration()) { }
         public TestMetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration) : base(nameFormatter, stepTypeConfiguration) { }
     }
 }

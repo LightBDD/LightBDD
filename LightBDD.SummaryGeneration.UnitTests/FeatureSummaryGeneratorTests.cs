@@ -4,7 +4,6 @@ using LightBDD.Core.Execution.Results;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.AutoRhinoMock;
 using Rhino.Mocks;
 
 namespace LightBDD.SummaryGeneration.UnitTests

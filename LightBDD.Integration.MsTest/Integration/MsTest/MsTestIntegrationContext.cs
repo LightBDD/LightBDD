@@ -1,4 +1,5 @@
 using System;
+using LightBDD.Configuration;
 using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting;
@@ -14,10 +15,10 @@ namespace LightBDD.Integration.MsTest
         public Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
         public IProgressNotifier ProgressNotifier { get; }
 
-        public MsTestIntegrationContext(IProgressNotifier progressNotifier)
+        public MsTestIntegrationContext(LightBddConfiguration configuration, IProgressNotifier progressNotifier)
         {
-            NameFormatter = new DefaultNameFormatter();
-            MetadataProvider = new MsTestMetadataProvider(NameFormatter, StepTypeConfiguration.Default);
+            NameFormatter = configuration.Get<NameFormatterConfiguration>().Formatter;
+            MetadataProvider = new MsTestMetadataProvider(NameFormatter, configuration.Get<StepTypeConfiguration>());
             ExceptionToStatusMapper = ex => (ex is AssertInconclusiveException) ? ExecutionStatus.Ignored : ExecutionStatus.Failed;
             ProgressNotifier = progressNotifier;
         }

@@ -1,4 +1,5 @@
 using System;
+using LightBDD.Configuration;
 using LightBDD.Integration.NUnit3;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
@@ -10,8 +11,14 @@ namespace LightBDD
     {
         public void BeforeTest(ITest test)
         {
-            NUnit3FeatureCoordinator.InstallSelf();
+            var configuration = new LightBddConfiguration();
+            OnConfiguration(configuration);
+            NUnit3FeatureCoordinator.InstallSelf(configuration);
             BeforeLightBddTests();
+        }
+
+        protected virtual void OnConfiguration(LightBddConfiguration configuration)
+        {
         }
 
         protected virtual void BeforeLightBddTests()

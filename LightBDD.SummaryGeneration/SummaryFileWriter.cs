@@ -10,8 +10,9 @@ namespace LightBDD.SummaryGeneration
     /// </summary>
     public class SummaryFileWriter : ISummaryWriter
     {
-        private readonly IResultFormatter _formatter;
+        public IResultFormatter Formatter { get; }
         public string OutputPath { get; }
+        public string FullOutputPath { get; }
 
         /// <summary>
         /// Constructor allowing to create SummaryFileWriter with associated result formatter and output path.
@@ -20,8 +21,9 @@ namespace LightBDD.SummaryGeneration
         /// <param name="outputPath">Output path.</param>
         public SummaryFileWriter(IResultFormatter formatter, string outputPath)
         {
-            OutputPath = GetOutputPath(outputPath);
-            _formatter = formatter;
+            OutputPath = outputPath;
+            Formatter = formatter;
+            FullOutputPath = GetOutputPath(outputPath);
         }
 
         private static string GetOutputPath(string outputPath)
@@ -39,13 +41,13 @@ namespace LightBDD.SummaryGeneration
         public void Save(params IFeatureResult[] results)
         {
             EnsureOutputDirectoryExists();
-            using (var stream = File.Create(OutputPath))
-                _formatter.Format(stream, results);
+            using (var stream = File.Create(FullOutputPath))
+                Formatter.Format(stream, results);
         }
 
         private void EnsureOutputDirectoryExists()
         {
-            var directory = Path.GetDirectoryName(OutputPath);
+            var directory = Path.GetDirectoryName(FullOutputPath);
             if (directory != null)
                 Directory.CreateDirectory(directory);
         }

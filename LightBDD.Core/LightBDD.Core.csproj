@@ -38,6 +38,10 @@
     <Compile Include="..\AssemblyVersion.cs">
       <Link>Properties\AssemblyVersion.cs</Link>
     </Compile>
+    <Compile Include="Configuration\IFeatureConfiguration.cs" />
+    <Compile Include="Configuration\LightBddConfiguration.cs" />
+    <Compile Include="Configuration\NameFormatterConfiguration.cs" />
+    <Compile Include="Configuration\StepTypeConfiguration.cs" />
     <Compile Include="Core\Coordination\FeatureCoordinator.cs" />
     <Compile Include="Core\Coordination\IFeatureAggregator.cs" />
     <Compile Include="Core\Execution\Implementation\ScenarioContext.cs" />
@@ -49,7 +53,6 @@
     <Compile Include="Core\Execution\Implementation\ExecutionTimeWatch.cs" />
     <Compile Include="Core\Execution\Implementation\ScenarioExecutor.cs" />
     <Compile Include="Core\Extensibility\Implementation\StepTypeProcessor.cs" />
-    <Compile Include="Core\Extensibility\StepTypeConfiguration.cs" />
     <Compile Include="Formatting\Parameters\FormatAttribute.cs" />
     <Compile Include="Formatting\Parameters\FormatBooleanAttribute.cs" />
     <Compile Include="Formatting\Parameters\FormatCollectionAttribute.cs" />

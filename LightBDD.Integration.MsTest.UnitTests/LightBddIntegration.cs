@@ -1,3 +1,4 @@
+using LightBDD.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.Integration.MsTest.UnitTests
@@ -6,7 +7,12 @@ namespace LightBDD.Integration.MsTest.UnitTests
     class LightBddIntegration
     {
         [AssemblyInitialize]
-        public static void Setup(TestContext testContext) { LightBddScope.Initialize(); }
+        public static void Setup(TestContext testContext)
+        {
+            var configuration = new LightBddConfiguration();
+            LightBddScope.Initialize(configuration);
+        }
+
         [AssemblyCleanup]
         public static void Cleanup() { LightBddScope.Cleanup(); }
     }

@@ -15,7 +15,8 @@ namespace LightBDD.SummaryGeneration.UnitTests
         {
             var writer = new SummaryFileWriter(MockRepository.GenerateMock<IResultFormatter>(), "~//output.txt");
             var expected = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + "\\output.txt");
-            Assert.That(writer.OutputPath, Is.EqualTo(expected));
+            Assert.That(writer.OutputPath, Is.EqualTo("~//output.txt"));
+            Assert.That(writer.FullOutputPath, Is.EqualTo(expected));
         }
 
         [Test]
@@ -23,7 +24,8 @@ namespace LightBDD.SummaryGeneration.UnitTests
         {
             var writer = new SummaryFileWriter(MockRepository.GenerateMock<IResultFormatter>(), "output.txt");
             var expected = Path.GetFullPath("output.txt");
-            Assert.That(writer.OutputPath, Is.EqualTo(expected));
+            Assert.That(writer.OutputPath, Is.EqualTo("output.txt"));
+            Assert.That(writer.FullOutputPath, Is.EqualTo(expected));
         }
 
         [Test]

@@ -1,8 +1,10 @@
 using System;
+using System.Linq;
+using LightBDD.Configuration;
 using LightBDD.Core.Coordination;
 using LightBDD.Core.Extensibility;
 using LightBDD.SummaryGeneration;
-using LightBDD.SummaryGeneration.Formatters;
+using LightBDD.SummaryGeneration.Configuration;
 
 namespace LightBDD.Integration.MsTest
 {
@@ -21,9 +23,9 @@ namespace LightBDD.Integration.MsTest
         {
         }
 
-        internal static void InstallSelf()
+        internal static void InstallSelf(LightBddConfiguration configuration)
         {
-            Install(new MsTestFeatureCoordinator(new MsTestBddRunnerFactory(), new FeatureSummaryGenerator(new SummaryFileWriter(new XmlResultFormatter(), "~/Reports/summary.xml"))));
+            Install(new MsTestFeatureCoordinator(new MsTestBddRunnerFactory(configuration), new FeatureSummaryGenerator(configuration.Get<SummaryWritersConfiguration>().ToArray())));
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using LightBDD.Configuration;
 using LightBDD.Integration.XUnit2;
 using Xunit.Sdk;
 
@@ -10,7 +11,9 @@ namespace LightBDD
     {
         internal void SetUp()
         {
-            XUnit2FeatureCoordinator.InstallSelf();
+            var configuration = new LightBddConfiguration();
+            OnConfiguration(configuration);
+            XUnit2FeatureCoordinator.InstallSelf(configuration);
             BeforeLightBddTests();
         }
 
@@ -19,6 +22,11 @@ namespace LightBDD
             XUnit2FeatureCoordinator.GetInstance().Dispose();
             AfterLightBddTests();
         }
+
+        protected virtual void OnConfiguration(LightBddConfiguration configuration)
+        {
+        }
+
         protected virtual void BeforeLightBddTests()
         {
         }

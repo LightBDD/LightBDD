@@ -55,6 +55,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\NameFormatterConfiguration_tests.cs" />
+    <Compile Include="Configuration\StepTypeConfiguration_tests.cs" />
     <Compile Include="CoreBddRunner_asynchronous_step_execution_tests.cs" />
     <Compile Include="CoreBddRunner_concurrency_tests.cs" />
     <Compile Include="CoreBddRunner_execution_results_tests.cs" />
