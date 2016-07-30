@@ -72,6 +72,7 @@
     <Compile Include="CoreBddRunner_time_measurement_tests.cs" />
     <Compile Include="Extensibility\BddRunnerExtensions_tests.cs" />
     <Compile Include="Extensibility\BddRunnerFactory_tests.cs" />
+    <Compile Include="Extensibility\CoreMetadataProvider_metadata_inheritance_tests.cs" />
     <Compile Include="Extensibility\CoreMetadataProvider_step_type_interpretation_tests.cs" />
     <Compile Include="Extensibility\CoreMetadataProvider_tests.cs" />
     <Compile Include="Extensibility\ParameterDescriptor_tests.cs" />
