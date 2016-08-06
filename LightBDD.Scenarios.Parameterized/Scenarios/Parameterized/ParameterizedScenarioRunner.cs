@@ -59,11 +59,13 @@ namespace LightBDD.Scenarios.Parameterized
 
         private Func<object, object[], Task> CompileStepAction(MethodCallExpression methodCall, ParameterExpression contextParameter)
         {
+            Func<int, Task> fromResult = Task.FromResult;
+
             var param = Expression.Parameter(typeof(object[]), "args");
             var args = methodCall.Arguments.Select((arg, index) => Expression.Convert(Expression.ArrayAccess(param, Expression.Constant(index)), arg.Type));
             Expression body = Expression.Call(methodCall.Object, methodCall.Method, args);
             if (methodCall.Method.ReturnType != typeof(Task))
-                body = Expression.Block(body, Expression.Property(null, typeof(Task), nameof(Task.CompletedTask)));
+                body = Expression.Block(body, Expression.Call(null, fromResult.GetMethodInfo(), Expression.Constant(0)));
             var function = Expression.Lambda<Func<TContext, object[], Task>>(body, contextParameter, param).Compile();
 
             return (o, a) => function((TContext)o, a);

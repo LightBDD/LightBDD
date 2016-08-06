@@ -43,7 +43,7 @@ namespace LightBDD.Scenarios.Basic
             return new StepDescriptor(step.GetMethodInfo().Name, (ctx, args) =>
             {
                 step.Invoke();
-                return Task.CompletedTask;
+                return Task.FromResult(0);
             });
         }
     }
