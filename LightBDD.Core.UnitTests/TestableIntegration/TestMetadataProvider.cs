@@ -30,7 +30,7 @@ namespace LightBDD.Core.UnitTests.TestableIntegration
             return ExtractAttributePropertyValue<CustomFeatureDescriptionAttribute>(featureType, a => a.Description);
         }
 
-        public TestMetadataProvider(INameFormatter nameFormatter) : base(nameFormatter, new StepTypeConfiguration()) { }
-        public TestMetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration) : base(nameFormatter, stepTypeConfiguration) { }
+        public TestMetadataProvider(INameFormatter nameFormatter) : base(nameFormatter, new StepTypeConfiguration(), new DefaultCultureInfoProvider()) { }
+        public TestMetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration) : base(nameFormatter, stepTypeConfiguration, new DefaultCultureInfoProvider()) { }
     }
 }

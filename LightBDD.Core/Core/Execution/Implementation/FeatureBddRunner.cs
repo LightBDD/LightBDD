@@ -20,7 +20,7 @@ namespace LightBDD.Core.Execution.Implementation
             _integrationContext = integrationContext;
             _featureResult = new FeatureResult(_integrationContext.MetadataProvider.GetFeatureInfo(featureType));
 
-            _scenarioExecutor = new ScenarioExecutor();
+            _scenarioExecutor = new ScenarioExecutor(new ExtendableExecutor(integrationContext.ExecutionExtensions));
             _scenarioExecutor.ScenarioExecuted += _featureResult.AddScenario;
 
             integrationContext.FeatureProgressNotifier.NotifyFeatureStart(_featureResult.Info);

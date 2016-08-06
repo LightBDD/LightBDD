@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using LightBDD.Configuration;
 using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Extensibility;
@@ -15,14 +17,16 @@ namespace LightBDD.Integration.MsTest
         public Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
         public IFeatureProgressNotifier FeatureProgressNotifier { get; }
         public Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider { get; }
+        public ExecutionExtensionsConfiguration ExecutionExtensions { get; }
 
         public MsTestIntegrationContext(LightBddConfiguration configuration)
         {
             NameFormatter = configuration.Get<NameFormatterConfiguration>().Formatter;
-            MetadataProvider = new MsTestMetadataProvider(NameFormatter, configuration.Get<StepTypeConfiguration>());
+            MetadataProvider = new MsTestMetadataProvider(NameFormatter, configuration.Get<StepTypeConfiguration>(), configuration.Get<CultureInfoProviderConfiguration>().CultureInfoProvider);
             ExceptionToStatusMapper = ex => (ex is AssertInconclusiveException) ? ExecutionStatus.Ignored : ExecutionStatus.Failed;
             FeatureProgressNotifier = configuration.Get<FeatureProgressNotifierConfiguration>().Notifier;
             ScenarioProgressNotifierProvider = configuration.Get<ScenarioProgressNotifierConfiguration>().NotifierProvider;
+            ExecutionExtensions = configuration.Get<ExecutionExtensionsConfiguration>();
         }
     }
 }

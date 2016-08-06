@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using LightBDD.Configuration;
 using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Extensibility;
@@ -15,14 +17,16 @@ namespace LightBDD.Integration.XUnit2
         public Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
         public IFeatureProgressNotifier FeatureProgressNotifier { get; }
         public Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider { get; }
+        public ExecutionExtensionsConfiguration ExecutionExtensions { get; }
 
         public XUnit2IntegrationContext(LightBddConfiguration configuration)
         {
             NameFormatter = configuration.Get<NameFormatterConfiguration>().Formatter;
-            MetadataProvider = new XUnit2MetadataProvider(NameFormatter, configuration.Get<StepTypeConfiguration>());
+            MetadataProvider = new XUnit2MetadataProvider(NameFormatter, configuration.Get<StepTypeConfiguration>(), configuration.Get<CultureInfoProviderConfiguration>().CultureInfoProvider);
             ExceptionToStatusMapper = ex => (ex is IgnoreException) ? ExecutionStatus.Ignored : ExecutionStatus.Failed;
             FeatureProgressNotifier = configuration.Get<FeatureProgressNotifierConfiguration>().Notifier;
             ScenarioProgressNotifierProvider = configuration.Get<ScenarioProgressNotifierConfiguration>().NotifierProvider;
+            ExecutionExtensions = configuration.Get<ExecutionExtensionsConfiguration>();
         }
     }
 }

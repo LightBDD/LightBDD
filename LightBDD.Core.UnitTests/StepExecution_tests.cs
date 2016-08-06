@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
+using LightBDD.Configuration;
 using LightBDD.Core.Execution;
 using LightBDD.Core.UnitTests.TestableIntegration;
+using LightBDD.Extensions.ContextualAsyncExecution;
 using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests
@@ -22,7 +24,7 @@ namespace LightBDD.Core.UnitTests
         public void Comment_should_throw_exception_if_used_outside_of_step()
         {
             var exception = Assert.Throws<InvalidOperationException>(() => StepExecution.Current.Comment("some comment"));
-            Assert.That(exception.Message, Is.EqualTo("Current task is not executing any scenarios. Please ensure that ScenarioContext is accessed from task running scenario."));
+            Assert.That(exception.Message, Is.EqualTo($"Current task is not executing any scenarios. Please ensure that {nameof(ScenarioExecutionContext)} is installed in {nameof(LightBddConfiguration)} and execution context is accessed from task running scenario."));
         }
 
         [Test]

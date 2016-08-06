@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Execution.Results.Implementation;
+using LightBDD.Core.Extensibility;
 using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Notification;
 
@@ -10,30 +11,28 @@ namespace LightBDD.Core.Execution.Implementation
 {
     internal class ScenarioExecutor
     {
-        public async Task Execute(ScenarioInfo scenario, Func<RunnableStep[]> stepsProvider, Func<object> contextProvider, IScenarioProgressNotifier progressNotifier)
+        private readonly IExtendableExecutor _extendableExecutor;
+
+        public ScenarioExecutor(IExtendableExecutor extendableExecutor)
         {
-            var scenarioContext = new ScenarioContext();
-            try
-            {
-                ScenarioContext.Current = scenarioContext;
-                await ExecuteWithinSynchronizationContext(scenario, stepsProvider, scenarioContext, contextProvider,progressNotifier);
-            }
-            finally
-            {
-                ScenarioContext.Current = null;
-            }
+            _extendableExecutor = extendableExecutor;
         }
 
-        private async Task ExecuteWithinSynchronizationContext(ScenarioInfo scenario, Func<RunnableStep[]> stepsProvider, ScenarioContext scenarioContext, Func<object> contextProvider, IScenarioProgressNotifier progressNotifier)
+        public Task Execute(ScenarioInfo scenario, Func<RunnableStep[]> stepsProvider, Func<object> contextProvider, IScenarioProgressNotifier progressNotifier)
+        {
+            return _extendableExecutor.ExecuteScenario(scenario,() => ExecuteWithinSynchronizationContext(scenario, stepsProvider, contextProvider, progressNotifier));
+        }
+
+        private async Task ExecuteWithinSynchronizationContext(ScenarioInfo scenario, Func<RunnableStep[]> stepsProvider, Func<object> contextProvider, IScenarioProgressNotifier progressNotifier)
         {
             progressNotifier.NotifyScenarioStart(scenario);
-
+            var data = new ScenarioData();
             var watch = ExecutionTimeWatch.StartNew();
             try
             {
-                scenarioContext.InitializeScenario(stepsProvider, contextProvider);
-                foreach (var step in scenarioContext.PreparedSteps)
-                    await step.Invoke(scenarioContext, scenarioContext.ExecutionContext);
+                data.InitializeScenario(stepsProvider, contextProvider);
+                foreach (var step in data.PreparedSteps)
+                    await step.Invoke(_extendableExecutor,data.ScenarioContext);
             }
             finally
             {
@@ -41,9 +40,9 @@ namespace LightBDD.Core.Execution.Implementation
 
                 var result = new ScenarioResult(
                     scenario,
-                    scenarioContext.PreparedSteps.Select(s => s.Result).ToArray(),
+                    data.PreparedSteps.Select(s => s.Result).ToArray(),
                     watch.GetTime(),
-                    scenarioContext.ScenarioInitializationException);
+                    data.ScenarioInitializationException);
 
                 progressNotifier.NotifyScenarioFinished(result);
                 ScenarioExecuted?.Invoke(result);

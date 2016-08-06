@@ -16,15 +16,21 @@ namespace LightBDD.Core.Extensibility
     public abstract class CoreMetadataProvider : IMetadataProvider
     {
         private readonly INameFormatter _nameFormatter;
+        private readonly ICultureInfoProvider _cultureInfoProvider;
         private readonly StepNameParser _stepNameParser;
         private readonly StepTypeProcessor _stepTypeProcessor;
 
-        protected CoreMetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration)
+        protected CoreMetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration, ICultureInfoProvider cultureInfoProvider)
         {
             if (nameFormatter == null)
                 throw new ArgumentNullException(nameof(nameFormatter));
+            if (cultureInfoProvider == null)
+                throw new ArgumentNullException(nameof(cultureInfoProvider));
+            if (stepTypeConfiguration == null)
+                throw new ArgumentNullException(nameof(stepTypeConfiguration));
 
             _nameFormatter = nameFormatter;
+            _cultureInfoProvider = cultureInfoProvider;
             _stepNameParser = new StepNameParser(nameFormatter);
             _stepTypeProcessor = new StepTypeProcessor(nameFormatter, stepTypeConfiguration);
         }
@@ -70,7 +76,7 @@ namespace LightBDD.Core.Extensibility
 
         public Func<object, string> GetStepParameterFormatter(ParameterInfo parameterInfo)
         {
-            Func<object, string> defaultFormatter = value => string.Format(ScenarioContext.GetCurrentCulture(), "{0}", value);
+            Func<object, string> defaultFormatter = value => string.Format(_cultureInfoProvider.GetCultureInfo(), "{0}", value);
             var formatters = parameterInfo.GetCustomAttributes(typeof(ParameterFormatterAttribute), true)
                .OfType<ParameterFormatterAttribute>().ToArray();
 
@@ -81,7 +87,7 @@ namespace LightBDD.Core.Extensibility
                     string.Join(", ", formatters.Select(f => f.GetType().Name).OrderBy(n => n))));
 
             return formatters.Length == 1
-                ? value => formatters[0].Format(ScenarioContext.GetCurrentCulture(), value)
+                ? value => formatters[0].Format(_cultureInfoProvider.GetCultureInfo(), value)
                 : defaultFormatter;
         }
 

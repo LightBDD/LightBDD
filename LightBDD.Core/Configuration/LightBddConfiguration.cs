@@ -5,7 +5,7 @@ namespace LightBDD.Configuration
 {
     public class LightBddConfiguration
     {
-        private readonly ConcurrentDictionary<Type, object> _configuration = new ConcurrentDictionary<Type, object>();
+        private readonly ConcurrentDictionary<Type, IFeatureConfiguration> _configuration = new ConcurrentDictionary<Type, IFeatureConfiguration>();
 
         public TConfiguration Get<TConfiguration>() where TConfiguration : IFeatureConfiguration, new()
         {

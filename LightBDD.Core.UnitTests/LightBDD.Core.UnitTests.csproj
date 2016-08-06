@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\CultureInfoProviderConfiguration_tests.cs" />
     <Compile Include="Configuration\FeatureProgressNotifierConfiguration_tests.cs" />
     <Compile Include="Configuration\NameFormatterConfiguration_tests.cs" />
     <Compile Include="Configuration\ScenarioProgressNotifierConfiguration_tests.cs" />
@@ -108,6 +109,14 @@
     <ProjectReference Include="..\LightBDD.Core\LightBDD.Core.csproj">
       <Project>{9F3D28CD-E37E-4EF8-9CBF-A785D8CA3484}</Project>
       <Name>LightBDD.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LightBDD.Extensions.ContextualAsyncExecution\LightBDD.Extensions.ContextualAsyncExecution.csproj">
+      <Project>{EF7A2E66-C1F3-49D8-8A35-787185D6BFD2}</Project>
+      <Name>LightBDD.Extensions.ContextualAsyncExecution</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LightBDD.Features.Commenting\LightBDD.Features.Commenting.csproj">
+      <Project>{81872a44-e6e3-4939-a0e0-55f21ab39a0e}</Project>
+      <Name>LightBDD.Features.Commenting</Name>
     </ProjectReference>
     <ProjectReference Include="..\LightBDD.UnitTests.Helpers\LightBDD.UnitTests.Helpers.csproj">
       <Project>{CF893093-7FC5-4688-8360-EE920C2035F3}</Project>

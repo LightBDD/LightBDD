@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Execution.Results.Implementation;
+using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Implementation;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
@@ -10,7 +11,7 @@ using LightBDD.Core.Notification;
 
 namespace LightBDD.Core.Execution.Implementation
 {
-    internal class RunnableStep
+    internal class RunnableStep : IStep
     {
         private readonly Func<object, object[], Task> _stepInvocation;
         private readonly StepParameter[] _parameters;
@@ -49,18 +50,16 @@ namespace LightBDD.Core.Execution.Implementation
             }
         }
 
-        public async Task Invoke(ScenarioContext scenarioContext, object context)
+        public async Task Invoke(IExtendableExecutor extendableExecutor, object context)
         {
             bool stepStartNotified = false;
             try
             {
-                scenarioContext.CurrentStep = this;
-
                 EvaluateParameters(context);
                 _progressNotifier.NotifyStepStart(_result.Info);
                 stepStartNotified = true;
 
-                await TimeMeasuredInvoke(context);
+                await extendableExecutor.ExecuteStep(this, () => TimeMeasuredInvoke(context));
                 _result.SetStatus(ExecutionStatus.Passed);
             }
             catch (StepBypassException e)
@@ -74,8 +73,6 @@ namespace LightBDD.Core.Execution.Implementation
             }
             finally
             {
-                scenarioContext.CurrentStep = null;
-
                 if (stepStartNotified)
                     _progressNotifier.NotifyStepFinished(_result);
             }

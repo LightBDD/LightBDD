@@ -13,11 +13,5 @@ namespace LightBDD
         {
             throw new StepBypassException(reason);
         }
-
-        public void Comment(string comment)
-        {
-            if (!string.IsNullOrWhiteSpace(comment))
-                ScenarioContext.Current.CurrentStep.Comment(comment);
-        }
     }
 }

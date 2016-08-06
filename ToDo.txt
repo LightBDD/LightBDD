@@ -23,3 +23,5 @@ minimal 4.5 net framework with modules including comments (4.6) and culture fix 
 rename Feature/Scenario/Fixture runners and revisit class hierarchy to make it more descriptive
 customization tests + acceptance tests
 html+json results
+integrationcontext - expose readonly configuration+remove configuration specific properties and implement the base class
+rework project names, namespaces and consider separate project with interfaces
