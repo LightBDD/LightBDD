@@ -22,3 +22,4 @@ Future:
 minimal 4.5 net framework with modules including comments (4.6) and culture fix (4.6)
 rename Feature/Scenario/Fixture runners and revisit class hierarchy to make it more descriptive
 customization tests + acceptance tests
+html+json results
