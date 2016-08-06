@@ -38,12 +38,18 @@
     <Compile Include="..\AssemblyVersion.cs">
       <Link>Properties\AssemblyVersion.cs</Link>
     </Compile>
+    <Compile Include="Configuration\FeatureProgressNotifierConfiguration.cs" />
     <Compile Include="Configuration\IFeatureConfiguration.cs" />
     <Compile Include="Configuration\LightBddConfiguration.cs" />
     <Compile Include="Configuration\NameFormatterConfiguration.cs" />
+    <Compile Include="Configuration\ScenarioProgressNotifierConfiguration.cs" />
     <Compile Include="Configuration\StepTypeConfiguration.cs" />
     <Compile Include="Core\Coordination\FeatureCoordinator.cs" />
     <Compile Include="Core\Coordination\IFeatureAggregator.cs" />
+    <Compile Include="Core\Execution\Implementation\FeatureBddRunner.cs" />
+    <Compile Include="Core\Notification\Implementation\ParallelProgressNotifier.cs" />
+    <Compile Include="Core\Notification\Implementation\ProgressState.cs" />
+    <Compile Include="IFeatureBddRunner.cs" />
     <Compile Include="Core\Execution\Implementation\ScenarioContext.cs" />
     <Compile Include="Core\Execution\Results\ExecutionTime.cs" />
     <Compile Include="Core\Extensibility\BddRunnerFactory.cs" />
@@ -53,6 +59,9 @@
     <Compile Include="Core\Execution\Implementation\ExecutionTimeWatch.cs" />
     <Compile Include="Core\Execution\Implementation\ScenarioExecutor.cs" />
     <Compile Include="Core\Extensibility\Implementation\StepTypeProcessor.cs" />
+    <Compile Include="Core\Notification\DelegatingScenarioProgressNotifier.cs" />
+    <Compile Include="Core\Notification\Implementation\ProgressManager.cs" />
+    <Compile Include="Core\Notification\IScenarioProgressNotifier.cs" />
     <Compile Include="Formatting\Parameters\FormatAttribute.cs" />
     <Compile Include="Formatting\Parameters\FormatBooleanAttribute.cs" />
     <Compile Include="Formatting\Parameters\FormatCollectionAttribute.cs" />
@@ -83,10 +92,10 @@
     <Compile Include="Core\Extensibility\StepDescriptor.cs" />
     <Compile Include="Core\Metadata\Implementation\StepNameInfo.cs" />
     <Compile Include="Core\Extensibility\BddRunnerExtensions.cs" />
-    <Compile Include="Core\Notification\DelegatingProgressNotifier.cs" />
-    <Compile Include="Core\Notification\IProgressNotifier.cs" />
+    <Compile Include="Core\Notification\DelegatingFeatureProgressNotifier.cs" />
+    <Compile Include="Core\Notification\IFeatureProgressNotifier.cs" />
     <Compile Include="Core\Notification\NoProgressNotifier.cs" />
-    <Compile Include="Core\Notification\ParallelProgressNotifier.cs" />
+    <Compile Include="Core\Notification\ParallelProgressNotifierProvider.cs" />
     <Compile Include="FeatureDescriptionAttribute.cs" />
     <Compile Include="IBddRunner.cs" />
     <Compile Include="LabelAttribute.cs" />
@@ -105,6 +114,7 @@
   <ItemGroup>
     <None Include="project.json" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

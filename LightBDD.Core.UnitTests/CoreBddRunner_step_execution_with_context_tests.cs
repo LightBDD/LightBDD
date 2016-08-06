@@ -14,11 +14,13 @@ namespace LightBDD.Core.UnitTests
     public class CoreBddRunner_step_execution_with_context_tests
     {
         private IBddRunner _runner;
+        private IFeatureBddRunner _feature;
 
         [SetUp]
         public void SetUp()
         {
-            _runner = TestableBddRunnerFactory.GetRunner(GetType());
+            _feature = TestableBddRunnerFactory.GetRunner(GetType());
+            _runner = _feature.GetRunner(this);
         }
 
         [Test]
@@ -28,7 +30,7 @@ namespace LightBDD.Core.UnitTests
                 .WithContext(() => { throw new InvalidOperationException("abc"); })
                 .TestScenario(Given_step_one));
 
-            var scenario = _runner.Integrate().GetFeatureResult().GetScenarios().Single();
+            var scenario = _feature.GetFeatureResult().GetScenarios().Single();
             Assert.That(scenario.Status, Is.EqualTo(ExecutionStatus.Failed));
             Assert.That(scenario.StatusDetails, Is.EqualTo("Context initialization failed: abc"));
         }

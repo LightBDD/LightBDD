@@ -1,5 +1,4 @@
 ﻿using System;
-using LightBDD.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Notification;
 
@@ -7,23 +6,18 @@ namespace LightBDD.Core.UnitTests.TestableIntegration
 {
     public class TestableBddRunnerFactory : BddRunnerFactory
     {
-        public TestableBddRunnerFactory() : base(new LightBddConfiguration())
+        public TestableBddRunnerFactory() : this(NoProgressNotifier.Default, fixture => NoProgressNotifier.Default)
         {
         }
 
-        public static IBddRunner GetRunner(Type featureType, IProgressNotifier progressNotifier)
+        public TestableBddRunnerFactory(IFeatureProgressNotifier featureProgressNotifier, Func<object, IScenarioProgressNotifier> scenarioProgressNotifier)
+            : base(new TestableIntegrationContext(featureProgressNotifier, scenarioProgressNotifier))
         {
-            return new TestableBddRunnerFactory().GetRunnerFor(featureType, () => progressNotifier).AsBddRunner();
         }
 
-        public static IBddRunner GetRunner(Type featureType)
+        public static IFeatureBddRunner GetRunner(Type featureType)
         {
-            return GetRunner(featureType, new NoProgressNotifier());
-        }
-
-        protected override IIntegrationContext CreateIntegrationContext(IProgressNotifier progressNotifier)
-        {
-            return new TestableIntegrationContext(progressNotifier);
+            return new TestableBddRunnerFactory().GetRunnerFor(featureType);
         }
     }
 }

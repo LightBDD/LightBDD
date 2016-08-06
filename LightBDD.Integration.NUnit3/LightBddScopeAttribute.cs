@@ -11,14 +11,26 @@ namespace LightBDD
     {
         public void BeforeTest(ITest test)
         {
-            var configuration = new LightBddConfiguration();
-            OnConfiguration(configuration);
-            NUnit3FeatureCoordinator.InstallSelf(configuration);
+            NUnit3FeatureCoordinator.InstallSelf(Configure());
             BeforeLightBddTests();
         }
 
-        protected virtual void OnConfiguration(LightBddConfiguration configuration)
+        protected virtual void OnConfigure(LightBddConfiguration configuration)
         {
+        }
+
+        private LightBddConfiguration Configure()
+        {
+            var configuration = new LightBddConfiguration();
+
+            configuration.Get<FeatureProgressNotifierConfiguration>()
+                .UpdateNotifier(NUnit3ProgressNotifier.CreateFeatureProgressNotifier());
+
+            configuration.Get<ScenarioProgressNotifierConfiguration>()
+                .UpdateNotifierProvider(NUnit3ProgressNotifier.CreateScenarioProgressNotifier);
+
+            OnConfigure(configuration);
+            return configuration;
         }
 
         protected virtual void BeforeLightBddTests()

@@ -3,11 +3,8 @@ using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Notification
 {
-    public interface IProgressNotifier
+    public interface IScenarioProgressNotifier
     {
-        void NotifyFeatureStart(IFeatureInfo feature);
-        void NotifyFeatureFinished(IFeatureResult feature);
-
         void NotifyScenarioStart(IScenarioInfo scenario);
         void NotifyScenarioFinished(IScenarioResult scenario);
 

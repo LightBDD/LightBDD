@@ -9,7 +9,8 @@ namespace LightBDD.Core.Extensibility
     {
         IMetadataProvider MetadataProvider { get; }
         INameFormatter NameFormatter { get; }
-        Func<Exception,ExecutionStatus> ExceptionToStatusMapper { get; }
-        IProgressNotifier ProgressNotifier { get; }
+        Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
+        IFeatureProgressNotifier FeatureProgressNotifier { get; }
+        Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider { get; }
     }
 }

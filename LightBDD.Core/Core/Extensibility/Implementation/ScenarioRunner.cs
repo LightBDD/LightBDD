@@ -15,7 +15,7 @@ namespace LightBDD.Core.Extensibility.Implementation
     {
         private readonly ScenarioExecutor _scenarioExecutor;
         private readonly IMetadataProvider _metadataProvider;
-        private readonly IProgressNotifier _progressNotifier;
+        private readonly IScenarioProgressNotifier _progressNotifier;
         private readonly Func<Exception, ExecutionStatus> _exceptionToStatusMapper;
         private IEnumerable<StepDescriptor> _steps = Enumerable.Empty<StepDescriptor>();
         private INameInfo _name;
@@ -23,7 +23,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         private string[] _categories = Arrays<string>.Empty();
         private Func<object> _contextProvider = () => null;
 
-        public ScenarioRunner(ScenarioExecutor scenarioExecutor, IMetadataProvider metadataProvider, IProgressNotifier progressNotifier, Func<Exception, ExecutionStatus> exceptionToStatusMapper)
+        public ScenarioRunner(ScenarioExecutor scenarioExecutor, IMetadataProvider metadataProvider, IScenarioProgressNotifier progressNotifier, Func<Exception, ExecutionStatus> exceptionToStatusMapper)
         {
             _scenarioExecutor = scenarioExecutor;
             _metadataProvider = metadataProvider;
@@ -97,7 +97,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         public Task RunAsynchronously()
         {
             Validate();
-            return _scenarioExecutor.Execute(new ScenarioInfo(_name, _labels, _categories), ProvideSteps, _contextProvider);
+            return _scenarioExecutor.Execute(new ScenarioInfo(_name, _labels, _categories), ProvideSteps, _contextProvider, _progressNotifier);
         }
 
         public void RunSynchronously()

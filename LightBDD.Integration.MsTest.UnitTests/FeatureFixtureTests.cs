@@ -1,6 +1,4 @@
-﻿using LightBDD.Core.Extensibility;
-using LightBDD.Core.Notification;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.Integration.MsTest.UnitTests
 {
@@ -10,16 +8,12 @@ namespace LightBDD.Integration.MsTest.UnitTests
         class TestableFeatureFixture : FeatureFixture
         {
             public IBddRunner GetRunner() => Runner;
-
-            public TestableFeatureFixture(IProgressNotifier notifier) : base(() => notifier) { }
         }
 
         [TestMethod]
-        public void Progress_notifier_should_be_customizable()
+        public void Runner_should_be_initialized()
         {
-            var expected = new NoProgressNotifier();
-            var actual = new TestableFeatureFixture(expected).GetRunner().Integrate().IntegrationContext.ProgressNotifier;
-            Assert.AreSame(expected, actual);
+            Assert.IsNotNull(new TestableFeatureFixture().GetRunner());
         }
     }
 }

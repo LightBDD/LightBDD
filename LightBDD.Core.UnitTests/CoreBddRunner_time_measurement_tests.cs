@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using LightBDD.Core.Execution.Results;
-using LightBDD.Core.Extensibility;
 using LightBDD.Core.UnitTests.TestableIntegration;
 using NUnit.Framework;
 
@@ -14,13 +13,15 @@ namespace LightBDD.Core.UnitTests
     {
         private IBddRunner _runner;
         private static readonly TimeSpan UtcNowClockPrecision = TimeSpan.FromMilliseconds(15);
+        private IFeatureBddRunner _feature;
 
         #region Setup/Teardown
 
         [SetUp]
         public void SetUp()
         {
-            _runner = TestableBddRunnerFactory.GetRunner(GetType());
+            _feature = TestableBddRunnerFactory.GetRunner(GetType());
+            _runner = _feature.GetRunner(this);
         }
 
         #endregion
@@ -47,7 +48,7 @@ namespace LightBDD.Core.UnitTests
             catch { }
             watch.Stop();
 
-            var result = _runner.Integrate().GetFeatureResult().GetScenarios().Single();
+            var result = _feature.GetFeatureResult().GetScenarios().Single();
 
             FormatTime("Measure time", new ExecutionTime(startTime, watch.Elapsed));
             FormatTime("Scenario time", result.ExecutionTime);
@@ -71,7 +72,7 @@ namespace LightBDD.Core.UnitTests
 
         private void AssertStepsExecutionTimesAreDoneInOrder()
         {
-            var scenario = _runner.Integrate().GetFeatureResult().GetScenarios().Single();
+            var scenario = _feature.GetFeatureResult().GetScenarios().Single();
             var steps = scenario.GetSteps().ToArray();
             for (int i = 0; i < steps.Length; ++i)
             {

@@ -1,7 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Execution.Results;
-using LightBDD.Core.Extensibility;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
 using LightBDD.Core.UnitTests.TestableIntegration;
@@ -25,7 +25,8 @@ namespace LightBDD.Core.UnitTests
         {
             var progressNotifier = new CapturingProgressNotifier();
 
-            var runner = TestableBddRunnerFactory.GetRunner(GetType(), progressNotifier);
+            var feature = new TestableBddRunnerFactory(progressNotifier, fixture => progressNotifier).GetRunnerFor(GetType());
+            var runner = feature.GetRunner(this);
             try
             {
                 runner.Test().TestScenario(
@@ -34,7 +35,7 @@ namespace LightBDD.Core.UnitTests
                     Then_step_three_should_throw_exception);
             }
             catch { }
-            runner.Integrate().Dispose();
+            feature.Dispose();
 
             string[] expected =
             {
@@ -61,7 +62,8 @@ namespace LightBDD.Core.UnitTests
         {
             var progressNotifier = new CapturingProgressNotifier();
 
-            var runner = TestableBddRunnerFactory.GetRunner(GetType(), progressNotifier);
+            var feature = new TestableBddRunnerFactory(progressNotifier, fixture => progressNotifier).GetRunnerFor(GetType());
+            var runner = feature.GetRunner(this);
             try
             {
                 runner.Test().TestScenario(
@@ -72,7 +74,7 @@ namespace LightBDD.Core.UnitTests
             catch
             {
             }
-            runner.Integrate().Dispose();
+            feature.Dispose();
 
             string[] expected =
             {
@@ -86,7 +88,31 @@ namespace LightBDD.Core.UnitTests
             Assert.That(progressNotifier.Notifications, Is.EqualTo(expected), "Expected:\r\n{0}\r\n\r\nGot:\r\n{1}\r\n\r\n", string.Join("\r\n", expected), string.Join("\r\n", progressNotifier.Notifications));
         }
 
-        class CapturingProgressNotifier : IProgressNotifier
+        [Test]
+        public void It_should_instantiate_new_scenario_progress_notifier_for_each_scenario()
+        {
+            var notifiers = new List<CapturingProgressNotifier>();
+
+            Func<object, IScenarioProgressNotifier> captureNotifierCreation = fixture =>
+            {
+                var notifier = new CapturingProgressNotifier();
+                notifiers.Add(notifier);
+                return notifier;
+            };
+
+            var runner = new TestableBddRunnerFactory(NoProgressNotifier.Default, captureNotifierCreation).GetRunnerFor(GetType()).GetRunner(this);
+
+            runner.Test().TestNamedScenario("scenario1", TestStep.CreateSync(Given_step_one));
+            runner.Test().TestNamedScenario("scenario2", TestStep.CreateSync(Given_step_one));
+            runner.Test().TestNamedScenario("scenario3", TestStep.CreateSync(Given_step_one));
+
+            Assert.That(notifiers.Count, Is.EqualTo(3));
+            Assert.That(notifiers[0].Notifications.Count(n => n.StartsWith("Scenario Start: scenario1")), Is.EqualTo(1), "scenario1");
+            Assert.That(notifiers[1].Notifications.Count(n => n.StartsWith("Scenario Start: scenario2")), Is.EqualTo(1), "scenario2");
+            Assert.That(notifiers[2].Notifications.Count(n => n.StartsWith("Scenario Start: scenario3")), Is.EqualTo(1), "scenario3");
+        }
+
+        class CapturingProgressNotifier : IScenarioProgressNotifier, IFeatureProgressNotifier
         {
             private readonly List<string> _notifications = new List<string>();
 

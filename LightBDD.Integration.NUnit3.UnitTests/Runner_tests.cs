@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution.Results;
-using LightBDD.Core.Extensibility;
 using NUnit.Framework;
 
 namespace LightBDD.Integration.NUnit3.UnitTests
@@ -28,7 +27,7 @@ namespace LightBDD.Integration.NUnit3.UnitTests
         {
             Runner.Basic().RunScenario(Some_step);
 
-            var result = Runner.Integrate().GetFeatureResult();
+            var result = FeatureFactory.GetRunnerFor(GetType()).GetFeatureResult();
             Assert.That(result.Info.Description, Is.EqualTo("desc"));
 
             var scenario = GetScenarioResult(nameof(It_should_capture_nunit_specific_attributes));
@@ -79,12 +78,6 @@ namespace LightBDD.Integration.NUnit3.UnitTests
             Assert.That(ex.Message, Is.EqualTo("Unable to locate Scenario name. Please ensure that scenario is executed from method with [Test] attribute and [assembly:Debuggable(true, true)] attribute is present in test assembly."));
         }
 
-        [Test]
-        public void Runner_should_use_NUnit3ProgressNotifier_by_default()
-        {
-            Assert.IsInstanceOf<NUnit3ProgressNotifier>(Runner.Integrate().IntegrationContext.ProgressNotifier);
-        }
-
         private void Inconclusive_step()
         {
             Assert.Inconclusive();
@@ -101,7 +94,7 @@ namespace LightBDD.Integration.NUnit3.UnitTests
 
         private IScenarioResult GetScenarioResult(string scenarioId)
         {
-            return Runner.Integrate()
+            return FeatureFactory.GetRunnerFor(GetType())
                 .GetFeatureResult()
                 .GetScenarios()
                 .Single(s => s.Info.Labels.Contains(scenarioId));

@@ -3,8 +3,10 @@ using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Notification
 {
-    public class NoProgressNotifier : IProgressNotifier
+    public class NoProgressNotifier : IFeatureProgressNotifier, IScenarioProgressNotifier
     {
+        public static NoProgressNotifier Default { get; } = new NoProgressNotifier();
+
         public void NotifyFeatureStart(IFeatureInfo feature) { }
         public void NotifyFeatureFinished(IFeatureResult feature) { }
         public void NotifyScenarioStart(IScenarioInfo scenario) { }

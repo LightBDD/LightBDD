@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using LightBDD.Core.Execution;
-using LightBDD.Core.Extensibility;
 using LightBDD.Core.UnitTests.TestableIntegration;
 using NUnit.Framework;
 
@@ -31,17 +30,19 @@ namespace LightBDD.Core.UnitTests
         [TestCase("\t\n\r ")]
         public void Comment_should_ignore_empty_comments(string comment)
         {
-            var runner = TestableBddRunnerFactory.GetRunner(GetType());
+            var feature = TestableBddRunnerFactory.GetRunner(GetType());
+            var runner = feature.GetRunner(this);
 
             runner.Test().TestScenario(TestStep.CreateAsync(Commented_step, comment));
 
-            Assert.That(runner.Integrate().GetFeatureResult().GetScenarios().Single().GetSteps().Single().Comments.ToArray(), Is.Empty);
+            Assert.That(feature.GetFeatureResult().GetScenarios().Single().GetSteps().Single().Comments.ToArray(), Is.Empty);
         }
 
         [Test]
         public void Comment_should_record_comment_in_currently_executed_step()
         {
-            var runner = TestableBddRunnerFactory.GetRunner(GetType());
+            var feature = TestableBddRunnerFactory.GetRunner(GetType());
+            var runner = feature.GetRunner(this);
 
             var comment = "abc";
             var otherComment = "def";
@@ -50,7 +51,7 @@ namespace LightBDD.Core.UnitTests
                 TestStep.CreateAsync(Commented_step, comment),
                 TestStep.CreateAsync(Commented_step, otherComment));
 
-            var steps = runner.Integrate().GetFeatureResult().GetScenarios().Single().GetSteps().ToArray();
+            var steps = feature.GetFeatureResult().GetScenarios().Single().GetSteps().ToArray();
 
             Assert.That(steps[0].Comments.ToArray(), Is.EqualTo(new[] { comment, comment }));
             Assert.That(steps[1].Comments.ToArray(), Is.EqualTo(new[] { otherComment, otherComment }));

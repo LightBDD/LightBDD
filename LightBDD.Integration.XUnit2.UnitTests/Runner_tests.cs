@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution.Results;
-using LightBDD.Core.Extensibility;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -59,12 +58,6 @@ namespace LightBDD.Integration.XUnit2.UnitTests
                 ex.Result.Message);
         }
 
-        [Fact]
-        public void Runner_should_use_XUnit2ProgressNotifier_by_default()
-        {
-            Assert.Equal(typeof(XUnit2ProgressNotifier), Runner.Integrate().IntegrationContext.ProgressNotifier.GetType());
-        }
-
         private void Ignored_step()
         {
             StepExecution.Current.IgnoreScenario("reason");
@@ -76,7 +69,7 @@ namespace LightBDD.Integration.XUnit2.UnitTests
 
         private IScenarioResult GetScenarioResult(string scenarioId)
         {
-            return Runner.Integrate()
+            return FeatureFactory.GetRunnerFor(GetType())
                 .GetFeatureResult()
                 .GetScenarios()
                 .Single(s => s.Info.Labels.Contains(scenarioId));

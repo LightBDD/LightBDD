@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FeatureFactory.cs" />
     <Compile Include="FeatureFixture.cs" />
     <Compile Include="Integration\MsTest\MsTestBddRunnerFactory.cs" />
     <Compile Include="Integration\MsTest\MsTestIntegrationContext.cs" />

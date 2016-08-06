@@ -11,9 +11,7 @@ namespace LightBDD
     {
         internal void SetUp()
         {
-            var configuration = new LightBddConfiguration();
-            OnConfiguration(configuration);
-            XUnit2FeatureCoordinator.InstallSelf(configuration);
+            XUnit2FeatureCoordinator.InstallSelf(Configure());
             BeforeLightBddTests();
         }
 
@@ -23,7 +21,7 @@ namespace LightBDD
             AfterLightBddTests();
         }
 
-        protected virtual void OnConfiguration(LightBddConfiguration configuration)
+        protected virtual void OnConfigure(LightBddConfiguration configuration)
         {
         }
 
@@ -33,6 +31,20 @@ namespace LightBDD
 
         protected virtual void AfterLightBddTests()
         {
+        }
+
+        private LightBddConfiguration Configure()
+        {
+            var configuration = new LightBddConfiguration();
+
+            configuration.Get<FeatureProgressNotifierConfiguration>()
+                .UpdateNotifier(XUnit2ProgressNotifier.CreateFeatureProgressNotifier());
+
+            configuration.Get<ScenarioProgressNotifierConfiguration>()
+                .UpdateNotifierProvider<ITestOutputProvider>(fixture => XUnit2ProgressNotifier.CreateScenarioProgressNotifier(fixture.TestOutput));
+
+            OnConfigure(configuration);
+            return configuration;
         }
     }
 }

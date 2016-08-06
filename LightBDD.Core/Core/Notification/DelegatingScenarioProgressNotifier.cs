@@ -1,29 +1,17 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Notification
 {
     [DebuggerStepThrough]
-    public class DelegatingProgressNotifier : IProgressNotifier
+    public class DelegatingScenarioProgressNotifier : IScenarioProgressNotifier
     {
-        private readonly IProgressNotifier[] _notifiers;
+        private readonly IScenarioProgressNotifier[] _notifiers;
 
-        public DelegatingProgressNotifier(params IProgressNotifier[] notifiers)
+        public DelegatingScenarioProgressNotifier(params IScenarioProgressNotifier[] notifiers)
         {
             _notifiers = notifiers;
-        }
-
-        public void NotifyFeatureStart(IFeatureInfo feature)
-        {
-            foreach (var notifier in _notifiers)
-                notifier.NotifyFeatureStart(feature);
-        }
-
-        public void NotifyFeatureFinished(IFeatureResult feature)
-        {
-            foreach (var notifier in _notifiers)
-                notifier.NotifyFeatureFinished(feature);
         }
 
         public void NotifyScenarioStart(IScenarioInfo scenario)

@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution.Results;
-using LightBDD.Core.Extensibility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.Integration.MsTest.UnitTests
@@ -71,12 +70,6 @@ namespace LightBDD.Integration.MsTest.UnitTests
                     ex.Message);
         }
 
-        [TestMethod]
-        public void Runner_should_use_MsTestProgressNotifier_by_default()
-        {
-            Assert.IsInstanceOfType(Runner.Integrate().IntegrationContext.ProgressNotifier, typeof(MsTestProgressNotifier));
-        }
-
         private void Inconclusive_step()
         {
             Assert.Inconclusive();
@@ -88,7 +81,7 @@ namespace LightBDD.Integration.MsTest.UnitTests
 
         private IScenarioResult GetScenarioResult(string scenarioId)
         {
-            return Runner.Integrate()
+            return FeatureFactory.GetRunnerFor(GetType())
                 .GetFeatureResult()
                 .GetScenarios()
                 .Single(s => s.Info.Labels.Contains(scenarioId));

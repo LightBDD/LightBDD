@@ -11,11 +11,13 @@ namespace LightBDD.Core.UnitTests
     {
         private IBddRunner _runner;
         private List<string> _executedSteps;
+        private IFeatureBddRunner _feature;
 
         [SetUp]
         public void SetUp()
         {
-            _runner = TestableBddRunnerFactory.GetRunner(GetType());
+            _feature = TestableBddRunnerFactory.GetRunner(GetType());
+            _runner = _feature.GetRunner(this);
             _executedSteps = new List<string>();
         }
 
@@ -44,17 +46,24 @@ namespace LightBDD.Core.UnitTests
         }
 
         [Test]
-        public void Disposed_runner_should_not_allow_creating_new_scenarios()
+        public void Disposed_feature_should_not_allow_creating_new_scenarios()
         {
-            _runner.Integrate().Dispose();
+            _feature.Dispose();
             Assert.Throws<ObjectDisposedException>(() => _runner.Integrate().NewScenario());
+        }
+
+        [Test]
+        public void Disposed_feature_should_not_allow_creating_new_runners()
+        {
+            _feature.Dispose();
+            Assert.Throws<ObjectDisposedException>(() => _feature.GetRunner(this));
         }
 
         [Test]
         public void Disposed_runner_should_allow_retrieving_results()
         {
-            _runner.Integrate().Dispose();
-            Assert.DoesNotThrow(() => _runner.Integrate().GetFeatureResult());
+            _feature.Dispose();
+            Assert.DoesNotThrow(() => _feature.GetFeatureResult());
         }
 
         private void Given_step_one() { _executedSteps.Add("Given_step_one"); }

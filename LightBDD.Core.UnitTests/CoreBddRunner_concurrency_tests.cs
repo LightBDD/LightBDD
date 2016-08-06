@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using LightBDD.Core.Extensibility;
 using LightBDD.Core.UnitTests.TestableIntegration;
 using NUnit.Framework;
 using Steps = LightBDD.Core.UnitTests.Helpers.Steps;
@@ -11,11 +10,13 @@ namespace LightBDD.Core.UnitTests
     {
         private readonly int _elementsCount = 1500;
         private IBddRunner _runner;
+        private IFeatureBddRunner _feature;
 
         [SetUp]
         public void SetUp()
         {
-            _runner = TestableBddRunnerFactory.GetRunner(GetType());
+            _feature = TestableBddRunnerFactory.GetRunner(GetType());
+            _runner = _feature.GetRunner(this);
         }
 
         [Test]
@@ -26,7 +27,7 @@ namespace LightBDD.Core.UnitTests
                 .AsParallel()
                 .ForAll(Parallel_scenario);
 
-            Assert.That(_runner.Integrate().GetFeatureResult().GetScenarios().Count(), Is.EqualTo(_elementsCount));
+            Assert.That(_feature.GetFeatureResult().GetScenarios().Count(), Is.EqualTo(_elementsCount));
 
             for (int i = 0; i < _elementsCount; ++i)
             {
@@ -39,7 +40,7 @@ namespace LightBDD.Core.UnitTests
                 };
                 var expectedComments = new[] { CommentReason, $"{i}" };
 
-                var scenario = _runner.Integrate().GetFeatureResult().GetScenarios().FirstOrDefault(s => s.Info.Name.ToString() == expectedScenarioName);
+                var scenario = _feature.GetFeatureResult().GetScenarios().FirstOrDefault(s => s.Info.Name.ToString() == expectedScenarioName);
                 Assert.That(scenario, Is.Not.Null, "Missing scenario: {0}", i);
 
                 Assert.That(scenario.GetSteps().Select(s => s.Info.Name.ToString()).ToArray(), Is.EqualTo(expectedSteps), $"In scenario {i}");

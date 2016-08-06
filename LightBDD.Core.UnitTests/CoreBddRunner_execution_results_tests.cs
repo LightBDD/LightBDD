@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using LightBDD.Core.Extensibility;
 using LightBDD.Core.UnitTests.TestableIntegration;
 using NUnit.Framework;
 
@@ -12,11 +11,13 @@ namespace LightBDD.Core.UnitTests
     public class CoreBddRunner_execution_results_tests
     {
         private IBddRunner _runner;
+        private IFeatureBddRunner _feature;
 
         [SetUp]
         public void SetUp()
         {
-            _runner = TestableBddRunnerFactory.GetRunner(GetType());
+            _feature = TestableBddRunnerFactory.GetRunner(GetType());
+            _runner = _feature.GetRunner(this);
         }
 
         [Test]
@@ -33,7 +34,7 @@ namespace LightBDD.Core.UnitTests
             }
             catch { }
 
-            var featureResult = _runner.Integrate().GetFeatureResult();
+            var featureResult = _feature.GetFeatureResult();
             Assert.That(featureResult.ToString(), Is.EqualTo("[Ticket-1][Ticket-2] CoreBddRunner execution results tests"));
 
             var scenarioResult = featureResult.GetScenarios().Single();

@@ -16,11 +16,13 @@ namespace LightBDD.Core.UnitTests
     public class CoreBddRunner_parameterized_step_metadata_collection_tests : Steps
     {
         private IBddRunner _runner;
+        private IFeatureBddRunner _feature;
 
         [SetUp]
         public void SetUp()
         {
-            _runner = TestableBddRunnerFactory.GetRunner(GetType());
+            _feature = TestableBddRunnerFactory.GetRunner(GetType());
+            _runner = _feature.GetRunner(this);
         }
 
         [Test]
@@ -31,7 +33,7 @@ namespace LightBDD.Core.UnitTests
                 TestStep.CreateAsync(When_step_with_parameter, 123),
                 TestStep.CreateAsync(Then_step_with_parameter, 3.15));
 
-            var steps = _runner.Integrate().GetFeatureResult().GetScenarios().Single().GetSteps();
+            var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
                 new StepResultExpectation(1, 3, "GIVEN step with parameter \"abc\"", ExecutionStatus.Passed),
                 new StepResultExpectation(2, 3, "WHEN step with parameter \"123\"", ExecutionStatus.Passed),
@@ -47,7 +49,7 @@ namespace LightBDD.Core.UnitTests
                 TestStep.CreateAsync(Method_with_inserted_parameter_param_in_name, "abc"),
                 TestStep.CreateAsync(Method_with_appended_parameter_at_the_end_of_name, "abc"));
 
-            var steps = _runner.Integrate().GetFeatureResult().GetScenarios().Single().GetSteps();
+            var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
                 new StepResultExpectation(1, 3, "Method with replaced parameter \"abc\" in name", ExecutionStatus.Passed),
                 new StepResultExpectation(2, 3, "Method with inserted parameter param \"abc\" in name", ExecutionStatus.Passed),
@@ -63,7 +65,7 @@ namespace LightBDD.Core.UnitTests
                 TestStep.CreateAsync(When_step_with_parameter, () => 1),
                 TestStep.CreateAsync(Then_step_with_parameter, () => 3.14));
 
-            var steps = _runner.Integrate().GetFeatureResult().GetScenarios().Single().GetSteps();
+            var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
                 new StepResultExpectation(1, 3, "GIVEN step with parameter \"abc\"", ExecutionStatus.Passed),
                 new StepResultExpectation(2, 3, "WHEN step with parameter \"1\"", ExecutionStatus.Passed),
@@ -84,7 +86,7 @@ namespace LightBDD.Core.UnitTests
 
             Assert.That(ex.Message, Is.EqualTo(ParameterExceptionReason));
 
-            var steps = _runner.Integrate().GetFeatureResult().GetScenarios().Single().GetSteps();
+            var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
                 new StepResultExpectation(1, 3, "GIVEN step with parameter \"def\"", ExecutionStatus.Passed),
                 new StepResultExpectation(2, 3, "WHEN step with parameter \"<?>\"", ExecutionStatus.Failed, ParameterExceptionReason),
@@ -105,7 +107,7 @@ namespace LightBDD.Core.UnitTests
 
             Assert.That(ex.Message, Is.EqualTo(ExceptionReason));
 
-            var steps = _runner.Integrate().GetFeatureResult().GetScenarios().Single().GetSteps();
+            var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
                 new StepResultExpectation(1, 3, "GIVEN step with parameter \"abc\"", ExecutionStatus.Passed),
                 new StepResultExpectation(2, 3, "WHEN step with parameter \"5\" throwing exception", ExecutionStatus.Failed, ExceptionReason),
@@ -126,7 +128,7 @@ namespace LightBDD.Core.UnitTests
 
             Assert.That(ex.Message, Is.EqualTo(ParameterExceptionReason));
 
-            var steps = _runner.Integrate().GetFeatureResult().GetScenarios().Single().GetSteps();
+            var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
                 new StepResultExpectation(1, 3, "GIVEN step with parameter \"def\"", ExecutionStatus.Passed),
                 new StepResultExpectation(2, 3, "WHEN step with parameter \"<?>\"", ExecutionStatus.Failed, ParameterExceptionReason),
@@ -138,7 +140,7 @@ namespace LightBDD.Core.UnitTests
         public void It_should_capture_step_initialization_issues_in_scenario_execution_results()
         {
             Assert.Throws<InvalidOperationException>(() => _runner.Test().TestScenario(GetFailingStepDescriptors("some reason")));
-            var result = _runner.Integrate().GetFeatureResult().GetScenarios().Single();
+            var result = _feature.GetFeatureResult().GetScenarios().Single();
             Assert.That(result.Status, Is.EqualTo(ExecutionStatus.Failed));
             Assert.That(result.StatusDetails, Is.EqualTo("Step initialization failed: some reason"));
         }
@@ -151,7 +153,7 @@ namespace LightBDD.Core.UnitTests
             var ex = Assert.Throws<InvalidOperationException>(() => _runner.Test().TestScenario(TestStep.CreateAsync(Method_with_wrong_formatter_param, () => "abc")));
             Assert.That(ex.Message, Is.EqualTo(expectedErrorMessage));
 
-            var result = _runner.Integrate().GetFeatureResult().GetScenarios().Single();
+            var result = _feature.GetFeatureResult().GetScenarios().Single();
             Assert.That(result.Status, Is.EqualTo(ExecutionStatus.Failed));
             Assert.That(result.StatusDetails, Is.EqualTo("Step 1: " + expectedErrorMessage));
 

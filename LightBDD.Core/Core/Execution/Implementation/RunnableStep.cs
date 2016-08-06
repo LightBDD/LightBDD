@@ -15,11 +15,11 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly Func<object, object[], Task> _stepInvocation;
         private readonly StepParameter[] _parameters;
         private readonly Func<Exception, ExecutionStatus> _exceptionToStatusMapper;
-        private readonly IProgressNotifier _progressNotifier;
+        private readonly IScenarioProgressNotifier _progressNotifier;
         private readonly StepResult _result;
         public IStepResult Result => _result;
 
-        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task> stepInvocation, StepParameter[] parameters, Func<Exception, ExecutionStatus> exceptionToStatusMapper, IProgressNotifier progressNotifier)
+        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task> stepInvocation, StepParameter[] parameters, Func<Exception, ExecutionStatus> exceptionToStatusMapper, IScenarioProgressNotifier progressNotifier)
         {
             _result = new StepResult(stepInfo);
             _stepInvocation = stepInvocation;

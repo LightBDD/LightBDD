@@ -13,14 +13,16 @@ namespace LightBDD.Integration.NUnit3
         public INameFormatter NameFormatter { get; }
         public IMetadataProvider MetadataProvider { get; }
         public Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
-        public IProgressNotifier ProgressNotifier { get; }
+        public IFeatureProgressNotifier FeatureProgressNotifier { get; }
+        public Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider { get; }
 
-        public NUnit3IntegrationContext(LightBddConfiguration configuration, IProgressNotifier progressNotifier)
+        public NUnit3IntegrationContext(LightBddConfiguration configuration)
         {
             NameFormatter = configuration.Get<NameFormatterConfiguration>().Formatter;
             MetadataProvider = new NUnit3MetadataProvider(NameFormatter, configuration.Get<StepTypeConfiguration>());
             ExceptionToStatusMapper = ex => (ex is IgnoreException || ex is InconclusiveException) ? ExecutionStatus.Ignored : ExecutionStatus.Failed;
-            ProgressNotifier = progressNotifier;
+            FeatureProgressNotifier = configuration.Get<FeatureProgressNotifierConfiguration>().Notifier;
+            ScenarioProgressNotifierProvider = configuration.Get<ScenarioProgressNotifierConfiguration>().NotifierProvider;
         }
     }
 }

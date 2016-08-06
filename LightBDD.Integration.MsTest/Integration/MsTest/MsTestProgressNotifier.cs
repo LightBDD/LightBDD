@@ -3,16 +3,16 @@ using LightBDD.Core.Notification;
 
 namespace LightBDD.Integration.MsTest
 {
-    public class MsTestProgressNotifier : ParallelProgressNotifier
+    public class MsTestProgressNotifier
     {
-        protected override void Notify(string message)
+        public static IFeatureProgressNotifier CreateFeatureProgressNotifier()
         {
-            Console.WriteLine(message);
+            return ParallelProgressNotifierProvider.Default.CreateFeatureProgressNotifier(Console.WriteLine);
         }
 
-        public MsTestProgressNotifier(ProgressManager progressManager)
-            : base(progressManager)
+        public static IScenarioProgressNotifier CreateScenarioProgressNotifier()
         {
+            return ParallelProgressNotifierProvider.Default.CreateScenarioProgressNotifier(Console.WriteLine);
         }
     }
 }

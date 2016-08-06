@@ -13,14 +13,16 @@ namespace LightBDD.Integration.XUnit2
         public INameFormatter NameFormatter { get; }
         public IMetadataProvider MetadataProvider { get; }
         public Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
-        public IProgressNotifier ProgressNotifier { get; }
+        public IFeatureProgressNotifier FeatureProgressNotifier { get; }
+        public Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider { get; }
 
-        public XUnit2IntegrationContext(LightBddConfiguration configuration, IProgressNotifier progressNotifier)
+        public XUnit2IntegrationContext(LightBddConfiguration configuration)
         {
             NameFormatter = configuration.Get<NameFormatterConfiguration>().Formatter;
             MetadataProvider = new XUnit2MetadataProvider(NameFormatter, configuration.Get<StepTypeConfiguration>());
             ExceptionToStatusMapper = ex => (ex is IgnoreException) ? ExecutionStatus.Ignored : ExecutionStatus.Failed;
-            ProgressNotifier = progressNotifier;
+            FeatureProgressNotifier = configuration.Get<FeatureProgressNotifierConfiguration>().Notifier;
+            ScenarioProgressNotifierProvider = configuration.Get<ScenarioProgressNotifierConfiguration>().NotifierProvider;
         }
     }
 }

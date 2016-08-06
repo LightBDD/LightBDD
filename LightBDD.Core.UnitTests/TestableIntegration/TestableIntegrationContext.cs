@@ -8,16 +8,19 @@ namespace LightBDD.Core.UnitTests.TestableIntegration
 {
     public class TestableIntegrationContext : IIntegrationContext
     {
-        public TestableIntegrationContext(IProgressNotifier progressNotifier)
+        public TestableIntegrationContext(IFeatureProgressNotifier featureProgressNotifier, Func<object,IScenarioProgressNotifier> scenarioProgressNotifier)
         {
-            ProgressNotifier = progressNotifier;
             NameFormatter = new DefaultNameFormatter();
             MetadataProvider = new TestMetadataProvider(NameFormatter);
             ExceptionToStatusMapper = ex => ex is CustomIgnoreException ? ExecutionStatus.Ignored : ExecutionStatus.Failed;
+            FeatureProgressNotifier = featureProgressNotifier;
+            ScenarioProgressNotifierProvider = scenarioProgressNotifier;
         }
+
         public IMetadataProvider MetadataProvider { get; }
         public INameFormatter NameFormatter { get; }
         public Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
-        public IProgressNotifier ProgressNotifier { get; }
+        public IFeatureProgressNotifier FeatureProgressNotifier { get; }
+        public Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider { get; }
     }
 }

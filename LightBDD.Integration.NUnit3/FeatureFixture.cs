@@ -1,30 +1,22 @@
-﻿using System;
-using LightBDD.Core.Extensibility;
-using LightBDD.Core.Notification;
-using LightBDD.Integration.NUnit3;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace LightBDD
 {
     public class FeatureFixture
     {
-        private readonly ICoreBddRunner _runner;
-        protected IBddRunner Runner => _runner.AsBddRunner();
+        private readonly IFeatureBddRunner _featureBddRunner;
+        protected IBddRunner Runner { get; }
 
-        protected FeatureFixture(Func<IProgressNotifier> progressNotifierCreator = null)
+        protected FeatureFixture()
         {
-            _runner = NUnit3FeatureCoordinator.GetInstance().RunnerFactory.GetRunnerFor(GetType(), progressNotifierCreator ?? CreateProgressNotifier);
+            _featureBddRunner = FeatureFactory.GetRunnerFor(GetType());
+            Runner = _featureBddRunner.GetRunner(this);
         }
 
         [OneTimeTearDown]
         public void FeatureFixtureTearDown()
         {
-            _runner.Dispose();
-        }
-
-        private static IProgressNotifier CreateProgressNotifier()
-        {
-            return new NUnit3ProgressNotifier(ParallelProgressNotifier.ProgressManager.Instance);
+            _featureBddRunner.Dispose();
         }
     }
 }

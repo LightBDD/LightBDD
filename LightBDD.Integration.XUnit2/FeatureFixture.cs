@@ -1,24 +1,16 @@
-﻿using System;
-using LightBDD.Core.Notification;
-using LightBDD.Integration.XUnit2;
-using Xunit.Abstractions;
+﻿using Xunit.Abstractions;
 
 namespace LightBDD
 {
-    public class FeatureFixture
+    public class FeatureFixture : ITestOutputProvider
     {
-        protected ITestOutputHelper Output { get; }
+        public ITestOutputHelper TestOutput { get; }
         protected IBddRunner Runner { get; }
 
-        protected FeatureFixture(ITestOutputHelper output, Func<IProgressNotifier> progressNotifierCreator = null)
+        protected FeatureFixture(ITestOutputHelper output)
         {
-            Output = output;
-            Runner = XUnit2FeatureCoordinator.GetInstance().RunnerFactory.GetRunnerFor(GetType(), progressNotifierCreator ?? CreateProgressNotifier).AsBddRunner();
-        }
-
-        private IProgressNotifier CreateProgressNotifier()
-        {
-            return new XUnit2ProgressNotifier(Output, ParallelProgressNotifier.ProgressManager.Instance);
+            TestOutput = output;
+            Runner = FeatureFactory.GetRunnerFor(GetType()).GetRunner(this);
         }
     }
 }

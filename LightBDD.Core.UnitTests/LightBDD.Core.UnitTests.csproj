@@ -55,7 +55,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\FeatureProgressNotifierConfiguration_tests.cs" />
     <Compile Include="Configuration\NameFormatterConfiguration_tests.cs" />
+    <Compile Include="Configuration\ScenarioProgressNotifierConfiguration_tests.cs" />
     <Compile Include="Configuration\StepTypeConfiguration_tests.cs" />
     <Compile Include="CoreBddRunner_asynchronous_step_execution_tests.cs" />
     <Compile Include="CoreBddRunner_concurrency_tests.cs" />
@@ -86,7 +88,8 @@
     <Compile Include="Formatting\DefaultNameFormatter_tests.cs" />
     <Compile Include="Helpers\ParameterInfoHelper.cs" />
     <Compile Include="Helpers\Steps.cs" />
-    <Compile Include="Notification\DelegatingProgressNotifier_tests.cs" />
+    <Compile Include="Notification\DelegatingFeatureProgressNotifier_tests.cs" />
+    <Compile Include="Notification\DelegatingScenarioProgressNotifier_tests.cs" />
     <Compile Include="Notification\ParallelProgressNotifier_tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StepExecution_tests.cs" />

@@ -3,16 +3,16 @@ using NUnit.Framework;
 
 namespace LightBDD.Integration.NUnit3
 {
-    public class NUnit3ProgressNotifier : ParallelProgressNotifier
+    public class NUnit3ProgressNotifier
     {
-        protected override void Notify(string message)
+        public static IFeatureProgressNotifier CreateFeatureProgressNotifier()
         {
-            TestContext.WriteLine(message);
+            return ParallelProgressNotifierProvider.Default.CreateFeatureProgressNotifier(TestContext.WriteLine);
         }
 
-        public NUnit3ProgressNotifier(ProgressManager progressManager)
-            : base(progressManager)
+        public static IScenarioProgressNotifier CreateScenarioProgressNotifier()
         {
+            return ParallelProgressNotifierProvider.Default.CreateScenarioProgressNotifier(TestContext.WriteLine);
         }
     }
 }

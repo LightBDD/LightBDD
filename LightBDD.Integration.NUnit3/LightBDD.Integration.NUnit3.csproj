@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FeatureFactory.cs" />
     <Compile Include="FeatureFixture.cs" />
     <Compile Include="Integration\NUnit3\NUnit3BddRunnerFactory.cs" />
     <Compile Include="Integration\NUnit3\NUnit3FeatureCoordinator.cs" />

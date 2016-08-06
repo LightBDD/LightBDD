@@ -20,18 +20,20 @@ namespace LightBDD.Core.UnitTests
         [ScenarioCategory("standard local category")]
         public void It_should_collect_custom_categories()
         {
-            IBddRunner runner = TestableBddRunnerFactory.GetRunner(GetType());
+            var feature = TestableBddRunnerFactory.GetRunner(GetType());
+            var runner = feature.GetRunner(this);
             runner.Test().TestScenario(Some_step);
-            var scenario = runner.Integrate().GetFeatureResult().GetScenarios().Single();
+            var scenario = feature.GetFeatureResult().GetScenarios().Single();
             Assert.That(scenario.Info.Categories, Is.EqualTo(new[] { "some global category", "some local category", "standard global category", "standard local category" }));
         }
 
         [Test]
         public void It_should_collect_custom_feature_description()
         {
-            IBddRunner runner = TestableBddRunnerFactory.GetRunner(GetType());
+            var feature = TestableBddRunnerFactory.GetRunner(GetType());
+            var runner = feature.GetRunner(this);
             runner.Test().TestScenario(Some_step);
-            Assert.That(runner.Integrate().GetFeatureResult().Info.Description, Is.EqualTo("some description"));
+            Assert.That(feature.GetFeatureResult().Info.Description, Is.EqualTo("some description"));
         }
 
         [CustomFeatureDescription("custom description")]
@@ -43,21 +45,23 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_collect_standard_feature_description_if_both_are_specified()
         {
-            IBddRunner runner = TestableBddRunnerFactory.GetRunner(typeof(Feature_with_two_descriptions));
+            var feature = TestableBddRunnerFactory.GetRunner(typeof(Feature_with_two_descriptions));
+            var runner = feature.GetRunner(new Feature_with_two_descriptions());
             runner.Test().TestScenario(Some_step);
-            Assert.That(runner.Integrate().GetFeatureResult().Info.Description, Is.EqualTo("standard description"));
+            Assert.That(feature.GetFeatureResult().Info.Description, Is.EqualTo("standard description"));
         }
 
         [Test]
         public void It_should_capture_step_status_with_custom_exception_mapping()
         {
-            IBddRunner runner = TestableBddRunnerFactory.GetRunner(GetType());
+            var feature = TestableBddRunnerFactory.GetRunner(GetType());
+            var runner = feature.GetRunner(this);
             Assert.Throws<CustomIgnoreException>(() => runner.Test().TestScenario(
                 Given_step_one,
                 When_step_two_ignoring_scenario,
                 Then_step_three));
 
-            var steps = runner.Integrate().GetFeatureResult().GetScenarios().Single().GetSteps();
+            var steps = feature.GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
                 new StepResultExpectation(1, 3, "GIVEN step one", ExecutionStatus.Passed),
                 new StepResultExpectation(2, 3, "WHEN step two ignoring scenario", ExecutionStatus.Ignored, IgnoreReason),
@@ -69,7 +73,7 @@ namespace LightBDD.Core.UnitTests
         [TestCase(" \t\r\n")]
         public void It_should_not_allow_to_run_scenarios_without_name(string name)
         {
-            var exception = Assert.Throws<ArgumentException>(() => TestableBddRunnerFactory.GetRunner(GetType()).Integrate().NewScenario().WithName(name));
+            var exception = Assert.Throws<ArgumentException>(() => TestableBddRunnerFactory.GetRunner(GetType()).GetRunner(this).Integrate().NewScenario().WithName(name));
             Assert.That(exception.Message, Does.StartWith("Unable to create scenario without name"));
         }
     }

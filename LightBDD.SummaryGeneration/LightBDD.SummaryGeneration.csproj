@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C5D8C75E-8E3B-479F-9207-5ABFC884B97F}</ProjectGuid>
+    <ProjectGuid>{AB40EAD7-A5C3-4C3B-B7C9-EEB5D5E668CB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LightBDD.SummaryGeneration</RootNamespace>

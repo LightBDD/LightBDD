@@ -10,20 +10,13 @@ namespace LightBDD.Core.Execution.Implementation
 {
     internal class ScenarioExecutor
     {
-        private readonly IProgressNotifier _progressNotifier;
-
-        public ScenarioExecutor(IProgressNotifier progressNotifier)
-        {
-            _progressNotifier = progressNotifier;
-        }
-
-        public async Task Execute(ScenarioInfo scenario, Func<RunnableStep[]> stepsProvider, Func<object> contextProvider)
+        public async Task Execute(ScenarioInfo scenario, Func<RunnableStep[]> stepsProvider, Func<object> contextProvider, IScenarioProgressNotifier progressNotifier)
         {
             var scenarioContext = new ScenarioContext();
             try
             {
                 ScenarioContext.Current = scenarioContext;
-                await ExecuteWithinSynchronizationContext(scenario, stepsProvider, scenarioContext, contextProvider);
+                await ExecuteWithinSynchronizationContext(scenario, stepsProvider, scenarioContext, contextProvider,progressNotifier);
             }
             finally
             {
@@ -31,9 +24,9 @@ namespace LightBDD.Core.Execution.Implementation
             }
         }
 
-        private async Task ExecuteWithinSynchronizationContext(ScenarioInfo scenario, Func<RunnableStep[]> stepsProvider, ScenarioContext scenarioContext, Func<object> contextProvider)
+        private async Task ExecuteWithinSynchronizationContext(ScenarioInfo scenario, Func<RunnableStep[]> stepsProvider, ScenarioContext scenarioContext, Func<object> contextProvider, IScenarioProgressNotifier progressNotifier)
         {
-            _progressNotifier.NotifyScenarioStart(scenario);
+            progressNotifier.NotifyScenarioStart(scenario);
 
             var watch = ExecutionTimeWatch.StartNew();
             try
@@ -52,7 +45,7 @@ namespace LightBDD.Core.Execution.Implementation
                     watch.GetTime(),
                     scenarioContext.ScenarioInitializationException);
 
-                _progressNotifier.NotifyScenarioFinished(result);
+                progressNotifier.NotifyScenarioFinished(result);
                 ScenarioExecuted?.Invoke(result);
             }
         }

@@ -1,6 +1,4 @@
-﻿using LightBDD.Core.Extensibility;
-using LightBDD.Core.Notification;
-using Xunit;
+﻿using Xunit;
 using Xunit.Sdk;
 
 namespace LightBDD.Integration.XUnit2.UnitTests
@@ -11,15 +9,13 @@ namespace LightBDD.Integration.XUnit2.UnitTests
         {
             public IBddRunner GetRunner() => Runner;
 
-            public TestableFeatureFixture(IProgressNotifier notifier) : base(new TestOutputHelper(), () => notifier) { }
+            public TestableFeatureFixture() : base(new TestOutputHelper()) { }
         }
 
         [Fact]
-        public void Progress_notifier_should_be_customizable()
+        public void Runner_should_be_initialized()
         {
-            var expected = new NoProgressNotifier();
-            var actual = new TestableFeatureFixture(expected).GetRunner().Integrate().IntegrationContext.ProgressNotifier;
-            Assert.Same(expected, actual);
+            Assert.NotNull(new TestableFeatureFixture().GetRunner());
         }
     }
 }

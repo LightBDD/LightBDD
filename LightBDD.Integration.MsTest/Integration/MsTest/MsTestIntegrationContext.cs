@@ -13,14 +13,16 @@ namespace LightBDD.Integration.MsTest
         public INameFormatter NameFormatter { get; }
         public IMetadataProvider MetadataProvider { get; }
         public Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
-        public IProgressNotifier ProgressNotifier { get; }
+        public IFeatureProgressNotifier FeatureProgressNotifier { get; }
+        public Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider { get; }
 
-        public MsTestIntegrationContext(LightBddConfiguration configuration, IProgressNotifier progressNotifier)
+        public MsTestIntegrationContext(LightBddConfiguration configuration)
         {
             NameFormatter = configuration.Get<NameFormatterConfiguration>().Formatter;
             MetadataProvider = new MsTestMetadataProvider(NameFormatter, configuration.Get<StepTypeConfiguration>());
             ExceptionToStatusMapper = ex => (ex is AssertInconclusiveException) ? ExecutionStatus.Ignored : ExecutionStatus.Failed;
-            ProgressNotifier = progressNotifier;
+            FeatureProgressNotifier = configuration.Get<FeatureProgressNotifierConfiguration>().Notifier;
+            ScenarioProgressNotifierProvider = configuration.Get<ScenarioProgressNotifierConfiguration>().NotifierProvider;
         }
     }
 }
