@@ -48,6 +48,7 @@
       <Link>Properties\AssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="AbstractBDDRunner.cs" />
+    <Compile Include="Configuration\WriterElement.cs" />
     <Compile Include="Configuration\StepTypesElement.cs" />
     <Compile Include="Execution\Exceptions\StepBypassException.cs" />
     <Compile Include="Execution\Implementation\ExecutionContext.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Coordination\FeatureCoordinator.cs" />
     <Compile Include="StepType.cs" />
     <Compile Include="SummaryGeneration\ISummaryWriter.cs" />
+    <Compile Include="SummaryGeneration\SummaryFileWriterCurrentDate.cs" />
     <Compile Include="SummaryGeneration\SummaryGenerator.cs" />
     <Compile Include="SummaryGeneration\SummaryFileWriter.cs" />
     <Compile Include="TestMetadataProvider.cs" />
