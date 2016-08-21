@@ -1,6 +1,12 @@
 LightBDD
 ===========================================
 
+Version 1.7.2
+----------------------------------------
+Summary:
++ Added FormattableSummaryFileWriter allowing to parameterize summary files paths with execution date/time parameters.
++ Extended SummaryWriterCollection with Type property allowing to change type of used ISummaryWriter implementation (default is SummaryFileWriter).
+
 Version 1.7.1
 ----------------------------------------
 Summary:
