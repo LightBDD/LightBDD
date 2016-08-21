@@ -1,5 +1,8 @@
-﻿using System.Configuration;
+﻿using System;
+using System.ComponentModel;
+using System.Configuration;
 using LightBDD.Results.Formatters;
+using LightBDD.SummaryGeneration;
 
 namespace LightBDD.Configuration
 {
@@ -8,12 +11,26 @@ namespace LightBDD.Configuration
     /// </summary>
     internal class SummaryWriterCollection : ConfigurationElementCollection
     {
+        private const string TYPE_FIELD = "type";
+
         /// <summary>
         /// Default constructor initializing collection with XmlResultFormatter/"~\\FeaturesSummary.xml" writer.
         /// </summary>
         public SummaryWriterCollection()
         {
             BaseAdd(new SummaryWriterElement { Formatter = typeof(XmlResultFormatter), Output = "~\\FeaturesSummary.xml" });
+        }
+
+        /// <summary>
+        /// Type of ISummaryWriter used to write summary files.
+        /// </summary>
+        [ConfigurationProperty(TYPE_FIELD, DefaultValue = typeof(SummaryFileWriter))]
+        [SubclassTypeValidator(typeof(ISummaryWriter))]
+        [TypeConverter(typeof(TypeNameConverter))]
+        public Type Type
+        {
+            get { return (Type)this[TYPE_FIELD]; }
+            set { this[TYPE_FIELD] = value; }
         }
 
         /// <summary>

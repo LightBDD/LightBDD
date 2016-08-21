@@ -1,8 +1,8 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using LightBDD.Results;
 using LightBDD.Results.Formatters;
+using LightBDD.SummaryGeneration.Implementation;
 
 namespace LightBDD.SummaryGeneration
 {
@@ -16,20 +16,14 @@ namespace LightBDD.SummaryGeneration
 
         /// <summary>
         /// Constructor allowing to create SummaryFileWriter with associated result formatter and output path.
+        ///  Please note that full output path is being resolved at time when constructor is called, not when results are saved, so any relative paths will be resolved at the construction of this class.
         /// </summary>
         /// <param name="formatter">Result formatter.</param>
         /// <param name="outputPath">Output path. If starts with ~, it would be resolved to CurrentDomain.BaseDirectory.</param>
         public SummaryFileWriter(IResultFormatter formatter, string outputPath)
         {
-            _outputPath = GetOutputPath(outputPath);
+            _outputPath = Path.GetFullPath(FilePathHelper.ResolveAbsolutePath(outputPath));
             _formatter = formatter;
-        }
-
-        private static string GetOutputPath(string outputPath)
-        {
-            if (outputPath.StartsWith("~"))
-                outputPath = AppDomain.CurrentDomain.BaseDirectory + "\\" + outputPath.Substring(1);
-            return Path.GetFullPath(outputPath);
         }
 
         /// <summary>
@@ -39,15 +33,8 @@ namespace LightBDD.SummaryGeneration
         /// <param name="results">Results to save.</param>
         public void Save(params IFeatureResult[] results)
         {
-            EnsureOutputDirectoryExists();
+            FilePathHelper.EnsureOutputDirectoryExists(_outputPath);
             File.WriteAllText(_outputPath, _formatter.Format(results), Encoding.UTF8);
-        }
-
-        private void EnsureOutputDirectoryExists()
-        {
-            var directory = Path.GetDirectoryName(_outputPath);
-            if (directory != null)
-                Directory.CreateDirectory(directory);
         }
     }
 }
