@@ -11,14 +11,18 @@ namespace LightBDD.Coordination
         public static SummaryGenerator Create()
         {
             var cfg = LightBDDConfiguration.GetConfiguration();
-            return new SummaryGenerator(cfg.SummaryWriters.OfType<SummaryWriterElement>().Select(CreateSummaryOutput).ToArray());
+            return new SummaryGenerator(cfg.SummaryWriters.OfType<SummaryWriterElement>().Select(swe => CreateSummaryOutput(cfg, swe)).ToArray());
         }
 
-        private static SummaryFileWriter CreateSummaryOutput(SummaryWriterElement summaryWriterElement)
+        private static ISummaryWriter CreateSummaryOutput(LightBDDConfiguration cfg, SummaryWriterElement summaryWriterElement)
         {
-            return new SummaryFileWriter(
-                (IResultFormatter)Activator.CreateInstance(summaryWriterElement.Formatter),
-                summaryWriterElement.Output);
+            Type typeFormatter = cfg.Writer.SummaryWriter ?? typeof(SummaryFileWriter);
+
+            IResultFormatter formatter = (IResultFormatter)Activator.CreateInstance(summaryWriterElement.Formatter);
+
+            object[] param = new object[] {formatter, summaryWriterElement.Output};
+
+            return (ISummaryWriter)Activator.CreateInstance(typeFormatter, param);
         }
     }
 }
