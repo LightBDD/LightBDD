@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace LightBDD.Scenarios.Basic.UnitTests
 {
@@ -13,16 +13,17 @@ namespace LightBDD.Scenarios.Basic.UnitTests
     [TestFixture]
     public class Basic_scenario_runner_tests
     {
-        private StepDescriptor[] _capturedSteps;
-        private IScenarioRunner _mockScenarioRunner;
-        private ITestableBddRunner _runner;
+        private StepDescriptor[] _capturedDescriptors;
+        private Mock<IScenarioRunner> _mockScenarioRunner;
+        private Mock<ITestableBddRunner> _mockRunner;
+        private ITestableBddRunner Runner => _mockRunner.Object;
 
         [SetUp]
         public void SetUp()
         {
-            _capturedSteps = null;
-            _mockScenarioRunner = MockRepository.GenerateStrictMock<IScenarioRunner>();
-            _runner = MockRepository.GenerateStrictMock<ITestableBddRunner>();
+            _capturedDescriptors = null;
+            _mockScenarioRunner = new Mock<IScenarioRunner>();
+            _mockRunner = new Mock<ITestableBddRunner>();
         }
 
         [Test]
@@ -33,16 +34,16 @@ namespace LightBDD.Scenarios.Basic.UnitTests
             ExpectWithSteps();
             ExpectRunSynchronously();
 
-            _runner.Basic().RunScenario(Step_one, Step_two);
+            Runner.Basic().RunScenario(Step_one, Step_two);
 
-            _runner.VerifyAllExpectations();
-            _mockScenarioRunner.VerifyAllExpectations();
+            _mockRunner.Verify();
+            _mockScenarioRunner.Verify();
 
-            Assert.That(_capturedSteps, Is.Not.Null);
-            Assert.That(_capturedSteps.Length, Is.EqualTo(2));
+            Assert.That(_capturedDescriptors, Is.Not.Null);
+            Assert.That(_capturedDescriptors.Length, Is.EqualTo(2));
 
-            AssertStep(_capturedSteps[0], nameof(Step_one));
-            AssertStep(_capturedSteps[1], nameof(Step_two));
+            AssertStep(_capturedDescriptors[0], nameof(Step_one));
+            AssertStep(_capturedDescriptors[1], nameof(Step_two));
         }
 
         [Test]
@@ -53,12 +54,12 @@ namespace LightBDD.Scenarios.Basic.UnitTests
             ExpectWithSteps();
             ExpectRunSynchronously();
 
-            _runner.Basic().RunScenario(Step_not_throwing_exception);
+            Runner.Basic().RunScenario(Step_not_throwing_exception);
 
-            Assert.That(_capturedSteps, Is.Not.Null);
-            Assert.That(_capturedSteps.Length, Is.EqualTo(1));
+            Assert.That(_capturedDescriptors, Is.Not.Null);
+            Assert.That(_capturedDescriptors.Length, Is.EqualTo(1));
 
-            Assert.True(_capturedSteps[0].StepInvocation.Invoke(null, null).IsCompleted, "Synchronous step should be completed after invocation");
+            Assert.True(_capturedDescriptors[0].StepInvocation.Invoke(null, null).IsCompleted, "Synchronous step should be completed after invocation");
         }
 
         [Test]
@@ -69,16 +70,16 @@ namespace LightBDD.Scenarios.Basic.UnitTests
             ExpectWithSteps();
             ExpectRunAsynchronously();
 
-            await _runner.Basic().RunScenarioAsync(Step_one_async, Step_two_async);
+            await Runner.Basic().RunScenarioAsync(Step_one_async, Step_two_async);
 
-            _runner.VerifyAllExpectations();
-            _mockScenarioRunner.VerifyAllExpectations();
+            _mockRunner.Verify();
+            _mockScenarioRunner.Verify();
 
-            Assert.That(_capturedSteps, Is.Not.Null);
-            Assert.That(_capturedSteps.Length, Is.EqualTo(2));
+            Assert.That(_capturedDescriptors, Is.Not.Null);
+            Assert.That(_capturedDescriptors.Length, Is.EqualTo(2));
 
-            AssertStep(_capturedSteps[0], nameof(Step_one_async));
-            AssertStep(_capturedSteps[1], nameof(Step_two_async));
+            AssertStep(_capturedDescriptors[0], nameof(Step_one_async));
+            AssertStep(_capturedDescriptors[1], nameof(Step_two_async));
         }
 
         private void AssertStep(StepDescriptor step, string expectedName)
@@ -95,34 +96,45 @@ namespace LightBDD.Scenarios.Basic.UnitTests
 
         private void ExpectRunSynchronously()
         {
-            _mockScenarioRunner.Expect(r => r.RunSynchronously());
+            _mockScenarioRunner
+                .Setup(r => r.RunSynchronously())
+                .Verifiable();
         }
 
         private void ExpectWithSteps()
         {
             _mockScenarioRunner
-                .Expect(s => s.WithSteps(Arg<IEnumerable<StepDescriptor>>.Is.Anything))
-                .WhenCalled(call => _capturedSteps = ((IEnumerable<StepDescriptor>)call.Arguments[0]).ToArray())
-                .Return(_mockScenarioRunner);
+                .Setup(s => s.WithSteps(It.IsAny<IEnumerable<StepDescriptor>>()))
+                .Returns((IEnumerable<StepDescriptor> desc) =>
+                {
+                    _capturedDescriptors = desc.ToArray();
+                    return _mockScenarioRunner.Object;
+                })
+                .Verifiable();
         }
 
         private void ExpectWithCapturedScenarioDetails()
         {
             _mockScenarioRunner
-                .Expect(s => s.WithCapturedScenarioDetails())
-                .Return(_mockScenarioRunner);
+                .Setup(s => s.WithCapturedScenarioDetails())
+                .Returns(_mockScenarioRunner.Object)
+                .Verifiable();
         }
 
         private void ExpectNewScenario()
         {
-            _runner
-                .Expect(r => r.NewScenario())
-                .Return(_mockScenarioRunner);
+            _mockRunner
+                .Setup(r => r.NewScenario())
+                .Returns(_mockScenarioRunner.Object)
+                .Verifiable();
         }
 
         private void ExpectRunAsynchronously()
         {
-            _mockScenarioRunner.Expect(r => r.RunAsynchronously()).Return(Task.CompletedTask);
+            _mockScenarioRunner
+                .Setup(r => r.RunAsynchronously())
+                .Returns(Task.CompletedTask)
+                .Verifiable();
         }
 
         #endregion

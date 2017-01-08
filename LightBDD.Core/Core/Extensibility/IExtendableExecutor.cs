@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
-using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Extensibility

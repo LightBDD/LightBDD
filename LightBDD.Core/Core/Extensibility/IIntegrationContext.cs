@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using LightBDD.Configuration;
 using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Formatting;

@@ -1,7 +1,7 @@
 ﻿using System;
 using LightBDD.Core.Extensibility;
 using NUnit.Framework;
-using Rhino.Mocks;
+using Moq;
 
 namespace LightBDD.Runners.Contextual.UnitTests
 {
@@ -11,15 +11,15 @@ namespace LightBDD.Runners.Contextual.UnitTests
         public interface ITestableBddRunner : IBddRunner, ICoreBddRunner { }
         class MyContext { }
 
-        private ITestableBddRunner _runner;
-        private IScenarioRunner _mockScenarioRunner;
+        private Mock<ITestableBddRunner> _runner;
+        private Mock<IScenarioRunner> _mockScenarioRunner;
         private Func<object> _capturedContextProvider;
 
         [SetUp]
         public void SetUp()
         {
-            _runner = MockRepository.GenerateStrictMock<ITestableBddRunner>();
-            _mockScenarioRunner = MockRepository.GenerateStrictMock<IScenarioRunner>();
+            _runner = new Mock<ITestableBddRunner>(MockBehavior.Strict);
+            _mockScenarioRunner = new Mock<IScenarioRunner>(MockBehavior.Strict);
             _capturedContextProvider = null;
         }
 
@@ -30,7 +30,7 @@ namespace LightBDD.Runners.Contextual.UnitTests
             ExpectContext();
 
             var context = new object();
-            _runner.WithContext(context).Integrate().NewScenario();
+            _runner.Object.WithContext(context).Integrate().NewScenario();
 
             VerifyAllExpectations();
             Assert.That(_capturedContextProvider.Invoke(), Is.SameAs(context));
@@ -42,7 +42,7 @@ namespace LightBDD.Runners.Contextual.UnitTests
             ExpectNewScenario();
             ExpectContext();
 
-            _runner.WithContext(() => TimeSpan.FromSeconds(5)).Integrate().NewScenario();
+            _runner.Object.WithContext(() => TimeSpan.FromSeconds(5)).Integrate().NewScenario();
 
             VerifyAllExpectations();
             Assert.That(_capturedContextProvider.Invoke(), Is.EqualTo(TimeSpan.FromSeconds(5)));
@@ -54,7 +54,7 @@ namespace LightBDD.Runners.Contextual.UnitTests
             ExpectNewScenario();
             ExpectContext();
 
-            _runner.WithContext<MyContext>().Integrate().NewScenario();
+            _runner.Object.WithContext<MyContext>().Integrate().NewScenario();
 
             VerifyAllExpectations();
             Assert.That(_capturedContextProvider.Invoke(), Is.InstanceOf<MyContext>());
@@ -62,23 +62,28 @@ namespace LightBDD.Runners.Contextual.UnitTests
 
         private void VerifyAllExpectations()
         {
-            _runner.VerifyAllExpectations();
-            _mockScenarioRunner.VerifyAllExpectations();
+            _runner.Verify();
+            _mockScenarioRunner.Verify();
         }
 
         private void ExpectContext()
         {
             _mockScenarioRunner
-                .Expect(s => s.WithContext(Arg<Func<object>>.Is.Anything))
-                .WhenCalled(call => _capturedContextProvider = (Func<object>)call.Arguments[0])
-                .Return(_mockScenarioRunner);
+                .Setup(s => s.WithContext(It.IsAny<Func<object>>()))
+                .Returns((Func<object> obj) =>
+                {
+                    _capturedContextProvider = obj;
+                    return _mockScenarioRunner.Object;
+                })
+                .Verifiable();
         }
 
         private void ExpectNewScenario()
         {
             _runner
-                .Expect(r => r.NewScenario())
-                .Return(_mockScenarioRunner);
+                .Setup(r => r.NewScenario())
+                .Returns(_mockScenarioRunner.Object)
+                .Verifiable();
         }
     }
 }

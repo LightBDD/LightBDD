@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace LightBDD.Scenarios.Parameterized.UnitTests
 {
     [TestFixture]
-    public class Parameterized_scenario_runner_parameter_capture_tests : ParameterizedScenrariosTestBase<NoContext>
+    public class Parameterized_scenario_runner_parameter_capture_tests : ParameterizedScenariosTestBase<NoContext>
     {
 
         [Test]

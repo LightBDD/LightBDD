@@ -1,5 +1,8 @@
-﻿using Xunit;
-using Xunit.Sdk;
+﻿using LightBDD;
+using Xunit;
+using Xunit.Abstractions;
+
+[assembly: LightBddScope]
 
 namespace LightBDD.Integration.XUnit2.UnitTests
 {
@@ -7,15 +10,17 @@ namespace LightBDD.Integration.XUnit2.UnitTests
     {
         class TestableFeatureFixture : FeatureFixture
         {
-            public IBddRunner GetRunner() => Runner;
+            public TestableFeatureFixture(ITestOutputHelper output) : base(output)
+            {
+            }
 
-            public TestableFeatureFixture() : base(new TestOutputHelper()) { }
+            public IBddRunner GetRunner() => Runner;
         }
 
         [Fact]
         public void Runner_should_be_initialized()
         {
-            Assert.NotNull(new TestableFeatureFixture().GetRunner());
+            Assert.NotNull(new TestableFeatureFixture(null).GetRunner());
         }
     }
 }

@@ -29,7 +29,12 @@ namespace LightBDD.SummaryGeneration
         private static string GetOutputPath(string outputPath)
         {
             if (outputPath.StartsWith("~"))
+#if NET45
                 outputPath = AppDomain.CurrentDomain.BaseDirectory + "\\" + outputPath.Substring(1);
+#else
+                outputPath = AppContext.BaseDirectory + "\\" + outputPath.Substring(1);
+#endif
+
             return Path.GetFullPath(outputPath);
         }
 

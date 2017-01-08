@@ -33,7 +33,11 @@ namespace LightBDD.Integration.XUnit2.Customization
         private LightBddScopeAttribute GetLightBddScopeAttribute()
         {
             var asmName = TestAssembly.Assembly.Name;
+#if NET45
             var attribs = Assembly.Load(asmName)
+#else
+            var attribs = Assembly.Load(new AssemblyName(asmName))
+#endif
                 .GetCustomAttributes(typeof(LightBddScopeAttribute))
                 .Cast<LightBddScopeAttribute>().ToArray();
             if (attribs.Length > 1)

@@ -3,9 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Configuration;
 using LightBDD.Core.Execution;
-using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Metadata;
-using LightBDD.Core.Metadata.Implementation;
 
 namespace LightBDD.Core.Extensibility.Implementation
 {

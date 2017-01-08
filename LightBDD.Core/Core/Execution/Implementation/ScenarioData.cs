@@ -1,6 +1,4 @@
 using System;
-using System.Globalization;
-using System.Threading;
 
 namespace LightBDD.Core.Execution.Implementation
 {

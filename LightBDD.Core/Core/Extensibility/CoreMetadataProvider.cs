@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using LightBDD.Configuration;
-using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Extensibility.Implementation;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Helpers;

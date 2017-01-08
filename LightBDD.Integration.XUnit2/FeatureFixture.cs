@@ -2,6 +2,7 @@
 
 namespace LightBDD
 {
+    [FeatureFixture]
     public class FeatureFixture : ITestOutputProvider
     {
         public ITestOutputHelper TestOutput { get; }

@@ -1,7 +1,6 @@
 ﻿using System;
 using LightBDD.Configuration;
 using LightBDD.Core.Extensibility;
-using LightBDD.Core.Formatting;
 using NUnit.Framework;
 using Rhino.Mocks;
 

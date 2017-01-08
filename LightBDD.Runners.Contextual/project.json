@@ -1,10 +1,18 @@
 ﻿{
-  "supports": {},
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "compile": [ "**/*.cs", "../AssemblyVersion.cs" ]
+  },
   "dependencies": {
-    "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
-    "NETStandard.Library": "1.6.0"
+    "LightBDD.Core": {
+      "target": "project"
+    }
   },
   "frameworks": {
-    "netstandard1.1": {}
+    "netstandard1.1": {
+      "dependencies": { "NETStandard.Library": "1.6.0" }
+    },
+    "net45": {
+    } 
   }
 }

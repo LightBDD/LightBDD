@@ -1,0 +1,28 @@
+﻿{
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "compile": [ "**/*.cs", "../AssemblyVersion.cs" ]
+  },
+  "frameworks": {
+    "netstandard1.3": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.0"
+      },
+      "imports": [ "dotnet" ]
+    },
+    "net46": {
+      "frameworkAssemblies": {
+        "System.Reflection": "4.0.0.0"
+      }
+    }
+  },
+  "dependencies": {
+    "LightBDD.Core": {
+      "target": "project"
+    },
+    "LightBDD.SummaryGeneration": {
+      "target": "project"
+    },
+    "MSTest.TestFramework": "1.0.8-rc2"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "compile": [ "**/*.cs", "../AssemblyVersion.cs" ]
+  },
+  "frameworks": {
+    "net46": {
+      "frameworkAssemblies": {
+        "System.Reflection": "4.0.10.0",
+        "System.Runtime": "4.0.20.0"
+      }
+    }
+  },
+  "dependencies": {
+    "NUnit": "3.4.1",
+    "AutoFixture": "3.50.2",
+    "LightBDD.Core": {
+      "target": "project"
+    }
+  }
+}

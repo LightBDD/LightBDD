@@ -1,0 +1,26 @@
+﻿{
+  "version": "1.0.0-*",
+  "testRunner": "NUnit",
+  "frameworks": {
+    "net46": {
+      "frameworkAssemblies": {
+        "System.Reflection": "4.0.10.0"
+      }
+    }
+  },
+  "dependencies": {
+    "LightBDD.Core": {
+      "target": "project"
+    },
+    "NUnit": "3.4.1",
+    "dotnet-test-nunit": "3.4.0-beta-2",
+    "AutoFixture": "3.50.2",
+    "RhinoMocks": "3.6.1",
+    "LightBDD.SummaryGeneration": {
+      "target": "project"
+    },
+    "LightBDD.UnitTests.Helpers": {
+      "target": "project"
+    }
+  }
+}

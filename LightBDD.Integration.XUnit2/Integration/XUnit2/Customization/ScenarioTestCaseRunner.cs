@@ -34,7 +34,6 @@ namespace LightBDD.Integration.XUnit2.Customization
             CreateTheorySpecificTestRunners();
             if (!_testRunners.Any())
                 _testRunners.Add(new ScenarioTestRunner(new XunitTest(TestCase, DisplayName), MessageBus, TestClass, ConstructorArguments, TestMethod, TestMethodArguments, SkipReason, BeforeAfterAttributes, new ExceptionAggregator(Aggregator), CancellationTokenSource));
-
         }
 
         private void CreateTheorySpecificTestRunners()
@@ -131,8 +130,13 @@ namespace LightBDD.Integration.XUnit2.Customization
         {
             try
             {
+#if NET45
                 var assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName == assemblyName || a.GetName().Name == assemblyName)
                                ?? Assembly.Load(assemblyName);
+#else
+                var asm = new AssemblyName(assemblyName);
+                var assembly = Assembly.Load(new AssemblyName { Name = asm.Name, Version = asm.Version });
+#endif
                 return assembly.GetType(typeName);
             }
             catch

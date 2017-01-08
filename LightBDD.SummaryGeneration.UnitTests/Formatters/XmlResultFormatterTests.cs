@@ -21,7 +21,7 @@ namespace LightBDD.SummaryGeneration.UnitTests.Formatters
         {
             _schema = new XmlSchemaSet();
 
-            _schema.Add("", Path.GetDirectoryName(GetType().Assembly.CodeBase) + "\\XmlResultFormatterSchema.xsd");
+            _schema.Add("", Path.GetDirectoryName(typeof(ISummaryWriter).Assembly.CodeBase) + "\\..\\..\\..\\..\\..\\XmlResultFormatterSchema.xsd");
         }
 
         [SetUp]

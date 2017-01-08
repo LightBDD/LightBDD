@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace LightBDD.Scenarios.Parameterized.UnitTests
 {
     [TestFixture]
-    public class Parameterized_scenario_runner_contextual_execution_tests : ParameterizedScenrariosTestBase<MyContext>
+    public class Parameterized_scenario_runner_contextual_execution_tests : ParameterizedScenariosTestBase<MyContext>
     {
 
         [Test]

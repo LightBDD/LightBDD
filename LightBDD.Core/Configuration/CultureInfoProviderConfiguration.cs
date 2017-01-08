@@ -1,6 +1,5 @@
 ﻿using System;
 using LightBDD.Core.Extensibility;
-using LightBDD.Core.Formatting;
 
 namespace LightBDD.Configuration
 {

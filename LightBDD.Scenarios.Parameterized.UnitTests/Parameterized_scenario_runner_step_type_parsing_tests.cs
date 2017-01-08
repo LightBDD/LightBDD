@@ -1,12 +1,11 @@
 ﻿using System.Threading.Tasks;
 using LightBDD.Scenarios.Parameterized.UnitTests.Helpers;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace LightBDD.Scenarios.Parameterized.UnitTests
 {
     [TestFixture]
-    public class Parameterized_scenario_runner_step_type_parsing_tests : ParameterizedScenrariosTestBase<NoContext>
+    public class Parameterized_scenario_runner_step_type_parsing_tests : ParameterizedScenariosTestBase<NoContext>
     {
         [Test]
         public void It_should_not_capture_underscores_but_everything_else_for_step_type_in_synchronous_run()
@@ -17,8 +16,8 @@ namespace LightBDD.Scenarios.Parameterized.UnitTests
                 _ => Step_one(),
                 when => Step_two());
 
-            Runner.VerifyAllExpectations();
-            MockScenarioRunner.VerifyAllExpectations();
+            MockRunner.Verify();
+            MockScenarioRunner.Verify();
 
             Assert.That(CapturedSteps, Is.Not.Null);
             Assert.That(CapturedSteps.Length, Is.EqualTo(2));
@@ -36,8 +35,8 @@ namespace LightBDD.Scenarios.Parameterized.UnitTests
                 _ => Step_one_async(),
                 when => Step_two_async());
 
-            Runner.VerifyAllExpectations();
-            MockScenarioRunner.VerifyAllExpectations();
+            MockRunner.Verify();
+            MockScenarioRunner.Verify();
 
             Assert.That(CapturedSteps, Is.Not.Null);
             Assert.That(CapturedSteps.Length, Is.EqualTo(2));

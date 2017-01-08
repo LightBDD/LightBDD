@@ -1,0 +1,29 @@
+{
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "compile": [ "**/*.cs", "../AssemblyVersion.cs" ]
+  },
+  "frameworks": {
+    "netstandard1.6": {
+      "dependencies": {
+        "Microsoft.Extensions.DependencyModel": "1.0.0",
+        "NETStandard.Library": "1.6.1"
+      },
+      "imports": [ "dotnet" ]
+    },
+    "net46": {
+      "frameworkAssemblies": {
+        "System.Reflection": "4.0.0.0"
+      }
+    }
+  },
+  "dependencies": {
+    "LightBDD.Core": {
+      "target": "project"
+    },
+    "LightBDD.SummaryGeneration": {
+      "target": "project"
+    },
+    "NUnit": "3.5.0" 
+  }
+}

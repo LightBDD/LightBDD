@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using LightBDD.Core.Notification;
 
 namespace LightBDD.Configuration

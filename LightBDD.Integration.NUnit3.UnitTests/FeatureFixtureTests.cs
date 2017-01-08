@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using LightBDD;
+using NUnit.Framework;
+[assembly: LightBddScope]
 
 namespace LightBDD.Integration.NUnit3.UnitTests
 {

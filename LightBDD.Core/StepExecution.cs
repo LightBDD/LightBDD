@@ -1,5 +1,4 @@
 using LightBDD.Core.Execution;
-using LightBDD.Core.Execution.Implementation;
 
 namespace LightBDD
 {

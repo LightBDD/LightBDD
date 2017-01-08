@@ -1,7 +1,8 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 
 namespace LightBDD
 {
+    [FeatureFixture]
     public class FeatureFixture
     {
         private readonly IFeatureBddRunner _featureBddRunner;
