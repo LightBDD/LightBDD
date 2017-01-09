@@ -1,7 +1,12 @@
 ﻿{
   "version": "1.0.0-*",
   "buildOptions": {
-    "compile": [ "**/*.cs", "../AssemblyVersion.cs" ]
+    "compile": [ "**/*.cs", "../AssemblyVersion.cs" ],
+    "embed": [
+      "Formatters/Html/scripts.js",
+      "Formatters/Html/styles.css",
+      "../logo/lightbdd_small.ico"
+    ]
   },
   "frameworks": {
     "netstandard1.3": {

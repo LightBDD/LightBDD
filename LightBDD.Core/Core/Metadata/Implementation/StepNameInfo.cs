@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using LightBDD.Core.Formatting.NameDecorators;
 
 namespace LightBDD.Core.Metadata.Implementation
 {
@@ -22,8 +23,13 @@ namespace LightBDD.Core.Metadata.Implementation
 
         public override string ToString()
         {
+            return Format(StepNameDecorators.Default);
+        }
+
+        public string Format(IStepNameDecorator decorator)
+        {
             return (StepTypeName != null)
-                ? string.Format("{0} {1}", StepTypeName, base.ToString())
+                ? string.Format("{0} {1}", decorator.DecorateStepTypeName(StepTypeName), base.Format(decorator))
                 : base.ToString();
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Execution.Results;
+using LightBDD.Core.Formatting.NameDecorators;
 using LightBDD.Core.Metadata;
 
 namespace LightBDD.UnitTests.Helpers
@@ -127,10 +128,14 @@ namespace LightBDD.UnitTests.Helpers
             public string NameFormat { get; set; }
             public IEnumerable<INameParameterInfo> Parameters { get; set; }
             public string FormattedName { get; set; }
+            public string Format(INameDecorator decorator)
+            {
+                return FormattedName;
+            }
 
             public override string ToString()
             {
-                return FormattedName;
+                return Format(StepNameDecorators.Default);
             }
         }
 
@@ -141,9 +146,18 @@ namespace LightBDD.UnitTests.Helpers
             public IEnumerable<INameParameterInfo> Parameters { get; set; }
             public string StepTypeName { get; set; }
 
-            public override string ToString()
+            public string Format(IStepNameDecorator stepNameDecorator)
             {
                 return FormattedName;
+            }
+
+            public string Format(INameDecorator decorator)
+            {
+                return FormattedName;
+            }
+            public override string ToString()
+            {
+                return Format(StepNameDecorators.Default);
             }
         }
 

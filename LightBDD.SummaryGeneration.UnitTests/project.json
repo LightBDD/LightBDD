@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.0-*",
   "testRunner": "NUnit",
   "frameworks": {
@@ -21,6 +21,7 @@
     },
     "LightBDD.UnitTests.Helpers": {
       "target": "project"
-    }
+    },
+    "HtmlAgilityPack.NetCore": "1.5.0.1"
   }
 }

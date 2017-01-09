@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using LightBDD.Core.Formatting.NameDecorators;
 
 namespace LightBDD.Core.Metadata.Implementation
 {
@@ -17,9 +18,14 @@ namespace LightBDD.Core.Metadata.Implementation
 
         public override string ToString()
         {
+            return Format(StepNameDecorators.Default);
+        }
+
+        public string Format(INameDecorator decorator)
+        {
             if (!Parameters.Any())
-                return NameFormat;
-            return string.Format(NameFormat, Parameters.Select(p => (object)p.FormattedValue).ToArray());
+                return decorator.DecorateNameFormat(NameFormat);
+            return string.Format(NameFormat, Parameters.Select(p => (object)decorator.DecorateParameterValue(p)).ToArray());
         }
     }
 }
