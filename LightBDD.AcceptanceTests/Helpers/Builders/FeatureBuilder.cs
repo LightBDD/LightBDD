@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using LightBDD.Results;
+using LightBDD.Core.Execution.Results;
+using LightBDD.UnitTests.Helpers;
 
 namespace LightBDD.AcceptanceTests.Helpers.Builders
 {
@@ -15,7 +16,7 @@ namespace LightBDD.AcceptanceTests.Helpers.Builders
 
         public string Name { get; }
 
-        public ScenarioBuilder NewScenario(ResultStatus status)
+        public ScenarioBuilder NewScenario(ExecutionStatus status)
         {
             var builder = new ScenarioBuilder(status);
             _scenarios.Add(builder);

@@ -161,7 +161,6 @@ initialize();";
         private string FormatAndExtractText(params IFeatureResult[] results)
         {
             var formatted = FormatResults(results);
-            File.WriteAllText("c:\\temp\\a.html",formatted);
             var doc = new HtmlDocument();
             doc.LoadHtml(formatted);
             var body = doc.DocumentNode.SelectSingleNode("//body");
