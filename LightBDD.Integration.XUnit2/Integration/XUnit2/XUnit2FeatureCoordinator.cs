@@ -25,7 +25,7 @@ namespace LightBDD.Integration.XUnit2
 
         internal static void InstallSelf(LightBddConfiguration configuration)
         {
-            Install(new XUnit2FeatureCoordinator(new XUnit2BddRunnerFactory(configuration), new FeatureSummaryGenerator(configuration.Get<SummaryWritersConfiguration>().ToArray())));
+            Install(new XUnit2FeatureCoordinator(new XUnit2BddRunnerFactory(configuration), new FeatureSummaryGenerator(configuration.SummaryWritersConfiguration().ToArray())));
         }
     }
 }

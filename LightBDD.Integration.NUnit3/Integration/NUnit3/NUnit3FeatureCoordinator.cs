@@ -25,7 +25,7 @@ namespace LightBDD.Integration.NUnit3
 
         internal static void InstallSelf(LightBddConfiguration configuration)
         {
-            Install(new NUnit3FeatureCoordinator(new NUnit3BddRunnerFactory(configuration), new FeatureSummaryGenerator(configuration.Get<SummaryWritersConfiguration>().ToArray())));
+            Install(new NUnit3FeatureCoordinator(new NUnit3BddRunnerFactory(configuration), new FeatureSummaryGenerator(configuration.SummaryWritersConfiguration().ToArray())));
         }
     }
 }

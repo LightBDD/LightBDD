@@ -19,12 +19,12 @@ namespace LightBDD.Integration.XUnit2
 
         public XUnit2IntegrationContext(LightBddConfiguration configuration)
         {
-            NameFormatter = configuration.Get<NameFormatterConfiguration>().Formatter;
-            MetadataProvider = new XUnit2MetadataProvider(NameFormatter, configuration.Get<StepTypeConfiguration>(), configuration.Get<CultureInfoProviderConfiguration>().CultureInfoProvider);
+            NameFormatter = configuration.NameFormatterConfiguration().Formatter;
+            MetadataProvider = new XUnit2MetadataProvider(NameFormatter, configuration.StepTypeConfiguration(), configuration.CultureInfoProviderConfiguration().CultureInfoProvider);
             ExceptionToStatusMapper = ex => (ex is IgnoreException) ? ExecutionStatus.Ignored : ExecutionStatus.Failed;
-            FeatureProgressNotifier = configuration.Get<FeatureProgressNotifierConfiguration>().Notifier;
-            ScenarioProgressNotifierProvider = configuration.Get<ScenarioProgressNotifierConfiguration>().NotifierProvider;
-            ExecutionExtensions = configuration.Get<ExecutionExtensionsConfiguration>();
+            FeatureProgressNotifier = configuration.FeatureProgressNotifierConfiguration().Notifier;
+            ScenarioProgressNotifierProvider = configuration.ScenarioProgressNotifierConfiguration().NotifierProvider;
+            ExecutionExtensions = configuration.ExecutionExtensionsConfiguration();
         }
     }
 }

@@ -11,7 +11,7 @@ public class ConfiguredLightBddScopeAttribute : LightBddScopeAttribute
 {
     protected override void OnConfigure(LightBddConfiguration configuration)
     {
-        configuration.Get<SummaryWritersConfiguration>()
+        configuration.SummaryWritersConfiguration()
             .Add(new SummaryFileWriter(new HtmlResultFormatter(), "~\\Reports\\FeaturesSummary.html"))
             .Add(new SummaryFileWriter(new PlainTextResultFormatter(), "~\\Reports\\FeaturesSummary.txt"));
     }
