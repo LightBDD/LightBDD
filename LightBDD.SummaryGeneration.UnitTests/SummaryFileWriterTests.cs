@@ -2,8 +2,8 @@
 using System.IO;
 using LightBDD.Core.Execution.Results;
 using LightBDD.SummaryGeneration.Formatters;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace LightBDD.SummaryGeneration.UnitTests
 {
@@ -13,7 +13,7 @@ namespace LightBDD.SummaryGeneration.UnitTests
         [Test]
         public void It_should_use_appdomain_base_directory_if_output_starts_with_tilde()
         {
-            var writer = new SummaryFileWriter(MockRepository.GenerateMock<IResultFormatter>(), "~//output.txt");
+            var writer = new SummaryFileWriter(Mock.Of<IResultFormatter>(), "~//output.txt");
             var expected = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + "\\output.txt");
             Assert.That(writer.OutputPath, Is.EqualTo("~//output.txt"));
             Assert.That(writer.FullOutputPath, Is.EqualTo(expected));
@@ -22,7 +22,7 @@ namespace LightBDD.SummaryGeneration.UnitTests
         [Test]
         public void It_should_use_working_directory_if_output_is_relative_path()
         {
-            var writer = new SummaryFileWriter(MockRepository.GenerateMock<IResultFormatter>(), "output.txt");
+            var writer = new SummaryFileWriter(Mock.Of<IResultFormatter>(), "output.txt");
             var expected = Path.GetFullPath("output.txt");
             Assert.That(writer.OutputPath, Is.EqualTo("output.txt"));
             Assert.That(writer.FullOutputPath, Is.EqualTo(expected));
@@ -35,18 +35,18 @@ namespace LightBDD.SummaryGeneration.UnitTests
             var outputPath = $"~\\{Guid.NewGuid()}\\output.txt";
             var expectedPath = outputPath.Replace("~", AppDomain.CurrentDomain.BaseDirectory);
 
-            var formatter = MockRepository.GenerateMock<IResultFormatter>();
+            var formatter = Mock.Of<IResultFormatter>();
             var results = new[]
             {
-                MockRepository.GenerateMock<IFeatureResult>(),
-                MockRepository.GenerateMock<IFeatureResult>()
+                Mock.Of<IFeatureResult>(),
+                Mock.Of<IFeatureResult>()
             };
 
-            formatter
-                .Stub(f => f.Format(Arg<Stream>.Is.Anything, Arg<IFeatureResult[]>.Is.Same(results)))
-                .WhenCalled(call =>
+            Mock.Get(formatter)
+                .Setup(f => f.Format(It.IsAny<Stream>(), results))
+                .Callback((Stream stream,IFeatureResult[] r) =>
                 {
-                    using (var writer = new StreamWriter((Stream)call.Arguments[0]))
+                    using (var writer = new StreamWriter(stream))
                         writer.Write(expectedFileContent);
                 });
 

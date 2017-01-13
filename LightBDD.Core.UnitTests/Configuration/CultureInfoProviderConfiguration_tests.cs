@@ -1,8 +1,8 @@
 ﻿using System;
 using LightBDD.Configuration;
 using LightBDD.Core.Extensibility;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace LightBDD.Core.UnitTests.Configuration
 {
@@ -24,7 +24,7 @@ namespace LightBDD.Core.UnitTests.Configuration
         [Test]
         public void It_should_update_value()
         {
-            var provider = MockRepository.GenerateMock<ICultureInfoProvider>();
+            var provider = Mock.Of<ICultureInfoProvider>();
             var config = new CultureInfoProviderConfiguration().UpdateCultureInfoProvider(provider);
             Assert.That(config.CultureInfoProvider, Is.SameAs(provider));
         }

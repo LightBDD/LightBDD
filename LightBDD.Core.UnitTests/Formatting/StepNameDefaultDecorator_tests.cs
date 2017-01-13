@@ -1,7 +1,7 @@
 ﻿using LightBDD.Core.Formatting.NameDecorators;
 using LightBDD.Core.Metadata;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace LightBDD.Core.UnitTests.Formatting
 {
@@ -22,9 +22,9 @@ namespace LightBDD.Core.UnitTests.Formatting
         [TestCase(null, false, "")]
         public void Should_format_step_parameter(string value, bool isEvaluated, string expected)
         {
-            var stepParameter = MockRepository.GenerateMock<INameParameterInfo>();
-            stepParameter.Stub(p => p.FormattedValue).Return(value);
-            stepParameter.Stub(p => p.IsEvaluated).Return(isEvaluated);
+            var stepParameter = Mock.Of<INameParameterInfo>();
+            Mock.Get(stepParameter).Setup(p => p.FormattedValue).Returns(value);
+            Mock.Get(stepParameter).Setup(p => p.IsEvaluated).Returns(isEvaluated);
             Assert.That(StepNameDecorators.Default.DecorateParameterValue(stepParameter), Is.EqualTo(expected));
         }
 

@@ -2,9 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Execution.Results;
 using LightBDD.UnitTests.Helpers;
+using Moq;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
-using Rhino.Mocks;
+using Mocks = LightBDD.UnitTests.Helpers.Mocks;
 
 namespace LightBDD.SummaryGeneration.UnitTests
 {
@@ -14,7 +15,7 @@ namespace LightBDD.SummaryGeneration.UnitTests
         [Test]
         public void SummaryGenerator_should_be_thread_safe()
         {
-            var writer = MockRepository.GenerateMock<ISummaryWriter>();
+            var writer = Mock.Of<ISummaryWriter>();
             var generator = new FeatureSummaryGenerator(writer);
             var fixture = MockFixture.CreateNew();
 
@@ -28,7 +29,7 @@ namespace LightBDD.SummaryGeneration.UnitTests
             .ForAll(generator.Aggregate);
 
             generator.Dispose();
-            writer.AssertWasCalled(w => w.Save(Arg<IFeatureResult[]>.Matches(r => r.Length == allMocks.Count)));
+            Mock.Get(writer).Verify(w => w.Save(It.Is<IFeatureResult[]>(r => r.Length == allMocks.Count)));
         }
 
         [Test]
@@ -36,8 +37,8 @@ namespace LightBDD.SummaryGeneration.UnitTests
         {
             var summaryWriters = new[]
             {
-                MockRepository.GenerateMock<ISummaryWriter>(),
-                MockRepository.GenerateMock<ISummaryWriter>()
+                Mock.Of<ISummaryWriter>(),
+                Mock.Of<ISummaryWriter>()
             };
             var generator = new FeatureSummaryGenerator(summaryWriters);
 
@@ -53,12 +54,12 @@ namespace LightBDD.SummaryGeneration.UnitTests
                 generator.Aggregate(result);
 
             foreach (var summaryWriter in summaryWriters)
-                summaryWriter.AssertWasNotCalled(w => w.Save(Arg<IFeatureResult[]>.Is.Anything));
+                Mock.Get(summaryWriter).Verify(w => w.Save(It.IsAny<IFeatureResult[]>()),Times.Never);
 
             generator.Dispose();
 
             foreach (var summaryWriter in summaryWriters)
-                summaryWriter.AssertWasCalled(w => w.Save(Arg<IFeatureResult[]>.List.Equal(results.OrderBy(r => r.Info.Name.ToString()).ToArray())));
+                Mock.Get(summaryWriter).Verify(w => w.Save(It.Is<IFeatureResult[]>(f => f.SequenceEqual(results.OrderBy(r => r.Info.Name.ToString()).ToArray()))));
         }
     }
 }

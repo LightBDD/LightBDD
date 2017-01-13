@@ -1,7 +1,7 @@
 using LightBDD.Core.Notification;
-using LightBDD.UnitTests.Helpers;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
+using Mocks = LightBDD.UnitTests.Helpers.Mocks;
 
 namespace LightBDD.Core.UnitTests.Notification
 {
@@ -14,7 +14,7 @@ namespace LightBDD.Core.UnitTests.Notification
         [SetUp]
         public void SetUp()
         {
-            _notifiers = new[] { MockRepository.GenerateMock<IScenarioProgressNotifier>(), MockRepository.GenerateMock<IScenarioProgressNotifier>() };
+            _notifiers = new[] { Mock.Of<IScenarioProgressNotifier>(), Mock.Of<IScenarioProgressNotifier>() };
             _subject = new DelegatingScenarioProgressNotifier(_notifiers);
         }
         
@@ -24,7 +24,7 @@ namespace LightBDD.Core.UnitTests.Notification
             var stepInfo = new Mocks.TestStepInfo();
             _subject.NotifyStepStart(stepInfo);
             foreach (var notifier in _notifiers)
-                notifier.AssertWasCalled(n => n.NotifyStepStart(stepInfo));
+                Mock.Get(notifier).Verify(n => n.NotifyStepStart(stepInfo));
         }
 
         [Test]
@@ -33,7 +33,7 @@ namespace LightBDD.Core.UnitTests.Notification
             var step = new Mocks.TestStepResult();
             _subject.NotifyStepFinished(step);
             foreach (var notifier in _notifiers)
-                notifier.AssertWasCalled(n => n.NotifyStepFinished(step));
+                Mock.Get(notifier).Verify(n => n.NotifyStepFinished(step));
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace LightBDD.Core.UnitTests.Notification
             var comment = "comment";
             _subject.NotifyStepComment(stepInfo, comment);
             foreach (var notifier in _notifiers)
-                notifier.AssertWasCalled(n => n.NotifyStepComment(stepInfo, comment));
+                Mock.Get(notifier).Verify(n => n.NotifyStepComment(stepInfo, comment));
         }
 
         [Test]
@@ -52,7 +52,7 @@ namespace LightBDD.Core.UnitTests.Notification
             var scenarioInfo = new Mocks.TestScenarioInfo();
             _subject.NotifyScenarioStart(scenarioInfo);
             foreach (var notifier in _notifiers)
-                notifier.AssertWasCalled(n => n.NotifyScenarioStart(scenarioInfo));
+                Mock.Get(notifier).Verify(n => n.NotifyScenarioStart(scenarioInfo));
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace LightBDD.Core.UnitTests.Notification
             var scenario = new Mocks.TestScenarioResult();
             _subject.NotifyScenarioFinished(scenario);
             foreach (var notifier in _notifiers)
-                notifier.AssertWasCalled(n => n.NotifyScenarioFinished(scenario));
+                Mock.Get(notifier).Verify(n => n.NotifyScenarioFinished(scenario));
         }
     }
 }

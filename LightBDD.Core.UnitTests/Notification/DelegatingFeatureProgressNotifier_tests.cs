@@ -1,7 +1,7 @@
 using LightBDD.Core.Notification;
-using LightBDD.UnitTests.Helpers;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
+using Mocks = LightBDD.UnitTests.Helpers.Mocks;
 
 namespace LightBDD.Core.UnitTests.Notification
 {
@@ -14,7 +14,7 @@ namespace LightBDD.Core.UnitTests.Notification
         [SetUp]
         public void SetUp()
         {
-            _notifiers = new[] { MockRepository.GenerateMock<IFeatureProgressNotifier>(), MockRepository.GenerateMock<IFeatureProgressNotifier>() };
+            _notifiers = new[] { Mock.Of<IFeatureProgressNotifier>(), Mock.Of<IFeatureProgressNotifier>() };
             _subject = new DelegatingFeatureProgressNotifier(_notifiers);
         }
 
@@ -24,7 +24,7 @@ namespace LightBDD.Core.UnitTests.Notification
             var featureInfo = new Mocks.TestFeatureInfo();
             _subject.NotifyFeatureStart(featureInfo);
             foreach (var notifier in _notifiers)
-                notifier.AssertWasCalled(n => n.NotifyFeatureStart(featureInfo));
+                Mock.Get(notifier).Verify(n => n.NotifyFeatureStart(featureInfo));
         }
 
         [Test]
@@ -33,7 +33,7 @@ namespace LightBDD.Core.UnitTests.Notification
             var feature = new Mocks.TestFeatureResult();
             _subject.NotifyFeatureFinished(feature);
             foreach (var notifier in _notifiers)
-                notifier.AssertWasCalled(n => n.NotifyFeatureFinished(feature));
+                Mock.Get(notifier).Verify(n => n.NotifyFeatureFinished(feature));
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System;
 using LightBDD.Configuration;
 using LightBDD.Core.Formatting;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace LightBDD.Core.UnitTests.Configuration
 {
@@ -24,7 +24,7 @@ namespace LightBDD.Core.UnitTests.Configuration
         [Test]
         public void It_should_update_formatter()
         {
-            var nameFormatter = MockRepository.GenerateMock<INameFormatter>();
+            var nameFormatter = Mock.Of<INameFormatter>();
             var config = new NameFormatterConfiguration().UpdateFormatter(nameFormatter);
             Assert.That(config.Formatter, Is.SameAs(nameFormatter));
         }

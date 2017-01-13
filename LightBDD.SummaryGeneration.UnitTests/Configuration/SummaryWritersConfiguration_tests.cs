@@ -3,8 +3,8 @@ using System.IO;
 using System.Linq;
 using LightBDD.SummaryGeneration.Configuration;
 using LightBDD.SummaryGeneration.Formatters;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace LightBDD.SummaryGeneration.UnitTests.Configuration
 {
@@ -27,8 +27,8 @@ namespace LightBDD.SummaryGeneration.UnitTests.Configuration
         [Test]
         public void It_should_allow_clear_add_and_remove_items()
         {
-            var writer = MockRepository.GenerateMock<ISummaryWriter>();
-            var writer2 = MockRepository.GenerateMock<ISummaryWriter>();
+            var writer = Mock.Of<ISummaryWriter>();
+            var writer2 = Mock.Of<ISummaryWriter>();
             var configuration = new SummaryWritersConfiguration();
             Assert.That(configuration.Clear(), Is.Empty);
             Assert.That(configuration.Add(writer).Add(writer2).ToArray(), Is.EqualTo(new[] { writer, writer2 }));
