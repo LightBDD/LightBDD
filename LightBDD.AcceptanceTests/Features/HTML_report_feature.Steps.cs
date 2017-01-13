@@ -7,7 +7,6 @@ using LightBDD.AcceptanceTests.Helpers.Builders;
 using LightBDD.Core.Execution.Results;
 using LightBDD.SummaryGeneration.Formatters;
 using NUnit.Framework;
-using NUnit.Framework.Internal.Commands;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
@@ -76,7 +75,7 @@ namespace LightBDD.AcceptanceTests.Features
             var htmlText = FormatResults(_features.ToArray());
             File.WriteAllText(_htmlFileName, htmlText);
         }
-        
+
         private void a_html_report_is_opened()
         {
             _driver.Navigate().GoToUrl(_htmlFileName);
@@ -247,13 +246,13 @@ namespace LightBDD.AcceptanceTests.Features
             Assert.That(_driver.Url, Does.Contain("?"));
         }
 
-        private void the_Feature_Summary_table_is_sorted_ASCENDING_by_column([OrderFormat]bool ascending, int column)
+        private void the_Feature_Summary_table_is_sorted_ASCENDING_by_column([OrderFormat]bool ascending, FeatureSummaryColumn column)
         {
             var values = _driver
                 .FindElementById("featuresSummary")
                 .FindElements(By.TagName("tr"))
                 .Skip(1)
-                .Select(tr => tr.FindElements(By.TagName("td")).Where(td => td.Displayed).ElementAt(column - 1).Text)
+                .Select(tr => tr.FindElements(By.TagName("td")).Where(td => td.Displayed).ElementAt((int)column - 1).Text)
                 .ToArray();
 
             if (ascending)
@@ -262,15 +261,19 @@ namespace LightBDD.AcceptanceTests.Features
                 Assert.That(values, Is.EqualTo(values.OrderByDescending(v => v).ToArray()));
         }
 
-        private void the_Feature_Summary_table_column_is_clicked(int column)
+        private void the_Feature_Summary_table_column_is_clicked(FeatureSummaryColumn column)
         {
-            _driver
+            var webElement = _driver
                 .FindElementById("featuresSummary")
                 .FindElements(By.TagName("tr"))
                 .First()
                 .FindElements(By.TagName("th"))
                 .Where(th => th.Displayed)
-                .ElementAt(column - 1)
+                .ElementAt((int)column - 1);
+
+            Assert.That(column.ToString(), Does.Contain(webElement.Text));
+
+            webElement
                 .ClickWithWait();
         }
 
@@ -283,5 +286,24 @@ namespace LightBDD.AcceptanceTests.Features
             }
         }
 
+    }
+
+    internal enum FeatureSummaryColumn
+    {
+        Feature = 1,
+        Scenarios,
+        ScenariosPassed,
+        ScenariosBypassed,
+        ScenariosFailed,
+        ScenariosIgnored,
+        Steps,
+        StepsPassed,
+        StepsBypassed,
+        StepsFailed,
+        StepsIgnored,
+        StepsNotRun,
+        Duration,
+        DurationAggregated,
+        DurationAverage
     }
 }

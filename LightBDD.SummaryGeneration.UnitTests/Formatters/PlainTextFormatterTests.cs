@@ -29,20 +29,22 @@ namespace LightBDD.SummaryGeneration.UnitTests.Formatters
             var text = FormatResults(result);
             TestContext.WriteLine(text);
             const string expectedText = @"Summary:
-	Test execution start time: 2014-09-23 19:21:58 UTC
-	Test execution time      : 1m 04s
-	Number of features       : 1
-	Number of scenarios      : 2
-	Passed scenarios         : 0
-	Bypassed scenarios       : 0
-	Failed scenarios         : 1
-	Ignored scenarios        : 1
-	Number of steps          : 5
-	Passed steps             : 1
-	Bypassed steps           : 1
-	Failed steps             : 1
-	Ignored steps            : 1
-	Not Run steps            : 1
+	Test execution start time       : 2014-09-23 19:21:58 UTC
+	Test execution end time         : 2014-09-23 19:23:00 UTC
+	Test execution time             : 1m 02s
+	Test execution time (aggregated): 1m 04s
+	Number of features              : 1
+	Number of scenarios             : 2
+	Passed scenarios                : 0
+	Bypassed scenarios              : 0
+	Failed scenarios                : 1
+	Ignored scenarios               : 1
+	Number of steps                 : 5
+	Passed steps                    : 1
+	Bypassed steps                  : 1
+	Failed steps                    : 1
+	Ignored steps                   : 1
+	Not Run steps                   : 1
 
 Feature: My feature [Label 1]
 	My feature
@@ -69,7 +71,7 @@ Feature: My feature [Label 1]
 			Step 2: Expected: True
 				  But was: False
 ";
-            Assert.That(text, Is.EqualTo(expectedText));
+            Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
         }
 
         [Test]
@@ -79,20 +81,22 @@ Feature: My feature [Label 1]
             var text = FormatResults(result);
             TestContext.WriteLine(text);
             const string expectedText = @"Summary:
-	Test execution start time: 2014-09-23 19:21:58 UTC
-	Test execution time      : 25ms
-	Number of features       : 1
-	Number of scenarios      : 1
-	Passed scenarios         : 0
-	Bypassed scenarios       : 0
-	Failed scenarios         : 0
-	Ignored scenarios        : 1
-	Number of steps          : 2
-	Passed steps             : 1
-	Bypassed steps           : 0
-	Failed steps             : 0
-	Ignored steps            : 1
-	Not Run steps            : 0
+	Test execution start time       : 2014-09-23 19:21:58 UTC
+	Test execution end time         : 2014-09-23 19:21:58 UTC
+	Test execution time             : 25ms
+	Test execution time (aggregated): 25ms
+	Number of features              : 1
+	Number of scenarios             : 1
+	Passed scenarios                : 0
+	Bypassed scenarios              : 0
+	Failed scenarios                : 0
+	Ignored scenarios               : 1
+	Number of steps                 : 2
+	Passed steps                    : 1
+	Bypassed steps                  : 0
+	Failed steps                    : 0
+	Ignored steps                   : 1
+	Not Run steps                   : 0
 
 Feature: My feature
 
@@ -111,20 +115,22 @@ Feature: My feature
             var text = FormatResults(results);
             TestContext.WriteLine(text);
             const string expectedText = @"Summary:
-	Test execution start time: 2014-09-23 19:21:58 UTC
-	Test execution time      : 40ms
-	Number of features       : 2
-	Number of scenarios      : 2
-	Passed scenarios         : 2
-	Bypassed scenarios       : 0
-	Failed scenarios         : 0
-	Ignored scenarios        : 0
-	Number of steps          : 2
-	Passed steps             : 2
-	Bypassed steps           : 0
-	Failed steps             : 0
-	Ignored steps            : 0
-	Not Run steps            : 0
+	Test execution start time       : 2014-09-23 19:21:58 UTC
+	Test execution end time         : 2014-09-23 19:22:01 UTC
+	Test execution time             : 3s 020ms
+	Test execution time (aggregated): 40ms
+	Number of features              : 2
+	Number of scenarios             : 2
+	Passed scenarios                : 2
+	Bypassed scenarios              : 0
+	Failed scenarios                : 0
+	Ignored scenarios               : 0
+	Number of steps                 : 2
+	Passed steps                    : 2
+	Bypassed steps                  : 0
+	Failed steps                    : 0
+	Ignored steps                   : 0
+	Not Run steps                   : 0
 
 Feature: My feature
 

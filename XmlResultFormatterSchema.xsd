@@ -32,6 +32,7 @@
               </xs:element>
             </xs:sequence>
             <xs:attribute name="TestExecutionStart" type="xs:dateTime" use="required"/>
+            <xs:attribute name="TestExecutionEnd" type="xs:dateTime" use="required"/>
             <xs:attribute name="TestExecutionTime" type="xs:duration" use="required"/>
           </xs:complexType>
         </xs:element>

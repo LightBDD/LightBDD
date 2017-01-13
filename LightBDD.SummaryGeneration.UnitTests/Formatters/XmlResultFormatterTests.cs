@@ -41,7 +41,7 @@ namespace LightBDD.SummaryGeneration.UnitTests.Formatters
 
             const string expectedText = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <TestResults>
-  <Summary TestExecutionStart=""2014-09-23T19:21:58.055Z"" TestExecutionTime=""PT1M4.257S"">
+  <Summary TestExecutionStart=""2014-09-23T19:21:58.055Z"" TestExecutionEnd=""2014-09-23T19:23:00.155Z"" TestExecutionTime=""PT1M2.1S"">
     <Features Count=""1"" />
     <Scenarios Count=""2"" Passed=""0"" Bypassed=""0"" Failed=""1"" Ignored=""1"" />
     <Steps Count=""5"" Passed=""1"" Bypassed=""1"" Failed=""1"" Ignored=""1"" NotRun=""1"" />
@@ -101,7 +101,7 @@ Step 2: Expected: True
 
             const string expectedText = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <TestResults>
-  <Summary TestExecutionStart=""2014-09-23T19:21:58.055Z"" TestExecutionTime=""PT0.025S"">
+  <Summary TestExecutionStart=""2014-09-23T19:21:58.055Z"" TestExecutionEnd=""2014-09-23T19:21:58.08Z"" TestExecutionTime=""PT0.025S"">
     <Features Count=""1"" />
     <Scenarios Count=""1"" Passed=""0"" Bypassed=""0"" Failed=""0"" Ignored=""1"" />
     <Steps Count=""2"" Passed=""1"" Bypassed=""0"" Failed=""0"" Ignored=""1"" NotRun=""0"" />
@@ -130,7 +130,7 @@ Step 2: Expected: True
             TestContext.WriteLine(text);
             const string expectedText = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <TestResults>
-  <Summary TestExecutionStart=""2014-09-23T19:21:58.055Z"" TestExecutionTime=""PT0.04S"">
+  <Summary TestExecutionStart=""2014-09-23T19:21:58.055Z"" TestExecutionEnd=""2014-09-23T19:22:01.075Z"" TestExecutionTime=""PT3.02S"">
     <Features Count=""2"" />
     <Scenarios Count=""2"" Passed=""2"" Bypassed=""0"" Failed=""0"" Ignored=""0"" />
     <Steps Count=""2"" Passed=""2"" Bypassed=""0"" Failed=""0"" Ignored=""0"" NotRun=""0"" />

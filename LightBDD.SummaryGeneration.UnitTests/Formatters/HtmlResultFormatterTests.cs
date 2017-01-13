@@ -7,6 +7,7 @@ using System.Text;
 using HtmlAgilityPack;
 using LightBDD.Core.Execution.Results;
 using LightBDD.SummaryGeneration.Formatters;
+using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 
 namespace LightBDD.SummaryGeneration.UnitTests.Formatters
@@ -31,9 +32,12 @@ namespace LightBDD.SummaryGeneration.UnitTests.Formatters
             var result = ResultFormatterTestData.GetFeatureResultWithDescription();
 
             var text = FormatAndExtractText(result);
-            const string expectedText = @"Execution summary
+            TestContext.WriteLine(text);
+            var expectedText = $@"Execution summary
 Test execution start time: 2014-09-23 19:21:58 UTC
-Test execution time: 1m 04s
+Test execution end time: 2014-09-23 19:23:00 UTC
+Test execution time: 1m 02s
+Test execution time (aggregated): 1m 04s
 Number of features: 1
 Number of scenarios: 2
 Passed scenarios: 0
@@ -47,8 +51,8 @@ Failed steps: 1
 Ignored steps: 1
 Not Run steps: 1
 Feature summary
-Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Average
-My feature [Label 1] 2 0 0 1 1 5 1 1 1 1 1 1m 04s 642570000 32s 128ms 321285000
+Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
+My feature [Label 1] 2 0 0 1 1 5 1 1 1 1 1 1m 02s 621000000 1m 04s 642570000 32s 128ms 321285000
 Feature details[&#8734;link]
 Toggle: Features Scenarios
 Filter: Passed Bypassed Failed Ignored Not Run
@@ -73,9 +77,9 @@ NotRun 3. step5
 Step 1: bypass reason
 Step 2: Expected: True
 	  But was: False
-Generated with LightBDD
+Generated with LightBDD v{GetExpectedLightBddVersion()}
 initialize();";
-            Assert.That(text, Is.EqualTo(expectedText));
+            Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
         }
 
         [Test]
@@ -84,10 +88,12 @@ initialize();";
             var result = ResultFormatterTestData.GetFeatureResultWithoutDescriptionNorLabelNorDetails();
 
             var text = FormatAndExtractText(result);
-
-            const string expectedText = @"Execution summary
+            TestContext.WriteLine(text);
+            var expectedText = $@"Execution summary
 Test execution start time: 2014-09-23 19:21:58 UTC
+Test execution end time: 2014-09-23 19:21:58 UTC
 Test execution time: 25ms
+Test execution time (aggregated): 25ms
 Number of features: 1
 Number of scenarios: 1
 Passed scenarios: 0
@@ -101,8 +107,8 @@ Failed steps: 0
 Ignored steps: 1
 Not Run steps: 0
 Feature summary
-Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Average
-My feature 1 0 0 0 1 2 1 0 0 1 0 25ms 250000 25ms 250000
+Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
+My feature 1 0 0 0 1 2 1 0 0 1 0 25ms 250000 25ms 250000 25ms 250000
 Feature details[&#8734;link]
 Toggle: Features Scenarios
 Filter: Passed Bypassed Failed Ignored Not Run
@@ -111,9 +117,9 @@ My feature[&#8734;link]
 Ignored name (25ms)[&#8734;link]
 Passed 1. step1 (20ms)
 Ignored 2. step2 (5ms)
-Generated with LightBDD
+Generated with LightBDD v{GetExpectedLightBddVersion()}
 initialize();";
-            Assert.That(text, Is.EqualTo(expectedText));
+            Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
         }
 
         [Test]
@@ -121,9 +127,12 @@ initialize();";
         {
             var results = ResultFormatterTestData.GetMultipleFeatureResults();
             var text = FormatAndExtractText(results);
-            const string expectedText = @"Execution summary
+            TestContext.WriteLine(text);
+            var expectedText = $@"Execution summary
 Test execution start time: 2014-09-23 19:21:58 UTC
-Test execution time: 40ms
+Test execution end time: 2014-09-23 19:22:01 UTC
+Test execution time: 3s 020ms
+Test execution time (aggregated): 40ms
 Number of features: 2
 Number of scenarios: 2
 Passed scenarios: 2
@@ -137,9 +146,9 @@ Failed steps: 0
 Ignored steps: 0
 Not Run steps: 0
 Feature summary
-Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Average
-My feature 1 1 0 0 0 1 1 0 0 0 0 20ms 200000 20ms 200000
-My feature2 1 1 0 0 0 1 1 0 0 0 0 20ms 200000 20ms 200000
+Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
+My feature 1 1 0 0 0 1 1 0 0 0 0 20ms 200000 20ms 200000 20ms 200000
+My feature2 1 1 0 0 0 1 1 0 0 0 0 20ms 200000 20ms 200000 20ms 200000
 Feature details[&#8734;link]
 Toggle: Features Scenarios
 Filter: Passed Bypassed Failed Ignored Not Run
@@ -153,9 +162,14 @@ My feature2[&#8734;link]
 Passed scenario1 (20ms)[&#8734;link]
 categoryB
 Passed 1. step1 (20ms)
-Generated with LightBDD
+Generated with LightBDD v{GetExpectedLightBddVersion()}
 initialize();";
-            Assert.That(text, Is.EqualTo(expectedText));
+            Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
+        }
+
+        private string GetExpectedLightBddVersion()
+        {
+            return typeof(IBddRunner).Assembly.GetName().Version.ToString(4);
         }
 
         private string FormatAndExtractText(params IFeatureResult[] results)

@@ -1,51 +1,30 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Execution.Results;
 
 namespace LightBDD.SummaryGeneration
 {
+    ///TODO: add explicit tests
     /// <summary>
     /// Helper methods to work on feature results
     /// </summary>
     public static class FeatureSummaryExtensions
     {
-        /// <summary>
-        /// Returns time when first scenario has started executing based on Scenario ExecutionStart property.
-        /// If no scenarios have been executed, UtcNow is returned.
-        /// </summary>
-        public static DateTimeOffset GetTestExecutionStartTime(this IEnumerable<IFeatureResult> results)
+        public static ExecutionTimeSummary GetTestExecutionTimeSummary(this IEnumerable<IFeatureResult> results)
         {
-            return results.SelectMany(r => r.GetScenarios())
-            .Where(s => s.ExecutionTime != null)
-            .Select(s => (DateTimeOffset?)s.ExecutionTime.Start)
-            .OrderBy(s => s)
-            .FirstOrDefault()
-            .GetValueOrDefault(DateTimeOffset.UtcNow);
+            return ExecutionTimeSummary.Calculate(
+                results
+                .SelectMany(r => r.GetScenarios())
+                .Select(s => s.ExecutionTime)
+                .Where(s => s != null));
         }
 
-        /// <summary>
-        /// Returns total test execution time based on Scenario ExecutionTime property.
-        /// </summary>
-        public static TimeSpan GetTestExecutionTime(this IEnumerable<IFeatureResult> results)
+        public static ExecutionTimeSummary GetTestExecutionTimeSummary(this IEnumerable<IScenarioResult> results)
         {
-            return results.SelectMany(r => r.GetScenarios()).GetTestExecutionTime();
-        }
-
-        /// <summary>
-        /// Returns total test execution time based on Scenario ExecutionTime property.
-        /// </summary>
-        public static TimeSpan GetTestExecutionTime(this IEnumerable<IScenarioResult> results)
-        {
-            return results.Aggregate(TimeSpan.Zero, (current, s) => current + (s.ExecutionTime?.Duration).GetValueOrDefault());
-        }
-
-        /// <summary>
-        /// Returns average test execution time based on Scenario ExecutionTime property.
-        /// </summary>
-        public static TimeSpan GetTestAverageExecutionTime(this IEnumerable<IScenarioResult> results)
-        {
-            return TimeSpan.FromTicks((long)results.Select(s => (s.ExecutionTime?.Duration).GetValueOrDefault().Ticks).DefaultIfEmpty(0).Average());
+            return ExecutionTimeSummary.Calculate(
+                results
+                .Select(s => s.ExecutionTime)
+                .Where(s => s != null));
         }
 
         /// <summary>

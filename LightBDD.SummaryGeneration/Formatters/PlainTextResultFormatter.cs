@@ -147,11 +147,15 @@ namespace LightBDD.SummaryGeneration.Formatters
 
         private static void FormatSummary(TextWriter writer, IFeatureResult[] features)
         {
+            var timeSummary = features.GetTestExecutionTimeSummary();
+
             writer.WriteLine("Summary:");
             var summary = new Dictionary<string, object>
             {
-                {"Test execution start time", features.GetTestExecutionStartTime().ToString("yyyy-MM-dd HH:mm:ss UTC")},
-                {"Test execution time", features.GetTestExecutionTime().FormatPretty()},
+                {"Test execution start time", timeSummary.Start.ToString("yyyy-MM-dd HH:mm:ss UTC")},
+                {"Test execution end time", timeSummary.End.ToString("yyyy-MM-dd HH:mm:ss UTC")},
+                {"Test execution time", timeSummary.Duration.FormatPretty()},
+                {"Test execution time (aggregated)", timeSummary.Aggregated.FormatPretty()},
                 {"Number of features", features.Length},
                 {"Number of scenarios", features.CountScenarios()},
                 {"Passed scenarios", features.CountScenariosWithStatus(ExecutionStatus.Passed)},

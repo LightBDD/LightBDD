@@ -2,11 +2,16 @@
   "version": "1.0.0-*",
   "buildOptions": {
     "compile": [ "**/*.cs", "../AssemblyVersion.cs" ],
-    "embed": [
-      "Formatters/Html/scripts.js",
-      "Formatters/Html/styles.css",
-      "../logo/lightbdd_small.ico"
-    ]
+    "embed": {
+      "include": [
+        "Formatters/Html/scripts.js",
+        "Formatters/Html/styles.css"
+
+      ],
+      "mappings": {
+        "LightBDD/SummaryGeneration/Formatters/Html/lightbdd_small.ico": "../logo/lightbdd_small.ico"
+      }
+    }
   },
   "frameworks": {
     "netstandard1.3": {

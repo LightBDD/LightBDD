@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 
 namespace LightBDD.SummaryGeneration.Formatters.Html
 {
     internal class HtmlTextWriter : IDisposable
     {
+        private static readonly string[] VoidElements = new[] { "area", "base", "br", "col", "hr", "img", "input", "link", "meta", "param", "command", "keygen", "source" };
         private readonly TextWriter _writer;
 
         public HtmlTextWriter(TextWriter writer)
@@ -35,12 +37,25 @@ namespace LightBDD.SummaryGeneration.Formatters.Html
             Write(tag);
             foreach (var attribute in attributes)
                 WriteAttribute(attribute.Key, attribute.Value);
+
             if (closed)
-                Write("/");
-            Write(">");
+            {
+                if (VoidElements.Contains(tag))
+                    Write("/>");
+                else
+                {
+                    Write(">");
+                    CloseTag(tag);
+                }
+            }
+            else
+                Write(">");
         }
 
-        public void CloseTag(string tag) { Write("</"); Write(tag); Write(">"); }
+        public void CloseTag(string tag)
+        {
+            Write("</"); Write(tag); Write(">");
+        }
 
         private void WriteAttribute(string attribute, string value)
         {

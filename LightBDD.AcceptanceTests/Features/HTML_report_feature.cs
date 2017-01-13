@@ -1,5 +1,21 @@
-﻿using LightBDD.Core.Execution.Results;
+﻿using LightBDD;
+using LightBDD.Configuration;
+using LightBDD.Core.Execution.Results;
+using LightBDD.SummaryGeneration;
+using LightBDD.SummaryGeneration.Configuration;
+using LightBDD.SummaryGeneration.Formatters;
 using NUnit.Framework;
+[assembly: ConfiguredLightBddScope]
+
+public class ConfiguredLightBddScopeAttribute : LightBddScopeAttribute
+{
+    protected override void OnConfigure(LightBddConfiguration configuration)
+    {
+        configuration.Get<SummaryWritersConfiguration>()
+            .Add(new SummaryFileWriter(new HtmlResultFormatter(), "~\\Reports\\FeaturesSummary.html"))
+            .Add(new SummaryFileWriter(new PlainTextResultFormatter(), "~\\Reports\\FeaturesSummary.txt"));
+    }
+}
 
 namespace LightBDD.AcceptanceTests.Features
 {
@@ -10,7 +26,7 @@ I want to have HTML report")]
     [TestFixture]
     public partial class HTML_report_feature
     {
-        [Test]
+        [Scenario]
         public void Should_collapse_feature_details()
         {
             Runner.Parameterized().RunScenario(
@@ -29,7 +45,7 @@ I want to have HTML report")]
                 then => the_feature_scenarios_are_VISIBLE(1, true));
         }
 
-        [Test]
+        [Scenario]
         public void Should_collapse_scenario_details()
         {
             Runner.Parameterized().RunScenario(
@@ -49,7 +65,7 @@ I want to have HTML report")]
 
         }
 
-        [Test]
+        [Scenario]
         public void Should_collapse_all_features()
         {
             Runner.Parameterized().RunScenario(
@@ -71,7 +87,7 @@ I want to have HTML report")]
                 and => all_steps_are_VISIBLE(true));
         }
 
-        [Test]
+        [Scenario]
         public void Should_collapse_all_scenarios()
         {
             Runner.Parameterized().RunScenario(
@@ -92,7 +108,7 @@ I want to have HTML report")]
                 and => all_steps_are_VISIBLE(true));
         }
 
-        [Test]
+        [Scenario]
         [TestCase(ExecutionStatus.Bypassed)]
         [TestCase(ExecutionStatus.Passed)]
         [TestCase(ExecutionStatus.Failed)]
@@ -120,7 +136,7 @@ I want to have HTML report")]
                 );
         }
 
-        [Test]
+        [Scenario]
         [TestCase(ExecutionStatus.Bypassed)]
         [TestCase(ExecutionStatus.Passed)]
         [TestCase(ExecutionStatus.Failed)]
@@ -148,7 +164,7 @@ I want to have HTML report")]
                 );
         }
 
-        [Test]
+        [Scenario]
         public void Should_filter_by_category()
         {
             Runner.Parameterized().RunScenario(
@@ -204,7 +220,7 @@ I want to have HTML report")]
                 );
         }
 
-        [Test]
+        [Scenario]
         public void Should_filter_by_category_and_status()
         {
             Runner.Parameterized().RunScenario(
@@ -250,7 +266,7 @@ I want to have HTML report")]
                 );
         }
 
-        [Test]
+        [Scenario]
         public void Should_follow_shareable_link_with_preserving_selected_options()
         {
             Runner.Parameterized().RunScenario(
@@ -298,7 +314,7 @@ I want to have HTML report")]
                 );
         }
 
-        [Test]
+        [Scenario]
         public void Should_sort_feature_summary_rows()
         {
             Runner.Parameterized().RunScenario(
@@ -314,33 +330,43 @@ I want to have HTML report")]
                 and => a_html_report_is_created(),
 
                 when => a_html_report_is_opened(),
-                then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(true, 1),
-                when => the_Feature_Summary_table_column_is_clicked(1),
-                then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(false, 1),
+                then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(true, FeatureSummaryColumn.Feature),
+                when => the_Feature_Summary_table_column_is_clicked(FeatureSummaryColumn.Feature),
+                then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(false, FeatureSummaryColumn.Feature),
 
-                when => the_Feature_Summary_table_column_is_clicked(2),
-                then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(false, 2),
-                when => the_Feature_Summary_table_column_is_clicked(2),
-                then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(true, 2),
+                when => the_Feature_Summary_table_column_is_clicked(FeatureSummaryColumn.Scenarios),
+                then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(false, FeatureSummaryColumn.Scenarios),
+                when => the_Feature_Summary_table_column_is_clicked(FeatureSummaryColumn.Scenarios),
+                then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(true, FeatureSummaryColumn.Scenarios),
 
-                when => the_Feature_Summary_table_column_is_clicked(3),
-                then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(false, 3),
-                when => the_Feature_Summary_table_column_is_clicked(3),
-                then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(true, 3),
+                when => the_Feature_Summary_table_column_is_clicked(FeatureSummaryColumn.ScenariosPassed),
+                then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(false, FeatureSummaryColumn.ScenariosPassed),
+                when => the_Feature_Summary_table_column_is_clicked(FeatureSummaryColumn.ScenariosPassed),
+                then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(true, FeatureSummaryColumn.ScenariosPassed),
 
-                when => the_Feature_Summary_table_column_is_clicked(7),
-                then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(false, 7),
-                when => the_Feature_Summary_table_column_is_clicked(7),
-                then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(true, 7),
+                when => the_Feature_Summary_table_column_is_clicked(FeatureSummaryColumn.Steps),
+                then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(false, FeatureSummaryColumn.Steps),
+                when => the_Feature_Summary_table_column_is_clicked(FeatureSummaryColumn.Steps),
+                then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(true, FeatureSummaryColumn.Steps),
 
-                when => the_Feature_Summary_table_column_is_clicked(13),
-                then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(false, 13),
-                when => the_Feature_Summary_table_column_is_clicked(13),
-                then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(true, 13)
+                when => the_Feature_Summary_table_column_is_clicked(FeatureSummaryColumn.Duration),
+                then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(false, FeatureSummaryColumn.Duration),
+                when => the_Feature_Summary_table_column_is_clicked(FeatureSummaryColumn.Duration),
+                then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(true, FeatureSummaryColumn.Duration),
+
+                when => the_Feature_Summary_table_column_is_clicked(FeatureSummaryColumn.DurationAggregated),
+                then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(false, FeatureSummaryColumn.DurationAggregated),
+                when => the_Feature_Summary_table_column_is_clicked(FeatureSummaryColumn.DurationAggregated),
+                then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(true, FeatureSummaryColumn.DurationAggregated),
+
+                when => the_Feature_Summary_table_column_is_clicked(FeatureSummaryColumn.DurationAverage),
+                then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(false, FeatureSummaryColumn.DurationAverage),
+                when => the_Feature_Summary_table_column_is_clicked(FeatureSummaryColumn.DurationAverage),
+                then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(true, FeatureSummaryColumn.DurationAverage)
                 );
         }
 
-        [Test]
+        [Scenario]
         public void Should_show_details_of_non_passed_scenarios()
         {
             Runner.Parameterized().RunScenario(

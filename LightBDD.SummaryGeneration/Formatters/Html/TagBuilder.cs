@@ -126,6 +126,7 @@ namespace LightBDD.SummaryGeneration.Formatters.Html
             }
             else
                 writer.WriteTag(_tag, _attributes);
+
             if (_spaceAfter)
                 writer.Write(" ");
 

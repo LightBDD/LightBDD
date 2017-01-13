@@ -13,11 +13,11 @@ namespace LightBDD.SummaryGeneration.Formatters.Html
 {
     internal class HtmlResultTextWriter : IDisposable
     {
-        private static readonly IStepNameDecorator _stepNameDecorator = new HtmlStepNameDecorator();
+        private static readonly IStepNameDecorator StepNameDecorator = new HtmlStepNameDecorator();
         private readonly HtmlTextWriter _writer;
         private readonly string _styles = ReadResource("LightBDD.SummaryGeneration.Formatters.Html.styles.css");
         private readonly string _scripts = ReadResource("LightBDD.SummaryGeneration.Formatters.Html.scripts.js");
-        private readonly string _favico = ReadBase64Resource("LightBDD.SummaryGeneration.lightbdd_small.ico");
+        private readonly string _favico = ReadBase64Resource("LightBDD.SummaryGeneration.Formatters.Html.lightbdd_small.ico");
 
         private readonly IFeatureResult[] _features;
 
@@ -67,13 +67,16 @@ namespace LightBDD.SummaryGeneration.Formatters.Html
             var bypassedScenarios = _features.CountScenariosWithStatus(ExecutionStatus.Bypassed);
             var failedScenarios = _features.CountScenariosWithStatus(ExecutionStatus.Failed);
             var ignoredScenarios = _features.CountScenariosWithStatus(ExecutionStatus.Ignored);
+            var timeSummary = _features.GetTestExecutionTimeSummary();
 
             return Html.Tag(Html5Tag.Section).Content(
                 Html.Tag(Html5Tag.H1).Content("Execution summary"),
                 Html.Tag(Html5Tag.Article).Content(
                     Html.Tag(Html5Tag.Table).Class("summary").Content(
-                        GetKeyValueTableRow("Test execution start time:", _features.GetTestExecutionStartTime().ToString("yyyy-MM-dd HH:mm:ss UTC")),
-                        GetKeyValueTableRow("Test execution time:", _features.GetTestExecutionTime().FormatPretty()),
+                        GetKeyValueTableRow("Test execution start time:", timeSummary.Start.ToString("yyyy-MM-dd HH:mm:ss UTC")),
+                        GetKeyValueTableRow("Test execution end time:", timeSummary.End.ToString("yyyy-MM-dd HH:mm:ss UTC")),
+                        GetKeyValueTableRow("Test execution time:", timeSummary.Duration.FormatPretty()),
+                        GetKeyValueTableRow("Test execution time (aggregated):", timeSummary.Aggregated.FormatPretty()),
                         GetKeyValueTableRow("Number of features:", _features.Length.ToString()),
                         GetKeyValueTableRow("Number of scenarios:", _features.CountScenarios()),
                         GetKeyValueTableRow("Passed scenarios:", _features.CountScenariosWithStatus(ExecutionStatus.Passed)),
@@ -145,7 +148,9 @@ namespace LightBDD.SummaryGeneration.Formatters.Html
                 Tuple.Create("Not Run", sortableMinor, "sortTable('featuresSummary',11,true,this)"),
                 Tuple.Create("Duration", sortable, "sortTable('featuresSummary',13,true,this)"),
                 Tuple.Create("", hidden, ""),
-                Tuple.Create("Average", sortableMinor, "sortTable('featuresSummary',15,true,this)"),
+                Tuple.Create("Aggregated", sortableMinor, "sortTable('featuresSummary',15,true,this)"),
+                Tuple.Create("", hidden, ""),
+                Tuple.Create("Average", sortableMinor, "sortTable('featuresSummary',17,true,this)"),
                 Tuple.Create("", hidden, "")
                 );
             yield return Html.Tag(Html5Tag.Tbody).Content(_features.Select((t, index) => GetFeatureSummary(t, index + 1)));
@@ -154,12 +159,11 @@ namespace LightBDD.SummaryGeneration.Formatters.Html
 
         private static IHtmlNode GetFeatureSummary(IFeatureResult feature, int index)
         {
-            var testExecutionTime = feature.GetScenarios().GetTestExecutionTime();
-            var testAverageExecutionTime = feature.GetScenarios().GetTestAverageExecutionTime();
+            var timeSummary = feature.GetScenarios().GetTestExecutionTimeSummary();
 
             return Html.Tag(Html5Tag.Tr).Content(
                 Html.Tag(Html5Tag.Td).Content(
-                    Html.Tag(Html5Tag.A).Href("#feature" + index).Content(feature.Info.Name.Format(_stepNameDecorator)),
+                    Html.Tag(Html5Tag.A).Href("#feature" + index).Content(feature.Info.Name.Format(StepNameDecorator)),
                     Html.Tag(Html5Tag.Span).Content(feature.Info.Labels.Select(GetLabel)).SkipEmpty()),
 
                 Html.Tag(Html5Tag.Td).Content(feature.GetScenarios().Count().ToString()),
@@ -175,10 +179,12 @@ namespace LightBDD.SummaryGeneration.Formatters.Html
                 GetNumericTagWithOptionalClass(Html5Tag.Td, "ignoredAlert", feature.CountStepsWithStatus(ExecutionStatus.Ignored)),
                 Html.Tag(Html5Tag.Td).Content(feature.CountStepsWithStatus(ExecutionStatus.NotRun).ToString()),
 
-                Html.Tag(Html5Tag.Td).Content(testExecutionTime.FormatPretty()),
-                Html.Tag(Html5Tag.Td).Class("hidden").Content(testExecutionTime.Ticks.ToString()),
-                Html.Tag(Html5Tag.Td).Content(testAverageExecutionTime.FormatPretty()),
-                Html.Tag(Html5Tag.Td).Class("hidden").Content(testAverageExecutionTime.Ticks.ToString())
+                Html.Tag(Html5Tag.Td).Content(timeSummary.Duration.FormatPretty()),
+                Html.Tag(Html5Tag.Td).Class("hidden").Content(timeSummary.Duration.Ticks.ToString()),
+                Html.Tag(Html5Tag.Td).Content(timeSummary.Aggregated.FormatPretty()),
+                Html.Tag(Html5Tag.Td).Class("hidden").Content(timeSummary.Aggregated.Ticks.ToString()),
+                Html.Tag(Html5Tag.Td).Content(timeSummary.Average.FormatPretty()),
+                Html.Tag(Html5Tag.Td).Class("hidden").Content(timeSummary.Average.Ticks.ToString())
                 );
         }
 
@@ -305,7 +311,7 @@ namespace LightBDD.SummaryGeneration.Formatters.Html
                 Html.Checkbox().Class("toggle toggleF").Id("toggle" + index).Checked(),
                 Html.Tag(Html5Tag.Div).Class("header").Content(
                     Html.Tag(Html5Tag.H2).Id("feature" + index).Class("title").Content(
-                        Html.Tag(Html5Tag.Label).For("toggle" + index).Content(GetCheckBoxTag(), Html.Text(feature.Info.Name.Format(_stepNameDecorator))),
+                        Html.Tag(Html5Tag.Label).For("toggle" + index).Content(GetCheckBoxTag(), Html.Text(feature.Info.Name.Format(StepNameDecorator))),
                         Html.Tag(Html5Tag.Span).Content(feature.Info.Labels.Select(GetLabel)).SkipEmpty(),
                         GetSmallLink("feature" + index)),
                     Html.Tag(Html5Tag.Div).Class("description").Content(feature.Info.Description)),
@@ -341,7 +347,7 @@ namespace LightBDD.SummaryGeneration.Formatters.Html
                     Html.Tag(Html5Tag.Label).For(toggleId).Content(
                         GetCheckBoxTag(),
                         GetStatus(scenario.Status),
-                        Html.Text(scenario.Info.Name.Format(_stepNameDecorator))),
+                        Html.Text(scenario.Info.Name.Format(StepNameDecorator))),
                     Html.Tag(Html5Tag.Span).Content(scenario.Info.Labels.Select(GetLabel)).SkipEmpty(),
                     GetDuration(scenario.ExecutionTime),
                     GetSmallLink(scenarioId)),
@@ -394,7 +400,7 @@ namespace LightBDD.SummaryGeneration.Formatters.Html
         {
             return Html.Tag(Html5Tag.Div).Class("step").Content(
                 GetStatus(step.Status),
-                Html.Text(string.Format("{0}. {1}", step.Info.Number, step.Info.Name.Format(_stepNameDecorator))).Trim(),
+                Html.Text(string.Format("{0}. {1}", step.Info.Number, step.Info.Name.Format(StepNameDecorator))).Trim(),
                 GetDuration(step.ExecutionTime));
         }
 
@@ -421,9 +427,14 @@ namespace LightBDD.SummaryGeneration.Formatters.Html
                         WriteExecutionSummary(),
                         WriteFeatureList(),
                         WriteFeatureDetails(),
-                        Html.Tag(Html5Tag.Div).Class("footer").Content(Html.Text("Generated with "), Html.Tag(Html5Tag.A).Content("LightBDD").Href("https://github.com/Suremaker/LightBDD")),
+                        Html.Tag(Html5Tag.Div).Class("footer").Content(Html.Text("Generated with "), Html.Tag(Html5Tag.A).Content("LightBDD v" + GetLightBddVersion()).Href("https://github.com/Suremaker/LightBDD")),
                         Html.Tag(Html5Tag.Script).Content("initialize();", false, false)
                         )));
+        }
+
+        private static string GetLightBddVersion()
+        {
+            return typeof(IBddRunner).GetTypeInfo().Assembly.GetName().Version.ToString(4);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace LightBDD.SummaryGeneration.Formatters
     {
         #region IResultFormatter Members
 
-        public void Format(Stream stream,params IFeatureResult[] features)
+        public void Format(Stream stream, params IFeatureResult[] features)
         {
             using (var writer = new StreamWriter(stream, new UTF8Encoding(false)))
                 ToXDocument(features).Save(writer);
@@ -101,10 +101,12 @@ namespace LightBDD.SummaryGeneration.Formatters
 
         private static XElement ToSummaryXElement(IFeatureResult[] features)
         {
+            var timeSummary = features.GetTestExecutionTimeSummary();
             var objects = new List<object>
             {
-                new XAttribute("TestExecutionStart", features.GetTestExecutionStartTime()),
-                new XAttribute("TestExecutionTime", features.GetTestExecutionTime()),
+                new XAttribute("TestExecutionStart", timeSummary.Start),
+                new XAttribute("TestExecutionEnd", timeSummary.End),
+                new XAttribute("TestExecutionTime", timeSummary.Duration),
                 new XElement("Features", new object[] {new XAttribute("Count", features.Length)}),
                 new XElement("Scenarios", new XAttribute("Count", features.CountScenarios()),
                     new XAttribute("Passed", features.CountScenariosWithStatus(ExecutionStatus.Passed)),
