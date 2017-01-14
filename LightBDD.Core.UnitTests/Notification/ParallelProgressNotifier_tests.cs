@@ -6,18 +6,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Formatting;
-using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
-using Ploeh.AutoFixture;
+using RandomTestValues;
 
 namespace LightBDD.Core.UnitTests.Notification
 {
     [TestFixture]
     public class ParallelProgressNotifier_tests
     {
-        private readonly IFixture _autoFixture = MockFixture.CreateNew();
         private ConcurrentDictionary<int, ConcurrentQueue<string>> _capturedGroups;
         public IEnumerable<string> CapturedItems => _capturedGroups.SelectMany(g => g.Value);
         private readonly AsyncLocal<int> _currentId = new AsyncLocal<int>();
@@ -41,13 +39,15 @@ namespace LightBDD.Core.UnitTests.Notification
         [Test]
         public void It_should_capture_meaningful_information()
         {
-            var featureInfo = _autoFixture.Create<IFeatureInfo>();
-            var scenarioInfo = _autoFixture.Create<IScenarioInfo>();
-            var stepInfo = _autoFixture.Create<IStepInfo>();
-            var stepResult = _autoFixture.Create<IStepResult>();
-            var scenarioResult = _autoFixture.Build<Mocks.TestScenarioResult>().With(r => r.Status, ExecutionStatus.Passed).Create();
-            var featureResult = _autoFixture.Create<IFeatureResult>();
-            var comment = _autoFixture.Create<string>();
+            var featureInfo = RandomValue.Object<Results.TestFeatureInfo>();
+            var scenarioInfo = RandomValue.Object<Results.TestScenarioInfo>();
+            var stepInfo = RandomValue.Object<Results.TestStepInfo>();
+            var stepResult = RandomValue.Object<Results.TestStepResult>();
+            var scenarioResult = RandomValue.Object<Results.TestScenarioResult>();
+            scenarioResult.Status = ExecutionStatus.Passed;
+
+            var featureResult = RandomValue.Object<Results.TestFeatureResult>();
+            var comment = RandomValue.String();
 
             var featureNotifier = GetFeatureNotifier();
             var scenarioNotifier = GetScenarioNotifier();
@@ -78,7 +78,8 @@ namespace LightBDD.Core.UnitTests.Notification
         [Test]
         public void NotifyFeatureStart_should_omit_description_if_not_provided()
         {
-            var featureInfo = _autoFixture.Build<Mocks.TestFeatureInfo>().Without(i => i.Description).Create();
+            var featureInfo = RandomValue.Object<Results.TestFeatureInfo>();
+            featureInfo.Description = null;
             GetFeatureNotifier().NotifyFeatureStart(featureInfo);
 
             Assert.That(CapturedItems.Single(), Is.EqualTo($"Fi=000,Fa=000,Pe=000 #   > FEATURE: [{string.Join("][", featureInfo.Labels)}] {featureInfo.Name}"));
@@ -87,7 +88,8 @@ namespace LightBDD.Core.UnitTests.Notification
         [Test]
         public void NotifyFeatureStart_should_omit_labels_if_not_provided()
         {
-            var featureInfo = _autoFixture.Build<Mocks.TestFeatureInfo>().With(i => i.Labels, Enumerable.Empty<string>()).Create();
+            var featureInfo = RandomValue.Object<Results.TestFeatureInfo>();
+            featureInfo.Labels = new string[0];
             GetFeatureNotifier().NotifyFeatureStart(featureInfo);
 
             var header = "Fi=000,Fa=000,Pe=000 #   > ";
@@ -98,7 +100,8 @@ namespace LightBDD.Core.UnitTests.Notification
         [Test]
         public void NotifyScenarioStart_should_omit_labels_if_not_provided()
         {
-            var scenarioInfo = _autoFixture.Build<Mocks.TestScenarioInfo>().With(i => i.Labels, Enumerable.Empty<string>()).Create();
+            var scenarioInfo = RandomValue.Object<Results.TestScenarioInfo>();
+            scenarioInfo.Labels = new string[0];
             GetScenarioNotifier().NotifyScenarioStart(scenarioInfo);
 
             var expected = $"Fi=000,Fa=000,Pe=001 #  1> SCENARIO: {scenarioInfo.Name}";
@@ -108,8 +111,10 @@ namespace LightBDD.Core.UnitTests.Notification
         [Test]
         public void NotifyScenarioStart_should_increase_pending_counter()
         {
-            var scenarioInfo = _autoFixture.Build<Mocks.TestScenarioInfo>().With(i => i.Labels, Enumerable.Empty<string>()).Create();
-            var scenarioInfo2 = _autoFixture.Build<Mocks.TestScenarioInfo>().With(i => i.Labels, Enumerable.Empty<string>()).Create();
+            var scenarioInfo = RandomValue.Object<Results.TestScenarioInfo>();
+            var scenarioInfo2 = RandomValue.Object<Results.TestScenarioInfo>();
+            scenarioInfo.Labels = new string[0];
+            scenarioInfo2.Labels = new string[0];
             var scenarioNotifier = GetScenarioNotifier();
 
             scenarioNotifier.NotifyScenarioStart(scenarioInfo);
@@ -127,11 +132,18 @@ namespace LightBDD.Core.UnitTests.Notification
         [Test]
         public void NotifyScenarioFinished_should_decrease_pending_counter_and_increase_finished_and_failed_counters_accordingly()
         {
-            var scenarioInfo = _autoFixture.Build<Mocks.TestScenarioInfo>().With(i => i.Labels, Enumerable.Empty<string>()).Create();
-            var scenarioInfo2 = _autoFixture.Build<Mocks.TestScenarioInfo>().With(i => i.Labels, Enumerable.Empty<string>()).Create();
+            var scenarioInfo = RandomValue.Object<Results.TestScenarioInfo>();
+            var scenarioInfo2 = RandomValue.Object<Results.TestScenarioInfo>();
+            scenarioInfo.Labels = new string[0];
+            scenarioInfo2.Labels = new string[0];
 
-            var scenarioResult = _autoFixture.Build<Mocks.TestScenarioResult>().With(r => r.Info, scenarioInfo).With(r => r.Status, ExecutionStatus.Passed).Create();
-            var scenarioResult2 = _autoFixture.Build<Mocks.TestScenarioResult>().With(r => r.Info, scenarioInfo2).With(r => r.Status, ExecutionStatus.Failed).Create();
+            var scenarioResult = RandomValue.Object<Results.TestScenarioResult>();
+            scenarioResult.Info = scenarioInfo;
+            scenarioResult.Status = ExecutionStatus.Passed;
+
+            var scenarioResult2 = RandomValue.Object<Results.TestScenarioResult>();
+            scenarioResult2.Info = scenarioInfo2;
+            scenarioResult2.Status = ExecutionStatus.Failed;
 
             var scenarioNotifier = GetScenarioNotifier();
             scenarioNotifier.NotifyScenarioStart(scenarioInfo);
@@ -155,8 +167,12 @@ namespace LightBDD.Core.UnitTests.Notification
         [Test]
         public void NotifyScenarioFinished_should_omit_execution_time_if_not_provided()
         {
-            var scenarioInfo = _autoFixture.Build<Mocks.TestScenarioInfo>().With(i => i.Labels, Enumerable.Empty<string>()).Create();
-            var scenarioResult = _autoFixture.Build<Mocks.TestScenarioResult>().With(r => r.Info, scenarioInfo).With(r => r.Status, ExecutionStatus.Passed).Without(r => r.ExecutionTime).Create();
+            var scenarioInfo = RandomValue.Object<Results.TestScenarioInfo>();
+            scenarioInfo.Labels = new string[0];
+            var scenarioResult = RandomValue.Object<Results.TestScenarioResult>();
+            scenarioResult.Info = scenarioInfo;
+            scenarioResult.Status = ExecutionStatus.Passed;
+            scenarioResult.ExecutionTime = null;
 
             var scenarioNotifier = GetScenarioNotifier();
             scenarioNotifier.NotifyScenarioStart(scenarioInfo);
@@ -175,8 +191,12 @@ namespace LightBDD.Core.UnitTests.Notification
         [Test]
         public void NotifyScenarioFinished_should_omit_status_details_if_not_provided()
         {
-            var scenarioInfo = _autoFixture.Build<Mocks.TestScenarioInfo>().With(i => i.Labels, Enumerable.Empty<string>()).Create();
-            var scenarioResult = _autoFixture.Build<Mocks.TestScenarioResult>().With(r => r.Info, scenarioInfo).With(r => r.Status, ExecutionStatus.Passed).Without(r => r.StatusDetails).Create();
+            var scenarioInfo = RandomValue.Object<Results.TestScenarioInfo>();
+            scenarioInfo.Labels = new string[0];
+            var scenarioResult = RandomValue.Object<Results.TestScenarioResult>();
+            scenarioResult.Info = scenarioInfo;
+            scenarioResult.Status = ExecutionStatus.Passed;
+            scenarioResult.StatusDetails = null;
 
             var scenarioNotifier = GetScenarioNotifier();
             scenarioNotifier.NotifyScenarioStart(scenarioInfo);
@@ -221,29 +241,36 @@ namespace LightBDD.Core.UnitTests.Notification
             await Task.Yield();
             _currentId.Value = i;
 
-            featureNotifier.NotifyFeatureStart(_autoFixture.Create<IFeatureInfo>());
+            featureNotifier.NotifyFeatureStart(RandomValue.Object<Results.TestFeatureInfo>());
             await Task.Yield();
-            scenarioNotifier.NotifyScenarioStart(_autoFixture.Create<IScenarioInfo>());
+            scenarioNotifier.NotifyScenarioStart(RandomValue.Object<Results.TestScenarioInfo>());
             await Task.Yield();
-            scenarioNotifier.NotifyStepStart(_autoFixture.Create<IStepInfo>());
+            scenarioNotifier.NotifyStepStart(RandomValue.Object<Results.TestStepInfo>());
             await Task.Yield();
-            scenarioNotifier.NotifyStepComment(_autoFixture.Create<IStepInfo>(), "comment");
+            scenarioNotifier.NotifyStepComment(RandomValue.Object<Results.TestStepInfo>(), "comment");
             await Task.Yield();
-            scenarioNotifier.NotifyStepComment(_autoFixture.Create<IStepInfo>(), "comment2");
+            scenarioNotifier.NotifyStepComment(RandomValue.Object<Results.TestStepInfo>(), "comment2");
             await Task.Yield();
-            scenarioNotifier.NotifyStepFinished(_autoFixture.Create<IStepResult>());
+            scenarioNotifier.NotifyStepFinished(RandomValue.Object<Results.TestStepResult>());
             await Task.Yield();
-            scenarioNotifier.NotifyStepStart(_autoFixture.Create<IStepInfo>());
+            scenarioNotifier.NotifyStepStart(RandomValue.Object<Results.TestStepInfo>());
             await Task.Yield();
-            scenarioNotifier.NotifyStepComment(_autoFixture.Create<IStepInfo>(), "comment");
+            scenarioNotifier.NotifyStepComment(RandomValue.Object<Results.TestStepInfo>(), "comment");
             await Task.Yield();
-            scenarioNotifier.NotifyStepComment(_autoFixture.Create<IStepInfo>(), "comment2");
+            scenarioNotifier.NotifyStepComment(RandomValue.Object<Results.TestStepInfo>(), "comment2");
             await Task.Yield();
-            scenarioNotifier.NotifyStepFinished(_autoFixture.Create<IStepResult>());
+            scenarioNotifier.NotifyStepFinished(RandomValue.Object<Results.TestStepResult>());
             await Task.Yield();
-            scenarioNotifier.NotifyScenarioFinished(_autoFixture.Build<Mocks.TestScenarioResult>().Without(m => m.Steps).Create());
+
+            var scenarioResult = RandomValue.Object<Results.TestScenarioResult>();
+            scenarioResult.Steps = new Results.TestStepResult[0];
+
+            scenarioNotifier.NotifyScenarioFinished(scenarioResult);
             await Task.Yield();
-            featureNotifier.NotifyFeatureFinished(_autoFixture.Build<Mocks.TestFeatureResult>().Without(m => m.Scenarios).Create());
+
+            var featureResult = RandomValue.Object<Results.TestFeatureResult>();
+            featureResult.Scenarios = new Results.TestScenarioResult[0];
+            featureNotifier.NotifyFeatureFinished(featureResult);
         }
 
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Reflection;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting;

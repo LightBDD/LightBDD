@@ -8,8 +8,7 @@
       "dependencies": {
         "Microsoft.Extensions.DependencyModel": "1.0.0",
         "NETStandard.Library": "1.6.1"
-      },
-      "imports": [ "dotnet" ]
+      }
     },
     "net46": {
       "frameworkAssemblies": {
@@ -24,6 +23,6 @@
     "LightBDD.SummaryGeneration": {
       "target": "project"
     },
-    "NUnit": "3.5.0" 
+    "NUnit": "3.6.0" 
   }
 }

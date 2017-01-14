@@ -7,7 +7,7 @@ using LightBDD.Core.Metadata;
 
 namespace LightBDD.UnitTests.Helpers
 {
-    public static class Mocks
+    public static class Results
     {
         public static TestStepResult CreateStepResult(int stepNumber, string stepName, ExecutionStatus status, DateTimeOffset executionStart, TimeSpan executionTime, string statusDetails = null)
         {
@@ -52,7 +52,7 @@ namespace LightBDD.UnitTests.Helpers
 
         public static TestStepResult WithExecutionTime(this TestStepResult result, DateTimeOffset executionStart, TimeSpan executionTime)
         {
-            result.ExecutionTime = new ExecutionTime(executionStart, executionTime);
+            result.ExecutionTime = new TestExecutionTime { Start = executionStart, Duration = executionTime };
             return result;
         }
 
@@ -63,7 +63,7 @@ namespace LightBDD.UnitTests.Helpers
                 FormattedName = stepName,
                 StepTypeName = stepTypeName,
                 NameFormat = nameFormat,
-                Parameters = parameters.Select(CreateStepNameParameter)
+                Parameters = parameters.Select(CreateStepNameParameter).ToArray()
             };
         }
 
@@ -76,13 +76,13 @@ namespace LightBDD.UnitTests.Helpers
             };
         }
 
-        public static TestScenarioResult CreateScenarioResult(string name, string label, DateTimeOffset executionStart, TimeSpan executionTime, string[] categories, params IStepResult[] steps)
+        public static TestScenarioResult CreateScenarioResult(string name, string label, DateTimeOffset executionStart, TimeSpan executionTime, string[] categories, params TestStepResult[] steps)
         {
             return new TestScenarioResult
             {
                 Info = CreateScenarioInfo(name, label, categories),
                 Steps = steps,
-                ExecutionTime = new ExecutionTime(executionStart, executionTime),
+                ExecutionTime = new TestExecutionTime { Start = executionStart, Duration = executionTime },
                 Status = steps.Max(s => s.Status),
                 StatusDetails = string.Join(Environment.NewLine, steps.Where(s => s.StatusDetails != null).Select(s => $"Step {s.Info.Number}: {s.StatusDetails.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t")}"))
             };
@@ -93,7 +93,7 @@ namespace LightBDD.UnitTests.Helpers
             return new TestScenarioInfo
             {
                 Name = CreateNameInfo(name),
-                Labels = label != null ? new[] { label } : Enumerable.Empty<string>(),
+                Labels = label != null ? new[] { label } : new string[0],
                 Categories = categories ?? new string[0]
             };
         }
@@ -103,7 +103,7 @@ namespace LightBDD.UnitTests.Helpers
             return new TestNameInfo { FormattedName = name };
         }
 
-        public static TestFeatureResult CreateFeatureResult(string name, string description, string label, params IScenarioResult[] scenarios)
+        public static TestFeatureResult CreateFeatureResult(string name, string description, string label, params TestScenarioResult[] scenarios)
         {
             return new TestFeatureResult
             {
@@ -118,7 +118,7 @@ namespace LightBDD.UnitTests.Helpers
             {
                 Name = CreateNameInfo(name),
                 Description = description,
-                Labels = label != null ? new[] { label } : Enumerable.Empty<string>()
+                Labels = label != null ? new[] { label } : new string[0]
             };
         }
 
@@ -126,7 +126,9 @@ namespace LightBDD.UnitTests.Helpers
         public class TestNameInfo : INameInfo
         {
             public string NameFormat { get; set; }
-            public IEnumerable<INameParameterInfo> Parameters { get; set; }
+            IEnumerable<INameParameterInfo> INameInfo.Parameters => Parameters;
+            public TestNameParameterInfo[] Parameters { get; set; }
+
             public string FormattedName { get; set; }
             public string Format(INameDecorator decorator)
             {
@@ -143,7 +145,8 @@ namespace LightBDD.UnitTests.Helpers
         {
             public string FormattedName { get; set; }
             public string NameFormat { get; set; }
-            public IEnumerable<INameParameterInfo> Parameters { get; set; }
+            IEnumerable<INameParameterInfo> INameInfo.Parameters => Parameters;
+            public TestNameParameterInfo[] Parameters { get; set; }
             public string StepTypeName { get; set; }
 
             public string Format(IStepNameDecorator stepNameDecorator)
@@ -163,48 +166,61 @@ namespace LightBDD.UnitTests.Helpers
 
         public class TestStepResult : IStepResult
         {
-            public IStepInfo Info { get; set; }
+            IStepInfo IStepResult.Info => Info;
+            public TestStepInfo Info { get; set; }
             public ExecutionStatus Status { get; set; }
             public string StatusDetails { get; set; }
-            public ExecutionTime ExecutionTime { get; set; }
-            public IEnumerable<string> Comments { get; set; }
+            public TestExecutionTime ExecutionTime { get; set; }
+            ExecutionTime IStepResult.ExecutionTime => ExecutionTime?.ToMockedType();
+            IEnumerable<string> IStepResult.Comments => Comments;
+            public string[] Comments { get; set; }
         }
 
         public class TestStepInfo : IStepInfo
         {
-            public IStepNameInfo Name { get; set; }
+            IStepNameInfo IStepInfo.Name => Name;
+            public TestStepNameInfo Name { get; set; }
             public int Number { get; set; }
             public int Total { get; set; }
         }
 
         public class TestScenarioResult : IScenarioResult
         {
-            public IScenarioInfo Info { get; set; }
+            IScenarioInfo IScenarioResult.Info => Info;
+            public TestScenarioInfo Info { get; set; }
             public ExecutionStatus Status { get; set; }
             public string StatusDetails { get; set; }
-            public ExecutionTime ExecutionTime { get; set; }
+            public TestExecutionTime ExecutionTime { get; set; }
+            ExecutionTime IScenarioResult.ExecutionTime => ExecutionTime?.ToMockedType();
             public IEnumerable<IStepResult> GetSteps() => Steps;
-            public IEnumerable<IStepResult> Steps { get; set; } = Enumerable.Empty<IStepResult>();
+            public TestStepResult[] Steps { get; set; }
+
         }
 
         public class TestScenarioInfo : IScenarioInfo
         {
-            public INameInfo Name { get; set; }
-            public IEnumerable<string> Labels { get; set; }
-            public IEnumerable<string> Categories { get; set; }
+            INameInfo IScenarioInfo.Name => Name;
+            public TestNameInfo Name { get; set; }
+            IEnumerable<string> IScenarioInfo.Labels => Labels;
+            public string[] Labels { get; set; }
+            IEnumerable<string> IScenarioInfo.Categories => Categories;
+            public string[] Categories { get; set; }
         }
 
         public class TestFeatureResult : IFeatureResult
         {
-            public IFeatureInfo Info { get; set; }
-            public IEnumerable<IScenarioResult> Scenarios { get; set; } = Enumerable.Empty<IScenarioResult>();
+            IFeatureInfo IFeatureResult.Info => Info;
+            public TestFeatureInfo Info { get; set; }
+            public TestScenarioResult[] Scenarios { get; set; }
             public IEnumerable<IScenarioResult> GetScenarios() => Scenarios;
         }
 
         public class TestFeatureInfo : IFeatureInfo
         {
-            public INameInfo Name { get; set; }
-            public IEnumerable<string> Labels { get; set; }
+            INameInfo IFeatureInfo.Name => Name;
+            public TestNameInfo Name { get; set; }
+            IEnumerable<string> IFeatureInfo.Labels => Labels;
+            public string[] Labels { get; set; }
             public string Description { get; set; }
         }
 
@@ -214,5 +230,16 @@ namespace LightBDD.UnitTests.Helpers
             public string FormattedValue { get; set; }
         }
         #endregion
+    }
+
+    public class TestExecutionTime
+    {
+        public ExecutionTime ToMockedType()
+        {
+            return new ExecutionTime(Start, Duration);
+        }
+
+        public TimeSpan Duration { get; set; }
+        public DateTimeOffset Start { get; set; }
     }
 }

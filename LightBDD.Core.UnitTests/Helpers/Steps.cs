@@ -1,10 +1,8 @@
 using System;
 using LightBDD.Core.UnitTests.TestableIntegration;
-using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests.Helpers
 {
-    [SetCulture("")]
     public class Steps
     {
         public const string BypassReason = "bypass reason";

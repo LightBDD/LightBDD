@@ -14,7 +14,7 @@ namespace LightBDD.SummaryGeneration.UnitTests
         public void It_should_use_appdomain_base_directory_if_output_starts_with_tilde()
         {
             var writer = new SummaryFileWriter(Mock.Of<IResultFormatter>(), "~//output.txt");
-            var expected = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + "\\output.txt");
+            var expected = Path.GetFullPath(AppContext.BaseDirectory + "\\output.txt");
             Assert.That(writer.OutputPath, Is.EqualTo("~//output.txt"));
             Assert.That(writer.FullOutputPath, Is.EqualTo(expected));
         }
@@ -33,7 +33,7 @@ namespace LightBDD.SummaryGeneration.UnitTests
         {
             var expectedFileContent = "text";
             var outputPath = $"~\\{Guid.NewGuid()}\\output.txt";
-            var expectedPath = outputPath.Replace("~", AppDomain.CurrentDomain.BaseDirectory);
+            var expectedPath = outputPath.Replace("~", AppContext.BaseDirectory);
 
             var formatter = Mock.Of<IResultFormatter>();
             var results = new[]

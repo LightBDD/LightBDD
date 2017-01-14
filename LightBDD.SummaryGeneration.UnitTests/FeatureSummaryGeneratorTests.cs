@@ -4,8 +4,7 @@ using LightBDD.Core.Execution.Results;
 using LightBDD.UnitTests.Helpers;
 using Moq;
 using NUnit.Framework;
-using Ploeh.AutoFixture;
-using Mocks = LightBDD.UnitTests.Helpers.Mocks;
+using RandomTestValues;
 
 namespace LightBDD.SummaryGeneration.UnitTests
 {
@@ -17,9 +16,8 @@ namespace LightBDD.SummaryGeneration.UnitTests
         {
             var writer = Mock.Of<ISummaryWriter>();
             var generator = new FeatureSummaryGenerator(writer);
-            var fixture = MockFixture.CreateNew();
 
-            var mocks = fixture.CreateMany<Mocks.TestFeatureResult>(50).ToArray();
+            var mocks = Enumerable.Range(0, 50).Select(i => RandomValue.Object<Results.TestFeatureResult>()).ToArray();
             var allMocks = new List<IFeatureResult>();
             for (int i = 0; i < 100; ++i)
                 allMocks.AddRange(mocks);
@@ -44,17 +42,17 @@ namespace LightBDD.SummaryGeneration.UnitTests
 
             var results = new[]
             {
-                Mocks.CreateFeatureResult("name2","desc","label1"),
-                Mocks.CreateFeatureResult("name1","desc","label1"),
-                Mocks.CreateFeatureResult("name4","desc","label1"),
-                Mocks.CreateFeatureResult("name3","desc","label1"),
+                Results.CreateFeatureResult("name2","desc","label1"),
+                Results.CreateFeatureResult("name1","desc","label1"),
+                Results.CreateFeatureResult("name4","desc","label1"),
+                Results.CreateFeatureResult("name3","desc","label1"),
             };
 
             foreach (var result in results)
                 generator.Aggregate(result);
 
             foreach (var summaryWriter in summaryWriters)
-                Mock.Get(summaryWriter).Verify(w => w.Save(It.IsAny<IFeatureResult[]>()),Times.Never);
+                Mock.Get(summaryWriter).Verify(w => w.Save(It.IsAny<IFeatureResult[]>()), Times.Never);
 
             generator.Dispose();
 

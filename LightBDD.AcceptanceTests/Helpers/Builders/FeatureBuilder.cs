@@ -25,7 +25,7 @@ namespace LightBDD.AcceptanceTests.Helpers.Builders
 
         public IFeatureResult Build()
         {
-            return Mocks.CreateFeatureResult(Name, "descr", "label", _scenarios.Select(s => s.Build()).ToArray());
+            return Results.CreateFeatureResult(Name, "descr", "label", _scenarios.Select(s => s.Build()).ToArray());
         }
     }
 }

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using LightBDD.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting;
-using NUnit.Framework;
+using NUnit.Framework.Internal;
 
 namespace LightBDD.Core.UnitTests.TestableIntegration
 {
@@ -14,10 +12,7 @@ namespace LightBDD.Core.UnitTests.TestableIntegration
     {
         public override MethodBase CaptureCurrentScenarioMethod()
         {
-            return new StackTrace()
-                .GetFrames()
-                .First(f => f.GetMethod().GetCustomAttributes(true).Any(a => a is TestAttribute))
-                .GetMethod();
+            return TestExecutionContext.CurrentContext.CurrentTest.Method.MethodInfo;
         }
 
         protected override IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member)
@@ -27,7 +22,7 @@ namespace LightBDD.Core.UnitTests.TestableIntegration
 
         protected override string GetImplementationSpecificFeatureDescription(Type featureType)
         {
-            return ExtractAttributePropertyValue<CustomFeatureDescriptionAttribute>(featureType, a => a.Description);
+            return ExtractAttributePropertyValue<CustomFeatureDescriptionAttribute>(featureType.GetTypeInfo(), a => a.Description);
         }
 
         public TestMetadataProvider(INameFormatter nameFormatter) : base(nameFormatter, new StepTypeConfiguration(), new DefaultCultureInfoProvider()) { }

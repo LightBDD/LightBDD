@@ -3,7 +3,7 @@
   "testRunner": "nunit",
   "frameworks": {
     "netcoreapp1.0": {
-      "imports": [ "portable-net45+win8", "netstandard1.3" ],
+      "imports": [ "netstandard1.6" ],
       "dependencies": {
         "Microsoft.NETCore.App": {
           "version": "1.0.0-*",
@@ -20,7 +20,7 @@
     "LightBDD.Scenarios.Basic": {
       "target": "project"
     },
-    "NUnit": "3.5.0",
-    "dotnet-test-nunit": "3.4.0-beta-2"
+    "NUnit": "3.6.0",
+    "dotnet-test-nunit": "3.4.0-beta-3"
   }
 }

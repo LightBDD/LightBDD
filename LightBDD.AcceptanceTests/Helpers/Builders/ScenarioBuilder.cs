@@ -20,11 +20,11 @@ namespace LightBDD.AcceptanceTests.Helpers.Builders
             return this;
         }
 
-        public IScenarioResult Build()
+        public Results.TestScenarioResult Build()
         {
-            return Mocks.CreateScenarioResult("scenario", "label", DateTimeOffset.Now, TimeSpan.FromSeconds(2), Categories,
-                Mocks.CreateStepResult(1, "step1", ExecutionStatus.Passed, DateTimeOffset.Now, TimeSpan.FromSeconds(1)),
-                Mocks.CreateStepResult(2, "step2", Status, DateTimeOffset.Now, TimeSpan.FromSeconds(1)));
+            return Results.CreateScenarioResult("scenario", "label", DateTimeOffset.Now, TimeSpan.FromSeconds(2), Categories,
+                Results.CreateStepResult(1, "step1", ExecutionStatus.Passed, DateTimeOffset.Now, TimeSpan.FromSeconds(1)),
+                Results.CreateStepResult(2, "step2", Status, DateTimeOffset.Now, TimeSpan.FromSeconds(1)));
         }
     }
 }
