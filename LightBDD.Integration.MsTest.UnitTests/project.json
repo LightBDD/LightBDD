@@ -2,7 +2,7 @@
   "version": "1.0.0-*",
   "testRunner": "mstest",
   "frameworks": {
-    "netcoreapp1.0": {
+    "netcoreapp1.1": {
       "imports": [ "dotnet" ],
       "dependencies": {
         "Microsoft.NETCore.App": {

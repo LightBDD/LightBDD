@@ -2,7 +2,7 @@
   "version": "1.0.0-*",
   "testRunner": "xunit",
   "frameworks": {
-    "netcoreapp1.0": {
+    "netcoreapp1.1": {
       "imports": [ "netstandard1.6" ],
       "dependencies": {
         "Microsoft.NETCore.App": {
