@@ -1,14 +1,12 @@
-﻿{
+{
   "version": "1.0.0-*",
   "buildOptions": {
     "compile": [ "**/*.cs", "../AssemblyVersion.cs" ]
   },
   "frameworks": {
-    "netstandard1.3": {
-      "dependencies": {
-        "NETStandard.Library": "1.6.0"
-      },
-      "imports": [ "dotnet" ]
+    "netstandard1.6": {
+      "imports": [ "dotnet" ],
+      "dependencies": { "NETStandard.Library": "1.6.0" }
     },
     "net46": {
       "frameworkAssemblies": {
