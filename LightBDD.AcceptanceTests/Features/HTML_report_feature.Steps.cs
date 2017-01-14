@@ -23,6 +23,7 @@ namespace LightBDD.AcceptanceTests.Features
         public void FeatureSetup()
         {
             _driver = new ChromeDriver();
+            _driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromMilliseconds(250));
         }
 
         [SetUp]
@@ -106,7 +107,7 @@ namespace LightBDD.AcceptanceTests.Features
 
         private void ClickLabeledButton(string buttonId)
         {
-            _driver.FindElementsByTagName("label").Single(l => l.GetAttribute("for") == buttonId).ClickWithWait();
+            _driver.FindElementsByTagName("label").Single(l => l.GetAttribute("for") == buttonId).Click();
         }
 
         private static string ToFeatureToggle(int feature)
@@ -190,14 +191,14 @@ namespace LightBDD.AcceptanceTests.Features
 
         private void a_category_filter_button_is_clicked(string category)
         {
-            _driver.FindLabelByText(category).ClickWithWait();
+            _driver.FindLabelByText(category).Click();
         }
 
         private void the_link_to_details_of_STATUS_scenarios_is_clicked(ExecutionStatus status)
         {
             _driver.FindElementsByTagName("table").First(t => t.HasClassName("summary"))
                 .FindElements(By.TagName("td")).First(td => td.FindElements(By.TagName("span")).Any(span => span.HasClassName(status.ToString().ToLower() + "Alert")))
-                .FindElements(By.TagName("a")).First().ClickWithWait();
+                .FindElements(By.TagName("a")).First().Click();
         }
 
         private void the_category_filter_button_is_SELECTED(string category, [SelectedFormat]bool selected)
@@ -238,7 +239,7 @@ namespace LightBDD.AcceptanceTests.Features
 
         private void the_options_link_is_clicked()
         {
-            _driver.FindElementById("optionsLink").ClickWithWait();
+            _driver.FindElementById("optionsLink").Click();
         }
 
         private void the_page_is_redirected_to_url_with_query_part()
@@ -273,8 +274,7 @@ namespace LightBDD.AcceptanceTests.Features
 
             Assert.That(column.ToString(), Does.Contain(webElement.Text));
 
-            webElement
-                .ClickWithWait();
+            webElement.Click();
         }
 
         private string FormatResults(params IFeatureResult[] results)

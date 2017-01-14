@@ -53,12 +53,6 @@ namespace LightBDD.AcceptanceTests.Helpers
             return element.GetClassNames().Any(c => c == className);
         }
 
-        public static void ClickWithWait(this IWebElement element)
-        {
-            element.Click();
-            Thread.Sleep(250);
-        }
-
         public static IWebElement FindLabelByText(this ChromeDriver driver, string text)
         {
             return driver.FindElementsByTagName("label").Single(l => l.Text == text);
