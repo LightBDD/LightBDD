@@ -1,5 +1,6 @@
 ﻿namespace LightBDD
 {
+    [FeatureFixture]
     public class FeatureFixture
     {
         protected IBddRunner Runner { get; }

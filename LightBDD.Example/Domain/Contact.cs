@@ -2,8 +2,8 @@
 {
 	public class Contact
 	{
-		public string Name { get; private set; }
-		public string PhoneNumber { get; private set; }
+		public string Name { get; }
+		public string PhoneNumber { get; }
 
 		public Contact(string name, string phoneNumber)
 		{
@@ -29,13 +29,13 @@
 		{
 			unchecked
 			{
-				return ((Name != null ? Name.GetHashCode() : 0) * 397) ^ (PhoneNumber != null ? PhoneNumber.GetHashCode() : 0);
+				return ((Name?.GetHashCode() ?? 0) * 397) ^ (PhoneNumber?.GetHashCode() ?? 0);
 			}
 		}
 
 		public override string ToString()
 		{
-			return string.Format("Name: {0}, PhoneNumber: {1}", Name, PhoneNumber);
+			return $"Name: {Name}, PhoneNumber: {PhoneNumber}";
 		}
 
 		#endregion

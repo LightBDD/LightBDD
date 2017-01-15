@@ -15,13 +15,22 @@ namespace LightBDD.SummaryGeneration.UnitTests.Configuration
         public void It_should_return_default_configuration()
         {
             var configuration = new SummaryWritersConfiguration();
-            Assert.That(configuration.Count, Is.EqualTo(1));
+            Assert.That(configuration.Count, Is.EqualTo(2));
 
-            Assert.That(configuration.Single(), Is.InstanceOf<SummaryFileWriter>());
-            var writer = (SummaryFileWriter)configuration.Single();
-            Assert.That(writer.OutputPath, Is.EqualTo(@"~\Reports\FeaturesSummary.xml"));
-            Assert.That(writer.FullOutputPath, Is.EqualTo(Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + "\\" + writer.OutputPath.Substring(1))));
-            Assert.That(writer.Formatter, Is.InstanceOf<XmlResultFormatter>());
+            var featuresSummaryXml = @"~\Reports\FeaturesSummary.xml";
+            var featuresSummaryHtml = @"~\Reports\FeaturesSummary.html";
+
+            AssertWriter(configuration, featuresSummaryXml, typeof(XmlResultFormatter), featuresSummaryXml.Replace("~", AppDomain.CurrentDomain.BaseDirectory));
+            AssertWriter(configuration, featuresSummaryHtml, typeof(HtmlResultFormatter), featuresSummaryHtml.Replace("~", AppDomain.CurrentDomain.BaseDirectory));
+        }
+
+        private void AssertWriter(SummaryWritersConfiguration configuration, string expectedRelativePath, Type expectedFormatterType, string expectedFullPath)
+        {
+            var writer = configuration.OfType<SummaryFileWriter>().FirstOrDefault(w => w.OutputPath == expectedRelativePath);
+            Assert.That(writer, Is.Not.Null, $"Expected to find writer with path: {expectedRelativePath}");
+
+            Assert.That(writer.FullOutputPath, Is.EqualTo(Path.GetFullPath(expectedFullPath)));
+            Assert.That(writer.Formatter, Is.InstanceOf(expectedFormatterType));
         }
 
         [Test]

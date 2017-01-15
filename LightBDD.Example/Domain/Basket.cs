@@ -6,7 +6,7 @@ namespace LightBDD.Example.Domain
     {
         private readonly List<string> _products = new List<string>();
 
-        public IEnumerable<string> Products { get { return _products; } }
+        public IEnumerable<string> Products => _products;
 
         public void Add(string product)
         {

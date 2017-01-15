@@ -2,20 +2,20 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.Example.AcceptanceTests.MsTest.Features
 {
+    [TestClass]
     [FeatureDescription(
 @"In order to pay for products
 As a customer
 I want to receive invoice for bought items")]
-    [TestClass]
     [Label("Story-2")]
     public partial class Invoice_feature
     {
-        [TestMethod]
+        [Scenario]
         [Label("Ticket-4")]
         [ScenarioCategory(Categories.Sales)]
         public void Receiving_invoice_for_products()
         {
-            Runner.RunScenario(
+            Runner.Parameterized().RunScenario(
                 given => Product_is_available_in_product_storage("wooden desk"),
                 and => Product_is_available_in_product_storage("wooden shelf"),
                 when => Customer_buys_product("wooden desk"),

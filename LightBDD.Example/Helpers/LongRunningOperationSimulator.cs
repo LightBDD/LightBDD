@@ -1,5 +1,5 @@
 using System;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace LightBDD.Example.Helpers
 {
@@ -9,7 +9,7 @@ namespace LightBDD.Example.Helpers
 
         public static void Simulate()
         {
-            Thread.Sleep(TimeSpan.FromMilliseconds(Rand.Next(100, 200)));
+            Task.Delay(TimeSpan.FromMilliseconds(Rand.Next(100, 200))).Wait();
         }
     }
 }

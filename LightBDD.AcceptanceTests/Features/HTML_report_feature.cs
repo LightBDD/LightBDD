@@ -1,21 +1,5 @@
-﻿using LightBDD;
-using LightBDD.Configuration;
-using LightBDD.Core.Execution.Results;
-using LightBDD.SummaryGeneration;
-using LightBDD.SummaryGeneration.Configuration;
-using LightBDD.SummaryGeneration.Formatters;
+﻿using LightBDD.Core.Execution.Results;
 using NUnit.Framework;
-[assembly: ConfiguredLightBddScope]
-
-public class ConfiguredLightBddScopeAttribute : LightBddScopeAttribute
-{
-    protected override void OnConfigure(LightBddConfiguration configuration)
-    {
-        configuration.SummaryWritersConfiguration()
-            .Add(new SummaryFileWriter(new HtmlResultFormatter(), "~\\Reports\\FeaturesSummary.html"))
-            .Add(new SummaryFileWriter(new PlainTextResultFormatter(), "~\\Reports\\FeaturesSummary.txt"));
-    }
-}
 
 namespace LightBDD.AcceptanceTests.Features
 {
@@ -100,7 +84,7 @@ I want to have HTML report")]
                 and => all_steps_are_VISIBLE(true),
 
                 when => a_scenario_filter_button_is_clicked(),
-               then => all_scenarios_are_VISIBLE(true),
+                then => all_scenarios_are_VISIBLE(true),
                 and => all_steps_are_VISIBLE(false),
 
                 when => a_scenario_filter_button_is_clicked(),
@@ -133,7 +117,7 @@ I want to have HTML report")]
                 and => all_features_are_VISIBLE(true),
                 and => all_scenarios_are_VISIBLE(true),
                 and => all_steps_are_VISIBLE(true)
-                );
+            );
         }
 
         [Scenario]
@@ -161,7 +145,7 @@ I want to have HTML report")]
                 and => all_features_are_VISIBLE(true),
                 and => all_scenarios_are_VISIBLE(true),
                 and => all_steps_are_VISIBLE(true)
-                );
+            );
         }
 
         [Scenario]
@@ -217,7 +201,7 @@ I want to have HTML report")]
                 then => all_features_are_VISIBLE(true),
                 and => all_scenarios_are_VISIBLE(true),
                 and => all_steps_are_VISIBLE(true)
-                );
+            );
         }
 
         [Scenario]
@@ -263,7 +247,7 @@ I want to have HTML report")]
                 and => the_feature_scenario_is_VISIBLE(1, 3, false),
                 and => the_feature_is_VISIBLE(2, false),
                 and => the_feature_is_VISIBLE(3, false)
-                );
+            );
         }
 
         [Scenario]
@@ -311,7 +295,7 @@ I want to have HTML report")]
                 and => the_feature_scenario_is_VISIBLE(1, 3, false),
                 and => the_feature_is_VISIBLE(2, false),
                 and => the_feature_is_VISIBLE(3, false)
-                );
+            );
         }
 
         [Scenario]
@@ -363,7 +347,7 @@ I want to have HTML report")]
                 then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(false, FeatureSummaryColumn.DurationAverage),
                 when => the_Feature_Summary_table_column_is_clicked(FeatureSummaryColumn.DurationAverage),
                 then => the_Feature_Summary_table_is_sorted_ASCENDING_by_column(true, FeatureSummaryColumn.DurationAverage)
-                );
+            );
         }
 
         [Scenario]

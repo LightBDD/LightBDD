@@ -1,0 +1,39 @@
+{
+  "version": "1.0.0-*",
+  "testRunner": "mstest",
+  "frameworks": {
+    "netcoreapp1.1": {
+      "imports": [ "dotnet" ],
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "version": "1.1.0",
+          "type": "platform"
+        }
+      }
+    },
+    "net46": {}
+  },
+  "dependencies": {
+    "LightBDD.Integration.MsTest": {
+      "target": "project"
+    },
+    "LightBDD.Scenarios.Basic": {
+      "target": "project"
+    },
+    "LightBDD.Scenarios.Parameterized": {
+      "target": "project"
+    },
+    "LightBDD.Runners.Contextual": {
+      "target": "project"
+    },
+
+    "LightBDD.Features.Commenting": {
+      "target": "project"
+    },
+    "LightBDD.Example": {
+      "target": "project"
+    },
+    "MSTest.TestFramework": "1.0.8-rc2",
+    "dotnet-test-mstest": "1.1.2-preview"
+  }
+}

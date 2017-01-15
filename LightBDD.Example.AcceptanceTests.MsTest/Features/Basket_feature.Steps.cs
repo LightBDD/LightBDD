@@ -1,6 +1,5 @@
 using System.Linq;
 using LightBDD.Example.Domain;
-using LightBDD.Execution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.Example.AcceptanceTests.MsTest.Features
@@ -15,7 +14,7 @@ namespace LightBDD.Example.AcceptanceTests.MsTest.Features
         {
             var product = "product";
             _stock.Add(product);
-            StepExecution.Comment(string.Format("Added '{0}' to the stock", product));
+            StepExecution.Current.Comment(string.Format("Added '{0}' to the stock", product));
         }
 
         private void Given_product_is_out_of_stock()
@@ -26,7 +25,7 @@ namespace LightBDD.Example.AcceptanceTests.MsTest.Features
         private void When_customer_adds_it_to_the_basket()
         {
             var product = "product";
-            StepExecution.Comment(string.Format("Transferring '{0}' to the basket", product));
+            StepExecution.Current.Comment(string.Format("Transferring '{0}' to the basket", product));
             _transferResult = _stock.TransferToBasket(_basket, product);
         }
 

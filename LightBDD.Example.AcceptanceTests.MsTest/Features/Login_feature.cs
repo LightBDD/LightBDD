@@ -10,12 +10,12 @@ I want to login into system")]
     [Label("Story-1")]
     public partial class Login_feature
     {
-        [TestMethod]
+        [Scenario]
         [Label("Ticket-1")]
         [ScenarioCategory(Categories.Security)]
         public void Successful_login()
         {
-            Runner.RunScenario(
+            Runner.Basic().RunScenario(
 
                 Given_the_user_is_about_to_login,
                 Given_the_user_entered_valid_login,
@@ -25,12 +25,12 @@ I want to login into system")]
                 Then_a_welcome_message_containing_user_name_should_be_returned);
         }
 
-        [TestMethod]
+        [Scenario]
         [Label("Ticket-2")]
         [ScenarioCategory(Categories.Security)]
         public void Wrong_login_provided_causes_login_to_fail()
         {
-            Runner.RunScenario(
+            Runner.Basic().RunScenario(
 
                 Given_the_user_is_about_to_login,
                 Given_the_user_entered_invalid_login,
@@ -40,12 +40,12 @@ I want to login into system")]
                 Then_an_invalid_login_or_password_error_message_should_be_returned);
         }
 
-        [TestMethod]
+        [Scenario]
         [Label("Ticket-2")]
         [ScenarioCategory(Categories.Security)]
         public void Wrong_password_provided_causes_login_to_fail()
         {
-            Runner.RunScenario(
+            Runner.Basic().RunScenario(
 
                 Given_the_user_is_about_to_login,
                 Given_the_user_entered_valid_login,
@@ -58,12 +58,12 @@ I want to login into system")]
         /// <summary>
         /// This test presents how LightBDD treats test failures
         /// </summary>
-        [TestMethod]
+        [Scenario]
         [Label("Ticket-3")]
         [ScenarioCategory(Categories.Security)]
         public void Anonymous_login_name_should_allow_to_log_in()
         {
-            Runner.RunScenario(
+            Runner.Basic().RunScenario(
 
                 Given_the_user_is_about_to_login,
                 Given_the_user_entered_anonymous_login,

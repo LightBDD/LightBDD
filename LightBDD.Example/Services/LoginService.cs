@@ -16,7 +16,7 @@ namespace LightBDD.Example.Services
             LongRunningOperationSimulator.Simulate();
             string password;
             return (_users.TryGetValue(loginRequest.UserName, out password) && password == loginRequest.Password)
-                ? new LoginResult(true, string.Format("Welcome {0}!", loginRequest.UserName))
+                ? new LoginResult(true, $"Welcome {loginRequest.UserName}!")
                 : new LoginResult(false, "Invalid user name or password.");
         }
     }

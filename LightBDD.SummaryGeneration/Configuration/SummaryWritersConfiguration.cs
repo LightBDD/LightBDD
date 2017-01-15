@@ -13,6 +13,7 @@ namespace LightBDD.SummaryGeneration.Configuration
         public SummaryWritersConfiguration()
         {
             Add(new SummaryFileWriter(new XmlResultFormatter(), "~\\Reports\\FeaturesSummary.xml"));
+            Add(new SummaryFileWriter(new HtmlResultFormatter(), "~\\Reports\\FeaturesSummary.html"));
         }
 
         public SummaryWritersConfiguration Add(ISummaryWriter writer)
