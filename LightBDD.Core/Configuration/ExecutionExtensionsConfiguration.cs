@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Configuration
 {
-    //TODO: add tests
-    public class ExecutionExtensionsConfiguration : IFeatureConfiguration
+    public class ExecutionExtensionsConfiguration : IExecutionExtensions, IFeatureConfiguration
     {
         private readonly List<IScenarioExecutionExtension> _scenarioExtensions = new List<IScenarioExecutionExtension>();
         private readonly List<IStepExecutionExtension> _stepExtensions = new List<IStepExecutionExtension>();
@@ -13,20 +13,34 @@ namespace LightBDD.Configuration
         public IEnumerable<IScenarioExecutionExtension> ScenarioExecutionExtensions => _scenarioExtensions;
         public IEnumerable<IStepExecutionExtension> StepExecutionExtensions => _stepExtensions;
 
-        public ExecutionExtensionsConfiguration AddScenarioExtension(IScenarioExecutionExtension extension)
+        public ExecutionExtensionsConfiguration EnableScenarioExtension<TScenarioExecutionExtension>()
+            where TScenarioExecutionExtension : IScenarioExecutionExtension, new()
+            => EnableScenarioExtension(() => new TScenarioExecutionExtension());
+
+        public ExecutionExtensionsConfiguration EnableScenarioExtension<TScenarioExecutionExtension>(Func<TScenarioExecutionExtension> factory) where TScenarioExecutionExtension : IScenarioExecutionExtension
         {
-            if (extension == null)
-                throw new ArgumentNullException(nameof(extension));
-            _scenarioExtensions.Add(extension);
+            if (factory == null)
+                throw new ArgumentNullException(nameof(factory));
+
+            if (!_scenarioExtensions.Any(e => e is TScenarioExecutionExtension))
+                _scenarioExtensions.Add(factory());
+
             return this;
         }
 
-        public ExecutionExtensionsConfiguration AddStepExtension(IStepExecutionExtension extension)
+        public ExecutionExtensionsConfiguration EnableStepExtension<TStepExecutionExtension>(Func<TStepExecutionExtension> factory) where TStepExecutionExtension : IStepExecutionExtension
         {
-            if (extension == null)
-                throw new ArgumentNullException(nameof(extension));
-            _stepExtensions.Add(extension);
+            if (factory == null)
+                throw new ArgumentNullException(nameof(factory));
+
+            if (!_stepExtensions.Any(e => e is TStepExecutionExtension))
+                _stepExtensions.Add(factory());
+
             return this;
         }
+
+        public ExecutionExtensionsConfiguration EnableStepExtension<TStepExecutionExtension>()
+           where TStepExecutionExtension : IStepExecutionExtension, new()
+           => EnableStepExtension(() => new TStepExecutionExtension());
     }
 }

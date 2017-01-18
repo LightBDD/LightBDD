@@ -15,7 +15,7 @@ namespace LightBDD.Integration.MsTest
         public Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
         public IFeatureProgressNotifier FeatureProgressNotifier { get; }
         public Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider { get; }
-        public ExecutionExtensionsConfiguration ExecutionExtensions { get; }
+        public IExecutionExtensions ExecutionExtensions { get; }
 
         public MsTestIntegrationContext(LightBddConfiguration configuration)
         {

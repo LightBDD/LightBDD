@@ -19,6 +19,7 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly IScenarioProgressNotifier _progressNotifier;
         private readonly StepResult _result;
         public IStepResult Result => _result;
+        public IStepInfo Info => Result.Info;
 
         public RunnableStep(StepInfo stepInfo, Func<object, object[], Task> stepInvocation, StepParameter[] parameters, Func<Exception, ExecutionStatus> exceptionToStatusMapper, IScenarioProgressNotifier progressNotifier)
         {

@@ -4,20 +4,22 @@ using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Notification;
-using LightBDD.Extensions.ContextualAsyncExecution;
 
 namespace LightBDD.Core.UnitTests.TestableIntegration
 {
     public class TestableIntegrationContext : IIntegrationContext
     {
         public TestableIntegrationContext(IFeatureProgressNotifier featureProgressNotifier, Func<object, IScenarioProgressNotifier> scenarioProgressNotifier)
+            : this(featureProgressNotifier, scenarioProgressNotifier, new ExecutionExtensionsConfiguration().EnableStepCommenting()) { }
+
+        public TestableIntegrationContext(IFeatureProgressNotifier featureProgressNotifier, Func<object, IScenarioProgressNotifier> scenarioProgressNotifier, IExecutionExtensions executionExtensions)
         {
             NameFormatter = new DefaultNameFormatter();
             MetadataProvider = new TestMetadataProvider(NameFormatter);
             ExceptionToStatusMapper = ex => ex is CustomIgnoreException ? ExecutionStatus.Ignored : ExecutionStatus.Failed;
             FeatureProgressNotifier = featureProgressNotifier;
             ScenarioProgressNotifierProvider = scenarioProgressNotifier;
-            ExecutionExtensions = new ExecutionExtensionsConfiguration().AddScenarioExtension(new ScenarioExecutionContextExtension()).AddStepExtension(new StepCommentingExtension());
+            ExecutionExtensions = executionExtensions;
         }
 
         public IMetadataProvider MetadataProvider { get; }
@@ -25,6 +27,6 @@ namespace LightBDD.Core.UnitTests.TestableIntegration
         public Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
         public IFeatureProgressNotifier FeatureProgressNotifier { get; }
         public Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider { get; }
-        public ExecutionExtensionsConfiguration ExecutionExtensions { get; }
+        public IExecutionExtensions ExecutionExtensions { get; }
     }
 }

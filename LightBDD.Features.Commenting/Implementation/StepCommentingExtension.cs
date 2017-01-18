@@ -3,13 +3,12 @@ using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Extensions.ContextualAsyncExecution;
-using LightBDD.Implementation;
 
-namespace LightBDD
+namespace LightBDD.Implementation
 {
     //TODO: test in separate project
     //TODO: rename project to be consistent
-    public class StepCommentingExtension : IStepExecutionExtension
+    internal class StepCommentingExtension : IStepExecutionExtension
     {
         public async Task ExecuteAsync(IStep step, Func<Task> stepInvocation)
         {

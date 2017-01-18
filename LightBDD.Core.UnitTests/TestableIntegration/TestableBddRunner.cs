@@ -15,6 +15,9 @@ namespace LightBDD.Core.UnitTests.TestableIntegration
         {
         }
 
+        public TestableBddRunnerFactory(IIntegrationContext integrationContext)
+            : base(integrationContext) { }
+
         public static IFeatureBddRunner GetRunner(Type featureType)
         {
             return new TestableBddRunnerFactory().GetRunnerFor(featureType);

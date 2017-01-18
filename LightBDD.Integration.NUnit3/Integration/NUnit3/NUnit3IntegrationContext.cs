@@ -15,7 +15,7 @@ namespace LightBDD.Integration.NUnit3
         public Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
         public IFeatureProgressNotifier FeatureProgressNotifier { get; }
         public Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider { get; }
-        public ExecutionExtensionsConfiguration ExecutionExtensions { get; }
+        public IExecutionExtensions ExecutionExtensions { get; }
 
         public NUnit3IntegrationContext(LightBddConfiguration configuration)
         {

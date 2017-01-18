@@ -5,7 +5,6 @@ using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Extensibility
 {
-    //TODO: add tests
     public interface IExtendableExecutor
     {
         Task ExecuteScenario(IScenarioInfo scenario, Func<Task> scenarioInvocation);

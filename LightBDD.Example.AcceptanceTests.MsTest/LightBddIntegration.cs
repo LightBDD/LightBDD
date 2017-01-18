@@ -1,5 +1,4 @@
 using LightBDD.Configuration;
-using LightBDD.Extensions.ContextualAsyncExecution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.Example.AcceptanceTests.MsTest
@@ -16,8 +15,7 @@ namespace LightBDD.Example.AcceptanceTests.MsTest
         {
             configuration
                 .ExecutionExtensionsConfiguration()
-                .AddScenarioExtension(new ScenarioExecutionContextExtension())
-                .AddStepExtension(new StepCommentingExtension());
+                .EnableStepCommenting();
         }
     }
 }

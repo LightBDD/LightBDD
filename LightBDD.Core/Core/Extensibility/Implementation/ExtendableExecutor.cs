@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LightBDD.Configuration;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Metadata;
 
@@ -12,7 +11,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         private readonly IScenarioExecutionExtension[] _scenarios;
         private readonly IStepExecutionExtension[] _steps;
 
-        public ExtendableExecutor(ExecutionExtensionsConfiguration extensions)
+        public ExtendableExecutor(IExecutionExtensions extensions)
         {
             _scenarios = extensions.ScenarioExecutionExtensions.ToArray();
             _steps = extensions.StepExecutionExtensions.ToArray();

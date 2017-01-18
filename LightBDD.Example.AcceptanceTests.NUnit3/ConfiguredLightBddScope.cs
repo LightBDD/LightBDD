@@ -1,6 +1,5 @@
 using LightBDD.Configuration;
 using LightBDD.Example.AcceptanceTests.NUnit3;
-using LightBDD.Extensions.ContextualAsyncExecution;
 
 [assembly: ConfiguredLightBddScope]
 namespace LightBDD.Example.AcceptanceTests.NUnit3
@@ -11,8 +10,7 @@ namespace LightBDD.Example.AcceptanceTests.NUnit3
         {
             configuration
                 .ExecutionExtensionsConfiguration()
-                .AddScenarioExtension(new ScenarioExecutionContextExtension())
-                .AddStepExtension(new StepCommentingExtension());
+                .EnableStepCommenting();
         }
     }
 }

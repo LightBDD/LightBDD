@@ -15,7 +15,7 @@ namespace LightBDD.Integration.XUnit2
         public Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
         public IFeatureProgressNotifier FeatureProgressNotifier { get; }
         public Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider { get; }
-        public ExecutionExtensionsConfiguration ExecutionExtensions { get; }
+        public IExecutionExtensions ExecutionExtensions { get; }
 
         public XUnit2IntegrationContext(LightBddConfiguration configuration)
         {
