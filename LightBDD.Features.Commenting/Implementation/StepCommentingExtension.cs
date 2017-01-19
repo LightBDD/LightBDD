@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
+using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Extensions.ContextualAsyncExecution;
 
 namespace LightBDD.Implementation

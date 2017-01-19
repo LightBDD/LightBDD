@@ -2,6 +2,7 @@ using System;
 using LightBDD.Configuration;
 using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Extensibility;
+using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Notification;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

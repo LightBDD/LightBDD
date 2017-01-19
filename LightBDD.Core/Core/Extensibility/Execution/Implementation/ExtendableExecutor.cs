@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Metadata;
 
-namespace LightBDD.Core.Extensibility.Implementation
+namespace LightBDD.Core.Extensibility.Execution.Implementation
 {
     internal class ExtendableExecutor : IExtendableExecutor
     {

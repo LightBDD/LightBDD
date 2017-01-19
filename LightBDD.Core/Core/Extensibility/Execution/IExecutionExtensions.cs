@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace LightBDD.Core.Extensibility
+namespace LightBDD.Core.Extensibility.Execution
 {
     public interface IExecutionExtensions
     {
