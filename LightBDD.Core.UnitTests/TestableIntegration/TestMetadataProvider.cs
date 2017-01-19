@@ -27,5 +27,6 @@ namespace LightBDD.Core.UnitTests.TestableIntegration
 
         public TestMetadataProvider(INameFormatter nameFormatter) : base(nameFormatter, new StepTypeConfiguration(), new DefaultCultureInfoProvider()) { }
         public TestMetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration) : base(nameFormatter, stepTypeConfiguration, new DefaultCultureInfoProvider()) { }
+        public TestMetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration, ICultureInfoProvider cultureInfoProvider) : base(nameFormatter, stepTypeConfiguration, cultureInfoProvider) { }
     }
 }

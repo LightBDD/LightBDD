@@ -1,5 +1,4 @@
 ﻿using System;
-using LightBDD.Configuration;
 using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting;
@@ -7,18 +6,15 @@ using LightBDD.Core.Notification;
 
 namespace LightBDD.Core.UnitTests.TestableIntegration
 {
-    public class TestableIntegrationContext : IIntegrationContext
+    internal class TestableIntegrationContext : IIntegrationContext
     {
-        public TestableIntegrationContext(IFeatureProgressNotifier featureProgressNotifier, Func<object, IScenarioProgressNotifier> scenarioProgressNotifier)
-            : this(featureProgressNotifier, scenarioProgressNotifier, new ExecutionExtensionsConfiguration().EnableStepCommenting()) { }
-
-        public TestableIntegrationContext(IFeatureProgressNotifier featureProgressNotifier, Func<object, IScenarioProgressNotifier> scenarioProgressNotifier, IExecutionExtensions executionExtensions)
+        public TestableIntegrationContext(INameFormatter nameFormatter, IMetadataProvider metadataProvider, Func<Exception, ExecutionStatus> exceptionToStatusMapper, IFeatureProgressNotifier featureProgressNotifier, Func<object, IScenarioProgressNotifier> scenarioProgressNotifierProvider, IExecutionExtensions executionExtensions)
         {
-            NameFormatter = new DefaultNameFormatter();
-            MetadataProvider = new TestMetadataProvider(NameFormatter);
-            ExceptionToStatusMapper = ex => ex is CustomIgnoreException ? ExecutionStatus.Ignored : ExecutionStatus.Failed;
+            NameFormatter = nameFormatter;
+            MetadataProvider = metadataProvider;
+            ExceptionToStatusMapper = exceptionToStatusMapper;
             FeatureProgressNotifier = featureProgressNotifier;
-            ScenarioProgressNotifierProvider = scenarioProgressNotifier;
+            ScenarioProgressNotifierProvider = scenarioProgressNotifierProvider;
             ExecutionExtensions = executionExtensions;
         }
 

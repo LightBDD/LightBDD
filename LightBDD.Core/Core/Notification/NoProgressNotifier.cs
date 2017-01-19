@@ -5,8 +5,8 @@ namespace LightBDD.Core.Notification
 {
     public class NoProgressNotifier : IFeatureProgressNotifier, IScenarioProgressNotifier
     {
+        private NoProgressNotifier() { }
         public static NoProgressNotifier Default { get; } = new NoProgressNotifier();
-
         public void NotifyFeatureStart(IFeatureInfo feature) { }
         public void NotifyFeatureFinished(IFeatureResult feature) { }
         public void NotifyScenarioStart(IScenarioInfo scenario) { }

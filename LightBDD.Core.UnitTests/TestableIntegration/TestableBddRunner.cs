@@ -6,17 +6,17 @@ namespace LightBDD.Core.UnitTests.TestableIntegration
 {
     public class TestableBddRunnerFactory : BddRunnerFactory
     {
-        public TestableBddRunnerFactory() : this(NoProgressNotifier.Default, fixture => NoProgressNotifier.Default)
+        public TestableBddRunnerFactory() : this(TestableIntegrationContextBuilder.Default())
         {
         }
 
         public TestableBddRunnerFactory(IFeatureProgressNotifier featureProgressNotifier, Func<object, IScenarioProgressNotifier> scenarioProgressNotifier)
-            : base(new TestableIntegrationContext(featureProgressNotifier, scenarioProgressNotifier))
+            : this(TestableIntegrationContextBuilder.Default().WithFeatureProgressNotifier(featureProgressNotifier).WithScenarioProgressNotifierProvider(scenarioProgressNotifier))
         {
         }
 
-        public TestableBddRunnerFactory(IIntegrationContext integrationContext)
-            : base(integrationContext) { }
+        public TestableBddRunnerFactory(TestableIntegrationContextBuilder contextBuilder)
+            : base(contextBuilder.Build()) { }
 
         public static IFeatureBddRunner GetRunner(Type featureType)
         {

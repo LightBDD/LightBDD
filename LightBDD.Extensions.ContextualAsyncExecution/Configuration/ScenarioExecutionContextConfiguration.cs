@@ -1,5 +1,4 @@
 ﻿using LightBDD.Configuration;
-using LightBDD.Core.Extensibility;
 using LightBDD.Extensions.ContextualAsyncExecution.Implementation;
 
 namespace LightBDD.Extensions.ContextualAsyncExecution.Configuration

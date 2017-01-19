@@ -1,6 +1,4 @@
-﻿using LightBDD.Core.Extensibility;
-
-namespace LightBDD.Configuration
+﻿namespace LightBDD.Configuration
 {
     public static class ConfigurationExtensions
     {

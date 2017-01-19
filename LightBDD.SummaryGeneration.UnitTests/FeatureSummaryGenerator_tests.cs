@@ -9,7 +9,7 @@ using RandomTestValues;
 namespace LightBDD.SummaryGeneration.UnitTests
 {
     [TestFixture]
-    public class FeatureSummaryGeneratorTests
+    public class FeatureSummaryGenerator_tests
     {
         [Test]
         public void SummaryGenerator_should_be_thread_safe()

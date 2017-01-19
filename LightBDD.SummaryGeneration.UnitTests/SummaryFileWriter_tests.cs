@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace LightBDD.SummaryGeneration.UnitTests
 {
     [TestFixture]
-    public class SummaryFileWriterTests
+    public class SummaryFileWriter_tests
     {
         [Test]
         public void It_should_use_appdomain_base_directory_if_output_starts_with_tilde()

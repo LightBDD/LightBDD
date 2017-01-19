@@ -5,7 +5,6 @@ using LightBDD.Configuration;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Metadata;
-using LightBDD.Core.Notification;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Core.UnitTests.TestableIntegration;
 using Moq;
@@ -71,7 +70,7 @@ namespace LightBDD.Core.UnitTests
 
         private IFeatureBddRunner CreateRunner(IExecutionExtensions extensions)
         {
-            return new TestableBddRunnerFactory(new TestableIntegrationContext(new NoProgressNotifier(), fixture => new NoProgressNotifier(), extensions)).GetRunnerFor(GetType());
+            return new TestableBddRunnerFactory(TestableIntegrationContextBuilder.Default().WithExecutionExtensions(extensions)).GetRunnerFor(GetType());
         }
     }
 

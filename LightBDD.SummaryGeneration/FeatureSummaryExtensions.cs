@@ -4,7 +4,6 @@ using LightBDD.Core.Execution.Results;
 
 namespace LightBDD.SummaryGeneration
 {
-    ///TODO: add explicit tests
     /// <summary>
     /// Helper methods to work on feature results
     /// </summary>
