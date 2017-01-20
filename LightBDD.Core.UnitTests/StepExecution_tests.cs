@@ -1,9 +1,4 @@
-﻿using System;
-using System.Linq;
-using LightBDD.Configuration;
-using LightBDD.Core.Execution;
-using LightBDD.Core.UnitTests.TestableIntegration;
-using LightBDD.Extensions.ContextualAsyncExecution;
+﻿using LightBDD.Core.Execution;
 using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests
@@ -18,51 +13,6 @@ namespace LightBDD.Core.UnitTests
 
             var exception = Assert.Throws<StepBypassException>(() => StepExecution.Current.Bypass(bypassReason));
             Assert.That(exception.Message, Is.EqualTo(bypassReason));
-        }
-
-        [Test]
-        public void Comment_should_throw_exception_if_used_outside_of_step()
-        {
-            var exception = Assert.Throws<InvalidOperationException>(() => StepExecution.Current.Comment("some comment"));
-            Assert.That(exception.Message, Is.EqualTo($"Current task is not executing any scenarios. Please ensure that {nameof(ScenarioExecutionContext)} is installed in {nameof(LightBddConfiguration)} and execution context is accessed from task running scenario."));
-        }
-
-        [Test]
-        [TestCase(null)]
-        [TestCase("\t\n\r ")]
-        public void Comment_should_ignore_empty_comments(string comment)
-        {
-            var feature = TestableBddRunnerFactory.GetRunner(GetType());
-            var runner = feature.GetRunner(this);
-
-            runner.Test().TestScenario(TestStep.CreateAsync(Commented_step, comment));
-
-            Assert.That(feature.GetFeatureResult().GetScenarios().Single().GetSteps().Single().Comments.ToArray(), Is.Empty);
-        }
-
-        [Test]
-        public void Comment_should_record_comment_in_currently_executed_step()
-        {
-            var feature = TestableBddRunnerFactory.GetRunner(GetType());
-            var runner = feature.GetRunner(this);
-
-            var comment = "abc";
-            var otherComment = "def";
-
-            runner.Test().TestScenario(
-                TestStep.CreateAsync(Commented_step, comment),
-                TestStep.CreateAsync(Commented_step, otherComment));
-
-            var steps = feature.GetFeatureResult().GetScenarios().Single().GetSteps().ToArray();
-
-            Assert.That(steps[0].Comments.ToArray(), Is.EqualTo(new[] { comment, comment }));
-            Assert.That(steps[1].Comments.ToArray(), Is.EqualTo(new[] { otherComment, otherComment }));
-        }
-
-        private static void Commented_step(string comment)
-        {
-            StepExecution.Current.Comment(comment);
-            StepExecution.Current.Comment(comment);
         }
     }
 }

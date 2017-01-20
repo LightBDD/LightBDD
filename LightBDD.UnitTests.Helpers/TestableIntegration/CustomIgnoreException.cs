@@ -1,6 +1,6 @@
 using System;
 
-namespace LightBDD.Core.UnitTests.TestableIntegration
+namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
     public class CustomIgnoreException : Exception
     {

@@ -6,7 +6,7 @@ using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting;
 using NUnit.Framework.Internal;
 
-namespace LightBDD.Core.UnitTests.TestableIntegration
+namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
     public class TestMetadataProvider : CoreMetadataProvider
     {

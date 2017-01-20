@@ -2,7 +2,7 @@
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Notification;
 
-namespace LightBDD.Core.UnitTests.TestableIntegration
+namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
     public class TestableBddRunnerFactory : BddRunnerFactory
     {

@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using LightBDD.Core.Execution.Results;
-using LightBDD.Core.UnitTests.TestableIntegration;
+using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 using Steps = LightBDD.Core.UnitTests.Helpers.Steps;
 

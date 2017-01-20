@@ -1,4 +1,4 @@
-{
+﻿{
   "version": "1.0.0-*",
   "testRunner": "nunit",
   "frameworks": {
@@ -26,6 +26,9 @@
     "RandomTestValues": "2.0.0",
     "Moq": "4.6.38-alpha",
     "LightBDD.UnitTests.Helpers": {
+      "target": "project"
+    },
+    "LightBDD.Features.Commenting": {
       "target": "project"
     }
   }

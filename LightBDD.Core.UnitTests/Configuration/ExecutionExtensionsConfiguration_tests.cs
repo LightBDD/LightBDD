@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Configuration;
 using LightBDD.Core.Execution;
-using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Metadata;
 using NUnit.Framework;

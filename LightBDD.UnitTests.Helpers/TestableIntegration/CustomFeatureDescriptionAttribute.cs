@@ -1,6 +1,6 @@
 using System;
 
-namespace LightBDD.Core.UnitTests.TestableIntegration
+namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class CustomFeatureDescriptionAttribute : Attribute

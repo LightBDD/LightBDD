@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using LightBDD.Core.UnitTests.TestableIntegration;
+using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests

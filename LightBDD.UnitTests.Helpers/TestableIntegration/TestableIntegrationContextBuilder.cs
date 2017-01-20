@@ -6,7 +6,7 @@ using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Notification;
 
-namespace LightBDD.Core.UnitTests.TestableIntegration
+namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
     public class TestableIntegrationContextBuilder
     {
@@ -24,7 +24,7 @@ namespace LightBDD.Core.UnitTests.TestableIntegration
             _exceptionToStatusMapper = ex => ex is CustomIgnoreException ? ExecutionStatus.Ignored : ExecutionStatus.Failed;
             _featureProgressNotifier = NoProgressNotifier.Default;
             _scenarioProgressNotifierProvider = feature => NoProgressNotifier.Default;
-            _executionExtensions = new ExecutionExtensionsConfiguration().EnableStepCommenting();
+            _executionExtensions = new ExecutionExtensionsConfiguration().EnableStepExtension<StepCommentHelper>();
         }
 
         public TestableIntegrationContextBuilder WithNameFormatter(INameFormatter formatter)

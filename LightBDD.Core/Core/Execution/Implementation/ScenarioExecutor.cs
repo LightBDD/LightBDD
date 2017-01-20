@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Execution.Results.Implementation;
-using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Notification;

@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.UnitTests.Helpers;
-using LightBDD.Core.UnitTests.TestableIntegration;
 using LightBDD.Formatting.Parameters;
+using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests.Extensibility

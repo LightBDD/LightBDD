@@ -1,8 +1,8 @@
 using LightBDD.Core.Extensibility;
 
-namespace LightBDD.Core.UnitTests.TestableIntegration
+namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
-    static class TestSyntax
+    public static class TestSyntax
     {
         public static TestSyntaxRunner Test(this IBddRunner runner)
         {

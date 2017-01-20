@@ -3,9 +3,9 @@ using System.Reflection;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
 
-namespace LightBDD.Core.UnitTests.TestableIntegration
+namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
-    internal static class TestStep
+    public static class TestStep
     {
         public static StepDescriptor CreateAsync(Action step) => new StepDescriptor(step.GetMethodInfo().Name, async (ctx, args) => { await Task.Yield(); step.Invoke(); });
         public static StepDescriptor CreateSync(Action step) => new StepDescriptor(step.GetMethodInfo().Name, (ctx, args) => { step.Invoke(); return Task.CompletedTask; });

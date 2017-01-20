@@ -1,5 +1,5 @@
 using System;
-using LightBDD.Core.UnitTests.TestableIntegration;
+using LightBDD.UnitTests.Helpers.TestableIntegration;
 
 namespace LightBDD.Core.UnitTests.Helpers
 {
@@ -15,7 +15,8 @@ namespace LightBDD.Core.UnitTests.Helpers
         public void Given_step_one() { }
         public void Setup_before_steps() { }
         public void When_step_two() { }
-        public void When_step_two_with_comment() { StepExecution.Current.Comment(CommentReason); }
+
+        public void When_step_two_with_comment() { StepCommentHelper.Comment(CommentReason); }
         public void When_step_two_is_bypassed() { StepExecution.Current.Bypass(BypassReason); }
         public void When_step_two_throwing_exception() { throw new InvalidOperationException(ExceptionReason); }
         public void Then_step_three() { }
@@ -28,8 +29,8 @@ namespace LightBDD.Core.UnitTests.Helpers
 
         public void When_step_with_parameter_and_comments(int parameter)
         {
-            StepExecution.Current.Comment(CommentReason);
-            StepExecution.Current.Comment($"{parameter}");
+            StepCommentHelper.Comment(CommentReason);
+            StepCommentHelper.Comment($"{parameter}");
         }
         public void When_step_with_parameter_throwing_exception(int parameter) { throw new InvalidOperationException(ExceptionReason); }
         public void Then_step_with_parameter(double parameter) { }

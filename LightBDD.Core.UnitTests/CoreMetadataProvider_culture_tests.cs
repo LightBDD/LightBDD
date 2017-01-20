@@ -3,7 +3,7 @@ using LightBDD.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.UnitTests.Helpers;
-using LightBDD.Core.UnitTests.TestableIntegration;
+using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests

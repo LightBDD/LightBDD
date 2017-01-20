@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
 
-namespace LightBDD.Core.UnitTests.TestableIntegration
+namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
-    internal class TestSyntaxRunner
+    public class TestSyntaxRunner
     {
         private readonly ICoreBddRunner _coreRunner;
         private Func<object> _contextProvider;

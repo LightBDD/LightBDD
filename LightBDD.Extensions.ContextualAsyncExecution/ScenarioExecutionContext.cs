@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Threading;
 using LightBDD.Configuration;
+using LightBDD.Extensions.ContextualAsyncExecution.Configuration;
 
 namespace LightBDD.Extensions.ContextualAsyncExecution
 {
@@ -22,7 +23,7 @@ namespace LightBDD.Extensions.ContextualAsyncExecution
                 var ctx = CurrentContext.Value;
                 if (ctx != null)
                     return ctx;
-                throw new InvalidOperationException($"Current task is not executing any scenarios. Please ensure that {nameof(ScenarioExecutionContext)} is installed in {nameof(LightBddConfiguration)} and execution context is accessed from task running scenario.");
+                throw new InvalidOperationException($"Current task is not executing any scenarios or {nameof(ScenarioExecutionContext)} is not enabled in {nameof(LightBddConfiguration)}. Ensure that cfg.{nameof(ConfigurationExtensions.ExecutionExtensionsConfiguration)}().{nameof(ScenarioExecutionContextConfiguration.EnableScenarioExecutionContext)}() is called during LightBDD initialization and operation accessing {nameof(ScenarioExecutionContext)} is called from task running scenario.");
             }
             set { CurrentContext.Value = value; }
         }
