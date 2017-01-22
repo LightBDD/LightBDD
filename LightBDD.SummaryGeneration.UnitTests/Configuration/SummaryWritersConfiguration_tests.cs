@@ -50,5 +50,19 @@ namespace LightBDD.SummaryGeneration.UnitTests.Configuration
             var configuration = new SummaryWritersConfiguration();
             Assert.Throws<ArgumentNullException>(() => configuration.Add(null));
         }
+
+        [Test]
+        public void It_should_allow_adding_file_writer_with_extension_method()
+        {
+            var writer = new SummaryWritersConfiguration()
+                .Clear()
+                .AddFileWriter<PlainTextResultFormatter>("file.txt")
+                .Cast<SummaryFileWriter>()
+                .SingleOrDefault();
+
+            Assert.That(writer, Is.Not.Null);
+            Assert.That(writer.Formatter, Is.TypeOf<PlainTextResultFormatter>());
+            Assert.That(writer.OutputPath, Is.EqualTo("file.txt"));
+        }
     }
 }
