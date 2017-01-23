@@ -1,3 +1,5 @@
+using LightBDD.Scenarios.Extended;
+
 namespace LightBDD.Example.AcceptanceTests.XUnit2.Features
 {
     [FeatureDescription(

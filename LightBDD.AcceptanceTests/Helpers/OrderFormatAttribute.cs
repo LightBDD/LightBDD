@@ -1,5 +1,5 @@
 using System.Globalization;
-using LightBDD.Formatting.Parameters;
+using LightBDD.Core.Formatting.Parameters;
 
 namespace LightBDD.AcceptanceTests.Helpers
 {

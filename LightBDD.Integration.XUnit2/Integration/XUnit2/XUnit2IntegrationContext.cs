@@ -1,11 +1,13 @@
 using System;
-using LightBDD.Configuration;
-using LightBDD.Core.Execution.Results;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Notification;
+using LightBDD.Core.Results;
+using LightBDD.Formatting.Configuration;
 using LightBDD.Integration.XUnit2.Customization;
+using LightBDD.Notification.Configuration;
 
 namespace LightBDD.Integration.XUnit2
 {

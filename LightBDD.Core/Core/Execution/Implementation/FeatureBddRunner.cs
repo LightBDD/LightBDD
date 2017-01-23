@@ -1,9 +1,9 @@
 using System;
-using LightBDD.Core.Execution.Results;
-using LightBDD.Core.Execution.Results.Implementation;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution.Implementation;
 using LightBDD.Core.Extensibility.Implementation;
+using LightBDD.Core.Results;
+using LightBDD.Core.Results.Implementation;
 
 namespace LightBDD.Core.Execution.Implementation
 {

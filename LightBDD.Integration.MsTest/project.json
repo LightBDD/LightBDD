@@ -18,7 +18,13 @@
     "LightBDD.Core": {
       "target": "project"
     },
-    "LightBDD.SummaryGeneration": {
+    "LightBDD.Reporting": {
+      "target": "project"
+    },
+    "LightBDD.Formatting": {
+      "target": "project"
+    },
+    "LightBDD.Notification": {
       "target": "project"
     },
     "MSTest.TestFramework": "1.0.8-rc2"

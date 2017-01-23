@@ -1,7 +1,6 @@
 ﻿using LightBDD.Core.Extensibility;
-using LightBDD.Scenarios.Basic;
 
-namespace LightBDD
+namespace LightBDD.Scenarios.Basic
 {
     public static class BasicScenarioExtensions
     {

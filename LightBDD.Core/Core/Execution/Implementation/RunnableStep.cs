@@ -1,13 +1,13 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LightBDD.Core.Execution.Results;
-using LightBDD.Core.Execution.Results.Implementation;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Implementation;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Notification;
+using LightBDD.Core.Results;
+using LightBDD.Core.Results.Implementation;
 
 namespace LightBDD.Core.Execution.Implementation
 {

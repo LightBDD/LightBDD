@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using LightBDD.Configuration;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Formatting;
 
 namespace LightBDD.Core.Extensibility.Implementation

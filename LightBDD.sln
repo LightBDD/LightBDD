@@ -26,13 +26,13 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Runners.Contextual
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Scenarios.Basic", "LightBDD.Scenarios.Basic\LightBDD.Scenarios.Basic.xproj", "{B900D37E-5355-46B0-BF13-F97D3A4C2967}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Scenarios.Parameterized", "LightBDD.Scenarios.Parameterized\LightBDD.Scenarios.Parameterized.xproj", "{FCC96344-EC54-4BA3-84A9-25B3C7940163}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Scenarios.Extended", "LightBDD.Scenarios.Extended\LightBDD.Scenarios.Extended.xproj", "{FCC96344-EC54-4BA3-84A9-25B3C7940163}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.SummaryGeneration", "LightBDD.SummaryGeneration\LightBDD.SummaryGeneration.xproj", "{3CBFC670-11D5-4BBE-9E12-1EBB4BE78186}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Reporting", "LightBDD.Reporting\LightBDD.Reporting.xproj", "{3CBFC670-11D5-4BBE-9E12-1EBB4BE78186}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Features.Commenting", "LightBDD.Features.Commenting\LightBDD.Features.Commenting.xproj", "{162E2F53-1043-4A9A-A6CE-EA487B2C57E4}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Commenting", "LightBDD.Commenting\LightBDD.Commenting.xproj", "{162E2F53-1043-4A9A-A6CE-EA487B2C57E4}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Extensions.ContextualAsyncExecution", "LightBDD.Extensions.ContextualAsyncExecution\LightBDD.Extensions.ContextualAsyncExecution.xproj", "{A7217957-FC67-473A-A7F0-18509262774F}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.ExecutionContext", "LightBDD.ExecutionContext\LightBDD.ExecutionContext.xproj", "{A7217957-FC67-473A-A7F0-18509262774F}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Integration.MsTest", "LightBDD.Integration.MsTest\LightBDD.Integration.MsTest.xproj", "{CBD1B3D9-4B77-4B21-9C3A-7E3A9FB3D780}"
 EndProject
@@ -54,11 +54,11 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Integration.MsTest
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Runners.Contextual.UnitTests", "LightBDD.Runners.Contextual.UnitTests\LightBDD.Runners.Contextual.UnitTests.xproj", "{59B10E6E-11A1-4F38-91BF-DA9E0A51FAB3}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Scenarios.Parameterized.UnitTests", "LightBDD.Scenarios.Parameterized.UnitTests\LightBDD.Scenarios.Parameterized.UnitTests.xproj", "{C7741B4C-5909-47FB-81AC-DE98FD9E1BA8}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Scenarios.Extended.UnitTests", "LightBDD.Scenarios.Extended.UnitTests\LightBDD.Scenarios.Extended.UnitTests.xproj", "{C7741B4C-5909-47FB-81AC-DE98FD9E1BA8}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Scenarios.Basic.UnitTests", "LightBDD.Scenarios.Basic.UnitTests\LightBDD.Scenarios.Basic.UnitTests.xproj", "{EC2EBBC3-CF0E-4D00-B65C-C57DDF9EFEE5}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.SummaryGeneration.UnitTests", "LightBDD.SummaryGeneration.UnitTests\LightBDD.SummaryGeneration.UnitTests.xproj", "{BBD59A28-DF7C-455A-BEDD-7EAE6D9CDC6D}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Reporting.UnitTests", "LightBDD.Reporting.UnitTests\LightBDD.Reporting.UnitTests.xproj", "{BBD59A28-DF7C-455A-BEDD-7EAE6D9CDC6D}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.AcceptanceTests", "LightBDD.AcceptanceTests\LightBDD.AcceptanceTests.xproj", "{17CF2456-692D-4D8D-996B-59BD067E9175}"
 EndProject
@@ -72,9 +72,13 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Example.Acceptance
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Example.AcceptanceTests.XUnit2", "LightBDD.Example.AcceptanceTests.XUnit2\LightBDD.Example.AcceptanceTests.XUnit2.xproj", "{7B0B7668-FC01-417F-AB48-6B0C00976EB8}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Features.Commenting.UnitTests", "LightBDD.Features.Commenting.UnitTests\LightBDD.Features.Commenting.UnitTests.xproj", "{197DEF24-BC20-4DCE-B339-08516CE3765A}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Commenting.UnitTests", "LightBDD.Commenting.UnitTests\LightBDD.Commenting.UnitTests.xproj", "{197DEF24-BC20-4DCE-B339-08516CE3765A}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Extensions.ContextualAsyncExecution.UnitTests", "LightBDD.Extensions.ContextualAsyncExecution.UnitTests\LightBDD.Extensions.ContextualAsyncExecution.UnitTests.xproj", "{A9244D66-F38A-465F-B2A3-5BECEE94440C}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.ExecutionContext.UnitTests", "LightBDD.ExecutionContext.UnitTests\LightBDD.ExecutionContext.UnitTests.xproj", "{A9244D66-F38A-465F-B2A3-5BECEE94440C}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Formatting", "LightBDD.Formatting\LightBDD.Formatting.xproj", "{7E16DFCF-1085-4A8B-862C-4B59A17F9D27}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Notification", "LightBDD.Notification\LightBDD.Notification.xproj", "{51867364-BEB5-41AC-82A4-22EE8885E55A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -186,6 +190,14 @@ Global
 		{A9244D66-F38A-465F-B2A3-5BECEE94440C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9244D66-F38A-465F-B2A3-5BECEE94440C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9244D66-F38A-465F-B2A3-5BECEE94440C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E16DFCF-1085-4A8B-862C-4B59A17F9D27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E16DFCF-1085-4A8B-862C-4B59A17F9D27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E16DFCF-1085-4A8B-862C-4B59A17F9D27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E16DFCF-1085-4A8B-862C-4B59A17F9D27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51867364-BEB5-41AC-82A4-22EE8885E55A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51867364-BEB5-41AC-82A4-22EE8885E55A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51867364-BEB5-41AC-82A4-22EE8885E55A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51867364-BEB5-41AC-82A4-22EE8885E55A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

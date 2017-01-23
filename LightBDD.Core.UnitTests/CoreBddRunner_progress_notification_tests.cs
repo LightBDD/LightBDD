@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
+using LightBDD.Core.Results;
+using LightBDD.Core.UnitTests.Helpers;
+using LightBDD.Notification;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
-using Steps = LightBDD.Core.UnitTests.Helpers.Steps;
 
 namespace LightBDD.Core.UnitTests
 {

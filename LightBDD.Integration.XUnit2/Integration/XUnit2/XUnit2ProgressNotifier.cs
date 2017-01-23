@@ -1,5 +1,6 @@
 ﻿using System;
 using LightBDD.Core.Notification;
+using LightBDD.Notification;
 using Xunit.Abstractions;
 
 namespace LightBDD.Integration.XUnit2

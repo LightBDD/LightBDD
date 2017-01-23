@@ -18,6 +18,8 @@
     "NUnit": "3.6.0",
     "LightBDD.Core": {
       "target": "project"
-    }
+    },
+    "LightBDD.Formatting": { "target": "project" },
+    "LightBDD.Notification": { "target": "project" }
   }
 }

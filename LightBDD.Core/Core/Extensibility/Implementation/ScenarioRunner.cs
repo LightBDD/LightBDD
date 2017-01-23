@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution.Implementation;
-using LightBDD.Core.Execution.Results;
-using LightBDD.Core.Helpers;
+using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Notification;
+using LightBDD.Core.Results;
 
 namespace LightBDD.Core.Extensibility.Implementation
 {

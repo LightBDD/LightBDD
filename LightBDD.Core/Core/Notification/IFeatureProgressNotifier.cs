@@ -1,5 +1,5 @@
-﻿using LightBDD.Core.Execution.Results;
-using LightBDD.Core.Metadata;
+﻿using LightBDD.Core.Metadata;
+using LightBDD.Core.Results;
 
 namespace LightBDD.Core.Notification
 {

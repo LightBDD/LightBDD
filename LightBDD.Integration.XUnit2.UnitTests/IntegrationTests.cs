@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LightBDD.Core.Execution.Results;
+using LightBDD.Core.Results;
+using LightBDD.Scenarios.Basic;
 using Xunit;
 using Xunit.Abstractions;
+
 namespace LightBDD.Integration.XUnit2.UnitTests
 {
     [FeatureDescription("desc")]

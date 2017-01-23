@@ -1,8 +1,8 @@
 ﻿using System.Globalization;
-using LightBDD.Configuration;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
-using LightBDD.Core.Formatting;
 using LightBDD.Core.UnitTests.Helpers;
+using LightBDD.Formatting;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 

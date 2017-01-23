@@ -20,14 +20,14 @@
     "LightBDD.Scenarios.Basic": {
       "target": "project"
     },
-    "LightBDD.Scenarios.Parameterized": {
+    "LightBDD.Scenarios.Extended": {
       "target": "project"
     },
     "LightBDD.Runners.Contextual": {
       "target": "project"
     },
 
-    "LightBDD.Features.Commenting": {
+    "LightBDD.Commenting": {
       "target": "project"
     },
     "LightBDD.Example": {

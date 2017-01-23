@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
-using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Extensibility;
+using LightBDD.Core.Results;
+using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.UnitTests.Helpers;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
-using Steps = LightBDD.Core.UnitTests.Helpers.Steps;
 
 namespace LightBDD.Core.UnitTests
 {

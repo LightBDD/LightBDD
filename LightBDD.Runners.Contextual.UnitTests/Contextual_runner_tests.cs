@@ -1,7 +1,7 @@
 ﻿using System;
 using LightBDD.Core.Extensibility;
-using NUnit.Framework;
 using Moq;
+using NUnit.Framework;
 
 namespace LightBDD.Runners.Contextual.UnitTests
 {

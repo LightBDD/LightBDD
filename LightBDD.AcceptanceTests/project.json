@@ -13,7 +13,7 @@
     "LightBDD.Integration.NUnit3": {
       "target": "project"
     },
-    "LightBDD.Scenarios.Parameterized": {
+    "LightBDD.Scenarios.Extended": {
       "target": "project"
     },
     "LightBDD.UnitTests.Helpers": {

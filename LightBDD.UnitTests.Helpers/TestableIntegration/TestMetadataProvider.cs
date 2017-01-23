@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using LightBDD.Configuration;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting;
 using NUnit.Framework.Internal;

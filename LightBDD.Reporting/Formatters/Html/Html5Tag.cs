@@ -1,0 +1,30 @@
+namespace LightBDD.Reporting.Formatters.Html
+{
+    internal enum Html5Tag
+    {
+        Section,
+        Article,
+        H1,
+        Table,
+        Input,
+        Div,
+        Tr,
+        Th,
+        Td,
+        Span,
+        A,
+        Tbody,
+        H3,
+        Label,
+        Html,
+        Head,
+        Meta,
+        Link,
+        Title,
+        Style,
+        Script,
+        Body,
+        Thead,
+        H2
+    }
+}

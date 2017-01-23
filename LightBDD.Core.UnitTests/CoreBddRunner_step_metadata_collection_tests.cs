@@ -1,5 +1,5 @@
 using System.Linq;
-using LightBDD.Core.Execution.Results;
+using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.UnitTests.Helpers;
 using LightBDD.UnitTests.Helpers.TestableIntegration;

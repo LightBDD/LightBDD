@@ -1,7 +1,7 @@
 ﻿using System;
 using LightBDD.Core.Extensibility;
 
-namespace LightBDD
+namespace LightBDD.Runners.Contextual
 {
     internal class ContextualBddRunner<TContext> : IBddRunner<TContext>, ICoreBddRunner
     {

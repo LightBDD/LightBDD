@@ -1,6 +1,7 @@
 ﻿using System;
-using LightBDD.Configuration;
+using LightBDD.Core.Configuration;
 using LightBDD.Integration.MsTest;
+using LightBDD.Notification.Configuration;
 
 namespace LightBDD
 {

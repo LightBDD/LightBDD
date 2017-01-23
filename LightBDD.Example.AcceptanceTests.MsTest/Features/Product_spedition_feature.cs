@@ -1,4 +1,6 @@
 using LightBDD.Example.AcceptanceTests.MsTest.Features.Contexts;
+using LightBDD.Runners.Contextual;
+using LightBDD.Scenarios.Extended;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.Example.AcceptanceTests.MsTest.Features

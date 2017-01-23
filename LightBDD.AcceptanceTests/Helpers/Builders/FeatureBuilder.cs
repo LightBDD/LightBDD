@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using LightBDD.Core.Execution.Results;
+using LightBDD.Core.Results;
 using LightBDD.UnitTests.Helpers;
 
 namespace LightBDD.AcceptanceTests.Helpers.Builders
@@ -25,7 +25,7 @@ namespace LightBDD.AcceptanceTests.Helpers.Builders
 
         public IFeatureResult Build()
         {
-            return Results.CreateFeatureResult(Name, "descr", "label", _scenarios.Select(s => s.Build()).ToArray());
+            return TestResults.CreateFeatureResult(Name, "descr", "label", _scenarios.Select(s => s.Build()).ToArray());
         }
     }
 }

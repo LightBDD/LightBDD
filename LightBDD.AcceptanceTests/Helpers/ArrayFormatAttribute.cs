@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Globalization;
 using System.Linq;
-using LightBDD.Formatting.Parameters;
+using LightBDD.Core.Formatting.Parameters;
 
 namespace LightBDD.AcceptanceTests.Helpers
 {

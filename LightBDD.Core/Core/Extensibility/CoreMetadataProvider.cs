@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using LightBDD.Configuration;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility.Implementation;
 using LightBDD.Core.Formatting;
-using LightBDD.Core.Helpers;
+using LightBDD.Core.Formatting.Parameters;
+using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
-using LightBDD.Formatting.Parameters;
 
 namespace LightBDD.Core.Extensibility
 {

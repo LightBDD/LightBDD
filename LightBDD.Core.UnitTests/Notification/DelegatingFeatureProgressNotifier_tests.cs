@@ -1,4 +1,5 @@
 using LightBDD.Core.Notification;
+using LightBDD.Notification;
 using LightBDD.UnitTests.Helpers;
 using Moq;
 using NUnit.Framework;
@@ -21,7 +22,7 @@ namespace LightBDD.Core.UnitTests.Notification
         [Test]
         public void It_should_delegate_NotifyFeatureStart()
         {
-            var featureInfo = new Results.TestFeatureInfo();
+            var featureInfo = new TestResults.TestFeatureInfo();
             _subject.NotifyFeatureStart(featureInfo);
             foreach (var notifier in _notifiers)
                 Mock.Get(notifier).Verify(n => n.NotifyFeatureStart(featureInfo));
@@ -30,7 +31,7 @@ namespace LightBDD.Core.UnitTests.Notification
         [Test]
         public void It_should_delegate_NotifyFeatureFinished()
         {
-            var feature = new Results.TestFeatureResult();
+            var feature = new TestResults.TestFeatureResult();
             _subject.NotifyFeatureFinished(feature);
             foreach (var notifier in _notifiers)
                 Mock.Get(notifier).Verify(n => n.NotifyFeatureFinished(feature));

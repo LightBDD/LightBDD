@@ -1,4 +1,5 @@
 ﻿using System;
+using LightBDD.Scenarios.Basic;
 using NUnit.Framework;
 
 namespace LightBDD.Integration.NUnit3.UnitTests

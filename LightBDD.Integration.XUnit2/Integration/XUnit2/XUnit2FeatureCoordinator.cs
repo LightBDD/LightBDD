@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
-using LightBDD.Configuration;
-using LightBDD.Core.Coordination;
+using LightBDD.Core.Configuration;
+using LightBDD.Core.Execution.Coordination;
 using LightBDD.Core.Extensibility;
-using LightBDD.SummaryGeneration;
-using LightBDD.SummaryGeneration.Configuration;
+using LightBDD.Reporting;
+using LightBDD.Reporting.Configuration;
 
 namespace LightBDD.Integration.XUnit2
 {

@@ -1,4 +1,4 @@
-using LightBDD.Configuration;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Integration.XUnit2

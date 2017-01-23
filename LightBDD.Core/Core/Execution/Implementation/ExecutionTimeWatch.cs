@@ -1,6 +1,6 @@
 using System;
 using System.Diagnostics;
-using LightBDD.Core.Execution.Results;
+using LightBDD.Core.Results;
 
 namespace LightBDD.Core.Execution.Implementation
 {

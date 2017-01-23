@@ -1,5 +1,5 @@
 ﻿using System;
-using LightBDD.Configuration;
+using LightBDD.Core.Configuration;
 using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests.Configuration

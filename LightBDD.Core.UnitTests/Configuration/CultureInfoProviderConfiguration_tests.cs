@@ -1,5 +1,5 @@
 ﻿using System;
-using LightBDD.Configuration;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using Moq;
 using NUnit.Framework;

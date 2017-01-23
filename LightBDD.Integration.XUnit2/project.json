@@ -19,9 +19,15 @@
     "LightBDD.Core": {
       "target": "project"
     },
-    "LightBDD.SummaryGeneration": {
+    "LightBDD.Reporting": {
       "target": "project"
     },
-    "xunit": "2.1.0" 
+    "LightBDD.Formatting": {
+      "target": "project"
+    },
+    "LightBDD.Notification": {
+      "target": "project"
+    },
+    "xunit": "2.1.0"
   }
 }

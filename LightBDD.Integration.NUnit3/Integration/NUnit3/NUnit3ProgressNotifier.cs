@@ -1,4 +1,5 @@
 ﻿using LightBDD.Core.Notification;
+using LightBDD.Notification;
 using NUnit.Framework;
 
 namespace LightBDD.Integration.NUnit3

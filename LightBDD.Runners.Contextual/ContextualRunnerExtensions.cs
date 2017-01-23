@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LightBDD
+namespace LightBDD.Runners.Contextual
 {
     public static class ContextualRunnerExtensions
     {

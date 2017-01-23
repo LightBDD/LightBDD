@@ -1,8 +1,8 @@
 using System;
-using LightBDD.Core.Execution.Results;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Notification;
+using LightBDD.Core.Results;
 
 namespace LightBDD.Core.Extensibility
 {

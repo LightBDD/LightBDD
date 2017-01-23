@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using LightBDD.Core.Execution.Results;
+using LightBDD.Core.Results;
 
 namespace LightBDD.AcceptanceTests.Helpers.Builders
 {

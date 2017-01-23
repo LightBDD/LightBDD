@@ -1,6 +1,7 @@
 using System;
-using LightBDD.Configuration;
+using LightBDD.Core.Configuration;
 using LightBDD.Integration.XUnit2;
+using LightBDD.Notification.Configuration;
 using Xunit.Sdk;
 
 namespace LightBDD

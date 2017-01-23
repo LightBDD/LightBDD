@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using LightBDD.Core.Execution.Results;
+using LightBDD.Core.Results;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 

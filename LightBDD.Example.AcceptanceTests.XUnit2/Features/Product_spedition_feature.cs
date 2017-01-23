@@ -1,4 +1,6 @@
 using LightBDD.Example.AcceptanceTests.XUnit2.Features.Contexts;
+using LightBDD.Runners.Contextual;
+using LightBDD.Scenarios.Extended;
 
 namespace LightBDD.Example.AcceptanceTests.XUnit2.Features
 {
