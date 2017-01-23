@@ -14,8 +14,8 @@
     "net46": {
       "frameworkAssemblies": {
         "System.Reflection": "4.0.10.0",
-        "System.Threading.Tasks": "4.0.0.0",
-        "System.Linq.Expressions": "4.0.0.0"
+        "System.Threading.Tasks": "4.0.10.0",
+        "System.Linq.Expressions": "4.0.10.0"
       }
     }
   },

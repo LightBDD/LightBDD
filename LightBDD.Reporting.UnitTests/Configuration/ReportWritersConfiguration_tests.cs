@@ -17,11 +17,11 @@ namespace LightBDD.Reporting.UnitTests.Configuration
             var configuration = new ReportWritersConfiguration();
             Assert.That(configuration.Count, Is.EqualTo(2));
 
-            var featuresSummaryXml = @"~\Reports\FeaturesSummary.xml";
-            var featuresSummaryHtml = @"~\Reports\FeaturesSummary.html";
+            var featuresReportXml = @"~\Reports\FeaturesReport.xml";
+            var featuresReportHtml = @"~\Reports\FeaturesReport.html";
 
-            AssertWriter(configuration, featuresSummaryXml, typeof(XmlReportFormatter), featuresSummaryXml.Replace("~", AppDomain.CurrentDomain.BaseDirectory));
-            AssertWriter(configuration, featuresSummaryHtml, typeof(HtmlReportFormatter), featuresSummaryHtml.Replace("~", AppDomain.CurrentDomain.BaseDirectory));
+            AssertWriter(configuration, featuresReportXml, typeof(XmlReportFormatter), featuresReportXml.Replace("~", AppDomain.CurrentDomain.BaseDirectory));
+            AssertWriter(configuration, featuresReportHtml, typeof(HtmlReportFormatter), featuresReportHtml.Replace("~", AppDomain.CurrentDomain.BaseDirectory));
         }
 
         private void AssertWriter(ReportWritersConfiguration configuration, string expectedRelativePath, Type expectedFormatterType, string expectedFullPath)
