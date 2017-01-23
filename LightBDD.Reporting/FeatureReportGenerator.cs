@@ -5,13 +5,13 @@ using LightBDD.Core.Results;
 
 namespace LightBDD.Reporting
 {
-    public class FeatureSummaryGenerator : IFeatureAggregator
+    public class FeatureReportGenerator : IFeatureAggregator
     {
-        private readonly ISummaryWriter[] _writers;
+        private readonly IReportWriter[] _writers;
         private readonly ConcurrentQueue<IFeatureResult> _results = new ConcurrentQueue<IFeatureResult>();
         private bool _disposed;
 
-        public FeatureSummaryGenerator(params ISummaryWriter[] writers)
+        public FeatureReportGenerator(params IReportWriter[] writers)
         {
             _writers = writers;
         }

@@ -7,7 +7,7 @@ namespace LightBDD.Reporting
     /// <summary>
     /// Helper methods to work on feature results
     /// </summary>
-    public static class FeatureSummaryExtensions
+    public static class FeatureReportExtensions
     {
         public static ExecutionTimeSummary GetTestExecutionTimeSummary(this IEnumerable<IFeatureResult> results)
         {
@@ -55,7 +55,7 @@ namespace LightBDD.Reporting
         /// </summary>
         public static int CountSteps(this IEnumerable<IFeatureResult> results)
         {
-            return results.Sum(f => CountSteps(f));
+            return results.Sum(CountSteps);
         }
 
         /// <summary>

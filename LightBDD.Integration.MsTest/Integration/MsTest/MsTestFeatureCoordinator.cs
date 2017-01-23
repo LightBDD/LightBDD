@@ -25,7 +25,7 @@ namespace LightBDD.Integration.MsTest
 
         internal static void InstallSelf(LightBddConfiguration configuration)
         {
-            Install(new MsTestFeatureCoordinator(new MsTestBddRunnerFactory(configuration), new FeatureSummaryGenerator(configuration.SummaryWritersConfiguration().ToArray())));
+            Install(new MsTestFeatureCoordinator(new MsTestBddRunnerFactory(configuration), new FeatureReportGenerator(configuration.ReportWritersConfiguration().ToArray())));
         }
     }
 }

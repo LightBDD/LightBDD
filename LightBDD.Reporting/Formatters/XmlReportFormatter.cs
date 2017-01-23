@@ -8,9 +8,9 @@ using LightBDD.Core.Results;
 
 namespace LightBDD.Reporting.Formatters
 {
-    public class XmlResultFormatter : IResultFormatter
+    public class XmlReportFormatter : IReportFormatter
     {
-        #region IResultFormatter Members
+        #region IReportFormatter Members
 
         public void Format(Stream stream, params IFeatureResult[] features)
         {

@@ -9,13 +9,13 @@ using RandomTestValues;
 namespace LightBDD.Reporting.UnitTests
 {
     [TestFixture]
-    public class FeatureSummaryGenerator_tests
+    public class FeatureReportGenerator_tests
     {
         [Test]
         public void SummaryGenerator_should_be_thread_safe()
         {
-            var writer = Mock.Of<ISummaryWriter>();
-            var generator = new FeatureSummaryGenerator(writer);
+            var writer = Mock.Of<IReportWriter>();
+            var generator = new FeatureReportGenerator(writer);
 
             var mocks = Enumerable.Range(0, 50).Select(i => RandomValue.Object<TestResults.TestFeatureResult>()).ToArray();
             var allMocks = new List<IFeatureResult>();
@@ -35,10 +35,10 @@ namespace LightBDD.Reporting.UnitTests
         {
             var summaryWriters = new[]
             {
-                Mock.Of<ISummaryWriter>(),
-                Mock.Of<ISummaryWriter>()
+                Mock.Of<IReportWriter>(),
+                Mock.Of<IReportWriter>()
             };
-            var generator = new FeatureSummaryGenerator(summaryWriters);
+            var generator = new FeatureReportGenerator(summaryWriters);
 
             var results = new[]
             {

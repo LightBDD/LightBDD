@@ -5,7 +5,7 @@ namespace LightBDD.Reporting
 	/// <summary>
 	/// Interface for feature result summary writers.
 	/// </summary>
-	public interface ISummaryWriter
+	public interface IReportWriter
 	{
 		/// <summary>
 		/// Saves feature <c>results</c>.

@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace LightBDD.Reporting.UnitTests
 {
     [TestFixture]
-    public class FeatureSummaryExtensions_tests
+    public class FeatureReportExtensions_tests
     {
         [Test]
         public void It_should_count_scenarios()

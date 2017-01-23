@@ -10,24 +10,24 @@ using NUnit.Framework;
 namespace LightBDD.Reporting.UnitTests.Formatters
 {
     [TestFixture]
-    public class XmlResultFormatterTests
+    public class XmlReportFormatter_tests
     {
-        private IResultFormatter _subject;
+        private IReportFormatter _subject;
         private static XmlSchemaSet _schema;
 
         #region Setup/Teardown
 
-        public XmlResultFormatterTests()
+        public XmlReportFormatter_tests()
         {
             _schema = new XmlSchemaSet();
 
-            _schema.Add("", Path.GetDirectoryName(typeof(ISummaryWriter).Assembly.CodeBase) + "\\..\\..\\..\\..\\..\\XmlResultFormatterSchema.xsd");
+            _schema.Add("", Path.GetDirectoryName(typeof(IReportWriter).Assembly.CodeBase) + "\\..\\..\\..\\..\\..\\XmlResultFormatterSchema.xsd");
         }
 
         [SetUp]
         public void SetUp()
         {
-            _subject = new XmlResultFormatter();
+            _subject = new XmlReportFormatter();
         }
 
         #endregion
@@ -35,7 +35,7 @@ namespace LightBDD.Reporting.UnitTests.Formatters
         [Test]
         public void Should_format_xml()
         {
-            var result = ResultFormatterTestData.GetFeatureResultWithDescription();
+            var result = ReportFormatterTestData.GetFeatureResultWithDescription();
             var text = FormatResults(result);
             TestContext.WriteLine(text);
 
@@ -95,7 +95,7 @@ Step 2: Expected: True
         [Test]
         public void Should_format_xml_without_description_nor_label_nor_details()
         {
-            var result = ResultFormatterTestData.GetFeatureResultWithoutDescriptionNorLabelNorDetails();
+            var result = ReportFormatterTestData.GetFeatureResultWithoutDescriptionNorLabelNorDetails();
             var text = FormatResults(result);
             TestContext.WriteLine(text);
 
@@ -124,7 +124,7 @@ Step 2: Expected: True
         [Test]
         public void Should_format_multiple_features()
         {
-            var results = ResultFormatterTestData.GetMultipleFeatureResults();
+            var results = ReportFormatterTestData.GetMultipleFeatureResults();
 
             var text = FormatResults(results);
             TestContext.WriteLine(text);

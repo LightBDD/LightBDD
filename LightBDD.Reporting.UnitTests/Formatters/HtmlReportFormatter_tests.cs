@@ -13,15 +13,15 @@ using NUnit.Framework;
 namespace LightBDD.Reporting.UnitTests.Formatters
 {
     [TestFixture]
-    public class HtmlResultFormatterTests
+    public class HtmlReportFormatter_tests
     {
-        private IResultFormatter _subject;
+        private IReportFormatter _subject;
         #region Setup/Teardown
 
         [SetUp]
         public void SetUp()
         {
-            _subject = new HtmlResultFormatter();
+            _subject = new HtmlReportFormatter();
         }
 
         #endregion
@@ -29,7 +29,7 @@ namespace LightBDD.Reporting.UnitTests.Formatters
         [Test]
         public void Should_format_feature_with_description()
         {
-            var result = ResultFormatterTestData.GetFeatureResultWithDescription();
+            var result = ReportFormatterTestData.GetFeatureResultWithDescription();
 
             var text = FormatAndExtractText(result);
             TestContext.WriteLine(text);
@@ -85,7 +85,7 @@ initialize();";
         [Test]
         public void Should_format_feature_without_description_nor_label_nor_details()
         {
-            var result = ResultFormatterTestData.GetFeatureResultWithoutDescriptionNorLabelNorDetails();
+            var result = ReportFormatterTestData.GetFeatureResultWithoutDescriptionNorLabelNorDetails();
 
             var text = FormatAndExtractText(result);
             TestContext.WriteLine(text);
@@ -125,7 +125,7 @@ initialize();";
         [Test]
         public void Should_format_multiple_features()
         {
-            var results = ResultFormatterTestData.GetMultipleFeatureResults();
+            var results = ReportFormatterTestData.GetMultipleFeatureResults();
             var text = FormatAndExtractText(results);
             TestContext.WriteLine(text);
             var expectedText = $@"Execution summary

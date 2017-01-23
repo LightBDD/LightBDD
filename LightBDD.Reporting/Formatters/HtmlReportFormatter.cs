@@ -7,7 +7,7 @@ namespace LightBDD.Reporting.Formatters
     /// <summary>
     /// Formats feature results as HTML.
     /// </summary>
-    public class HtmlResultFormatter : IResultFormatter
+    public class HtmlReportFormatter : IReportFormatter
     {
         public void Format(Stream stream, params IFeatureResult[] features)
         {

@@ -281,7 +281,7 @@ namespace LightBDD.AcceptanceTests.Features
         {
             using (var memory = new MemoryStream())
             {
-                new HtmlResultFormatter().Format(memory, results);
+                new HtmlReportFormatter().Format(memory, results);
                 return Encoding.UTF8.GetString(memory.ToArray());
             }
         }

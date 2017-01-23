@@ -11,9 +11,8 @@ namespace LightBDD.AcceptanceTests
     {
         protected override void OnConfigure(LightBddConfiguration configuration)
         {
-            configuration.SummaryWritersConfiguration()
-                .Add(new SummaryFileWriter(new HtmlResultFormatter(), "~\\Reports\\FeaturesSummary.html"))
-                .Add(new SummaryFileWriter(new PlainTextResultFormatter(), "~\\Reports\\FeaturesSummary.txt"));
+            configuration.ReportWritersConfiguration()
+                .Add(new ReportFileWriter(new PlainTextReportFormatter(), "~\\Reports\\FeaturesReport.txt"));
         }
     }
 }

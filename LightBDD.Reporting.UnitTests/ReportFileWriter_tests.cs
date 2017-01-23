@@ -8,12 +8,12 @@ using NUnit.Framework;
 namespace LightBDD.Reporting.UnitTests
 {
     [TestFixture]
-    public class SummaryFileWriter_tests
+    public class ReportFileWriter_tests
     {
         [Test]
         public void It_should_use_appdomain_base_directory_if_output_starts_with_tilde()
         {
-            var writer = new SummaryFileWriter(Mock.Of<IResultFormatter>(), "~//output.txt");
+            var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), "~//output.txt");
             var expected = Path.GetFullPath(AppContext.BaseDirectory + "\\output.txt");
             Assert.That(writer.OutputPath, Is.EqualTo("~//output.txt"));
             Assert.That(writer.FullOutputPath, Is.EqualTo(expected));
@@ -22,7 +22,7 @@ namespace LightBDD.Reporting.UnitTests
         [Test]
         public void It_should_use_working_directory_if_output_is_relative_path()
         {
-            var writer = new SummaryFileWriter(Mock.Of<IResultFormatter>(), "output.txt");
+            var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), "output.txt");
             var expected = Path.GetFullPath("output.txt");
             Assert.That(writer.OutputPath, Is.EqualTo("output.txt"));
             Assert.That(writer.FullOutputPath, Is.EqualTo(expected));
@@ -35,7 +35,7 @@ namespace LightBDD.Reporting.UnitTests
             var outputPath = $"~\\{Guid.NewGuid()}\\output.txt";
             var expectedPath = outputPath.Replace("~", AppContext.BaseDirectory);
 
-            var formatter = Mock.Of<IResultFormatter>();
+            var formatter = Mock.Of<IReportFormatter>();
             var results = new[]
             {
                 Mock.Of<IFeatureResult>(),
@@ -50,7 +50,7 @@ namespace LightBDD.Reporting.UnitTests
                         writer.Write(expectedFileContent);
                 });
 
-            new SummaryFileWriter(formatter, outputPath).Save(results);
+            new ReportFileWriter(formatter, outputPath).Save(results);
 
             Assert.That(File.Exists(expectedPath), "File does not exists: {0}", expectedPath);
             Assert.That(File.ReadAllText(expectedPath), Is.EqualTo(expectedFileContent));

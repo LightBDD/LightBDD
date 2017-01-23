@@ -11,9 +11,9 @@ namespace LightBDD.Reporting.Formatters
     /// <summary>
     /// Formats feature results as plain text.
     /// </summary>
-    public class PlainTextResultFormatter : IResultFormatter
+    public class PlainTextReportFormatter : IReportFormatter
     {
-        #region IResultFormatter Members
+        #region IReportFormatter Members
 
         public void Format(Stream stream, params IFeatureResult[] features)
         {

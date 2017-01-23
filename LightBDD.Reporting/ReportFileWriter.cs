@@ -8,18 +8,18 @@ namespace LightBDD.Reporting
     /// <summary>
     /// Summary file writer class allows to save feature results by using associated result formatter and output path.
     /// </summary>
-    public class SummaryFileWriter : ISummaryWriter
+    public class ReportFileWriter : IReportWriter
     {
-        public IResultFormatter Formatter { get; }
+        public IReportFormatter Formatter { get; }
         public string OutputPath { get; }
         public string FullOutputPath { get; }
 
         /// <summary>
-        /// Constructor allowing to create SummaryFileWriter with associated result formatter and output path.
+        /// Constructor allowing to create ReportFileWriter with associated result formatter and output path.
         /// </summary>
         /// <param name="formatter">Result formatter.</param>
         /// <param name="outputPath">Output path.</param>
-        public SummaryFileWriter(IResultFormatter formatter, string outputPath)
+        public ReportFileWriter(IReportFormatter formatter, string outputPath)
         {
             OutputPath = outputPath;
             Formatter = formatter;

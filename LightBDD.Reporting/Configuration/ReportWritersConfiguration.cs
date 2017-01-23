@@ -6,17 +6,17 @@ using LightBDD.Reporting.Formatters;
 
 namespace LightBDD.Reporting.Configuration
 {
-    public class SummaryWritersConfiguration : IEnumerable<ISummaryWriter>, IFeatureConfiguration
+    public class ReportWritersConfiguration : IEnumerable<IReportWriter>, IFeatureConfiguration
     {
-        private readonly List<ISummaryWriter> _summaryWriters = new List<ISummaryWriter>();
+        private readonly List<IReportWriter> _summaryWriters = new List<IReportWriter>();
 
-        public SummaryWritersConfiguration()
+        public ReportWritersConfiguration()
         {
-            Add(new SummaryFileWriter(new XmlResultFormatter(), "~\\Reports\\FeaturesSummary.xml"));
-            Add(new SummaryFileWriter(new HtmlResultFormatter(), "~\\Reports\\FeaturesSummary.html"));
+            Add(new ReportFileWriter(new XmlReportFormatter(), "~\\Reports\\FeaturesReport.xml"));
+            Add(new ReportFileWriter(new HtmlReportFormatter(), "~\\Reports\\FeaturesReport.html"));
         }
 
-        public SummaryWritersConfiguration Add(ISummaryWriter writer)
+        public ReportWritersConfiguration Add(IReportWriter writer)
         {
             if (writer == null)
                 throw new ArgumentNullException(nameof(writer));
@@ -24,19 +24,19 @@ namespace LightBDD.Reporting.Configuration
             return this;
         }
 
-        public SummaryWritersConfiguration Remove(ISummaryWriter writer)
+        public ReportWritersConfiguration Remove(IReportWriter writer)
         {
             _summaryWriters.Remove(writer);
             return this;
         }
 
-        public SummaryWritersConfiguration Clear()
+        public ReportWritersConfiguration Clear()
         {
             _summaryWriters.Clear();
             return this;
         }
 
-        public IEnumerator<ISummaryWriter> GetEnumerator()
+        public IEnumerator<IReportWriter> GetEnumerator()
         {
             return _summaryWriters.GetEnumerator();
         }
