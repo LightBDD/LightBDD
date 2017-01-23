@@ -13,7 +13,7 @@ Define-Step -Name 'Update version' -Target 'all,build' -Body {
         Set-Content $file -Value $content -Encoding UTF8
     }
 
-	$version = (Get-Content 'make\current_version').Trim()
+    $version = (Get-Content 'make\current_version').Trim()
     Write-ShortStatus "Updating version to $version..."
 
     Replace-InFile 'AssemblyVersion.cs' $version 'Version("%")'
@@ -23,42 +23,38 @@ Define-Step -Name 'Update version' -Target 'all,build' -Body {
 }
 
 Define-Step -Name 'Build' -Target 'all,build' -Body {
-	call "${env:ProgramFiles(x86)}\MSBuild\12.0\Bin\msbuild.exe" LightBDD.sln /t:"Clean,Build" /p:Configuration=Release /m /verbosity:m /nologo /p:TreatWarningsAsErrors=true
+    call "msbuild.exe" LightBDD.sln /t:"Build" /p:Configuration=Release /m /verbosity:n /nologo /p:TreatWarningsAsErrors=true /nr:false
 }
 
 Define-Step -Name 'Tests' -Target 'all,test' -Body {
-	. (require 'psmake.mod.testing')
+    . (require 'psmake.mod.testing')
 
-	$tests = @()
-	$tests += Define-NUnitTests -GroupName 'LightBDD core' -TestAssembly "LightBDD.UnitTests\bin\Release\LightBDD.UnitTests.dll"
-	$tests += Define-NUnitTests -GroupName 'LightBDD NUnit' -TestAssembly "LightBDD.NUnit.UnitTests\bin\Release\LightBDD.NUnit.UnitTests.dll"
-	$tests += Define-MbUnitTests -GroupName 'LightBDD MbUnit' -TestAssembly "LightBDD.MbUnit.UnitTests\bin\Release\LightBDD.MbUnit.UnitTests.dll"    
-	$tests += Define-MsTests -GroupName 'LightBDD MsTest' -TestAssembly "LightBDD.MsTest.UnitTests\bin\Release\LightBDD.MsTest.UnitTests.dll"
-	$tests += Define-XUnitTests -GroupName 'LightBDD XUnit' -TestAssembly "LightBDD.XUnit.UnitTests\bin\Release\LightBDD.XUnit.UnitTests.dll"
-	$tests += Define-NUnitTests -GroupName 'LightBDD ConfigurationTests' -TestAssembly "LightBDD.ConfigurationTests\bin\Release\LightBDD.ConfigurationTests.dll"
-	$tests += Define-NUnitTests -GroupName 'LightBDD Acceptance' -TestAssembly "LightBDD.AcceptanceTests\bin\Release\LightBDD.AcceptanceTests.dll"
+    $tests = Define-DotnetTests -TestProject "*.UnitTests"
+    $tests += Define-DotnetTests -TestProject "*.AcceptanceTests"
 
-	$tests | Run-Tests -EraseReportDirectory -Cover -CodeFilter '+[LightBDD*]* -[*Tests*]*' -TestFilter '*Tests.dll' | Generate-CoverageSummary | Check-AcceptableCoverage -AcceptableCoverage 95
+    $tests | Run-Tests -EraseReportDirectory -Cover -CodeFilter '+[LightBDD*]* -[*Tests*]*' -TestFilter '*Tests.dll' `
+        | Generate-CoverageSummary | Check-AcceptableCoverage -AcceptableCoverage 95
 }
 
+<#
 Define-Step -Name 'Packaging' -Target 'all,pack' -Body {
-	Remove-Item 'output' -Force -Recurse -ErrorAction SilentlyContinue | Out-Null
-	mkdir 'output' | Out-Null
-	.nuget\NuGet.exe pack -sym LightBDD\LightBDD.csproj -OutputDirectory 'output' -Prop Configuration=Release
-	.nuget\NuGet.exe pack -sym LightBDD.NUnit\LightBDD.NUnit.csproj -OutputDirectory 'output' -Prop Configuration=Release
-	.nuget\NuGet.exe pack -sym LightBDD.MbUnit\LightBDD.MbUnit.csproj -OutputDirectory 'output' -Prop Configuration=Release
-	.nuget\NuGet.exe pack -sym LightBDD.MsTest\LightBDD.MsTest.csproj -OutputDirectory 'output' -Prop Configuration=Release
-	.nuget\NuGet.exe pack -sym LightBDD.XUnit\LightBDD.XUnit.csproj -OutputDirectory 'output' -Prop Configuration=Release
-	.nuget\NuGet.exe pack LightBDD.nuspec -OutputDirectory 'output'
+    Remove-Item 'output' -Force -Recurse -ErrorAction SilentlyContinue | Out-Null
+    mkdir 'output' | Out-Null
+    .nuget\NuGet.exe pack -sym LightBDD\LightBDD.csproj -OutputDirectory 'output' -Prop Configuration=Release
+    .nuget\NuGet.exe pack -sym LightBDD.NUnit\LightBDD.NUnit.csproj -OutputDirectory 'output' -Prop Configuration=Release
+    .nuget\NuGet.exe pack -sym LightBDD.MbUnit\LightBDD.MbUnit.csproj -OutputDirectory 'output' -Prop Configuration=Release
+    .nuget\NuGet.exe pack -sym LightBDD.MsTest\LightBDD.MsTest.csproj -OutputDirectory 'output' -Prop Configuration=Release
+    .nuget\NuGet.exe pack -sym LightBDD.XUnit\LightBDD.XUnit.csproj -OutputDirectory 'output' -Prop Configuration=Release
+    .nuget\NuGet.exe pack LightBDD.nuspec -OutputDirectory 'output'
 }
 
 Define-Step -Name 'Prepare templates' -Target 'all,pack' -Body {
-	function ZipDirectory ($zipfilename, $sourcedir)
-	{
-	   Add-Type -Assembly System.IO.Compression.FileSystem
-	   $compressionLevel = [System.IO.Compression.CompressionLevel]::Optimal
-	   [System.IO.Compression.ZipFile]::CreateFromDirectory($sourcedir, $zipfilename, $compressionLevel, $false)
-	}
+    function ZipDirectory ($zipfilename, $sourcedir)
+    {
+       Add-Type -Assembly System.IO.Compression.FileSystem
+       $compressionLevel = [System.IO.Compression.CompressionLevel]::Optimal
+       [System.IO.Compression.ZipFile]::CreateFromDirectory($sourcedir, $zipfilename, $compressionLevel, $false)
+    }
 
     function Copy-Packages ($targetDirectory, $vstemplate) 
     {
@@ -84,10 +80,10 @@ Define-Step -Name 'Prepare templates' -Target 'all,pack' -Body {
     }
 
     Remove-Item -Force -Recurse 'Templates\*\*'
-	Remove-Item -Force -Recurse 'Templates_input' -ErrorAction SilentlyContinue | Out-Null
+    Remove-Item -Force -Recurse 'Templates_input' -ErrorAction SilentlyContinue | Out-Null
     Copy-Item 'TemplatesSource' -Recurse -Destination 'Templates_input' | Out-Null    
 
-	Get-ChildItem '.\Templates_input' -Recurse  -Filter '*.vstemplate' | %{
+    Get-ChildItem '.\Templates_input' -Recurse  -Filter '*.vstemplate' | %{
         $srcDirectory = $_.Directory.FullName
         $packageName = $_.Directory.Name
         $dstDirectory = $_.Directory.Parent.FullName.Replace('\Templates_input\','\Templates\')
@@ -104,6 +100,6 @@ Define-Step -Name 'Prepare templates' -Target 'all,pack' -Body {
 }
 
 Define-Step -Name 'Build VSIX package' -Target 'all,pack' -Body {
-	call "${env:ProgramFiles(x86)}\MSBuild\12.0\Bin\msbuild.exe" LightBDD.VSPackage.sln /t:"Clean,Build" /p:Configuration=Release /m /verbosity:m /nologo /p:TreatWarningsAsErrors=true
+    call "${env:ProgramFiles(x86)}\MSBuild\12.0\Bin\msbuild.exe" LightBDD.VSPackage.sln /t:"Clean,Build" /p:Configuration=Release /m /verbosity:m /nologo /p:TreatWarningsAsErrors=true
     copy-item 'LightBDD.VSPackage\bin\Release\LightBDD.VSPackage.vsix' -Destination 'output'
-}
+}#>
