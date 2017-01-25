@@ -1,0 +1,33 @@
+﻿{
+  "version": "2.0.0.0", //build_ver
+  "buildOptions": {
+    "compile": [ "**/*.cs", "../../AssemblyVersion.cs" ]
+  },
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": [ "dotnet" ],
+      "dependencies": { "NETStandard.Library": "1.6.0" }
+    },
+    "net46": {
+      "frameworkAssemblies": {
+        "System.Reflection": "4.0.10.0",
+        "System.Runtime": "4.0.20.0"
+      }
+    }
+  },
+  "dependencies": {
+    "LightBDD.Core": {
+      "target": "project"
+    },
+    "LightBDD.Reporting": {
+      "target": "project"
+    },
+    "LightBDD.Formatting": {
+      "target": "project"
+    },
+    "LightBDD.Notification": {
+      "target": "project"
+    },
+    "MSTest.TestFramework": "1.0.8-rc2"
+  }
+}

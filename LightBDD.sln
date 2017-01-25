@@ -20,65 +20,65 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		XmlResultFormatterSchema.xsd = XmlResultFormatterSchema.xsd
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Core", "LightBDD.Core\LightBDD.Core.xproj", "{1404165C-13B2-43E2-A78D-6B271EB62FC8}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Core", "src\LightBDD.Core\LightBDD.Core.xproj", "{1404165C-13B2-43E2-A78D-6B271EB62FC8}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Runners.Contextual", "LightBDD.Runners.Contextual\LightBDD.Runners.Contextual.xproj", "{FF01846F-F262-47C4-81E1-EF770859FB39}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Runners.Contextual", "src\LightBDD.Runners.Contextual\LightBDD.Runners.Contextual.xproj", "{FF01846F-F262-47C4-81E1-EF770859FB39}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Scenarios.Basic", "LightBDD.Scenarios.Basic\LightBDD.Scenarios.Basic.xproj", "{B900D37E-5355-46B0-BF13-F97D3A4C2967}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Scenarios.Basic", "src\LightBDD.Scenarios.Basic\LightBDD.Scenarios.Basic.xproj", "{B900D37E-5355-46B0-BF13-F97D3A4C2967}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Scenarios.Extended", "LightBDD.Scenarios.Extended\LightBDD.Scenarios.Extended.xproj", "{FCC96344-EC54-4BA3-84A9-25B3C7940163}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Scenarios.Extended", "src\LightBDD.Scenarios.Extended\LightBDD.Scenarios.Extended.xproj", "{FCC96344-EC54-4BA3-84A9-25B3C7940163}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Reporting", "LightBDD.Reporting\LightBDD.Reporting.xproj", "{3CBFC670-11D5-4BBE-9E12-1EBB4BE78186}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Reporting", "src\LightBDD.Reporting\LightBDD.Reporting.xproj", "{3CBFC670-11D5-4BBE-9E12-1EBB4BE78186}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Commenting", "LightBDD.Commenting\LightBDD.Commenting.xproj", "{162E2F53-1043-4A9A-A6CE-EA487B2C57E4}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Commenting", "src\LightBDD.Commenting\LightBDD.Commenting.xproj", "{162E2F53-1043-4A9A-A6CE-EA487B2C57E4}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.ExecutionContext", "LightBDD.ExecutionContext\LightBDD.ExecutionContext.xproj", "{A7217957-FC67-473A-A7F0-18509262774F}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.ExecutionContext", "src\LightBDD.ExecutionContext\LightBDD.ExecutionContext.xproj", "{A7217957-FC67-473A-A7F0-18509262774F}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Integration.MsTest", "LightBDD.Integration.MsTest\LightBDD.Integration.MsTest.xproj", "{CBD1B3D9-4B77-4B21-9C3A-7E3A9FB3D780}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Integration.MsTest", "src\LightBDD.Integration.MsTest\LightBDD.Integration.MsTest.xproj", "{CBD1B3D9-4B77-4B21-9C3A-7E3A9FB3D780}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Integration.NUnit3", "LightBDD.Integration.NUnit3\LightBDD.Integration.NUnit3.xproj", "{EE206E44-4393-45E5-8C8F-331348128E09}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Integration.NUnit3", "src\LightBDD.Integration.NUnit3\LightBDD.Integration.NUnit3.xproj", "{EE206E44-4393-45E5-8C8F-331348128E09}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Integration.XUnit2", "LightBDD.Integration.XUnit2\LightBDD.Integration.XUnit2.xproj", "{E270ECD0-B309-4CF5-AF1A-67A7A2F44C65}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Integration.XUnit2", "src\LightBDD.Integration.XUnit2\LightBDD.Integration.XUnit2.xproj", "{E270ECD0-B309-4CF5-AF1A-67A7A2F44C65}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A7491D1D-7E5B-4021-8105-4098683807EB}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Core.UnitTests", "LightBDD.Core.UnitTests\LightBDD.Core.UnitTests.xproj", "{08063D55-3F5E-4CA0-978E-00C6699A3011}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Core.UnitTests", "test\LightBDD.Core.UnitTests\LightBDD.Core.UnitTests.xproj", "{08063D55-3F5E-4CA0-978E-00C6699A3011}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.UnitTests.Helpers", "LightBDD.UnitTests.Helpers\LightBDD.UnitTests.Helpers.xproj", "{43976AB8-60F1-4E2B-855C-0425AC0D053A}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.UnitTests.Helpers", "test\LightBDD.UnitTests.Helpers\LightBDD.UnitTests.Helpers.xproj", "{43976AB8-60F1-4E2B-855C-0425AC0D053A}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Integration.NUnit3.UnitTests", "LightBDD.Integration.NUnit3.UnitTests\LightBDD.Integration.NUnit3.UnitTests.xproj", "{E8BDD57E-BAF1-49BB-AE45-21C79D87DC22}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Integration.NUnit3.UnitTests", "test\LightBDD.Integration.NUnit3.UnitTests\LightBDD.Integration.NUnit3.UnitTests.xproj", "{E8BDD57E-BAF1-49BB-AE45-21C79D87DC22}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Integration.XUnit2.UnitTests", "LightBDD.Integration.XUnit2.UnitTests\LightBDD.Integration.XUnit2.UnitTests.xproj", "{B3ECF8C7-51A8-4016-8C72-99B658A3F8B0}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Integration.XUnit2.UnitTests", "test\LightBDD.Integration.XUnit2.UnitTests\LightBDD.Integration.XUnit2.UnitTests.xproj", "{B3ECF8C7-51A8-4016-8C72-99B658A3F8B0}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Integration.MsTest.UnitTests", "LightBDD.Integration.MsTest.UnitTests\LightBDD.Integration.MsTest.UnitTests.xproj", "{1536CA9A-850D-46D6-B931-87F8AEF62021}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Integration.MsTest.UnitTests", "test\LightBDD.Integration.MsTest.UnitTests\LightBDD.Integration.MsTest.UnitTests.xproj", "{1536CA9A-850D-46D6-B931-87F8AEF62021}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Runners.Contextual.UnitTests", "LightBDD.Runners.Contextual.UnitTests\LightBDD.Runners.Contextual.UnitTests.xproj", "{59B10E6E-11A1-4F38-91BF-DA9E0A51FAB3}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Runners.Contextual.UnitTests", "test\LightBDD.Runners.Contextual.UnitTests\LightBDD.Runners.Contextual.UnitTests.xproj", "{59B10E6E-11A1-4F38-91BF-DA9E0A51FAB3}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Scenarios.Extended.UnitTests", "LightBDD.Scenarios.Extended.UnitTests\LightBDD.Scenarios.Extended.UnitTests.xproj", "{C7741B4C-5909-47FB-81AC-DE98FD9E1BA8}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Scenarios.Extended.UnitTests", "test\LightBDD.Scenarios.Extended.UnitTests\LightBDD.Scenarios.Extended.UnitTests.xproj", "{C7741B4C-5909-47FB-81AC-DE98FD9E1BA8}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Scenarios.Basic.UnitTests", "LightBDD.Scenarios.Basic.UnitTests\LightBDD.Scenarios.Basic.UnitTests.xproj", "{EC2EBBC3-CF0E-4D00-B65C-C57DDF9EFEE5}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Scenarios.Basic.UnitTests", "test\LightBDD.Scenarios.Basic.UnitTests\LightBDD.Scenarios.Basic.UnitTests.xproj", "{EC2EBBC3-CF0E-4D00-B65C-C57DDF9EFEE5}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Reporting.UnitTests", "LightBDD.Reporting.UnitTests\LightBDD.Reporting.UnitTests.xproj", "{BBD59A28-DF7C-455A-BEDD-7EAE6D9CDC6D}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Reporting.UnitTests", "test\LightBDD.Reporting.UnitTests\LightBDD.Reporting.UnitTests.xproj", "{BBD59A28-DF7C-455A-BEDD-7EAE6D9CDC6D}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.AcceptanceTests", "LightBDD.AcceptanceTests\LightBDD.AcceptanceTests.xproj", "{17CF2456-692D-4D8D-996B-59BD067E9175}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.AcceptanceTests", "test\LightBDD.AcceptanceTests\LightBDD.AcceptanceTests.xproj", "{17CF2456-692D-4D8D-996B-59BD067E9175}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{731BA391-CF84-4BA6-8A44-8B3B85D6F79E}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Example", "LightBDD.Example\LightBDD.Example.xproj", "{F69FD39E-F710-4C37-A1E0-84B02B5C64CB}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Example", "examples\LightBDD.Example\LightBDD.Example.xproj", "{F69FD39E-F710-4C37-A1E0-84B02B5C64CB}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Example.AcceptanceTests.MsTest", "LightBDD.Example.AcceptanceTests.MsTest\LightBDD.Example.AcceptanceTests.MsTest.xproj", "{0617D510-15E8-4665-B4FF-A07CD38E5F25}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Example.AcceptanceTests.MsTest", "examples\LightBDD.Example.AcceptanceTests.MsTest\LightBDD.Example.AcceptanceTests.MsTest.xproj", "{0617D510-15E8-4665-B4FF-A07CD38E5F25}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Example.AcceptanceTests.NUnit3", "LightBDD.Example.AcceptanceTests.NUnit3\LightBDD.Example.AcceptanceTests.NUnit3.xproj", "{1EADD5AD-ECC1-4755-8DAF-C3B747B7F385}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Example.AcceptanceTests.NUnit3", "examples\LightBDD.Example.AcceptanceTests.NUnit3\LightBDD.Example.AcceptanceTests.NUnit3.xproj", "{1EADD5AD-ECC1-4755-8DAF-C3B747B7F385}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Example.AcceptanceTests.XUnit2", "LightBDD.Example.AcceptanceTests.XUnit2\LightBDD.Example.AcceptanceTests.XUnit2.xproj", "{7B0B7668-FC01-417F-AB48-6B0C00976EB8}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Example.AcceptanceTests.XUnit2", "examples\LightBDD.Example.AcceptanceTests.XUnit2\LightBDD.Example.AcceptanceTests.XUnit2.xproj", "{7B0B7668-FC01-417F-AB48-6B0C00976EB8}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Commenting.UnitTests", "LightBDD.Commenting.UnitTests\LightBDD.Commenting.UnitTests.xproj", "{197DEF24-BC20-4DCE-B339-08516CE3765A}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Commenting.UnitTests", "test\LightBDD.Commenting.UnitTests\LightBDD.Commenting.UnitTests.xproj", "{197DEF24-BC20-4DCE-B339-08516CE3765A}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.ExecutionContext.UnitTests", "LightBDD.ExecutionContext.UnitTests\LightBDD.ExecutionContext.UnitTests.xproj", "{A9244D66-F38A-465F-B2A3-5BECEE94440C}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.ExecutionContext.UnitTests", "test\LightBDD.ExecutionContext.UnitTests\LightBDD.ExecutionContext.UnitTests.xproj", "{A9244D66-F38A-465F-B2A3-5BECEE94440C}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Formatting", "LightBDD.Formatting\LightBDD.Formatting.xproj", "{7E16DFCF-1085-4A8B-862C-4B59A17F9D27}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Formatting", "src\LightBDD.Formatting\LightBDD.Formatting.xproj", "{7E16DFCF-1085-4A8B-862C-4B59A17F9D27}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Notification", "LightBDD.Notification\LightBDD.Notification.xproj", "{51867364-BEB5-41AC-82A4-22EE8885E55A}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Notification", "src\LightBDD.Notification\LightBDD.Notification.xproj", "{51867364-BEB5-41AC-82A4-22EE8885E55A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,18 @@
+﻿{
+  "version": "2.0.0.0", //build_ver
+  "buildOptions": {
+    "compile": [ "**/*.cs", "../../AssemblyVersion.cs" ]
+  },
+  "frameworks": {
+    "netstandard1.3": {
+      "dependencies": { "NETStandard.Library": "1.6.0" }
+    },
+    "net46": {
+    }
+  },
+  "dependencies": {
+    "LightBDD.ExecutionContext": {
+      "target": "project"
+    }
+  }
+}

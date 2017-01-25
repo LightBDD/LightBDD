@@ -1,0 +1,34 @@
+﻿{
+  "version": "2.0.0.0", //build_ver
+  "buildOptions": {
+    "compile": [ "**/*.cs", "../../AssemblyVersion.cs" ]
+  },
+  "frameworks": {
+    "netstandard1.3": {
+      "dependencies": { "NETStandard.Library": "1.6.0" },
+      "imports": [ "dotnet", "portable-net45+win8+wp8+wpa81" ]
+    },
+    "net46": {
+      "frameworkAssemblies": {
+        "System.Reflection": "4.0.10.0",
+        "System.Runtime": "4.0.20.0",
+        "System.Threading.Tasks": "4.0.10.0"
+      }
+    }
+  },
+  "dependencies": {
+    "LightBDD.Core": {
+      "target": "project"
+    },
+    "LightBDD.Reporting": {
+      "target": "project"
+    },
+    "LightBDD.Formatting": {
+      "target": "project"
+    },
+    "LightBDD.Notification": {
+      "target": "project"
+    },
+    "xunit": "2.1.0"
+  }
+}

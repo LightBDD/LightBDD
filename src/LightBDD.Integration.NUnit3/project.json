@@ -1,0 +1,30 @@
+﻿{
+  "version": "2.0.0.0", //build_ver
+  "buildOptions": {
+    "compile": [ "**/*.cs", "../../AssemblyVersion.cs" ]
+  },
+  "frameworks": {
+    "netstandard1.6": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.0"
+      }
+    },
+    "net46": {
+    }
+  },
+  "dependencies": {
+    "LightBDD.Core": {
+      "target": "project"
+    },
+    "LightBDD.Reporting": {
+      "target": "project"
+    },
+    "LightBDD.Formatting": {
+      "target": "project"
+    },
+    "LightBDD.Notification": {
+      "target": "project"
+    },
+    "NUnit": "3.6.0"
+  }
+}

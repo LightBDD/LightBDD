@@ -1,0 +1,27 @@
+﻿{
+  "version": "2.0.0.0", //build_ver
+  "testRunner": "NUnit",
+  "frameworks": {
+    "net46": {
+      "frameworkAssemblies": {
+        "System.Reflection": "4.0.10.0"
+      }
+    }
+  },
+  "dependencies": {
+    "LightBDD.Core": {
+      "target": "project"
+    },
+    "NUnit": "3.6.0",
+    "dotnet-test-nunit": "3.4.0-beta-3",
+    "RandomTestValues": "2.0.0",
+    "Moq": "4.6.38-alpha",
+    "LightBDD.Reporting": {
+      "target": "project"
+    },
+    "LightBDD.UnitTests.Helpers": {
+      "target": "project"
+    },
+    "HtmlAgilityPack.NetCore": "1.5.0.1"
+  }
+}

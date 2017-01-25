@@ -16,14 +16,14 @@ Define-Step -Name 'Update version' -Target 'all,build' -Body {
     $version = (Get-Content 'make\current_version').Trim()
     Write-ShortStatus "Updating version to $version..."
 
+    gci -Filter 'project.json' -Recurse | %{ Replace-InFile $_.fullname $version '"version": "%", //build_ver' }
     Replace-InFile 'AssemblyVersion.cs' $version 'Version("%")'
-    Replace-InFile 'LightBDD.nuspec' $version '<version>%</version>','<dependency id="LightBDD.NUnit" version="%" />'
     Replace-InFile 'LightBDD.VSPackage\source.extension.vsixmanifest' $version 'Identity Id="d6382c7a-fe20-47e5-b4e1-4d798cef97f1" Version="%"'
     
 }
 
 Define-Step -Name 'Build' -Target 'all,build' -Body {
-	call dotnet restore
+    call dotnet restore
     call "msbuild.exe" LightBDD.sln /t:"Build" /p:Configuration=Release /m /verbosity:n /nologo /p:TreatWarningsAsErrors=true /nr:false
 }
 
@@ -34,21 +34,17 @@ Define-Step -Name 'Tests' -Target 'all,test' -Body {
     $tests += Define-DotnetTests -TestProject "*.AcceptanceTests"
 
     $tests | Run-Tests -EraseReportDirectory -Cover -CodeFilter '+[LightBDD*]* -[*Tests*]*' -TestFilter '*Tests.dll' `
-        | Generate-CoverageSummary | Check-AcceptableCoverage -AcceptableCoverage 95
+        | Generate-CoverageSummary | Check-AcceptableCoverage -AcceptableCoverage 90
 }
 
-<#
+
 Define-Step -Name 'Packaging' -Target 'all,pack' -Body {
     Remove-Item 'output' -Force -Recurse -ErrorAction SilentlyContinue | Out-Null
     mkdir 'output' | Out-Null
-    .nuget\NuGet.exe pack -sym LightBDD\LightBDD.csproj -OutputDirectory 'output' -Prop Configuration=Release
-    .nuget\NuGet.exe pack -sym LightBDD.NUnit\LightBDD.NUnit.csproj -OutputDirectory 'output' -Prop Configuration=Release
-    .nuget\NuGet.exe pack -sym LightBDD.MbUnit\LightBDD.MbUnit.csproj -OutputDirectory 'output' -Prop Configuration=Release
-    .nuget\NuGet.exe pack -sym LightBDD.MsTest\LightBDD.MsTest.csproj -OutputDirectory 'output' -Prop Configuration=Release
-    .nuget\NuGet.exe pack -sym LightBDD.XUnit\LightBDD.XUnit.csproj -OutputDirectory 'output' -Prop Configuration=Release
-    .nuget\NuGet.exe pack LightBDD.nuspec -OutputDirectory 'output'
-}
 
+    gci -Path "src" -Filter 'project.json' -Recurse | %{ call dotnet pack $_.fullname --output 'output' --no-build }
+}
+<#
 Define-Step -Name 'Prepare templates' -Target 'all,pack' -Body {
     function ZipDirectory ($zipfilename, $sourcedir)
     {
