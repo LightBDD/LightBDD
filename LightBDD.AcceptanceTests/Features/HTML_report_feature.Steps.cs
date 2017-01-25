@@ -30,7 +30,7 @@ namespace LightBDD.AcceptanceTests.Features
         public void ScenarioSetUp()
         {
             _features = null;
-            _htmlFileName = Path.GetFullPath(Guid.NewGuid() + ".html");
+            _htmlFileName = Path.GetFullPath(AppContext.BaseDirectory + "\\" + Guid.NewGuid() + ".html");
             _resultBuilder = new ResultBuilder();
         }
 
