@@ -14,7 +14,7 @@ namespace LightBDD.Core.UnitTests.Formatting.Parameters
             var attribute = new FormatCollectionAttribute();
             var collection = new object[] { 5, 55.5, new DateTime(2016, 05, 14) };
             Assert.That(attribute.Format(CultureInfo.InvariantCulture, collection), Is.EqualTo("5, 55.5, 05/14/2016 00:00:00"));
-            Assert.That(attribute.Format(new CultureInfo("PL"), collection), Is.EqualTo("5, 55,5, 14.05.2016 00:00:00"));
+            Assert.That(attribute.Format(new CultureInfo("PL"), collection), Is.EqualTo("5, 55,5, 2016-05-14 00:00:00"));
         }
 
         [Test]
@@ -23,7 +23,7 @@ namespace LightBDD.Core.UnitTests.Formatting.Parameters
             var attribute = new FormatCollectionAttribute("|", "<{0}>");
             var collection = new object[] { 5, 55.5, new DateTime(2016, 05, 14) };
             Assert.That(attribute.Format(CultureInfo.InvariantCulture, collection), Is.EqualTo("<5>|<55.5>|<05/14/2016 00:00:00>"));
-            Assert.That(attribute.Format(new CultureInfo("PL"), collection), Is.EqualTo("<5>|<55,5>|<14.05.2016 00:00:00>"));
+            Assert.That(attribute.Format(new CultureInfo("PL"), collection), Is.EqualTo("<5>|<55,5>|<2016-05-14 00:00:00>"));
         }
     }
 }

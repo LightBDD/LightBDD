@@ -15,8 +15,7 @@ namespace LightBDD.Reporting.UnitTests.Formatters
                     TestResults.CreateStepResult(ExecutionStatus.Passed)
                         .WithExecutionTime(_startDate.AddSeconds(2), new TimeSpan(0, 1, 1))
                         .WithStepNameDetails(1, "call step1 \"arg1\"", "step1 \"{0}\"", "call", "arg1")
-                        .WithComments(@"multiline
-comment", "comment 2"),
+                        .WithComments($"multiline{Environment.NewLine}comment", "comment 2"),
                     TestResults.CreateStepResult(2, "step2", ExecutionStatus.Ignored, _startDate.AddSeconds(3), new TimeSpan(0, 0, 0, 1, 100), "Not implemented yet")),
 
                 TestResults.CreateScenarioResult("name2", null, _startDate.AddSeconds(4), new TimeSpan(0, 0, 0, 2, 157), new[] { "categoryB", "categoryC" },
