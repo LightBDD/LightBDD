@@ -2,9 +2,19 @@
 
 namespace LightBDD.Core.Extensibility
 {
+    /// <summary>
+    /// IBddRunner extensions.
+    /// </summary>
     public static class BddRunnerExtensions
     {
-        public static ICoreBddRunner Integrate<T>(this IBddRunner<T> runner)
+        /// <summary>
+        /// Method allowing to retrieve the <see cref="ICoreBddRunner"/> instance allowing to define and execute scenarios.
+        /// This method is dedicated for projects extending LightBDD with user friendly API for running scenarios - it should not be used directly by regular LightBDD users.
+        /// </summary>
+        /// <typeparam name="TContext">Bdd runner context type.</typeparam>
+        /// <param name="runner">Bdd runner.</param>
+        /// <returns>Instance of <see cref="ICoreBddRunner"/>.</returns>
+        public static ICoreBddRunner Integrate<TContext>(this IBddRunner<TContext> runner)
         {
             if (runner == null)
                 throw new ArgumentNullException(nameof(runner));
