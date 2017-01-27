@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "2.0.0.0", //build_ver
   "buildOptions": {
     "compile": [ "**/*.cs", "../../AssemblyVersion.cs" ],
@@ -11,7 +11,8 @@
       "mappings": {
         "LightBDD/Reporting/Formatters/Html/lightbdd_small.ico": "../../logo/lightbdd_small.ico"
       }
-    }
+    },
+    "xmlDoc": true
   },
   "frameworks": {
     "netstandard1.3": {

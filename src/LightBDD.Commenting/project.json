@@ -1,7 +1,8 @@
-﻿{
+{
   "version": "2.0.0.0", //build_ver
   "buildOptions": {
-    "compile": [ "**/*.cs", "../../AssemblyVersion.cs" ]
+    "compile": [ "**/*.cs", "../../AssemblyVersion.cs" ],
+    "xmlDoc": true
   },
   "frameworks": {
     "netstandard1.3": {
