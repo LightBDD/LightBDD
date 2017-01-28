@@ -12,13 +12,20 @@ using LightBDD.Core.Metadata.Implementation;
 
 namespace LightBDD.Core.Extensibility
 {
+    /// <summary>
+    /// Metadata provider offering core implementation for providing feature, scenario and step metadata.
+    /// </summary>
     public abstract class CoreMetadataProvider : IMetadataProvider
     {
-        private readonly INameFormatter _nameFormatter;
-        private readonly ICultureInfoProvider _cultureInfoProvider;
         private readonly StepNameParser _stepNameParser;
         private readonly StepTypeProcessor _stepTypeProcessor;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="nameFormatter"><see cref="INameFormatter"/> object used to format names.</param>
+        /// <param name="stepTypeConfiguration"><see cref="StepTypeConfiguration"/> object used in providing step metadata.</param>
+        /// <param name="cultureInfoProvider"><see cref="ICultureInfoProvider"/> object used in providing step parameter formatters.</param>
         protected CoreMetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration, ICultureInfoProvider cultureInfoProvider)
         {
             if (nameFormatter == null)
@@ -28,31 +35,73 @@ namespace LightBDD.Core.Extensibility
             if (stepTypeConfiguration == null)
                 throw new ArgumentNullException(nameof(stepTypeConfiguration));
 
-            _nameFormatter = nameFormatter;
-            _cultureInfoProvider = cultureInfoProvider;
+            NameFormatter = nameFormatter;
+            CultureInfoProvider = cultureInfoProvider;
             _stepNameParser = new StepNameParser(nameFormatter);
             _stepTypeProcessor = new StepTypeProcessor(nameFormatter, stepTypeConfiguration);
         }
 
-        protected INameFormatter NameFormatter => _nameFormatter;
+        /// <summary>
+        /// Returns currently used <see cref="ICultureInfoProvider"/> instance.
+        /// </summary>
+        protected ICultureInfoProvider CultureInfoProvider { get; }
+        /// <summary>
+        /// Returns currently used <see cref="INameFormatter"/> instance.
+        /// </summary>
+        protected INameFormatter NameFormatter { get; }
 
+        /// <summary>
+        /// Provides <see cref="IFeatureInfo"/> object containing information about feature represented by <paramref name="featureType"/>.
+        /// 
+        /// The <see cref="IFeatureInfo.Name"/> is determined from the <paramref name="featureType"/> name.
+        /// The <see cref="IFeatureInfo.Labels"/> are determined from <see cref="LabelAttribute"/> attributes applied on <paramref name="featureType"/>.
+        /// The <see cref="IFeatureInfo.Description"/> is determined from <see cref="FeatureDescriptionAttribute"/> in first instance, then by <see cref="GetImplementationSpecificFeatureDescription"/>() method. The value may be <c>null</c>.
+        /// </summary>
+        /// <param name="featureType">Feature type.</param>
+        /// <returns><see cref="IFeatureInfo"/> object.</returns>
         public IFeatureInfo GetFeatureInfo(Type featureType)
         {
             return new FeatureInfo(GetFeatureName(featureType), GetFeatureLabels(featureType), GetFeatureDescription(featureType));
         }
 
+        /// <summary>
+        /// Provides currently executed scenario method.
+        /// </summary>
+        /// <returns><see cref="MethodBase"/> describing currently executed scenario method.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when called outside of scenario method.</exception>
         public abstract MethodBase CaptureCurrentScenarioMethod();
 
-        public virtual INameInfo GetScenarioName(MethodBase scenarioMethod)
+        /// <summary>
+        /// Provides <see cref="INameInfo"/> object containing information about scenario name represented by <paramref name="scenarioMethod"/>.
+        /// The name is based on provided method name.
+        /// The current implementation ignores scenario parameters, always constructing object with empty <see cref="INameInfo.Parameters"/> collection.
+        /// </summary>
+        /// <param name="scenarioMethod">Scenario method.</param>
+        /// <returns><see cref="INameInfo"/> object.</returns>
+        public INameInfo GetScenarioName(MethodBase scenarioMethod)
         {
-            return new NameInfo(_nameFormatter.FormatName(scenarioMethod.Name), Arrays<INameParameterInfo>.Empty());
+            return new NameInfo(NameFormatter.FormatName(scenarioMethod.Name), Arrays<INameParameterInfo>.Empty());
         }
 
-        public virtual string[] GetScenarioLabels(MethodBase scenarioMethod)
+        /// <summary>
+        /// Provides scenario labels for scenario represented by <paramref name="scenarioMethod"/> which are determined from <see cref="LabelAttribute"/> applied on the method.
+        /// </summary>
+        /// <param name="scenarioMethod">Scenario method.</param>
+        /// <returns>Scenario labels.</returns>
+        public string[] GetScenarioLabels(MethodBase scenarioMethod)
         {
             return ExtractAttributePropertyValues<LabelAttribute>(scenarioMethod, a => a.Label).OrderBy(l => l).ToArray();
         }
 
+        /// <summary>
+        /// Provides scenario categories for scenario represented by <paramref name="scenarioMethod"/>.
+        /// The categories are determined from <see cref="ScenarioCategoryAttribute"/> applied on <paramref name="scenarioMethod"/> and type declaring the method,
+        /// as well as from <see cref="GetImplementationSpecificScenarioCategories"/>() executed on <paramref name="scenarioMethod"/> and type declaring the method.
+        /// 
+        /// The categories specified on base classes will also be retrieved.
+        /// </summary>
+        /// <param name="scenarioMethod">Scenario method.</param>
+        /// <returns>Scenario categories.</returns>
         public string[] GetScenarioCategories(MethodBase scenarioMethod)
         {
             return ExtractAttributePropertyValues<ScenarioCategoryAttribute>(scenarioMethod, a => a.Name)
@@ -64,75 +113,126 @@ namespace LightBDD.Core.Extensibility
                 .ToArray();
         }
 
-        public IStepNameInfo GetStepName(StepDescriptor stepDescriptor, string lastStepTypeName)
+        /// <summary>
+        /// Provides <see cref="IStepNameInfo"/> object containing information about step name represented by <paramref name="stepDescriptor"/>.
+        /// The <paramref name="previousStepTypeName"/> represents the step type name of previous step.
+        /// </summary>
+        /// <param name="stepDescriptor">Step descriptor.</param>
+        /// <param name="previousStepTypeName">Step type name of previous step, or <c>null</c> if current step is first one.</param>
+        /// <returns><see cref="IStepNameInfo"/> object.</returns>
+        public IStepNameInfo GetStepName(StepDescriptor stepDescriptor, string previousStepTypeName)
         {
             var formattedStepName = _stepNameParser.GetStepNameFormat(stepDescriptor.RawName, stepDescriptor.Parameters);
             return new StepNameInfo(
-                _stepTypeProcessor.GetStepTypeName(stepDescriptor.PredefinedStepType, ref formattedStepName, lastStepTypeName),
+                _stepTypeProcessor.GetStepTypeName(stepDescriptor.PredefinedStepType, ref formattedStepName, previousStepTypeName),
                 formattedStepName,
                 stepDescriptor.Parameters.Select(p => NameParameterInfo.Unknown).ToArray());
         }
 
+        /// <summary>
+        /// Provides step parameter formatter function for provided <paramref name="parameterInfo"/>.
+        /// If <see cref="ParameterFormatterAttribute"/> is applied on <paramref name="parameterInfo"/>, it will be used to retrieve formatter function, otherwise the default one will be provided.
+        /// The returned formatter function uses <see cref="CultureInfoProvider"/> to format parameters.
+        /// </summary>
+        /// <param name="parameterInfo"><see cref="ParameterInfo"/> object describing step or scenario method parameter.</param>
+        /// <returns>Formatter function.</returns>
+        /// <exception cref="InvalidOperationException">Throws when more than one <see cref="ParameterFormatterAttribute"/> is applied on <paramref name="parameterInfo"/>.</exception>
         public Func<object, string> GetStepParameterFormatter(ParameterInfo parameterInfo)
         {
-            Func<object, string> defaultFormatter = value => string.Format(_cultureInfoProvider.GetCultureInfo(), "{0}", value);
+            Func<object, string> defaultFormatter = value => string.Format(CultureInfoProvider.GetCultureInfo(), "{0}", value);
             var formatters = parameterInfo.GetCustomAttributes(typeof(ParameterFormatterAttribute), true)
                .OfType<ParameterFormatterAttribute>().ToArray();
 
             if (formatters.Length > 1)
-                throw new InvalidOperationException(string.Format(
-                    "Parameter can contain only one attribute ParameterFormatterAttribute. Parameter: {0}, Detected attributes: {1}",
-                    parameterInfo.Name,
-                    string.Join(", ", formatters.Select(f => f.GetType().Name).OrderBy(n => n))));
+                throw new InvalidOperationException($"Parameter can contain only one attribute ParameterFormatterAttribute. Parameter: {parameterInfo.Name}, Detected attributes: {string.Join(", ", formatters.Select(f => f.GetType().Name).OrderBy(n => n))}");
 
             return formatters.Length == 1
-                ? value => formatters[0].Format(_cultureInfoProvider.GetCultureInfo(), value)
+                ? value => formatters[0].Format(CultureInfoProvider.GetCultureInfo(), value)
                 : defaultFormatter;
         }
-
-
-
+        /// <summary>
+        /// Returns implementation specific scenario categories or empty collection if no categories are provided.
+        /// </summary>
+        /// <param name="member">Scenario method or feature test class to analyze.</param>
+        /// <returns>Scenario categories or empty collection.</returns>
         protected abstract IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member);
 
-        protected virtual string GetFeatureDescription(Type featureType)
-        {
-            return ExtractAttributePropertyValue<FeatureDescriptionAttribute>(featureType.GetTypeInfo(), a => a.Description)
-                   ?? GetImplementationSpecificFeatureDescription(featureType);
-        }
-
+        /// <summary>
+        /// Returns implementation specific feature description or null if such is not provided.
+        /// </summary>
+        /// <param name="featureType">Feature type.</param>
+        /// <returns>Feature description or null.</returns>
         protected abstract string GetImplementationSpecificFeatureDescription(Type featureType);
 
         /// <summary>
-        /// Retrieves specified attribute property value.
+        /// Provides value of attribute of type <typeparamref name="TAttribute"/> applied on <paramref name="member"/> or default if attribute is not applied.
+        /// The attribute is searched in <paramref name="member"/> and it's ancestors.
         /// </summary>
+        /// <param name="member">Member to analyze for specified attribute.</param>
+        /// <param name="valueExtractor">Attribute value extraction method.</param>
+        /// <typeparam name="TAttribute">Type of attribute to extract.</typeparam>
+        /// <returns>Attribute value or default.</returns>
+        /// <exception cref="InvalidOperationException">Throws when attribute is applied more than once.</exception>
         protected static string ExtractAttributePropertyValue<TAttribute>(MemberInfo member, Func<TAttribute, string> valueExtractor) where TAttribute : Attribute
         {
             return ExtractAttributePropertyValues(member, valueExtractor).SingleOrDefault();
         }
 
         /// <summary>
-        /// Retrieves specified attribute property value for all attribute instances applied on given member.
+        /// Provides values of all attributes of type <typeparamref name="TAttribute"/> applied on <paramref name="member"/> or empty collection if none are applied.
+        /// The attribute is searched in <paramref name="member"/> and it's ancestors.
         /// </summary>
+        /// <param name="member">Member to analyze for specified attribute.</param>
+        /// <param name="valueExtractor">Attribute value extraction method.</param>
+        /// <typeparam name="TAttribute">Type of attribute to extract.</typeparam>
+        /// <returns>Values of all attributes or empty collection.</returns>
         protected static IEnumerable<string> ExtractAttributePropertyValues<TAttribute>(MemberInfo member, Func<TAttribute, string> valueExtractor) where TAttribute : Attribute
         {
             return ExtractAttributes<TAttribute>(member).Select(valueExtractor);
         }
+
         /// <summary>
-        /// Retrieves specified attributes applied on given member.
+        /// Provides all attributes of type <typeparamref name="TAttribute"/> applied on <paramref name="member"/> or empty collection if none are applied.
+        /// The attribute is searched in <paramref name="member"/> and it's ancestors.
         /// </summary>
+        /// <param name="member">Member to analyze for specified attribute.</param>
+        /// <typeparam name="TAttribute">Type of attribute to extract.</typeparam>
+        /// <returns>All attributes or empty collection.</returns>
         protected static IEnumerable<TAttribute> ExtractAttributes<TAttribute>(MemberInfo member) where TAttribute : Attribute
         {
             return member.GetCustomAttributes(typeof(TAttribute), true).OfType<TAttribute>();
         }
 
-        protected virtual string[] GetFeatureLabels(Type featureType)
+        /// <summary>
+        /// Provides labels from <see cref="LabelAttribute"/> attributes applied on <paramref name="featureType"/>, or empty array if none are present.
+        /// </summary>
+        /// <param name="featureType">Feature type.</param>
+        /// <returns>Array of labels or empty array if none are present.</returns>
+        protected string[] GetFeatureLabels(Type featureType)
         {
             return ExtractAttributePropertyValues<LabelAttribute>(featureType.GetTypeInfo(), a => a.Label).OrderBy(l => l).ToArray();
         }
 
-        protected virtual INameInfo GetFeatureName(Type featureType)
+        /// <summary>
+        /// Provides feature name which is determined from name of <paramref name="featureType"/>.
+        /// </summary>
+        /// <param name="featureType">Feature type.</param>
+        /// <returns>Feature name.</returns>
+        protected INameInfo GetFeatureName(Type featureType)
         {
-            return new NameInfo(_nameFormatter.FormatName(featureType.Name), Arrays<INameParameterInfo>.Empty());
+            return new NameInfo(NameFormatter.FormatName(featureType.Name), Arrays<INameParameterInfo>.Empty());
+        }
+
+        /// <summary>
+        /// Provides feature description which is determined from <see cref="FeatureDescriptionAttribute"/> in first instance, then by <see cref="GetImplementationSpecificFeatureDescription"/>() method. 
+        /// Returns description or <c>null</c> if none is present.
+        /// </summary>
+        /// <param name="featureType">Feature type.</param>
+        /// <returns>Feature description or <c>null</c>.</returns>
+        protected string GetFeatureDescription(Type featureType)
+        {
+            return ExtractAttributePropertyValue<FeatureDescriptionAttribute>(featureType.GetTypeInfo(), a => a.Description)
+                   ?? GetImplementationSpecificFeatureDescription(featureType);
         }
     }
 }

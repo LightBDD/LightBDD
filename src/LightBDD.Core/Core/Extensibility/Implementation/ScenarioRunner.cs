@@ -112,22 +112,22 @@ namespace LightBDD.Core.Extensibility.Implementation
         {
             var descriptors = _steps.ToArray();
             var totalStepsCount = descriptors.Length;
-            string lastStepTypeName = null;
+            string previousStepTypeName = null;
             var result = new RunnableStep[totalStepsCount];
 
             for (int i = 0; i < totalStepsCount; ++i)
             {
-                var step = ToRunnableStep(descriptors[i], i, totalStepsCount, lastStepTypeName);
+                var step = ToRunnableStep(descriptors[i], i, totalStepsCount, previousStepTypeName);
                 result[i] = step;
-                lastStepTypeName = step.Result.Info.Name.StepTypeName;
+                previousStepTypeName = step.Result.Info.Name.StepTypeName;
             }
 
             return result;
         }
 
-        private RunnableStep ToRunnableStep(StepDescriptor descriptor, int stepIndex, int totalStepsCount, string lastStepTypeName)
+        private RunnableStep ToRunnableStep(StepDescriptor descriptor, int stepIndex, int totalStepsCount, string previousStepTypeName)
         {
-            var stepInfo = new StepInfo(_metadataProvider.GetStepName(descriptor, lastStepTypeName), stepIndex + 1, totalStepsCount);
+            var stepInfo = new StepInfo(_metadataProvider.GetStepName(descriptor, previousStepTypeName), stepIndex + 1, totalStepsCount);
             var parameters = descriptor.Parameters.Select(p => new StepParameter(p, _metadataProvider.GetStepParameterFormatter(p.ParameterInfo))).ToArray();
             return new RunnableStep(stepInfo, descriptor.StepInvocation, parameters, _exceptionToStatusMapper, _progressNotifier);
         }
