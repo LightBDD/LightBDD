@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution;
+using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.UnitTests.Helpers;
@@ -70,7 +71,7 @@ namespace LightBDD.Core.UnitTests
 
         private IFeatureBddRunner CreateRunner(IExecutionExtensions extensions)
         {
-            return new TestableBddRunnerFactory(TestableIntegrationContextBuilder.Default().WithExecutionExtensions(extensions)).GetRunnerFor(GetType());
+            return new TestableFeatureBddRunnerFactory(TestableIntegrationContextBuilder.Default().WithExecutionExtensions(extensions)).GetRunnerFor(GetType());
         }
     }
 

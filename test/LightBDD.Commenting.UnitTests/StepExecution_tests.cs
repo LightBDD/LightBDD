@@ -2,6 +2,7 @@
 using System.Linq;
 using LightBDD.Commenting.Configuration;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Extensibility;
 using LightBDD.ExecutionContext.Configuration;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
@@ -14,7 +15,7 @@ namespace LightBDD.Commenting.UnitTests
         [Test]
         public void Comment_should_throw_exception_if_feature_is_not_enabled()
         {
-            var runner = new TestableBddRunnerFactory(
+            var runner = new TestableFeatureBddRunnerFactory(
                     TestableIntegrationContextBuilder.Default()
                     .WithExecutionExtensions(new ExecutionExtensionsConfiguration().EnableScenarioExecutionContext())
                 )
@@ -23,7 +24,7 @@ namespace LightBDD.Commenting.UnitTests
 
             var exception = Assert.Throws<InvalidOperationException>(() => runner.Test().TestScenario(TestStep.CreateAsync(Commented_step, "some comment")));
 
-            Assert.That(exception.Message, Is.EqualTo("Current task is not executing any scenario steps or commenting feature is not enabled in LightBddConfiguration. Ensure that cfg.ExecutionExtensionsConfiguration().EnableStepCommenting() is called during LightBDD initialization and commenting feature is called from task running scenario step."));
+            Assert.That(exception.Message, Is.EqualTo("Current task is not executing any scenario steps or commenting feature is not enabled in LightBddConfiguration. Ensure that configuration.ExecutionExtensionsConfiguration().EnableStepCommenting() is called during LightBDD initialization and commenting feature is called from task running scenario step."));
         }
 
         [Test]
@@ -69,7 +70,7 @@ namespace LightBDD.Commenting.UnitTests
             var context = TestableIntegrationContextBuilder.Default()
                 .WithExecutionExtensions(new ExecutionExtensionsConfiguration().EnableStepCommenting());
 
-            return new TestableBddRunnerFactory(context).GetRunnerFor(GetType());
+            return new TestableFeatureBddRunnerFactory(context).GetRunnerFor(GetType());
         }
     }
 }

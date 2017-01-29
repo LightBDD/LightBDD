@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using LightBDD.Core.Extensibility;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
@@ -19,7 +20,7 @@ namespace LightBDD.Core.UnitTests
         [SetUp]
         public void SetUp()
         {
-            _feature = TestableBddRunnerFactory.GetRunner(GetType());
+            _feature = TestableFeatureBddRunnerFactory.GetRunner(GetType());
             _runner = _feature.GetRunner(this);
         }
 

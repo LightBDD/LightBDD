@@ -4,15 +4,23 @@ using LightBDD.Core.Formatting;
 
 namespace LightBDD.Formatting.Configuration
 {
+    /// <summary>
+    /// Configuration class allowing to customize name formatting behavior.
+    /// </summary>
     public class NameFormatterConfiguration : IFeatureConfiguration
     {
-        public NameFormatterConfiguration()
-        {
-            Formatter = new DefaultNameFormatter();
-        }
+        /// <summary>
+        /// Returns formatter.
+        /// By default it is initialized with <see cref="DefaultNameFormatter"/> instance.
+        /// </summary>
+        public INameFormatter Formatter { get; private set; } = new DefaultNameFormatter();
 
-        public INameFormatter Formatter { get; private set; }
-
+        /// <summary>
+        /// Updates <see cref="Formatter"/> with new value.
+        /// </summary>
+        /// <param name="formatter">New formatter to set.</param>
+        /// <returns>Self.</returns>
+        /// <exception cref="ArgumentNullException">Throws when <paramref name="formatter"/> is null.</exception>
         public NameFormatterConfiguration UpdateFormatter(INameFormatter formatter)
         {
             if (formatter == null)

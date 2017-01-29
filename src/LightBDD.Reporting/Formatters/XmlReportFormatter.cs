@@ -8,10 +8,18 @@ using LightBDD.Core.Results;
 
 namespace LightBDD.Reporting.Formatters
 {
+    /// <summary>
+    /// Formats feature results as XML.
+    /// </summary>
     public class XmlReportFormatter : IReportFormatter
     {
         #region IReportFormatter Members
 
+        /// <summary>
+        /// Formats provided feature results and writes to the <paramref name="stream"/>.
+        /// </summary>
+        /// <param name="stream">Stream to write formatted results to.</param>
+        /// <param name="features">Feature results to format.</param>
         public void Format(Stream stream, params IFeatureResult[] features)
         {
             using (var writer = new StreamWriter(stream, new UTF8Encoding(false)))

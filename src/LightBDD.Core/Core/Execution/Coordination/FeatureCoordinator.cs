@@ -4,7 +4,7 @@ using LightBDD.Core.Extensibility;
 namespace LightBDD.Core.Execution.Coordination
 {
     /// <summary>
-    /// Feature coordinator singleton class holding <see cref="BddRunnerFactory"/> allowing to instantiate runners as well as <see cref="IFeatureAggregator"/> used for aggregate execution results on coordinator disposal.
+    /// Feature coordinator singleton class holding <see cref="FeatureBddRunnerFactory"/> allowing to instantiate runners as well as <see cref="IFeatureAggregator"/> used for aggregate execution results on coordinator disposal.
     /// </summary>
     public abstract class FeatureCoordinator : IDisposable
     {
@@ -17,7 +17,7 @@ namespace LightBDD.Core.Execution.Coordination
         /// <summary>
         /// Runner factory.
         /// </summary>
-        public BddRunnerFactory RunnerFactory { get; }
+        public FeatureBddRunnerFactory RunnerFactory { get; }
         /// <summary>
         /// Returns <c>true</c> if already disposed, otherwise <c>false</c>.
         /// </summary>
@@ -43,7 +43,7 @@ namespace LightBDD.Core.Execution.Coordination
         /// </summary>
         /// <param name="runnerFactory">Runner factory instance that would be used for instantiating runners.</param>
         /// <param name="featureAggregator">Feature aggregator instance used for aggregating feature results on coordinator disposal.</param>
-        protected FeatureCoordinator(BddRunnerFactory runnerFactory, IFeatureAggregator featureAggregator)
+        protected FeatureCoordinator(FeatureBddRunnerFactory runnerFactory, IFeatureAggregator featureAggregator)
         {
             _featureAggregator = featureAggregator;
             RunnerFactory = runnerFactory;

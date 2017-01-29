@@ -17,7 +17,7 @@ namespace LightBDD.Commenting.Implementation
                 var step = _step;
                 if (step != null)
                     return step;
-                throw new InvalidOperationException($"Current task is not executing any scenario steps or commenting feature is not enabled in {nameof(LightBddConfiguration)}. Ensure that cfg.{nameof(ConfigurationExtensions.ExecutionExtensionsConfiguration)}().{nameof(CommentingConfiguration.EnableStepCommenting)}() is called during LightBDD initialization and commenting feature is called from task running scenario step.");
+                throw new InvalidOperationException($"Current task is not executing any scenario steps or commenting feature is not enabled in {nameof(LightBddConfiguration)}. Ensure that configuration.{nameof(ConfigurationExtensions.ExecutionExtensionsConfiguration)}().{nameof(CommentingConfigurationExtensions.EnableStepCommenting)}() is called during LightBDD initialization and commenting feature is called from task running scenario step.");
             }
             set { _step = value; }
         }

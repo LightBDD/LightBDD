@@ -19,7 +19,7 @@ namespace LightBDD.Core.UnitTests
         [SetUp]
         public void SetUp()
         {
-            _feature = TestableBddRunnerFactory.GetRunner(GetType());
+            _feature = TestableFeatureBddRunnerFactory.GetRunner(GetType());
             _runner = _feature.GetRunner(this);
         }
 

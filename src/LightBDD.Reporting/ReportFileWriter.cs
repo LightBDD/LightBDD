@@ -10,14 +10,23 @@ namespace LightBDD.Reporting
     /// </summary>
     public class ReportFileWriter : IReportWriter
     {
+        /// <summary>
+        /// Returns configured formatter.
+        /// </summary>
         public IReportFormatter Formatter { get; }
+        /// <summary>
+        /// Returns configured output path.
+        /// </summary>
         public string OutputPath { get; }
+        /// <summary>
+        /// Returns output path resolved to a full path.
+        /// </summary>
         public string FullOutputPath { get; }
 
         /// <summary>
         /// Constructor allowing to create ReportFileWriter with associated result formatter and output path.
         /// </summary>
-        /// <param name="formatter">Result formatter.</param>
+        /// <param name="formatter">Report formatter.</param>
         /// <param name="outputPath">Output path.</param>
         public ReportFileWriter(IReportFormatter formatter, string outputPath)
         {

@@ -15,6 +15,11 @@ namespace LightBDD.Reporting.Formatters
     {
         #region IReportFormatter Members
 
+        /// <summary>
+        /// Formats provided feature results and writes to the <paramref name="stream"/>.
+        /// </summary>
+        /// <param name="stream">Stream to write formatted results to.</param>
+        /// <param name="features">Feature results to format.</param>
         public void Format(Stream stream, params IFeatureResult[] features)
         {
             using (var writer = new StreamWriter(stream))
@@ -56,7 +61,6 @@ namespace LightBDD.Reporting.Formatters
 
             foreach (var scenario in feature.GetScenarios())
                 FormatScenario(writer, scenario);
-
         }
 
         private static void FormatLabels(TextWriter writer, IEnumerable<string> labels)

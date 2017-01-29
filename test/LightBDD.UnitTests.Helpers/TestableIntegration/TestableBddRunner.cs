@@ -4,23 +4,23 @@ using LightBDD.Core.Notification;
 
 namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
-    public class TestableBddRunnerFactory : BddRunnerFactory
+    public class TestableFeatureBddRunnerFactory : FeatureBddRunnerFactory
     {
-        public TestableBddRunnerFactory() : this(TestableIntegrationContextBuilder.Default())
+        public TestableFeatureBddRunnerFactory() : this(TestableIntegrationContextBuilder.Default())
         {
         }
 
-        public TestableBddRunnerFactory(IFeatureProgressNotifier featureProgressNotifier, Func<object, IScenarioProgressNotifier> scenarioProgressNotifier)
+        public TestableFeatureBddRunnerFactory(IFeatureProgressNotifier featureProgressNotifier, Func<object, IScenarioProgressNotifier> scenarioProgressNotifier)
             : this(TestableIntegrationContextBuilder.Default().WithFeatureProgressNotifier(featureProgressNotifier).WithScenarioProgressNotifierProvider(scenarioProgressNotifier))
         {
         }
 
-        public TestableBddRunnerFactory(TestableIntegrationContextBuilder contextBuilder)
+        public TestableFeatureBddRunnerFactory(TestableIntegrationContextBuilder contextBuilder)
             : base(contextBuilder.Build()) { }
 
         public static IFeatureBddRunner GetRunner(Type featureType)
         {
-            return new TestableBddRunnerFactory().GetRunnerFor(featureType);
+            return new TestableFeatureBddRunnerFactory().GetRunnerFor(featureType);
         }
     }
 }

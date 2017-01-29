@@ -1,4 +1,5 @@
 ﻿using System;
+using LightBDD.Core.Extensibility;
 using LightBDD.Integration.XUnit2;
 
 namespace LightBDD

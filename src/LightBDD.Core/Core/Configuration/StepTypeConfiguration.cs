@@ -29,12 +29,12 @@ namespace LightBDD.Core.Configuration
 
         /// <summary>
         /// Current value of repeated step replacement that would be used to replace consecutive steps of the same type.
-        /// <seealso cref="StepTypeConfiguration()"/>
+        /// See also: <seealso cref="StepTypeConfiguration"/>.
         /// </summary>
         public string RepeatedStepReplacement { get; private set; }
         /// <summary>
         /// Current collection of predefined step types that would be used to recognize step type in the parsed step method name.
-        /// <seealso cref="StepTypeConfiguration()"/>
+        /// See also: <seealso cref="StepTypeConfiguration"/>.
         /// </summary>
         public IEnumerable<string> PredefinedStepTypes { get; private set; }
 

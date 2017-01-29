@@ -6,10 +6,10 @@ using LightBDD.Core.Execution.Implementation;
 namespace LightBDD.Core.Extensibility
 {
     /// <summary>
-    /// Abstract Bdd runner factory allowing to create <see cref="IFeatureBddRunner"/> instances and maintaining list of instantiated runners.
+    /// Abstract runner factory allowing to create <see cref="IFeatureBddRunner"/> instances and maintaining list of instantiated runners.
     /// This class should be used by projects integrating LightBDD with testing frameworks.
     /// </summary>
-    public abstract class BddRunnerFactory
+    public abstract class FeatureBddRunnerFactory
     {
         private readonly IIntegrationContext _integrationContext;
         private readonly ConcurrentDictionary<Type, IFeatureBddRunner> _runners = new ConcurrentDictionary<Type, IFeatureBddRunner>();
@@ -18,7 +18,7 @@ namespace LightBDD.Core.Extensibility
         /// Constructor instantiating factory with specified integration context.
         /// </summary>
         /// <param name="integrationContext">Integration context.</param>
-        protected BddRunnerFactory(IIntegrationContext integrationContext)
+        protected FeatureBddRunnerFactory(IIntegrationContext integrationContext)
         {
             _integrationContext = integrationContext;
         }

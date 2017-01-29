@@ -18,7 +18,7 @@ namespace LightBDD.Core.UnitTests
         [SetUp]
         public void SetUp()
         {
-            _runner = TestableBddRunnerFactory.GetRunner(GetType()).GetRunner(this);
+            _runner = TestableFeatureBddRunnerFactory.GetRunner(GetType()).GetRunner(this);
         }
 
         #endregion
@@ -57,7 +57,7 @@ namespace LightBDD.Core.UnitTests
         public void Integration_should_not_allow_running_asynchronous_tests_synchronously()
         {
             var ex = Assert.Throws<InvalidOperationException>(() => _runner.Test().TestScenarioPurelySync(TestStep.CreateAsync(() => { })));
-            Assert.That(ex.Message, Is.EqualTo("Only immediately returning steps can be run synchronously"));
+            Assert.That(ex.Message, Is.EqualTo("Only steps being completed upon return can be run synchronously (All steps have to return completed task)."));
         }
     }
 }

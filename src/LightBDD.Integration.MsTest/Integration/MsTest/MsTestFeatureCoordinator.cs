@@ -19,13 +19,13 @@ namespace LightBDD.Integration.MsTest
             return Instance;
         }
 
-        public MsTestFeatureCoordinator(BddRunnerFactory runnerFactory, IFeatureAggregator featureAggregator) : base(runnerFactory, featureAggregator)
+        public MsTestFeatureCoordinator(FeatureBddRunnerFactory runnerFactory, IFeatureAggregator featureAggregator) : base(runnerFactory, featureAggregator)
         {
         }
 
         internal static void InstallSelf(LightBddConfiguration configuration)
         {
-            Install(new MsTestFeatureCoordinator(new MsTestBddRunnerFactory(configuration), new FeatureReportGenerator(configuration.ReportWritersConfiguration().ToArray())));
+            Install(new MsTestFeatureCoordinator(new MsTestFeatureBddRunnerFactory(configuration), new FeatureReportGenerator(configuration.ReportWritersConfiguration().ToArray())));
         }
     }
 }

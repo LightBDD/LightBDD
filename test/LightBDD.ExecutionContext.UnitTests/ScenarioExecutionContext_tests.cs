@@ -83,10 +83,10 @@ namespace LightBDD.ExecutionContext.UnitTests
         [Test]
         public void ScenarioExecutionContext_should_throw_if_not_installed()
         {
-            var runner = TestableBddRunnerFactory.GetRunner(GetType()).GetRunner(this);
+            var runner = TestableFeatureBddRunnerFactory.GetRunner(GetType()).GetRunner(this);
             var exception = Assert.ThrowsAsync<InvalidOperationException>(() => RunScenarioAsync(runner));
 
-            Assert.That(exception.Message, Is.EqualTo("Current task is not executing any scenarios or ScenarioExecutionContext is not enabled in LightBddConfiguration. Ensure that cfg.ExecutionExtensionsConfiguration().EnableScenarioExecutionContext() is called during LightBDD initialization and operation accessing ScenarioExecutionContext is called from task running scenario."));
+            Assert.That(exception.Message, Is.EqualTo("Current task is not executing any scenarios or ScenarioExecutionContext is not enabled in LightBddConfiguration. Ensure that configuration.ExecutionExtensionsConfiguration().EnableScenarioExecutionContext() is called during LightBDD initialization and operation accessing ScenarioExecutionContext is called from task running scenario."));
         }
 
         [Test]
@@ -94,7 +94,7 @@ namespace LightBDD.ExecutionContext.UnitTests
         {
             var exception = Assert.Throws<InvalidOperationException>(() => ScenarioExecutionContext.Current.Get<ImplicitContext>());
 
-            Assert.That(exception.Message, Is.EqualTo("Current task is not executing any scenarios or ScenarioExecutionContext is not enabled in LightBddConfiguration. Ensure that cfg.ExecutionExtensionsConfiguration().EnableScenarioExecutionContext() is called during LightBDD initialization and operation accessing ScenarioExecutionContext is called from task running scenario."));
+            Assert.That(exception.Message, Is.EqualTo("Current task is not executing any scenarios or ScenarioExecutionContext is not enabled in LightBddConfiguration. Ensure that configuration.ExecutionExtensionsConfiguration().EnableScenarioExecutionContext() is called during LightBDD initialization and operation accessing ScenarioExecutionContext is called from task running scenario."));
         }
 
         private static Task RunScenarioAsync(IBddRunner runner)
@@ -108,7 +108,7 @@ namespace LightBDD.ExecutionContext.UnitTests
 
         private IBddRunner CreateRunner()
         {
-            return new TestableBddRunnerFactory(TestableIntegrationContextBuilder
+            return new TestableFeatureBddRunnerFactory(TestableIntegrationContextBuilder
                     .Default()
                     .WithExecutionExtensions(new ExecutionExtensionsConfiguration().EnableScenarioExecutionContext()))
                 .GetRunnerFor(GetType())

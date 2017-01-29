@@ -2,12 +2,20 @@
 
 namespace LightBDD.Formatting.Configuration
 {
+    /// <summary>
+    /// Configuration class allowing to retrieve <see cref="NameFormatterConfiguration"/> for further customizations.
+    /// See also: <seealso cref="LightBddConfiguration"/>.
+    /// </summary>
     public static class FormattingConfigurationExtensions
     {
-
-        public static NameFormatterConfiguration NameFormatterConfiguration(this LightBddConfiguration cfg)
+        /// <summary>
+        /// Retrieves <see cref="NameFormatterConfiguration"/> from <paramref name="configuration"/> for further customizations.
+        /// </summary>
+        /// <param name="configuration">Configuration object.</param>
+        /// <returns>Configuration object.</returns>
+        public static NameFormatterConfiguration NameFormatterConfiguration(this LightBddConfiguration configuration)
         {
-            return cfg.Get<NameFormatterConfiguration>();
+            return configuration.Get<NameFormatterConfiguration>();
         }
     }
 }

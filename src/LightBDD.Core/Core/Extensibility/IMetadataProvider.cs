@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Extensibility
@@ -42,6 +43,11 @@ namespace LightBDD.Core.Extensibility
         /// <summary>
         /// Provides <see cref="IStepNameInfo"/> object containing information about step name represented by <paramref name="stepDescriptor"/>.
         /// The <paramref name="previousStepTypeName"/> represents the step type name of previous step.
+        /// <para>
+        /// The <see cref="IStepNameInfo.StepTypeName"/> is determined from <see cref="StepDescriptor.PredefinedStepType"/> or parsed from <see cref="StepDescriptor.RawName"/> if former is <c>null</c>.
+        /// When determined step type is the same as <paramref name="previousStepTypeName"/>, it is being replaced with <see cref="StepTypeConfiguration.RepeatedStepReplacement"/>.
+        /// </para>
+        /// See also: <seealso cref="StepTypeConfiguration"/>, <seealso cref="LightBddConfiguration"/>.
         /// </summary>
         /// <param name="stepDescriptor">Step descriptor.</param>
         /// <param name="previousStepTypeName">Step type name of previous step, or <c>null</c> if current step is first one.</param>

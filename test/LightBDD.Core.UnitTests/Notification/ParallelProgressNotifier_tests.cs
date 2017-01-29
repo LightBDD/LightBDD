@@ -22,6 +22,8 @@ namespace LightBDD.Core.UnitTests.Notification
         private readonly AsyncLocal<int> _currentId = new AsyncLocal<int>();
         private ParallelProgressNotifierProvider _notifierProvider;
 
+        class TestableParallelProgressNotifierProvider : ParallelProgressNotifierProvider { }
+
         private void Notify(string message)
         {
             _capturedGroups.GetOrAdd(_currentId.Value, i => new ConcurrentQueue<string>()).Enqueue(message);
@@ -34,7 +36,7 @@ namespace LightBDD.Core.UnitTests.Notification
         public void SetUp()
         {
             _capturedGroups = new ConcurrentDictionary<int, ConcurrentQueue<string>>();
-            _notifierProvider = new ParallelProgressNotifierProvider();
+            _notifierProvider = new TestableParallelProgressNotifierProvider();
         }
 
         [Test]

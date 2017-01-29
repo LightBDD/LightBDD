@@ -9,6 +9,11 @@ namespace LightBDD.Reporting
     /// </summary>
     public static class FeatureReportExtensions
     {
+        /// <summary>
+        /// Returns execution summary for provided <paramref name="results"/>.
+        /// </summary>
+        /// <param name="results">Results to calculate execution summary for.</param>
+        /// <returns><see cref="ExecutionTimeSummary"/> object.</returns>
         public static ExecutionTimeSummary GetTestExecutionTimeSummary(this IEnumerable<IFeatureResult> results)
         {
             return ExecutionTimeSummary.Calculate(
@@ -18,6 +23,11 @@ namespace LightBDD.Reporting
                 .Where(s => s != null));
         }
 
+        /// <summary>
+        /// Returns execution summary for provided <paramref name="results"/>.
+        /// </summary>
+        /// <param name="results">Results to calculate execution summary for.</param>
+        /// <returns><see cref="ExecutionTimeSummary"/> object.</returns>
         public static ExecutionTimeSummary GetTestExecutionTimeSummary(this IEnumerable<IScenarioResult> results)
         {
             return ExecutionTimeSummary.Calculate(

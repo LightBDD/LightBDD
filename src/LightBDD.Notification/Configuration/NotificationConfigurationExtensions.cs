@@ -2,17 +2,29 @@
 
 namespace LightBDD.Notification.Configuration
 {
+    /// <summary>
+    /// Configuration class allowing to retrieve progress notification configurations for further customizations.
+    /// See also: <seealso cref="LightBddConfiguration"/>.
+    /// </summary>
     public static class NotificationConfigurationExtensions
     {
-
-        public static FeatureProgressNotifierConfiguration FeatureProgressNotifierConfiguration(this LightBddConfiguration cfg)
+        /// <summary>
+        /// Retrieves <see cref="FeatureProgressNotifierConfiguration"/> from <paramref name="configuration"/> for further customizations.
+        /// </summary>
+        /// <param name="configuration">Configuration object.</param>
+        /// <returns>Configuration object.</returns>
+        public static FeatureProgressNotifierConfiguration FeatureProgressNotifierConfiguration(this LightBddConfiguration configuration)
         {
-            return cfg.Get<FeatureProgressNotifierConfiguration>();
+            return configuration.Get<FeatureProgressNotifierConfiguration>();
         }
-
-        public static ScenarioProgressNotifierConfiguration ScenarioProgressNotifierConfiguration(this LightBddConfiguration cfg)
+        /// <summary>
+        /// Retrieves <see cref="ScenarioProgressNotifierConfiguration"/> from <paramref name="configuration"/> for further customizations.
+        /// </summary>
+        /// <param name="configuration">Configuration object.</param>
+        /// <returns>Configuration object.</returns>
+        public static ScenarioProgressNotifierConfiguration ScenarioProgressNotifierConfiguration(this LightBddConfiguration configuration)
         {
-            return cfg.Get<ScenarioProgressNotifierConfiguration>();
+            return configuration.Get<ScenarioProgressNotifierConfiguration>();
         }
     }
 }

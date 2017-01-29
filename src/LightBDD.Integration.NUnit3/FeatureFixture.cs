@@ -1,3 +1,4 @@
+using LightBDD.Core.Extensibility;
 using NUnit.Framework;
 
 namespace LightBDD

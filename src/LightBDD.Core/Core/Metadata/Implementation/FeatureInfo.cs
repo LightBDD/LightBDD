@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace LightBDD.Core.Metadata.Implementation
 {
-    class FeatureInfo : IFeatureInfo
+    internal class FeatureInfo : IFeatureInfo
     {
         public FeatureInfo(INameInfo name, string[] labels, string description)
         {

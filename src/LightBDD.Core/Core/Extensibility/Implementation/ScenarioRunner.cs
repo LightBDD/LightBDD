@@ -33,6 +33,8 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         public IScenarioRunner WithSteps(IEnumerable<StepDescriptor> steps)
         {
+            if (_steps == null)
+                throw new ArgumentNullException(nameof(steps));
             _steps = steps;
             return this;
         }
@@ -73,9 +75,9 @@ namespace LightBDD.Core.Extensibility.Implementation
         private void Validate()
         {
             if (_name == null)
-                throw new ArgumentNullException("Name", "Scenario name is not provided.");
+                throw new InvalidOperationException("Scenario name is not provided.");
             if (!_steps.Any())
-                throw new ArgumentException("At least one step has to be provided", "Steps");
+                throw new InvalidOperationException("At least one step has to be provided");
         }
 
         public IScenarioRunner WithLabels(string[] labels)
@@ -104,7 +106,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         {
             var task = RunAsynchronously();
             if (!task.IsCompleted)
-                throw new InvalidOperationException("Only immediately returning steps can be run synchronously");
+                throw new InvalidOperationException("Only steps being completed upon return can be run synchronously (All steps have to return completed task).");
             task.GetAwaiter().GetResult();
         }
 

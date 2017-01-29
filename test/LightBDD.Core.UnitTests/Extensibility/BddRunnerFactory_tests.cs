@@ -9,12 +9,12 @@ namespace LightBDD.Core.UnitTests.Extensibility
     [TestFixture]
     public class BddRunnerFactory_tests
     {
-        private BddRunnerFactory _factory;
+        private FeatureBddRunnerFactory _factory;
 
         [SetUp]
         public void SetUp()
         {
-            _factory = new TestableBddRunnerFactory();
+            _factory = new TestableFeatureBddRunnerFactory();
         }
 
         [Test]
