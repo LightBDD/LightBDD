@@ -34,7 +34,7 @@ namespace LightBDD.Scenarios.Basic.UnitTests
             ExpectWithSteps();
             ExpectRunSynchronously();
 
-            Runner.Basic().RunScenario(Step_one, Step_two);
+            Runner.RunScenario(Step_one, Step_two);
 
             _mockRunner.Verify();
             _mockScenarioRunner.Verify();
@@ -54,7 +54,7 @@ namespace LightBDD.Scenarios.Basic.UnitTests
             ExpectWithSteps();
             ExpectRunSynchronously();
 
-            Runner.Basic().RunScenario(Step_not_throwing_exception);
+            Runner.RunScenario(Step_not_throwing_exception);
 
             Assert.That(_capturedDescriptors, Is.Not.Null);
             Assert.That(_capturedDescriptors.Length, Is.EqualTo(1));
@@ -70,7 +70,7 @@ namespace LightBDD.Scenarios.Basic.UnitTests
             ExpectWithSteps();
             ExpectRunAsynchronously();
 
-            await Runner.Basic().RunScenarioAsync(Step_one_async, Step_two_async);
+            await Runner.RunScenarioAsync(Step_one_async, Step_two_async);
 
             _mockRunner.Verify();
             _mockScenarioRunner.Verify();

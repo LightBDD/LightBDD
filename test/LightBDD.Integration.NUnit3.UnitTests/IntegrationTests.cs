@@ -16,7 +16,7 @@ namespace LightBDD.Integration.NUnit3.UnitTests
         [Label(nameof(It_should_capture_scenario_name))]
         public void It_should_capture_scenario_name()
         {
-            Runner.Basic().RunScenario(Some_step);
+            Runner.RunScenario(Some_step);
             var result = GetScenarioResult(nameof(It_should_capture_scenario_name));
             Assert.That(result.Info.Name.ToString(), Is.EqualTo("It should capture scenario name"));
         }
@@ -26,7 +26,7 @@ namespace LightBDD.Integration.NUnit3.UnitTests
         public async Task It_should_capture_scenario_name_after_await()
         {
             await Task.Yield();
-            Runner.Basic().RunScenario(Some_step);
+            Runner.RunScenario(Some_step);
             var result = GetScenarioResult(nameof(It_should_capture_scenario_name_after_await));
             Assert.That(result.Info.Name.ToString(), Is.EqualTo("It should capture scenario name after await"));
         }
@@ -36,7 +36,7 @@ namespace LightBDD.Integration.NUnit3.UnitTests
         [Label(nameof(It_should_capture_nunit_specific_attributes))]
         public void It_should_capture_nunit_specific_attributes()
         {
-            Runner.Basic().RunScenario(Some_step);
+            Runner.RunScenario(Some_step);
 
             var result = FeatureFactory.GetRunnerFor(GetType()).GetFeatureResult();
             Assert.That(result.Info.Description, Is.EqualTo("desc"));
@@ -58,7 +58,7 @@ namespace LightBDD.Integration.NUnit3.UnitTests
         {
             try
             {
-                Runner.Basic().RunScenario(Ignored_step);
+                Runner.RunScenario(Ignored_step);
             }
             catch
             {
@@ -73,7 +73,7 @@ namespace LightBDD.Integration.NUnit3.UnitTests
         {
             try
             {
-                Runner.Basic().RunScenario(Inconclusive_step);
+                Runner.RunScenario(Inconclusive_step);
             }
             catch
             {
@@ -85,7 +85,7 @@ namespace LightBDD.Integration.NUnit3.UnitTests
         [Test]
         public void Runner_should_throw_meaningful_exception_if_scenario_is_not_run_from_Scenario_attribute()
         {
-            Exception ex = Assert.Throws<InvalidOperationException>(() => Runner.Basic().RunScenario(Some_step));
+            Exception ex = Assert.Throws<InvalidOperationException>(() => Runner.RunScenario(Some_step));
             Assert.That(
                 ex.Message,
                 Is.EqualTo("Unable to locate Scenario name. Please ensure that scenario is executed from method with [Scenario] attribute and test class deriving from FeatureFixture or with [FeatureFixture] attribute."));

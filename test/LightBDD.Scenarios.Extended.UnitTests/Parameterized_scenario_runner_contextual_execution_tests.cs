@@ -15,7 +15,7 @@ namespace LightBDD.Scenarios.Extended.UnitTests
             ExpectSynchronousScenarioRun();
 
             var context = new MyContext();
-            Runner.Parameterized().RunScenario(
+            Runner.RunScenario(
                 ctx => ctx.AssertIsSameAs(context), //passing context to step
                 ctx => ctx.AssertIsSameAs(ctx)); // passing context to step and step argument
 
@@ -29,7 +29,7 @@ namespace LightBDD.Scenarios.Extended.UnitTests
             ExpectAsynchronousScenarioRun();
 
             var context = new MyContext();
-            await Runner.Parameterized().RunScenarioAsync(
+            await Runner.RunScenarioAsync(
                 ctx => ctx.AssertIsSameAsAsync(context), //passing context to step
                 ctx => ctx.AssertIsSameAsAsync(ctx)); // passing context to step and step argument
 

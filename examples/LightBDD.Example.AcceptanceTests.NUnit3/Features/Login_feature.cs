@@ -14,7 +14,7 @@ I want to login into system")]
         [ScenarioCategory(Categories.Security)]
         public void Successful_login()
         {
-            Runner.Basic().RunScenario(
+            Runner.RunScenario(
 
                 Given_the_user_is_about_to_login,
                 Given_the_user_entered_valid_login,
@@ -29,7 +29,7 @@ I want to login into system")]
         [ScenarioCategory(Categories.Security)]
         public void Wrong_login_provided_causes_login_to_fail()
         {
-            Runner.Basic().RunScenario(
+            Runner.RunScenario(
 
                 Given_the_user_is_about_to_login,
                 Given_the_user_entered_invalid_login,
@@ -44,7 +44,7 @@ I want to login into system")]
         [ScenarioCategory(Categories.Security)]
         public void Wrong_password_provided_causes_login_to_fail()
         {
-            Runner.Basic().RunScenario(
+            Runner.RunScenario(
 
                 Given_the_user_is_about_to_login,
                 Given_the_user_entered_valid_login,
@@ -62,7 +62,7 @@ I want to login into system")]
         [ScenarioCategory(Categories.Security)]
         public void Anonymous_login_name_should_allow_to_log_in()
         {
-            Runner.Basic().RunScenario(
+            Runner.RunScenario(
 
                 Given_the_user_is_about_to_login,
                 Given_the_user_entered_anonymous_login,

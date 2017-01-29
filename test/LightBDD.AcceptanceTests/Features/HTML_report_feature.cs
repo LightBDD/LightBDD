@@ -14,7 +14,7 @@ I want to have HTML report")]
         [Scenario]
         public void Should_collapse_feature_details()
         {
-            Runner.Parameterized().RunScenario(
+            Runner.RunScenario(
                 given => a_various_features_with_scenarios_and_categories(),
                 and => a_html_report_is_created(),
 
@@ -33,7 +33,7 @@ I want to have HTML report")]
         [Scenario]
         public void Should_collapse_scenario_details()
         {
-            Runner.Parameterized().RunScenario(
+            Runner.RunScenario(
                 given => a_various_features_with_scenarios_and_categories(),
                 and => a_html_report_is_created(),
 
@@ -53,7 +53,7 @@ I want to have HTML report")]
         [Scenario]
         public void Should_collapse_all_features()
         {
-            Runner.Parameterized().RunScenario(
+            Runner.RunScenario(
                 given => a_various_features_with_scenarios_and_categories(),
                 and => a_html_report_is_created(),
 
@@ -75,7 +75,7 @@ I want to have HTML report")]
         [Scenario]
         public void Should_collapse_all_scenarios()
         {
-            Runner.Parameterized().RunScenario(
+            Runner.RunScenario(
                 given => a_various_features_with_scenarios_and_categories(),
                 and => a_html_report_is_created(),
 
@@ -100,7 +100,7 @@ I want to have HTML report")]
         [TestCase(ExecutionStatus.Ignored)]
         public void Should_filter_by_status(ExecutionStatus status)
         {
-            Runner.Parameterized().RunScenario(
+            Runner.RunScenario(
                 given => a_various_features_with_scenarios_and_categories(),
                 and => a_html_report_is_created(),
 
@@ -128,7 +128,7 @@ I want to have HTML report")]
         [TestCase(ExecutionStatus.Ignored)]
         public void Should_filter_by_status_when_there_is_no_categories_filter_bar(ExecutionStatus status)
         {
-            Runner.Parameterized().RunScenario(
+            Runner.RunScenario(
                 given => a_various_features_with_scenarios_but_no_categories(),
                 and => a_html_report_is_created(),
 
@@ -152,7 +152,7 @@ I want to have HTML report")]
         [Scenario]
         public void Should_filter_by_category()
         {
-            Runner.Parameterized().RunScenario(
+            Runner.RunScenario(
                 given => a_feature_result("featureA"),
                 and => the_feature_has_scenario_result_of_status_and_categories("featureA", ExecutionStatus.Passed, "catA", "catB"),
                 and => the_feature_has_scenario_result_of_status_and_categories("featureA", ExecutionStatus.Passed, "catA"),
@@ -208,7 +208,7 @@ I want to have HTML report")]
         [Scenario]
         public void Should_filter_by_category_and_status()
         {
-            Runner.Parameterized().RunScenario(
+            Runner.RunScenario(
                 given => a_feature_result("featureA"),
                 and => the_feature_has_scenario_result_of_status_and_categories("featureA", ExecutionStatus.Failed, "catA", "catB"),
                 and => the_feature_has_scenario_result_of_status_and_categories("featureA", ExecutionStatus.Passed, "catA"),
@@ -254,7 +254,7 @@ I want to have HTML report")]
         [Scenario]
         public void Should_follow_shareable_link_with_preserving_selected_options()
         {
-            Runner.Parameterized().RunScenario(
+            Runner.RunScenario(
                 given => a_feature_result("featureA"),
                 and => the_feature_has_scenario_result_of_status_and_categories("featureA", ExecutionStatus.Failed, "catA", "catB"),
                 and => the_feature_has_scenario_result_of_status_and_categories("featureA", ExecutionStatus.Passed, "catA"),
@@ -302,7 +302,7 @@ I want to have HTML report")]
         [Scenario]
         public void Should_sort_feature_summary_rows()
         {
-            Runner.Parameterized().RunScenario(
+            Runner.RunScenario(
                 given => a_feature_result("a"),
                 and => the_feature_has_scenario_result_of_status("a", ExecutionStatus.Passed),
                 and => the_feature_has_scenario_result_of_status("a", ExecutionStatus.Passed),
@@ -354,7 +354,7 @@ I want to have HTML report")]
         [Scenario]
         public void Should_show_details_of_non_passed_scenarios()
         {
-            Runner.Parameterized().RunScenario(
+            Runner.RunScenario(
                 given => a_feature_result("featureA"),
                 and => the_feature_has_scenario_result_of_status("featureA", ExecutionStatus.Failed),
                 and => the_feature_has_scenario_result_of_status("featureA", ExecutionStatus.Ignored),

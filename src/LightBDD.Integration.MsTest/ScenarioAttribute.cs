@@ -5,7 +5,7 @@ namespace LightBDD
 {
     /// <summary>
     /// Scenario attribute that should be used for MsTest framework tests, as a replacement for [TestMethod] attribute.
-    /// The Scenario represents scenario test method.
+    /// The ScenarioAttribute represents scenario test method.
     /// </summary>
     public class ScenarioAttribute : TestMethodAttribute
     {

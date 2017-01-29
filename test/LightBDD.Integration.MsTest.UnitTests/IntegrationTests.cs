@@ -15,7 +15,7 @@ namespace LightBDD.Integration.MsTest.UnitTests
         [Label(nameof(It_should_capture_scenario_name))]
         public void It_should_capture_scenario_name()
         {
-            Runner.Basic().RunScenario(Some_step);
+            Runner.RunScenario(Some_step);
             var result = GetScenarioResult(nameof(It_should_capture_scenario_name));
             Assert.AreEqual("It should capture scenario name", result.Info.Name.ToString());
         }
@@ -25,7 +25,7 @@ namespace LightBDD.Integration.MsTest.UnitTests
         public async Task It_should_capture_scenario_name_after_await()
         {
             await Task.Yield();
-            Runner.Basic().RunScenario(Some_step);
+            Runner.RunScenario(Some_step);
             var result = GetScenarioResult(nameof(It_should_capture_scenario_name_after_await));
             Assert.AreEqual("It should capture scenario name after await", result.Info.Name.ToString());
         }
@@ -35,7 +35,7 @@ namespace LightBDD.Integration.MsTest.UnitTests
         [Label(nameof(It_should_capture_mstest_specific_attributes))]
         public void It_should_capture_mstest_specific_attributes()
         {
-            Runner.Basic().RunScenario(Some_step);
+            Runner.RunScenario(Some_step);
 
             var scenario = GetScenarioResult(nameof(It_should_capture_mstest_specific_attributes));
             var expected = new[]
@@ -54,7 +54,7 @@ namespace LightBDD.Integration.MsTest.UnitTests
         {
             try
             {
-                Runner.Basic().RunScenario(Inconclusive_step);
+                Runner.RunScenario(Inconclusive_step);
             }
             catch
             {
@@ -69,7 +69,7 @@ namespace LightBDD.Integration.MsTest.UnitTests
             Exception ex = null;
             try
             {
-                Runner.Basic().RunScenario(Some_step);
+                Runner.RunScenario(Some_step);
             }
             catch (Exception e)
             {

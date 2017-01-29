@@ -17,7 +17,7 @@ I want to dispatch products to customer as soon as the payment is finalized")]
         [ScenarioCategory(Categories.Delivery)]
         public void Should_dispatch_product_after_payment_is_finalized()
         {
-            Runner.WithContext<SpeditionContext>().Parameterized().RunScenario(
+            Runner.WithContext<SpeditionContext>().RunScenario(
                 given => given.There_is_an_active_customer_with_id("ABC-123"),
                 and => and.The_customer_has_product_in_basket("wooden shelf"),
                 and => and.The_customer_has_product_in_basket("wooden desk"),

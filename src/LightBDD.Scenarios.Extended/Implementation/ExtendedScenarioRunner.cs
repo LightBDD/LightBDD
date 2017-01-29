@@ -7,7 +7,7 @@ using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Scenarios.Extended.Implementation
 {
-    internal class ExtendedScenarioRunner<TContext> : IExtendedScenarioRunner<TContext>
+    internal class ExtendedScenarioRunner<TContext>
     {
         private readonly IBddRunner<TContext> _runner;
 

@@ -12,7 +12,7 @@ namespace LightBDD.Scenarios.Extended.UnitTests
         {
             ExpectSynchronousScenarioRun();
 
-            Runner.Parameterized().RunScenario(
+            Runner.RunScenario(
                 _ => Step_one(),
                 when => Step_two());
 
@@ -31,7 +31,7 @@ namespace LightBDD.Scenarios.Extended.UnitTests
         {
             ExpectAsynchronousScenarioRun();
 
-            await Runner.Parameterized().RunScenarioAsync(
+            await Runner.RunScenarioAsync(
                 _ => Step_one_async(),
                 when => Step_two_async());
 

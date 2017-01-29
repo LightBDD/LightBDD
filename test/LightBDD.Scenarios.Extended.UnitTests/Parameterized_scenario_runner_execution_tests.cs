@@ -14,7 +14,7 @@ namespace LightBDD.Scenarios.Extended.UnitTests
         {
             ExpectSynchronousScenarioRun();
 
-            Runner.Parameterized().RunScenario(_ => Step_not_throwing_exception());
+            Runner.RunScenario(_ => Step_not_throwing_exception());
 
             Assert.That(CapturedSteps, Is.Not.Null);
             Assert.That(CapturedSteps.Length, Is.EqualTo(1));
@@ -26,7 +26,7 @@ namespace LightBDD.Scenarios.Extended.UnitTests
         public void It_should_allow_to_execute_parameterized_steps_in_sync_mode()
         {
             ExpectSynchronousScenarioRun();
-            Runner.Parameterized().RunScenario(_ => Step_with_parameters(32, "32"));
+            Runner.RunScenario(_ => Step_with_parameters(32, "32"));
             var step = CapturedSteps.Single();
 
             var ex = Assert.Throws<InvalidOperationException>(() => step.StepInvocation(null, step.Parameters.Select(p => p.ValueEvaluator(null)).ToArray()));
@@ -37,7 +37,7 @@ namespace LightBDD.Scenarios.Extended.UnitTests
         public async Task It_should_allow_to_execute_parameterized_steps_in_async_mode()
         {
             ExpectAsynchronousScenarioRun();
-            await Runner.Parameterized().RunScenarioAsync(_ => Step_with_parameters_async(33, "33"));
+            await Runner.RunScenarioAsync(_ => Step_with_parameters_async(33, "33"));
             var step = CapturedSteps.Single();
 
             var ex = Assert.ThrowsAsync<InvalidOperationException>(() => step.StepInvocation(null, step.Parameters.Select(p => p.ValueEvaluator(null)).ToArray()));

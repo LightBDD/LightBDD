@@ -99,7 +99,7 @@ namespace LightBDD.ExecutionContext.UnitTests
 
         private static Task RunScenarioAsync(IBddRunner runner)
         {
-            return runner.WithContext(new ExplicitContext()).Parameterized().RunScenarioAsync(
+            return runner.WithContext(new ExplicitContext()).RunScenarioAsync(
                 ctx => ctx.Given_implicit_context_initialized(),
                 ctx => ctx.When_time_elapsed_allowing_other_scenario_to_execute_concurrently(),
                 ctx => ctx.Then_implicit_context_should_be_preserved(),

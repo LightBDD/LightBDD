@@ -16,7 +16,7 @@ namespace LightBDD.Scenarios.Extended.UnitTests
         public void It_should_capture_constant_parameters_in_sync_mode()
         {
             ExpectSynchronousScenarioRun();
-            Runner.Parameterized().RunScenario(_ => Step_with_parameters(32, "32"));
+            Runner.RunScenario(_ => Step_with_parameters(32, "32"));
             var step = CapturedSteps.Single();
             Assert.That(step.Parameters.Length, Is.EqualTo(2));
 
@@ -34,7 +34,7 @@ namespace LightBDD.Scenarios.Extended.UnitTests
 
             int i = 56;
 
-            Runner.Parameterized().RunScenario(_ => Step_with_parameters(i, i.ToString()));
+            Runner.RunScenario(_ => Step_with_parameters(i, i.ToString()));
             var step = CapturedSteps.Single();
             Assert.That(step.Parameters.Length, Is.EqualTo(2));
 
@@ -49,7 +49,7 @@ namespace LightBDD.Scenarios.Extended.UnitTests
         public async Task It_should_capture_constant_parameters_in_async_mode()
         {
             ExpectAsynchronousScenarioRun();
-            await Runner.Parameterized().RunScenarioAsync(_ => Step_with_parameters_async(32, "32"));
+            await Runner.RunScenarioAsync(_ => Step_with_parameters_async(32, "32"));
             var step = CapturedSteps.Single();
             Assert.That(step.Parameters.Length, Is.EqualTo(2));
 
@@ -67,7 +67,7 @@ namespace LightBDD.Scenarios.Extended.UnitTests
 
             int i = 56;
 
-            await Runner.Parameterized().RunScenarioAsync(_ => Step_with_parameters_async(i, i.ToString()));
+            await Runner.RunScenarioAsync(_ => Step_with_parameters_async(i, i.ToString()));
             var step = CapturedSteps.Single();
             Assert.That(step.Parameters.Length, Is.EqualTo(2));
 
@@ -83,7 +83,7 @@ namespace LightBDD.Scenarios.Extended.UnitTests
         {
             ExpectSynchronousScenarioRun();
             int val = 4;
-            var ex = Assert.Throws<ArgumentException>(() => Runner.Parameterized().RunScenario(_ => Step_with_ref_parameters(ref val)));
+            var ex = Assert.Throws<ArgumentException>(() => Runner.RunScenario(_ => Step_with_ref_parameters(ref val)));
             Assert.That(ex.Message, Does.Match($"Steps accepting ref or out parameters are not supported: _ => .*{nameof(Step_with_ref_parameters)}.*"));
         }
 
@@ -92,7 +92,7 @@ namespace LightBDD.Scenarios.Extended.UnitTests
         {
             ExpectSynchronousScenarioRun();
             int val;
-            var ex = Assert.Throws<ArgumentException>(() => Runner.Parameterized().RunScenario(_ => Step_with_out_parameters(out val)));
+            var ex = Assert.Throws<ArgumentException>(() => Runner.RunScenario(_ => Step_with_out_parameters(out val)));
             Assert.That(ex.Message, Does.Match($"Steps accepting ref or out parameters are not supported: _ => .*{nameof(Step_with_out_parameters)}.*"));
         }
 
@@ -102,7 +102,7 @@ namespace LightBDD.Scenarios.Extended.UnitTests
         public void It_should_capture_method_parameter(string parameter)
         {
             ExpectSynchronousScenarioRun();
-            Runner.Parameterized().RunScenario(_ => Some_step(parameter));
+            Runner.RunScenario(_ => Some_step(parameter));
 
             Assert.That(CapturedSteps.Single().Parameters.Single().ValueEvaluator(null), Is.EqualTo(parameter));
         }
@@ -111,7 +111,7 @@ namespace LightBDD.Scenarios.Extended.UnitTests
         public void It_should_capture_method_call()
         {
             ExpectSynchronousScenarioRun();
-            Runner.Parameterized().RunScenario(_ => Some_step(GetType().ToString()));
+            Runner.RunScenario(_ => Some_step(GetType().ToString()));
 
             Assert.That(CapturedSteps.Single().Parameters.Single().ValueEvaluator(null), Is.EqualTo(GetType().ToString()));
         }

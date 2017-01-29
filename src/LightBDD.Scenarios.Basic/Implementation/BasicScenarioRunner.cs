@@ -6,7 +6,7 @@ using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Scenarios.Basic.Implementation
 {
-    internal class BasicScenarioRunner : IBasicScenarioRunner
+    internal class BasicScenarioRunner
     {
         private readonly ICoreBddRunner _coreRunner;
 
