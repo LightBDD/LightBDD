@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace LightBDD.Integration.NUnit3
 {
-    public class NUnit3ProgressNotifier
+    internal class NUnit3ProgressNotifier
     {
         public static IFeatureProgressNotifier CreateFeatureProgressNotifier()
         {

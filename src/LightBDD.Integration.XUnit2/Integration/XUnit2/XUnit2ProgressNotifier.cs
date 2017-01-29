@@ -5,7 +5,7 @@ using Xunit.Abstractions;
 
 namespace LightBDD.Integration.XUnit2
 {
-    public class XUnit2ProgressNotifier
+    internal class XUnit2ProgressNotifier
     {
         public static IFeatureProgressNotifier CreateFeatureProgressNotifier()
         {

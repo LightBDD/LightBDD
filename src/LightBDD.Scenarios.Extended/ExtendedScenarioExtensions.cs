@@ -1,4 +1,6 @@
-﻿namespace LightBDD.Scenarios.Extended
+﻿using LightBDD.Scenarios.Extended.Implementation;
+
+namespace LightBDD.Scenarios.Extended
 {
     public static class ExtendedScenarioExtensions
     {

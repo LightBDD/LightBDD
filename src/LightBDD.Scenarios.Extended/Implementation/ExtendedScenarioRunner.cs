@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
 
-namespace LightBDD.Scenarios.Extended
+namespace LightBDD.Scenarios.Extended.Implementation
 {
     internal class ExtendedScenarioRunner<TContext> : IExtendedScenarioRunner<TContext>
     {

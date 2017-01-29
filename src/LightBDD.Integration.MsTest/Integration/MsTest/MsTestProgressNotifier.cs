@@ -4,7 +4,7 @@ using LightBDD.Notification;
 
 namespace LightBDD.Integration.MsTest
 {
-    public class MsTestProgressNotifier
+    internal class MsTestProgressNotifier
     {
         public static IFeatureProgressNotifier CreateFeatureProgressNotifier()
         {

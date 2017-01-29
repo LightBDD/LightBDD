@@ -1,4 +1,5 @@
 ﻿using LightBDD.Core.Extensibility;
+using LightBDD.Scenarios.Basic.Implementation;
 
 namespace LightBDD.Scenarios.Basic
 {
