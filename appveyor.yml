@@ -1,0 +1,8 @@
+version: '{build}'
+branches:
+  only:
+  - ver2
+clone_depth: 1
+build_script:
+- ps: make\make_local.ps1
+test: off

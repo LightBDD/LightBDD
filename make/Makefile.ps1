@@ -24,7 +24,7 @@ Define-Step -Name 'Update version' -Target 'all,build' -Body {
 
 Define-Step -Name 'Build' -Target 'all,build' -Body {
     call dotnet restore
-    call "msbuild.exe" LightBDD.sln /t:"Build" /p:Configuration=Release /m /verbosity:n /nologo /p:TreatWarningsAsErrors=true /nr:false
+    call "msbuild.exe" LightBDD.sln /t:"Build" /p:Configuration=Release /m /verbosity:m /nologo /p:TreatWarningsAsErrors=true /nr:false
 }
 
 Define-Step -Name 'Tests' -Target 'all,test' -Body {
