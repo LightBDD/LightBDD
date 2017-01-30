@@ -5,7 +5,6 @@ using LightBDD.Core.Metadata;
 
 namespace LightBDD.ExecutionContext.Implementation
 {
-    //TODO: rename project to be consistent
     internal class ScenarioExecutionContextExtension : IScenarioExecutionExtension
     {
         public async Task ExecuteAsync(IScenarioInfo scenario, Func<Task> scenarioInvocation)

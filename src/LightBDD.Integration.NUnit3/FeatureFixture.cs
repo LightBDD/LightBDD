@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace LightBDD
 {
     /// <summary>
-    /// Base class for feature tests with NUnit 3 framework.
+    /// Base class for feature tests with NUnit framework.
     /// It offers <see cref="Runner"/> property allowing to execute scenarios belonging to the feature class.
     /// </summary>
     [FeatureFixture]
@@ -21,7 +21,7 @@ namespace LightBDD
         /// </summary>
         protected FeatureFixture()
         {
-            _featureBddRunner = FeatureFactory.GetRunnerFor(GetType());
+            _featureBddRunner = NUnit3FeatureRunnerFactory.GetRunnerFor(GetType());
             Runner = _featureBddRunner.GetRunner(this);
         }
 

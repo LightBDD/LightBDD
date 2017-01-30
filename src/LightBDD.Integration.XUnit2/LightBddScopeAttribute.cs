@@ -7,7 +7,7 @@ using Xunit.Sdk;
 namespace LightBDD
 {
     /// <summary>
-    /// An attribute allowing to initialize and finalize LightBDD in XUnit 2 framework.
+    /// An attribute allowing to initialize and finalize LightBDD in XUnit framework.
     /// 
     /// The <c>[assembly:LightBddScope]</c> attribute has to be present in assembly containing LightBDD tests.
     /// It is possible to customize the LightBDD configuration by overriding the <see cref="OnConfigure"/>() method.

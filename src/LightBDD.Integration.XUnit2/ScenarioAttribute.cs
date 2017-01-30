@@ -5,7 +5,7 @@ using Xunit.Sdk;
 namespace LightBDD
 {
     /// <summary>
-    /// Scenario attribute that should be used for XUnit 2 framework tests, as a replacement for [Fact] and [Theory] attributes.
+    /// Scenario attribute that should be used for XUnit framework tests, as a replacement for [Fact] and [Theory] attributes.
     /// The ScenarioAttribute represents scenario test method.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]

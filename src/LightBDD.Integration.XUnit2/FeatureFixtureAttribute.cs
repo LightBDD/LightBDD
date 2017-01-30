@@ -7,7 +7,7 @@ namespace LightBDD
 {
     /// <summary>
     /// Attribute that should be applied to all test classes representing feature tests.
-    /// It is required for running LightBDD tests with XUnit 2 testing framework.
+    /// It is required for running LightBDD tests with XUnit testing framework.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class FeatureFixtureAttribute : BeforeAfterTestAttribute

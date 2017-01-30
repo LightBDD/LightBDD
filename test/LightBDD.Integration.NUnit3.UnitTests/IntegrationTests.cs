@@ -38,7 +38,7 @@ namespace LightBDD.Integration.NUnit3.UnitTests
         {
             Runner.RunScenario(Some_step);
 
-            var result = FeatureFactory.GetRunnerFor(GetType()).GetFeatureResult();
+            var result = NUnit3FeatureRunnerFactory.GetRunnerFor(GetType()).GetFeatureResult();
             Assert.That(result.Info.Description, Is.EqualTo("desc"));
 
             var scenario = GetScenarioResult(nameof(It_should_capture_nunit_specific_attributes));
@@ -107,7 +107,7 @@ namespace LightBDD.Integration.NUnit3.UnitTests
 
         private IScenarioResult GetScenarioResult(string scenarioId)
         {
-            return FeatureFactory.GetRunnerFor(GetType())
+            return NUnit3FeatureRunnerFactory.GetRunnerFor(GetType())
                 .GetFeatureResult()
                 .GetScenarios()
                 .Single(s => s.Info.Labels.Contains(scenarioId));
