@@ -16,7 +16,7 @@ namespace LightBDD.Integration.NUnit3
 
         public override MethodBase CaptureCurrentScenarioMethod()
         {
-            var scenarioMethod = TestMethodInfoProvider.TestMethod;
+            var scenarioMethod = TestContextProvider.Current?.TestMethod;
             if (scenarioMethod == null || !scenarioMethod.GetCustomAttributes<ScenarioAttribute>().Any())
                 throw new InvalidOperationException("Unable to locate Scenario name. Please ensure that scenario is executed from method with [Scenario] attribute and test class deriving from FeatureFixture or with [FeatureFixture] attribute.");
             return scenarioMethod;

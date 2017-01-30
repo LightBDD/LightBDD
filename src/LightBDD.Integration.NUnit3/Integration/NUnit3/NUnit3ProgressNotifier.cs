@@ -13,7 +13,7 @@ namespace LightBDD.Integration.NUnit3
 
         public static IScenarioProgressNotifier CreateScenarioProgressNotifier()
         {
-            return ParallelProgressNotifierProvider.Default.CreateScenarioProgressNotifier(TestContext.WriteLine);
+            return ParallelProgressNotifierProvider.Default.CreateScenarioProgressNotifier(text => TestContextProvider.Current.TestOutWriter.WriteLine(text));
         }
     }
 }
