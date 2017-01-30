@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Threading;
 using LightBDD.Core.Configuration;
 using LightBDD.ExecutionContext.Configuration;
@@ -11,6 +12,7 @@ namespace LightBDD.ExecutionContext
     /// 
     /// <para>This feature has to be enabled in <see cref="LightBddConfiguration"/> via <see cref="ScenarioExecutionContextConfigurationExtensions.EnableScenarioExecutionContext"/>() prior to usage.</para>
     /// </summary>
+    [DebuggerStepThrough]
     public sealed class ScenarioExecutionContext
     {
         private static readonly AsyncLocal<ScenarioExecutionContext> CurrentContext = new AsyncLocal<ScenarioExecutionContext>();

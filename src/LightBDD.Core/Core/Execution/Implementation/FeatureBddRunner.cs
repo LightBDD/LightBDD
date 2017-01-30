@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution.Implementation;
 using LightBDD.Core.Extensibility.Implementation;
@@ -7,6 +8,7 @@ using LightBDD.Core.Results.Implementation;
 
 namespace LightBDD.Core.Execution.Implementation
 {
+    [DebuggerStepThrough]
     internal class FeatureBddRunner : IFeatureBddRunner
     {
         private readonly FeatureResult _featureResult;
@@ -36,7 +38,7 @@ namespace LightBDD.Core.Execution.Implementation
             if (fixture.GetType() != _featureType)
                 throw new ArgumentException($"Provided fixture instance '{fixture.GetType()}' type does not match feature type '{_featureType}'");
 
-            return new CoreBddRunner(() => CreateScenarioRunner(fixture));
+            return new CoreBddRunner(fixture, CreateScenarioRunner);
         }
 
         private IScenarioRunner CreateScenarioRunner(object fixture)

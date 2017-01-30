@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics;
 
 namespace LightBDD.Core.Execution.Implementation
 {
+    [DebuggerStepThrough]
     internal class ScenarioData
     {
         public Exception ScenarioInitializationException { get; private set; }

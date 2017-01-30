@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 using LightBDD.Core.Notification;
 using LightBDD.Notification;
 using Xunit.Abstractions;
 
 namespace LightBDD.Integration.XUnit2
 {
+    [DebuggerStepThrough]
     internal class XUnit2ProgressNotifier
     {
         public static IFeatureProgressNotifier CreateFeatureProgressNotifier()

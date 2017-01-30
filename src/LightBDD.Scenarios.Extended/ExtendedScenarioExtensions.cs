@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using LightBDD.Scenarios.Extended.Implementation;
@@ -8,6 +9,7 @@ namespace LightBDD.Scenarios.Extended
     /// <summary>
     /// Extensions class allowing to use extended scenario syntax for running LightBDD tests.
     /// </summary>
+    [DebuggerStepThrough]
     public static class ExtendedScenarioExtensions
     {
         /// <summary>

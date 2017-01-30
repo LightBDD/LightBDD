@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -7,6 +8,7 @@ using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Scenarios.Extended.Implementation
 {
+    [DebuggerStepThrough]
     internal class ExtendedScenarioRunner<TContext>
     {
         private readonly IBddRunner<TContext> _runner;

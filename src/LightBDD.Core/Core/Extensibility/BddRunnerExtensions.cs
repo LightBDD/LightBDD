@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace LightBDD.Core.Extensibility
 {
     /// <summary>
     /// IBddRunner extensions.
     /// </summary>
+    [DebuggerStepThrough]
     public static class BddRunnerExtensions
     {
         /// <summary>

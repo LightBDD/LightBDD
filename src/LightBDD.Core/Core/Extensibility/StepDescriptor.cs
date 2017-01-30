@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using LightBDD.Core.Metadata;
 
@@ -8,6 +9,7 @@ namespace LightBDD.Core.Extensibility
     /// Class describing scenario step, including its metadata information as well invocation method together with parameters required to its execution.
     /// It is designed to provide all required information for <see cref="IMetadataProvider.GetStepName"/>() method to provide <see cref="IStepNameInfo"/> object.
     /// </summary>
+    [DebuggerStepThrough]
     public class StepDescriptor
     {
         /// <summary>

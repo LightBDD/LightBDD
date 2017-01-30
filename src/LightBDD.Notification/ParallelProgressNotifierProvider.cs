@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using LightBDD.Core.Notification;
 using LightBDD.Notification.Implementation;
 
@@ -9,6 +10,7 @@ namespace LightBDD.Notification
     /// The implementations are designed to provide notifications that would be still understandable when scenarios are executed in parallel.
     /// Each notification entry is prefixed with text showing total number of processed, failed and currently running scenarios as well as scenario number the message is notified for.
     /// </summary>
+    [DebuggerStepThrough]
     public class ParallelProgressNotifierProvider
     {
         private readonly ProgressManager _manager = new ProgressManager();

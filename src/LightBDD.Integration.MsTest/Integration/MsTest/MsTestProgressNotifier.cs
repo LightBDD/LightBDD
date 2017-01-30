@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using LightBDD.Core.Notification;
 using LightBDD.Notification;
 
 namespace LightBDD.Integration.MsTest
 {
+    [DebuggerStepThrough]
     internal class MsTestProgressNotifier
     {
         public static IFeatureProgressNotifier CreateFeatureProgressNotifier()

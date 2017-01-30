@@ -1,5 +1,8 @@
-﻿namespace LightBDD.Notification.Implementation
+﻿using System.Diagnostics;
+
+namespace LightBDD.Notification.Implementation
 {
+    [DebuggerStepThrough]
     internal struct ProgressState
     {
         public ProgressState(int finishedScenarios, int pendingScenarios, int failedScenarios)

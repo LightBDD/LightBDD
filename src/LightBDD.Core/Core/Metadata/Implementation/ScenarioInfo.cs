@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace LightBDD.Core.Metadata.Implementation
 {
+    [DebuggerStepThrough]
     internal class ScenarioInfo : IScenarioInfo
     {
         public ScenarioInfo(INameInfo name, string[] labels, string[] categories)

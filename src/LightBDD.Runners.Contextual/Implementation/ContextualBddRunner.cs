@@ -1,8 +1,10 @@
 using System;
+using System.Diagnostics;
 using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Runners.Contextual.Implementation
 {
+    [DebuggerStepThrough]
     internal class ContextualBddRunner<TContext> : IBddRunner<TContext>, ICoreBddRunner
     {
         private readonly ICoreBddRunner _coreRunner;

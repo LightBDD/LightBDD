@@ -1,9 +1,11 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Results.Implementation
 {
+    [DebuggerStepThrough]
     internal class FeatureResult : IFeatureResult
     {
         private readonly ConcurrentQueue<IScenarioResult> _scenarios = new ConcurrentQueue<IScenarioResult>();

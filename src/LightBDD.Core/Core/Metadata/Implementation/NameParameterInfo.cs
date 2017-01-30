@@ -1,5 +1,8 @@
+using System.Diagnostics;
+
 namespace LightBDD.Core.Metadata.Implementation
 {
+    [DebuggerStepThrough]
     internal class NameParameterInfo : INameParameterInfo
     {
         public const string UnknownValue = "<?>";

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility.Execution;
@@ -6,6 +7,7 @@ using LightBDD.ExecutionContext;
 
 namespace LightBDD.Commenting.Implementation
 {
+    [DebuggerStepThrough]
     internal class StepCommentingExtension : IStepExecutionExtension
     {
         public async Task ExecuteAsync(IStep step, Func<Task> stepInvocation)

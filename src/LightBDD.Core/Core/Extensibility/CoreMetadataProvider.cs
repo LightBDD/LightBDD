@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using LightBDD.Core.Configuration;
@@ -15,6 +16,7 @@ namespace LightBDD.Core.Extensibility
     /// <summary>
     /// Metadata provider offering core implementation for providing feature, scenario and step metadata.
     /// </summary>
+    [DebuggerStepThrough]
     public abstract class CoreMetadataProvider : IMetadataProvider
     {
         private readonly StepNameParser _stepNameParser;

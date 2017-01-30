@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Metadata;
@@ -8,6 +9,7 @@ using LightBDD.Core.Results;
 
 namespace LightBDD.Notification.Implementation
 {
+    [DebuggerStepThrough]
     internal class ParallelProgressNotifier : IScenarioProgressNotifier, IFeatureProgressNotifier
     {
         private readonly ProgressManager _manager;

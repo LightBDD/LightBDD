@@ -1,9 +1,11 @@
-﻿using LightBDD.Core.Notification;
+﻿using System.Diagnostics;
+using LightBDD.Core.Notification;
 using LightBDD.Notification;
 using NUnit.Framework;
 
 namespace LightBDD.Integration.NUnit3
 {
+    [DebuggerStepThrough]
     internal class NUnit3ProgressNotifier
     {
         public static IFeatureProgressNotifier CreateFeatureProgressNotifier()
@@ -13,7 +15,12 @@ namespace LightBDD.Integration.NUnit3
 
         public static IScenarioProgressNotifier CreateScenarioProgressNotifier()
         {
-            return ParallelProgressNotifierProvider.Default.CreateScenarioProgressNotifier(text => TestContextProvider.Current.TestOutWriter.WriteLine(text));
+            return ParallelProgressNotifierProvider.Default.CreateScenarioProgressNotifier(WriteScenarioProgress);
+        }
+
+        private static void WriteScenarioProgress(string text)
+        {
+            TestContextProvider.Current.TestOutWriter.WriteLine(text);
         }
     }
 }

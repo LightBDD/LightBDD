@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace LightBDD.Core.Metadata.Implementation
 {
+    [DebuggerStepThrough]
     internal class FeatureInfo : IFeatureInfo
     {
         public FeatureInfo(INameInfo name, string[] labels, string description)

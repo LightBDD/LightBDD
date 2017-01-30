@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution.Implementation;
@@ -11,6 +12,7 @@ using LightBDD.Core.Results;
 
 namespace LightBDD.Core.Extensibility.Implementation
 {
+    [DebuggerStepThrough]
     internal class ScenarioRunner : IScenarioRunner
     {
         private readonly ScenarioExecutor _scenarioExecutor;

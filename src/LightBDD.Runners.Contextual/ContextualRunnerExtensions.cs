@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using LightBDD.Runners.Contextual.Implementation;
 
 namespace LightBDD.Runners.Contextual
@@ -6,6 +7,7 @@ namespace LightBDD.Runners.Contextual
     /// <summary>
     /// Extensions allowing to create contextual <see cref="IBddRunner"/> instance.
     /// </summary>
+    [DebuggerStepThrough]
     public static class ContextualRunnerExtensions
     {
         /// <summary>

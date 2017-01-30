@@ -1,10 +1,12 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using LightBDD.Core.Formatting;
 
 namespace LightBDD.Core.Extensibility.Implementation
 {
+    [DebuggerStepThrough]
     internal class StepNameParser
     {
         private readonly INameFormatter _nameFormatter;

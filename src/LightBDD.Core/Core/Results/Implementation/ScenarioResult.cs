@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Results.Implementation
 {
+    [DebuggerStepThrough]
     internal class ScenarioResult : IScenarioResult
     {
         private readonly IStepResult[] _steps;

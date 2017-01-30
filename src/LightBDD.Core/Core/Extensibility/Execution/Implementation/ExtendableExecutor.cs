@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
@@ -6,6 +7,7 @@ using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Extensibility.Execution.Implementation
 {
+    [DebuggerStepThrough]
     internal class ExtendableExecutor : IExtendableExecutor
     {
         private readonly IScenarioExecutionExtension[] _scenarios;

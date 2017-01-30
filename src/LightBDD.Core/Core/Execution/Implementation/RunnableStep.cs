@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility.Execution.Implementation;
@@ -11,6 +12,7 @@ using LightBDD.Core.Results.Implementation;
 
 namespace LightBDD.Core.Execution.Implementation
 {
+    [DebuggerStepThrough]
     internal class RunnableStep : IStep
     {
         private readonly Func<object, object[], Task> _stepInvocation;
@@ -108,6 +110,11 @@ namespace LightBDD.Core.Execution.Implementation
         {
             _result.AddComment(comment);
             _progressNotifier.NotifyStepComment(_result.Info, comment);
+        }
+
+        public override string ToString()
+        {
+            return _result.ToString();
         }
     }
 }

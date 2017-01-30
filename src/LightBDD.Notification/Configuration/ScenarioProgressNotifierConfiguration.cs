@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Notification;
 
@@ -7,6 +8,7 @@ namespace LightBDD.Notification.Configuration
     /// <summary>
     /// Configuration class allowing to customize scenario progress notification behavior.
     /// </summary>
+    [DebuggerStepThrough]
     public class ScenarioProgressNotifierConfiguration : IFeatureConfiguration
     {
         /// <summary>

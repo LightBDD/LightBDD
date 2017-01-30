@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility.Execution.Implementation;
@@ -12,17 +13,17 @@ namespace LightBDD.Core.Execution.Implementation
     internal class ScenarioExecutor
     {
         private readonly IExtendableExecutor _extendableExecutor;
-
+        [DebuggerStepThrough]
         public ScenarioExecutor(IExtendableExecutor extendableExecutor)
         {
             _extendableExecutor = extendableExecutor;
         }
-
+        [DebuggerStepThrough]
         public Task Execute(ScenarioInfo scenario, Func<RunnableStep[]> stepsProvider, Func<object> contextProvider, IScenarioProgressNotifier progressNotifier)
         {
-            return _extendableExecutor.ExecuteScenario(scenario,() => ExecuteWithinSynchronizationContext(scenario, stepsProvider, contextProvider, progressNotifier));
+            return _extendableExecutor.ExecuteScenario(scenario, () => ExecuteWithinSynchronizationContext(scenario, stepsProvider, contextProvider, progressNotifier));
         }
-
+        [DebuggerStepThrough]
         private async Task ExecuteWithinSynchronizationContext(ScenarioInfo scenario, Func<RunnableStep[]> stepsProvider, Func<object> contextProvider, IScenarioProgressNotifier progressNotifier)
         {
             progressNotifier.NotifyScenarioStart(scenario);
@@ -31,8 +32,7 @@ namespace LightBDD.Core.Execution.Implementation
             try
             {
                 data.InitializeScenario(stepsProvider, contextProvider);
-                foreach (var step in data.PreparedSteps)
-                    await step.Invoke(_extendableExecutor,data.ScenarioContext);
+                await ExecuteSteps(data);
             }
             finally
             {
@@ -47,6 +47,12 @@ namespace LightBDD.Core.Execution.Implementation
                 progressNotifier.NotifyScenarioFinished(result);
                 ScenarioExecuted?.Invoke(result);
             }
+        }
+
+        private async Task ExecuteSteps(ScenarioData data)
+        {
+            foreach (var step in data.PreparedSteps)
+                await step.Invoke(_extendableExecutor, data.ScenarioContext);
         }
 
         public event Action<IScenarioResult> ScenarioExecuted;
