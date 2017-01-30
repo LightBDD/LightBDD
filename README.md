@@ -1,7 +1,7 @@
 ![logo](https://github.com/Suremaker/LightBDD/blob/master/logo/lightbdd.ico) Lightweight Behavior Driven Development test framework (LightBDD)
 ===========
 
-[![Build status](https://ci.appveyor.com/api/projects/status/xkd7qc950o07o3x8?svg=true)](https://ci.appveyor.com/project/Suremaker/lightbdd)
+[![Build status](https://ci.appveyor.com/api/projects/status/xkd7qc950o07o3x8?svg=true)](https://ci.appveyor.com/project/Suremaker/lightbdd) [![NuGet Badge](https://buildstats.info/nuget/LightBDD)](https://www.nuget.org/packages/LightBDD/)
 
 Have you ever been using the BDD methodology? Yes? - cool.
 Now, have you tried to write stories or acceptance criteria using tools like [SpecFlow](http://www.specflow.org/) or [Fitnesse](http://fitnesse.org/)?
