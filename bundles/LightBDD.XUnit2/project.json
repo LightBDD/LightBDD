@@ -1,0 +1,14 @@
+﻿{
+  "version": "2.0.0.0", //build_ver
+  "frameworks": {
+    "netstandard1.6": { "imports": [ "dotnet", "portable-net45+win8+wp8+wpa81" ] },
+    "net46": {}
+  },
+  "dependencies": {
+    "LightBDD.Integration.XUnit2": { "target": "project" },
+    "LightBDD.Scenarios.Basic": { "target": "project" },
+    "LightBDD.Scenarios.Extended": { "target": "project" },
+    "LightBDD.Runners.Contextual": { "target": "project" },
+    "LightBDD.Commenting": { "target": "project" }
+  }
+}
