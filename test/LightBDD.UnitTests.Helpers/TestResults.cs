@@ -61,7 +61,7 @@ namespace LightBDD.UnitTests.Helpers
             return new TestStepNameInfo
             {
                 FormattedName = stepName,
-                StepTypeName = stepTypeName,
+                StepTypeName = stepTypeName != null ? new TestStepTypeNameInfo { Name = stepTypeName, OriginalName = stepTypeName } : null,
                 NameFormat = nameFormat,
                 Parameters = parameters.Select(CreateStepNameParameter).ToArray()
             };
@@ -147,7 +147,8 @@ namespace LightBDD.UnitTests.Helpers
             public string NameFormat { get; set; }
             IEnumerable<INameParameterInfo> INameInfo.Parameters => Parameters;
             public TestNameParameterInfo[] Parameters { get; set; }
-            public string StepTypeName { get; set; }
+            public TestStepTypeNameInfo StepTypeName { get; set; }
+            IStepTypeNameInfo IStepNameInfo.StepTypeName => StepTypeName;
 
             public string Format(IStepNameDecorator stepNameDecorator)
             {
@@ -229,17 +230,27 @@ namespace LightBDD.UnitTests.Helpers
             public bool IsEvaluated { get; set; }
             public string FormattedValue { get; set; }
         }
-        #endregion
-    }
 
-    public class TestExecutionTime
-    {
-        public ExecutionTime ToMockedType()
+        public class TestStepTypeNameInfo : IStepTypeNameInfo
         {
-            return new ExecutionTime(Start, Duration);
+            public string Name { get; set; }
+            public string OriginalName { get; set; }
+            public override string ToString()
+            {
+                return Name;
+            }
         }
 
-        public TimeSpan Duration { get; set; }
-        public DateTimeOffset Start { get; set; }
+        public class TestExecutionTime
+        {
+            public ExecutionTime ToMockedType()
+            {
+                return new ExecutionTime(Start, Duration);
+            }
+
+            public TimeSpan Duration { get; set; }
+            public DateTimeOffset Start { get; set; }
+        }
+        #endregion
     }
 }

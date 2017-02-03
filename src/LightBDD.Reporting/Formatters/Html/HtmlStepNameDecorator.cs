@@ -8,9 +8,9 @@ namespace LightBDD.Reporting.Formatters.Html
 {
     internal class HtmlStepNameDecorator : IStepNameDecorator
     {
-        public string DecorateStepTypeName(string stepTypeName)
+        public string DecorateStepTypeName(IStepTypeNameInfo stepTypeName)
         {
-            return AsString(Html.Tag(Html5Tag.Span).Class("stepType").Content(stepTypeName));
+            return AsString(Html.Tag(Html5Tag.Span).Class("stepType").Content(stepTypeName.Name));
         }
 
         public string DecorateParameterValue(INameParameterInfo parameter)

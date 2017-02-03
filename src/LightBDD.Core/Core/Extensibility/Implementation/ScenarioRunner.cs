@@ -123,7 +123,7 @@ namespace LightBDD.Core.Extensibility.Implementation
             {
                 var step = ToRunnableStep(descriptors[i], i, totalStepsCount, previousStepTypeName);
                 result[i] = step;
-                previousStepTypeName = step.Result.Info.Name.StepTypeName;
+                previousStepTypeName = step.Result.Info.Name.StepTypeName?.OriginalName;
             }
 
             return result;

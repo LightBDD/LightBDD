@@ -73,7 +73,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
                 ParameterDescriptor.FromConstant(ParameterInfoHelper.GetMethodParameter<int>(new Feature_type().Some_step_with_argument), 5));
 
             var stepName = _metadataProvider.GetStepName(descriptor, null);
-            Assert.That(stepName.StepTypeName, Is.EqualTo("GIVEN"));
+            Assert.That(stepName.StepTypeName.ToString(), Is.EqualTo("GIVEN"));
             Assert.That(stepName.NameFormat, Is.EqualTo("Some step with argument \"{0}\""));
             Assert.That(stepName.ToString(), Is.EqualTo("GIVEN Some step with argument \"<?>\""));
         }

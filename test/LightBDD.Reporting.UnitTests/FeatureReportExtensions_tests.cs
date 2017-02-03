@@ -158,11 +158,11 @@ namespace LightBDD.Reporting.UnitTests
                     {
                         new TestResults.TestScenarioResult
                         {
-                            ExecutionTime = new TestExecutionTime {Start = baseTime, Duration = TimeSpan.FromSeconds(4)}
+                            ExecutionTime = new TestResults.TestExecutionTime {Start = baseTime, Duration = TimeSpan.FromSeconds(4)}
                         },
                         new TestResults.TestScenarioResult
                         {
-                            ExecutionTime =new TestExecutionTime{Start = baseTime.AddSeconds(1), Duration = TimeSpan.FromSeconds(2)}
+                            ExecutionTime =new TestResults.TestExecutionTime{Start = baseTime.AddSeconds(1), Duration = TimeSpan.FromSeconds(2)}
                         }
 
                     }
@@ -173,11 +173,11 @@ namespace LightBDD.Reporting.UnitTests
                     {
                         new TestResults.TestScenarioResult
                         {
-                            ExecutionTime = new TestExecutionTime {Start = baseTime, Duration = TimeSpan.FromSeconds(7)}
+                            ExecutionTime = new TestResults.TestExecutionTime {Start = baseTime, Duration = TimeSpan.FromSeconds(7)}
                         },
                         new TestResults.TestScenarioResult
                         {
-                            ExecutionTime = new TestExecutionTime {Start = baseTime, Duration = TimeSpan.FromSeconds(7)}
+                            ExecutionTime = new TestResults.TestExecutionTime {Start = baseTime, Duration = TimeSpan.FromSeconds(7)}
                         }
                     }
                 },

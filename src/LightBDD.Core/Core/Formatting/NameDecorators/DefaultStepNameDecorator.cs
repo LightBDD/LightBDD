@@ -6,9 +6,9 @@ namespace LightBDD.Core.Formatting.NameDecorators
     [DebuggerStepThrough]
     internal class DefaultStepNameDecorator : IStepNameDecorator
     {
-        public string DecorateStepTypeName(string stepTypeName)
+        public string DecorateStepTypeName(IStepTypeNameInfo stepTypeName)
         {
-            return stepTypeName ?? string.Empty;
+            return stepTypeName?.Name ?? string.Empty;
         }
 
         public string DecorateParameterValue(INameParameterInfo parameter)

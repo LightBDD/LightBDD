@@ -8,7 +8,7 @@ namespace LightBDD.Core.Metadata.Implementation
     [DebuggerStepThrough]
     internal class StepNameInfo : NameInfo, IStepNameInfo
     {
-        public StepNameInfo(string stepTypeName, string nameFormat, INameParameterInfo[] parameters)
+        public StepNameInfo(IStepTypeNameInfo stepTypeName, string nameFormat, INameParameterInfo[] parameters)
             : base(nameFormat, parameters)
         {
             StepTypeName = stepTypeName;
@@ -21,7 +21,7 @@ namespace LightBDD.Core.Metadata.Implementation
             return new StepNameInfo(nameInfo.StepTypeName, nameInfo.NameFormat, parameters);
         }
 
-        public string StepTypeName { get; }
+        public IStepTypeNameInfo StepTypeName { get; }
 
         public override string ToString()
         {

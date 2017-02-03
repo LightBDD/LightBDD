@@ -1,3 +1,5 @@
+using LightBDD.Core.Metadata;
+
 namespace LightBDD.Core.Formatting.NameDecorators
 {
     /// <summary>
@@ -8,6 +10,6 @@ namespace LightBDD.Core.Formatting.NameDecorators
         /// <summary>
         /// Decorates step type name.
         /// </summary>
-        string DecorateStepTypeName(string stepTypeName);
+        string DecorateStepTypeName(IStepTypeNameInfo stepTypeName);
     }
 }

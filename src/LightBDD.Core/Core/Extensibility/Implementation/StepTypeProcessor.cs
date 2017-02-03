@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Formatting;
+using LightBDD.Core.Metadata;
+using LightBDD.Core.Metadata.Implementation;
 
 namespace LightBDD.Core.Extensibility.Implementation
 {
@@ -18,12 +20,15 @@ namespace LightBDD.Core.Extensibility.Implementation
             _configuration = configuration;
         }
 
-        public string GetStepTypeName(string rawStepTypeName, ref string formattedRawName, string previousStepTypeName)
+        public IStepTypeNameInfo GetStepTypeName(string rawStepTypeName, ref string formattedRawName, string previousStepTypeName)
         {
             var stepTypeName = string.IsNullOrWhiteSpace(rawStepTypeName)
                 ? ExtractStepTypeFromFormattedName(ref formattedRawName)
                 : _nameFormatter.FormatName(rawStepTypeName);
-            return FormatStepTypeName(NormalizeStepTypeName(stepTypeName, previousStepTypeName));
+
+            return string.IsNullOrWhiteSpace(stepTypeName) 
+                ? null 
+                : new StepTypeNameInfo(FormatStepTypeName(NormalizeStepTypeName(stepTypeName, previousStepTypeName)), FormatStepTypeName(stepTypeName));
         }
 
         private string ExtractStepTypeFromFormattedName(ref string formattedRawName)

@@ -98,7 +98,7 @@ namespace LightBDD.Reporting.Formatters
         {
             var objects = new List<object>();
             if (stepName.StepTypeName != null)
-                objects.Add(new XAttribute("StepType", stepName.StepTypeName));
+                objects.Add(new XAttribute("StepType", stepName.StepTypeName.Name));
             objects.Add(new XAttribute("Format", stepName.NameFormat));
             objects.Add(stepName.Parameters.Select(p => new XElement("Parameter",
                 new XAttribute("IsEvaluated", p.IsEvaluated),

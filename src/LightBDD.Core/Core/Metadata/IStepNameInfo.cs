@@ -14,8 +14,8 @@ namespace LightBDD.Core.Metadata
         /// <returns>Formatted name.</returns>
         string Format(IStepNameDecorator decorator);
         /// <summary>
-        /// Returns step type name.
+        /// Returns step type name (may be null).
         /// </summary>
-        string StepTypeName { get; }
+        IStepTypeNameInfo StepTypeName { get; }
     }
 }

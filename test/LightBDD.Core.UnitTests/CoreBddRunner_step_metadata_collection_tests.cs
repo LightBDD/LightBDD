@@ -85,20 +85,22 @@ namespace LightBDD.Core.UnitTests
                 When_step_two,
                 Then_step_three,
                 Then_step_four,
+                Then_step_five,
                 Some_step
                 );
 
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
-                    new StepResultExpectation(1, 9, "SETUP before steps", ExecutionStatus.Passed),
-                    new StepResultExpectation(2, 9, "AND before steps", ExecutionStatus.Passed),
-                    new StepResultExpectation(3, 9, "GIVEN step one", ExecutionStatus.Passed),
-                    new StepResultExpectation(4, 9, "AND step one", ExecutionStatus.Passed),
-                    new StepResultExpectation(5, 9, "WHEN step two", ExecutionStatus.Passed),
-                    new StepResultExpectation(6, 9, "AND step two", ExecutionStatus.Passed),
-                    new StepResultExpectation(7, 9, "THEN step three", ExecutionStatus.Passed),
-                    new StepResultExpectation(8, 9, "AND step four", ExecutionStatus.Passed),
-                    new StepResultExpectation(9, 9, "Some step", ExecutionStatus.Passed)
+                    new StepResultExpectation(1, 10, "SETUP before steps", ExecutionStatus.Passed),
+                    new StepResultExpectation(2, 10, "AND before steps", ExecutionStatus.Passed),
+                    new StepResultExpectation(3, 10, "GIVEN step one", ExecutionStatus.Passed),
+                    new StepResultExpectation(4, 10, "AND step one", ExecutionStatus.Passed),
+                    new StepResultExpectation(5, 10, "WHEN step two", ExecutionStatus.Passed),
+                    new StepResultExpectation(6, 10, "AND step two", ExecutionStatus.Passed),
+                    new StepResultExpectation(7, 10, "THEN step three", ExecutionStatus.Passed),
+                    new StepResultExpectation(8, 10, "AND step four", ExecutionStatus.Passed),
+                    new StepResultExpectation(9, 10, "AND step five", ExecutionStatus.Passed),
+                    new StepResultExpectation(10, 10, "Some step", ExecutionStatus.Passed)
                 );
         }
 

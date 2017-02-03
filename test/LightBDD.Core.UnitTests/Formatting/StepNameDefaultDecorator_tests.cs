@@ -1,5 +1,6 @@
 ﻿using LightBDD.Core.Formatting.NameDecorators;
 using LightBDD.Core.Metadata;
+using LightBDD.UnitTests.Helpers;
 using Moq;
 using NUnit.Framework;
 
@@ -13,7 +14,7 @@ namespace LightBDD.Core.UnitTests.Formatting
         [TestCase(null, "")]
         public void Should_format_step_type_name(string stepTypeName, string expected)
         {
-            Assert.That(StepNameDecorators.Default.DecorateStepTypeName(stepTypeName), Is.EqualTo(expected));
+            Assert.That(StepNameDecorators.Default.DecorateStepTypeName(new TestResults.TestStepTypeNameInfo {Name = stepTypeName, OriginalName = "something else"}), Is.EqualTo(expected));
         }
 
         [Test]
