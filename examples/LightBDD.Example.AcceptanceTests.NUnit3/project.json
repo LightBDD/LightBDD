@@ -14,20 +14,7 @@
     "net46": {}
   },
   "dependencies": {
-    "LightBDD.Integration.NUnit3": {
-      "target": "project"
-    },
-    "LightBDD.Scenarios.Basic": {
-      "target": "project"
-    },
-    "LightBDD.Scenarios.Extended": {
-      "target": "project"
-    },
-    "LightBDD.Runners.Contextual": {
-      "target": "project"
-    },
-
-    "LightBDD.Commenting": {
+    "LightBDD.NUnit3": {
       "target": "project"
     },
     "LightBDD.Example": {

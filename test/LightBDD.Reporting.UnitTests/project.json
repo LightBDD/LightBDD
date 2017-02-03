@@ -9,14 +9,11 @@
     }
   },
   "dependencies": {
-    "LightBDD.Core": {
-      "target": "project"
-    },
     "NUnit": "3.6.0",
     "dotnet-test-nunit": "3.4.0-beta-3",
     "RandomTestValues": "2.0.0",
     "Moq": "4.6.38-alpha",
-    "LightBDD.Reporting": {
+    "LightBDD.Framework": {
       "target": "project"
     },
     "LightBDD.UnitTests.Helpers": {

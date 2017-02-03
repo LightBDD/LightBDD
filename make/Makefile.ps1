@@ -42,8 +42,7 @@ Define-Step -Name 'Packaging' -Target 'all,pack' -Body {
     Remove-Item 'output' -Force -Recurse -ErrorAction SilentlyContinue | Out-Null
     mkdir 'output' | Out-Null
 
-	@("src","bundles") `
-		| %{ gci -Path $_ -Filter 'project.json' -Recurse } `
+	gci -Path "src" -Filter 'project.json' -Recurse `
 		| %{ call dotnet pack $_.fullname --output 'output' --no-build }
 }
 <#

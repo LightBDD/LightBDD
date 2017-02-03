@@ -1,6 +1,6 @@
 ﻿{
   "version": "2.0.0.0", //build_ver
-  "testRunner": "xunit",
+  "testRunner": "nunit",
   "frameworks": {
     "netcoreapp1.1": {
       "imports": [ "netstandard1.6" ],
@@ -11,16 +11,22 @@
         }
       }
     },
-    "net46": {}
+    "net46": {
+      "frameworkAssemblies": {
+        "System.Reflection": "4.0.10.0"
+      }
+    }
   },
   "dependencies": {
-    "LightBDD.XUnit2": {
+    "LightBDD.Framework": {
       "target": "project"
     },
-    "LightBDD.Example": {
+    "NUnit": "3.6.0",
+    "dotnet-test-nunit": "3.4.0-beta-3",
+    "RandomTestValues": "2.0.0",
+    "Moq": "4.6.38-alpha",
+    "LightBDD.UnitTests.Helpers": {
       "target": "project"
-    },
-    "xunit": "2.2.0-beta2-build3300",
-    "dotnet-test-xunit": "2.2.0-preview2-build1029"
+    }
   }
 }

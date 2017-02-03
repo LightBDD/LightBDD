@@ -1,9 +1,9 @@
 ﻿{
   "version": "2.0.0.0", //build_ver
-  "testRunner": "xunit",
+  "testRunner": "mstest",
   "frameworks": {
     "netcoreapp1.1": {
-      "imports": [ "netstandard1.6" ],
+      "imports": [ "dotnet" ],
       "dependencies": {
         "Microsoft.NETCore.App": {
           "version": "1.1.0",
@@ -14,13 +14,10 @@
     "net46": {}
   },
   "dependencies": {
-    "LightBDD.XUnit2": {
+    "LightBDD.MsTest": {
       "target": "project"
     },
-    "LightBDD.Example": {
-      "target": "project"
-    },
-    "xunit": "2.2.0-beta2-build3300",
-    "dotnet-test-xunit": "2.2.0-preview2-build1029"
+    "MSTest.TestFramework": "1.0.8-rc2",
+    "dotnet-test-mstest": "1.1.2-preview"
   }
 }

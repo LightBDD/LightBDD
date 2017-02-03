@@ -1,6 +1,6 @@
 ﻿{
   "version": "2.0.0.0", //build_ver
-  "testRunner": "xunit",
+  "testRunner": "nunit",
   "frameworks": {
     "netcoreapp1.1": {
       "imports": [ "netstandard1.6" ],
@@ -14,13 +14,10 @@
     "net46": {}
   },
   "dependencies": {
-    "LightBDD.XUnit2": {
+    "LightBDD.NUnit3": {
       "target": "project"
     },
-    "LightBDD.Example": {
-      "target": "project"
-    },
-    "xunit": "2.2.0-beta2-build3300",
-    "dotnet-test-xunit": "2.2.0-preview2-build1029"
+    "NUnit": "3.6.0",
+    "dotnet-test-nunit": "3.4.0-beta-3"
   }
 }

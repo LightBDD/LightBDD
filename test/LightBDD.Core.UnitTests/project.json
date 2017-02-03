@@ -21,14 +21,12 @@
     "LightBDD.Core": {
       "target": "project"
     },
-    "LightBDD.Formatting": { "target": "project" },
-    "LightBDD.Notification": { "target": "project" },
+    "LightBDD.UnitTests.Helpers": {
+      "target": "project"
+    },
     "NUnit": "3.6.0",
     "dotnet-test-nunit": "3.4.0-beta-3",
     "RandomTestValues": "2.0.0",
-    "Moq": "4.6.38-alpha",
-    "LightBDD.UnitTests.Helpers": {
-      "target": "project"
-    }
+    "Moq": "4.6.38-alpha"
   }
 }

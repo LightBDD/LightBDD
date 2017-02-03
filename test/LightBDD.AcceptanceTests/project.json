@@ -10,10 +10,7 @@
     "net46": {}
   },
   "dependencies": {
-    "LightBDD.Integration.NUnit3": {
-      "target": "project"
-    },
-    "LightBDD.Scenarios.Extended": {
+    "LightBDD.NUnit3": {
       "target": "project"
     },
     "LightBDD.UnitTests.Helpers": {
