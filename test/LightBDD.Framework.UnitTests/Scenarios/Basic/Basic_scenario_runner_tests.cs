@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
+using LightBDD.Framework.Scenarios.Basic;
 using Moq;
 using NUnit.Framework;
 

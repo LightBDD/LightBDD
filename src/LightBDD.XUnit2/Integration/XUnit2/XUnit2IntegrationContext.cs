@@ -5,9 +5,9 @@ using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
-using LightBDD.Formatting.Configuration;
+using LightBDD.Framework.Formatting.Configuration;
+using LightBDD.Framework.Notification.Configuration;
 using LightBDD.Integration.XUnit2.Customization;
-using LightBDD.Notification.Configuration;
 
 namespace LightBDD.Integration.XUnit2
 {

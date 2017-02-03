@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using LightBDD.Core.Results;
 
-namespace LightBDD.Reporting
+namespace LightBDD.Framework.Reporting
 {
     /// <summary>
     /// Class providing execution time summary.

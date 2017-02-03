@@ -1,9 +1,9 @@
-﻿using LightBDD.Commenting.Configuration;
-using LightBDD.Commenting.Implementation;
-using LightBDD.Core.Configuration;
-using LightBDD.ExecutionContext;
+﻿using LightBDD.Core.Configuration;
+using LightBDD.Framework.Commenting.Configuration;
+using LightBDD.Framework.Commenting.Implementation;
+using LightBDD.Framework.ExecutionContext;
 
-namespace LightBDD.Commenting
+namespace LightBDD.Framework.Commenting
 {
     /// <summary>
     /// Extension class for <see cref="StepExecution"/> allowing to comment currently running steps.

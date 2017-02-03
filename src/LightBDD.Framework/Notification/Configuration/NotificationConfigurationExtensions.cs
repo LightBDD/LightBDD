@@ -1,6 +1,6 @@
 ﻿using LightBDD.Core.Configuration;
 
-namespace LightBDD.Notification.Configuration
+namespace LightBDD.Framework.Notification.Configuration
 {
     /// <summary>
     /// Configuration class allowing to retrieve progress notification configurations for further customizations.

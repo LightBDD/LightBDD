@@ -1,5 +1,5 @@
 
-namespace LightBDD.Reporting.Formatters.Html
+namespace LightBDD.Framework.Reporting.Formatters.Html
 {
     internal class TextBuilder : IHtmlNode
     {

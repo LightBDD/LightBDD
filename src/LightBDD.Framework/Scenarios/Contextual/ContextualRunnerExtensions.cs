@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using LightBDD.Runners.Contextual.Implementation;
+using LightBDD.Framework.Scenarios.Contextual.Implementation;
 
-namespace LightBDD.Runners.Contextual
+namespace LightBDD.Framework.Scenarios.Contextual
 {
     /// <summary>
     /// Extensions allowing to create contextual <see cref="IBddRunner"/> instance.

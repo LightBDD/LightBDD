@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
-using LightBDD.Notification;
+using LightBDD.Framework.Notification;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 using RandomTestValues;

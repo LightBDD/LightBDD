@@ -1,6 +1,6 @@
-﻿using LightBDD.Reporting.Formatters;
+﻿using LightBDD.Framework.Reporting.Formatters;
 
-namespace LightBDD.Reporting.Configuration
+namespace LightBDD.Framework.Reporting.Configuration
 {
     /// <summary>
     /// Extension class for <see cref="ReportWritersConfiguration"/> simplifying configuration with <see cref="ReportFileWriter"/> instances.

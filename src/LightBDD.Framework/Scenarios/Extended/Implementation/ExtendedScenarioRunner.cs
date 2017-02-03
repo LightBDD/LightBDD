@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
 
-namespace LightBDD.Scenarios.Extended.Implementation
+namespace LightBDD.Framework.Scenarios.Extended.Implementation
 {
     [DebuggerStepThrough]
     internal class ExtendedScenarioRunner<TContext>

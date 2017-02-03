@@ -1,10 +1,10 @@
-﻿using LightBDD.Commenting.Implementation;
-using LightBDD.Core.Configuration;
-using LightBDD.ExecutionContext;
-using LightBDD.ExecutionContext.Configuration;
+﻿using LightBDD.Core.Configuration;
+using LightBDD.Framework.Commenting.Implementation;
+using LightBDD.Framework.ExecutionContext;
+using LightBDD.Framework.ExecutionContext.Configuration;
 
 //TODO: move configuration namespace to root?
-namespace LightBDD.Commenting.Configuration
+namespace LightBDD.Framework.Commenting.Configuration
 {
     /// <summary>
     /// Configuration class allowing to enable commenting feature in LightBDD.

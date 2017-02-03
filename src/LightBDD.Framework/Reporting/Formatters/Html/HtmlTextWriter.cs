@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 
-namespace LightBDD.Reporting.Formatters.Html
+namespace LightBDD.Framework.Reporting.Formatters.Html
 {
     internal class HtmlTextWriter : IDisposable
     {

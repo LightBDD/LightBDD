@@ -1,5 +1,6 @@
 ﻿using System;
 using LightBDD.Core.Extensibility;
+using LightBDD.Framework.Scenarios.Contextual;
 using Moq;
 using NUnit.Framework;
 

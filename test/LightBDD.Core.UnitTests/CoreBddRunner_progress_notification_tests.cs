@@ -5,7 +5,7 @@ using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
-using LightBDD.Notification;
+using LightBDD.Framework.Notification;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 

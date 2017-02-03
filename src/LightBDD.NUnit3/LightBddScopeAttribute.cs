@@ -1,7 +1,7 @@
 using System;
 using LightBDD.Core.Configuration;
+using LightBDD.Framework.Notification.Configuration;
 using LightBDD.Integration.NUnit3;
-using LightBDD.Notification.Configuration;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 

@@ -2,8 +2,9 @@
 using System.IO;
 using System.Linq;
 using LightBDD.Core.Reporting;
-using LightBDD.Reporting.Configuration;
-using LightBDD.Reporting.Formatters;
+using LightBDD.Framework.Reporting;
+using LightBDD.Framework.Reporting.Configuration;
+using LightBDD.Framework.Reporting.Formatters;
 using Moq;
 using NUnit.Framework;
 

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace LightBDD.Reporting.Formatters.Html
+namespace LightBDD.Framework.Reporting.Formatters.Html
 {
     internal class TagBuilder : IHtmlNode
     {

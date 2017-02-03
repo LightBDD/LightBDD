@@ -1,10 +1,10 @@
 ﻿using System;
-using LightBDD.Commenting.Configuration;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution;
-using LightBDD.ExecutionContext;
+using LightBDD.Framework.Commenting.Configuration;
+using LightBDD.Framework.ExecutionContext;
 
-namespace LightBDD.Commenting.Implementation
+namespace LightBDD.Framework.Commenting.Implementation
 {
     internal class CurrentStepProperty : IContextProperty
     {

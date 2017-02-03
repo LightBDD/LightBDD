@@ -1,5 +1,5 @@
 using LightBDD.Core.Notification;
-using LightBDD.Notification;
+using LightBDD.Framework.Notification;
 using LightBDD.UnitTests.Helpers;
 using Moq;
 using NUnit.Framework;

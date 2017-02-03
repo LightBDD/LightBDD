@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using LightBDD.Core.Formatting;
 
-namespace LightBDD.Formatting
+namespace LightBDD.Framework.Formatting
 {
     /// <summary>
     /// Default implementation of <see cref="INameFormatter"/> interface.

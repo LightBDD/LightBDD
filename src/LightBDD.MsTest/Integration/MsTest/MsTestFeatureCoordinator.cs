@@ -4,8 +4,7 @@ using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution.Coordination;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Reporting;
-using LightBDD.Reporting;
-using LightBDD.Reporting.Configuration;
+using LightBDD.Framework.Reporting.Configuration;
 
 namespace LightBDD.Integration.MsTest
 {

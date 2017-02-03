@@ -3,9 +3,9 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
 using LightBDD.Core.Configuration;
-using LightBDD.ExecutionContext.Configuration;
+using LightBDD.Framework.ExecutionContext.Configuration;
 
-namespace LightBDD.ExecutionContext
+namespace LightBDD.Framework.ExecutionContext
 {
     /// <summary>
     /// Scenario execution context class allowing to store and retrieve scenario properties that would be available for all tasks executed within the scenario.

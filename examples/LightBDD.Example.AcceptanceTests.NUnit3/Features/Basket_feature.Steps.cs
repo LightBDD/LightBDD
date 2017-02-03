@@ -1,6 +1,6 @@
 using System.Linq;
-using LightBDD.Commenting;
 using LightBDD.Example.Domain;
+using LightBDD.Framework.Commenting;
 using NUnit.Framework;
 
 namespace LightBDD.Example.AcceptanceTests.NUnit3.Features

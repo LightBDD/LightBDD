@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using LightBDD.Core.Notification;
-using LightBDD.Notification;
+using LightBDD.Framework.Notification;
 using NUnit.Framework;
 
 namespace LightBDD.Integration.NUnit3

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.IO;
 using LightBDD.Core.Results;
-using LightBDD.Reporting.Formatters;
+using LightBDD.Framework.Reporting;
+using LightBDD.Framework.Reporting.Formatters;
 using Moq;
 using NUnit.Framework;
 

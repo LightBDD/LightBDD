@@ -2,7 +2,7 @@
 using System.Threading;
 using LightBDD.Core.Results;
 
-namespace LightBDD.Notification.Implementation
+namespace LightBDD.Framework.Notification.Implementation
 {
     [DebuggerStepThrough]
     internal class ProgressManager

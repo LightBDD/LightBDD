@@ -5,8 +5,8 @@ using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
-using LightBDD.Formatting.Configuration;
-using LightBDD.Notification.Configuration;
+using LightBDD.Framework.Formatting.Configuration;
+using LightBDD.Framework.Notification.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.Integration.MsTest

@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Reporting;
-using LightBDD.Reporting.Formatters;
+using LightBDD.Framework.Reporting.Formatters;
 
-namespace LightBDD.Reporting.Configuration
+namespace LightBDD.Framework.Reporting.Configuration
 {
     /// <summary>
     /// Configuration class allowing to customize report writers.

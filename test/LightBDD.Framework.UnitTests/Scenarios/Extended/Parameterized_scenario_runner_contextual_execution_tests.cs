@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.Scenarios.Extended.UnitTests.Helpers;
 using NUnit.Framework;
 

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
-using LightBDD.ExecutionContext.Configuration;
+using LightBDD.Framework.ExecutionContext;
+using LightBDD.Framework.ExecutionContext.Configuration;
+using LightBDD.Framework.Scenarios.Contextual;
+using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.Runners.Contextual;
 using LightBDD.Scenarios.Extended;
 using LightBDD.UnitTests.Helpers.TestableIntegration;

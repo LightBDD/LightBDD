@@ -4,7 +4,7 @@ using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
 
-namespace LightBDD.Notification
+namespace LightBDD.Framework.Notification
 {
     /// <summary>
     /// Feature progress notifier allowing to delegate notification to zero or more notifiers.

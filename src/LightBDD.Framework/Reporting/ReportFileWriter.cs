@@ -2,9 +2,9 @@
 using System.IO;
 using LightBDD.Core.Reporting;
 using LightBDD.Core.Results;
-using LightBDD.Reporting.Formatters;
+using LightBDD.Framework.Reporting.Formatters;
 
-namespace LightBDD.Reporting
+namespace LightBDD.Framework.Reporting
 {
     /// <summary>
     /// Summary file writer class allows to save feature results by using associated result formatter and output path.

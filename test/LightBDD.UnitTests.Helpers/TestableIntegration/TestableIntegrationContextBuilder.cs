@@ -5,8 +5,8 @@ using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
-using LightBDD.Formatting;
-using LightBDD.Notification;
+using LightBDD.Framework.Formatting;
+using LightBDD.Framework.Notification;
 
 namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using LightBDD.Core.Notification;
-using LightBDD.Notification.Implementation;
+using LightBDD.Framework.Notification.Implementation;
 
-namespace LightBDD.Notification
+namespace LightBDD.Framework.Notification
 {
     /// <summary>
     /// Class providing implementations of <see cref="IFeatureProgressNotifier"/> and <see cref="IScenarioProgressNotifier"/> interfaces.

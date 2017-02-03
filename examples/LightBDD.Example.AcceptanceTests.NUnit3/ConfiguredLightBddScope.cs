@@ -1,6 +1,6 @@
-using LightBDD.Commenting.Configuration;
 using LightBDD.Core.Configuration;
 using LightBDD.Example.AcceptanceTests.NUnit3;
+using LightBDD.Framework.Commenting.Configuration;
 
 [assembly: ConfiguredLightBddScope]
 namespace LightBDD.Example.AcceptanceTests.NUnit3

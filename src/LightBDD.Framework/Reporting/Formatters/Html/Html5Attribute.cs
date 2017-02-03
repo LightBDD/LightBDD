@@ -1,4 +1,4 @@
-namespace LightBDD.Reporting.Formatters.Html
+namespace LightBDD.Framework.Reporting.Formatters.Html
 {
     internal enum Html5Attribute
     {

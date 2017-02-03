@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text;
 using LightBDD.Core.Results;
-using LightBDD.Reporting.Formatters;
+using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 

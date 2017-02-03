@@ -6,7 +6,7 @@ using System.Text;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Results;
 
-namespace LightBDD.Reporting.Formatters
+namespace LightBDD.Framework.Reporting.Formatters
 {
     /// <summary>
     /// Formats feature results as plain text.

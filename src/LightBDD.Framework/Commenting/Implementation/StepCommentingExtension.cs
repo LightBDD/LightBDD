@@ -3,9 +3,9 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility.Execution;
-using LightBDD.ExecutionContext;
+using LightBDD.Framework.ExecutionContext;
 
-namespace LightBDD.Commenting.Implementation
+namespace LightBDD.Framework.Commenting.Implementation
 {
     [DebuggerStepThrough]
     internal class StepCommentingExtension : IStepExecutionExtension

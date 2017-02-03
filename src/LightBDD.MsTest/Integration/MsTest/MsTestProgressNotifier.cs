@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using LightBDD.Core.Notification;
-using LightBDD.Notification;
+using LightBDD.Framework.Notification;
 
 namespace LightBDD.Integration.MsTest
 {

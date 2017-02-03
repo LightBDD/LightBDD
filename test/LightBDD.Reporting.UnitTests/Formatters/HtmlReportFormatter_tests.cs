@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using HtmlAgilityPack;
 using LightBDD.Core.Results;
-using LightBDD.Reporting.Formatters;
+using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 

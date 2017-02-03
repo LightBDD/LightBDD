@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Results;
 
-namespace LightBDD.Reporting
+namespace LightBDD.Framework.Reporting
 {
     /// <summary>
     /// Helper methods to work on feature results

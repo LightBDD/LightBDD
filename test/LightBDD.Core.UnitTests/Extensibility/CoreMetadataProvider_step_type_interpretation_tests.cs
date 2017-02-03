@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
-using LightBDD.Formatting;
+using LightBDD.Framework.Formatting;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 

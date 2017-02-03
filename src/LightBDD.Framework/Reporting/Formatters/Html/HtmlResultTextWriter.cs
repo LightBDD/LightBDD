@@ -9,7 +9,7 @@ using LightBDD.Core.Formatting;
 using LightBDD.Core.Formatting.NameDecorators;
 using LightBDD.Core.Results;
 
-namespace LightBDD.Reporting.Formatters.Html
+namespace LightBDD.Framework.Reporting.Formatters.Html
 {
     internal class HtmlResultTextWriter : IDisposable
     {

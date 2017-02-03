@@ -2,7 +2,7 @@
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
 
-namespace LightBDD.Notification
+namespace LightBDD.Framework.Notification
 {
     /// <summary>
     /// Progress notifier implementation that does nothing when called.

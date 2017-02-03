@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Metadata;
 
-namespace LightBDD.ExecutionContext.Implementation
+namespace LightBDD.Framework.ExecutionContext.Implementation
 {
     [DebuggerStepThrough]
     internal class ScenarioExecutionContextExtension : IScenarioExecutionExtension

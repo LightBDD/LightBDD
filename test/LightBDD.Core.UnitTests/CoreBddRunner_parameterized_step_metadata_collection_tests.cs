@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
-using LightBDD.Formatting.Parameters;
+using LightBDD.Framework.Formatting.Parameters;
 using LightBDD.UnitTests.Helpers;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;

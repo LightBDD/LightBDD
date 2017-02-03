@@ -7,7 +7,7 @@ using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
 
-namespace LightBDD.Notification.Implementation
+namespace LightBDD.Framework.Notification.Implementation
 {
     [DebuggerStepThrough]
     internal class ParallelProgressNotifier : IScenarioProgressNotifier, IFeatureProgressNotifier

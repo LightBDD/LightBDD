@@ -2,7 +2,7 @@
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Formatting;
 
-namespace LightBDD.Formatting.Configuration
+namespace LightBDD.Framework.Formatting.Configuration
 {
     /// <summary>
     /// Configuration class allowing to customize name formatting behavior.

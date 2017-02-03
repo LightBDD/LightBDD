@@ -1,7 +1,7 @@
 using System;
 using LightBDD.Core.Notification;
-using LightBDD.Notification;
-using LightBDD.Notification.Configuration;
+using LightBDD.Framework.Notification;
+using LightBDD.Framework.Notification.Configuration;
 using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests.Configuration

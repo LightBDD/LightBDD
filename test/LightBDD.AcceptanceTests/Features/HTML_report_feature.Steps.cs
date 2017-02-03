@@ -5,7 +5,7 @@ using System.Text;
 using LightBDD.AcceptanceTests.Helpers;
 using LightBDD.AcceptanceTests.Helpers.Builders;
 using LightBDD.Core.Results;
-using LightBDD.Reporting.Formatters;
+using LightBDD.Framework.Reporting.Formatters;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;

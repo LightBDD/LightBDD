@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
-using LightBDD.Scenarios.Basic.Implementation;
+using LightBDD.Framework.Scenarios.Basic.Implementation;
 
-namespace LightBDD.Scenarios.Basic
+namespace LightBDD.Framework.Scenarios.Basic
 {
     /// <summary>
     /// Extensions class allowing to use basic scenario syntax for running LightBDD tests.

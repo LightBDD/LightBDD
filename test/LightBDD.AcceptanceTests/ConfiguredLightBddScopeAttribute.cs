@@ -1,8 +1,8 @@
 using LightBDD.AcceptanceTests;
 using LightBDD.Core.Configuration;
-using LightBDD.Reporting;
-using LightBDD.Reporting.Configuration;
-using LightBDD.Reporting.Formatters;
+using LightBDD.Framework.Reporting;
+using LightBDD.Framework.Reporting.Configuration;
+using LightBDD.Framework.Reporting.Formatters;
 
 [assembly: ConfiguredLightBddScope]
 namespace LightBDD.AcceptanceTests

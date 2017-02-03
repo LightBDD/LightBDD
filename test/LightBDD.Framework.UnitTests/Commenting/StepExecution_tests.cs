@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
-using LightBDD.Commenting.Configuration;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
-using LightBDD.ExecutionContext.Configuration;
+using LightBDD.Framework.Commenting;
+using LightBDD.Framework.Commenting.Configuration;
+using LightBDD.Framework.ExecutionContext.Configuration;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 

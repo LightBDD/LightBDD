@@ -1,8 +1,8 @@
 using System.IO;
 using LightBDD.Core.Results;
-using LightBDD.Reporting.Formatters.Html;
+using LightBDD.Framework.Reporting.Formatters.Html;
 
-namespace LightBDD.Reporting.Formatters
+namespace LightBDD.Framework.Reporting.Formatters
 {
     /// <summary>
     /// Formats feature results as HTML.

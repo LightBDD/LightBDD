@@ -1,4 +1,4 @@
-using LightBDD.Scenarios.Basic;
+using LightBDD.Framework.Scenarios.Basic;
 
 namespace LightBDD.Example.AcceptanceTests.XUnit2.Features
 {

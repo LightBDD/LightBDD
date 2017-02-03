@@ -6,7 +6,7 @@ using System.Xml.Linq;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
 
-namespace LightBDD.Reporting.Formatters
+namespace LightBDD.Framework.Reporting.Formatters
 {
     /// <summary>
     /// Formats feature results as XML.

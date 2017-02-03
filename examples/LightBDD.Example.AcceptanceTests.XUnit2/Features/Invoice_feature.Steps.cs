@@ -1,4 +1,4 @@
-﻿using LightBDD.Formatting.Parameters;
+﻿using LightBDD.Framework.Formatting.Parameters;
 using Xunit.Abstractions;
 
 namespace LightBDD.Example.AcceptanceTests.XUnit2.Features

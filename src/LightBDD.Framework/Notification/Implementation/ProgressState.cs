@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace LightBDD.Notification.Implementation
+namespace LightBDD.Framework.Notification.Implementation
 {
     [DebuggerStepThrough]
     internal struct ProgressState

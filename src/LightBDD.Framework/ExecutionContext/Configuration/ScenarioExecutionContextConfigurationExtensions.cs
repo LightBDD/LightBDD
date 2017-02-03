@@ -1,7 +1,7 @@
 ﻿using LightBDD.Core.Configuration;
-using LightBDD.ExecutionContext.Implementation;
+using LightBDD.Framework.ExecutionContext.Implementation;
 
-namespace LightBDD.ExecutionContext.Configuration
+namespace LightBDD.Framework.ExecutionContext.Configuration
 {
     /// <summary>
     /// Configuration class allowing to enable <see cref="ScenarioExecutionContext"/> feature in LightBDD.

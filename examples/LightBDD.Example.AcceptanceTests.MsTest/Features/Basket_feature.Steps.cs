@@ -1,6 +1,6 @@
 using System.Linq;
-using LightBDD.Commenting;
 using LightBDD.Example.Domain;
+using LightBDD.Framework.Commenting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.Example.AcceptanceTests.MsTest.Features

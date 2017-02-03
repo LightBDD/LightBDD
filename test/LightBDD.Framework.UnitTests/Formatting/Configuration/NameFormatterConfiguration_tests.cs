@@ -1,7 +1,7 @@
 ﻿using System;
 using LightBDD.Core.Formatting;
-using LightBDD.Formatting;
-using LightBDD.Formatting.Configuration;
+using LightBDD.Framework.Formatting;
+using LightBDD.Framework.Formatting.Configuration;
 using Moq;
 using NUnit.Framework;
 

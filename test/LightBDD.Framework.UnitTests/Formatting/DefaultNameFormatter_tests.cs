@@ -1,4 +1,4 @@
-﻿using LightBDD.Formatting;
+﻿using LightBDD.Framework.Formatting;
 using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests.Formatting

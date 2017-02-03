@@ -1,4 +1,4 @@
-﻿namespace LightBDD.ExecutionContext
+﻿namespace LightBDD.Framework.ExecutionContext
 {
     /// <summary>
     /// Marker interface describing execution context property.

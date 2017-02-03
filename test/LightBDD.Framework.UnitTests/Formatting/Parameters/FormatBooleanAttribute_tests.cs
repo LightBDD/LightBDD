@@ -1,6 +1,6 @@
 using System;
 using System.Globalization;
-using LightBDD.Formatting.Parameters;
+using LightBDD.Framework.Formatting.Parameters;
 using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests.Formatting.Parameters
