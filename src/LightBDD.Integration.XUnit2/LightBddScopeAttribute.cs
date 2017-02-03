@@ -19,11 +19,31 @@ namespace LightBDD
         internal void SetUp()
         {
             XUnit2FeatureCoordinator.InstallSelf(Configure());
+            OnSetUp();
         }
+
+        /// <summary>
+        /// Allows to execute additional actions after LightBDD scope initialization
+        /// </summary>
+        protected virtual void OnSetUp() { }
 
         internal void TearDown()
         {
-            XUnit2FeatureCoordinator.GetInstance().Dispose();
+            try
+            {
+                OnTearDown();
+            }
+            finally
+            {
+                XUnit2FeatureCoordinator.GetInstance().Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Allows to execute additional cleanup just after LightBDD scope termination
+        /// </summary>
+        protected virtual void OnTearDown()
+        {
         }
 
         /// <summary>

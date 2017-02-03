@@ -21,6 +21,7 @@ namespace LightBDD
         public void BeforeTest(ITest test)
         {
             NUnit3FeatureCoordinator.InstallSelf(Configure());
+            OnSetUp();
         }
 
         /// <summary>
@@ -28,6 +29,18 @@ namespace LightBDD
         /// </summary>
         /// <param name="configuration">Configuration to customize.</param>
         protected virtual void OnConfigure(LightBddConfiguration configuration)
+        {
+        }
+        
+        /// <summary>
+        /// Allows to execute additional actions after LightBDD scope initialization
+        /// </summary>
+        protected virtual void OnSetUp() { }
+
+        /// <summary>
+        /// Allows to execute additional cleanup just after LightBDD scope termination
+        /// </summary>
+        protected virtual void OnTearDown()
         {
         }
 
@@ -49,7 +62,14 @@ namespace LightBDD
         /// <param name="test">The test that has just been run.</param>
         public void AfterTest(ITest test)
         {
-            NUnit3FeatureCoordinator.GetInstance().Dispose();
+            try
+            {
+                OnTearDown();
+            }
+            finally
+            {
+                NUnit3FeatureCoordinator.GetInstance().Dispose();
+            }
         }
 
         /// <summary>Provides the target for the action attribute</summary>

@@ -11,8 +11,8 @@
     },
     "net46": {
       "frameworkAssemblies": {
-        "System.Reflection": "4.0.10.0",
-        "System.Runtime": "4.0.20.0"
+        "System.Reflection": { "type": "build" },
+        "System.Runtime": { "type": "build" }
       }
     }
   },
