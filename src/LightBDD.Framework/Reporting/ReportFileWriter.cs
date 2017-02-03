@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using LightBDD.Core.Reporting;
 using LightBDD.Core.Results;
 using LightBDD.Reporting.Formatters;
 

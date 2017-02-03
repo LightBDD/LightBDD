@@ -3,7 +3,7 @@ using System.Linq;
 using LightBDD.Core.Execution.Coordination;
 using LightBDD.Core.Results;
 
-namespace LightBDD.Reporting
+namespace LightBDD.Core.Reporting
 {
     /// <summary>
     /// Class allowing to generate and save reports for executed features.

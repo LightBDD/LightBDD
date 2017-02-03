@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using LightBDD.Core.Reporting;
 using LightBDD.Core.Results;
 using LightBDD.UnitTests.Helpers;
 using Moq;

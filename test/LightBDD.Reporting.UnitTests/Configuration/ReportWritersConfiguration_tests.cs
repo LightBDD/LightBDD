@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using LightBDD.Core.Reporting;
 using LightBDD.Reporting.Configuration;
 using LightBDD.Reporting.Formatters;
 using Moq;

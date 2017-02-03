@@ -1,6 +1,6 @@
 ﻿namespace LightBDD
 {
-
+    //TODO: move all root types to LightBDD.Framework (create interfaces in core if needed). Move IBddRunner<T> to core directories. Update namespace.
     /// <summary>
     /// The base runner interface describing runner that can execute scenarios within specified context.
     /// See also: <seealso cref="IBddRunner"/>.

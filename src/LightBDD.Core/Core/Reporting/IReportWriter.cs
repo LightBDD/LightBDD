@@ -1,6 +1,6 @@
 ﻿using LightBDD.Core.Results;
 
-namespace LightBDD.Reporting
+namespace LightBDD.Core.Reporting
 {
 	/// <summary>
 	/// Interface for feature result summary writers.

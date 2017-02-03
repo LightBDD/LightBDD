@@ -2,6 +2,7 @@
 using System.Text;
 using System.Xml.Linq;
 using System.Xml.Schema;
+using LightBDD.Core.Reporting;
 using LightBDD.Core.Results;
 using LightBDD.Reporting.Formatters;
 using LightBDD.UnitTests.Helpers;

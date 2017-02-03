@@ -2,6 +2,7 @@
 
 namespace LightBDD
 {
+    //TODO: update namespace
     /// <summary>
     /// Base class for feature tests with XUnit framework.
     /// It offers <see cref="Runner"/> property allowing to execute scenarios belonging to the feature class.

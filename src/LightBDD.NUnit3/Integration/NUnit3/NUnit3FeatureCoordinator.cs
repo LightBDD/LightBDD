@@ -3,6 +3,7 @@ using System.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution.Coordination;
 using LightBDD.Core.Extensibility;
+using LightBDD.Core.Reporting;
 using LightBDD.Reporting;
 using LightBDD.Reporting.Configuration;
 
