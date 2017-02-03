@@ -5,12 +5,10 @@ using LightBDD.Framework.ExecutionContext;
 using LightBDD.Framework.ExecutionContext.Configuration;
 using LightBDD.Framework.Scenarios.Contextual;
 using LightBDD.Framework.Scenarios.Extended;
-using LightBDD.Runners.Contextual;
-using LightBDD.Scenarios.Extended;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
-namespace LightBDD.ExecutionContext.UnitTests
+namespace LightBDD.Framework.UnitTests.ExecutionContext
 {
     [TestFixture]
     public class ScenarioExecutionContext_tests

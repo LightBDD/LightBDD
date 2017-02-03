@@ -1,7 +1,7 @@
 ﻿using LightBDD.Framework.Formatting;
 using NUnit.Framework;
 
-namespace LightBDD.Core.UnitTests.Formatting
+namespace LightBDD.Framework.UnitTests.Formatting
 {
 	[TestFixture]
 	public class DefaultNameFormatter_tests

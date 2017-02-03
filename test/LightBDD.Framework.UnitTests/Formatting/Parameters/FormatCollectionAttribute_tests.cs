@@ -4,7 +4,7 @@ using System.Linq;
 using LightBDD.Framework.Formatting.Parameters;
 using NUnit.Framework;
 
-namespace LightBDD.Core.UnitTests.Formatting.Parameters
+namespace LightBDD.Framework.UnitTests.Formatting.Parameters
 {
     [TestFixture]
     public class FormatCollectionAttribute_tests

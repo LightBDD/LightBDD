@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace LightBDD.Scenarios.Extended.UnitTests.Helpers
+namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
 {
     public class Steps
     {

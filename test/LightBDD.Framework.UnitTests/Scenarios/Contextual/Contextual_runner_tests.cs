@@ -4,7 +4,7 @@ using LightBDD.Framework.Scenarios.Contextual;
 using Moq;
 using NUnit.Framework;
 
-namespace LightBDD.Runners.Contextual.UnitTests
+namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
 {
     [TestFixture]
     public class Contextual_runner_tests

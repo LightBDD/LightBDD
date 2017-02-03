@@ -7,7 +7,7 @@ using LightBDD.Framework.Scenarios.Basic;
 using Moq;
 using NUnit.Framework;
 
-namespace LightBDD.Scenarios.Basic.UnitTests
+namespace LightBDD.Framework.UnitTests.Scenarios.Basic
 {
     public interface ITestableBddRunner : IBddRunner, ICoreBddRunner { }
 

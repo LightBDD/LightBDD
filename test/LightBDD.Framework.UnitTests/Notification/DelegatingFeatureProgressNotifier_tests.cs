@@ -4,7 +4,7 @@ using LightBDD.UnitTests.Helpers;
 using Moq;
 using NUnit.Framework;
 
-namespace LightBDD.Core.UnitTests.Notification
+namespace LightBDD.Framework.UnitTests.Notification
 {
     [TestFixture]
     public class DelegatingFeatureProgressNotifier_tests

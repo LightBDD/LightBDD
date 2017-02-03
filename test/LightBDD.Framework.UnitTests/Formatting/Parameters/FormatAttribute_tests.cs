@@ -2,7 +2,7 @@
 using LightBDD.Framework.Formatting.Parameters;
 using NUnit.Framework;
 
-namespace LightBDD.Core.UnitTests.Formatting.Parameters
+namespace LightBDD.Framework.UnitTests.Formatting.Parameters
 {
     [TestFixture]
     public class FormatAttribute_tests

@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using LightBDD.Framework.Scenarios.Extended;
-using LightBDD.Scenarios.Extended.UnitTests.Helpers;
+using LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers;
 using NUnit.Framework;
 
-namespace LightBDD.Scenarios.Extended.UnitTests
+namespace LightBDD.Framework.UnitTests.Scenarios.Extended
 {
     [TestFixture]
     public class Parameterized_scenario_runner_step_type_parsing_tests : ParameterizedScenariosTestBase<NoContext>

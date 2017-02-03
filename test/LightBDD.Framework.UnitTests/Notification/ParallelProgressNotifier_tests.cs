@@ -12,7 +12,7 @@ using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 using RandomTestValues;
 
-namespace LightBDD.Core.UnitTests.Notification
+namespace LightBDD.Framework.UnitTests.Notification
 {
     [TestFixture]
     public class ParallelProgressNotifier_tests

@@ -3,7 +3,7 @@ using LightBDD.Framework.Notification;
 using LightBDD.Framework.Notification.Configuration;
 using NUnit.Framework;
 
-namespace LightBDD.Core.UnitTests.Configuration
+namespace LightBDD.Framework.UnitTests.Notification.Configuration
 {
     [TestFixture]
     public class FeatureProgressNotifierConfiguration_tests

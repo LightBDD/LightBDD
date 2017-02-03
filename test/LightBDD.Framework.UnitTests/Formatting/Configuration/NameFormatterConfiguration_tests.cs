@@ -5,7 +5,7 @@ using LightBDD.Framework.Formatting.Configuration;
 using Moq;
 using NUnit.Framework;
 
-namespace LightBDD.Core.UnitTests.Configuration
+namespace LightBDD.Framework.UnitTests.Formatting.Configuration
 {
     [TestFixture]
     public class NameFormatterConfiguration_tests

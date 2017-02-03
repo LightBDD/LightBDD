@@ -1,10 +1,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Framework.Scenarios.Extended;
-using LightBDD.Scenarios.Extended.UnitTests.Helpers;
+using LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers;
 using NUnit.Framework;
 
-namespace LightBDD.Scenarios.Extended.UnitTests
+namespace LightBDD.Framework.UnitTests.Scenarios.Extended
 {
     [TestFixture]
     public class Parameterized_scenario_runner_contextual_execution_tests : ParameterizedScenariosTestBase<MyContext>

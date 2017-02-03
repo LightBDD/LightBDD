@@ -8,7 +8,7 @@ using LightBDD.Framework.ExecutionContext.Configuration;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
-namespace LightBDD.Commenting.UnitTests
+namespace LightBDD.Framework.UnitTests.Commenting
 {
     [TestFixture]
     public class StepExecution_tests

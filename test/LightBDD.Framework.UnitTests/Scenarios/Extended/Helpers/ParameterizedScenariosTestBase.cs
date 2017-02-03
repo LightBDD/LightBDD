@@ -6,7 +6,7 @@ using LightBDD.Core.Extensibility;
 using Moq;
 using NUnit.Framework;
 
-namespace LightBDD.Scenarios.Extended.UnitTests.Helpers
+namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
 {
     public class ParameterizedScenariosTestBase<T> : Steps
     {

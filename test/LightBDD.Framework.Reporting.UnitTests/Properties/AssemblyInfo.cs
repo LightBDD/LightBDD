@@ -7,7 +7,7 @@ using NUnit.Framework;
 // associated with an assembly.
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("LightBDD.Reporting.UnitTests")]
+[assembly: AssemblyProduct("LightBDD.Framework.Reporting.UnitTests")]
 [assembly: AssemblyTrademark("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible

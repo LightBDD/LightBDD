@@ -7,7 +7,7 @@ using Moq;
 using NUnit.Framework;
 using RandomTestValues;
 
-namespace LightBDD.Reporting.UnitTests
+namespace LightBDD.Core.UnitTests.Reporting
 {
     [TestFixture]
     public class FeatureReportGenerator_tests

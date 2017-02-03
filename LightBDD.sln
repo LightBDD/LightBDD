@@ -56,7 +56,7 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Framework", "src\L
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Framework.UnitTests", "test\LightBDD.Framework.UnitTests\LightBDD.Framework.UnitTests.xproj", "{89A86E84-BC70-4F54-8022-1FFCAF1D908D}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Framework.Reporting.UnitTests", "test\LightBDD.Reporting.UnitTests\LightBDD.Framework.Reporting.UnitTests.xproj", "{BBD59A28-DF7C-455A-BEDD-7EAE6D9CDC6D}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Framework.Reporting.UnitTests", "test\LightBDD.Framework.Reporting.UnitTests\LightBDD.Framework.Reporting.UnitTests.xproj", "{BBD59A28-DF7C-455A-BEDD-7EAE6D9CDC6D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
