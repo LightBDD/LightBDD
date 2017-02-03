@@ -1,4 +1,5 @@
 ﻿using LightBDD.Framework.Formatting.Parameters;
+using LightBDD.NUnit3;
 using NUnit.Framework;
 
 namespace LightBDD.Example.AcceptanceTests.NUnit3.Features

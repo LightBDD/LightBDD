@@ -3,6 +3,7 @@ using LightBDD.Core.Configuration;
 using LightBDD.Framework.Reporting;
 using LightBDD.Framework.Reporting.Configuration;
 using LightBDD.Framework.Reporting.Formatters;
+using LightBDD.NUnit3;
 
 [assembly: ConfiguredLightBddScope]
 namespace LightBDD.AcceptanceTests

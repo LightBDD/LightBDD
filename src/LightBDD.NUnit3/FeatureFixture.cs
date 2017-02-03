@@ -1,7 +1,7 @@
 using LightBDD.Core.Extensibility;
 using NUnit.Framework;
 
-namespace LightBDD
+namespace LightBDD.NUnit3
 {
     //TODO: update namespace
     /// <summary>

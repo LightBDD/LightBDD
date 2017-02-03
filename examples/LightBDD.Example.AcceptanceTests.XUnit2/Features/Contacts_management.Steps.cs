@@ -1,4 +1,5 @@
 
+using LightBDD.XUnit2;
 using Xunit.Abstractions;
 
 namespace LightBDD.Example.AcceptanceTests.XUnit2.Features

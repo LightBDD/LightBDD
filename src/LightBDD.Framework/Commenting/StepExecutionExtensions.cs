@@ -5,6 +5,7 @@ using LightBDD.Framework.ExecutionContext;
 
 namespace LightBDD.Framework.Commenting
 {
+    //TODO: autoregister
     /// <summary>
     /// Extension class for <see cref="StepExecution"/> allowing to comment currently running steps.
     /// </summary>

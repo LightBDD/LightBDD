@@ -1,8 +1,8 @@
 ﻿using System;
 using LightBDD.Core.Extensibility;
-using LightBDD.Integration.XUnit2;
+using LightBDD.XUnit2.Implementation;
 
-namespace LightBDD
+namespace LightBDD.XUnit2
 {
     /// <summary>
     /// Class allowing to instantiate <see cref="IFeatureBddRunner"/> that is being configured to work with XUnit framework.

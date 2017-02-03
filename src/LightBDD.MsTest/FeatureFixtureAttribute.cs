@@ -1,7 +1,7 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD
+namespace LightBDD.MsTest
 {
     /// <summary>
     /// Attribute that should be applied to all test classes representing feature tests.

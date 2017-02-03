@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Results;
 using LightBDD.Framework.Scenarios.Basic;
+using LightBDD.MsTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.Integration.MsTest.UnitTests

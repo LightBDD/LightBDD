@@ -1,8 +1,8 @@
 ﻿using System;
 using LightBDD.Core.Extensibility;
-using LightBDD.Integration.MsTest;
+using LightBDD.MsTest.Implementation;
 
-namespace LightBDD
+namespace LightBDD.MsTest
 {
     /// <summary>
     /// Class allowing to instantiate <see cref="IFeatureBddRunner"/> that is being configured to work with MsTest framework.

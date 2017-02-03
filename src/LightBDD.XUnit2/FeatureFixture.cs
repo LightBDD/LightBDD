@@ -1,6 +1,6 @@
 ﻿using Xunit.Abstractions;
 
-namespace LightBDD
+namespace LightBDD.XUnit2
 {
     //TODO: update namespace
     /// <summary>

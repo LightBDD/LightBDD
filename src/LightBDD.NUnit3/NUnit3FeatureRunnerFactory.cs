@@ -1,8 +1,8 @@
 ﻿using System;
 using LightBDD.Core.Extensibility;
-using LightBDD.Integration.NUnit3;
+using LightBDD.NUnit3.Implementation;
 
-namespace LightBDD
+namespace LightBDD.NUnit3
 {
     /// <summary>
     /// Class allowing to instantiate <see cref="IFeatureBddRunner"/> that is being configured to work with NUnit framework.

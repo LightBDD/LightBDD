@@ -1,4 +1,5 @@
 ﻿using LightBDD;
+using LightBDD.XUnit2;
 using Xunit;
 using Xunit.Abstractions;
 

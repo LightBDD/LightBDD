@@ -1,4 +1,5 @@
 ﻿using LightBDD;
+using LightBDD.NUnit3;
 using NUnit.Framework;
 
 [assembly: LightBddScope]

@@ -1,5 +1,6 @@
 using LightBDD.Example.Services;
 using LightBDD.Framework.Commenting;
+using LightBDD.XUnit2;
 using Xunit;
 using Xunit.Abstractions;
 

@@ -1,5 +1,6 @@
 using LightBDD.Core.Configuration;
 using LightBDD.Framework.Commenting.Configuration;
+using LightBDD.MsTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.Example.AcceptanceTests.MsTest

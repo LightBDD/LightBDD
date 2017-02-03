@@ -1,6 +1,7 @@
 using LightBDD.Example.AcceptanceTests.NUnit3.Features.Contexts;
 using LightBDD.Framework.Scenarios.Contextual;
 using LightBDD.Framework.Scenarios.Extended;
+using LightBDD.NUnit3;
 
 namespace LightBDD.Example.AcceptanceTests.NUnit3.Features
 {

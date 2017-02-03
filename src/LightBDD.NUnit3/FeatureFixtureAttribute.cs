@@ -1,9 +1,9 @@
 using System;
-using LightBDD.Integration;
+using LightBDD.NUnit3.Implementation;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 
-namespace LightBDD
+namespace LightBDD.NUnit3
 {
     /// <summary>
     /// Attribute that should be applied to all test classes representing feature tests.

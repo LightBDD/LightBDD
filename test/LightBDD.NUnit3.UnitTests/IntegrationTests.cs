@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Results;
 using LightBDD.Framework.Scenarios.Basic;
+using LightBDD.NUnit3;
 using NUnit.Framework;
 
 namespace LightBDD.Integration.NUnit3.UnitTests

@@ -1,5 +1,6 @@
 using LightBDD.Example.Services;
 using LightBDD.Framework.Commenting;
+using LightBDD.NUnit3;
 using NUnit.Framework;
 
 namespace LightBDD.Example.AcceptanceTests.NUnit3.Features

@@ -1,10 +1,10 @@
 using System;
 using LightBDD.Core.Configuration;
 using LightBDD.Framework.Notification.Configuration;
-using LightBDD.Integration.XUnit2;
+using LightBDD.XUnit2.Implementation;
 using Xunit.Sdk;
 
-namespace LightBDD
+namespace LightBDD.XUnit2
 {
     /// <summary>
     /// An attribute allowing to initialize and finalize LightBDD in XUnit framework.
@@ -12,7 +12,7 @@ namespace LightBDD
     /// The <c>[assembly:LightBddScope]</c> attribute has to be present in assembly containing LightBDD tests.
     /// It is possible to customize the LightBDD configuration by overriding the <see cref="OnConfigure"/>() method.
     /// </summary>
-    [TestFrameworkDiscoverer("LightBDD.Integration.XUnit2.Customization.TestFrameworkTypeDiscoverer", "LightBDD.XUnit2")]
+    [TestFrameworkDiscoverer("LightBDD.XUnit2.Implementation.Customization.TestFrameworkTypeDiscoverer", "LightBDD.XUnit2")]
     [AttributeUsage(AttributeTargets.Assembly)]
     public class LightBddScopeAttribute : Attribute, ITestFrameworkAttribute
     {

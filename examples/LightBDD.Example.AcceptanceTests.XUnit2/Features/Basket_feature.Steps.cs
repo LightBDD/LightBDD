@@ -1,6 +1,7 @@
 using System.Linq;
 using LightBDD.Example.Domain;
 using LightBDD.Framework.Commenting;
+using LightBDD.XUnit2;
 using Xunit;
 using Xunit.Abstractions;
 

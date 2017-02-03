@@ -1,11 +1,11 @@
 using System;
 using LightBDD.Core.Configuration;
 using LightBDD.Framework.Notification.Configuration;
-using LightBDD.Integration.NUnit3;
+using LightBDD.NUnit3.Implementation;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 
-namespace LightBDD
+namespace LightBDD.NUnit3
 {
     /// <summary>
     /// An attribute allowing to initialize and finalize LightBDD in NUnit framework.

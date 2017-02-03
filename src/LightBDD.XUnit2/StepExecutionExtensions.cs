@@ -1,7 +1,7 @@
 using LightBDD.Core.Results;
-using LightBDD.Integration.XUnit2.Customization;
+using LightBDD.XUnit2.Implementation.Customization;
 
-namespace LightBDD
+namespace LightBDD.XUnit2
 {
     /// <summary>
     /// Extension class for <see cref="StepExecution"/> allowing to ignore currently running steps.

@@ -1,9 +1,9 @@
 ﻿using System;
 using LightBDD.Core.Configuration;
 using LightBDD.Framework.Notification.Configuration;
-using LightBDD.Integration.MsTest;
+using LightBDD.MsTest.Implementation;
 
-namespace LightBDD
+namespace LightBDD.MsTest
 {
     /// <summary>
     /// LightBddScope class allowing to initialize and finalize LightBDD in MsTest framework.

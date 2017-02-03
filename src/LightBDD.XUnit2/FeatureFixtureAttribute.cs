@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Reflection;
-using LightBDD.Integration;
+using LightBDD.XUnit2.Implementation;
 using Xunit.Sdk;
 
-namespace LightBDD
+namespace LightBDD.XUnit2
 {
     /// <summary>
     /// Attribute that should be applied to all test classes representing feature tests.

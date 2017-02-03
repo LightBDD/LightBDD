@@ -1,7 +1,7 @@
-﻿using LightBDD.Integration;
+﻿using LightBDD.MsTest.Implementation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD
+namespace LightBDD.MsTest
 {
     /// <summary>
     /// Scenario attribute that should be used for MsTest framework tests, as a replacement for [TestMethod] attribute.

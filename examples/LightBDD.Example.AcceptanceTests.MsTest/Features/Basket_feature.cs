@@ -1,4 +1,5 @@
 using LightBDD.Framework.Scenarios.Basic;
+using LightBDD.MsTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.Example.AcceptanceTests.MsTest.Features

@@ -1,4 +1,4 @@
-﻿namespace LightBDD
+﻿namespace LightBDD.MsTest
 {
     //TODO: update namespace
     /// <summary>
