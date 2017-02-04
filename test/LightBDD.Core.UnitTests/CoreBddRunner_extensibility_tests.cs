@@ -20,7 +20,7 @@ namespace LightBDD.Core.UnitTests
         [ScenarioCategory("standard local category")]
         public void It_should_collect_custom_categories()
         {
-            var feature = TestableFeatureBddRunnerFactory.GetRunner(GetType());
+            var feature = TestableFeatureRunnerRepository.GetRunner(GetType());
             var runner = feature.GetRunner(this);
             runner.Test().TestScenario(Some_step);
             var scenario = feature.GetFeatureResult().GetScenarios().Single();
@@ -30,7 +30,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_collect_custom_feature_description()
         {
-            var feature = TestableFeatureBddRunnerFactory.GetRunner(GetType());
+            var feature = TestableFeatureRunnerRepository.GetRunner(GetType());
             var runner = feature.GetRunner(this);
             runner.Test().TestScenario(Some_step);
             Assert.That(feature.GetFeatureResult().Info.Description, Is.EqualTo("some description"));
@@ -45,7 +45,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_collect_standard_feature_description_if_both_are_specified()
         {
-            var feature = TestableFeatureBddRunnerFactory.GetRunner(typeof(Feature_with_two_descriptions));
+            var feature = TestableFeatureRunnerRepository.GetRunner(typeof(Feature_with_two_descriptions));
             var runner = feature.GetRunner(new Feature_with_two_descriptions());
             runner.Test().TestScenario(Some_step);
             Assert.That(feature.GetFeatureResult().Info.Description, Is.EqualTo("standard description"));
@@ -54,7 +54,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_capture_step_status_with_custom_exception_mapping()
         {
-            var feature = TestableFeatureBddRunnerFactory.GetRunner(GetType());
+            var feature = TestableFeatureRunnerRepository.GetRunner(GetType());
             var runner = feature.GetRunner(this);
             Assert.Throws<CustomIgnoreException>(() => runner.Test().TestScenario(
                 Given_step_one,
@@ -73,7 +73,7 @@ namespace LightBDD.Core.UnitTests
         [TestCase(" \t\r\n")]
         public void It_should_not_allow_to_run_scenarios_without_name(string name)
         {
-            var exception = Assert.Throws<ArgumentException>(() => TestableFeatureBddRunnerFactory.GetRunner(GetType()).GetRunner(this).Integrate().NewScenario().WithName(name));
+            var exception = Assert.Throws<ArgumentException>(() => TestableFeatureRunnerRepository.GetRunner(GetType()).GetRunner(this).Integrate().NewScenario().WithName(name));
             Assert.That(exception.Message, Does.StartWith("Unable to create scenario without name"));
         }
     }

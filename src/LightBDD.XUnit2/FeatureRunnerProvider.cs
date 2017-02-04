@@ -1,13 +1,13 @@
 ﻿using System;
 using LightBDD.Core.Extensibility;
-using LightBDD.NUnit3.Implementation;
+using LightBDD.XUnit2.Implementation;
 
-namespace LightBDD.NUnit3
+namespace LightBDD.XUnit2
 {
     /// <summary>
-    /// Class allowing to instantiate <see cref="IFeatureBddRunner"/> that is being configured to work with NUnit framework.
+    /// Class allowing to instantiate <see cref="IFeatureBddRunner"/> that is being configured to work with XUnit framework.
     /// </summary>
-    public static class NUnit3FeatureRunnerFactory
+    public static class FeatureRunnerProvider
     {
         /// <summary>
         /// Returns <see cref="IFeatureBddRunner"/> for given <paramref name="featureType"/>.
@@ -16,7 +16,7 @@ namespace LightBDD.NUnit3
         /// <returns><see cref="IFeatureBddRunner"/> object.</returns>
         public static IFeatureBddRunner GetRunnerFor(Type featureType)
         {
-            return NUnit3FeatureCoordinator.GetInstance().RunnerFactory.GetRunnerFor(featureType);
+            return XUnit2FeatureCoordinator.GetInstance().RunnerRepository.GetRunnerFor(featureType);
         }
     }
 }

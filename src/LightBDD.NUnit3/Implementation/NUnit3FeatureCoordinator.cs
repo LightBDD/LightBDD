@@ -19,13 +19,13 @@ namespace LightBDD.NUnit3.Implementation
             return Instance;
         }
 
-        public NUnit3FeatureCoordinator(FeatureBddRunnerFactory runnerFactory, IFeatureAggregator featureAggregator) : base(runnerFactory, featureAggregator)
+        public NUnit3FeatureCoordinator(FeatureRunnerRepository runnerRepository, IFeatureAggregator featureAggregator) : base(runnerRepository, featureAggregator)
         {
         }
 
         internal static void InstallSelf(LightBddConfiguration configuration)
         {
-            Install(new NUnit3FeatureCoordinator(new NUnit3FeatureBddRunnerFactory(configuration), new FeatureReportGenerator(configuration.ReportWritersConfiguration().ToArray())));
+            Install(new NUnit3FeatureCoordinator(new NUnit3FeatureRunnerRepository(configuration), new FeatureReportGenerator(configuration.ReportWritersConfiguration().ToArray())));
         }
     }
 }

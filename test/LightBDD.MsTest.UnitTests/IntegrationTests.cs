@@ -93,7 +93,7 @@ namespace LightBDD.Integration.MsTest.UnitTests
 
         private IScenarioResult GetScenarioResult(string scenarioId)
         {
-            return MsTestFeatureRunnerFactory.GetRunnerFor(GetType())
+            return FeatureRunnerProvider.GetRunnerFor(GetType())
                 .GetFeatureResult()
                 .GetScenarios()
                 .Single(s => s.Info.Labels.Contains(scenarioId));

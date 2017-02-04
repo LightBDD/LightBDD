@@ -9,49 +9,49 @@ namespace LightBDD.Core.UnitTests.Extensibility
     [TestFixture]
     public class BddRunnerFactory_tests
     {
-        private FeatureBddRunnerFactory _factory;
+        private FeatureRunnerRepository _repository;
 
         [SetUp]
         public void SetUp()
         {
-            _factory = new TestableFeatureBddRunnerFactory();
+            _repository = new TestableFeatureRunnerRepository();
         }
 
         [Test]
         public void It_should_throw_if_runner_requested_with_null_type_parameter()
         {
-            var ex = Assert.Throws<ArgumentNullException>(() => _factory.GetRunnerFor(null));
+            var ex = Assert.Throws<ArgumentNullException>(() => _repository.GetRunnerFor(null));
             Assert.That(ex.Message, Does.Contain("featureType"));
         }
 
         [Test]
         public void It_should_throw_if_runner_requested_with_null_fixture()
         {
-            var ex = Assert.Throws<ArgumentNullException>(() => _factory.GetRunnerFor(GetType()).GetRunner(null));
+            var ex = Assert.Throws<ArgumentNullException>(() => _repository.GetRunnerFor(GetType()).GetRunner(null));
             Assert.That(ex.Message, Does.Contain("fixture"));
         }
 
         [Test]
         public void It_should_throw_if_runner_requested_with_fixture_of_different_type()
         {
-            var ex = Assert.Throws<ArgumentException>(() => _factory.GetRunnerFor(GetType()).GetRunner(new object()));
+            var ex = Assert.Throws<ArgumentException>(() => _repository.GetRunnerFor(GetType()).GetRunner(new object()));
             Assert.That(ex.Message, Is.EqualTo($"Provided fixture instance '{typeof(object)}' type does not match feature type '{GetType()}'"));
         }
 
         [Test]
         public void It_should_instantiate_only_one_runner_per_type()
         {
-            var runner1 = _factory.GetRunnerFor(GetType());
-            var runner2 = _factory.GetRunnerFor(GetType());
+            var runner1 = _repository.GetRunnerFor(GetType());
+            var runner2 = _repository.GetRunnerFor(GetType());
             Assert.That(runner1, Is.SameAs(runner2));
         }
 
         [Test]
         public void It_should_return_all_runners()
         {
-            _factory.GetRunnerFor(GetType());
-            _factory.GetRunnerFor(typeof(BddRunnerExtensions_tests));
-            Assert.That(_factory.AllRunners.Count(), Is.EqualTo(2));
+            _repository.GetRunnerFor(GetType());
+            _repository.GetRunnerFor(typeof(BddRunnerExtensions_tests));
+            Assert.That(_repository.AllRunners.Count(), Is.EqualTo(2));
         }
     }
 }

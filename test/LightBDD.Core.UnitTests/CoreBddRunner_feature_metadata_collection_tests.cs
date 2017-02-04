@@ -23,7 +23,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_collect_all_feature_details()
         {
-            var feature = TestableFeatureBddRunnerFactory.GetRunner(typeof(Feature_with_all_details)).GetFeatureResult();
+            var feature = TestableFeatureRunnerRepository.GetRunner(typeof(Feature_with_all_details)).GetFeatureResult();
             Assert.That(feature.Info.Name.ToString(), Is.EqualTo("Feature with all details"));
             Assert.That(feature.Info.Labels, Is.EqualTo(new[] { "Ticket-1", "Ticket-2" }));
             Assert.That(feature.Info.Description, Is.EqualTo("Runner tests description"));
@@ -32,7 +32,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_collect_feature_with_labels()
         {
-            var feature = TestableFeatureBddRunnerFactory.GetRunner(typeof(Feature_with_labels)).GetFeatureResult();
+            var feature = TestableFeatureRunnerRepository.GetRunner(typeof(Feature_with_labels)).GetFeatureResult();
             Assert.That(feature.Info.Name.ToString(), Is.EqualTo("Feature with labels"));
             Assert.That(feature.Info.Labels, Is.EqualTo(new[] { "Ticket-1", "Ticket-2" }));
             Assert.Null(feature.Info.Description);
@@ -41,7 +41,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_collect_feature_with_description()
         {
-            var feature = TestableFeatureBddRunnerFactory.GetRunner(typeof(Feature_with_description)).GetFeatureResult();
+            var feature = TestableFeatureRunnerRepository.GetRunner(typeof(Feature_with_description)).GetFeatureResult();
             Assert.That(feature.Info.Name.ToString(), Is.EqualTo("Feature with description"));
             Assert.That(feature.Info.Description, Is.EqualTo("Runner tests description"));
             Assert.That(feature.Info.Labels, Is.Empty);
@@ -50,7 +50,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_collect_plain_feature()
         {
-            var feature = TestableFeatureBddRunnerFactory.GetRunner(typeof(Feature_without_details)).GetFeatureResult();
+            var feature = TestableFeatureRunnerRepository.GetRunner(typeof(Feature_without_details)).GetFeatureResult();
             Assert.That(feature.Info.Name.ToString(), Is.EqualTo("Feature without details"));
             Assert.Null(feature.Info.Description);
             Assert.That(feature.Info.Labels, Is.Empty);

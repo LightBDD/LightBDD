@@ -1,13 +1,13 @@
 ﻿using System;
 using LightBDD.Core.Extensibility;
-using LightBDD.XUnit2.Implementation;
+using LightBDD.MsTest.Implementation;
 
-namespace LightBDD.XUnit2
+namespace LightBDD.MsTest
 {
     /// <summary>
-    /// Class allowing to instantiate <see cref="IFeatureBddRunner"/> that is being configured to work with XUnit framework.
+    /// Class allowing to instantiate <see cref="IFeatureBddRunner"/> that is being configured to work with MsTest framework.
     /// </summary>
-    public static class XUnit2FeatureRunnerFactory
+    public static class FeatureRunnerProvider
     {
         /// <summary>
         /// Returns <see cref="IFeatureBddRunner"/> for given <paramref name="featureType"/>.
@@ -16,7 +16,7 @@ namespace LightBDD.XUnit2
         /// <returns><see cref="IFeatureBddRunner"/> object.</returns>
         public static IFeatureBddRunner GetRunnerFor(Type featureType)
         {
-            return XUnit2FeatureCoordinator.GetInstance().RunnerFactory.GetRunnerFor(featureType);
+            return MsTestFeatureCoordinator.GetInstance().RunnerRepository.GetRunnerFor(featureType);
         }
     }
 }

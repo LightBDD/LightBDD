@@ -2,7 +2,6 @@
 
 namespace LightBDD.XUnit2
 {
-    //TODO: update namespace
     /// <summary>
     /// Base class for feature tests with XUnit framework.
     /// It offers <see cref="Runner"/> property allowing to execute scenarios belonging to the feature class.
@@ -25,7 +24,7 @@ namespace LightBDD.XUnit2
         protected FeatureFixture(ITestOutputHelper output)
         {
             TestOutput = output;
-            Runner = XUnit2FeatureRunnerFactory.GetRunnerFor(GetType()).GetRunner(this);
+            Runner = FeatureRunnerProvider.GetRunnerFor(GetType()).GetRunner(this);
         }
     }
 }

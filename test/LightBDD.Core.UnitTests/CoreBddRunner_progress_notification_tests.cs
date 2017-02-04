@@ -26,7 +26,7 @@ namespace LightBDD.Core.UnitTests
         {
             var progressNotifier = new CapturingProgressNotifier();
 
-            var feature = new TestableFeatureBddRunnerFactory(progressNotifier, fixture => progressNotifier).GetRunnerFor(GetType());
+            var feature = new TestableFeatureRunnerRepository(progressNotifier, fixture => progressNotifier).GetRunnerFor(GetType());
             var runner = feature.GetRunner(this);
             try
             {
@@ -63,7 +63,7 @@ namespace LightBDD.Core.UnitTests
         {
             var progressNotifier = new CapturingProgressNotifier();
 
-            var feature = new TestableFeatureBddRunnerFactory(progressNotifier, fixture => progressNotifier).GetRunnerFor(GetType());
+            var feature = new TestableFeatureRunnerRepository(progressNotifier, fixture => progressNotifier).GetRunnerFor(GetType());
             var runner = feature.GetRunner(this);
             try
             {
@@ -101,7 +101,7 @@ namespace LightBDD.Core.UnitTests
                 return notifier;
             };
 
-            var runner = new TestableFeatureBddRunnerFactory(NoProgressNotifier.Default, captureNotifierCreation).GetRunnerFor(GetType()).GetRunner(this);
+            var runner = new TestableFeatureRunnerRepository(NoProgressNotifier.Default, captureNotifierCreation).GetRunnerFor(GetType()).GetRunner(this);
 
             runner.Test().TestNamedScenario("scenario1", TestStep.CreateSync(Given_step_one));
             runner.Test().TestNamedScenario("scenario2", TestStep.CreateSync(Given_step_one));

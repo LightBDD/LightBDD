@@ -16,7 +16,7 @@ namespace LightBDD.Framework.UnitTests.Commenting
         [Test]
         public void Comment_should_throw_exception_if_feature_is_not_enabled()
         {
-            var runner = new TestableFeatureBddRunnerFactory(
+            var runner = new TestableFeatureRunnerRepository(
                     TestableIntegrationContextBuilder.Default()
                     .WithExecutionExtensions(new ExecutionExtensionsConfiguration().EnableScenarioExecutionContext())
                 )
@@ -71,7 +71,7 @@ namespace LightBDD.Framework.UnitTests.Commenting
             var context = TestableIntegrationContextBuilder.Default()
                 .WithExecutionExtensions(new ExecutionExtensionsConfiguration().EnableStepCommenting());
 
-            return new TestableFeatureBddRunnerFactory(context).GetRunnerFor(GetType());
+            return new TestableFeatureRunnerRepository(context).GetRunnerFor(GetType());
         }
     }
 }

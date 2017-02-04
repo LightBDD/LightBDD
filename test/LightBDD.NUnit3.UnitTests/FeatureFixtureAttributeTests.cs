@@ -10,7 +10,7 @@ namespace LightBDD.Integration.NUnit3.UnitTests
         [Scenario]
         public void Runner_should_throw_meaningful_exception_if_scenario_is_not_run_from_class_with_FeatureFixture_attribute()
         {
-            var runner = NUnit3FeatureRunnerFactory.GetRunnerFor(GetType()).GetRunner(this);
+            var runner = FeatureRunnerProvider.GetRunnerFor(GetType()).GetRunner(this);
             Exception ex = Assert.Throws<InvalidOperationException>(() => runner.RunScenario(Some_step));
             Assert.That(
                 ex.Message,

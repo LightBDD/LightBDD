@@ -19,13 +19,13 @@ namespace LightBDD.XUnit2.Implementation
             return Instance;
         }
 
-        public XUnit2FeatureCoordinator(FeatureBddRunnerFactory runnerFactory, IFeatureAggregator featureAggregator) : base(runnerFactory, featureAggregator)
+        public XUnit2FeatureCoordinator(FeatureRunnerRepository runnerRepository, IFeatureAggregator featureAggregator) : base(runnerRepository, featureAggregator)
         {
         }
 
         internal static void InstallSelf(LightBddConfiguration configuration)
         {
-            Install(new XUnit2FeatureCoordinator(new XUnit2FeatureBddRunnerFactory(configuration), new FeatureReportGenerator(configuration.ReportWritersConfiguration().ToArray())));
+            Install(new XUnit2FeatureCoordinator(new XUnit2FeatureRunnerRepository(configuration), new FeatureReportGenerator(configuration.ReportWritersConfiguration().ToArray())));
         }
     }
 }

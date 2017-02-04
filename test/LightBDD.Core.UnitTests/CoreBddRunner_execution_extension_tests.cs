@@ -71,7 +71,7 @@ namespace LightBDD.Core.UnitTests
 
         private IFeatureBddRunner CreateRunner(IExecutionExtensions extensions)
         {
-            return new TestableFeatureBddRunnerFactory(TestableIntegrationContextBuilder.Default().WithExecutionExtensions(extensions)).GetRunnerFor(GetType());
+            return new TestableFeatureRunnerRepository(TestableIntegrationContextBuilder.Default().WithExecutionExtensions(extensions)).GetRunnerFor(GetType());
         }
     }
 
