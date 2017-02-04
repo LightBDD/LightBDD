@@ -1,5 +1,6 @@
 ﻿namespace LightBDD.Framework
 {
+    //TODO: revisit runners
     /// <summary>
     /// The base runner interface describing runner that can execute scenarios within specified context.
     /// See also: <seealso cref="IBddRunner"/>.
