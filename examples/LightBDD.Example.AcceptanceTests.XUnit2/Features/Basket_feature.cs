@@ -1,3 +1,4 @@
+using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.XUnit2;
 

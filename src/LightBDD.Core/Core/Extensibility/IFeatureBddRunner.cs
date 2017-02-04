@@ -12,13 +12,13 @@ namespace LightBDD.Core.Extensibility
     public interface IFeatureBddRunner : IDisposable
     {
         /// <summary>
-        /// Returns <see cref="IBddRunner"/> instance allowing to execute scenario tests on <paramref name="fixture"/> object.
+        /// Returns <see cref="ICoreBddRunner"/> instance allowing to execute scenario tests on <paramref name="fixture"/> object.
         /// </summary>
         /// <param name="fixture">Fixture object containing scenario tests to execute.</param>
-        /// <returns><see cref="IBddRunner"/> instance.</returns>
+        /// <returns><see cref="ICoreBddRunner"/> instance.</returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="fixture"/> is null.</exception>
         /// <exception cref="ArgumentException">Throws when <paramref name="fixture"/> type does not match feature type that <see cref="IFeatureBddRunner"/> has been created for by <see cref="FeatureRunnerRepository"/>.</exception>
-        IBddRunner GetRunner(object fixture);
+        ICoreBddRunner GetRunner(object fixture);
         /// <summary>
         /// Returns current results of feature tests.
         /// </summary>

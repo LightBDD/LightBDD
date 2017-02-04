@@ -1,6 +1,7 @@
 using System;
+using LightBDD.Core.Extensibility;
 
-namespace LightBDD
+namespace LightBDD.Framework
 {
     /// <summary>
     /// Feature description attribute that can be applied on feature test class.
@@ -10,12 +11,12 @@ namespace LightBDD
     /// If given implementation supports alternative description attributes, and both are applied on class, this one would be used.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class FeatureDescriptionAttribute : Attribute
+    public class FeatureDescriptionAttribute : Attribute, IFeatureDescriptionAttribute
     {
         /// <summary>
         /// Feature description.
         /// </summary>
-        public string Description { get; private set; }
+        public string Description { get; }
 
         /// <summary>
         /// Constructor allowing to associate description.

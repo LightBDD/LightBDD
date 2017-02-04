@@ -1,4 +1,5 @@
 ﻿using LightBDD.Core.Execution;
+using LightBDD.Framework;
 using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests

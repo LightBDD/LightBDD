@@ -1,6 +1,7 @@
 ﻿using System;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Results;
+using LightBDD.Framework;
 using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests.Extensibility

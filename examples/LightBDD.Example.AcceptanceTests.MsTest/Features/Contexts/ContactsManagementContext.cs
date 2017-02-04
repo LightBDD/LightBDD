@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Linq;
 using LightBDD.Example.Domain;
+using LightBDD.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.Example.AcceptanceTests.MsTest.Features.Contexts

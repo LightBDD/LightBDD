@@ -23,7 +23,7 @@ namespace LightBDD.Framework.UnitTests.Commenting
                 .GetRunnerFor(GetType())
                 .GetRunner(this);
 
-            var exception = Assert.Throws<InvalidOperationException>(() => runner.Test().TestScenario(TestStep.CreateAsync(Commented_step, "some comment")));
+            var exception = Assert.Throws<InvalidOperationException>(() => runner.AsRunner().Test().TestScenario(TestStep.CreateAsync(Commented_step, "some comment")));
 
             Assert.That(exception.Message, Is.EqualTo("Current task is not executing any scenario steps or commenting feature is not enabled in LightBddConfiguration. Ensure that configuration.ExecutionExtensionsConfiguration().EnableStepCommenting() is called during LightBDD initialization and commenting feature is called from task running scenario step."));
         }
@@ -36,7 +36,7 @@ namespace LightBDD.Framework.UnitTests.Commenting
             var feature = GetFeatureRunner();
             var runner = feature.GetRunner(this);
 
-            runner.Test().TestScenario(TestStep.CreateAsync(Commented_step, comment));
+            runner.AsRunner().Test().TestScenario(TestStep.CreateAsync(Commented_step, comment));
 
             Assert.That(feature.GetFeatureResult().GetScenarios().Single().GetSteps().Single().Comments.ToArray(), Is.Empty);
         }
@@ -50,7 +50,7 @@ namespace LightBDD.Framework.UnitTests.Commenting
             var comment = "abc";
             var otherComment = "def";
 
-            runner.Test().TestScenario(
+            runner.AsRunner().Test().TestScenario(
                 TestStep.CreateAsync(Commented_step, comment),
                 TestStep.CreateAsync(Commented_step, otherComment));
 

@@ -5,7 +5,7 @@ using LightBDD.Core.Extensibility;
 namespace LightBDD.Core.Execution.Implementation
 {
     [DebuggerStepThrough]
-    internal class CoreBddRunner : IBddRunner, ICoreBddRunner
+    internal class CoreBddRunner : ICoreBddRunner
     {
         private readonly object _fixture;
         private readonly Func<object, IScenarioRunner> _scenarioRunnerProvider;

@@ -29,7 +29,7 @@ namespace LightBDD.Core.Execution.Implementation
             integrationContext.FeatureProgressNotifier.NotifyFeatureStart(_featureResult.Info);
         }
 
-        public IBddRunner GetRunner(object fixture)
+        public ICoreBddRunner GetRunner(object fixture)
         {
             VerifyDisposed();
 

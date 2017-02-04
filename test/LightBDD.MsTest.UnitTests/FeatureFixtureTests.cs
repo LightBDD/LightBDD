@@ -1,4 +1,5 @@
-﻿using LightBDD.MsTest;
+﻿using LightBDD.Framework;
+using LightBDD.MsTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.Integration.MsTest.UnitTests

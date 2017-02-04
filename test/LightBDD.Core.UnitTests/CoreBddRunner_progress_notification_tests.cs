@@ -5,6 +5,7 @@ using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
+using LightBDD.Framework;
 using LightBDD.Framework.Notification;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
@@ -30,7 +31,7 @@ namespace LightBDD.Core.UnitTests
             var runner = feature.GetRunner(this);
             try
             {
-                runner.Test().TestScenario(
+                runner.AsRunner().Test().TestScenario(
                     Given_step_one,
                     When_step_two_with_comment,
                     Then_step_three_should_throw_exception);
@@ -67,7 +68,7 @@ namespace LightBDD.Core.UnitTests
             var runner = feature.GetRunner(this);
             try
             {
-                runner.Test().TestScenario(
+                runner.AsRunner().Test().TestScenario(
                     TestStep.CreateAsync(Given_step_with_parameter, () => "abc"),
                     TestStep.CreateAsync(When_step_with_parameter, ThrowingParameterInvocation),
                     TestStep.CreateAsync(Then_step_with_parameter, () => 2.22));
@@ -103,9 +104,9 @@ namespace LightBDD.Core.UnitTests
 
             var runner = new TestableFeatureRunnerRepository(NoProgressNotifier.Default, captureNotifierCreation).GetRunnerFor(GetType()).GetRunner(this);
 
-            runner.Test().TestNamedScenario("scenario1", TestStep.CreateSync(Given_step_one));
-            runner.Test().TestNamedScenario("scenario2", TestStep.CreateSync(Given_step_one));
-            runner.Test().TestNamedScenario("scenario3", TestStep.CreateSync(Given_step_one));
+            runner.AsRunner().Test().TestNamedScenario("scenario1", TestStep.CreateSync(Given_step_one));
+            runner.AsRunner().Test().TestNamedScenario("scenario2", TestStep.CreateSync(Given_step_one));
+            runner.AsRunner().Test().TestNamedScenario("scenario3", TestStep.CreateSync(Given_step_one));
 
             Assert.That(notifiers.Count, Is.EqualTo(3));
             Assert.That(notifiers[0].Notifications.Count(n => n.StartsWith("Scenario Start: scenario1")), Is.EqualTo(1), "scenario1");

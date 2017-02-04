@@ -1,4 +1,6 @@
-﻿namespace LightBDD.MsTest
+﻿using LightBDD.Framework;
+
+namespace LightBDD.MsTest
 {
     /// <summary>
     /// Base class for feature tests with MSTest framework.
@@ -16,7 +18,7 @@
         /// </summary>
         protected FeatureFixture()
         {
-            Runner = FeatureRunnerProvider.GetRunnerFor(GetType()).GetRunner(this);
+            Runner = FeatureRunnerProvider.GetRunnerFor(GetType()).GetRunner(this).AsRunner();
         }
     }
 }

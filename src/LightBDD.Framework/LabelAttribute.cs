@@ -1,6 +1,7 @@
 using System;
+using LightBDD.Core.Extensibility;
 
-namespace LightBDD
+namespace LightBDD.Framework
 {
     /// <summary>
     /// Label attribute that can be applied on feature test class or scenario method.
@@ -8,12 +9,12 @@ namespace LightBDD
     /// Multiple labels per item are supported.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = true)]
-    public class LabelAttribute : Attribute
+    public class LabelAttribute : Attribute, ILabelAttribute
     {
         /// <summary>
         /// Specified label.
         /// </summary>
-        public string Label { get; private set; }
+        public string Label { get; }
 
         /// <summary>
         /// Constructor allowing to associate label text.

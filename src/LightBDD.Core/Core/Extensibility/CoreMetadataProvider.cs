@@ -56,7 +56,7 @@ namespace LightBDD.Core.Extensibility
         /// Provides <see cref="IFeatureInfo"/> object containing information about feature represented by <paramref name="featureType"/>.
         /// 
         /// The <see cref="IFeatureInfo.Name"/> is determined from the <paramref name="featureType"/> name.
-        /// The <see cref="IFeatureInfo.Labels"/> are determined from <see cref="LabelAttribute"/> attributes applied on <paramref name="featureType"/>.
+        /// The <see cref="IFeatureInfo.Labels"/> are determined from attributes implementing <see cref="ILabelAttribute"/>, applied on <paramref name="featureType"/>.
         /// The <see cref="IFeatureInfo.Description"/> is determined from <see cref="FeatureDescriptionAttribute"/> in first instance, then by <see cref="GetImplementationSpecificFeatureDescription"/>() method. The value may be <c>null</c>.
         /// </summary>
         /// <param name="featureType">Feature type.</param>
@@ -86,18 +86,18 @@ namespace LightBDD.Core.Extensibility
         }
 
         /// <summary>
-        /// Provides scenario labels for scenario represented by <paramref name="scenarioMethod"/> which are determined from <see cref="LabelAttribute"/> applied on the method.
+        /// Provides scenario labels for scenario represented by <paramref name="scenarioMethod"/> which are determined from attributes implementing <see cref="LabelAttribute"/>, applied on the method.
         /// </summary>
         /// <param name="scenarioMethod">Scenario method.</param>
         /// <returns>Scenario labels.</returns>
         public string[] GetScenarioLabels(MethodBase scenarioMethod)
         {
-            return ExtractAttributePropertyValues<LabelAttribute>(scenarioMethod, a => a.Label).OrderBy(l => l).ToArray();
+            return ExtractAttributePropertyValues<ILabelAttribute>(scenarioMethod, a => a.Label).OrderBy(l => l).ToArray();
         }
 
         /// <summary>
         /// Provides scenario categories for scenario represented by <paramref name="scenarioMethod"/>.
-        /// The categories are determined from <see cref="ScenarioCategoryAttribute"/> applied on <paramref name="scenarioMethod"/> and type declaring the method,
+        /// The categories are determined from attributes implementing <see cref="IScenarioCategoryAttribute"/>, applied on <paramref name="scenarioMethod"/> and type declaring the method,
         /// as well as from <see cref="GetImplementationSpecificScenarioCategories"/>() executed on <paramref name="scenarioMethod"/> and type declaring the method.
         /// 
         /// The categories specified on base classes will also be retrieved.
@@ -106,8 +106,8 @@ namespace LightBDD.Core.Extensibility
         /// <returns>Scenario categories.</returns>
         public string[] GetScenarioCategories(MethodBase scenarioMethod)
         {
-            return ExtractAttributePropertyValues<ScenarioCategoryAttribute>(scenarioMethod, a => a.Name)
-                .Concat(ExtractAttributePropertyValues<ScenarioCategoryAttribute>(scenarioMethod.DeclaringType.GetTypeInfo(), a => a.Name))
+            return ExtractAttributePropertyValues<IScenarioCategoryAttribute>(scenarioMethod, a => a.Category)
+                .Concat(ExtractAttributePropertyValues<IScenarioCategoryAttribute>(scenarioMethod.DeclaringType.GetTypeInfo(), a => a.Category))
                 .Concat(GetImplementationSpecificScenarioCategories(scenarioMethod))
                 .Concat(GetImplementationSpecificScenarioCategories(scenarioMethod.DeclaringType.GetTypeInfo()))
                 .Distinct()
@@ -180,7 +180,7 @@ namespace LightBDD.Core.Extensibility
         /// <typeparam name="TAttribute">Type of attribute to extract.</typeparam>
         /// <returns>Attribute value or default.</returns>
         /// <exception cref="InvalidOperationException">Throws when attribute is applied more than once.</exception>
-        protected static string ExtractAttributePropertyValue<TAttribute>(MemberInfo member, Func<TAttribute, string> valueExtractor) where TAttribute : Attribute
+        protected static string ExtractAttributePropertyValue<TAttribute>(MemberInfo member, Func<TAttribute, string> valueExtractor)
         {
             return ExtractAttributePropertyValues(member, valueExtractor).SingleOrDefault();
         }
@@ -193,7 +193,7 @@ namespace LightBDD.Core.Extensibility
         /// <param name="valueExtractor">Attribute value extraction method.</param>
         /// <typeparam name="TAttribute">Type of attribute to extract.</typeparam>
         /// <returns>Values of all attributes or empty collection.</returns>
-        protected static IEnumerable<string> ExtractAttributePropertyValues<TAttribute>(MemberInfo member, Func<TAttribute, string> valueExtractor) where TAttribute : Attribute
+        protected static IEnumerable<string> ExtractAttributePropertyValues<TAttribute>(MemberInfo member, Func<TAttribute, string> valueExtractor)
         {
             return ExtractAttributes<TAttribute>(member).Select(valueExtractor);
         }
@@ -205,19 +205,19 @@ namespace LightBDD.Core.Extensibility
         /// <param name="member">Member to analyze for specified attribute.</param>
         /// <typeparam name="TAttribute">Type of attribute to extract.</typeparam>
         /// <returns>All attributes or empty collection.</returns>
-        protected static IEnumerable<TAttribute> ExtractAttributes<TAttribute>(MemberInfo member) where TAttribute : Attribute
+        protected static IEnumerable<TAttribute> ExtractAttributes<TAttribute>(MemberInfo member)
         {
-            return member.GetCustomAttributes(typeof(TAttribute), true).OfType<TAttribute>();
+            return member.GetCustomAttributes(true).OfType<TAttribute>();
         }
 
         /// <summary>
-        /// Provides labels from <see cref="LabelAttribute"/> attributes applied on <paramref name="featureType"/>, or empty array if none are present.
+        /// Provides labels from  attributes implementing <see cref="ILabelAttribute"/>, applied on <paramref name="featureType"/>, or empty array if none are present.
         /// </summary>
         /// <param name="featureType">Feature type.</param>
         /// <returns>Array of labels or empty array if none are present.</returns>
         protected string[] GetFeatureLabels(Type featureType)
         {
-            return ExtractAttributePropertyValues<LabelAttribute>(featureType.GetTypeInfo(), a => a.Label).OrderBy(l => l).ToArray();
+            return ExtractAttributePropertyValues<ILabelAttribute>(featureType.GetTypeInfo(), a => a.Label).OrderBy(l => l).ToArray();
         }
 
         /// <summary>
@@ -231,14 +231,14 @@ namespace LightBDD.Core.Extensibility
         }
 
         /// <summary>
-        /// Provides feature description which is determined from <see cref="FeatureDescriptionAttribute"/> in first instance, then by <see cref="GetImplementationSpecificFeatureDescription"/>() method. 
+        /// Provides feature description which is determined from attribute implementing <see cref="IFeatureDescriptionAttribute"/> in first instance, then by <see cref="GetImplementationSpecificFeatureDescription"/>() method. 
         /// Returns description or <c>null</c> if none is present.
         /// </summary>
         /// <param name="featureType">Feature type.</param>
         /// <returns>Feature description or <c>null</c>.</returns>
         protected string GetFeatureDescription(Type featureType)
         {
-            return ExtractAttributePropertyValue<FeatureDescriptionAttribute>(featureType.GetTypeInfo(), a => a.Description)
+            return ExtractAttributePropertyValue<IFeatureDescriptionAttribute>(featureType.GetTypeInfo(), a => a.Description)
                    ?? GetImplementationSpecificFeatureDescription(featureType);
         }
     }

@@ -1,4 +1,5 @@
 using LightBDD.Example.AcceptanceTests.MsTest.Features.Contexts;
+using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Contextual;
 using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.MsTest;

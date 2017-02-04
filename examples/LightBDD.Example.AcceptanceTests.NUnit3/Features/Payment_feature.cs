@@ -1,3 +1,5 @@
+using LightBDD.Framework;
+
 namespace LightBDD.Example.AcceptanceTests.NUnit3.Features
 {
     [FeatureDescription(

@@ -1,4 +1,4 @@
-﻿using LightBDD;
+﻿using LightBDD.Framework;
 using LightBDD.NUnit3;
 using NUnit.Framework;
 

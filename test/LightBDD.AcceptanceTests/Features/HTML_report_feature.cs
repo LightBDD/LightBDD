@@ -1,4 +1,5 @@
 ﻿using LightBDD.Core.Results;
+using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.NUnit3;
 using NUnit.Framework;

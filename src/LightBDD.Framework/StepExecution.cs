@@ -1,7 +1,7 @@
 using LightBDD.Core.Execution;
 using LightBDD.Core.Results;
 
-namespace LightBDD
+namespace LightBDD.Framework
 {
     /// <summary>
     /// Step execution class, allowing to control step execution from method executing step.

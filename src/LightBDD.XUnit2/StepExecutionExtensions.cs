@@ -1,4 +1,5 @@
 using LightBDD.Core.Results;
+using LightBDD.Framework;
 using LightBDD.XUnit2.Implementation.Customization;
 
 namespace LightBDD.XUnit2

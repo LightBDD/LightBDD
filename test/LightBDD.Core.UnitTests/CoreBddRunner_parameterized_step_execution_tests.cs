@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using LightBDD.Framework;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
@@ -14,7 +15,7 @@ namespace LightBDD.Core.UnitTests
         [SetUp]
         public void SetUp()
         {
-            _runner = TestableFeatureRunnerRepository.GetRunner(GetType()).GetRunner(this);
+            _runner = TestableFeatureRunnerRepository.GetRunner(GetType()).GetRunner(this).AsRunner();
             _executedSteps = new List<Tuple<string, object>>();
         }
 

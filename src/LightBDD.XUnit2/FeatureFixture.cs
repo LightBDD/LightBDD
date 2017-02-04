@@ -1,4 +1,5 @@
-﻿using Xunit.Abstractions;
+﻿using LightBDD.Framework;
+using Xunit.Abstractions;
 
 namespace LightBDD.XUnit2
 {
@@ -24,7 +25,7 @@ namespace LightBDD.XUnit2
         protected FeatureFixture(ITestOutputHelper output)
         {
             TestOutput = output;
-            Runner = FeatureRunnerProvider.GetRunnerFor(GetType()).GetRunner(this);
+            Runner = FeatureRunnerProvider.GetRunnerFor(GetType()).GetRunner(this).AsRunner();
         }
     }
 }

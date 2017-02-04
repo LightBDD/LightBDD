@@ -1,7 +1,9 @@
-﻿using System;
+using System;
 using System.Diagnostics;
+using LightBDD.Core.Extensibility;
+using LightBDD.Framework.Implementation;
 
-namespace LightBDD.Core.Extensibility
+namespace LightBDD.Framework
 {
     /// <summary>
     /// IBddRunner extensions.
@@ -25,6 +27,13 @@ namespace LightBDD.Core.Extensibility
                 throw new InvalidOperationException($"The type '{runner.GetType().Name}' has to implement '{nameof(ICoreBddRunner)}' interface to support integration.");
 
             return (ICoreBddRunner)runner;
+        }
+
+        public static IBddRunner AsRunner(this ICoreBddRunner coreRunner)
+        {
+            if (coreRunner == null)
+                throw new ArgumentNullException(nameof(coreRunner));
+            return new BddRunner(coreRunner);
         }
     }
 }

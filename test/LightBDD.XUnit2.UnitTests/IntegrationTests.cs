@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Results;
+using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.XUnit2;
 using Xunit;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Scenarios.Basic.Implementation;
 
 namespace LightBDD.Framework.Scenarios.Basic

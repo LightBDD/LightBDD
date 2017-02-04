@@ -1,5 +1,6 @@
 using System.Linq;
 using LightBDD.Example.Domain;
+using LightBDD.Framework;
 using LightBDD.Framework.Commenting;
 using LightBDD.MsTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

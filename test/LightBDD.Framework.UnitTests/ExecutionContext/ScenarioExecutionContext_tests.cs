@@ -84,7 +84,7 @@ namespace LightBDD.Framework.UnitTests.ExecutionContext
         [Test]
         public void ScenarioExecutionContext_should_throw_if_not_installed()
         {
-            var runner = TestableFeatureRunnerRepository.GetRunner(GetType()).GetRunner(this);
+            var runner = TestableFeatureRunnerRepository.GetRunner(GetType()).GetRunner(this).AsRunner();
             var exception = Assert.ThrowsAsync<InvalidOperationException>(() => RunScenarioAsync(runner));
 
             Assert.That(exception.Message, Is.EqualTo("Current task is not executing any scenarios or ScenarioExecutionContext is not enabled in LightBddConfiguration. Ensure that configuration.ExecutionExtensionsConfiguration().EnableScenarioExecutionContext() is called during LightBDD initialization and operation accessing ScenarioExecutionContext is called from task running scenario."));
@@ -113,7 +113,8 @@ namespace LightBDD.Framework.UnitTests.ExecutionContext
                     .Default()
                     .WithExecutionExtensions(new ExecutionExtensionsConfiguration().EnableScenarioExecutionContext()))
                 .GetRunnerFor(GetType())
-                .GetRunner(this);
+                .GetRunner(this)
+                .AsRunner();
         }
     }
 

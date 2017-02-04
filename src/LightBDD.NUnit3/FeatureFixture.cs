@@ -1,4 +1,5 @@
 using LightBDD.Core.Extensibility;
+using LightBDD.Framework;
 using NUnit.Framework;
 
 namespace LightBDD.NUnit3
@@ -22,7 +23,7 @@ namespace LightBDD.NUnit3
         protected FeatureFixture()
         {
             _featureBddRunner = FeatureRunnerProvider.GetRunnerFor(GetType());
-            Runner = _featureBddRunner.GetRunner(this);
+            Runner = _featureBddRunner.GetRunner(this).AsRunner();
         }
 
         /// <summary>

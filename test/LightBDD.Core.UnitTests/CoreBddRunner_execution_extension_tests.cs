@@ -7,6 +7,7 @@ using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.UnitTests.Helpers;
+using LightBDD.Framework;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using Moq;
 using NUnit.Framework;
@@ -25,7 +26,7 @@ namespace LightBDD.Core.UnitTests
                 .Returns((IScenarioInfo info, Func<Task> inner) => inner());
 
             var featureRunner = CreateRunner(new ExecutionExtensionsConfiguration().EnableScenarioExtension(() => mockExtension.Object));
-            var runner = featureRunner.GetRunner(this);
+            var runner = featureRunner.GetRunner(this).AsRunner();
 
             runner
                 .Test()
@@ -50,7 +51,7 @@ namespace LightBDD.Core.UnitTests
                 });
 
             var featureRunner = CreateRunner(new ExecutionExtensionsConfiguration().EnableStepExtension(() => mockExtension.Object));
-            var runner = featureRunner.GetRunner(this);
+            var runner = featureRunner.GetRunner(this).AsRunner();
 
             runner
                 .Test()

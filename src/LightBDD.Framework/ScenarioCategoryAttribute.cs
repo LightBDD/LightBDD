@@ -1,6 +1,7 @@
 using System;
+using LightBDD.Core.Extensibility;
 
-namespace LightBDD
+namespace LightBDD.Framework
 {
     /// <summary>
     /// Scenario category attribute that can be applied on scenario test method.
@@ -10,19 +11,19 @@ namespace LightBDD
     /// If given implementation supports alternative category attributes, and both are applied on scenario method, all of them would be used.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = true)]
-    public class ScenarioCategoryAttribute : Attribute
+    public class ScenarioCategoryAttribute : Attribute, IScenarioCategoryAttribute
     {
         /// <summary>
-        /// Feature description.
+        /// Scenario category name.
         /// </summary>
-        public string Name { get; private set; }
+        public string Category { get; }
 
         /// <summary>
         /// Constructor accepting category name.
         /// </summary>
         public ScenarioCategoryAttribute(string name)
         {
-            Name = name;
+            Category = name;
         }
     }
 }

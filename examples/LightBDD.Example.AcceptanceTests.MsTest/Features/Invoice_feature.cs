@@ -1,3 +1,4 @@
+using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.MsTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

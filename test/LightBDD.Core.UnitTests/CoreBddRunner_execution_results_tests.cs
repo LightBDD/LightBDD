@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using LightBDD.Core.Extensibility;
+using LightBDD.Framework;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
@@ -18,7 +19,7 @@ namespace LightBDD.Core.UnitTests
         public void SetUp()
         {
             _feature = TestableFeatureRunnerRepository.GetRunner(GetType());
-            _runner = _feature.GetRunner(this);
+            _runner = _feature.GetRunner(this).AsRunner();
         }
 
         [Test]

@@ -1,3 +1,4 @@
+using LightBDD.Framework;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 

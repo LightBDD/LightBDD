@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Reflection;
 using LightBDD.Core.Extensibility;
+using LightBDD.Framework;
 using LightBDD.Framework.Formatting;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;

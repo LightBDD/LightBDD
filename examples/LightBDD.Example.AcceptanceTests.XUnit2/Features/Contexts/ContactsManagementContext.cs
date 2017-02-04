@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Linq;
 using LightBDD.Example.Domain;
+using LightBDD.Framework;
 using Xunit;
 
 namespace LightBDD.Example.AcceptanceTests.XUnit2.Features.Contexts
