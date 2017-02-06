@@ -6,6 +6,7 @@ using LightBDD.Framework.Reporting.Formatters;
 
 namespace LightBDD.Framework.Reporting
 {
+    //TODO: merge formattable output feature from 1.7.2
     /// <summary>
     /// Summary file writer class allows to save feature results by using associated result formatter and output path.
     /// </summary>
