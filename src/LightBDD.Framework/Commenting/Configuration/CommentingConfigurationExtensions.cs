@@ -3,7 +3,6 @@ using LightBDD.Framework.Commenting.Implementation;
 using LightBDD.Framework.ExecutionContext;
 using LightBDD.Framework.ExecutionContext.Configuration;
 
-//TODO: move configuration namespace to root?
 namespace LightBDD.Framework.Commenting.Configuration
 {
     /// <summary>

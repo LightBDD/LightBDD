@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestResults>
+  <Summary TestExecutionStart="2017-02-06T20:06:54.6450214Z" TestExecutionEnd="2017-02-06T20:06:55.3370945Z" TestExecutionTime="PT0.6920731S">
+    <Features Count="5" />
+    <Scenarios Count="11" Passed="7" Bypassed="1" Failed="1" Ignored="2" />
+    <Steps Count="55" Passed="48" Bypassed="1" Failed="1" Ignored="2" NotRun="3" />
+  </Summary>
+  <Feature Name="Basket feature">
+    <Label Name="Story-4" />
+    <Description>In order to buy products
+As a customer
+I want to add products to basket</Description>
+    <Scenario Status="Passed" Name="No product in stock" ExecutionStart="2017-02-06T20:06:54.6450214Z" ExecutionTime="PT0.2276553S">
+      <Label Name="Ticket-6" />
+      <Category Name="Sales" />
+      <Step Status="Passed" Number="1" Name="GIVEN product is out of stock" ExecutionStart="2017-02-06T20:06:54.6685372Z" ExecutionTime="PT0.002827S">
+        <StepName StepType="GIVEN" Format="product is out of stock" />
+      </Step>
+      <Step Status="Passed" Number="2" Name="WHEN customer adds it to the basket" ExecutionStart="2017-02-06T20:06:54.68805Z" ExecutionTime="PT0.1828236S">
+        <StepName StepType="WHEN" Format="customer adds it to the basket" />
+        <Comment>Transferring 'product' to the basket</Comment>
+      </Step>
+      <Step Status="Passed" Number="3" Name="THEN the product addition should be unsuccessful" ExecutionStart="2017-02-06T20:06:54.8711717Z" ExecutionTime="PT0.0012586S">
+        <StepName StepType="THEN" Format="the product addition should be unsuccessful" />
+      </Step>
+      <Step Status="Passed" Number="4" Name="AND the basket should not contain the product" ExecutionStart="2017-02-06T20:06:54.8721724Z" ExecutionTime="PT0.0003545S">
+        <StepName StepType="AND" Format="the basket should not contain the product" />
+      </Step>
+    </Scenario>
+    <Scenario Status="Ignored" Name="Successful addition" ExecutionStart="2017-02-06T20:06:54.8771762Z" ExecutionTime="PT0.106321S">
+      <Label Name="Ticket-7" />
+      <Category Name="Sales" />
+      <Step Status="Passed" Number="1" Name="GIVEN product is in stock" ExecutionStart="2017-02-06T20:06:54.8771762Z" ExecutionTime="PT0.0003997S">
+        <StepName StepType="GIVEN" Format="product is in stock" />
+        <Comment>Added 'product' to the stock</Comment>
+      </Step>
+      <Step Status="Passed" Number="2" Name="WHEN customer adds it to the basket" ExecutionStart="2017-02-06T20:06:54.8776763Z" ExecutionTime="PT0.1044535S">
+        <StepName StepType="WHEN" Format="customer adds it to the basket" />
+        <Comment>Transferring 'product' to the basket</Comment>
+      </Step>
+      <Step Status="Passed" Number="3" Name="THEN the product addition should be successful" ExecutionStart="2017-02-06T20:06:54.9822456Z" ExecutionTime="PT0.0001978S">
+        <StepName StepType="THEN" Format="the product addition should be successful" />
+      </Step>
+      <Step Status="Passed" Number="4" Name="AND the basket should contain the product" ExecutionStart="2017-02-06T20:06:54.9822456Z" ExecutionTime="PT0.0002327S">
+        <StepName StepType="AND" Format="the basket should contain the product" />
+      </Step>
+      <Step Status="Ignored" Number="5" Name="AND the product should be removed from stock" ExecutionStart="2017-02-06T20:06:54.9827461Z" ExecutionTime="PT0.0006489S">
+        <StatusDetails>Product removal from stock is not implemented yet</StatusDetails>
+        <StepName StepType="AND" Format="the product should be removed from stock" />
+      </Step>
+      <StatusDetails>Step 5: Product removal from stock is not implemented yet</StatusDetails>
+    </Scenario>
+  </Feature>
+  <Feature Name="Contacts management">
+    <Label Name="Story-6" />
+    <Description>In order to maintain my contact book
+As an application user
+I want to add, browse and remove my contacts</Description>
+    <Scenario Status="Passed" Name="Contact book should allow me to add multiple contacts" ExecutionStart="2017-02-06T20:06:54.6470227Z" ExecutionTime="PT0.0599713S">
+      <Label Name="Ticket-8" />
+      <Step Status="Passed" Number="1" Name="CTX Given my contact book is empty" ExecutionStart="2017-02-06T20:06:54.6695379Z" ExecutionTime="PT0.0006507S">
+        <StepName StepType="CTX" Format="Given my contact book is empty" />
+      </Step>
+      <Step Status="Passed" Number="2" Name="AND When I add new contacts" ExecutionStart="2017-02-06T20:06:54.6750413Z" ExecutionTime="PT0.0024566S">
+        <StepName StepType="AND" Format="When I add new contacts" />
+      </Step>
+      <Step Status="Passed" Number="3" Name="AND Then all contacts should be available in the contact book" ExecutionStart="2017-02-06T20:06:54.6780438Z" ExecutionTime="PT0.0289409S">
+        <StepName StepType="AND" Format="Then all contacts should be available in the contact book" />
+      </Step>
+    </Scenario>
+    <Scenario Status="Bypassed" Name="Contact book should allow me to remove all contacts" ExecutionStart="2017-02-06T20:06:54.7125665Z" ExecutionTime="PT0.0096236S">
+      <Label Name="Ticket-9" />
+      <Step Status="Passed" Number="1" Name="CTX Given my contact book is filled with many contacts" ExecutionStart="2017-02-06T20:06:54.7140677Z" ExecutionTime="PT0.0044477S">
+        <StepName StepType="CTX" Format="Given my contact book is filled with many contacts" />
+      </Step>
+      <Step Status="Bypassed" Number="2" Name="AND When I clear it" ExecutionStart="2017-02-06T20:06:54.7185705Z" ExecutionTime="PT0.0018492S">
+        <StatusDetails>Contact book clearing is not implemented yet. Contacts are removed one by one.</StatusDetails>
+        <StepName StepType="AND" Format="When I clear it" />
+      </Step>
+      <Step Status="Passed" Number="3" Name="AND Then the contact book should be empty" ExecutionStart="2017-02-06T20:06:54.7205728Z" ExecutionTime="PT0.001372S">
+        <StepName StepType="AND" Format="Then the contact book should be empty" />
+      </Step>
+      <StatusDetails>Step 2: Contact book clearing is not implemented yet. Contacts are removed one by one.</StatusDetails>
+    </Scenario>
+    <Scenario Status="Passed" Name="Contact book should allow me to remove contacts" ExecutionStart="2017-02-06T20:06:54.728077Z" ExecutionTime="PT0.0111785S">
+      <Label Name="Ticket-9" />
+      <Step Status="Passed" Number="1" Name="CTX Given my contact book is filled with contacts" ExecutionStart="2017-02-06T20:06:54.7300779Z" ExecutionTime="PT0.0002444S">
+        <StepName StepType="CTX" Format="Given my contact book is filled with contacts" />
+      </Step>
+      <Step Status="Passed" Number="2" Name="AND When I remove one contact" ExecutionStart="2017-02-06T20:06:54.7305785Z" ExecutionTime="PT0.0007851S">
+        <StepName StepType="AND" Format="When I remove one contact" />
+      </Step>
+      <Step Status="Passed" Number="3" Name="AND Then the contact book should not contain removed contact any more" ExecutionStart="2017-02-06T20:06:54.7310786Z" ExecutionTime="PT0.0061691S">
+        <StepName StepType="AND" Format="Then the contact book should not contain removed contact any more" />
+      </Step>
+      <Step Status="Passed" Number="4" Name="AND Then the contact book should contains all other contacts" ExecutionStart="2017-02-06T20:06:54.7375831Z" ExecutionTime="PT0.001643S">
+        <StepName StepType="AND" Format="Then the contact book should contains all other contacts" />
+      </Step>
+    </Scenario>
+  </Feature>
+  <Feature Name="Invoice feature">
+    <Label Name="Story-2" />
+    <Description>In order to pay for products
+As a customer
+I want to receive invoice for bought items</Description>
+    <Scenario Status="Ignored" Name="Receiving invoice for products" ExecutionStart="2017-02-06T20:06:54.6450214Z" ExecutionTime="PT0.0357295S">
+      <Label Name="Ticket-4" />
+      <Category Name="Sales" />
+      <Step Status="Passed" Number="1" Name="GIVEN Product &quot;wooden desk&quot; is available in product storage" ExecutionStart="2017-02-06T20:06:54.6690373Z" ExecutionTime="PT0.0016164S">
+        <StepName StepType="GIVEN" Format="Product &quot;{0}&quot; is available in product storage">
+          <Parameter IsEvaluated="true">wooden desk</Parameter>
+        </StepName>
+      </Step>
+      <Step Status="Passed" Number="2" Name="AND Product &quot;wooden shelf&quot; is available in product storage" ExecutionStart="2017-02-06T20:06:54.6765426Z" ExecutionTime="PT0.0000027S">
+        <StepName StepType="AND" Format="Product &quot;{0}&quot; is available in product storage">
+          <Parameter IsEvaluated="true">wooden shelf</Parameter>
+        </StepName>
+      </Step>
+      <Step Status="Passed" Number="3" Name="WHEN Customer buys product &quot;wooden desk&quot;" ExecutionStart="2017-02-06T20:06:54.6765426Z" ExecutionTime="PT0.0000018S">
+        <StepName StepType="WHEN" Format="Customer buys product &quot;{0}&quot;">
+          <Parameter IsEvaluated="true">wooden desk</Parameter>
+        </StepName>
+      </Step>
+      <Step Status="Passed" Number="4" Name="AND Customer buys product &quot;wooden shelf&quot;" ExecutionStart="2017-02-06T20:06:54.6765426Z" ExecutionTime="PT0.0000023S">
+        <StepName StepType="AND" Format="Customer buys product &quot;{0}&quot;">
+          <Parameter IsEvaluated="true">wooden shelf</Parameter>
+        </StepName>
+      </Step>
+      <Step Status="Ignored" Number="5" Name="THEN An invoice should be sent to the customer" ExecutionStart="2017-02-06T20:06:54.6765426Z" ExecutionTime="PT0.0010771S">
+        <StatusDetails>Not implemented yet</StatusDetails>
+        <StepName StepType="THEN" Format="An invoice should be sent to the customer" />
+      </Step>
+      <Step Status="NotRun" Number="6" Name="AND The invoice should contain product &quot;wooden desk&quot; with price of &quot;£62.00&quot;">
+        <StepName StepType="AND" Format="The invoice should contain product &quot;{0}&quot; with price of &quot;{1}&quot;">
+          <Parameter IsEvaluated="true">wooden desk</Parameter>
+          <Parameter IsEvaluated="true">£62.00</Parameter>
+        </StepName>
+      </Step>
+      <Step Status="NotRun" Number="7" Name="AND The invoice should contain product &quot;wooden shelf&quot; with price of &quot;£37.00&quot;">
+        <StepName StepType="AND" Format="The invoice should contain product &quot;{0}&quot; with price of &quot;{1}&quot;">
+          <Parameter IsEvaluated="true">wooden shelf</Parameter>
+          <Parameter IsEvaluated="true">£37.00</Parameter>
+        </StepName>
+      </Step>
+      <StatusDetails>Step 5: Not implemented yet</StatusDetails>
+    </Scenario>
+  </Feature>
+  <Feature Name="Login feature">
+    <Label Name="Story-1" />
+    <Description>In order to access personal data
+As an user
+I want to login into system</Description>
+    <Scenario Status="Failed" Name="Anonymous login name should allow to log in" ExecutionStart="2017-02-06T20:06:54.6450214Z" ExecutionTime="PT0.2259124S">
+      <Label Name="Ticket-3" />
+      <Category Name="Security" />
+      <Step Status="Passed" Number="1" Name="GIVEN the user is about to login" ExecutionStart="2017-02-06T20:06:54.6685372Z" ExecutionTime="PT0.0018809S">
+        <StepName StepType="GIVEN" Format="the user is about to login" />
+      </Step>
+      <Step Status="Passed" Number="2" Name="AND the user entered anonymous login" ExecutionStart="2017-02-06T20:06:54.6765426Z" ExecutionTime="PT0.0051642S">
+        <StepName StepType="AND" Format="the user entered anonymous login" />
+      </Step>
+      <Step Status="Passed" Number="3" Name="WHEN the user clicks login button" ExecutionStart="2017-02-06T20:06:54.6815459Z" ExecutionTime="PT0.1739757S">
+        <StepName StepType="WHEN" Format="the user clicks login button" />
+      </Step>
+      <Step Status="Failed" Number="4" Name="THEN the login operation should be successful" ExecutionStart="2017-02-06T20:06:54.8556612Z" ExecutionTime="PT0.0147216S">
+        <StatusDetails>  Login should succeeded
+  Expected: True
+  But was:  False
+</StatusDetails>
+        <StepName StepType="THEN" Format="the login operation should be successful" />
+        <Comment>Presentation of failed scenario</Comment>
+      </Step>
+      <Step Status="NotRun" Number="5" Name="AND a welcome message containing user name should be returned">
+        <StepName StepType="AND" Format="a welcome message containing user name should be returned" />
+      </Step>
+      <StatusDetails>Step 4: Login should succeeded
+	  Expected: True
+	  But was:  False</StatusDetails>
+    </Scenario>
+    <Scenario Status="Passed" Name="Successful login" ExecutionStart="2017-02-06T20:06:54.876175Z" ExecutionTime="PT0.1840361S">
+      <Label Name="Ticket-1" />
+      <Category Name="Security" />
+      <Step Status="Passed" Number="1" Name="GIVEN the user is about to login" ExecutionStart="2017-02-06T20:06:54.876175Z" ExecutionTime="PT0.0000046S">
+        <StepName StepType="GIVEN" Format="the user is about to login" />
+      </Step>
+      <Step Status="Passed" Number="2" Name="AND the user entered valid login" ExecutionStart="2017-02-06T20:06:54.876175Z" ExecutionTime="PT0.0001679S">
+        <StepName StepType="AND" Format="the user entered valid login" />
+      </Step>
+      <Step Status="Passed" Number="3" Name="AND the user entered valid password" ExecutionStart="2017-02-06T20:06:54.8766756Z" ExecutionTime="PT0.0001544S">
+        <StepName StepType="AND" Format="the user entered valid password" />
+      </Step>
+      <Step Status="Passed" Number="4" Name="WHEN the user clicks login button" ExecutionStart="2017-02-06T20:06:54.8766756Z" ExecutionTime="PT0.1822027S">
+        <StepName StepType="WHEN" Format="the user clicks login button" />
+      </Step>
+      <Step Status="Passed" Number="5" Name="THEN the login operation should be successful" ExecutionStart="2017-02-06T20:06:55.0592968Z" ExecutionTime="PT0.0000233S">
+        <StepName StepType="THEN" Format="the login operation should be successful" />
+        <Comment>Presentation of failed scenario</Comment>
+      </Step>
+      <Step Status="Passed" Number="6" Name="AND a welcome message containing user name should be returned" ExecutionStart="2017-02-06T20:06:55.0592968Z" ExecutionTime="PT0.0011298S">
+        <StepName StepType="AND" Format="a welcome message containing user name should be returned" />
+      </Step>
+    </Scenario>
+    <Scenario Status="Passed" Name="Wrong login provided causes login to fail" ExecutionStart="2017-02-06T20:06:55.0643006Z" ExecutionTime="PT0.1241156S">
+      <Label Name="Ticket-2" />
+      <Category Name="Security" />
+      <Step Status="Passed" Number="1" Name="GIVEN the user is about to login" ExecutionStart="2017-02-06T20:06:55.0643006Z" ExecutionTime="PT0.0000041S">
+        <StepName StepType="GIVEN" Format="the user is about to login" />
+      </Step>
+      <Step Status="Passed" Number="2" Name="AND the user entered invalid login" ExecutionStart="2017-02-06T20:06:55.0643006Z" ExecutionTime="PT0.0001231S">
+        <StepName StepType="AND" Format="the user entered invalid login" />
+      </Step>
+      <Step Status="Passed" Number="3" Name="AND the user entered valid password" ExecutionStart="2017-02-06T20:06:55.0648002Z" ExecutionTime="PT0.0000023S">
+        <StepName StepType="AND" Format="the user entered valid password" />
+      </Step>
+      <Step Status="Passed" Number="4" Name="WHEN the user clicks login button" ExecutionStart="2017-02-06T20:06:55.0648002Z" ExecutionTime="PT0.122967S">
+        <StepName StepType="WHEN" Format="the user clicks login button" />
+      </Step>
+      <Step Status="Passed" Number="5" Name="THEN the login operation should be unsuccessful" ExecutionStart="2017-02-06T20:06:55.1874244Z" ExecutionTime="PT0.0003349S">
+        <StepName StepType="THEN" Format="the login operation should be unsuccessful" />
+      </Step>
+      <Step Status="Passed" Number="6" Name="AND an invalid login or password error message should be returned" ExecutionStart="2017-02-06T20:06:55.1874244Z" ExecutionTime="PT0.0003022S">
+        <StepName StepType="AND" Format="an invalid login or password error message should be returned" />
+      </Step>
+    </Scenario>
+    <Scenario Status="Passed" Name="Wrong password provided causes login to fail" ExecutionStart="2017-02-06T20:06:55.1944309Z" ExecutionTime="PT0.1426636S">
+      <Label Name="Ticket-2" />
+      <Category Name="Security" />
+      <Step Status="Passed" Number="1" Name="GIVEN the user is about to login" ExecutionStart="2017-02-06T20:06:55.1944309Z" ExecutionTime="PT0.0000046S">
+        <StepName StepType="GIVEN" Format="the user is about to login" />
+      </Step>
+      <Step Status="Passed" Number="2" Name="AND the user entered valid login" ExecutionStart="2017-02-06T20:06:55.1944309Z" ExecutionTime="PT0.0000018S">
+        <StepName StepType="AND" Format="the user entered valid login" />
+      </Step>
+      <Step Status="Passed" Number="3" Name="AND the user entered invalid password" ExecutionStart="2017-02-06T20:06:55.1944309Z" ExecutionTime="PT0.0001371S">
+        <StepName StepType="AND" Format="the user entered invalid password" />
+      </Step>
+      <Step Status="Passed" Number="4" Name="WHEN the user clicks login button" ExecutionStart="2017-02-06T20:06:55.1944309Z" ExecutionTime="PT0.1420939S">
+        <StepName StepType="WHEN" Format="the user clicks login button" />
+      </Step>
+      <Step Status="Passed" Number="5" Name="THEN the login operation should be unsuccessful" ExecutionStart="2017-02-06T20:06:55.3370287Z" ExecutionTime="PT0.0000093S">
+        <StepName StepType="THEN" Format="the login operation should be unsuccessful" />
+      </Step>
+      <Step Status="Passed" Number="6" Name="AND an invalid login or password error message should be returned" ExecutionStart="2017-02-06T20:06:55.3370287Z" ExecutionTime="PT0.0000069S">
+        <StepName StepType="AND" Format="an invalid login or password error message should be returned" />
+      </Step>
+    </Scenario>
+  </Feature>
+  <Feature Name="Product spedition feature">
+    <Label Name="Story-3" />
+    <Description>In order to deliver products to customer effectively
+As a spedition manager
+I want to dispatch products to customer as soon as the payment is finalized</Description>
+    <Scenario Status="Passed" Name="Should dispatch product after payment is finalized" ExecutionStart="2017-02-06T20:06:54.6460225Z" ExecutionTime="PT0.0299285S">
+      <Label Name="Ticket-5" />
+      <Category Name="Delivery" />
+      <Category Name="Sales" />
+      <Step Status="Passed" Number="1" Name="GIVEN There is an active customer with id &quot;ABC-123&quot;" ExecutionStart="2017-02-06T20:06:54.6690373Z" ExecutionTime="PT0.001127S">
+        <StepName StepType="GIVEN" Format="There is an active customer with id &quot;{0}&quot;">
+          <Parameter IsEvaluated="true">ABC-123</Parameter>
+        </StepName>
+      </Step>
+      <Step Status="Passed" Number="2" Name="AND The customer has product &quot;wooden shelf&quot; in basket" ExecutionStart="2017-02-06T20:06:54.6760425Z" ExecutionTime="PT0.0000065S">
+        <StepName StepType="AND" Format="The customer has product &quot;{0}&quot; in basket">
+          <Parameter IsEvaluated="true">wooden shelf</Parameter>
+        </StepName>
+      </Step>
+      <Step Status="Passed" Number="3" Name="AND The customer has product &quot;wooden desk&quot; in basket" ExecutionStart="2017-02-06T20:06:54.6760425Z" ExecutionTime="PT0.0000023S">
+        <StepName StepType="AND" Format="The customer has product &quot;{0}&quot; in basket">
+          <Parameter IsEvaluated="true">wooden desk</Parameter>
+        </StepName>
+      </Step>
+      <Step Status="Passed" Number="4" Name="WHEN The customer payment finalizes" ExecutionStart="2017-02-06T20:06:54.6760425Z" ExecutionTime="PT0.0000023S">
+        <StepName StepType="WHEN" Format="The customer payment finalizes" />
+      </Step>
+      <Step Status="Passed" Number="5" Name="THEN Product &quot;wooden shelf&quot; should be dispatched to the customer" ExecutionStart="2017-02-06T20:06:54.6760425Z" ExecutionTime="PT0.0000023S">
+        <StepName StepType="THEN" Format="Product &quot;{0}&quot; should be dispatched to the customer">
+          <Parameter IsEvaluated="true">wooden shelf</Parameter>
+        </StepName>
+      </Step>
+      <Step Status="Passed" Number="6" Name="AND Product &quot;wooden desk&quot; should be dispatched to the customer" ExecutionStart="2017-02-06T20:06:54.6760425Z" ExecutionTime="PT0.0000023S">
+        <StepName StepType="AND" Format="Product &quot;{0}&quot; should be dispatched to the customer">
+          <Parameter IsEvaluated="true">wooden desk</Parameter>
+        </StepName>
+      </Step>
+    </Scenario>
+  </Feature>
+</TestResults>

@@ -15,14 +15,14 @@ namespace LightBDD.XUnit2.Implementation.Customization
 
         }
 
-        protected override async void RunTestCases(IEnumerable<IXunitTestCase> testCases, IMessageSink executionMessageSink, ITestFrameworkExecutionOptions executionOptions)
+        protected override void RunTestCases(IEnumerable<IXunitTestCase> testCases, IMessageSink executionMessageSink, ITestFrameworkExecutionOptions executionOptions)
         {
             var bddScopeAttribute = GetLightBddScopeAttribute();
             bddScopeAttribute?.SetUp();
             try
             {
                 using (var assemblyRunner = new XunitTestAssemblyRunner(TestAssembly, testCases, DiagnosticMessageSink, executionMessageSink, executionOptions))
-                    await assemblyRunner.RunAsync();
+                    assemblyRunner.RunAsync().Wait();
             }
             finally
             {

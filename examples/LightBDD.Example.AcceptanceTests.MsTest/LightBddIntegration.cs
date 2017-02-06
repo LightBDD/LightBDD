@@ -1,5 +1,6 @@
 using LightBDD.Core.Configuration;
-using LightBDD.Framework.Commenting.Configuration;
+using LightBDD.Framework.Reporting.Configuration;
+using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.MsTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -16,8 +17,8 @@ namespace LightBDD.Example.AcceptanceTests.MsTest
         private static void OnConfigure(LightBddConfiguration configuration)
         {
             configuration
-                .ExecutionExtensionsConfiguration()
-                .EnableStepCommenting();
+                .ReportWritersConfiguration()
+                .AddFileWriter<PlainTextReportFormatter>("~\\Reports\\FeaturesReport.txt");
         }
     }
 }

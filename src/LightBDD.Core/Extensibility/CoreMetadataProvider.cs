@@ -57,7 +57,7 @@ namespace LightBDD.Core.Extensibility
         /// 
         /// The <see cref="IFeatureInfo.Name"/> is determined from the <paramref name="featureType"/> name.
         /// The <see cref="IFeatureInfo.Labels"/> are determined from attributes implementing <see cref="ILabelAttribute"/>, applied on <paramref name="featureType"/>.
-        /// The <see cref="IFeatureInfo.Description"/> is determined from <see cref="FeatureDescriptionAttribute"/> in first instance, then by <see cref="GetImplementationSpecificFeatureDescription"/>() method. The value may be <c>null</c>.
+        /// The <see cref="IFeatureInfo.Description"/> is determined from attribute implementing <see cref="IFeatureDescriptionAttribute"/> in first instance, then by <see cref="GetImplementationSpecificFeatureDescription"/>() method. The value may be <c>null</c>.
         /// </summary>
         /// <param name="featureType">Feature type.</param>
         /// <returns><see cref="IFeatureInfo"/> object.</returns>
@@ -86,7 +86,7 @@ namespace LightBDD.Core.Extensibility
         }
 
         /// <summary>
-        /// Provides scenario labels for scenario represented by <paramref name="scenarioMethod"/> which are determined from attributes implementing <see cref="LabelAttribute"/>, applied on the method.
+        /// Provides scenario labels for scenario represented by <paramref name="scenarioMethod"/> which are determined from attributes implementing <see cref="ILabelAttribute"/>, applied on the method.
         /// </summary>
         /// <param name="scenarioMethod">Scenario method.</param>
         /// <returns>Scenario labels.</returns>

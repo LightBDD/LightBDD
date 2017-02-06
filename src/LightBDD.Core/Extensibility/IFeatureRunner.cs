@@ -6,7 +6,7 @@ namespace LightBDD.Core.Extensibility
     /// <summary>
     /// The feature runner interface allowing to execute feature tests and collect execution results.
     /// The instances of this interface can be provided by <see cref="FeatureRunnerRepository"/>.
-    /// <para>It is expected that for given feature test class, one instance of <see cref="IFeatureRunner"/> is created, while each class instance will have dedicated instance of <see cref="IBddRunner"/>.</para>
+    /// <para>It is expected that for given feature test class, one instance of <see cref="IFeatureRunner"/> is created, while each class instance will have dedicated instance of <see cref="IFeatureFixtureRunner"/>.</para>
     /// <para>Note for testing framework integration projects: The feature runner should be disposed after all scenarios execution.</para>
     /// </summary>
     public interface IFeatureRunner : IDisposable
