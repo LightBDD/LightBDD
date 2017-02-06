@@ -2,6 +2,7 @@
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
+using LightBDD.Framework.Extensibility;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
@@ -12,13 +13,13 @@ namespace LightBDD.Core.UnitTests
     {
         private readonly int _elementsCount = 1500;
         private IBddRunner _runner;
-        private IFeatureBddRunner _feature;
+        private IFeatureRunner _feature;
 
         [SetUp]
         public void SetUp()
         {
             _feature = TestableFeatureRunnerRepository.GetRunner(GetType());
-            _runner = _feature.GetRunner(this).AsRunner();
+            _runner = _feature.GetBddRunner(this);
         }
 
         [Test]

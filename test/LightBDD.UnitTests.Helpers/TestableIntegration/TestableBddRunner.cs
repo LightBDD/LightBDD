@@ -18,7 +18,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
         public TestableFeatureRunnerRepository(TestableIntegrationContextBuilder contextBuilder)
             : base(contextBuilder.Build()) { }
 
-        public static IFeatureBddRunner GetRunner(Type featureType)
+        public static IFeatureRunner GetRunner(Type featureType)
         {
             return new TestableFeatureRunnerRepository().GetRunnerFor(featureType);
         }

@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
+using LightBDD.Framework.Extensibility;
 
 namespace LightBDD.Framework.Scenarios.Extended.Implementation
 {

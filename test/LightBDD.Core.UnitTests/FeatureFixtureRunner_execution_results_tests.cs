@@ -2,6 +2,7 @@
 using System.Linq;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework;
+using LightBDD.Framework.Extensibility;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
@@ -10,16 +11,16 @@ namespace LightBDD.Core.UnitTests
     [TestFixture]
     [Label("Ticket-1")]
     [Label("Ticket-2")]
-    public class CoreBddRunner_execution_results_tests
+    public class FeatureFixtureRunner_execution_results_tests
     {
         private IBddRunner _runner;
-        private IFeatureBddRunner _feature;
+        private IFeatureRunner _feature;
 
         [SetUp]
         public void SetUp()
         {
             _feature = TestableFeatureRunnerRepository.GetRunner(GetType());
-            _runner = _feature.GetRunner(this).AsRunner();
+            _runner = _feature.GetBddRunner(this);
         }
 
         [Test]
@@ -37,7 +38,7 @@ namespace LightBDD.Core.UnitTests
             catch { }
 
             var featureResult = _feature.GetFeatureResult();
-            Assert.That(featureResult.ToString(), Is.EqualTo("[Ticket-1][Ticket-2] CoreBddRunner execution results tests"));
+            Assert.That(featureResult.ToString(), Is.EqualTo("[Ticket-1][Ticket-2] FeatureFixtureRunner execution results tests"));
 
             var scenarioResult = featureResult.GetScenarios().Single();
             Assert.That(scenarioResult.ToString(), Is.EqualTo("[Label-1][Label-2] Execution results should print user friendly output: Failed (Step 3: reason)"));

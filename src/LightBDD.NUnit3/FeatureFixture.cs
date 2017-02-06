@@ -1,5 +1,6 @@
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework;
+using LightBDD.Framework.Extensibility;
 using NUnit.Framework;
 
 namespace LightBDD.NUnit3
@@ -11,7 +12,7 @@ namespace LightBDD.NUnit3
     [FeatureFixture]
     public class FeatureFixture
     {
-        private readonly IFeatureBddRunner _featureBddRunner;
+        private readonly IFeatureRunner _featureRunner;
         /// <summary>
         /// Returns <see cref="IBddRunner"/> allowing to execute scenarios belonging to the feature class.
         /// </summary>
@@ -22,8 +23,8 @@ namespace LightBDD.NUnit3
         /// </summary>
         protected FeatureFixture()
         {
-            _featureBddRunner = FeatureRunnerProvider.GetRunnerFor(GetType());
-            Runner = _featureBddRunner.GetRunner(this).AsRunner();
+            _featureRunner = FeatureRunnerProvider.GetRunnerFor(GetType());
+            Runner = _featureRunner.GetBddRunner(this);
         }
 
         /// <summary>
@@ -32,7 +33,7 @@ namespace LightBDD.NUnit3
         [OneTimeTearDown]
         public void FeatureFixtureTearDown()
         {
-            _featureBddRunner.Dispose();
+            _featureRunner.Dispose();
         }
     }
 }

@@ -27,14 +27,14 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [Test]
         public void It_should_throw_if_runner_requested_with_null_fixture()
         {
-            var ex = Assert.Throws<ArgumentNullException>(() => _repository.GetRunnerFor(GetType()).GetRunner(null));
+            var ex = Assert.Throws<ArgumentNullException>(() => _repository.GetRunnerFor(GetType()).ForFixture(null));
             Assert.That(ex.Message, Does.Contain("fixture"));
         }
 
         [Test]
         public void It_should_throw_if_runner_requested_with_fixture_of_different_type()
         {
-            var ex = Assert.Throws<ArgumentException>(() => _repository.GetRunnerFor(GetType()).GetRunner(new object()));
+            var ex = Assert.Throws<ArgumentException>(() => _repository.GetRunnerFor(GetType()).ForFixture(new object()));
             Assert.That(ex.Message, Is.EqualTo($"Provided fixture instance '{typeof(object)}' type does not match feature type '{GetType()}'"));
         }
 

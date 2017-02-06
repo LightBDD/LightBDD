@@ -10,9 +10,9 @@ namespace LightBDD.Framework.Scenarios.Basic.Implementation
     [DebuggerStepThrough]
     internal class BasicScenarioRunner
     {
-        private readonly ICoreBddRunner _coreRunner;
+        private readonly IFeatureFixtureRunner _coreRunner;
 
-        public BasicScenarioRunner(ICoreBddRunner coreRunner)
+        public BasicScenarioRunner(IFeatureFixtureRunner coreRunner)
         {
             _coreRunner = coreRunner;
         }

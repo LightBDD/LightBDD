@@ -1,4 +1,5 @@
 using LightBDD.Framework;
+using LightBDD.Framework.Extensibility;
 
 namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {

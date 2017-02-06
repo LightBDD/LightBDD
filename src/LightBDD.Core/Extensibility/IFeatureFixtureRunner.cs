@@ -1,10 +1,10 @@
 namespace LightBDD.Core.Extensibility
 {
     /// <summary>
-    /// ICoreBddRunner interface allowing to define and execute scenarios in programmatic manner.
+    /// IFeatureFixtureRunner interface allowing to define and execute scenarios in programmatic manner.
     /// The interface is dedicated for projects extending LightBDD with user friendly API for running scenarios - it should not be used directly by regular LightBDD users.
     /// </summary>
-    public interface ICoreBddRunner
+    public interface IFeatureFixtureRunner
     {
         /// <summary>
         /// Creates new scenario to execute.

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using LightBDD.Framework;
+using LightBDD.Framework.Extensibility;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
@@ -19,7 +20,7 @@ namespace LightBDD.Core.UnitTests
         [SetUp]
         public void SetUp()
         {
-            _runner = TestableFeatureRunnerRepository.GetRunner(GetType()).GetRunner(this).AsRunner();
+            _runner = TestableFeatureRunnerRepository.GetRunner(GetType()).GetBddRunner(this);
         }
 
         #endregion

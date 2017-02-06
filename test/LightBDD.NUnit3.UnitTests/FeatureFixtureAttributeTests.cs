@@ -1,5 +1,5 @@
 ﻿using System;
-using LightBDD.Framework;
+using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.NUnit3;
 using NUnit.Framework;
@@ -11,7 +11,7 @@ namespace LightBDD.Integration.NUnit3.UnitTests
         [Scenario]
         public void Runner_should_throw_meaningful_exception_if_scenario_is_not_run_from_class_with_FeatureFixture_attribute()
         {
-            var runner = FeatureRunnerProvider.GetRunnerFor(GetType()).GetRunner(this).AsRunner();
+            var runner = FeatureRunnerProvider.GetRunnerFor(GetType()).GetBddRunner(this);
             Exception ex = Assert.Throws<InvalidOperationException>(() => runner.RunScenario(Some_step));
             Assert.That(
                 ex.Message,

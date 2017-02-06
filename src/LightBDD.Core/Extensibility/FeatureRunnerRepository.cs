@@ -1,18 +1,18 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using LightBDD.Core.Execution.Implementation;
+using LightBDD.Core.Extensibility.Implementation;
 
 namespace LightBDD.Core.Extensibility
 {
     /// <summary>
-    /// Abstract runner factory allowing to create <see cref="IFeatureBddRunner"/> instances and maintaining list of instantiated runners.
+    /// Abstract runner factory allowing to create <see cref="IFeatureRunner"/> instances and maintaining list of instantiated runners.
     /// This class should be used by projects integrating LightBDD with testing frameworks.
     /// </summary>
     public abstract class FeatureRunnerRepository
     {
         private readonly IIntegrationContext _integrationContext;
-        private readonly ConcurrentDictionary<Type, IFeatureBddRunner> _runners = new ConcurrentDictionary<Type, IFeatureBddRunner>();
+        private readonly ConcurrentDictionary<Type, IFeatureRunner> _runners = new ConcurrentDictionary<Type, IFeatureRunner>();
 
         /// <summary>
         /// Constructor instantiating factory with specified integration context.
@@ -30,18 +30,18 @@ namespace LightBDD.Core.Extensibility
         /// <param name="featureType">Type of class describing feature and holding list of scenario methods.</param>
         /// <returns>Feature runner.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="featureType"/> is null.</exception>
-        public IFeatureBddRunner GetRunnerFor(Type featureType)
+        public IFeatureRunner GetRunnerFor(Type featureType)
         {
             if (featureType == null)
                 throw new ArgumentNullException(nameof(featureType));
 
-            return _runners.GetOrAdd(featureType, type => new FeatureBddRunner(type, _integrationContext));
+            return _runners.GetOrAdd(featureType, type => new FeatureRunner(type, _integrationContext));
         }
 
         /// <summary>
         /// All currently instantiated runners.
         /// </summary>
-        public IEnumerable<IFeatureBddRunner> AllRunners => _runners.Values;
+        public IEnumerable<IFeatureRunner> AllRunners => _runners.Values;
 
     }
 }

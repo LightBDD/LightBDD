@@ -1,5 +1,6 @@
 ﻿using System;
 using LightBDD.Core.Extensibility;
+using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Scenarios.Contextual;
 using Moq;
 using NUnit.Framework;
@@ -9,7 +10,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
     [TestFixture]
     public class Contextual_runner_tests
     {
-        public interface ITestableBddRunner : IBddRunner, ICoreBddRunner { }
+        public interface ITestableBddRunner : IBddRunner, IFeatureFixtureRunner { }
         class MyContext { }
 
         private Mock<ITestableBddRunner> _runner;

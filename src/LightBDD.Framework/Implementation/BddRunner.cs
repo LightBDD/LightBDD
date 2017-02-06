@@ -2,11 +2,11 @@ using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Framework.Implementation
 {
-    internal class BddRunner : IBddRunner,ICoreBddRunner
+    internal class BddRunner : IBddRunner,IFeatureFixtureRunner
     {
-        private readonly ICoreBddRunner _coreRunner;
+        private readonly IFeatureFixtureRunner _coreRunner;
 
-        public BddRunner(ICoreBddRunner coreRunner)
+        public BddRunner(IFeatureFixtureRunner coreRunner)
         {
             _coreRunner = coreRunner;
         }

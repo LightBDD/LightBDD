@@ -5,16 +5,16 @@ using LightBDD.NUnit3.Implementation;
 namespace LightBDD.NUnit3
 {
     /// <summary>
-    /// Class allowing to instantiate <see cref="IFeatureBddRunner"/> that is being configured to work with NUnit framework.
+    /// Class allowing to instantiate <see cref="IFeatureRunner"/> that is being configured to work with NUnit framework.
     /// </summary>
     public static class FeatureRunnerProvider
     {
         /// <summary>
-        /// Returns <see cref="IFeatureBddRunner"/> for given <paramref name="featureType"/>.
+        /// Returns <see cref="IFeatureRunner"/> for given <paramref name="featureType"/>.
         /// </summary>
         /// <param name="featureType">Feature type.</param>
-        /// <returns><see cref="IFeatureBddRunner"/> object.</returns>
-        public static IFeatureBddRunner GetRunnerFor(Type featureType)
+        /// <returns><see cref="IFeatureRunner"/> object.</returns>
+        public static IFeatureRunner GetRunnerFor(Type featureType)
         {
             return NUnit3FeatureCoordinator.GetInstance().RunnerRepository.GetRunnerFor(featureType);
         }

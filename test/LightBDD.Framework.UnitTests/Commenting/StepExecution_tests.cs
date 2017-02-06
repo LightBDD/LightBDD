@@ -5,6 +5,7 @@ using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Commenting;
 using LightBDD.Framework.Commenting.Configuration;
 using LightBDD.Framework.ExecutionContext.Configuration;
+using LightBDD.Framework.Extensibility;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
@@ -21,9 +22,9 @@ namespace LightBDD.Framework.UnitTests.Commenting
                     .WithExecutionExtensions(new ExecutionExtensionsConfiguration().EnableScenarioExecutionContext())
                 )
                 .GetRunnerFor(GetType())
-                .GetRunner(this);
+                .GetBddRunner(this);
 
-            var exception = Assert.Throws<InvalidOperationException>(() => runner.AsRunner().Test().TestScenario(TestStep.CreateAsync(Commented_step, "some comment")));
+            var exception = Assert.Throws<InvalidOperationException>(() => runner.Test().TestScenario(TestStep.CreateAsync(Commented_step, "some comment")));
 
             Assert.That(exception.Message, Is.EqualTo("Current task is not executing any scenario steps or commenting feature is not enabled in LightBddConfiguration. Ensure that configuration.ExecutionExtensionsConfiguration().EnableStepCommenting() is called during LightBDD initialization and commenting feature is called from task running scenario step."));
         }
@@ -34,9 +35,9 @@ namespace LightBDD.Framework.UnitTests.Commenting
         public void Comment_should_ignore_empty_comments(string comment)
         {
             var feature = GetFeatureRunner();
-            var runner = feature.GetRunner(this);
+            var runner = feature.GetBddRunner(this);
 
-            runner.AsRunner().Test().TestScenario(TestStep.CreateAsync(Commented_step, comment));
+            runner.Test().TestScenario(TestStep.CreateAsync(Commented_step, comment));
 
             Assert.That(feature.GetFeatureResult().GetScenarios().Single().GetSteps().Single().Comments.ToArray(), Is.Empty);
         }
@@ -45,12 +46,12 @@ namespace LightBDD.Framework.UnitTests.Commenting
         public void Comment_should_record_comment_in_currently_executed_step()
         {
             var feature = GetFeatureRunner();
-            var runner = feature.GetRunner(this);
+            var runner = feature.GetBddRunner(this);
 
             var comment = "abc";
             var otherComment = "def";
 
-            runner.AsRunner().Test().TestScenario(
+            runner.Test().TestScenario(
                 TestStep.CreateAsync(Commented_step, comment),
                 TestStep.CreateAsync(Commented_step, otherComment));
 
@@ -66,7 +67,7 @@ namespace LightBDD.Framework.UnitTests.Commenting
             StepExecution.Current.Comment(comment);
         }
 
-        private IFeatureBddRunner GetFeatureRunner()
+        private IFeatureRunner GetFeatureRunner()
         {
             var context = TestableIntegrationContextBuilder.Default()
                 .WithExecutionExtensions(new ExecutionExtensionsConfiguration().EnableStepCommenting());

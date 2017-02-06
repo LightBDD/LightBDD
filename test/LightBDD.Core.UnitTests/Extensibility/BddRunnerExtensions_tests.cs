@@ -2,6 +2,7 @@
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Results;
 using LightBDD.Framework;
+using LightBDD.Framework.Extensibility;
 using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests.Extensibility
@@ -13,7 +14,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         public void Integrated_should_throw_if_runner_does_not_implement_ICoreBddRunner()
         {
             var ex = Assert.Throws<InvalidOperationException>(() => new IncompleteRunner().Integrate());
-            Assert.That(ex.Message, Is.EqualTo($"The type '{nameof(IncompleteRunner)}' has to implement '{nameof(ICoreBddRunner)}' interface to support integration."));
+            Assert.That(ex.Message, Is.EqualTo($"The type '{nameof(IncompleteRunner)}' has to implement '{nameof(IFeatureFixtureRunner)}' interface to support integration."));
         }
 
         [Test]
@@ -31,7 +32,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
 
         class IncompleteRunner : IBddRunner { }
 
-        class CompleteRunner : IBddRunner, ICoreBddRunner
+        class CompleteRunner : IBddRunner, IFeatureFixtureRunner
         {
             public void Dispose()
             {

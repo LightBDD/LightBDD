@@ -5,6 +5,7 @@ using System.Threading;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Results;
 using LightBDD.Framework;
+using LightBDD.Framework.Extensibility;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
@@ -15,7 +16,7 @@ namespace LightBDD.Core.UnitTests
     {
         private IBddRunner _runner;
         private static readonly TimeSpan UtcNowClockPrecision = TimeSpan.FromMilliseconds(15);
-        private IFeatureBddRunner _feature;
+        private IFeatureRunner _feature;
 
         #region Setup/Teardown
 
@@ -23,7 +24,7 @@ namespace LightBDD.Core.UnitTests
         public void SetUp()
         {
             _feature = TestableFeatureRunnerRepository.GetRunner(GetType());
-            _runner = _feature.GetRunner(this).AsRunner();
+            _runner = _feature.GetBddRunner(this);
         }
 
         #endregion

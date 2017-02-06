@@ -1,15 +1,14 @@
 using System;
 using System.Diagnostics;
-using LightBDD.Core.Extensibility;
+using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Extensibility.Execution.Implementation;
-using LightBDD.Core.Extensibility.Implementation;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Implementation;
 
-namespace LightBDD.Core.Execution.Implementation
+namespace LightBDD.Core.Extensibility.Implementation
 {
     [DebuggerStepThrough]
-    internal class FeatureBddRunner : IFeatureBddRunner
+    internal class FeatureRunner : IFeatureRunner
     {
         private readonly FeatureResult _featureResult;
         private readonly ScenarioExecutor _scenarioExecutor;
@@ -17,7 +16,7 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly Type _featureType;
         private bool _disposed;
 
-        public FeatureBddRunner(Type featureType, IIntegrationContext integrationContext)
+        public FeatureRunner(Type featureType, IIntegrationContext integrationContext)
         {
             _featureType = featureType;
             _integrationContext = integrationContext;
@@ -29,7 +28,7 @@ namespace LightBDD.Core.Execution.Implementation
             integrationContext.FeatureProgressNotifier.NotifyFeatureStart(_featureResult.Info);
         }
 
-        public ICoreBddRunner GetRunner(object fixture)
+        public IFeatureFixtureRunner ForFixture(object fixture)
         {
             VerifyDisposed();
 
@@ -38,7 +37,7 @@ namespace LightBDD.Core.Execution.Implementation
             if (fixture.GetType() != _featureType)
                 throw new ArgumentException($"Provided fixture instance '{fixture.GetType()}' type does not match feature type '{_featureType}'");
 
-            return new CoreBddRunner(fixture, CreateScenarioRunner);
+            return new FeatureFixtureRunner(fixture, CreateScenarioRunner);
         }
 
         private IScenarioRunner CreateScenarioRunner(object fixture)

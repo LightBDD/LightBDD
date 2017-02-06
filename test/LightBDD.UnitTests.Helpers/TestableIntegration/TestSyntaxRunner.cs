@@ -8,10 +8,10 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
     public class TestSyntaxRunner
     {
-        private readonly ICoreBddRunner _coreRunner;
+        private readonly IFeatureFixtureRunner _coreRunner;
         private Func<object> _contextProvider;
 
-        public TestSyntaxRunner(ICoreBddRunner coreRunner)
+        public TestSyntaxRunner(IFeatureFixtureRunner coreRunner)
         {
             _coreRunner = coreRunner;
         }

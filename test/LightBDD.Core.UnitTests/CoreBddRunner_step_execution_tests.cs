@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework;
+using LightBDD.Framework.Extensibility;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
@@ -12,13 +13,13 @@ namespace LightBDD.Core.UnitTests
     {
         private IBddRunner _runner;
         private List<string> _executedSteps;
-        private IFeatureBddRunner _feature;
+        private IFeatureRunner _feature;
 
         [SetUp]
         public void SetUp()
         {
             _feature = TestableFeatureRunnerRepository.GetRunner(GetType());
-            _runner = _feature.GetRunner(this).AsRunner();
+            _runner = _feature.GetBddRunner(this);
             _executedSteps = new List<string>();
         }
 
@@ -57,7 +58,7 @@ namespace LightBDD.Core.UnitTests
         public void Disposed_feature_should_not_allow_creating_new_runners()
         {
             _feature.Dispose();
-            Assert.Throws<ObjectDisposedException>(() => _feature.GetRunner(this));
+            Assert.Throws<ObjectDisposedException>(() => _feature.ForFixture(this));
         }
 
         [Test]

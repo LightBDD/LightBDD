@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Basic
 {
-    public interface ITestableBddRunner : IBddRunner, ICoreBddRunner { }
+    public interface ITestableBddRunner : IBddRunner, IFeatureFixtureRunner { }
 
     [TestFixture]
     public class Basic_scenario_runner_tests

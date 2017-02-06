@@ -1,4 +1,5 @@
 ﻿using LightBDD.Framework;
+using LightBDD.Framework.Extensibility;
 
 namespace LightBDD.MsTest
 {
@@ -18,7 +19,7 @@ namespace LightBDD.MsTest
         /// </summary>
         protected FeatureFixture()
         {
-            Runner = FeatureRunnerProvider.GetRunnerFor(GetType()).GetRunner(this).AsRunner();
+            Runner = FeatureRunnerProvider.GetRunnerFor(GetType()).GetBddRunner(this);
         }
     }
 }

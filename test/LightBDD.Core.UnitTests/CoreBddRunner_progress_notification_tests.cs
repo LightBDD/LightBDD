@@ -6,6 +6,7 @@ using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
+using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Notification;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
@@ -28,10 +29,10 @@ namespace LightBDD.Core.UnitTests
             var progressNotifier = new CapturingProgressNotifier();
 
             var feature = new TestableFeatureRunnerRepository(progressNotifier, fixture => progressNotifier).GetRunnerFor(GetType());
-            var runner = feature.GetRunner(this);
+            var runner = feature.GetBddRunner(this);
             try
             {
-                runner.AsRunner().Test().TestScenario(
+                runner.Test().TestScenario(
                     Given_step_one,
                     When_step_two_with_comment,
                     Then_step_three_should_throw_exception);
@@ -65,10 +66,10 @@ namespace LightBDD.Core.UnitTests
             var progressNotifier = new CapturingProgressNotifier();
 
             var feature = new TestableFeatureRunnerRepository(progressNotifier, fixture => progressNotifier).GetRunnerFor(GetType());
-            var runner = feature.GetRunner(this);
+            var runner = feature.GetBddRunner(this);
             try
             {
-                runner.AsRunner().Test().TestScenario(
+                runner.Test().TestScenario(
                     TestStep.CreateAsync(Given_step_with_parameter, () => "abc"),
                     TestStep.CreateAsync(When_step_with_parameter, ThrowingParameterInvocation),
                     TestStep.CreateAsync(Then_step_with_parameter, () => 2.22));
@@ -102,11 +103,11 @@ namespace LightBDD.Core.UnitTests
                 return notifier;
             };
 
-            var runner = new TestableFeatureRunnerRepository(NoProgressNotifier.Default, captureNotifierCreation).GetRunnerFor(GetType()).GetRunner(this);
+            var runner = new TestableFeatureRunnerRepository(NoProgressNotifier.Default, captureNotifierCreation).GetRunnerFor(GetType()).GetBddRunner(this);
 
-            runner.AsRunner().Test().TestNamedScenario("scenario1", TestStep.CreateSync(Given_step_one));
-            runner.AsRunner().Test().TestNamedScenario("scenario2", TestStep.CreateSync(Given_step_one));
-            runner.AsRunner().Test().TestNamedScenario("scenario3", TestStep.CreateSync(Given_step_one));
+            runner.Test().TestNamedScenario("scenario1", TestStep.CreateSync(Given_step_one));
+            runner.Test().TestNamedScenario("scenario2", TestStep.CreateSync(Given_step_one));
+            runner.Test().TestNamedScenario("scenario3", TestStep.CreateSync(Given_step_one));
 
             Assert.That(notifiers.Count, Is.EqualTo(3));
             Assert.That(notifiers[0].Notifications.Count(n => n.StartsWith("Scenario Start: scenario1")), Is.EqualTo(1), "scenario1");

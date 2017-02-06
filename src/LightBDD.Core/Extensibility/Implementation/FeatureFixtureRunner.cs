@@ -1,16 +1,15 @@
 using System;
 using System.Diagnostics;
-using LightBDD.Core.Extensibility;
 
-namespace LightBDD.Core.Execution.Implementation
+namespace LightBDD.Core.Extensibility.Implementation
 {
     [DebuggerStepThrough]
-    internal class CoreBddRunner : ICoreBddRunner
+    internal class FeatureFixtureRunner : IFeatureFixtureRunner
     {
         private readonly object _fixture;
         private readonly Func<object, IScenarioRunner> _scenarioRunnerProvider;
 
-        public CoreBddRunner(object fixture, Func<object, IScenarioRunner> scenarioRunnerProvider)
+        public FeatureFixtureRunner(object fixture, Func<object, IScenarioRunner> scenarioRunnerProvider)
         {
             _fixture = fixture;
             _scenarioRunnerProvider = scenarioRunnerProvider;

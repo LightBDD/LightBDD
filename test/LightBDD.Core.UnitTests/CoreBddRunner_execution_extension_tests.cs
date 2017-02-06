@@ -7,7 +7,7 @@ using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.UnitTests.Helpers;
-using LightBDD.Framework;
+using LightBDD.Framework.Extensibility;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using Moq;
 using NUnit.Framework;
@@ -26,7 +26,7 @@ namespace LightBDD.Core.UnitTests
                 .Returns((IScenarioInfo info, Func<Task> inner) => inner());
 
             var featureRunner = CreateRunner(new ExecutionExtensionsConfiguration().EnableScenarioExtension(() => mockExtension.Object));
-            var runner = featureRunner.GetRunner(this).AsRunner();
+            var runner = featureRunner.GetBddRunner(this);
 
             runner
                 .Test()
@@ -51,7 +51,7 @@ namespace LightBDD.Core.UnitTests
                 });
 
             var featureRunner = CreateRunner(new ExecutionExtensionsConfiguration().EnableStepExtension(() => mockExtension.Object));
-            var runner = featureRunner.GetRunner(this).AsRunner();
+            var runner = featureRunner.GetBddRunner(this);
 
             runner
                 .Test()
@@ -70,7 +70,7 @@ namespace LightBDD.Core.UnitTests
             Assert.That(steps[2].Comments, Is.EquivalentTo(new[] { "THEN step three" }));
         }
 
-        private IFeatureBddRunner CreateRunner(IExecutionExtensions extensions)
+        private IFeatureRunner CreateRunner(IExecutionExtensions extensions)
         {
             return new TestableFeatureRunnerRepository(TestableIntegrationContextBuilder.Default().WithExecutionExtensions(extensions)).GetRunnerFor(GetType());
         }
