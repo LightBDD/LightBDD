@@ -18,7 +18,8 @@ namespace LightBDD.Example.AcceptanceTests.MsTest
         {
             configuration
                 .ReportWritersConfiguration()
-                .AddFileWriter<PlainTextReportFormatter>("~\\Reports\\FeaturesReport.txt");
+                .Clear()
+                .AddFileWriter<PlainTextReportFormatter>("~\\Reports\\{TestDateTimeUtc:yyyy-MM-dd-HH_mm_ss}_FeaturesReport.txt");
         }
     }
 }

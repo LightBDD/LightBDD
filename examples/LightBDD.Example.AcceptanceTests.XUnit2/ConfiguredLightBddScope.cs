@@ -13,7 +13,7 @@ namespace LightBDD.Example.AcceptanceTests.XUnit2
         {
             configuration
                 .ReportWritersConfiguration()
-                .AddFileWriter<PlainTextReportFormatter>("~\\Reports\\FeaturesReport.txt");
+                .AddFileWriter<PlainTextReportFormatter>("~\\Reports\\{TestDateTimeUtc:yyyy-MM-dd-HH_mm_ss}_FeaturesReport.txt");
         }
     }
 }

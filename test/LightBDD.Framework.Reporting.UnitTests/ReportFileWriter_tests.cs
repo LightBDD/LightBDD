@@ -14,9 +14,9 @@ namespace LightBDD.Reporting.UnitTests
         [Test]
         public void It_should_use_appdomain_base_directory_if_output_starts_with_tilde()
         {
-            var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), "~//output.txt");
+            var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), "~\\output.txt");
             var expected = Path.GetFullPath(AppContext.BaseDirectory + "\\output.txt");
-            Assert.That(writer.OutputPath, Is.EqualTo("~//output.txt"));
+            Assert.That(writer.OutputPath, Is.EqualTo("~\\output.txt"));
             Assert.That(writer.FullOutputPath, Is.EqualTo(expected));
         }
 
@@ -26,6 +26,15 @@ namespace LightBDD.Reporting.UnitTests
             var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), "output.txt");
             var expected = Path.GetFullPath("output.txt");
             Assert.That(writer.OutputPath, Is.EqualTo("output.txt"));
+            Assert.That(writer.FullOutputPath, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void It_should_preserve_output_path_if_it_is_absolute()
+        {
+            var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), "c:\\output.txt");
+            var expected = Path.GetFullPath("c:\\output.txt");
+            Assert.That(writer.OutputPath, Is.EqualTo("c:\\output.txt"));
             Assert.That(writer.FullOutputPath, Is.EqualTo(expected));
         }
 

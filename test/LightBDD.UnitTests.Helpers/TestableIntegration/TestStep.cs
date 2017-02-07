@@ -7,7 +7,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
     public static class TestStep
     {
-        public static StepDescriptor CreateAsync(Action step) => new StepDescriptor(step.GetMethodInfo().Name, async (ctx, args) => { await Task.Yield(); step.Invoke(); });
+        public static StepDescriptor CreateAsync(Action step) => new StepDescriptor(step.GetMethodInfo().Name, async (ctx, args) => { await Task.Delay(10); step.Invoke(); });
         public static StepDescriptor CreateSync(Action step) => new StepDescriptor(step.GetMethodInfo().Name, (ctx, args) => { step.Invoke(); return Task.CompletedTask; });
         public static StepDescriptor Create(Func<Task> step) => new StepDescriptor(step.GetMethodInfo().Name, (ctx, args) => step.Invoke());
 
