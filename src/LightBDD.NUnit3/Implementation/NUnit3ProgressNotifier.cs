@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using LightBDD.Core.Notification;
 using LightBDD.Framework.Notification;
-using NUnit.Framework;
 
 namespace LightBDD.NUnit3.Implementation
 {
@@ -10,12 +9,12 @@ namespace LightBDD.NUnit3.Implementation
     {
         public static IFeatureProgressNotifier CreateFeatureProgressNotifier()
         {
-            return ParallelProgressNotifierProvider.Default.CreateFeatureProgressNotifier(TestContext.WriteLine);
+            return NoProgressNotifier.Default;
         }
 
         public static IScenarioProgressNotifier CreateScenarioProgressNotifier()
         {
-            return ParallelProgressNotifierProvider.Default.CreateScenarioProgressNotifier(WriteScenarioProgress);
+            return new DefaultProgressNotifier(WriteScenarioProgress);
         }
 
         private static void WriteScenarioProgress(string text)

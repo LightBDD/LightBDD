@@ -1,8 +1,6 @@
 using System.Threading.Tasks;
-using LightBDD.Example.Domain;
 using LightBDD.Example.Helpers;
 using LightBDD.NUnit3;
-using NUnit.Framework;
 
 namespace LightBDD.Example.AcceptanceTests.NUnit3.Features
 {
