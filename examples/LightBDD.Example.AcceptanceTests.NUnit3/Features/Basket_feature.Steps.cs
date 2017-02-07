@@ -12,12 +12,12 @@ namespace LightBDD.Example.AcceptanceTests.NUnit3.Features
         private Stock _stock;
         private Basket _basket;
         private bool _transferResult;
+        private static readonly string Product = "product";
 
         private void Given_product_is_in_stock()
         {
-            var product = "product";
-            _stock.Add(product);
-            StepExecution.Current.Comment(string.Format("Added '{0}' to the stock", product));
+            _stock.Add(Product);
+            StepExecution.Current.Comment(string.Format("Added '{0}' to the stock", Product));
         }
 
         private void Given_product_is_out_of_stock()
@@ -25,11 +25,10 @@ namespace LightBDD.Example.AcceptanceTests.NUnit3.Features
             //It is not added, so it is out of stock
         }
 
-        private void When_customer_adds_it_to_the_basket()
+        private async void When_customer_adds_it_to_the_basket()
         {
-            var product = "product";
-            StepExecution.Current.Comment(string.Format("Transferring '{0}' to the basket", product));
-            _transferResult = _stock.TransferToBasket(_basket, product);
+            StepExecution.Current.Comment(string.Format("Transferring '{0}' to the basket", Product));
+            _transferResult = await _stock.TransferToBasketAsync(_basket, Product);
         }
 
         private void Then_the_product_addition_should_be_successful()
@@ -39,7 +38,7 @@ namespace LightBDD.Example.AcceptanceTests.NUnit3.Features
 
         private void Then_the_basket_should_contain_the_product()
         {
-            Assert.That(_basket.Products.Contains("product"), Is.True);
+            Assert.That(_basket.Products.Contains(Product), Is.True);
         }
 
         private void Then_the_product_addition_should_be_unsuccessful()
@@ -49,13 +48,13 @@ namespace LightBDD.Example.AcceptanceTests.NUnit3.Features
 
         private void Then_the_basket_should_not_contain_the_product()
         {
-            Assert.That(_basket.Products.Contains("product"), Is.False);
+            Assert.That(_basket.Products.Contains(Product), Is.False);
         }
 
         private void Then_the_product_should_be_removed_from_stock()
         {
             Assert.Ignore("Product removal from stock is not implemented yet");
-            Assert.That(_stock.Products.Contains("product"), Is.False);
+            Assert.That(_stock.Products.Contains(Product), Is.False);
         }
 
         #region Setup/Teardown

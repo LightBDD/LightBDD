@@ -1,16 +1,16 @@
 Summary:
-	Test execution start time       : 2017-02-06 20:06:54 UTC
-	Test execution end time         : 2017-02-06 20:06:55 UTC
-	Test execution time             : 692ms
-	Test execution time (aggregated): 1s 157ms
-	Number of features              : 5
-	Number of scenarios             : 11
-	Passed scenarios                : 7
+	Test execution start time       : 2017-02-07 19:35:43 UTC
+	Test execution end time         : 2017-02-07 19:35:44 UTC
+	Test execution time             : 759ms
+	Test execution time (aggregated): 2s 086ms
+	Number of features              : 6
+	Number of scenarios             : 12
+	Passed scenarios                : 8
 	Bypassed scenarios              : 1
 	Failed scenarios                : 1
 	Ignored scenarios               : 2
-	Number of steps                 : 55
-	Passed steps                    : 48
+	Number of steps                 : 59
+	Passed steps                    : 52
 	Bypassed steps                  : 1
 	Failed steps                    : 1
 	Ignored steps                   : 2
@@ -21,22 +21,22 @@ Feature: Basket feature [Story-4]
 	As a customer
 	I want to add products to basket
 
-	Scenario: No product in stock [Ticket-6] - Passed (227ms)
+	Scenario: No product in stock [Ticket-6] - Passed (244ms)
 		Categories: Sales
-		Step 1: GIVEN product is out of stock - Passed (2ms)
-		Step 2: WHEN customer adds it to the basket - Passed (182ms)
-		Step 3: THEN the product addition should be unsuccessful - Passed (1ms)
+		Step 1: GIVEN product is out of stock - Passed (19ms)
+		Step 2: WHEN customer adds it to the basket - Passed (184ms)
+		Step 3: THEN the product addition should be unsuccessful - Passed (2ms)
 		Step 4: AND the basket should not contain the product - Passed (<1ms)
 		Comments:
 			Step 2: Transferring 'product' to the basket
 
-	Scenario: Successful addition [Ticket-7] - Ignored (106ms)
+	Scenario: Successful addition [Ticket-7] - Ignored (164ms)
 		Categories: Sales
 		Step 1: GIVEN product is in stock - Passed (<1ms)
-		Step 2: WHEN customer adds it to the basket - Passed (104ms)
+		Step 2: WHEN customer adds it to the basket - Passed (161ms)
 		Step 3: THEN the product addition should be successful - Passed (<1ms)
 		Step 4: AND the basket should contain the product - Passed (<1ms)
-		Step 5: AND the product should be removed from stock - Ignored (<1ms)
+		Step 5: AND the product should be removed from stock - Ignored (1ms)
 		Details:
 			Step 5: Product removal from stock is not implemented yet
 		Comments:
@@ -48,38 +48,38 @@ Feature: Contacts management [Story-6]
 	As an application user
 	I want to add, browse and remove my contacts
 
-	Scenario: Contact book should allow me to add multiple contacts [Ticket-8] - Passed (59ms)
-		Step 1: CTX Given my contact book is empty - Passed (<1ms)
-		Step 2: AND When I add new contacts - Passed (2ms)
-		Step 3: AND Then all contacts should be available in the contact book - Passed (28ms)
+	Scenario: Contact book should allow me to add multiple contacts [Ticket-8] - Passed (88ms)
+		Step 1: GIVEN my contact book is empty - Passed (15ms)
+		Step 2: WHEN I add new contacts - Passed (2ms)
+		Step 3: THEN all contacts should be available in the contact book - Passed (27ms)
 
-	Scenario: Contact book should allow me to remove all contacts [Ticket-9] - Bypassed (9ms)
-		Step 1: CTX Given my contact book is filled with many contacts - Passed (4ms)
-		Step 2: AND When I clear it - Bypassed (1ms)
-		Step 3: AND Then the contact book should be empty - Passed (1ms)
+	Scenario: Contact book should allow me to remove all contacts [Ticket-9] - Bypassed (15ms)
+		Step 1: GIVEN my contact book is filled with many contacts - Passed (8ms)
+		Step 2: WHEN I clear it - Bypassed (2ms)
+		Step 3: THEN the contact book should be empty - Passed (1ms)
 		Details:
 			Step 2: Contact book clearing is not implemented yet. Contacts are removed one by one.
 
-	Scenario: Contact book should allow me to remove contacts [Ticket-9] - Passed (11ms)
-		Step 1: CTX Given my contact book is filled with contacts - Passed (<1ms)
-		Step 2: AND When I remove one contact - Passed (<1ms)
-		Step 3: AND Then the contact book should not contain removed contact any more - Passed (6ms)
-		Step 4: AND Then the contact book should contains all other contacts - Passed (1ms)
+	Scenario: Contact book should allow me to remove contacts [Ticket-9] - Passed (12ms)
+		Step 1: GIVEN my contact book is filled with contacts - Passed (<1ms)
+		Step 2: WHEN I remove one contact - Passed (<1ms)
+		Step 3: THEN the contact book should not contain removed contact any more - Passed (7ms)
+		Step 4: AND the contact book should contains all other contacts - Passed (1ms)
 
 Feature: Invoice feature [Story-2]
 	In order to pay for products
 	As a customer
 	I want to receive invoice for bought items
 
-	Scenario: Receiving invoice for products [Ticket-4] - Ignored (35ms)
+	Scenario: Receiving invoice for products [Ticket-4] - Ignored (47ms)
 		Categories: Sales
-		Step 1: GIVEN Product "wooden desk" is available in product storage - Passed (1ms)
-		Step 2: AND Product "wooden shelf" is available in product storage - Passed (<1ms)
-		Step 3: WHEN Customer buys product "wooden desk" - Passed (<1ms)
-		Step 4: AND Customer buys product "wooden shelf" - Passed (<1ms)
-		Step 5: THEN An invoice should be sent to the customer - Ignored (1ms)
-		Step 6: AND The invoice should contain product "wooden desk" with price of "£62.00" - NotRun
-		Step 7: AND The invoice should contain product "wooden shelf" with price of "£37.00" - NotRun
+		Step 1: GIVEN product "wooden desk" is available in product storage - Passed (16ms)
+		Step 2: AND product "wooden shelf" is available in product storage - Passed (<1ms)
+		Step 3: WHEN customer buys product "wooden desk" - Passed (<1ms)
+		Step 4: AND customer buys product "wooden shelf" - Passed (<1ms)
+		Step 5: THEN an invoice should be sent to the customer - Ignored (1ms)
+		Step 6: AND the invoice should contain product "wooden desk" with price of "£62.00" - NotRun
+		Step 7: AND the invoice should contain product "wooden shelf" with price of "£37.00" - NotRun
 		Details:
 			Step 5: Not implemented yet
 
@@ -88,12 +88,12 @@ Feature: Login feature [Story-1]
 	As an user
 	I want to login into system
 
-	Scenario: Anonymous login name should allow to log in [Ticket-3] - Failed (225ms)
+	Scenario: Anonymous login name should allow to log in [Ticket-3] - Failed (273ms)
 		Categories: Security
-		Step 1: GIVEN the user is about to login - Passed (1ms)
-		Step 2: AND the user entered anonymous login - Passed (5ms)
-		Step 3: WHEN the user clicks login button - Passed (173ms)
-		Step 4: THEN the login operation should be successful - Failed (14ms)
+		Step 1: GIVEN the user is about to login - Passed (11ms)
+		Step 2: AND the user entered anonymous login - Passed (<1ms)
+		Step 3: WHEN the user clicks login button - Passed (201ms)
+		Step 4: THEN the login operation should be successful - Failed (18ms)
 		Step 5: AND a welcome message containing user name should be returned - NotRun
 		Details:
 			Step 4: Login should succeeded
@@ -102,43 +102,54 @@ Feature: Login feature [Story-1]
 		Comments:
 			Step 4: Presentation of failed scenario
 
-	Scenario: Successful login [Ticket-1] - Passed (184ms)
+	Scenario: Successful login [Ticket-1] - Passed (115ms)
 		Categories: Security
 		Step 1: GIVEN the user is about to login - Passed (<1ms)
 		Step 2: AND the user entered valid login - Passed (<1ms)
 		Step 3: AND the user entered valid password - Passed (<1ms)
-		Step 4: WHEN the user clicks login button - Passed (182ms)
+		Step 4: WHEN the user clicks login button - Passed (113ms)
 		Step 5: THEN the login operation should be successful - Passed (<1ms)
 		Step 6: AND a welcome message containing user name should be returned - Passed (1ms)
 		Comments:
 			Step 5: Presentation of failed scenario
 
-	Scenario: Wrong login provided causes login to fail [Ticket-2] - Passed (124ms)
+	Scenario: Wrong login provided causes login to fail [Ticket-2] - Passed (192ms)
 		Categories: Security
 		Step 1: GIVEN the user is about to login - Passed (<1ms)
 		Step 2: AND the user entered invalid login - Passed (<1ms)
 		Step 3: AND the user entered valid password - Passed (<1ms)
-		Step 4: WHEN the user clicks login button - Passed (122ms)
+		Step 4: WHEN the user clicks login button - Passed (191ms)
 		Step 5: THEN the login operation should be unsuccessful - Passed (<1ms)
 		Step 6: AND an invalid login or password error message should be returned - Passed (<1ms)
 
-	Scenario: Wrong password provided causes login to fail [Ticket-2] - Passed (142ms)
+	Scenario: Wrong password provided causes login to fail [Ticket-2] - Passed (163ms)
 		Categories: Security
 		Step 1: GIVEN the user is about to login - Passed (<1ms)
 		Step 2: AND the user entered valid login - Passed (<1ms)
 		Step 3: AND the user entered invalid password - Passed (<1ms)
-		Step 4: WHEN the user clicks login button - Passed (142ms)
+		Step 4: WHEN the user clicks login button - Passed (162ms)
 		Step 5: THEN the login operation should be unsuccessful - Passed (<1ms)
 		Step 6: AND an invalid login or password error message should be returned - Passed (<1ms)
+
+Feature: Payment feature [Story-5]
+	In order to get desired products
+	As a customer
+	I want to pay for products in basket
+
+	Scenario: Successful payment [Ticket-10][Ticket-11] - Passed (713ms)
+		Step 1: GIVEN customer has some products in basket - Passed (214ms)
+		Step 2: AND customer has enough money to pay for products - Passed (168ms)
+		Step 3: WHEN customer requests to pay - Passed (180ms)
+		Step 4: THEN payment should be successful - Passed (121ms)
 
 Feature: Product spedition feature [Story-3]
 	In order to deliver products to customer effectively
 	As a spedition manager
 	I want to dispatch products to customer as soon as the payment is finalized
 
-	Scenario: Should dispatch product after payment is finalized [Ticket-5] - Passed (29ms)
+	Scenario: Should dispatch product after payment is finalized [Ticket-5] - Passed (54ms)
 		Categories: Delivery, Sales
-		Step 1: GIVEN There is an active customer with id "ABC-123" - Passed (1ms)
+		Step 1: GIVEN There is an active customer with id "ABC-123" - Passed (27ms)
 		Step 2: AND The customer has product "wooden shelf" in basket - Passed (<1ms)
 		Step 3: AND The customer has product "wooden desk" in basket - Passed (<1ms)
 		Step 4: WHEN The customer payment finalizes - Passed (<1ms)

@@ -9,7 +9,12 @@ namespace LightBDD.Example.Helpers
 
         public static void Simulate()
         {
-            Task.Delay(TimeSpan.FromMilliseconds(Rand.Next(100, 200))).Wait();
+            SimulateAsync().Wait();
+        }
+
+        public static Task SimulateAsync()
+        {
+            return Task.Delay(TimeSpan.FromMilliseconds(Rand.Next(100, 200)));
         }
     }
 }

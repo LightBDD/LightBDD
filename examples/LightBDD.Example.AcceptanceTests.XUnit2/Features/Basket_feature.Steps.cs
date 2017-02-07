@@ -26,11 +26,11 @@ namespace LightBDD.Example.AcceptanceTests.XUnit2.Features
             //It is not added, so it is out of stock
         }
 
-        private void When_customer_adds_it_to_the_basket()
+        private async void When_customer_adds_it_to_the_basket()
         {
             var product = "product";
             StepExecution.Current.Comment(string.Format("Transferring '{0}' to the basket", product));
-            _transferResult = _stock.TransferToBasket(_basket, product);
+            _transferResult = await _stock.TransferToBasketAsync(_basket, product);
         }
 
         private void Then_the_product_addition_should_be_successful()

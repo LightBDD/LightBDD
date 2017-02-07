@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using LightBDD.Example.Helpers;
 
 namespace LightBDD.Example.Domain
@@ -14,9 +15,9 @@ namespace LightBDD.Example.Domain
             _products.Add(product);
         }
 
-        public bool TransferToBasket(Basket basket, string product)
+        public async Task<bool> TransferToBasketAsync(Basket basket, string product)
         {
-            LongRunningOperationSimulator.Simulate();
+            await LongRunningOperationSimulator.SimulateAsync();
             if (!_products.Contains(product) || !_products.Remove(product))
                 return false;
             basket.Add(product);

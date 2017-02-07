@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.MsTest;
@@ -16,9 +17,9 @@ I want to add products to basket")]
         [Scenario]
         [Label("Ticket-6")]
         [ScenarioCategory(Categories.Sales)]
-        public void No_product_in_stock()
+        public async Task No_product_in_stock()
         {
-            Runner.RunScenario(
+            await Runner.RunScenarioActionsAsync(
                 Given_product_is_out_of_stock,
                 When_customer_adds_it_to_the_basket,
                 Then_the_product_addition_should_be_unsuccessful,
@@ -31,9 +32,9 @@ I want to add products to basket")]
         [Scenario]
         [Label("Ticket-7")]
         [ScenarioCategory(Categories.Sales)]
-        public void Successful_addition()
+        public async Task Successful_addition()
         {
-            Runner.RunScenario(
+            await Runner.RunScenarioActionsAsync(
                 Given_product_is_in_stock,
                 When_customer_adds_it_to_the_basket,
                 Then_the_product_addition_should_be_successful,
