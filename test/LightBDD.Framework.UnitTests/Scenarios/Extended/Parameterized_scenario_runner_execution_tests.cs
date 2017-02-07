@@ -44,5 +44,20 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
             var ex = Assert.ThrowsAsync<InvalidOperationException>(() => step.StepInvocation(null, step.Parameters.Select(p => p.ValueEvaluator(null)).ToArray()));
             Assert.That(ex.Message, Is.EqualTo(ExceptionMessageForStep_with_parameters(33)));
         }
+
+        [Test]
+        public async Task It_should_allow_to_run_void_and_async_void_steps_in_async_mode()
+        {
+            ExpectAsynchronousScenarioRun();
+
+            await Runner.RunScenarioActionsAsync(_ => Step_one_async_void(), _ => Step_two());
+
+            VerifyExpectations();
+        }
+
+        private async void Step_one_async_void()
+        {
+            await Task.Delay(200);
+        }
     }
 }

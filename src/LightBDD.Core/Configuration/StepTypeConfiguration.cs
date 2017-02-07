@@ -14,7 +14,7 @@ namespace LightBDD.Core.Configuration
         /// </summary>
         public static readonly string DefaultRepeatedStepReplacement = "and";
         /// <summary>
-        /// Default predefined step types: given, whent, then, setup, and
+        /// Default predefined step types: given, when, then, setup, and
         /// </summary>
         public static readonly IEnumerable<string> DefaultPredefinedStepTypes = new[] { "given", "when", "then", "setup", "and" };
 

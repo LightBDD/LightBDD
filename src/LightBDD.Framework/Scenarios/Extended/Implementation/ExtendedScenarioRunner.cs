@@ -37,6 +37,15 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
                 .RunAsynchronously();
         }
 
+        public Task RunScenarioAsync(params Expression<Action<TContext>>[] steps)
+        {
+            return _runner.Integrate()
+                .NewScenario()
+                .WithCapturedScenarioDetails()
+                .WithSteps(steps.Select(ToStep))
+                .RunAsynchronously();
+        }
+
         private StepDescriptor ToStep<T>(Expression<T> stepExpression)
         {
             var contextParameter = stepExpression.Parameters[0];

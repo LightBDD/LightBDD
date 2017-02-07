@@ -79,6 +79,30 @@ namespace LightBDD.Integration.XUnit2.UnitTests
                 ex.Message);
         }
 
+        [Scenario]
+        public async Task Runner_should_support_async_void_scenarios()
+        {
+            var finished = false;
+            Action step1 = async () =>
+            {
+                await Task.Delay(200);
+                finished = true;
+            };
+            Action step2 = () => Assert.True(finished);
+
+            await Runner.RunScenarioActionsAsync(step1, step2);
+        }
+
+        [Scenario]
+        public void Runner_should_not_support_async_void_scenarios_if_executed_in_sync_mode()
+        {
+            Action step = async () => await Task.Delay(200);
+            var ex = Assert.Throws<InvalidOperationException>(() => Runner.RunScenario(step));
+            Assert.Equal(
+                    "Only steps being completed upon return can be run synchronously (all steps have to return completed task). Consider using Async scenario methods for async Task or async void steps.",
+                    ex.Message);
+        }
+
         private void Ignored_step()
         {
             StepExecution.Current.IgnoreScenario("manually ignored");

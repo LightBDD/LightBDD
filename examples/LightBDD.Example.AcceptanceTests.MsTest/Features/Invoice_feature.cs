@@ -19,13 +19,13 @@ I want to receive invoice for bought items")]
         public void Receiving_invoice_for_products()
         {
             Runner.RunScenario(
-                given => Product_is_available_in_product_storage("wooden desk"),
-                and => Product_is_available_in_product_storage("wooden shelf"),
-                when => Customer_buys_product("wooden desk"),
-                and => Customer_buys_product("wooden shelf"),
-                then => An_invoice_should_be_sent_to_the_customer(),
-                and => The_invoice_should_contain_product_with_price_of_AMOUNT("wooden desk", 62),
-                and => The_invoice_should_contain_product_with_price_of_AMOUNT("wooden shelf", 37));
+                _ => Given_product_is_available_in_product_storage("wooden desk"),
+                _ => Given_product_is_available_in_product_storage("wooden shelf"),
+                _ => When_customer_buys_product("wooden desk"),
+                _ => When_customer_buys_product("wooden shelf"),
+                _ => Then_an_invoice_should_be_sent_to_the_customer(),
+                _ => Then_the_invoice_should_contain_product_with_price_of_AMOUNT("wooden desk", 62),
+                _ => Then_the_invoice_should_contain_product_with_price_of_AMOUNT("wooden shelf", 37));
         }
     }
 }

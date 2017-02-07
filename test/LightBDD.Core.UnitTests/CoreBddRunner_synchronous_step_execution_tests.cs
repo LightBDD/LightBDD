@@ -59,7 +59,7 @@ namespace LightBDD.Core.UnitTests
         public void Integration_should_not_allow_running_asynchronous_tests_synchronously()
         {
             var ex = Assert.Throws<InvalidOperationException>(() => _runner.Test().TestScenarioPurelySync(TestStep.CreateAsync(() => { })));
-            Assert.That(ex.Message, Is.EqualTo("Only steps being completed upon return can be run synchronously (All steps have to return completed task)."));
+            Assert.That(ex.Message, Is.EqualTo("Only steps being completed upon return can be run synchronously (all steps have to return completed task). Consider using Async scenario methods for async Task or async void steps."));
         }
     }
 }

@@ -83,6 +83,20 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic
             AssertStep(_capturedDescriptors[1], nameof(Step_two_async));
         }
 
+        [Test]
+        public async Task It_should_allow_to_run_void_and_async_void_steps_in_asynchronous_mode()
+        {
+            ExpectNewScenario();
+            ExpectWithCapturedScenarioDetails();
+            ExpectWithSteps();
+            ExpectRunAsynchronously();
+
+            await Runner.RunScenarioActionsAsync(Step_one_async_void, Step_two);
+
+            _mockRunner.Verify();
+            _mockScenarioRunner.Verify();
+        }
+
         private void AssertStep(StepDescriptor step, string expectedName)
         {
             Assert.That(step.RawName, Is.EqualTo(expectedName), nameof(step.RawName));
@@ -148,6 +162,16 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic
             await Task.Yield();
             throw new Exception(nameof(Step_one_async));
         }
+        private async void Step_one_async_void()
+        {
+            await Task.Delay(200);
+        }
+        private async void Step_two_async_void_throwing_exception()
+        {
+            await Task.Delay(200);
+            throw new Exception(nameof(Step_two_async_void_throwing_exception));
+        }
+
         private async Task Step_two_async()
         {
             await Task.Yield();

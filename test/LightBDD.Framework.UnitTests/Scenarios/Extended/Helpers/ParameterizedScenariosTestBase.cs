@@ -82,6 +82,12 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
                 .Verifiable();
         }
 
+        protected void VerifyExpectations()
+        {
+            MockScenarioRunner.VerifyAll();
+            MockRunner.VerifyAll();
+        }
+
         protected void AssertStep(StepDescriptor step, string expectedName, string expectedPredefinedStepType = null)
         {
             Assert.That(step.RawName, Is.EqualTo(expectedName), nameof(step.RawName));

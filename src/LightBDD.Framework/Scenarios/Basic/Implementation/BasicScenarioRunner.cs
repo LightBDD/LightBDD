@@ -35,6 +35,15 @@ namespace LightBDD.Framework.Scenarios.Basic.Implementation
                 .RunAsynchronously();
         }
 
+        public Task RunScenarioAsync(params Action[] steps)
+        {
+            return _coreRunner
+                .NewScenario()
+                .WithCapturedScenarioDetails()
+                .WithSteps(steps.Select(ToSynchronousStep))
+                .RunAsynchronously();
+        }
+
         private StepDescriptor ToAsynchronousStep(Func<Task> step)
         {
             return new StepDescriptor(step.GetMethodInfo().Name, (ctx, args) => step.Invoke());

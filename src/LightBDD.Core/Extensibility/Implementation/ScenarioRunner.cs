@@ -108,7 +108,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         {
             var task = RunAsynchronously();
             if (!task.IsCompleted)
-                throw new InvalidOperationException("Only steps being completed upon return can be run synchronously (All steps have to return completed task).");
+                throw new InvalidOperationException("Only steps being completed upon return can be run synchronously (all steps have to return completed task). Consider using Async scenario methods for async Task or async void steps.");
             task.GetAwaiter().GetResult();
         }
 

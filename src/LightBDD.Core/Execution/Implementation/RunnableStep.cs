@@ -84,9 +84,18 @@ namespace LightBDD.Core.Execution.Implementation
         private async Task TimeMeasuredInvoke(object context)
         {
             var watch = ExecutionTimeWatch.StartNew();
+            var ctx = AsyncStepSynchronizationContext.InstallNew();
             try
             {
-                await _stepInvocation.Invoke(context, PrepareParameters());
+                try
+                {
+                    await _stepInvocation.Invoke(context, PrepareParameters());
+                }
+                finally
+                {
+                    ctx.RestoreOriginal();
+                    await ctx.WaitForTasksAsync();
+                }
             }
             finally
             {

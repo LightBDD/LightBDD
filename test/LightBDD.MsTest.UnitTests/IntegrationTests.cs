@@ -83,6 +83,39 @@ namespace LightBDD.Integration.MsTest.UnitTests
                     ex.Message);
         }
 
+        [Scenario]
+        public async Task Runner_should_support_async_void_scenarios()
+        {
+            var finished = false;
+            Action step1 = async () =>
+            {
+                await Task.Delay(200);
+                finished = true;
+            };
+            Action step2 = () => Assert.IsTrue(finished);
+
+           await Runner.RunScenarioActionsAsync(step1, step2);
+        }
+
+        [Scenario]
+        public void Runner_should_not_support_async_void_scenarios_if_executed_in_sync_mode()
+        {
+            Action step = async () => await Task.Delay(200);
+            Exception ex = null;
+            try
+            {
+                Runner.RunScenario(step);
+            }
+            catch (InvalidOperationException e)
+            {
+                ex = e;
+            }
+            Assert.IsNotNull(ex);
+            Assert.AreEqual(
+                    "Only steps being completed upon return can be run synchronously (all steps have to return completed task). Consider using Async scenario methods for async Task or async void steps.",
+                    ex.Message);
+        }
+
         private void Inconclusive_step()
         {
             Assert.Inconclusive();
