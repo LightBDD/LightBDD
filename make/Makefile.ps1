@@ -43,7 +43,7 @@ Define-Step -Name 'Packaging' -Target 'all,pack' -Body {
     mkdir 'output' | Out-Null
 
 	gci -Path "src" -Filter 'project.json' -Recurse `
-		| %{ call dotnet pack $_.fullname --output 'output' --no-build }
+		| %{ call dotnet pack $_.fullname --output 'output' --no-build --configuration Release}
 }
 <#
 Define-Step -Name 'Prepare templates' -Target 'all,pack' -Body {
