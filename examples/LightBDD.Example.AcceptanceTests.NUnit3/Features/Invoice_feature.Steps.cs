@@ -1,4 +1,4 @@
-﻿using LightBDD.Framework.Formatting.Parameters;
+﻿using LightBDD.Framework.Formatting;
 using LightBDD.NUnit3;
 using NUnit.Framework;
 

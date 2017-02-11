@@ -7,7 +7,6 @@ using LightBDD.Core.Formatting.Parameters;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
 using LightBDD.Framework.Formatting;
-using LightBDD.Framework.Formatting.Parameters;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 

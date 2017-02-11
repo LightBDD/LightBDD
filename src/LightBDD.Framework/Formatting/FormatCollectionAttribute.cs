@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Linq;
 using LightBDD.Core.Formatting.Parameters;
 
-namespace LightBDD.Framework.Formatting.Parameters
+namespace LightBDD.Framework.Formatting
 {
     /// <summary>
     /// Attribute allowing to define formatting rules for method parameter of type implementing <see cref="IEnumerable"/> interface.

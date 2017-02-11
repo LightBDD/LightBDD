@@ -1,5 +1,5 @@
 ﻿using LightBDD.Framework;
-using LightBDD.Framework.Formatting.Parameters;
+using LightBDD.Framework.Formatting;
 using LightBDD.XUnit2;
 using Xunit.Abstractions;
 

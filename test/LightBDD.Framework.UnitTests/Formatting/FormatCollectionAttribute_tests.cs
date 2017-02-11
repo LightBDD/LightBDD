@@ -1,10 +1,10 @@
 using System;
 using System.Globalization;
 using System.Linq;
-using LightBDD.Framework.Formatting.Parameters;
+using LightBDD.Framework.Formatting;
 using NUnit.Framework;
 
-namespace LightBDD.Framework.UnitTests.Formatting.Parameters
+namespace LightBDD.Framework.UnitTests.Formatting
 {
     [TestFixture]
     public class FormatCollectionAttribute_tests

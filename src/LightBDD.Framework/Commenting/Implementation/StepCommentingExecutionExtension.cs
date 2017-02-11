@@ -8,7 +8,7 @@ using LightBDD.Framework.ExecutionContext;
 namespace LightBDD.Framework.Commenting.Implementation
 {
     [DebuggerStepThrough]
-    internal class StepCommentingExtension : IStepExecutionExtension
+    internal class StepCommentingExecutionExtension : IStepExecutionExtension
     {
         public async Task ExecuteAsync(IStep step, Func<Task> stepInvocation)
         {

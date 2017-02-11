@@ -1,4 +1,4 @@
-﻿using LightBDD.Framework.Formatting.Parameters;
+﻿using LightBDD.Framework.Formatting;
 using LightBDD.MsTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

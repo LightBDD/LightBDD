@@ -21,7 +21,7 @@ namespace LightBDD.Framework.Commenting.Configuration
         {
             return configuration
                 .EnableScenarioExecutionContext()
-                .EnableStepExtension<StepCommentingExtension>();
+                .EnableStepExtension<StepCommentingExecutionExtension>();
         }
     }
 }

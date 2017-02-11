@@ -8,7 +8,7 @@ namespace LightBDD.Framework.Scenarios.Contextual
     /// Extensions allowing to create contextual <see cref="IBddRunner"/> instance.
     /// </summary>
     [DebuggerStepThrough]
-    public static class ContextualRunnerExtensions
+    public static class ContextualScenarioExtensions
     {
         /// <summary>
         /// Specifies that scenario would be executed in dedicated context of <typeparamref name="TContext"/> type, created by <paramref name="contextFactory"/> function.

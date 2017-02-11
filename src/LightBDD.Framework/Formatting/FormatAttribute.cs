@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using LightBDD.Core.Formatting.Parameters;
 
-namespace LightBDD.Framework.Formatting.Parameters
+namespace LightBDD.Framework.Formatting
 {
     /// <summary>
     /// Attribute allowing to define how step parameter value should be formatted.
