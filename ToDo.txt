@@ -25,3 +25,4 @@ customization tests + acceptance tests
 html+json results
 integrationcontext - expose readonly configuration+remove configuration specific properties and implement the base class
 rework project names, namespaces and consider separate project with interfaces
+release 1.7.3 with logo path update + xunit to xunit2 redirection
