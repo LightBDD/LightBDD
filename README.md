@@ -232,7 +232,7 @@ In order to display scenario names properly, the project containing feature clas
 * scenario methods have to have **[MethodImpl(MethodImplOptions.NoInlining)]** attribute applied, or
 * **BDDRunner.RunScenarios()** has to be called with explicit scenario name.
 
-The simplest and easisest fix for this problem is to add **[assembly: Debuggable(true, true)]** to the **AssemblyInfo.cs** in test project.
+The simplest and easiest fix for this problem is to add **[assembly: Debuggable(true, true)]** to the **AssemblyInfo.cs** in test project.
 
 ## Wiki
 Please check project [wiki](https://github.com/Suremaker/LightBDD/wiki) for more details.

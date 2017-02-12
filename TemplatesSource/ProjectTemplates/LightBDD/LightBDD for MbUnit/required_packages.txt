@@ -1,3 +1,0 @@
-Gallio_MbUnit
-LightBDD.Core
-LightBDD.MbUnit
