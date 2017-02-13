@@ -16,3 +16,4 @@ make/psmake.*
 .vs
 *.lock.json
 TestResult.xml
+templates/*/lightbdd.ico

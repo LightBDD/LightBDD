@@ -18,7 +18,7 @@ Define-Step -Name 'Update version' -Target 'all,build' -Body {
 
     gci -Filter 'project.json' -Recurse | %{ Replace-InFile $_.fullname $version '"version": "%", //build_ver' }
     Replace-InFile 'AssemblyVersion.cs' $version 'Version("%")'
-    Replace-InFile 'LightBDD.VSPackage\source.extension.vsixmanifest' $version 'Identity Id="d6382c7a-fe20-47e5-b4e1-4d798cef97f1" Version="%"'
+    Replace-InFile 'templates\LightBDD.VSIXTemplates\source.extension.vsixmanifest' $version 'Identity Id="d6382c7a-fe20-47e5-b4e1-4d798cef97f1" Version="%"'
     
 }
 
@@ -45,59 +45,40 @@ Define-Step -Name 'Packaging' -Target 'all,pack' -Body {
 	gci -Path "src" -Filter 'project.json' -Recurse `
 		| %{ call dotnet pack $_.fullname --output 'output' --no-build --configuration Release}
 }
-<#
+
 Define-Step -Name 'Prepare templates' -Target 'all,pack' -Body {
-    function ZipDirectory ($zipfilename, $sourcedir)
-    {
-       Add-Type -Assembly System.IO.Compression.FileSystem
-       $compressionLevel = [System.IO.Compression.CompressionLevel]::Optimal
-       [System.IO.Compression.ZipFile]::CreateFromDirectory($sourcedir, $zipfilename, $compressionLevel, $false)
+
+	function Copy-Logo($target)
+	{
+        Copy-Item 'logo\lightbdd.ico' -Destination "$templateDirectory\lightbdd.ico" | Out-Null
+	}
+
+	function Copy-Packages($targetDirectory, $vstemplate)
+	{
+		$packages = [xml](Get-Content "$targetDirectory\packages.config")
+		$packageToInclude = ""
+		
+		$packages.packages.package | %{ 
+			$packageName = "$($_.id).$($_.version)"
+			Write-Host $packageName
+			cp "packages\$packageName\$packageName.nupkg" "$targetDirectory"
+			$packageToInclude += "<package id=`"$($_.id)`" version=`"$($_.version)`" />"
+		}
+		(Get-Content $vstemplate -Encoding UTF8).Replace('<packages repository="template"></packages>',"<packages repository=`"template`">$packageToInclude</packages>") | Set-Content $vstemplate -Encoding UTF8
+	}
+
+	call $Context.NugetExe restore LightBDD.VSIXTemplates.sln -ConfigFile $Context.NugetConfig
+	
+    Get-ChildItem '.\templates' -Recurse  -Filter '*ProjectTemplate.vstemplate' | %{
+	Write-Host $_
+        $templateDirectory = $_.Directory.FullName
+		Write-ShortStatus "Processing: $templateDirectory"
+        Copy-Logo $templateDirectory
+		Copy-Packages $templateDirectory $_.FullName
     }
-
-    function Copy-Packages ($targetDirectory, $vstemplate) 
-    {
-        $input = "$targetDirectory\required_packages.txt"
-        if (!(Test-Path $input)) { return }
-
-        $packages = Get-Content $input
-        $items = @()
-
-        foreach($package in $packages)
-        {
-            $pkgFile = Get-ChildItem -Path "output","Packages" -Recurse -Include "$package.*.nupkg" -Exclude "*.symbols.nupkg" | Select-Object -First 1            
-            if(!$pkgFile) { throw "Package $package not found!" }
-            Copy-Item $pkgFile -Destination $targetDirectory
-            
-            $version = $pkgFile.Name -replace "$package.",'' -replace '.nupkg',''
-            $items+="<package id=`"$package`" version=`"$version`" />"
-        }
-
-        (Get-Content $vstemplate -Encoding UTF8).Replace('<packages repository="template"></packages>',"<packages repository=`"template`">$items</packages>") | Set-Content $vstemplate -Encoding UTF8
-
-        Remove-Item $input
-    }
-
-    Remove-Item -Force -Recurse 'Templates\*\*'
-    Remove-Item -Force -Recurse 'Templates_input' -ErrorAction SilentlyContinue | Out-Null
-    Copy-Item 'TemplatesSource' -Recurse -Destination 'Templates_input' | Out-Null    
-
-    Get-ChildItem '.\Templates_input' -Recurse  -Filter '*.vstemplate' | %{
-        $srcDirectory = $_.Directory.FullName
-        $packageName = $_.Directory.Name
-        $dstDirectory = $_.Directory.Parent.FullName.Replace('\Templates_input\','\Templates\')
-        Write-ShortStatus $_.FullName
-
-        Copy-Item 'logo\lightbdd.ico' -Destination "$srcDirectory\logo.ico" | Out-Null
-        Copy-Packages $srcDirectory $_.FullName
-
-        mkdir $dstDirectory -ErrorAction SilentlyContinue | Out-Null
-        ZipDirectory "$dstDirectory\$($packageName).zip" $srcDirectory
-        Remove-Item "$srcDirectory\logo.ico" | Out-Null
-    }
-    Remove-Item -Force -Recurse 'Templates_input' -ErrorAction SilentlyContinue | Out-Null
 }
 
 Define-Step -Name 'Build VSIX package' -Target 'all,pack' -Body {
-    call "${env:ProgramFiles(x86)}\MSBuild\12.0\Bin\msbuild.exe" LightBDD.VSPackage.sln /t:"Clean,Build" /p:Configuration=Release /m /verbosity:m /nologo /p:TreatWarningsAsErrors=true
-    copy-item 'LightBDD.VSPackage\bin\Release\LightBDD.VSPackage.vsix' -Destination 'output'
-}#>
+    call "msbuild.exe" LightBDD.VSIXTemplates.sln /t:"Clean,Build" /p:Configuration=Release /m /verbosity:m /nologo /p:TreatWarningsAsErrors=true /nr:false
+    copy-item 'templates\LightBDD.VSIXTemplates\bin\Release\LightBDD.VSIXTemplates.vsix' -Destination 'output'
+}

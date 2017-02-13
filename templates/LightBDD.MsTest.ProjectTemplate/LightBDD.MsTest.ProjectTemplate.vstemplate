@@ -18,8 +18,9 @@
   <TemplateContent>
     <Project File="ProjectTemplate.csproj" ReplaceParameters="true">
       <ProjectItem ReplaceParameters="true" TargetFileName="Properties\AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
-      <ProjectItem ReplaceParameters="true" TargetFileName="My_feature.cs">My_feature.cs</ProjectItem>
-      <ProjectItem ReplaceParameters="true" TargetFileName="My_feature.Steps.cs">My_feature.Steps.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="LightBddIntegration.cs">LightBddIntegration.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="My_feature.cs">Feature.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="My_feature.Steps.cs">Feature.Steps.cs</ProjectItem>
     </Project>
   </TemplateContent>
   <WizardExtension>

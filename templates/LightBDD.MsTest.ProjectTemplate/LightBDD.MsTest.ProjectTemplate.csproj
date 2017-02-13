@@ -93,6 +93,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\packages\LightBDD.MsTest.2.0.0.0\LightBDD.MsTest.2.0.0.0.nupkg">
+      <Link>Packages\LightBDD.MsTest.2.0.0.0.nupkg</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <None Include="Feature.cs" />
     <None Include="Feature.Steps.cs" />
     <None Include="LightBddIntegration.cs" />
@@ -104,7 +108,9 @@
     <None Include="ProjectTemplate.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <VSTemplate Include="LightBDD.MsTest.ProjectTemplate.vstemplate" />
+    <VSTemplate Include="LightBDD.MsTest.ProjectTemplate.vstemplate">
+      <SubType>Designer</SubType>
+    </VSTemplate>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6">
@@ -119,9 +125,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\logo\lightbdd.ico">
-      <Link>lightbdd.ico</Link>
-    </Content>
+    <None Include="lightbdd.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
