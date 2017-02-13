@@ -1,7 +1,6 @@
 ﻿using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.Framework.Scenarios.Extended;
-using NUnit;
 
 namespace $rootnamespace$
 {

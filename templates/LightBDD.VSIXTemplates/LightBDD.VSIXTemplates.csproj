@@ -75,45 +75,24 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LightBDD.MsTest.ProjectTemplate\LightBDD.MsTest.ProjectTemplate.csproj">
-      <Project>{183019BB-4EAB-4274-9A22-58C8D5678AD8}</Project>
-      <Name>LightBDD.MsTest.ProjectTemplate</Name>
-      <VSIXSubPath>ProjectTemplates</VSIXSubPath>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-    </ProjectReference>
-    <ProjectReference Include="..\LightBDD.MsTest.FeatureTemplate\LightBDD.MsTest.FeatureTemplate.csproj">
+    <ProjectReference Include="..\ItemTemplates\LightBDD.MsTest.FeatureTemplate\LightBDD.MsTest.FeatureTemplate.csproj">
       <Project>{918C60A8-D2FE-4849-8951-01F3B1A830C9}</Project>
       <Name>LightBDD.MsTest.FeatureTemplate</Name>
       <VSIXSubPath>ItemTemplates</VSIXSubPath>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
     </ProjectReference>
-    <ProjectReference Include="..\LightBDD.NUnit3.FeatureTemplate\LightBDD.NUnit3.FeatureTemplate.csproj">
+    <ProjectReference Include="..\ItemTemplates\LightBDD.NUnit3.FeatureTemplate\LightBDD.NUnit3.FeatureTemplate.csproj">
       <Project>{987A36B6-417E-44C9-A8BE-CF5639CEE674}</Project>
       <Name>LightBDD.NUnit3.FeatureTemplate</Name>
       <VSIXSubPath>ItemTemplates</VSIXSubPath>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
     </ProjectReference>
-    <ProjectReference Include="..\LightBDD.NUnit3.ProjectTemplate\LightBDD.NUnit3.ProjectTemplate.csproj">
-      <Project>{B76AEE15-FD6E-485C-AE2D-F4318DBDF2CD}</Project>
-      <Name>LightBDD.NUnit3.ProjectTemplate</Name>
-      <VSIXSubPath>ProjectTemplates</VSIXSubPath>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-    </ProjectReference>
-    <ProjectReference Include="..\LightBDD.XUnit2.FeatureTemplate\LightBDD.XUnit2.FeatureTemplate.csproj">
+    <ProjectReference Include="..\ItemTemplates\LightBDD.XUnit2.FeatureTemplate\LightBDD.XUnit2.FeatureTemplate.csproj">
       <Project>{8B8652D8-A72D-4D29-900D-9783BB753163}</Project>
       <Name>LightBDD.XUnit2.FeatureTemplate</Name>
       <VSIXSubPath>ItemTemplates</VSIXSubPath>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-    </ProjectReference>
-    <ProjectReference Include="..\LightBDD.XUnit2.ProjectTemplate\LightBDD.XUnit2.ProjectTemplate.csproj">
-      <Project>{56CB7EE2-9759-4EEA-8FF4-3992BBB00F67}</Project>
-      <Name>LightBDD.XUnit2.ProjectTemplate</Name>
-      <VSIXSubPath>ProjectTemplates</VSIXSubPath>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
     </ProjectReference>

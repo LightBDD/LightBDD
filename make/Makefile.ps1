@@ -42,43 +42,21 @@ Define-Step -Name 'Packaging' -Target 'all,pack' -Body {
     Remove-Item 'output' -Force -Recurse -ErrorAction SilentlyContinue | Out-Null
     mkdir 'output' | Out-Null
 
-	gci -Path "src" -Filter 'project.json' -Recurse `
-		| %{ call dotnet pack $_.fullname --output 'output' --no-build --configuration Release}
+    gci -Path "src" -Filter 'project.json' -Recurse `
+        | %{ call dotnet pack $_.fullname --output 'output' --no-build --configuration Release}
 }
 
 Define-Step -Name 'Prepare templates' -Target 'all,pack' -Body {
 
-	function Copy-Logo($target)
-	{
-        Copy-Item 'logo\lightbdd.ico' -Destination "$templateDirectory\lightbdd.ico" | Out-Null
-	}
-
-	function Copy-Packages($targetDirectory, $vstemplate)
-	{
-		$packages = [xml](Get-Content "$targetDirectory\packages.config")
-		$packageToInclude = ""
-		
-		$packages.packages.package | %{ 
-			$packageName = "$($_.id).$($_.version)"
-			Write-Host $packageName
-			cp "packages\$packageName\$packageName.nupkg" "$targetDirectory"
-			$packageToInclude += "<package id=`"$($_.id)`" version=`"$($_.version)`" />"
-		}
-		(Get-Content $vstemplate -Encoding UTF8).Replace('<packages repository="template"></packages>',"<packages repository=`"template`">$packageToInclude</packages>") | Set-Content $vstemplate -Encoding UTF8
-	}
-
-	call $Context.NugetExe restore LightBDD.VSIXTemplates.sln -ConfigFile $Context.NugetConfig
-	
-    Get-ChildItem '.\templates' -Recurse  -Filter '*ProjectTemplate.vstemplate' | %{
-	Write-Host $_
+    Get-ChildItem '.\templates' -Recurse  -Filter '*.vstemplate' | %{
+    Write-Host $_
         $templateDirectory = $_.Directory.FullName
-		Write-ShortStatus "Processing: $templateDirectory"
-        Copy-Logo $templateDirectory
-		Copy-Packages $templateDirectory $_.FullName
+        Write-ShortStatus "Processing: $templateDirectory"
+        Copy-Item 'logo\lightbdd.ico' -Destination "$templateDirectory\lightbdd.ico" | Out-Null
     }
 }
 
 Define-Step -Name 'Build VSIX package' -Target 'all,pack' -Body {
-    call "msbuild.exe" LightBDD.VSIXTemplates.sln /t:"Clean,Build" /p:Configuration=Release /m /verbosity:m /nologo /p:TreatWarningsAsErrors=true /nr:false
+    call "msbuild.exe" templates\LightBDD.VSIXTemplates.sln /t:"Clean,Build" /p:Configuration=Release /m /verbosity:m /nologo /p:TreatWarningsAsErrors=true /nr:false
     copy-item 'templates\LightBDD.VSIXTemplates\bin\Release\LightBDD.VSIXTemplates.vsix' -Destination 'output'
 }

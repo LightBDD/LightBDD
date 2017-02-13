@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{B150E26B-0134-45FE-B9DC-13893C360E7C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ItemTemplates", "ItemTemplates", "{22EF8318-5FFC-4887-8168-9CA95C1D9769}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.NUnit3.FeatureTemplate", "ItemTemplates\LightBDD.NUnit3.FeatureTemplate\LightBDD.NUnit3.FeatureTemplate.csproj", "{987A36B6-417E-44C9-A8BE-CF5639CEE674}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.XUnit2.FeatureTemplate", "ItemTemplates\LightBDD.XUnit2.FeatureTemplate\LightBDD.XUnit2.FeatureTemplate.csproj", "{8B8652D8-A72D-4D29-900D-9783BB753163}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.MsTest.FeatureTemplate", "ItemTemplates\LightBDD.MsTest.FeatureTemplate\LightBDD.MsTest.FeatureTemplate.csproj", "{918C60A8-D2FE-4849-8951-01F3B1A830C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.VSIXTemplates", "LightBDD.VSIXTemplates\LightBDD.VSIXTemplates.csproj", "{D184742A-32EB-4B71-9546-811D5757A6F7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{987A36B6-417E-44C9-A8BE-CF5639CEE674}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{987A36B6-417E-44C9-A8BE-CF5639CEE674}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{987A36B6-417E-44C9-A8BE-CF5639CEE674}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{987A36B6-417E-44C9-A8BE-CF5639CEE674}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B8652D8-A72D-4D29-900D-9783BB753163}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B8652D8-A72D-4D29-900D-9783BB753163}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B8652D8-A72D-4D29-900D-9783BB753163}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B8652D8-A72D-4D29-900D-9783BB753163}.Release|Any CPU.Build.0 = Release|Any CPU
+		{918C60A8-D2FE-4849-8951-01F3B1A830C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{918C60A8-D2FE-4849-8951-01F3B1A830C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{918C60A8-D2FE-4849-8951-01F3B1A830C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{918C60A8-D2FE-4849-8951-01F3B1A830C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D184742A-32EB-4B71-9546-811D5757A6F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D184742A-32EB-4B71-9546-811D5757A6F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D184742A-32EB-4B71-9546-811D5757A6F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D184742A-32EB-4B71-9546-811D5757A6F7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{22EF8318-5FFC-4887-8168-9CA95C1D9769} = {B150E26B-0134-45FE-B9DC-13893C360E7C}
+		{987A36B6-417E-44C9-A8BE-CF5639CEE674} = {22EF8318-5FFC-4887-8168-9CA95C1D9769}
+		{8B8652D8-A72D-4D29-900D-9783BB753163} = {22EF8318-5FFC-4887-8168-9CA95C1D9769}
+		{918C60A8-D2FE-4849-8951-01F3B1A830C9} = {22EF8318-5FFC-4887-8168-9CA95C1D9769}
+	EndGlobalSection
+EndGlobal
