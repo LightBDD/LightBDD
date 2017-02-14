@@ -1,6 +1,63 @@
 LightBDD
 ===========================================
 
+Version 2.0.0
+----------------------------------------
+Summary:
++ Reimplemented assemblies to support multiple platforms (.NET Standard 1.6 / .NET Framework 4.6)
++ Reimplemented assemblies to support async test execution (added support for async void step methods)
++ Splitted LightBDD.Core to LightBDD.Core and LightBDD.Framework; adjusted namespaces
++ Changed app.config based configuration to more flexible LightBDDConfiguration mechanism
++ Implemented portable versions of NUnit 3, XUnit 2 and MsTest 2 integrations
++ Dropped support for MbUnit, NUnit 2 and MsTest integrations
++ Reworked LightBDD.SummaryGeneration namespace to LightBDD.Reporting
+Details:
++ (Core)(Change) Reimplemented LightBDD.Core to support async test execution
++ (Core)(Change) Reimplemented LightBDD.Core to support .NET Standard 1.1 and .NET Framework 4.5
++ (Core)(Change) Reimplemented consecutive step type name replacement
++ (Core)(Change) Reimplemented name and parameter formatting to support parameterizing for all names (features, scenarios, steps) as well as specified CultureInfo
++ (Core)(New) Introduced IFeatureBddRunner to represent the feature itself (type) and contain it's results, and made IBddRunner/IFeatureFixtureRunner lightweight but fixture instance specific.
++ (Core)(New) Splitted IProgressNotifier to IFeatureProgressNotifier nad IScenarioProgressNotifier. Modified behaviour of runner to create IScenarioProgressNotifier instance for each scenario.
++ (Core)(New) Implemented LightBDDConfiguration mechanism and provided configuration mechanisms for all configurable LightBDD features
++ (Framework)(New) Extracted non core classes from LightBDD.Core and formed LightBDD.Framework
++ (Framework)(Change) Reimplemented runner to provide IBddRunner interface with extensibility API based on extension methods
++ (Framework)(Change) Reimplemented basic, extended and contextual scenarios
++ (Framework)(Change) Reimplemented commenting feature to support async tests and being used via extension methods
++ (Framework/ all integrations)(Change) Implemented LightBDD scope and changed the way how LightBDD initializes and finalizes execution
++ (Framework)(Change) Reimplemented LightBDD.SummaryGeneration namespace as LightBDD.Reporting; added more detailed execution times information
++ (Framework)(Change) Merged FormattableSummaryFileWriter functionality to ReportFileWriter
++ (Core/Framework)(New) Added RunScenarioActionsAsync to basic and extended scenarios to allow mixing void and async void actions
++ (XUnit 2)(Change) Reimplemented integration with XUnit 2 (.NET Standard 1.6 and .NET Framework 4.6)
++ (XUnit 2)(New) Added ITestOutputProvider to XUnit 2 integration and made FeatureFixture implementing it.
++ (MsTest)(Deprecation) Dropped support for MsTest in favor of MsTest 2
++ (MsTest 2)(New) Implemented initial implementation of MsTest 2 (.NET Standard 1.6 and .NET Framework 4.6)
++ (MbUnit)(Deprecation) Dropped support for MbUnit (as testing framework is dead)
++ (NUnit 2)(Deprecation) Dropped support for NUnit 2 in favor of NUnit 3
++ (NUnit 3)(Change) Reimplemented integration with NUnit 3 (.NET Standard 1.6 and .NET Framework 4.6)
++ (all integrations)(New) Implemented ScenarioAttribute and made it required; Impelemnted FeatureFixtureAttribute and added it to FeatureFixure classes.
++ (all integrations) Added "~\\Reports\\FeaturesReport.html" to default report writers
++ (VSIX) (Change) Update item templates for LightBDD 2; dropped Project Templates
++ (all)(Change) Standardized namespaces to match to assembly name
++ (all)(Change) Updated logo
+
+Version 1.7.2
+----------------------------------------
+Summary:
++ Added FormattableSummaryFileWriter allowing to parameterize summary files paths with execution date/time parameters.
++ Extended SummaryWriterCollection with Type property allowing to change type of used ISummaryWriter implementation (default is SummaryFileWriter).
+
+Version 1.7.1
+----------------------------------------
+Summary:
++ Added support for NUnit3 testing framework
++ Extended SummaryFileWriter to support paths starting with ~ for result files, where ~ is resolved to CurrentDomain.BaseDirectory
++ Modifier SummaryWriterCollection to use "~\\FeaturesSummary.xml" path for default XmlResultFormatter
+Details:
++ (NUnit3)(New)(Issue #9) Added support for NUnit3 testing framework
++ (Core)(Change) Extended SummaryFileWriter to support paths starting with ~ for result files, where ~ is resolved to CurrentDomain.BaseDirectory (that solves the issue with NUnit3 Resharper runner that does not honour working directory)
++ (Core)(Change) Modifier SummaryWriterCollection to use "~\\FeaturesSummary.xml" path for default XmlResultFormatter
++ (Core)(Change) Removed unreliable tests for FeatureCoordinator
+
 Version 1.7.0
 ----------------------------------------
 Summary:

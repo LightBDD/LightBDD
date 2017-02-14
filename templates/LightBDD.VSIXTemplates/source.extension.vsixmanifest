@@ -3,7 +3,7 @@
   <Metadata>
     <Identity Id="d6382c7a-fe20-47e5-b4e1-4d798cef97f1" Version="2.0.0.0" Language="en-US" Publisher="Wojciech Kotlarski" />
     <DisplayName>LightBDD for Visual Studio</DisplayName>
-    <Description xml:space="preserve">A collection of Project / Item templates for LightBDD testing framework</Description>
+    <Description xml:space="preserve">A collection of Item templates for LightBDD testing framework</Description>
     <MoreInfo>https://github.com/Suremaker/LightBDD</MoreInfo>
     <License>LICENSE.txt</License>
     <Icon>lightbdd_small.ico</Icon>
