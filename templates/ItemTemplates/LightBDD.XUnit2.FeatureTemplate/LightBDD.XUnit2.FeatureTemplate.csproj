@@ -78,7 +78,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <VSTemplate Include="LightBDD.XUnit2.FeatureTemplate.vstemplate" />
+    <VSTemplate Include="LightBDD.XUnit2.FeatureTemplate.vstemplate">
+      <OutputSubPath>LightBDD</OutputSubPath>
+    </VSTemplate>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6">

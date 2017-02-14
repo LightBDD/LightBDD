@@ -5,7 +5,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>..\..\logo\lightbdd.ico</ApplicationIcon>
+    <ApplicationIcon>lightbdd.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -64,20 +64,21 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="..\..\logo\lightbdd.ico">
-      <Link>lightbdd.ico</Link>
+    <Content Include="..\..\logo\lightbdd_small.ico">
+      <Link>lightbdd_small.ico</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="lightbdd.ico" />
     <Content Include="Preview.PNG">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ItemTemplates\LightBDD.MsTest.FeatureTemplate\LightBDD.MsTest.FeatureTemplate.csproj">
+    <ProjectReference Include="..\ItemTemplates\LightBDD.MsTest2.FeatureTemplate\LightBDD.MsTest2.FeatureTemplate.csproj">
       <Project>{918C60A8-D2FE-4849-8951-01F3B1A830C9}</Project>
-      <Name>LightBDD.MsTest.FeatureTemplate</Name>
+      <Name>LightBDD.MsTest2.FeatureTemplate</Name>
       <VSIXSubPath>ItemTemplates</VSIXSubPath>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>

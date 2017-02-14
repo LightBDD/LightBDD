@@ -1,5 +1,5 @@
 ﻿using LightBDD.NUnit3;
-using NUnit;
+using NUnit.Framework;
 
 namespace $rootnamespace$
 {

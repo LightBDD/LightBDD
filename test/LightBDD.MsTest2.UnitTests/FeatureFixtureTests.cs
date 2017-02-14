@@ -1,0 +1,21 @@
+﻿using LightBDD.Framework;
+using LightBDD.MsTest2;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace LightBDD.Integration.MsTest.UnitTests2
+{
+    [TestClass]
+    public class FeatureFixtureTests
+    {
+        class TestableFeatureFixture : FeatureFixture
+        {
+            public IBddRunner GetRunner() => Runner;
+        }
+
+        [TestMethod]
+        public void Runner_should_be_initialized()
+        {
+            Assert.IsNotNull(new TestableFeatureFixture().GetRunner());
+        }
+    }
+}

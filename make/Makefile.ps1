@@ -16,7 +16,7 @@ Define-Step -Name 'Update version' -Target 'all,build' -Body {
     $version = (Get-Content 'make\current_version').Trim()
     Write-ShortStatus "Updating version to $version..."
 
-    gci -Filter 'project.json' -Recurse | %{ Replace-InFile $_.fullname $version '"version": "%", //build_ver' }
+    gci -Filter 'project.json' -Recurse | %{ Replace-InFile $_.fullname $version '"version": "%", //build_ver','"version": "%-pre", //build_ver' }
     Replace-InFile 'AssemblyVersion.cs' $version 'Version("%")'
     Replace-InFile 'templates\LightBDD.VSIXTemplates\source.extension.vsixmanifest' $version 'Identity Id="d6382c7a-fe20-47e5-b4e1-4d798cef97f1" Version="%"'
     

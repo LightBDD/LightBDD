@@ -3,7 +3,7 @@
   <TemplateData>
     <DefaultName>My_feature.cs</DefaultName>
     <Name>LightBDD.NUnit3: Feature Test Class</Name>
-    <Description>LightBDD feature tests class representing set of acceptance tests for given feature.</Description>
+    <Description>LightBDD feature tests class representing set of acceptance tests for given feature (NUnit3 integration).</Description>
     <Icon>lightbdd.ico</Icon>
     <TemplateID>2c5635aa-d975-4f77-aa99-382e28df936f</TemplateID>
     <ProjectType>CSharp</ProjectType>

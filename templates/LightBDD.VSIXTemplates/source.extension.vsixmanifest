@@ -6,7 +6,7 @@
     <Description xml:space="preserve">A collection of Project / Item templates for LightBDD testing framework</Description>
     <MoreInfo>https://github.com/Suremaker/LightBDD</MoreInfo>
     <License>LICENSE.txt</License>
-    <Icon>lightbdd.ico</Icon>
+    <Icon>lightbdd_small.ico</Icon>
     <PreviewImage>Preview.PNG</PreviewImage>
     <Tags>lightbdd bdd tdd testing framework behavior driven development acceptance criteria nunit mstest vstest</Tags>
   </Metadata>
@@ -19,6 +19,6 @@
   <Assets>
     <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="LightBDD.NUnit3.FeatureTemplate" d:TargetPath="|LightBDD.NUnit3.FeatureTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
     <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="LightBDD.XUnit2.FeatureTemplate" d:TargetPath="|LightBDD.XUnit2.FeatureTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
-    <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="LightBDD.MsTest.FeatureTemplate" d:TargetPath="|LightBDD.MsTest.FeatureTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
+    <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="LightBDD.MsTest2.FeatureTemplate" d:TargetPath="|LightBDD.MsTest2.FeatureTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
   </Assets>
 </PackageManifest>

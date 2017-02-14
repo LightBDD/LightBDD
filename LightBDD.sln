@@ -22,7 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Core", "src\LightBDD.Core\LightBDD.Core.xproj", "{1404165C-13B2-43E2-A78D-6B271EB62FC8}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.MsTest", "src\LightBDD.MsTest\LightBDD.MsTest.xproj", "{CBD1B3D9-4B77-4B21-9C3A-7E3A9FB3D780}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.MsTest2", "src\LightBDD.MsTest2\LightBDD.MsTest2.xproj", "{CBD1B3D9-4B77-4B21-9C3A-7E3A9FB3D780}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.NUnit3", "src\LightBDD.NUnit3\LightBDD.NUnit3.xproj", "{EE206E44-4393-45E5-8C8F-331348128E09}"
 EndProject
@@ -38,7 +38,7 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.NUnit3.UnitTests",
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.XUnit2.UnitTests", "test\LightBDD.XUnit2.UnitTests\LightBDD.XUnit2.UnitTests.xproj", "{B3ECF8C7-51A8-4016-8C72-99B658A3F8B0}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.MsTest.UnitTests", "test\LightBDD.MsTest.UnitTests\LightBDD.MsTest.UnitTests.xproj", "{1536CA9A-850D-46D6-B931-87F8AEF62021}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.MsTest2.UnitTests", "test\LightBDD.MsTest2.UnitTests\LightBDD.MsTest2.UnitTests.xproj", "{1536CA9A-850D-46D6-B931-87F8AEF62021}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.AcceptanceTests", "test\LightBDD.AcceptanceTests\LightBDD.AcceptanceTests.xproj", "{17CF2456-692D-4D8D-996B-59BD067E9175}"
 EndProject
@@ -46,7 +46,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{73
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Example", "examples\LightBDD.Example\LightBDD.Example.xproj", "{F69FD39E-F710-4C37-A1E0-84B02B5C64CB}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Example.AcceptanceTests.MsTest", "examples\LightBDD.Example.AcceptanceTests.MsTest\LightBDD.Example.AcceptanceTests.MsTest.xproj", "{0617D510-15E8-4665-B4FF-A07CD38E5F25}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Example.AcceptanceTests.MsTest2", "examples\LightBDD.Example.AcceptanceTests.MsTest2\LightBDD.Example.AcceptanceTests.MsTest2.xproj", "{0617D510-15E8-4665-B4FF-A07CD38E5F25}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightBDD.Example.AcceptanceTests.NUnit3", "examples\LightBDD.Example.AcceptanceTests.NUnit3\LightBDD.Example.AcceptanceTests.NUnit3.xproj", "{1EADD5AD-ECC1-4755-8DAF-C3B747B7F385}"
 EndProject

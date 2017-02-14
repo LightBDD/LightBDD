@@ -1,4 +1,6 @@
-﻿using LightBDD.XUnit2;
+﻿using LightBDD.Framework;
+using LightBDD.XUnit2;
+using Xunit.Abstractions;
 
 namespace $rootnamespace$
 {

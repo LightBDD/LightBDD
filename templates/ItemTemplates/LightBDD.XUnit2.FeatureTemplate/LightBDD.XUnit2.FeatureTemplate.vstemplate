@@ -2,8 +2,8 @@
 <VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
   <TemplateData>
     <DefaultName>My_feature.cs</DefaultName>
-    <Name>LightBDD.NUnit3: Feature Test Class</Name>
-    <Description>LightBDD feature tests class representing set of acceptance tests for given feature.</Description>
+    <Name>LightBDD.XUnit2: Feature Test Class</Name>
+    <Description>LightBDD feature tests class representing set of acceptance tests for given feature (XUnit2 integration).</Description>
     <Icon>lightbdd.ico</Icon>
     <TemplateID>0b987f7f-873a-4787-a53c-7cdcc11af1b7</TemplateID>
     <ProjectType>CSharp</ProjectType>

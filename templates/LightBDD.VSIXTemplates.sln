@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.NUnit3.FeatureTemp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.XUnit2.FeatureTemplate", "ItemTemplates\LightBDD.XUnit2.FeatureTemplate\LightBDD.XUnit2.FeatureTemplate.csproj", "{8B8652D8-A72D-4D29-900D-9783BB753163}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.MsTest.FeatureTemplate", "ItemTemplates\LightBDD.MsTest.FeatureTemplate\LightBDD.MsTest.FeatureTemplate.csproj", "{918C60A8-D2FE-4849-8951-01F3B1A830C9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.MsTest2.FeatureTemplate", "ItemTemplates\LightBDD.MsTest2.FeatureTemplate\LightBDD.MsTest2.FeatureTemplate.csproj", "{918C60A8-D2FE-4849-8951-01F3B1A830C9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.VSIXTemplates", "LightBDD.VSIXTemplates\LightBDD.VSIXTemplates.csproj", "{D184742A-32EB-4B71-9546-811D5757A6F7}"
 EndProject

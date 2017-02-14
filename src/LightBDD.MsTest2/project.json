@@ -1,0 +1,25 @@
+﻿{
+  "version": "2.0.0.0-pre", //build_ver
+  "buildOptions": {
+    "compile": [ "**/*.cs", "../../AssemblyVersion.cs" ],
+    "xmlDoc": true
+  },
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": [ "dotnet" ],
+      "dependencies": { "NETStandard.Library": "1.6.0" }
+    },
+    "net46": {
+      "frameworkAssemblies": {
+        "System.Reflection": { "type": "build" },
+        "System.Runtime": { "type": "build" }
+      }
+    }
+  },
+  "dependencies": {
+    "LightBDD.Framework": {
+      "target": "project"
+    },
+    "MSTest.TestFramework": "1.0.8-rc2"
+  }
+}

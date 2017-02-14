@@ -22,7 +22,7 @@ namespace LightBDD.Reporting.UnitTests.Formatters
         {
             _schema = new XmlSchemaSet();
 
-            _schema.Add("", Path.GetDirectoryName(typeof(IReportWriter).Assembly.CodeBase) + "\\..\\..\\..\\..\\..\\..\\XmlResultFormatterSchema.xsd");
+            _schema.Add("", Path.GetDirectoryName(typeof(IReportWriter).Assembly.CodeBase) + "\\..\\..\\..\\..\\..\\..\\schemas\\XmlReportFormatterSchema.xsd");
         }
 
         [SetUp]
