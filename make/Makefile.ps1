@@ -53,6 +53,7 @@ Define-Step -Name 'Prepare templates' -Target 'all,pack' -Body {
         $templateDirectory = $_.Directory.FullName
         Write-ShortStatus "Processing: $templateDirectory"
         Copy-Item 'logo\lightbdd.ico' -Destination "$templateDirectory\lightbdd.ico" | Out-Null
+        Copy-Item 'logo\lightbdd_small.ico' -Destination "$templateDirectory\lightbdd_small.ico" | Out-Null
     }
 }
 
