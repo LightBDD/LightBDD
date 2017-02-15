@@ -34,6 +34,7 @@ namespace LightBDD.Example.AcceptanceTests.NUnit3.Features
 
         private void Given_the_user_entered_anonymous_login()
         {
+            StepExecution.Current.Comment("Presentation of failed scenario");
             _loginRequest.UserName = "anonymous";
         }
 
@@ -54,7 +55,6 @@ namespace LightBDD.Example.AcceptanceTests.NUnit3.Features
 
         private void Then_the_login_operation_should_be_successful()
         {
-            StepExecution.Current.Comment("Presentation of failed scenario");
             Assert.That(_loginResult.IsSuccessful, Is.True, "Login should succeeded");
         }
 

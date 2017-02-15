@@ -1,4 +1,6 @@
 using LightBDD.Example.Services;
+using LightBDD.Framework;
+using LightBDD.Framework.Commenting;
 using LightBDD.MsTest2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -32,6 +34,7 @@ namespace LightBDD.Example.AcceptanceTests.MsTest.Features
 
         private void Given_the_user_entered_anonymous_login()
         {
+            StepExecution.Current.Comment("Presentation of failed scenario");
             _loginRequest.UserName = "anonymous";
         }
 
