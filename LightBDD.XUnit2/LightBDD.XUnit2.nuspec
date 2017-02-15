@@ -24,12 +24,8 @@ Features:
 * VS Project Item templates for feature test files,
 * xUnit 2 integration.</description>
 	<summary>$description$</summary>
-    <releaseNotes>+ Implemented scenario steps auto-grouping for consecutive steps starting with the same name type (given/when/then/setup), by replacing following steps type to 'and'
-+ Added ability to add runtime comments to currently executed steps
-+ Added support for xUnit.net testing framework
-+ Extended XmlResultFormatter / XmlResultFormatterSchema.xsd to include step comments and step name details
-+ Added new implementations of IProgressNotifier interface</releaseNotes>
-    <copyright>Copyright © Wojciech Kotlarski 2013-2015</copyright>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright © Wojciech Kotlarski 2013-2017</copyright>
     <tags>bdd tdd testing framework behavior driven development acceptance criteria xunit</tags>
 	<language>en-US</language>
 	<dependencies>

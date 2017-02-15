@@ -36,7 +36,7 @@ Define-Step -Name 'Tests' -Target 'all,test' -Body {
 	$tests += Define-NUnit3Tests -GroupName 'LightBDD NUnit3' -TestAssembly "LightBDD.NUnit3.UnitTests\bin\Release\LightBDD.NUnit3.UnitTests.dll"
 	$tests += Define-MbUnitTests -GroupName 'LightBDD MbUnit' -TestAssembly "LightBDD.MbUnit.UnitTests\bin\Release\LightBDD.MbUnit.UnitTests.dll"    
 	$tests += Define-MsTests -GroupName 'LightBDD MsTest' -TestAssembly "LightBDD.MsTest.UnitTests\bin\Release\LightBDD.MsTest.UnitTests.dll"
-	$tests += Define-XUnitTests -GroupName 'LightBDD XUnit' -TestAssembly "LightBDD.XUnit.UnitTests\bin\Release\LightBDD.XUnit.UnitTests.dll"
+	$tests += Define-XUnitTests -GroupName 'LightBDD XUnit2' -TestAssembly "LightBDD.XUnit2.UnitTests\bin\Release\LightBDD.XUnit2.UnitTests.dll"
 	$tests += Define-NUnitTests -GroupName 'LightBDD ConfigurationTests' -TestAssembly "LightBDD.ConfigurationTests\bin\Release\LightBDD.ConfigurationTests.dll"
 	$tests += Define-NUnitTests -GroupName 'LightBDD Acceptance' -TestAssembly "LightBDD.AcceptanceTests\bin\Release\LightBDD.AcceptanceTests.dll"
 

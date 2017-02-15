@@ -24,9 +24,8 @@ Features:
 * VS Project Item templates for feature test files,
 * MsTest integration.</description>
 	<summary>$description$</summary>
-    <releaseNotes>+ Added FormattableSummaryFileWriter allowing to parameterize summary files paths with execution date/time parameters.
-+ Extended SummaryWriterCollection with Type property allowing to change type of used ISummaryWriter implementation (default is SummaryFileWriter).</releaseNotes>
-    <copyright>Copyright © Wojciech Kotlarski 2013-2016</copyright>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright © Wojciech Kotlarski 2013-2017</copyright>
     <tags>bdd tdd testing framework behavior driven development acceptance criteria mstest vstest</tags>
 	<language>en-US</language>
 	<dependencies>

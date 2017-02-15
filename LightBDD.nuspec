@@ -24,8 +24,7 @@ Features:
 * VS Project Item templates for feature test files,
 * Integration with NUnit framework.</description>
 	<summary>Main package for Lightweight Behavior Driven Development Test Framework allowing creation of acceptance tests in developer friendly environment.</summary>
-    <releaseNotes>+ Added FormattableSummaryFileWriter allowing to parameterize summary files paths with execution date/time parameters.
-+ Extended SummaryWriterCollection with Type property allowing to change type of used ISummaryWriter implementation (default is SummaryFileWriter).</releaseNotes>
+    <releaseNotes></releaseNotes>
     <copyright>Copyright © Wojciech Kotlarski 2013-2017</copyright>
     <tags>bdd tdd testing framework behavior driven development acceptance criteria nunit</tags>
 	<language>en-US</language>
