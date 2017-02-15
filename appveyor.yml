@@ -1,7 +1,7 @@
 version: '{build}'
 branches:
   only:
-  - ver2
+  - master
 clone_depth: 1
 build_script:
 - ps: make\make_local.ps1
