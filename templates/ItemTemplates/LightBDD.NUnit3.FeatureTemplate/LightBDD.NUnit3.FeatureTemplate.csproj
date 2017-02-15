@@ -75,6 +75,9 @@
   <ItemGroup>
     <None Include="Feature.cs" />
     <None Include="Feature.Steps.cs" />
+    <Compile Include="..\..\..\AssemblyVersion.cs">
+      <Link>Properties\AssemblyVersion.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

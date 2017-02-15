@@ -26,5 +26,21 @@
   },
   "dependencies": {
     "LightBDD.Core": { "target": "project" }
+  },
+  "authors": [ "Wojciech Kotlarski" ],
+  "description": "Provides LightBDD framework with features, such as:\n* native support for refactoring, code analysis (like finding unused methods), test running and all features that Visual Studio / Intellisense / Resharper offer during code development,\n* easy to read scenario definitions,\n* basic, extended (parameterized) and contextual scenario execution support,\n* method parameter formatting attributes,\n* step commenting,\n* Xml/Html/Plain text report generation.",
+  "copyright": "Copyright © Wojciech Kotlarski 2013-2017",
+  "packOptions": {
+    "iconUrl": "https://raw.githubusercontent.com/Suremaker/LightBDD/master/logo/lightbdd.png",
+    "licenseUrl": "http://opensource.org/licenses/BSD-2-Clause",
+    "projectUrl": "https://github.com/Suremaker/LightBDD",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/Suremaker/LightBDD"
+    },
+    "owners": [ "Wojciech Kotlarski" ],
+    "summary": "LightBDD Test Framework",
+    "tags": [ "bdd", "tdd", "testing", "framework", "behavior driven development", "acceptance criteria" ],
+    "releaseNotes": "Rewritten Framework mechanisms to function on top of LightBDD.Core and offer end-user common features."
   }
 }

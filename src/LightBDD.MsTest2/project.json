@@ -21,5 +21,21 @@
       "target": "project"
     },
     "MSTest.TestFramework": "1.0.8-rc2"
+  },
+  "authors": [ "Wojciech Kotlarski" ],
+  "description": "Allows creating acceptance tests in developer friendly environment by offering LightBDD.Framework features on top of MsTest v2 (MSTest.TestFramework) testing framework.\n\nHigh level features:\n* user friendly bdd scenario definitions,\n* test execution tracing and time measurement, helpful during longer test execution,\n* Xml/Html/Plain text reports generation,\n* cross-platform support (.NET Standard / .NET Framework),\n* asynchronous execution support.",
+  "copyright": "Copyright © Wojciech Kotlarski 2013-2017",
+  "packOptions": {
+    "iconUrl": "https://raw.githubusercontent.com/Suremaker/LightBDD/master/logo/lightbdd.png",
+    "licenseUrl": "http://opensource.org/licenses/BSD-2-Clause",
+    "projectUrl": "https://github.com/Suremaker/LightBDD",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/Suremaker/LightBDD"
+    },
+    "owners": [ "Wojciech Kotlarski" ],
+    "summary": "LightBDD Test Framework for MsTest v2",
+    "tags": [ "bdd", "tdd", "testing", "framework", "behavior driven development", "acceptance criteria", "nunit", "nunit3" ],
+    "releaseNotes": "Implemented MsTest v2 integration and provided support for multiple platforms (.NET Standard, .NET Framework) and async test execution."
   }
 }

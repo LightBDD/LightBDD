@@ -10,5 +10,21 @@
     },
     "net45": {
     }
+  },
+  "authors": [ "Wojciech Kotlarski" ],
+  "description": "Provides LightBDD core features, such as:\n* asynchronous scenario execution with execution tracking and time measurement,\n* metadata discovery and formatting,\n* reporting,\n* in-code configuration,\n* progress notification,\n* framework extensibility.",
+  "copyright": "Copyright © Wojciech Kotlarski 2013-2017",
+  "packOptions": {
+    "iconUrl": "https://raw.githubusercontent.com/Suremaker/LightBDD/master/logo/lightbdd.png",
+    "licenseUrl": "http://opensource.org/licenses/BSD-2-Clause",
+    "projectUrl": "https://github.com/Suremaker/LightBDD",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/Suremaker/LightBDD"
+    },
+    "owners": [ "Wojciech Kotlarski" ],
+    "summary": "LightBDD Test Framework Core",
+    "tags": [ "bdd", "tdd", "testing", "framework", "behavior driven development", "acceptance criteria" ],
+    "releaseNotes": "Rewritten Core mechanisms to support multiple platforms (.NET Standard, .NET Framework), async test execution, extensibility and in-code configuration."
   }
 }
