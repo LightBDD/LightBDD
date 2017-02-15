@@ -1,0 +1,28 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>LightBDD.XUnit</id>
+    <version>1.7.3.0</version>
+    <title>LightBDD.XUnit</title>
+    <authors>Wojciech Kotlarski</authors>
+    <owners>Wojciech Kotlarski</owners>
+    <licenseUrl>http://opensource.org/licenses/BSD-2-Clause</licenseUrl>
+    <projectUrl>https://github.com/Suremaker/LightBDD</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/Suremaker/LightBDD/1.x/logo/lightbdd.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A bridge package allowing smooth transition from LightBDD.XUnit to LightBDD.XUnit2.
+After update to this version, the LightBDD.XUnit package can be removed and LightBDD.XUnit2 should be used since then.</description>
+	<summary>[deprecated] Lightweight Behavior Driven Development Test Framework for xUnit</summary>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright © Wojciech Kotlarski 2013-2017</copyright>
+    <tags>bdd tdd testing framework behavior driven development acceptance criteria nunit</tags>
+	<language>en-US</language>
+	<dependencies>
+		<group targetFramework=".NETFramework4.0">
+			<dependency id="LightBDD.XUnit2" version="1.7.3.0" />
+		</group>
+    </dependencies>
+  </metadata>
+  <files>
+  </files>
+</package>

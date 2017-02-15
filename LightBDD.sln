@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD", "LightBDD\LightBDD.csproj", "{C8406FF5-FF97-4B66-A789-CBD97263FAC4}"
 EndProject
@@ -52,11 +52,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.AcceptanceTests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.ConfigurationTests", "LightBDD.ConfigurationTests\LightBDD.ConfigurationTests.csproj", "{C2F6D24F-5204-49F9-B62D-F4D16223C436}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.XUnit", "LightBDD.XUnit\LightBDD.XUnit.csproj", "{50A154A5-00CE-4D44-88C5-12915F2E64F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.XUnit2", "LightBDD.XUnit2\LightBDD.XUnit2.csproj", "{50A154A5-00CE-4D44-88C5-12915F2E64F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.XUnit.UnitTests", "LightBDD.XUnit.UnitTests\LightBDD.XUnit.UnitTests.csproj", "{B6DDA701-B249-4536-8F3F-9270FA2D716C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.XUnit2.UnitTests", "LightBDD.XUnit2.UnitTests\LightBDD.XUnit2.UnitTests.csproj", "{B6DDA701-B249-4536-8F3F-9270FA2D716C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.Example.AcceptanceTests.XUnit", "LightBDD.Example.AcceptanceTests.XUnit\LightBDD.Example.AcceptanceTests.XUnit.csproj", "{3219158E-B974-4B10-86A6-7E388FDA57A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.Example.AcceptanceTests.XUnit2", "LightBDD.Example.AcceptanceTests.XUnit2\LightBDD.Example.AcceptanceTests.XUnit2.csproj", "{3219158E-B974-4B10-86A6-7E388FDA57A9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.NUnit3", "LightBDD.NUnit3\LightBDD.NUnit3.csproj", "{CF16B106-B5DC-4463-A2DF-3F4F88B932C6}"
 EndProject

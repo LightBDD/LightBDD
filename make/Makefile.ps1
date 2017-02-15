@@ -18,6 +18,7 @@ Define-Step -Name 'Update version' -Target 'all,build' -Body {
 
     Replace-InFile 'AssemblyVersion.cs' $version 'Version("%")'
     Replace-InFile 'LightBDD.nuspec' $version '<version>%</version>','<dependency id="LightBDD.NUnit" version="%" />'
+    Replace-InFile 'LightBDD.XUnit.nuspec' $version '<version>%</version>','<dependency id="LightBDD.XUnit2" version="%" />'
     Replace-InFile 'LightBDD.VSPackage\source.extension.vsixmanifest' $version 'Identity Id="d6382c7a-fe20-47e5-b4e1-4d798cef97f1" Version="%"'
     
 }
@@ -50,8 +51,9 @@ Define-Step -Name 'Packaging' -Target 'all,pack' -Body {
 	.nuget\NuGet.exe pack -sym LightBDD.NUnit3\LightBDD.NUnit3.csproj -OutputDirectory 'output' -Prop Configuration=Release
 	.nuget\NuGet.exe pack -sym LightBDD.MbUnit\LightBDD.MbUnit.csproj -OutputDirectory 'output' -Prop Configuration=Release
 	.nuget\NuGet.exe pack -sym LightBDD.MsTest\LightBDD.MsTest.csproj -OutputDirectory 'output' -Prop Configuration=Release
-	.nuget\NuGet.exe pack -sym LightBDD.XUnit\LightBDD.XUnit.csproj -OutputDirectory 'output' -Prop Configuration=Release
+	.nuget\NuGet.exe pack -sym LightBDD.XUnit2\LightBDD.XUnit2.csproj -OutputDirectory 'output' -Prop Configuration=Release
 	.nuget\NuGet.exe pack LightBDD.nuspec -OutputDirectory 'output'
+	.nuget\NuGet.exe pack LightBDD.XUnit.nuspec -OutputDirectory 'output'
 }
 
 Define-Step -Name 'Prepare templates' -Target 'all,pack' -Body {

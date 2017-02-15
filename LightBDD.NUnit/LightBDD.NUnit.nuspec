@@ -8,7 +8,7 @@
     <owners>Wojciech Kotlarski</owners>
     <licenseUrl>http://opensource.org/licenses/BSD-2-Clause</licenseUrl>
     <projectUrl>https://github.com/Suremaker/LightBDD</projectUrl>
-    <iconUrl>https://raw.githubusercontent.com/Suremaker/LightBDD/master/logo/lightbdd.png</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/Suremaker/LightBDD/1.x/logo/lightbdd.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Allows creating acceptance tests in developer friendly environment.
 

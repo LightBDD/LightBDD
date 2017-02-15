@@ -1,6 +1,13 @@
 LightBDD
 ===========================================
 
+Version 1.7.3
+----------------------------------------
+Summary:
++ Updated packages logo url to point to branch 1.x
++ Renamed LightBDD.XUnit to LightBDD.XUnit2
++ Deprecated LightBDD.XUnit package and added LightBDD.XUnit2 as dependency
+
 Version 1.7.2
 ----------------------------------------
 Summary:

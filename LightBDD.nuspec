@@ -2,13 +2,13 @@
 <package >
   <metadata>
     <id>LightBDD</id>
-    <version>1.7.2.0</version>
+    <version>1.7.3.0</version>
     <title>LightBDD</title>
     <authors>Wojciech Kotlarski</authors>
     <owners>Wojciech Kotlarski</owners>
     <licenseUrl>http://opensource.org/licenses/BSD-2-Clause</licenseUrl>
     <projectUrl>https://github.com/Suremaker/LightBDD</projectUrl>
-    <iconUrl>https://raw.githubusercontent.com/Suremaker/LightBDD/master/logo/lightbdd.png</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/Suremaker/LightBDD/1.x/logo/lightbdd.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Allows creating acceptance tests in developer friendly environment.
 
@@ -26,12 +26,12 @@ Features:
 	<summary>Main package for Lightweight Behavior Driven Development Test Framework allowing creation of acceptance tests in developer friendly environment.</summary>
     <releaseNotes>+ Added FormattableSummaryFileWriter allowing to parameterize summary files paths with execution date/time parameters.
 + Extended SummaryWriterCollection with Type property allowing to change type of used ISummaryWriter implementation (default is SummaryFileWriter).</releaseNotes>
-    <copyright>Copyright © Wojciech Kotlarski 2013-2016</copyright>
+    <copyright>Copyright © Wojciech Kotlarski 2013-2017</copyright>
     <tags>bdd tdd testing framework behavior driven development acceptance criteria nunit</tags>
 	<language>en-US</language>
 	<dependencies>
 		<group targetFramework=".NETFramework4.0">
-			<dependency id="LightBDD.NUnit" version="1.7.2.0" />
+			<dependency id="LightBDD.NUnit" version="1.7.3.0" />
 		</group>
     </dependencies>
   </metadata>
