@@ -1,7 +1,16 @@
 ![logo](https://github.com/Suremaker/LightBDD/blob/master/logo/lightbdd.ico) Lightweight Behavior Driven Development test framework (LightBDD)
 ===========
 
-[![Build status](https://ci.appveyor.com/api/projects/status/xkd7qc950o07o3x8?svg=true)](https://ci.appveyor.com/project/Suremaker/lightbdd) | LightBDD.NUnit3 [![NuGet Badge](https://buildstats.info/nuget/LightBDD.NUnit3)](https://www.nuget.org/packages/LightBDD.NUnit3/) | LightBDD.XUnit2 [![NuGet Badge](https://buildstats.info/nuget/LightBDD.XUnit2)](https://www.nuget.org/packages/LightBDD.XUnit2/) | LightBDD.MsTest2 [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MsTest2)](https://www.nuget.org/packages/LightBDD.MsTest2/)
+Category|Badge
+--------|------
+Build | [![Build status](https://ci.appveyor.com/api/projects/status/xkd7qc950o07o3x8?svg=true)](https://ci.appveyor.com/project/Suremaker/lightbdd) 
+LightBDD.NUnit3 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.NUnit3)](https://www.nuget.org/packages/LightBDD.NUnit3/)
+LightBDD.XUnit2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.XUnit2)](https://www.nuget.org/packages/LightBDD.XUnit2/)
+LightBDD.MsTest2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MsTest2)](https://www.nuget.org/packages/LightBDD.MsTest2/)
+LightBDD.NUnit (1.x) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.NUnit)](https://www.nuget.org/packages/LightBDD.NUnit/)
+LightBDD.XUnit (1.x) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.XUnit)](https://www.nuget.org/packages/LightBDD.XUnit/)
+LightBDD.MsTest (1.x) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MsTest)](https://www.nuget.org/packages/LightBDD.MsTest/)
+LightBDD.MbUnit (1.x) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MbUnit)](https://www.nuget.org/packages/LightBDD.MbUnit/)
 
 Have you ever been using the BDD methodology? Yes? - cool.
 Now, have you tried to write stories or acceptance criteria using tools like [SpecFlow](http://www.specflow.org/) or [Fitnesse](http://fitnesse.org/)?
@@ -111,7 +120,8 @@ public partial class Invoice_feature : FeatureFixture
 
 	private void Then_an_invoice_should_be_sent_to_the_customer() { /* ... */ }
 
-	private void Then_the_invoice_should_contain_product_with_price_of_AMOUNT(string product, int amount) { /* ... */ }
+	private void Then_the_invoice_should_contain_product_with_price_of_AMOUNT(string product, int amount)
+	{ /* ... */ }
 	/* ... */
 }
 ```
