@@ -1,8 +1,25 @@
 version: '{build}'
+skip_tags: false
+clone_depth: 1
+test: off
+
 branches:
   only:
   - master
-clone_depth: 1
+
 build_script:
-- ps: make\make_local.ps1
-test: off
+- ps: make\make.ps1 -t all
+
+artifacts:
+  - path: 'output\*.*'
+    name: packages
+
+deploy:
+  provider: NuGet
+  api_key:
+    secure: wsVSfiTOvjdQgExU1aVzfww+N1ptKt1et5epn7/mx/67+FI/QxR76eR7oGmEDNr+
+  skip_symbols: false
+  artifact: /output\\*\.nupkg/
+  on:
+    branch: master
+    appveyor_repo_tag: true
