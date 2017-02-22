@@ -1,12 +1,13 @@
 using System.IO;
 using System.Reflection;
 using System.Threading;
+using LightBDD.Framework.ExecutionContext;
 
 namespace LightBDD.NUnit3.Implementation
 {
     internal class TestContextProvider
     {
-        private static readonly AsyncLocal<TestContextProvider> _provider = new AsyncLocal<TestContextProvider>();
+        private static readonly AsyncLocalContext<TestContextProvider> _provider = new AsyncLocalContext<TestContextProvider>();
         public  MethodInfo TestMethod { get; }
         public  TextWriter TestOutWriter { get; }
 

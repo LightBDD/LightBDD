@@ -7,6 +7,12 @@
     "netstandard1.6": {
       "dependencies": { "NETStandard.Library": "1.6.0" }
     },
+    "net45": {
+      "frameworkAssemblies": {
+        "System.Reflection": "4.0.0.0",
+        "System.Runtime": "4.0.0.0"
+      }
+    },
     "net46": {
       "frameworkAssemblies": {
         "System.Reflection": "4.0.10.0",

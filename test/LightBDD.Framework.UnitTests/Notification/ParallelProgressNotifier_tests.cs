@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
+using LightBDD.Framework.ExecutionContext;
 using LightBDD.Framework.Notification;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
@@ -19,7 +20,7 @@ namespace LightBDD.Framework.UnitTests.Notification
     {
         private ConcurrentDictionary<int, ConcurrentQueue<string>> _capturedGroups;
         public IEnumerable<string> CapturedItems => _capturedGroups.SelectMany(g => g.Value);
-        private readonly AsyncLocal<int> _currentId = new AsyncLocal<int>();
+        private readonly AsyncLocalContext<int> _currentId = new AsyncLocalContext<int>();
         private ParallelProgressNotifierProvider _notifierProvider;
 
         class TestableParallelProgressNotifierProvider : ParallelProgressNotifierProvider { }

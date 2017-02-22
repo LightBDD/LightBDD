@@ -15,7 +15,7 @@ namespace LightBDD.Reporting.UnitTests
         public void It_should_use_appdomain_base_directory_if_output_starts_with_tilde()
         {
             var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), "~\\output.txt");
-            var expected = Path.GetFullPath(AppContext.BaseDirectory + "\\output.txt");
+            var expected = Path.GetFullPath(BaseDirectory + "\\output.txt");
             Assert.That(writer.OutputPath, Is.EqualTo("~\\output.txt"));
             Assert.That(writer.FullOutputPath, Is.EqualTo(expected));
         }
@@ -43,7 +43,7 @@ namespace LightBDD.Reporting.UnitTests
         {
             var expectedFileContent = "text";
             var outputPath = $"~\\{Guid.NewGuid()}\\output.txt";
-            var expectedPath = outputPath.Replace("~", AppContext.BaseDirectory);
+            var expectedPath = outputPath.Replace("~", BaseDirectory);
 
             var formatter = Mock.Of<IReportFormatter>();
             var results = new[]
@@ -64,6 +64,18 @@ namespace LightBDD.Reporting.UnitTests
 
             Assert.That(File.Exists(expectedPath), "File does not exists: {0}", expectedPath);
             Assert.That(File.ReadAllText(expectedPath), Is.EqualTo(expectedFileContent));
+        }
+
+        private static string BaseDirectory
+        {
+            get
+            {
+#if NET451
+                return AppDomain.CurrentDomain.BaseDirectory;
+#else 
+                return AppContext.BaseDirectory;
+#endif
+            }
         }
     }
 }

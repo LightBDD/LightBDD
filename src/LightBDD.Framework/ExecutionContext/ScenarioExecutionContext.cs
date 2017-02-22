@@ -15,7 +15,7 @@ namespace LightBDD.Framework.ExecutionContext
     [DebuggerStepThrough]
     public sealed class ScenarioExecutionContext
     {
-        private static readonly AsyncLocal<ScenarioExecutionContext> CurrentContext = new AsyncLocal<ScenarioExecutionContext>();
+        private static readonly AsyncLocalContext<ScenarioExecutionContext> CurrentContext = new AsyncLocalContext<ScenarioExecutionContext>();
         private readonly ConcurrentDictionary<Type, IContextProperty> _properties = new ConcurrentDictionary<Type, IContextProperty>();
 
         /// <summary>

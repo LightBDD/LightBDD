@@ -31,8 +31,20 @@ namespace LightBDD.AcceptanceTests.Features
         public void ScenarioSetUp()
         {
             _features = null;
-            _htmlFileName = Path.GetFullPath(AppContext.BaseDirectory + "\\" + Guid.NewGuid() + ".html");
+            _htmlFileName = Path.GetFullPath(BaseDirectory + "\\" + Guid.NewGuid() + ".html");
             _resultBuilder = new ResultBuilder();
+        }
+
+        private static string BaseDirectory
+        {
+            get
+            {
+#if NET451
+                return AppDomain.CurrentDomain.BaseDirectory;
+#else 
+                return AppContext.BaseDirectory;
+#endif
+            }
         }
 
         [OneTimeTearDown]

@@ -22,6 +22,12 @@
         "System.Xml": { "type": "build" },
         "System.Xml.Linq": { "type": "build" }
       }
+    },
+    "net45": {
+      "frameworkAssemblies": {
+        "System.Xml": { "type": "build" },
+        "System.Xml.Linq": { "type": "build" }
+      }
     }
   },
   "dependencies": {

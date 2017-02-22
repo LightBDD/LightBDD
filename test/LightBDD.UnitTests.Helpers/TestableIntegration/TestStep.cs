@@ -8,7 +8,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
     public static class TestStep
     {
         public static StepDescriptor CreateAsync(Action step) => new StepDescriptor(step.GetMethodInfo().Name, async (ctx, args) => { await Task.Delay(10); step.Invoke(); });
-        public static StepDescriptor CreateSync(Action step) => new StepDescriptor(step.GetMethodInfo().Name, (ctx, args) => { step.Invoke(); return Task.CompletedTask; });
+        public static StepDescriptor CreateSync(Action step) => new StepDescriptor(step.GetMethodInfo().Name, (ctx, args) => { step.Invoke(); return Task.FromResult(0); });
         public static StepDescriptor Create(Func<Task> step) => new StepDescriptor(step.GetMethodInfo().Name, (ctx, args) => step.Invoke());
 
         public static StepDescriptor CreateAsync<TArg>(Action<TArg> step, Func<TArg> argEvaluator)
@@ -30,7 +30,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             Func<object, object[], Task> stepInvocation = (ctx, args) =>
             {
                 step.Invoke((TArg)args[0]);
-                return Task.CompletedTask;
+                return Task.FromResult(0);
             };
             var parameter = ParameterDescriptor.FromInvocation(step.GetMethodInfo().GetParameters()[0], ctx => argEvaluator.Invoke());
 
@@ -60,7 +60,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             Func<object, object[], Task> stepInvocation = (ctx, args) =>
             {
                 step.Invoke((TArg)args[0]);
-                return Task.CompletedTask;
+                return Task.FromResult(0);
             };
             var parameter = ParameterDescriptor.FromConstant(step.GetMethodInfo().GetParameters()[0], arg);
 

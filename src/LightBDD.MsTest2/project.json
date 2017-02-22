@@ -9,6 +9,12 @@
       "imports": [ "dotnet" ],
       "dependencies": { "NETStandard.Library": "1.6.0" }
     },
+    "net45": {
+      "frameworkAssemblies": {
+        "System.Reflection": { "type": "build" },
+        "System.Runtime": { "type": "build" }
+      }
+    },
     "net46": {
       "frameworkAssemblies": {
         "System.Reflection": { "type": "build" },

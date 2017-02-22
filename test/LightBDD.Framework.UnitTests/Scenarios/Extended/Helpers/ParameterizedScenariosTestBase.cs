@@ -78,7 +78,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
         {
             MockScenarioRunner
                 .Setup(r => r.RunAsynchronously())
-                .Returns(Task.CompletedTask)
+                .Returns(Task.FromResult(0))
                 .Verifiable();
         }
 

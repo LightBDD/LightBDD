@@ -11,6 +11,11 @@
         }
       }
     },
+    "net451": {
+      "frameworkAssemblies": {
+        "System.Reflection": "4.0.10.0"
+      }
+    },
     "net46": {
       "frameworkAssemblies": {
         "System.Reflection": "4.0.10.0"
