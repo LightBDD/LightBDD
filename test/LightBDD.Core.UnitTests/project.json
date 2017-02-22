@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "2.0.0.0", //build_ver
   "testRunner": "nunit",
   "frameworks": {
@@ -27,6 +27,6 @@
     "NUnit": "3.6.0",
     "dotnet-test-nunit": "3.4.0-beta-3",
     "RandomTestValues": "2.0.0",
-    "Moq": "4.6.38-alpha"
+    "Moq": "4.7.0"
   }
 }

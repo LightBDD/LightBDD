@@ -1,5 +1,5 @@
-﻿{
-  "version": "2.0.0.0-pre", //build_ver
+{
+  "version": "2.0.0.0", //build_ver
   "buildOptions": {
     "compile": [ "**/*.cs", "../../AssemblyVersion.cs" ],
     "xmlDoc": true
@@ -26,7 +26,7 @@
     "LightBDD.Framework": {
       "target": "project"
     },
-    "MSTest.TestFramework": "1.0.8-rc2"
+    "MSTest.TestFramework": "1.1.11"
   },
   "authors": [ "Wojciech Kotlarski" ],
   "description": "Allows creating acceptance tests in developer friendly environment by offering LightBDD.Framework features on top of MsTest v2 (MSTest.TestFramework) testing framework.\n\nHigh level features:\n* user friendly bdd scenario definitions,\n* test execution tracing and time measurement, helpful during longer test execution,\n* Xml/Html/Plain text reports generation,\n* cross-platform support (.NET Standard / .NET Framework),\n* asynchronous execution support,\n* in-code LightBDD configuration.",
