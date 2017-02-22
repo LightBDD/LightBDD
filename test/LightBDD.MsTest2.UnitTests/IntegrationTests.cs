@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using LightBDD.Core.Results;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Basic;
+using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.MsTest2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -94,7 +95,7 @@ namespace LightBDD.Integration.MsTest.UnitTests2
             };
             Action step2 = () => Assert.IsTrue(finished);
 
-           await Runner.RunScenarioActionsAsync(step1, step2);
+            await Runner.RunScenarioActionsAsync(step1, step2);
         }
 
         [Scenario]
@@ -114,6 +115,20 @@ namespace LightBDD.Integration.MsTest.UnitTests2
             Assert.AreEqual(
                     "Only steps being completed upon return can be run synchronously (all steps have to return completed task). Consider using Async scenario methods for async Task or async void steps.",
                     ex.Message);
+        }
+
+        [Scenario]
+        [DataRow("abc")]
+        [DataRow("def")]
+        public void Runner_should_support_parameterized_scenarios(string value)
+        {
+            Runner.RunScenario(_ => Step_with_parameter(value));
+        }
+
+        private void Step_with_parameter(string value)
+        {
+            Assert.IsNotNull(value);
+            Assert.AreEqual(3, value.Length);
         }
 
         private void Inconclusive_step()
