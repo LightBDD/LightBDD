@@ -47,8 +47,8 @@ namespace LightBDD.Core.UnitTests
             _runner.Test()
                 .WithContext(() => new object())
                 .TestScenario(
-                    new StepDescriptor("test1", (ctx, args) => { list.Add(ctx); return Task.CompletedTask; }, ParameterDescriptor.FromInvocation(someParameterInfo, ctx => { list.Add(ctx); return ctx; })),
-                    new StepDescriptor("test1", (ctx, args) => { list.Add(ctx); return Task.CompletedTask; }, ParameterDescriptor.FromInvocation(someParameterInfo, ctx => { list.Add(ctx); return ctx; })));
+                    new StepDescriptor("test1", (ctx, args) => { list.Add(ctx); return Task.FromResult(0); }, ParameterDescriptor.FromInvocation(someParameterInfo, ctx => { list.Add(ctx); return ctx; })),
+                    new StepDescriptor("test1", (ctx, args) => { list.Add(ctx); return Task.FromResult(0); }, ParameterDescriptor.FromInvocation(someParameterInfo, ctx => { list.Add(ctx); return ctx; })));
 
             Assert.That(list.Count, Is.EqualTo(4));
             Assert.That(list.Distinct().Count, Is.EqualTo(1), "Only one instance of object should be created");
@@ -61,12 +61,12 @@ namespace LightBDD.Core.UnitTests
 
             var runnerWithContext = _runner.Test().WithContext(() => new object());
             runnerWithContext.TestScenario(
-                    new StepDescriptor("test1", (ctx, args) => { list.Add(ctx); return Task.CompletedTask; }),
-                    new StepDescriptor("test1", (ctx, args) => { list.Add(ctx); return Task.CompletedTask; }));
+                    new StepDescriptor("test1", (ctx, args) => { list.Add(ctx); return Task.FromResult(0); }),
+                    new StepDescriptor("test1", (ctx, args) => { list.Add(ctx); return Task.FromResult(0); }));
 
             runnerWithContext.TestScenario(
-                    new StepDescriptor("test1", (ctx, args) => { list.Add(ctx); return Task.CompletedTask; }),
-                    new StepDescriptor("test1", (ctx, args) => { list.Add(ctx); return Task.CompletedTask; }));
+                    new StepDescriptor("test1", (ctx, args) => { list.Add(ctx); return Task.FromResult(0); }),
+                    new StepDescriptor("test1", (ctx, args) => { list.Add(ctx); return Task.FromResult(0); }));
 
             Assert.That(list.Count, Is.EqualTo(4));
             Assert.That(list.Distinct().Count, Is.EqualTo(2), "Each scenario should have own context");

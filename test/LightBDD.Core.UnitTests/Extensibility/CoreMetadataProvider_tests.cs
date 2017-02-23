@@ -69,7 +69,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
             var descriptor = new StepDescriptor(
                 "given",
                 nameof(Feature_type.Some_step_with_argument),
-                (o, a) => Task.CompletedTask,
+                (o, a) => Task.FromResult(0),
                 ParameterDescriptor.FromConstant(ParameterInfoHelper.GetMethodParameter<int>(new Feature_type().Some_step_with_argument), 5));
 
             var stepName = _metadataProvider.GetStepName(descriptor, null);
