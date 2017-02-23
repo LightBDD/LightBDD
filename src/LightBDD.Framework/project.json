@@ -14,7 +14,7 @@
     "xmlDoc": true
   },
   "frameworks": {
-    "netstandard1.6": {
+    "netstandard1.3": {
       "dependencies": { "NETStandard.Library": "1.6.0" }
     },
     "net46": {

@@ -1,11 +1,11 @@
-{
+﻿{
   "version": "2.0.0.0", //build_ver
   "buildOptions": {
     "compile": [ "**/*.cs", "../../AssemblyVersion.cs" ],
     "xmlDoc": true
   },
   "frameworks": {
-    "netstandard1.6": {
+    "netstandard1.3": {
       "dependencies": { "NETStandard.Library": "1.6.0" },
       "imports": [ "dotnet", "portable-net45+win8+wp8+wpa81" ]
     },
