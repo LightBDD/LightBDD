@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
@@ -11,6 +12,7 @@ using NUnit.Framework;
 
 namespace LightBDD.NUnit3.Implementation
 {
+    [DebuggerStepThrough]
     internal class NUnit3IntegrationContext : IIntegrationContext
     {
         public INameFormatter NameFormatter { get; }
@@ -24,10 +26,17 @@ namespace LightBDD.NUnit3.Implementation
         {
             NameFormatter = configuration.NameFormatterConfiguration().Formatter;
             MetadataProvider = new NUnit3MetadataProvider(NameFormatter, configuration.StepTypeConfiguration(), configuration.CultureInfoProviderConfiguration().CultureInfoProvider);
-            ExceptionToStatusMapper = ex => (ex is IgnoreException || ex is InconclusiveException) ? ExecutionStatus.Ignored : ExecutionStatus.Failed;
+            ExceptionToStatusMapper = MapExceptionToStatus;
             FeatureProgressNotifier = configuration.FeatureProgressNotifierConfiguration().Notifier;
             ScenarioProgressNotifierProvider = configuration.ScenarioProgressNotifierConfiguration().NotifierProvider;
             ExecutionExtensions = configuration.ExecutionExtensionsConfiguration();
+        }
+
+        private static ExecutionStatus MapExceptionToStatus(Exception ex)
+        {
+            return (ex is IgnoreException || ex is InconclusiveException) 
+                ? ExecutionStatus.Ignored 
+                : ExecutionStatus.Failed;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Results.Implementation
@@ -10,11 +11,16 @@ namespace LightBDD.Core.Results.Implementation
     [DebuggerStepThrough]
     internal class ScenarioResult : IScenarioResult
     {
-        private readonly IStepResult[] _steps;
+        private IStepResult[] _steps=Arrays<IStepResult>.Empty();
 
-        public ScenarioResult(IScenarioInfo info, IStepResult[] steps, ExecutionTime executionTime, Exception scenarioInitializationException)
+        public ScenarioResult(IScenarioInfo info)
         {
             Info = info;
+            Status = ExecutionStatus.NotRun;
+        }
+
+        public void UpdateResult(IStepResult[] steps, ExecutionTime executionTime,Exception scenarioInitializationException)
+        {
             _steps = steps;
             ExecutionTime = executionTime;
             CaptureStatus(scenarioInitializationException);
@@ -23,7 +29,7 @@ namespace LightBDD.Core.Results.Implementation
         public IScenarioInfo Info { get; }
         public ExecutionStatus Status { get; private set; }
         public string StatusDetails { get; private set; }
-        public ExecutionTime ExecutionTime { get; }
+        public ExecutionTime ExecutionTime { get; private set; }
 
         public IEnumerable<IStepResult> GetSteps() => _steps;
 

@@ -8,39 +8,50 @@ using LightBDD.Core.Metadata;
 namespace LightBDD.Core.Extensibility.Execution.Implementation
 {
     [DebuggerStepThrough]
-    internal class ExtendableExecutor : IExtendableExecutor
+    internal class ExtendableExecutor
     {
-        private readonly IScenarioExecutionExtension[] _scenarios;
-        private readonly IStepExecutionExtension[] _steps;
+        private readonly Func<IScenarioInfo, Func<Task>, Task>[] _scenarioExecutors;
+        private readonly Func<IStep, Func<Task>, Task>[] _stepExecutors;
 
         public ExtendableExecutor(IExecutionExtensions extensions)
         {
-            _scenarios = extensions.ScenarioExecutionExtensions.ToArray();
-            _steps = extensions.StepExecutionExtensions.ToArray();
+            _scenarioExecutors = extensions.ScenarioExecutionExtensions.Select(e => (Func<IScenarioInfo, Func<Task>, Task>)e.ExecuteAsync).ToArray();
+            _stepExecutors = extensions.StepExecutionExtensions.Select(e => (Func<IStep, Func<Task>, Task>)e.ExecuteAsync).ToArray();
         }
 
-        public Task ExecuteScenario(IScenarioInfo scenario, Func<Task> scenarioInvocation)
+        public Task ExecuteScenarioAsync(IScenarioInfo scenario, Func<Task> scenarioInvocation)
         {
-            return ExecuteScenario(scenario, scenarioInvocation, 0).Invoke();
+            return new RecursiveExecutor<IScenarioInfo>(_scenarioExecutors, scenario, scenarioInvocation).Execute();
         }
 
-        public Task ExecuteStep(IStep step, Func<Task> stepInvocation)
+        public Task ExecuteStepAsync(IStep step, Func<Task> stepInvocation)
         {
-            return ExecuteStep(step, stepInvocation, 0).Invoke();
+            return new RecursiveExecutor<IStep>(_stepExecutors, step, stepInvocation).Execute();
         }
 
-        private Func<Task> ExecuteScenario(IScenarioInfo scenario, Func<Task> scenarioInvocation, int index)
+        [DebuggerStepThrough]
+        private class RecursiveExecutor<T>
         {
-            return index == _scenarios.Length
-                ? scenarioInvocation
-                : () => _scenarios[index].ExecuteAsync(scenario, ExecuteScenario(scenario, scenarioInvocation, index + 1));
-        }
+            private readonly Func<T, Func<Task>, Task>[] _extensions;
+            private readonly T _target;
+            private readonly Func<Task> _targetInvocation;
+            private int _index;
 
-        private Func<Task> ExecuteStep(IStep step, Func<Task> stepInvocation, int index)
-        {
-            return index == _steps.Length
-                ? stepInvocation
-                : () => _steps[index].ExecuteAsync(step, ExecuteStep(step, stepInvocation, index + 1));
+            public RecursiveExecutor(Func<T, Func<Task>, Task>[] extensions, T target, Func<Task> targetInvocation)
+            {
+                _extensions = extensions;
+                _target = target;
+                _targetInvocation = targetInvocation;
+                _index = 0;
+            }
+
+            public Task Execute()
+            {
+                var index = _index++;
+                return index < _extensions.Length
+                    ? _extensions[index].Invoke(_target, Execute)
+                    : _targetInvocation.Invoke();
+            }
         }
     }
 }

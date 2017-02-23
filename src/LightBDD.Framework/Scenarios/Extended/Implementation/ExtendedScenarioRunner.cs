@@ -73,14 +73,19 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
         {
             Func<int, Task> fromResult = Task.FromResult;
 
-            var param = Expression.Parameter(typeof(object[]), "args");
-            var args = methodCall.Arguments.Select((arg, index) => Expression.Convert(Expression.ArrayAccess(param, Expression.Constant(index)), arg.Type));
+            var targetParam = Expression.Parameter(typeof(object), "target");
+            var argsParam = Expression.Parameter(typeof(object[]), "args");
+            var args = methodCall.Arguments.Select((arg, index) => Expression.Convert(Expression.ArrayAccess(argsParam, Expression.Constant(index)), arg.Type));
             Expression body = Expression.Call(methodCall.Object, methodCall.Method, args);
             if (methodCall.Method.ReturnType != typeof(Task))
                 body = Expression.Block(body, Expression.Call(null, fromResult.GetMethodInfo(), Expression.Constant(0)));
-            var function = Expression.Lambda<Func<TContext, object[], Task>>(body, contextParameter, param).Compile();
+            var stepCallFunction = Expression.Lambda<Func<TContext, object[], Task>>(body, contextParameter, argsParam).Compile();
 
-            return (o, a) => function((TContext)o, a);
+            var genericStepCallFunction = Expression.Lambda<Func<object, object[], Task>>(
+                    Expression.Invoke(Expression.Constant(stepCallFunction), Expression.Convert(targetParam, contextParameter.Type), argsParam),
+                    targetParam, argsParam)
+                .Compile();
+            return genericStepCallFunction;
         }
 
         private ParameterDescriptor CompileArgument(Expression argumentExpression, ParameterExpression contextParameter, ParameterInfo parameterInfo)
@@ -91,7 +96,11 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
 
             var function = Expression.Lambda<Func<TContext, object>>(Expression.Convert(argumentExpression, typeof(object)), contextParameter).Compile();
 
-            return ParameterDescriptor.FromInvocation(parameterInfo, ctx => function((TContext)ctx));
+            var targetParam = Expression.Parameter(typeof(object), "target");
+            var genericStepArgFunction = Expression.Lambda<Func<object, object>>(Expression.Invoke(Expression.Constant(function), Expression.Convert(targetParam, contextParameter.Type)),targetParam)
+                .Compile();
+
+            return ParameterDescriptor.FromInvocation(parameterInfo, genericStepArgFunction);
         }
 
         private static MethodCallExpression GetMethodExpression<T>(Expression<T> stepExpression)

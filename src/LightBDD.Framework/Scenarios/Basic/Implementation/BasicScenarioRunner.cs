@@ -46,16 +46,42 @@ namespace LightBDD.Framework.Scenarios.Basic.Implementation
 
         private StepDescriptor ToAsynchronousStep(Func<Task> step)
         {
-            return new StepDescriptor(step.GetMethodInfo().Name, (ctx, args) => step.Invoke());
+            return new StepDescriptor(step.GetMethodInfo().Name, new AsyncStepExecutor(step).ExecuteAsync);
         }
 
         private static StepDescriptor ToSynchronousStep(Action step)
         {
-            return new StepDescriptor(step.GetMethodInfo().Name, (ctx, args) =>
+            return new StepDescriptor(step.GetMethodInfo().Name, new StepExecutor(step).Execute);
+        }
+
+        [DebuggerStepThrough]
+        private class AsyncStepExecutor
+        {
+            private readonly Func<Task> _invocation;
+
+            public AsyncStepExecutor(Func<Task> invocation)
             {
-                step.Invoke();
+                _invocation = invocation;
+            }
+            public Task ExecuteAsync(object context, object[] args)
+            {
+                return _invocation.Invoke();
+            }
+        }
+        [DebuggerStepThrough]
+        private class StepExecutor
+        {
+            private readonly Action _invocation;
+
+            public StepExecutor(Action invocation)
+            {
+                _invocation = invocation;
+            }
+            public Task Execute(object context, object[] args)
+            {
+                _invocation.Invoke();
                 return Task.FromResult(0);
-            });
+            }
         }
     }
 }

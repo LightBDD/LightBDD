@@ -1,7 +1,9 @@
+using System.Diagnostics;
 using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Framework.Implementation
 {
+    [DebuggerStepThrough]
     internal class BddRunner : IBddRunner,IFeatureFixtureRunner
     {
         private readonly IFeatureFixtureRunner _coreRunner;

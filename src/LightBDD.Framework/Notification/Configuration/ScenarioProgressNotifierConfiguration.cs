@@ -27,7 +27,7 @@ namespace LightBDD.Framework.Notification.Configuration
         {
             if (notifierProvider == null)
                 throw new ArgumentNullException(nameof(notifierProvider));
-            NotifierProvider = fixture => notifierProvider();
+            NotifierProvider = new StatelessProvider(notifierProvider).Provide;
             return this;
         }
         /// <summary>
@@ -54,6 +54,20 @@ namespace LightBDD.Framework.Notification.Configuration
                 throw new InvalidOperationException($"Unable to create {nameof(IScenarioProgressNotifier)}. Expected fixture of type '{typeof(TFixture)}' while got '{fixture.GetType()}'.");
 
             return scenarioProgressNotifier((TFixture)fixture);
+        }
+        [DebuggerStepThrough]
+        private class StatelessProvider
+        {
+            private readonly Func<IScenarioProgressNotifier> _notifierProvider;
+            public StatelessProvider(Func<IScenarioProgressNotifier> notifierProvider)
+            {
+                _notifierProvider = notifierProvider;
+            }
+
+            public IScenarioProgressNotifier Provide(object fixture)
+            {
+                return _notifierProvider.Invoke();
+            }
         }
     }
 }

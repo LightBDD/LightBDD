@@ -12,11 +12,11 @@ namespace LightBDD.Core.Formatting
     public static class TimeFormatter
     {
         private static readonly Tuple<string, int, Func<TimeSpan, int>>[] Formatters = {
-            new Tuple<string, int, Func<TimeSpan, int>>("d", 1, ts => ts.Days),
-            new Tuple<string, int, Func<TimeSpan, int>>("h", 2, ts => ts.Hours),
-            new Tuple<string, int, Func<TimeSpan, int>>("m", 2, ts => ts.Minutes),
-            new Tuple<string, int, Func<TimeSpan, int>>("s", 2, ts => ts.Seconds),
-            new Tuple<string, int, Func<TimeSpan, int>>("ms", 3, ts => ts.Milliseconds)
+            new Tuple<string, int, Func<TimeSpan, int>>("d", 1, GetDays),
+            new Tuple<string, int, Func<TimeSpan, int>>("h", 2, GetHours),
+            new Tuple<string, int, Func<TimeSpan, int>>("m", 2, GetMinutes),
+            new Tuple<string, int, Func<TimeSpan, int>>("s", 2, GetSeconds),
+            new Tuple<string, int, Func<TimeSpan, int>>("ms", 3, GetMilliseconds)
         };
         /// <summary>
         /// Formats given value if provided or returns empty string.
@@ -90,6 +90,31 @@ namespace LightBDD.Core.Formatting
             else
                 sb.Append(" ");
             sb.Append(formatter.Item3(ts).ToString("D" + padding)).Append(formatter.Item1);
+        }
+
+        private static int GetMilliseconds(TimeSpan ts)
+        {
+            return ts.Milliseconds;
+        }
+
+        private static int GetSeconds(TimeSpan ts)
+        {
+            return ts.Seconds;
+        }
+
+        private static int GetMinutes(TimeSpan ts)
+        {
+            return ts.Minutes;
+        }
+
+        private static int GetHours(TimeSpan ts)
+        {
+            return ts.Hours;
+        }
+
+        private static int GetDays(TimeSpan ts)
+        {
+            return ts.Days;
         }
     }
 }

@@ -19,17 +19,21 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly StepParameter[] _parameters;
         private readonly Func<Exception, ExecutionStatus> _exceptionToStatusMapper;
         private readonly IScenarioProgressNotifier _progressNotifier;
+        private readonly ExtendableExecutor _extendableExecutor;
+        private readonly object _scenarioContext;
         private readonly StepResult _result;
         public IStepResult Result => _result;
         public IStepInfo Info => Result.Info;
 
-        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task> stepInvocation, StepParameter[] parameters, Func<Exception, ExecutionStatus> exceptionToStatusMapper, IScenarioProgressNotifier progressNotifier)
+        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task> stepInvocation, StepParameter[] parameters, Func<Exception, ExecutionStatus> exceptionToStatusMapper, IScenarioProgressNotifier progressNotifier, ExtendableExecutor extendableExecutor, object scenarioContext)
         {
             _result = new StepResult(stepInfo);
             _stepInvocation = stepInvocation;
             _parameters = parameters;
             _exceptionToStatusMapper = exceptionToStatusMapper;
             _progressNotifier = progressNotifier;
+            _extendableExecutor = extendableExecutor;
+            _scenarioContext = scenarioContext;
             UpdateNameDetails();
         }
 
@@ -53,16 +57,16 @@ namespace LightBDD.Core.Execution.Implementation
             }
         }
 
-        public async Task Invoke(IExtendableExecutor extendableExecutor, object context)
+        public async Task RunAsync()
         {
             bool stepStartNotified = false;
             try
             {
-                EvaluateParameters(context);
+                EvaluateParameters();
                 _progressNotifier.NotifyStepStart(_result.Info);
                 stepStartNotified = true;
 
-                await extendableExecutor.ExecuteStep(this, () => TimeMeasuredInvoke(context));
+                await _extendableExecutor.ExecuteStepAsync(this, TimeMeasuredInvokeAsync);
                 _result.SetStatus(ExecutionStatus.Passed);
             }
             catch (StepBypassException e)
@@ -81,7 +85,7 @@ namespace LightBDD.Core.Execution.Implementation
             }
         }
 
-        private async Task TimeMeasuredInvoke(object context)
+        private async Task TimeMeasuredInvokeAsync()
         {
             var watch = ExecutionTimeWatch.StartNew();
             var ctx = AsyncStepSynchronizationContext.InstallNew();
@@ -89,7 +93,7 @@ namespace LightBDD.Core.Execution.Implementation
             {
                 try
                 {
-                    await _stepInvocation.Invoke(context, PrepareParameters());
+                    await _stepInvocation.Invoke(_scenarioContext, PrepareParameters());
                 }
                 finally
                 {
@@ -103,10 +107,10 @@ namespace LightBDD.Core.Execution.Implementation
             }
         }
 
-        private void EvaluateParameters(object context)
+        private void EvaluateParameters()
         {
             foreach (var parameter in _parameters)
-                parameter.Evaluate(context);
+                parameter.Evaluate(_scenarioContext);
             UpdateNameDetails();
         }
 

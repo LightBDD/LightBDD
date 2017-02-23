@@ -1,9 +1,11 @@
 using System;
+using System.Diagnostics;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
 
 namespace LightBDD.Core.Extensibility.Implementation
 {
+    [DebuggerStepThrough]
     internal class StepParameter
     {
         private readonly Func<object, object> _valueEvaluator;
