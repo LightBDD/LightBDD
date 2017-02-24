@@ -18,3 +18,4 @@ make/psmake.*
 TestResult.xml
 templates/**/lightbdd.ico
 templates/**/lightbdd_small.ico
+deps/
