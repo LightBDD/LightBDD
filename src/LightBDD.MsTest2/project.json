@@ -39,6 +39,7 @@
       "type": "git",
       "url": "https://github.com/Suremaker/LightBDD"
     },
+    "files": { "include" : ["../../QuickStart.txt"], "mappings": { "readme.txt": "../../QuickStart.txt"} },
     "owners": [ "Wojciech Kotlarski" ],
     "summary": "LightBDD Test Framework for MsTest v2",
     "tags": [ "bdd", "tdd", "testing", "framework", "behavior driven development", "acceptance criteria", "nunit", "nunit3" ],

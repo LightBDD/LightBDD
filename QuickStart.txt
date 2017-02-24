@@ -1,122 +1,13 @@
 LightBDD Quick Start:
 #####################################
 
-Visual Studio Project Item Templates:
--------------------------------------
+Thanks for installing LightBDD version 1.7.0.0!
 
-Project and Item templates for LightBDD tests can be downloaded from: https://github.com/Suremaker/LightBDD/tree/master/Templates
-For VisualStudio 2013, it is possible also to install 'LightBDD for Visual Studio' extension from Visual Studio Gallery.
+If you are new LightBDD user, please feel free to explore the LightBDD Wiki page, especially Quick Start: https://github.com/Suremaker/LightBDD/wiki/Quick-Start
+If you just updated LightBDD from version 1.X, please read Wiki page about migrating LightBDD: https://github.com/Suremaker/LightBDD/wiki/Migrating-LightBDD-Versions
 
-Acceptance tests creation:
--------------------------------------
-
-Acceptance tests should consist of two files:
-
-1. Acceptance tests definition part containing:
-* optional feature description and label,
-* list of scenario methods with optional label and body with Runner executing scenario steps 
-
-[TestFixture]
-[FeatureDescription(
-@"In order to access personal data
-As an user
-I want to login into system")]
-[Label("Story-1")]
-public partial class Login_feature
-{
-	[Test]
-	[Label("Ticket-1")]
-	public void Successful_login()
-	{
-		Runner.RunScenario(
-
-			Given_user_is_about_to_login,
-			Given_user_entered_valid_login,
-			Given_user_entered_valid_password,
-			When_user_clicked_login_button,
-			Then_login_is_successful,
-			Then_welcome_message_is_returned_containing_user_name);
-	}
-}
-
-2. Implementation part containing:
-* implementation of all step methods
-* set up / tear down methods
-* inheritance of FeatureFixture base class (it is strongly recommended, however it is possible also to not have it - please use then LightBDD: Standalone Feature Test Class item template, or see Feature Fixture implementation: https://github.com/Suremaker/LightBDD/blob/master/LightBDD/FeatureFixture.cs).
-
-public partial class Login_feature : FeatureFixture
-{
-	/* scenario data */
-	/* set up / tear down methods */
-
-	private void Given_user_is_about_to_login()
-	{
-		_loginService = new LoginService();
-		_loginService.AddUser(_validUserName, _validPassword);
-		_loginRequest = new LoginRequest();
-	}
-	
-	private void When_user_clicked_login_button()
-	{
-		_loginResult = _loginService.Login(_loginRequest);
-	}
-
-	private void Then_login_is_successful()
-	{
-		Assert.That(_loginResult.IsSuccessful, Is.True);
-	}
-
-	/* other step definitions */
-}
-
-Please note that with usage of provided ItemTemplates, feature class parts would be nicely grouped in Visual Studio.
-
-Since version 1.5.0 it is possible also to define parameterized steps (for details, please follow links from 'More details' section).
-
-Test running:
--------------------------------------
-LightBDD integrates with NUnit, MbUnit, MsTest and xUnit frameworks, so the tests can be run in the same way as regular tests in those frameworks.
-
-During run, the test progress would be printed on console, like:
-
-FEATURE: [Story-1] Login feature
-  In order to access personal data
-  As an user
-  I want to login into system
-
-SCENARIO: [Ticket-1] Successful login
-  STEP 1/6: GIVEN user is about to login...
-  STEP 1/6: GIVEN user is about to login (Passed after <1ms)
-  STEP 2/6: AND user entered valid login...
-  STEP 2/6: AND user entered valid login (Passed after <1ms)
-  STEP 3/6: AND user entered valid password...
-  STEP 3/6: AND user entered valid password (Passed after <1ms)
-  STEP 4/6: WHEN user clicked login button...
-  STEP 4/6: WHEN user clicked login button (Passed after <1ms)
-  STEP 5/6: THEN login is successful...
-  STEP 5/6: THEN login is successful (Passed after <1ms)
-  STEP 6/6: AND welcome message is returned containing user name...
-  STEP 6/6: AND welcome message is returned containing user name (Passed after 8ms)
-  SCENARIO RESULT: Passed after 12ms
-
-After all tests are finished, FeaturesSummary.xml would be created in project bin folder with xml summary of scenario execution.
-It is possible to configure other feature summary formats (HTML / Plain text) in app.config.
-
-Conventions:
--------------------------------------
-* each feature should be represented as separate class with [TestFixture] attribute, where class name is feature name,
-* each scenario should be represented as method with [Test] attribute, where method name is feature name,
-* scenario method should call BDDRunner class RunScenario method with list of Given/When/Then methods representing steps to execute
-* all names should use underscores, that make them a little bit easier to read in code, but they are also transformed to readable text during execution.
-
-More details:
--------------------------------------
-For more details, please check:
+Other quick links:
 * project web site: https://github.com/Suremaker/LightBDD
 * project wiki: https://github.com/Suremaker/LightBDD/wiki
-* example projects: 
-  * https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example
-  * https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example.AcceptanceTests.NUnit
-  * https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example.AcceptanceTests.MbUnit
-  * https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example.AcceptanceTests.MsTest
-  * https://github.com/Suremaker/LightBDD/tree/master/LightBDD.Example.AcceptanceTests.XUnit
+* example projects: https://github.com/Suremaker/LightBDD/tree/master/examples
+* Visual Studio Item Templates: https://marketplace.visualstudio.com/items?itemName=Suremaker.LightBDDforVisualStudio

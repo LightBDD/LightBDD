@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
-  <metadata>
+	<metadata>
 	<id>LightBDD</id>
 	<version>2.0.0.0</version>
 	<title>[deprecated] LightBDD meta-package</title>
@@ -19,10 +19,11 @@ After update to this version, the LightBDD package can be removed and LightBDD.N
 	<language>en-US</language>
 	<dependencies>
 		<group targetFramework=".NETFramework4.5">
-			<dependency id="LightBDD.NUnit2" version="[2.0.0.0, )" />
+			<dependency id="LightBDD.NUnit" version="[2.0.0.0, )" />
 		</group>
 	</dependencies>
-  </metadata>
-  <files>
-  </files>
+	</metadata>
+	<files>
+		<file src="..\QuickStart.txt" target="readme.txt" />
+	</files>
 </package>
