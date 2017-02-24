@@ -17,6 +17,7 @@ Define-Step -Name 'Update version' -Target 'all,build' -Body {
     Write-ShortStatus "Updating version to $version..."
 
     gci -Filter 'project.json' -Recurse | %{ Replace-InFile $_.fullname $version '"version": "%", //build_ver','"version": "%-pre", //build_ver' }
+    gci -Path 'meta-packages' -Filter '*.nuspec' -Recurse | %{ Replace-InFile $_.fullname $version '<version>%</version>','version="[%, )"' }
     Replace-InFile 'AssemblyVersion.cs' $version 'Version("%")'
     Replace-InFile 'templates\LightBDD.VSIXTemplates\source.extension.vsixmanifest' $version 'Identity Id="d6382c7a-fe20-47e5-b4e1-4d798cef97f1" Version="%"'
     
@@ -45,6 +46,9 @@ Define-Step -Name 'Packaging' -Target 'all,pack' -Body {
 
     gci -Path "src" -Filter 'project.json' -Recurse `
         | %{ call dotnet pack $_.fullname --output 'output' --no-build --configuration Release}
+
+    gci -Path "meta-packages" -Filter '*.nuspec' -Recurse `
+        | %{ call $Context.NugetExe pack $_.fullname -OutputDirectory 'output' }
 }
 
 Define-Step -Name 'Prepare templates' -Target 'all,pack' -Body {

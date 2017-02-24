@@ -1,0 +1,28 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+	<id>LightBDD</id>
+	<version>2.0.0.0</version>
+	<title>[deprecated] LightBDD meta-package</title>
+	<authors>Wojciech Kotlarski</authors>
+	<owners>Wojciech Kotlarski</owners>
+	<licenseUrl>http://opensource.org/licenses/BSD-2-Clause</licenseUrl>
+	<projectUrl>https://github.com/Suremaker/LightBDD</projectUrl>
+	<iconUrl>https://raw.githubusercontent.com/Suremaker/LightBDD/master/logo/lightbdd.png</iconUrl>
+	<requireLicenseAcceptance>false</requireLicenseAcceptance>
+	<description>A bridge package allowing smooth transition from LightBDD to LightBDD.NUnit2.
+After update to this version, the LightBDD package can be removed and LightBDD.NUnit2 should be used since then.</description>
+	<summary>[deprecated] LightBDD meta-package (use LightBDD.NUnit2 or LightBDD.NUnit3 instead)</summary>
+	<releaseNotes>Deprecated in favor of explicit LightBDD integration packages.</releaseNotes>
+	<copyright>Copyright © Wojciech Kotlarski 2013-2017</copyright>
+	<tags>bdd tdd testing framework behavior driven development acceptance criteria</tags>
+	<language>en-US</language>
+	<dependencies>
+		<group targetFramework=".NETFramework4.5">
+			<dependency id="LightBDD.NUnit2" version="[2.0.0.0, )" />
+		</group>
+	</dependencies>
+  </metadata>
+  <files>
+  </files>
+</package>
