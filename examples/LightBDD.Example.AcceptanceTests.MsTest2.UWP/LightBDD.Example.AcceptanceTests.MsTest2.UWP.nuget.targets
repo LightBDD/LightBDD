@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup Condition="'$(NuGetPackageRoot)' == ''">
-    <NuGetPackageRoot>$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
-  </PropertyGroup>
-  <ImportGroup>
-    <Import Project="$(NuGetPackageRoot)\MSTest.TestAdapter\1.1.12\build\uap10.0\MSTest.TestAdapter.targets" Condition="Exists('$(NuGetPackageRoot)\MSTest.TestAdapter\1.1.12\build\uap10.0\MSTest.TestAdapter.targets')" />
-  </ImportGroup>
-</Project>

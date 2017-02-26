@@ -1,5 +1,5 @@
 ﻿{
-  "version": "2.0.0.0", //build_ver
+  "version": "2.1.0.0", //build_ver
   "buildOptions": {
     "compile": [ "**/*.cs", "../../AssemblyVersion.cs" ]
   },
