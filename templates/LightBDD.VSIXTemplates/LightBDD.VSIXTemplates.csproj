@@ -84,6 +84,13 @@
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
     </ProjectReference>
+    <ProjectReference Include="..\ItemTemplates\LightBDD.NUnit2.FeatureTemplate\LightBDD.NUnit2.FeatureTemplate.csproj">
+      <Project>{eb5f0f1f-920b-45d2-9499-73cb60bd3b20}</Project>
+      <Name>LightBDD.NUnit2.FeatureTemplate</Name>
+      <VSIXSubPath>ItemTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
     <ProjectReference Include="..\ItemTemplates\LightBDD.NUnit3.FeatureTemplate\LightBDD.NUnit3.FeatureTemplate.csproj">
       <Project>{987A36B6-417E-44C9-A8BE-CF5639CEE674}</Project>
       <Name>LightBDD.NUnit3.FeatureTemplate</Name>

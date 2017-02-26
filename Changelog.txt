@@ -9,7 +9,7 @@ Summary:
 + #11 Refactored code to make debugger only jump into code that is important during scenario debugging
 + #14 Extended .NET Standard support to 1.3 for LightBDD.Framework/LightBDD.XUnit2/LightBDD.MsTest2
 + #14 Added LightBDD.Example.AcceptanceTests.MsTest2.UWP project
-+ #16 Added LightBDD.NUnit2 depending on NUnit 2.6.4
++ #16 Added LightBDD.NUnit2 depending on NUnit 2.6.4 and added VS ItemTemplate for it
 + Added deprecated meta packages to simplify migration from LightBDD 1.x
 + Added readme.txt to integration packages
 

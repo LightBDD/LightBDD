@@ -7,7 +7,7 @@
     <Icon>lightbdd.ico</Icon>
     <TemplateID>2c5635aa-d975-4f77-aa99-382e28df936f</TemplateID>
     <ProjectType>CSharp</ProjectType>
-    <RequiredFrameworkVersion>4.6</RequiredFrameworkVersion>
+    <RequiredFrameworkVersion>4.5</RequiredFrameworkVersion>
     <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
   </TemplateData>
   <TemplateContent>
