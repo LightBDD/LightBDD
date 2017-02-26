@@ -1,16 +1,18 @@
 ![logo](https://github.com/Suremaker/LightBDD/blob/master/logo/lightbdd.ico) Lightweight Behavior Driven Development test framework (LightBDD)
 ===========
 
-Category|Badge
---------|------
-Build | [![Build status](https://ci.appveyor.com/api/projects/status/xkd7qc950o07o3x8?svg=true)](https://ci.appveyor.com/project/Suremaker/lightbdd) 
-LightBDD.NUnit3 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.NUnit3?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.NUnit3/)
-LightBDD.XUnit2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.XUnit2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.XUnit2/)
-LightBDD.MsTest2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MsTest2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.MsTest2/)
-LightBDD.NUnit (1.x) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.NUnit?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.NUnit/)
-LightBDD.XUnit (1.x) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.XUnit?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.XUnit/)
-LightBDD.MsTest (1.x) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MsTest?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.MsTest/)
-LightBDD.MbUnit (1.x) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MbUnit?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.MbUnit/)
+Category|Badge |Platforms
+--------|------|--------
+Build | [![Build status](https://ci.appveyor.com/api/projects/status/xkd7qc950o07o3x8?svg=true)](https://ci.appveyor.com/project/Suremaker/lightbdd)|
+LightBDD.NUnit3 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.NUnit3?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.NUnit3/) | .NET Standard 1.6 <br> .NET Framework 4.5 <br> .NET Core
+LightBDD.NUnit2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.NUnit2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.NUnit2/) | .NET Framework 4.5
+LightBDD.XUnit2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.XUnit2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.XUnit2/) | .NET Standard 1.3 <br> .NET Framework 4.5 <br> .NET Core
+LightBDD.MsTest2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MsTest2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.MsTest2/) | .NET Standard 1.3 <br> .NET Framework 4.5 <br> .NET Core <br> UWP
+LightBDD.MbUnit (1.x) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MbUnit?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.MbUnit/) | .NET Framework 4.0
+LightBDD.NUnit (deprecated) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.NUnit?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.NUnit/) |
+LightBDD.XUnit (deprecated) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.XUnit?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.XUnit/) |
+LightBDD.MsTest (deprecated) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MsTest?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.MsTest/) |
+LightBDD (deprecated) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD?includePreReleases=true)](https://www.nuget.org/packages/LightBDD/) |
 
 Have you ever been using the BDD methodology? Yes? - cool.
 Now, have you tried to write stories or acceptance criteria using tools like [SpecFlow](http://www.specflow.org/) or [Fitnesse](http://fitnesse.org/)?
@@ -36,7 +38,7 @@ This additional layer becomes the root of most problems when maintaining tests, 
 * VisualStudio templates for test classes ([see details](#vs-project-item-templates)),
 * Integrated with [NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/) and [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/) frameworks,
 * Async scenario and steps execution support,
-* Cross-platform support (.NET Framework 4.6 / .NET Standard 1.6).
+* Cross-platform support (.NET Framework / .NET Standard / .NET Core / UWP).
 
 ### Tests structure and conventions
 **LightBDD** is integrated with well known testing frameworks ([NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/) and [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/)) which makes it very easy to learn, adapt and use - please see [Tests Structure and Conventions](https://github.com/Suremaker/LightBDD/wiki/Tests-structure-and-conventions) wiki section for details.
