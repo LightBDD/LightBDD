@@ -9,9 +9,9 @@ LightBDD.NUnit2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.NUnit2?
 LightBDD.XUnit2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.XUnit2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.XUnit2/) | .NET Standard 1.3 <br> .NET Framework 4.5 <br> .NET Core
 LightBDD.MsTest2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MsTest2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.MsTest2/) | .NET Standard 1.3 <br> .NET Framework 4.5 <br> .NET Core <br> UWP
 LightBDD.MbUnit (1.x) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MbUnit?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.MbUnit/) | .NET Framework 4.0
+LightBDD.MsTest (1.x) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MsTest?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.MsTest/) | .NET Framework 4.0
 LightBDD.NUnit (deprecated) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.NUnit?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.NUnit/) |
 LightBDD.XUnit (deprecated) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.XUnit?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.XUnit/) |
-LightBDD.MsTest (deprecated) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MsTest?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.MsTest/) |
 LightBDD (deprecated) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD?includePreReleases=true)](https://www.nuget.org/packages/LightBDD/) |
 
 Have you ever been using the BDD methodology? Yes? - cool.
