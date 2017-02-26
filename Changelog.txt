@@ -1,6 +1,18 @@
 LightBDD
 ===========================================
 
+Version 2.1.0
+----------------------------------------
+Summary:
++ #12 extended support  for .NET Framework 4.5
++ #13 Updated MSTest.TestFramework to 1.1.11 and xunit to 2.2.0
++ #11 Refactored code to make debugger only jump into code that is important during scenario debugging
++ #14 Extended .NET Standard support to 1.3 for LightBDD.Framework/LightBDD.XUnit2/LightBDD.MsTest2
++ #14 Added LightBDD.Example.AcceptanceTests.MsTest2.UWP project
++ #16 Added LightBDD.NUnit2 depending on NUnit 2.6.4
++ Added deprecated meta packages to simplify migration from LightBDD 1.x
++ Added readme.txt to integration packages
+
 Version 2.0.0
 ----------------------------------------
 Summary:
