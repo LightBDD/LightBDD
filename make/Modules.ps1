@@ -1,3 +1,3 @@
 Write-Output @{
-	'psmake.mod.testing' = '1.3.0.0';
+	'psmake.mod.testing' = '1.3.1.0';
 }

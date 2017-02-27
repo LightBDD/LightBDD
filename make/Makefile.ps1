@@ -36,8 +36,8 @@ Define-Step -Name 'Tests' -Target 'all,test' -Body {
     $tests += Define-NUnitTests -GroupName "NUnit 2 tests" -TestAssembly "*\bin\Release\*.NUnitTests.dll"
     $tests += Define-DotnetTests -TestProject "*.AcceptanceTests"
 
-    $tests | Run-Tests -EraseReportDirectory -Cover -CodeFilter '+[LightBDD*]* -[*Tests*]*' -TestFilter '*Tests.dll' 
-        # | Generate-CoverageSummary | Check-AcceptableCoverage -AcceptableCoverage 90
+    $tests | Run-Tests -EraseReportDirectory -Cover -CodeFilter '+[LightBDD*]* -[*Tests*]*' -TestFilter '*Tests.dll' `
+         | Generate-CoverageSummary | Check-AcceptableCoverage -AcceptableCoverage 90
 }
 
 
