@@ -35,7 +35,7 @@ This additional layer becomes the root of most problems when maintaining tests, 
 * Support for contextual scenario execution where steps shares dedicated context,
 * Feature report generation in XML, HTML or Plain text format,
 * In-code LightBDD configuration allowing to customize all LightBDD features,
-* VisualStudio templates for test classes ([see details](#vs-project-item-templates)),
+* VisualStudio templates for test classes ([see details](#vs-item-templates)),
 * Integrated with [NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/) and [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/) frameworks,
 * Async scenario and steps execution support,
 * Cross-platform support (.NET Framework / .NET Standard / .NET Core / UWP).
@@ -179,12 +179,13 @@ SCENARIO: [Ticket-4] Receiving invoice for products
 
 ![](https://raw.githubusercontent.com/wiki/Suremaker/LightBDD/images/scenario_report.png)
 
-To read more, please see [Generating Reports](Generating-Reports) wiki page.
+To read more, please see [Generating Reports](https://github.com/Suremaker/LightBDD/wiki/Generating-Reports) wiki page.
 
 ## Installation
-The LightBDD is available on [NuGet](http://nuget.org): 
+The LightBDD is available on [NuGet](https://www.nuget.org/packages?q=LightBDD): 
 
 * `PM> Install-Package LightBDD.NUnit3` for package using NUnit 3x
+* `PM> Install-Package LightBDD.NUnit2` for package using NUnit 2x
 * `PM> Install-Package LightBDD.XUnit2` for package using xUnit 2x
 * `PM> Install-Package LightBDD.MsTest2` for package using MsTest.TestFramework
 
