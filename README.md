@@ -1,4 +1,4 @@
-![logo](https://github.com/Suremaker/LightBDD/blob/master/logo/lightbdd.ico) Lightweight Behavior Driven Development test framework (LightBDD)
+![logo](https://github.com/LightBDD/LightBDD/blob/master/logo/lightbdd.ico) Lightweight Behavior Driven Development test framework (LightBDD)
 ===========
 
 Category|Badge |Platforms
@@ -41,7 +41,7 @@ This additional layer becomes the root of most problems when maintaining tests, 
 * Cross-platform support (.NET Framework / .NET Standard / .NET Core / UWP).
 
 ### Tests structure and conventions
-**LightBDD** is integrated with well known testing frameworks ([NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/) and [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/)) which makes it very easy to learn, adapt and use - please see [Tests Structure and Conventions](https://github.com/Suremaker/LightBDD/wiki/Tests-structure-and-conventions) wiki section for details.
+**LightBDD** is integrated with well known testing frameworks ([NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/) and [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/)) which makes it very easy to learn, adapt and use - please see [Tests Structure and Conventions](https://github.com/LightBDD/LightBDD/wiki/Tests-structure-and-conventions) wiki section for details.
 
 ### Example 
 ```C#
@@ -177,9 +177,9 @@ SCENARIO: [Ticket-4] Receiving invoice for products
 
 ### Example HTML report generated after test execution:
 
-![](https://raw.githubusercontent.com/wiki/Suremaker/LightBDD/images/scenario_report.png)
+![](https://raw.githubusercontent.com/wiki/LightBDD/LightBDD/images/scenario_report.png)
 
-To read more, please see [Generating Reports](https://github.com/Suremaker/LightBDD/wiki/Generating-Reports) wiki page.
+To read more, please see [Generating Reports](https://github.com/LightBDD/LightBDD/wiki/Generating-Reports) wiki page.
 
 ## Installation
 The LightBDD is available on [NuGet](https://www.nuget.org/packages?q=LightBDD): 
@@ -194,7 +194,7 @@ The LightBDD is available on [NuGet](https://www.nuget.org/packages?q=LightBDD):
 They can be installed via [Visual Studio Gallery](https://visualstudiogallery.msdn.microsoft.com/99be2036-a6b3-462c-9111-3ca31a317da2) (Visual Studio 2012 and newer versions supported)
 
 ## Wiki
-Please check project [wiki](https://github.com/Suremaker/LightBDD/wiki) for more details.
+Please check project [wiki](https://github.com/LightBDD/LightBDD/wiki) for more details.
 
 ## Debugging LightBDD from NuGet packages
 

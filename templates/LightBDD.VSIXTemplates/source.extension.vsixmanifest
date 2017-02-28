@@ -4,7 +4,7 @@
     <Identity Id="d6382c7a-fe20-47e5-b4e1-4d798cef97f1" Version="2.1.0.0" Language="en-US" Publisher="Wojciech Kotlarski" />
     <DisplayName>LightBDD for Visual Studio</DisplayName>
     <Description xml:space="preserve">A collection of Item templates for LightBDD testing framework</Description>
-    <MoreInfo>https://github.com/Suremaker/LightBDD</MoreInfo>
+    <MoreInfo>https://github.com/LightBDD/LightBDD</MoreInfo>
     <License>LICENSE.txt</License>
     <Icon>lightbdd_small.ico</Icon>
     <PreviewImage>Preview.PNG</PreviewImage>

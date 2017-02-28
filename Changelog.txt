@@ -172,7 +172,7 @@ Version 1.5.0
 Summary:
 + fluent interface for scenario creation
 + parameterized steps support
-+ capturing execution start and duration of scenarios and steps (https://github.com/Suremaker/LightBDD/issues/5)
++ capturing execution start and duration of scenarios and steps (https://github.com/LightBDD/LightBDD/issues/5)
 + improvements to HtmlResultFormatter
 Details:
 + introduced IScenarioBuilder/ICustomizedScenarioBuilder fluent interfaces for scenario creation, added NewScenario() methods to AbstractBDDRunner

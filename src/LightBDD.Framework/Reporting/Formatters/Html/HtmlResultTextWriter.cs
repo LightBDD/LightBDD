@@ -427,7 +427,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                         WriteExecutionSummary(),
                         WriteFeatureList(),
                         WriteFeatureDetails(),
-                        Html.Tag(Html5Tag.Div).Class("footer").Content(Html.Text("Generated with "), Html.Tag(Html5Tag.A).Content("LightBDD v" + GetLightBddVersion()).Href("https://github.com/Suremaker/LightBDD")),
+                        Html.Tag(Html5Tag.Div).Class("footer").Content(Html.Text("Generated with "), Html.Tag(Html5Tag.A).Content("LightBDD v" + GetLightBddVersion()).Href("https://github.com/LightBDD/LightBDD")),
                         Html.Tag(Html5Tag.Script).Content("initialize();", false, false)
                         )));
         }

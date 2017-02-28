@@ -7,8 +7,8 @@
 		<authors>Wojciech Kotlarski</authors>
 		<owners>Wojciech Kotlarski</owners>
 		<licenseUrl>http://opensource.org/licenses/BSD-2-Clause</licenseUrl>
-		<projectUrl>https://github.com/Suremaker/LightBDD</projectUrl>
-		<iconUrl>https://raw.githubusercontent.com/Suremaker/LightBDD/master/logo/lightbdd.png</iconUrl>
+		<projectUrl>https://github.com/LightBDD/LightBDD</projectUrl>
+		<iconUrl>https://raw.githubusercontent.com/LightBDD/LightBDD/master/logo/lightbdd.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>A bridge package allowing smooth transition from LightBDD.NUnit to LightBDD.NUnit2.
 After update to this version, the LightBDD.NUnit package can be removed and LightBDD.NUnit2 should be used since then.</description>
