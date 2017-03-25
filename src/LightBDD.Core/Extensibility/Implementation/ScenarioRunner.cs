@@ -102,7 +102,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         public Task RunAsynchronously()
         {
             Validate();
-            return _scenarioExecutor.Execute(new ScenarioInfo(_name, _labels, _categories), ProvideSteps, _contextProvider, _progressNotifier);
+            return _scenarioExecutor.ExecuteAsync(new ScenarioInfo(_name, _labels, _categories), ProvideSteps, _contextProvider, _progressNotifier);
         }
 
         public void RunSynchronously()

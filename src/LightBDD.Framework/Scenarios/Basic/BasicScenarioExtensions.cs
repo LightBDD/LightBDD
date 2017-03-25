@@ -73,9 +73,9 @@ namespace LightBDD.Framework.Scenarios.Basic
         /// </summary>
         /// <param name="runner">Runner.</param>
         /// <param name="steps">List of steps to execute in order.</param>
-        public static Task RunScenarioAsync(this IBddRunner runner, params Func<Task>[] steps)
+        public static async Task RunScenarioAsync(this IBddRunner runner, params Func<Task>[] steps)
         {
-            return Basic(runner).RunScenarioAsync(steps);
+            await Basic(runner).RunScenarioAsync(steps);
         }
 
         /// <summary>
@@ -110,9 +110,9 @@ namespace LightBDD.Framework.Scenarios.Basic
         /// </summary>
         /// <param name="runner">Runner.</param>
         /// <param name="steps">List of steps to execute in order.</param>
-        public static Task RunScenarioActionsAsync(this IBddRunner runner, params Action[] steps)
+        public static async Task RunScenarioActionsAsync(this IBddRunner runner, params Action[] steps)
         {
-            return Basic(runner).RunScenarioAsync(steps);
+            await Basic(runner).RunScenarioAsync(steps);
         }
 
         private static BasicScenarioRunner Basic(this IBddRunner runner)

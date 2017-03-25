@@ -141,9 +141,9 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// <remarks>This is an asynchronous method and should be awaited.</remarks>
         /// <param name="runner">Runner.</param>
         /// <param name="steps">List of steps to execute in order.</param>
-        public static Task RunScenarioAsync<TContext>(this IBddRunner<TContext> runner, params Expression<Func<TContext, Task>>[] steps)
+        public static async Task RunScenarioAsync<TContext>(this IBddRunner<TContext> runner, params Expression<Func<TContext, Task>>[] steps)
         {
-            return Extended(runner).RunScenarioAsync(steps);
+            await Extended(runner).RunScenarioAsync(steps);
         }
 
         /// <summary>
@@ -220,9 +220,9 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// <remarks>This is an asynchronous method and should be awaited.</remarks>
         /// <param name="runner">Runner.</param>
         /// <param name="steps">List of steps to execute in order.</param>
-        public static Task RunScenarioActionsAsync<TContext>(this IBddRunner<TContext> runner,params Expression<Action<TContext>>[] steps)
+        public static async Task RunScenarioActionsAsync<TContext>(this IBddRunner<TContext> runner,params Expression<Action<TContext>>[] steps)
         {
-            return Extended(runner).RunScenarioAsync(steps);
+            await Extended(runner).RunScenarioAsync(steps);
         }
         
 

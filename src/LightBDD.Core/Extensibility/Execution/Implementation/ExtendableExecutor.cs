@@ -21,12 +21,12 @@ namespace LightBDD.Core.Extensibility.Execution.Implementation
 
         public Task ExecuteScenarioAsync(IScenarioInfo scenario, Func<Task> scenarioInvocation)
         {
-            return new RecursiveExecutor<IScenarioInfo>(_scenarioExecutors, scenario, scenarioInvocation).Execute();
+            return new RecursiveExecutor<IScenarioInfo>(_scenarioExecutors, scenario, scenarioInvocation).ExecuteAsync();
         }
 
         public Task ExecuteStepAsync(IStep step, Func<Task> stepInvocation)
         {
-            return new RecursiveExecutor<IStep>(_stepExecutors, step, stepInvocation).Execute();
+            return new RecursiveExecutor<IStep>(_stepExecutors, step, stepInvocation).ExecuteAsync();
         }
 
         [DebuggerStepThrough]
@@ -45,11 +45,11 @@ namespace LightBDD.Core.Extensibility.Execution.Implementation
                 _index = 0;
             }
 
-            public Task Execute()
+            public Task ExecuteAsync()
             {
                 var index = _index++;
                 return index < _extensions.Length
-                    ? _extensions[index].Invoke(_target, Execute)
+                    ? _extensions[index].Invoke(_target, ExecuteAsync)
                     : _targetInvocation.Invoke();
             }
         }
