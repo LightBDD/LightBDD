@@ -24,7 +24,7 @@ namespace LightBDD.AcceptanceTests.Features
         public void FeatureSetup()
         {
             _driver = new ChromeDriver();
-            _driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromMilliseconds(250));
+            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(250);
         }
 
         [SetUp]

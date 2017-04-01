@@ -6,7 +6,7 @@ using LightBDD.Core.Metadata.Implementation;
 namespace LightBDD.Core.Extensibility.Implementation
 {
     [DebuggerStepThrough]
-    internal class StepParameter
+    internal class MethodArgument
     {
         private readonly Func<object, object> _valueEvaluator;
         private readonly Func<object, string> _valueFormatter;
@@ -14,7 +14,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         public bool IsEvaluated { get; private set; }
         public object Value { get; private set; }
 
-        public StepParameter(ParameterDescriptor descriptor, Func<object, string> valueFormatter)
+        public MethodArgument(ParameterDescriptor descriptor, Func<object, string> valueFormatter)
         {
             _valueFormatter = valueFormatter;
             RawName = descriptor.RawName;
