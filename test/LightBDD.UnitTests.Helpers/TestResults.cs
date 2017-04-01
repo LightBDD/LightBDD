@@ -78,6 +78,11 @@ namespace LightBDD.UnitTests.Helpers
 
         public static TestScenarioResult CreateScenarioResult(string name, string label, DateTimeOffset executionStart, TimeSpan executionTime, string[] categories, params TestStepResult[] steps)
         {
+            return CreateScenarioResult(CreateNameInfo(name), label, executionStart, executionTime, categories, steps);
+        }
+
+        public static TestScenarioResult CreateScenarioResult(TestNameInfo name, string label, DateTimeOffset executionStart, TimeSpan executionTime, string[] categories, params TestStepResult[] steps)
+        {
             return new TestScenarioResult
             {
                 Info = CreateScenarioInfo(name, label, categories),
@@ -88,19 +93,24 @@ namespace LightBDD.UnitTests.Helpers
             };
         }
 
-        private static TestScenarioInfo CreateScenarioInfo(string name, string label, string[] categories)
+        private static TestScenarioInfo CreateScenarioInfo(TestNameInfo name, string label, string[] categories)
         {
             return new TestScenarioInfo
             {
-                Name = CreateNameInfo(name),
+                Name = name,
                 Labels = label != null ? new[] { label } : new string[0],
                 Categories = categories ?? new string[0]
             };
         }
 
-        private static TestNameInfo CreateNameInfo(string name)
+        public static TestNameInfo CreateNameInfo(string name, string nameFormat = null, params string[] parameters)
         {
-            return new TestNameInfo { FormattedName = name };
+            return new TestNameInfo
+            {
+                FormattedName = name,
+                NameFormat = nameFormat ?? name,
+                Parameters = parameters.Select(CreateStepNameParameter).ToArray()
+            };
         }
 
         public static TestFeatureResult CreateFeatureResult(string name, string description, string label, params TestScenarioResult[] scenarios)

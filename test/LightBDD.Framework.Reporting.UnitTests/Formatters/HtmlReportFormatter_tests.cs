@@ -70,7 +70,7 @@ Step 2: Not implemented yet
 // Step 1: multiline
 comment
 // Step 1: comment 2
-Failed name2 (2s 157ms)[&#8734;link]
+Failed name2 ""arg1"" (2s 157ms)[&#8734;link]
 categoryB, categoryC
 Bypassed 1. step3 (2s 107ms)
 Failed 2. step4 (50ms)

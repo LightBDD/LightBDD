@@ -61,7 +61,7 @@ Feature: My feature [Label 1]
 				comment
 			Step 1: comment 2
 
-	Scenario: name2 - Failed (2s 157ms)
+	Scenario: name2 ""arg1"" - Failed (2s 157ms)
 		Categories: categoryB, categoryC
 		Step 1: step3 - Bypassed (2s 107ms)
 		Step 2: step4 - Failed (50ms)

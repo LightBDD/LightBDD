@@ -18,7 +18,7 @@ namespace LightBDD.Reporting.UnitTests.Formatters
                         .WithComments($"multiline{Environment.NewLine}comment", "comment 2"),
                     TestResults.CreateStepResult(2, "step2", ExecutionStatus.Ignored, _startDate.AddSeconds(3), new TimeSpan(0, 0, 0, 1, 100), "Not implemented yet")),
 
-                TestResults.CreateScenarioResult("name2", null, _startDate.AddSeconds(4), new TimeSpan(0, 0, 0, 2, 157), new[] { "categoryB", "categoryC" },
+                TestResults.CreateScenarioResult(TestResults.CreateNameInfo("name2 \"arg1\"", "name2 \"{0}\"","arg1"), null, _startDate.AddSeconds(4), new TimeSpan(0, 0, 0, 2, 157), new[] { "categoryB", "categoryC" },
                     TestResults.CreateStepResult(1, "step3", ExecutionStatus.Bypassed, _startDate.AddSeconds(5), new TimeSpan(0, 0, 0, 2, 107), "bypass reason"),
                     TestResults.CreateStepResult(2, "step4", ExecutionStatus.Failed, _startDate.AddSeconds(6), new TimeSpan(0, 0, 0, 0, 50),
                         $"  Expected: True{Environment.NewLine}  But was: False"),
