@@ -19,7 +19,7 @@ namespace LightBDD.Core.UnitTests
             var parameterInfo = ParameterInfoHelper.GetMethodParameter<double>(Step_with_parameter);
 
             var formatter = new TestMetadataProvider(new DefaultNameFormatter(), new StepTypeConfiguration(), new TestCultureInfoProvider(new CultureInfo(cultureInfo)))
-                .GetStepParameterFormatter(parameterInfo);
+                .GetParameterFormatter(parameterInfo);
 
             Assert.That(formatter.Invoke(parameter), Is.EqualTo(expectedFormattedParameter));
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
@@ -50,6 +51,47 @@ namespace LightBDD.Core.UnitTests.Extensibility
         }
 
         [Test]
+        public void GetScenarioName_should_capture_parameterless_scenario_name_from_descriptor()
+        {
+            var method = typeof(Feature_type).GetMethod(nameof(Feature_type.Some_method_without_arguments));
+            var scenarioName = _metadataProvider.GetScenarioName(new ScenarioDescriptor(method, new object[0]));
+
+            Assert.That(scenarioName.ToString(), Is.EqualTo("Some method without arguments"));
+            Assert.That(scenarioName.Parameters, Is.Empty);
+        }
+
+        [Test]
+        public void GetScenarioName_should_capture_parameterized_scenario_name_from_descriptor_honoring_parameter_formatters()
+        {
+            var method = typeof(Feature_type).GetMethod(nameof(Feature_type.Some_method_with_argument_arg1_and_arg2));
+            var scenarioName = _metadataProvider.GetScenarioName(new ScenarioDescriptor(method, new object[] { 5, "text" }));
+
+            Assert.That(scenarioName.NameFormat, Is.EqualTo("Some method with argument arg1 \"{0}\" and arg2 \"{1}\""));
+            Assert.That(scenarioName.ToString(), Is.EqualTo("Some method with argument arg1 \"--5--\" and arg2 \"text\""));
+            Assert.That(scenarioName.Parameters, Is.Not.Empty);
+
+            Assert.That(scenarioName.Parameters.Select(p => p.FormattedValue).ToArray(), Is.EqualTo(new[] { "--5--", "text" }));
+        }
+
+        [Test]
+        public void GetScenarioName_should_throw_if_multiple_parameter_formatters_are_declared_on_parameter()
+        {
+            var method = typeof(Feature_type).GetMethod(nameof(Feature_type.Some_step_with_incorrectly_formatted_argument));
+            var ex = Assert.Throws<InvalidOperationException>(() => _metadataProvider.GetScenarioName(new ScenarioDescriptor(method, new object[] { 5 })));
+            Assert.That(ex.Message, Is.EqualTo($"Unable to obtain scenario name for method Some_step_with_incorrectly_formatted_argument: Parameter can contain only one attribute ParameterFormatterAttribute. Parameter: argument, Detected attributes: {nameof(CustomFormatterAttribute)}, {nameof(FormatAttribute)}"));
+        }
+
+        [Test]
+        public void GetScenarioName_should_capture_parameterized_scenario_name_from_descriptor_allowing_unknown_arguments()
+        {
+            var method = typeof(Feature_type).GetMethod(nameof(Feature_type.Some_method_with_argument_arg1_and_arg2));
+            var scenarioName = _metadataProvider.GetScenarioName(new ScenarioDescriptor(method, null));
+
+            Assert.That(scenarioName.ToString(), Is.EqualTo("Some method with argument arg1 and arg2"));
+            Assert.That(scenarioName.Parameters, Is.Empty);
+        }
+
+        [Test]
         public void GetScenarioLabels_should_capture_scenario_labels_from_method()
         {
             var method = typeof(Feature_type).GetMethod(nameof(Feature_type.Some_method));
@@ -83,8 +125,8 @@ namespace LightBDD.Core.UnitTests.Extensibility
         {
             var parameter1 = ParameterInfoHelper.GetMethodParameter<int>(new Feature_type().Some_step_with_argument);
             var parameter2 = ParameterInfoHelper.GetMethodParameter<int>(new Feature_type().Some_step_with_formatted_argument);
-            var formatter1 = _metadataProvider.GetStepParameterFormatter(parameter1);
-            var formatter2 = _metadataProvider.GetStepParameterFormatter(parameter2);
+            var formatter1 = _metadataProvider.GetParameterFormatter(parameter1);
+            var formatter2 = _metadataProvider.GetParameterFormatter(parameter2);
 
             Assert.That(formatter1.Invoke(5), Is.EqualTo($"{5}"));
             Assert.That(formatter2.Invoke(3), Is.EqualTo($"--{3}--"));
@@ -94,7 +136,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         public void GetStepParameterFormatter_should_throw_if_multiple_parameter_formatters_are_declared_on_parameter()
         {
             var parameter = ParameterInfoHelper.GetMethodParameter<int>(new Feature_type().Some_step_with_incorrectly_formatted_argument);
-            var ex = Assert.Throws<InvalidOperationException>(() => _metadataProvider.GetStepParameterFormatter(parameter));
+            var ex = Assert.Throws<InvalidOperationException>(() => _metadataProvider.GetParameterFormatter(parameter));
             Assert.That(ex.Message, Is.EqualTo($"Parameter can contain only one attribute ParameterFormatterAttribute. Parameter: argument, Detected attributes: {nameof(CustomFormatterAttribute)}, {nameof(FormatAttribute)}"));
         }
 
@@ -104,6 +146,9 @@ namespace LightBDD.Core.UnitTests.Extensibility
             [Label("s1"), Label("s2")]
             [ScenarioCategory("c1"), ScenarioCategory("c2")]
             public void Some_method(int argument) { }
+
+            public void Some_method_without_arguments() { }
+            public void Some_method_with_argument_arg1_and_arg2([CustomFormatter]int arg1, string arg2) { }
 
             public void Some_step_with_argument(int argument) { }
             public void Some_step_with_formatted_argument([CustomFormatter]int argument) { }

@@ -19,7 +19,7 @@ namespace LightBDD.Core.Extensibility
     [DebuggerStepThrough]
     public abstract class CoreMetadataProvider : IMetadataProvider
     {
-        private readonly StepNameParser _stepNameParser;
+        private readonly NameParser _nameParser;
         private readonly StepTypeProcessor _stepTypeProcessor;
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace LightBDD.Core.Extensibility
 
             NameFormatter = nameFormatter;
             CultureInfoProvider = cultureInfoProvider;
-            _stepNameParser = new StepNameParser(nameFormatter);
+            _nameParser = new NameParser(nameFormatter);
             _stepTypeProcessor = new StepTypeProcessor(nameFormatter, stepTypeConfiguration);
         }
 
@@ -129,7 +129,7 @@ namespace LightBDD.Core.Extensibility
         /// <returns><see cref="IStepNameInfo"/> object.</returns>
         public IStepNameInfo GetStepName(StepDescriptor stepDescriptor, string previousStepTypeName)
         {
-            var formattedStepName = _stepNameParser.GetStepNameFormat(stepDescriptor.RawName, stepDescriptor.Parameters);
+            var formattedStepName = _nameParser.GetNameFormat(stepDescriptor.RawName, stepDescriptor.Parameters);
             return new StepNameInfo(
                 _stepTypeProcessor.GetStepTypeName(stepDescriptor.PredefinedStepType, ref formattedStepName, previousStepTypeName),
                 formattedStepName,
@@ -144,7 +144,19 @@ namespace LightBDD.Core.Extensibility
         /// <param name="parameterInfo"><see cref="ParameterInfo"/> object describing step or scenario method parameter.</param>
         /// <returns>Formatter function.</returns>
         /// <exception cref="InvalidOperationException">Throws when more than one <see cref="ParameterFormatterAttribute"/> is applied on <paramref name="parameterInfo"/>.</exception>
-        public Func<object, string> GetStepParameterFormatter(ParameterInfo parameterInfo)
+        [Obsolete]
+        public Func<object, string> GetStepParameterFormatter(ParameterInfo parameterInfo) => GetParameterFormatter(parameterInfo);
+
+        /// <summary>
+        /// Provides step parameter formatter function for provided <paramref name="parameterInfo"/>.
+        /// If <see cref="ParameterFormatterAttribute"/> is applied on <paramref name="parameterInfo"/>, it will be used to retrieve formatter function, otherwise the default one will be provided.
+        /// The returned formatter function uses <see cref="CultureInfoProvider"/> to format parameters.
+        /// </summary>
+        /// <param name="parameterInfo"><see cref="ParameterInfo"/> object describing step or scenario method parameter.</param>
+        /// <returns>Formatter function.</returns>
+        /// <exception cref="InvalidOperationException">Throws when more than one <see cref="ParameterFormatterAttribute"/> is applied on <paramref name="parameterInfo"/>.</exception>
+
+        public Func<object, string> GetParameterFormatter(ParameterInfo parameterInfo)
         {
             Func<object, string> defaultFormatter = value => string.Format(CultureInfoProvider.GetCultureInfo(), "{0}", value);
             var formatters = parameterInfo.GetCustomAttributes(typeof(ParameterFormatterAttribute), true)
@@ -157,6 +169,7 @@ namespace LightBDD.Core.Extensibility
                 ? value => formatters[0].Format(CultureInfoProvider.GetCultureInfo(), value)
                 : defaultFormatter;
         }
+
         /// <summary>
         /// Returns implementation specific scenario categories or empty collection if no categories are provided.
         /// </summary>
@@ -240,6 +253,37 @@ namespace LightBDD.Core.Extensibility
         {
             return ExtractAttributePropertyValue<IFeatureDescriptionAttribute>(featureType.GetTypeInfo(), a => a.Description)
                    ?? GetImplementationSpecificFeatureDescription(featureType);
+        }
+
+        /// <summary>
+        /// Provides currently executed scenario details, that later can be used to build scenario metadata.
+        /// This implementation uses <see cref="CaptureCurrentScenarioMethod"/> to provide method information and always returns <see cref="ScenarioDescriptor"/> without parameters.
+        /// </summary>
+        /// <returns><see cref="ScenarioDescriptor"/> object.</returns>
+        public virtual ScenarioDescriptor CaptureCurrentScenario()
+        {
+            return new ScenarioDescriptor(CaptureCurrentScenarioMethod(), null);
+        }
+
+        /// <summary>
+        /// Provides <see cref="INameInfo"/> object containing information about scenario name represented by <paramref name="scenarioDescriptor"/>.
+        /// </summary>
+        /// <param name="scenarioDescriptor">Scenario descriptor.</param>
+        /// <returns><see cref="INameInfo"/> object.</returns>
+        public INameInfo GetScenarioName(ScenarioDescriptor scenarioDescriptor)
+        {
+            try
+            {
+                var formattedStepName = _nameParser.GetNameFormat(scenarioDescriptor.MethodInfo.Name, scenarioDescriptor.Parameters);
+                var arguments = scenarioDescriptor.Parameters.Select(p => new MethodArgument(p, GetParameterFormatter(p.ParameterInfo))).ToArray();
+                return new NameInfo(
+                    formattedStepName,
+                    arguments.Select(p => p.FormatNameParameter()).ToArray());
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"Unable to obtain scenario name for method {scenarioDescriptor.MethodInfo.Name}: {e.Message}", e);
+            }
         }
     }
 }

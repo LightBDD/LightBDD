@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using LightBDD.Core.Results;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Basic;
+using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.XUnit2;
 using Xunit;
 using Xunit.Abstractions;
@@ -75,7 +76,7 @@ namespace LightBDD.Integration.XUnit2.UnitTests
         {
             Exception ex = Assert.Throws<InvalidOperationException>(() => Runner.RunScenario(Some_step));
             Assert.Equal(
-                "Unable to locate Scenario name. Please ensure that scenario is executed from method with [Scenario] attribute and test class deriving from FeatureFixture or with [FeatureFixture] attribute.",
+                "Unable to locate Scenario name. Please ensure that scenario is executed from method with [Scenario] attribute.",
                 ex.Message);
         }
 
@@ -101,6 +102,20 @@ namespace LightBDD.Integration.XUnit2.UnitTests
             Assert.Equal(
                     "Only steps being completed upon return can be run synchronously (all steps have to return completed task). Consider using Async scenario methods for async Task or async void steps.",
                     ex.Message);
+        }
+
+        [Scenario]
+        [InlineData("abc")]
+        [InlineData("def")]
+        public void Runner_should_support_parameterized_scenarios_with_value(string value)
+        {
+            Runner.RunScenario(_ => Step_with_parameter(value));
+        }
+
+        private void Step_with_parameter(string value)
+        {
+            Assert.NotNull(value);
+            Assert.Equal(3, value.Length);
         }
 
         private void Ignored_step()

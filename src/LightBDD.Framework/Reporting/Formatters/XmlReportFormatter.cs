@@ -56,7 +56,7 @@ namespace LightBDD.Framework.Reporting.Formatters
                 new XAttribute("Status", scenario.Status.ToString()),
                 new XAttribute("Name", scenario.Info.Name)
             };
-
+            objects.Add(ToXElement(scenario.Info.Name));
             objects.AddRange(scenario.Info.Labels.Select(label => new XElement("Label", new XAttribute("Name", label))));
 
             if (scenario.ExecutionTime != null)
@@ -100,11 +100,25 @@ namespace LightBDD.Framework.Reporting.Formatters
             if (stepName.StepTypeName != null)
                 objects.Add(new XAttribute("StepType", stepName.StepTypeName.Name));
             objects.Add(new XAttribute("Format", stepName.NameFormat));
-            objects.Add(stepName.Parameters.Select(p => new XElement("Parameter",
-                new XAttribute("IsEvaluated", p.IsEvaluated),
-                new XText(p.FormattedValue))).Cast<object>().ToArray());
+            objects.Add(stepName.Parameters.Select(ToXElement).Cast<object>().ToArray());
 
             return new XElement("StepName", objects);
+        }
+
+        private static XElement ToXElement(INameInfo name)
+        {
+            var objects = new List<object>();
+            objects.Add(new XAttribute("Format", name.NameFormat));
+            objects.Add(name.Parameters.Select(ToXElement).Cast<object>().ToArray());
+
+            return new XElement("Name", objects);
+        }
+
+        private static XElement ToXElement(INameParameterInfo p)
+        {
+            return new XElement("Parameter",
+                new XAttribute("IsEvaluated", p.IsEvaluated),
+                new XText(p.FormattedValue));
         }
 
         private static XElement ToSummaryXElement(IFeatureResult[] features)

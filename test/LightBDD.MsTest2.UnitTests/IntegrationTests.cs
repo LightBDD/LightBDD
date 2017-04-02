@@ -6,6 +6,7 @@ using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.MsTest2;
+using LightBDD.MsTest2.Implementation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.Integration.MsTest.UnitTests2
@@ -120,7 +121,7 @@ namespace LightBDD.Integration.MsTest.UnitTests2
         [Scenario]
         [DataRow("abc")]
         [DataRow("def")]
-        public void Runner_should_support_parameterized_scenarios(string value)
+        public void Runner_should_support_parameterized_scenarios_with_value(string value)
         {
             Runner.RunScenario(_ => Step_with_parameter(value));
         }

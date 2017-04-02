@@ -1,33 +1,14 @@
 ﻿using System;
-using System.Reflection;
-using LightBDD.XUnit2.Implementation;
 using Xunit.Sdk;
 
 namespace LightBDD.XUnit2
 {
     /// <summary>
     /// Attribute that should be applied to all test classes representing feature tests.
-    /// It is required for running LightBDD tests with XUnit testing framework.
+    /// For XUnit integration this attribute is meaningless and it is present for backward compatibility.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class FeatureFixtureAttribute : BeforeAfterTestAttribute
     {
-        /// <summary>
-        /// This method is called after the test method is executed.
-        /// </summary>
-        /// <param name="methodUnderTest">The method under test</param>
-        public override void After(MethodInfo methodUnderTest)
-        {
-            TestMethodInfoProvider.TestMethod = null;
-        }
-
-        /// <summary>
-        /// This method is called before the test method is executed.
-        /// </summary>
-        /// <param name="methodUnderTest">The method under test</param>
-        public override void Before(MethodInfo methodUnderTest)
-        {
-            TestMethodInfoProvider.TestMethod = methodUnderTest;
-        }
     }
 }

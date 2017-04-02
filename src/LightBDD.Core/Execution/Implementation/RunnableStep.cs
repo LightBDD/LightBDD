@@ -16,7 +16,7 @@ namespace LightBDD.Core.Execution.Implementation
     internal class RunnableStep : IStep
     {
         private readonly Func<object, object[], Task> _stepInvocation;
-        private readonly StepParameter[] _parameters;
+        private readonly MethodArgument[] _arguments;
         private readonly Func<Exception, ExecutionStatus> _exceptionToStatusMapper;
         private readonly IScenarioProgressNotifier _progressNotifier;
         private readonly ExtendableExecutor _extendableExecutor;
@@ -25,11 +25,11 @@ namespace LightBDD.Core.Execution.Implementation
         public IStepResult Result => _result;
         public IStepInfo Info => Result.Info;
 
-        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task> stepInvocation, StepParameter[] parameters, Func<Exception, ExecutionStatus> exceptionToStatusMapper, IScenarioProgressNotifier progressNotifier, ExtendableExecutor extendableExecutor, object scenarioContext)
+        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task> stepInvocation, MethodArgument[] arguments, Func<Exception, ExecutionStatus> exceptionToStatusMapper, IScenarioProgressNotifier progressNotifier, ExtendableExecutor extendableExecutor, object scenarioContext)
         {
             _result = new StepResult(stepInfo);
             _stepInvocation = stepInvocation;
-            _parameters = parameters;
+            _arguments = arguments;
             _exceptionToStatusMapper = exceptionToStatusMapper;
             _progressNotifier = progressNotifier;
             _extendableExecutor = extendableExecutor;
@@ -39,13 +39,13 @@ namespace LightBDD.Core.Execution.Implementation
 
         private void UpdateNameDetails()
         {
-            if (!_parameters.Any())
+            if (!_arguments.Any())
                 return;
 
-            _result.UpdateName(_parameters.Select(FormatStepParameter).ToArray());
+            _result.UpdateName(_arguments.Select(FormatStepParameter).ToArray());
         }
 
-        private INameParameterInfo FormatStepParameter(StepParameter p)
+        private INameParameterInfo FormatStepParameter(MethodArgument p)
         {
             try
             {
@@ -109,14 +109,14 @@ namespace LightBDD.Core.Execution.Implementation
 
         private void EvaluateParameters()
         {
-            foreach (var parameter in _parameters)
+            foreach (var parameter in _arguments)
                 parameter.Evaluate(_scenarioContext);
             UpdateNameDetails();
         }
 
         private object[] PrepareParameters()
         {
-            return _parameters.Select(p => p.Value).ToArray();
+            return _arguments.Select(p => p.Value).ToArray();
         }
 
         public void Comment(string comment)

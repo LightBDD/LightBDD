@@ -10,6 +10,7 @@ namespace LightBDD.XUnit2.Implementation.Customization
 {
     /// <summary>
     /// ScenarioTestRunner reimplements the TestRunner&lt;&gt; RunAsync() method, allowing to skip test programatically with IgnoreException.
+    /// It also captures scenario method details for metadata provider.
     /// </summary>
     internal class ScenarioTestRunner : XunitTestRunner
     {
@@ -80,6 +81,19 @@ namespace LightBDD.XUnit2.Implementation.Customization
                 CancellationTokenSource.Cancel();
 
             return runSummary;
+        }
+
+        protected override async Task<decimal> InvokeTestMethodAsync(ExceptionAggregator aggregator)
+        {
+            try
+            {
+                TestContextProvider.Initialize(TestMethod, TestMethodArguments);
+                return await base.InvokeTestMethodAsync(aggregator);
+            }
+            finally
+            {
+                TestContextProvider.Clear();
+            }
         }
     }
 }

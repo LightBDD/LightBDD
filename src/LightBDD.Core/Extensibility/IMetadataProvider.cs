@@ -21,13 +21,26 @@ namespace LightBDD.Core.Extensibility
         /// </summary>
         /// <returns><see cref="MethodBase"/> describing currently executed scenario method.</returns>
         /// <exception cref="InvalidOperationException">Thrown when called outside of scenario method.</exception>
+        [Obsolete("Use " + nameof(CaptureCurrentScenario) + "() instead.")]
         MethodBase CaptureCurrentScenarioMethod();
+        /// <summary>
+        /// Provides currently executed scenario details, that later can be used to build scenario metadata.
+        /// </summary>
+        /// <returns><see cref="ScenarioDescriptor"/> object.</returns>
+        ScenarioDescriptor CaptureCurrentScenario();
         /// <summary>
         /// Provides <see cref="INameInfo"/> object containing information about scenario name represented by <paramref name="scenarioMethod"/>.
         /// </summary>
         /// <param name="scenarioMethod">Scenario method.</param>
         /// <returns><see cref="INameInfo"/> object.</returns>
+        [Obsolete("Use " + nameof(GetScenarioName) + "(ScenarioDescriptor descriptor)")]
         INameInfo GetScenarioName(MethodBase scenarioMethod);
+        /// <summary>
+        /// Provides <see cref="INameInfo"/> object containing information about scenario name represented by <paramref name="scenarioDescriptor"/>.
+        /// </summary>
+        /// <param name="scenarioDescriptor">Scenario descriptor.</param>
+        /// <returns><see cref="INameInfo"/> object.</returns>
+        INameInfo GetScenarioName(ScenarioDescriptor scenarioDescriptor);
         /// <summary>
         /// Provides scenario labels for scenario represented by <paramref name="scenarioMethod"/>.
         /// </summary>
@@ -58,6 +71,13 @@ namespace LightBDD.Core.Extensibility
         /// </summary>
         /// <param name="parameterInfo"><see cref="ParameterInfo"/> object describing step or scenario method parameter.</param>
         /// <returns>Formatter function.</returns>
+        [Obsolete("Use " + nameof(GetParameterFormatter) + "() instead.")]
         Func<object, string> GetStepParameterFormatter(ParameterInfo parameterInfo);
+        /// <summary>
+        /// Provides parameter formatter function for provided <paramref name="parameterInfo"/>.
+        /// </summary>
+        /// <param name="parameterInfo"><see cref="ParameterInfo"/> object describing step or scenario method parameter.</param>
+        /// <returns>Formatter function.</returns>
+        Func<object, string> GetParameterFormatter(ParameterInfo parameterInfo);
     }
 }

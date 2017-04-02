@@ -12,14 +12,20 @@ namespace LightBDD.XUnit2.Implementation
     [DebuggerStepThrough]
     internal class XUnit2MetadataProvider : CoreMetadataProvider
     {
-        public XUnit2MetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration, ICultureInfoProvider cultureInfoProvider) 
+        public XUnit2MetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration, ICultureInfoProvider cultureInfoProvider)
             : base(nameFormatter, stepTypeConfiguration, cultureInfoProvider) { }
+
+        public override ScenarioDescriptor CaptureCurrentScenario()
+        {
+            var context = TestContextProvider.Current;
+            if (context?.TestMethod == null)
+                throw new InvalidOperationException("Unable to locate Scenario name. Please ensure that scenario is executed from method with [Scenario] attribute.");
+            return new ScenarioDescriptor(context.TestMethod, context.TestMethodArguments);
+        }
+
         public override MethodBase CaptureCurrentScenarioMethod()
         {
-            var scenarioMethod = TestMethodInfoProvider.TestMethod;
-            if (scenarioMethod == null || !scenarioMethod.GetCustomAttributes<ScenarioAttribute>().Any())
-                throw new InvalidOperationException("Unable to locate Scenario name. Please ensure that scenario is executed from method with [Scenario] attribute and test class deriving from FeatureFixture or with [FeatureFixture] attribute.");
-            return scenarioMethod;
+            return CaptureCurrentScenario().MethodInfo;
         }
 
         protected override IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member)

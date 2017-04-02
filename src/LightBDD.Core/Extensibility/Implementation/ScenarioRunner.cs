@@ -44,11 +44,10 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         public IScenarioRunner WithCapturedScenarioDetails()
         {
-            var methodInfo = _metadataProvider.CaptureCurrentScenarioMethod();
-
-            return WithName(_metadataProvider.GetScenarioName(methodInfo))
-                .WithLabels(_metadataProvider.GetScenarioLabels(methodInfo))
-                .WithCategories(_metadataProvider.GetScenarioCategories(methodInfo));
+            var scenario = _metadataProvider.CaptureCurrentScenario();
+            return WithName(_metadataProvider.GetScenarioName(scenario))
+                .WithLabels(_metadataProvider.GetScenarioLabels(scenario.MethodInfo))
+                .WithCategories(_metadataProvider.GetScenarioCategories(scenario.MethodInfo));
         }
 
         public IScenarioRunner WithName(string name)
@@ -133,8 +132,8 @@ namespace LightBDD.Core.Extensibility.Implementation
         private RunnableStep ToRunnableStep(StepDescriptor descriptor, int stepIndex, int totalStepsCount, string previousStepTypeName, ExtendableExecutor extendableExecutor, object scenarioContext)
         {
             var stepInfo = new StepInfo(_metadataProvider.GetStepName(descriptor, previousStepTypeName), stepIndex + 1, totalStepsCount);
-            var parameters = descriptor.Parameters.Select(p => new StepParameter(p, _metadataProvider.GetStepParameterFormatter(p.ParameterInfo))).ToArray();
-            return new RunnableStep(stepInfo, descriptor.StepInvocation, parameters, _exceptionToStatusMapper, _progressNotifier, extendableExecutor, scenarioContext);
+            var arguments = descriptor.Parameters.Select(p => new MethodArgument(p, _metadataProvider.GetParameterFormatter(p.ParameterInfo))).ToArray();
+            return new RunnableStep(stepInfo, descriptor.StepInvocation, arguments, _exceptionToStatusMapper, _progressNotifier, extendableExecutor, scenarioContext);
         }
 
         private static object ProvideNoContext()

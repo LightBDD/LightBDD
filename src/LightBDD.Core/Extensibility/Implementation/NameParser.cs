@@ -7,16 +7,16 @@ using LightBDD.Core.Formatting;
 namespace LightBDD.Core.Extensibility.Implementation
 {
     [DebuggerStepThrough]
-    internal class StepNameParser
+    internal class NameParser
     {
         private readonly INameFormatter _nameFormatter;
 
-        public StepNameParser(INameFormatter nameFormatter)
+        public NameParser(INameFormatter nameFormatter)
         {
             _nameFormatter = nameFormatter;
         }
 
-        public string GetStepNameFormat(string stepRawName, ParameterDescriptor[] stepParameters)
+        public string GetNameFormat(string stepRawName, ParameterDescriptor[] stepParameters)
         {
             var name = _nameFormatter.FormatName(stepRawName);
             var sb = new StringBuilder();
@@ -42,11 +42,11 @@ namespace LightBDD.Core.Extensibility.Implementation
         {
             int position = FindArgument(stepName, parameterName.ToUpperInvariant(), StringComparison.Ordinal);
             if (position >= 0)
-                return new ArgumentReplacement(position, string.Format("\"{{{0}}}\"", argumentIndex), parameterName.Length);
+                return new ArgumentReplacement(position, $"\"{{{argumentIndex}}}\"", parameterName.Length);
             position = FindArgument(stepName, parameterName, StringComparison.OrdinalIgnoreCase);
             if (position >= 0)
-                return new ArgumentReplacement(position + parameterName.Length, string.Format(" \"{{{0}}}\"", argumentIndex), 0);
-            return new ArgumentReplacement(stepName.Length, string.Format(" [{0}: \"{{{1}}}\"]", parameterName, argumentIndex), 0);
+                return new ArgumentReplacement(position + parameterName.Length, $" \"{{{argumentIndex}}}\"", 0);
+            return new ArgumentReplacement(stepName.Length, $" [{parameterName}: \"{{{argumentIndex}}}\"]", 0);
         }
 
         private static int FindArgument(string name, string argument, StringComparison stringComparison)

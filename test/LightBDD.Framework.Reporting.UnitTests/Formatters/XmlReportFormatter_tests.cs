@@ -52,6 +52,7 @@ namespace LightBDD.Reporting.UnitTests.Formatters
     <Description>My feature
 long description</Description>
     <Scenario Status=""Ignored"" Name=""name"" ExecutionStart=""2014-09-23T19:21:58.055Z"" ExecutionTime=""PT1M2.1S"">
+      <Name Format=""name"" />
       <Label Name=""Label 2"" />
       <Category Name=""categoryA"" />
       <Step Status=""Passed"" Number=""1"" Name=""call step1 &quot;arg1&quot;"" ExecutionStart=""2014-09-23T19:21:59.055Z"" ExecutionTime=""PT1M1S"">
@@ -68,7 +69,10 @@ comment</Comment>
       </Step>
       <StatusDetails>Step 2: Not implemented yet</StatusDetails>
     </Scenario>
-    <Scenario Status=""Failed"" Name=""name2"" ExecutionStart=""2014-09-23T19:22:01.055Z"" ExecutionTime=""PT2.157S"">
+    <Scenario Status=""Failed"" Name=""name2 &quot;arg1&quot;"" ExecutionStart=""2014-09-23T19:22:01.055Z"" ExecutionTime=""PT2.157S"">
+      <Name Format=""name2 &quot;{0}&quot;"">
+        <Parameter IsEvaluated=""true"">arg1</Parameter>
+      </Name>
       <Category Name=""categoryB"" />
       <Category Name=""categoryC"" />
       <Step Status=""Bypassed"" Number=""1"" Name=""step3"" ExecutionStart=""2014-09-23T19:22:02.055Z"" ExecutionTime=""PT2.107S"">
@@ -109,6 +113,7 @@ Step 2: Expected: True
   </Summary>
   <Feature Name=""My feature"">
     <Scenario Status=""Ignored"" Name=""name"" ExecutionStart=""2014-09-23T19:21:58.055Z"" ExecutionTime=""PT0.025S"">
+      <Name Format=""name"" />
       <Step Status=""Passed"" Number=""1"" Name=""step1"" ExecutionStart=""2014-09-23T19:21:59.055Z"" ExecutionTime=""PT0.02S"">
         <StepName Format=""step1"" />
       </Step>
@@ -138,6 +143,7 @@ Step 2: Expected: True
   </Summary>
   <Feature Name=""My feature"">
     <Scenario Status=""Passed"" Name=""scenario1"" ExecutionStart=""2014-09-23T19:21:58.055Z"" ExecutionTime=""PT0.02S"">
+      <Name Format=""scenario1"" />
       <Category Name=""categoryA"" />
       <Step Status=""Passed"" Number=""1"" Name=""step1"" ExecutionStart=""2014-09-23T19:21:59.055Z"" ExecutionTime=""PT0.02S"">
         <StepName Format=""step1"" />
@@ -146,6 +152,7 @@ Step 2: Expected: True
   </Feature>
   <Feature Name=""My feature2"">
     <Scenario Status=""Passed"" Name=""scenario1"" ExecutionStart=""2014-09-23T19:22:01.055Z"" ExecutionTime=""PT0.02S"">
+      <Name Format=""scenario1"" />
       <Category Name=""categoryB"" />
       <Step Status=""Passed"" Number=""1"" Name=""step1"" ExecutionStart=""2014-09-23T19:22:02.055Z"" ExecutionTime=""PT0.02S"">
         <StepName Format=""step1"" />
