@@ -1,6 +1,10 @@
 LightBDD
 ===========================================
 
+Version 2.1.0.1 (VSIX only)
+----------------------------------------
++ Updated VSIX to include Pro and Enterprise versions, VisualStudio 2012, 2013 and 2015 (including VS2012 Premium)
+
 Version 2.1.0
 ----------------------------------------
 Summary:
