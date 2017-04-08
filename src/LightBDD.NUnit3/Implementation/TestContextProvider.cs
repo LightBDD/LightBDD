@@ -1,6 +1,5 @@
 using System.IO;
 using System.Reflection;
-using System.Threading;
 using LightBDD.Framework.ExecutionContext;
 
 namespace LightBDD.NUnit3.Implementation

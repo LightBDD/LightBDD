@@ -19,3 +19,6 @@ TestResult.xml
 templates/**/lightbdd.ico
 templates/**/lightbdd_small.ico
 deps/
+AppPackages
+*.nuget.props
+*.nuget.targets

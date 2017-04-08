@@ -1,5 +1,4 @@
 using System.Reflection;
-using System.Threading;
 using LightBDD.Framework.ExecutionContext;
 
 namespace LightBDD.MsTest2.Implementation

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility.Execution;

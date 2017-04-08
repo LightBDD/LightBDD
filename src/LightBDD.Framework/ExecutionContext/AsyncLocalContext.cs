@@ -1,7 +1,8 @@
-﻿using System;
-using System.Threading;
-#if NET45
+﻿#if NET45
+using System;
 using System.Runtime.Remoting.Messaging;
+#else
+using System.Threading;
 #endif
 
 namespace LightBDD.Framework.ExecutionContext

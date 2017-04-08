@@ -6,7 +6,6 @@ using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.MsTest2;
-using LightBDD.MsTest2.Implementation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.Integration.MsTest.UnitTests2

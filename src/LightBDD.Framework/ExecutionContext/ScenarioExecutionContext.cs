@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Threading;
 using LightBDD.Core.Configuration;
 using LightBDD.Framework.ExecutionContext.Configuration;
 
