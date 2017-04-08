@@ -20,7 +20,7 @@ namespace LightBDD.XUnit2.Implementation
 
         public XUnit2FeatureCoordinator(LightBddConfiguration configuration) : base(
             new XUnit2FeatureRunnerRepository(configuration),
-            new FeatureReportGenerator(configuration.ReportWritersConfiguration().ToArray()))
+            new FeatureReportGenerator(configuration.ReportWritersConfiguration().ToArray()), configuration)
         {
         }
 

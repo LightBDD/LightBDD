@@ -61,5 +61,15 @@ namespace LightBDD.Core.Configuration
             RepeatedStepReplacement = replacement;
             return this;
         }
+
+        public StepTypeConfiguration UpdateUseLambdaNameAsStepType(Func<string, bool> useLambdaNameAsStepTypeFunction)
+        {
+            if (useLambdaNameAsStepTypeFunction == null)
+                throw new ArgumentNullException(nameof(useLambdaNameAsStepTypeFunction));
+            UseLambdaNameAsStepType = useLambdaNameAsStepTypeFunction;
+            return this;
+        }
+
+        public Func<string, bool> UseLambdaNameAsStepType { get; private set; } = name => name?.Length > 1;
     }
 }

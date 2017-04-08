@@ -4,7 +4,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
+using LightBDD.Framework.ExecutionContext;
 using LightBDD.Framework.Extensibility;
 
 namespace LightBDD.Framework.Scenarios.Extended.Implementation
@@ -58,9 +60,9 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
 
         private static string GetStepTypeName(ParameterExpression contextParameter)
         {
-            return contextParameter.Name == "_"
-                ? null
-                : contextParameter.Name;
+            return LightBddContext.Configuration.Get<StepTypeConfiguration>().UseLambdaNameAsStepType(contextParameter.Name)
+                ? contextParameter.Name
+                : null;
         }
 
         private ParameterDescriptor[] ProcessArguments(MethodCallExpression methodExpression, ParameterExpression contextParameter)
@@ -97,7 +99,7 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
             var function = Expression.Lambda<Func<TContext, object>>(Expression.Convert(argumentExpression, typeof(object)), contextParameter).Compile();
 
             var targetParam = Expression.Parameter(typeof(object), "target");
-            var genericStepArgFunction = Expression.Lambda<Func<object, object>>(Expression.Invoke(Expression.Constant(function), Expression.Convert(targetParam, contextParameter.Type)),targetParam)
+            var genericStepArgFunction = Expression.Lambda<Func<object, object>>(Expression.Invoke(Expression.Constant(function), Expression.Convert(targetParam, contextParameter.Type)), targetParam)
                 .Compile();
 
             return ParameterDescriptor.FromInvocation(parameterInfo, genericStepArgFunction);

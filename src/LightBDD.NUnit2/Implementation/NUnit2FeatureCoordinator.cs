@@ -20,7 +20,7 @@ namespace LightBDD.NUnit2.Implementation
 
         public NUnit2FeatureCoordinator(LightBddConfiguration configuration) : base(
             new NUnit2FeatureRunnerRepository(configuration),
-            new FeatureReportGenerator(configuration.ReportWritersConfiguration().ToArray()))
+            new FeatureReportGenerator(configuration.ReportWritersConfiguration().ToArray()), configuration)
         {
         }
 
