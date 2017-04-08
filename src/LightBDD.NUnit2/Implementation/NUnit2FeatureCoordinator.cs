@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution.Coordination;
-using LightBDD.Core.Extensibility;
 using LightBDD.Core.Reporting;
 using LightBDD.Framework.Reporting.Configuration;
 
@@ -19,13 +18,15 @@ namespace LightBDD.NUnit2.Implementation
             return Instance;
         }
 
-        public NUnit2FeatureCoordinator(FeatureRunnerRepository runnerRepository, IFeatureAggregator featureAggregator) : base(runnerRepository, featureAggregator)
+        public NUnit2FeatureCoordinator(LightBddConfiguration configuration) : base(
+            new NUnit2FeatureRunnerRepository(configuration),
+            new FeatureReportGenerator(configuration.ReportWritersConfiguration().ToArray()))
         {
         }
 
         internal static void InstallSelf(LightBddConfiguration configuration)
         {
-            Install(new NUnit2FeatureCoordinator(new NUnit2FeatureRunnerRepository(configuration), new FeatureReportGenerator(configuration.ReportWritersConfiguration().ToArray())));
+            Install(new NUnit2FeatureCoordinator(configuration));
         }
     }
 }

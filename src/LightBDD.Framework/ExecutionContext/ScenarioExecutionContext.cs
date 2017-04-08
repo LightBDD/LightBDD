@@ -8,7 +8,7 @@ using LightBDD.Framework.ExecutionContext.Configuration;
 namespace LightBDD.Framework.ExecutionContext
 {
     /// <summary>
-    /// Scenario execution context class allowing to store and retrieve scenario properties that would be available for all tasks executed within the scenario.
+    /// Scenario execution context class allowing to store and retrieve scenario properties that would be available for all steps and tasks executed within the scenario.
     /// 
     /// <para>This feature has to be enabled in <see cref="LightBddConfiguration"/> via <see cref="ScenarioExecutionContextConfigurationExtensions.EnableScenarioExecutionContext"/>() prior to usage.</para>
     /// </summary>
