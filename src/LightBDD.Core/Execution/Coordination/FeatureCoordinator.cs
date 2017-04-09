@@ -24,6 +24,9 @@ namespace LightBDD.Core.Execution.Coordination
         /// </summary>
         public bool IsDisposed { get; private set; }
 
+        /// <summary>
+        /// Returns configuration used for LightBDD tests.
+        /// </summary>
         public LightBddConfiguration Configuration { get; }
 
         /// <summary>
@@ -51,7 +54,7 @@ namespace LightBDD.Core.Execution.Coordination
         {
             _featureAggregator = featureAggregator;
             RunnerRepository = runnerRepository;
-            Configuration = configuration;
+            Configuration = configuration.Seal();
         }
 
         /// <summary>

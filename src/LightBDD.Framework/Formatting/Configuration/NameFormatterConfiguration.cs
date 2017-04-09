@@ -7,7 +7,7 @@ namespace LightBDD.Framework.Formatting.Configuration
     /// <summary>
     /// Configuration class allowing to customize name formatting behavior.
     /// </summary>
-    public class NameFormatterConfiguration : IFeatureConfiguration
+    public class NameFormatterConfiguration : FeatureConfiguration
     {
         /// <summary>
         /// Returns formatter.
@@ -23,6 +23,7 @@ namespace LightBDD.Framework.Formatting.Configuration
         /// <exception cref="ArgumentNullException">Throws when <paramref name="formatter"/> is null.</exception>
         public NameFormatterConfiguration UpdateFormatter(INameFormatter formatter)
         {
+            ThrowIfSealed();
             if (formatter == null)
                 throw new ArgumentNullException(nameof(formatter));
             Formatter = formatter;

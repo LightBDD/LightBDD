@@ -7,7 +7,7 @@ namespace LightBDD.Core.Configuration
     /// <summary>
     /// Step type configuration allowing to define step types recognized by LightBDD.
     /// </summary>
-    public class StepTypeConfiguration : IFeatureConfiguration
+    public class StepTypeConfiguration : FeatureConfiguration
     {
         /// <summary>
         /// Default repeated step replacement: and
@@ -45,6 +45,7 @@ namespace LightBDD.Core.Configuration
         /// <returns>Self.</returns>
         public StepTypeConfiguration UpdatePredefinedStepTypes(params string[] stepTypes)
         {
+            ThrowIfSealed();
             if (stepTypes == null)
                 throw new ArgumentNullException(nameof(stepTypes));
             PredefinedStepTypes = stepTypes;
@@ -58,12 +59,14 @@ namespace LightBDD.Core.Configuration
         /// <returns>Self.</returns>
         public StepTypeConfiguration UpdateRepeatedStepReplacement(string replacement)
         {
+            ThrowIfSealed();
             RepeatedStepReplacement = replacement;
             return this;
         }
 
         public StepTypeConfiguration UpdateUseLambdaNameAsStepType(Func<string, bool> useLambdaNameAsStepTypeFunction)
         {
+            ThrowIfSealed();
             if (useLambdaNameAsStepTypeFunction == null)
                 throw new ArgumentNullException(nameof(useLambdaNameAsStepTypeFunction));
             UseLambdaNameAsStepType = useLambdaNameAsStepTypeFunction;

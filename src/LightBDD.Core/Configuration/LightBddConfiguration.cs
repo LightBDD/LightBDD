@@ -18,7 +18,35 @@ namespace LightBDD.Core.Configuration
         /// <returns>Feature configuration instance.</returns>
         public TConfiguration Get<TConfiguration>() where TConfiguration : IFeatureConfiguration, new()
         {
-            return (TConfiguration)_configuration.GetOrAdd(typeof(TConfiguration), t => new TConfiguration());
+            return SealIfNeeded((TConfiguration)_configuration.GetOrAdd(typeof(TConfiguration), t => new TConfiguration()));
         }
+
+        private TConfiguration SealIfNeeded<TConfiguration>(TConfiguration config) where TConfiguration : IFeatureConfiguration
+        {
+            if (IsSealed)
+                (config as ISealableFeatureConfiguration)?.Seal();
+            return config;
+        }
+
+        /// <summary>
+        /// Seals configuration making it immutable.
+        /// It calls <see cref="ISealableFeatureConfiguration.Seal"/>() method on all configuration items that implements the <see cref="ISealableFeatureConfiguration"/> interface.
+        /// Since this call, the <see cref="Get{TConfiguration}"/>() method will return only sealed configuration (current, and future default one).
+        /// </summary>
+        /// <returns>Self.</returns>
+        public LightBddConfiguration Seal()
+        {
+            if (IsSealed)
+                return this;
+            IsSealed = true;
+            foreach (var value in _configuration.Values)
+                SealIfNeeded(value);
+            return this;
+        }
+
+        /// <summary>
+        /// Returns true if configuration is sealed.
+        /// </summary>
+        public bool IsSealed { get; private set; }
     }
 }
