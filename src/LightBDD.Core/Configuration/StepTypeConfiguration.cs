@@ -64,6 +64,12 @@ namespace LightBDD.Core.Configuration
             return this;
         }
 
+        /// <summary>
+        /// Updates <see cref="UseLambdaNameAsStepType"/> with new function.
+        /// </summary>
+        /// <param name="useLambdaNameAsStepTypeFunction">Function to use.</param>
+        /// <returns>Self.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="useLambdaNameAsStepTypeFunction"/> is null.</exception>
         public StepTypeConfiguration UpdateUseLambdaNameAsStepType(Func<string, bool> useLambdaNameAsStepTypeFunction)
         {
             ThrowIfSealed();
@@ -73,6 +79,10 @@ namespace LightBDD.Core.Configuration
             return this;
         }
 
+        /// <summary>
+        /// Function defining if given lambda parameter name should be used as step type.
+        /// By default any name with length longer than 1 character will be treated as a valid step type while names with 1 character will not.
+        /// </summary>
         public Func<string, bool> UseLambdaNameAsStepType { get; private set; } = name => name?.Length > 1;
     }
 }

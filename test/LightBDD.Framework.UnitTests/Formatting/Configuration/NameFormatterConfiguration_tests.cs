@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Formatting;
 using LightBDD.Framework.Formatting;
 using LightBDD.Framework.Formatting.Configuration;
@@ -28,6 +30,16 @@ namespace LightBDD.Framework.UnitTests.Formatting.Configuration
             var nameFormatter = Mock.Of<INameFormatter>();
             var config = new NameFormatterConfiguration().UpdateFormatter(nameFormatter);
             Assert.That(config.Formatter, Is.SameAs(nameFormatter));
+        }
+
+        [Test]
+        public void Configuration_should_be_sealable()
+        {
+            var lighbddConfig = new LightBddConfiguration();
+            var cfg = lighbddConfig.Get<NameFormatterConfiguration>();
+            lighbddConfig.Seal();
+
+            Assert.Throws<InvalidOperationException>(() => cfg.UpdateFormatter(Mock.Of<INameFormatter>()));
         }
     }
 }

@@ -1,7 +1,9 @@
 using System;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Notification;
 using LightBDD.Framework.Notification;
 using LightBDD.Framework.Notification.Configuration;
+using Moq;
 using NUnit.Framework;
 
 namespace LightBDD.Framework.UnitTests.Notification.Configuration
@@ -60,6 +62,16 @@ namespace LightBDD.Framework.UnitTests.Notification.Configuration
             var configuration = new ScenarioProgressNotifierConfiguration().UpdateNotifierProvider<ScenarioProgressNotifierConfiguration_tests>(fixture => NoProgressNotifier.Default);
 
             Assert.Throws<ArgumentNullException>(() => configuration.NotifierProvider(null));
+        }
+
+        [Test]
+        public void Configuration_should_be_sealable()
+        {
+            var lighbddConfig = new LightBddConfiguration();
+            var cfg = lighbddConfig.Get<ScenarioProgressNotifierConfiguration>();
+            lighbddConfig.Seal();
+
+            Assert.Throws<InvalidOperationException>(() => cfg.UpdateNotifierProvider(Mock.Of<IScenarioProgressNotifier>));
         }
     }
 }
