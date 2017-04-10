@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Scenarios.Extended.Implementation;
 
 namespace LightBDD.Framework.Scenarios.Extended
@@ -220,15 +221,15 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// <remarks>This is an asynchronous method and should be awaited.</remarks>
         /// <param name="runner">Runner.</param>
         /// <param name="steps">List of steps to execute in order.</param>
-        public static async Task RunScenarioActionsAsync<TContext>(this IBddRunner<TContext> runner,params Expression<Action<TContext>>[] steps)
+        public static async Task RunScenarioActionsAsync<TContext>(this IBddRunner<TContext> runner, params Expression<Action<TContext>>[] steps)
         {
             await Extended(runner).RunScenarioAsync(steps);
         }
-        
+
 
         private static ExtendedScenarioRunner<TContext> Extended<TContext>(this IBddRunner<TContext> runner)
         {
-            return new ExtendedScenarioRunner<TContext>(runner);
+            return runner.Integrate().Enrich(ExtendedScenarioRunner<TContext>.Create);
         }
     }
 }

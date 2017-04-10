@@ -17,9 +17,28 @@ namespace LightBDD.Framework.Scenarios.Contextual.Implementation
             _coreRunner = inner.Integrate();
         }
 
-        public IScenarioRunner NewScenario()
+        public IScenarioRunner NewScenario() => _coreRunner.NewScenario().WithContext(_contextProvider);
+        public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, IIntegrationContext, TEnrichedRunner> runnerFactory)
         {
-            return _coreRunner.NewScenario().WithContext(_contextProvider);
+            return _coreRunner.Enrich(new ContextualRunnerEnricher<TEnrichedRunner>(this, runnerFactory).Enrich);
+        }
+
+        [DebuggerStepThrough]
+        private class ContextualRunnerEnricher<TRunner>
+        {
+            private readonly IFeatureFixtureRunner _contextualRunner;
+            private readonly Func<IFeatureFixtureRunner, IIntegrationContext, TRunner> _runnerFactory;
+
+            public ContextualRunnerEnricher(IFeatureFixtureRunner contextualRunner, Func<IFeatureFixtureRunner, IIntegrationContext, TRunner> runnerFactory)
+            {
+                _contextualRunner = contextualRunner;
+                _runnerFactory = runnerFactory;
+            }
+
+            public TRunner Enrich(IFeatureFixtureRunner _, IIntegrationContext ctx)
+            {
+                return _runnerFactory(_contextualRunner, ctx);
+            }
         }
     }
 }

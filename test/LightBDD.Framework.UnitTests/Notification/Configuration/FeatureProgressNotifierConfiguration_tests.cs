@@ -1,6 +1,5 @@
 using System;
 using LightBDD.Core.Configuration;
-using LightBDD.Core.Formatting;
 using LightBDD.Core.Notification;
 using LightBDD.Framework.Notification;
 using LightBDD.Framework.Notification.Configuration;

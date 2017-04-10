@@ -2,9 +2,7 @@
 using System.IO;
 using System.Linq;
 using LightBDD.Core.Configuration;
-using LightBDD.Core.Formatting;
 using LightBDD.Core.Reporting;
-using LightBDD.Framework.Formatting.Configuration;
 using LightBDD.Framework.Reporting;
 using LightBDD.Framework.Reporting.Configuration;
 using LightBDD.Framework.Reporting.Formatters;

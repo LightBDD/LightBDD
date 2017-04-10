@@ -20,7 +20,7 @@ namespace LightBDD.MsTest2.Implementation
 
         public MsTest2FeatureCoordinator(LightBddConfiguration configuration) : base(
             new MsTest2FeatureRunnerRepository(configuration),
-            new FeatureReportGenerator(configuration.ReportWritersConfiguration().ToArray()), configuration)
+            new FeatureReportGenerator(configuration.ReportWritersConfiguration().ToArray()))
         {
         }
 

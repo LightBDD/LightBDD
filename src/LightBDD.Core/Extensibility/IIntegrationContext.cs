@@ -1,4 +1,5 @@
 using System;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Notification;
@@ -36,5 +37,9 @@ namespace LightBDD.Core.Extensibility
         /// Returns LightBDD execution extensions.
         /// </summary>
         IExecutionExtensions ExecutionExtensions { get; }
+        /// <summary>
+        /// Returns LightBDD Configuration.
+        /// </summary>
+        LightBddConfiguration Configuration { get; }
     }
 }

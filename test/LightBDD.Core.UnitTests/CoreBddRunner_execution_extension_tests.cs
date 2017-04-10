@@ -25,7 +25,7 @@ namespace LightBDD.Core.UnitTests
                 .Setup(e => e.ExecuteAsync(It.IsAny<IScenarioInfo>(), It.IsAny<Func<Task>>()))
                 .Returns((IScenarioInfo info, Func<Task> inner) => inner());
 
-            var featureRunner = CreateRunner(new ExecutionExtensionsConfiguration().EnableScenarioExtension(() => mockExtension.Object));
+            var featureRunner = CreateRunner(cfg => cfg.ExecutionExtensionsConfiguration().EnableScenarioExtension(() => mockExtension.Object));
             var runner = featureRunner.GetBddRunner(this);
 
             runner
@@ -36,6 +36,18 @@ namespace LightBDD.Core.UnitTests
             Assert.That(scenarios.Length, Is.EqualTo(1));
 
             mockExtension.Verify(e => e.ExecuteAsync(scenarios[0].Info, It.IsAny<Func<Task>>()), Times.Once);
+        }
+
+        class MockStepExecutionExtension : IStepExecutionExtension
+        {
+            private readonly Mock<IStepExecutionExtension> _mock;
+
+            public MockStepExecutionExtension(Mock<IStepExecutionExtension> mock)
+            {
+                _mock = mock;
+            }
+
+            public Task ExecuteAsync(IStep step, Func<Task> stepInvocation) => _mock.Object.ExecuteAsync(step, stepInvocation);
         }
 
         [Test]
@@ -50,7 +62,7 @@ namespace LightBDD.Core.UnitTests
                     return inner();
                 });
 
-            var featureRunner = CreateRunner(new ExecutionExtensionsConfiguration().EnableStepExtension(() => mockExtension.Object));
+            var featureRunner = CreateRunner(cfg => cfg.ExecutionExtensionsConfiguration().EnableStepExtension(() => new MockStepExecutionExtension(mockExtension)));
             var runner = featureRunner.GetBddRunner(this);
 
             runner
@@ -70,9 +82,9 @@ namespace LightBDD.Core.UnitTests
             Assert.That(steps[2].Comments, Is.EquivalentTo(new[] { "THEN step three" }));
         }
 
-        private IFeatureRunner CreateRunner(IExecutionExtensions extensions)
+        private IFeatureRunner CreateRunner(Action<LightBddConfiguration> cfg)
         {
-            return new TestableFeatureRunnerRepository(TestableIntegrationContextBuilder.Default().WithExecutionExtensions(extensions)).GetRunnerFor(GetType());
+            return new TestableFeatureRunnerRepository(TestableIntegrationContextBuilder.Default().WithConfiguration(cfg)).GetRunnerFor(GetType());
         }
     }
 

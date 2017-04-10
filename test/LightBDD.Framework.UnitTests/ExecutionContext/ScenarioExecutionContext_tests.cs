@@ -112,7 +112,7 @@ namespace LightBDD.Framework.UnitTests.ExecutionContext
         {
             return new TestableFeatureRunnerRepository(TestableIntegrationContextBuilder
                     .Default()
-                    .WithExecutionExtensions(new ExecutionExtensionsConfiguration().EnableScenarioExecutionContext()))
+                    .WithConfiguration(cfg => cfg.ExecutionExtensionsConfiguration().EnableScenarioExecutionContext()))
                 .GetRunnerFor(GetType())
                 .GetBddRunner(this);
         }

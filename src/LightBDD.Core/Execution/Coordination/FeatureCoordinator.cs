@@ -1,5 +1,4 @@
 ﻿using System;
-using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Core.Execution.Coordination
@@ -25,11 +24,6 @@ namespace LightBDD.Core.Execution.Coordination
         public bool IsDisposed { get; private set; }
 
         /// <summary>
-        /// Returns configuration used for LightBDD tests.
-        /// </summary>
-        public LightBddConfiguration Configuration { get; }
-
-        /// <summary>
         /// Installs the specified feature coordinator in thread safe manner.
         /// </summary>
         /// <param name="coordinator">Coordinator instance to install.</param>
@@ -49,12 +43,10 @@ namespace LightBDD.Core.Execution.Coordination
         /// </summary>
         /// <param name="runnerRepository">Runner factory instance that would be used for instantiating runners.</param>
         /// <param name="featureAggregator">Feature aggregator instance used for aggregating feature results on coordinator disposal.</param>
-        /// <param name="configuration">LightBDD configuration.</param>
-        protected FeatureCoordinator(FeatureRunnerRepository runnerRepository, IFeatureAggregator featureAggregator, LightBddConfiguration configuration)
+        protected FeatureCoordinator(FeatureRunnerRepository runnerRepository, IFeatureAggregator featureAggregator)
         {
             _featureAggregator = featureAggregator;
             RunnerRepository = runnerRepository;
-            Configuration = configuration.Seal();
         }
 
         /// <summary>

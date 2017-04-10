@@ -1,29 +1,21 @@
 ﻿using System;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
-using LightBDD.Core.Extensibility.Execution;
-using LightBDD.Core.Formatting;
-using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
+using LightBDD.Framework.Extensibility;
 
 namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
-    internal class TestableIntegrationContext : IIntegrationContext
+    internal class TestableIntegrationContext : IntegrationContext
     {
-        public TestableIntegrationContext(INameFormatter nameFormatter, IMetadataProvider metadataProvider, Func<Exception, ExecutionStatus> exceptionToStatusMapper, IFeatureProgressNotifier featureProgressNotifier, Func<object, IScenarioProgressNotifier> scenarioProgressNotifierProvider, IExecutionExtensions executionExtensions)
+        private readonly Func<Exception, ExecutionStatus> _exceptionMapper;
+
+        public TestableIntegrationContext(LightBddConfiguration configuration, IMetadataProvider metadataProvider, Func<Exception, ExecutionStatus> exceptionMapper)
+            : base(configuration, metadataProvider)
         {
-            NameFormatter = nameFormatter;
-            MetadataProvider = metadataProvider;
-            ExceptionToStatusMapper = exceptionToStatusMapper;
-            FeatureProgressNotifier = featureProgressNotifier;
-            ScenarioProgressNotifierProvider = scenarioProgressNotifierProvider;
-            ExecutionExtensions = executionExtensions;
+            _exceptionMapper = exceptionMapper;
         }
 
-        public IMetadataProvider MetadataProvider { get; }
-        public INameFormatter NameFormatter { get; }
-        public Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
-        public IFeatureProgressNotifier FeatureProgressNotifier { get; }
-        public Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider { get; }
-        public IExecutionExtensions ExecutionExtensions { get; }
+        protected override ExecutionStatus MapExceptionToStatus(Exception exception) => _exceptionMapper(exception);
     }
 }

@@ -50,6 +50,11 @@ namespace LightBDD.Core.UnitTests.Extensibility
                 throw new NotImplementedException();
             }
 
+            public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, IIntegrationContext, TEnrichedRunner> runnerFactory)
+            {
+                throw new NotImplementedException();
+            }
+
             public IBddRunner AsBddRunner()
             {
                 throw new NotImplementedException();

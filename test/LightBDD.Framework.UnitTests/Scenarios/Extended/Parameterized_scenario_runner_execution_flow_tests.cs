@@ -17,7 +17,6 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
                 _ => Step_one(),
                 _ => Step_two());
 
-            MockRunner.Verify();
             MockScenarioRunner.Verify();
         }
 
@@ -30,7 +29,6 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
                 _ => Step_one_async(),
                 _ => Step_two_async());
 
-            MockRunner.Verify();
             MockScenarioRunner.Verify();
         }
     }

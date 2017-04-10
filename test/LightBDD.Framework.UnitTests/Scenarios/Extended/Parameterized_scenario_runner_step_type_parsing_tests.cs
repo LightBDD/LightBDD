@@ -20,7 +20,6 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
                 xx => Step_two()
                 );
 
-            MockRunner.Verify();
             MockScenarioRunner.Verify();
 
             Assert.That(CapturedSteps, Is.Not.Null);
@@ -44,7 +43,6 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
                 xx => Step_two_async()
                 );
 
-            MockRunner.Verify();
             MockScenarioRunner.Verify();
 
             Assert.That(CapturedSteps, Is.Not.Null);
