@@ -11,9 +11,9 @@ using LightBDD.Framework.Notification.Configuration;
 namespace LightBDD.Framework.Extensibility
 {
     /// <summary>
-    /// A default implementation of <see cref="IIntegrationContext"/>.
+    /// A default implementation of <see cref="IIntegrationContext"/> and <see cref="IConfigurationContext"/>.
     /// </summary>
-    public abstract class IntegrationContext : IIntegrationContext
+    public abstract class IntegrationContext : IIntegrationContext, IConfigurationContext
     {
         /// <summary>
         /// Returns metadata provider.
