@@ -6,7 +6,7 @@ using LightBDD.Framework.Extensibility;
 namespace LightBDD.Framework.Scenarios.Contextual.Implementation
 {
     [DebuggerStepThrough]
-    internal class ContextualBddRunner<TContext> : IBddRunner<TContext>, IFeatureFixtureRunner
+    internal class ContextualBddRunner<TContext> : IBddRunner<TContext>, IEnrichableFeatureFixtureRunner
     {
         private readonly IFeatureFixtureRunner _coreRunner;
         private readonly Func<object> _contextProvider;
@@ -20,7 +20,7 @@ namespace LightBDD.Framework.Scenarios.Contextual.Implementation
         public IScenarioRunner NewScenario() => _coreRunner.NewScenario().WithContext(_contextProvider);
         public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, IIntegrationContext, TEnrichedRunner> runnerFactory)
         {
-            return _coreRunner.Enrich(new ContextualRunnerEnricher<TEnrichedRunner>(this, runnerFactory).Enrich);
+            return _coreRunner.AsEnrichable().Enrich(new ContextualRunnerEnricher<TEnrichedRunner>(this, runnerFactory).Enrich);
         }
 
         [DebuggerStepThrough]

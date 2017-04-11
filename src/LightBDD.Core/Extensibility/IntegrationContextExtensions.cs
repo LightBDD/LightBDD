@@ -13,13 +13,14 @@ namespace LightBDD.Core.Extensibility
         /// </summary>
         /// <param name="context"><see cref="IIntegrationContext"/> instance.</param>
         /// <returns><see cref="LightBddConfiguration"/> instance.</returns>
+        /// <exception cref="NotSupportedException">Thrown if <paramref name="context"/> does not implement <see cref="IConfigurationContext"/>.</exception>
         public static LightBddConfiguration GetConfiguration(this IIntegrationContext context)
         {
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
             var configurationContext = context as IConfigurationContext;
             if (configurationContext == null)
-                throw new ArgumentException($"Unable to retrieve configuration from context of {context.GetType()} type. Provided context does not implement {typeof(IConfigurationContext)} interface.");
+                throw new NotSupportedException($"Unable to retrieve configuration from context of {context.GetType()} type. Provided context does not implement {typeof(IConfigurationContext)} interface.");
             return configurationContext.Configuration;
         }
     }

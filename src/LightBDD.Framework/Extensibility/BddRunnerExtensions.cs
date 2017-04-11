@@ -18,13 +18,14 @@ namespace LightBDD.Framework.Extensibility
         /// <typeparam name="TContext">Bdd runner context type.</typeparam>
         /// <param name="runner">Bdd runner.</param>
         /// <returns>Instance of <see cref="IFeatureFixtureRunner"/>.</returns>
+        /// <exception cref="NotSupportedException">Thrown if <paramref name="runner"/> does not implement <see cref="IFeatureFixtureRunner"/>.</exception>
         public static IFeatureFixtureRunner Integrate<TContext>(this IBddRunner<TContext> runner)
         {
             if (runner == null)
                 throw new ArgumentNullException(nameof(runner));
 
             if (!(runner is IFeatureFixtureRunner))
-                throw new InvalidOperationException($"The type '{runner.GetType().Name}' has to implement '{nameof(IFeatureFixtureRunner)}' interface to support integration.");
+                throw new NotSupportedException($"The type '{runner.GetType().Name}' has to implement '{nameof(IFeatureFixtureRunner)}' interface to support integration.");
 
             return (IFeatureFixtureRunner)runner;
         }

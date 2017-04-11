@@ -5,7 +5,7 @@ using LightBDD.Core.Extensibility;
 namespace LightBDD.Framework.Implementation
 {
     [DebuggerStepThrough]
-    internal class BddRunner : IBddRunner, IFeatureFixtureRunner
+    internal class BddRunner : IBddRunner, IEnrichableFeatureFixtureRunner
     {
         private readonly IFeatureFixtureRunner _coreRunner;
 
@@ -16,6 +16,6 @@ namespace LightBDD.Framework.Implementation
 
         public IScenarioRunner NewScenario() => _coreRunner.NewScenario();
 
-        public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, IIntegrationContext, TEnrichedRunner> runnerFactory) => _coreRunner.Enrich(runnerFactory);
+        public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, IIntegrationContext, TEnrichedRunner> runnerFactory) => _coreRunner.AsEnrichable().Enrich(runnerFactory);
     }
 }

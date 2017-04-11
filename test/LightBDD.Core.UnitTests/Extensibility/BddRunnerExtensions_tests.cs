@@ -13,7 +13,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [Test]
         public void Integrated_should_throw_if_runner_does_not_implement_ICoreBddRunner()
         {
-            var ex = Assert.Throws<InvalidOperationException>(() => new IncompleteRunner().Integrate());
+            var ex = Assert.Throws<NotSupportedException>(() => new IncompleteRunner().Integrate());
             Assert.That(ex.Message, Is.EqualTo($"The type '{nameof(IncompleteRunner)}' has to implement '{nameof(IFeatureFixtureRunner)}' interface to support integration."));
         }
 
@@ -32,14 +32,13 @@ namespace LightBDD.Core.UnitTests.Extensibility
 
         class IncompleteRunner : IBddRunner { }
 
-        class CompleteRunner : IBddRunner, IFeatureFixtureRunner
+        class CompleteRunner : IBddRunner, IEnrichableFeatureFixtureRunner
         {
             public void Dispose()
             {
                 throw new NotImplementedException();
             }
 
-            public IIntegrationContext IntegrationContext { get; }
             public IFeatureResult GetFeatureResult()
             {
                 throw new NotImplementedException();

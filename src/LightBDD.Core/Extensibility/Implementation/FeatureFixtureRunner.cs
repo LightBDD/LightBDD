@@ -4,11 +4,11 @@ using System.Diagnostics;
 namespace LightBDD.Core.Extensibility.Implementation
 {
     [DebuggerStepThrough]
-    internal class FeatureFixtureRunner : IFeatureFixtureRunner
+    internal class FeatureFixtureRunner : IEnrichableFeatureFixtureRunner
     {
         private readonly object _fixture;
         private readonly Func<object, IScenarioRunner> _scenarioRunnerProvider;
-        private IIntegrationContext _integrationContext;
+        private readonly IIntegrationContext _integrationContext;
 
         public FeatureFixtureRunner(object fixture, Func<object, IScenarioRunner> scenarioRunnerProvider, IIntegrationContext integrationContext)
         {

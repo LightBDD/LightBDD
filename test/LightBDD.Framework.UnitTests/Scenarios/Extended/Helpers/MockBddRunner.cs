@@ -3,7 +3,7 @@ using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
 {
-    public class MockBddRunner<T> : IBddRunner<T>, IFeatureFixtureRunner
+    public class MockBddRunner<T> : IBddRunner<T>, IEnrichableFeatureFixtureRunner
     {
         private readonly IIntegrationContext _ctx;
         private readonly IScenarioRunner _scenarioRunner;
