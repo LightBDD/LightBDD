@@ -9,6 +9,11 @@ namespace LightBDD.Framework.Implementation
     {
         private readonly IFeatureFixtureRunner _coreRunner;
 
+        public BddRunner(IEnrichableFeatureFixtureRunner coreRunner)
+        {
+            _coreRunner = coreRunner;
+        }
+        [Obsolete("Use " + nameof(IEnrichableFeatureFixtureRunner), true)]
         public BddRunner(IFeatureFixtureRunner coreRunner)
         {
             _coreRunner = coreRunner;
@@ -16,6 +21,6 @@ namespace LightBDD.Framework.Implementation
 
         public IScenarioRunner NewScenario() => _coreRunner.NewScenario();
 
-        public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, IIntegrationContext, TEnrichedRunner> runnerFactory) => _coreRunner.AsEnrichable().Enrich(runnerFactory);
+        public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, IntegrationContext, TEnrichedRunner> runnerFactory) => _coreRunner.AsEnrichable().Enrich(runnerFactory);
     }
 }

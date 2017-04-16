@@ -11,14 +11,23 @@ namespace LightBDD.Core.Extensibility
     /// </summary>
     public abstract class FeatureRunnerRepository
     {
-        private readonly IIntegrationContext _integrationContext;
+        private readonly IntegrationContext _integrationContext;
         private readonly ConcurrentDictionary<Type, IFeatureRunner> _runners = new ConcurrentDictionary<Type, IFeatureRunner>();
 
         /// <summary>
         /// Constructor instantiating factory with specified integration context.
         /// </summary>
         /// <param name="integrationContext">Integration context.</param>
+        [Obsolete("Use constructor with " + nameof(IntegrationContext), true)]
         protected FeatureRunnerRepository(IIntegrationContext integrationContext)
+        {
+            _integrationContext = integrationContext as IntegrationContext ?? new IntegrationContextWrapper(integrationContext);
+        }
+        /// <summary>
+        /// Constructor instantiating factory with specified runner context.
+        /// </summary>
+        /// <param name="integrationContext">Runner context.</param>
+        protected FeatureRunnerRepository(IntegrationContext integrationContext)
         {
             _integrationContext = integrationContext;
         }

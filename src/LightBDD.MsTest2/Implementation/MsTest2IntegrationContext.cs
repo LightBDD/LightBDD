@@ -10,10 +10,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace LightBDD.MsTest2.Implementation
 {
     [DebuggerStepThrough]
-    internal class MsTest2IntegrationContext : IntegrationContext
+    internal class MsTest2IntegrationContext : DefaultIntegrationContext
     {
         public MsTest2IntegrationContext(LightBddConfiguration configuration)
-            : base(configuration, CreateMetadataProvider(configuration))
+            : base(configuration, CreateMetadataProvider(configuration), MapExceptionToStatus)
         {
         }
 
@@ -25,7 +25,7 @@ namespace LightBDD.MsTest2.Implementation
                 configuration.CultureInfoProviderConfiguration().CultureInfoProvider);
         }
 
-        protected override ExecutionStatus MapExceptionToStatus(Exception ex)
+        private static ExecutionStatus MapExceptionToStatus(Exception ex)
         {
             return (ex is AssertInconclusiveException)
                 ? ExecutionStatus.Ignored

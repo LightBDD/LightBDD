@@ -4,6 +4,7 @@ using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
+using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Formatting;
 using LightBDD.Framework.Formatting.Configuration;
 using LightBDD.Framework.Notification;
@@ -63,9 +64,9 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
                 .WithConfiguration(cfg => cfg.ExecutionExtensionsConfiguration().EnableStepExtension<StepCommentHelper>());
         }
 
-        public IIntegrationContext Build()
+        public IntegrationContext Build()
         {
-            return new TestableIntegrationContext(_configuration, _metadataProvider(_configuration.NameFormatterConfiguration().Formatter), _exceptionToStatusMapper);
+            return new DefaultIntegrationContext(_configuration, _metadataProvider(_configuration.NameFormatterConfiguration().Formatter), _exceptionToStatusMapper);
         }
     }
 }

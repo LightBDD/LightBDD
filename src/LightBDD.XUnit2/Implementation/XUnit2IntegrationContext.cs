@@ -10,10 +10,10 @@ using LightBDD.XUnit2.Implementation.Customization;
 namespace LightBDD.XUnit2.Implementation
 {
     [DebuggerStepThrough]
-    internal class XUnit2IntegrationContext : IntegrationContext
+    internal class XUnit2IntegrationContext : DefaultIntegrationContext
     {
         public XUnit2IntegrationContext(LightBddConfiguration configuration)
-            : base(configuration, CreateMetadataProvider(configuration))
+            : base(configuration, CreateMetadataProvider(configuration), MapExceptionToStatus)
         {
         }
 
@@ -25,7 +25,7 @@ namespace LightBDD.XUnit2.Implementation
                 configuration.CultureInfoProviderConfiguration().CultureInfoProvider);
         }
 
-        protected override ExecutionStatus MapExceptionToStatus(Exception ex)
+        private static ExecutionStatus MapExceptionToStatus(Exception ex)
         {
             return (ex is IgnoreException)
                 ? ExecutionStatus.Ignored

@@ -10,10 +10,10 @@ using NUnit.Framework;
 namespace LightBDD.NUnit2.Implementation
 {
     [DebuggerStepThrough]
-    internal class NUnit2IntegrationContext : IntegrationContext
+    internal class NUnit2IntegrationContext : DefaultIntegrationContext
     {
         public NUnit2IntegrationContext(LightBddConfiguration configuration)
-            : base(configuration, CreateMetadataProvider(configuration))
+            : base(configuration, CreateMetadataProvider(configuration), MapExceptionToStatus)
         {
         }
 
@@ -25,7 +25,7 @@ namespace LightBDD.NUnit2.Implementation
                 configuration.CultureInfoProviderConfiguration().CultureInfoProvider);
         }
 
-        protected override ExecutionStatus MapExceptionToStatus(Exception ex)
+        private static ExecutionStatus MapExceptionToStatus(Exception ex)
         {
             return (ex is IgnoreException || ex is InconclusiveException)
                 ? ExecutionStatus.Ignored

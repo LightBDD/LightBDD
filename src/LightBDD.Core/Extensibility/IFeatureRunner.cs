@@ -15,10 +15,10 @@ namespace LightBDD.Core.Extensibility
         /// Returns <see cref="IFeatureFixtureRunner"/> instance allowing to execute scenario tests on <paramref name="fixture"/> object.
         /// </summary>
         /// <param name="fixture">Fixture object containing scenario tests to execute.</param>
-        /// <returns><see cref="IFeatureFixtureRunner"/> instance.</returns>
+        /// <returns><see cref="IEnrichableFeatureFixtureRunner"/> instance.</returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="fixture"/> is null.</exception>
         /// <exception cref="ArgumentException">Throws when <paramref name="fixture"/> type does not match feature type that <see cref="IFeatureRunner"/> has been created for by <see cref="FeatureRunnerRepository"/>.</exception>
-        IFeatureFixtureRunner ForFixture(object fixture);
+        IEnrichableFeatureFixtureRunner ForFixture(object fixture);
         /// <summary>
         /// Returns current results of feature tests.
         /// </summary>

@@ -5,10 +5,10 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
 {
     public class MockBddRunner<T> : IBddRunner<T>, IEnrichableFeatureFixtureRunner
     {
-        private readonly IIntegrationContext _ctx;
+        private readonly IntegrationContext _ctx;
         private readonly IScenarioRunner _scenarioRunner;
 
-        public MockBddRunner(IIntegrationContext ctx, IScenarioRunner scenarioRunner)
+        public MockBddRunner(IntegrationContext ctx, IScenarioRunner scenarioRunner)
         {
             _ctx = ctx;
             _scenarioRunner = scenarioRunner;
@@ -16,6 +16,6 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
 
         public IScenarioRunner NewScenario() => _scenarioRunner;
 
-        public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, IIntegrationContext, TEnrichedRunner> runnerFactory) => runnerFactory(this, _ctx);
+        public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, IntegrationContext, TEnrichedRunner> runnerFactory) => runnerFactory(this, _ctx);
     }
 }

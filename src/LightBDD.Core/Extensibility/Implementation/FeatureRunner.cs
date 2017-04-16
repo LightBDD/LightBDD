@@ -12,11 +12,11 @@ namespace LightBDD.Core.Extensibility.Implementation
     {
         private readonly FeatureResult _featureResult;
         private readonly ScenarioExecutor _scenarioExecutor;
-        private readonly IIntegrationContext _integrationContext;
+        private readonly IntegrationContext _integrationContext;
         private readonly Type _featureType;
         private bool _disposed;
 
-        public FeatureRunner(Type featureType, IIntegrationContext integrationContext)
+        public FeatureRunner(Type featureType, IntegrationContext integrationContext)
         {
             _featureType = featureType;
             _integrationContext = integrationContext;
@@ -28,7 +28,7 @@ namespace LightBDD.Core.Extensibility.Implementation
             integrationContext.FeatureProgressNotifier.NotifyFeatureStart(_featureResult.Info);
         }
 
-        public IFeatureFixtureRunner ForFixture(object fixture)
+        public IEnrichableFeatureFixtureRunner ForFixture(object fixture)
         {
             VerifyDisposed();
 

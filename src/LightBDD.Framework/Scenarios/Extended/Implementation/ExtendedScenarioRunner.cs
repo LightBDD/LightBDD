@@ -13,9 +13,9 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
     internal class ExtendedScenarioRunner<TContext>
     {
         private readonly IFeatureFixtureRunner _runner;
-        private readonly IIntegrationContext _context;
+        private readonly IntegrationContext _context;
 
-        public ExtendedScenarioRunner(IFeatureFixtureRunner runner, IIntegrationContext context)
+        public ExtendedScenarioRunner(IFeatureFixtureRunner runner, IntegrationContext context)
         {
             _runner = runner;
             _context = context;
@@ -61,7 +61,7 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
 
         private string GetStepTypeName(ParameterExpression contextParameter)
         {
-            return _context.GetConfiguration().Get<StepTypeConfiguration>().UseLambdaNameAsStepType(contextParameter.Name)
+            return _context.Configuration.Get<StepTypeConfiguration>().UseLambdaNameAsStepType(contextParameter.Name)
                 ? contextParameter.Name
                 : null;
         }
@@ -117,7 +117,7 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
             return methodExpression;
         }
 
-        public static ExtendedScenarioRunner<TContext> Create(IFeatureFixtureRunner runner, IIntegrationContext context)
+        public static ExtendedScenarioRunner<TContext> Create(IFeatureFixtureRunner runner, IntegrationContext context)
         {
             return new ExtendedScenarioRunner<TContext>(runner, context);
         }

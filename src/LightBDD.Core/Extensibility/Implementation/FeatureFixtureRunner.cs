@@ -8,9 +8,9 @@ namespace LightBDD.Core.Extensibility.Implementation
     {
         private readonly object _fixture;
         private readonly Func<object, IScenarioRunner> _scenarioRunnerProvider;
-        private readonly IIntegrationContext _integrationContext;
+        private readonly IntegrationContext _integrationContext;
 
-        public FeatureFixtureRunner(object fixture, Func<object, IScenarioRunner> scenarioRunnerProvider, IIntegrationContext integrationContext)
+        public FeatureFixtureRunner(object fixture, Func<object, IScenarioRunner> scenarioRunnerProvider, IntegrationContext integrationContext)
         {
             _fixture = fixture;
             _scenarioRunnerProvider = scenarioRunnerProvider;
@@ -18,7 +18,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         }
 
         public IScenarioRunner NewScenario() => _scenarioRunnerProvider.Invoke(_fixture);
-        public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, IIntegrationContext, TEnrichedRunner> runnerFactory)
+        public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, IntegrationContext, TEnrichedRunner> runnerFactory)
         {
             if (runnerFactory == null)
                 throw new ArgumentNullException(nameof(runnerFactory));

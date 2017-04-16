@@ -11,51 +11,52 @@ using LightBDD.Framework.Notification.Configuration;
 namespace LightBDD.Framework.Extensibility
 {
     /// <summary>
-    /// A default implementation of <see cref="IIntegrationContext"/> and <see cref="IConfigurationContext"/>.
+    /// A default implementation of <see cref="IntegrationContext"/>.
     /// </summary>
-    public abstract class IntegrationContext : IIntegrationContext, IConfigurationContext
+    public class DefaultIntegrationContext : IntegrationContext
     {
         /// <summary>
         /// Returns metadata provider.
         /// </summary>
-        public IMetadataProvider MetadataProvider { get; }
+        public override IMetadataProvider MetadataProvider { get; }
 
         /// <summary>
         /// Returns name formatter.
         /// </summary>
-        public INameFormatter NameFormatter { get; }
+        public override INameFormatter NameFormatter { get; }
 
         /// <summary>
         /// Returns exception to status mapping method.
         /// </summary>
-        public Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
+        public override Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
 
         /// <summary>
         /// Returns feature progress notifier.
         /// </summary>
-        public IFeatureProgressNotifier FeatureProgressNotifier { get; }
+        public override IFeatureProgressNotifier FeatureProgressNotifier { get; }
 
         /// <summary>
         /// Returns scenario progress notifier provider method.
         /// </summary>
-        public Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider { get; }
+        public override Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider { get; }
 
         /// <summary>
         /// Returns LightBDD execution extensions.
         /// </summary>
-        public IExecutionExtensions ExecutionExtensions { get; }
+        public override IExecutionExtensions ExecutionExtensions { get; }
 
         /// <summary>
         /// Returns LightBDD Configuration.
         /// </summary>
-        public LightBddConfiguration Configuration { get; }
+        public override LightBddConfiguration Configuration { get; }
 
         /// <summary>
         /// Default constructor sealing provided <paramref name="configuration"/> and initializing all properties.
         /// </summary>
         /// <param name="configuration">Configuration to use.</param>
         /// <param name="metadataProvider"><see cref="IMetadataProvider"/> instance to use.</param>
-        protected IntegrationContext(LightBddConfiguration configuration, IMetadataProvider metadataProvider)
+        /// <param name="exceptionToStatusMapper">Exception to status mapper function.</param>
+        public DefaultIntegrationContext(LightBddConfiguration configuration, IMetadataProvider metadataProvider, Func<Exception, ExecutionStatus> exceptionToStatusMapper)
         {
             if (configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
@@ -65,17 +66,10 @@ namespace LightBDD.Framework.Extensibility
             Configuration = configuration.Seal();
             NameFormatter = configuration.NameFormatterConfiguration().Formatter;
             MetadataProvider = metadataProvider;
-            ExceptionToStatusMapper = MapExceptionToStatus;
+            ExceptionToStatusMapper = exceptionToStatusMapper;
             FeatureProgressNotifier = configuration.FeatureProgressNotifierConfiguration().Notifier;
             ScenarioProgressNotifierProvider = configuration.ScenarioProgressNotifierConfiguration().NotifierProvider;
             ExecutionExtensions = configuration.ExecutionExtensionsConfiguration();
         }
-
-        /// <summary>
-        /// Maps exception instance referenced by <paramref name="exception"/> to <see cref="ExecutionStatus"/>.
-        /// </summary>
-        /// <param name="exception">Exception to map.</param>
-        /// <returns>Mapped status.</returns>
-        protected abstract ExecutionStatus MapExceptionToStatus(Exception exception);
     }
 }
