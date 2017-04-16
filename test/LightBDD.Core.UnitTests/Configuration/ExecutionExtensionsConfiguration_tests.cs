@@ -70,5 +70,25 @@ namespace LightBDD.Core.UnitTests.Configuration
                 new[] { typeof(StepExtension1), typeof(StepExtension2) },
                 cfg.StepExecutionExtensions.Select(e => e.GetType()).ToArray());
         }
+
+        [Test]
+        public void Configuration_should_be_sealable()
+        {
+            var lighbddConfig = new LightBddConfiguration();
+            var cfg = lighbddConfig.Get<ExecutionExtensionsConfiguration>()
+                .EnableStepExtension<StepExtension1>()
+                .EnableScenarioExtension<ScenarioExtension1>();
+            lighbddConfig.Seal();
+
+            Assert.Throws<InvalidOperationException>(() => cfg.EnableStepExtension<StepExtension2>());
+            Assert.Throws<InvalidOperationException>(() => cfg.EnableScenarioExtension<ScenarioExtension2>());
+
+            CollectionAssert.AreEquivalent(
+                new[] { typeof(ScenarioExtension1) },
+                cfg.ScenarioExecutionExtensions.Select(e => e.GetType()).ToArray());
+            CollectionAssert.AreEquivalent(
+                new[] { typeof(StepExtension1) },
+                cfg.StepExecutionExtensions.Select(e => e.GetType()).ToArray());
+        }
     }
 }

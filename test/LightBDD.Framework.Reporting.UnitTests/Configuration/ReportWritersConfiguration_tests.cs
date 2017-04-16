@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Reporting;
 using LightBDD.Framework.Reporting;
 using LightBDD.Framework.Reporting.Configuration;
@@ -65,6 +66,20 @@ namespace LightBDD.Reporting.UnitTests.Configuration
             Assert.That(writer, Is.Not.Null);
             Assert.That(writer.Formatter, Is.TypeOf<PlainTextReportFormatter>());
             Assert.That(writer.OutputPath, Is.EqualTo("file.txt"));
+        }
+
+        [Test]
+        public void Configuration_should_be_sealable()
+        {
+            var writer = Mock.Of<IReportWriter>();
+            var lighbddConfig = new LightBddConfiguration();
+            var cfg = lighbddConfig.Get<ReportWritersConfiguration>().Add(writer);
+            lighbddConfig.Seal();
+
+            Assert.Throws<InvalidOperationException>(() => cfg.Add(Mock.Of<IReportWriter>()));
+            Assert.Throws<InvalidOperationException>(() => cfg.Clear());
+            Assert.Throws<InvalidOperationException>(() => cfg.Remove(writer));
+            Assert.That(cfg.ToArray(), Is.Not.Empty);
         }
     }
 }

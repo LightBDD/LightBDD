@@ -19,7 +19,7 @@ namespace LightBDD.Framework.UnitTests.Commenting
         {
             var runner = new TestableFeatureRunnerRepository(
                     TestableIntegrationContextBuilder.Default()
-                    .WithExecutionExtensions(new ExecutionExtensionsConfiguration().EnableScenarioExecutionContext())
+                    .WithConfiguration(cfg => cfg.ExecutionExtensionsConfiguration().EnableScenarioExecutionContext())
                 )
                 .GetRunnerFor(GetType())
                 .GetBddRunner(this);
@@ -70,7 +70,7 @@ namespace LightBDD.Framework.UnitTests.Commenting
         private IFeatureRunner GetFeatureRunner()
         {
             var context = TestableIntegrationContextBuilder.Default()
-                .WithExecutionExtensions(new ExecutionExtensionsConfiguration().EnableStepCommenting());
+                .WithConfiguration(cfg => cfg.ExecutionExtensionsConfiguration().EnableStepCommenting());
 
             return new TestableFeatureRunnerRepository(context).GetRunnerFor(GetType());
         }

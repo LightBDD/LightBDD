@@ -1,6 +1,9 @@
 using System;
+using LightBDD.Core.Configuration;
+using LightBDD.Core.Notification;
 using LightBDD.Framework.Notification;
 using LightBDD.Framework.Notification.Configuration;
+using Moq;
 using NUnit.Framework;
 
 namespace LightBDD.Framework.UnitTests.Notification.Configuration
@@ -26,6 +29,16 @@ namespace LightBDD.Framework.UnitTests.Notification.Configuration
         {
             var configuration = new FeatureProgressNotifierConfiguration().UpdateNotifier(new DelegatingFeatureProgressNotifier());
             Assert.That(configuration.Notifier, Is.InstanceOf<DelegatingFeatureProgressNotifier>());
+        }
+
+        [Test]
+        public void Configuration_should_be_sealable()
+        {
+            var lighbddConfig = new LightBddConfiguration();
+            var cfg = lighbddConfig.Get<FeatureProgressNotifierConfiguration>();
+            lighbddConfig.Seal();
+
+            Assert.Throws<InvalidOperationException>(() => cfg.UpdateNotifier(Mock.Of<IFeatureProgressNotifier>()));
         }
     }
 }

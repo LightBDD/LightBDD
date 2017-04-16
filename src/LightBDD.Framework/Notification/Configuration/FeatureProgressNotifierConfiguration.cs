@@ -7,7 +7,7 @@ namespace LightBDD.Framework.Notification.Configuration
     /// <summary>
     /// Configuration class allowing to customize feature progress notification behavior.
     /// </summary>
-    public class FeatureProgressNotifierConfiguration : IFeatureConfiguration
+    public class FeatureProgressNotifierConfiguration : FeatureConfiguration
     {
         /// <summary>
         /// Returns feature progress notifier.
@@ -23,6 +23,7 @@ namespace LightBDD.Framework.Notification.Configuration
         /// <exception cref="ArgumentNullException">Throws when <paramref name="notifier"/> is null.</exception>
         public FeatureProgressNotifierConfiguration UpdateNotifier(IFeatureProgressNotifier notifier)
         {
+            ThrowIfSealed();
             if (notifier == null)
                 throw new ArgumentNullException(nameof(notifier));
             Notifier = notifier;

@@ -28,5 +28,15 @@ namespace LightBDD.Core.UnitTests.Configuration
             var config = new CultureInfoProviderConfiguration().UpdateCultureInfoProvider(provider);
             Assert.That(config.CultureInfoProvider, Is.SameAs(provider));
         }
+
+        [Test]
+        public void Configuration_should_be_sealable()
+        {
+            var lighbddConfig = new LightBddConfiguration();
+            var cfg = lighbddConfig.Get<CultureInfoProviderConfiguration>();
+            lighbddConfig.Seal();
+
+            Assert.Throws<InvalidOperationException>(() => cfg.UpdateCultureInfoProvider(Mock.Of<ICultureInfoProvider>()));
+        }
     }
 }

@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using LightBDD.Core.Extensibility;
+using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Scenarios.Extended.Implementation;
 
 namespace LightBDD.Framework.Scenarios.Extended
@@ -76,7 +78,7 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// <param name="steps">List of steps to execute in order.</param>
         public static void RunScenario<TContext>(this IBddRunner<TContext> runner, params Expression<Action<TContext>>[] steps)
         {
-            Extended(runner).RunScenario(steps);
+            AsExtended(runner).RunScenario(steps);
         }
         /// <summary>
         /// Runs test scenario by executing given steps in specified order.<br/>
@@ -143,7 +145,7 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// <param name="steps">List of steps to execute in order.</param>
         public static async Task RunScenarioAsync<TContext>(this IBddRunner<TContext> runner, params Expression<Func<TContext, Task>>[] steps)
         {
-            await Extended(runner).RunScenarioAsync(steps);
+            await AsExtended(runner).RunScenarioAsync(steps);
         }
 
         /// <summary>
@@ -220,15 +222,14 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// <remarks>This is an asynchronous method and should be awaited.</remarks>
         /// <param name="runner">Runner.</param>
         /// <param name="steps">List of steps to execute in order.</param>
-        public static async Task RunScenarioActionsAsync<TContext>(this IBddRunner<TContext> runner,params Expression<Action<TContext>>[] steps)
+        public static async Task RunScenarioActionsAsync<TContext>(this IBddRunner<TContext> runner, params Expression<Action<TContext>>[] steps)
         {
-            await Extended(runner).RunScenarioAsync(steps);
+            await AsExtended(runner).RunScenarioAsync(steps);
         }
-        
 
-        private static ExtendedScenarioRunner<TContext> Extended<TContext>(this IBddRunner<TContext> runner)
+        private static ExtendedScenarioRunner<TContext> AsExtended<TContext>(this IBddRunner<TContext> runner)
         {
-            return new ExtendedScenarioRunner<TContext>(runner);
+            return runner.Integrate().AsEnrichable().Enrich(ExtendedScenarioRunner<TContext>.Create);
         }
     }
 }

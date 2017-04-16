@@ -4,24 +4,27 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
-using LightBDD.Framework.Extensibility;
 
 namespace LightBDD.Framework.Scenarios.Extended.Implementation
 {
     [DebuggerStepThrough]
     internal class ExtendedScenarioRunner<TContext>
     {
-        private readonly IBddRunner<TContext> _runner;
+        private readonly IFeatureFixtureRunner _runner;
+        private readonly IntegrationContext _context;
 
-        public ExtendedScenarioRunner(IBddRunner<TContext> runner)
+        public ExtendedScenarioRunner(IFeatureFixtureRunner runner, IntegrationContext context)
         {
             _runner = runner;
+            _context = context;
         }
+
 
         public void RunScenario(params Expression<Action<TContext>>[] steps)
         {
-            _runner.Integrate()
+            _runner
                 .NewScenario()
                 .WithCapturedScenarioDetails()
                 .WithSteps(steps.Select(ToStep))
@@ -30,7 +33,7 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
 
         public Task RunScenarioAsync(params Expression<Func<TContext, Task>>[] steps)
         {
-            return _runner.Integrate()
+            return _runner
                 .NewScenario()
                 .WithCapturedScenarioDetails()
                 .WithSteps(steps.Select(ToStep))
@@ -39,7 +42,7 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
 
         public Task RunScenarioAsync(params Expression<Action<TContext>>[] steps)
         {
-            return _runner.Integrate()
+            return _runner
                 .NewScenario()
                 .WithCapturedScenarioDetails()
                 .WithSteps(steps.Select(ToStep))
@@ -56,11 +59,11 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
             return new StepDescriptor(GetStepTypeName(contextParameter), methodExpression.Method.Name, CompileStepAction(methodExpression, contextParameter), arguments);
         }
 
-        private static string GetStepTypeName(ParameterExpression contextParameter)
+        private string GetStepTypeName(ParameterExpression contextParameter)
         {
-            return contextParameter.Name == "_"
-                ? null
-                : contextParameter.Name;
+            return _context.Configuration.Get<StepTypeConfiguration>().UseLambdaNameAsStepType(contextParameter.Name)
+                ? contextParameter.Name
+                : null;
         }
 
         private ParameterDescriptor[] ProcessArguments(MethodCallExpression methodExpression, ParameterExpression contextParameter)
@@ -97,7 +100,7 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
             var function = Expression.Lambda<Func<TContext, object>>(Expression.Convert(argumentExpression, typeof(object)), contextParameter).Compile();
 
             var targetParam = Expression.Parameter(typeof(object), "target");
-            var genericStepArgFunction = Expression.Lambda<Func<object, object>>(Expression.Invoke(Expression.Constant(function), Expression.Convert(targetParam, contextParameter.Type)),targetParam)
+            var genericStepArgFunction = Expression.Lambda<Func<object, object>>(Expression.Invoke(Expression.Constant(function), Expression.Convert(targetParam, contextParameter.Type)), targetParam)
                 .Compile();
 
             return ParameterDescriptor.FromInvocation(parameterInfo, genericStepArgFunction);
@@ -112,6 +115,11 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
             if (methodExpression.Method.GetParameters().Any(p => p.IsOut || p.ParameterType.IsByRef))
                 throw new ArgumentException("Steps accepting ref or out parameters are not supported: " + stepExpression);
             return methodExpression;
+        }
+
+        public static ExtendedScenarioRunner<TContext> Create(IFeatureFixtureRunner runner, IntegrationContext context)
+        {
+            return new ExtendedScenarioRunner<TContext>(runner, context);
         }
     }
 }

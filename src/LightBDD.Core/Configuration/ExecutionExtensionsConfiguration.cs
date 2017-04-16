@@ -8,7 +8,7 @@ namespace LightBDD.Core.Configuration
     /// <summary>
     /// Execution extensions configuration allowing to enable LightBDD extensions.
     /// </summary>
-    public class ExecutionExtensionsConfiguration : IExecutionExtensions, IFeatureConfiguration
+    public class ExecutionExtensionsConfiguration : FeatureConfiguration, IExecutionExtensions
     {
         private readonly List<IScenarioExecutionExtension> _scenarioExtensions = new List<IScenarioExecutionExtension>();
         private readonly List<IStepExecutionExtension> _stepExtensions = new List<IStepExecutionExtension>();
@@ -42,6 +42,7 @@ namespace LightBDD.Core.Configuration
         /// <returns>Self.</returns>
         public ExecutionExtensionsConfiguration EnableScenarioExtension<TScenarioExecutionExtension>(Func<TScenarioExecutionExtension> factory) where TScenarioExecutionExtension : IScenarioExecutionExtension
         {
+            ThrowIfSealed();
             if (factory == null)
                 throw new ArgumentNullException(nameof(factory));
 
@@ -60,6 +61,7 @@ namespace LightBDD.Core.Configuration
         /// <returns>Self.</returns>
         public ExecutionExtensionsConfiguration EnableStepExtension<TStepExecutionExtension>(Func<TStepExecutionExtension> factory) where TStepExecutionExtension : IStepExecutionExtension
         {
+            ThrowIfSealed();
             if (factory == null)
                 throw new ArgumentNullException(nameof(factory));
 

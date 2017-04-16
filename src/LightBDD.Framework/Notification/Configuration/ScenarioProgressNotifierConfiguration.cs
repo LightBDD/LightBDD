@@ -9,7 +9,7 @@ namespace LightBDD.Framework.Notification.Configuration
     /// Configuration class allowing to customize scenario progress notification behavior.
     /// </summary>
     [DebuggerStepThrough]
-    public class ScenarioProgressNotifierConfiguration : IFeatureConfiguration
+    public class ScenarioProgressNotifierConfiguration : FeatureConfiguration
     {
         /// <summary>
         /// Returns function providing scenario progress notifier, where function parameter is feature fixture class instance.
@@ -25,6 +25,7 @@ namespace LightBDD.Framework.Notification.Configuration
         /// <exception cref="ArgumentNullException">Throws when <paramref name="notifierProvider"/> is null.</exception>
         public ScenarioProgressNotifierConfiguration UpdateNotifierProvider(Func<IScenarioProgressNotifier> notifierProvider)
         {
+            ThrowIfSealed();
             if (notifierProvider == null)
                 throw new ArgumentNullException(nameof(notifierProvider));
             NotifierProvider = new StatelessProvider(notifierProvider).Provide;
@@ -39,6 +40,7 @@ namespace LightBDD.Framework.Notification.Configuration
         /// <exception cref="ArgumentNullException">Throws when <paramref name="notifierProvider"/> is null.</exception>
         public ScenarioProgressNotifierConfiguration UpdateNotifierProvider<TFixture>(Func<TFixture, IScenarioProgressNotifier> notifierProvider)
         {
+            ThrowIfSealed();
             if (notifierProvider == null)
                 throw new ArgumentNullException(nameof(notifierProvider));
             NotifierProvider = fixture => CreateScenarioProgressNotifier(notifierProvider, fixture);

@@ -2,34 +2,27 @@ using System;
 using System.Diagnostics;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
-using LightBDD.Core.Extensibility.Execution;
-using LightBDD.Core.Formatting;
-using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
+using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Formatting.Configuration;
-using LightBDD.Framework.Notification.Configuration;
 using LightBDD.XUnit2.Implementation.Customization;
 
 namespace LightBDD.XUnit2.Implementation
 {
     [DebuggerStepThrough]
-    internal class XUnit2IntegrationContext : IIntegrationContext
+    internal class XUnit2IntegrationContext : DefaultIntegrationContext
     {
-        public INameFormatter NameFormatter { get; }
-        public IMetadataProvider MetadataProvider { get; }
-        public Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
-        public IFeatureProgressNotifier FeatureProgressNotifier { get; }
-        public Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider { get; }
-        public IExecutionExtensions ExecutionExtensions { get; }
-
         public XUnit2IntegrationContext(LightBddConfiguration configuration)
+            : base(configuration, CreateMetadataProvider(configuration), MapExceptionToStatus)
         {
-            NameFormatter = configuration.NameFormatterConfiguration().Formatter;
-            MetadataProvider = new XUnit2MetadataProvider(NameFormatter, configuration.StepTypeConfiguration(), configuration.CultureInfoProviderConfiguration().CultureInfoProvider);
-            ExceptionToStatusMapper = MapExceptionToStatus;
-            FeatureProgressNotifier = configuration.FeatureProgressNotifierConfiguration().Notifier;
-            ScenarioProgressNotifierProvider = configuration.ScenarioProgressNotifierConfiguration().NotifierProvider;
-            ExecutionExtensions = configuration.ExecutionExtensionsConfiguration();
+        }
+
+        private static IMetadataProvider CreateMetadataProvider(LightBddConfiguration configuration)
+        {
+            return new XUnit2MetadataProvider(
+                configuration.NameFormatterConfiguration().Formatter,
+                configuration.StepTypeConfiguration(),
+                configuration.CultureInfoProviderConfiguration().CultureInfoProvider);
         }
 
         private static ExecutionStatus MapExceptionToStatus(Exception ex)

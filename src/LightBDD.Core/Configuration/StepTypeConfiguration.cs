@@ -7,7 +7,7 @@ namespace LightBDD.Core.Configuration
     /// <summary>
     /// Step type configuration allowing to define step types recognized by LightBDD.
     /// </summary>
-    public class StepTypeConfiguration : IFeatureConfiguration
+    public class StepTypeConfiguration : FeatureConfiguration
     {
         /// <summary>
         /// Default repeated step replacement: and
@@ -45,6 +45,7 @@ namespace LightBDD.Core.Configuration
         /// <returns>Self.</returns>
         public StepTypeConfiguration UpdatePredefinedStepTypes(params string[] stepTypes)
         {
+            ThrowIfSealed();
             if (stepTypes == null)
                 throw new ArgumentNullException(nameof(stepTypes));
             PredefinedStepTypes = stepTypes;
@@ -58,8 +59,30 @@ namespace LightBDD.Core.Configuration
         /// <returns>Self.</returns>
         public StepTypeConfiguration UpdateRepeatedStepReplacement(string replacement)
         {
+            ThrowIfSealed();
             RepeatedStepReplacement = replacement;
             return this;
         }
+
+        /// <summary>
+        /// Updates <see cref="UseLambdaNameAsStepType"/> with new function.
+        /// </summary>
+        /// <param name="useLambdaNameAsStepTypeFunction">Function to use.</param>
+        /// <returns>Self.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="useLambdaNameAsStepTypeFunction"/> is null.</exception>
+        public StepTypeConfiguration UpdateUseLambdaNameAsStepType(Func<string, bool> useLambdaNameAsStepTypeFunction)
+        {
+            ThrowIfSealed();
+            if (useLambdaNameAsStepTypeFunction == null)
+                throw new ArgumentNullException(nameof(useLambdaNameAsStepTypeFunction));
+            UseLambdaNameAsStepType = useLambdaNameAsStepTypeFunction;
+            return this;
+        }
+
+        /// <summary>
+        /// Function defining if given lambda parameter name should be used as step type.
+        /// By default any name with length longer than 1 character will be treated as a valid step type while names with 1 character will not.
+        /// </summary>
+        public Func<string, bool> UseLambdaNameAsStepType { get; private set; } = name => name?.Length > 1;
     }
 }

@@ -10,7 +10,7 @@ namespace LightBDD.Framework.Reporting.Configuration
     /// <summary>
     /// Configuration class allowing to customize report writers.
     /// </summary>
-    public class ReportWritersConfiguration : IEnumerable<IReportWriter>, IFeatureConfiguration
+    public class ReportWritersConfiguration : FeatureConfiguration, IEnumerable<IReportWriter>
     {
         private readonly List<IReportWriter> _writers = new List<IReportWriter>();
 
@@ -31,6 +31,7 @@ namespace LightBDD.Framework.Reporting.Configuration
         /// <exception cref="ArgumentNullException">Throws when <paramref name="writer"/> is <c>null</c>.</exception>
         public ReportWritersConfiguration Add(IReportWriter writer)
         {
+            ThrowIfSealed();
             if (writer == null)
                 throw new ArgumentNullException(nameof(writer));
             _writers.Add(writer);
@@ -44,6 +45,7 @@ namespace LightBDD.Framework.Reporting.Configuration
         /// <returns>Self.</returns>
         public ReportWritersConfiguration Remove(IReportWriter writer)
         {
+            ThrowIfSealed();
             _writers.Remove(writer);
             return this;
         }
@@ -54,6 +56,7 @@ namespace LightBDD.Framework.Reporting.Configuration
         /// <returns>Self.</returns>
         public ReportWritersConfiguration Clear()
         {
+            ThrowIfSealed();
             _writers.Clear();
             return this;
         }

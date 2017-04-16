@@ -6,7 +6,7 @@ namespace LightBDD.Core.Configuration
     /// <summary>
     /// Culture info provider configuration.
     /// </summary>
-    public class CultureInfoProviderConfiguration : IFeatureConfiguration
+    public class CultureInfoProviderConfiguration : FeatureConfiguration
     {
         /// <summary>
         /// Default constructor configuring <see cref="DefaultCultureInfoProvider"/> as CultureInfoProvider.
@@ -28,6 +28,7 @@ namespace LightBDD.Core.Configuration
         /// <returns>Self.</returns>
         public CultureInfoProviderConfiguration UpdateCultureInfoProvider(ICultureInfoProvider provider)
         {
+            ThrowIfSealed();
             if (provider == null)
                 throw new ArgumentNullException(nameof(provider));
             CultureInfoProvider = provider;

@@ -2,40 +2,33 @@ using System;
 using System.Diagnostics;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
-using LightBDD.Core.Extensibility.Execution;
-using LightBDD.Core.Formatting;
-using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
+using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Formatting.Configuration;
-using LightBDD.Framework.Notification.Configuration;
 using NUnit.Framework;
 
 namespace LightBDD.NUnit3.Implementation
 {
     [DebuggerStepThrough]
-    internal class NUnit3IntegrationContext : IIntegrationContext
+    internal class NUnit3IntegrationContext : DefaultIntegrationContext
     {
-        public INameFormatter NameFormatter { get; }
-        public IMetadataProvider MetadataProvider { get; }
-        public Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
-        public IFeatureProgressNotifier FeatureProgressNotifier { get; }
-        public Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider { get; }
-        public IExecutionExtensions ExecutionExtensions { get; }
-
         public NUnit3IntegrationContext(LightBddConfiguration configuration)
+            : base(configuration, CreateMetadataProvider(configuration), MapExceptionToStatus)
         {
-            NameFormatter = configuration.NameFormatterConfiguration().Formatter;
-            MetadataProvider = new NUnit3MetadataProvider(NameFormatter, configuration.StepTypeConfiguration(), configuration.CultureInfoProviderConfiguration().CultureInfoProvider);
-            ExceptionToStatusMapper = MapExceptionToStatus;
-            FeatureProgressNotifier = configuration.FeatureProgressNotifierConfiguration().Notifier;
-            ScenarioProgressNotifierProvider = configuration.ScenarioProgressNotifierConfiguration().NotifierProvider;
-            ExecutionExtensions = configuration.ExecutionExtensionsConfiguration();
+        }
+
+        private static IMetadataProvider CreateMetadataProvider(LightBddConfiguration configuration)
+        {
+            return new NUnit3MetadataProvider(
+                configuration.NameFormatterConfiguration().Formatter,
+                configuration.StepTypeConfiguration(),
+                configuration.CultureInfoProviderConfiguration().CultureInfoProvider);
         }
 
         private static ExecutionStatus MapExceptionToStatus(Exception ex)
         {
-            return (ex is IgnoreException || ex is InconclusiveException) 
-                ? ExecutionStatus.Ignored 
+            return (ex is IgnoreException || ex is InconclusiveException)
+                ? ExecutionStatus.Ignored
                 : ExecutionStatus.Failed;
         }
     }

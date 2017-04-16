@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
+using LightBDD.UnitTests.Helpers.TestableIntegration;
 using Moq;
 using NUnit.Framework;
 
@@ -12,20 +13,18 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
     {
         protected StepDescriptor[] CapturedSteps;
         protected Mock<IScenarioRunner> MockScenarioRunner;
-        protected Mock<ITestableBddRunner<T>> MockRunner;
-        protected ITestableBddRunner<T> Runner => MockRunner.Object;
+        protected MockBddRunner<T> Runner;
 
         [SetUp]
         public void SetUp()
         {
             CapturedSteps = null;
             MockScenarioRunner = new Mock<IScenarioRunner>();
-            MockRunner = new Mock<ITestableBddRunner<T>>();
+            Runner = new MockBddRunner<T>(TestableIntegrationContextBuilder.Default().Build(),MockScenarioRunner.Object);
         }
 
         protected void ExpectSynchronousScenarioRun()
         {
-            ExpectNewScenario();
             ExpectWithCapturedScenarioDetails();
             ExpectWithSteps();
             ExpectRunSynchronously();
@@ -33,7 +32,6 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
 
         protected void ExpectAsynchronousScenarioRun()
         {
-            ExpectNewScenario();
             ExpectWithCapturedScenarioDetails();
             ExpectWithSteps();
             ExpectRunAsynchronously();
@@ -66,14 +64,6 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
                 .Verifiable();
         }
 
-        protected void ExpectNewScenario()
-        {
-            MockRunner
-                .Setup(r => r.NewScenario())
-                .Returns(MockScenarioRunner.Object)
-                .Verifiable();
-        }
-
         protected void ExpectRunAsynchronously()
         {
             MockScenarioRunner
@@ -85,7 +75,6 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
         protected void VerifyExpectations()
         {
             MockScenarioRunner.VerifyAll();
-            MockRunner.VerifyAll();
         }
 
         protected void AssertStep(StepDescriptor step, string expectedName, string expectedPredefinedStepType = null)
