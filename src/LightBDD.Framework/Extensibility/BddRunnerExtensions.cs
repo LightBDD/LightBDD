@@ -41,7 +41,7 @@ namespace LightBDD.Framework.Extensibility
         {
             if (featureRunner == null)
                 throw new ArgumentNullException(nameof(featureRunner));
-            return new BddRunner(featureRunner.ForFixture(fixture));
+            return new BddRunner(featureRunner.ForFixture(fixture).AsEnrichable());
         }
     }
 }

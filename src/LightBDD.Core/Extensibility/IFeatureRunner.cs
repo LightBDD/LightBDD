@@ -18,7 +18,7 @@ namespace LightBDD.Core.Extensibility
         /// <returns><see cref="IEnrichableFeatureFixtureRunner"/> instance.</returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="fixture"/> is null.</exception>
         /// <exception cref="ArgumentException">Throws when <paramref name="fixture"/> type does not match feature type that <see cref="IFeatureRunner"/> has been created for by <see cref="FeatureRunnerRepository"/>.</exception>
-        IEnrichableFeatureFixtureRunner ForFixture(object fixture);
+        IFeatureFixtureRunner ForFixture(object fixture);
         /// <summary>
         /// Returns current results of feature tests.
         /// </summary>

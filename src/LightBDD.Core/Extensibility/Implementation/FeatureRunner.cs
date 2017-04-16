@@ -28,7 +28,7 @@ namespace LightBDD.Core.Extensibility.Implementation
             integrationContext.FeatureProgressNotifier.NotifyFeatureStart(_featureResult.Info);
         }
 
-        public IEnrichableFeatureFixtureRunner ForFixture(object fixture)
+        public IFeatureFixtureRunner ForFixture(object fixture)
         {
             VerifyDisposed();
 
