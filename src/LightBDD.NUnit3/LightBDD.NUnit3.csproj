@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Allows creating acceptance tests in developer friendly environment by offering LightBDD.Framework features on top of NUnit 3 testing framework.
+
+High level features:
+* user friendly bdd scenario definitions,
+* test execution tracing and time measurement, helpful during longer test execution,
+* Xml/Html/Plain text reports generation,
+* cross-platform support (.NET Standard / .NET Framework),
+* asynchronous execution support,
+* in-code LightBDD configuration.</Description>
+    <Copyright>Copyright © Wojciech Kotlarski 2013-2017</Copyright>
+    <VersionPrefix>2.1.0.0</VersionPrefix>
+    <Authors>Wojciech Kotlarski</Authors>
+    <TargetFrameworks>netstandard1.6;net45;net46</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyName>LightBDD.NUnit3</AssemblyName>
+    <PackageId>LightBDD.NUnit3</PackageId>
+    <PackageTags>bdd;tdd;testing;framework;behavior driven development;acceptance criteria;nunit;nunit3</PackageTags>
+    <PackageReleaseNotes>Rewritten NUnit 3 integration to support multiple platforms (.NET Standard, .NET Framework) and async test execution.</PackageReleaseNotes>
+    <PackageIconUrl>https://raw.githubusercontent.com/LightBDD/LightBDD/master/logo/lightbdd.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/LightBDD/LightBDD</PackageProjectUrl>
+    <PackageLicenseUrl>http://opensource.org/licenses/BSD-2-Clause</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/LightBDD/LightBDD</RepositoryUrl>
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.0</NetStandardImplicitPackageVersion>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\AssemblyVersion.cs" Exclude="bin\**;obj\**;**\*.xproj;packages\**" />
+    <None Update="..\..\QuickStart.txt">
+      <PackagePath></PackagePath>
+      <Pack>true</Pack>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LightBDD.Framework\LightBDD.Framework.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.6.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,70 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Allows creating acceptance tests in developer friendly environment by offering LightBDD.Framework features on top of xUnit 2 testing framework.
+
+High level features:
+* user friendly bdd scenario definitions,
+* test execution tracing and time measurement, helpful during longer test execution,
+* Xml/Html/Plain text reports generation,
+* cross-platform support (.NET Standard / .NET Framework),
+* asynchronous execution support,
+* in-code LightBDD configuration.</Description>
+    <Copyright>Copyright © Wojciech Kotlarski 2013-2017</Copyright>
+    <VersionPrefix>2.1.0.0</VersionPrefix>
+    <Authors>Wojciech Kotlarski</Authors>
+    <TargetFrameworks>netstandard1.3;net45;net46</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyName>LightBDD.XUnit2</AssemblyName>
+    <PackageId>LightBDD.XUnit2</PackageId>
+    <PackageTags>bdd;tdd;testing;framework;behavior driven development;acceptance criteria;xunit;xunit2</PackageTags>
+    <PackageReleaseNotes>Rewritten xUnit 2 integration to support multiple platforms (.NET Standard, .NET Framework) and async test execution.</PackageReleaseNotes>
+    <PackageIconUrl>https://raw.githubusercontent.com/LightBDD/LightBDD/master/logo/lightbdd.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/LightBDD/LightBDD</PackageProjectUrl>
+    <PackageLicenseUrl>http://opensource.org/licenses/BSD-2-Clause</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/LightBDD/LightBDD</RepositoryUrl>
+    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.3' ">$(PackageTargetFallback);dotnet;portable-net45+win8+wp8+wpa81</PackageTargetFallback>
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.3' ">1.6.0</NetStandardImplicitPackageVersion>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\AssemblyVersion.cs" Exclude="bin\**;obj\**;**\*.xproj;packages\**" />
+    <None Update="..\..\QuickStart.txt">
+      <PackagePath></PackagePath>
+      <Pack>true</Pack>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LightBDD.Framework\LightBDD.Framework.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="System.Reflection" />
+    <Reference Include="System.Runtime" />
+    <Reference Include="System.Threading.Tasks" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
+    <Reference Include="System.Reflection" />
+    <Reference Include="System.Runtime" />
+    <Reference Include="System.Threading.Tasks" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+</Project>

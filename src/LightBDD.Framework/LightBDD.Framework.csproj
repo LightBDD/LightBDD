@@ -1,0 +1,61 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Provides LightBDD framework with features, such as:
+* native support for refactoring, code analysis (like finding unused methods), test running and all features that Visual Studio / Intellisense / Resharper offer during code development,
+* easy to read scenario definitions,
+* basic, extended (parameterized) and contextual scenario execution support,
+* method parameter formatting attributes,
+* step commenting,
+* Xml/Html/Plain text report generation.</Description>
+    <Copyright>Copyright © Wojciech Kotlarski 2013-2017</Copyright>
+    <VersionPrefix>2.1.0.0</VersionPrefix>
+    <Authors>Wojciech Kotlarski</Authors>
+    <TargetFrameworks>netstandard1.3;net46;net45</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyName>LightBDD.Framework</AssemblyName>
+    <PackageId>LightBDD.Framework</PackageId>
+    <PackageTags>bdd;tdd;testing;framework;behavior driven development;acceptance criteria</PackageTags>
+    <PackageReleaseNotes>Rewritten Framework mechanisms to function on top of LightBDD.Core and offer end-user common features.</PackageReleaseNotes>
+    <PackageIconUrl>https://raw.githubusercontent.com/LightBDD/LightBDD/master/logo/lightbdd.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/LightBDD/LightBDD</PackageProjectUrl>
+    <PackageLicenseUrl>http://opensource.org/licenses/BSD-2-Clause</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/LightBDD/LightBDD</RepositoryUrl>
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.3' ">1.6.0</NetStandardImplicitPackageVersion>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\AssemblyVersion.cs" Exclude="bin\**;obj\**;**\*.xproj;packages\**" />
+    <EmbeddedResource Include="..\..\logo\lightbdd_small.ico">
+      <Link>LightBDD.Framework/Reporting/Formatters/Html/lightbdd_small.ico</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reporting\Formatters\Html\scripts.js;Reporting\Formatters\Html\styles.css" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LightBDD.Core\LightBDD.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+</Project>
