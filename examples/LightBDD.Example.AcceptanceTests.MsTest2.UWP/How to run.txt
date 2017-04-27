@@ -4,3 +4,5 @@
 4. Open Test Explorer and run tests.
 
 After tests are executed, the LightBDD HTML report should open.
+
+Please note that this project is excluded from Release build - it only builds in debug.

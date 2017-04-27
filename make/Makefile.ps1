@@ -16,8 +16,7 @@ Define-Step -Name 'Update version' -Target 'all,build' -Body {
     $version = (Get-Content 'make\current_version').Trim()
     Write-ShortStatus "Updating version to $version..."
 
-    gci -Filter 'project.json' -Recurse | %{ Replace-InFile $_.fullname $version '"version": "%", //build_ver','"version": "%-pre", //build_ver' }
-    gci -Path 'meta-packages' -Filter '*.nuspec' -Recurse | %{ Replace-InFile $_.fullname $version '<version>%</version>','version="[%, )"' }
+    gci -Filter '*.csproj' -Recurse | %{ Replace-InFile $_.fullname $version '<VersionPrefix>%</VersionPrefix>' }
     Replace-InFile 'AssemblyVersion.cs' $version 'Version("%")'
     Replace-InFile 'QuickStart.txt' $version 'version %!'
     Replace-InFile 'templates\LightBDD.VSIXTemplates\source.extension.vsixmanifest' $version 'Identity Id="d6382c7a-fe20-47e5-b4e1-4d798cef97f1" Version="%"'
@@ -26,7 +25,7 @@ Define-Step -Name 'Update version' -Target 'all,build' -Body {
 
 Define-Step -Name 'Build' -Target 'all,build' -Body {
     call dotnet restore
-    call "msbuild.exe" LightBDD.sln /t:"Build" /p:Configuration=Release /m /verbosity:m /nologo /p:TreatWarningsAsErrors=true /nr:false
+    call dotnet build LightBDD.sln /t:"Build" /p:Configuration=Release /m /verbosity:m /nologo /p:TreatWarningsAsErrors=true
 }
 
 Define-Step -Name 'Tests' -Target 'all,test' -Body {
@@ -47,9 +46,6 @@ Define-Step -Name 'Packaging' -Target 'all,pack' -Body {
 
     gci -Path "src" -Filter 'project.json' -Recurse `
         | %{ call dotnet pack $_.fullname --output 'output' --no-build --configuration Release}
-
-    gci -Path "meta-packages" -Filter '*.nuspec' -Recurse `
-        | %{ call $Context.NugetExe pack $_.fullname -OutputDirectory 'output' }
 }
 
 Define-Step -Name 'Prepare templates' -Target 'all,pack' -Body {

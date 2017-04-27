@@ -48,7 +48,7 @@ namespace LightBDD.Framework.Reporting
         /// <summary>
         /// Converts <paramref name="formattablePath"/> to <see cref="ReportFormattablePath"/> by:
         /// * parameterizing path with configured parameter functions,
-        /// * replacing starting '~' character with value of <see cref="AppContext.BaseDirectory"/>, if present,
+        /// * replacing starting '~' character with value of <c>AppContext.BaseDirectory</c>, if present,
         /// * resolving to full path if path is relative.
         /// </summary>
         /// <param name="formattablePath">Formattable path string</param>
