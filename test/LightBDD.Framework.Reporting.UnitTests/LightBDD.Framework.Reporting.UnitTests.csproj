@@ -2,7 +2,9 @@
 
   <PropertyGroup>
     <VersionPrefix>2.1.0.0</VersionPrefix>
-    <TargetFrameworks>net451;net46</TargetFrameworks>
+    <TargetFrameworks>netcoreapp1.1;net451;net46</TargetFrameworks>
+    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netcoreapp1.1' ">$(PackageTargetFallback);netstandard1.6</PackageTargetFallback>
+    <RuntimeFrameworkVersion Condition=" '$(TargetFramework)' == 'netcoreapp1.1' ">1.1.1</RuntimeFrameworkVersion>
     <AssemblyName>LightBDD.Framework.Reporting.UnitTests</AssemblyName>
     <PackageId>LightBDD.Framework.Reporting.UnitTests</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
@@ -10,6 +12,12 @@
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\schemas\XmlReportFormatterSchema.xsd" Link="XmlReportFormatterSchema.xsd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\LightBDD.Framework\LightBDD.Framework.csproj" />

@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 [assembly: LightBddScope]
 
-namespace LightBDD.Integration.NUnit3.UnitTests
+namespace LightBDD.NUnit3.UnitTests
 {
     [TestFixture]
     public class FeatureFixtureTests

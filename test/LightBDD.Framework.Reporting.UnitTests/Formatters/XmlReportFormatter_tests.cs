@@ -1,37 +1,34 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using System.Xml.Linq;
 using System.Xml.Schema;
-using LightBDD.Core.Reporting;
 using LightBDD.Core.Results;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 
-namespace LightBDD.Reporting.UnitTests.Formatters
+namespace LightBDD.Framework.Reporting.UnitTests.Formatters
 {
     [TestFixture]
     public class XmlReportFormatter_tests
     {
         private IReportFormatter _subject;
+#if NET451 || NET46
         private static XmlSchemaSet _schema;
-
-        #region Setup/Teardown
 
         public XmlReportFormatter_tests()
         {
             _schema = new XmlSchemaSet();
 
-            _schema.Add("", Path.GetDirectoryName(typeof(IReportWriter).Assembly.CodeBase) + "\\..\\..\\..\\..\\..\\..\\schemas\\XmlReportFormatterSchema.xsd");
+            _schema.Add("", AppDomain.CurrentDomain.BaseDirectory + "\\XmlReportFormatterSchema.xsd");
         }
-
+#endif
         [SetUp]
         public void SetUp()
         {
             _subject = new XmlReportFormatter();
         }
-
-        #endregion
 
         [Test]
         public void Should_format_xml()
@@ -166,7 +163,9 @@ Step 2: Expected: True
 
         private static void ValidateWithSchema(string xml)
         {
+#if NET451 || NET46
             XDocument.Parse(xml).Validate(_schema, (o, e) => Assert.Fail(e.Message));
+#endif
         }
         private string FormatResults(params IFeatureResult[] results)
         {

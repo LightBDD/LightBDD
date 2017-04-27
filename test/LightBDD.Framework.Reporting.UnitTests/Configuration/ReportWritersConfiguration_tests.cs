@@ -3,13 +3,12 @@ using System.IO;
 using System.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Reporting;
-using LightBDD.Framework.Reporting;
 using LightBDD.Framework.Reporting.Configuration;
 using LightBDD.Framework.Reporting.Formatters;
 using Moq;
 using NUnit.Framework;
 
-namespace LightBDD.Reporting.UnitTests.Configuration
+namespace LightBDD.Framework.Reporting.UnitTests.Configuration
 {
     [TestFixture]
     public class ReportWritersConfiguration_tests
@@ -23,8 +22,8 @@ namespace LightBDD.Reporting.UnitTests.Configuration
             var featuresReportXml = @"~\Reports\FeaturesReport.xml";
             var featuresReportHtml = @"~\Reports\FeaturesReport.html";
 
-            AssertWriter(configuration, featuresReportXml, typeof(XmlReportFormatter), featuresReportXml.Replace("~", AppDomain.CurrentDomain.BaseDirectory));
-            AssertWriter(configuration, featuresReportHtml, typeof(HtmlReportFormatter), featuresReportHtml.Replace("~", AppDomain.CurrentDomain.BaseDirectory));
+            AssertWriter(configuration, featuresReportXml, typeof(XmlReportFormatter), featuresReportXml.Replace("~", AppDomainHelper.BaseDirectory));
+            AssertWriter(configuration, featuresReportHtml, typeof(HtmlReportFormatter), featuresReportHtml.Replace("~", AppDomainHelper.BaseDirectory));
         }
 
         private void AssertWriter(ReportWritersConfiguration configuration, string expectedRelativePath, Type expectedFormatterType, string expectedFullPath)

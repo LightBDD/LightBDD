@@ -5,10 +5,9 @@ using LightBDD.Core.Results;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.Framework.Scenarios.Extended;
-using LightBDD.MsTest2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD.Integration.MsTest.UnitTests2
+namespace LightBDD.MsTest2.UnitTests
 {
     [TestClass]
     [ScenarioCategory("Category E")]

@@ -5,7 +5,7 @@ using Xunit.Abstractions;
 
 [assembly: LightBddScope]
 
-namespace LightBDD.Integration.XUnit2.UnitTests
+namespace LightBDD.XUnit2.UnitTests
 {
     public class FeatureFixtureTests
     {

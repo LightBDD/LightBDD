@@ -2,7 +2,7 @@
 using LightBDD.Core.Results;
 using LightBDD.UnitTests.Helpers;
 
-namespace LightBDD.Reporting.UnitTests.Formatters
+namespace LightBDD.Framework.Reporting.UnitTests.Formatters
 {
     static class ReportFormatterTestData
     {

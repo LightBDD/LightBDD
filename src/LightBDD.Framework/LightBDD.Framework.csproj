@@ -35,7 +35,7 @@
   <ItemGroup>
     <Compile Include="..\..\AssemblyVersion.cs" Exclude="bin\**;obj\**;**\*.xproj;packages\**" />
     <EmbeddedResource Include="..\..\logo\lightbdd_small.ico">
-      <Link>LightBDD.Framework/Reporting/Formatters/Html/lightbdd_small.ico</Link>
+      <Link>Reporting\Formatters\Html\lightbdd_small.ico</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="Reporting\Formatters\Html\scripts.js;Reporting\Formatters\Html\styles.css" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
   </ItemGroup>
