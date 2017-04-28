@@ -31,12 +31,15 @@ Define-Step -Name 'Build' -Target 'all,build' -Body {
 Define-Step -Name 'Tests' -Target 'all,test' -Body {
     . (require 'psmake.mod.testing')
 
-    $tests = Define-DotnetTests -TestProject "*.UnitTests"
+    $tests = Define-DotnetTests -TestProject "*.UnitTests.csproj"
     $tests += Define-NUnitTests -GroupName "NUnit 2 tests" -TestAssembly "*\bin\Release\*.NUnitTests.dll"
-    $tests += Define-DotnetTests -TestProject "*.AcceptanceTests"
+    $tests += Define-DotnetTests -TestProject "*.AcceptanceTests.csproj"
 
+    $tests | Run-Tests
+    <# Code coverage does not work with current opencover (it does not support portable pdb (it will have to be full) and would require -old-style flag but then dotnet test won't detect netcore tests)
     $tests | Run-Tests -EraseReportDirectory -Cover -CodeFilter '+[LightBDD*]* -[*Tests*]*' -TestFilter '*Tests.dll' `
          | Generate-CoverageSummary | Check-AcceptableCoverage -AcceptableCoverage 90
+    #>
 }
 
 
