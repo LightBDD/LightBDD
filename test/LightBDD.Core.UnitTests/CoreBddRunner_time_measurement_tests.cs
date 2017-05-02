@@ -15,7 +15,7 @@ namespace LightBDD.Core.UnitTests
     public class CoreBddRunner_time_measurement_tests
     {
         private IBddRunner _runner;
-        private static readonly TimeSpan UtcNowClockPrecision = TimeSpan.FromMilliseconds(15);
+        private static readonly TimeSpan UtcNowClockPrecision = TimeSpan.FromMilliseconds(30);
         private IFeatureRunner _feature;
 
         #region Setup/Teardown
@@ -43,10 +43,8 @@ namespace LightBDD.Core.UnitTests
 
         private void AssertScenarioExecutionTime(Action runScenario)
         {
-            var watch = new Stopwatch();
-
             var startTime = DateTimeOffset.UtcNow;
-            watch.Start();
+            var watch = Stopwatch.StartNew();
             try { runScenario(); }
             catch { }
             watch.Stop();
@@ -57,11 +55,11 @@ namespace LightBDD.Core.UnitTests
             FormatTime("Scenario time", result.ExecutionTime);
 
             Assert.That(result.ExecutionTime, Is.Not.Null);
-            Assert.That(result.ExecutionTime.Duration, Is.LessThanOrEqualTo(watch.Elapsed));
+            Assert.That(result.ExecutionTime.Duration, Is.LessThanOrEqualTo(watch.Elapsed), "Scenario.ExecutionTime.Duration");
             Assert.That(result.ExecutionTime.Start, Is
                 .GreaterThanOrEqualTo(startTime)
                 .And
-                .LessThan(startTime.Add(watch.Elapsed).Add(UtcNowClockPrecision)));
+                .LessThan(startTime.Add(watch.Elapsed).Add(UtcNowClockPrecision)), "Scenario.ExecutionTime.Start");
 
             AssertStepsExecutionTimesAreDoneInOrder();
         }
@@ -82,19 +80,19 @@ namespace LightBDD.Core.UnitTests
                 FormatTime("Step result", steps[i].ExecutionTime);
                 if (steps[i].Status == ExecutionStatus.NotRun)
                 {
-                    Assert.That(steps[i].ExecutionTime, Is.Null);
+                    Assert.That(steps[i].ExecutionTime, Is.Null, $"Step[{i}].ExecutionTime");
                     continue;
                 }
 
-                Assert.That(steps[i].ExecutionTime, Is.Not.Null);
+                Assert.That(steps[i].ExecutionTime, Is.Not.Null, $"Step[{i}].ExecutionTime");
 
                 if (i == 0)
-                    Assert.That(steps[i].ExecutionTime.Start, Is.GreaterThanOrEqualTo(scenario.ExecutionTime.Start));
+                    Assert.That(steps[i].ExecutionTime.Start, Is.GreaterThanOrEqualTo(scenario.ExecutionTime.Start), $"Step[{i}].ExecutionTime.Start");
                 else
-                    Assert.That(steps[i].ExecutionTime.Start, Is.GreaterThanOrEqualTo(steps[i - 1].ExecutionTime.End - UtcNowClockPrecision));
+                    Assert.That(steps[i].ExecutionTime.Start, Is.GreaterThanOrEqualTo(steps[i - 1].ExecutionTime.End - UtcNowClockPrecision), $"Step[{i}].ExecutionTime.Start");
 
                 if (i == steps.Length - 1)
-                    Assert.That(steps[i].ExecutionTime.End, Is.LessThanOrEqualTo(scenario.ExecutionTime.End + UtcNowClockPrecision));
+                    Assert.That(steps[i].ExecutionTime.End, Is.LessThanOrEqualTo(scenario.ExecutionTime.End + UtcNowClockPrecision), $"Step[{i}].ExecutionTime.End");
             }
         }
 
