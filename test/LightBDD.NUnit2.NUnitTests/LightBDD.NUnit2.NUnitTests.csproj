@@ -53,9 +53,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\AssemblyVersion.cs">
-      <Link>Properties\AssemblyVersion.cs</Link>
-    </Compile>
     <Compile Include="FeatureFixtureAttributeTests.cs" />
     <Compile Include="FeatureFixtureTests.cs" />
     <Compile Include="IntegrationTests.cs" />

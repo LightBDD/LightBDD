@@ -1,40 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  <Import Project="..\..\Common.props" />
   <PropertyGroup>
-    <Description>Provides LightBDD framework with features, such as:
-* native support for refactoring, code analysis (like finding unused methods), test running and all features that Visual Studio / Intellisense / Resharper offer during code development,
-* easy to read scenario definitions,
-* basic, extended (parameterized) and contextual scenario execution support,
-* method parameter formatting attributes,
-* step commenting,
-* Xml/Html/Plain text report generation.</Description>
-    <Copyright>Copyright © Wojciech Kotlarski 2013-2017</Copyright>
-    <VersionPrefix>2.1.0.0</VersionPrefix>
-    <Authors>Wojciech Kotlarski</Authors>
+    <Description>Provides LightBDD framework with features, such as native support for refactoring, code analysis (like finding unused methods), test running and all features that Visual Studio / Intellisense / Resharper offer during code development; easy to read scenario definitions; basic, extended (parameterized) and contextual scenario execution support; method parameter formatting attributes; step commenting; Xml/Html/Plain text report generation.</Description>
     <TargetFrameworks>netstandard1.3;net46;net45</TargetFrameworks>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <AssemblyName>LightBDD.Framework</AssemblyName>
-    <PackageId>LightBDD.Framework</PackageId>
-    <PackageTags>bdd;tdd;testing;framework;behavior driven development;acceptance criteria</PackageTags>
-    <PackageReleaseNotes>Rewritten Framework mechanisms to function on top of LightBDD.Core and offer end-user common features.</PackageReleaseNotes>
-    <PackageIconUrl>https://raw.githubusercontent.com/LightBDD/LightBDD/master/logo/lightbdd.png</PackageIconUrl>
-    <PackageProjectUrl>https://github.com/LightBDD/LightBDD</PackageProjectUrl>
-    <PackageLicenseUrl>http://opensource.org/licenses/BSD-2-Clause</PackageLicenseUrl>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/LightBDD/LightBDD</RepositoryUrl>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.3' ">1.6.0</NetStandardImplicitPackageVersion>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <IncludeSymbols>True</IncludeSymbols>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageOutputPath>..\..\output</PackageOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\AssemblyVersion.cs" Link="Properties\AssemblyVersion.cs" />
     <EmbeddedResource Include="..\..\logo\lightbdd_small.ico">
       <Link>Reporting\Formatters\Html\lightbdd_small.ico</Link>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reporting\Formatters\Html\scripts.js;Reporting\Formatters\Html\styles.css" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+    <EmbeddedResource Include="Reporting\Formatters\Html\scripts.js;Reporting\Formatters\Html\styles.css" />
   </ItemGroup>
 
   <ItemGroup>

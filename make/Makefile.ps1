@@ -16,8 +16,8 @@ Define-Step -Name 'Update version' -Target 'all,build' -Body {
     $version = (Get-Content 'make\current_version').Trim()
     Write-ShortStatus "Updating version to $version..."
 
-    gci -Filter '*.csproj' -Recurse | %{ Replace-InFile $_.fullname $version '<VersionPrefix>%</VersionPrefix>' }
     Replace-InFile 'AssemblyVersion.cs' $version 'Version("%")'
+    Replace-InFile 'Common.props' $version '<VersionPrefix>%</VersionPrefix>'
     Replace-InFile 'QuickStart.txt' $version 'version %!'
     Replace-InFile 'templates\LightBDD.VSIXTemplates\source.extension.vsixmanifest' $version 'Identity Id="d6382c7a-fe20-47e5-b4e1-4d798cef97f1" Version="%"'
     
@@ -47,14 +47,14 @@ Define-Step -Name 'Tests' -Target 'all,test' -Body {
 
 Define-Step -Name 'Prepare templates' -Target 'all,pack' -Body {
 
-    Get-ChildItem '.\templates' -Recurse  -Filter '*.vstemplate' | %{
+    Get-ChildItem '.\templates' -Recurse -Filter '*.vstemplate' | %{
     Write-Host $_
         $templateDirectory = $_.Directory.FullName
         Write-ShortStatus "Processing: $templateDirectory"
         Copy-Item 'logo\lightbdd.ico' -Destination "$templateDirectory\lightbdd.ico" | Out-Null
     }
 
-    Get-ChildItem '.\templates' -Recurse  -Filter '*.vsixmanifest' | %{
+    Get-ChildItem '.\templates' -Recurse -Filter '*.vsixmanifest' | %{
         $templateDirectory = $_.Directory.FullName
         Write-ShortStatus "Processing: $templateDirectory"
         Copy-Item 'logo\lightbdd_small.ico' -Destination "$templateDirectory\lightbdd_small.ico" | Out-Null

@@ -1,39 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  <Import Project="..\..\Common.props" />
   <PropertyGroup>
-    <Description>
-      Provides LightBDD core features, such as:
-      * asynchronous scenario execution with execution tracking and time measurement,
-      * metadata discovery and formatting,
-      * reporting,
-      * in-code configuration,
-      * progress notification,
-      * framework extensibility.
-    </Description>
-    <Copyright>Copyright © Wojciech Kotlarski 2013-2017</Copyright>
-    <VersionPrefix>2.1.0.0</VersionPrefix>
-    <Authors>Wojciech Kotlarski</Authors>
+    <Summary>LightBDD Test Framework Core</Summary>
+    <Description>Provides LightBDD core features, including asynchronous scenario execution with execution tracking and time measurement; metadata discovery and formatting; reporting; in-code configuration; progress notification and framework extensibility.</Description>
     <TargetFrameworks>netstandard1.1;net45</TargetFrameworks>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <AssemblyName>LightBDD.Core</AssemblyName>
-    <PackageId>LightBDD.Core</PackageId>
-    <PackageTags>bdd;tdd;testing;framework;behavior driven development;acceptance criteria</PackageTags>
-    <PackageReleaseNotes>Rewritten Core mechanisms to support multiple platforms (.NET Standard, .NET Framework), async test execution, extensibility and in-code configuration.</PackageReleaseNotes>
-    <PackageIconUrl>https://raw.githubusercontent.com/LightBDD/LightBDD/master/logo/lightbdd.png</PackageIconUrl>
-    <PackageProjectUrl>https://github.com/LightBDD/LightBDD</PackageProjectUrl>
-    <PackageLicenseUrl>http://opensource.org/licenses/BSD-2-Clause</PackageLicenseUrl>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/LightBDD/LightBDD</RepositoryUrl>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.1' ">1.6.0</NetStandardImplicitPackageVersion>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <IncludeSymbols>True</IncludeSymbols>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageOutputPath>..\..\output</PackageOutputPath>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="..\..\AssemblyVersion.cs" Link="Properties\AssemblyVersion.cs" />
-  </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System" />
