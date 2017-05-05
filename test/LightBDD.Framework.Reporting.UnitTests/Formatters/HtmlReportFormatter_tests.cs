@@ -6,12 +6,12 @@ using System.Linq;
 using System.Text;
 using HtmlAgilityPack;
 using LightBDD.Core.Results;
-using LightBDD.Framework;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
+using System.Reflection;
 
-namespace LightBDD.Reporting.UnitTests.Formatters
+namespace LightBDD.Framework.Reporting.UnitTests.Formatters
 {
     [TestFixture]
     public class HtmlReportFormatter_tests
@@ -170,7 +170,7 @@ initialize();";
 
         private string GetExpectedLightBddVersion()
         {
-            return typeof(IBddRunner).Assembly.GetName().Version.ToString(4);
+            return typeof(IBddRunner).GetTypeInfo().Assembly.GetName().Version.ToString(4);
         }
 
         private string FormatAndExtractText(params IFeatureResult[] results)

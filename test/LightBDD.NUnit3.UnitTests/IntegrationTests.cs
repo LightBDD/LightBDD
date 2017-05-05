@@ -4,10 +4,9 @@ using System.Threading.Tasks;
 using LightBDD.Core.Results;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Basic;
-using LightBDD.NUnit3;
 using NUnit.Framework;
 
-namespace LightBDD.Integration.NUnit3.UnitTests
+namespace LightBDD.NUnit3.UnitTests
 {
     [TestFixture]
     [Description("desc")]

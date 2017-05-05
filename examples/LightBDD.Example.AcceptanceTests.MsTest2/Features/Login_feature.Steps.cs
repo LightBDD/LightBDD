@@ -4,7 +4,7 @@ using LightBDD.Framework.Commenting;
 using LightBDD.MsTest2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD.Example.AcceptanceTests.MsTest.Features
+namespace LightBDD.Example.AcceptanceTests.MsTest2.Features
 {
     public partial class Login_feature : FeatureFixture
     {

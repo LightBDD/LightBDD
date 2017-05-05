@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\Common.props" />
+  <PropertyGroup>
+    <Description>Allows creating acceptance tests in developer friendly environment by offering LightBDD.Framework features on top of NUnit 2 testing framework.
+
+High level features:
+* user friendly bdd scenario definitions,
+* test execution tracing and time measurement, helpful during longer test execution,
+* Xml/Html/Plain text reports generation,
+* asynchronous execution support,
+* in-code LightBDD configuration.</Description>
+    <TargetFrameworks>net45;net46</TargetFrameworks>
+    <PackageTags>$(PackageTags);nunit;nunit2</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="..\..\QuickStart.txt">
+      <PackagePath></PackagePath>
+      <Pack>true</Pack>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LightBDD.Framework\LightBDD.Framework.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="2.6.4" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+</Project>

@@ -4,7 +4,7 @@ using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.MsTest2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD.Example.AcceptanceTests.MsTest
+namespace LightBDD.Example.AcceptanceTests.MsTest2
 {
     [TestClass]
     public class LightBddIntegration

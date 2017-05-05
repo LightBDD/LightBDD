@@ -11,9 +11,9 @@
     <Tags>lightbdd bdd tdd testing framework behavior driven development acceptance criteria nunit mstest vstest</Tags>
   </Metadata>
   <Installation>
-    <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[11.0,15.0)" />
-    <InstallationTarget Version="[11.0,15.0)" Id="Microsoft.VisualStudio.Pro" />
-    <InstallationTarget Version="[11.0,15.0)" Id="Microsoft.VisualStudio.Enterprise" />
+    <InstallationTarget Version="[11.0,)" Id="Microsoft.VisualStudio.Community"/>
+    <InstallationTarget Version="[11.0,)" Id="Microsoft.VisualStudio.Pro" />
+    <InstallationTarget Version="[11.0,)" Id="Microsoft.VisualStudio.Enterprise" />
   </Installation>
   <Dependencies>
     <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
@@ -24,4 +24,7 @@
     <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="LightBDD.MsTest2.FeatureTemplate" d:TargetPath="|LightBDD.MsTest2.FeatureTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
     <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="LightBDD.NUnit2.FeatureTemplate" d:TargetPath="|LightBDD.NUnit2.FeatureTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
   </Assets>
+  <Prerequisites>
+    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,)" DisplayName="Visual Studio core editor" />
+  </Prerequisites>
 </PackageManifest>

@@ -1,10 +1,9 @@
 ﻿using System;
 using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Scenarios.Basic;
-using LightBDD.NUnit3;
 using NUnit.Framework;
 
-namespace LightBDD.Integration.NUnit3.UnitTests
+namespace LightBDD.NUnit3.UnitTests
 {
     public class FeatureFixtureAttributeTests
     {

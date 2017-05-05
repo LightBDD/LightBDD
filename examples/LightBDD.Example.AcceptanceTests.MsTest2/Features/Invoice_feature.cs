@@ -3,7 +3,7 @@ using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.MsTest2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD.Example.AcceptanceTests.MsTest.Features
+namespace LightBDD.Example.AcceptanceTests.MsTest2.Features
 {
     [TestClass]
     [FeatureDescription(

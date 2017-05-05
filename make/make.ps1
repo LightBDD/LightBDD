@@ -14,5 +14,5 @@ function private:Get-NuGetArgs ($params, $defaultSource)
 }
 
 $private:srcArgs = Get-NuGetArgs $args $PsMakeNugetSource
-.nuget\NuGet.exe install psmake -Version $PsMakeVer -OutputDirectory make -ConfigFile .nuget\NuGet.Config @srcArgs
+.nuget\NuGet.exe install psmake -Version $PsMakeVer -OutputDirectory make -ConfigFile .\NuGet.Config @srcArgs
 & "make\psmake.$PsMakeVer\psmake.ps1" -md make @args

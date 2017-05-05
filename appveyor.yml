@@ -1,3 +1,4 @@
+image: Visual Studio 2017
 version: '{build}'
 skip_tags: false
 clone_depth: 1

@@ -4,7 +4,7 @@ using LightBDD.Example.Domain;
 using LightBDD.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD.Example.AcceptanceTests.MsTest.Features.Contexts
+namespace LightBDD.Example.AcceptanceTests.MsTest2.Features.Contexts
 {
 public class ContactsManagementContext
 {

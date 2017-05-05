@@ -5,11 +5,10 @@ using LightBDD.Core.Results;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.Framework.Scenarios.Extended;
-using LightBDD.XUnit2;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace LightBDD.Integration.XUnit2.UnitTests
+namespace LightBDD.XUnit2.UnitTests
 {
     [FeatureDescription("desc")]
     [ScenarioCategory("Category B")]

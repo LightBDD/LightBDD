@@ -2,13 +2,12 @@ using System;
 using System.IO;
 using System.Linq;
 using LightBDD.Core.Results;
-using LightBDD.Framework.Reporting;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.UnitTests.Helpers;
 using Moq;
 using NUnit.Framework;
 
-namespace LightBDD.Reporting.UnitTests
+namespace LightBDD.Framework.Reporting.UnitTests
 {
     [TestFixture]
     public class ReportFileWriter_formattable_path_tests
@@ -91,7 +90,7 @@ namespace LightBDD.Reporting.UnitTests
         private void GenerateRelativeDirPathWithTilde()
         {
             _dirPath = Guid.NewGuid().ToString();
-            _realDirPath = AppDomain.CurrentDomain.BaseDirectory + "\\" + _dirPath;
+            _realDirPath = AppDomainHelper.BaseDirectory + "\\" + _dirPath;
             _dirPath = "~\\" + _dirPath;
         }
 

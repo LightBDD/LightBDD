@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\Common.props" />
+  <PropertyGroup>
+    <Description>Provides LightBDD framework with common classes and features for all LightBDD integrations.
+
+High level features:
+* native support for refactoring, code analysis (like finding unused methods), test running and all features that Visual Studio / Intellisense / Resharper offer during code development;
+* easy to read scenario definitions;
+* basic, extended (parameterized) and contextual scenario execution support;
+* method parameter formatting attributes;
+* step commenting;
+* execution progress notifiers;
+* Xml/Html/Plain text report generation.</Description>
+    <TargetFrameworks>netstandard1.3;net46;net45</TargetFrameworks>
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.3' ">1.6.0</NetStandardImplicitPackageVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\logo\lightbdd_small.ico">
+      <Link>Reporting\Formatters\Html\lightbdd_small.ico</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reporting\Formatters\Html\scripts.js;Reporting\Formatters\Html\styles.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LightBDD.Core\LightBDD.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+</Project>

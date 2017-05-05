@@ -33,7 +33,7 @@ namespace LightBDD.Framework.Reporting
         /// Please note that full output path is being resolved at time when constructor is called, not when results are saved, so any relative paths will be resolved at the construction of this class.
         /// </summary>
         /// <param name="formatter">Report formatter.</param>
-        /// <param name="outputPath">Output path. If starts with <c>~</c>, it would be resolved to <see cref="AppContext.BaseDirectory"/>. It can contain string.Format() like parameters of {name:format} syntax.
+        /// <param name="outputPath">Output path. If starts with <c>~</c>, it would be resolved to <c>AppContext.BaseDirectory</c>. It can contain string.Format() like parameters of {name:format} syntax.
         /// This constructor uses default <see cref="ReportPathFormatter"/> to format these parameters. See <see cref="ReportPathFormatter.CreateDefault"/>() for more details on available parameter types.</param>
         public ReportFileWriter(IReportFormatter formatter, string outputPath)
             : this(formatter, outputPath, ReportPathFormatter.CreateDefault()) { }
@@ -43,7 +43,7 @@ namespace LightBDD.Framework.Reporting
         /// Please note that full output path is being resolved at time when constructor is called, not when results are saved, so any relative paths will be resolved at the construction of this class.
         /// </summary>
         /// <param name="formatter">Report formatter.</param>
-        /// <param name="outputPath">Output path. If starts with <c>~</c>, it would be resolved to <see cref="AppContext.BaseDirectory"/>. It can contain string.Format() like parameters of {name:format} syntax.</param>
+        /// <param name="outputPath">Output path. If starts with <c>~</c>, it would be resolved to <c>AppContext.BaseDirectory</c>. It can contain string.Format() like parameters of {name:format} syntax.</param>
         /// <param name="pathFormatter"><see cref="ReportPathFormatter"/> instance used to format <paramref name="outputPath"/>.</param>
         public ReportFileWriter(IReportFormatter formatter, string outputPath, ReportPathFormatter pathFormatter)
         {
