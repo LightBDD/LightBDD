@@ -53,16 +53,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Framework.Reportin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.NUnit2", "src\LightBDD.NUnit2\LightBDD.NUnit2.csproj", "{46143709-9004-4FB2-9179-9A7ED9BF2992}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.NUnit2.NUnitTests", "test\LightBDD.NUnit2.NUnitTests\LightBDD.NUnit2.NUnitTests.csproj", "{13B7FE09-7153-4AC4-BF2A-8C63FBB3EF3C}"
-	ProjectSection(ProjectDependencies) = postProject
-		{46143709-9004-4FB2-9179-9A7ED9BF2992} = {46143709-9004-4FB2-9179-9A7ED9BF2992}
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.NUnit2.NUnitTests", "test\LightBDD.NUnit2.NUnitTests\LightBDD.NUnit2.NUnitTests.csproj", "{13B7FE09-7153-4AC4-BF2A-8C63FBB3EF3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.Example.AcceptanceTests.NUnit2", "examples\LightBDD.Example.AcceptanceTests.NUnit2\LightBDD.Example.AcceptanceTests.NUnit2.csproj", "{A160FFD6-0AF8-4B6B-9E96-45F06A08CFD2}"
-	ProjectSection(ProjectDependencies) = postProject
-		{46143709-9004-4FB2-9179-9A7ED9BF2992} = {46143709-9004-4FB2-9179-9A7ED9BF2992}
-		{F69FD39E-F710-4C37-A1E0-84B02B5C64CB} = {F69FD39E-F710-4C37-A1E0-84B02B5C64CB}
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Example.AcceptanceTests.NUnit2", "examples\LightBDD.Example.AcceptanceTests.NUnit2\LightBDD.Example.AcceptanceTests.NUnit2.csproj", "{A160FFD6-0AF8-4B6B-9E96-45F06A08CFD2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.Example.AcceptanceTests.MsTest2.UWP", "examples\LightBDD.Example.AcceptanceTests.MsTest2.UWP\LightBDD.Example.AcceptanceTests.MsTest2.UWP.csproj", "{C78B34DF-5DC2-4EE7-91D0-4C474B49FBB1}"
 	ProjectSection(ProjectDependencies) = postProject
