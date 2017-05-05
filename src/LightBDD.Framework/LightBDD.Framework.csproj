@@ -1,7 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\..\Common.props" />
   <PropertyGroup>
-    <Description>Provides LightBDD framework with features, such as native support for refactoring, code analysis (like finding unused methods), test running and all features that Visual Studio / Intellisense / Resharper offer during code development; easy to read scenario definitions; basic, extended (parameterized) and contextual scenario execution support; method parameter formatting attributes; step commenting; Xml/Html/Plain text report generation.</Description>
+    <Description>Provides LightBDD framework with common classes and features for all LightBDD integrations.
+
+High level features:
+* native support for refactoring, code analysis (like finding unused methods), test running and all features that Visual Studio / Intellisense / Resharper offer during code development;
+* easy to read scenario definitions;
+* basic, extended (parameterized) and contextual scenario execution support;
+* method parameter formatting attributes;
+* step commenting;
+* execution progress notifiers;
+* Xml/Html/Plain text report generation.</Description>
     <TargetFrameworks>netstandard1.3;net46;net45</TargetFrameworks>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.3' ">1.6.0</NetStandardImplicitPackageVersion>
   </PropertyGroup>
