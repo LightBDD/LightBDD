@@ -29,5 +29,9 @@ namespace LightBDD.Core.Results
         /// Returns step comments or empty collection if no comments were made.
         /// </summary>
         IEnumerable<string> Comments { get; }
+        /// <summary>
+        /// Returns sub-steps if given step consists of any, or empty collection.
+        /// </summary>
+        IEnumerable<IStepResult> SubSteps { get; }
     }
 }

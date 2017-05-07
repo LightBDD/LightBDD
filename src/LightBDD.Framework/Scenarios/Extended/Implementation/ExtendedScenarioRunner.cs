@@ -49,6 +49,11 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
                 .RunAsynchronously();
         }
 
+        public StepGroup DefineStepGroup<T>(Expression<Action<T>>[] steps)
+        {
+            return new StepGroup(steps.Select(ToStep).ToArray());
+        }
+
         private StepDescriptor ToStep<T>(Expression<T> stepExpression)
         {
             var contextParameter = stepExpression.Parameters[0];
@@ -72,23 +77,41 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
             return methodExpression.Arguments.Select((arg, index) => CompileArgument(arg, contextParameter, methodParameterInfo[index])).ToArray();
         }
 
-        private Func<object, object[], Task> CompileStepAction(MethodCallExpression methodCall, ParameterExpression contextParameter)
+        private Func<object, object[], Task<StepResultDescriptor>> CompileStepAction(MethodCallExpression methodCall, ParameterExpression contextParameter)
         {
-            Func<int, Task> fromResult = Task.FromResult;
-
             var targetParam = Expression.Parameter(typeof(object), "target");
             var argsParam = Expression.Parameter(typeof(object[]), "args");
             var args = methodCall.Arguments.Select((arg, index) => Expression.Convert(Expression.ArrayAccess(argsParam, Expression.Constant(index)), arg.Type));
             Expression body = Expression.Call(methodCall.Object, methodCall.Method, args);
-            if (methodCall.Method.ReturnType != typeof(Task))
-                body = Expression.Block(body, Expression.Call(null, fromResult.GetMethodInfo(), Expression.Constant(0)));
-            var stepCallFunction = Expression.Lambda<Func<TContext, object[], Task>>(body, contextParameter, argsParam).Compile();
 
-            var genericStepCallFunction = Expression.Lambda<Func<object, object[], Task>>(
+            body = ConvertReturnType(methodCall.Method.ReturnType, body);
+
+            var stepCallFunction = Expression.Lambda<Func<TContext, object[], Task<StepResultDescriptor>>>(body, contextParameter, argsParam).Compile();
+
+            var genericStepCallFunction = Expression.Lambda<Func<object, object[], Task<StepResultDescriptor>>>(
                     Expression.Invoke(Expression.Constant(stepCallFunction), Expression.Convert(targetParam, contextParameter.Type), argsParam),
                     targetParam, argsParam)
                 .Compile();
             return genericStepCallFunction;
+        }
+
+        private static Expression ConvertReturnType(Type currentReturnType, Expression body)
+        {
+            var currentTypeInfo = currentReturnType.GetTypeInfo();
+            if (typeof(Task).GetTypeInfo().IsAssignableFrom(currentTypeInfo))
+            {
+                if (currentTypeInfo.IsGenericType && typeof(StepResultDescriptor).GetTypeInfo().IsAssignableFrom(currentTypeInfo.GenericTypeParameters[0].GetTypeInfo()))
+                    return body;
+                Func<Task, Task<StepResultDescriptor>> finalizer = FinalizeTask;
+
+                return Expression.Call(null, finalizer.GetMethodInfo(), body);
+            }
+
+            Func<StepResultDescriptor, Task> fromResult = Task.FromResult;
+            if (typeof(StepResultDescriptor).GetTypeInfo().IsAssignableFrom(currentTypeInfo))
+                return Expression.Call(null, fromResult.GetMethodInfo(), body);
+
+            return Expression.Block(body, Expression.Call(null, fromResult.GetMethodInfo(), Expression.Constant(StepResultDescriptor.None)));
         }
 
         private ParameterDescriptor CompileArgument(Expression argumentExpression, ParameterExpression contextParameter, ParameterInfo parameterInfo)
@@ -120,6 +143,12 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
         public static ExtendedScenarioRunner<TContext> Create(IFeatureFixtureRunner runner, IntegrationContext context)
         {
             return new ExtendedScenarioRunner<TContext>(runner, context);
+        }
+
+        private static async Task<StepResultDescriptor> FinalizeTask(Task parent)
+        {
+            await parent;
+            return StepResultDescriptor.None;
         }
     }
 }

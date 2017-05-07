@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
 
@@ -22,6 +23,7 @@ namespace LightBDD.Core.Results.Implementation
         public string StatusDetails { get; private set; }
         public ExecutionTime ExecutionTime { get; private set; }
         public IEnumerable<string> Comments => _comments;
+        public IEnumerable<IStepResult> SubSteps { get; private set; } = Arrays<IStepResult>.Empty();
 
         public void SetStatus(ExecutionStatus status, string details = null)
         {
@@ -51,6 +53,11 @@ namespace LightBDD.Core.Results.Implementation
                 details = string.Format(" ({0})", StatusDetails);
 
             return $"{Info}: {Status}{details}";
+        }
+
+        public void SetSubSteps(IStepResult[] subSteps)
+        {
+            SubSteps = subSteps;
         }
     }
 }

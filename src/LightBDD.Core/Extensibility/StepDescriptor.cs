@@ -9,6 +9,7 @@ namespace LightBDD.Core.Extensibility
     /// Class describing scenario step, including its metadata information as well invocation method together with parameters required to its execution.
     /// It is designed to provide all required information for <see cref="IMetadataProvider.GetStepName"/>() method to provide <see cref="IStepNameInfo"/> object.
     /// </summary>
+    //TODO: backward compatibility check
     [DebuggerStepThrough]
     public class StepDescriptor
     {
@@ -21,7 +22,7 @@ namespace LightBDD.Core.Extensibility
         /// <param name="parameters">Step invocation function parameters.</param>
         /// <exception cref="ArgumentException">Throws when <paramref name="rawName"/> is null or empty.</exception>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="stepInvocation"/> or <paramref name="parameters"/> is null.</exception>
-        public StepDescriptor(string predefinedStepType, string rawName, Func<object, object[], Task> stepInvocation, params ParameterDescriptor[] parameters)
+        public StepDescriptor(string predefinedStepType, string rawName, Func<object, object[], Task<StepResultDescriptor>> stepInvocation, params ParameterDescriptor[] parameters)
         {
             if (string.IsNullOrWhiteSpace(rawName))
                 throw new ArgumentException("Null or just white space is not allowed", nameof(rawName));
@@ -45,7 +46,7 @@ namespace LightBDD.Core.Extensibility
         /// <param name="parameters">Step invocation function parameters.</param>
         /// <exception cref="ArgumentException">Throws when <paramref name="rawName"/> is null or empty.</exception>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="stepInvocation"/> or <paramref name="parameters"/> is null.</exception>
-        public StepDescriptor(string rawName, Func<object, object[], Task> stepInvocation, params ParameterDescriptor[] parameters)
+        public StepDescriptor(string rawName, Func<object, object[], Task<StepResultDescriptor>> stepInvocation, params ParameterDescriptor[] parameters)
             : this(null, rawName, stepInvocation, parameters)
         {
         }
@@ -60,7 +61,7 @@ namespace LightBDD.Core.Extensibility
         /// <summary>
         /// Returns step invocation function accepting scenario context object configured with <see cref="IScenarioRunner.WithContext"/>() method and step parameters.
         /// </summary>
-        public Func<object, object[], Task> StepInvocation { get; }
+        public Func<object, object[], Task<StepResultDescriptor>> StepInvocation { get; }
         /// <summary>
         /// Returns step parameter descriptors.
         /// </summary>

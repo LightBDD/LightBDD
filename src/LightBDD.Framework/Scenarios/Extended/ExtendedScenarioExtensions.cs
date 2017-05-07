@@ -227,6 +227,11 @@ namespace LightBDD.Framework.Scenarios.Extended
             await AsExtended(runner).RunScenarioAsync(steps);
         }
 
+        public static StepGroup DefineStepGroup<TContext>(this IBddRunner<TContext> runner, params Expression<Action<TContext>>[] steps)
+        {
+            return AsExtended(runner).DefineStepGroup(steps);
+        }
+
         private static ExtendedScenarioRunner<TContext> AsExtended<TContext>(this IBddRunner<TContext> runner)
         {
             return runner.Integrate().AsEnrichable().Enrich(ExtendedScenarioRunner<TContext>.Create);

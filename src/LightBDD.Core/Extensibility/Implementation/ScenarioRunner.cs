@@ -114,14 +114,18 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         private RunnableStep[] ProvideSteps(ExtendableExecutor extendableExecutor, object scenarioContext)
         {
-            var descriptors = _steps.ToArray();
-            var totalStepsCount = descriptors.Length;
+            return ProvideSteps(extendableExecutor, scenarioContext, _steps.ToArray());
+        }
+
+        private RunnableStep[] ProvideSteps(ExtendableExecutor extendableExecutor, object scenarioContext, StepDescriptor[] steps)
+        {
+            var totalStepsCount = steps.Length;
             string previousStepTypeName = null;
             var result = new RunnableStep[totalStepsCount];
 
             for (int i = 0; i < totalStepsCount; ++i)
             {
-                var step = ToRunnableStep(descriptors[i], i, totalStepsCount, previousStepTypeName, extendableExecutor, scenarioContext);
+                var step = ToRunnableStep(steps[i], i, totalStepsCount, previousStepTypeName, extendableExecutor, scenarioContext);
                 result[i] = step;
                 previousStepTypeName = step.Result.Info.Name.StepTypeName?.OriginalName;
             }
@@ -133,7 +137,19 @@ namespace LightBDD.Core.Extensibility.Implementation
         {
             var stepInfo = new StepInfo(_metadataProvider.GetStepName(descriptor, previousStepTypeName), stepIndex + 1, totalStepsCount);
             var arguments = descriptor.Parameters.Select(p => new MethodArgument(p, _metadataProvider.GetParameterFormatter(p.ParameterInfo))).ToArray();
-            return new RunnableStep(stepInfo, descriptor.StepInvocation, arguments, _exceptionToStatusMapper, _progressNotifier, extendableExecutor, scenarioContext);
+            return new RunnableStep(stepInfo, TransformInvocationResult(descriptor, extendableExecutor, scenarioContext), arguments, _exceptionToStatusMapper, _progressNotifier, extendableExecutor, scenarioContext);
+        }
+
+        private Func<object, object[], Task<RunnableStepResult>> TransformInvocationResult(StepDescriptor descriptor, ExtendableExecutor extendableExecutor, object scenarioContext)
+        {
+            var invocation = descriptor.StepInvocation;
+
+            async Task<RunnableStepResult> Invoke(object context, object[] args)
+            {
+                var result = await invocation.Invoke(context, args);
+                return new RunnableStepResult(ProvideSteps(extendableExecutor, scenarioContext, result.SubSteps));
+            }
+            return Invoke;
         }
 
         private static object ProvideNoContext()

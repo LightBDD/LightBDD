@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
+using LightBDD.Framework.Scenarios.Extended;
 
 namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
@@ -19,6 +20,11 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
         public void TestScenario(params Action[] steps)
         {
             TestScenario(steps.Select(TestStep.CreateAsync).ToArray());
+        }
+
+        public void TestGroupScenario(params Func<StepGroup>[] steps)
+        {
+            TestScenario(steps.Select(TestStep.CreateForGroup).ToArray());
         }
 
         public Task TestScenarioAsync(params Func<Task>[] steps)
@@ -89,6 +95,11 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
                 .WithName(name)
                 .WithSteps(steps)
                 .RunAsynchronously();
+        }
+
+        public StepGroup CreateStepGroup(params Action[] steps)
+        {
+            return new StepGroup(steps.Select(TestStep.CreateSync).ToArray());
         }
     }
 }

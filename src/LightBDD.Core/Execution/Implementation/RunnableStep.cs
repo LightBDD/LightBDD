@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution.Implementation;
 using LightBDD.Core.Extensibility.Implementation;
 using LightBDD.Core.Metadata;
@@ -15,7 +16,7 @@ namespace LightBDD.Core.Execution.Implementation
     [DebuggerStepThrough]
     internal class RunnableStep : IStep
     {
-        private readonly Func<object, object[], Task> _stepInvocation;
+        private readonly Func<object, object[], Task<RunnableStepResult>> _stepInvocation;
         private readonly MethodArgument[] _arguments;
         private readonly Func<Exception, ExecutionStatus> _exceptionToStatusMapper;
         private readonly IScenarioProgressNotifier _progressNotifier;
@@ -25,7 +26,7 @@ namespace LightBDD.Core.Execution.Implementation
         public IStepResult Result => _result;
         public IStepInfo Info => Result.Info;
 
-        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task> stepInvocation, MethodArgument[] arguments, Func<Exception, ExecutionStatus> exceptionToStatusMapper, IScenarioProgressNotifier progressNotifier, ExtendableExecutor extendableExecutor, object scenarioContext)
+        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task<RunnableStepResult>> stepInvocation, MethodArgument[] arguments, Func<Exception, ExecutionStatus> exceptionToStatusMapper, IScenarioProgressNotifier progressNotifier, ExtendableExecutor extendableExecutor, object scenarioContext)
         {
             _result = new StepResult(stepInfo);
             _stepInvocation = stepInvocation;
@@ -88,23 +89,45 @@ namespace LightBDD.Core.Execution.Implementation
         private async Task TimeMeasuredInvokeAsync()
         {
             var watch = ExecutionTimeWatch.StartNew();
-            var ctx = AsyncStepSynchronizationContext.InstallNew();
+
             try
             {
-                try
-                {
-                    await _stepInvocation.Invoke(_scenarioContext, PrepareParameters());
-                }
-                finally
-                {
-                    ctx.RestoreOriginal();
-                    await ctx.WaitForTasksAsync();
-                }
+                var result = await InvokeStepMethodAsync();
+                await InvokeSubStepsAsync(result.SubSteps);
             }
             finally
             {
                 _result.SetExecutionTime(watch.GetTime());
             }
+        }
+
+        private async Task InvokeSubStepsAsync(RunnableStep[] subSteps)
+        {
+            try
+            {
+                foreach (var subStep in subSteps)
+                    await subStep.RunAsync();
+            }
+            finally
+            {
+                _result.SetSubSteps(subSteps.Select(s => s.Result).ToArray());
+            }
+        }
+
+        private async Task<RunnableStepResult> InvokeStepMethodAsync()
+        {
+            RunnableStepResult result;
+            var ctx = AsyncStepSynchronizationContext.InstallNew();
+            try
+            {
+                result = await _stepInvocation.Invoke(_scenarioContext, PrepareParameters());
+            }
+            finally
+            {
+                ctx.RestoreOriginal();
+                await ctx.WaitForTasksAsync();
+            }
+            return result;
         }
 
         private void EvaluateParameters()

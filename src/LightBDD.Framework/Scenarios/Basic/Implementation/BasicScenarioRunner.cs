@@ -7,6 +7,7 @@ using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Framework.Scenarios.Basic.Implementation
 {
+    //TODO: check return value?
     [DebuggerStepThrough]
     internal class BasicScenarioRunner
     {
@@ -63,9 +64,10 @@ namespace LightBDD.Framework.Scenarios.Basic.Implementation
             {
                 _invocation = invocation;
             }
-            public Task ExecuteAsync(object context, object[] args)
+            public async Task<StepResultDescriptor> ExecuteAsync(object context, object[] args)
             {
-                return _invocation.Invoke();
+                await _invocation.Invoke();
+                return StepResultDescriptor.None;
             }
         }
         [DebuggerStepThrough]
@@ -77,10 +79,10 @@ namespace LightBDD.Framework.Scenarios.Basic.Implementation
             {
                 _invocation = invocation;
             }
-            public Task Execute(object context, object[] args)
+            public Task<StepResultDescriptor> Execute(object context, object[] args)
             {
                 _invocation.Invoke();
-                return Task.FromResult(0);
+                return Task.FromResult(StepResultDescriptor.None);
             }
         }
     }
