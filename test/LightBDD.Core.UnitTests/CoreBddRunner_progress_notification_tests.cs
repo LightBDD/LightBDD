@@ -61,6 +61,65 @@ namespace LightBDD.Core.UnitTests
         [ScenarioCategory("category 2")]
         [Label("lab1")]
         [Label("lab2")]
+        public void It_should_notify_execution_progress_of_composite_steps()
+        {
+            var progressNotifier = new CapturingProgressNotifier();
+
+            var feature = new TestableFeatureRunnerRepository(progressNotifier, fixture => progressNotifier).GetRunnerFor(GetType());
+            var runner = feature.GetBddRunner(this);
+            var steps = new TestableSteps(runner);
+            try
+            {
+                runner.Test().TestGroupScenario(
+                    steps.Composite_group);
+            }
+            catch { }
+            feature.Dispose();
+
+            string[] expected =
+            {
+                "Feature Start: CoreBddRunner progress notification tests [label1, label2]: feature description",
+                "Scenario Start: It should notify execution progress of composite steps [lab1, lab2] <category 1, category 2>",
+                "Step Start: 1/1 Composite group",
+                "Step Start: 1.1/1.2 Passing step group with comment",
+
+                "Step Start: 1.1.1/1.1.3 GIVEN step one",
+                "Step Finish: 1.1.1/1.1.3 GIVEN step one | Status:Passed | ExecutionTimePresent:True | Details:",
+
+                "Step Start: 1.1.2/1.1.3 WHEN step two with comment",
+                "Step 1.1.2/1.1.3 Comment: some comment",
+                "Step Finish: 1.1.2/1.1.3 WHEN step two with comment | Status:Passed | ExecutionTimePresent:True | Details:",
+
+                "Step Start: 1.1.3/1.1.3 THEN step three",
+                "Step Finish: 1.1.3/1.1.3 THEN step three | Status:Passed | ExecutionTimePresent:True | Details:",
+
+                "Step Finish: 1.1/1.2 Passing step group with comment | Status:Passed | ExecutionTimePresent:True | Details:",
+
+                "Step Start: 1.2/1.2 Bypassed step group",
+
+                "Step Start: 1.2.1/1.2.3 GIVEN step one",
+                "Step Finish: 1.2.1/1.2.3 GIVEN step one | Status:Passed | ExecutionTimePresent:True | Details:",
+
+                "Step Start: 1.2.2/1.2.3 WHEN step two is bypassed",
+                "Step Finish: 1.2.2/1.2.3 WHEN step two is bypassed | Status:Bypassed | ExecutionTimePresent:True | Details:bypass reason",
+
+                "Step Start: 1.2.3/1.2.3 THEN step three",
+                "Step Finish: 1.2.3/1.2.3 THEN step three | Status:Passed | ExecutionTimePresent:True | Details:",
+
+                "Step Finish: 1.2/1.2 Bypassed step group | Status:Bypassed | ExecutionTimePresent:True | Details:bypass reason",
+
+                "Step Finish: 1/1 Composite group | Status:Bypassed | ExecutionTimePresent:True | Details:bypass reason",
+
+                "Scenario Finish: It should notify execution progress of composite steps [lab1, lab2] <category 1, category 2> | Status:Bypassed | ExecutionTimePresent:True | Steps:1 | Details:Step 1: bypass reason",
+                "Feature Finish: CoreBddRunner progress notification tests [label1, label2]: feature description | Scenarios:1"
+            };
+            Assert.That(progressNotifier.Notifications, Is.EqualTo(expected), "Expected:\r\n{0}\r\n\r\nGot:\r\n{1}\r\n\r\n", string.Join("\r\n", expected), string.Join("\r\n", progressNotifier.Notifications));
+        }
+
+        [Test]
+        [ScenarioCategory("category 2")]
+        [Label("lab1")]
+        [Label("lab2")]
         public void It_should_notify_execution_progress_for_parameterized_steps()
         {
             var progressNotifier = new CapturingProgressNotifier();
@@ -153,7 +212,7 @@ namespace LightBDD.Core.UnitTests
 
             public void NotifyStepComment(IStepInfo step, string comment)
             {
-                _notifications.Add($"Step {step.Number}/{step.Total} Comment: {comment}");
+                _notifications.Add($"Step {step.GroupPrefix}{step.Number}/{step.GroupPrefix}{step.Total} Comment: {comment}");
             }
 
             private string FormatFeature(IFeatureInfo feature)
@@ -168,7 +227,7 @@ namespace LightBDD.Core.UnitTests
 
             private string FormatStep(IStepInfo step)
             {
-                return $"{step.Number}/{step.Total} {step.Name}";
+                return $"{step.GroupPrefix}{step.Number}/{step.GroupPrefix}{step.Total} {step.Name}";
             }
         }
     }

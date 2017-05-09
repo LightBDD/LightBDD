@@ -56,9 +56,9 @@ namespace LightBDD.Framework.UnitTests.Notification
             {
                 $"FEATURE: [{string.Join("][", featureInfo.Labels)}] {featureInfo.Name}\n  {featureInfo.Description}",
                 $"SCENARIO: [{string.Join("][", scenarioInfo.Labels)}] {scenarioInfo.Name}",
-                $"  STEP {stepInfo.Number}/{stepInfo.Total}: {stepInfo.Name}...",
-                $"  STEP {stepInfo.Number}/{stepInfo.Total}: /* {comment} */",
-                $"  STEP {stepResult.Info.Number}/{stepResult.Info.Total}: {stepResult.Info.Name} ({stepResult.Status} after {stepResult.ExecutionTime.Duration.FormatPretty()})",
+                $"  STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: {stepInfo.Name}...",
+                $"  STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: /* {comment} */",
+                $"  STEP {stepResult.Info.GroupPrefix}{stepResult.Info.Number}/{stepResult.Info.GroupPrefix}{stepResult.Info.Total}: {stepResult.Info.Name} ({stepResult.Status} after {stepResult.ExecutionTime.Duration.FormatPretty()})",
                 $"  SCENARIO RESULT: {scenarioResult.Status} after {scenarioResult.ExecutionTime.Duration.FormatPretty()}\n    {scenarioResult.StatusDetails}",
                 $"FEATURE FINISHED: {featureResult.Info.Name}"
             };

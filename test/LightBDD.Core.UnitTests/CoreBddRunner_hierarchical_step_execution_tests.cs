@@ -5,7 +5,6 @@ using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
 using LightBDD.Framework.Extensibility;
-using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.UnitTests.Helpers;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
@@ -13,12 +12,13 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests
 {
     [TestFixture]
-    public class CoreBddRunner_hierarchical_step_execution_tests : Steps
+    public class CoreBddRunner_hierarchical_step_execution_tests : StepGroups
     {
-        private IBddRunner _runner;
-        private IFeatureRunner _feature;
-
         #region Setup/Teardown
+
+        private IFeatureRunner _feature;
+        private IBddRunner _runner;
+        protected override IBddRunner Runner => _runner;
 
         [SetUp]
         public void SetUp()
@@ -32,7 +32,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void Runner_should_execute_all_steps_within_group()
         {
-            Assert.DoesNotThrow(() => _runner.Test().TestGroupScenario(Passing_step_group));
+            Assert.DoesNotThrow(() => Runner.Test().TestGroupScenario(Passing_step_group));
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps().ToArray();
             StepResultExpectation.AssertEqual(steps,
                 new StepResultExpectation(1, 1, "Passing step group", ExecutionStatus.Passed));
@@ -47,7 +47,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void Runner_should_mark_step_failed_if_substep_fails()
         {
-            Assert.Throws<InvalidOperationException>(() => _runner.Test().TestGroupScenario(Failing_step_group));
+            Assert.Throws<InvalidOperationException>(() => Runner.Test().TestGroupScenario(Failing_step_group));
 
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps().ToArray();
             StepResultExpectation.AssertEqual(steps,
@@ -63,7 +63,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void Runner_should_mark_step_ignored_if_substep_is_ignored()
         {
-            Assert.Throws<CustomIgnoreException>(() => _runner.Test().TestGroupScenario(Ignored_step_group));
+            Assert.Throws<CustomIgnoreException>(() => Runner.Test().TestGroupScenario(Ignored_step_group));
 
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps().ToArray();
             StepResultExpectation.AssertEqual(steps,
@@ -79,7 +79,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void Runner_should_mark_step_bypassed_if_substep_is_bypassed()
         {
-            Assert.DoesNotThrow(() => _runner.Test().TestGroupScenario(Bypassed_step_group));
+            Assert.DoesNotThrow(() => Runner.Test().TestGroupScenario(Bypassed_step_group));
 
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps().ToArray();
 
@@ -96,7 +96,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void Runner_should_properly_associate_steps_to_the_group()
         {
-            Assert.DoesNotThrow(() => _runner.Test().TestGroupScenario(Passing_step_group, Composite_group));
+            Assert.DoesNotThrow(() => Runner.Test().TestGroupScenario(Passing_step_group, Composite_group));
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps().ToArray();
             StepResultExpectation.AssertEqual(steps,
                 new StepResultExpectation(1, 2, "Passing step group", ExecutionStatus.Passed),
@@ -110,7 +110,7 @@ namespace LightBDD.Core.UnitTests
 
             StepResultExpectation.AssertEqual(steps[1].SubSteps.ElementAt(0).SubSteps,
                 new StepResultExpectation("2.1.", 1, 3, "GIVEN step one", ExecutionStatus.Passed),
-                new StepResultExpectation("2.1.", 2, 3, "WHEN step two", ExecutionStatus.Passed),
+                new StepResultExpectation("2.1.", 2, 3, "WHEN step two with comment", ExecutionStatus.Passed, null, CommentReason),
                 new StepResultExpectation("2.1.", 3, 3, "THEN step three", ExecutionStatus.Passed)
             );
             StepResultExpectation.AssertEqual(steps[1].SubSteps.ElementAt(1).SubSteps,
@@ -118,43 +118,6 @@ namespace LightBDD.Core.UnitTests
                 new StepResultExpectation("2.2.", 2, 3, "WHEN step two is bypassed", ExecutionStatus.Bypassed, BypassReason),
                 new StepResultExpectation("2.2.", 3, 3, "THEN step three", ExecutionStatus.Passed)
             );
-        }
-
-        StepGroup Composite_group()
-        {
-            return _runner.Test().CreateCompositeStepGroup(Passing_step_group, Bypassed_step_group);
-        }
-
-        StepGroup Passing_step_group()
-        {
-            return _runner.Test().CreateStepGroup(
-                Given_step_one,
-                When_step_two,
-                Then_step_three);
-        }
-
-        StepGroup Failing_step_group()
-        {
-            return _runner.Test().CreateStepGroup(
-                Given_step_one,
-                When_step_two_throwing_exception,
-                Then_step_three);
-        }
-
-        StepGroup Ignored_step_group()
-        {
-            return _runner.Test().CreateStepGroup(
-                Given_step_one,
-                When_step_two_ignoring_scenario,
-                Then_step_three);
-        }
-
-        StepGroup Bypassed_step_group()
-        {
-            return _runner.Test().CreateStepGroup(
-                Given_step_one,
-                When_step_two_is_bypassed,
-                Then_step_three);
         }
     }
 }

@@ -31,7 +31,7 @@ namespace LightBDD.UnitTests.Helpers
 
         public static void AssertEqual(IEnumerable<IStepResult> stepResults, params StepResultExpectation[] stepResultExpectations)
         {
-            string[] actual = stepResults.Select(r => $"{r.Info.GroupPrefix}{r.Info.Number}:{r.Info.GroupPrefix}{r.Info.Total} {r.Info.Name} - {r.Status} ({r.StatusDetails}) // {string.Join(" // ", new string[0])}").ToArray();
+            string[] actual = stepResults.Select(r => $"{r.Info.GroupPrefix}{r.Info.Number}:{r.Info.GroupPrefix}{r.Info.Total} {r.Info.Name} - {r.Status} ({r.StatusDetails}) // {string.Join(" // ", r.Comments)}").ToArray();
             string[] expected = stepResultExpectations.Select(r => $"{r.GroupPrefix}{r.Number}:{r.GroupPrefix}{r.TotalSteps} {r.Name} - {r.Status} ({r.StatusDetails}) // {string.Join(" // ", r.Comments)}").ToArray();
 
             Assert.True(actual.SequenceEqual(expected),
