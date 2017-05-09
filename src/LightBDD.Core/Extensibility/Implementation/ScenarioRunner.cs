@@ -114,10 +114,10 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         private RunnableStep[] ProvideSteps(ExtendableExecutor extendableExecutor, object scenarioContext)
         {
-            return ProvideSteps(extendableExecutor, scenarioContext, _steps.ToArray());
+            return ProvideSteps(extendableExecutor, scenarioContext, _steps.ToArray(), string.Empty);
         }
 
-        private RunnableStep[] ProvideSteps(ExtendableExecutor extendableExecutor, object scenarioContext, StepDescriptor[] steps)
+        private RunnableStep[] ProvideSteps(ExtendableExecutor extendableExecutor, object scenarioContext, StepDescriptor[] steps, string groupPrefix)
         {
             var totalStepsCount = steps.Length;
             string previousStepTypeName = null;
@@ -125,7 +125,7 @@ namespace LightBDD.Core.Extensibility.Implementation
 
             for (int i = 0; i < totalStepsCount; ++i)
             {
-                var step = ToRunnableStep(steps[i], i, totalStepsCount, previousStepTypeName, extendableExecutor, scenarioContext);
+                var step = ToRunnableStep(steps[i], i, totalStepsCount, previousStepTypeName, extendableExecutor, scenarioContext, groupPrefix);
                 result[i] = step;
                 previousStepTypeName = step.Result.Info.Name.StepTypeName?.OriginalName;
             }
@@ -133,21 +133,22 @@ namespace LightBDD.Core.Extensibility.Implementation
             return result;
         }
 
-        private RunnableStep ToRunnableStep(StepDescriptor descriptor, int stepIndex, int totalStepsCount, string previousStepTypeName, ExtendableExecutor extendableExecutor, object scenarioContext)
+        private RunnableStep ToRunnableStep(StepDescriptor descriptor, int stepIndex, int totalStepsCount, string previousStepTypeName, ExtendableExecutor extendableExecutor, object scenarioContext, string groupPrefix)
         {
-            var stepInfo = new StepInfo(_metadataProvider.GetStepName(descriptor, previousStepTypeName), stepIndex + 1, totalStepsCount);
+            var stepInfo = new StepInfo(_metadataProvider.GetStepName(descriptor, previousStepTypeName), stepIndex + 1, totalStepsCount, groupPrefix);
             var arguments = descriptor.Parameters.Select(p => new MethodArgument(p, _metadataProvider.GetParameterFormatter(p.ParameterInfo))).ToArray();
-            return new RunnableStep(stepInfo, TransformInvocationResult(descriptor, extendableExecutor, scenarioContext), arguments, _exceptionToStatusMapper, _progressNotifier, extendableExecutor, scenarioContext);
+            var stepGroupPrefix = $"{stepInfo.GroupPrefix}{stepInfo.Number}.";
+            return new RunnableStep(stepInfo, TransformInvocationResult(descriptor, extendableExecutor, scenarioContext, stepGroupPrefix), arguments, _exceptionToStatusMapper, _progressNotifier, extendableExecutor, scenarioContext);
         }
 
-        private Func<object, object[], Task<RunnableStepResult>> TransformInvocationResult(StepDescriptor descriptor, ExtendableExecutor extendableExecutor, object scenarioContext)
+        private Func<object, object[], Task<RunnableStepResult>> TransformInvocationResult(StepDescriptor descriptor, ExtendableExecutor extendableExecutor, object scenarioContext, string groupPrefix)
         {
             var invocation = descriptor.StepInvocation;
 
             async Task<RunnableStepResult> Invoke(object context, object[] args)
             {
                 var result = await invocation.Invoke(context, args);
-                return new RunnableStepResult(ProvideSteps(extendableExecutor, scenarioContext, result.SubSteps));
+                return new RunnableStepResult(ProvideSteps(extendableExecutor, scenarioContext, result.SubSteps, groupPrefix));
             }
             return Invoke;
         }

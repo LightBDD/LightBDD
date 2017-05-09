@@ -50,7 +50,7 @@ namespace LightBDD.Core.Results.Implementation
         {
             var details = string.Empty;
             if (StatusDetails != null)
-                details = string.Format(" ({0})", StatusDetails);
+                details = $" ({StatusDetails})";
 
             return $"{Info}: {Status}{details}";
         }

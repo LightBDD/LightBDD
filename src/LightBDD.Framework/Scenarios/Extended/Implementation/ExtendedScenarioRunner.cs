@@ -54,6 +54,11 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
             return new StepGroup(steps.Select(ToStep).ToArray());
         }
 
+        public Task<StepGroup> DefineStepGroupAsync<T>(Expression<Func<T, Task>>[] steps)
+        {
+            return Task.FromResult(new StepGroup(steps.Select(ToStep).ToArray()));
+        }
+
         private StepDescriptor ToStep<T>(Expression<T> stepExpression)
         {
             var contextParameter = stepExpression.Parameters[0];
@@ -100,8 +105,15 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
             var currentTypeInfo = currentReturnType.GetTypeInfo();
             if (typeof(Task).GetTypeInfo().IsAssignableFrom(currentTypeInfo))
             {
-                if (currentTypeInfo.IsGenericType && typeof(StepResultDescriptor).GetTypeInfo().IsAssignableFrom(currentTypeInfo.GenericTypeParameters[0].GetTypeInfo()))
+                if (currentReturnType == typeof(Task<StepResultDescriptor>))
                     return body;
+                if (currentTypeInfo.IsGenericType && typeof(StepResultDescriptor).GetTypeInfo()
+                        .IsAssignableFrom(currentTypeInfo.GenericTypeArguments[0].GetTypeInfo()))
+                {
+                    Func<Task<StepResultDescriptor>, Task<StepResultDescriptor>> converter = ConvertTask;
+                    var specializedConverter = converter.GetMethodInfo().GetGenericMethodDefinition().MakeGenericMethod(currentTypeInfo.GenericTypeArguments[0]);
+                    return Expression.Call(null, specializedConverter, body);
+                }
                 Func<Task, Task<StepResultDescriptor>> finalizer = FinalizeTask;
 
                 return Expression.Call(null, finalizer.GetMethodInfo(), body);
@@ -143,6 +155,11 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
         public static ExtendedScenarioRunner<TContext> Create(IFeatureFixtureRunner runner, IntegrationContext context)
         {
             return new ExtendedScenarioRunner<TContext>(runner, context);
+        }
+
+        private static async Task<StepResultDescriptor> ConvertTask<T>(Task<T> parent) where T : StepResultDescriptor
+        {
+            return await parent;
         }
 
         private static async Task<StepResultDescriptor> FinalizeTask(Task parent)

@@ -39,6 +39,18 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
             throw new Exception(nameof(Step_two_async));
         }
 
+        protected async void Step_one_async_action()
+        {
+            await Task.Yield();
+            throw new Exception(nameof(Step_one_async_action));
+        }
+
+        protected async void Step_two_async_action()
+        {
+            await Task.Yield();
+            throw new Exception(nameof(Step_two_async_action));
+        }
+
         public static string ExceptionMessageForStep_with_parameters(int matchingParam)
         {
             return $"Params match: {matchingParam}";

@@ -192,6 +192,7 @@ namespace LightBDD.UnitTests.Helpers
         public class TestStepInfo : IStepInfo
         {
             IStepNameInfo IStepInfo.Name => Name;
+            public string GroupPrefix { get; set; }
             public TestStepNameInfo Name { get; set; }
             public int Number { get; set; }
             public int Total { get; set; }

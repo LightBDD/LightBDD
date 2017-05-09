@@ -101,5 +101,10 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
         {
             return new StepGroup(steps.Select(TestStep.CreateSync).ToArray());
         }
+
+        public StepGroup CreateCompositeStepGroup(params Func<StepGroup>[] steps)
+        {
+            return new StepGroup(steps.Select(TestStep.CreateForGroup).ToArray());
+        }
     }
 }
