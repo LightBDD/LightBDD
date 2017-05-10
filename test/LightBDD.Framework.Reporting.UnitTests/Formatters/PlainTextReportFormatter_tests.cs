@@ -39,12 +39,12 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
 	Bypassed scenarios              : 0
 	Failed scenarios                : 1
 	Ignored scenarios               : 1
-	Number of steps                 : 5
-	Passed steps                    : 1
+	Number of steps                 : 9
+	Passed steps                    : 3
 	Bypassed steps                  : 1
 	Failed steps                    : 1
-	Ignored steps                   : 1
-	Not Run steps                   : 1
+	Ignored steps                   : 2
+	Not Run steps                   : 2
 
 Feature: My feature [Label 1]
 	My feature
@@ -54,6 +54,10 @@ Feature: My feature [Label 1]
 		Categories: categoryA
 		Step 1: call step1 ""arg1"" - Passed (1m 01s)
 		Step 2: step2 - Ignored (1s 100ms)
+			Step 2.1: substep 1 - Passed (100ms)
+			Step 2.2: substep 2 - Passed (1s)
+			Step 2.3: substep 3 - Ignored (0ms)
+				Step 2.3.1: sub-substep 1 - NotRun
 		Details:
 			Step 2: Not implemented yet
 		Comments:

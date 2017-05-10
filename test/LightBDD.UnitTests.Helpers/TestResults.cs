@@ -56,6 +56,18 @@ namespace LightBDD.UnitTests.Helpers
             return result;
         }
 
+        public static TestStepResult WithSubSteps(this TestStepResult result, params IStepResult[] subSteps)
+        {
+            result.SubSteps = subSteps;
+            return result;
+        }
+
+        public static TestStepResult WithGroupPrefix(this TestStepResult result, string groupPrefix)
+        {
+            result.Info.GroupPrefix = groupPrefix;
+            return result;
+        }
+
         public static TestStepNameInfo CreateStepName(string stepName, string stepTypeName, string nameFormat, params string[] parameters)
         {
             return new TestStepNameInfo
@@ -184,8 +196,8 @@ namespace LightBDD.UnitTests.Helpers
             public TestExecutionTime ExecutionTime { get; set; }
             ExecutionTime IStepResult.ExecutionTime => ExecutionTime?.ToMockedType();
             IEnumerable<string> IStepResult.Comments => Comments;
-            IEnumerable<IStepResult> IStepResult.SubSteps => SubSteps;
-            public IStepResult[] SubSteps { get; set; }
+            public IEnumerable<IStepResult> GetSubSteps() => SubSteps;
+            public IStepResult[] SubSteps { get; set; } = new IStepResult[0];
             public string[] Comments { get; set; }
         }
 

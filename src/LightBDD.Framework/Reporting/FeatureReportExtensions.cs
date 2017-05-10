@@ -73,7 +73,7 @@ namespace LightBDD.Framework.Reporting
         /// </summary>
         public static int CountSteps(this IFeatureResult result)
         {
-            return result.GetScenarios().SelectMany(s => s.GetSteps()).Count();
+            return result.GetScenarios().SelectMany(s => s.GetAllSteps()).Count();
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace LightBDD.Framework.Reporting
         /// </summary>
         public static int CountStepsWithStatus(this IScenarioResult result, ExecutionStatus status)
         {
-            return result.GetSteps().Count(s => s.Status == status);
+            return result.GetAllSteps().Count(s => s.Status == status);
         }
 
         /// <summary>
@@ -98,6 +98,16 @@ namespace LightBDD.Framework.Reporting
         public static int CountStepsWithStatus(this IEnumerable<IFeatureResult> results, ExecutionStatus status)
         {
             return results.Sum(f => f.CountStepsWithStatus(status));
+        }
+
+        private static IEnumerable<IStepResult> GetAllSteps(this IScenarioResult scenario)
+        {
+            return scenario.GetSteps().Concat(scenario.GetSteps().SelectMany(s => s.GetAllSubSteps()));
+        }
+
+        private static IEnumerable<IStepResult> GetAllSubSteps(this IStepResult step)
+        {
+            return step.GetSubSteps().Concat(step.GetSubSteps().SelectMany(s => s.GetAllSubSteps()));
         }
     }
 }

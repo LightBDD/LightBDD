@@ -131,9 +131,11 @@ namespace LightBDD.Framework.Reporting.Formatters
             writer.Write(commentBuilder);
         }
 
-        private static void FormatStep(TextWriter writer, IStepResult step)
+        private static void FormatStep(TextWriter writer, IStepResult step, int indent = 0)
         {
+            writer.Write(new string('\t', indent));
             writer.Write("\t\tStep ");
+            writer.Write(step.Info.GroupPrefix);
             writer.Write(step.Info.Number);
             writer.Write(": ");
             writer.Write(step.Info.Name);
@@ -146,6 +148,8 @@ namespace LightBDD.Framework.Reporting.Formatters
                 writer.Write(")");
             }
             writer.WriteLine();
+            foreach (var subStep in step.GetSubSteps())
+                FormatStep(writer, subStep, indent + 1);
         }
 
         private static void FormatSummary(TextWriter writer, IFeatureResult[] features)

@@ -400,8 +400,9 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         {
             return Html.Tag(Html5Tag.Div).Class("step").Content(
                 GetStatus(step.Status),
-                Html.Text(string.Format("{0}. {1}", step.Info.Number, step.Info.Name.Format(StepNameDecorator))).Trim(),
-                GetDuration(step.ExecutionTime));
+                Html.Text(string.Format("{0}{1}. {2}", step.Info.GroupPrefix, step.Info.Number, step.Info.Name.Format(StepNameDecorator))).Trim(),
+                GetDuration(step.ExecutionTime),
+                Html.Tag(Html5Tag.Div).Class("sub-steps").Content(step.GetSubSteps().Select(GetStep)).SkipEmpty());
         }
 
         private static string GetStatusClass(ExecutionStatus status)

@@ -11,6 +11,7 @@ using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests
 {
+    //TODO: add time measurement for step groups
     [TestFixture]
     public class CoreBddRunner_time_measurement_tests
     {

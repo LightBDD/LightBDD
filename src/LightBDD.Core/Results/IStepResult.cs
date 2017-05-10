@@ -32,6 +32,6 @@ namespace LightBDD.Core.Results
         /// <summary>
         /// Returns sub-steps if given step consists of any, or empty collection.
         /// </summary>
-        IEnumerable<IStepResult> SubSteps { get; }
+        IEnumerable<IStepResult> GetSubSteps();
     }
 }

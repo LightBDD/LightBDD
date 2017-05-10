@@ -11,7 +11,7 @@ namespace LightBDD.Core.Results.Implementation
     [DebuggerStepThrough]
     internal class ScenarioResult : IScenarioResult
     {
-        private IStepResult[] _steps=Arrays<IStepResult>.Empty();
+        private IStepResult[] _steps = Arrays<IStepResult>.Empty();
 
         public ScenarioResult(IScenarioInfo info)
         {
@@ -19,7 +19,7 @@ namespace LightBDD.Core.Results.Implementation
             Status = ExecutionStatus.NotRun;
         }
 
-        public void UpdateResult(IStepResult[] steps, ExecutionTime executionTime,Exception scenarioInitializationException)
+        public void UpdateResult(IStepResult[] steps, ExecutionTime executionTime, Exception scenarioInitializationException)
         {
             _steps = steps;
             ExecutionTime = executionTime;

@@ -68,9 +68,9 @@ namespace LightBDD.Core.Execution.Implementation
                 stepStartNotified = true;
 
                 await _extendableExecutor.ExecuteStepAsync(this, TimeMeasuredInvokeAsync);
-                if (_result.SubSteps.Any())
+                if (_result.GetSubSteps().Any())
                 {
-                    var maxSeverityStep = _result.SubSteps.OrderByDescending(r => r.Status).First();
+                    var maxSeverityStep = _result.GetSubSteps().OrderByDescending(r => r.Status).First();
                     _result.SetStatus(maxSeverityStep.Status, maxSeverityStep.StatusDetails);
                 }
                 else
