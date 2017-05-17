@@ -148,7 +148,7 @@ namespace LightBDD.Core.Extensibility.Implementation
             async Task<RunnableStepResult> Invoke(object context, object[] args)
             {
                 var result = await invocation.Invoke(context, args);
-                return new RunnableStepResult(ProvideSteps(extendableExecutor, scenarioContext, result.SubSteps, groupPrefix));
+                return new RunnableStepResult(ProvideSteps(extendableExecutor, scenarioContext, result.SubSteps.ToArray(), groupPrefix));
             }
             return Invoke;
         }

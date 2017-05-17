@@ -22,7 +22,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             TestScenario(steps.Select(TestStep.CreateAsync).ToArray());
         }
 
-        public void TestGroupScenario(params Func<StepGroup>[] steps)
+        public void TestGroupScenario(params Func<TestStepGroup>[] steps)
         {
             TestScenario(steps.Select(TestStep.CreateForGroup).ToArray());
         }
@@ -97,14 +97,14 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
                 .RunAsynchronously();
         }
 
-        public StepGroup CreateStepGroup(params Action[] steps)
+        public TestStepGroup CreateStepGroup(params Action[] steps)
         {
-            return new StepGroup(steps.Select(TestStep.CreateSync).ToArray());
+            return new TestStepGroup(steps.Select(TestStep.CreateSync).ToArray());
         }
 
-        public StepGroup CreateCompositeStepGroup(params Func<StepGroup>[] steps)
+        public TestStepGroup CreateCompositeStepGroup(params Func<TestStepGroup>[] steps)
         {
-            return new StepGroup(steps.Select(TestStep.CreateForGroup).ToArray());
+            return new TestStepGroup(steps.Select(TestStep.CreateForGroup).ToArray());
         }
     }
 }

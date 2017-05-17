@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using LightBDD.Core.Results;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
@@ -55,15 +56,24 @@ namespace LightBDD.Framework.Reporting.UnitTests
                             {
                                 new TestResults.TestStepResult(),
                                 new TestResults.TestStepResult(),
-                                new TestResults.TestStepResult()
+                                new TestResults.TestStepResult
+                                {
+                                    SubSteps = new[]
+                                    {
+                                        new TestResults.TestStepResult
+                                        {
+                                            SubSteps = new[] {new TestResults.TestStepResult()}
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
             };
-            Assert.That(features.CountSteps(), Is.EqualTo(5));
+            Assert.That(features.CountSteps(), Is.EqualTo(7));
             Assert.That(features[0].CountSteps(), Is.EqualTo(2));
-            Assert.That(features[1].CountSteps(), Is.EqualTo(3));
+            Assert.That(features[1].CountSteps(), Is.EqualTo(5));
         }
 
         [Test]
@@ -95,7 +105,17 @@ namespace LightBDD.Framework.Reporting.UnitTests
                             {
                                 new TestResults.TestStepResult {Status = ExecutionStatus.Passed},
                                 new TestResults.TestStepResult {Status = ExecutionStatus.Bypassed},
-                                new TestResults.TestStepResult {Status = ExecutionStatus.Failed}
+                                new TestResults.TestStepResult
+                                {
+                                    Status = ExecutionStatus.Failed,
+                                    SubSteps = new[]
+                                    {
+                                        new TestResults.TestStepResult
+                                        {
+                                            SubSteps = new[] {new TestResults.TestStepResult()}
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -104,6 +124,7 @@ namespace LightBDD.Framework.Reporting.UnitTests
             Assert.That(features.CountStepsWithStatus(ExecutionStatus.Passed), Is.EqualTo(2));
             Assert.That(features.CountStepsWithStatus(ExecutionStatus.Failed), Is.EqualTo(2));
             Assert.That(features.CountStepsWithStatus(ExecutionStatus.Bypassed), Is.EqualTo(1));
+            Assert.That(features.CountStepsWithStatus(ExecutionStatus.NotRun), Is.EqualTo(2));
 
             Assert.That(features[0].CountStepsWithStatus(ExecutionStatus.Failed), Is.EqualTo(1));
             Assert.That(features[0].Scenarios[0].CountStepsWithStatus(ExecutionStatus.Failed), Is.EqualTo(0));
@@ -162,7 +183,7 @@ namespace LightBDD.Framework.Reporting.UnitTests
                         },
                         new TestResults.TestScenarioResult
                         {
-                            ExecutionTime =new TestResults.TestExecutionTime{Start = baseTime.AddSeconds(1), Duration = TimeSpan.FromSeconds(2)}
+                            ExecutionTime = new TestResults.TestExecutionTime{Start = baseTime.AddSeconds(1), Duration = TimeSpan.FromSeconds(2)}
                         }
 
                     }
@@ -191,6 +212,69 @@ namespace LightBDD.Framework.Reporting.UnitTests
             AssertZeroExecutionSummary(features[2].Scenarios.GetTestExecutionTimeSummary());
         }
 
+        [Test]
+        public void It_should_return_all_steps_for_scenario_in_order()
+        {
+            var scenario = new TestResults.TestScenarioResult
+            {
+                Steps = new[]
+                {
+                    new TestResults.TestStepResult{StatusDetails = "a"},
+                    new TestResults.TestStepResult{StatusDetails = "b",SubSteps = new []{new TestResults.TestStepResult{StatusDetails = "b1"} }},
+                    new TestResults.TestStepResult
+                    {
+                        StatusDetails = "c",
+                        SubSteps = new[]
+                        {
+                            new TestResults.TestStepResult
+                            {
+                                StatusDetails = "c1",
+                                SubSteps = new[] {new TestResults.TestStepResult{StatusDetails = "c11"}}
+                            },
+                            new TestResults.TestStepResult
+                            {
+                                StatusDetails = "c2",
+                                SubSteps = new[] {new TestResults.TestStepResult{StatusDetails = "c21"}}
+                            }
+                        }
+                    }
+                }
+            };
+            Assert.AreEqual(new[] { "a", "b", "b1", "c", "c1", "c11", "c2", "c21" }, scenario.GetAllSteps().Select(x => x.StatusDetails).ToArray());
+        }
+
+        [Test]
+        public void It_should_return_all_steps_for_step_in_order()
+        {
+            var step = new TestResults.TestStepResult
+            {
+                StatusDetails = "root",
+                SubSteps = new[]
+                {
+                    new TestResults.TestStepResult{StatusDetails = "a"},
+                    new TestResults.TestStepResult{StatusDetails = "b",SubSteps = new []{new TestResults.TestStepResult{StatusDetails = "b1"} }},
+                    new TestResults.TestStepResult
+                    {
+                        StatusDetails = "c",
+                        SubSteps = new[]
+                        {
+                            new TestResults.TestStepResult
+                            {
+                                StatusDetails = "c1",
+                                SubSteps = new[] {new TestResults.TestStepResult{StatusDetails = "c11"}}
+                            },
+                            new TestResults.TestStepResult
+                            {
+                                StatusDetails = "c2",
+                                SubSteps = new[] {new TestResults.TestStepResult{StatusDetails = "c21"}}
+                            }
+                        }
+                    }
+                }
+            };
+            Assert.AreEqual(new[] { "root", "a", "b", "b1", "c", "c1", "c11", "c2", "c21" }, step.GetAllSteps().Select(x => x.StatusDetails).ToArray());
+        }
+
         private static void AssertZeroExecutionSummary(ExecutionTimeSummary summary)
         {
             Assert.That(summary.Start, Is.EqualTo(summary.End), () => "start and end should be the same");
@@ -206,8 +290,7 @@ namespace LightBDD.Framework.Reporting.UnitTests
             AssertDurations(summary, expectedDuration, expectedAggregated, expectedAverage);
         }
 
-        private static void AssertDurations(ExecutionTimeSummary summary, TimeSpan expectedDuration, TimeSpan expectedAggregated,
-            TimeSpan expectedAverage)
+        private static void AssertDurations(ExecutionTimeSummary summary, TimeSpan expectedDuration, TimeSpan expectedAggregated, TimeSpan expectedAverage)
         {
             Assert.That(summary.Duration, Is.EqualTo(expectedDuration), () => nameof(summary.Duration));
             Assert.That(summary.Aggregated, Is.EqualTo(expectedAggregated), () => nameof(summary.Aggregated));

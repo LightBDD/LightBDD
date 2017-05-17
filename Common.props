@@ -17,4 +17,8 @@
     <PackageTags>bdd;tdd;testing;framework;behavior driven development;acceptance criteria</PackageTags>
     <PackageReleaseNotes>Rewritten Core mechanisms to support multiple platforms (.NET Standard, .NET Framework), async test execution, extensibility and in-code configuration.</PackageReleaseNotes>
   </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+  </PropertyGroup>
 </Project>

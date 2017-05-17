@@ -9,7 +9,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
     [TestFixture]
     public class StepDescriptor_tests
     {
-        private static readonly Func<object, object[], Task<StepResultDescriptor>> SomeStepInvocation = (o, a) => Task.FromResult(StepResultDescriptor.None);
+        private static readonly Func<object, object[], Task<StepResultDescriptor>> SomeStepInvocation = (o, a) => Task.FromResult(StepResultDescriptor.Default);
 
         [Test]
         public void It_should_allow_creating_step_descriptor()

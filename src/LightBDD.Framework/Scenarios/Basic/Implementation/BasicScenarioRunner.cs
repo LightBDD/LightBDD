@@ -67,7 +67,7 @@ namespace LightBDD.Framework.Scenarios.Basic.Implementation
             public async Task<StepResultDescriptor> ExecuteAsync(object context, object[] args)
             {
                 await _invocation.Invoke();
-                return StepResultDescriptor.None;
+                return StepResultDescriptor.Default;
             }
         }
         [DebuggerStepThrough]
@@ -82,7 +82,7 @@ namespace LightBDD.Framework.Scenarios.Basic.Implementation
             public Task<StepResultDescriptor> Execute(object context, object[] args)
             {
                 _invocation.Invoke();
-                return Task.FromResult(StepResultDescriptor.None);
+                return Task.FromResult(StepResultDescriptor.Default);
             }
         }
     }

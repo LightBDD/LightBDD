@@ -123,7 +123,7 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
             if (typeof(StepResultDescriptor).GetTypeInfo().IsAssignableFrom(currentTypeInfo))
                 return Expression.Call(null, fromResult.GetMethodInfo(), body);
 
-            return Expression.Block(body, Expression.Call(null, fromResult.GetMethodInfo(), Expression.Constant(StepResultDescriptor.None)));
+            return Expression.Block(body, Expression.Call(null, fromResult.GetMethodInfo(), Expression.Constant(StepResultDescriptor.Default)));
         }
 
         private ParameterDescriptor CompileArgument(Expression argumentExpression, ParameterExpression contextParameter, ParameterInfo parameterInfo)
@@ -165,7 +165,7 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
         private static async Task<StepResultDescriptor> FinalizeTask(Task parent)
         {
             await parent;
-            return StepResultDescriptor.None;
+            return StepResultDescriptor.Default;
         }
     }
 }

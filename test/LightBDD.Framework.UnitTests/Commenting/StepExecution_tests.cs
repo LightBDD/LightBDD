@@ -76,7 +76,7 @@ namespace LightBDD.Framework.UnitTests.Commenting
             Assert.That(steps[1].Comments.ToArray(), Is.EqualTo(new[] { nameof(Commented_step2) }));
         }
 
-        StepGroup Grouped_steps()
+        TestStepGroup Grouped_steps()
         {
             return GetFeatureRunner().GetBddRunner(this).Test().CreateStepGroup(
                 Commented_step1,

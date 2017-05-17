@@ -13,23 +13,23 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             {
                 await Task.Delay(10);
                 step.Invoke();
-                return StepResultDescriptor.None;
+                return StepResultDescriptor.Default;
             });
 
         public static StepDescriptor CreateSync(Action step) => new StepDescriptor(step.GetMethodInfo().Name,
             (ctx, args) =>
             {
                 step.Invoke();
-                return Task.FromResult(StepResultDescriptor.None);
+                return Task.FromResult(StepResultDescriptor.Default);
             });
 
         public static StepDescriptor Create(Func<Task> step) => new StepDescriptor(step.GetMethodInfo().Name, (ctx, args) =>
             {
                 step.Invoke();
-                return Task.FromResult(StepResultDescriptor.None);
+                return Task.FromResult(StepResultDescriptor.Default);
             });
 
-        public static StepDescriptor CreateForGroup(Func<StepGroup> step) => new StepDescriptor(
+        public static StepDescriptor CreateForGroup(Func<TestStepGroup> step) => new StepDescriptor(
             step.GetMethodInfo().Name,
             (ctx, args) => Task.FromResult(new StepResultDescriptor(step.Invoke().SubSteps)));
 
@@ -39,7 +39,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             {
                 await Task.Yield();
                 step.Invoke((TArg)args[0]);
-                return StepResultDescriptor.None;
+                return StepResultDescriptor.Default;
             };
             var parameter = ParameterDescriptor.FromInvocation(step.GetMethodInfo().GetParameters()[0], ctx => argEvaluator.Invoke());
 
@@ -51,7 +51,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             {
                 await Task.Yield();
                 step.Invoke();
-                return StepResultDescriptor.None;
+                return StepResultDescriptor.Default;
             });
 
         public static StepDescriptor CreateSync<TArg>(Action<TArg> step, Func<TArg> argEvaluator)
@@ -59,7 +59,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             Func<object, object[], Task<StepResultDescriptor>> stepInvocation = (ctx, args) =>
             {
                 step.Invoke((TArg)args[0]);
-                return Task.FromResult(StepResultDescriptor.None);
+                return Task.FromResult(StepResultDescriptor.Default);
             };
             var parameter = ParameterDescriptor.FromInvocation(step.GetMethodInfo().GetParameters()[0], ctx => argEvaluator.Invoke());
 
@@ -70,7 +70,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             Func<object, object[], Task<StepResultDescriptor>> stepInvocation = (ctx, args) =>
             {
                 step.Invoke((TArg)args[0]);
-                return Task.FromResult(StepResultDescriptor.None);
+                return Task.FromResult(StepResultDescriptor.Default);
             };
             var parameter = ParameterDescriptor.FromInvocation(step.GetMethodInfo().GetParameters()[0], ctx => argEvaluator.Invoke());
 
@@ -83,7 +83,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             {
                 await Task.Yield();
                 step.Invoke((TArg)args[0]);
-                return StepResultDescriptor.None;
+                return StepResultDescriptor.Default;
             };
             var parameter = ParameterDescriptor.FromConstant(step.GetMethodInfo().GetParameters()[0], arg);
 
@@ -94,7 +94,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             Func<object, object[], Task<StepResultDescriptor>> stepInvocation = (ctx, args) =>
             {
                 step.Invoke((TArg)args[0]);
-                return Task.FromResult(StepResultDescriptor.None);
+                return Task.FromResult(StepResultDescriptor.Default);
             };
             var parameter = ParameterDescriptor.FromConstant(step.GetMethodInfo().GetParameters()[0], arg);
 
@@ -105,7 +105,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             Func<object, object[], Task<StepResultDescriptor>> stepInvocation = (ctx, args) =>
             {
                 step.Invoke((TArg)args[0]);
-                return Task.FromResult(StepResultDescriptor.None);
+                return Task.FromResult(StepResultDescriptor.Default);
             };
             var parameter = ParameterDescriptor.FromConstant(step.GetMethodInfo().GetParameters()[0], arg);
 

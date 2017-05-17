@@ -9,12 +9,12 @@ namespace LightBDD.Core.UnitTests.Helpers
     {
         protected abstract IBddRunner Runner { get; }
 
-        public StepGroup Composite_group()
+        public TestStepGroup Composite_group()
         {
             return Runner.Test().CreateCompositeStepGroup(Passing_step_group_with_comment, Bypassed_step_group);
         }
 
-        public StepGroup Passing_step_group()
+        public TestStepGroup Passing_step_group()
         {
             return Runner.Test().CreateStepGroup(
                 Given_step_one,
@@ -22,7 +22,7 @@ namespace LightBDD.Core.UnitTests.Helpers
                 Then_step_three);
         }
 
-        public StepGroup Passing_step_group_with_comment()
+        public TestStepGroup Passing_step_group_with_comment()
         {
             return Runner.Test().CreateStepGroup(
                 Given_step_one,
@@ -30,7 +30,7 @@ namespace LightBDD.Core.UnitTests.Helpers
                 Then_step_three);
         }
 
-        public StepGroup Failing_step_group()
+        public TestStepGroup Failing_step_group()
         {
             return Runner.Test().CreateStepGroup(
                 Given_step_one,
@@ -38,7 +38,7 @@ namespace LightBDD.Core.UnitTests.Helpers
                 Then_step_three);
         }
 
-        public StepGroup Ignored_step_group()
+        public TestStepGroup Ignored_step_group()
         {
             return Runner.Test().CreateStepGroup(
                 Given_step_one,
@@ -46,7 +46,7 @@ namespace LightBDD.Core.UnitTests.Helpers
                 Then_step_three);
         }
 
-        public StepGroup Bypassed_step_group()
+        public TestStepGroup Bypassed_step_group()
         {
             return Runner.Test().CreateStepGroup(
                 Given_step_one,

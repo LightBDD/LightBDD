@@ -56,7 +56,7 @@ namespace LightBDD.UnitTests.Helpers
             return result;
         }
 
-        public static TestStepResult WithSubSteps(this TestStepResult result, params IStepResult[] subSteps)
+        public static TestStepResult WithSubSteps(this TestStepResult result, params TestStepResult[] subSteps)
         {
             result.SubSteps = subSteps;
             return result;
@@ -197,7 +197,7 @@ namespace LightBDD.UnitTests.Helpers
             ExecutionTime IStepResult.ExecutionTime => ExecutionTime?.ToMockedType();
             IEnumerable<string> IStepResult.Comments => Comments;
             public IEnumerable<IStepResult> GetSubSteps() => SubSteps;
-            public IStepResult[] SubSteps { get; set; } = new IStepResult[0];
+            public TestStepResult[] SubSteps { get; set; } = new TestStepResult[0];
             public string[] Comments { get; set; }
         }
 

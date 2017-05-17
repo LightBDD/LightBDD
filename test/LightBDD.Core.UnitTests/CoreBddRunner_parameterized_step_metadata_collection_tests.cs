@@ -165,7 +165,7 @@ namespace LightBDD.Core.UnitTests
 
         public IEnumerable<StepDescriptor> GetFailingStepDescriptors(string reason)
         {
-            yield return new StepDescriptor("test", (o, a) => Task.FromResult(StepResultDescriptor.None));
+            yield return new StepDescriptor("test", (o, a) => Task.FromResult(StepResultDescriptor.Default));
             throw new ArgumentException(reason);
         }
 
