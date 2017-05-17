@@ -47,7 +47,7 @@ namespace LightBDD.Core.UnitTests
             {
                 "1/3 GIVEN step one: Passed",
                 "2/3 WHEN step two: Passed",
-                "3/3 THEN step three: Failed (reason)"
+                "3/3 THEN step three: Failed (Step 3: reason)"
             }));
         }
 

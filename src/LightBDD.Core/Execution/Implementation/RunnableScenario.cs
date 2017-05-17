@@ -65,6 +65,10 @@ namespace LightBDD.Core.Execution.Implementation
             {
                 await _extendableExecutor.ExecuteScenarioAsync(_scenario, RunScenarioAsync);
             }
+            catch (StepAbortedException ex)
+            {
+                ex.RethrowOriginalException();
+            }
             finally
             {
                 watch.Stop();

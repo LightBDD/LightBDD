@@ -42,27 +42,11 @@ namespace LightBDD.Core.Results.Implementation
                 return;
             }
 
-            var stepsResult = GetSteps().Reverse().OrderByDescending(s => s.Status).FirstOrDefault();
+            var stepsResult = GetSteps().GetMostSevereOrNull();
             if (stepsResult == null)
                 return;
             Status = stepsResult.Status;
-            StatusDetails = CaptureStatusDetails();
-        }
-
-        private string CaptureStatusDetails()
-        {
-            var sb = new StringBuilder();
-            foreach (var step in GetSteps().Where(s => s.StatusDetails != null))
-            {
-                if (sb.Length > 0)
-                    sb.AppendLine();
-
-                sb.Append("Step ")
-                    .Append(step.Info.Number)
-                    .Append(": ")
-                    .Append(step.StatusDetails.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t"));
-            }
-            return sb.Length > 0 ? sb.ToString() : null;
+            StatusDetails = GetSteps().MergeStatusDetails();
         }
 
         public override string ToString()

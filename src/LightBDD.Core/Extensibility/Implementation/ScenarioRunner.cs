@@ -19,19 +19,19 @@ namespace LightBDD.Core.Extensibility.Implementation
         private readonly ScenarioExecutor _scenarioExecutor;
         private readonly IMetadataProvider _metadataProvider;
         private readonly IScenarioProgressNotifier _progressNotifier;
-        private readonly Func<Exception, ExecutionStatus> _exceptionToStatusMapper;
         private IEnumerable<StepDescriptor> _steps = Enumerable.Empty<StepDescriptor>();
         private INameInfo _name;
         private string[] _labels = Arrays<string>.Empty();
         private string[] _categories = Arrays<string>.Empty();
         private Func<object> _contextProvider = ProvideNoContext;
+        private readonly ExceptionProcessor _exceptionProcessor;
 
-        public ScenarioRunner(ScenarioExecutor scenarioExecutor, IMetadataProvider metadataProvider, IScenarioProgressNotifier progressNotifier, Func<Exception, ExecutionStatus> exceptionToStatusMapper)
+        public ScenarioRunner(ScenarioExecutor scenarioExecutor, IMetadataProvider metadataProvider, IScenarioProgressNotifier progressNotifier, ExceptionProcessor exceptionProcessor)
         {
             _scenarioExecutor = scenarioExecutor;
             _metadataProvider = metadataProvider;
             _progressNotifier = progressNotifier;
-            _exceptionToStatusMapper = exceptionToStatusMapper;
+            _exceptionProcessor = exceptionProcessor;
         }
 
         public IScenarioRunner WithSteps(IEnumerable<StepDescriptor> steps)
@@ -138,7 +138,7 @@ namespace LightBDD.Core.Extensibility.Implementation
             var stepInfo = new StepInfo(_metadataProvider.GetStepName(descriptor, previousStepTypeName), stepIndex + 1, totalStepsCount, groupPrefix);
             var arguments = descriptor.Parameters.Select(p => new MethodArgument(p, _metadataProvider.GetParameterFormatter(p.ParameterInfo))).ToArray();
             var stepGroupPrefix = $"{stepInfo.GroupPrefix}{stepInfo.Number}.";
-            return new RunnableStep(stepInfo, TransformInvocationResult(descriptor, extendableExecutor, scenarioContext, stepGroupPrefix), arguments, _exceptionToStatusMapper, _progressNotifier, extendableExecutor, scenarioContext);
+            return new RunnableStep(stepInfo, TransformInvocationResult(descriptor, extendableExecutor, scenarioContext, stepGroupPrefix), arguments, _exceptionProcessor, _progressNotifier, extendableExecutor, scenarioContext);
         }
 
         private Func<object, object[], Task<RunnableStepResult>> TransformInvocationResult(StepDescriptor descriptor, ExtendableExecutor extendableExecutor, object scenarioContext, string groupPrefix)

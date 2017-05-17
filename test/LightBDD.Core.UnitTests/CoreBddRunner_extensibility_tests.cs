@@ -65,7 +65,7 @@ namespace LightBDD.Core.UnitTests
             var steps = feature.GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
                 new StepResultExpectation(1, 3, "GIVEN step one", ExecutionStatus.Passed),
-                new StepResultExpectation(2, 3, "WHEN step two ignoring scenario", ExecutionStatus.Ignored, IgnoreReason),
+                new StepResultExpectation(2, 3, "WHEN step two ignoring scenario", ExecutionStatus.Ignored, $"Step 2: {IgnoreReason}"),
                 new StepResultExpectation(3, 3, "THEN step three", ExecutionStatus.NotRun));
         }
 

@@ -91,7 +91,7 @@ namespace LightBDD.Core.UnitTests
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
                 new StepResultExpectation(1, 3, "GIVEN step with parameter \"def\"", ExecutionStatus.Passed),
-                new StepResultExpectation(2, 3, "WHEN step with parameter \"<?>\"", ExecutionStatus.Failed, ParameterExceptionReason),
+                new StepResultExpectation(2, 3, "WHEN step with parameter \"<?>\"", ExecutionStatus.Failed, $"Step 2: {ParameterExceptionReason}"),
                 new StepResultExpectation(3, 3, "THEN step with parameter \"<?>\"", ExecutionStatus.NotRun)
                 );
         }
@@ -112,7 +112,7 @@ namespace LightBDD.Core.UnitTests
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
                 new StepResultExpectation(1, 3, "GIVEN step with parameter \"abc\"", ExecutionStatus.Passed),
-                new StepResultExpectation(2, 3, "WHEN step with parameter \"5\" throwing exception", ExecutionStatus.Failed, ExceptionReason),
+                new StepResultExpectation(2, 3, "WHEN step with parameter \"5\" throwing exception", ExecutionStatus.Failed, $"Step 2: {ExceptionReason}"),
                 new StepResultExpectation(3, 3, "THEN step with parameter \"<?>\"", ExecutionStatus.NotRun)
                 );
         }
@@ -133,7 +133,7 @@ namespace LightBDD.Core.UnitTests
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
                 new StepResultExpectation(1, 3, "GIVEN step with parameter \"def\"", ExecutionStatus.Passed),
-                new StepResultExpectation(2, 3, "WHEN step with parameter \"<?>\"", ExecutionStatus.Failed, ParameterExceptionReason),
+                new StepResultExpectation(2, 3, "WHEN step with parameter \"<?>\"", ExecutionStatus.Failed, $"Step 2: {ParameterExceptionReason}"),
                 new StepResultExpectation(3, 3, "THEN step with parameter \"3.27\"", ExecutionStatus.NotRun)
                 );
         }
@@ -157,10 +157,10 @@ namespace LightBDD.Core.UnitTests
 
             var result = _feature.GetFeatureResult().GetScenarios().Single();
             Assert.That(result.Status, Is.EqualTo(ExecutionStatus.Failed));
-            Assert.That(result.StatusDetails, Is.EqualTo("Step 1: " + expectedErrorMessage));
+            Assert.That(result.StatusDetails, Is.EqualTo($"Step 1: {expectedErrorMessage}"));
 
             StepResultExpectation.AssertEqual(result.GetSteps(),
-                new StepResultExpectation(1, 1, "Method with wrong formatter param \"<?>\"", ExecutionStatus.Failed, expectedErrorMessage));
+                new StepResultExpectation(1, 1, "Method with wrong formatter param \"<?>\"", ExecutionStatus.Failed, $"Step 1: {expectedErrorMessage}"));
         }
 
         public IEnumerable<StepDescriptor> GetFailingStepDescriptors(string reason)

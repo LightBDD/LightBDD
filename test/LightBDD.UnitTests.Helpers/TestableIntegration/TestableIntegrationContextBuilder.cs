@@ -61,7 +61,11 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
                 .WithExceptionToStatusMapper(ex => ex is CustomIgnoreException ? ExecutionStatus.Ignored : ExecutionStatus.Failed)
                 .WithFeatureProgressNotifier(NoProgressNotifier.Default)
                 .WithScenarioProgressNotifierProvider(feature => NoProgressNotifier.Default)
-                .WithConfiguration(cfg => cfg.ExecutionExtensionsConfiguration().EnableStepExtension<StepCommentHelper>());
+                .WithConfiguration(cfg =>
+                {
+                    cfg.ExecutionExtensionsConfiguration().EnableStepExtension<StepCommentHelper>();
+                    cfg.ExceptionHandlingConfiguration().UpdateExceptionDetailsFormatter(ex => ex.Message);
+                });
         }
 
         public IntegrationContext Build()

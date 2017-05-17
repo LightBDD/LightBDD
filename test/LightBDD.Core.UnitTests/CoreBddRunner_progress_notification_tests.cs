@@ -50,7 +50,7 @@ namespace LightBDD.Core.UnitTests
                 "Step 2/3 Comment: some comment",
                 "Step Finish: 2/3 WHEN step two with comment | Status:Passed | ExecutionTimePresent:True | Details:",
                 "Step Start: 3/3 THEN step three should throw exception",
-                "Step Finish: 3/3 THEN step three should throw exception | Status:Failed | ExecutionTimePresent:True | Details:exception reason",
+                "Step Finish: 3/3 THEN step three should throw exception | Status:Failed | ExecutionTimePresent:True | Details:Step 3: exception reason",
                 "Scenario Finish: It should notify execution progress [lab1, lab2] <category 1, category 2> | Status:Failed | ExecutionTimePresent:True | Steps:3 | Details:Step 3: exception reason",
                 "Feature Finish: CoreBddRunner progress notification tests [label1, label2]: feature description | Scenarios:1"
             };
@@ -101,16 +101,16 @@ namespace LightBDD.Core.UnitTests
                 "Step Finish: 1.2.1/1.2.3 GIVEN step one | Status:Passed | ExecutionTimePresent:True | Details:",
 
                 "Step Start: 1.2.2/1.2.3 WHEN step two is bypassed",
-                "Step Finish: 1.2.2/1.2.3 WHEN step two is bypassed | Status:Bypassed | ExecutionTimePresent:True | Details:bypass reason",
+                "Step Finish: 1.2.2/1.2.3 WHEN step two is bypassed | Status:Bypassed | ExecutionTimePresent:True | Details:Step 1.2.2: bypass reason",
 
                 "Step Start: 1.2.3/1.2.3 THEN step three",
                 "Step Finish: 1.2.3/1.2.3 THEN step three | Status:Passed | ExecutionTimePresent:True | Details:",
 
-                "Step Finish: 1.2/1.2 Bypassed step group | Status:Bypassed | ExecutionTimePresent:True | Details:bypass reason",
+                "Step Finish: 1.2/1.2 Bypassed step group | Status:Bypassed | ExecutionTimePresent:True | Details:Step 1.2.2: bypass reason",
 
-                "Step Finish: 1/1 Composite group | Status:Bypassed | ExecutionTimePresent:True | Details:bypass reason",
+                "Step Finish: 1/1 Composite group | Status:Bypassed | ExecutionTimePresent:True | Details:Step 1.2.2: bypass reason",
 
-                "Scenario Finish: It should notify execution progress of composite steps [lab1, lab2] <category 1, category 2> | Status:Bypassed | ExecutionTimePresent:True | Steps:1 | Details:Step 1: bypass reason",
+                "Scenario Finish: It should notify execution progress of composite steps [lab1, lab2] <category 1, category 2> | Status:Bypassed | ExecutionTimePresent:True | Steps:1 | Details:Step 1.2.2: bypass reason",
                 "Feature Finish: CoreBddRunner progress notification tests [label1, label2]: feature description | Scenarios:1"
             };
             Assert.That(progressNotifier.Notifications, Is.EqualTo(expected), "Expected:\r\n{0}\r\n\r\nGot:\r\n{1}\r\n\r\n", string.Join("\r\n", expected), string.Join("\r\n", progressNotifier.Notifications));

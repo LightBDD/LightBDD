@@ -51,11 +51,11 @@ namespace LightBDD.Core.UnitTests
 
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps().ToArray();
             StepResultExpectation.AssertEqual(steps,
-                new StepResultExpectation(1, 1, "Failing step group", ExecutionStatus.Failed, ExceptionReason));
+                new StepResultExpectation(1, 1, "Failing step group", ExecutionStatus.Failed, $"Step 1.2: {ExceptionReason}"));
 
             StepResultExpectation.AssertEqual(steps[0].GetSubSteps(),
                 new StepResultExpectation("1.", 1, 3, "GIVEN step one", ExecutionStatus.Passed),
-                new StepResultExpectation("1.", 2, 3, "WHEN step two throwing exception", ExecutionStatus.Failed, ExceptionReason),
+                new StepResultExpectation("1.", 2, 3, "WHEN step two throwing exception", ExecutionStatus.Failed, $"Step 1.2: {ExceptionReason}"),
                 new StepResultExpectation("1.", 3, 3, "THEN step three", ExecutionStatus.NotRun)
             );
         }
@@ -67,11 +67,11 @@ namespace LightBDD.Core.UnitTests
 
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps().ToArray();
             StepResultExpectation.AssertEqual(steps,
-                new StepResultExpectation(1, 1, "Ignored step group", ExecutionStatus.Ignored, IgnoreReason));
+                new StepResultExpectation(1, 1, "Ignored step group", ExecutionStatus.Ignored, $"Step 1.2: {IgnoreReason}"));
 
             StepResultExpectation.AssertEqual(steps[0].GetSubSteps(),
                 new StepResultExpectation("1.", 1, 3, "GIVEN step one", ExecutionStatus.Passed),
-                new StepResultExpectation("1.", 2, 3, "WHEN step two ignoring scenario", ExecutionStatus.Ignored, IgnoreReason),
+                new StepResultExpectation("1.", 2, 3, "WHEN step two ignoring scenario", ExecutionStatus.Ignored, $"Step 1.2: {IgnoreReason}"),
                 new StepResultExpectation("1.", 3, 3, "THEN step three", ExecutionStatus.NotRun)
             );
         }
@@ -84,11 +84,11 @@ namespace LightBDD.Core.UnitTests
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps().ToArray();
 
             StepResultExpectation.AssertEqual(steps,
-                new StepResultExpectation(1, 1, "Bypassed step group", ExecutionStatus.Bypassed, BypassReason));
+                new StepResultExpectation(1, 1, "Bypassed step group", ExecutionStatus.Bypassed, $"Step 1.2: {BypassReason}"));
 
             StepResultExpectation.AssertEqual(steps[0].GetSubSteps(),
                 new StepResultExpectation("1.", 1, 3, "GIVEN step one", ExecutionStatus.Passed),
-                new StepResultExpectation("1.", 2, 3, "WHEN step two is bypassed", ExecutionStatus.Bypassed, BypassReason),
+                new StepResultExpectation("1.", 2, 3, "WHEN step two is bypassed", ExecutionStatus.Bypassed, $"Step 1.2: {BypassReason}"),
                 new StepResultExpectation("1.", 3, 3, "THEN step three", ExecutionStatus.Passed)
             );
         }
@@ -100,7 +100,7 @@ namespace LightBDD.Core.UnitTests
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps().ToArray();
             StepResultExpectation.AssertEqual(steps,
                 new StepResultExpectation(1, 2, "Passing step group", ExecutionStatus.Passed),
-                new StepResultExpectation(2, 2, "Composite group", ExecutionStatus.Bypassed, BypassReason));
+                new StepResultExpectation(2, 2, "Composite group", ExecutionStatus.Bypassed, $"Step 2.2.2: {BypassReason}"));
 
             StepResultExpectation.AssertEqual(steps[0].GetSubSteps(),
                 new StepResultExpectation("1.", 1, 3, "GIVEN step one", ExecutionStatus.Passed),
@@ -115,7 +115,7 @@ namespace LightBDD.Core.UnitTests
             );
             StepResultExpectation.AssertEqual(steps[1].GetSubSteps().ElementAt(1).GetSubSteps(),
                 new StepResultExpectation("2.2.", 1, 3, "GIVEN step one", ExecutionStatus.Passed),
-                new StepResultExpectation("2.2.", 2, 3, "WHEN step two is bypassed", ExecutionStatus.Bypassed, BypassReason),
+                new StepResultExpectation("2.2.", 2, 3, "WHEN step two is bypassed", ExecutionStatus.Bypassed, $"Step 2.2.2: {BypassReason}"),
                 new StepResultExpectation("2.2.", 3, 3, "THEN step three", ExecutionStatus.Passed)
             );
         }

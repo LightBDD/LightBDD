@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution.Implementation;
 using LightBDD.Core.Extensibility.Implementation;
+using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Notification;
@@ -18,7 +19,7 @@ namespace LightBDD.Core.Execution.Implementation
     {
         private readonly Func<object, object[], Task<RunnableStepResult>> _stepInvocation;
         private readonly MethodArgument[] _arguments;
-        private readonly Func<Exception, ExecutionStatus> _exceptionToStatusMapper;
+        private readonly ExceptionProcessor _exceptionProcessor;
         private readonly IScenarioProgressNotifier _progressNotifier;
         private readonly ExtendableExecutor _extendableExecutor;
         private readonly object _scenarioContext;
@@ -26,12 +27,12 @@ namespace LightBDD.Core.Execution.Implementation
         public IStepResult Result => _result;
         public IStepInfo Info => Result.Info;
 
-        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task<RunnableStepResult>> stepInvocation, MethodArgument[] arguments, Func<Exception, ExecutionStatus> exceptionToStatusMapper, IScenarioProgressNotifier progressNotifier, ExtendableExecutor extendableExecutor, object scenarioContext)
+        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task<RunnableStepResult>> stepInvocation, MethodArgument[] arguments, ExceptionProcessor exceptionProcessor, IScenarioProgressNotifier progressNotifier, ExtendableExecutor extendableExecutor, object scenarioContext)
         {
             _result = new StepResult(stepInfo);
             _stepInvocation = stepInvocation;
             _arguments = arguments;
-            _exceptionToStatusMapper = exceptionToStatusMapper;
+            _exceptionProcessor = exceptionProcessor;
             _progressNotifier = progressNotifier;
             _extendableExecutor = extendableExecutor;
             _scenarioContext = scenarioContext;
@@ -68,25 +69,25 @@ namespace LightBDD.Core.Execution.Implementation
                 stepStartNotified = true;
 
                 await _extendableExecutor.ExecuteStepAsync(this, TimeMeasuredInvokeAsync);
-                if (_result.GetSubSteps().Any())
-                {
-                    var maxSeverityStep = _result.GetSubSteps().OrderByDescending(r => r.Status).First();
-                    _result.SetStatus(maxSeverityStep.Status, maxSeverityStep.StatusDetails);
-                }
-                else
-                    _result.SetStatus(ExecutionStatus.Passed);
+                _result.SetStatus(_result.GetSubSteps().GetMostSevereOrNull()?.Status ?? ExecutionStatus.Passed);
             }
-            catch (StepBypassException e)
+            catch (StepBypassException exception)
             {
-                _result.SetStatus(ExecutionStatus.Bypassed, e.Message);
+                _result.SetStatus(ExecutionStatus.Bypassed, exception.Message);
             }
-            catch (Exception e)
+            catch (StepAbortedException e)
             {
-                _result.SetStatus(_exceptionToStatusMapper(e), e.Message);
+                _result.SetStatus(e.StepStatus);
                 throw;
+            }
+            catch (Exception exception)
+            {
+                var executionStatus = _exceptionProcessor.UpdateResultsWithException(_result, exception);
+                throw new StepAbortedException(exception, executionStatus);
             }
             finally
             {
+                _result.IncludeSubStepDetails();
                 if (stepStartNotified)
                     _progressNotifier.NotifyStepFinished(_result);
             }

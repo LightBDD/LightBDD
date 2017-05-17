@@ -34,5 +34,15 @@
         {
             return cfg.Get<ExecutionExtensionsConfiguration>();
         }
+
+        /// <summary>
+        /// Returns exception handling configuration.
+        /// </summary>
+        /// <param name="cfg"></param>
+        /// <returns></returns>
+        public static ExceptionHandlingConfiguration ExceptionHandlingConfiguration(this LightBddConfiguration cfg)
+        {
+            return cfg.Get<ExceptionHandlingConfiguration>();
+        }
     }
 }
