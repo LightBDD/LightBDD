@@ -74,6 +74,9 @@ Step 2: Not implemented yet
 // Step 1: multiline
 comment
 // Step 1: comment 2
+// Step 2.3: sub-comment
+// Step 2.3.1: sub-sub-multiline
+comment
 Failed name2 ""arg1"" (2s 157ms)[&#8734;link]
 categoryB, categoryC
 Bypassed 1. step3 (2s 107ms)

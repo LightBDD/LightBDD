@@ -100,14 +100,20 @@ namespace LightBDD.Framework.Reporting
             return results.Sum(f => f.CountStepsWithStatus(status));
         }
 
-        private static IEnumerable<IStepResult> GetAllSteps(this IScenarioResult scenario)
+        /// <summary>
+        /// Returns all the steps with their sub steps, belonging to scenario.
+        /// </summary>
+        public static IEnumerable<IStepResult> GetAllSteps(this IScenarioResult scenario)
         {
-            return scenario.GetSteps().Concat(scenario.GetSteps().SelectMany(s => s.GetAllSubSteps()));
+            return scenario.GetSteps().SelectMany(x => x.GetAllSteps());
         }
 
-        private static IEnumerable<IStepResult> GetAllSubSteps(this IStepResult step)
+        /// <summary>
+        /// Returns enumeration over step-sub step hierarchy, including specified step.
+        /// </summary>
+        public static IEnumerable<IStepResult> GetAllSteps(this IStepResult step)
         {
-            return step.GetSubSteps().Concat(step.GetSubSteps().SelectMany(s => s.GetAllSubSteps()));
+            return Enumerable.Repeat(step, 1).Concat(step.GetSubSteps().SelectMany(s => s.GetAllSteps()));
         }
     }
 }

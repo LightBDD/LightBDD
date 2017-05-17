@@ -64,6 +64,9 @@ Feature: My feature [Label 1]
 			Step 1: multiline
 				comment
 			Step 1: comment 2
+			Step 2.3: sub-comment
+			Step 2.3.1: sub-sub-multiline
+				comment
 
 	Scenario: name2 ""arg1"" - Failed (2s 157ms)
 		Categories: categoryB, categoryC

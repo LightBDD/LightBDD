@@ -72,8 +72,11 @@ comment</Comment>
         <SubStep Status=""Ignored"" Number=""3"" Name=""substep 3"" ExecutionStart=""2014-09-23T19:22:01.155Z"" ExecutionTime=""PT0S"" GroupPrefix=""2."">
           <StatusDetails>Not implemented yet</StatusDetails>
           <StepName Format=""substep 3"" />
+          <Comment>sub-comment</Comment>
           <SubStep Status=""NotRun"" Number=""1"" Name=""sub-substep 1"" GroupPrefix=""2.3."">
             <StepName Format=""sub-substep 1"" />
+            <Comment>sub-sub-multiline
+comment</Comment>
           </SubStep>
         </SubStep>
       </Step>

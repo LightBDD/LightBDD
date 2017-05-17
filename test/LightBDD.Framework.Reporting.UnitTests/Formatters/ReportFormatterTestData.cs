@@ -20,8 +20,8 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
                     .WithSubSteps(
                             TestResults.CreateStepResult(1, "substep 1", ExecutionStatus.Passed, _startDate.AddSeconds(3), new TimeSpan(0, 0, 0, 0, 100)).WithGroupPrefix("2."),
                             TestResults.CreateStepResult(2, "substep 2", ExecutionStatus.Passed, _startDate.AddSeconds(3).AddMilliseconds(100), new TimeSpan(0, 0, 0, 1, 0)).WithGroupPrefix("2."),
-                            TestResults.CreateStepResult(3, "substep 3", ExecutionStatus.Ignored, _startDate.AddSeconds(4).AddMilliseconds(100), TimeSpan.Zero, "Not implemented yet").WithGroupPrefix("2.")
-                            .WithSubSteps(TestResults.CreateStepResult(1, "sub-substep 1", ExecutionStatus.NotRun).WithGroupPrefix("2.3."))
+                            TestResults.CreateStepResult(3, "substep 3", ExecutionStatus.Ignored, _startDate.AddSeconds(4).AddMilliseconds(100), TimeSpan.Zero, "Not implemented yet").WithGroupPrefix("2.").WithComments("sub-comment")
+                            .WithSubSteps(TestResults.CreateStepResult(1, "sub-substep 1", ExecutionStatus.NotRun).WithGroupPrefix("2.3.").WithComments($"sub-sub-multiline{Environment.NewLine}comment"))
                         )),
 
                 TestResults.CreateScenarioResult(TestResults.CreateNameInfo("name2 \"arg1\"", "name2 \"{0}\"", "arg1"), null, _startDate.AddSeconds(4), new TimeSpan(0, 0, 0, 2, 157), new[] { "categoryB", "categoryC" },
