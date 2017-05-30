@@ -16,8 +16,7 @@ namespace LightBDD.NUnit3
         /// <param name="test">The test that is going to be run.</param>
         public void BeforeTest(ITest test)
         {
-            // TODO: TestContext.Out assignment to TestContextProvider is really a workaround for https://github.com/nunit/nunit/issues/1965 and should be removed when fixed
-            TestContextProvider.Initialize(test.Method.MethodInfo, TestContext.Out);
+            TestContextProvider.Initialize(test.Method.MethodInfo, test.Arguments);
         }
 
         /// <summary>Executed after each test is run</summary>

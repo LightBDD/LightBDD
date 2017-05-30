@@ -6,26 +6,26 @@ namespace LightBDD.NUnit3.Implementation
 {
     internal class TestContextProvider
     {
-        private static readonly AsyncLocalContext<TestContextProvider> _provider = new AsyncLocalContext<TestContextProvider>();
+        private static readonly AsyncLocalContext<TestContextProvider> Provider = new AsyncLocalContext<TestContextProvider>();
         public  MethodInfo TestMethod { get; }
-        public  TextWriter TestOutWriter { get; }
+        public  object[] TestMethodArguments { get; }
 
-        public static TestContextProvider Current => _provider.Value;
+        public static TestContextProvider Current => Provider.Value;
 
-        public static void Initialize(MethodInfo testMethod, TextWriter outWriter)
+        public static void Initialize(MethodInfo testMethod, object[] testArguments)
         {
-            _provider.Value = new TestContextProvider(testMethod,outWriter);
+            Provider.Value = new TestContextProvider(testMethod,testArguments);
         }
 
         public static void Clear()
         {
-            _provider.Value = null;
+            Provider.Value = null;
         }
 
-        private TestContextProvider(MethodInfo testMethod, TextWriter testOutWriter)
+        private TestContextProvider(MethodInfo testMethod, object[] testMethodArguments)
         {
             TestMethod = testMethod;
-            TestOutWriter = testOutWriter;
+            TestMethodArguments = testMethodArguments;
         }
     }
 }

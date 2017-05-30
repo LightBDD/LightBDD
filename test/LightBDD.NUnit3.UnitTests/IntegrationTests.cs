@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.Extensibility;
 using LightBDD.Core.Results;
 using LightBDD.Framework;
+using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Scenarios.Basic;
+using LightBDD.Framework.Scenarios.Extended;
 using NUnit.Framework;
 
 namespace LightBDD.NUnit3.UnitTests
@@ -114,6 +117,21 @@ namespace LightBDD.NUnit3.UnitTests
             Assert.AreEqual(
                     "Only steps being completed upon return can be run synchronously (all steps have to return completed task). Consider using Async scenario methods for async Task or async void steps.",
                     ex.Message);
+        }
+
+        [Scenario]
+        [TestCase("abc")]
+        [TestCase("def")]
+        public void Runner_should_support_parameterized_scenarios_with_value(string value)
+        {
+            Runner.RunScenario(_ => Step_with_parameter(value));
+            Assert.That(ConfiguredLightBddScope.CapturedNotifications, Does.Contain($"SCENARIO: Runner should support parameterized scenarios with value \"{value}\""));
+        }
+
+        private void Step_with_parameter(string value)
+        {
+            Assert.NotNull(value);
+            Assert.That(value.Length, Is.EqualTo(3));
         }
 
         private void Inconclusive_step()

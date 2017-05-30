@@ -122,6 +122,7 @@ namespace LightBDD.MsTest2.UnitTests
         public void Runner_should_support_parameterized_scenarios_with_value(string value)
         {
             Runner.RunScenario(_ => Step_with_parameter(value));
+            Assert.IsTrue(ConfiguredLightBddScope.CapturedNotifications.Contains($"SCENARIO: Runner should support parameterized scenarios with value \"{value}\""));
         }
 
         private void Step_with_parameter(string value)

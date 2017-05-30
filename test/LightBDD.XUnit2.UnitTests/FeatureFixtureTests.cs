@@ -3,8 +3,6 @@ using LightBDD.XUnit2;
 using Xunit;
 using Xunit.Abstractions;
 
-[assembly: LightBddScope]
-
 namespace LightBDD.XUnit2.UnitTests
 {
     public class FeatureFixtureTests
