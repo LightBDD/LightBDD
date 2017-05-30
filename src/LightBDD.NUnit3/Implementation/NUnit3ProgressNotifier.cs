@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using LightBDD.Core.Notification;
 using LightBDD.Framework.Notification;
+using NUnit.Framework;
 
 namespace LightBDD.NUnit3.Implementation
 {
@@ -19,7 +20,7 @@ namespace LightBDD.NUnit3.Implementation
 
         private static void WriteScenarioProgress(string text)
         {
-            TestContextProvider.Current.TestOutWriter.WriteLine(text);
+            TestContext.Out.WriteLine(text);
         }
     }
 }
