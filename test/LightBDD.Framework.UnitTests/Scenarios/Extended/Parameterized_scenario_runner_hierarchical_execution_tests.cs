@@ -45,18 +45,22 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
             AssertStep(subSteps[1], nameof(Step_two_async));
         }
 
-        private Task<StepGroup> Async_step_group()
+        private async Task<StepGroup> Async_step_group()
         {
-            return Runner.DefineStepGroupAsync(
-                _ => Step_one_async(),
-                _ => Step_two_async());
+            return StepGroup.DefineNew()
+                .AddSteps(
+                    _ => Step_one_async(),
+                    _ => Step_two_async())
+                .Build();
         }
 
         private StepGroup Step_group()
         {
-            return Runner.DefineStepGroup(
-                _ => Step_one(),
-                _ => Step_two());
+            return StepGroup.DefineNew()
+                .AddSteps(
+                    _ => Step_one(),
+                    _ => Step_two())
+                .Build();
         }
     }
 }

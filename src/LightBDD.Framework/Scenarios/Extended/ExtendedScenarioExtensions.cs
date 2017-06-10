@@ -227,60 +227,6 @@ namespace LightBDD.Framework.Scenarios.Extended
             await AsExtended(runner).RunScenarioAsync(steps);
         }
 
-        /// <summary>
-        /// Defines a composite step as a group of sub steps that have to be successfully executed to make the step passing.
-        /// The defined sub steps would be included in execution progress as well as in report generated after execution.
-        /// The composite step can be used later as a part of scenarios like regular step.
-        /// 
-        /// Example composite step definition:
-        /// <code>
-        /// StepGroup Given_product_is_in_basket(string product)
-        /// {
-        ///     return Runner.DefineStepGroup(
-        ///         _ => Given_customer_is_logged_in("ABC-123"),
-        ///         _ => Given_product_is_available_in_product_storage(product),
-        ///         _ => When_customer_puts_product_to_the_basket(product),
-        ///         _ => Then_basket_should_contain_product(product));
-        /// }
-        /// 
-        /// Please note that while this method just <b>defines</b> sub steps to execute (they are not executed within this method), the sub steps would be executed as a part of the step, influencing the step result as well as execution time.
-        /// </code>
-        /// </summary>
-        /// <param name="runner">Runner.</param>
-        /// <param name="steps">List of steps to execute in order.</param>
-        /// <returns>Step group definition.</returns>
-        public static StepGroup DefineStepGroup<TContext>(this IBddRunner<TContext> runner, params Expression<Action<TContext>>[] steps)
-        {
-            return AsExtended(runner).DefineStepGroup(steps);
-        }
-
-        /// <summary>
-        /// Defines a composite step as a group of async sub steps that have to be successfully executed to make the step passing.
-        /// The defined sub steps would be included in execution progress as well as in report generated after execution.
-        /// The composite step can be used later as a part of scenarios like regular step.
-        /// 
-        /// Example composite step definition:
-        /// <code>
-        /// async Task&lt;StepGroup&gt; Given_product_is_in_basket(string product)
-        /// {
-        ///     return await Runner.DefineStepGroupAsync(
-        ///         _ => Given_customer_is_logged_in("ABC-123"),
-        ///         _ => Given_product_is_available_in_product_storage(product),
-        ///         _ => When_customer_puts_product_to_the_basket(product),
-        ///         _ => Then_basket_should_contain_product(product));
-        /// }
-        /// 
-        /// Please note that while this method just <b>defines</b> sub steps to execute (they are not executed within this method), the sub steps would be executed as a part of the step, influencing the step result as well as execution time.
-        /// </code>
-        /// </summary>
-        /// <param name="runner">Runner.</param>
-        /// <param name="steps">List of steps to execute in order.</param>
-        /// <returns>Step group definition.</returns>
-        public static async Task<StepGroup> DefineStepGroupAsync<TContext>(this IBddRunner<TContext> runner, params Expression<Func<TContext, Task>>[] steps)
-        {
-            return await AsExtended(runner).DefineStepGroupAsync(steps);
-        }
-
         private static ExtendedScenarioRunner<TContext> AsExtended<TContext>(this IBddRunner<TContext> runner)
         {
             return runner.Integrate().AsEnrichable().Enrich(ExtendedScenarioRunner<TContext>.Create);
