@@ -15,10 +15,10 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
         private readonly IFeatureFixtureRunner _runner;
         private readonly ExtendedStepCompiler<TContext> _stepCompiler;
 
-        public ExtendedScenarioRunner(IFeatureFixtureRunner runner, IntegrationContext context)
+        public ExtendedScenarioRunner(IFeatureFixtureRunner runner, LightBddConfiguration configuration)
         {
             _runner = runner;
-            _stepCompiler = new ExtendedStepCompiler<TContext>(context.Configuration);
+            _stepCompiler = new ExtendedStepCompiler<TContext>(configuration);
         }
 
 
@@ -49,9 +49,9 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
                 .RunAsynchronously();
         }
 
-        public static ExtendedScenarioRunner<TContext> Create(IFeatureFixtureRunner runner, IntegrationContext context)
+        public static ExtendedScenarioRunner<TContext> Create(IFeatureFixtureRunner runner, LightBddConfiguration configuration)
         {
-            return new ExtendedScenarioRunner<TContext>(runner, context);
+            return new ExtendedScenarioRunner<TContext>(runner, configuration);
         }
     }
 }

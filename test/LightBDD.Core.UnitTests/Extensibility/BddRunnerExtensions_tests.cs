@@ -1,4 +1,5 @@
 ﻿using System;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Results;
 using LightBDD.Framework;
@@ -49,7 +50,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
                 throw new NotImplementedException();
             }
 
-            public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, IntegrationContext, TEnrichedRunner> runnerFactory)
+            public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, LightBddConfiguration, TEnrichedRunner> runnerFactory)
             {
                 throw new NotImplementedException();
             }

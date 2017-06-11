@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Framework.Implementation
@@ -21,6 +22,6 @@ namespace LightBDD.Framework.Implementation
 
         public IScenarioRunner NewScenario() => _coreRunner.NewScenario();
 
-        public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, IntegrationContext, TEnrichedRunner> runnerFactory) => _coreRunner.AsEnrichable().Enrich(runnerFactory);
+        public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, LightBddConfiguration, TEnrichedRunner> runnerFactory) => _coreRunner.AsEnrichable().Enrich(runnerFactory);
     }
 }

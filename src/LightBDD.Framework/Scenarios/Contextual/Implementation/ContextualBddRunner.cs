@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Extensibility;
 
@@ -18,7 +19,7 @@ namespace LightBDD.Framework.Scenarios.Contextual.Implementation
         }
 
         public IScenarioRunner NewScenario() => _coreRunner.NewScenario().WithContext(_contextProvider);
-        public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, IntegrationContext, TEnrichedRunner> runnerFactory)
+        public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, LightBddConfiguration, TEnrichedRunner> runnerFactory)
         {
             return _coreRunner.AsEnrichable().Enrich(new ContextualRunnerEnricher<TEnrichedRunner>(this, runnerFactory).Enrich);
         }
@@ -27,15 +28,15 @@ namespace LightBDD.Framework.Scenarios.Contextual.Implementation
         private class ContextualRunnerEnricher<TRunner>
         {
             private readonly IFeatureFixtureRunner _contextualRunner;
-            private readonly Func<IFeatureFixtureRunner, IntegrationContext, TRunner> _runnerFactory;
+            private readonly Func<IFeatureFixtureRunner, LightBddConfiguration, TRunner> _runnerFactory;
 
-            public ContextualRunnerEnricher(IFeatureFixtureRunner contextualRunner, Func<IFeatureFixtureRunner, IntegrationContext, TRunner> runnerFactory)
+            public ContextualRunnerEnricher(IFeatureFixtureRunner contextualRunner, Func<IFeatureFixtureRunner, LightBddConfiguration, TRunner> runnerFactory)
             {
                 _contextualRunner = contextualRunner;
                 _runnerFactory = runnerFactory;
             }
 
-            public TRunner Enrich(IFeatureFixtureRunner _, IntegrationContext ctx)
+            public TRunner Enrich(IFeatureFixtureRunner _, LightBddConfiguration ctx)
             {
                 return _runnerFactory(_contextualRunner, ctx);
             }

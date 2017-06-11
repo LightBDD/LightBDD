@@ -1,21 +1,22 @@
 using System;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
 {
     public class MockBddRunner<T> : IBddRunner<T>, IEnrichableFeatureFixtureRunner
     {
-        private readonly IntegrationContext _ctx;
+        private readonly LightBddConfiguration _configuration;
         private readonly IScenarioRunner _scenarioRunner;
 
-        public MockBddRunner(IntegrationContext ctx, IScenarioRunner scenarioRunner)
+        public MockBddRunner(LightBddConfiguration configuration, IScenarioRunner scenarioRunner)
         {
-            _ctx = ctx;
+            _configuration = configuration;
             _scenarioRunner = scenarioRunner;
         }
 
         public IScenarioRunner NewScenario() => _scenarioRunner;
 
-        public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, IntegrationContext, TEnrichedRunner> runnerFactory) => runnerFactory(this, _ctx);
+        public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, LightBddConfiguration, TEnrichedRunner> runnerFactory) => runnerFactory(this, _configuration);
     }
 }

@@ -20,7 +20,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
         {
             CapturedSteps = null;
             MockScenarioRunner = new Mock<IScenarioRunner>();
-            Runner = new MockBddRunner<T>(TestableIntegrationContextBuilder.Default().Build(),MockScenarioRunner.Object);
+            Runner = new MockBddRunner<T>(TestableIntegrationContextBuilder.Default().Build().Configuration,MockScenarioRunner.Object);
         }
 
         protected void ExpectSynchronousScenarioRun()
