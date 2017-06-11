@@ -6,7 +6,6 @@ using LightBDD.Framework.Commenting;
 using LightBDD.Framework.Commenting.Configuration;
 using LightBDD.Framework.ExecutionContext.Configuration;
 using LightBDD.Framework.Extensibility;
-using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
@@ -78,7 +77,7 @@ namespace LightBDD.Framework.UnitTests.Commenting
 
         TestStepGroup Grouped_steps()
         {
-            return GetFeatureRunner().GetBddRunner(this).Test().CreateStepGroup(
+            return TestStepGroup.CreateStepGroup(
                 Commented_step1,
                 Commented_step2);
         }

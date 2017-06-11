@@ -2,7 +2,6 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
-using LightBDD.Framework.Scenarios.Extended;
 
 namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
@@ -31,7 +30,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
 
         public static StepDescriptor CreateForGroup(Func<TestStepGroup> step) => new StepDescriptor(
             step.GetMethodInfo().Name,
-            (ctx, args) => Task.FromResult(new StepResultDescriptor(step.Invoke().SubSteps)));
+            (ctx, args) => Task.FromResult((StepResultDescriptor)step.Invoke()));
 
         public static StepDescriptor CreateAsync<TArg>(Action<TArg> step, Func<TArg> argEvaluator)
         {

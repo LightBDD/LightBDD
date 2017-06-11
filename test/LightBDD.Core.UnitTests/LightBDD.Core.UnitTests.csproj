@@ -17,6 +17,7 @@
     <PackageReference Include="NUnit3TestAdapter" Version="3.8.0-alpha1" />
     <PackageReference Include="RandomTestValues" Version="2.0.2" />
     <PackageReference Include="Moq" Version="4.7.9" />
+    <PackageReference Include="System.ValueTuple" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net451' ">

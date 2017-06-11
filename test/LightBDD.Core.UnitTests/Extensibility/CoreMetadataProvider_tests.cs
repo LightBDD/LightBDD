@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting.Parameters;
@@ -10,6 +9,7 @@ using LightBDD.Framework;
 using LightBDD.Framework.Formatting;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
+using System.Reflection;
 
 namespace LightBDD.Core.UnitTests.Extensibility
 {

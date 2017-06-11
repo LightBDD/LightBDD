@@ -21,10 +21,20 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
 
         public StepGroup Build() => _internal.Build();
 
-        public void AddSteps(IEnumerable<StepDescriptor> steps) => StepGroupBuilderExtensions.Integrate<NoContext>(_internal).AddSteps(steps);
+        public IIntegrableStepGroupBuilder AddSteps(IEnumerable<StepDescriptor> steps)
+        {
+            _internal.Integrate().AddSteps(steps);
+            return this;
+        }
+
+        public IIntegrableStepGroupBuilder WithStepContext(Func<object> contextProvider)
+        {
+            _internal.Integrate().WithStepContext(contextProvider);
+            return this;
+        }
 
         public TStepGroupBuilder Enrich<TStepGroupBuilder>(
             Func<IIntegrableStepGroupBuilder, LightBddConfiguration, TStepGroupBuilder> builderFactory)
-            => builderFactory(StepGroupBuilderExtensions.Integrate<NoContext>(_internal), _configuration);
+            => builderFactory(_internal.Integrate(), _configuration);
     }
 }

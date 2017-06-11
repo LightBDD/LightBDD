@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Framework.Scenarios.Extended;
@@ -44,6 +45,18 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
             AssertStep(subSteps[0], nameof(Step_one_async));
             AssertStep(subSteps[1], nameof(Step_two_async));
         }
+
+        [Test]
+        public void It_should_defer_step_parsing_to_execution()
+        {
+            StepGroup group = null;
+            Assert.DoesNotThrow(() => group = new TestableStepGroupBuilder()
+                .AddSteps(_ => null as Task)
+                .Build());
+
+            Assert.Throws<ArgumentException>(() => group.SubSteps.ToArray());
+        }
+
 
         private async Task<StepGroup> Async_step_group()
         {

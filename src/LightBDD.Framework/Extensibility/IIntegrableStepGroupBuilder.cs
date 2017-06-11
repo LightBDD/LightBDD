@@ -7,7 +7,9 @@ namespace LightBDD.Framework.Extensibility
 {
     public interface IIntegrableStepGroupBuilder
     {
-        void AddSteps(IEnumerable<StepDescriptor> steps);
+        IIntegrableStepGroupBuilder AddSteps(IEnumerable<StepDescriptor> steps);
+        IIntegrableStepGroupBuilder WithStepContext(Func<object> contextProvider);
         TStepGroupBuilder Enrich<TStepGroupBuilder>(Func<IIntegrableStepGroupBuilder, LightBddConfiguration, TStepGroupBuilder> builderFactory);
+        StepGroup Build();
     }
 }

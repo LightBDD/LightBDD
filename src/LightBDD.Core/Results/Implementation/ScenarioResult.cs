@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;

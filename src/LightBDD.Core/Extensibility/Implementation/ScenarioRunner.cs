@@ -9,7 +9,6 @@ using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Notification;
-using LightBDD.Core.Results;
 
 namespace LightBDD.Core.Extensibility.Implementation
 {
@@ -138,19 +137,39 @@ namespace LightBDD.Core.Extensibility.Implementation
             var stepInfo = new StepInfo(_metadataProvider.GetStepName(descriptor, previousStepTypeName), stepIndex + 1, totalStepsCount, groupPrefix);
             var arguments = descriptor.Parameters.Select(p => new MethodArgument(p, _metadataProvider.GetParameterFormatter(p.ParameterInfo))).ToArray();
             var stepGroupPrefix = $"{stepInfo.GroupPrefix}{stepInfo.Number}.";
-            return new RunnableStep(stepInfo, TransformInvocationResult(descriptor, extendableExecutor, scenarioContext, stepGroupPrefix), arguments, _exceptionProcessor, _progressNotifier, extendableExecutor, scenarioContext);
+            return new RunnableStep(stepInfo, TransformInvocationResult(descriptor, extendableExecutor, stepGroupPrefix), arguments, _exceptionProcessor, _progressNotifier, extendableExecutor, scenarioContext);
         }
 
-        private Func<object, object[], Task<RunnableStepResult>> TransformInvocationResult(StepDescriptor descriptor, ExtendableExecutor extendableExecutor, object scenarioContext, string groupPrefix)
+        private Func<object, object[], Task<RunnableStepResult>> TransformInvocationResult(StepDescriptor descriptor, ExtendableExecutor extendableExecutor, string groupPrefix)
         {
             var invocation = descriptor.StepInvocation;
 
             async Task<RunnableStepResult> Invoke(object context, object[] args)
             {
                 var result = await invocation.Invoke(context, args);
-                return new RunnableStepResult(ProvideSteps(extendableExecutor, scenarioContext, result.SubSteps.ToArray(), groupPrefix));
+                var subStepsContext = InstantiateSubStepsContext(result);
+                try
+                {
+                    return new RunnableStepResult(ProvideSteps(extendableExecutor, subStepsContext, result.SubSteps.ToArray(), groupPrefix));
+                }
+                catch (Exception e)
+                {
+                    throw new InvalidOperationException($"Sub-steps initialization failed: {e.Message}", e);
+                }
             }
             return Invoke;
+        }
+
+        private static object InstantiateSubStepsContext(StepResultDescriptor result)
+        {
+            try
+            {
+                return result.SubStepsContextProvider.Invoke();
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"Sub-steps context initialization failed: {e.Message}", e);
+            }
         }
 
         private static object ProvideNoContext()

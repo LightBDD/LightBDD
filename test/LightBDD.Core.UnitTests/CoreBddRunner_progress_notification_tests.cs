@@ -67,11 +67,9 @@ namespace LightBDD.Core.UnitTests
 
             var feature = new TestableFeatureRunnerRepository(progressNotifier, fixture => progressNotifier).GetRunnerFor(GetType());
             var runner = feature.GetBddRunner(this);
-            var steps = new TestableSteps(runner);
             try
             {
-                runner.Test().TestGroupScenario(
-                    steps.Composite_group);
+                runner.Test().TestGroupScenario(Composite_group);
             }
             catch { }
             feature.Dispose();

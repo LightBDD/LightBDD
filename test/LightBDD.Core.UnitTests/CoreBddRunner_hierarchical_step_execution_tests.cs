@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
@@ -12,13 +14,12 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests
 {
     [TestFixture]
-    public class CoreBddRunner_hierarchical_step_execution_tests : StepGroups
+    public class CoreBddRunner_hierarchical_step_execution_tests : Steps
     {
         #region Setup/Teardown
 
         private IFeatureRunner _feature;
         private IBddRunner _runner;
-        protected override IBddRunner Runner => _runner;
 
         [SetUp]
         public void SetUp()
@@ -30,9 +31,29 @@ namespace LightBDD.Core.UnitTests
         #endregion
 
         [Test]
+        public void Runner_should_capture_details_about_sub_step_initialization_failure()
+        {
+            Assert.Throws<InvalidOperationException>(() => _runner.Test().TestGroupScenario(Incorrect_step_group));
+            var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps().ToArray();
+            StepResultExpectation.AssertEqual(steps,
+                new StepResultExpectation(1, 1, "Incorrect step group", ExecutionStatus.Failed, "Step 1: Sub-steps initialization failed: abc"));
+        }
+
+        private TestStepGroup Incorrect_step_group()
+        {
+            IEnumerable<StepDescriptor> GetSteps()
+            {
+                yield return new StepDescriptor("step", (ctx, args) => Task.FromResult(StepResultDescriptor.Default));
+                throw new Exception("abc");
+            }
+
+            return new TestStepGroup(() => null, GetSteps());
+        }
+
+        [Test]
         public void Runner_should_execute_all_steps_within_group()
         {
-            Assert.DoesNotThrow(() => Runner.Test().TestGroupScenario(Passing_step_group));
+            Assert.DoesNotThrow(() => _runner.Test().TestGroupScenario(Passing_step_group));
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps().ToArray();
             StepResultExpectation.AssertEqual(steps,
                 new StepResultExpectation(1, 1, "Passing step group", ExecutionStatus.Passed));
@@ -47,7 +68,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void Runner_should_mark_step_failed_if_substep_fails()
         {
-            Assert.Throws<InvalidOperationException>(() => Runner.Test().TestGroupScenario(Failing_step_group));
+            Assert.Throws<InvalidOperationException>(() => _runner.Test().TestGroupScenario(Failing_step_group));
 
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps().ToArray();
             StepResultExpectation.AssertEqual(steps,
@@ -63,7 +84,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void Runner_should_mark_step_ignored_if_substep_is_ignored()
         {
-            Assert.Throws<CustomIgnoreException>(() => Runner.Test().TestGroupScenario(Ignored_step_group));
+            Assert.Throws<CustomIgnoreException>(() => _runner.Test().TestGroupScenario(Ignored_step_group));
 
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps().ToArray();
             StepResultExpectation.AssertEqual(steps,
@@ -79,7 +100,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void Runner_should_mark_step_bypassed_if_substep_is_bypassed()
         {
-            Assert.DoesNotThrow(() => Runner.Test().TestGroupScenario(Bypassed_step_group));
+            Assert.DoesNotThrow(() => _runner.Test().TestGroupScenario(Bypassed_step_group));
 
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps().ToArray();
 
@@ -96,7 +117,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void Runner_should_properly_associate_steps_to_the_group()
         {
-            Assert.DoesNotThrow(() => Runner.Test().TestGroupScenario(Passing_step_group, Composite_group));
+            Assert.DoesNotThrow(() => _runner.Test().TestGroupScenario(Passing_step_group, Composite_group));
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps().ToArray();
             StepResultExpectation.AssertEqual(steps,
                 new StepResultExpectation(1, 2, "Passing step group", ExecutionStatus.Passed),

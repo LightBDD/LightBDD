@@ -10,6 +10,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers
 {
     public class BasicScenarioTestsBase
     {
+        public interface ITestableBddRunner : IBddRunner, IFeatureFixtureRunner { }
         protected StepDescriptor[] CapturedSteps;
         protected Mock<IScenarioRunner> MockScenarioRunner;
         protected Mock<ITestableBddRunner> MockRunner;
