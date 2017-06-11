@@ -11,7 +11,6 @@ namespace LightBDD.Framework
         internal StepGroup(IEnumerable<StepDescriptor> steps)
         : base(steps) { }
 
-        //TODO: provide proper configuration
-        public static IStepGroupBuilder<NoContext> DefineNew() => new StepGroupBuilder(new LightBddConfiguration());
+        public static IStepGroupBuilder DefineNew() => new StepGroupBuilder();
     }
 }

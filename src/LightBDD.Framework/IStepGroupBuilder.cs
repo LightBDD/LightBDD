@@ -4,4 +4,9 @@
     {
         StepGroup Build();
     }
+
+    public interface IStepGroupBuilder : IStepGroupBuilder<NoContext>
+    {
+
+    }
 }

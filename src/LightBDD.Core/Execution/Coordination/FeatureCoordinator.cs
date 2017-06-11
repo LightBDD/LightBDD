@@ -1,4 +1,5 @@
 ﻿using System;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Core.Execution.Coordination
@@ -23,6 +24,16 @@ namespace LightBDD.Core.Execution.Coordination
         /// </summary>
         public bool IsDisposed { get; private set; }
 
+        public LightBddConfiguration Configuration { get; }
+
+        protected internal static FeatureCoordinator GetInstance()
+        {
+            var coordinator = Instance ?? throw new InvalidOperationException("LightBDD is not initialized yet.");
+            if (coordinator.IsDisposed)
+                throw new InvalidOperationException("LightBDD scenario test execution is already finished.");
+            return coordinator;
+        }
+
         /// <summary>
         /// Installs the specified feature coordinator in thread safe manner.
         /// </summary>
@@ -43,10 +54,21 @@ namespace LightBDD.Core.Execution.Coordination
         /// </summary>
         /// <param name="runnerRepository">Runner factory instance that would be used for instantiating runners.</param>
         /// <param name="featureAggregator">Feature aggregator instance used for aggregating feature results on coordinator disposal.</param>
+        [Obsolete("This constructor is obsolete. Please use other instead.", true)]
         protected FeatureCoordinator(FeatureRunnerRepository runnerRepository, IFeatureAggregator featureAggregator)
+        : this(runnerRepository, featureAggregator, new LightBddConfiguration()) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="runnerRepository">Runner factory instance that would be used for instantiating runners.</param>
+        /// <param name="featureAggregator">Feature aggregator instance used for aggregating feature results on coordinator disposal.</param>
+        /// <param name="configuration"><see cref="LightBddConfiguration"/> instance used to initialize LightBDD tests.</param>
+        protected FeatureCoordinator(FeatureRunnerRepository runnerRepository, IFeatureAggregator featureAggregator, LightBddConfiguration configuration)
         {
             _featureAggregator = featureAggregator;
             RunnerRepository = runnerRepository;
+            Configuration = configuration;
         }
 
         /// <summary>
