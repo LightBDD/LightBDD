@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
+using LightBDD.Core.Extensibility.Results;
 
 namespace LightBDD.Framework.Scenarios.Extended.Implementation
 {
@@ -42,7 +43,7 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
             return methodExpression.Arguments.Select((arg, index) => CompileArgument(arg, contextParameter, methodParameterInfo[index])).ToArray();
         }
 
-        private Func<object, object[], Task<StepResultDescriptor>> CompileStepAction(MethodCallExpression methodCall, ParameterExpression contextParameter)
+        private Func<object, object[], Task<IStepResultDescriptor>> CompileStepAction(MethodCallExpression methodCall, ParameterExpression contextParameter)
         {
             var targetParam = Expression.Parameter(typeof(object), "target");
             var argsParam = Expression.Parameter(typeof(object[]), "args");
@@ -51,9 +52,9 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
 
             body = ConvertReturnType(methodCall.Method.ReturnType, body);
 
-            var stepCallFunction = Expression.Lambda<Func<TContext, object[], Task<StepResultDescriptor>>>(body, contextParameter, argsParam).Compile();
+            var stepCallFunction = Expression.Lambda<Func<TContext, object[], Task<IStepResultDescriptor>>>(body, contextParameter, argsParam).Compile();
 
-            var genericStepCallFunction = Expression.Lambda<Func<object, object[], Task<StepResultDescriptor>>>(
+            var genericStepCallFunction = Expression.Lambda<Func<object, object[], Task<IStepResultDescriptor>>>(
                     Expression.Invoke(Expression.Constant(stepCallFunction), Expression.Convert(targetParam, contextParameter.Type), argsParam),
                     targetParam, argsParam)
                 .Compile();
@@ -65,25 +66,25 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
             var currentTypeInfo = currentReturnType.GetTypeInfo();
             if (typeof(Task).GetTypeInfo().IsAssignableFrom(currentTypeInfo))
             {
-                if (currentReturnType == typeof(Task<StepResultDescriptor>))
+                if (currentReturnType == typeof(Task<IStepResultDescriptor>))
                     return body;
-                if (currentTypeInfo.IsGenericType && typeof(StepResultDescriptor).GetTypeInfo()
+                if (currentTypeInfo.IsGenericType && typeof(IStepResultDescriptor).GetTypeInfo()
                         .IsAssignableFrom(currentTypeInfo.GenericTypeArguments[0].GetTypeInfo()))
                 {
-                    Func<Task<StepResultDescriptor>, Task<StepResultDescriptor>> converter = ConvertTask;
+                    Func<Task<IStepResultDescriptor>, Task<IStepResultDescriptor>> converter = ConvertTask;
                     var specializedConverter = converter.GetMethodInfo().GetGenericMethodDefinition().MakeGenericMethod(currentTypeInfo.GenericTypeArguments[0]);
                     return Expression.Call(null, specializedConverter, body);
                 }
-                Func<Task, Task<StepResultDescriptor>> finalizer = FinalizeTask;
+                Func<Task, Task<IStepResultDescriptor>> finalizer = FinalizeTaskWithDefaultResultDescriptor;
 
                 return Expression.Call(null, finalizer.GetMethodInfo(), body);
             }
 
-            Func<StepResultDescriptor, Task> fromResult = Task.FromResult;
-            if (typeof(StepResultDescriptor).GetTypeInfo().IsAssignableFrom(currentTypeInfo))
+            Func<IStepResultDescriptor, Task> fromResult = Task.FromResult;
+            if (typeof(IStepResultDescriptor).GetTypeInfo().IsAssignableFrom(currentTypeInfo))
                 return Expression.Call(null, fromResult.GetMethodInfo(), body);
 
-            return Expression.Block(body, Expression.Call(null, fromResult.GetMethodInfo(), Expression.Constant(StepResultDescriptor.Default)));
+            return Expression.Block(body, Expression.Call(null, fromResult.GetMethodInfo(), Expression.Constant(DefaultStepResultDescriptor.Instance)));
         }
 
         private ParameterDescriptor CompileArgument(Expression argumentExpression, ParameterExpression contextParameter, ParameterInfo parameterInfo)
@@ -112,15 +113,15 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
             return methodExpression;
         }
 
-        private static async Task<StepResultDescriptor> ConvertTask<T>(Task<T> parent) where T : StepResultDescriptor
+        private static async Task<IStepResultDescriptor> ConvertTask<T>(Task<T> parent) where T : IStepResultDescriptor
         {
             return await parent;
         }
 
-        private static async Task<StepResultDescriptor> FinalizeTask(Task parent)
+        private static async Task<IStepResultDescriptor> FinalizeTaskWithDefaultResultDescriptor(Task parent)
         {
             await parent;
-            return StepResultDescriptor.Default;
+            return DefaultStepResultDescriptor.Instance;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
+using LightBDD.Core.Extensibility.Results;
 using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
@@ -43,7 +44,7 @@ namespace LightBDD.Core.UnitTests
         {
             IEnumerable<StepDescriptor> GetSteps()
             {
-                yield return new StepDescriptor("step", (ctx, args) => Task.FromResult(StepResultDescriptor.Default));
+                yield return new StepDescriptor("step", (ctx, args) => Task.FromResult(DefaultStepResultDescriptor.Instance));
                 throw new Exception("abc");
             }
 

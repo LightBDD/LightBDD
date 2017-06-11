@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.Extensibility.Results;
 using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers;
 using NUnit.Framework;
@@ -21,7 +22,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
             Assert.That(CapturedSteps.Length, Is.EqualTo(1));
             Assert.That(CapturedSteps[0].RawName, Is.EqualTo(nameof(Step_group)));
 
-            var result = await CapturedSteps[0].StepInvocation.Invoke(null, null);
+            var result = (CompositeStepResultDescriptor)await CapturedSteps[0].StepInvocation.Invoke(null, null);
             var subSteps = result.SubSteps.ToArray();
             Assert.That(subSteps.Length, Is.EqualTo(2));
             AssertStep(subSteps[0], nameof(Step_one));
@@ -39,7 +40,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
             Assert.That(CapturedSteps.Length, Is.EqualTo(1));
             Assert.That(CapturedSteps[0].RawName, Is.EqualTo(nameof(Async_step_group)));
 
-            var result = await CapturedSteps[0].StepInvocation.Invoke(null, null);
+            var result = (CompositeStepResultDescriptor)await CapturedSteps[0].StepInvocation.Invoke(null, null);
             var subSteps = result.SubSteps.ToArray();
             Assert.That(subSteps.Length, Is.EqualTo(2));
             AssertStep(subSteps[0], nameof(Step_one_async));

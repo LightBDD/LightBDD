@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
+using LightBDD.Core.Extensibility.Results;
 using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
@@ -100,7 +101,7 @@ namespace LightBDD.Core.UnitTests
             return new StepDescriptor(name, (ctx, args) =>
             {
                 _capturedSteps.Add((name, ctx));
-                return Task.FromResult(StepResultDescriptor.Default);
+                return Task.FromResult(DefaultStepResultDescriptor.Instance);
             });
         }
     }

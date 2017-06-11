@@ -10,6 +10,7 @@ using LightBDD.Framework.Formatting;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 using System.Reflection;
+using LightBDD.Core.Extensibility.Results;
 
 namespace LightBDD.Core.UnitTests.Extensibility
 {
@@ -111,7 +112,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
             var descriptor = new StepDescriptor(
                 "given",
                 nameof(Feature_type.Some_step_with_argument),
-                (o, a) => Task.FromResult(StepResultDescriptor.Default),
+                (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance),
                 ParameterDescriptor.FromConstant(ParameterInfoHelper.GetMethodParameter<int>(new Feature_type().Some_step_with_argument), 5));
 
             var stepName = _metadataProvider.GetStepName(descriptor, null);

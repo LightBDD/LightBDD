@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Extensibility.Execution.Implementation;
+using LightBDD.Core.Extensibility.Results;
 using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
@@ -147,10 +148,15 @@ namespace LightBDD.Core.Extensibility.Implementation
             async Task<RunnableStepResult> Invoke(object context, object[] args)
             {
                 var result = await invocation.Invoke(context, args);
-                var subStepsContext = InstantiateSubStepsContext(result);
+
+                var compositeDescriptor = result as CompositeStepResultDescriptor;
+                if (compositeDescriptor == null)
+                    return RunnableStepResult.Empty;
+
+                var subStepsContext = InstantiateSubStepsContext(compositeDescriptor);
                 try
                 {
-                    return new RunnableStepResult(ProvideSteps(extendableExecutor, subStepsContext, result.SubSteps.ToArray(), groupPrefix));
+                    return new RunnableStepResult(ProvideSteps(extendableExecutor, subStepsContext, compositeDescriptor.SubSteps.ToArray(), groupPrefix));
                 }
                 catch (Exception e)
                 {
@@ -160,7 +166,7 @@ namespace LightBDD.Core.Extensibility.Implementation
             return Invoke;
         }
 
-        private static object InstantiateSubStepsContext(StepResultDescriptor result)
+        private static object InstantiateSubStepsContext(CompositeStepResultDescriptor result)
         {
             try
             {

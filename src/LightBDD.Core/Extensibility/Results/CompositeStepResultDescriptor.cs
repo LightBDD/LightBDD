@@ -1,29 +1,20 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace LightBDD.Core.Extensibility
+namespace LightBDD.Core.Extensibility.Results
 {
     /// <summary>
     /// Step result descriptor class that core engine expects to be returned after step execution.
     /// It allows to define a list of additional sub steps that would included in step execution, making given step passing only if all are successful.
-    /// For regular steps, it is expected that <see cref="Default"/> value is returned.
     /// </summary>
-    public class StepResultDescriptor
+    public class CompositeStepResultDescriptor : IStepResultDescriptor
     {
-        private static object NoStepContextProvider() => null;
-
-        /// <summary>
-        /// An instance describing regular step result, containing no additional sub steps.
-        /// </summary>
-        public static readonly StepResultDescriptor Default = new StepResultDescriptor(NoStepContextProvider, Enumerable.Empty<StepDescriptor>());
-
         /// <summary>
         /// Constructor allowing to initialize instance with sub steps definition.
         /// </summary>
         /// <param name="subStepsContextProvider"></param>
         /// <param name="subSteps">Sub steps.</param>
-        public StepResultDescriptor(Func<object> subStepsContextProvider, IEnumerable<StepDescriptor> subSteps)
+        public CompositeStepResultDescriptor(Func<object> subStepsContextProvider, IEnumerable<StepDescriptor> subSteps)
         {
             SubStepsContextProvider = subStepsContextProvider ?? throw new ArgumentNullException(nameof(subStepsContextProvider));
             SubSteps = subSteps;

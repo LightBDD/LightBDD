@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
+using LightBDD.Core.Extensibility.Results;
 
 namespace LightBDD.Framework.Scenarios.Basic.Implementation
 {
@@ -22,7 +23,7 @@ namespace LightBDD.Framework.Scenarios.Basic.Implementation
         [DebuggerStepThrough]
         private class AsyncStepExecutor
         {
-            private static readonly MethodInfo AsCompositeStepMethod = ((Func<Task, Task<StepResultDescriptor>>)AsCompositeStep<StepResultDescriptor>).GetMethodInfo().GetGenericMethodDefinition();
+            private static readonly MethodInfo AsCompositeStepMethod = ((Func<Task, Task<IStepResultDescriptor>>)AsCompositeStep<IStepResultDescriptor>).GetMethodInfo().GetGenericMethodDefinition();
             private readonly Func<Task> _invocation;
 
             public AsyncStepExecutor(Func<Task> invocation)
@@ -30,34 +31,34 @@ namespace LightBDD.Framework.Scenarios.Basic.Implementation
                 _invocation = invocation;
             }
 
-            public async Task<StepResultDescriptor> ExecuteAsync(object context, object[] args)
+            public async Task<IStepResultDescriptor> ExecuteAsync(object context, object[] args)
             {
                 var task = _invocation.Invoke();
                 await task;
 
-                if (IsCompositeStepTask(task))
-                    return await ConvertToCompositeStep(task);
+                if (HasResultDescriptor(task))
+                    return await ConvertToResultDescriptor(task);
 
-                return StepResultDescriptor.Default;
+                return DefaultStepResultDescriptor.Instance;
             }
 
-            private static Task<StepResultDescriptor> ConvertToCompositeStep(Task task)
+            private static Task<IStepResultDescriptor> ConvertToResultDescriptor(Task task)
             {
-                return (Task<StepResultDescriptor>)AsCompositeStepMethod
+                return (Task<IStepResultDescriptor>)AsCompositeStepMethod
                     .MakeGenericMethod(task.GetType().GetTypeInfo().GenericTypeArguments)
                     .Invoke(null, new object[] { task });
             }
 
-            private static bool IsCompositeStepTask(Task task)
+            private static bool HasResultDescriptor(Task task)
             {
                 var taskType = task.GetType().GetTypeInfo();
                 if (!taskType.IsGenericType)
                     return false;
                 return taskType.GenericTypeArguments.Length == 1
-                    && typeof(StepResultDescriptor).GetTypeInfo().IsAssignableFrom(taskType.GenericTypeArguments[0].GetTypeInfo());
+                    && typeof(IStepResultDescriptor).GetTypeInfo().IsAssignableFrom(taskType.GenericTypeArguments[0].GetTypeInfo());
             }
 
-            private static async Task<StepResultDescriptor> AsCompositeStep<T>(Task stepTask) where T : StepResultDescriptor
+            private static async Task<IStepResultDescriptor> AsCompositeStep<T>(Task stepTask) where T : IStepResultDescriptor
             {
                 return await (Task<T>)stepTask;
             }
@@ -72,10 +73,10 @@ namespace LightBDD.Framework.Scenarios.Basic.Implementation
             {
                 _invocation = invocation;
             }
-            public Task<StepResultDescriptor> Execute(object context, object[] args)
+            public Task<IStepResultDescriptor> Execute(object context, object[] args)
             {
                 _invocation.Invoke();
-                return Task.FromResult(StepResultDescriptor.Default);
+                return Task.FromResult(DefaultStepResultDescriptor.Instance);
             }
         }
     }
