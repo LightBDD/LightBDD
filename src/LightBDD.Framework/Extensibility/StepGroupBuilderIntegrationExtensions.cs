@@ -4,10 +4,10 @@ using System.Diagnostics;
 namespace LightBDD.Framework.Extensibility
 {
     /// <summary>
-    /// <see cref="IStepGroupBuilder{TContext}"/> extensions.
+    /// <see cref="IStepGroupBuilder{TContext}"/> integration extensions.
     /// </summary>
     [DebuggerStepThrough]
-    public static class StepGroupBuilderExtensions
+    public static class StepGroupBuilderIntegrationExtensions
     {
         /// <summary>
         /// Method allowing to retrieve the <see cref="IIntegrableStepGroupBuilder"/> instance allowing to define steps.

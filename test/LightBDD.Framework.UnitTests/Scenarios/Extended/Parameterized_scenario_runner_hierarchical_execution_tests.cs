@@ -52,7 +52,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
         {
             StepGroup group = null;
             Assert.DoesNotThrow(() => group = new TestableStepGroupBuilder()
-                .AddSteps(_ => null as Task)
+                .AddAsyncSteps(_ => null as Task)
                 .Build());
 
             Assert.Throws<ArgumentException>(() => group.SubSteps.ToArray());
@@ -62,7 +62,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
         private async Task<StepGroup> Async_step_group()
         {
             return new TestableStepGroupBuilder()
-                .AddSteps(
+                .AddAsyncSteps(
                     _ => Step_one_async(),
                     _ => Step_two_async())
                 .Build();

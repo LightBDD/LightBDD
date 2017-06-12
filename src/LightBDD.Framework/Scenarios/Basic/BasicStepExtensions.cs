@@ -48,7 +48,7 @@ namespace LightBDD.Framework.Scenarios.Basic
         /// The step name is determined from corresponding action name.<br/>
         /// Example usage:
         /// <code>
-        /// builder.AddSteps(
+        /// builder.AddAsyncSteps(
         ///     Given_the_user_is_about_to_login,
         ///     Given_the_user_entered_valid_login,
         ///     Given_the_user_entered_valid_password,
@@ -64,7 +64,7 @@ namespace LightBDD.Framework.Scenarios.Basic
         /// <param name="builder">Step group builder.</param>
         /// <param name="steps">Steps to add.</param>
         /// <returns><paramref name="builder"/> instance.</returns>
-        public static IStepGroupBuilder<NoContext> AddSteps(this IStepGroupBuilder<NoContext> builder, params Func<Task>[] steps)
+        public static IStepGroupBuilder<NoContext> AddAsyncSteps(this IStepGroupBuilder<NoContext> builder, params Func<Task>[] steps)
         {
             builder.Integrate().AddSteps(steps.Select(BasicStepCompiler.ToAsynchronousStep));
             return builder;

@@ -80,7 +80,7 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// <para>
         /// Example usage for scenarios with no context:
         /// <code>
-        /// builder.AddSteps(
+        /// builder.AddAsyncSteps(
         ///     _ => Given_product_is_available_in_product_storage("wooden desk"),
         ///     _ => When_customer_buys_product("wooden desk"),
         ///     _ => Then_invoice_should_contain_product_with_price_of_AMOUNT_pounds("wooden desk", 62));
@@ -93,7 +93,7 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// <para>
         /// Example usage for scenarios with context:
         /// <code>
-        /// builder.WithContext&lt;SpeditionContext&gt;().AddSteps(
+        /// builder.WithContext&lt;SpeditionContext&gt;().AddAsyncSteps(
         ///     _ => _.Given_there_is_an_active_customer_with_id("ABC-123"),
         ///     _ => _.Given_the_customer_has_product_in_basket("wooden shelf"),
         ///     _ => _.When_the_customer_payment_finalizes(),
@@ -111,7 +111,7 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// <param name="builder">Step group builder.</param>
         /// <param name="steps">Steps to add.</param>
         /// <returns><paramref name="builder"/> instance.</returns>
-        public static IStepGroupBuilder<TContext> AddSteps<TContext>(this IStepGroupBuilder<TContext> builder, params Expression<Func<TContext, Task>>[] steps)
+        public static IStepGroupBuilder<TContext> AddAsyncSteps<TContext>(this IStepGroupBuilder<TContext> builder, params Expression<Func<TContext, Task>>[] steps)
         {
             AsExtended(builder).AddSteps(steps);
             return builder;

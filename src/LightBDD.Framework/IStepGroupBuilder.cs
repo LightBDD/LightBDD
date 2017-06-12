@@ -1,4 +1,7 @@
-﻿namespace LightBDD.Framework
+﻿using System.Diagnostics;
+using System.Threading.Tasks;
+
+namespace LightBDD.Framework
 {
     /// <summary>
     /// Generic allowing to compose <see cref="StepGroup"/> instance.

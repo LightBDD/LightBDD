@@ -18,8 +18,8 @@ namespace LightBDD.Example.AcceptanceTests.MsTest2.UWP
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
-            this.Suspending += OnSuspending;
+            InitializeComponent();
+            Suspending += OnSuspending;
         }
 
         /// <summary>

@@ -34,7 +34,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic
         private async Task<StepGroup> Async_step_group()
         {
             return StepGroup.DefineNew()
-                .AddSteps(
+                .AddAsyncSteps(
                     Step_one_async,
                     Step_two_async)
                 .Build();

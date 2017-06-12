@@ -15,7 +15,7 @@ namespace LightBDD.Framework
     /// StepGroup Given_invoice_with_product()
     /// {
     ///     return StepGroup.DefineNew()
-    ///         .AddSteps(
+    ///         .AddAsyncSteps(
     ///             _ => Given_product_is_available_in_product_storage("wooden desk"),
     ///             _ => When_customer_buys_product("wooden desk"),
     ///             _ => Then_invoice_should_contain_product_with_price_of_AMOUNT_pounds("wooden desk", 62))
@@ -36,7 +36,7 @@ namespace LightBDD.Framework
         /// StepGroup Given_invoice_with_product()
         /// {
         ///     return StepGroup.DefineNew()
-        ///         .AddSteps(
+        ///         .AddAsyncSteps(
         ///             _ => Given_product_is_available_in_product_storage("wooden desk"),
         ///             _ => When_customer_buys_product("wooden desk"),
         ///             _ => Then_invoice_should_contain_product_with_price_of_AMOUNT_pounds("wooden desk", 62))
