@@ -4,6 +4,7 @@ using LightBDD.Core.Extensibility.Results;
 using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers;
 using NUnit.Framework;
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Basic
 {
