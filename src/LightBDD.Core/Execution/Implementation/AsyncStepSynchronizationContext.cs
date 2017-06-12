@@ -82,11 +82,11 @@ namespace LightBDD.Core.Execution.Implementation
 
             var exceptions = _exceptions.ToArray();
             if (!exceptions.Any())
-                _resetEvent.SetResult(true);
+                _resetEvent.TrySetResult(true); //TODO: why Try is needed?
             else if (exceptions.Length == 1)
-                _resetEvent.SetException(exceptions);
+                _resetEvent.TrySetException(exceptions);
             else
-                _resetEvent.SetException(new AggregateException(exceptions));
+                _resetEvent.TrySetException(new AggregateException(exceptions));
         }
     }
 }
