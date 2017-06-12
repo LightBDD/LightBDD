@@ -13,7 +13,7 @@ namespace LightBDD.Core.Extensibility
         /// </summary>
         /// <typeparam name="TEnrichedRunner">Type of enriched runner.</typeparam>
         /// <param name="runnerFactory">Runner factory.</param>
-        /// <returns></returns>
+        /// <returns>Enriched builder instance.</returns>
         TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, LightBddConfiguration, TEnrichedRunner> runnerFactory);
     }
 }

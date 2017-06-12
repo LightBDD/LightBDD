@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
@@ -7,6 +8,7 @@ using LightBDD.Framework.Extensibility;
 
 namespace LightBDD.Framework.Implementation
 {
+    [DebuggerStepThrough]
     internal class StepGroupBuilder : LightBddConfigurationAware, IStepGroupBuilder, IIntegrableStepGroupBuilder
     {
         private static readonly IEnumerable<StepDescriptor> EmptySteps = Enumerable.Empty<StepDescriptor>();
@@ -21,6 +23,8 @@ namespace LightBDD.Framework.Implementation
 
         public IIntegrableStepGroupBuilder AddSteps(IEnumerable<StepDescriptor> steps)
         {
+            if (steps == null)
+                throw new ArgumentNullException(nameof(steps));
             _steps = _steps.Concat(steps);
             return this;
         }
