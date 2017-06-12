@@ -18,14 +18,14 @@ namespace LightBDD.Core.UnitTests.Configuration
         {
             var exception = MakeSampleException();
 
-            var expectedExceptionDetails = @"System.Exception : ThrowSampleException
+            var expectedExceptionDetails = @"^System\.Exception : ThrowSampleException
 	---> System.InvalidOperationException : ThrowInnerException
-		---> System.AggregateException : One or more errors occurred.
-			---> System.NotImplementedException : Not implemented yet
-			---> System.Exception : other
-at LightBDD.Core.UnitTests.Configuration.ExceptionHandlingConfiguration_tests.ThrowSampleException() in";
+		---> System\.AggregateException : One or more errors occurred\..*
+			---> System\.NotImplementedException : Not implemented yet
+			---> System\.Exception : other
+at LightBDD\.Core\.UnitTests\.Configuration\.ExceptionHandlingConfiguration_tests\.ThrowSampleException\(\) in";
             var formattedDetails = new ExceptionHandlingConfiguration().ExceptionDetailsFormatter(exception);
-            Assert.That(formattedDetails.Replace("\r", ""), Does.StartWith(expectedExceptionDetails.Replace("\r", "")));
+            Assert.That(formattedDetails.Replace("\r", ""), Does.Match(expectedExceptionDetails.Replace("\r", "")));
         }
 
         private Exception MakeSampleException()
@@ -82,9 +82,9 @@ at LightBDD.Core.UnitTests.Configuration.ExceptionHandlingConfiguration_tests.Th
         [Test]
         public void Configuration_should_be_sealable()
         {
-            var lighbddConfig = new LightBddConfiguration();
-            var cfg = lighbddConfig.Get<ExceptionHandlingConfiguration>();
-            lighbddConfig.Seal();
+            var config = new LightBddConfiguration();
+            var cfg = config.Get<ExceptionHandlingConfiguration>();
+            config.Seal();
 
             Assert.Throws<InvalidOperationException>(() => cfg.UpdateExceptionDetailsFormatter(ex => "abc"));
         }
