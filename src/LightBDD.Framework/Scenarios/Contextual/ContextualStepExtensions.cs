@@ -5,7 +5,7 @@ using LightBDD.Framework.Scenarios.Contextual.Implementation;
 namespace LightBDD.Framework.Scenarios.Contextual
 {
     /// <summary>
-    /// Extensions allowing to create contextual <see cref="IStepGroupBuilder"/> instance.
+    /// Extensions allowing to create contextual <see cref="ICompositeStepBuilder"/> instance.
     /// </summary>
     [DebuggerStepThrough]
     public static class ContextualStepExtensions
@@ -15,36 +15,36 @@ namespace LightBDD.Framework.Scenarios.Contextual
         /// The context instance would be created by calling default constructor just before scenario execution.
         /// </summary>
         /// <typeparam name="TContext">Context type.</typeparam>
-        /// <param name="runner"><see cref="IStepGroupBuilder"/> instance.</param>
+        /// <param name="runner"><see cref="ICompositeStepBuilder"/> instance.</param>
         /// <param name="contextFactory">Context factory function.</param>
         /// <returns>Contextual runner.</returns>
-        public static IStepGroupBuilder<TContext> WithContext<TContext>(this IStepGroupBuilder runner, Func<TContext> contextFactory)
+        public static ICompositeStepBuilder<TContext> WithContext<TContext>(this ICompositeStepBuilder runner, Func<TContext> contextFactory)
         {
-            return new ContextualStepGroupBuilder<TContext>(runner, () => contextFactory());
+            return new ContextualCompositeStepBuilder<TContext>(runner, () => contextFactory());
         }
 
         /// <summary>
         /// Specifies that scenario would be executed in dedicated <paramref name="context"/> of <typeparamref name="TContext"/> type.
         /// </summary>
         /// <typeparam name="TContext">Context type.</typeparam>
-        /// <param name="runner"><see cref="IStepGroupBuilder"/> instance.</param>
+        /// <param name="runner"><see cref="ICompositeStepBuilder"/> instance.</param>
         /// <param name="context">Context instance.</param>
         /// <returns>Contextual runner.</returns>
-        public static IStepGroupBuilder<TContext> WithContext<TContext>(this IStepGroupBuilder runner, TContext context)
+        public static ICompositeStepBuilder<TContext> WithContext<TContext>(this ICompositeStepBuilder runner, TContext context)
         {
-            return new ContextualStepGroupBuilder<TContext>(runner, () => context);
+            return new ContextualCompositeStepBuilder<TContext>(runner, () => context);
         }
 
         /// <summary>
         /// Returns runner that would be executing scenarios in dedicated context of <typeparamref name="TContext"/> type.<br/>
         /// The context instance would be created by calling default constructor just before scenario execution.
         /// </summary>
-        /// <param name="runner"><see cref="IStepGroupBuilder"/> instance.</param>
+        /// <param name="runner"><see cref="ICompositeStepBuilder"/> instance.</param>
         /// <typeparam name="TContext">Context type.</typeparam>
         /// <returns>Contextual runner.</returns>
-        public static IStepGroupBuilder<TContext> WithContext<TContext>(this IStepGroupBuilder runner) where TContext : new()
+        public static ICompositeStepBuilder<TContext> WithContext<TContext>(this ICompositeStepBuilder runner) where TContext : new()
         {
-            return new ContextualStepGroupBuilder<TContext>(runner, () => new TContext());
+            return new ContextualCompositeStepBuilder<TContext>(runner, () => new TContext());
         }
     }
 }

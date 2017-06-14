@@ -9,12 +9,12 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
     [TestFixture]
     public class Contextual_runner_hierarchical_execution_tests
     {
-        private IStepGroupBuilder _builder;
+        private ICompositeStepBuilder _builder;
 
         [SetUp]
         public void SetUp()
         {
-            _builder = new TestableStepGroupBuilder();
+            _builder = new TestableCompositeStepBuilder();
         }
 
         [Test]

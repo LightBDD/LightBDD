@@ -8,13 +8,13 @@ using LightBDD.Framework.Implementation;
 namespace LightBDD.Framework
 {
     /// <summary>
-    /// Class representing step group that consists of sub-step collection and context provider defining context instance that should be shared between all steps.
-    /// If a step method returns instance of <see cref="StepGroup"/>, the specified sub-steps will be included in step execution, making given parent step passing only if all are successful.<br/>
+    /// Class representing composite step that consists of sub-step collection and optional context provider defining context instance that should be shared between all steps.
+    /// If a step method returns instance of <see cref="CompositeStep"/>, the specified sub-steps will be included in step execution, making given parent step passing only if all are successful.<br/>
     /// Example usage:
     /// <code>
-    /// StepGroup Given_invoice_with_product()
+    /// CompositeStep Given_invoice_with_item()
     /// {
-    ///     return StepGroup.DefineNew()
+    ///     return CompositeStep.DefineNew()
     ///         .AddAsyncSteps(
     ///             _ => Given_product_is_available_in_product_storage("wooden desk"),
     ///             _ => When_customer_buys_product("wooden desk"),
@@ -24,18 +24,18 @@ namespace LightBDD.Framework
     /// </code>
     /// </summary>
     [DebuggerStepThrough]
-    public class StepGroup : CompositeStepResultDescriptor
+    public class CompositeStep : CompositeStepResultDescriptor
     {
-        internal StepGroup(Func<object> contextProvider, IEnumerable<StepDescriptor> steps)
+        internal CompositeStep(Func<object> contextProvider, IEnumerable<StepDescriptor> steps)
         : base(contextProvider, steps) { }
 
         /// <summary>
-        /// Instantiates a new <see cref="IStepGroupBuilder"/> allowing to build <see cref="StepGroup"/> instance.<br/>
+        /// Instantiates a new <see cref="ICompositeStepBuilder"/> allowing to build <see cref="CompositeStep"/> instance.<br/>
         /// Example usage:
         /// <code>
-        /// StepGroup Given_invoice_with_product()
+        /// CompositeStep Given_invoice_with_item()
         /// {
-        ///     return StepGroup.DefineNew()
+        ///     return CompositeStep.DefineNew()
         ///         .AddAsyncSteps(
         ///             _ => Given_product_is_available_in_product_storage("wooden desk"),
         ///             _ => When_customer_buys_product("wooden desk"),
@@ -44,7 +44,7 @@ namespace LightBDD.Framework
         /// }
         /// </code>
         /// </summary>
-        /// <returns><see cref="IStepGroupBuilder"/> instance.</returns>
-        public static IStepGroupBuilder DefineNew() => new StepGroupBuilder();
+        /// <returns><see cref="ICompositeStepBuilder"/> instance.</returns>
+        public static ICompositeStepBuilder DefineNew() => new CompositeStepBuilder();
     }
 }

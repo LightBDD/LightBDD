@@ -33,10 +33,10 @@ namespace LightBDD.Framework.Scenarios.Basic
         /// void Given_the_user_is_about_to_login() { /* ... */ }
         /// </code>
         /// </summary>
-        /// <param name="builder">Step group builder.</param>
+        /// <param name="builder">Composite step builder.</param>
         /// <param name="steps">Steps to add.</param>
         /// <returns><paramref name="builder"/> instance.</returns>
-        public static IStepGroupBuilder<NoContext> AddSteps(this IStepGroupBuilder<NoContext> builder, params Action[] steps)
+        public static ICompositeStepBuilder<NoContext> AddSteps(this ICompositeStepBuilder<NoContext> builder, params Action[] steps)
         {
             builder.Integrate().AddSteps(steps.Select(BasicStepCompiler.ToSynchronousStep));
             return builder;
@@ -61,10 +61,10 @@ namespace LightBDD.Framework.Scenarios.Basic
         /// async Task Given_the_user_is_about_to_login() { /* ... */ }
         /// </code>
         /// </summary>
-        /// <param name="builder">Step group builder.</param>
+        /// <param name="builder">Composite step builder.</param>
         /// <param name="steps">Steps to add.</param>
         /// <returns><paramref name="builder"/> instance.</returns>
-        public static IStepGroupBuilder<NoContext> AddAsyncSteps(this IStepGroupBuilder<NoContext> builder, params Func<Task>[] steps)
+        public static ICompositeStepBuilder<NoContext> AddAsyncSteps(this ICompositeStepBuilder<NoContext> builder, params Func<Task>[] steps)
         {
             builder.Integrate().AddSteps(steps.Select(BasicStepCompiler.ToAsynchronousStep));
             return builder;

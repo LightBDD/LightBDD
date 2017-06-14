@@ -56,10 +56,10 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// </code>
         /// </para>
         /// </summary>
-        /// <param name="builder">Step group builder.</param>
+        /// <param name="builder">Composite step builder.</param>
         /// <param name="steps">Steps to add.</param>
         /// <returns><paramref name="builder"/> instance.</returns>
-        public static IStepGroupBuilder<TContext> AddSteps<TContext>(this IStepGroupBuilder<TContext> builder, params Expression<Action<TContext>>[] steps)
+        public static ICompositeStepBuilder<TContext> AddSteps<TContext>(this ICompositeStepBuilder<TContext> builder, params Expression<Action<TContext>>[] steps)
         {
             AsExtended(builder).AddSteps(steps);
             return builder;
@@ -108,18 +108,18 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// </code>
         /// </para>
         /// </summary>
-        /// <param name="builder">Step group builder.</param>
+        /// <param name="builder">Composite step builder.</param>
         /// <param name="steps">Steps to add.</param>
         /// <returns><paramref name="builder"/> instance.</returns>
-        public static IStepGroupBuilder<TContext> AddAsyncSteps<TContext>(this IStepGroupBuilder<TContext> builder, params Expression<Func<TContext, Task>>[] steps)
+        public static ICompositeStepBuilder<TContext> AddAsyncSteps<TContext>(this ICompositeStepBuilder<TContext> builder, params Expression<Func<TContext, Task>>[] steps)
         {
             AsExtended(builder).AddSteps(steps);
             return builder;
         }
 
-        private static ExtendedStepGroupBuilder<TContext> AsExtended<TContext>(this IStepGroupBuilder<TContext> runner)
+        private static ExtendedCompositeStepBuilder<TContext> AsExtended<TContext>(this ICompositeStepBuilder<TContext> runner)
         {
-            return runner.Integrate().Enrich(ExtendedStepGroupBuilder<TContext>.Create);
+            return runner.Integrate().Enrich(ExtendedCompositeStepBuilder<TContext>.Create);
         }
     }
 }

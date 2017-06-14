@@ -29,7 +29,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
                 return Task.FromResult(DefaultStepResultDescriptor.Instance);
             });
 
-        public static StepDescriptor CreateForGroup(Func<TestStepGroup> step) => new StepDescriptor(
+        public static StepDescriptor CreateForGroup(Func<TestCompositeStep> step) => new StepDescriptor(
             step.GetMethodInfo().Name,
             (ctx, args) => Task.FromResult((IStepResultDescriptor)step.Invoke()));
 

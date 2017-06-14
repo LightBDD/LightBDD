@@ -13,9 +13,9 @@ namespace LightBDD.Example.AcceptanceTests.XUnit2.Features
 {
     public partial class Customer_journey
     {
-        private async Task<StepGroup> Then_customer_should_receive_order_email()
+        private async Task<CompositeStep> Then_customer_should_receive_order_email()
         {
-            return StepGroup.DefineNew()
+            return CompositeStep.DefineNew()
                 .WithContext<MailBox>()
                 .AddAsyncSteps(
                     x => x.Then_customer_should_receive_invoice(),
@@ -23,27 +23,27 @@ namespace LightBDD.Example.AcceptanceTests.XUnit2.Features
                 .Build();
         }
 
-        private async Task<StepGroup> When_customer_pays_for_products_in_basket()
+        private async Task<CompositeStep> When_customer_pays_for_products_in_basket()
         {
-            return StepGroup.DefineNew()
+            return CompositeStep.DefineNew()
                 .AddSteps(
                     When_customer_requests_to_pay,
                     Then_payment_should_be_successful)
                 .Build();
         }
 
-        private async Task<StepGroup> When_customer_adds_products_to_basket()
+        private async Task<CompositeStep> When_customer_adds_products_to_basket()
         {
-            return StepGroup.DefineNew().AddAsyncSteps(
+            return CompositeStep.DefineNew().AddAsyncSteps(
                     _ => Given_product_is_in_stock("wooden desk"),
                     _ => When_customer_adds_product_to_the_basket("wooden desk"),
                     _ => Then_the_product_addition_should_be_successful())
                 .Build();
         }
 
-        private async Task<StepGroup> Given_customer_is_logged_in()
+        private async Task<CompositeStep> Given_customer_is_logged_in()
         {
-            return StepGroup.DefineNew().AddSteps(
+            return CompositeStep.DefineNew().AddSteps(
                     Given_the_user_is_about_to_login,
                     Given_the_user_entered_valid_login,
                     Given_the_user_entered_valid_password,

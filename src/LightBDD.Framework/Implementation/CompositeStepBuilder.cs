@@ -9,19 +9,19 @@ using LightBDD.Framework.Extensibility;
 namespace LightBDD.Framework.Implementation
 {
     [DebuggerStepThrough]
-    internal class StepGroupBuilder : LightBddConfigurationAware, IStepGroupBuilder, IIntegrableStepGroupBuilder
+    internal class CompositeStepBuilder : LightBddConfigurationAware, ICompositeStepBuilder, IIntegrableCompositeStepBuilder
     {
         private static readonly IEnumerable<StepDescriptor> EmptySteps = Enumerable.Empty<StepDescriptor>();
 
         private IEnumerable<StepDescriptor> _steps = EmptySteps;
         private Func<object> _contextProvider;
 
-        public StepGroup Build()
+        public CompositeStep Build()
         {
-            return new StepGroup(_contextProvider ?? ProvideNoContext, _steps);
+            return new CompositeStep(_contextProvider ?? ProvideNoContext, _steps);
         }
 
-        public IIntegrableStepGroupBuilder AddSteps(IEnumerable<StepDescriptor> steps)
+        public IIntegrableCompositeStepBuilder AddSteps(IEnumerable<StepDescriptor> steps)
         {
             if (steps == null)
                 throw new ArgumentNullException(nameof(steps));
@@ -29,7 +29,7 @@ namespace LightBDD.Framework.Implementation
             return this;
         }
 
-        public IIntegrableStepGroupBuilder WithStepContext(Func<object> contextProvider)
+        public IIntegrableCompositeStepBuilder WithStepContext(Func<object> contextProvider)
         {
             if (_contextProvider != null || !ReferenceEquals(_steps, EmptySteps))
                 throw new InvalidOperationException("Step context can be specified only once, when no steps are specified yet.");
@@ -38,7 +38,7 @@ namespace LightBDD.Framework.Implementation
             return this;
         }
 
-        public TStepGroupBuilder Enrich<TStepGroupBuilder>(Func<IIntegrableStepGroupBuilder, LightBddConfiguration, TStepGroupBuilder> builderFactory)
+        public TEnrichedBuilder Enrich<TEnrichedBuilder>(Func<IIntegrableCompositeStepBuilder, LightBddConfiguration, TEnrichedBuilder> builderFactory)
         {
             return builderFactory(this, Configuration);
         }

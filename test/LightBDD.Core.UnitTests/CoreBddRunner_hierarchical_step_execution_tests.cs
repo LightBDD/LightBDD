@@ -40,7 +40,7 @@ namespace LightBDD.Core.UnitTests
                 new StepResultExpectation(1, 1, "Incorrect step group", ExecutionStatus.Failed, "Step 1: Sub-steps initialization failed: abc"));
         }
 
-        private TestStepGroup Incorrect_step_group()
+        private TestCompositeStep Incorrect_step_group()
         {
             IEnumerable<StepDescriptor> GetSteps()
             {
@@ -48,7 +48,7 @@ namespace LightBDD.Core.UnitTests
                 throw new Exception("abc");
             }
 
-            return new TestStepGroup(() => null, GetSteps());
+            return new TestCompositeStep(() => null, GetSteps());
         }
 
         [Test]

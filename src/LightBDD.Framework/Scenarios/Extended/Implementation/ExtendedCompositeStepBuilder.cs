@@ -9,20 +9,20 @@ using LightBDD.Framework.Extensibility;
 namespace LightBDD.Framework.Scenarios.Extended.Implementation
 {
     [DebuggerStepThrough]
-    internal class ExtendedStepGroupBuilder<TContext>
+    internal class ExtendedCompositeStepBuilder<TContext>
     {
-        private readonly IIntegrableStepGroupBuilder _builder;
+        private readonly IIntegrableCompositeStepBuilder _builder;
         private readonly ExtendedStepCompiler<TContext> _stepCompiler;
 
-        private ExtendedStepGroupBuilder(IIntegrableStepGroupBuilder builder, LightBddConfiguration configuration)
+        private ExtendedCompositeStepBuilder(IIntegrableCompositeStepBuilder builder, LightBddConfiguration configuration)
         {
             _builder = builder;
             _stepCompiler = new ExtendedStepCompiler<TContext>(configuration);
         }
 
-        public static ExtendedStepGroupBuilder<TContext> Create(IIntegrableStepGroupBuilder builder, LightBddConfiguration configuration)
+        public static ExtendedCompositeStepBuilder<TContext> Create(IIntegrableCompositeStepBuilder builder, LightBddConfiguration configuration)
         {
-            return new ExtendedStepGroupBuilder<TContext>(builder, configuration);
+            return new ExtendedCompositeStepBuilder<TContext>(builder, configuration);
         }
 
         public void AddSteps(Expression<Func<TContext, Task>>[] steps)

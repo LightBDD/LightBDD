@@ -66,32 +66,32 @@ namespace LightBDD.Core.UnitTests
             Assert.That(scenario.StatusDetails, Is.EqualTo("Step 1: Sub-steps context initialization failed: abc"));
         }
 
-        TestStepGroup StepGroupWithInvalidContext()
+        TestCompositeStep StepGroupWithInvalidContext()
         {
-            return new TestStepGroup(
+            return new TestCompositeStep(
                 () => throw new Exception("abc"),
                 MakeStep("step"));
         }
 
-        TestStepGroup StepGroupWithContext1()
+        TestCompositeStep StepGroupWithContext1()
         {
-            return new TestStepGroup(
+            return new TestCompositeStep(
                 () => Guid.NewGuid(),
                 MakeStep("step1"),
                 MakeStep("step2"));
         }
 
-        TestStepGroup StepGroupWithContext2()
+        TestCompositeStep StepGroupWithContext2()
         {
-            return new TestStepGroup(
+            return new TestCompositeStep(
                 () => Guid.NewGuid(),
                 MakeStep("stepA"),
                 MakeStep("stepB"));
         }
 
-        TestStepGroup StepGroupWithoutContext()
+        TestCompositeStep StepGroupWithoutContext()
         {
-            return new TestStepGroup(
+            return new TestCompositeStep(
                 MakeStep("stepN1"),
                 MakeStep("stepN2"));
         }

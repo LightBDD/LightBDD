@@ -32,9 +32,9 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic
             AssertStep(subSteps[1], nameof(Step_two_async));
         }
 
-        private async Task<StepGroup> Async_step_group()
+        private async Task<CompositeStep> Async_step_group()
         {
-            return StepGroup.DefineNew()
+            return CompositeStep.DefineNew()
                 .AddAsyncSteps(
                     Step_one_async,
                     Step_two_async)

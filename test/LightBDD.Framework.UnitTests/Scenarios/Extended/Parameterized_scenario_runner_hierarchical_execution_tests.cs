@@ -51,8 +51,8 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
         [Test]
         public void It_should_defer_step_parsing_to_execution()
         {
-            StepGroup group = null;
-            Assert.DoesNotThrow(() => group = new TestableStepGroupBuilder()
+            CompositeStep group = null;
+            Assert.DoesNotThrow(() => group = new TestableCompositeStepBuilder()
                 .AddAsyncSteps(_ => null as Task)
                 .Build());
 
@@ -60,18 +60,18 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
         }
 
 
-        private async Task<StepGroup> Async_step_group()
+        private async Task<CompositeStep> Async_step_group()
         {
-            return new TestableStepGroupBuilder()
+            return new TestableCompositeStepBuilder()
                 .AddAsyncSteps(
                     _ => Step_one_async(),
                     _ => Step_two_async())
                 .Build();
         }
 
-        private StepGroup Step_group()
+        private CompositeStep Step_group()
         {
-            return new TestableStepGroupBuilder()
+            return new TestableCompositeStepBuilder()
                 .AddSteps(
                     _ => Step_one(),
                     _ => Step_two())

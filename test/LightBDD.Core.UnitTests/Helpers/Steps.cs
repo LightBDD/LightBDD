@@ -40,46 +40,46 @@ namespace LightBDD.Core.UnitTests.Helpers
 
         public int ThrowingParameterInvocation() { throw new InvalidOperationException(ParameterExceptionReason); }
 
-        public TestStepGroup Composite_group()
+        public TestCompositeStep Composite_group()
         {
-            return TestStepGroup.CreateCompositeStepGroup(Passing_step_group_with_comment, Bypassed_step_group);
+            return TestCompositeStep.CreateFromComposites(Passing_step_group_with_comment, Bypassed_step_group);
         }
 
-        public TestStepGroup Passing_step_group()
+        public TestCompositeStep Passing_step_group()
         {
-            return TestStepGroup.CreateStepGroup(
+            return TestCompositeStep.Create(
                 Given_step_one,
                 When_step_two,
                 Then_step_three);
         }
 
-        public TestStepGroup Passing_step_group_with_comment()
+        public TestCompositeStep Passing_step_group_with_comment()
         {
-            return TestStepGroup.CreateStepGroup(
+            return TestCompositeStep.Create(
                 Given_step_one,
                 When_step_two_with_comment,
                 Then_step_three);
         }
 
-        public TestStepGroup Failing_step_group()
+        public TestCompositeStep Failing_step_group()
         {
-            return TestStepGroup.CreateStepGroup(
+            return TestCompositeStep.Create(
                 Given_step_one,
                 When_step_two_throwing_exception,
                 Then_step_three);
         }
 
-        public TestStepGroup Ignored_step_group()
+        public TestCompositeStep Ignored_step_group()
         {
-            return TestStepGroup.CreateStepGroup(
+            return TestCompositeStep.Create(
                 Given_step_one,
                 When_step_two_ignoring_scenario,
                 Then_step_three);
         }
 
-        public TestStepGroup Bypassed_step_group()
+        public TestCompositeStep Bypassed_step_group()
         {
-            return TestStepGroup.CreateStepGroup(
+            return TestCompositeStep.Create(
                 Given_step_one,
                 When_step_two_is_bypassed,
                 Then_step_three);

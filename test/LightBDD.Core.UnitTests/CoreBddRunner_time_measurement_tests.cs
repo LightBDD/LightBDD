@@ -132,14 +132,14 @@ namespace LightBDD.Core.UnitTests
             throw new NotImplementedException();
         }
 
-        private TestStepGroup Step_group_two()
+        private TestCompositeStep Step_group_two()
         {
-            return TestStepGroup.CreateStepGroup(Step_one, Step_two, Step_two);
+            return TestCompositeStep.Create(Step_one, Step_two, Step_two);
         }
 
-        private TestStepGroup Step_group_one()
+        private TestCompositeStep Step_group_one()
         {
-            return TestStepGroup.CreateStepGroup(Step_one, Step_two);
+            return TestCompositeStep.Create(Step_one, Step_two);
         }
     }
 }
