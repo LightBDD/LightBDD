@@ -25,7 +25,7 @@ namespace LightBDD.Framework.Scenarios.Contextual.Implementation
         }
 
         [DebuggerStepThrough]
-        private class ContextualRunnerEnricher<TRunner>
+        private struct ContextualRunnerEnricher<TRunner>
         {
             private readonly IFeatureFixtureRunner _contextualRunner;
             private readonly Func<IFeatureFixtureRunner, LightBddConfiguration, TRunner> _runnerFactory;

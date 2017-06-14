@@ -42,13 +42,15 @@ namespace LightBDD.Core.Execution.Implementation
         public override void Post(SendOrPostCallback d, object state)
         {
             OperationStarted();
-            _inner.Post(s => RunWithSelf(d, s), state);
+
+            _inner.Post(new RunWithSelfDelegate(d, this).Run, state);
         }
 
         public override void Send(SendOrPostCallback d, object state)
         {
             OperationStarted();
-            _inner.Send(s => RunWithSelf(d, s), state);
+
+            _inner.Send(new RunWithSelfDelegate(d, this).Run, state);
         }
 
         private void RunWithSelf(SendOrPostCallback d, object s)
@@ -87,6 +89,21 @@ namespace LightBDD.Core.Execution.Implementation
                 _resetEvent.TrySetException(exceptions);
             else
                 _resetEvent.TrySetException(new AggregateException(exceptions));
+        }
+
+        [DebuggerStepThrough]
+        private struct RunWithSelfDelegate
+        {
+            private readonly SendOrPostCallback _callback;
+            private readonly AsyncStepSynchronizationContext _context;
+
+            public RunWithSelfDelegate(SendOrPostCallback callback, AsyncStepSynchronizationContext context)
+            {
+                _callback = callback;
+                _context = context;
+            }
+
+            public void Run(object state) => _context.RunWithSelf(_callback, state);
         }
     }
 }

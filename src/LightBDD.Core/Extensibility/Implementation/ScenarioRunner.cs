@@ -138,16 +138,36 @@ namespace LightBDD.Core.Extensibility.Implementation
             var stepInfo = new StepInfo(_metadataProvider.GetStepName(descriptor, previousStepTypeName), stepIndex + 1, totalStepsCount, groupPrefix);
             var arguments = descriptor.Parameters.Select(p => new MethodArgument(p, _metadataProvider.GetParameterFormatter(p.ParameterInfo))).ToArray();
             var stepGroupPrefix = $"{stepInfo.GroupPrefix}{stepInfo.Number}.";
-            return new RunnableStep(stepInfo, TransformInvocationResult(descriptor, extendableExecutor, stepGroupPrefix), arguments, _exceptionProcessor, _progressNotifier, extendableExecutor, scenarioContext);
+            return new RunnableStep(
+                stepInfo,
+                new InvocationResultTransformer(this, descriptor.StepInvocation, extendableExecutor, stepGroupPrefix).InvokeAsync,
+                arguments,
+                _exceptionProcessor,
+                _progressNotifier,
+                extendableExecutor,
+                scenarioContext);
         }
 
-        private Func<object, object[], Task<RunnableStepResult>> TransformInvocationResult(StepDescriptor descriptor, ExtendableExecutor extendableExecutor, string groupPrefix)
-        {
-            var invocation = descriptor.StepInvocation;
 
-            async Task<RunnableStepResult> Invoke(object context, object[] args)
+        [DebuggerStepThrough]
+        private struct InvocationResultTransformer
+        {
+            private readonly ScenarioRunner _runner;
+            private readonly Func<object, object[], Task<IStepResultDescriptor>> _invocation;
+            private readonly ExtendableExecutor _extendableExecutor;
+            private readonly string _groupPrefix;
+
+            public InvocationResultTransformer(ScenarioRunner runner, Func<object, object[], Task<IStepResultDescriptor>> invocation, ExtendableExecutor extendableExecutor, string groupPrefix)
             {
-                var result = await invocation.Invoke(context, args);
+                _runner = runner;
+                _invocation = invocation;
+                _extendableExecutor = extendableExecutor;
+                _groupPrefix = groupPrefix;
+            }
+
+            public async Task<RunnableStepResult> InvokeAsync(object context, object[] args)
+            {
+                var result = await _invocation.Invoke(context, args);
 
                 var compositeDescriptor = result as CompositeStepResultDescriptor;
                 if (compositeDescriptor == null)
@@ -156,14 +176,13 @@ namespace LightBDD.Core.Extensibility.Implementation
                 var subStepsContext = InstantiateSubStepsContext(compositeDescriptor);
                 try
                 {
-                    return new RunnableStepResult(ProvideSteps(extendableExecutor, subStepsContext, compositeDescriptor.SubSteps.ToArray(), groupPrefix));
+                    return new RunnableStepResult(_runner.ProvideSteps(_extendableExecutor, subStepsContext, compositeDescriptor.SubSteps.ToArray(), _groupPrefix));
                 }
                 catch (Exception e)
                 {
                     throw new InvalidOperationException($"Sub-steps initialization failed: {e.Message}", e);
                 }
             }
-            return Invoke;
         }
 
         private static object InstantiateSubStepsContext(CompositeStepResultDescriptor result)

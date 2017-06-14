@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using LightBDD.Core.Internals;
 
 namespace LightBDD.Core.Configuration
@@ -6,6 +7,7 @@ namespace LightBDD.Core.Configuration
     /// <summary>
     /// Exception handling configuration.
     /// </summary>
+    [DebuggerStepThrough]
     public class ExceptionHandlingConfiguration : FeatureConfiguration
     {
         /// <summary>

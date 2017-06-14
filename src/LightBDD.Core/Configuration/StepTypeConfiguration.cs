@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace LightBDD.Core.Configuration
@@ -7,6 +8,7 @@ namespace LightBDD.Core.Configuration
     /// <summary>
     /// Step type configuration allowing to define step types recognized by LightBDD.
     /// </summary>
+    [DebuggerStepThrough]
     public class StepTypeConfiguration : FeatureConfiguration
     {
         /// <summary>

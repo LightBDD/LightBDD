@@ -13,7 +13,6 @@ using LightBDD.Core.Results.Implementation;
 
 namespace LightBDD.Core.Execution.Implementation
 {
-    [DebuggerStepThrough]
     internal class RunnableStep : IStep
     {
         private readonly Func<object, object[], Task<RunnableStepResult>> _stepInvocation;
@@ -26,6 +25,7 @@ namespace LightBDD.Core.Execution.Implementation
         public IStepResult Result => _result;
         public IStepInfo Info => Result.Info;
 
+        [DebuggerStepThrough]
         public RunnableStep(StepInfo stepInfo, Func<object, object[], Task<RunnableStepResult>> stepInvocation, MethodArgument[] arguments, ExceptionProcessor exceptionProcessor, IScenarioProgressNotifier progressNotifier, ExtendableExecutor extendableExecutor, object scenarioContext)
         {
             _result = new StepResult(stepInfo);
@@ -38,6 +38,7 @@ namespace LightBDD.Core.Execution.Implementation
             UpdateNameDetails();
         }
 
+        [DebuggerStepThrough]
         private void UpdateNameDetails()
         {
             if (!_arguments.Any())
@@ -46,6 +47,7 @@ namespace LightBDD.Core.Execution.Implementation
             _result.UpdateName(_arguments.Select(FormatStepParameter).ToArray());
         }
 
+        [DebuggerStepThrough]
         private INameParameterInfo FormatStepParameter(MethodArgument p)
         {
             try
@@ -58,6 +60,7 @@ namespace LightBDD.Core.Execution.Implementation
             }
         }
 
+        [DebuggerStepThrough]
         public async Task RunAsync()
         {
             bool stepStartNotified = false;
@@ -92,19 +95,25 @@ namespace LightBDD.Core.Execution.Implementation
             }
         }
 
+        [DebuggerStepThrough]
         private async Task TimeMeasuredInvokeAsync()
         {
             var watch = ExecutionTimeWatch.StartNew();
-
             try
             {
-                var result = await InvokeStepMethodAsync();
-                await InvokeSubStepsAsync(result.SubSteps);
+                await InvokeStepAsync();
             }
             finally
             {
                 _result.SetExecutionTime(watch.GetTime());
             }
+        }
+
+        private async Task InvokeStepAsync()
+        {
+            var result = await InvokeStepMethodAsync();
+            if (result.SubSteps.Any())
+                await InvokeSubStepsAsync(result.SubSteps);
         }
 
         private async Task InvokeSubStepsAsync(RunnableStep[] subSteps)
@@ -120,6 +129,7 @@ namespace LightBDD.Core.Execution.Implementation
             }
         }
 
+        [DebuggerStepThrough]
         private async Task<RunnableStepResult> InvokeStepMethodAsync()
         {
             RunnableStepResult result;
@@ -136,6 +146,7 @@ namespace LightBDD.Core.Execution.Implementation
             return result;
         }
 
+        [DebuggerStepThrough]
         private void EvaluateParameters()
         {
             foreach (var parameter in _arguments)
@@ -143,17 +154,20 @@ namespace LightBDD.Core.Execution.Implementation
             UpdateNameDetails();
         }
 
+        [DebuggerStepThrough]
         private object[] PrepareParameters()
         {
             return _arguments.Select(p => p.Value).ToArray();
         }
 
+        [DebuggerStepThrough]
         public void Comment(string comment)
         {
             _result.AddComment(comment);
             _progressNotifier.NotifyStepComment(_result.Info, comment);
         }
 
+        [DebuggerStepThrough]
         public override string ToString()
         {
             return _result.ToString();
