@@ -6,7 +6,6 @@
     <Icon>lightbdd.ico</Icon>
     <TemplateID>566611cc-70be-415e-bf5a-923ecabf33fd</TemplateID>
     <ProjectType>CSharp</ProjectType>
-    <RequiredFrameworkVersion>4.5</RequiredFrameworkVersion>
     <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
     <DefaultName>My_feature.cs</DefaultName>
   </TemplateData>
