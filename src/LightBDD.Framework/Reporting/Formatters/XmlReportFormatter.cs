@@ -66,7 +66,7 @@ namespace LightBDD.Framework.Reporting.Formatters
             }
             if (scenario.Info.Categories.Any())
                 objects.AddRange(scenario.Info.Categories.Select(c => new XElement("Category", new XAttribute("Name", c))));
-            objects.AddRange(scenario.GetSteps().Select(ToXElement));
+            objects.AddRange(scenario.GetSteps().Select(s => ToXElement(s, "Step")));
 
             if (!string.IsNullOrWhiteSpace(scenario.StatusDetails))
                 objects.Add(new XElement("StatusDetails", scenario.StatusDetails));
@@ -74,7 +74,7 @@ namespace LightBDD.Framework.Reporting.Formatters
             return new XElement("Scenario", objects);
         }
 
-        private static XElement ToXElement(IStepResult step)
+        private static XElement ToXElement(IStepResult step, string elementName)
         {
             var objects = new List<object>
             {
@@ -87,11 +87,14 @@ namespace LightBDD.Framework.Reporting.Formatters
                 objects.Add(new XAttribute("ExecutionStart", step.ExecutionTime.Start));
                 objects.Add(new XAttribute("ExecutionTime", step.ExecutionTime.Duration));
             }
+            if (!string.IsNullOrEmpty(step.Info.GroupPrefix))
+                objects.Add(new XAttribute("GroupPrefix", step.Info.GroupPrefix));
             if (step.StatusDetails != null)
                 objects.Add(new XElement("StatusDetails", step.StatusDetails));
             objects.Add(ToXElement(step.Info.Name));
             objects.AddRange(step.Comments.Select(c => new XElement("Comment", c)));
-            return new XElement("Step", objects);
+            objects.AddRange(step.GetSubSteps().Select(s => ToXElement(s, "SubStep")));
+            return new XElement(elementName, objects);
         }
 
         private static XElement ToXElement(IStepNameInfo stepName)

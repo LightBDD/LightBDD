@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0-preview-20170502-03" />
-    <PackageReference Include="NUnit" Version="3.7.0" />
+    <PackageReference Include="NUnit" Version="3.7.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.8.0-alpha1" />
     <PackageReference Include="Selenium.WebDriver" Version="3.4.0" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="2.29.0" />

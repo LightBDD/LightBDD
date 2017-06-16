@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
+using LightBDD.Core.Extensibility.Results;
 using LightBDD.Core.UnitTests.Helpers;
 using NUnit.Framework;
 
@@ -9,7 +10,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
     [TestFixture]
     public class StepDescriptor_tests
     {
-        private static readonly Func<object, object[], Task> SomeStepInvocation = (o, a) => Task.FromResult(0);
+        private static readonly Func<object, object[], Task<IStepResultDescriptor>> SomeStepInvocation = (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance);
 
         [Test]
         public void It_should_allow_creating_step_descriptor()

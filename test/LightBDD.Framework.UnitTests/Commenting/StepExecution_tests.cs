@@ -61,6 +61,30 @@ namespace LightBDD.Framework.UnitTests.Commenting
             Assert.That(steps[1].Comments.ToArray(), Is.EqualTo(new[] { otherComment, otherComment }));
         }
 
+        [Test]
+        public void Comment_should_record_comment_in_currently_executed_step_belonging_to_step_group()
+        {
+            var feature = GetFeatureRunner();
+            var runner = feature.GetBddRunner(this);
+
+            runner.Test().TestGroupScenario(Grouped_steps);
+
+            var steps = feature.GetFeatureResult().GetScenarios().Single().GetSteps().Single().GetSubSteps().ToArray();
+
+            Assert.That(steps[0].Comments.ToArray(), Is.EqualTo(new[] { nameof(Commented_step1) }));
+            Assert.That(steps[1].Comments.ToArray(), Is.EqualTo(new[] { nameof(Commented_step2) }));
+        }
+
+        TestCompositeStep Grouped_steps()
+        {
+            return TestCompositeStep.Create(
+                Commented_step1,
+                Commented_step2);
+        }
+
+        private static void Commented_step1(){StepExecution.Current.Comment(nameof(Commented_step1));}
+        private static void Commented_step2(){StepExecution.Current.Comment(nameof(Commented_step2));}
+
         private static void Commented_step(string comment)
         {
             StepExecution.Current.Comment(comment);

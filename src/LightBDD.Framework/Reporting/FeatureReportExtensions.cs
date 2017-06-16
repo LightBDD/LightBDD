@@ -73,7 +73,7 @@ namespace LightBDD.Framework.Reporting
         /// </summary>
         public static int CountSteps(this IFeatureResult result)
         {
-            return result.GetScenarios().SelectMany(s => s.GetSteps()).Count();
+            return result.GetScenarios().SelectMany(s => s.GetAllSteps()).Count();
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace LightBDD.Framework.Reporting
         /// </summary>
         public static int CountStepsWithStatus(this IScenarioResult result, ExecutionStatus status)
         {
-            return result.GetSteps().Count(s => s.Status == status);
+            return result.GetAllSteps().Count(s => s.Status == status);
         }
 
         /// <summary>
@@ -98,6 +98,22 @@ namespace LightBDD.Framework.Reporting
         public static int CountStepsWithStatus(this IEnumerable<IFeatureResult> results, ExecutionStatus status)
         {
             return results.Sum(f => f.CountStepsWithStatus(status));
+        }
+
+        /// <summary>
+        /// Returns all the steps with their sub steps, belonging to scenario.
+        /// </summary>
+        public static IEnumerable<IStepResult> GetAllSteps(this IScenarioResult scenario)
+        {
+            return scenario.GetSteps().SelectMany(x => x.GetAllSteps());
+        }
+
+        /// <summary>
+        /// Returns enumeration over step-sub step hierarchy, including specified step.
+        /// </summary>
+        public static IEnumerable<IStepResult> GetAllSteps(this IStepResult step)
+        {
+            return Enumerable.Repeat(step, 1).Concat(step.GetSubSteps().SelectMany(s => s.GetAllSteps()));
         }
     }
 }

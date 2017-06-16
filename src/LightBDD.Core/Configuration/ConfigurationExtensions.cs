@@ -1,8 +1,11 @@
-﻿namespace LightBDD.Core.Configuration
+﻿using System.Diagnostics;
+
+namespace LightBDD.Core.Configuration
 {
     /// <summary>
     /// Extension class allowing to configure core parts of LightBDD.
     /// </summary>
+    [DebuggerStepThrough]
     public static class ConfigurationExtensions
     {
         /// <summary>
@@ -33,6 +36,16 @@
         public static ExecutionExtensionsConfiguration ExecutionExtensionsConfiguration(this LightBddConfiguration cfg)
         {
             return cfg.Get<ExecutionExtensionsConfiguration>();
+        }
+
+        /// <summary>
+        /// Returns exception handling configuration.
+        /// </summary>
+        /// <param name="cfg"></param>
+        /// <returns></returns>
+        public static ExceptionHandlingConfiguration ExceptionHandlingConfiguration(this LightBddConfiguration cfg)
+        {
+            return cfg.Get<ExceptionHandlingConfiguration>();
         }
     }
 }

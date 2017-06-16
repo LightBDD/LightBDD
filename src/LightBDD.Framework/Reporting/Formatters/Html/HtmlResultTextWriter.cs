@@ -354,14 +354,14 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 Html.Tag(Html5Tag.Div).Class("categories").Content(string.Join(", ", scenario.Info.Categories)).SkipEmpty(),
                 Html.Tag(Html5Tag.Div).Content(scenario.GetSteps().Select(GetStep)),
                 GetStatusDetails(scenario.StatusDetails),
-                GetComments(scenario.GetSteps()),
+                GetComments(scenario.GetAllSteps()),
                 Html.Br());
         }
 
         private IHtmlNode GetComments(IEnumerable<IStepResult> steps)
         {
             return Html.Tag(Html5Tag.Div).Class("comments")
-                .Content(from s in steps from c in s.Comments select Html.Tag(Html5Tag.Div).Content(string.Format("// Step {0}: {1}", s.Info.Number, c)));
+                .Content(from s in steps from c in s.Comments select Html.Tag(Html5Tag.Div).Content($"// Step {s.Info.GroupPrefix}{s.Info.Number}: {c}"));
         }
 
         private string GetScenarioCategories(IScenarioResult scenario)
@@ -400,8 +400,9 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         {
             return Html.Tag(Html5Tag.Div).Class("step").Content(
                 GetStatus(step.Status),
-                Html.Text(string.Format("{0}. {1}", step.Info.Number, step.Info.Name.Format(StepNameDecorator))).Trim(),
-                GetDuration(step.ExecutionTime));
+                Html.Text(string.Format("{0}{1}. {2}", step.Info.GroupPrefix, step.Info.Number, step.Info.Name.Format(StepNameDecorator))).Trim(),
+                GetDuration(step.ExecutionTime),
+                Html.Tag(Html5Tag.Div).Class("sub-steps").Content(step.GetSubSteps().Select(GetStep)).SkipEmpty());
         }
 
         private static string GetStatusClass(ExecutionStatus status)

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace LightBDD.Core.Extensibility
 {
     /// <summary>
-    /// IScenarioRunner interface allowing to programmatically construct scenario to execute.
+    /// <see cref="IScenarioRunner"/> integration interface allowing to construct scenario for execution.
     /// The interface is dedicated for projects extending LightBDD with user friendly API for running scenarios - it should not be used directly by regular LightBDD users.
     /// </summary>
     public interface IScenarioRunner

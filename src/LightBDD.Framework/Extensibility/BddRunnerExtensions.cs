@@ -6,7 +6,7 @@ using LightBDD.Framework.Implementation;
 namespace LightBDD.Framework.Extensibility
 {
     /// <summary>
-    /// IBddRunner extensions.
+    /// <see cref="IBddRunner{TContext}"/> extensions.
     /// </summary>
     [DebuggerStepThrough]
     public static class BddRunnerExtensions

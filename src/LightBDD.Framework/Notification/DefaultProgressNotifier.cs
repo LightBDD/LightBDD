@@ -58,7 +58,7 @@ namespace LightBDD.Framework.Notification
         /// <param name="step">Step info.</param>
         public void NotifyStepStart(IStepInfo step)
         {
-            _onNotify($"  STEP {step.Number}/{step.Total}: {step.Name}...");
+            _onNotify($"  STEP {step.GroupPrefix}{step.Number}/{step.GroupPrefix}{step.Total}: {step.Name}...");
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace LightBDD.Framework.Notification
         /// <param name="step">Step result.</param>
         public void NotifyStepFinished(IStepResult step)
         {
-            _onNotify($"  STEP {step.Info.Number}/{step.Info.Total}: {step.Info.Name} ({step.Status} after {step.ExecutionTime.Duration.FormatPretty()})");
+            _onNotify($"  STEP {step.Info.GroupPrefix}{step.Info.Number}/{step.Info.GroupPrefix}{step.Info.Total}: {step.Info.Name} ({step.Status} after {step.ExecutionTime.Duration.FormatPretty()})");
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace LightBDD.Framework.Notification
         /// <param name="comment">Comment.</param>
         public void NotifyStepComment(IStepInfo step, string comment)
         {
-            _onNotify($"  STEP {step.Number}/{step.Total}: /* {comment} */");
+            _onNotify($"  STEP {step.GroupPrefix}{step.Number}/{step.GroupPrefix}{step.Total}: /* {comment} */");
         }
 
         /// <summary>

@@ -41,6 +41,12 @@ namespace LightBDD.Core.UnitTests
             AssertScenarioExecutionTime(() => _runner.Test().TestScenario(Step_one, Step_throwing_exception, Step_two));
         }
 
+        [Test]
+        public void It_should_capture_execution_time_for_composite_steps()
+        {
+            AssertScenarioExecutionTime(() => _runner.Test().TestGroupScenario(Step_group_one, Step_group_two));
+        }
+
         private void AssertScenarioExecutionTime(Action runScenario)
         {
             var startTime = DateTimeOffset.UtcNow;
@@ -75,24 +81,39 @@ namespace LightBDD.Core.UnitTests
         {
             var scenario = _feature.GetFeatureResult().GetScenarios().Single();
             var steps = scenario.GetSteps().ToArray();
+            AssertStepTimes(steps, scenario.ExecutionTime);
+        }
+
+        private static void AssertStepTimes(IStepResult[] steps, ExecutionTime parentExecutionTime)
+        {
             for (int i = 0; i < steps.Length; ++i)
             {
-                FormatTime("Step result", steps[i].ExecutionTime);
-                if (steps[i].Status == ExecutionStatus.NotRun)
+                var step = steps[i];
+
+                FormatTime($"Step result [{step.Info}]", step.ExecutionTime);
+                if (step.Status == ExecutionStatus.NotRun)
                 {
-                    Assert.That(steps[i].ExecutionTime, Is.Null, $"Step[{i}].ExecutionTime");
+                    Assert.That(step.ExecutionTime, Is.Null, $"Step[{step.Info}].ExecutionTime");
                     continue;
                 }
 
-                Assert.That(steps[i].ExecutionTime, Is.Not.Null, $"Step[{i}].ExecutionTime");
+                Assert.That(step.ExecutionTime, Is.Not.Null, $"Step[{step.Info}].ExecutionTime");
 
                 if (i == 0)
-                    Assert.That(steps[i].ExecutionTime.Start, Is.GreaterThanOrEqualTo(scenario.ExecutionTime.Start), $"Step[{i}].ExecutionTime.Start");
+                    Assert.That(step.ExecutionTime.Start,
+                        Is.GreaterThanOrEqualTo(parentExecutionTime.Start),
+                        $"Step[{step.Info}].ExecutionTime.Start");
                 else
-                    Assert.That(steps[i].ExecutionTime.Start, Is.GreaterThanOrEqualTo(steps[i - 1].ExecutionTime.End - UtcNowClockPrecision), $"Step[{i}].ExecutionTime.Start");
+                    Assert.That(step.ExecutionTime.Start,
+                        Is.GreaterThanOrEqualTo(steps[i - 1].ExecutionTime.End - UtcNowClockPrecision),
+                        $"Step[{step.Info}].ExecutionTime.Start");
 
                 if (i == steps.Length - 1)
-                    Assert.That(steps[i].ExecutionTime.End, Is.LessThanOrEqualTo(scenario.ExecutionTime.End + UtcNowClockPrecision), $"Step[{i}].ExecutionTime.End");
+                    Assert.That(step.ExecutionTime.End,
+                        Is.LessThanOrEqualTo(parentExecutionTime.End + UtcNowClockPrecision),
+                        $"Step[{step.Info}].ExecutionTime.End");
+
+                AssertStepTimes(step.GetSubSteps().ToArray(), step.ExecutionTime);
             }
         }
 
@@ -109,6 +130,16 @@ namespace LightBDD.Core.UnitTests
         private static void Step_throwing_exception()
         {
             throw new NotImplementedException();
+        }
+
+        private TestCompositeStep Step_group_two()
+        {
+            return TestCompositeStep.Create(Step_one, Step_two, Step_two);
+        }
+
+        private TestCompositeStep Step_group_one()
+        {
+            return TestCompositeStep.Create(Step_one, Step_two);
         }
     }
 }

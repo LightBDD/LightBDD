@@ -54,7 +54,7 @@ namespace LightBDD.Core.UnitTests
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
                     new StepResultExpectation(1, 3, "GIVEN step one", ExecutionStatus.Passed),
-                    new StepResultExpectation(2, 3, "WHEN step two throwing exception", ExecutionStatus.Failed, ExceptionReason),
+                    new StepResultExpectation(2, 3, "WHEN step two throwing exception", ExecutionStatus.Failed, $"Step 2: {ExceptionReason}"),
                     new StepResultExpectation(3, 3, "THEN step three", ExecutionStatus.NotRun)
                 );
         }
@@ -70,7 +70,7 @@ namespace LightBDD.Core.UnitTests
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
                     new StepResultExpectation(1, 3, "GIVEN step one", ExecutionStatus.Passed),
-                    new StepResultExpectation(2, 3, "WHEN step two is bypassed", ExecutionStatus.Bypassed, BypassReason),
+                    new StepResultExpectation(2, 3, "WHEN step two is bypassed", ExecutionStatus.Bypassed, $"Step 2: {BypassReason}"),
                     new StepResultExpectation(3, 3, "THEN step three", ExecutionStatus.Passed)
                 );
         }

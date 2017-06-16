@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 
 namespace LightBDD.Core.Configuration
 {
     /// <summary>
     /// LightBDD feature configuration class allowing to configure and/or obtain LightBDD features configuration.
     /// </summary>
+    [DebuggerStepThrough]
     public class LightBddConfiguration
     {
         private readonly ConcurrentDictionary<Type, IFeatureConfiguration> _configuration = new ConcurrentDictionary<Type, IFeatureConfiguration>();

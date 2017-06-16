@@ -45,15 +45,15 @@ Passed scenarios: 0
 Bypassed scenarios: 0
 Failed scenarios: 1 (see details)
 Ignored scenarios: 1 (see details)
-Number of steps: 5
-Passed steps: 1
+Number of steps: 9
+Passed steps: 3
 Bypassed steps: 1
 Failed steps: 1
-Ignored steps: 1
-Not Run steps: 1
+Ignored steps: 2
+Not Run steps: 2
 Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
-My feature [Label 1] 2 0 0 1 1 5 1 1 1 1 1 1m 02s 621000000 1m 04s 642570000 32s 128ms 321285000
+My feature [Label 1] 2 0 0 1 1 9 3 1 1 2 2 1m 02s 621000000 1m 04s 642570000 32s 128ms 321285000
 Feature details[&#8734;link]
 Toggle: Features Scenarios
 Filter: Passed Bypassed Failed Ignored Not Run
@@ -66,10 +66,17 @@ Ignored name [Label 2] (1m 02s)[&#8734;link]
 categoryA
 Passed 1. call step1 ""arg1"" (1m 01s)
 Ignored 2. step2 (1s 100ms)
+Passed 2.1. substep 1 (100ms)
+Passed 2.2. substep 2 (1s)
+Ignored 2.3. substep 3 (0ms)
+NotRun 2.3.1. sub-substep 1
 Step 2: Not implemented yet
 // Step 1: multiline
 comment
 // Step 1: comment 2
+// Step 2.3: sub-comment
+// Step 2.3.1: sub-sub-multiline
+comment
 Failed name2 ""arg1"" (2s 157ms)[&#8734;link]
 categoryB, categoryC
 Bypassed 1. step3 (2s 107ms)

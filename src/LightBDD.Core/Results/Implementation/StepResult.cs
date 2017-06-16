@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
 
@@ -11,6 +13,7 @@ namespace LightBDD.Core.Results.Implementation
     {
         private readonly StepInfo _info;
         private readonly ConcurrentQueue<string> _comments = new ConcurrentQueue<string>();
+        private IEnumerable<IStepResult> _subSteps = Arrays<IStepResult>.Empty();
 
         public StepResult(StepInfo info)
         {
@@ -22,11 +25,13 @@ namespace LightBDD.Core.Results.Implementation
         public string StatusDetails { get; private set; }
         public ExecutionTime ExecutionTime { get; private set; }
         public IEnumerable<string> Comments => _comments;
+        public IEnumerable<IStepResult> GetSubSteps() => _subSteps;
 
         public void SetStatus(ExecutionStatus status, string details = null)
         {
             Status = status;
-            StatusDetails = details;
+            if (!string.IsNullOrWhiteSpace(details))
+                StatusDetails = $"Step {_info.GroupPrefix}{_info.Number}: {details.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t")}";
         }
 
         public void UpdateName(INameParameterInfo[] parameters)
@@ -48,9 +53,19 @@ namespace LightBDD.Core.Results.Implementation
         {
             var details = string.Empty;
             if (StatusDetails != null)
-                details = string.Format(" ({0})", StatusDetails);
+                details = $" ({StatusDetails})";
 
             return $"{Info}: {Status}{details}";
+        }
+
+        public void SetSubSteps(IStepResult[] subSteps)
+        {
+            _subSteps = subSteps;
+        }
+
+        public void IncludeSubStepDetails()
+        {
+            StatusDetails = GetSubSteps().MergeStatusDetails(StatusDetails);
         }
     }
 }

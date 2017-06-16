@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
@@ -11,7 +10,7 @@ namespace LightBDD.Core.Results.Implementation
     [DebuggerStepThrough]
     internal class ScenarioResult : IScenarioResult
     {
-        private IStepResult[] _steps=Arrays<IStepResult>.Empty();
+        private IStepResult[] _steps = Arrays<IStepResult>.Empty();
 
         public ScenarioResult(IScenarioInfo info)
         {
@@ -19,7 +18,7 @@ namespace LightBDD.Core.Results.Implementation
             Status = ExecutionStatus.NotRun;
         }
 
-        public void UpdateResult(IStepResult[] steps, ExecutionTime executionTime,Exception scenarioInitializationException)
+        public void UpdateResult(IStepResult[] steps, ExecutionTime executionTime, Exception scenarioInitializationException)
         {
             _steps = steps;
             ExecutionTime = executionTime;
@@ -42,27 +41,11 @@ namespace LightBDD.Core.Results.Implementation
                 return;
             }
 
-            var stepsResult = GetSteps().Reverse().OrderByDescending(s => s.Status).FirstOrDefault();
+            var stepsResult = GetSteps().GetMostSevereOrNull();
             if (stepsResult == null)
                 return;
             Status = stepsResult.Status;
-            StatusDetails = CaptureStatusDetails();
-        }
-
-        private string CaptureStatusDetails()
-        {
-            var sb = new StringBuilder();
-            foreach (var step in GetSteps().Where(s => s.StatusDetails != null))
-            {
-                if (sb.Length > 0)
-                    sb.AppendLine();
-
-                sb.Append("Step ")
-                    .Append(step.Info.Number)
-                    .Append(": ")
-                    .Append(step.StatusDetails.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t"));
-            }
-            return sb.Length > 0 ? sb.ToString() : null;
+            StatusDetails = GetSteps().MergeStatusDetails();
         }
 
         public override string ToString()

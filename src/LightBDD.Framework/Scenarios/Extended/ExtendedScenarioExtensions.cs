@@ -36,12 +36,8 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// {
         ///     Runner.RunScenario(
         ///         _ => Given_product_is_available_in_product_storage("wooden desk"),
-        ///         _ => Given_product_is_available_in_product_storage("wooden shelf"),
         ///         _ => When_customer_buys_product("wooden desk"),
-        ///         _ => When_customer_buys_product("wooden shelf"),
-        ///         _ => Then_an_invoice_should_be_sent_to_the_customer(),
-        ///         _ => Then_invoice_should_contain_product_with_price_of_AMOUNT_pounds("wooden desk", 62),
-        ///         _ => Then_invoice_should_contain_product_with_price_of_AMOUNT_pounds("wooden shelf", 37));
+        ///         _ => Then_invoice_should_contain_product_with_price_of_AMOUNT_pounds("wooden desk", 62));
         /// }
         /// </code>
         /// Expected step signature:
@@ -59,10 +55,8 @@ namespace LightBDD.Framework.Scenarios.Extended
         ///     Runner.WithContext&lt;SpeditionContext&gt;().RunScenario(
         ///         _ => _.Given_there_is_an_active_customer_with_id("ABC-123"),
         ///         _ => _.Given_the_customer_has_product_in_basket("wooden shelf"),
-        ///         _ => _.Given_the_customer_has_product_in_basket("wooden desk"),
         ///         _ => _.When_the_customer_payment_finalizes(),
-        ///         _ => _.Then_product_should_be_dispatched_to_the_customer("wooden shelf"),
-        ///         _ => _.Then_product_should_be_dispatched_to_the_customer("wooden desk"));
+        ///         _ => _.Then_product_should_be_dispatched_to_the_customer("wooden shelf"));
         /// }
         /// </code>
         /// Expected step signature:
@@ -102,12 +96,8 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// {
         ///     return Runner.RunScenarioAsync(
         ///         _ => Given_product_is_available_in_product_storage("wooden desk"),
-        ///         _ => Given_product_is_available_in_product_storage("wooden shelf"),
         ///         _ => When_customer_buys_product("wooden desk"),
-        ///         _ => When_customer_buys_product("wooden shelf"),
-        ///         _ => Then_an_invoice_should_be_sent_to_the_customer(),
-        ///         _ => Then_invoice_should_contain_product_with_price_of_AMOUNT_pounds("wooden desk", 62),
-        ///         _ => Then_invoice_should_contain_product_with_price_of_AMOUNT_pounds("wooden shelf", 37));
+        ///         _ => Then_invoice_should_contain_product_with_price_of_AMOUNT_pounds("wooden desk", 62));
         /// }
         /// </code>
         /// Expected step signature:
@@ -125,10 +115,8 @@ namespace LightBDD.Framework.Scenarios.Extended
         ///     return Runner.WithContext&lt;SpeditionContext&gt;().RunScenarioAsync(
         ///         _ => _.Given_there_is_an_active_customer_with_id("ABC-123"),
         ///         _ => _.Given_the_customer_has_product_in_basket("wooden shelf"),
-        ///         _ => _.Given_the_customer_has_product_in_basket("wooden desk"),
         ///         _ => _.When_the_customer_payment_finalizes(),
-        ///         _ => _.Then_product_should_be_dispatched_to_the_customer("wooden shelf"),
-        ///         _ => _.Then_product_should_be_dispatched_to_the_customer("wooden desk"));
+        ///         _ => _.Then_product_should_be_dispatched_to_the_customer("wooden shelf"));
         /// }
         /// </code>
         /// Expected step signature:

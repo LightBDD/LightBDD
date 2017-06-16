@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using LightBDD.Core.Extensibility.Execution;
 
@@ -8,6 +9,7 @@ namespace LightBDD.Core.Configuration
     /// <summary>
     /// Execution extensions configuration allowing to enable LightBDD extensions.
     /// </summary>
+    [DebuggerStepThrough]
     public class ExecutionExtensionsConfiguration : FeatureConfiguration, IExecutionExtensions
     {
         private readonly List<IScenarioExecutionExtension> _scenarioExtensions = new List<IScenarioExecutionExtension>();

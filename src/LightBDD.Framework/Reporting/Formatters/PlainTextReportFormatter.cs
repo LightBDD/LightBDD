@@ -106,8 +106,7 @@ namespace LightBDD.Framework.Reporting.Formatters
             StringBuilder commentBuilder = new StringBuilder();
             foreach (var step in scenario.GetSteps())
             {
-                FormatStep(writer, step);
-                CollectComments(step, commentBuilder);
+                FormatStep(writer, step, commentBuilder);
             }
             FormatDetails(writer, scenario);
             FormatComments(writer, commentBuilder);
@@ -117,7 +116,7 @@ namespace LightBDD.Framework.Reporting.Formatters
         {
             foreach (var comment in step.Comments)
             {
-                commentBuilder.Append("\t\t\tStep ").Append(step.Info.Number)
+                commentBuilder.Append("\t\t\tStep ").Append(step.Info.GroupPrefix).Append(step.Info.Number)
                     .Append(": ")
                     .AppendLine(comment.Replace(Environment.NewLine, Environment.NewLine + "\t\t\t\t"));
             }
@@ -131,9 +130,11 @@ namespace LightBDD.Framework.Reporting.Formatters
             writer.Write(commentBuilder);
         }
 
-        private static void FormatStep(TextWriter writer, IStepResult step)
+        private static void FormatStep(TextWriter writer, IStepResult step, StringBuilder commentBuilder, int indent = 0)
         {
+            writer.Write(new string('\t', indent));
             writer.Write("\t\tStep ");
+            writer.Write(step.Info.GroupPrefix);
             writer.Write(step.Info.Number);
             writer.Write(": ");
             writer.Write(step.Info.Name);
@@ -146,6 +147,9 @@ namespace LightBDD.Framework.Reporting.Formatters
                 writer.Write(")");
             }
             writer.WriteLine();
+            CollectComments(step, commentBuilder);
+            foreach (var subStep in step.GetSubSteps())
+                FormatStep(writer, subStep, commentBuilder, indent + 1);
         }
 
         private static void FormatSummary(TextWriter writer, IFeatureResult[] features)

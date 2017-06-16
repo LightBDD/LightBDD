@@ -68,9 +68,9 @@ namespace LightBDD.Framework.UnitTests.Notification
             {
                 $"Fi=000,Fa=000,Pe=000 #   > FEATURE: [{string.Join("][", featureInfo.Labels)}] {featureInfo.Name}\n{new string(' ',headerLength)}  {featureInfo.Description}",
                 $"Fi=000,Fa=000,Pe=001 #  1> SCENARIO: [{string.Join("][", scenarioInfo.Labels)}] {scenarioInfo.Name}",
-                $"Fi=000,Fa=000,Pe=001 #  1>   STEP {stepInfo.Number}/{stepInfo.Total}: {stepInfo.Name}...",
-                $"Fi=000,Fa=000,Pe=001 #  1>   STEP {stepInfo.Number}/{stepInfo.Total}: /* {comment} */",
-                $"Fi=000,Fa=000,Pe=001 #  1>   STEP {stepResult.Info.Number}/{stepResult.Info.Total}: {stepResult.Info.Name} ({stepResult.Status} after {stepResult.ExecutionTime.Duration.FormatPretty()})",
+                $"Fi=000,Fa=000,Pe=001 #  1>   STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: {stepInfo.Name}...",
+                $"Fi=000,Fa=000,Pe=001 #  1>   STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: /* {comment} */",
+                $"Fi=000,Fa=000,Pe=001 #  1>   STEP {stepResult.Info.GroupPrefix}{stepResult.Info.Number}/{stepResult.Info.GroupPrefix}{stepResult.Info.Total}: {stepResult.Info.Name} ({stepResult.Status} after {stepResult.ExecutionTime.Duration.FormatPretty()})",
                 $"Fi=001,Fa=000,Pe=000 #  1>   SCENARIO RESULT: {scenarioResult.Status} after {scenarioResult.ExecutionTime.Duration.FormatPretty()}\n{new string(' ',headerLength)}    {scenarioResult.StatusDetails}",
                 $"Fi=001,Fa=000,Pe=000 #   > FEATURE FINISHED: {featureResult.Info.Name}"
             };

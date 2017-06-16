@@ -21,6 +21,11 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             TestScenario(steps.Select(TestStep.CreateAsync).ToArray());
         }
 
+        public void TestGroupScenario(params Func<TestCompositeStep>[] steps)
+        {
+            TestScenario(steps.Select(TestStep.CreateForGroup).ToArray());
+        }
+
         public Task TestScenarioAsync(params Func<Task>[] steps)
         {
             return TestScenarioAsync(steps.Select(TestStep.Create).ToArray());

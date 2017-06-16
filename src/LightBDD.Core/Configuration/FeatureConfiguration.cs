@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace LightBDD.Core.Configuration
 {
     /// <summary>
     /// A base class of FeatureConfiguration with sealed state detection.
     /// </summary>
+    [DebuggerStepThrough]
     public abstract class FeatureConfiguration : ISealableFeatureConfiguration
     {
         void ISealableFeatureConfiguration.Seal()

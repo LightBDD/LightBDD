@@ -42,7 +42,7 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
   <Summary TestExecutionStart=""2014-09-23T19:21:58.055Z"" TestExecutionEnd=""2014-09-23T19:23:00.155Z"" TestExecutionTime=""PT1M2.1S"">
     <Features Count=""1"" />
     <Scenarios Count=""2"" Passed=""0"" Bypassed=""0"" Failed=""1"" Ignored=""1"" />
-    <Steps Count=""5"" Passed=""1"" Bypassed=""1"" Failed=""1"" Ignored=""1"" NotRun=""1"" />
+    <Steps Count=""9"" Passed=""3"" Bypassed=""1"" Failed=""1"" Ignored=""2"" NotRun=""2"" />
   </Summary>
   <Feature Name=""My feature"">
     <Label Name=""Label 1"" />
@@ -63,6 +63,22 @@ comment</Comment>
       <Step Status=""Ignored"" Number=""2"" Name=""step2"" ExecutionStart=""2014-09-23T19:22:00.055Z"" ExecutionTime=""PT1.1S"">
         <StatusDetails>Not implemented yet</StatusDetails>
         <StepName Format=""step2"" />
+        <SubStep Status=""Passed"" Number=""1"" Name=""substep 1"" ExecutionStart=""2014-09-23T19:22:00.055Z"" ExecutionTime=""PT0.1S"" GroupPrefix=""2."">
+          <StepName Format=""substep 1"" />
+        </SubStep>
+        <SubStep Status=""Passed"" Number=""2"" Name=""substep 2"" ExecutionStart=""2014-09-23T19:22:00.155Z"" ExecutionTime=""PT1S"" GroupPrefix=""2."">
+          <StepName Format=""substep 2"" />
+        </SubStep>
+        <SubStep Status=""Ignored"" Number=""3"" Name=""substep 3"" ExecutionStart=""2014-09-23T19:22:01.155Z"" ExecutionTime=""PT0S"" GroupPrefix=""2."">
+          <StatusDetails>Not implemented yet</StatusDetails>
+          <StepName Format=""substep 3"" />
+          <Comment>sub-comment</Comment>
+          <SubStep Status=""NotRun"" Number=""1"" Name=""sub-substep 1"" GroupPrefix=""2.3."">
+            <StepName Format=""sub-substep 1"" />
+            <Comment>sub-sub-multiline
+comment</Comment>
+          </SubStep>
+        </SubStep>
       </Step>
       <StatusDetails>Step 2: Not implemented yet</StatusDetails>
     </Scenario>

@@ -105,6 +105,10 @@
     </Compile>
     <Compile Include="Features\Contexts\ContactsManagementContext.cs" />
     <Compile Include="Features\Contexts\SpeditionContext.cs" />
+    <Compile Include="Features\Customer_journey.cs" />
+    <Compile Include="Features\Customer_journey.Steps.cs">
+      <DependentUpon>Customer_journey.cs</DependentUpon>
+    </Compile>
     <Compile Include="Features\Invoice_feature.cs" />
     <Compile Include="Features\Invoice_feature.Steps.cs">
       <DependentUpon>Invoice_feature.cs</DependentUpon>

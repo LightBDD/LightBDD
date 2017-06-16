@@ -9,18 +9,19 @@ namespace LightBDD.NUnit3.Implementation
 {
     internal class NUnit3FeatureCoordinator : FeatureCoordinator
     {
-        public static FeatureCoordinator GetInstance()
+        public new static FeatureCoordinator GetInstance()
         {
             if (Instance == null)
                 throw new InvalidOperationException(string.Format("{0} is not defined in the project. Please ensure that following attribute, or attribute extending it is defined at assembly level: [assembly:{0}]", nameof(LightBddScopeAttribute)));
             if (Instance.IsDisposed)
-                throw new InvalidOperationException(string.Format("LightBdd scenario test execution is already finished. Please ensure that no tests are executed outside of assembly execution scope specified by {0} attribute.", nameof(LightBddScopeAttribute)));
+                throw new InvalidOperationException(string.Format("LightBDD scenario test execution is already finished. Please ensure that no tests are executed outside of assembly execution scope specified by {0} attribute.", nameof(LightBddScopeAttribute)));
             return Instance;
         }
 
-        public NUnit3FeatureCoordinator(LightBddConfiguration configuration) : base(
+        private NUnit3FeatureCoordinator(LightBddConfiguration configuration) : base(
             new NUnit3FeatureRunnerRepository(configuration),
-            new FeatureReportGenerator(configuration.ReportWritersConfiguration().ToArray()))
+            new FeatureReportGenerator(configuration.ReportWritersConfiguration().ToArray()),
+            configuration)
         {
         }
 
