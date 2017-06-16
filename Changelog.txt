@@ -1,6 +1,28 @@
 LightBDD
 ===========================================
 
+Version 2.2.0
+----------------------------------------
+Summary:
++ #21 Changed the signature RunScenarioAsync/RunScenarioActionsAsync to explicitly state they are async
++ #22 Updated LightBDD.MsTest2 / LightBDD.XUnit2 / LightBDD.NUnit3 to capture scenario parameters
++ #23 Enhance rules for determining the step type in extended scenarios (allowing x => Given_ syntax)
++ #19 Implement composite steps
++ #27 Update VSIX templates for VS2017
+Details:
++ (Core)(Change) #22 Updated LightBDD.Core IMetadataProvider to allow capturing scenario methods with arguments
++ (Core)(Change) #22 Updated XmlReportFormatterSchema.xsd and XmlReportFormatter to include Scenario Name details
++ (Core)(Change) #23 Changed runner to use lambda parameter name as step type only if name is more than 1 character
++ (Core)(Change) #23 Added StepTypeConfiguration.UseLambdaNameAsStepType property allowing to control this behaviour
++ (Core)(Change) #23 Implemented sealable LightBddConfiguration allowing to make configuration read only
++ (Core)(New) #19 Updated engine to support composite step execution and reporting
++ (Framework)(New) #19 Added CompositeStep class that can be returned by step method
++ (Framework)(Change) #19 Updated Xml/Html/PlainText report writters to include composite step details
++ (Framework)(Change) #19 Updated progress notifiers include composite step details
++ (Core)(Change) #19 Updated XmlReportFormatterSchema.xsd to include GroupPrefix attribute and SubSteps elements on Step type
++ (Core)(Change) #19 Updated exception capture in steps and scenarios to include more details about exception and added LightBddConfiguration.ExceptionHandlingConfiguration() extension method to configure it
++ (all integrations) Updated dependencies to the newest ones
+
 Version 2.1.0.1 (VSIX only)
 ----------------------------------------
 + Updated VSIX to include Pro and Enterprise versions, VisualStudio 2012, 2013 and 2015 (including VS2012 Premium)
