@@ -9,6 +9,7 @@ Summary:
 + #23 Enhance rules for determining the step type in extended scenarios (allowing x => Given_ syntax)
 + #19 Implement composite steps
 + #27 Update VSIX templates for VS2017
++ Updated LightBDD.XUnit2 to target .NET Framework 4.5.2 instead of 4.5 (as xunit 2.2 no longer support net 4.5)
 Details:
 + (Core)(Change) #22 Updated LightBDD.Core IMetadataProvider to allow capturing scenario methods with arguments
 + (Core)(Change) #22 Updated XmlReportFormatterSchema.xsd and XmlReportFormatter to include Scenario Name details

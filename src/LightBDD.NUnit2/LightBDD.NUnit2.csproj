@@ -14,8 +14,8 @@ High level features:
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="..\..\QuickStart.txt">
-      <PackagePath></PackagePath>
+    <None Include="..\..\QuickStart.txt">
+      <PackagePath>readme.txt</PackagePath>
       <Pack>true</Pack>
     </None>
   </ItemGroup>
