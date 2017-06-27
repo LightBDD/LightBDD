@@ -8,11 +8,14 @@ namespace LightBDD.Framework.UnitTests.Formatting
     public class FormatAttribute_tests
     {
         [Test]
-        public void It_should_use_specified_format()
+        [TestCase("", 55.5, "55.5")]
+        [TestCase("PL", 55.5, "55,5")]
+        [TestCase("", "", "")]
+        [TestCase("", null, "<null>")]
+        public void It_should_use_specified_format(string culture, object value, string formattedValue)
         {
             var attribute = new FormatAttribute("--{0}--");
-            Assert.That(attribute.Format(CultureInfo.InvariantCulture, 55.5), Is.EqualTo("--55.5--"));
-            Assert.That(attribute.Format(new CultureInfo("PL"), 55.5), Is.EqualTo("--55,5--"));
+            Assert.That(attribute.Format(new CultureInfo(culture), value), Is.EqualTo($"--{formattedValue}--"));
         }
     }
 }

@@ -7,6 +7,7 @@ using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility.Implementation;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Formatting.Parameters;
+using LightBDD.Core.Formatting.Parameters.Implementation;
 using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
@@ -158,7 +159,7 @@ namespace LightBDD.Core.Extensibility
 
         public Func<object, string> GetParameterFormatter(ParameterInfo parameterInfo)
         {
-            Func<object, string> defaultFormatter = value => string.Format(CultureInfoProvider.GetCultureInfo(), "{0}", value);
+            Func<object, string> defaultFormatter = value => string.Format(CultureInfoProvider.GetCultureInfo(), "{0}", value ?? FormatSymbols.Instance.NullValue);
             var formatters = parameterInfo.GetCustomAttributes(typeof(ParameterFormatterAttribute), true)
                .OfType<ParameterFormatterAttribute>().ToArray();
 
