@@ -27,8 +27,7 @@ Define-Step -Name 'Build' -Target 'all,build' -Body {
     Remove-Item 'output' -Force -Recurse -ErrorAction SilentlyContinue | Out-Null
     mkdir 'output' | Out-Null
 
-    call dotnet restore
-    call dotnet build LightBDD.sln /t:"Build" /p:Configuration=Release /m /verbosity:m /nologo /p:TreatWarningsAsErrors=true
+    call dotnet build /t:"restore,build" '-c' Release /nologo /p:TreatWarningsAsErrors=true
 }
 
 Define-Step -Name 'Tests' -Target 'all,test' -Body {
