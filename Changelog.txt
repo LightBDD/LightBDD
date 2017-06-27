@@ -1,6 +1,12 @@
 LightBDD
 ===========================================
 
+Version vNext
+----------------------------------------
+Summary:
++ #28 Updated parameter formatters to distinguish null values and format them as "<null>"
++ #28 Updated FormatCollectionAttribute to accept null collection
+
 Version 2.2.0
 ----------------------------------------
 Summary:

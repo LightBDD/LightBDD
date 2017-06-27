@@ -65,14 +65,16 @@ namespace LightBDD.Core.UnitTests
         {
             _runner.Test().TestScenario(
                 TestStep.CreateAsync(Given_step_with_parameter, () => "abc"),
+                TestStep.CreateAsync(Given_step_with_parameter, () => (string)null),
                 TestStep.CreateAsync(When_step_with_parameter, () => 1),
                 TestStep.CreateAsync(Then_step_with_parameter, () => 3.14));
 
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
-                new StepResultExpectation(1, 3, "GIVEN step with parameter \"abc\"", ExecutionStatus.Passed),
-                new StepResultExpectation(2, 3, "WHEN step with parameter \"1\"", ExecutionStatus.Passed),
-                new StepResultExpectation(3, 3, "THEN step with parameter \"3.14\"", ExecutionStatus.Passed)
+                new StepResultExpectation(1, 4, "GIVEN step with parameter \"abc\"", ExecutionStatus.Passed),
+                new StepResultExpectation(2, 4, "AND step with parameter \"<null>\"", ExecutionStatus.Passed),
+                new StepResultExpectation(3, 4, "WHEN step with parameter \"1\"", ExecutionStatus.Passed),
+                new StepResultExpectation(4, 4, "THEN step with parameter \"3.14\"", ExecutionStatus.Passed)
                 );
         }
 

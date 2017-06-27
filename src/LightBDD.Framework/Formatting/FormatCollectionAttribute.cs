@@ -32,7 +32,9 @@ namespace LightBDD.Framework.Formatting
         /// <returns></returns>
         public override string Format(CultureInfo culture, object parameter)
         {
-            return string.Join(_separator, ((IEnumerable)parameter).Cast<object>().Select(o => string.Format(culture, _valueFormat, o)));
+            return parameter == null
+                ? Symbols.NullValue
+                : string.Join(_separator, ((IEnumerable)parameter).Cast<object>().Select(o => string.Format(culture, _valueFormat, o ?? Symbols.NullValue)));
         }
     }
 }

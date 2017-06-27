@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using LightBDD.Core.Formatting.Parameters.Implementation;
 
 namespace LightBDD.Core.Formatting.Parameters
 {
@@ -16,5 +17,10 @@ namespace LightBDD.Core.Formatting.Parameters
         /// <param name="parameter">Parameter to format.</param>
         /// <returns></returns>
         public abstract string Format(CultureInfo culture, object parameter);
+
+        /// <summary>
+        /// Returns format symbols such as null value text representation.
+        /// </summary>
+        protected IFormatSymbols Symbols => FormatSymbols.Instance;
     }
 }

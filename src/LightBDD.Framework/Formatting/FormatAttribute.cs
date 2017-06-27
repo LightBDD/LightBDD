@@ -25,7 +25,7 @@ namespace LightBDD.Framework.Formatting
         /// <returns></returns>
         public override string Format(CultureInfo culture, object parameter)
         {
-            return string.Format(culture, _format, parameter);
+            return string.Format(culture, _format, parameter ?? Symbols.NullValue);
         }
     }
 }
