@@ -1,4 +1,5 @@
 using LightBDD.AcceptanceTests;
+using LightBDD.AcceptanceTests.Helpers;
 using LightBDD.Core.Configuration;
 using LightBDD.Framework.Reporting;
 using LightBDD.Framework.Reporting.Configuration;
@@ -14,6 +15,11 @@ namespace LightBDD.AcceptanceTests
         {
             configuration.ReportWritersConfiguration()
                 .Add(new ReportFileWriter(new PlainTextReportFormatter(), "~\\Reports\\FeaturesReport.txt"));
+        }
+
+        protected override void OnTearDown()
+        {
+            DriverPool.CloseAll();
         }
     }
 }
