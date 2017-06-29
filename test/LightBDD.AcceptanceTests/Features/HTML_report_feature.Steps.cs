@@ -11,7 +11,6 @@ using LightBDD.NUnit3;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-[assembly: Parallelizable(ParallelScope.All)]
 
 namespace LightBDD.AcceptanceTests.Features
 {

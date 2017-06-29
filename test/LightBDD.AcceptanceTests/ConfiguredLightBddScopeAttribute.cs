@@ -5,7 +5,10 @@ using LightBDD.Framework.Reporting;
 using LightBDD.Framework.Reporting.Configuration;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.NUnit3;
+using NUnit.Framework;
 
+[assembly: Parallelizable(ParallelScope.All)]
+[assembly: LevelOfParallelism(4)]
 [assembly: ConfiguredLightBddScope]
 namespace LightBDD.AcceptanceTests
 {
