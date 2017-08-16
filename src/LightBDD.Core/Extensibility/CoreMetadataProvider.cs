@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Implementation;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Formatting.Parameters;
@@ -31,15 +32,11 @@ namespace LightBDD.Core.Extensibility
         /// <param name="cultureInfoProvider"><see cref="ICultureInfoProvider"/> object used in providing step parameter formatters.</param>
         protected CoreMetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration, ICultureInfoProvider cultureInfoProvider)
         {
-            if (nameFormatter == null)
-                throw new ArgumentNullException(nameof(nameFormatter));
-            if (cultureInfoProvider == null)
-                throw new ArgumentNullException(nameof(cultureInfoProvider));
             if (stepTypeConfiguration == null)
                 throw new ArgumentNullException(nameof(stepTypeConfiguration));
 
-            NameFormatter = nameFormatter;
-            CultureInfoProvider = cultureInfoProvider;
+            NameFormatter = nameFormatter ?? throw new ArgumentNullException(nameof(nameFormatter));
+            CultureInfoProvider = cultureInfoProvider ?? throw new ArgumentNullException(nameof(cultureInfoProvider));
             _nameParser = new NameParser(nameFormatter);
             _stepTypeProcessor = new StepTypeProcessor(nameFormatter, stepTypeConfiguration);
         }
@@ -169,6 +166,35 @@ namespace LightBDD.Core.Extensibility
             return formatters.Length == 1
                 ? value => formatters[0].Format(CultureInfoProvider.GetCultureInfo(), value)
                 : defaultFormatter;
+        }
+
+        /// <summary>
+        /// Returns a collection of <see cref="IStepExecutionExtension"/> extensions that are applied on step described by <paramref name="stepDescriptor"/> parameter.
+        /// The <see cref="IStepExecutionExtension"/> are inferred from method attributes that implements <see cref="StepExecutionExtensionAttribute"/> type.
+        /// The returned collection would be sorted ascending based on <see cref="StepExecutionExtensionAttribute.Order"/> property.
+        /// </summary>
+        /// <param name="stepDescriptor">Step descriptor.</param>
+        /// <returns>Collection of extensions or empty collection if none are present.</returns>
+        public IEnumerable<IStepExecutionExtension> GetStepExecutionExtensions(StepDescriptor stepDescriptor)
+        {
+            if (stepDescriptor.MethodInfo == null)
+                return Enumerable.Empty<IStepExecutionExtension>();
+
+            return ExtractAttributes<StepExecutionExtensionAttribute>(stepDescriptor.MethodInfo)
+                .OrderBy(x => x.Order);
+        }
+
+        /// <summary>
+        /// Returns a collection of <see cref="IScenarioExecutionExtension"/> extensions that are applied on scenario described by <paramref name="scenarioDescriptor"/> parameter.
+        /// The <see cref="IScenarioExecutionExtension"/> are inferred from method attributes that implements <see cref="ScenarioExecutionExtensionAttribute"/> type.
+        /// The returned collection would be sorted ascending based on <see cref="ScenarioExecutionExtensionAttribute.Order"/> property.
+        /// </summary>
+        /// <param name="scenarioDescriptor">Scenario descriptor.</param>
+        /// <returns>Collection of extensions or empty collection if none are present.</returns>
+        public IEnumerable<IScenarioExecutionExtension> GetScenarioExecutionExtensions(ScenarioDescriptor scenarioDescriptor)
+        {
+            return ExtractAttributes<ScenarioExecutionExtensionAttribute>(scenarioDescriptor.MethodInfo)
+                .OrderBy(x => x.Order);
         }
 
         /// <summary>

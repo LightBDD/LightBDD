@@ -10,7 +10,10 @@ using LightBDD.Framework.Formatting;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 using System.Reflection;
+using LightBDD.Core.Execution;
+using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Results;
+using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.UnitTests.Extensibility
 {
@@ -110,10 +113,13 @@ namespace LightBDD.Core.UnitTests.Extensibility
         public void GetStepName_should_capture_name_from_step_descriptor_but_leave_parameters_unknown()
         {
             var descriptor = new StepDescriptor(
-                "given",
                 nameof(Feature_type.Some_step_with_argument),
                 (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance),
-                ParameterDescriptor.FromConstant(ParameterInfoHelper.GetMethodParameter<int>(new Feature_type().Some_step_with_argument), 5));
+                ParameterDescriptor.FromConstant(
+                    ParameterInfoHelper.GetMethodParameter<int>(new Feature_type().Some_step_with_argument), 5))
+            {
+                PredefinedStepType = "given"
+            };
 
             var stepName = _metadataProvider.GetStepName(descriptor, null);
             Assert.That(stepName.StepTypeName.ToString(), Is.EqualTo("GIVEN"));
@@ -141,16 +147,69 @@ namespace LightBDD.Core.UnitTests.Extensibility
             Assert.That(ex.Message, Is.EqualTo($"Parameter can contain only one attribute ParameterFormatterAttribute. Parameter: argument, Detected attributes: {nameof(CustomFormatterAttribute)}, {nameof(FormatAttribute)}"));
         }
 
+        [Test]
+        public void GetStepExecutionExtensions_should_return_extensions_in_order()
+        {
+            Action<int> step = new Feature_type().Some_step_with_argument;
+            var extensions = _metadataProvider.GetStepExecutionExtensions(new StepDescriptor(step.GetMethodInfo(), (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance)));
+            var expectedOrder = new[] { 0, 2, 3, 5 };
+
+            Assert.That(extensions.Cast<StepExecutionExtensionAttribute>().Select(x => x.Order).ToArray(),
+                Is.EqualTo(expectedOrder));
+        }
+
+        [Test]
+        public void GetStepExecutionExtensions_should_return_empty_collection_if_descriptor_has_null_MethodInfo()
+        {
+            var extensions = _metadataProvider.GetStepExecutionExtensions(new StepDescriptor("abc123", (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance)));
+            Assert.That(extensions, Is.Empty);
+        }
+
+        [Test]
+        public void GetStepExecutionExtensions_should_return_empty_collection_if_method_does_not_have_extensions()
+        {
+            Action<int> step = new Feature_type().Some_step_with_formatted_argument;
+            var extensions = _metadataProvider.GetStepExecutionExtensions(new StepDescriptor(step.GetMethodInfo(), (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance)));
+            Assert.That(extensions, Is.Empty);
+        }
+
+        [Test]
+        public void GetScenarioExecutionExtensions_should_return_extensions_in_order()
+        {
+            Action<int> step = new Feature_type().Some_method;
+            var extensions = _metadataProvider.GetScenarioExecutionExtensions(new ScenarioDescriptor(step.GetMethodInfo(), null));
+            var expectedOrder = new[] { -5, -3, -2, 0 };
+
+            Assert.That(extensions.Cast<ScenarioExecutionExtensionAttribute>().Select(x => x.Order).ToArray(),
+                Is.EqualTo(expectedOrder));
+        }
+
+        [Test]
+        public void GetScenarioExecutionExtensions_should_return_empty_collection_if_method_does_not_have_extensions()
+        {
+            Action step = new Feature_type().Some_method_without_arguments;
+            var extensions = _metadataProvider.GetScenarioExecutionExtensions(new ScenarioDescriptor(step.GetMethodInfo(), null));
+            Assert.That(extensions, Is.Empty);
+        }
+
         [FeatureDescription("description"), Label("l1"), Label("l2")]
         class Feature_type
         {
             [Label("s1"), Label("s2")]
             [ScenarioCategory("c1"), ScenarioCategory("c2")]
+            [MyScenarioExtension(Order = -3)]
+            [MyScenarioExtension(Order = -2)]
+            [MyScenarioExtension(Order = -5)]
+            [MyScenarioExtension]
             public void Some_method(int argument) { }
 
             public void Some_method_without_arguments() { }
             public void Some_method_with_argument_arg1_and_arg2([CustomFormatter]int arg1, string arg2) { }
 
+            [MyStepExtension]
+            [MyStepExtension(Order = 3)]
+            [MyStepExtension(Order = 2)]
+            [MyStepExtension(Order = 5)]
             public void Some_step_with_argument(int argument) { }
             public void Some_step_with_formatted_argument([CustomFormatter]int argument) { }
             public void Some_step_with_incorrectly_formatted_argument([CustomFormatter][Format("{0}")]int argument) { }
@@ -161,6 +220,22 @@ namespace LightBDD.Core.UnitTests.Extensibility
             public override string Format(CultureInfo culture, object parameter)
             {
                 return string.Format(culture, "--{0}--", parameter);
+            }
+        }
+
+        private class MyStepExtensionAttribute : StepExecutionExtensionAttribute
+        {
+            public override Task ExecuteAsync(IStep step, Func<Task> stepInvocation)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private class MyScenarioExtension : ScenarioExecutionExtensionAttribute
+        {
+            public override Task ExecuteAsync(IScenarioInfo scenario, Func<Task> scenarioInvocation)
+            {
+                throw new NotImplementedException();
             }
         }
     }

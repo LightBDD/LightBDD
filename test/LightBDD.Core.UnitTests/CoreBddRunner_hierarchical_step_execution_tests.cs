@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Results;
@@ -44,7 +46,8 @@ namespace LightBDD.Core.UnitTests
         {
             IEnumerable<StepDescriptor> GetSteps()
             {
-                yield return new StepDescriptor("step", (ctx, args) => Task.FromResult(DefaultStepResultDescriptor.Instance));
+                Func<object> stepAction = GetSteps;
+                yield return new StepDescriptor(stepAction.GetMethodInfo(), (ctx, args) => Task.FromResult(DefaultStepResultDescriptor.Instance));
                 throw new Exception("abc");
             }
 

@@ -12,12 +12,11 @@ namespace LightBDD.Core.Extensibility
         {
             if (parameterInfo == null)
                 throw new ArgumentNullException(nameof(parameterInfo));
-            if (valueEvaluator == null)
-                throw new ArgumentNullException(nameof(valueEvaluator));
+
+            ValueEvaluator = valueEvaluator ?? throw new ArgumentNullException(nameof(valueEvaluator));
             RawName = parameterInfo.Name;
             IsConstant = isConstant;
             ParameterInfo = parameterInfo;
-            ValueEvaluator = valueEvaluator;
         }
         /// <summary>
         /// Creates <see cref="ParameterDescriptor"/> object representing <paramref name="parameterInfo"/> with constant value <paramref name="value"/>.
