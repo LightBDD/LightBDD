@@ -25,7 +25,7 @@ Because of that, they try to provide translation layers between the text in whic
 This additional layer becomes the root of most problems when maintaining tests, mostly because it lacks integration with development tools, which means that there is no support for refactoring, code analysis (like showing unused methods) etc, or a good integrated environment for running those tests.
 
 ## Project description
-**The purpose of this project** is to provide framework which would be as close to the development environment as possible (so developers would be able to use all of the standard development tools to maintain it), but also offering easy to read tests by people who are not experts in writing code, easier to track during longer execution, and easy to summarize.
+**LightBDD** is a behaviour-driven development test framework offering ability to write tests that are easy to read, easy to track during execution and summarize in user friendly report, while allowing developers to use all of the standard development tools to maintain them.
 
 ### Features
 * Native support for refactoring, code analysis (like finding unused methods), test running and all features that Visual Studio / Intellisense / Resharper offer during code development,
