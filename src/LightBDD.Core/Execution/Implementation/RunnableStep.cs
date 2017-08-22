@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Execution.Implementation;
 using LightBDD.Core.Extensibility.Implementation;
 using LightBDD.Core.Internals;
@@ -21,12 +23,13 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly IScenarioProgressNotifier _progressNotifier;
         private readonly ExtendableExecutor _extendableExecutor;
         private readonly object _scenarioContext;
+        private readonly IEnumerable<IStepExecutionExtension> _stepExecutionExtensions;
         private readonly StepResult _result;
         public IStepResult Result => _result;
         public IStepInfo Info => Result.Info;
 
         [DebuggerStepThrough]
-        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task<RunnableStepResult>> stepInvocation, MethodArgument[] arguments, ExceptionProcessor exceptionProcessor, IScenarioProgressNotifier progressNotifier, ExtendableExecutor extendableExecutor, object scenarioContext)
+        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task<RunnableStepResult>> stepInvocation, MethodArgument[] arguments, ExceptionProcessor exceptionProcessor, IScenarioProgressNotifier progressNotifier, ExtendableExecutor extendableExecutor, object scenarioContext, IEnumerable<IStepExecutionExtension> stepExecutionExtensions)
         {
             _result = new StepResult(stepInfo);
             _stepInvocation = stepInvocation;
@@ -35,6 +38,7 @@ namespace LightBDD.Core.Execution.Implementation
             _progressNotifier = progressNotifier;
             _extendableExecutor = extendableExecutor;
             _scenarioContext = scenarioContext;
+            _stepExecutionExtensions = stepExecutionExtensions;
             UpdateNameDetails();
         }
 
@@ -70,7 +74,7 @@ namespace LightBDD.Core.Execution.Implementation
                 _progressNotifier.NotifyStepStart(_result.Info);
                 stepStartNotified = true;
 
-                await _extendableExecutor.ExecuteStepAsync(this, TimeMeasuredInvokeAsync);
+                await _extendableExecutor.ExecuteStepAsync(this, TimeMeasuredInvokeAsync, _stepExecutionExtensions);
                 _result.SetStatus(_result.GetSubSteps().GetMostSevereOrNull()?.Status ?? ExecutionStatus.Passed);
             }
             catch (StepBypassException exception)

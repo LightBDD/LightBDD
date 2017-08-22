@@ -83,16 +83,16 @@ namespace LightBDD.Core.Extensibility
         Func<object, string> GetParameterFormatter(ParameterInfo parameterInfo);
         /// <summary>
         /// Returns a collection of <see cref="IStepExecutionExtension"/> extensions that are applied on step described by <paramref name="stepDescriptor"/> parameter.
-        /// The <see cref="IStepExecutionExtension"/> are inferred from method attributes that implements <see cref="StepExecutionExtensionAttribute"/> type.
-        /// The returned collection would be sorted ascending based on <see cref="StepExecutionExtensionAttribute.Order"/> property.
+        /// The <see cref="IStepExecutionExtension"/> are inferred from method attributes that implements <see cref="IStepExecutionExtensionAttribute"/> type.
+        /// The returned collection would be sorted ascending based on <see cref="IStepExecutionExtensionAttribute.Order"/> property.
         /// </summary>
         /// <param name="stepDescriptor">Step descriptor.</param>
         /// <returns>Collection of extensions or empty collection if none are present.</returns>
         IEnumerable<IStepExecutionExtension> GetStepExecutionExtensions(StepDescriptor stepDescriptor);
         /// <summary>
         /// Returns a collection of <see cref="IScenarioExecutionExtension"/> extensions that are applied on scenario described by <paramref name="scenarioDescriptor"/> parameter.
-        /// The <see cref="IScenarioExecutionExtension"/> are inferred from method attributes that implements <see cref="ScenarioExecutionExtensionAttribute"/> type.
-        /// The returned collection would be sorted ascending based on <see cref="ScenarioExecutionExtensionAttribute.Order"/> property.
+        /// The <see cref="IScenarioExecutionExtension"/> are inferred from method attributes that implements <see cref="IScenarioExecutionExtensionAttribute"/> type.
+        /// The returned collection would be sorted ascending based on <see cref="IScenarioExecutionExtensionAttribute.Order"/> property.
         /// </summary>
         /// <param name="scenarioDescriptor">Scenario descriptor.</param>
         /// <returns>Collection of extensions or empty collection if none are present.</returns>
