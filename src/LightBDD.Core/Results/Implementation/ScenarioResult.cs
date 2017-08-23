@@ -44,8 +44,11 @@ namespace LightBDD.Core.Results.Implementation
             var stepsResult = GetSteps().GetMostSevereOrNull();
             if (stepsResult == null)
                 return;
-            Status = stepsResult.Status;
-            StatusDetails = GetSteps().MergeStatusDetails();
+
+            if (Status < stepsResult.Status)
+                Status = stepsResult.Status;
+
+            StatusDetails = GetSteps().MergeStatusDetails(StatusDetails);
         }
 
         public override string ToString()
@@ -56,6 +59,13 @@ namespace LightBDD.Core.Results.Implementation
             if (StatusDetails != null)
                 sb.Append(" (").Append(StatusDetails).Append(")");
             return sb.ToString();
+        }
+
+        public void UpdateScenarioResult(ExecutionStatus status, string details)
+        {
+            Status = status;
+            if (!string.IsNullOrWhiteSpace(details))
+                StatusDetails = $"Scenario: {details.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t")}";
         }
     }
 }

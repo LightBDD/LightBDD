@@ -74,7 +74,7 @@ namespace LightBDD.Core.Execution.Implementation
                 _progressNotifier.NotifyStepStart(_result.Info);
                 stepStartNotified = true;
 
-                await _extendableExecutor.ExecuteStepAsync(this, TimeMeasuredInvokeAsync, _stepExecutionExtensions);
+                await TimeMeasuredInvokeAsync();
                 _result.SetStatus(_result.GetSubSteps().GetMostSevereOrNull()?.Status ?? ExecutionStatus.Passed);
             }
             catch (StepBypassException exception)
@@ -88,7 +88,7 @@ namespace LightBDD.Core.Execution.Implementation
             }
             catch (Exception exception)
             {
-                var executionStatus = _exceptionProcessor.UpdateResultsWithException(_result, exception);
+                var executionStatus = _exceptionProcessor.UpdateResultsWithException(_result.SetStatus, exception);
                 throw new StepAbortedException(exception, executionStatus);
             }
             finally
@@ -105,7 +105,7 @@ namespace LightBDD.Core.Execution.Implementation
             var watch = ExecutionTimeWatch.StartNew();
             try
             {
-                await InvokeStepAsync();
+                await _extendableExecutor.ExecuteStepAsync(this, InvokeStepAsync, _stepExecutionExtensions);
             }
             finally
             {

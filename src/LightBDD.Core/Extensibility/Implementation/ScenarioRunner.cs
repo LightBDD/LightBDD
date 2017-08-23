@@ -103,7 +103,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         {
             Validate();
             return _scenarioExecutor
-                .ExecuteAsync(new ScenarioInfo(_name, _labels, _categories), ProvideSteps, _contextProvider, _progressNotifier, _scenarioExecutionExtensions);
+                .ExecuteAsync(new ScenarioInfo(_name, _labels, _categories), ProvideSteps, _contextProvider, _progressNotifier, _scenarioExecutionExtensions, _exceptionProcessor);
         }
 
         public void RunSynchronously()
