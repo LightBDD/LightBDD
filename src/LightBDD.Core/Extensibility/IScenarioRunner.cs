@@ -17,7 +17,6 @@ namespace LightBDD.Core.Extensibility
         /// <param name="steps">Steps to execute.</param>
         /// <returns>Self.</returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="steps"/> are <c>null</c>.</exception>
-        //TODO: how to pass step extensions?
         IScenarioRunner WithSteps(IEnumerable<StepDescriptor> steps);
         /// <summary>
         /// Configures scenario details with values inferred by <see cref="IMetadataProvider"/>.

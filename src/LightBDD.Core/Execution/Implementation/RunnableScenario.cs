@@ -47,6 +47,7 @@ namespace LightBDD.Core.Execution.Implementation
                 await step.RunAsync();
         }
 
+        [DebuggerStepThrough]
         private void InitializeScenario()
         {
             try
@@ -68,7 +69,6 @@ namespace LightBDD.Core.Execution.Implementation
             var watch = ExecutionTimeWatch.StartNew();
             try
             {
-                //TODO: check debugging experience
                 InitializeScenario();
                 await _extendableExecutor.ExecuteScenarioAsync(_scenario, RunScenarioAsync, _scenarioExecutionExtensions);
             }
