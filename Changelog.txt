@@ -6,6 +6,8 @@ Version vNext
 Summary:
 + #28 Updated parameter formatters to distinguish null values and format them as "<null>"
 + #28 Updated FormatCollectionAttribute to accept null collection
++ (all integrations) #42 Added IgnoreScenarioAttribute allowing to declaratively ignore the scenario when applied on scenario or step method
++ (Core) #42 Added IScenarioExecutionExtensionAttribute, IStepExecutionExtensionAttribute interfaces allowing to describe execution extension attributes applicable on scenario or step methods
 
 Version 2.2.0
 ----------------------------------------
