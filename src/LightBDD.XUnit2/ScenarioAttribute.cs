@@ -1,6 +1,7 @@
 using System;
 using Xunit;
 using Xunit.Sdk;
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
 
 namespace LightBDD.XUnit2
 {
@@ -12,5 +13,14 @@ namespace LightBDD.XUnit2
     [XunitTestCaseDiscoverer("LightBDD.XUnit2.Implementation.Customization.ScenarioTestCaseDiscoverer", "LightBDD.XUnit2")]
     public class ScenarioAttribute : FactAttribute
     {
+        /// <summary>
+        /// Marks the test so that it will not be run, and gets or sets the skip reason
+        /// </summary>
+        [Obsolete("Please use IgnoreScenarioAttribute on scenario or step method instead, as it will make test appearing in the reports.")]
+        public override string Skip
+        {
+            get => base.Skip;
+            set => base.Skip = value;
+        }
     }
 }

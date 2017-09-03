@@ -6,7 +6,7 @@ using LightBDD.Framework.Formatting;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
-namespace LightBDD.Core.UnitTests
+namespace LightBDD.Core.UnitTests.Extensibility
 {
     [TestFixture]
     public class CoreMetadataProvider_culture_tests

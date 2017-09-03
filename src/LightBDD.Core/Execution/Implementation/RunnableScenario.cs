@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Execution.Implementation;
 using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Notification;
@@ -17,19 +19,23 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly Func<object> _contextProvider;
         private readonly IScenarioProgressNotifier _progressNotifier;
         private readonly ExtendableExecutor _extendableExecutor;
+        private readonly IEnumerable<IScenarioExecutionExtension> _scenarioExecutionExtensions;
+        private readonly ExceptionProcessor _exceptionProcessor;
         private readonly ScenarioResult _result;
         private Exception _scenarioInitializationException;
         private RunnableStep[] _preparedSteps = new RunnableStep[0];
         private object _scenarioContext;
 
         [DebuggerStepThrough]
-        public RunnableScenario(ScenarioInfo scenario, Func<ExtendableExecutor, object, RunnableStep[]> stepsProvider, Func<object> contextProvider, IScenarioProgressNotifier progressNotifier, ExtendableExecutor extendableExecutor)
+        public RunnableScenario(ScenarioInfo scenario, Func<ExtendableExecutor, object, RunnableStep[]> stepsProvider, Func<object> contextProvider, IScenarioProgressNotifier progressNotifier, ExtendableExecutor extendableExecutor, IEnumerable<IScenarioExecutionExtension> scenarioExecutionExtensions, ExceptionProcessor exceptionProcessor)
         {
             _scenario = scenario;
             _stepsProvider = stepsProvider;
             _contextProvider = contextProvider;
             _progressNotifier = progressNotifier;
             _extendableExecutor = extendableExecutor;
+            _scenarioExecutionExtensions = scenarioExecutionExtensions;
+            _exceptionProcessor = exceptionProcessor;
             _result = new ScenarioResult(_scenario);
         }
 
@@ -37,11 +43,11 @@ namespace LightBDD.Core.Execution.Implementation
 
         private async Task RunScenarioAsync()
         {
-            InitializeScenario();
             foreach (var step in _preparedSteps)
                 await step.RunAsync();
         }
 
+        [DebuggerStepThrough]
         private void InitializeScenario()
         {
             try
@@ -63,11 +69,21 @@ namespace LightBDD.Core.Execution.Implementation
             var watch = ExecutionTimeWatch.StartNew();
             try
             {
-                await _extendableExecutor.ExecuteScenarioAsync(_scenario, RunScenarioAsync);
+                InitializeScenario();
+                await _extendableExecutor.ExecuteScenarioAsync(_scenario, RunScenarioAsync, _scenarioExecutionExtensions);
+            }
+            catch (StepBypassException ex)
+            {
+                _result.UpdateScenarioResult(ExecutionStatus.Bypassed, ex.Message);
             }
             catch (StepAbortedException ex)
             {
                 ex.RethrowOriginalException();
+            }
+            catch (Exception ex)
+            {
+                _exceptionProcessor.UpdateResultsWithException(_result.UpdateScenarioResult, ex);
+                throw;
             }
             finally
             {

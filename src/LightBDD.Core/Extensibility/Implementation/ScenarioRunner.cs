@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution.Implementation;
+using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Execution.Implementation;
 using LightBDD.Core.Extensibility.Results;
 using LightBDD.Core.Internals;
@@ -25,6 +26,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         private string[] _categories = Arrays<string>.Empty();
         private Func<object> _contextProvider = ProvideNoContext;
         private readonly ExceptionProcessor _exceptionProcessor;
+        private IEnumerable<IScenarioExecutionExtension> _scenarioExecutionExtensions = Enumerable.Empty<IScenarioExecutionExtension>();
 
         public ScenarioRunner(ScenarioExecutor scenarioExecutor, IMetadataProvider metadataProvider, IScenarioProgressNotifier progressNotifier, ExceptionProcessor exceptionProcessor)
         {
@@ -47,7 +49,8 @@ namespace LightBDD.Core.Extensibility.Implementation
             var scenario = _metadataProvider.CaptureCurrentScenario();
             return WithName(_metadataProvider.GetScenarioName(scenario))
                 .WithLabels(_metadataProvider.GetScenarioLabels(scenario.MethodInfo))
-                .WithCategories(_metadataProvider.GetScenarioCategories(scenario.MethodInfo));
+                .WithCategories(_metadataProvider.GetScenarioCategories(scenario.MethodInfo))
+                .WithScenarioExecutionExtensions(_metadataProvider.GetScenarioExecutionExtensions(scenario));
         }
 
         public IScenarioRunner WithName(string name)
@@ -60,17 +63,19 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         public IScenarioRunner WithContext(Func<object> contextProvider)
         {
-            if (contextProvider == null)
-                throw new ArgumentNullException(nameof(contextProvider));
-            _contextProvider = contextProvider;
+            _contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
+            return this;
+        }
+
+        public IScenarioRunner WithScenarioExecutionExtensions(IEnumerable<IScenarioExecutionExtension> scenarioExecutionExtensions)
+        {
+            _scenarioExecutionExtensions = scenarioExecutionExtensions ?? throw new ArgumentNullException(nameof(scenarioExecutionExtensions));
             return this;
         }
 
         private IScenarioRunner WithName(INameInfo name)
         {
-            if (name == null)
-                throw new ArgumentNullException(nameof(name));
-            _name = name;
+            _name = name ?? throw new ArgumentNullException(nameof(name));
             return this;
         }
 
@@ -84,24 +89,21 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         public IScenarioRunner WithLabels(string[] labels)
         {
-            if (labels == null)
-                throw new ArgumentNullException(nameof(labels));
-            _labels = labels;
+            _labels = labels ?? throw new ArgumentNullException(nameof(labels));
             return this;
         }
 
         public IScenarioRunner WithCategories(string[] categories)
         {
-            if (categories == null)
-                throw new ArgumentNullException(nameof(categories));
-            _categories = categories;
+            _categories = categories ?? throw new ArgumentNullException(nameof(categories));
             return this;
         }
 
         public Task RunAsynchronously()
         {
             Validate();
-            return _scenarioExecutor.ExecuteAsync(new ScenarioInfo(_name, _labels, _categories), ProvideSteps, _contextProvider, _progressNotifier);
+            return _scenarioExecutor
+                .ExecuteAsync(new ScenarioInfo(_name, _labels, _categories), ProvideSteps, _contextProvider, _progressNotifier, _scenarioExecutionExtensions, _exceptionProcessor);
         }
 
         public void RunSynchronously()
@@ -145,7 +147,8 @@ namespace LightBDD.Core.Extensibility.Implementation
                 _exceptionProcessor,
                 _progressNotifier,
                 extendableExecutor,
-                scenarioContext);
+                scenarioContext,
+                _metadataProvider.GetStepExecutionExtensions(descriptor));
         }
 
 

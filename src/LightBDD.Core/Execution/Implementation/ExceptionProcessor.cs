@@ -3,7 +3,6 @@ using System.Diagnostics;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Results;
-using LightBDD.Core.Results.Implementation;
 
 namespace LightBDD.Core.Execution.Implementation
 {
@@ -19,11 +18,11 @@ namespace LightBDD.Core.Execution.Implementation
             _exceptionFormatter = integrationContext.Configuration.ExceptionHandlingConfiguration().ExceptionDetailsFormatter;
         }
 
-        public ExecutionStatus UpdateResultsWithException(StepResult result, Exception exception)
+        public ExecutionStatus UpdateResultsWithException(Action<ExecutionStatus,string> setStatus, Exception exception)
         {
             var status = _exceptionToStatusMapper.Invoke(exception);
             var details = (status == ExecutionStatus.Failed) ? _exceptionFormatter.Invoke(exception) : exception.Message;
-            result.SetStatus(status, details);
+            setStatus(status, details);
             return status;
         }
     }

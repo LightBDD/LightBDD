@@ -21,10 +21,7 @@ namespace LightBDD.Core.Extensibility
         /// <exception cref="InvalidOperationException">Thrown if number or <paramref name="arguments"/> is not null and does not match number of <paramref name="methodInfo"/> parameters.</exception>
         public ScenarioDescriptor(MethodBase methodInfo, object[] arguments)
         {
-            if (methodInfo == null)
-                throw new ArgumentNullException(nameof(methodInfo));
-
-            MethodInfo = methodInfo;
+            MethodInfo = methodInfo ?? throw new ArgumentNullException(nameof(methodInfo));
             Parameters = BuildParameters(methodInfo, arguments);
 
         }

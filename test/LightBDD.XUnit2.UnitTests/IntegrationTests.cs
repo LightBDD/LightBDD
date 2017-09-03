@@ -112,6 +112,38 @@ namespace LightBDD.XUnit2.UnitTests
             Assert.Contains($"SCENARIO: Runner should support parameterized scenarios with value \"{value}\"", ConfiguredLightBddScope.CapturedNotifications);
         }
 
+        [Scenario]
+        [IgnoreScenario("scenario reason")]
+        [Label(nameof(Runner_should_ignore_scenario_with_IgnoreScenarioAttribute))]
+        public void Runner_should_ignore_scenario_with_IgnoreScenarioAttribute()
+        {
+            var ex = Assert.ThrowsAny<Exception>(() => Runner.RunScenario(_ => Some_step()));
+            Assert.Equal("scenario reason", ex.Message);
+            var result = GetScenarioResult(nameof(Runner_should_ignore_scenario_with_IgnoreScenarioAttribute));
+
+            Assert.Equal(ExecutionStatus.Ignored, result.Status);
+            Assert.Equal("Scenario: scenario reason", result.StatusDetails);
+            Assert.Equal(ExecutionStatus.NotRun, result.GetSteps().Single().Status);
+        }
+
+        [Scenario]
+        [Label(nameof(Runner_should_ignore_step_with_IgnoreScenarioAttribute))]
+        public void Runner_should_ignore_step_with_IgnoreScenarioAttribute()
+        {
+            var ex = Assert.ThrowsAny<Exception>(() => Runner.RunScenario(_ => Declaratively_ignored_step()));
+            Assert.Equal("step reason", ex.Message);
+            var result = GetScenarioResult(nameof(Runner_should_ignore_step_with_IgnoreScenarioAttribute));
+
+            Assert.Equal(ExecutionStatus.Ignored, result.Status);
+            Assert.Equal(ExecutionStatus.Ignored, result.GetSteps().Single().Status);
+            Assert.Equal("Step 1: step reason", result.StatusDetails);
+        }
+
+        [IgnoreScenario("step reason")]
+        private void Declaratively_ignored_step()
+        {
+        }
+
         private void Step_with_parameter(string value)
         {
             Assert.NotNull(value);

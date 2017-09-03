@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LightBDD.Core.Extensibility.Execution;
 
 namespace LightBDD.Core.Extensibility
 {
@@ -50,6 +51,12 @@ namespace LightBDD.Core.Extensibility
         /// <returns>Self.</returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="contextProvider"/> is <c>null</c>.</exception>
         IScenarioRunner WithContext(Func<object> contextProvider);
+        /// <summary>
+        /// Configures scenario to be executed with additional execution extensions provided by <paramref name="scenarioExecutionExtensions"/>.
+        /// </summary>
+        /// <param name="scenarioExecutionExtensions">Execution extensions to use.</param>
+        /// <returns>Self.</returns>
+        IScenarioRunner WithScenarioExecutionExtensions(IEnumerable<IScenarioExecutionExtension> scenarioExecutionExtensions);
         /// <summary>
         /// Runs scenario asynchronously and returns task representing it.
         /// Before scenario is run, a validation is done if scenario is properly configured (i.e. name is defined and there is defined at least one step to execute).

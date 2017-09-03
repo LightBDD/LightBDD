@@ -23,7 +23,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
                 ParameterDescriptor.FromConstant(ParameterInfoHelper.IntParameterInfo, 32)
             };
 
-            var descriptor = new StepDescriptor(predefinedStepType, rawName, SomeStepInvocation, parameters);
+            var descriptor = new StepDescriptor(rawName, SomeStepInvocation, parameters) { PredefinedStepType = predefinedStepType };
 
             Assert.That(descriptor.PredefinedStepType, Is.EqualTo(predefinedStepType));
             Assert.That(descriptor.RawName, Is.EqualTo(rawName));

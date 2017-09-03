@@ -27,7 +27,10 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
 
             var arguments = ProcessArguments(methodExpression, contextParameter);
 
-            return new StepDescriptor(GetStepTypeName(contextParameter), methodExpression.Method.Name, CompileStepAction(methodExpression, contextParameter), arguments);
+            return new StepDescriptor(methodExpression.Method, CompileStepAction(methodExpression, contextParameter), arguments)
+            {
+                PredefinedStepType = GetStepTypeName(contextParameter)
+            };
         }
 
         private string GetStepTypeName(ParameterExpression contextParameter)
@@ -89,8 +92,7 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
 
         private ParameterDescriptor CompileArgument(Expression argumentExpression, ParameterExpression contextParameter, ParameterInfo parameterInfo)
         {
-            var expression = argumentExpression as ConstantExpression;
-            if (expression != null)
+            if (argumentExpression is ConstantExpression expression)
                 return ParameterDescriptor.FromConstant(parameterInfo, expression.Value);
 
             var function = Expression.Lambda<Func<TContext, object>>(Expression.Convert(argumentExpression, typeof(object)), contextParameter).Compile();

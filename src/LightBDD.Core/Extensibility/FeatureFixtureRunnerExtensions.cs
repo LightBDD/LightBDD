@@ -1,10 +1,12 @@
 using System;
+using System.Diagnostics;
 
 namespace LightBDD.Core.Extensibility
 {
     /// <summary>
     /// <see cref="IFeatureFixtureRunner"/> extensions.
     /// </summary>
+    [DebuggerStepThrough]
     public static class FeatureFixtureRunnerExtensions
     {
         /// <summary>

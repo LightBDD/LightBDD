@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Execution.Implementation;
 using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Notification;
@@ -18,9 +20,9 @@ namespace LightBDD.Core.Execution.Implementation
         }
 
         [DebuggerStepThrough]
-        public Task ExecuteAsync(ScenarioInfo scenario, Func<ExtendableExecutor, object, RunnableStep[]> stepsProvider, Func<object> contextProvider, IScenarioProgressNotifier progressNotifier)
+        public Task ExecuteAsync(ScenarioInfo scenario, Func<ExtendableExecutor, object, RunnableStep[]> stepsProvider, Func<object> contextProvider, IScenarioProgressNotifier progressNotifier, IEnumerable<IScenarioExecutionExtension> scenarioExecutionExtensions, ExceptionProcessor exceptionProcessor)
         {
-            var runnableScenario = new RunnableScenario(scenario, stepsProvider, contextProvider, progressNotifier, _extendableExecutor);
+            var runnableScenario = new RunnableScenario(scenario, stepsProvider, contextProvider, progressNotifier, _extendableExecutor, scenarioExecutionExtensions, exceptionProcessor);
             try
             {
                 return runnableScenario.RunAsync();

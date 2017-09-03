@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using LightBDD.Core.Results;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Basic;
+using LightBDD.Framework.Scenarios.Extended;
 using NUnit.Framework;
 
 namespace LightBDD.NUnit2.NUnitTests
@@ -114,6 +115,38 @@ namespace LightBDD.NUnit2.NUnitTests
             Assert.AreEqual(
                     "Only steps being completed upon return can be run synchronously (all steps have to return completed task). Consider using Async scenario methods for async Task or async void steps.",
                     ex.Message);
+        }
+
+        [Scenario]
+        [IgnoreScenario("scenario reason")]
+        [Label(nameof(Runner_should_ignore_scenario_with_IgnoreScenarioAttribute))]
+        public void Runner_should_ignore_scenario_with_IgnoreScenarioAttribute()
+        {
+            var ex = Assert.Throws<IgnoreException>(() => Runner.RunScenario(_ => Some_step()));
+            Assert.AreEqual("scenario reason", ex.Message);
+            var result = GetScenarioResult(nameof(Runner_should_ignore_scenario_with_IgnoreScenarioAttribute));
+
+            Assert.AreEqual(ExecutionStatus.Ignored, result.Status);
+            Assert.AreEqual("Scenario: scenario reason", result.StatusDetails);
+            Assert.AreEqual(ExecutionStatus.NotRun, result.GetSteps().Single().Status);
+        }
+
+        [Scenario]
+        [Label(nameof(Runner_should_ignore_step_with_IgnoreScenarioAttribute))]
+        public void Runner_should_ignore_step_with_IgnoreScenarioAttribute()
+        {
+            var ex = Assert.Throws<IgnoreException>(() => Runner.RunScenario(_ => Declaratively_ignored_step()));
+            Assert.AreEqual("step reason", ex.Message);
+            var result = GetScenarioResult(nameof(Runner_should_ignore_step_with_IgnoreScenarioAttribute));
+
+            Assert.AreEqual(ExecutionStatus.Ignored, result.Status);
+            Assert.AreEqual(ExecutionStatus.Ignored, result.GetSteps().Single().Status);
+            Assert.AreEqual("Step 1: step reason", result.StatusDetails);
+        }
+
+        [IgnoreScenario("step reason")]
+        private void Declaratively_ignored_step()
+        {
         }
 
         private void Inconclusive_step()
