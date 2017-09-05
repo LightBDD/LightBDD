@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.ExceptionServices;
+using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Execution.Implementation;
@@ -25,6 +27,8 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly object _scenarioContext;
         private readonly IEnumerable<IStepExecutionExtension> _stepExecutionExtensions;
         private readonly StepResult _result;
+        private Func<Exception, bool> _shouldAbortExecutionFn = ex => true;
+        private Exception _stepInvocationException;
         public IStepResult Result => _result;
         public IStepInfo Info => Result.Info;
 
@@ -67,7 +71,7 @@ namespace LightBDD.Core.Execution.Implementation
         [DebuggerStepThrough]
         public async Task RunAsync()
         {
-            bool stepStartNotified = false;
+            var stepStartNotified = false;
             try
             {
                 EvaluateParameters();
@@ -81,15 +85,14 @@ namespace LightBDD.Core.Execution.Implementation
             {
                 _result.SetStatus(ExecutionStatus.Bypassed, exception.Message);
             }
-            catch (StepAbortedException e)
+            catch (StepExecutionException e)
             {
                 _result.SetStatus(e.StepStatus);
-                throw;
             }
             catch (Exception exception)
             {
-                var executionStatus = _exceptionProcessor.UpdateResultsWithException(_result.SetStatus, exception);
-                throw new StepAbortedException(exception, executionStatus);
+                _exceptionProcessor.UpdateResultsWithException(_result.SetStatus, exception);
+                _stepInvocationException = exception;
             }
             finally
             {
@@ -97,6 +100,43 @@ namespace LightBDD.Core.Execution.Implementation
                 if (stepStartNotified)
                     _progressNotifier.NotifyStepFinished(_result);
             }
+            ProcessExceptions();
+        }
+
+        private void ProcessExceptions()
+        {
+            var exception = CollectException();
+            if (exception == null)
+                return;
+
+            _result.ExecutionException = exception;
+
+            if (ShouldAbortExecution(exception))
+                throw new StepExecutionException(exception, _result.Status);
+        }
+
+        private Exception CollectException()
+        {
+            if (_stepInvocationException != null)
+                return _stepInvocationException;
+
+            if (_result.Status < ExecutionStatus.Ignored)
+                return null;
+
+            var exceptions = _result.GetSubSteps()
+                .Where(s => s.Status == _result.Status)
+                .Select(s => s.ExecutionException)
+                .Where(x => x != null)
+                .ToArray();
+
+            return (_result.Status == ExecutionStatus.Ignored || exceptions.Length == 1)
+                ? exceptions.First()
+                : new AggregateException(exceptions);
+        }
+
+        private bool ShouldAbortExecution(Exception exception)
+        {
+            return _shouldAbortExecutionFn(exception);
         }
 
         [DebuggerStepThrough]
@@ -169,6 +209,11 @@ namespace LightBDD.Core.Execution.Implementation
         {
             _result.AddComment(comment);
             _progressNotifier.NotifyStepComment(_result.Info, comment);
+        }
+
+        public void ConfigureExecutionAbortOnException(Func<Exception, bool> shouldAbortExecutionFn)
+        {
+            _shouldAbortExecutionFn = shouldAbortExecutionFn ?? throw new ArgumentNullException(nameof(shouldAbortExecutionFn));
         }
 
         [DebuggerStepThrough]

@@ -23,6 +23,8 @@ namespace LightBDD.Core.Results.Implementation
         public IStepInfo Info => _info;
         public ExecutionStatus Status { get; private set; }
         public string StatusDetails { get; private set; }
+        //TODO: fix setter
+        public Exception ExecutionException { get; set; }
         public ExecutionTime ExecutionTime { get; private set; }
         public IEnumerable<string> Comments => _comments;
         public IEnumerable<IStepResult> GetSubSteps() => _subSteps;

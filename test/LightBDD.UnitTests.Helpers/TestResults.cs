@@ -196,6 +196,7 @@ namespace LightBDD.UnitTests.Helpers
             public TestExecutionTime ExecutionTime { get; set; }
             ExecutionTime IStepResult.ExecutionTime => ExecutionTime?.ToMockedType();
             IEnumerable<string> IStepResult.Comments => Comments;
+            public Exception ExecutionException { get; }
             public IEnumerable<IStepResult> GetSubSteps() => SubSteps;
             public TestStepResult[] SubSteps { get; set; } = new TestStepResult[0];
             public string[] Comments { get; set; }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Execution.Implementation;
@@ -76,14 +77,14 @@ namespace LightBDD.Core.Execution.Implementation
             {
                 _result.UpdateScenarioResult(ExecutionStatus.Bypassed, ex.Message);
             }
-            catch (StepAbortedException ex)
+            catch (StepExecutionException ex)
             {
-                ex.RethrowOriginalException();
+                _result.UpdateScenarioResult(ex.StepStatus);
             }
             catch (Exception ex)
             {
                 _exceptionProcessor.UpdateResultsWithException(_result.UpdateScenarioResult, ex);
-                throw;
+                _scenarioInitializationException = ex;
             }
             finally
             {
@@ -91,11 +92,40 @@ namespace LightBDD.Core.Execution.Implementation
 
                 _result.UpdateResult(
                     _preparedSteps.Select(s => s.Result).ToArray(),
-                    watch.GetTime(),
-                    _scenarioInitializationException);
+                    watch.GetTime());
 
                 _progressNotifier.NotifyScenarioFinished(Result);
             }
+            ProcessExceptions();
+        }
+
+        private void ProcessExceptions()
+        {
+            var exception = CollectException();
+            if (exception == null)
+                return;
+
+            _result.ExecutionException = exception;
+
+            ExceptionDispatchInfo.Capture(exception).Throw();
+        }
+
+        private Exception CollectException()
+        {
+            if (_scenarioInitializationException != null)
+                return _scenarioInitializationException;
+
+            if (_result.Status < ExecutionStatus.Ignored)
+                return null;
+
+            var exceptions = _result.GetSteps()
+                .Where(s => s.Status == _result.Status)
+                .Select(s => s.ExecutionException)
+                .Where(x => x != null).ToArray();
+
+            return (_result.Status == ExecutionStatus.Ignored || exceptions.Length == 1)
+                ? exceptions.First()
+                : new AggregateException(exceptions);
         }
 
         [DebuggerStepThrough]
