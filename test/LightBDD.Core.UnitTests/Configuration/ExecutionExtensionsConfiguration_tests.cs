@@ -13,28 +13,28 @@ namespace LightBDD.Core.UnitTests.Configuration
     public class ExecutionExtensionsConfiguration_tests
     {
         #region Extensions
-        class ScenarioExtension1 : IScenarioExecutionExtension
+        class ScenarioExtension1 : IScenarioExtension
         {
-            public Task ExecuteAsync(IScenarioInfo scenario, Func<Task> scenarioInvocation)
+            public Task ExecuteAsync(IScenario scenario, Func<Task> scenarioInvocation)
             {
                 throw new NotImplementedException();
             }
         }
-        class ScenarioExtension2 : IScenarioExecutionExtension
+        class ScenarioExtension2 : IScenarioExtension
         {
-            public Task ExecuteAsync(IScenarioInfo scenario, Func<Task> scenarioInvocation)
+            public Task ExecuteAsync(IScenario scenario, Func<Task> scenarioInvocation)
             {
                 throw new NotImplementedException();
             }
         }
-        class StepExtension1 : IStepExecutionExtension
+        class StepExtension1 : IStepExtension
         {
             public Task ExecuteAsync(IStep step, Func<Task> stepInvocation)
             {
                 throw new NotImplementedException();
             }
         }
-        class StepExtension2 : IStepExecutionExtension
+        class StepExtension2 : IStepExtension
         {
             public Task ExecuteAsync(IStep step, Func<Task> stepInvocation)
             {

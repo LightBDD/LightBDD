@@ -20,7 +20,7 @@ namespace LightBDD.Core.Execution.Implementation
         }
 
         [DebuggerStepThrough]
-        public Task ExecuteAsync(ScenarioInfo scenario, Func<ExtendableExecutor, object, RunnableStep[]> stepsProvider, Func<object> contextProvider, IScenarioProgressNotifier progressNotifier, IEnumerable<IScenarioExecutionExtension> scenarioExecutionExtensions, ExceptionProcessor exceptionProcessor)
+        public Task ExecuteAsync(ScenarioInfo scenario, Func<ExtendableExecutor, object, RunnableStep[]> stepsProvider, Func<object> contextProvider, IScenarioProgressNotifier progressNotifier, IEnumerable<IScenarioExtension> scenarioExecutionExtensions, ExceptionProcessor exceptionProcessor)
         {
             var runnableScenario = new RunnableScenario(scenario, stepsProvider, contextProvider, progressNotifier, _extendableExecutor, scenarioExecutionExtensions, exceptionProcessor);
             try

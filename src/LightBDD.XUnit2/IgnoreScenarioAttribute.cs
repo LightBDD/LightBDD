@@ -15,7 +15,7 @@ namespace LightBDD.XUnit2
     /// It is recommended to use this attribute in favor of <see cref="ScenarioAttribute.Skip"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
-    public class IgnoreScenarioAttribute : Attribute, IScenarioExecutionExtensionAttribute, IStepExecutionExtensionAttribute
+    public class IgnoreScenarioAttribute : Attribute, IScenarioExtensionAttribute, IStepExtensionAttribute
     {
         /// <summary>
         /// Default constructor allowing to specify ignore reason.
@@ -39,7 +39,7 @@ namespace LightBDD.XUnit2
         /// <summary>
         /// Stops execution of current scenario with ignored status.
         /// </summary>
-        public Task ExecuteAsync(IScenarioInfo scenario, Func<Task> scenarioInvocation)
+        public Task ExecuteAsync(IScenario scenario, Func<Task> scenarioInvocation)
         {
             throw new IgnoreException(Reason);
         }

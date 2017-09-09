@@ -56,7 +56,7 @@ namespace LightBDD.Core.Extensibility
         /// </summary>
         /// <param name="scenarioExecutionExtensions">Execution extensions to use.</param>
         /// <returns>Self.</returns>
-        IScenarioRunner WithScenarioExecutionExtensions(IEnumerable<IScenarioExecutionExtension> scenarioExecutionExtensions);
+        IScenarioRunner WithScenarioExecutionExtensions(IEnumerable<IScenarioExtension> scenarioExecutionExtensions);
         /// <summary>
         /// Runs scenario asynchronously and returns task representing it.
         /// Before scenario is run, a validation is done if scenario is properly configured (i.e. name is defined and there is defined at least one step to execute).

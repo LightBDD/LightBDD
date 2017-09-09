@@ -30,7 +30,9 @@ namespace LightBDD.Core.Results
         /// Returns step comments or empty collection if no comments were made.
         /// </summary>
         IEnumerable<string> Comments { get; }
-
+        /// <summary>
+        /// Returns exception caught during step execution or null if none occurred.
+        /// </summary>
         Exception ExecutionException { get; }
 
         /// <summary>

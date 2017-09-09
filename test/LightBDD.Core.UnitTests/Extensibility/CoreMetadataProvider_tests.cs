@@ -154,7 +154,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
             var extensions = _metadataProvider.GetStepExecutionExtensions(new StepDescriptor(step.GetMethodInfo(), (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance)));
             var expectedOrder = new[] { 0, 2, 3, 5 };
 
-            Assert.That(extensions.Cast<IStepExecutionExtensionAttribute>().Select(x => x.Order).ToArray(),
+            Assert.That(extensions.Cast<IStepExtensionAttribute>().Select(x => x.Order).ToArray(),
                 Is.EqualTo(expectedOrder));
         }
 
@@ -180,7 +180,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
             var extensions = _metadataProvider.GetScenarioExecutionExtensions(new ScenarioDescriptor(step.GetMethodInfo(), null));
             var expectedOrder = new[] { -5, -3, -2, 0 };
 
-            Assert.That(extensions.Cast<IScenarioExecutionExtensionAttribute>().Select(x => x.Order).ToArray(),
+            Assert.That(extensions.Cast<IScenarioExtensionAttribute>().Select(x => x.Order).ToArray(),
                 Is.EqualTo(expectedOrder));
         }
 
@@ -223,7 +223,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
             }
         }
         [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-        private class MyStepExtensionAttribute : Attribute, IStepExecutionExtensionAttribute
+        private class MyStepExtensionAttribute : Attribute, IStepExtensionAttribute
         {
             public Task ExecuteAsync(IStep step, Func<Task> stepInvocation)
             {
@@ -233,9 +233,9 @@ namespace LightBDD.Core.UnitTests.Extensibility
             public int Order { get; set; }
         }
         [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-        private class MyScenarioExtension : Attribute, IScenarioExecutionExtensionAttribute
+        private class MyScenarioExtension : Attribute, IScenarioExtensionAttribute
         {
-            public Task ExecuteAsync(IScenarioInfo scenario, Func<Task> scenarioInvocation)
+            public Task ExecuteAsync(IScenario scenario, Func<Task> scenarioInvocation)
             {
                 throw new NotImplementedException();
             }

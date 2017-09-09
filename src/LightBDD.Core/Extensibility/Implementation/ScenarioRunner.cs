@@ -26,7 +26,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         private string[] _categories = Arrays<string>.Empty();
         private Func<object> _contextProvider = ProvideNoContext;
         private readonly ExceptionProcessor _exceptionProcessor;
-        private IEnumerable<IScenarioExecutionExtension> _scenarioExecutionExtensions = Enumerable.Empty<IScenarioExecutionExtension>();
+        private IEnumerable<IScenarioExtension> _scenarioExecutionExtensions = Enumerable.Empty<IScenarioExtension>();
 
         public ScenarioRunner(ScenarioExecutor scenarioExecutor, IMetadataProvider metadataProvider, IScenarioProgressNotifier progressNotifier, ExceptionProcessor exceptionProcessor)
         {
@@ -67,7 +67,7 @@ namespace LightBDD.Core.Extensibility.Implementation
             return this;
         }
 
-        public IScenarioRunner WithScenarioExecutionExtensions(IEnumerable<IScenarioExecutionExtension> scenarioExecutionExtensions)
+        public IScenarioRunner WithScenarioExecutionExtensions(IEnumerable<IScenarioExtension> scenarioExecutionExtensions)
         {
             _scenarioExecutionExtensions = scenarioExecutionExtensions ?? throw new ArgumentNullException(nameof(scenarioExecutionExtensions));
             return this;

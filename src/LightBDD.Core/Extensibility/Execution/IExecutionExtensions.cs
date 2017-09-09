@@ -10,10 +10,10 @@ namespace LightBDD.Core.Extensibility.Execution
         /// <summary>
         /// Collection of scenario execution extensions.
         /// </summary>
-        IEnumerable<IScenarioExecutionExtension> ScenarioExecutionExtensions { get; }
+        IEnumerable<IScenarioExtension> ScenarioExecutionExtensions { get; }
         /// <summary>
         /// Collection of step execution extensions.
         /// </summary>
-        IEnumerable<IStepExecutionExtension> StepExecutionExtensions { get; }
+        IEnumerable<IStepExtension> StepExecutionExtensions { get; }
     }
 }

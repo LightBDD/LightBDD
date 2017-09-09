@@ -205,7 +205,7 @@ namespace LightBDD.Core.UnitTests
         }
 
         [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-        class MyCapturingExtension : Attribute, IScenarioExecutionExtensionAttribute, IStepExecutionExtensionAttribute
+        class MyCapturingExtension : Attribute, IScenarioExtensionAttribute, IStepExtensionAttribute
         {
             private readonly string _prefix;
 
@@ -214,9 +214,9 @@ namespace LightBDD.Core.UnitTests
                 _prefix = prefix;
             }
 
-            public Task ExecuteAsync(IScenarioInfo scenario, Func<Task> scenarioInvocation)
+            public Task ExecuteAsync(IScenario scenario, Func<Task> scenarioInvocation)
             {
-                CapturedMessages.Add(_prefix + ": " + scenario.Name.ToString());
+                CapturedMessages.Add(_prefix + ": " + scenario.Info.Name.ToString());
                 return scenarioInvocation.Invoke();
             }
 
@@ -230,7 +230,7 @@ namespace LightBDD.Core.UnitTests
         }
 
         [AttributeUsage(AttributeTargets.Method)]
-        class MyThrowingExtension : Attribute, IScenarioExecutionExtensionAttribute, IStepExecutionExtensionAttribute
+        class MyThrowingExtension : Attribute, IScenarioExtensionAttribute, IStepExtensionAttribute
         {
             private readonly ExecutionStatus _expected;
 
@@ -239,7 +239,7 @@ namespace LightBDD.Core.UnitTests
                 _expected = expected;
             }
 
-            public Task ExecuteAsync(IScenarioInfo scenario, Func<Task> scenarioInvocation)
+            public Task ExecuteAsync(IScenario scenario, Func<Task> scenarioInvocation)
             {
                 return ProcessStatus();
             }

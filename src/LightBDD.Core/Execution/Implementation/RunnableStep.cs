@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.ExceptionServices;
-using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Execution.Implementation;
@@ -25,15 +23,15 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly IScenarioProgressNotifier _progressNotifier;
         private readonly ExtendableExecutor _extendableExecutor;
         private readonly object _scenarioContext;
-        private readonly IEnumerable<IStepExecutionExtension> _stepExecutionExtensions;
+        private readonly IEnumerable<IStepExtension> _stepExecutionExtensions;
         private readonly StepResult _result;
-        private Func<Exception, bool> _shouldAbortExecutionFn = ex => true;
+        private Func<Exception, bool> _shouldAbortSubStepExecutionFn = ex => true;
         private Exception _stepInvocationException;
         public IStepResult Result => _result;
         public IStepInfo Info => Result.Info;
 
         [DebuggerStepThrough]
-        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task<RunnableStepResult>> stepInvocation, MethodArgument[] arguments, ExceptionProcessor exceptionProcessor, IScenarioProgressNotifier progressNotifier, ExtendableExecutor extendableExecutor, object scenarioContext, IEnumerable<IStepExecutionExtension> stepExecutionExtensions)
+        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task<RunnableStepResult>> stepInvocation, MethodArgument[] arguments, ExceptionProcessor exceptionProcessor, IScenarioProgressNotifier progressNotifier, ExtendableExecutor extendableExecutor, object scenarioContext, IEnumerable<IStepExtension> stepExecutionExtensions)
         {
             _result = new StepResult(stepInfo);
             _stepInvocation = stepInvocation;
@@ -111,8 +109,7 @@ namespace LightBDD.Core.Execution.Implementation
 
             _result.ExecutionException = exception;
 
-            if (ShouldAbortExecution(exception))
-                throw new StepExecutionException(exception, _result.Status);
+            throw new StepExecutionException(exception, _result.Status);
         }
 
         private Exception CollectException()
@@ -132,11 +129,6 @@ namespace LightBDD.Core.Execution.Implementation
             return (_result.Status == ExecutionStatus.Ignored || exceptions.Length == 1)
                 ? exceptions.First()
                 : new AggregateException(exceptions);
-        }
-
-        private bool ShouldAbortExecution(Exception exception)
-        {
-            return _shouldAbortExecutionFn(exception);
         }
 
         [DebuggerStepThrough]
@@ -165,11 +157,25 @@ namespace LightBDD.Core.Execution.Implementation
             try
             {
                 foreach (var subStep in subSteps)
-                    await subStep.RunAsync();
+                    await InvokeSubStepAsync(subStep);
             }
             finally
             {
                 _result.SetSubSteps(subSteps.Select(s => s.Result).ToArray());
+            }
+        }
+
+        [DebuggerStepThrough]
+        private async Task InvokeSubStepAsync(RunnableStep subStep)
+        {
+            try
+            {
+                await subStep.RunAsync();
+            }
+            catch (Exception ex)
+            {
+                if (_shouldAbortSubStepExecutionFn(ex))
+                    throw;
             }
         }
 
@@ -211,9 +217,10 @@ namespace LightBDD.Core.Execution.Implementation
             _progressNotifier.NotifyStepComment(_result.Info, comment);
         }
 
-        public void ConfigureExecutionAbortOnException(Func<Exception, bool> shouldAbortExecutionFn)
+        [DebuggerStepThrough]
+        public void ConfigureExecutionAbortOnSubStepException(Func<Exception, bool> shouldAbortExecutionFn)
         {
-            _shouldAbortExecutionFn = shouldAbortExecutionFn ?? throw new ArgumentNullException(nameof(shouldAbortExecutionFn));
+            _shouldAbortSubStepExecutionFn = shouldAbortExecutionFn ?? throw new ArgumentNullException(nameof(shouldAbortExecutionFn));
         }
 
         [DebuggerStepThrough]

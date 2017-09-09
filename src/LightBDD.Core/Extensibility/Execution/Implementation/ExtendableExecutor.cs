@@ -11,7 +11,7 @@ namespace LightBDD.Core.Extensibility.Execution.Implementation
     [DebuggerStepThrough]
     internal class ExtendableExecutor
     {
-        private readonly Func<IScenarioInfo, Func<Task>, Task>[] _scenarioExecutors;
+        private readonly Func<IScenario, Func<Task>, Task>[] _scenarioExecutors;
         private readonly Func<IStep, Func<Task>, Task>[] _stepExecutors;
 
         public ExtendableExecutor(IExecutionExtensions extensions)
@@ -20,22 +20,22 @@ namespace LightBDD.Core.Extensibility.Execution.Implementation
             _stepExecutors = ToInvocations(extensions.StepExecutionExtensions).ToArray();
         }
 
-        private static IEnumerable<Func<IStep, Func<Task>, Task>> ToInvocations(IEnumerable<IStepExecutionExtension> extensions)
+        private static IEnumerable<Func<IStep, Func<Task>, Task>> ToInvocations(IEnumerable<IStepExtension> extensions)
         {
             return extensions.Select(e => (Func<IStep, Func<Task>, Task>)e.ExecuteAsync);
         }
 
-        private static IEnumerable<Func<IScenarioInfo, Func<Task>, Task>> ToInvocations(IEnumerable<IScenarioExecutionExtension> extensions)
+        private static IEnumerable<Func<IScenario, Func<Task>, Task>> ToInvocations(IEnumerable<IScenarioExtension> extensions)
         {
-            return extensions.Select(e => (Func<IScenarioInfo, Func<Task>, Task>)e.ExecuteAsync);
+            return extensions.Select(e => (Func<IScenario, Func<Task>, Task>)e.ExecuteAsync);
         }
 
-        public Task ExecuteScenarioAsync(IScenarioInfo scenario, Func<Task> scenarioInvocation, IEnumerable<IScenarioExecutionExtension> scenarioExecutionExtensions)
+        public Task ExecuteScenarioAsync(IScenario scenario, Func<Task> scenarioInvocation, IEnumerable<IScenarioExtension> scenarioExecutionExtensions)
         {
-            return new RecursiveExecutor<IScenarioInfo>(_scenarioExecutors.Concat(ToInvocations(scenarioExecutionExtensions)), scenario, scenarioInvocation).ExecuteAsync();
+            return new RecursiveExecutor<IScenario>(_scenarioExecutors.Concat(ToInvocations(scenarioExecutionExtensions)), scenario, scenarioInvocation).ExecuteAsync();
         }
 
-        public Task ExecuteStepAsync(IStep step, Func<Task> stepInvocation, IEnumerable<IStepExecutionExtension> stepExecutionExtensions)
+        public Task ExecuteStepAsync(IStep step, Func<Task> stepInvocation, IEnumerable<IStepExtension> stepExecutionExtensions)
         {
             return new RecursiveExecutor<IStep>(_stepExecutors.Concat(ToInvocations(stepExecutionExtensions)), step, stepInvocation).ExecuteAsync();
         }
