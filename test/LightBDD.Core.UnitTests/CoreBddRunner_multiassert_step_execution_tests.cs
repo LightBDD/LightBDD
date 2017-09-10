@@ -28,7 +28,7 @@ namespace LightBDD.Core.UnitTests
         #endregion
 
         public void Passing_step() { }
-        public void Failing_step() { throw new Exception("failing"); }
+        public void Failing_step() { throw new InvalidOperationException("failing"); }
         public void Ignoring_step() { StepExecution.Current.IgnoreScenario("ignoring"); }
 
         [MultiAssert]
@@ -47,20 +47,44 @@ namespace LightBDD.Core.UnitTests
             return TestCompositeStep.Create(Passing_step, Passing_step);
         }
 
-        public TestCompositeStep Multiassert_complex_composite()
+        [Test]
+        public void Runner_should_throw_only_first_ignore_exception_to_be_properly_handled_by_underlying_testing_framework()
         {
-            return TestCompositeStep.CreateFromComposites(Multiassert_ignoring_steps, Multiassert_failing_composite, Passing_composite);
+            Assert.Throws<CustomIgnoreException>(() => _runner.Test().TestGroupScenario(Multiassert_ignoring_steps));
         }
 
         [Test]
         [MultiAssert]
-        public void Runner_should_properly_capture_exceptions_from_multiassert_steps()
+        public void Runner_should_propagate_exceptions_from_multiassert_scenario_with_AggregateException()
         {
-            //TODO: make it more precise
-            var ex = Assert.Throws<AggregateException>(() =>
-                _runner.Test().TestGroupScenario(Multiassert_ignoring_steps, Multiassert_failing_composite, Passing_composite));
+            var ex = Assert.Throws<AggregateException>(() => _runner.Test().TestGroupScenario(Multiassert_failing_composite, Multiassert_failing_composite));
 
-            Assert.That(ex.InnerExceptions.Select(x => x.GetType()).ToArray(), Is.EqualTo(new[] { typeof(Exception), typeof(Exception) }));
+            Assert.That(ex.InnerExceptions.Select(x => x.GetType()).ToArray(), Is.EqualTo(new[] { typeof(AggregateException), typeof(AggregateException) }));
+            var innerAggregates = ex.InnerExceptions.Cast<AggregateException>().ToArray();
+            Assert.That(innerAggregates[0].InnerExceptions.Select(x => x.GetType()).ToArray(), Is.EqualTo(new[] { typeof(InvalidOperationException), typeof(InvalidOperationException) }));
+            Assert.That(innerAggregates[1].InnerExceptions.Select(x => x.GetType()).ToArray(), Is.EqualTo(new[] { typeof(InvalidOperationException), typeof(InvalidOperationException) }));
+        }
+
+        [Test]
+        public void Runner_should_throw_original_exception_if_there_is_no_need_to_aggregate_multiple_ones()
+        {
+            var ex = Assert.Throws<AggregateException>(() => _runner.Test().TestGroupScenario(Multiassert_failing_composite));
+
+            Assert.That(ex.InnerExceptions.Select(x => x.GetType()).ToArray(), Is.EqualTo(new[] { typeof(InvalidOperationException), typeof(InvalidOperationException) }));
+        }
+
+        [Test]
+        [MultiAssert]
+        public void Runner_should_aggregate_only_failure_exceptions()
+        {
+            var ex = Assert.Throws<AggregateException>(() => _runner.Test().TestGroupScenario(Multiassert_failing_composite, Multiassert_ignoring_steps, Multiassert_failing_composite));
+            Assert.That(
+                ex.Flatten().InnerExceptions.Select(x => x.GetType()).ToArray(),
+                Is.EqualTo(new[]
+                {
+                    typeof(InvalidOperationException), typeof(InvalidOperationException),
+                    typeof(InvalidOperationException), typeof(InvalidOperationException)
+                }));
         }
 
         [Test]
