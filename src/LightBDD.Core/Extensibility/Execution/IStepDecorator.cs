@@ -7,7 +7,7 @@ namespace LightBDD.Core.Extensibility.Execution
     /// <summary>
     /// Interface describing step execution extension that can be used by LightBDD to decorate step execution.
     /// </summary>
-    public interface IStepExtension
+    public interface IStepDecorator
     {
         /// <summary>
         /// Method allowing to decorate step invocation specified by <paramref name="stepInvocation"/>.

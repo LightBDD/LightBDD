@@ -12,17 +12,17 @@ namespace LightBDD.Core.Execution.Implementation
 {
     internal class ScenarioExecutor
     {
-        private readonly ExtendableExecutor _extendableExecutor;
+        private readonly DecoratingExecutor _decoratingExecutor;
         [DebuggerStepThrough]
-        public ScenarioExecutor(ExtendableExecutor extendableExecutor)
+        public ScenarioExecutor(DecoratingExecutor decoratingExecutor)
         {
-            _extendableExecutor = extendableExecutor;
+            _decoratingExecutor = decoratingExecutor;
         }
 
         [DebuggerStepThrough]
-        public Task ExecuteAsync(ScenarioInfo scenario, Func<ExtendableExecutor, object, RunnableStep[]> stepsProvider, Func<object> contextProvider, IScenarioProgressNotifier progressNotifier, IEnumerable<IScenarioExtension> scenarioExecutionExtensions, ExceptionProcessor exceptionProcessor)
+        public Task ExecuteAsync(ScenarioInfo scenario, Func<DecoratingExecutor, object, RunnableStep[]> stepsProvider, Func<object> contextProvider, IScenarioProgressNotifier progressNotifier, IEnumerable<IScenarioDecorator> scenarioDecorators, ExceptionProcessor exceptionProcessor)
         {
-            var runnableScenario = new RunnableScenario(scenario, stepsProvider, contextProvider, progressNotifier, _extendableExecutor, scenarioExecutionExtensions, exceptionProcessor);
+            var runnableScenario = new RunnableScenario(scenario, stepsProvider, contextProvider, progressNotifier, _decoratingExecutor, scenarioDecorators, exceptionProcessor);
             try
             {
                 return runnableScenario.RunAsync();

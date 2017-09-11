@@ -16,7 +16,7 @@ namespace LightBDD.Framework.ExecutionContext.Configuration
         /// <returns>Configuration object.</returns>
         public static ExecutionExtensionsConfiguration EnableScenarioExecutionContext(this ExecutionExtensionsConfiguration configuration)
         {
-            return configuration.EnableScenarioExtension<ScenarioExecutionContextExtension>();
+            return configuration.EnableScenarioDecorator<ScenarioExecutionContextDecorator>();
         }
     }
 }

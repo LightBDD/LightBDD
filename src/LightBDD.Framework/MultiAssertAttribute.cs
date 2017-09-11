@@ -12,7 +12,7 @@ namespace LightBDD.Framework
     /// All exceptions that have occurred during sub-steps execution would be included in the LightBDD report.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
-    public class MultiAssertAttribute : Attribute, IStepExtensionAttribute, IScenarioExtensionAttribute
+    public class MultiAssertAttribute : Attribute, IStepDecoratorAttribute, IScenarioDecoratorAttribute
     {
         /// <summary>
         /// Method allowing to decorate step invocation specified by <paramref name="stepInvocation"/>.

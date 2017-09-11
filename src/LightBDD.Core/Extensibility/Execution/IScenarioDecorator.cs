@@ -7,7 +7,7 @@ namespace LightBDD.Core.Extensibility.Execution
     /// <summary>
     /// Interface describing scenario execution extension that can be used by LightBDD to decorate scenario execution.
     /// </summary>
-    public interface IScenarioExtension
+    public interface IScenarioDecorator
     {
         /// <summary>
         /// Method allowing to decorate scenario invocation specified by <paramref name="scenarioInvocation"/>.

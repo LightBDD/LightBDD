@@ -4,40 +4,39 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
-using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Extensibility.Execution.Implementation
 {
     [DebuggerStepThrough]
-    internal class ExtendableExecutor
+    internal class DecoratingExecutor
     {
         private readonly Func<IScenario, Func<Task>, Task>[] _scenarioExecutors;
         private readonly Func<IStep, Func<Task>, Task>[] _stepExecutors;
 
-        public ExtendableExecutor(IExecutionExtensions extensions)
+        public DecoratingExecutor(IExecutionExtensions extensions)
         {
-            _scenarioExecutors = ToInvocations(extensions.ScenarioExecutionExtensions).ToArray();
-            _stepExecutors = ToInvocations(extensions.StepExecutionExtensions).ToArray();
+            _scenarioExecutors = ToInvocations(extensions.ScenarioDecorators).ToArray();
+            _stepExecutors = ToInvocations(extensions.StepDecorators).ToArray();
         }
 
-        private static IEnumerable<Func<IStep, Func<Task>, Task>> ToInvocations(IEnumerable<IStepExtension> extensions)
+        private static IEnumerable<Func<IStep, Func<Task>, Task>> ToInvocations(IEnumerable<IStepDecorator> extensions)
         {
             return extensions.Select(e => (Func<IStep, Func<Task>, Task>)e.ExecuteAsync);
         }
 
-        private static IEnumerable<Func<IScenario, Func<Task>, Task>> ToInvocations(IEnumerable<IScenarioExtension> extensions)
+        private static IEnumerable<Func<IScenario, Func<Task>, Task>> ToInvocations(IEnumerable<IScenarioDecorator> extensions)
         {
             return extensions.Select(e => (Func<IScenario, Func<Task>, Task>)e.ExecuteAsync);
         }
 
-        public Task ExecuteScenarioAsync(IScenario scenario, Func<Task> scenarioInvocation, IEnumerable<IScenarioExtension> scenarioExecutionExtensions)
+        public Task ExecuteScenarioAsync(IScenario scenario, Func<Task> scenarioInvocation, IEnumerable<IScenarioDecorator> scenarioDecorators)
         {
-            return new RecursiveExecutor<IScenario>(_scenarioExecutors.Concat(ToInvocations(scenarioExecutionExtensions)), scenario, scenarioInvocation).ExecuteAsync();
+            return new RecursiveExecutor<IScenario>(_scenarioExecutors.Concat(ToInvocations(scenarioDecorators)), scenario, scenarioInvocation).ExecuteAsync();
         }
 
-        public Task ExecuteStepAsync(IStep step, Func<Task> stepInvocation, IEnumerable<IStepExtension> stepExecutionExtensions)
+        public Task ExecuteStepAsync(IStep step, Func<Task> stepInvocation, IEnumerable<IStepDecorator> stepDecorators)
         {
-            return new RecursiveExecutor<IStep>(_stepExecutors.Concat(ToInvocations(stepExecutionExtensions)), step, stepInvocation).ExecuteAsync();
+            return new RecursiveExecutor<IStep>(_stepExecutors.Concat(ToInvocations(stepDecorators)), step, stepInvocation).ExecuteAsync();
         }
 
         [DebuggerStepThrough]

@@ -21,9 +21,9 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly MethodArgument[] _arguments;
         private readonly ExceptionProcessor _exceptionProcessor;
         private readonly IScenarioProgressNotifier _progressNotifier;
-        private readonly ExtendableExecutor _extendableExecutor;
+        private readonly DecoratingExecutor _decoratingExecutor;
         private readonly object _scenarioContext;
-        private readonly IEnumerable<IStepExtension> _stepExecutionExtensions;
+        private readonly IEnumerable<IStepDecorator> _stepDecorators;
         private readonly StepResult _result;
         private Func<Exception, bool> _shouldAbortSubStepExecutionFn = ex => true;
         private Exception _stepInvocationException;
@@ -31,16 +31,16 @@ namespace LightBDD.Core.Execution.Implementation
         public IStepInfo Info => Result.Info;
 
         [DebuggerStepThrough]
-        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task<RunnableStepResult>> stepInvocation, MethodArgument[] arguments, ExceptionProcessor exceptionProcessor, IScenarioProgressNotifier progressNotifier, ExtendableExecutor extendableExecutor, object scenarioContext, IEnumerable<IStepExtension> stepExecutionExtensions)
+        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task<RunnableStepResult>> stepInvocation, MethodArgument[] arguments, ExceptionProcessor exceptionProcessor, IScenarioProgressNotifier progressNotifier, DecoratingExecutor decoratingExecutor, object scenarioContext, IEnumerable<IStepDecorator> stepDecorators)
         {
             _result = new StepResult(stepInfo);
             _stepInvocation = stepInvocation;
             _arguments = arguments;
             _exceptionProcessor = exceptionProcessor;
             _progressNotifier = progressNotifier;
-            _extendableExecutor = extendableExecutor;
+            _decoratingExecutor = decoratingExecutor;
             _scenarioContext = scenarioContext;
-            _stepExecutionExtensions = stepExecutionExtensions;
+            _stepDecorators = stepDecorators;
             UpdateNameDetails();
         }
 
@@ -137,7 +137,7 @@ namespace LightBDD.Core.Execution.Implementation
             var watch = ExecutionTimeWatch.StartNew();
             try
             {
-                await _extendableExecutor.ExecuteStepAsync(this, InvokeStepAsync, _stepExecutionExtensions);
+                await _decoratingExecutor.ExecuteStepAsync(this, InvokeStepAsync, _stepDecorators);
             }
             finally
             {

@@ -6,8 +6,10 @@ Version vNext
 Summary:
 + #28 Updated parameter formatters to distinguish null values and format them as "<null>"
 + #28 Updated FormatCollectionAttribute to accept null collection
-+ (all integrations) #42 Added IgnoreScenarioAttribute allowing to declaratively ignore the scenario when applied on scenario or step method
-+ (Core) #42 Added IScenarioExecutionExtensionAttribute, IStepExecutionExtensionAttribute interfaces allowing to describe execution extension attributes applicable on scenario or step methods
++ (all integrations)(New) #42 Added IgnoreScenarioAttribute allowing to declaratively ignore the scenario when applied on scenario or step method
++ (Framework)(New) #18 Added MultiAssertAttribute that if applied on scenario or composite step, will make all sub-steps executed irrespectively of their status and report any exceptions at the end of execution
++ (Core) #42 Added IScenarioDecoratorAttribute, IStepDecoratorAttribute interfaces allowing to describe execution decorator attributes applicable on scenario or step methods
++ (Core)(Change) #18 Added IScenarioDecorator/IStepDecorator interfaces in favor of IScenarioExecutionExtension/IStepExecutionExtension ones which are obsoleted now (updated ExecutionExtensionsConfiguration and IExecutionExtensions to use new interfaces)
 
 Version 2.2.0
 ----------------------------------------

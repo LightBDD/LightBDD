@@ -17,11 +17,11 @@ namespace LightBDD.Core.Execution.Implementation
     internal class RunnableScenario : IScenario
     {
         private readonly ScenarioInfo _info;
-        private readonly Func<ExtendableExecutor, object, RunnableStep[]> _stepsProvider;
+        private readonly Func<DecoratingExecutor, object, RunnableStep[]> _stepsProvider;
         private readonly Func<object> _contextProvider;
         private readonly IScenarioProgressNotifier _progressNotifier;
-        private readonly ExtendableExecutor _extendableExecutor;
-        private readonly IEnumerable<IScenarioExtension> _scenarioExtensions;
+        private readonly DecoratingExecutor _decoratingExecutor;
+        private readonly IEnumerable<IScenarioDecorator> _scenarioDecorators;
         private readonly ExceptionProcessor _exceptionProcessor;
         private readonly ScenarioResult _result;
         private Exception _scenarioInitializationException;
@@ -30,14 +30,14 @@ namespace LightBDD.Core.Execution.Implementation
         private Func<Exception, bool> _shouldAbortSubStepExecutionFn = ex => true;
 
         [DebuggerStepThrough]
-        public RunnableScenario(ScenarioInfo scenario, Func<ExtendableExecutor, object, RunnableStep[]> stepsProvider, Func<object> contextProvider, IScenarioProgressNotifier progressNotifier, ExtendableExecutor extendableExecutor, IEnumerable<IScenarioExtension> scenarioExtensions, ExceptionProcessor exceptionProcessor)
+        public RunnableScenario(ScenarioInfo scenario, Func<DecoratingExecutor, object, RunnableStep[]> stepsProvider, Func<object> contextProvider, IScenarioProgressNotifier progressNotifier, DecoratingExecutor decoratingExecutor, IEnumerable<IScenarioDecorator> scenarioDecorators, ExceptionProcessor exceptionProcessor)
         {
             _info = scenario;
             _stepsProvider = stepsProvider;
             _contextProvider = contextProvider;
             _progressNotifier = progressNotifier;
-            _extendableExecutor = extendableExecutor;
-            _scenarioExtensions = scenarioExtensions;
+            _decoratingExecutor = decoratingExecutor;
+            _scenarioDecorators = scenarioDecorators;
             _exceptionProcessor = exceptionProcessor;
             _result = new ScenarioResult(_info);
         }
@@ -86,7 +86,7 @@ namespace LightBDD.Core.Execution.Implementation
             try
             {
                 InitializeScenario();
-                await _extendableExecutor.ExecuteScenarioAsync(this, RunScenarioAsync, _scenarioExtensions);
+                await _decoratingExecutor.ExecuteScenarioAsync(this, RunScenarioAsync, _scenarioDecorators);
             }
             catch (StepBypassException ex)
             {
@@ -148,7 +148,7 @@ namespace LightBDD.Core.Execution.Implementation
         {
             try
             {
-                return _stepsProvider.Invoke(_extendableExecutor, _scenarioContext);
+                return _stepsProvider.Invoke(_decoratingExecutor, _scenarioContext);
             }
             catch (Exception e)
             {

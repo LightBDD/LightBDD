@@ -7,7 +7,7 @@ using LightBDD.Core.Extensibility.Execution;
 namespace LightBDD.Framework.ExecutionContext.Implementation
 {
     [DebuggerStepThrough]
-    internal class ScenarioExecutionContextExtension : IScenarioExtension
+    internal class ScenarioExecutionContextDecorator : IScenarioDecorator
     {
         public async Task ExecuteAsync(IScenario scenario, Func<Task> scenarioInvocation)
         {

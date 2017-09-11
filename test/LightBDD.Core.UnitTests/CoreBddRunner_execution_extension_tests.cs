@@ -6,7 +6,6 @@ using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
-using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
 using LightBDD.Framework.Extensibility;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
@@ -24,14 +23,14 @@ namespace LightBDD.Core.UnitTests
         public void SetUp() { CapturedMessages.Clear(); }
 
         [Test]
-        [MyCapturingExtension("local2", Order = 100)]
-        [MyCapturingExtension("local1", Order = 0)]
+        [MyCapturingDecorator("local2", Order = 100)]
+        [MyCapturingDecorator("local1", Order = 0)]
         public void It_should_call_global_and_local_extensions_in_order_when_scenario_is_executed()
         {
             var featureRunner = CreateRunner(cfg =>
             {
-                cfg.ExecutionExtensionsConfiguration().EnableScenarioExtension(() => new MyCapturingExtension("scenario-global"));
-                cfg.ExecutionExtensionsConfiguration().EnableStepExtension(() => new MyCapturingExtension("step-global"));
+                cfg.ExecutionExtensionsConfiguration().EnableScenarioDecorator(() => new MyCapturingDecorator("scenario-global"));
+                cfg.ExecutionExtensionsConfiguration().EnableStepDecorator(() => new MyCapturingDecorator("step-global"));
             });
             var runner = featureRunner.GetBddRunner(this);
 
@@ -59,7 +58,7 @@ namespace LightBDD.Core.UnitTests
         }
 
         [Test]
-        [MyThrowingExtension(ExecutionStatus.Failed)]
+        [MyThrowingDecorator(ExecutionStatus.Failed)]
         public void It_should_FAIL_scenario_based_on_scenario_extension_attribute()
         {
             var featureRunner = CreateRunner(cfg => { });
@@ -80,7 +79,7 @@ namespace LightBDD.Core.UnitTests
         }
 
         [Test]
-        [MyThrowingExtension(ExecutionStatus.Ignored)]
+        [MyThrowingDecorator(ExecutionStatus.Ignored)]
         public void It_should_IGNORE_scenario_based_on_scenario_extension_attribute()
         {
             var featureRunner = CreateRunner(cfg => { });
@@ -101,7 +100,7 @@ namespace LightBDD.Core.UnitTests
         }
 
         [Test]
-        [MyThrowingExtension(ExecutionStatus.Bypassed)]
+        [MyThrowingDecorator(ExecutionStatus.Bypassed)]
         public void It_should_BYPASSED_scenario_based_on_scenario_extension_attribute()
         {
             var featureRunner = CreateRunner(cfg => { });
@@ -178,23 +177,23 @@ namespace LightBDD.Core.UnitTests
             Assert.That(scenario.GetSteps().Single().Status, Is.EqualTo(ExecutionStatus.Bypassed));
         }
 
-        [MyThrowingExtension(ExecutionStatus.Failed)]
+        [MyThrowingDecorator(ExecutionStatus.Failed)]
         private void My_failed_step() { }
 
-        [MyThrowingExtension(ExecutionStatus.Ignored)]
+        [MyThrowingDecorator(ExecutionStatus.Ignored)]
         private void My_ignored_step() { }
 
-        [MyThrowingExtension(ExecutionStatus.Bypassed)]
+        [MyThrowingDecorator(ExecutionStatus.Bypassed)]
         private void My_bypassed_step() { }
 
-        [MyCapturingExtension("s1-ext1", Order = 0)]
-        [MyCapturingExtension("s1-ext2", Order = 1)]
+        [MyCapturingDecorator("s1-ext1", Order = 0)]
+        [MyCapturingDecorator("s1-ext2", Order = 1)]
         private void Some_step1()
         {
         }
 
-        [MyCapturingExtension("s2-ext1", Order = 0)]
-        [MyCapturingExtension("s2-ext2", Order = 1)]
+        [MyCapturingDecorator("s2-ext1", Order = 0)]
+        [MyCapturingDecorator("s2-ext2", Order = 1)]
         private void Some_step2()
         {
         }
@@ -205,11 +204,11 @@ namespace LightBDD.Core.UnitTests
         }
 
         [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-        class MyCapturingExtension : Attribute, IScenarioExtensionAttribute, IStepExtensionAttribute
+        class MyCapturingDecorator : Attribute, IScenarioDecoratorAttribute, IStepDecoratorAttribute
         {
             private readonly string _prefix;
 
-            public MyCapturingExtension(string prefix)
+            public MyCapturingDecorator(string prefix)
             {
                 _prefix = prefix;
             }
@@ -230,11 +229,11 @@ namespace LightBDD.Core.UnitTests
         }
 
         [AttributeUsage(AttributeTargets.Method)]
-        class MyThrowingExtension : Attribute, IScenarioExtensionAttribute, IStepExtensionAttribute
+        class MyThrowingDecorator : Attribute, IScenarioDecoratorAttribute, IStepDecoratorAttribute
         {
             private readonly ExecutionStatus _expected;
 
-            public MyThrowingExtension(ExecutionStatus expected)
+            public MyThrowingDecorator(ExecutionStatus expected)
             {
                 _expected = expected;
             }

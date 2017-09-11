@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility.Execution;
-using LightBDD.Core.Metadata;
 using NUnit.Framework;
 
 namespace LightBDD.NUnit3
@@ -13,7 +12,7 @@ namespace LightBDD.NUnit3
     /// It is recommended to use this attribute in favor of <see cref="IgnoreAttribute"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
-    public class IgnoreScenarioAttribute : Attribute, IScenarioExtensionAttribute, IStepExtensionAttribute
+    public class IgnoreScenarioAttribute : Attribute, IScenarioDecoratorAttribute, IStepDecoratorAttribute
     {
         /// <summary>
         /// Default constructor allowing to specify ignore reason.
