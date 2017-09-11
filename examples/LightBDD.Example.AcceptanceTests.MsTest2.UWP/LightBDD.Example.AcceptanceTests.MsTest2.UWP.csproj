@@ -99,6 +99,11 @@
     <Compile Include="Features\Basket_feature.Steps.cs">
       <DependentUpon>Basket_feature.cs</DependentUpon>
     </Compile>
+    <Compile Include="Features\Calculator_feature.cs" />
+    <Compile Include="Features\Calculator_feature.Steps.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Calculator_feature.cs</DependentUpon>
+    </Compile>
     <Compile Include="Features\Contacts_management.cs" />
     <Compile Include="Features\Contacts_management.Steps.cs">
       <DependentUpon>Contacts_management.cs</DependentUpon>
