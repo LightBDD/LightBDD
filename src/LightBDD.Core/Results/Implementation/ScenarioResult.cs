@@ -29,10 +29,14 @@ namespace LightBDD.Core.Results.Implementation
         public ExecutionStatus Status { get; private set; }
         public string StatusDetails { get; private set; }
         public ExecutionTime ExecutionTime { get; private set; }
-        //TODO: fix setter and method
-        public Exception ExecutionException { get; set; }
+        public Exception ExecutionException { get; private set; }
 
         public IEnumerable<IStepResult> GetSteps() => _steps;
+
+        public void UpdateException(Exception exception)
+        {
+            ExecutionException = exception;
+        }
 
         private void CaptureStatus()
         {

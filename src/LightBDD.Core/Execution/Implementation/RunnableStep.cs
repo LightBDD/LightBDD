@@ -26,7 +26,6 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly IEnumerable<IStepDecorator> _stepDecorators;
         private readonly StepResult _result;
         private Func<Exception, bool> _shouldAbortSubStepExecutionFn = ex => true;
-        private Exception _stepInvocationException;
         public IStepResult Result => _result;
         public IStepInfo Info => Result.Info;
 
@@ -69,6 +68,7 @@ namespace LightBDD.Core.Execution.Implementation
         [DebuggerStepThrough]
         public async Task RunAsync()
         {
+            var exceptionCollector = new ExceptionCollector();
             var stepStartNotified = false;
             try
             {
@@ -90,7 +90,7 @@ namespace LightBDD.Core.Execution.Implementation
             catch (Exception exception)
             {
                 _exceptionProcessor.UpdateResultsWithException(_result.SetStatus, exception);
-                _stepInvocationException = exception;
+                exceptionCollector.Capture(exception);
             }
             finally
             {
@@ -98,37 +98,19 @@ namespace LightBDD.Core.Execution.Implementation
                 if (stepStartNotified)
                     _progressNotifier.NotifyStepFinished(_result);
             }
-            ProcessExceptions();
+            ProcessExceptions(exceptionCollector);
         }
 
-        private void ProcessExceptions()
+        [DebuggerStepThrough]
+        private void ProcessExceptions(ExceptionCollector exceptionCollector)
         {
-            var exception = CollectException();
+            var exception = exceptionCollector.CollectFor(_result.Status, _result.GetSubSteps());
             if (exception == null)
                 return;
 
-            _result.ExecutionException = exception;
+            _result.UpdateException(exception);
 
             throw new StepExecutionException(exception, _result.Status);
-        }
-
-        private Exception CollectException()
-        {
-            if (_stepInvocationException != null)
-                return _stepInvocationException;
-
-            if (_result.Status < ExecutionStatus.Ignored)
-                return null;
-
-            var exceptions = _result.GetSubSteps()
-                .Where(s => s.Status == _result.Status)
-                .Select(s => s.ExecutionException)
-                .Where(x => x != null)
-                .ToArray();
-
-            return (_result.Status == ExecutionStatus.Ignored || exceptions.Length == 1)
-                ? exceptions.First()
-                : new AggregateException(exceptions);
         }
 
         [DebuggerStepThrough]

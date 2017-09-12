@@ -23,8 +23,7 @@ namespace LightBDD.Core.Results.Implementation
         public IStepInfo Info => _info;
         public ExecutionStatus Status { get; private set; }
         public string StatusDetails { get; private set; }
-        //TODO: fix setter
-        public Exception ExecutionException { get; set; }
+        public Exception ExecutionException { get; private set; }
         public ExecutionTime ExecutionTime { get; private set; }
         public IEnumerable<string> Comments => _comments;
         public IEnumerable<IStepResult> GetSubSteps() => _subSteps;
@@ -34,6 +33,11 @@ namespace LightBDD.Core.Results.Implementation
             Status = status;
             if (!string.IsNullOrWhiteSpace(details))
                 StatusDetails = $"Step {_info.GroupPrefix}{_info.Number}: {details.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t")}";
+        }
+
+        public void UpdateException(Exception exception)
+        {
+            ExecutionException = exception;
         }
 
         public void UpdateName(INameParameterInfo[] parameters)

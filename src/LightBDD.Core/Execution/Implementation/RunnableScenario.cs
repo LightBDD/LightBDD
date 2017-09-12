@@ -24,7 +24,6 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly IEnumerable<IScenarioDecorator> _scenarioDecorators;
         private readonly ExceptionProcessor _exceptionProcessor;
         private readonly ScenarioResult _result;
-        private Exception _scenarioInitializationException;
         private RunnableStep[] _preparedSteps = new RunnableStep[0];
         private object _scenarioContext;
         private Func<Exception, bool> _shouldAbortSubStepExecutionFn = ex => true;
@@ -50,7 +49,7 @@ namespace LightBDD.Core.Execution.Implementation
                 await RunStepAsync(step);
         }
 
-        private  async Task RunStepAsync(RunnableStep step)
+        private async Task RunStepAsync(RunnableStep step)
         {
             try
             {
@@ -66,21 +65,14 @@ namespace LightBDD.Core.Execution.Implementation
         [DebuggerStepThrough]
         private void InitializeScenario()
         {
-            try
-            {
-                _scenarioContext = CreateExecutionContext();
-                _preparedSteps = PrepareSteps();
-            }
-            catch (Exception e)
-            {
-                _scenarioInitializationException = e;
-                throw;
-            }
+            _scenarioContext = CreateExecutionContext();
+            _preparedSteps = PrepareSteps();
         }
 
         [DebuggerStepThrough]
         public async Task RunAsync()
         {
+            var exceptionCollector = new ExceptionCollector();
             _progressNotifier.NotifyScenarioStart(_info);
             var watch = ExecutionTimeWatch.StartNew();
             try
@@ -99,7 +91,7 @@ namespace LightBDD.Core.Execution.Implementation
             catch (Exception ex)
             {
                 _exceptionProcessor.UpdateResultsWithException(_result.UpdateScenarioResult, ex);
-                _scenarioInitializationException = ex;
+                exceptionCollector.Capture(ex);
             }
             finally
             {
@@ -111,36 +103,20 @@ namespace LightBDD.Core.Execution.Implementation
 
                 _progressNotifier.NotifyScenarioFinished(Result);
             }
-            ProcessExceptions();
+
+            ProcessExceptions(exceptionCollector);
         }
 
-        private void ProcessExceptions()
+        [DebuggerStepThrough]
+        private void ProcessExceptions(ExceptionCollector exceptionCollector)
         {
-            var exception = CollectException();
+            var exception = exceptionCollector.CollectFor(_result.Status, _result.GetSteps());
             if (exception == null)
                 return;
 
-            _result.ExecutionException = exception;
+            _result.UpdateException(exception);
 
             ExceptionDispatchInfo.Capture(exception).Throw();
-        }
-
-        private Exception CollectException()
-        {
-            if (_scenarioInitializationException != null)
-                return _scenarioInitializationException;
-
-            if (_result.Status < ExecutionStatus.Ignored)
-                return null;
-
-            var exceptions = _result.GetSteps()
-                .Where(s => s.Status == _result.Status)
-                .Select(s => s.ExecutionException)
-                .Where(x => x != null).ToArray();
-
-            return (_result.Status == ExecutionStatus.Ignored || exceptions.Length == 1)
-                ? exceptions.First()
-                : new AggregateException(exceptions);
         }
 
         [DebuggerStepThrough]
