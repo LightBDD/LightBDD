@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility.Execution;
-using LightBDD.Core.Metadata;
 
 namespace LightBDD.Framework.ExecutionContext.Implementation
 {
     [DebuggerStepThrough]
-    internal class ScenarioExecutionContextExtension : IScenarioExecutionExtension
+    internal class ScenarioExecutionContextDecorator : IScenarioDecorator
     {
-        public async Task ExecuteAsync(IScenarioInfo scenario, Func<Task> scenarioInvocation)
+        public async Task ExecuteAsync(IScenario scenario, Func<Task> scenarioInvocation)
         {
             try
             {

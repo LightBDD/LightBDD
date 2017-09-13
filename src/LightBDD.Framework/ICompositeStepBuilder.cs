@@ -1,7 +1,4 @@
-﻿using System.Diagnostics;
-using System.Threading.Tasks;
-
-namespace LightBDD.Framework
+﻿namespace LightBDD.Framework
 {
     /// <summary>
     /// Generic allowing to compose <see cref="CompositeStep"/> instance.

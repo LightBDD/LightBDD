@@ -18,29 +18,28 @@ namespace LightBDD.Core.Results.Implementation
             Status = ExecutionStatus.NotRun;
         }
 
-        public void UpdateResult(IStepResult[] steps, ExecutionTime executionTime, Exception scenarioInitializationException)
+        public void UpdateResult(IStepResult[] steps, ExecutionTime executionTime)
         {
             _steps = steps;
             ExecutionTime = executionTime;
-            CaptureStatus(scenarioInitializationException);
+            CaptureStatus();
         }
 
         public IScenarioInfo Info { get; }
         public ExecutionStatus Status { get; private set; }
         public string StatusDetails { get; private set; }
         public ExecutionTime ExecutionTime { get; private set; }
+        public Exception ExecutionException { get; private set; }
 
         public IEnumerable<IStepResult> GetSteps() => _steps;
 
-        private void CaptureStatus(Exception scenarioInitializationException)
+        public void UpdateException(Exception exception)
         {
-            if (scenarioInitializationException != null)
-            {
-                Status = ExecutionStatus.Failed;
-                StatusDetails = scenarioInitializationException.Message;
-                return;
-            }
+            ExecutionException = exception;
+        }
 
+        private void CaptureStatus()
+        {
             var stepsResult = GetSteps().GetMostSevereOrNull();
             if (stepsResult == null)
                 return;
@@ -61,7 +60,7 @@ namespace LightBDD.Core.Results.Implementation
             return sb.ToString();
         }
 
-        public void UpdateScenarioResult(ExecutionStatus status, string details)
+        public void UpdateScenarioResult(ExecutionStatus status, string details = null)
         {
             Status = status;
             if (!string.IsNullOrWhiteSpace(details))

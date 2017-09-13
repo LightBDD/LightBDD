@@ -23,4 +23,13 @@
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Features\Calculator_feature.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Features\Calculator_feature.Steps.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

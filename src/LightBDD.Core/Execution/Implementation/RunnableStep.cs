@@ -21,24 +21,25 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly MethodArgument[] _arguments;
         private readonly ExceptionProcessor _exceptionProcessor;
         private readonly IScenarioProgressNotifier _progressNotifier;
-        private readonly ExtendableExecutor _extendableExecutor;
+        private readonly DecoratingExecutor _decoratingExecutor;
         private readonly object _scenarioContext;
-        private readonly IEnumerable<IStepExecutionExtension> _stepExecutionExtensions;
+        private readonly IEnumerable<IStepDecorator> _stepDecorators;
         private readonly StepResult _result;
+        private Func<Exception, bool> _shouldAbortSubStepExecutionFn = ex => true;
         public IStepResult Result => _result;
         public IStepInfo Info => Result.Info;
 
         [DebuggerStepThrough]
-        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task<RunnableStepResult>> stepInvocation, MethodArgument[] arguments, ExceptionProcessor exceptionProcessor, IScenarioProgressNotifier progressNotifier, ExtendableExecutor extendableExecutor, object scenarioContext, IEnumerable<IStepExecutionExtension> stepExecutionExtensions)
+        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task<RunnableStepResult>> stepInvocation, MethodArgument[] arguments, ExceptionProcessor exceptionProcessor, IScenarioProgressNotifier progressNotifier, DecoratingExecutor decoratingExecutor, object scenarioContext, IEnumerable<IStepDecorator> stepDecorators)
         {
             _result = new StepResult(stepInfo);
             _stepInvocation = stepInvocation;
             _arguments = arguments;
             _exceptionProcessor = exceptionProcessor;
             _progressNotifier = progressNotifier;
-            _extendableExecutor = extendableExecutor;
+            _decoratingExecutor = decoratingExecutor;
             _scenarioContext = scenarioContext;
-            _stepExecutionExtensions = stepExecutionExtensions;
+            _stepDecorators = stepDecorators;
             UpdateNameDetails();
         }
 
@@ -67,7 +68,8 @@ namespace LightBDD.Core.Execution.Implementation
         [DebuggerStepThrough]
         public async Task RunAsync()
         {
-            bool stepStartNotified = false;
+            var exceptionCollector = new ExceptionCollector();
+            var stepStartNotified = false;
             try
             {
                 EvaluateParameters();
@@ -81,15 +83,14 @@ namespace LightBDD.Core.Execution.Implementation
             {
                 _result.SetStatus(ExecutionStatus.Bypassed, exception.Message);
             }
-            catch (StepAbortedException e)
+            catch (StepExecutionException e)
             {
                 _result.SetStatus(e.StepStatus);
-                throw;
             }
             catch (Exception exception)
             {
-                var executionStatus = _exceptionProcessor.UpdateResultsWithException(_result.SetStatus, exception);
-                throw new StepAbortedException(exception, executionStatus);
+                _exceptionProcessor.UpdateResultsWithException(_result.SetStatus, exception);
+                exceptionCollector.Capture(exception);
             }
             finally
             {
@@ -97,6 +98,19 @@ namespace LightBDD.Core.Execution.Implementation
                 if (stepStartNotified)
                     _progressNotifier.NotifyStepFinished(_result);
             }
+            ProcessExceptions(exceptionCollector);
+        }
+
+        [DebuggerStepThrough]
+        private void ProcessExceptions(ExceptionCollector exceptionCollector)
+        {
+            var exception = exceptionCollector.CollectFor(_result.Status, _result.GetSubSteps());
+            if (exception == null)
+                return;
+
+            _result.UpdateException(exception);
+
+            throw new StepExecutionException(exception, _result.Status);
         }
 
         [DebuggerStepThrough]
@@ -105,7 +119,7 @@ namespace LightBDD.Core.Execution.Implementation
             var watch = ExecutionTimeWatch.StartNew();
             try
             {
-                await _extendableExecutor.ExecuteStepAsync(this, InvokeStepAsync, _stepExecutionExtensions);
+                await _decoratingExecutor.ExecuteStepAsync(this, InvokeStepAsync, _stepDecorators);
             }
             finally
             {
@@ -125,11 +139,25 @@ namespace LightBDD.Core.Execution.Implementation
             try
             {
                 foreach (var subStep in subSteps)
-                    await subStep.RunAsync();
+                    await InvokeSubStepAsync(subStep);
             }
             finally
             {
                 _result.SetSubSteps(subSteps.Select(s => s.Result).ToArray());
+            }
+        }
+
+        [DebuggerStepThrough]
+        private async Task InvokeSubStepAsync(RunnableStep subStep)
+        {
+            try
+            {
+                await subStep.RunAsync();
+            }
+            catch (Exception ex)
+            {
+                if (_shouldAbortSubStepExecutionFn(ex))
+                    throw;
             }
         }
 
@@ -169,6 +197,12 @@ namespace LightBDD.Core.Execution.Implementation
         {
             _result.AddComment(comment);
             _progressNotifier.NotifyStepComment(_result.Info, comment);
+        }
+
+        [DebuggerStepThrough]
+        public void ConfigureExecutionAbortOnSubStepException(Func<Exception, bool> shouldAbortExecutionFn)
+        {
+            _shouldAbortSubStepExecutionFn = shouldAbortExecutionFn ?? throw new ArgumentNullException(nameof(shouldAbortExecutionFn));
         }
 
         [DebuggerStepThrough]

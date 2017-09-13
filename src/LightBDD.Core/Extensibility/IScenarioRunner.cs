@@ -52,11 +52,11 @@ namespace LightBDD.Core.Extensibility
         /// <exception cref="ArgumentNullException">Throws when <paramref name="contextProvider"/> is <c>null</c>.</exception>
         IScenarioRunner WithContext(Func<object> contextProvider);
         /// <summary>
-        /// Configures scenario to be executed with additional execution extensions provided by <paramref name="scenarioExecutionExtensions"/>.
+        /// Configures scenario to be executed with additional decorators provided by <paramref name="scenarioDecorators"/>.
         /// </summary>
-        /// <param name="scenarioExecutionExtensions">Execution extensions to use.</param>
+        /// <param name="scenarioDecorators">Decorators to use.</param>
         /// <returns>Self.</returns>
-        IScenarioRunner WithScenarioExecutionExtensions(IEnumerable<IScenarioExecutionExtension> scenarioExecutionExtensions);
+        IScenarioRunner WithScenarioDecorators(IEnumerable<IScenarioDecorator> scenarioDecorators);
         /// <summary>
         /// Runs scenario asynchronously and returns task representing it.
         /// Before scenario is run, a validation is done if scenario is properly configured (i.e. name is defined and there is defined at least one step to execute).

@@ -82,20 +82,20 @@ namespace LightBDD.Core.Extensibility
         /// <returns>Formatter function.</returns>
         Func<object, string> GetParameterFormatter(ParameterInfo parameterInfo);
         /// <summary>
-        /// Returns a collection of <see cref="IStepExecutionExtension"/> extensions that are applied on step described by <paramref name="stepDescriptor"/> parameter.
-        /// The <see cref="IStepExecutionExtension"/> are inferred from method attributes that implements <see cref="IStepExecutionExtensionAttribute"/> type.
-        /// The returned collection would be sorted ascending based on <see cref="IStepExecutionExtensionAttribute.Order"/> property.
+        /// Returns a collection of <see cref="IStepDecorator"/> decorators that are applied on step described by <paramref name="stepDescriptor"/> parameter.
+        /// The <see cref="IStepDecorator"/> are inferred from method attributes that implements <see cref="IStepDecoratorAttribute"/> type.
+        /// The returned collection would be sorted ascending based on <see cref="IStepDecoratorAttribute.Order"/> property.
         /// </summary>
         /// <param name="stepDescriptor">Step descriptor.</param>
-        /// <returns>Collection of extensions or empty collection if none are present.</returns>
-        IEnumerable<IStepExecutionExtension> GetStepExecutionExtensions(StepDescriptor stepDescriptor);
+        /// <returns>Collection of decorators or empty collection if none are present.</returns>
+        IEnumerable<IStepDecorator> GetStepDecorators(StepDescriptor stepDescriptor);
         /// <summary>
-        /// Returns a collection of <see cref="IScenarioExecutionExtension"/> extensions that are applied on scenario described by <paramref name="scenarioDescriptor"/> parameter.
-        /// The <see cref="IScenarioExecutionExtension"/> are inferred from method attributes that implements <see cref="IScenarioExecutionExtensionAttribute"/> type.
-        /// The returned collection would be sorted ascending based on <see cref="IScenarioExecutionExtensionAttribute.Order"/> property.
+        /// Returns a collection of <see cref="IScenarioDecorator"/> decorators that are applied on scenario described by <paramref name="scenarioDescriptor"/> parameter.
+        /// The <see cref="IScenarioDecorator"/> are inferred from method attributes that implements <see cref="IScenarioDecoratorAttribute"/> type.
+        /// The returned collection would be sorted ascending based on <see cref="IScenarioDecoratorAttribute.Order"/> property.
         /// </summary>
         /// <param name="scenarioDescriptor">Scenario descriptor.</param>
-        /// <returns>Collection of extensions or empty collection if none are present.</returns>
-        IEnumerable<IScenarioExecutionExtension> GetScenarioExecutionExtensions(ScenarioDescriptor scenarioDescriptor);
+        /// <returns>Collection of decorators or empty collection if none are present.</returns>
+        IEnumerable<IScenarioDecorator> GetScenarioDecorators(ScenarioDescriptor scenarioDescriptor);
     }
 }

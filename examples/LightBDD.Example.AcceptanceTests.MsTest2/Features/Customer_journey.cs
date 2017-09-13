@@ -11,7 +11,7 @@ namespace LightBDD.Example.AcceptanceTests.MsTest2.Features
 @"In order to receive a product
 As an application user
 I want to go through entire customer journey")]
-    [Label("Story-6")]
+    [Label("Story-7")]
     public partial class Customer_journey : FeatureFixture
     {
         [Scenario]

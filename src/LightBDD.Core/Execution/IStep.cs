@@ -5,7 +5,7 @@ namespace LightBDD.Core.Execution
     /// <summary>
     /// Interface describing current step, providing step information details and ability to comment it.
     /// </summary>
-    public interface IStep
+    public interface IStep : IExecutable
     {
         /// <summary>
         /// Step information details.
