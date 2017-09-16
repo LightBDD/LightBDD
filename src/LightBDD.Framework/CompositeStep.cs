@@ -4,6 +4,7 @@ using System.Diagnostics;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Results;
 using LightBDD.Framework.Implementation;
+using LightBDD.Framework.Scenarios;
 
 namespace LightBDD.Framework
 {

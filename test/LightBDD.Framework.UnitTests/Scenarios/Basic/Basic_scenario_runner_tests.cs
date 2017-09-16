@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers;
+using LightBDD.Framework.UnitTests.Scenarios.Helpers;
 using NUnit.Framework;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Basic
@@ -76,6 +77,36 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic
 
             MockRunner.Verify();
             MockScenarioRunner.Verify();
+        }
+
+        [Test]
+        public void It_should_allow_to_run_sync_scenarios_in_fluent_way()
+        {
+            var builder = new TestableScenarioBuilder<NoContext>();
+            builder.AddSteps(Step_one, Step_two);
+
+            var steps = builder.Steps;
+
+            Assert.That(steps, Is.Not.Null);
+            Assert.That(steps.Count, Is.EqualTo(2));
+
+            AssertStep(steps[0], nameof(Step_one));
+            AssertStep(steps[1], nameof(Step_two));
+        }
+
+        [Test]
+        public void It_should_allow_to_run_async_scenarios_in_fluent_way()
+        {
+            var builder = new TestableScenarioBuilder<NoContext>();
+            builder.AddAsyncSteps(Step_one_async, Step_two_async);
+
+            var steps = builder.Steps;
+
+            Assert.That(steps, Is.Not.Null);
+            Assert.That(steps.Count, Is.EqualTo(2));
+
+            AssertStep(steps[0], nameof(Step_one_async));
+            AssertStep(steps[1], nameof(Step_two_async));
         }
     }
 }

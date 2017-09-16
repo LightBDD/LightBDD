@@ -1,7 +1,9 @@
 ﻿using System;
+using LightBDD.Framework.Scenarios;
 using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.Framework.Scenarios.Contextual;
 using LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers;
+using LightBDD.Framework.UnitTests.Scenarios.Helpers;
 using NUnit.Framework;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
