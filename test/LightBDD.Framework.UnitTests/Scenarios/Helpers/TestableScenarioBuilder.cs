@@ -11,7 +11,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
     public class TestableScenarioBuilder<T> : IScenarioBuilder<T>, IIntegrableStepGroupBuilder
     {
         public readonly List<StepDescriptor> Steps = new List<StepDescriptor>();
-        public async Task RunAsync()
+        public Task RunAsync()
         {
             throw new NotImplementedException();
         }
