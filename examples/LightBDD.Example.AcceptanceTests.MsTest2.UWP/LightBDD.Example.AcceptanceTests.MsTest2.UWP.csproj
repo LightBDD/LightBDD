@@ -118,6 +118,11 @@
     <Compile Include="Features\Invoice_feature.Steps.cs">
       <DependentUpon>Invoice_feature.cs</DependentUpon>
     </Compile>
+    <Compile Include="Features\Invoice_history_feature.cs" />
+    <Compile Include="Features\Invoice_history_feature.Steps.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Invoice_history_feature.cs</DependentUpon>
+    </Compile>
     <Compile Include="Features\Login_feature.cs" />
     <Compile Include="Features\Login_feature.Steps.cs">
       <DependentUpon>Login_feature.cs</DependentUpon>
