@@ -16,14 +16,14 @@ namespace LightBDD.Framework.Extensibility
         /// </summary>
         /// <typeparam name="TContext">Step context type.</typeparam>
         /// <param name="builder">Builder.</param>
-        /// <returns>Instance of <see cref="IIntegrableStepGroupBuilder"/>.</returns>
-        /// <exception cref="NotSupportedException">Thrown if <paramref name="builder"/> does not implement <see cref="IIntegrableStepGroupBuilder"/>.</exception>
+        /// <returns>Instance of <see cref="IIntegrableCompositeStepBuilder"/>.</returns>
+        /// <exception cref="NotSupportedException">Thrown if <paramref name="builder"/> does not implement <see cref="IIntegrableCompositeStepBuilder"/>.</exception>
         public static IIntegrableCompositeStepBuilder Integrate<TContext>(this ICompositeStepBuilder<TContext> builder)
         {
             if (builder == null)
                 throw new ArgumentNullException(nameof(builder));
 
-            if (!(builder is IIntegrableStepGroupBuilder))
+            if (!(builder is IIntegrableCompositeStepBuilder))
                 throw new NotSupportedException($"The type '{builder.GetType().Name}' has to implement '{nameof(IIntegrableCompositeStepBuilder)}' interface to support integration.");
 
             return (IIntegrableCompositeStepBuilder)builder;
