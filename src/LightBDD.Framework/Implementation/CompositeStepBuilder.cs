@@ -10,7 +10,7 @@ using LightBDD.Framework.Scenarios;
 namespace LightBDD.Framework.Implementation
 {
     [DebuggerStepThrough]
-    internal class CompositeStepBuilder : LightBddConfigurationAware, ICompositeStepBuilder, IIntegrableStepGroupBuilder
+    internal class CompositeStepBuilder : LightBddConfigurationAware, ICompositeStepBuilder, IIntegrableCompositeStepBuilder
     {
         private static readonly IEnumerable<StepDescriptor> EmptySteps = Enumerable.Empty<StepDescriptor>();
 
@@ -30,7 +30,7 @@ namespace LightBDD.Framework.Implementation
             return this;
         }
 
-        public IIntegrableStepGroupBuilder WithStepContext(Func<object> contextProvider)
+        public IIntegrableCompositeStepBuilder WithStepContext(Func<object> contextProvider)
         {
             if (_contextProvider != null || !ReferenceEquals(_steps, EmptySteps))
                 throw new InvalidOperationException("Step context can be specified only once, when no steps are specified yet.");

@@ -8,9 +8,9 @@ using LightBDD.Framework.Extensibility;
 namespace LightBDD.Framework.Scenarios.Contextual.Implementation
 {
     [DebuggerStepThrough]
-    internal class ContextualCompositeStepBuilder<TContext> : ICompositeStepBuilder<TContext>, IIntegrableStepGroupBuilder
+    internal class ContextualCompositeStepBuilder<TContext> : ICompositeStepBuilder<TContext>, IIntegrableCompositeStepBuilder
     {
-        private readonly IIntegrableStepGroupBuilder _target;
+        private readonly IIntegrableCompositeStepBuilder _target;
 
         public ContextualCompositeStepBuilder(ICompositeStepBuilder runner, Func<object> contextProvider)
         {
@@ -28,7 +28,7 @@ namespace LightBDD.Framework.Scenarios.Contextual.Implementation
             return this;
         }
 
-        public IIntegrableStepGroupBuilder WithStepContext(Func<object> contextProvider)
+        public IIntegrableCompositeStepBuilder WithStepContext(Func<object> contextProvider)
         {
             _target.WithStepContext(contextProvider);
             return this;

@@ -22,19 +22,9 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
             return this;
         }
 
-        public IIntegrableStepGroupBuilder WithStepContext(Func<object> contextProvider)
-        {
-            throw new NotImplementedException();
-        }
-
         public TEnrichedBuilder Enrich<TEnrichedBuilder>(Func<IIntegrableStepGroupBuilder, LightBddConfiguration, TEnrichedBuilder> builderFactory)
         {
             return builderFactory(this, new LightBddConfiguration());
-        }
-
-        public CompositeStep Build()
-        {
-            throw new NotImplementedException();
         }
     }
 }

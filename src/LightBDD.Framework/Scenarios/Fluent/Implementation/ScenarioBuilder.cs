@@ -21,7 +21,7 @@ namespace LightBDD.Framework.Scenarios.Fluent.Implementation
 
         public async Task RunAsync()
         {
-            await BddRunnerExtensions.Integrate(_runner)
+            await _runner.Integrate()
                 .NewScenario()
                 .WithCapturedScenarioDetails()
                 .WithSteps(_steps)
@@ -36,21 +36,9 @@ namespace LightBDD.Framework.Scenarios.Fluent.Implementation
             return this;
         }
 
-        public IIntegrableStepGroupBuilder WithStepContext(Func<object> contextProvider)
-        {
-            // TODO: rework
-            throw new NotSupportedException();
-        }
-
         public TEnrichedBuilder Enrich<TEnrichedBuilder>(Func<IIntegrableStepGroupBuilder, LightBddConfiguration, TEnrichedBuilder> builderFactory)
         {
             return builderFactory(this, Configuration);
-        }
-
-        public CompositeStep Build()
-        {
-            // TODO: rework
-            throw new NotSupportedException();
         }
     }
 }
