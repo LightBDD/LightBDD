@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
@@ -9,20 +9,20 @@ using LightBDD.Framework.Extensibility;
 namespace LightBDD.Framework.Scenarios.Extended.Implementation
 {
     [DebuggerStepThrough]
-    internal class ExtendedCompositeStepBuilder<TContext>
+    internal class ExtendedScenarioBuilder<TContext>
     {
         private readonly IIntegrableStepGroupBuilder _builder;
         private readonly ExtendedStepCompiler<TContext> _stepCompiler;
 
-        private ExtendedCompositeStepBuilder(IIntegrableStepGroupBuilder builder, LightBddConfiguration configuration)
+        private ExtendedScenarioBuilder(IIntegrableStepGroupBuilder builder, LightBddConfiguration configuration)
         {
             _builder = builder;
             _stepCompiler = new ExtendedStepCompiler<TContext>(configuration);
         }
 
-        public static ExtendedCompositeStepBuilder<TContext> Create(IIntegrableStepGroupBuilder builder, LightBddConfiguration configuration)
+        public static ExtendedScenarioBuilder<TContext> Create(IIntegrableStepGroupBuilder builder, LightBddConfiguration configuration)
         {
-            return new ExtendedCompositeStepBuilder<TContext>(builder, configuration);
+            return new ExtendedScenarioBuilder<TContext>(builder, configuration);
         }
 
         public void AddSteps(Expression<Func<TContext, Task>>[] steps)

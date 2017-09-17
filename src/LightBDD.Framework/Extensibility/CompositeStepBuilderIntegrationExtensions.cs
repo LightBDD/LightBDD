@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using LightBDD.Framework.Scenarios;
 
 namespace LightBDD.Framework.Extensibility
 {
@@ -10,7 +11,7 @@ namespace LightBDD.Framework.Extensibility
     public static class CompositeStepBuilderIntegrationExtensions
     {
         /// <summary>
-        /// Method allowing to retrieve the <see cref="IIntegrableCompositeStepBuilder"/> instance allowing to define steps.
+        /// Method allowing to retrieve the <see cref="IIntegrableCompositeStepBuilder"/> instance allowing to add steps to composite step or scenario that is currently being defined.
         /// This method is dedicated for projects extending LightBDD with user friendly API for defining steps - it should not be used directly by regular LightBDD users.
         /// </summary>
         /// <typeparam name="TContext">Step context type.</typeparam>

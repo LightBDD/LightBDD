@@ -1,25 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Extensibility;
-using LightBDD.Framework.Scenarios;
 
-namespace LightBDD.Framework.Implementation
+namespace LightBDD.Framework.Scenarios.Fluent.Implementation
 {
-    [DebuggerStepThrough]
-    internal class CompositeStepBuilder : LightBddConfigurationAware, ICompositeStepBuilder, IIntegrableCompositeStepBuilder
+    internal class ScenarioBuilder<TContext> : LightBddConfigurationAware, IScenarioBuilder<TContext>, IIntegrableStepGroupBuilder
     {
+        private readonly IBddRunner<TContext> _runner;
         private static readonly IEnumerable<StepDescriptor> EmptySteps = Enumerable.Empty<StepDescriptor>();
-
         private IEnumerable<StepDescriptor> _steps = EmptySteps;
-        private Func<object> _contextProvider;
 
-        public CompositeStep Build()
+        public ScenarioBuilder(IBddRunner<TContext> runner)
         {
-            return new CompositeStep(_contextProvider ?? ProvideNoContext, _steps);
+            _runner = runner;
+        }
+
+        public async Task RunAsync()
+        {
+            await _runner.Integrate()
+                .NewScenario()
+                .WithCapturedScenarioDetails()
+                .WithSteps(_steps)
+                .RunAsynchronously();
         }
 
         public IIntegrableStepGroupBuilder AddSteps(IEnumerable<StepDescriptor> steps)
@@ -30,20 +36,9 @@ namespace LightBDD.Framework.Implementation
             return this;
         }
 
-        public IIntegrableCompositeStepBuilder WithStepContext(Func<object> contextProvider)
-        {
-            if (_contextProvider != null || !ReferenceEquals(_steps, EmptySteps))
-                throw new InvalidOperationException("Step context can be specified only once, when no steps are specified yet.");
-
-            _contextProvider = contextProvider;
-            return this;
-        }
-
         public TEnrichedBuilder Enrich<TEnrichedBuilder>(Func<IIntegrableStepGroupBuilder, LightBddConfiguration, TEnrichedBuilder> builderFactory)
         {
             return builderFactory(this, Configuration);
         }
-
-        private static object ProvideNoContext() => null;
     }
 }

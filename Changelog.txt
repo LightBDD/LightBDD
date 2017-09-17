@@ -10,6 +10,8 @@ Summary:
 + (Framework)(New) #18 Added MultiAssertAttribute that if applied on scenario or composite step, will make all sub-steps executed irrespectively of their status and report any exceptions at the end of execution
 + (Core) #42 Added IScenarioDecoratorAttribute, IStepDecoratorAttribute interfaces allowing to describe execution decorator attributes applicable on scenario or step methods
 + (Core)(Change) #18 Added IScenarioDecorator/IStepDecorator interfaces in favor of IScenarioExecutionExtension/IStepExecutionExtension ones which are obsoleted now (updated ExecutionExtensionsConfiguration and IExecutionExtensions to use new interfaces)
++ #17 Added fluent interface for defining and executing scenarios in basic and extended syntax.
++ (Framework)(Change) #17 Moved ICompositeStepBuilder<T> to LightBDD.Framework.Scenarios namespace
 
 Version 2.2.0
 ----------------------------------------

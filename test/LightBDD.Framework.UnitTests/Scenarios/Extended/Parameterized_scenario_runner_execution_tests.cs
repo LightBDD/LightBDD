@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers;
+using LightBDD.Framework.UnitTests.Scenarios.Helpers;
 using NUnit.Framework;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Extended
@@ -53,6 +54,28 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
             await Runner.RunScenarioActionsAsync(_ => Step_one_async_void(), _ => Step_two());
 
             VerifyExpectations();
+        }
+
+        [Test]
+        public void It_should_allow_to_execute_parameterized_steps_in_sync_mode_fluent_way()
+        {
+            var builder = new TestableScenarioBuilder<NoContext>();
+            builder.AddSteps(_ => Step_with_parameters(32, "32"));
+            var step = builder.Steps.Single();
+
+            var ex = Assert.Throws<InvalidOperationException>(() => step.StepInvocation(null, step.Parameters.Select(p => p.ValueEvaluator(null)).ToArray()));
+            Assert.That(ex.Message, Is.EqualTo(ExceptionMessageForStep_with_parameters(32)));
+        }
+
+        [Test]
+        public void It_should_allow_to_execute_parameterized_steps_in_async_mode_fluent_way()
+        {
+            var builder = new TestableScenarioBuilder<NoContext>();
+            builder.AddAsyncSteps(_ => Step_with_parameters_async(33, "33"));
+            var step = builder.Steps.Single();
+
+            var ex = Assert.ThrowsAsync<InvalidOperationException>(() => step.StepInvocation(null, step.Parameters.Select(p => p.ValueEvaluator(null)).ToArray()));
+            Assert.That(ex.Message, Is.EqualTo(ExceptionMessageForStep_with_parameters(33)));
         }
 
         private async void Step_one_async_void()

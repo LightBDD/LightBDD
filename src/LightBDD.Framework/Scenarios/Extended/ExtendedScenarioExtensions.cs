@@ -50,7 +50,7 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// <code>
         /// [Scenario]
         /// [Label("Ticket-3")]
-        /// public void Receiving_invoice_for_products()
+        /// public void Should_dispatch_product_after_payment_is_finalized()
         /// {
         ///     Runner.WithContext&lt;SpeditionContext&gt;().RunScenario(
         ///         _ => _.Given_there_is_an_active_customer_with_id("ABC-123"),
@@ -110,7 +110,7 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// <code>
         /// [Scenario]
         /// [Label("Ticket-3")]
-        /// public Task Receiving_invoice_for_products()
+        /// public Task Should_dispatch_product_after_payment_is_finalized()
         /// {
         ///     return Runner.WithContext&lt;SpeditionContext&gt;().RunScenarioAsync(
         ///         _ => _.Given_there_is_an_active_customer_with_id("ABC-123"),
@@ -180,7 +180,7 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// <code>
         /// [Scenario]
         /// [Label("Ticket-3")]
-        /// public Task Receiving_invoice_for_products()
+        /// public Task Should_dispatch_product_after_payment_is_finalized()
         /// {
         ///     return Runner.WithContext&lt;SpeditionContext&gt;().RunScenarioActionsAsync(
         ///         _ => _.Given_there_is_an_active_customer_with_id("ABC-123"),

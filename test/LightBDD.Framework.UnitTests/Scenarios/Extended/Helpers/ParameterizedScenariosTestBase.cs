@@ -13,14 +13,14 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
     {
         protected StepDescriptor[] CapturedSteps;
         protected Mock<IScenarioRunner> MockScenarioRunner;
-        protected MockBddRunner<T> Runner;
+        protected IBddRunner<T> Runner;
 
         [SetUp]
         public void SetUp()
         {
             CapturedSteps = null;
             MockScenarioRunner = new Mock<IScenarioRunner>();
-            Runner = new MockBddRunner<T>(TestableIntegrationContextBuilder.Default().Build().Configuration,MockScenarioRunner.Object);
+            Runner = new MockBddRunner<T>(TestableIntegrationContextBuilder.Default().Build().Configuration, MockScenarioRunner.Object);
         }
 
         protected void ExpectSynchronousScenarioRun()
