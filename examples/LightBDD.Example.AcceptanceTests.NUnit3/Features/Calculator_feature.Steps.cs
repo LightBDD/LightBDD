@@ -1,4 +1,5 @@
 ﻿using LightBDD.Example.Domain;
+using LightBDD.Framework.Expectations;
 using LightBDD.NUnit3;
 using NUnit.Framework;
 
@@ -13,21 +14,21 @@ namespace LightBDD.Example.AcceptanceTests.NUnit3.Features
             _calculator = new Calculator();
         }
 
-        private void Then_adding_X_to_Y_should_give_RESULT(int x, int y, int result)
+        private void Then_adding_X_to_Y_should_give_RESULT(int x, int y, ExpectedValue<int> result)
         {
-            Assert.AreEqual(result, _calculator.Add(x, y));
+            result.SetActual(_calculator.Add(x, y));
         }
 
-        private void Then_divinding_X_by_Y_should_give_RESULT(int x, int y, int result)
+        private void Then_divinding_X_by_Y_should_give_RESULT(int x, int y, ExpectedValue<int> result)
         {
-            Assert.AreEqual(result, _calculator.Divide(x, y));
+            result.SetActual(_calculator.Divide(x, y));
         }
 
-        private void Then_multiplying_X_by_Y_should_give_RESULT(int x, int y, int result)
+        private void Then_multiplying_X_by_Y_should_give_RESULT(int x, int y, ExpectedValue<int> result)
         {
             if (x < 0 || y < 0)
                 Assert.Inconclusive("Negative numbers are not supported yet");
-            Assert.AreEqual(result, _calculator.Multiply(x, y));
+            result.SetActual(_calculator.Multiply(x, y));
         }
     }
 }

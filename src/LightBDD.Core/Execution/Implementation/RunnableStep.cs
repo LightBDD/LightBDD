@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Execution.Implementation;
 using LightBDD.Core.Extensibility.Implementation;
+using LightBDD.Core.Formatting.Parameters;
 using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
@@ -169,13 +170,21 @@ namespace LightBDD.Core.Execution.Implementation
             try
             {
                 result = await _stepInvocation.Invoke(_scenarioContext, PrepareParameters());
+                VerifyParameters();
             }
             finally
             {
+                UpdateNameDetails();
                 ctx.RestoreOriginal();
                 await ctx.WaitForTasksAsync();
             }
             return result;
+        }
+
+        private void VerifyParameters()
+        {
+            if (!_arguments.All(a => (a.Value as IVerifiableParameter)?.IsValid ?? true))
+                throw new ArgumentException("Argument validation failed");
         }
 
         [DebuggerStepThrough]
