@@ -143,7 +143,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         {
             var parameter = ParameterInfoHelper.GetMethodParameter<int>(new Feature_type().Some_step_with_multiple_formatters_on_argument);
             var formatter = _metadataProvider.GetParameterFormatter(parameter);
-            Assert.That(formatter(3), Is.EqualTo("\"--3--\""));
+            Assert.That(formatter(3), Is.EqualTo("--3--"));
         }
 
         [Test]
