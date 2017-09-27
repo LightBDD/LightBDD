@@ -77,11 +77,11 @@ namespace LightBDD.Core.UnitTests.Extensibility
         }
 
         [Test]
-        public void GetScenarioName_should_throw_if_multiple_parameter_formatters_are_declared_on_parameter()
+        public void GetScenarioName_should_capture_parameterized_scenario_name_from_descriptor_with_multiple_parameter_formatters()
         {
-            var method = typeof(Feature_type).GetMethod(nameof(Feature_type.Some_step_with_incorrectly_formatted_argument));
-            var ex = Assert.Throws<InvalidOperationException>(() => _metadataProvider.GetScenarioName(new ScenarioDescriptor(method, new object[] { 5 })));
-            Assert.That(ex.Message, Is.EqualTo($"Unable to obtain scenario name for method Some_step_with_incorrectly_formatted_argument: Parameter can contain only one attribute ParameterFormatterAttribute. Parameter: argument, Detected attributes: {nameof(CustomFormatterAttribute)}, {nameof(FormatAttribute)}"));
+            var method = typeof(Feature_type).GetMethod(nameof(Feature_type.Some_step_with_multiple_formatters_on_argument));
+            var scenarioName= _metadataProvider.GetScenarioName(new ScenarioDescriptor(method, new object[] { 5 }));
+            Assert.That(scenarioName.ToString(), Is.EqualTo("Some step with multiple formatters on argument \"--5--\""));
         }
 
         [Test]
@@ -139,11 +139,11 @@ namespace LightBDD.Core.UnitTests.Extensibility
         }
 
         [Test]
-        public void GetStepParameterFormatter_should_throw_if_multiple_parameter_formatters_are_declared_on_parameter()
+        public void GetStepParameterFormatter_should_honour_multiple_parameter_formatters()
         {
-            var parameter = ParameterInfoHelper.GetMethodParameter<int>(new Feature_type().Some_step_with_incorrectly_formatted_argument);
-            var ex = Assert.Throws<InvalidOperationException>(() => _metadataProvider.GetParameterFormatter(parameter));
-            Assert.That(ex.Message, Is.EqualTo($"Parameter can contain only one attribute ParameterFormatterAttribute. Parameter: argument, Detected attributes: {nameof(CustomFormatterAttribute)}, {nameof(FormatAttribute)}"));
+            var parameter = ParameterInfoHelper.GetMethodParameter<int>(new Feature_type().Some_step_with_multiple_formatters_on_argument);
+            var formatter = _metadataProvider.GetParameterFormatter(parameter);
+            Assert.That(formatter(3), Is.EqualTo("\"--3--\""));
         }
 
         [Test]
@@ -211,7 +211,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
             [MyStepDecorator(Order = 5)]
             public void Some_step_with_argument(int argument) { }
             public void Some_step_with_formatted_argument([CustomFormatter]int argument) { }
-            public void Some_step_with_incorrectly_formatted_argument([CustomFormatter][Format("{0}")]int argument) { }
+            public void Some_step_with_multiple_formatters_on_argument([CustomFormatter][Format("{0}",Order = 1)]int argument) { }
         }
 
         public class CustomFormatterAttribute : ParameterFormatterAttribute
