@@ -19,10 +19,7 @@ namespace LightBDD.NUnit3.Implementation
 
         private static IMetadataProvider CreateMetadataProvider(LightBddConfiguration configuration)
         {
-            return new NUnit3MetadataProvider(
-                configuration.NameFormatterConfiguration().Formatter,
-                configuration.StepTypeConfiguration(),
-                configuration.CultureInfoProviderConfiguration().CultureInfoProvider);
+            return new NUnit3MetadataProvider(configuration);
         }
 
         private static ExecutionStatus MapExceptionToStatus(Exception ex)

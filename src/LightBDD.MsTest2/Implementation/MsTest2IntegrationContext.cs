@@ -19,10 +19,7 @@ namespace LightBDD.MsTest2.Implementation
 
         private static IMetadataProvider CreateMetadataProvider(LightBddConfiguration configuration)
         {
-            return new MsTest2MetadataProvider(
-                configuration.NameFormatterConfiguration().Formatter,
-                configuration.StepTypeConfiguration(),
-                configuration.CultureInfoProviderConfiguration().CultureInfoProvider);
+            return new MsTest2MetadataProvider(configuration);
         }
 
         private static ExecutionStatus MapExceptionToStatus(Exception ex)

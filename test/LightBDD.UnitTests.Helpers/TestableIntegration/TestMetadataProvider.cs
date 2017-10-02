@@ -4,6 +4,8 @@ using System.Reflection;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting;
+using LightBDD.Core.Formatting.Parameters;
+using LightBDD.Core.Formatting.Values;
 using NUnit.Framework.Internal;
 
 namespace LightBDD.UnitTests.Helpers.TestableIntegration
@@ -22,11 +24,23 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
 
         protected override string GetImplementationSpecificFeatureDescription(Type featureType)
         {
-            return ExtractAttributePropertyValue<CustomFeatureDescriptionAttribute>(featureType.GetTypeInfo(), a => a.Description);
+            return ExtractAttributePropertyValue<CustomFeatureDescriptionAttribute>(featureType.GetTypeInfo(),
+                a => a.Description);
         }
 
-        public TestMetadataProvider(INameFormatter nameFormatter) : base(nameFormatter, new StepTypeConfiguration(), new DefaultCultureInfoProvider()) { }
-        public TestMetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration) : base(nameFormatter, stepTypeConfiguration, new DefaultCultureInfoProvider()) { }
-        public TestMetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration, ICultureInfoProvider cultureInfoProvider) : base(nameFormatter, stepTypeConfiguration, cultureInfoProvider) { }
+        public TestMetadataProvider(INameFormatter nameFormatter)
+            : base(nameFormatter, new StepTypeConfiguration(), new DefaultCultureInfoProvider(), new ValueFormattingConfiguration())
+        {
+        }
+
+        public TestMetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration)
+            : base(nameFormatter, stepTypeConfiguration, new DefaultCultureInfoProvider(), new ValueFormattingConfiguration())
+        {
+        }
+
+        public TestMetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration, ICultureInfoProvider cultureInfoProvider)
+            : base(nameFormatter, stepTypeConfiguration, cultureInfoProvider, new ValueFormattingConfiguration())
+        {
+        }
     }
 }

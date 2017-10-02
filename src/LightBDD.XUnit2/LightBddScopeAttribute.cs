@@ -1,6 +1,7 @@
 using System;
 using LightBDD.Core.Configuration;
 using LightBDD.Framework.Commenting.Configuration;
+using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Notification.Configuration;
 using LightBDD.XUnit2.Implementation;
 using Xunit.Sdk;
@@ -57,11 +58,7 @@ namespace LightBDD.XUnit2
 
         private LightBddConfiguration Configure()
         {
-            var configuration = new LightBddConfiguration();
-
-            configuration
-                .ExecutionExtensionsConfiguration()
-                .EnableStepCommenting();
+            var configuration = new LightBddConfiguration().WithFrameworkDefaults();
 
             configuration.Get<FeatureProgressNotifierConfiguration>()
                 .UpdateNotifier(XUnit2ProgressNotifier.CreateFeatureProgressNotifier());
