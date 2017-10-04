@@ -17,7 +17,7 @@ namespace LightBDD.Core.Formatting.Values.Implementation
         public ValueFormattingService(ValueFormattingConfiguration configuration, ICultureInfoProvider cultureInfoProvider)
         {
             _generalFormatters = configuration.GeneralFormatters.ToArray();
-            _formatters = new ConcurrentDictionary<Type, IValueFormatter>(configuration.StrictFormatters);
+            _formatters = new ConcurrentDictionary<Type, IValueFormatter>(configuration.ExplicitFormatters);
             _cultureInfoProvider = cultureInfoProvider;
         }
 

@@ -8,6 +8,17 @@ namespace LightBDD.Framework.Formatting.Values
 {
     public class DictionaryFormatter : IConditionalValueFormatter
     {
+        private readonly string _containerFormat;
+        private readonly string _pairFormat;
+        private readonly string _separator;
+
+        public DictionaryFormatter(string containerFormat = "{0}", string pairFormat = "{0}: {1}", string separator = ", ")
+        {
+            _containerFormat = containerFormat;
+            _pairFormat = pairFormat;
+            _separator = separator;
+        }
+
         public string FormatValue(object value, IValueFormattingService formattingService)
         {
             var dictionary = (IDictionary)value;
@@ -16,11 +27,11 @@ namespace LightBDD.Framework.Formatting.Values
                 .Cast<object>()
                 .OrderBy(k => k)
                 .Select(key => string.Format(
-                    "{{{0}: {1}}}",
+                    _pairFormat,
                     formattingService.FormatValue(key),
                     formattingService.FormatValue(dictionary[key])));
 
-            return string.Join(", ", keyValues);
+            return string.Format(_containerFormat, string.Join(_separator, keyValues));
         }
 
         public bool CanFormat(Type type)

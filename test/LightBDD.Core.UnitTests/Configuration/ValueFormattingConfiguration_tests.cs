@@ -16,20 +16,20 @@ namespace LightBDD.Core.UnitTests.Configuration
         {
             var configuration = new ValueFormattingConfiguration();
             Assert.That(configuration.GeneralFormatters, Is.Empty);
-            Assert.That(configuration.StrictFormatters.Keys, Is.EquivalentTo(new[] { typeof(string) }));
+            Assert.That(configuration.ExplicitFormatters.Keys, Is.EquivalentTo(new[] { typeof(string) }));
         }
 
         [Test]
         public void It_should_not_allow_registering_null_general_formatter()
         {
-            Assert.Throws<ArgumentNullException>(() => new ValueFormattingConfiguration().Register(null));
+            Assert.Throws<ArgumentNullException>(() => new ValueFormattingConfiguration().RegisterGeneral(null));
         }
 
         [Test]
-        public void It_should_not_allow_registering_null_strict_formatter()
+        public void It_should_not_allow_registering_null_explicit_formatter()
         {
-            Assert.Throws<ArgumentNullException>(() => new ValueFormattingConfiguration().Register(null, Mock.Of<IValueFormatter>()));
-            Assert.Throws<ArgumentNullException>(() => new ValueFormattingConfiguration().Register(typeof(object), null));
+            Assert.Throws<ArgumentNullException>(() => new ValueFormattingConfiguration().RegisterExplicit(null, Mock.Of<IValueFormatter>()));
+            Assert.Throws<ArgumentNullException>(() => new ValueFormattingConfiguration().RegisterExplicit(typeof(object), null));
         }
 
         [Test]
@@ -38,25 +38,25 @@ namespace LightBDD.Core.UnitTests.Configuration
             var formatter1 = Mock.Of<IConditionalValueFormatter>();
             var formatter2 = Mock.Of<IConditionalValueFormatter>();
             var configuration = new ValueFormattingConfiguration()
-                .Register(formatter1)
-                .Register(formatter2);
+                .RegisterGeneral(formatter1)
+                .RegisterGeneral(formatter2);
 
             Assert.That(configuration.GeneralFormatters.ToArray(), Is.EqualTo(new[] { formatter1, formatter2 }));
         }
 
         [Test]
-        public void It_should_register_strict_formatter_allowing_to_override_previous_ones()
+        public void It_should_register_explicit_formatter_allowing_to_override_previous_ones()
         {
             var formatter1 = Mock.Of<IValueFormatter>();
             var formatter2 = Mock.Of<IValueFormatter>();
             var configuration = new ValueFormattingConfiguration()
-                .Register(typeof(string), formatter1)
-                .Register(typeof(int), formatter1)
-                .Register(typeof(object), formatter1)
-                .Register(typeof(object), formatter2);
+                .RegisterExplicit(typeof(string), formatter1)
+                .RegisterExplicit(typeof(int), formatter1)
+                .RegisterExplicit(typeof(object), formatter1)
+                .RegisterExplicit(typeof(object), formatter2);
 
             Assert.That(
-                configuration.StrictFormatters.ToDictionary(x => x.Key, x => x.Value),
+                configuration.ExplicitFormatters.ToDictionary(x => x.Key, x => x.Value),
                 Is.EqualTo(new Dictionary<Type, IValueFormatter>
                 {
                     {typeof(string), formatter1},
@@ -66,15 +66,23 @@ namespace LightBDD.Core.UnitTests.Configuration
         }
 
         [Test]
-        public void Clear_should_clear_all_formatters()
+        public void It_should_clear_all_general_formatters()
         {
             var configuration = new ValueFormattingConfiguration()
-                .Register(Mock.Of<IConditionalValueFormatter>())
-                .Register(typeof(char), Mock.Of<IValueFormatter>())
-                .Clear();
+                .RegisterGeneral(Mock.Of<IConditionalValueFormatter>())
+                .ClearGeneral();
 
             Assert.That(configuration.GeneralFormatters, Is.Empty);
-            Assert.That(configuration.StrictFormatters, Is.Empty);
+        }
+
+        [Test]
+        public void It_should_clear_all_explicit_formatters()
+        {
+            var configuration = new ValueFormattingConfiguration()
+                .RegisterExplicit(typeof(char), Mock.Of<IValueFormatter>())
+                .ClearExplicit();
+
+            Assert.That(configuration.ExplicitFormatters, Is.Empty);
         }
 
         [Test]
@@ -84,16 +92,17 @@ namespace LightBDD.Core.UnitTests.Configuration
             var cfg = lighbddConfig.Get<ValueFormattingConfiguration>();
 
             var generalFormatters = cfg.GeneralFormatters.ToArray();
-            var strictFormatters = cfg.StrictFormatters.ToArray();
+            var strictFormatters = cfg.ExplicitFormatters.ToArray();
 
             lighbddConfig.Seal();
 
-            Assert.Throws<InvalidOperationException>(() => cfg.Clear());
-            Assert.Throws<InvalidOperationException>(() => cfg.Register(Mock.Of<IConditionalValueFormatter>()));
-            Assert.Throws<InvalidOperationException>(() => cfg.Register(typeof(object), Mock.Of<IValueFormatter>()));
+            Assert.Throws<InvalidOperationException>(() => cfg.ClearGeneral());
+            Assert.Throws<InvalidOperationException>(() => cfg.ClearExplicit());
+            Assert.Throws<InvalidOperationException>(() => cfg.RegisterGeneral(Mock.Of<IConditionalValueFormatter>()));
+            Assert.Throws<InvalidOperationException>(() => cfg.RegisterExplicit(typeof(object), Mock.Of<IValueFormatter>()));
 
             Assert.That(cfg.GeneralFormatters, Is.EquivalentTo(generalFormatters));
-            Assert.That(cfg.StrictFormatters, Is.EquivalentTo(strictFormatters));
+            Assert.That(cfg.ExplicitFormatters, Is.EquivalentTo(strictFormatters));
         }
     }
 }

@@ -15,8 +15,8 @@ namespace LightBDD.Framework.Configuration
 
             configuration
                 .ValueFormattingConfiguration()
-                .Register(new DictionaryFormatter())
-                .Register(new CollectionFormatter());
+                .RegisterGeneral(new DictionaryFormatter())
+                .RegisterGeneral(new CollectionFormatter());
 
             return configuration;
         }

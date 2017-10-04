@@ -9,26 +9,32 @@ namespace LightBDD.Core.Configuration
 {
     public class ValueFormattingConfiguration : FeatureConfiguration
     {
-        private readonly ConcurrentDictionary<Type, IValueFormatter> _strictFormatters = new ConcurrentDictionary<Type, IValueFormatter>();
+        private readonly ConcurrentDictionary<Type, IValueFormatter> _explicitFormatters = new ConcurrentDictionary<Type, IValueFormatter>();
         private readonly List<IConditionalValueFormatter> _generalFormatters = new List<IConditionalValueFormatter>();
 
         public ValueFormattingConfiguration()
         {
-            _strictFormatters.TryAdd(typeof(string), new AsStringFormatter());
+            _explicitFormatters.TryAdd(typeof(string), new AsStringFormatter());
         }
 
-        public IReadOnlyDictionary<Type, IValueFormatter> StrictFormatters => new ReadOnlyDictionary<Type, IValueFormatter>(_strictFormatters);
+        public IReadOnlyDictionary<Type, IValueFormatter> ExplicitFormatters => new ReadOnlyDictionary<Type, IValueFormatter>(_explicitFormatters);
         public IReadOnlyList<IConditionalValueFormatter> GeneralFormatters => new ReadOnlyCollection<IConditionalValueFormatter>(_generalFormatters);
 
-        public ValueFormattingConfiguration Clear()
+        public ValueFormattingConfiguration ClearGeneral()
         {
             ThrowIfSealed();
-            _strictFormatters.Clear();
             _generalFormatters.Clear();
             return this;
         }
 
-        public ValueFormattingConfiguration Register(Type targetType, IValueFormatter formatter)
+        public ValueFormattingConfiguration ClearExplicit()
+        {
+            ThrowIfSealed();
+            _explicitFormatters.Clear();
+            return this;
+        }
+
+        public ValueFormattingConfiguration RegisterExplicit(Type targetType, IValueFormatter formatter)
         {
             ThrowIfSealed();
 
@@ -38,11 +44,11 @@ namespace LightBDD.Core.Configuration
             if (formatter == null)
                 throw new ArgumentNullException(nameof(formatter));
 
-            _strictFormatters.AddOrUpdate(targetType, formatter, (key, existing) => formatter);
+            _explicitFormatters.AddOrUpdate(targetType, formatter, (key, existing) => formatter);
             return this;
         }
 
-        public ValueFormattingConfiguration Register(IConditionalValueFormatter formatter)
+        public ValueFormattingConfiguration RegisterGeneral(IConditionalValueFormatter formatter)
         {
             ThrowIfSealed();
             _generalFormatters.Add(formatter ?? throw new ArgumentNullException(nameof(formatter)));

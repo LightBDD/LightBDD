@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using LightBDD.Core.Formatting.Parameters;
 using LightBDD.Core.Formatting.Values;
 

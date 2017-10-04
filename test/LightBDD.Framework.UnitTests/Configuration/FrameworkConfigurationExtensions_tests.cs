@@ -22,8 +22,14 @@ namespace LightBDD.Framework.UnitTests.Configuration
             expectedConfiguration.ExecutionExtensionsConfiguration()
                 .EnableStepCommenting();
 
-            Assert.That(configuration.ExecutionExtensionsConfiguration().StepDecorators.Select(x => x.GetType()).ToArray(),
-                Is.EquivalentTo(expectedConfiguration.ExecutionExtensionsConfiguration().StepDecorators.Select(x => x.GetType()).ToArray()));
+            Assert.That(configuration.ExecutionExtensionsConfiguration()
+                    .StepDecorators
+                    .Select(x => x.GetType())
+                    .ToArray(),
+                Is.EquivalentTo(expectedConfiguration.ExecutionExtensionsConfiguration()
+                    .StepDecorators
+                    .Select(x => x.GetType())
+                    .ToArray()));
         }
 
         [Test]
@@ -36,8 +42,14 @@ namespace LightBDD.Framework.UnitTests.Configuration
             expectedConfiguration.ExecutionExtensionsConfiguration()
                 .EnableScenarioExecutionContext();
 
-            Assert.That(configuration.ExecutionExtensionsConfiguration().ScenarioDecorators.Select(x => x.GetType()).ToArray(),
-                Is.EquivalentTo(expectedConfiguration.ExecutionExtensionsConfiguration().ScenarioDecorators.Select(x => x.GetType()).ToArray()));
+            Assert.That(configuration.ExecutionExtensionsConfiguration()
+                    .ScenarioDecorators
+                    .Select(x => x.GetType())
+                    .ToArray(),
+                Is.EquivalentTo(expectedConfiguration.ExecutionExtensionsConfiguration()
+                    .ScenarioDecorators
+                    .Select(x => x.GetType())
+                    .ToArray()));
         }
 
         [Test]
@@ -48,11 +60,17 @@ namespace LightBDD.Framework.UnitTests.Configuration
             var expectedConfiguration = new LightBddConfiguration();
 
             expectedConfiguration.ValueFormattingConfiguration()
-                .Register(new DictionaryFormatter())
-                .Register(new CollectionFormatter());
+                .RegisterGeneral(new DictionaryFormatter())
+                .RegisterGeneral(new CollectionFormatter());
 
-            Assert.That(configuration.ValueFormattingConfiguration().GeneralFormatters.ToArray(),
-                Is.EquivalentTo(expectedConfiguration.ValueFormattingConfiguration().GeneralFormatters.ToArray()));
+            Assert.That(configuration.ValueFormattingConfiguration()
+                    .GeneralFormatters
+                    .Select(x => x.GetType())
+                    .ToArray(),
+                Is.EquivalentTo(expectedConfiguration.ValueFormattingConfiguration()
+                    .GeneralFormatters
+                    .Select(x => x.GetType())
+                    .ToArray()));
         }
     }
 }
