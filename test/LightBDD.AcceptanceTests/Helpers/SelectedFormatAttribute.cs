@@ -1,13 +1,12 @@
-using System.Globalization;
-using LightBDD.Core.Formatting.Parameters;
+using LightBDD.Framework.Formatting;
 
 namespace LightBDD.AcceptanceTests.Helpers
 {
-    internal class SelectedFormatAttribute : ParameterFormatterAttribute
+    internal class SelectedFormatAttribute : FormatBooleanAttribute
     {
-        public override string Format(CultureInfo culture, object parameter)
+        public SelectedFormatAttribute()
+            : base("selected", "unselected")
         {
-            return ((bool)parameter) ? "selected" : "unselected";
         }
     }
 }

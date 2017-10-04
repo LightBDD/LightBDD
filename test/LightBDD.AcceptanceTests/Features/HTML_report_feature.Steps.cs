@@ -6,6 +6,7 @@ using System.Threading;
 using LightBDD.AcceptanceTests.Helpers;
 using LightBDD.AcceptanceTests.Helpers.Builders;
 using LightBDD.Core.Results;
+using LightBDD.Framework.Formatting;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.NUnit3;
 using NUnit.Framework;
@@ -243,7 +244,7 @@ namespace LightBDD.AcceptanceTests.Features
             ContextValue.ResultBuilder.NewFeature(feature);
         }
 
-        private void the_feature_has_scenario_result_of_status_and_categories(string feature, ExecutionStatus status, [ArrayFormat]params string[] categories)
+        private void the_feature_has_scenario_result_of_status_and_categories(string feature, ExecutionStatus status, [FormatCollection]params string[] categories)
         {
             ContextValue.ResultBuilder.ForFeature(feature).NewScenario(status).WithCategories(categories);
         }

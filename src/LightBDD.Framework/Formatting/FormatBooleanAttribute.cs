@@ -23,6 +23,9 @@ namespace LightBDD.Framework.Formatting
             _falseValue = falseValue;
         }
 
+        /// <summary>
+        /// Formats provided <paramref name="value"/> as boolean.
+        /// </summary>
         public override string FormatValue(object value, IValueFormattingService formattingService)
         {
             if (value == null)
@@ -30,6 +33,9 @@ namespace LightBDD.Framework.Formatting
             return (bool)value ? _trueValue : _falseValue;
         }
 
+        /// <summary>
+        /// Returns true if <paramref name="type"/> is <see cref="bool"/> type.
+        /// </summary>
         public override bool CanFormat(Type type)
         {
             return type == typeof(bool);

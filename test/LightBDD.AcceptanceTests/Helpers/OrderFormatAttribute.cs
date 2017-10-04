@@ -1,13 +1,12 @@
-using System.Globalization;
-using LightBDD.Core.Formatting.Parameters;
+using LightBDD.Framework.Formatting;
 
 namespace LightBDD.AcceptanceTests.Helpers
 {
-    internal class OrderFormatAttribute : ParameterFormatterAttribute
+    internal class OrderFormatAttribute : FormatBooleanAttribute
     {
-        public override string Format(CultureInfo culture, object parameter)
+        public OrderFormatAttribute()
+            : base("ascending", "descending")
         {
-            return ((bool)parameter) ? "ascending" : "descending";
         }
     }
 }

@@ -26,11 +26,17 @@ namespace LightBDD.Framework.Formatting
             _valueFormat = valueFormat ?? "{0}";
         }
 
+        /// <summary>
+        /// Returns true if <paramref name="type"/> implements <see cref="IEnumerable"/> type.
+        /// </summary>
         public override bool CanFormat(Type type)
         {
             return typeof(IEnumerable).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
         }
 
+        /// <summary>
+        /// Formats provided <paramref name="value"/> as collection.
+        /// </summary>
         public override string FormatValue(object value, IValueFormattingService formattingService)
         {
             return string.Join(_separator, ((IEnumerable)value).Cast<object>().Select(o => string.Format(_valueFormat, formattingService.FormatValue(o))));

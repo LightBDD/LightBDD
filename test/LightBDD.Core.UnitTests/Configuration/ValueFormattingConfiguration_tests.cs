@@ -78,11 +78,18 @@ namespace LightBDD.Core.UnitTests.Configuration
         [Test]
         public void It_should_clear_all_explicit_formatters()
         {
-            var configuration = new ValueFormattingConfiguration()
+            var configuration = new ValueFormattingConfiguration();
+            var defaultExplicitFormatters = configuration.ExplicitFormatters.ToArray();
+                configuration
                 .RegisterExplicit(typeof(char), Mock.Of<IValueFormatter>())
                 .ClearExplicit();
 
-            Assert.That(configuration.ExplicitFormatters, Is.Empty);
+            Assert.That(configuration.ExplicitFormatters
+                    .Select(x => x.GetType())
+                    .ToArray(),
+                Is.EquivalentTo(defaultExplicitFormatters
+                    .Select(x => x.GetType())
+                    .ToArray()));
         }
 
         [Test]

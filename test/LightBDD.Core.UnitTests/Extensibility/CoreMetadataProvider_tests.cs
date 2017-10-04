@@ -13,6 +13,7 @@ using System.Reflection;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Results;
+using LightBDD.Core.Formatting.Values;
 
 namespace LightBDD.Core.UnitTests.Extensibility
 {
@@ -216,9 +217,9 @@ namespace LightBDD.Core.UnitTests.Extensibility
 
         public class CustomFormatterAttribute : ParameterFormatterAttribute
         {
-            public override string Format(CultureInfo culture, object parameter)
+            public override string FormatValue(object value, IValueFormattingService formattingService)
             {
-                return string.Format(culture, "--{0}--", parameter);
+                return string.Format(formattingService.GetCultureInfo(), "--{0}--", value);
             }
         }
         [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]

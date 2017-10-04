@@ -1,5 +1,5 @@
-﻿using System.Globalization;
-using LightBDD.Core.Formatting.Parameters;
+﻿using LightBDD.Core.Formatting.Parameters;
+using LightBDD.Core.Formatting.Values;
 
 namespace LightBDD.Framework.Formatting
 {
@@ -17,15 +17,11 @@ namespace LightBDD.Framework.Formatting
         {
             _format = format;
         }
-        /// <summary>
-        /// Formats given <paramref name="parameter"/> value using <paramref name="culture"/>.
-        /// </summary>
-        /// <param name="culture">Culture used in formatting.</param>
-        /// <param name="parameter">Parameter to format.</param>
-        /// <returns></returns>
-        public override string Format(CultureInfo culture, object parameter)
+
+        /// <inheritdoc />
+        public override string FormatValue(object value, IValueFormattingService formattingService)
         {
-            return string.Format(culture, _format, parameter ?? Symbols.NullValue);
+            return string.Format(formattingService.GetCultureInfo(), _format, value);
         }
     }
 }
