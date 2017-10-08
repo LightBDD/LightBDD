@@ -44,6 +44,9 @@ namespace LightBDD.Framework.Implementation
             return builderFactory(this, Configuration);
         }
 
-        private static object ProvideNoContext() => null;
+        private static object ProvideNoContext()
+        {
+            return null;
+        }
     }
 }

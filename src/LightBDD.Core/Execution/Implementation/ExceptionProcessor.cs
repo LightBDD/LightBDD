@@ -21,7 +21,7 @@ namespace LightBDD.Core.Execution.Implementation
         public ExecutionStatus UpdateResultsWithException(Action<ExecutionStatus, string> setStatus, Exception exception)
         {
             var status = _exceptionToStatusMapper.Invoke(exception);
-            var details = (status == ExecutionStatus.Failed) ? _exceptionFormatter.Invoke(exception) : exception.Message;
+            var details = status == ExecutionStatus.Failed ? _exceptionFormatter.Invoke(exception) : exception.Message;
             setStatus(status, details);
             return status;
         }

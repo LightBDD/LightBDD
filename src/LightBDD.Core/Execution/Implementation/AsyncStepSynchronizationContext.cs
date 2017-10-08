@@ -103,7 +103,10 @@ namespace LightBDD.Core.Execution.Implementation
                 _context = context;
             }
 
-            public void Run(object state) => _context.RunWithSelf(_callback, state);
+            public void Run(object state)
+            {
+                _context.RunWithSelf(_callback, state);
+            }
         }
     }
 }

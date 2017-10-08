@@ -10,7 +10,7 @@ namespace LightBDD.Core.Extensibility.Implementation
     {
         private readonly Func<object, object> _valueEvaluator;
         private readonly Func<object, string> _valueFormatter;
-        public string RawName { get; private set; }
+        public string RawName { get; }
         public bool IsEvaluated { get; private set; }
         public object Value { get; private set; }
 

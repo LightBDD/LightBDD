@@ -1,6 +1,7 @@
 using System;
 using Xunit;
 using Xunit.Sdk;
+
 #pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
 
 namespace LightBDD.XUnit2

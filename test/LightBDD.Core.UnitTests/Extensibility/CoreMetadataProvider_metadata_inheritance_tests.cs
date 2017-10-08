@@ -57,7 +57,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
 
         [ScenarioCategory("BaseC")]
         [FeatureDescription("BaseDescription")]
-        class BaseClass
+        private class BaseClass
         {
             [ScenarioCategory("BaseMA")]
             public virtual void MethodA() { }
@@ -67,7 +67,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
 
         [ScenarioCategory("DerivedC")]
         [FeatureDescription("DerivedDescription")]
-        class DerivedClass : BaseClass
+        private class DerivedClass : BaseClass
         {
             [ScenarioCategory("DerivedMB")]
             public override void MethodB()
@@ -81,8 +81,8 @@ namespace LightBDD.Core.UnitTests.Extensibility
         }
 
         [FeatureDescription("base")]
-        class OtherBase { }
+        private class OtherBase { }
         [FeatureDescription("derived")]
-        class OtherDerived : OtherBase { }
+        private class OtherDerived : OtherBase { }
     }
 }

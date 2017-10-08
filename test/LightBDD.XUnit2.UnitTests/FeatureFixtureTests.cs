@@ -6,13 +6,16 @@ namespace LightBDD.XUnit2.UnitTests
 {
     public class FeatureFixtureTests
     {
-        class TestableFeatureFixture : FeatureFixture
+        private class TestableFeatureFixture : FeatureFixture
         {
             public TestableFeatureFixture(ITestOutputHelper output) : base(output)
             {
             }
 
-            public IBddRunner GetRunner() => Runner;
+            public IBddRunner GetRunner()
+            {
+                return Runner;
+            }
         }
 
         [Fact]

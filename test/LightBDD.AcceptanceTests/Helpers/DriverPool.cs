@@ -15,7 +15,10 @@ namespace LightBDD.AcceptanceTests.Helpers
                 : CreateDriver();
         }
 
-        public static void Release(ChromeDriver driver) => Drivers.Enqueue(driver);
+        public static void Release(ChromeDriver driver)
+        {
+            Drivers.Enqueue(driver);
+        }
 
         private static ChromeDriver CreateDriver()
         {

@@ -197,7 +197,11 @@ namespace LightBDD.UnitTests.Helpers
             ExecutionTime IStepResult.ExecutionTime => ExecutionTime?.ToMockedType();
             IEnumerable<string> IStepResult.Comments => Comments;
             public Exception ExecutionException { get; }
-            public IEnumerable<IStepResult> GetSubSteps() => SubSteps;
+            public IEnumerable<IStepResult> GetSubSteps()
+            {
+                return SubSteps;
+            }
+
             public TestStepResult[] SubSteps { get; set; } = new TestStepResult[0];
             public string[] Comments { get; set; }
         }
@@ -219,7 +223,11 @@ namespace LightBDD.UnitTests.Helpers
             public string StatusDetails { get; set; }
             public TestExecutionTime ExecutionTime { get; set; }
             ExecutionTime IScenarioResult.ExecutionTime => ExecutionTime?.ToMockedType();
-            public IEnumerable<IStepResult> GetSteps() => Steps;
+            public IEnumerable<IStepResult> GetSteps()
+            {
+                return Steps;
+            }
+
             public TestStepResult[] Steps { get; set; }
 
         }
@@ -239,7 +247,10 @@ namespace LightBDD.UnitTests.Helpers
             IFeatureInfo IFeatureResult.Info => Info;
             public TestFeatureInfo Info { get; set; }
             public TestScenarioResult[] Scenarios { get; set; }
-            public IEnumerable<IScenarioResult> GetScenarios() => Scenarios;
+            public IEnumerable<IScenarioResult> GetScenarios()
+            {
+                return Scenarios;
+            }
         }
 
         public class TestFeatureInfo : IFeatureInfo

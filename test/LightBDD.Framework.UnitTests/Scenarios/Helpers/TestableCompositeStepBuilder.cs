@@ -7,7 +7,7 @@ using LightBDD.Framework.Scenarios;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
 {
-    class TestableCompositeStepBuilder : ICompositeStepBuilder, IIntegrableCompositeStepBuilder
+    internal class TestableCompositeStepBuilder : ICompositeStepBuilder, IIntegrableCompositeStepBuilder
     {
         private readonly ICompositeStepBuilder _internal = CompositeStep.DefineNew();
         private readonly LightBddConfiguration _configuration;
@@ -20,7 +20,10 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
             _configuration = configuration;
         }
 
-        public CompositeStep Build() => _internal.Build();
+        public CompositeStep Build()
+        {
+            return _internal.Build();
+        }
 
         public IIntegrableStepGroupBuilder AddSteps(IEnumerable<StepDescriptor> steps)
         {
@@ -36,6 +39,8 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
 
         public TStepGroupBuilder Enrich<TStepGroupBuilder>(
             Func<IIntegrableStepGroupBuilder, LightBddConfiguration, TStepGroupBuilder> builderFactory)
-            => builderFactory(_internal.Integrate(), _configuration);
+        {
+            return builderFactory(_internal.Integrate(), _configuration);
+        }
     }
 }

@@ -22,15 +22,22 @@ namespace LightBDD.Framework.UnitTests.Notification
         private readonly AsyncLocalContext<int> _currentId = new AsyncLocalContext<int>();
         private ParallelProgressNotifierProvider _notifierProvider;
 
-        class TestableParallelProgressNotifierProvider : ParallelProgressNotifierProvider { }
+        private class TestableParallelProgressNotifierProvider : ParallelProgressNotifierProvider { }
 
         private void Notify(string message)
         {
             _capturedGroups.GetOrAdd(_currentId.Value, i => new ConcurrentQueue<string>()).Enqueue(message);
         }
 
-        public IFeatureProgressNotifier GetFeatureNotifier() => _notifierProvider.CreateFeatureProgressNotifier(Notify);
-        public IScenarioProgressNotifier GetScenarioNotifier() => _notifierProvider.CreateScenarioProgressNotifier(Notify);
+        public IFeatureProgressNotifier GetFeatureNotifier()
+        {
+            return _notifierProvider.CreateFeatureProgressNotifier(Notify);
+        }
+
+        public IScenarioProgressNotifier GetScenarioNotifier()
+        {
+            return _notifierProvider.CreateScenarioProgressNotifier(Notify);
+        }
 
         [SetUp]
         public void SetUp()

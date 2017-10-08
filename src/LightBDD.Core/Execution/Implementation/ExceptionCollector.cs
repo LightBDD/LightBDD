@@ -29,7 +29,7 @@ namespace LightBDD.Core.Execution.Implementation
                 .Select(s => s.ExecutionException)
                 .Where(x => x != null).ToArray();
 
-            return (executionStatus == ExecutionStatus.Ignored || exceptions.Length == 1)
+            return executionStatus == ExecutionStatus.Ignored || exceptions.Length == 1
                 ? exceptions.First()
                 : new AggregateException(exceptions);
         }

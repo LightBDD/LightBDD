@@ -31,9 +31,9 @@ namespace LightBDD.Core.UnitTests.Extensibility
             Assert.DoesNotThrow(() => new CompleteRunner().Integrate());
         }
 
-        class IncompleteRunner : IBddRunner { }
+        private class IncompleteRunner : IBddRunner { }
 
-        class CompleteRunner : IBddRunner, IEnrichableFeatureFixtureRunner
+        private class CompleteRunner : IBddRunner, IEnrichableFeatureFixtureRunner
         {
             public void Dispose()
             {

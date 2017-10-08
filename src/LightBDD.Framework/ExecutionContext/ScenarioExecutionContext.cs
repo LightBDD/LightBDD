@@ -41,7 +41,7 @@ namespace LightBDD.Framework.ExecutionContext
                     return ctx;
                 throw new InvalidOperationException($"Current task is not executing any scenarios or {nameof(ScenarioExecutionContext)} is not enabled in {nameof(LightBddConfiguration)}. Ensure that configuration.{nameof(ConfigurationExtensions.ExecutionExtensionsConfiguration)}().{nameof(ScenarioExecutionContextConfigurationExtensions.EnableScenarioExecutionContext)}() is called during LightBDD initialization and operation accessing {nameof(ScenarioExecutionContext)} is called from task running scenario.");
             }
-            set { CurrentContext.Value = value; }
+            set => CurrentContext.Value = value;
         }
     }
 }

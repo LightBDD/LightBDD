@@ -4,7 +4,7 @@ using LightBDD.UnitTests.Helpers;
 
 namespace LightBDD.Framework.Reporting.UnitTests.Formatters
 {
-    static class ReportFormatterTestData
+    internal static class ReportFormatterTestData
     {
         private static DateTimeOffset _startDate = new DateTimeOffset(2014, 09, 23, 19, 21, 57, 55, TimeSpan.Zero);
 
