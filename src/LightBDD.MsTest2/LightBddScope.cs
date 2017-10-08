@@ -1,6 +1,5 @@
 ﻿using System;
 using LightBDD.Core.Configuration;
-using LightBDD.Framework.Commenting.Configuration;
 using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Notification.Configuration;
 using LightBDD.MsTest2.Implementation;

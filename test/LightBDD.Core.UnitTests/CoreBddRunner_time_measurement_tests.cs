@@ -86,7 +86,7 @@ namespace LightBDD.Core.UnitTests
 
         private static void AssertStepTimes(IStepResult[] steps, ExecutionTime parentExecutionTime)
         {
-            for (int i = 0; i < steps.Length; ++i)
+            for (var i = 0; i < steps.Length; ++i)
             {
                 var step = steps[i];
 
@@ -100,18 +100,24 @@ namespace LightBDD.Core.UnitTests
                 Assert.That(step.ExecutionTime, Is.Not.Null, $"Step[{step.Info}].ExecutionTime");
 
                 if (i == 0)
+                {
                     Assert.That(step.ExecutionTime.Start,
                         Is.GreaterThanOrEqualTo(parentExecutionTime.Start),
                         $"Step[{step.Info}].ExecutionTime.Start");
+                }
                 else
+                {
                     Assert.That(step.ExecutionTime.Start,
                         Is.GreaterThanOrEqualTo(steps[i - 1].ExecutionTime.End - UtcNowClockPrecision),
                         $"Step[{step.Info}].ExecutionTime.Start");
+                }
 
                 if (i == steps.Length - 1)
+                {
                     Assert.That(step.ExecutionTime.End,
                         Is.LessThanOrEqualTo(parentExecutionTime.End + UtcNowClockPrecision),
                         $"Step[{step.Info}].ExecutionTime.End");
+                }
 
                 AssertStepTimes(step.GetSubSteps().ToArray(), step.ExecutionTime);
             }

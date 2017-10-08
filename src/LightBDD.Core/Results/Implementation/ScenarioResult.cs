@@ -31,7 +31,10 @@ namespace LightBDD.Core.Results.Implementation
         public ExecutionTime ExecutionTime { get; private set; }
         public Exception ExecutionException { get; private set; }
 
-        public IEnumerable<IStepResult> GetSteps() => _steps;
+        public IEnumerable<IStepResult> GetSteps()
+        {
+            return _steps;
+        }
 
         public void UpdateException(Exception exception)
         {

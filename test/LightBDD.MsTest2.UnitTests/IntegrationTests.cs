@@ -33,7 +33,9 @@ namespace LightBDD.MsTest2.UnitTests
         }
 
         [Scenario]
-        [TestCategory("Category A"), TestCategory("Category B"), ScenarioCategory("Category C")]
+        [TestCategory("Category A")]
+        [TestCategory("Category B")]
+        [ScenarioCategory("Category C")]
         [Label(nameof(It_should_capture_mstest_specific_attributes))]
         public void It_should_capture_mstest_specific_attributes()
         {

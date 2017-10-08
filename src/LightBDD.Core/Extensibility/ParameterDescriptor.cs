@@ -24,7 +24,11 @@ namespace LightBDD.Core.Extensibility
         /// <param name="parameterInfo"><see cref="ParameterInfo"/> object describing parameter.</param>
         /// <param name="value">Constant value that would be bound to the parameter.</param>
         /// <returns></returns>
-        public static ParameterDescriptor FromConstant(ParameterInfo parameterInfo, object value) => new ParameterDescriptor(true, parameterInfo, ctx => value);
+        public static ParameterDescriptor FromConstant(ParameterInfo parameterInfo, object value)
+        {
+            return new ParameterDescriptor(true, parameterInfo, ctx => value);
+        }
+
         /// <summary>
         /// Creates <see cref="ParameterDescriptor"/> object representing <paramref name="parameterInfo"/> with not-constant value provided by <paramref name="valueEvaluator"/>.
         /// It is expected that <paramref name="valueEvaluator"/> would be used once to evaluate parameter value, just before execution of method requiring this parameter value.
@@ -32,23 +36,27 @@ namespace LightBDD.Core.Extensibility
         /// <param name="parameterInfo"><see cref="ParameterInfo"/> object describing parameter.</param>
         /// <param name="valueEvaluator">Value evaluator function that should be used to retrieve parameter value.</param>
         /// <returns></returns>
-        public static ParameterDescriptor FromInvocation(ParameterInfo parameterInfo, Func<object, object> valueEvaluator) => new ParameterDescriptor(false, parameterInfo, valueEvaluator);
+        public static ParameterDescriptor FromInvocation(ParameterInfo parameterInfo, Func<object, object> valueEvaluator)
+        {
+            return new ParameterDescriptor(false, parameterInfo, valueEvaluator);
+        }
+
         /// <summary>
         /// Returns parameter raw name.
         /// </summary>
-        public string RawName { get; private set; }
+        public string RawName { get; }
         /// <summary>
         /// Returns <c>true</c> if parameter is defined as constant with known value or <c>false</c> if parameter value has to be evaluated first in order to be known.
         /// </summary>
-        public bool IsConstant { get; private set; }
+        public bool IsConstant { get; }
         /// <summary>
         /// Returns <see cref="ParameterInfo"/> object describing this parameter.
         /// </summary>
-        public ParameterInfo ParameterInfo { get; private set; }
+        public ParameterInfo ParameterInfo { get; }
         /// <summary>
         /// Returns parameter value evaluator that would be used to evaluate parameter value during execution.
         /// The value evaluator function parameter represents scenario context object defined by <see cref="IScenarioRunner.WithContext"/>() method.
         /// </summary>
-        public Func<object, object> ValueEvaluator { get; private set; }
+        public Func<object, object> ValueEvaluator { get; }
     }
 }

@@ -35,7 +35,10 @@ namespace LightBDD.Framework.Scenarios.Contextual.Implementation
         }
 
         public TEnrichedBuilder Enrich<TEnrichedBuilder>(Func<IIntegrableStepGroupBuilder, LightBddConfiguration, TEnrichedBuilder> builderFactory)
-            => _target.Enrich(new ContextualCompositeStepBuilderEnricher<TEnrichedBuilder>(this, builderFactory).Enrich);
+        {
+            return _target.Enrich(new ContextualCompositeStepBuilderEnricher<TEnrichedBuilder>(this, builderFactory)
+                .Enrich);
+        }
 
         [DebuggerStepThrough]
         private struct ContextualCompositeStepBuilderEnricher<TEnrichedBuilder>

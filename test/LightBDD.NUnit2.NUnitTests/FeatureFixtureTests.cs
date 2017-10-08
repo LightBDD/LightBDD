@@ -9,9 +9,12 @@ namespace LightBDD.NUnit2.NUnitTests
     [TestFixture]
     public class FeatureFixtureTests
     {
-        class TestableFeatureFixture : FeatureFixture
+        private class TestableFeatureFixture : FeatureFixture
         {
-            public IBddRunner GetRunner() => Runner;
+            public IBddRunner GetRunner()
+            {
+                return Runner;
+            }
         }
 
         [Test]

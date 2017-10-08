@@ -39,7 +39,7 @@ namespace LightBDD.Core.UnitTests
 
         [CustomFeatureDescription("custom description")]
         [FeatureDescription("standard description")]
-        class Feature_with_two_descriptions
+        private class Feature_with_two_descriptions
         {
         }
 

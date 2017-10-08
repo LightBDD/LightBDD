@@ -172,7 +172,7 @@ namespace LightBDD.Core.UnitTests
             Assert.That(notifiers[2].Notifications.Count(n => n.StartsWith("Scenario Start: scenario3")), Is.EqualTo(1), "scenario3");
         }
 
-        class CapturingProgressNotifier : IScenarioProgressNotifier, IFeatureProgressNotifier
+        private class CapturingProgressNotifier : IScenarioProgressNotifier, IFeatureProgressNotifier
         {
             private readonly List<string> _notifications = new List<string>();
 

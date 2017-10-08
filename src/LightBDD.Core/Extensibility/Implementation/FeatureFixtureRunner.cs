@@ -18,7 +18,11 @@ namespace LightBDD.Core.Extensibility.Implementation
             _configuration = configuration;
         }
 
-        public IScenarioRunner NewScenario() => _scenarioRunnerProvider.Invoke(_fixture);
+        public IScenarioRunner NewScenario()
+        {
+            return _scenarioRunnerProvider.Invoke(_fixture);
+        }
+
         public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, LightBddConfiguration, TEnrichedRunner> runnerFactory)
         {
             if (runnerFactory == null)

@@ -4,7 +4,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
     public class CustomCategoryAttribute : Attribute
     {
-        public string Name { get; private set; }
+        public string Name { get; }
 
         public CustomCategoryAttribute(string name)
         {

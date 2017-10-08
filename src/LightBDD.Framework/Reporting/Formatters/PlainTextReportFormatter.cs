@@ -65,7 +65,7 @@ namespace LightBDD.Framework.Reporting.Formatters
 
         private static void FormatLabels(TextWriter writer, IEnumerable<string> labels)
         {
-            bool first = true;
+            var first = true;
 
             foreach (var label in labels)
             {
@@ -103,11 +103,9 @@ namespace LightBDD.Framework.Reporting.Formatters
                 writer.WriteLine(string.Join(", ", scenario.Info.Categories));
             }
 
-            StringBuilder commentBuilder = new StringBuilder();
+            var commentBuilder = new StringBuilder();
             foreach (var step in scenario.GetSteps())
-            {
                 FormatStep(writer, step, commentBuilder);
-            }
             FormatDetails(writer, scenario);
             FormatComments(writer, commentBuilder);
         }

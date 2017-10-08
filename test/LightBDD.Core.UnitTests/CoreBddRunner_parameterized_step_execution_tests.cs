@@ -41,7 +41,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void Runner_should_evaluate_step_parameters_once()
         {
-            int number = 0;
+            var number = 0;
             _runner.Test().TestScenario(
                 TestStep.CreateAsync(Given_step_one, () => (++number).ToString()),
                 TestStep.CreateAsync(When_step_two, () => ++number),

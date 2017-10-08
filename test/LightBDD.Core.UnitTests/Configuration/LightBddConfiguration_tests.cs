@@ -7,7 +7,7 @@ namespace LightBDD.Core.UnitTests.Configuration
     [TestFixture]
     public class LightBddConfiguration_tests
     {
-        class SealableFeatureConfig : ISealableFeatureConfiguration
+        private class SealableFeatureConfig : ISealableFeatureConfiguration
         {
             public void Seal()
             {
@@ -17,11 +17,11 @@ namespace LightBDD.Core.UnitTests.Configuration
             public bool IsSealed { get; private set; }
         }
 
-        class NotSealableFeatureConfig : IFeatureConfiguration
+        private class NotSealableFeatureConfig : IFeatureConfiguration
         {
         }
 
-        class TestableFeatureConfig : FeatureConfiguration
+        private class TestableFeatureConfig : FeatureConfiguration
         {
             public void Foo() { ThrowIfSealed(); }
         }

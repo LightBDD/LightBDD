@@ -11,7 +11,8 @@ namespace LightBDD.NUnit3.UnitTests
 {
     [TestFixture]
     [Description("desc")]
-    [Category("Category D"), ScenarioCategory("Category E")]
+    [Category("Category D")]
+    [ScenarioCategory("Category E")]
     public class IntegrationTests : FeatureFixture
     {
         [Scenario]
@@ -34,7 +35,9 @@ namespace LightBDD.NUnit3.UnitTests
         }
 
         [Scenario]
-        [Category("Category A"), Category("Category B"), ScenarioCategory("Category C")]
+        [Category("Category A")]
+        [Category("Category B")]
+        [ScenarioCategory("Category C")]
         [Label(nameof(It_should_capture_nunit_specific_attributes))]
         public void It_should_capture_nunit_specific_attributes()
         {

@@ -20,7 +20,7 @@ namespace LightBDD.Core.UnitTests.Reporting
 
             var mocks = Enumerable.Range(0, 50).Select(i => RandomValue.Object<TestResults.TestFeatureResult>()).ToArray();
             var allMocks = new List<IFeatureResult>();
-            for (int i = 0; i < 100; ++i)
+            for (var i = 0; i < 100; ++i)
                 allMocks.AddRange(mocks);
 
             allMocks

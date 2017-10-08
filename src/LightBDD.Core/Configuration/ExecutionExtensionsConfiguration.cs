@@ -44,7 +44,9 @@ namespace LightBDD.Core.Configuration
         /// <returns>Self.</returns>
         public ExecutionExtensionsConfiguration EnableScenarioDecorator<TScenarioDecorator>()
             where TScenarioDecorator : IScenarioDecorator, new()
-            => EnableScenarioDecorator(() => new TScenarioDecorator());
+        {
+            return EnableScenarioDecorator(() => new TScenarioDecorator());
+        }
 
         /// <summary>
         /// Enables scenario decorator of specified type.
@@ -94,7 +96,9 @@ namespace LightBDD.Core.Configuration
         /// <returns>Self.</returns>
         public ExecutionExtensionsConfiguration EnableStepDecorator<TStepDecorator>()
            where TStepDecorator : IStepDecorator, new()
-           => EnableStepDecorator(() => new TStepDecorator());
+        {
+            return EnableStepDecorator(() => new TStepDecorator());
+        }
 
         /// <summary>
         /// Enables scenario execution extension of specified type.
@@ -105,7 +109,9 @@ namespace LightBDD.Core.Configuration
         [Obsolete("Use EnableScenarioDecorator instead", true)]
         public ExecutionExtensionsConfiguration EnableScenarioExtension<TScenarioExecutionExtension>()
             where TScenarioExecutionExtension : IScenarioExecutionExtension, new()
-            => EnableScenarioExtension(() => new TScenarioExecutionExtension());
+        {
+            return EnableScenarioExtension(() => new TScenarioExecutionExtension());
+        }
 
         /// <summary>
         /// Enables scenario execution extension of specified type.
@@ -119,7 +125,9 @@ namespace LightBDD.Core.Configuration
         public ExecutionExtensionsConfiguration EnableScenarioExtension<TScenarioExecutionExtension>(
             Func<TScenarioExecutionExtension> factory)
             where TScenarioExecutionExtension : IScenarioExecutionExtension
-            => EnableScenarioDecorator(() => new ScenarioExtensionToDecoratorConverter(factory()));
+        {
+            return EnableScenarioDecorator(() => new ScenarioExtensionToDecoratorConverter(factory()));
+        }
 
         /// <summary>
         /// Enables step execution extension of specified type.
@@ -133,7 +141,9 @@ namespace LightBDD.Core.Configuration
         public ExecutionExtensionsConfiguration EnableStepExtension<TStepExecutionExtension>(
             Func<TStepExecutionExtension> factory)
             where TStepExecutionExtension : IStepExecutionExtension
-            => EnableStepDecorator(factory);
+        {
+            return EnableStepDecorator(factory);
+        }
 
         /// <summary>
         /// Enables scenario execution extension of specified type.
@@ -144,7 +154,9 @@ namespace LightBDD.Core.Configuration
         [Obsolete("Use EnableStepDecorator instead", true)]
         public ExecutionExtensionsConfiguration EnableStepExtension<TStepExecutionExtension>()
            where TStepExecutionExtension : IStepExecutionExtension, new()
-           => EnableStepExtension(() => new TStepExecutionExtension());
+        {
+            return EnableStepExtension(() => new TStepExecutionExtension());
+        }
 
         [DebuggerStepThrough]
         [Obsolete]

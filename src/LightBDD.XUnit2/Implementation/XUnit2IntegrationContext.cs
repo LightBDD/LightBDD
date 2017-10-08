@@ -4,7 +4,6 @@ using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Results;
 using LightBDD.Framework.Extensibility;
-using LightBDD.Framework.Formatting.Configuration;
 using LightBDD.XUnit2.Implementation.Customization;
 
 namespace LightBDD.XUnit2.Implementation
@@ -24,7 +23,7 @@ namespace LightBDD.XUnit2.Implementation
 
         private static ExecutionStatus MapExceptionToStatus(Exception ex)
         {
-            return (ex is IgnoreException)
+            return ex is IgnoreException
                 ? ExecutionStatus.Ignored
                 : ExecutionStatus.Failed;
         }
