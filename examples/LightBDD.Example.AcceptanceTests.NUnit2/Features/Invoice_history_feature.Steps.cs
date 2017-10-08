@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using LightBDD.Example.Helpers;
-using LightBDD.Framework.Formatting;
 using LightBDD.NUnit2;
 
 namespace LightBDD.Example.AcceptanceTests.NUnit2.Features
@@ -17,7 +16,7 @@ namespace LightBDD.Example.AcceptanceTests.NUnit2.Features
             LongRunningOperationSimulator.Simulate();
         }
 
-        private void Then_I_should_see_invoices([FormatCollection]params string[] invoices)
+        private void Then_I_should_see_invoices(params string[] invoices)
         {
         }
     }

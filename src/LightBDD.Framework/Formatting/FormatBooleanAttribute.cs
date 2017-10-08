@@ -1,5 +1,6 @@
-﻿using System.Globalization;
+﻿using System;
 using LightBDD.Core.Formatting.Parameters;
+using LightBDD.Core.Formatting.Values;
 
 namespace LightBDD.Framework.Formatting
 {
@@ -23,14 +24,21 @@ namespace LightBDD.Framework.Formatting
         }
 
         /// <summary>
-        /// Formats given <paramref name="parameter"/> value using <paramref name="culture"/>.
+        /// Formats provided <paramref name="value"/> as boolean.
         /// </summary>
-        /// <param name="culture">Culture used in formatting.</param>
-        /// <param name="parameter">Parameter to format.</param>
-        /// <returns></returns>
-        public override string Format(CultureInfo culture, object parameter)
+        public override string FormatValue(object value, IValueFormattingService formattingService)
         {
-            return (bool)parameter ? _trueValue : _falseValue;
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+            return (bool)value ? _trueValue : _falseValue;
+        }
+
+        /// <summary>
+        /// Returns true if <paramref name="type"/> is <see cref="bool"/> type.
+        /// </summary>
+        public override bool CanFormat(Type type)
+        {
+            return type == typeof(bool);
         }
     }
 }

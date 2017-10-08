@@ -1,13 +1,12 @@
-using System.Globalization;
-using LightBDD.Core.Formatting.Parameters;
+using LightBDD.Framework.Formatting;
 
 namespace LightBDD.AcceptanceTests.Helpers
 {
-    internal class VisibleFormatAttribute : ParameterFormatterAttribute
+    internal class VisibleFormatAttribute : FormatBooleanAttribute
     {
-        public override string Format(CultureInfo culture, object parameter)
+        public VisibleFormatAttribute()
+            : base("visible", "invisible")
         {
-            return ((bool)parameter) ? "visible" : "invisible";
         }
     }
 }

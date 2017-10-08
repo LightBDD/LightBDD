@@ -16,7 +16,7 @@ namespace LightBDD.AcceptanceTests.Features
 {
     public partial class HTML_report_feature : FeatureFixture
     {
-        class Context : IDisposable
+        private class Context : IDisposable
         {
             public string HtmlFileName { get; }
             public ChromeDriver Driver { get; private set; }
@@ -133,7 +133,7 @@ namespace LightBDD.AcceptanceTests.Features
 
         private static string ToFeatureToggle(int feature)
         {
-            return String.Format("toggle{0}", feature);
+            return string.Format("toggle{0}", feature);
         }
 
         private void the_feature_scenarios_are_VISIBLE(int feature, [VisibleFormat]bool visible)
@@ -149,7 +149,7 @@ namespace LightBDD.AcceptanceTests.Features
 
         private static string ToScenarioToggle(int feature, int scenario)
         {
-            return String.Format("toggle{0}_{1}", feature, scenario - 1);
+            return string.Format("toggle{0}_{1}", feature, scenario - 1);
         }
 
         private void the_feature_scenario_steps_are_VISIBLE(int feature, int scenario, [VisibleFormat]bool visible)
@@ -180,12 +180,12 @@ namespace LightBDD.AcceptanceTests.Features
 
         private void a_filter_status_button_is_clicked(ExecutionStatus status)
         {
-            ClickLabeledButton(String.Format("show{0}", status));
+            ClickLabeledButton(string.Format("show{0}", status));
         }
 
         private void the_filter_status_button_is_SELECTED(ExecutionStatus status, [SelectedFormat]bool selected)
         {
-            Assert.That(ContextValue.Driver.FindElementById(String.Format("show{0}", status)).Selected, Is.EqualTo(selected));
+            Assert.That(ContextValue.Driver.FindElementById(string.Format("show{0}", status)).Selected, Is.EqualTo(selected));
         }
 
         private void all_scenarios_with_status_are_VISIBLE(ExecutionStatus status, [VisibleFormat]bool visible)
@@ -243,7 +243,7 @@ namespace LightBDD.AcceptanceTests.Features
             ContextValue.ResultBuilder.NewFeature(feature);
         }
 
-        private void the_feature_has_scenario_result_of_status_and_categories(string feature, ExecutionStatus status, [ArrayFormat]params string[] categories)
+        private void the_feature_has_scenario_result_of_status_and_categories(string feature, ExecutionStatus status, params string[] categories)
         {
             ContextValue.ResultBuilder.ForFeature(feature).NewScenario(status).WithCategories(categories);
         }

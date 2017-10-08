@@ -84,7 +84,7 @@ namespace LightBDD.Core.Extensibility
         /// <summary>
         /// Returns a collection of <see cref="IStepDecorator"/> decorators that are applied on step described by <paramref name="stepDescriptor"/> parameter.
         /// The <see cref="IStepDecorator"/> are inferred from method attributes that implements <see cref="IStepDecoratorAttribute"/> type.
-        /// The returned collection would be sorted ascending based on <see cref="IStepDecoratorAttribute.Order"/> property.
+        /// The returned collection would be sorted ascending based on <see cref="IOrderedAttribute.Order"/> property of the attribute.
         /// </summary>
         /// <param name="stepDescriptor">Step descriptor.</param>
         /// <returns>Collection of decorators or empty collection if none are present.</returns>
@@ -92,7 +92,7 @@ namespace LightBDD.Core.Extensibility
         /// <summary>
         /// Returns a collection of <see cref="IScenarioDecorator"/> decorators that are applied on scenario described by <paramref name="scenarioDescriptor"/> parameter.
         /// The <see cref="IScenarioDecorator"/> are inferred from method attributes that implements <see cref="IScenarioDecoratorAttribute"/> type.
-        /// The returned collection would be sorted ascending based on <see cref="IScenarioDecoratorAttribute.Order"/> property.
+        /// The returned collection would be sorted ascending based on <see cref="IOrderedAttribute.Order"/> property of the attribute.
         /// </summary>
         /// <param name="scenarioDescriptor">Scenario descriptor.</param>
         /// <returns>Collection of decorators or empty collection if none are present.</returns>

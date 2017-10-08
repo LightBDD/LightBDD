@@ -1,5 +1,7 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Reflection;
 using LightBDD.Core.Formatting.Parameters;
+using LightBDD.Core.Formatting.Values;
 
 namespace LightBDD.Framework.Formatting
 {
@@ -17,15 +19,26 @@ namespace LightBDD.Framework.Formatting
         {
             _format = format;
         }
-        /// <summary>
-        /// Formats given <paramref name="parameter"/> value using <paramref name="culture"/>.
-        /// </summary>
-        /// <param name="culture">Culture used in formatting.</param>
-        /// <param name="parameter">Parameter to format.</param>
-        /// <returns></returns>
-        public override string Format(CultureInfo culture, object parameter)
+
+        /// <inheritdoc />
+        public override string FormatValue(object value, IValueFormattingService formattingService)
         {
-            return string.Format(culture, _format, parameter ?? Symbols.NullValue);
+            return string.Format(formattingService.GetCultureInfo(), _format, value);
         }
+
+        /// <summary>
+        /// Returns true if <paramref name="type"/> is assignable to <see cref="SupportedType"/>.
+        /// </summary>
+        public override bool CanFormat(Type type)
+        {
+            return SupportedType.GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
+        }
+
+        /// <summary>
+        /// Specifies types for which this formatter is applicable for.
+        /// Any type that is assignable to <see cref="SupportedType"/> would be formattable by this formatter.
+        /// By default, <see cref="SupportedType"/> is <see cref="object"/>.
+        /// </summary>
+        public Type SupportedType { get; set; } = typeof(object);
     }
 }

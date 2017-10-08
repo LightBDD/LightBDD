@@ -1,7 +1,9 @@
-﻿using System.Collections;
-using System.Globalization;
+﻿using System;
+using System.Collections;
 using System.Linq;
+using System.Reflection;
 using LightBDD.Core.Formatting.Parameters;
+using LightBDD.Core.Formatting.Values;
 
 namespace LightBDD.Framework.Formatting
 {
@@ -25,16 +27,19 @@ namespace LightBDD.Framework.Formatting
         }
 
         /// <summary>
-        /// Formats given <paramref name="parameter"/> value using <paramref name="culture"/>.
+        /// Returns true if <paramref name="type"/> implements <see cref="IEnumerable"/> type.
         /// </summary>
-        /// <param name="culture">Culture used in formatting.</param>
-        /// <param name="parameter">Parameter to format.</param>
-        /// <returns></returns>
-        public override string Format(CultureInfo culture, object parameter)
+        public override bool CanFormat(Type type)
         {
-            return parameter == null
-                ? Symbols.NullValue
-                : string.Join(_separator, ((IEnumerable)parameter).Cast<object>().Select(o => string.Format(culture, _valueFormat, o ?? Symbols.NullValue)));
+            return typeof(IEnumerable).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()) && type != typeof(string);
+        }
+
+        /// <summary>
+        /// Formats provided <paramref name="value"/> as collection.
+        /// </summary>
+        public override string FormatValue(object value, IValueFormattingService formattingService)
+        {
+            return string.Join(_separator, ((IEnumerable)value).Cast<object>().Select(o => string.Format(_valueFormat, formattingService.FormatValue(o))));
         }
     }
 }

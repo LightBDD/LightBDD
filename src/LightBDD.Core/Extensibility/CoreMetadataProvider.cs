@@ -9,6 +9,8 @@ using LightBDD.Core.Extensibility.Implementation;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Formatting.Parameters;
 using LightBDD.Core.Formatting.Parameters.Implementation;
+using LightBDD.Core.Formatting.Values;
+using LightBDD.Core.Formatting.Values.Implementation;
 using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
@@ -21,6 +23,7 @@ namespace LightBDD.Core.Extensibility
     [DebuggerStepThrough]
     public abstract class CoreMetadataProvider : IMetadataProvider
     {
+        private readonly ValueFormattingService _valueFormattingService;
         private readonly NameParser _nameParser;
         private readonly StepTypeProcessor _stepTypeProcessor;
 
@@ -30,10 +33,22 @@ namespace LightBDD.Core.Extensibility
         /// <param name="nameFormatter"><see cref="INameFormatter"/> object used to format names.</param>
         /// <param name="stepTypeConfiguration"><see cref="StepTypeConfiguration"/> object used in providing step metadata.</param>
         /// <param name="cultureInfoProvider"><see cref="ICultureInfoProvider"/> object used in providing step parameter formatters.</param>
+        [Obsolete("Use other constructor instead", true)]
         protected CoreMetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration, ICultureInfoProvider cultureInfoProvider)
+            : this(nameFormatter, stepTypeConfiguration, cultureInfoProvider, new ValueFormattingConfiguration()) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="nameFormatter"><see cref="INameFormatter"/> object used to format names.</param>
+        /// <param name="stepTypeConfiguration"><see cref="StepTypeConfiguration"/> object used in providing step metadata.</param>
+        /// <param name="cultureInfoProvider"><see cref="ICultureInfoProvider"/> object used in providing step parameter formatters.</param>
+        /// <param name="valueFormattingConfiguration"><see cref="IValueFormattingService"/> object used to format parameters.</param>
+        protected CoreMetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration, ICultureInfoProvider cultureInfoProvider, ValueFormattingConfiguration valueFormattingConfiguration)
         {
             if (stepTypeConfiguration == null)
                 throw new ArgumentNullException(nameof(stepTypeConfiguration));
+            _valueFormattingService = new ValueFormattingService(valueFormattingConfiguration, cultureInfoProvider);
 
             NameFormatter = nameFormatter ?? throw new ArgumentNullException(nameof(nameFormatter));
             CultureInfoProvider = cultureInfoProvider ?? throw new ArgumentNullException(nameof(cultureInfoProvider));
@@ -156,22 +171,19 @@ namespace LightBDD.Core.Extensibility
 
         public Func<object, string> GetParameterFormatter(ParameterInfo parameterInfo)
         {
-            Func<object, string> defaultFormatter = value => string.Format(CultureInfoProvider.GetCultureInfo(), "{0}", value ?? FormatSymbols.Instance.NullValue);
-            var formatters = parameterInfo.GetCustomAttributes(typeof(ParameterFormatterAttribute), true)
-               .OfType<ParameterFormatterAttribute>().ToArray();
+            var declaredFormatters = parameterInfo.GetCustomAttributes(typeof(ParameterFormatterAttribute), true)
+               .OfType<ParameterFormatterAttribute>()
+               .OrderBy(x => x.Order)
+               .Cast<IConditionalValueFormatter>()
+               .ToArray();
 
-            if (formatters.Length > 1)
-                throw new InvalidOperationException($"Parameter can contain only one attribute ParameterFormatterAttribute. Parameter: {parameterInfo.Name}, Detected attributes: {string.Join(", ", formatters.Select(f => f.GetType().Name).OrderBy(n => n))}");
-
-            return formatters.Length == 1
-                ? value => formatters[0].Format(CultureInfoProvider.GetCultureInfo(), value)
-                : defaultFormatter;
+            return _valueFormattingService.WithDeclaredFormatters(declaredFormatters).FormatValue;
         }
 
         /// <summary>
         /// Returns a collection of <see cref="IStepDecorator"/> decorators that are applied on step described by <paramref name="stepDescriptor"/> parameter.
         /// The <see cref="IStepDecorator"/> are inferred from method attributes that implements <see cref="IStepDecoratorAttribute"/> type.
-        /// The returned collection would be sorted ascending based on <see cref="IStepDecoratorAttribute.Order"/> property.
+        /// The returned collection would be sorted ascending based on <see cref="IOrderedAttribute.Order"/> property.
         /// </summary>
         /// <param name="stepDescriptor">Step descriptor.</param>
         /// <returns>Collection of decorators or empty collection if none are present.</returns>
@@ -187,7 +199,7 @@ namespace LightBDD.Core.Extensibility
         /// <summary>
         /// Returns a collection of <see cref="IScenarioDecorator"/> decorators that are applied on scenario described by <paramref name="scenarioDescriptor"/> parameter.
         /// The <see cref="IScenarioDecorator"/> are inferred from method attributes that implements <see cref="IScenarioDecoratorAttribute"/> type.
-        /// The returned collection would be sorted ascending based on <see cref="IScenarioDecoratorAttribute.Order"/> property.
+        /// The returned collection would be sorted ascending based on <see cref="IOrderedAttribute.Order"/> property.
         /// </summary>
         /// <param name="scenarioDescriptor">Scenario descriptor.</param>
         /// <returns>Collection of decorators or empty collection if none are present.</returns>
