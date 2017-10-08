@@ -23,10 +23,21 @@ namespace LightBDD.Framework.Configuration
 
             configuration
                 .ValueFormattingConfiguration()
-                .RegisterGeneral(new DictionaryFormatter())
-                .RegisterGeneral(new CollectionFormatter());
+                .RegisterFrameworkDefaultGeneralFormatters();
 
             return configuration;
+        }
+
+        /// <summary>
+        /// Applies framework default general formatters.
+        /// </summary>
+        /// <param name="configuration">Configuration.</param>
+        /// <returns><paramref name="configuration"/>.</returns>
+        public static ValueFormattingConfiguration RegisterFrameworkDefaultGeneralFormatters(this ValueFormattingConfiguration configuration)
+        {
+            return configuration
+                 .RegisterGeneral(new DictionaryFormatter())
+                 .RegisterGeneral(new CollectionFormatter());
         }
     }
 }
