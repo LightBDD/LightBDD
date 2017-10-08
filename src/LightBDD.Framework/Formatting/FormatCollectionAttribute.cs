@@ -31,7 +31,7 @@ namespace LightBDD.Framework.Formatting
         /// </summary>
         public override bool CanFormat(Type type)
         {
-            return typeof(IEnumerable).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
+            return typeof(IEnumerable).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()) && type != typeof(string);
         }
 
         /// <summary>

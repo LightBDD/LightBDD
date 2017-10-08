@@ -60,10 +60,11 @@ namespace LightBDD.Framework.UnitTests.Formatting
         }
 
         [Test]
-        public void CanFormat_should_accept_any_enumerable_type()
+        public void CanFormat_should_accept_any_enumerable_type_except_string()
         {
             var attribute = new FormatCollectionAttribute();
             Assert.That(attribute.CanFormat(typeof(IEnumerable)), Is.True);
+            Assert.That(attribute.CanFormat(typeof(string)), Is.False);
             Assert.That(attribute.CanFormat(typeof(object)), Is.False);
         }
 
