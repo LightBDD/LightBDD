@@ -155,8 +155,7 @@ namespace LightBDD.Core.Extensibility
         /// </summary>
         /// <param name="parameterInfo"><see cref="ParameterInfo"/> object describing step or scenario method parameter.</param>
         /// <returns>Formatter function.</returns>
-        /// <exception cref="InvalidOperationException">Throws when more than one <see cref="ParameterFormatterAttribute"/> is applied on <paramref name="parameterInfo"/>.</exception>
-        [Obsolete]
+        [Obsolete("Use " + nameof(GetValueFormattingServiceFor) + " instead.")]
         public Func<object, string> GetStepParameterFormatter(ParameterInfo parameterInfo)
         {
             return GetParameterFormatter(parameterInfo);
@@ -169,9 +168,19 @@ namespace LightBDD.Core.Extensibility
         /// </summary>
         /// <param name="parameterInfo"><see cref="ParameterInfo"/> object describing step or scenario method parameter.</param>
         /// <returns>Formatter function.</returns>
-        /// <exception cref="InvalidOperationException">Throws when more than one <see cref="ParameterFormatterAttribute"/> is applied on <paramref name="parameterInfo"/>.</exception>
-
+        [Obsolete("Use " + nameof(GetValueFormattingServiceFor) + " instead.")]
         public Func<object, string> GetParameterFormatter(ParameterInfo parameterInfo)
+        {
+            return GetValueFormattingServiceFor(parameterInfo).FormatValue;
+        }
+        /// <summary>
+        /// Returns <see cref="IValueFormattingService"/> instance for provided <paramref name="parameterInfo"/>.
+        /// The returned formatting service is aware of any <see cref="ParameterFormatterAttribute"/> instance(s) are applied on <paramref name="parameterInfo"/> and would use them to format value before any other configured formatters.
+        /// If many instances of <see cref="ParameterFormatterAttribute"/> are present, they would be applied in <see cref="IOrderedAttribute.Order"/> order.
+        /// </summary>
+        /// <param name="parameterInfo"><see cref="ParameterInfo"/> object describing step or scenario method parameter.</param>
+        /// <returns><see cref="IValueFormattingService"/> instance.</returns>
+        public IValueFormattingService GetValueFormattingServiceFor(ParameterInfo parameterInfo)
         {
             var declaredFormatters = parameterInfo.GetCustomAttributes(typeof(ParameterFormatterAttribute), true)
                .OfType<ParameterFormatterAttribute>()
@@ -179,7 +188,7 @@ namespace LightBDD.Core.Extensibility
                .Cast<IConditionalValueFormatter>()
                .ToArray();
 
-            return _valueFormattingService.WithDeclaredFormatters(declaredFormatters).FormatValue;
+            return _valueFormattingService.WithDeclaredFormatters(declaredFormatters);
         }
 
         /// <summary>
@@ -316,7 +325,7 @@ namespace LightBDD.Core.Extensibility
             try
             {
                 var formattedStepName = _nameParser.GetNameFormat(scenarioDescriptor.MethodInfo.Name, scenarioDescriptor.Parameters);
-                var arguments = scenarioDescriptor.Parameters.Select(p => new MethodArgument(p, GetParameterFormatter(p.ParameterInfo))).ToArray();
+                var arguments = scenarioDescriptor.Parameters.Select(p => new MethodArgument(p, GetValueFormattingServiceFor(p.ParameterInfo))).ToArray();
                 return new NameInfo(
                     formattedStepName,
                     arguments.Select(p => p.FormatNameParameter()).ToArray());

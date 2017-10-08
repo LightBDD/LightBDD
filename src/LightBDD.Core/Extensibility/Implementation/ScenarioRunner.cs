@@ -138,7 +138,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         private RunnableStep ToRunnableStep(StepDescriptor descriptor, int stepIndex, int totalStepsCount, string previousStepTypeName, DecoratingExecutor decoratingExecutor, object scenarioContext, string groupPrefix)
         {
             var stepInfo = new StepInfo(_metadataProvider.GetStepName(descriptor, previousStepTypeName), stepIndex + 1, totalStepsCount, groupPrefix);
-            var arguments = descriptor.Parameters.Select(p => new MethodArgument(p, _metadataProvider.GetParameterFormatter(p.ParameterInfo))).ToArray();
+            var arguments = descriptor.Parameters.Select(p => new MethodArgument(p, _metadataProvider.GetValueFormattingServiceFor(p.ParameterInfo))).ToArray();
             var stepGroupPrefix = $"{stepInfo.GroupPrefix}{stepInfo.Number}.";
             return new RunnableStep(
                 stepInfo,

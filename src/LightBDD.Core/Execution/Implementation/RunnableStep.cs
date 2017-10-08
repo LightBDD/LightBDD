@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Execution.Implementation;
@@ -183,8 +184,20 @@ namespace LightBDD.Core.Execution.Implementation
 
         private void VerifyParameters()
         {
-            if (!_arguments.All(a => (a.Value as IVerifiableParameter)?.IsValid ?? true))
-                throw new ArgumentException("Argument validation failed");
+            var exceptions = _arguments
+                .Select(a => a.Value)
+                .OfType<IVerifiableParameter>()
+                .Select(p => p.GetValidationException())
+                .Where(ex => ex != null)
+                .ToArray();
+
+            if (!exceptions.Any())
+                return;
+
+            if (exceptions.Length > 1)
+                throw new AggregateException("Expectation failed", exceptions);
+
+            ExceptionDispatchInfo.Capture(exceptions[0]).Throw();
         }
 
         [DebuggerStepThrough]
