@@ -65,7 +65,7 @@ namespace LightBDD.Example.AcceptanceTests.XUnit2.Features.Contexts
 
         public void Given_my_contact_book_is_filled_with_many_contacts()
         {
-            for (int i = 0; i < 10000; ++i)
+            for (var i = 0; i < 10000; ++i)
                 ContactBook.AddContact(i.ToString(CultureInfo.InvariantCulture), i.ToString(CultureInfo.InvariantCulture));
         }
 

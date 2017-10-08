@@ -51,7 +51,7 @@ namespace LightBDD.Core.Extensibility
                 var parameterType = parameters[i].ParameterType.GetTypeInfo();
                 var argument = arguments[i];
                 var argumentType = argument?.GetType();
-                if ((argument == null && parameterType.IsValueType) || (argument != null && !parameterType.IsAssignableFrom(argument.GetType().GetTypeInfo())))
+                if (argument == null && parameterType.IsValueType || argument != null && !parameterType.IsAssignableFrom(argument.GetType().GetTypeInfo()))
                     throw new InvalidOperationException($"Provided argument {argumentType} '{argument ?? "null"}' is not assignable to parameter index {i} of method {methodInfo}");
                 results[i] = ParameterDescriptor.FromConstant(parameters[i], argument);
             }

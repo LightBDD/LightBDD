@@ -20,8 +20,14 @@ namespace LightBDD.Framework.Implementation
             _coreRunner = coreRunner;
         }
 
-        public IScenarioRunner NewScenario() => _coreRunner.NewScenario();
+        public IScenarioRunner NewScenario()
+        {
+            return _coreRunner.NewScenario();
+        }
 
-        public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, LightBddConfiguration, TEnrichedRunner> runnerFactory) => _coreRunner.AsEnrichable().Enrich(runnerFactory);
+        public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, LightBddConfiguration, TEnrichedRunner> runnerFactory)
+        {
+            return _coreRunner.AsEnrichable().Enrich(runnerFactory);
+        }
     }
 }

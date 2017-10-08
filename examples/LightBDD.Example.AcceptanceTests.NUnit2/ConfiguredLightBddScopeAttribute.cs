@@ -7,7 +7,7 @@ using LightBDD.NUnit2;
 [assembly: ConfiguredLightBddScope]
 namespace LightBDD.Example.AcceptanceTests.NUnit2
 {
-    class ConfiguredLightBddScopeAttribute : LightBddScopeAttribute
+    internal class ConfiguredLightBddScopeAttribute : LightBddScopeAttribute
     {
         protected override void OnConfigure(LightBddConfiguration configuration)
         {

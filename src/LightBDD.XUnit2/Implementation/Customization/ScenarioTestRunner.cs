@@ -65,16 +65,20 @@ namespace LightBDD.XUnit2.Implementation.Customization
                     }
 
                     if (!CancellationTokenSource.IsCancellationRequested)
+                    {
                         if (!MessageBus.QueueMessage(testResult))
                             CancellationTokenSource.Cancel();
+                    }
                 }
 
                 Aggregator.Clear();
                 BeforeTestFinished();
 
                 if (Aggregator.HasExceptions)
+                {
                     if (!MessageBus.QueueMessage(new TestCleanupFailure(Test, Aggregator.ToException())))
                         CancellationTokenSource.Cancel();
+                }
             }
 
             if (!MessageBus.QueueMessage(new TestFinished(Test, runSummary.Time, output)))

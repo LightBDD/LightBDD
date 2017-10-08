@@ -10,7 +10,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         private IHtmlNode[] _nodes = new IHtmlNode[0];
         private bool _spaceBefore;
         private bool _spaceAfter;
-        private string _tag;
+        private readonly string _tag;
 
         public TagBuilder(Html5Tag tag)
         {

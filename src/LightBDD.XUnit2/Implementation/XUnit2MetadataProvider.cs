@@ -5,15 +5,18 @@ using System.Linq;
 using System.Reflection;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
-using LightBDD.Core.Formatting;
+using LightBDD.Framework.Formatting.Configuration;
 
 namespace LightBDD.XUnit2.Implementation
 {
     [DebuggerStepThrough]
     internal class XUnit2MetadataProvider : CoreMetadataProvider
     {
-        public XUnit2MetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration, ICultureInfoProvider cultureInfoProvider)
-            : base(nameFormatter, stepTypeConfiguration, cultureInfoProvider) { }
+        public XUnit2MetadataProvider(LightBddConfiguration configuration)
+            : base(configuration.NameFormatterConfiguration().Formatter,
+                configuration.StepTypeConfiguration(),
+                configuration.CultureInfoProviderConfiguration().CultureInfoProvider,
+                configuration.ValueFormattingConfiguration()) { }
 
         public override ScenarioDescriptor CaptureCurrentScenario()
         {

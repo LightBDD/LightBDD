@@ -26,9 +26,15 @@ namespace LightBDD.MsTest2.Implementation
             }
         }
 
-        public Attribute[] GetAllAttributes(bool inherit) => _target.GetAllAttributes(inherit);
+        public Attribute[] GetAllAttributes(bool inherit)
+        {
+            return _target.GetAllAttributes(inherit);
+        }
 
-        public TAttributeType[] GetAttributes<TAttributeType>(bool inherit) where TAttributeType : Attribute => _target.GetAttributes<TAttributeType>(inherit);
+        public TAttributeType[] GetAttributes<TAttributeType>(bool inherit) where TAttributeType : Attribute
+        {
+            return _target.GetAttributes<TAttributeType>(inherit);
+        }
 
         public string TestMethodName => _target.TestMethodName;
         public string TestClassName => _target.TestClassName;

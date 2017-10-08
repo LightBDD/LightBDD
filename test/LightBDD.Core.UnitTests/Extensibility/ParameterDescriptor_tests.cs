@@ -54,10 +54,13 @@ namespace LightBDD.Core.UnitTests.Extensibility
             Assert.That(ex.ParamName, Is.EqualTo("valueEvaluator"));
         }
 
-        class Incrementer
+        private class Incrementer
         {
             private int _next;
-            public int GetNext() => ++_next;
+            public int GetNext()
+            {
+                return ++_next;
+            }
         }
     }
 }

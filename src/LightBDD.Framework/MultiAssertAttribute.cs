@@ -38,7 +38,10 @@ namespace LightBDD.Framework
             await scenarioInvocation();
         }
 
-        private static bool ShouldAbortExecution(Exception exception) => false;
+        private static bool ShouldAbortExecution(Exception exception)
+        {
+            return false;
+        }
 
         /// <summary>
         /// Order in which extensions should be applied, where instances of lower values would be executed first.

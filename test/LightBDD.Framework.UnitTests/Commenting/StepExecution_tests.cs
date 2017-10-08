@@ -75,7 +75,7 @@ namespace LightBDD.Framework.UnitTests.Commenting
             Assert.That(steps[1].Comments.ToArray(), Is.EqualTo(new[] { nameof(Commented_step2) }));
         }
 
-        TestCompositeStep Grouped_steps()
+        private TestCompositeStep Grouped_steps()
         {
             return TestCompositeStep.Create(
                 Commented_step1,

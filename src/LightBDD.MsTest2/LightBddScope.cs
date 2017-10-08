@@ -1,6 +1,6 @@
 ﻿using System;
 using LightBDD.Core.Configuration;
-using LightBDD.Framework.Commenting.Configuration;
+using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Notification.Configuration;
 using LightBDD.MsTest2.Implementation;
 
@@ -47,11 +47,7 @@ namespace LightBDD.MsTest2
 
         private static LightBddConfiguration Configure(Action<LightBddConfiguration> onConfigure)
         {
-            var configuration = new LightBddConfiguration();
-
-            configuration
-                .ExecutionExtensionsConfiguration()
-                .EnableStepCommenting();
+            var configuration = new LightBddConfiguration().WithFrameworkDefaults();
 
             configuration.Get<FeatureProgressNotifierConfiguration>()
                 .UpdateNotifier(MsTest2ProgressNotifier.CreateFeatureProgressNotifier());

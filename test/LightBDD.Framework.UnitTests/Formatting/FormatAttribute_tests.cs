@@ -11,11 +11,11 @@ namespace LightBDD.Framework.UnitTests.Formatting
         [TestCase("", 55.5, "55.5")]
         [TestCase("PL", 55.5, "55,5")]
         [TestCase("", "", "")]
-        [TestCase("", null, "<null>")]
         public void It_should_use_specified_format(string culture, object value, string formattedValue)
         {
             var attribute = new FormatAttribute("--{0}--");
-            Assert.That(attribute.Format(new CultureInfo(culture), value), Is.EqualTo($"--{formattedValue}--"));
+            var formattingService = new ValueFormattingServiceStub(new CultureInfo(culture));
+            Assert.That(attribute.FormatValue(value, formattingService), Is.EqualTo($"--{formattedValue}--"));
         }
     }
 }

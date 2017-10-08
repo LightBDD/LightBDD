@@ -10,16 +10,16 @@ namespace LightBDD.Core.UnitTests
         [FeatureDescription("Runner tests description")]
         [Label("Ticket-1")]
         [Label("Ticket-2")]
-        class Feature_with_all_details { }
+        private class Feature_with_all_details { }
 
         [Label("Ticket-1")]
         [Label("Ticket-2")]
-        class Feature_with_labels { }
+        private class Feature_with_labels { }
 
         [FeatureDescription("Runner tests description")]
-        class Feature_with_description { }
+        private class Feature_with_description { }
 
-        class Feature_without_details { }
+        private class Feature_without_details { }
 
         [Test]
         public void It_should_collect_all_feature_details()

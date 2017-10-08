@@ -57,7 +57,7 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         private string NormalizeStepTypeName(string stepTypeName, string lastStepTypeName)
         {
-            return (!string.IsNullOrEmpty(stepTypeName) && !string.IsNullOrWhiteSpace(_configuration.RepeatedStepReplacement) && string.Equals(stepTypeName, lastStepTypeName, StringComparison.OrdinalIgnoreCase))
+            return !string.IsNullOrEmpty(stepTypeName) && !string.IsNullOrWhiteSpace(_configuration.RepeatedStepReplacement) && string.Equals(stepTypeName, lastStepTypeName, StringComparison.OrdinalIgnoreCase)
                 ? FormatStepTypeName(_configuration.RepeatedStepReplacement)
                 : stepTypeName;
         }

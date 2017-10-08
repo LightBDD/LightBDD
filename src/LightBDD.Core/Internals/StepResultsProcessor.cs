@@ -20,6 +20,8 @@ namespace LightBDD.Core.Internals
         }
 
         public static IStepResult GetMostSevereOrNull(this IEnumerable<IStepResult> results)
-            => results.Reverse().OrderByDescending(s => s.Status).FirstOrDefault();
+        {
+            return results.Reverse().OrderByDescending(s => s.Status).FirstOrDefault();
+        }
     }
 }

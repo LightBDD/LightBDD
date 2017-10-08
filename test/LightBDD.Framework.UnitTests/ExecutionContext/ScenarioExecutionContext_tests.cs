@@ -14,7 +14,7 @@ namespace LightBDD.Framework.UnitTests.ExecutionContext
     [TestFixture]
     public class ScenarioExecutionContext_tests
     {
-        class ExplicitContext
+        private class ExplicitContext
         {
             private readonly Guid _expectedGuid = Guid.NewGuid();
 
@@ -63,7 +63,8 @@ namespace LightBDD.Framework.UnitTests.ExecutionContext
                 AssertImplicitContext("after subtasks");
             }
         }
-        class ImplicitContext : IContextProperty
+
+        private class ImplicitContext : IContextProperty
         {
             public Guid Value { get; set; }
         }

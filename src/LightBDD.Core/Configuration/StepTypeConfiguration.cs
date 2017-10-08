@@ -48,9 +48,7 @@ namespace LightBDD.Core.Configuration
         public StepTypeConfiguration UpdatePredefinedStepTypes(params string[] stepTypes)
         {
             ThrowIfSealed();
-            if (stepTypes == null)
-                throw new ArgumentNullException(nameof(stepTypes));
-            PredefinedStepTypes = stepTypes;
+            PredefinedStepTypes = stepTypes ?? throw new ArgumentNullException(nameof(stepTypes));
             return this;
         }
 
@@ -75,9 +73,7 @@ namespace LightBDD.Core.Configuration
         public StepTypeConfiguration UpdateUseLambdaNameAsStepType(Func<string, bool> useLambdaNameAsStepTypeFunction)
         {
             ThrowIfSealed();
-            if (useLambdaNameAsStepTypeFunction == null)
-                throw new ArgumentNullException(nameof(useLambdaNameAsStepTypeFunction));
-            UseLambdaNameAsStepType = useLambdaNameAsStepTypeFunction;
+            UseLambdaNameAsStepType = useLambdaNameAsStepTypeFunction ?? throw new ArgumentNullException(nameof(useLambdaNameAsStepTypeFunction));
             return this;
         }
 

@@ -32,7 +32,7 @@ namespace LightBDD.Core.UnitTests
 
             Assert.That(_feature.GetFeatureResult().GetScenarios().Count(), Is.EqualTo(_elementsCount));
 
-            for (int i = 0; i < _elementsCount; ++i)
+            for (var i = 0; i < _elementsCount; ++i)
             {
                 var expectedScenarioName = $"Parallel scenario \"{i}\"";
                 var expectedSteps = new[]

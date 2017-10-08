@@ -8,19 +8,37 @@ namespace LightBDD.Framework.UnitTests.Formatting
     [TestFixture]
     public class FormatBooleanAttribute_tests
     {
+        private readonly ValueFormattingServiceStub _formattingService = new ValueFormattingServiceStub(CultureInfo.InvariantCulture);
+
         [Test]
-        public void It_should_format_boolean()
+        public void FormatValue_should_format_boolean()
         {
             var attribute = new FormatBooleanAttribute("on", "off");
-            Assert.That(attribute.Format(CultureInfo.InvariantCulture, true), Is.EqualTo("on"));
-            Assert.That(attribute.Format(CultureInfo.InvariantCulture, false), Is.EqualTo("off"));
+
+            Assert.That(attribute.FormatValue(true, _formattingService), Is.EqualTo("on"));
+            Assert.That(attribute.FormatValue(false, _formattingService), Is.EqualTo("off"));
         }
 
         [Test]
-        public void It_should_throw_if_value_is_not_boolean()
+        public void FormatValue_should_throw_if_value_is_not_boolean()
         {
             var attribute = new FormatBooleanAttribute("on", "off");
-            Assert.Throws<InvalidCastException>(() => attribute.Format(CultureInfo.InvariantCulture, 32));
+            Assert.Throws<InvalidCastException>(() => attribute.FormatValue(32, _formattingService));
+        }
+
+        [Test]
+        public void FormatValue_should_throw_if_value_is_null()
+        {
+            var attribute = new FormatBooleanAttribute("on", "off");
+            Assert.Throws<ArgumentNullException>(() => attribute.FormatValue(null, _formattingService));
+        }
+
+        [Test]
+        public void CanFormat_should_accept_boolean_type()
+        {
+            var attribute = new FormatBooleanAttribute("yes", "no");
+            Assert.That(attribute.CanFormat(typeof(bool)), Is.True);
+            Assert.That(attribute.CanFormat(typeof(object)), Is.False);
         }
     }
 }

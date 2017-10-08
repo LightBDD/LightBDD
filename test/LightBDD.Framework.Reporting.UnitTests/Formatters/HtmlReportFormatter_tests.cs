@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using HtmlAgilityPack;
 using LightBDD.Core.Results;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
-using System.Reflection;
 
 namespace LightBDD.Framework.Reporting.UnitTests.Formatters
 {
@@ -214,7 +214,7 @@ initialize();";
         }
     }
 
-    class HtmlToPlainTextFormatter
+    internal class HtmlToPlainTextFormatter
     {
         private readonly IEnumerable<string> _blockElements = new[] { "div", "tr", "table", "section", "article", "h1", "h2", "h3", "br" };
         private readonly IEnumerable<string> _inlineElements = new[] { "td", "th" };//browsers are treating td/th in special way while for span they put no spaces when copied to clipboard

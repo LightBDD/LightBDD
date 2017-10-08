@@ -106,7 +106,7 @@ namespace LightBDD.XUnit2.Implementation.Customization
             return runSummary;
         }
 
-        RunSummary RunTest_DataDiscoveryException()
+        private RunSummary RunTest_DataDiscoveryException()
         {
             var test = new XunitTest(TestCase, DisplayName);
 

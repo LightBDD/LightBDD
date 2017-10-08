@@ -33,7 +33,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
         {
             ExpectSynchronousScenarioRun();
 
-            int i = 56;
+            var i = 56;
 
             Runner.RunScenario(_ => Step_with_parameters(i, i.ToString()));
             var step = CapturedSteps.Single();
@@ -66,7 +66,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
         {
             ExpectAsynchronousScenarioRun();
 
-            int i = 56;
+            var i = 56;
 
             await Runner.RunScenarioAsync(_ => Step_with_parameters_async(i, i.ToString()));
             var step = CapturedSteps.Single();
@@ -83,7 +83,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
         public void It_should_not_allow_ref_parameters_in_sync_mode()
         {
             ExpectSynchronousScenarioRun();
-            int val = 4;
+            var val = 4;
             var ex = Assert.Throws<ArgumentException>(() => Runner.RunScenario(_ => Step_with_ref_parameters(ref val)));
             Assert.That(ex.Message, Does.Match($"Steps accepting ref or out parameters are not supported: _ => .*{nameof(Step_with_ref_parameters)}.*"));
         }
