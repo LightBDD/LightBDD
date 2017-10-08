@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace LightBDD.Core.Formatting.Values.Implementation
+﻿namespace LightBDD.Core.Formatting.Values.Implementation
 {
     internal class AsStringFormatter : IValueFormatter
     {

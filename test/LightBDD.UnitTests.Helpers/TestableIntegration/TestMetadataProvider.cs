@@ -4,8 +4,7 @@ using System.Reflection;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting;
-using LightBDD.Core.Formatting.Parameters;
-using LightBDD.Core.Formatting.Values;
+using LightBDD.Framework.Formatting;
 using NUnit.Framework.Internal;
 
 namespace LightBDD.UnitTests.Helpers.TestableIntegration
@@ -27,6 +26,9 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             return ExtractAttributePropertyValue<CustomFeatureDescriptionAttribute>(featureType.GetTypeInfo(),
                 a => a.Description);
         }
+
+        public TestMetadataProvider(ValueFormattingConfiguration formattingConfiguration):
+            base(new DefaultNameFormatter(), new StepTypeConfiguration(), new DefaultCultureInfoProvider(),formattingConfiguration){}
 
         public TestMetadataProvider(INameFormatter nameFormatter)
             : base(nameFormatter, new StepTypeConfiguration(), new DefaultCultureInfoProvider(), new ValueFormattingConfiguration())

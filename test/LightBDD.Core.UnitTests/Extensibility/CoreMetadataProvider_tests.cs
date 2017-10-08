@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
-using LightBDD.Core.Formatting.Parameters;
+using LightBDD.Core.Extensibility.Execution;
+using LightBDD.Core.Extensibility.Results;
+using LightBDD.Core.Formatting;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
 using LightBDD.Framework.Formatting;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
-using System.Reflection;
-using LightBDD.Core.Execution;
-using LightBDD.Core.Extensibility.Execution;
-using LightBDD.Core.Extensibility.Results;
-using LightBDD.Core.Formatting.Values;
 
 namespace LightBDD.Core.UnitTests.Extensibility
 {
@@ -31,7 +29,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [Test]
         public void It_should_throw_if_nameFormatter_is_null()
         {
-            Assert.Throws<ArgumentNullException>(() => new TestMetadataProvider(null));
+            Assert.Throws<ArgumentNullException>(() => new TestMetadataProvider((INameFormatter)null));
         }
 
         [Test]
@@ -62,27 +60,6 @@ namespace LightBDD.Core.UnitTests.Extensibility
 
             Assert.That(scenarioName.ToString(), Is.EqualTo("Some method without arguments"));
             Assert.That(scenarioName.Parameters, Is.Empty);
-        }
-
-        [Test]
-        public void GetScenarioName_should_capture_parameterized_scenario_name_from_descriptor_honoring_parameter_formatters()
-        {
-            var method = typeof(Feature_type).GetMethod(nameof(Feature_type.Some_method_with_argument_arg1_and_arg2));
-            var scenarioName = _metadataProvider.GetScenarioName(new ScenarioDescriptor(method, new object[] { 5, "text" }));
-
-            Assert.That(scenarioName.NameFormat, Is.EqualTo("Some method with argument arg1 \"{0}\" and arg2 \"{1}\""));
-            Assert.That(scenarioName.ToString(), Is.EqualTo("Some method with argument arg1 \"--5--\" and arg2 \"text\""));
-            Assert.That(scenarioName.Parameters, Is.Not.Empty);
-
-            Assert.That(scenarioName.Parameters.Select(p => p.FormattedValue).ToArray(), Is.EqualTo(new[] { "--5--", "text" }));
-        }
-
-        [Test]
-        public void GetScenarioName_should_capture_parameterized_scenario_name_from_descriptor_with_multiple_parameter_formatters()
-        {
-            var method = typeof(Feature_type).GetMethod(nameof(Feature_type.Some_step_with_multiple_formatters_on_argument));
-            var scenarioName= _metadataProvider.GetScenarioName(new ScenarioDescriptor(method, new object[] { 5 }));
-            Assert.That(scenarioName.ToString(), Is.EqualTo("Some step with multiple formatters on argument \"--5--\""));
         }
 
         [Test]
@@ -127,25 +104,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
             Assert.That(stepName.ToString(), Is.EqualTo("GIVEN Some step with argument \"<?>\""));
         }
 
-        [Test]
-        public void GetStepParameterFormatter_should_capture_parameter_formatters()
-        {
-            var parameter1 = ParameterInfoHelper.GetMethodParameter<int>(new Feature_type().Some_step_with_argument);
-            var parameter2 = ParameterInfoHelper.GetMethodParameter<int>(new Feature_type().Some_step_with_formatted_argument);
-            var formatter1 = _metadataProvider.GetParameterFormatter(parameter1);
-            var formatter2 = _metadataProvider.GetParameterFormatter(parameter2);
 
-            Assert.That(formatter1.Invoke(5), Is.EqualTo($"{5}"));
-            Assert.That(formatter2.Invoke(3), Is.EqualTo($"--{3}--"));
-        }
-
-        [Test]
-        public void GetStepParameterFormatter_should_honour_multiple_parameter_formatters()
-        {
-            var parameter = ParameterInfoHelper.GetMethodParameter<int>(new Feature_type().Some_step_with_multiple_formatters_on_argument);
-            var formatter = _metadataProvider.GetParameterFormatter(parameter);
-            Assert.That(formatter(3), Is.EqualTo("--3--"));
-        }
 
         [Test]
         public void GetStepDecorators_should_return_extensions_in_order()
@@ -168,7 +127,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [Test]
         public void GetStepDecorators_should_return_empty_collection_if_method_does_not_have_extensions()
         {
-            Action<int> step = new Feature_type().Some_step_with_formatted_argument;
+            Action<int, string> step = new Feature_type().Some_method_with_argument_arg1_and_arg2;
             var extensions = _metadataProvider.GetStepDecorators(new StepDescriptor(step.GetMethodInfo(), (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance)));
             Assert.That(extensions, Is.Empty);
         }
@@ -192,11 +151,15 @@ namespace LightBDD.Core.UnitTests.Extensibility
             Assert.That(extensions, Is.Empty);
         }
 
-        [FeatureDescription("description"), Label("l1"), Label("l2")]
-        class Feature_type
+        [FeatureDescription("description")]
+        [Label("l1")]
+        [Label("l2")]
+        private class Feature_type
         {
-            [Label("s1"), Label("s2")]
-            [ScenarioCategory("c1"), ScenarioCategory("c2")]
+            [Label("s1")]
+            [Label("s2")]
+            [ScenarioCategory("c1")]
+            [ScenarioCategory("c2")]
             [MyScenarioDecorator(Order = -3)]
             [MyScenarioDecorator(Order = -2)]
             [MyScenarioDecorator(Order = -5)]
@@ -204,24 +167,15 @@ namespace LightBDD.Core.UnitTests.Extensibility
             public void Some_method(int argument) { }
 
             public void Some_method_without_arguments() { }
-            public void Some_method_with_argument_arg1_and_arg2([CustomFormatter]int arg1, string arg2) { }
+            public void Some_method_with_argument_arg1_and_arg2(int arg1, string arg2) { }
 
             [MyStepDecorator]
             [MyStepDecorator(Order = 3)]
             [MyStepDecorator(Order = 2)]
             [MyStepDecorator(Order = 5)]
             public void Some_step_with_argument(int argument) { }
-            public void Some_step_with_formatted_argument([CustomFormatter]int argument) { }
-            public void Some_step_with_multiple_formatters_on_argument([CustomFormatter][Format("{0}",Order = 1)]int argument) { }
         }
 
-        public class CustomFormatterAttribute : ParameterFormatterAttribute
-        {
-            public override string FormatValue(object value, IValueFormattingService formattingService)
-            {
-                return string.Format(formattingService.GetCultureInfo(), "--{0}--", value);
-            }
-        }
         [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
         private class MyStepDecoratorAttribute : Attribute, IStepDecoratorAttribute
         {

@@ -37,6 +37,8 @@ namespace LightBDD.Core.Formatting.Values.Implementation
 
         private IValueFormatter LookupFormatter(Type type)
         {
+            if (SelfFormattable.Instance.CanFormat(type))
+                return SelfFormattable.Instance;
             return (IValueFormatter)_generalFormatters.FirstOrDefault(f => f.CanFormat(type)) ?? DefaultValueFormatter.Instance;
         }
 
@@ -71,7 +73,10 @@ namespace LightBDD.Core.Formatting.Values.Implementation
                     : _parent.FormatValue(value);
             }
 
-            public CultureInfo GetCultureInfo() => _parent.GetCultureInfo();
+            public CultureInfo GetCultureInfo()
+            {
+                return _parent.GetCultureInfo();
+            }
         }
     }
 }
