@@ -3,7 +3,9 @@
 #### Details
 
 Issue reference: <!-- #NN -->
+
 List of changes:
+
 
 #### Checklist
 - [ ] Changes are backward compatible with previous version of Core and Framework,
