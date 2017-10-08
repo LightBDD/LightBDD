@@ -18,7 +18,7 @@ namespace LightBDD.Example.AcceptanceTests.MsTest2.Features
             Assert.AreEqual(result, _calculator.Add(x, y));
         }
 
-        private void Then_divinding_X_by_Y_should_give_RESULT(int x, int y, int result)
+        private void Then_dividing_X_by_Y_should_give_RESULT(int x, int y, int result)
         {
             Assert.AreEqual(result, _calculator.Divide(x, y));
         }

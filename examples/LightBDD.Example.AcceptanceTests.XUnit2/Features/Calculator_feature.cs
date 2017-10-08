@@ -34,10 +34,10 @@ This example presents usage of MultiAssertAttribute.")]
         {
             Runner.RunScenario(
                 _ => Given_a_calculator(),
-                _ => Then_divinding_X_by_Y_should_give_RESULT(6, 2, 3),
-                _ => Then_divinding_X_by_Y_should_give_RESULT(2, 0, 0),
-                _ => Then_divinding_X_by_Y_should_give_RESULT(2, 3, 0),
-                _ => Then_divinding_X_by_Y_should_give_RESULT(0, 5, 1));
+                _ => Then_dividing_X_by_Y_should_give_RESULT(6, 2, 3),
+                _ => Then_dividing_X_by_Y_should_give_RESULT(2, 0, 0),
+                _ => Then_dividing_X_by_Y_should_give_RESULT(2, 3, 0),
+                _ => Then_dividing_X_by_Y_should_give_RESULT(0, 5, 1));
         }
 
         [Label("Ticket-13")]
@@ -70,7 +70,7 @@ This example presents usage of MultiAssertAttribute.")]
         private CompositeStep Then_it_should_divide_numbers()
         {
             return CompositeStep.DefineNew().AddSteps(
-                _ => Then_divinding_X_by_Y_should_give_RESULT(6, 3, 2),
+                _ => Then_dividing_X_by_Y_should_give_RESULT(6, 3, 2),
                 _ => Then_multiplying_X_by_Y_should_give_RESULT(5, 2, 2))
             .Build();
         }
