@@ -19,8 +19,8 @@ namespace LightBDD.Core.UnitTests.Formatting
         [TestCase(0, 00, 00, 00, 000, 000, 000, "0ms")]
         public void Should_format_pretty(int days, int hours, int minutes, int seconds, int milliseconds, int microseconds, int nanoseconds, string expected)
         {
-            var microTime = TimeSpan.FromTicks(((microseconds * TimeSpan.TicksPerMillisecond) / 1000));
-            var nanoTime = TimeSpan.FromTicks(((nanoseconds * TimeSpan.TicksPerMillisecond) / 1000000));
+            var microTime = TimeSpan.FromTicks(microseconds * TimeSpan.TicksPerMillisecond / 1000);
+            var nanoTime = TimeSpan.FromTicks(nanoseconds * TimeSpan.TicksPerMillisecond / 1000000);
 
             var timeSpan = new TimeSpan(days, hours, minutes, seconds, milliseconds).Add(microTime).Add(nanoTime);
             Assert.That(timeSpan.FormatPretty(), Is.EqualTo(expected));

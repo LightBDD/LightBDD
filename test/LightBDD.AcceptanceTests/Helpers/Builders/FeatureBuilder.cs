@@ -5,7 +5,7 @@ using LightBDD.UnitTests.Helpers;
 
 namespace LightBDD.AcceptanceTests.Helpers.Builders
 {
-    class FeatureBuilder
+    internal class FeatureBuilder
     {
         private readonly List<ScenarioBuilder> _scenarios = new List<ScenarioBuilder>();
 

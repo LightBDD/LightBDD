@@ -55,7 +55,7 @@ namespace LightBDD.Framework.Reporting
         /// <returns>Formattable path.</returns>
         public ReportFormattablePath ToFormattablePath(string formattablePath)
         {
-            List<Func<IFeatureResult[], object>> parameters = new List<Func<IFeatureResult[], object>>();
+            var parameters = new List<Func<IFeatureResult[], object>>();
             foreach (var pair in _parameters.OrderByDescending(p => p.Key))
             {
                 var replaced = formattablePath.Replace("{" + pair.Key + ":", "{" + parameters.Count + ":");

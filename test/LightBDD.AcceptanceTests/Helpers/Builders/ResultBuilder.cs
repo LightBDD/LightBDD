@@ -4,7 +4,7 @@ using LightBDD.Core.Results;
 
 namespace LightBDD.AcceptanceTests.Helpers.Builders
 {
-    class ResultBuilder
+    internal class ResultBuilder
     {
         private readonly List<FeatureBuilder> _features = new List<FeatureBuilder>();
 

@@ -12,28 +12,32 @@ namespace LightBDD.Core.UnitTests.Configuration
     public class ExecutionExtensionsConfiguration_tests
     {
         #region Decorators
-        class ScenarioDecorator1 : IScenarioDecorator
+
+        private class ScenarioDecorator1 : IScenarioDecorator
         {
             public Task ExecuteAsync(IScenario scenario, Func<Task> scenarioInvocation)
             {
                 throw new NotImplementedException();
             }
         }
-        class ScenarioDecorator2 : IScenarioDecorator
+
+        private class ScenarioDecorator2 : IScenarioDecorator
         {
             public Task ExecuteAsync(IScenario scenario, Func<Task> scenarioInvocation)
             {
                 throw new NotImplementedException();
             }
         }
-        class StepDecorator1 : IStepDecorator
+
+        private class StepDecorator1 : IStepDecorator
         {
             public Task ExecuteAsync(IStep step, Func<Task> stepInvocation)
             {
                 throw new NotImplementedException();
             }
         }
-        class StepDecorator2 : IStepDecorator
+
+        private class StepDecorator2 : IStepDecorator
         {
             public Task ExecuteAsync(IStep step, Func<Task> stepInvocation)
             {

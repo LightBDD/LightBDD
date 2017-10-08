@@ -14,16 +14,15 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
     public class XmlReportFormatter_tests
     {
         private IReportFormatter _subject;
-#if NET451 || NET46
+
         private static XmlSchemaSet _schema;
 
         public XmlReportFormatter_tests()
         {
             _schema = new XmlSchemaSet();
-
             _schema.Add("", AppDomain.CurrentDomain.BaseDirectory + "\\XmlReportFormatterSchema.xsd");
         }
-#endif
+
         [SetUp]
         public void SetUp()
         {
@@ -179,9 +178,7 @@ Step 2: Expected: True
 
         private static void ValidateWithSchema(string xml)
         {
-#if NET451 || NET46
             XDocument.Parse(xml).Validate(_schema, (o, e) => Assert.Fail(e.Message));
-#endif
         }
         private string FormatResults(params IFeatureResult[] results)
         {

@@ -15,8 +15,14 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
             _scenarioRunner = scenarioRunner;
         }
 
-        public IScenarioRunner NewScenario() => _scenarioRunner;
+        public IScenarioRunner NewScenario()
+        {
+            return _scenarioRunner;
+        }
 
-        public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, LightBddConfiguration, TEnrichedRunner> runnerFactory) => runnerFactory(this, _configuration);
+        public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, LightBddConfiguration, TEnrichedRunner> runnerFactory)
+        {
+            return runnerFactory(this, _configuration);
+        }
     }
 }

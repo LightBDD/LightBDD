@@ -105,7 +105,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             if (classNameIfNotZero != null && value != 0)
                 valueTag.Class(classNameIfNotZero);
 
-            var detailsTag = (detailsId != null && value != 0)
+            var detailsTag = detailsId != null && value != 0
                 ? Html.Tag(Html5Tag.A)
                     .Id(detailsId)
                     .Href("#")

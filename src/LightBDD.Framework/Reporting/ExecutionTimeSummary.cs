@@ -68,7 +68,7 @@ namespace LightBDD.Framework.Reporting
             var low = DateTimeOffset.MaxValue;
             var high = DateTimeOffset.MinValue;
             var aggregated = TimeSpan.Zero;
-            int count = 0;
+            var count = 0;
 
             foreach (var time in times)
             {

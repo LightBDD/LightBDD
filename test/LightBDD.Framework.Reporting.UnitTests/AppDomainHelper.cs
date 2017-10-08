@@ -2,7 +2,7 @@ using System;
 
 namespace LightBDD.Framework.Reporting.UnitTests
 {
-    class AppDomainHelper
+    internal class AppDomainHelper
     {
         public static string BaseDirectory
         {

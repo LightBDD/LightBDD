@@ -125,7 +125,7 @@ namespace LightBDD.Core.Extensibility.Implementation
             string previousStepTypeName = null;
             var result = new RunnableStep[totalStepsCount];
 
-            for (int i = 0; i < totalStepsCount; ++i)
+            for (var i = 0; i < totalStepsCount; ++i)
             {
                 var step = ToRunnableStep(steps[i], i, totalStepsCount, previousStepTypeName, decoratingExecutor, scenarioContext, groupPrefix);
                 result[i] = step;

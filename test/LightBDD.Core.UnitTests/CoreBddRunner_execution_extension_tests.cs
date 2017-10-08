@@ -53,7 +53,7 @@ namespace LightBDD.Core.UnitTests
                 "s1-ext2: Some step1",
                 "step-global: Some step2",
                 "s2-ext1: Some step2",
-                "s2-ext2: Some step2",
+                "s2-ext2: Some step2"
             }));
         }
 
@@ -204,7 +204,7 @@ namespace LightBDD.Core.UnitTests
         }
 
         [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-        class MyCapturingDecorator : Attribute, IScenarioDecoratorAttribute, IStepDecoratorAttribute
+        private class MyCapturingDecorator : Attribute, IScenarioDecoratorAttribute, IStepDecoratorAttribute
         {
             private readonly string _prefix;
 
@@ -229,7 +229,7 @@ namespace LightBDD.Core.UnitTests
         }
 
         [AttributeUsage(AttributeTargets.Method)]
-        class MyThrowingDecorator : Attribute, IScenarioDecoratorAttribute, IStepDecoratorAttribute
+        private class MyThrowingDecorator : Attribute, IScenarioDecoratorAttribute, IStepDecoratorAttribute
         {
             private readonly ExecutionStatus _expected;
 

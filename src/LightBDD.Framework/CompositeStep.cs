@@ -46,6 +46,9 @@ namespace LightBDD.Framework
         /// </code>
         /// </summary>
         /// <returns><see cref="ICompositeStepBuilder"/> instance.</returns>
-        public static ICompositeStepBuilder DefineNew() => new CompositeStepBuilder();
+        public static ICompositeStepBuilder DefineNew()
+        {
+            return new CompositeStepBuilder();
+        }
     }
 }

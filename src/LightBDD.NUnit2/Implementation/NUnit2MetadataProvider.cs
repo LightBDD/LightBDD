@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
-using LightBDD.Core.Formatting;
 using LightBDD.Framework.Formatting.Configuration;
 using NUnit.Framework;
 

@@ -29,7 +29,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void Runner_should_await_for_async_void_step_before_calling_next_one()
         {
-            bool finished = false;
+            var finished = false;
             Action step1 = async () =>
             {
                 await Task.Delay(200);

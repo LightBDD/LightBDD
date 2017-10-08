@@ -8,7 +8,6 @@ using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Implementation;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Formatting.Parameters;
-using LightBDD.Core.Formatting.Parameters.Implementation;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Formatting.Values.Implementation;
 using LightBDD.Core.Internals;
@@ -158,7 +157,10 @@ namespace LightBDD.Core.Extensibility
         /// <returns>Formatter function.</returns>
         /// <exception cref="InvalidOperationException">Throws when more than one <see cref="ParameterFormatterAttribute"/> is applied on <paramref name="parameterInfo"/>.</exception>
         [Obsolete]
-        public Func<object, string> GetStepParameterFormatter(ParameterInfo parameterInfo) => GetParameterFormatter(parameterInfo);
+        public Func<object, string> GetStepParameterFormatter(ParameterInfo parameterInfo)
+        {
+            return GetParameterFormatter(parameterInfo);
+        }
 
         /// <summary>
         /// Provides step parameter formatter function for provided <paramref name="parameterInfo"/>.

@@ -25,7 +25,7 @@ namespace LightBDD.Core.Extensibility.Implementation
                 .Select((param, index) => ToArgumentReplacement(name, param.RawName, index))
                 .OrderBy(r => r.Position)
                 .ToArray();
-            int lastPos = 0;
+            var lastPos = 0;
             foreach (var replacement in replacements)
             {
                 if (lastPos < replacement.Position)
@@ -40,7 +40,7 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         private static ArgumentReplacement ToArgumentReplacement(string stepName, string parameterName, int argumentIndex)
         {
-            int position = FindArgument(stepName, parameterName.ToUpperInvariant(), StringComparison.Ordinal);
+            var position = FindArgument(stepName, parameterName.ToUpperInvariant(), StringComparison.Ordinal);
             if (position >= 0)
                 return new ArgumentReplacement(position, $"\"{{{argumentIndex}}}\"", parameterName.Length);
             position = FindArgument(stepName, parameterName, StringComparison.OrdinalIgnoreCase);
@@ -51,7 +51,7 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         private static int FindArgument(string name, string argument, StringComparison stringComparison)
         {
-            int pos = 0;
+            var pos = 0;
             while ((pos = name.IndexOf(argument, pos, stringComparison)) >= 0)
             {
                 if ((pos == 0 || name[pos - 1] == ' ') &&
