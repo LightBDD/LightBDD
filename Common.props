@@ -1,7 +1,7 @@
 ﻿<Project>
   <PropertyGroup>
     <Copyright>Copyright © Wojciech Kotlarski 2013-2017</Copyright>
-    <VersionPrefix>2.2.0.0</VersionPrefix>
+    <VersionPrefix>2.3.0.0</VersionPrefix>
     <Authors>Wojciech Kotlarski</Authors>
     <Company>https://github.com/LightBDD/LightBDD</Company>
     <PackageIconUrl>https://raw.githubusercontent.com/LightBDD/LightBDD/master/logo/lightbdd.png</PackageIconUrl>
@@ -15,7 +15,7 @@
     <PackageOutputPath>$(SolutionDir)\output</PackageOutputPath>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>bdd;tdd;testing;framework;behavior driven development;acceptance criteria</PackageTags>
-    <PackageReleaseNotes>Rewritten Core mechanisms to support multiple platforms (.NET Standard, .NET Framework), async test execution, extensibility and in-code configuration.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added MultiAssertAttribute and IgnoreScenarioAttribute; Improved scenario/step parameter formatting; Added fluent interface for scenario creation; Details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-230 </PackageReleaseNotes>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
