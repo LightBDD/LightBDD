@@ -1,23 +1,26 @@
 LightBDD
 ===========================================
 
-Version vNext
+Version 2.3.0
 ----------------------------------------
 Summary:
-+ #20 Reworked parameter formatting and added default formatters for scenario/step parameters as well as facility to register own assembly-wide formatters.
-+ (Core) #28 Updated parameter formatters to distinguish null values and format them as "<null>"
-+ (all integrations)(New) #42 Added IgnoreScenarioAttribute allowing to declaratively ignore the scenario when applied on scenario or step method
-+ (Framework)(New) #18 Added MultiAssertAttribute that if applied on scenario or composite step, will make all sub-steps executed irrespectively of their status and report any exceptions at the end of execution
-+ (Core) #42 Added IScenarioDecoratorAttribute, IStepDecoratorAttribute interfaces allowing to describe execution decorator attributes applicable on scenario or step methods
-+ (Core)(Change) #18 Added IScenarioDecorator/IStepDecorator interfaces in favor of IScenarioExecutionExtension/IStepExecutionExtension ones which are obsoleted now (updated ExecutionExtensionsConfiguration and IExecutionExtensions to use new interfaces)
-+ (Framework) #17 Added fluent interface for defining and executing scenarios in basic and extended syntax.
-+ (Framework)(Change) #17 Moved ICompositeStepBuilder<T> to LightBDD.Framework.Scenarios namespace
++ #20 Reworked parameter formatting and added default formatters for scenario/step parameters as well as facility to register own assembly-wide formatters
++ #28 Updated parameter formatters to distinguish null values and format them as "<null>"
++ #42 Added IgnoreScenarioAttribute allowing to declaratively ignore the scenario when applied on scenario or step method
++ #18 Added MultiAssertAttribute that if applied on scenario or composite step, will make all sub-steps executed irrespectively of previous step status and report any exceptions at the end of all sub-steps execution
++ #17 Added fluent interface for defining and executing scenarios in basic and extended syntax.
 Details:
-+ (Core) #20 Added IValueFormattingService allowing to format values of any type, based on format attributes, assembly-wide formatters, ISelfFormattable interface or ToString() method.
-+ (Core) #20 Added IValueFormatter, IConditionalValueFormatter interfaces allowing to assembly-wide formatters for scenario and step parameters
-+ (Core) #20 Added ISelfFormattable interface allowing to define value formatting method on type level
-+ (Core) #20 Aded ValueFormattingConfiguration allowing to configure assembly-wide formatters for scenario/step parameters
-+ (Core) #20 Updated ParameterFormatterAttribute to implement IConditionalValueFormatter interface, and allowed to apply multiple format attributes on a single parameter to customize formatting of various types within complex types.
++ (Core)(New) #42 Added IScenarioDecoratorAttribute, IStepDecoratorAttribute interfaces allowing to describe execution decorator attributes applicable on scenario or step methods
++ (Core)(Change) #18 Added IScenarioDecorator/IStepDecorator interfaces in favor of IScenarioExecutionExtension/IStepExecutionExtension ones which are obsoleted now
++ (Framework)(Change) #17 Moved ICompositeStepBuilder<T> to LightBDD.Framework.Scenarios namespace
++ (Core)(New) #20 Added IValueFormattingService allowing to format values of any type, based on format attributes, assembly-wide formatters, ISelfFormattable interface or ToString() method
++ (Core)(New) #20 Added IValueFormatter, IConditionalValueFormatter interfaces allowing to assembly-wide formatters for scenario and step parameters
++ (Core)(New) #20 Added ISelfFormattable interface allowing to define value formatting method on type level
++ (Core)(New) #20 Added ValueFormattingConfiguration allowing to configure assembly-wide formatters for scenario/step parameters
++ (Core)(Change) #20 Updated ParameterFormatterAttribute to implement IConditionalValueFormatter interface, and allowed to apply multiple format attributes on a single parameter to customize formatting of various types within complex types
++ (Framework)(Change) #20 Added SupportedType property to FormatAttribute allowing to narrow it's applicability
++ (Framework)(New) #17 Added NewScenario() extension method for IBddRunner<T>, allowing to define scenarios is fluent way
++ (Framework)(New) #17 Added AddSteps() extension method for IScenarioBuilder, allowing to add basic and extended steps to a fluent scenario builder
 
 
 Version 2.2.0

@@ -1,8 +1,8 @@
 Summary:
-	Test execution start time       : 2017-09-17 21:50:02 UTC
-	Test execution end time         : 2017-09-17 21:50:06 UTC
-	Test execution time             : 3s 932ms
-	Test execution time (aggregated): 3s 214ms
+	Test execution start time       : 2017-10-10 16:20:54 UTC
+	Test execution end time         : 2017-10-10 16:20:58 UTC
+	Test execution time             : 3s 169ms
+	Test execution time (aggregated): 2s 819ms
 	Number of features              : 9
 	Number of scenarios             : 18
 	Passed scenarios                : 9
@@ -21,22 +21,22 @@ Feature: Basket feature [Story-4]
 	As a customer
 	I want to add products to basket
 
-	Scenario: No product in stock [Ticket-6] - Passed (247ms)
+	Scenario: No product in stock [Ticket-6] - Passed (199ms)
 		Categories: Sales
-		Step 1: GIVEN product is out of stock - Passed (30ms)
-		Step 2: WHEN customer adds it to the basket - Passed (136ms)
-		Step 3: THEN the product addition should be unsuccessful - Passed (4ms)
-		Step 4: AND the basket should not contain the product - Passed (1ms)
+		Step 1: GIVEN product is out of stock - Passed (11ms)
+		Step 2: WHEN customer adds it to the basket - Passed (140ms)
+		Step 3: THEN the product addition should be unsuccessful - Passed (7ms)
+		Step 4: AND the basket should not contain the product - Passed (2ms)
 		Comments:
 			Step 2: Transferring 'product' to the basket
 
-	Scenario: Successful addition [Ticket-7] - Ignored (232ms)
+	Scenario: Successful addition [Ticket-7] - Ignored (199ms)
 		Categories: Sales
 		Step 1: GIVEN product is in stock - Passed (<1ms)
-		Step 2: WHEN customer adds it to the basket - Passed (219ms)
+		Step 2: WHEN customer adds it to the basket - Passed (190ms)
 		Step 3: THEN the product addition should be successful - Passed (1ms)
-		Step 4: AND the basket should contain the product - Passed (1ms)
-		Step 5: AND the product should be removed from stock - Ignored (2ms)
+		Step 4: AND the basket should contain the product - Passed (<1ms)
+		Step 5: AND the product should be removed from stock - Ignored (1ms)
 		Details:
 			Step 5: Product removal from stock is not implemented yet
 		Comments:
@@ -50,89 +50,89 @@ Feature: Calculator feature [Story-8]
 	
 	This example presents usage of MultiAssertAttribute.
 
-	Scenario: Adding numbers [Ticket-13] - Failed (179ms)
+	Scenario: Adding numbers [Ticket-13] - Failed (59ms)
 		Step 1: GIVEN a calculator - Passed (<1ms)
-		Step 2: THEN adding "2" to "3" should give "5" - Passed (35ms)
-		Step 3: AND adding "-3" to "2" should give "-1" - Failed (58ms)
+		Step 2: THEN adding "2" to "3" should give "5" - Passed (13ms)
+		Step 3: AND adding "-3" to "2" should give "-1" - Failed (13ms)
 		Step 4: AND adding "0" to "1" should give "1" - Passed (<1ms)
-		Step 5: AND adding "-2" to "-1" should give "-3" - Failed (4ms)
+		Step 5: AND adding "-2" to "-1" should give "-3" - Failed (<1ms)
 		Details:
 			Step 3: NUnit.Framework.AssertionException :   Expected: -1
 				  But was:  1
 				
 				at NUnit.Framework.Assert.ReportFailure(String message)
 				at NUnit.Framework.Assert.That[TActual](TActual actual, IResolveConstraint expression, String message, Object[] args)
-				at LightBDD.Example.AcceptanceTests.NUnit3.Features.Calculator_feature.Then_adding_X_to_Y_should_give_RESULT(Int32 x, Int32 y, Int32 result) in D:\dev\LightBDD\examples\LightBDD.Example.AcceptanceTests.NUnit3\Features\Calculator_feature.Steps.cs:line 19
-				at lambda_method(Closure , NoContext , Object[] )
+				at NUnit.Framework.Assert.AreEqual(Object expected, Object actual)
+				at LightBDD.Example.AcceptanceTests.NUnit3.Features.Calculator_feature.Then_adding_X_to_Y_should_give_RESULT(Int32 x, Int32 y, Int32 result) in D:\dev\LightBDD\examples\LightBDD.Example.AcceptanceTests.NUnit3\Features\Calculator_feature.Steps.cs:line 18
 			Step 5: NUnit.Framework.AssertionException :   Expected: -3
 				  But was:  3
 				
 				at NUnit.Framework.Assert.ReportFailure(String message)
 				at NUnit.Framework.Assert.That[TActual](TActual actual, IResolveConstraint expression, String message, Object[] args)
-				at LightBDD.Example.AcceptanceTests.NUnit3.Features.Calculator_feature.Then_adding_X_to_Y_should_give_RESULT(Int32 x, Int32 y, Int32 result) in D:\dev\LightBDD\examples\LightBDD.Example.AcceptanceTests.NUnit3\Features\Calculator_feature.Steps.cs:line 19
-				at lambda_method(Closure , NoContext , Object[] )
+				at NUnit.Framework.Assert.AreEqual(Object expected, Object actual)
+				at LightBDD.Example.AcceptanceTests.NUnit3.Features.Calculator_feature.Then_adding_X_to_Y_should_give_RESULT(Int32 x, Int32 y, Int32 result) in D:\dev\LightBDD\examples\LightBDD.Example.AcceptanceTests.NUnit3\Features\Calculator_feature.Steps.cs:line 18
 
-	Scenario: Composite operations [Ticket-13] - Failed (126ms)
+	Scenario: Composite operations [Ticket-13] - Failed (39ms)
 		Step 1: GIVEN a calculator - Passed (<1ms)
-		Step 2: THEN it should add numbers - Failed (57ms)
+		Step 2: THEN it should add numbers - Failed (18ms)
 			Step 2.1: THEN adding "2" to "3" should give "5" - Passed (<1ms)
-			Step 2.2: AND adding "2" to "-3" should give "-1" - Failed (1ms)
-			Step 2.3: AND adding "0" to "1" should give "0" - Failed (1ms)
-		Step 3: AND it should multiply numbers - Ignored (28ms)
-			Step 3.1: THEN multiplying "2" by "3" should give "6" - Passed (1ms)
-			Step 3.2: AND multiplying "2" by "-3" should give "-6" - Ignored (6ms)
+			Step 2.2: AND adding "2" to "-3" should give "-1" - Failed (<1ms)
+			Step 2.3: AND adding "0" to "1" should give "0" - Failed (<1ms)
+		Step 3: AND it should multiply numbers - Ignored (9ms)
+			Step 3.1: THEN multiplying "2" by "3" should give "6" - Passed (<1ms)
+			Step 3.2: AND multiplying "2" by "-3" should give "-6" - Ignored (1ms)
 			Step 3.3: AND multiplying "1" by "1" should give "1" - NotRun
-		Step 4: AND it should divide numbers - Failed (26ms)
+		Step 4: AND it should divide numbers - Failed (7ms)
 			Step 4.1: THEN divinding "6" by "3" should give "2" - Passed (<1ms)
-			Step 4.2: AND multiplying "5" by "2" should give "2" - Failed (1ms)
+			Step 4.2: AND multiplying "5" by "2" should give "2" - Failed (<1ms)
 		Details:
 			Step 2.2: NUnit.Framework.AssertionException :   Expected: -1
 				  But was:  1
 				
 				at NUnit.Framework.Assert.ReportFailure(String message)
 				at NUnit.Framework.Assert.That[TActual](TActual actual, IResolveConstraint expression, String message, Object[] args)
-				at LightBDD.Example.AcceptanceTests.NUnit3.Features.Calculator_feature.Then_adding_X_to_Y_should_give_RESULT(Int32 x, Int32 y, Int32 result) in D:\dev\LightBDD\examples\LightBDD.Example.AcceptanceTests.NUnit3\Features\Calculator_feature.Steps.cs:line 19
-				at lambda_method(Closure , NoContext , Object[] )
+				at NUnit.Framework.Assert.AreEqual(Object expected, Object actual)
+				at LightBDD.Example.AcceptanceTests.NUnit3.Features.Calculator_feature.Then_adding_X_to_Y_should_give_RESULT(Int32 x, Int32 y, Int32 result) in D:\dev\LightBDD\examples\LightBDD.Example.AcceptanceTests.NUnit3\Features\Calculator_feature.Steps.cs:line 18
 			Step 2.3: NUnit.Framework.AssertionException :   Expected: 0
 				  But was:  1
 				
 				at NUnit.Framework.Assert.ReportFailure(String message)
 				at NUnit.Framework.Assert.That[TActual](TActual actual, IResolveConstraint expression, String message, Object[] args)
-				at LightBDD.Example.AcceptanceTests.NUnit3.Features.Calculator_feature.Then_adding_X_to_Y_should_give_RESULT(Int32 x, Int32 y, Int32 result) in D:\dev\LightBDD\examples\LightBDD.Example.AcceptanceTests.NUnit3\Features\Calculator_feature.Steps.cs:line 19
-				at lambda_method(Closure , NoContext , Object[] )
+				at NUnit.Framework.Assert.AreEqual(Object expected, Object actual)
+				at LightBDD.Example.AcceptanceTests.NUnit3.Features.Calculator_feature.Then_adding_X_to_Y_should_give_RESULT(Int32 x, Int32 y, Int32 result) in D:\dev\LightBDD\examples\LightBDD.Example.AcceptanceTests.NUnit3\Features\Calculator_feature.Steps.cs:line 18
 			Step 3.2: Negative numbers are not supported yet
 			Step 4.2: NUnit.Framework.AssertionException :   Expected: 2
 				  But was:  10
 				
 				at NUnit.Framework.Assert.ReportFailure(String message)
 				at NUnit.Framework.Assert.That[TActual](TActual actual, IResolveConstraint expression, String message, Object[] args)
-				at LightBDD.Example.AcceptanceTests.NUnit3.Features.Calculator_feature.Then_multiplying_X_by_Y_should_give_RESULT(Int32 x, Int32 y, Int32 result) in D:\dev\LightBDD\examples\LightBDD.Example.AcceptanceTests.NUnit3\Features\Calculator_feature.Steps.cs:line 31
-				at lambda_method(Closure , NoContext , Object[] )
+				at NUnit.Framework.Assert.AreEqual(Object expected, Object actual)
+				at LightBDD.Example.AcceptanceTests.NUnit3.Features.Calculator_feature.Then_multiplying_X_by_Y_should_give_RESULT(Int32 x, Int32 y, Int32 result) in D:\dev\LightBDD\examples\LightBDD.Example.AcceptanceTests.NUnit3\Features\Calculator_feature.Steps.cs:line 30
 		Comments:
 			Step 2: It is possible to add MultiAssertAttribute on composite step
 			Step 3: This step does not have MultiAssertAttribute so will stop on first exception
 
-	Scenario: Dividing numbers [Ticket-13] - Failed (41ms)
+	Scenario: Dividing numbers [Ticket-13] - Failed (15ms)
 		Step 1: GIVEN a calculator - Passed (<1ms)
 		Step 2: THEN divinding "6" by "2" should give "3" - Passed (<1ms)
-		Step 3: AND divinding "2" by "0" should give "0" - Failed (4ms)
+		Step 3: AND divinding "2" by "0" should give "0" - Failed (1ms)
 		Step 4: AND divinding "2" by "3" should give "0" - Passed (<1ms)
-		Step 5: AND divinding "0" by "5" should give "1" - Failed (2ms)
+		Step 5: AND divinding "0" by "5" should give "1" - Failed (1ms)
 		Details:
 			Step 3: System.DivideByZeroException : Attempted to divide by zero.
+				at LightBDD.Example.Domain.Calculator.Divide(Int32 x, Int32 y)
 				at LightBDD.Example.AcceptanceTests.NUnit3.Features.Calculator_feature.Then_divinding_X_by_Y_should_give_RESULT(Int32 x, Int32 y, Int32 result) in D:\dev\LightBDD\examples\LightBDD.Example.AcceptanceTests.NUnit3\Features\Calculator_feature.Steps.cs:line 23
 				at lambda_method(Closure , NoContext , Object[] )
 				at LightBDD.Core.Extensibility.Implementation.ScenarioRunner.InvocationResultTransformer.<InvokeAsync>d__5.MoveNext()
-				--- End of stack trace from previous location where exception was thrown ---
 			Step 5: NUnit.Framework.AssertionException :   Expected: 1
 				  But was:  0
 				
 				at NUnit.Framework.Assert.ReportFailure(String message)
 				at NUnit.Framework.Assert.That[TActual](TActual actual, IResolveConstraint expression, String message, Object[] args)
-				at LightBDD.Example.AcceptanceTests.NUnit3.Features.Calculator_feature.Then_divinding_X_by_Y_should_give_RESULT(Int32 x, Int32 y, Int32 result) in D:\dev\LightBDD\examples\LightBDD.Example.AcceptanceTests.NUnit3\Features\Calculator_feature.Steps.cs:line 24
-				at lambda_method(Closure , NoContext , Object[] )
+				at NUnit.Framework.Assert.AreEqual(Object expected, Object actual)
+				at LightBDD.Example.AcceptanceTests.NUnit3.Features.Calculator_feature.Then_divinding_X_by_Y_should_give_RESULT(Int32 x, Int32 y, Int32 result) in D:\dev\LightBDD\examples\LightBDD.Example.AcceptanceTests.NUnit3\Features\Calculator_feature.Steps.cs:line 23
 
-	Scenario: Multiplying numbers [Ticket-13] - Ignored (14ms)
+	Scenario: Multiplying numbers [Ticket-13] - Ignored (9ms)
 		Step 1: GIVEN a calculator - Passed (<1ms)
 		Step 2: THEN multiplying "6" by "2" should give "12" - Passed (<1ms)
 		Step 3: AND multiplying "-1" by "2" should give "-2" - Ignored (<1ms)
@@ -148,45 +148,45 @@ Feature: Contacts management [Story-6]
 	As an application user
 	I want to add, browse and remove my contacts
 
-	Scenario: Contact book should allow me to add multiple contacts [Ticket-8] - Passed (26ms)
+	Scenario: Contact book should allow me to add multiple contacts [Ticket-8] - Passed (14ms)
 		Step 1: GIVEN my contact book is empty - Passed (<1ms)
 		Step 2: WHEN I add new contacts - Passed (1ms)
-		Step 3: THEN all contacts should be available in the contact book - Passed (10ms)
+		Step 3: THEN all contacts should be available in the contact book - Passed (8ms)
 
-	Scenario: Contact book should allow me to remove all contacts [Ticket-9] - Bypassed (17ms)
+	Scenario: Contact book should allow me to remove all contacts [Ticket-9] - Bypassed (13ms)
 		Step 1: GIVEN my contact book is filled with many contacts - Passed (5ms)
-		Step 2: WHEN I clear it - Bypassed (3ms)
+		Step 2: WHEN I clear it - Bypassed (2ms)
 		Step 3: THEN the contact book should be empty - Passed (1ms)
 		Details:
 			Step 2: Contact book clearing is not implemented yet. Contacts are removed one by one.
 
-	Scenario: Contact book should allow me to remove contacts [Ticket-9] - Passed (19ms)
+	Scenario: Contact book should allow me to remove contacts [Ticket-9] - Passed (16ms)
 		Step 1: GIVEN my contact book is filled with contacts - Passed (<1ms)
-		Step 2: WHEN I remove one contact - Passed (1ms)
+		Step 2: WHEN I remove one contact - Passed (<1ms)
 		Step 3: THEN the contact book should not contain removed contact any more - Passed (3ms)
-		Step 4: AND the contact book should contains all other contacts - Passed (7ms)
+		Step 4: AND the contact book should contains all other contacts - Passed (6ms)
 
 Feature: Customer journey [Story-7]
 	In order to receive a product
 	As an application user
 	I want to go through entire customer journey
 
-	Scenario: Ordering products [Ticket-12] - Ignored (549ms)
-		Step 1: GIVEN customer is logged in - Passed (187ms)
+	Scenario: Ordering products [Ticket-12] - Ignored (503ms)
+		Step 1: GIVEN customer is logged in - Passed (174ms)
 			Step 1.1: GIVEN the user is about to login - Passed (<1ms)
 			Step 1.2: AND the user entered valid login - Passed (<1ms)
 			Step 1.3: AND the user entered valid password - Passed (<1ms)
-			Step 1.4: WHEN the user clicks login button - Passed (174ms)
+			Step 1.4: WHEN the user clicks login button - Passed (168ms)
 			Step 1.5: THEN the login operation should be successful - Passed (<1ms)
-		Step 2: WHEN customer adds products to basket - Bypassed (202ms)
-			Step 2.1: GIVEN product "wooden desk" is in stock - Passed (2ms)
-			Step 2.2: WHEN customer adds product "wooden desk" to the basket - Bypassed (189ms)
-			Step 2.3: THEN the product addition should be successful - Passed (1ms)
-		Step 3: AND customer pays for products in basket - Passed (141ms)
-			Step 3.1: WHEN customer requests to pay - Passed (138ms)
+		Step 2: WHEN customer adds products to basket - Bypassed (158ms)
+			Step 2.1: GIVEN product "wooden desk" is in stock - Passed (1ms)
+			Step 2.2: WHEN customer adds product "wooden desk" to the basket - Bypassed (149ms)
+			Step 2.3: THEN the product addition should be successful - Passed (<1ms)
+		Step 3: AND customer pays for products in basket - Passed (157ms)
+			Step 3.1: WHEN customer requests to pay - Passed (156ms)
 			Step 3.2: THEN payment should be successful - Passed (<1ms)
-		Step 4: THEN customer should receive order email - Ignored (16ms)
-			Step 4.1: THEN customer should receive invoice - Ignored (3ms)
+		Step 4: THEN customer should receive order email - Ignored (11ms)
+			Step 4.1: THEN customer should receive invoice - Ignored (1ms)
 			Step 4.2: AND customer should receive order confirmation - NotRun
 		Details:
 			Step 2.2: Until proper api is implemented, product is added directly to the DB.
@@ -197,13 +197,13 @@ Feature: Invoice feature [Story-2]
 	As a customer
 	I want to receive invoice for bought items
 
-	Scenario: Receiving invoice for products [Ticket-4] - Ignored (16ms)
+	Scenario: Receiving invoice for products [Ticket-4] - Ignored (12ms)
 		Categories: Sales
 		Step 1: GIVEN product "wooden desk" is available in product storage - Passed (<1ms)
 		Step 2: AND product "wooden shelf" is available in product storage - Passed (<1ms)
 		Step 3: WHEN customer buys product "wooden desk" - Passed (<1ms)
 		Step 4: AND customer buys product "wooden shelf" - Passed (<1ms)
-		Step 5: THEN an invoice should be sent to the customer - Ignored (1ms)
+		Step 5: THEN an invoice should be sent to the customer - Ignored (<1ms)
 		Step 6: AND the invoice should contain product "wooden desk" with price of "£62.00" - NotRun
 		Step 7: AND the invoice should contain product "wooden shelf" with price of "£37.00" - NotRun
 		Details:
@@ -216,10 +216,10 @@ Feature: Invoice history feature [STORY-9]
 	
 	Example usage of fluent scenarios
 
-	Scenario: Browsing invoices [Ticket-14] - Passed (497ms)
-		Step 1: GIVEN invoice "Invoice-1" - Passed (187ms)
-		Step 2: AND invoice "Invoice-2" - Passed (159ms)
-		Step 3: WHEN I request all historical invoices - Passed (138ms)
+	Scenario: Browsing invoices [Ticket-14] - Passed (495ms)
+		Step 1: GIVEN invoice "Invoice-1" - Passed (195ms)
+		Step 2: AND invoice "Invoice-2" - Passed (139ms)
+		Step 3: WHEN I request all historical invoices - Passed (150ms)
 		Step 4: THEN I should see invoices "Invoice-1, Invoice-2" - Passed (<1ms)
 
 Feature: Login feature [Story-1]
@@ -227,11 +227,11 @@ Feature: Login feature [Story-1]
 	As an user
 	I want to login into system
 
-	Scenario: Anonymous login name should allow to log in [Ticket-3] - Failed (130ms)
+	Scenario: Anonymous login name should allow to log in [Ticket-3] - Failed (175ms)
 		Categories: Security
 		Step 1: GIVEN the user is about to login - Passed (<1ms)
 		Step 2: AND the user entered anonymous login - Passed (<1ms)
-		Step 3: WHEN the user clicks login button - Passed (125ms)
+		Step 3: WHEN the user clicks login button - Passed (170ms)
 		Step 4: THEN the login operation should be successful - Failed (2ms)
 		Step 5: AND a welcome message containing user name should be returned - NotRun
 		Details:
@@ -241,35 +241,35 @@ Feature: Login feature [Story-1]
 				
 				at NUnit.Framework.Assert.ReportFailure(String message)
 				at NUnit.Framework.Assert.That[TActual](TActual actual, IResolveConstraint expression, String message, Object[] args)
+				at LightBDD.Example.AcceptanceTests.NUnit3.Features.Login_feature.Then_the_login_operation_should_be_successful() in D:\dev\LightBDD\examples\LightBDD.Example.AcceptanceTests.NUnit3\Features\Login_feature.Steps.cs:line 58
 				at LightBDD.Framework.Scenarios.Basic.Implementation.BasicStepCompiler.StepExecutor.Execute(Object context, Object[] args)
-				at LightBDD.Core.Extensibility.Implementation.ScenarioRunner.InvocationResultTransformer.<InvokeAsync>d__5.MoveNext()
 		Comments:
 			Step 2: Presentation of failed scenario
 
-	Scenario: Successful login [Ticket-1] - Passed (166ms)
+	Scenario: Successful login [Ticket-1] - Passed (130ms)
 		Categories: Security
 		Step 1: GIVEN the user is about to login - Passed (<1ms)
 		Step 2: AND the user entered valid login - Passed (<1ms)
 		Step 3: AND the user entered valid password - Passed (<1ms)
-		Step 4: WHEN the user clicks login button - Passed (163ms)
+		Step 4: WHEN the user clicks login button - Passed (128ms)
 		Step 5: THEN the login operation should be successful - Passed (<1ms)
 		Step 6: AND a welcome message containing user name should be returned - Passed (1ms)
 
-	Scenario: Wrong login provided causes login to fail [Ticket-2] - Passed (105ms)
+	Scenario: Wrong login provided causes login to fail [Ticket-2] - Passed (109ms)
 		Categories: Security
 		Step 1: GIVEN the user is about to login - Passed (<1ms)
 		Step 2: AND the user entered invalid login - Passed (<1ms)
 		Step 3: AND the user entered valid password - Passed (<1ms)
-		Step 4: WHEN the user clicks login button - Passed (104ms)
+		Step 4: WHEN the user clicks login button - Passed (108ms)
 		Step 5: THEN the login operation should be unsuccessful - Passed (<1ms)
 		Step 6: AND an invalid login or password error message should be returned - Passed (<1ms)
 
-	Scenario: Wrong password provided causes login to fail [Ticket-2] - Passed (194ms)
+	Scenario: Wrong password provided causes login to fail [Ticket-2] - Passed (180ms)
 		Categories: Security
 		Step 1: GIVEN the user is about to login - Passed (<1ms)
 		Step 2: AND the user entered valid login - Passed (<1ms)
 		Step 3: AND the user entered invalid password - Passed (<1ms)
-		Step 4: WHEN the user clicks login button - Passed (194ms)
+		Step 4: WHEN the user clicks login button - Passed (179ms)
 		Step 5: THEN the login operation should be unsuccessful - Passed (<1ms)
 		Step 6: AND an invalid login or password error message should be returned - Passed (<1ms)
 
@@ -278,18 +278,18 @@ Feature: Payment feature [Story-5]
 	As a customer
 	I want to pay for products in basket
 
-	Scenario: Successful payment [Ticket-10][Ticket-11] - Passed (640ms)
-		Step 1: GIVEN customer has some products in basket - Passed (118ms)
-		Step 2: AND customer has enough money to pay for products - Passed (202ms)
-		Step 3: WHEN customer requests to pay - Passed (110ms)
-		Step 4: THEN payment should be successful - Passed (201ms)
+	Scenario: Successful payment [Ticket-10][Ticket-11] - Passed (637ms)
+		Step 1: GIVEN customer has some products in basket - Passed (180ms)
+		Step 2: AND customer has enough money to pay for products - Passed (168ms)
+		Step 3: WHEN customer requests to pay - Passed (119ms)
+		Step 4: THEN payment should be successful - Passed (165ms)
 
 Feature: Product spedition feature [Story-3]
 	In order to deliver products to customer effectively
 	As a spedition manager
 	I want to dispatch products to customer as soon as the payment is finalized
 
-	Scenario: Should dispatch product after payment is finalized [Ticket-5] - Passed (8ms)
+	Scenario: Should dispatch product after payment is finalized [Ticket-5] - Passed (7ms)
 		Categories: Delivery, Sales
 		Step 1: GIVEN There is an active customer with id "ABC-123" - Passed (<1ms)
 		Step 2: AND The customer has product "wooden shelf" in basket - Passed (<1ms)
