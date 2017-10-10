@@ -23,11 +23,16 @@ namespace LightBDD.Core.Formatting.Values.Implementation
 
         public string FormatValue(object value)
         {
+            return FormatValue(value, this);
+        }
+
+        private string FormatValue(object value, IValueFormattingService formattingService)
+        {
             if (value == null)
                 return FormatSymbols.Instance.NullValue;
 
             var valueFormatter = _formatters.GetOrAdd(value.GetType(), LookupFormatter);
-            return valueFormatter.FormatValue(value, this);
+            return valueFormatter.FormatValue(value, formattingService);
         }
 
         public CultureInfo GetCultureInfo()
@@ -70,7 +75,7 @@ namespace LightBDD.Core.Formatting.Values.Implementation
 
                 return declared != null
                     ? declared.FormatValue(value, this)
-                    : _parent.FormatValue(value);
+                    : _parent.FormatValue(value, this);
             }
 
             public CultureInfo GetCultureInfo()
