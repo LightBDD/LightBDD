@@ -4,6 +4,9 @@ using LightBDD.Framework.ExecutionContext;
 namespace LightBDD.NUnit3.Implementation
 {
     internal class TestContextProvider
+#if !NETSTANDARD1_6
+        : System.MarshalByRefObject
+#endif
     {
         private static readonly AsyncLocalContext<TestContextProvider> Provider = new AsyncLocalContext<TestContextProvider>();
         public  MethodInfo TestMethod { get; }
