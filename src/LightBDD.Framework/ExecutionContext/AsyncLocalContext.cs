@@ -15,6 +15,14 @@ namespace LightBDD.Framework.ExecutionContext
     public class AsyncLocalContext<T>
     {
 #if NET45
+        class Wrapper : MarshalByRefObject
+        {
+            public Wrapper(T value)
+            {
+                Value = value;
+            }
+            public T Value { get; }
+        }
         private readonly string _id = Guid.NewGuid().ToString();
 #else
         private readonly AsyncLocal<T> _context = new AsyncLocal<T>();
@@ -27,7 +35,8 @@ namespace LightBDD.Framework.ExecutionContext
             get
             {
 #if NET45
-                return (T)(CallContext.LogicalGetData(_id) ?? default(T));
+                var wrapper = (Wrapper)CallContext.LogicalGetData(_id);
+                return wrapper != null ? wrapper.Value : default(T);
 #else
                 return _context.Value;
 #endif
@@ -38,7 +47,7 @@ namespace LightBDD.Framework.ExecutionContext
                 if (Equals(value, default(T)))
                     CallContext.FreeNamedDataSlot(_id);
                 else
-                    CallContext.LogicalSetData(_id, value);
+                    CallContext.LogicalSetData(_id, new Wrapper(value));
 #else
                 _context.Value = value;
 #endif
