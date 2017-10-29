@@ -1,7 +1,7 @@
 ﻿<Project>
   <PropertyGroup>
     <Copyright>Copyright © Wojciech Kotlarski 2013-2017</Copyright>
-    <VersionPrefix>2.3.0.0</VersionPrefix>
+    <VersionPrefix>2.3.1.0</VersionPrefix>
     <Authors>Wojciech Kotlarski</Authors>
     <Company>https://github.com/LightBDD/LightBDD</Company>
     <PackageIconUrl>https://raw.githubusercontent.com/LightBDD/LightBDD/master/logo/lightbdd.png</PackageIconUrl>
@@ -15,7 +15,7 @@
     <PackageOutputPath>$(SolutionDir)\output</PackageOutputPath>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>bdd;tdd;testing;framework;behavior driven development;acceptance criteria</PackageTags>
-    <PackageReleaseNotes>Added MultiAssertAttribute and IgnoreScenarioAttribute; Improved scenario/step parameter formatting; Added fluent interface for scenario creation; Details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-230 </PackageReleaseNotes>
+    <PackageReleaseNotes>Fixed LightBDD targeting NET45x to support tests requiring cross-domain communication; Details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-231 </PackageReleaseNotes>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)'=='Release'">

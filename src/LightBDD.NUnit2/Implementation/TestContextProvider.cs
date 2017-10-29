@@ -5,19 +5,19 @@ namespace LightBDD.NUnit2.Implementation
 {
     internal class TestContextProvider
     {
-        private static readonly AsyncLocalContext<TestContextProvider> _provider = new AsyncLocalContext<TestContextProvider>();
+        private static readonly AsyncLocalContext<TestContextProvider> Provider = new AsyncLocalContext<TestContextProvider>();
         public MethodInfo TestMethod { get; }
 
-        public static TestContextProvider Current => _provider.Value;
+        public static TestContextProvider Current => Provider.Value;
 
         public static void Initialize(MethodInfo testMethod)
         {
-            _provider.Value = new TestContextProvider(testMethod);
+            Provider.Value = new TestContextProvider(testMethod);
         }
 
         public static void Clear()
         {
-            _provider.Value = null;
+            Provider.Value = null;
         }
 
         private TestContextProvider(MethodInfo testMethod)

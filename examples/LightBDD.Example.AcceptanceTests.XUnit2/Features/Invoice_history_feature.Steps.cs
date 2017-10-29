@@ -21,7 +21,7 @@ namespace LightBDD.Example.AcceptanceTests.XUnit2.Features
         {
         }
 
-        protected Invoice_history_feature(ITestOutputHelper output) : base(output)
+        public Invoice_history_feature(ITestOutputHelper output) : base(output)
         {
         }
     }
