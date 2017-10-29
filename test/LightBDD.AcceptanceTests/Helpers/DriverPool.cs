@@ -23,7 +23,7 @@ namespace LightBDD.AcceptanceTests.Helpers
         private static ChromeDriver CreateDriver()
         {
             var driver = new ChromeDriver();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(200);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(300);
             return driver;
         }
 
