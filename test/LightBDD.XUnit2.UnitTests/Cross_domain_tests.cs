@@ -1,16 +1,20 @@
 ﻿#if !NETCOREAPP1_1
 using System.Configuration;
 using System.Diagnostics;
+using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Extended;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace LightBDD.XUnit2.UnitTests
 {
+    [FeatureDescription(@"As a developer,
+I want runner to support tests requiring cross domain communication,
+So that I can write tests accessing application settings")]
     public class Cross_domain_tests : FeatureFixture
     {
         [Scenario]
-        public void Runner_should_allow_cross_domain_communication()
+        public void Runner_should_allow_retrieving_application_settings()
         {
             Runner.RunScenario(
                 _ => Assert_setting_has_value("foo"));
