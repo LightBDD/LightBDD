@@ -1,10 +1,9 @@
-using System;
 using System.Reflection;
 using LightBDD.Framework.ExecutionContext;
 
 namespace LightBDD.NUnit2.Implementation
 {
-    internal class TestContextProvider : MarshalByRefObject
+    internal class TestContextProvider
     {
         private static readonly AsyncLocalContext<TestContextProvider> Provider = new AsyncLocalContext<TestContextProvider>();
         public MethodInfo TestMethod { get; }
