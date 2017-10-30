@@ -53,17 +53,7 @@ namespace LightBDD.AcceptanceTests.Features
             ContextValue.Dispose();
         }
 
-        private static string BaseDirectory
-        {
-            get
-            {
-#if NET451
-                return AppDomain.CurrentDomain.BaseDirectory;
-#else 
-                return AppContext.BaseDirectory;
-#endif
-            }
-        }
+        private static string BaseDirectory => AppContext.BaseDirectory;
 
         private void a_various_features_with_scenarios_and_categories()
         {
@@ -146,7 +136,7 @@ namespace LightBDD.AcceptanceTests.Features
 
         private static string ToFeatureToggle(int feature)
         {
-            return string.Format("toggle{0}", feature);
+            return $"toggle{feature}";
         }
 
         private void the_feature_scenarios_are_VISIBLE(int feature, [VisibleFormat]bool visible)
@@ -162,7 +152,7 @@ namespace LightBDD.AcceptanceTests.Features
 
         private static string ToScenarioToggle(int feature, int scenario)
         {
-            return string.Format("toggle{0}_{1}", feature, scenario - 1);
+            return $"toggle{feature}_{scenario - 1}";
         }
 
         private void the_feature_scenario_steps_are_VISIBLE(int feature, int scenario, [VisibleFormat]bool visible)
@@ -193,12 +183,12 @@ namespace LightBDD.AcceptanceTests.Features
 
         private void a_filter_status_button_is_clicked(ExecutionStatus status)
         {
-            ClickLabeledButton(string.Format("show{0}", status));
+            ClickLabeledButton($"show{status}");
         }
 
         private void the_filter_status_button_is_SELECTED(ExecutionStatus status, [SelectedFormat]bool selected)
         {
-            Assert.That(ContextValue.Driver.FindElementById(string.Format("show{0}", status)).Selected, Is.EqualTo(selected));
+            Assert.That(ContextValue.Driver.FindElementById($"show{status}").Selected, Is.EqualTo(selected));
         }
 
         private void all_scenarios_with_status_are_VISIBLE(ExecutionStatus status, [VisibleFormat]bool visible)
@@ -283,7 +273,9 @@ namespace LightBDD.AcceptanceTests.Features
 
         private void the_page_is_redirected_to_url_with_query_part()
         {
-            Assert.That(ContextValue.Driver.Url, Does.Contain("?"));
+            Repeat.Until(
+                () => ContextValue.Driver.Url.Contains("?"),
+                () => $"Page was not redirected, actual value: {ContextValue.Driver.Url}");
         }
 
         private void the_Feature_Summary_table_is_sorted_ASCENDING_by_column([OrderFormat]bool ascending, FeatureSummaryColumn column)

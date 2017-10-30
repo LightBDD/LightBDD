@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
@@ -73,13 +72,7 @@ namespace LightBDD.AcceptanceTests.Helpers
         {
             var counter = driver.Synchronize();
             action();
-            for (var i = 0; i < 100; ++i)
-            {
-                if (driver.Synchronize() > counter)
-                    return;
-                Thread.Sleep(10);
-            }
-            throw new InvalidOperationException("The synchronization counter has not been increased!");
+            Repeat.Until(() => driver.Synchronize() > counter, "The synchronization counter has not been increased!");
         }
 
         /// <summary>
