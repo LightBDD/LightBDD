@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenQA.Selenium;
@@ -60,6 +61,32 @@ namespace LightBDD.AcceptanceTests.Helpers
         public static IWebElement FindLabelTarget(this ChromeDriver driver, IWebElement label)
         {
             return driver.FindElementById(label.GetAttribute("for"));
+        }
+
+        public static void ClickSync(this IWebElement element, ChromeDriver driver)
+        {
+            ExecuteSync(driver, element.Click);
+        }
+
+        private static void ExecuteSync(ChromeDriver driver, Action action)
+        {
+            var counter = driver.Synchronize();
+            action();
+            Repeat.Until(() => driver.Synchronize() > counter, "The synchronization counter has not been increased!");
+        }
+
+        /// <summary>
+        /// Executes javascript in the browser (that would wait for pending operation to finish) and returns synchronization counter (that is incremented after each long operation is finished).
+        /// </summary>
+        public static long Synchronize(this ChromeDriver driver)
+        {
+            return (long)driver.ExecuteScript("return synchronizationCounter;");
+        }
+
+        public static void EnsurePageIsLoaded(this ChromeDriver driver)
+        {
+            Repeat.Until(() => driver.Synchronize() == 0, () => $"The synchronization counter should be 0, but was: {driver.Synchronize()}");
+            Repeat.Until(() => (bool)driver.ExecuteScript("return initialized;"), "The page is not initialized.");
         }
     }
 }
