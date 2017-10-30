@@ -128,7 +128,20 @@ namespace LightBDD.AcceptanceTests.Features
 
         private void ClickLabeledButton(string buttonId)
         {
-            ContextValue.Driver.FindElementsByTagName("label").Single(l => l.GetAttribute("for") == buttonId).Click();
+            FindLabeledButton(buttonId).Click();
+            ContextValue.Driver.Synchronize();
+        }
+
+        private void ClickLabeledButtonSync(string buttonId)
+        {
+            FindLabeledButton(buttonId).ClickSync(ContextValue.Driver);
+        }
+
+        private IWebElement FindLabeledButton(string buttonId)
+        {
+            return ContextValue.Driver
+                .FindElementsByTagName("label")
+                .Single(l => l.GetAttribute("for") == buttonId);
         }
 
         private static string ToFeatureToggle(int feature)
@@ -160,12 +173,12 @@ namespace LightBDD.AcceptanceTests.Features
 
         private void a_feature_filter_button_is_clicked()
         {
-            ClickLabeledButton("toggleFeatures");
+            ClickLabeledButtonSync("toggleFeatures");
         }
 
         private void a_scenario_filter_button_is_clicked()
         {
-            ClickLabeledButton("toggleScenarios");
+            ClickLabeledButtonSync("toggleScenarios");
         }
 
         private void the_scenario_filter_button_is_SELECTED([SelectedFormat]bool selected)
@@ -212,14 +225,17 @@ namespace LightBDD.AcceptanceTests.Features
 
         private void a_category_filter_button_is_clicked(string category)
         {
-            ContextValue.Driver.FindLabelByText(category).Click();
+            ContextValue.Driver.FindLabelByText(category)
+                .ClickSync(ContextValue.Driver);
         }
 
         private void the_link_to_details_of_STATUS_scenarios_is_clicked(ExecutionStatus status)
         {
             ContextValue.Driver.FindElementsByTagName("table").First(t => t.HasClassName("summary"))
-                .FindElements(By.TagName("td")).First(td => td.FindElements(By.TagName("span")).Any(span => span.HasClassName(status.ToString().ToLower() + "Alert")))
-                .FindElements(By.TagName("a")).First().Click();
+                .FindElements(By.TagName("td"))
+                .First(td => td.FindElements(By.TagName("span")).Any(span => span.HasClassName(status.ToString().ToLower() + "Alert")))
+                .FindElements(By.TagName("a")).First()
+                .Click();
         }
 
         private void the_category_filter_button_is_SELECTED(string category, [SelectedFormat]bool selected)
@@ -260,7 +276,9 @@ namespace LightBDD.AcceptanceTests.Features
 
         private void the_options_link_is_clicked()
         {
-            ContextValue.Driver.FindElementById("optionsLink").Click();
+            ContextValue.Driver
+                .FindElementById("optionsLink")
+                .Click();
         }
 
         private void the_page_is_redirected_to_url_with_query_part()
@@ -295,7 +313,7 @@ namespace LightBDD.AcceptanceTests.Features
 
             Assert.That(column.ToString(), Does.Contain(webElement.Text));
 
-            webElement.Click();
+            webElement.ClickSync(ContextValue.Driver);
         }
 
         private string FormatResults(params IFeatureResult[] results)

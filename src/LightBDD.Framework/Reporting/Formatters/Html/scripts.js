@@ -1,4 +1,7 @@
-﻿function Queryable(array) {
+﻿var initialized = false;
+var synchronizationCounter = 0;
+
+function Queryable(array) {
     this._source = array;
     this._where = function (value) { return true; };
     this.where = function (predicate) { this._where = predicate; return this; };
@@ -34,7 +37,9 @@ function checkAll(checkBoxClass, checked) {
         .where(function (b) { return b.classList.contains(checkBoxClass); })
         .do(function (b) { b.checked = checked; });
     updateOptionsLink();
+    ++synchronizationCounter;
 }
+
 function sortTable(tableId, columnIdx, numeric, toggle) {
     var direction = toggle.dataset.dir === 'true';
     toggle.dataset.dir = !direction;
@@ -43,29 +48,29 @@ function sortTable(tableId, columnIdx, numeric, toggle) {
     var parseMethod;
     var checkMethod;
     if (numeric) {
-        sortMethod = direction ? function (x, y) { return x[0] - y[0]; } : function (x, y) { return y[0] - x[0]; };
-        parseMethod = function (x) { return parseFloat(x); };
-        checkMethod = function (x) { return !isNaN(x); };
+        sortMethod = direction ? function(x, y) { return x[0] - y[0]; } : function(x, y) { return y[0] - x[0]; };
+        parseMethod = function(x) { return parseFloat(x); };
+        checkMethod = function(x) { return !isNaN(x); };
     } else {
         sortMethod = direction
-            ? function (x, y) { return (x[0] > y[0]) ? 1 : ((x[0] < y[0]) ? -1 : 0); }
-            : function (x, y) { return (x[0] < y[0]) ? 1 : ((x[0] > y[0]) ? -1 : 0); };
-        parseMethod = function (x) { return x; };
-        checkMethod = function (x) { return true; };
+            ? function(x, y) { return (x[0] > y[0]) ? 1 : ((x[0] < y[0]) ? -1 : 0); }
+            : function(x, y) { return (x[0] < y[0]) ? 1 : ((x[0] > y[0]) ? -1 : 0); };
+        parseMethod = function(x) { return x; };
+        checkMethod = function(x) { return true; };
     }
 
     var tbl = document.getElementById(tableId).tBodies[0];
     var store = [];
     tbl.rows.asQueryable()
-        .do(function (row) {
+        .do(function(row) {
             var sortnr = parseMethod(row.cells[columnIdx].textContent || row.cells[columnIdx].innerText);
             if (checkMethod(sortnr)) store.push([sortnr, row]);
         });
     store.sort(sortMethod);
-    store.asQueryable().do(function (row) { tbl.appendChild(row[1]); });
+    store.asQueryable().do(function(row) { tbl.appendChild(row[1]); });
+    ++synchronizationCounter;
 }
 
-var initialized = false;
 function applyFilter() {
     if (!initialized)
         return;
@@ -124,6 +129,7 @@ function applyFilter() {
         feature.className = feature.className; //IE fix
     });
     updateOptionsLink();
+    ++synchronizationCounter;
 }
 
 function updateOptionsLink() {
