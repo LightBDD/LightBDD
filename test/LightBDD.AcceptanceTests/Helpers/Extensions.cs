@@ -82,5 +82,11 @@ namespace LightBDD.AcceptanceTests.Helpers
         {
             return (long)driver.ExecuteScript("return synchronizationCounter;");
         }
+
+        public static void EnsurePageIsLoaded(this ChromeDriver driver)
+        {
+            Repeat.Until(() => driver.Synchronize() == 0, () => $"The synchronization counter should be 0, but was: {driver.Synchronize()}");
+            Repeat.Until(() => (bool)driver.ExecuteScript("return initialized;"), "The page is not initialized.");
+        }
     }
 }

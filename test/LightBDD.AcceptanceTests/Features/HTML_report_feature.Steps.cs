@@ -91,6 +91,7 @@ namespace LightBDD.AcceptanceTests.Features
         private void a_html_report_is_opened()
         {
             ContextValue.Driver.Navigate().GoToUrl(ContextValue.HtmlFileName);
+            ContextValue.Driver.EnsurePageIsLoaded();
         }
 
         private void all_features_are_VISIBLE([VisibleFormat]bool visible)
@@ -276,6 +277,7 @@ namespace LightBDD.AcceptanceTests.Features
             Repeat.Until(
                 () => ContextValue.Driver.Url.Contains("?"),
                 () => $"Page was not redirected, actual value: {ContextValue.Driver.Url}");
+            ContextValue.Driver.EnsurePageIsLoaded();
         }
 
         private void the_Feature_Summary_table_is_sorted_ASCENDING_by_column([OrderFormat]bool ascending, FeatureSummaryColumn column)

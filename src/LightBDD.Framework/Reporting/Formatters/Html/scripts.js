@@ -1,5 +1,5 @@
 ﻿var initialized = false;
-var synchronizationCounter = 0;
+var synchronizationCounter = -1000;
 
 function Queryable(array) {
     this._source = array;
@@ -217,4 +217,5 @@ function initialize() {
     applyOptionsFromLink();
     initialized = true;
     applyFilter();
+    synchronizationCounter = 0;
 }
