@@ -10,7 +10,7 @@ namespace LightBDD.AcceptanceTests.Helpers
 
         public static void Until(Func<bool> predicate, string errorMessage)
         {
-            Until(predicate,()=>errorMessage);
+            Until(predicate, () => errorMessage);
         }
 
         public static void Until(Func<bool> predicate, Func<string> errorMessageFn)
