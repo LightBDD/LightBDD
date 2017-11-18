@@ -39,7 +39,7 @@ namespace Example.LightBDD.MsTest2.Features
 
         private void Then_the_basket_should_contain_the_product()
         {
-            Assert.IsTrue(Enumerable.Contains(_basket.Products, "product"));
+            Assert.IsTrue(_basket.Products.Contains("product"));
         }
 
         private void Then_the_product_addition_should_be_unsuccessful()
@@ -49,13 +49,13 @@ namespace Example.LightBDD.MsTest2.Features
 
         private void Then_the_basket_should_not_contain_the_product()
         {
-            Assert.IsFalse(Enumerable.Contains(_basket.Products, "product"));
+            Assert.IsFalse(_basket.Products.Contains("product"));
         }
 
         private void Then_the_product_should_be_removed_from_stock()
         {
             Assert.Inconclusive("Product removal from stock is not implemented yet");
-            Assert.IsFalse(Enumerable.Contains(_stock.Products, "product"));
+            Assert.IsFalse(_stock.Products.Contains("product"));
         }
 
         #region Setup/Teardown

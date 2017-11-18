@@ -33,7 +33,7 @@ public class ContactsManagementContext
     {
         CollectionAssert.AreEquivalent(
             AddedContacts,
-            Enumerable.ToArray(ContactBook.Contacts),
+            ContactBook.Contacts.ToArray(),
             "Contacts should be added to contact book");
     }
 
@@ -45,7 +45,7 @@ public class ContactsManagementContext
 
     public void When_I_remove_one_contact()
     {
-        RemovedContacts = Enumerable.Take(ContactBook.Contacts, 1).ToArray();
+        RemovedContacts = ContactBook.Contacts.Take(1).ToArray();
         foreach (var contact in RemovedContacts)
             ContactBook.Remove(contact.Name);
     }
@@ -53,14 +53,14 @@ public class ContactsManagementContext
     public void Then_the_contact_book_should_not_contain_removed_contact_any_more()
     {
         Assert.IsFalse(
-            Enumerable.Any(Enumerable.Where(ContactBook.Contacts, c => RemovedContacts.Contains<Contact>(c)).ToArray()),
+            ContactBook.Contacts.Where(c => RemovedContacts.Contains(c)).ToArray().Any(),
             "Contact book should not contain removed books");
     }
 
     public void Then_the_contact_book_should_contains_all_other_contacts()
     {
         CollectionAssert.AreEquivalent(
-                Enumerable.ToArray(ContactBook.Contacts),
+                ContactBook.Contacts.ToArray(),
                 AddedContacts.Except(RemovedContacts).ToArray(),
                 "All contacts that has not been explicitly removed should be still present in contact book");
     }
@@ -73,14 +73,14 @@ public class ContactsManagementContext
 
     public void When_I_clear_it()
     {
-        foreach (var contact in Enumerable.ToArray(ContactBook.Contacts))
+        foreach (var contact in ContactBook.Contacts.ToArray())
             ContactBook.Remove(contact.Name);
         StepExecution.Current.Bypass("Contact book clearing is not implemented yet. Contacts are removed one by one.");
     }
 
     public void Then_the_contact_book_should_be_empty()
     {
-        Assert.IsFalse(Enumerable.Any(ContactBook.Contacts), "Contact book should be empty");
+        Assert.IsFalse(ContactBook.Contacts.Any(), "Contact book should be empty");
     }
 
     private void AddSomeContacts()

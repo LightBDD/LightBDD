@@ -33,7 +33,7 @@ namespace Example.LightBDD.XUnit2.Features.Contexts
         {
             Assert.Equal(
                    AddedContacts,
-                   Enumerable.ToArray(ContactBook.Contacts));
+                   ContactBook.Contacts.ToArray());
         }
 
         public void Given_my_contact_book_is_filled_with_contacts()
@@ -44,7 +44,7 @@ namespace Example.LightBDD.XUnit2.Features.Contexts
 
         public void When_I_remove_one_contact()
         {
-            RemovedContacts = Enumerable.Take(ContactBook.Contacts, 1).ToArray();
+            RemovedContacts = ContactBook.Contacts.Take(1).ToArray();
             foreach (var contact in RemovedContacts)
                 ContactBook.Remove(contact.Name);
         }
@@ -53,13 +53,13 @@ namespace Example.LightBDD.XUnit2.Features.Contexts
         {
             Assert.Equal(
                  Enumerable.Empty<Contact>(),
-                 Enumerable.Where(ContactBook.Contacts, c => RemovedContacts.Contains(c)).ToArray());
+                 ContactBook.Contacts.Where(c => RemovedContacts.Contains(c)).ToArray());
         }
 
         public void Then_the_contact_book_should_contains_all_other_contacts()
         {
             Assert.Equal(
-                   Enumerable.ToArray(ContactBook.Contacts),
+                   ContactBook.Contacts.ToArray(),
                    AddedContacts.Except(RemovedContacts).ToArray());
         }
 
@@ -71,7 +71,7 @@ namespace Example.LightBDD.XUnit2.Features.Contexts
 
         public void When_I_clear_it()
         {
-            foreach (var contact in Enumerable.ToArray(ContactBook.Contacts))
+            foreach (var contact in ContactBook.Contacts.ToArray())
                 ContactBook.Remove(contact.Name);
             StepExecution.Current.Bypass("Contact book clearing is not implemented yet. Contacts are removed one by one.");
         }

@@ -32,7 +32,7 @@ namespace Example.LightBDD.NUnit3.Features.Contexts
         public void Then_all_contacts_should_be_available_in_the_contact_book()
         {
             Assert.That(
-                Enumerable.ToArray(ContactBook.Contacts),
+                ContactBook.Contacts.ToArray(),
                 Is.EquivalentTo(AddedContacts),
                 "Contacts should be added to contact book");
         }
@@ -45,7 +45,7 @@ namespace Example.LightBDD.NUnit3.Features.Contexts
 
         public void When_I_remove_one_contact()
         {
-            RemovedContacts = Enumerable.Take(ContactBook.Contacts, 1).ToArray();
+            RemovedContacts = ContactBook.Contacts.Take(1).ToArray();
             foreach (var contact in RemovedContacts)
                 ContactBook.Remove(contact.Name);
         }
@@ -54,7 +54,7 @@ namespace Example.LightBDD.NUnit3.Features.Contexts
         {
             Assert.AreEqual(
                 Enumerable.Empty<Contact>(),
-                Enumerable.Where(ContactBook.Contacts, c => RemovedContacts.Contains(c)).ToArray(),
+                ContactBook.Contacts.Where(c => RemovedContacts.Contains(c)).ToArray(),
                 "Contact book should not contain removed books");
         }
 
@@ -62,7 +62,7 @@ namespace Example.LightBDD.NUnit3.Features.Contexts
         {
             Assert.That(
                 AddedContacts.Except(RemovedContacts).ToArray(),
-                Is.EquivalentTo(Enumerable.ToArray(ContactBook.Contacts)),
+                Is.EquivalentTo(ContactBook.Contacts.ToArray()),
                 "All contacts that has not been explicitly removed should be still present in contact book");
         }
 
@@ -74,7 +74,7 @@ namespace Example.LightBDD.NUnit3.Features.Contexts
 
         public void When_I_clear_it()
         {
-            foreach (var contact in Enumerable.ToArray(ContactBook.Contacts))
+            foreach (var contact in ContactBook.Contacts.ToArray())
                 ContactBook.Remove(contact.Name);
             StepExecution.Current.Bypass("Contact book clearing is not implemented yet. Contacts are removed one by one.");
         }

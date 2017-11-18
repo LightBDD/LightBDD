@@ -6,6 +6,17 @@ using LightBDD.XUnit2;
 
 namespace Example.LightBDD.XUnit2.Features
 {
+    /* This feature class describes usage of contextual scenarios and extended syntax.
+     * With contextual scenarios it is possible to share state between all steps, which is useful in the situation where
+     * sharing state via feature class fields is not desired.
+     * 
+     * To use contextual scenarios, the Runner.WithContext() method has to be used and the context object can be then accessed by step with lambda parameter.
+     * The scenario below shows the recommended usage of context, where given-when-then steps are declared on the context class (it is however not enforced rule).
+     * 
+     * The lambda parameter name is used here to determine the step type (GIVEN/WHEN/THEN/etc).
+     * 
+     * More information on contextual scenarios can be found here: https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#contextual-scenarios
+     */
     [FeatureDescription(
 @"In order to deliver products to customer effectively
 As a spedition manager

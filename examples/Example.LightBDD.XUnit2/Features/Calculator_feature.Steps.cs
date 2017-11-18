@@ -20,7 +20,7 @@ namespace Example.LightBDD.XUnit2.Features
             Assert.Equal(result, _calculator.Add(x, y));
         }
 
-        private void Then_divinding_X_by_Y_should_give_RESULT(int x, int y, int result)
+        private void Then_dividing_X_by_Y_should_give_RESULT(int x, int y, int result)
         {
             Assert.Equal(result, _calculator.Divide(x, y));
         }
