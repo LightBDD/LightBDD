@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("LightBDD.Example.AcceptanceTests.MsTest2.UWP")]
+[assembly: AssemblyTitle("Example.LightBDD.MsTest2.UWP")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("LightBDD.Example.AcceptanceTests.MsTest2.UWP")]
+[assembly: AssemblyProduct("Example.LightBDD.MsTest2.UWP")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
