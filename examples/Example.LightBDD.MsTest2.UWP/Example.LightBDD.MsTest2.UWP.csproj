@@ -162,20 +162,21 @@
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="LightBDD.Core">
-      <HintPath>deps\LightBDD.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="LightBDD.Framework">
-      <HintPath>deps\LightBDD.Framework.dll</HintPath>
-    </Reference>
-    <Reference Include="LightBDD.MsTest2">
-      <HintPath>deps\LightBDD.MsTest2.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\LightBDD.Core\LightBDD.Core.csproj">
+      <Project>{1404165C-13B2-43E2-A78D-6B271EB62FC8}</Project>
+      <Name>LightBDD.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\LightBDD.Framework\LightBDD.Framework.csproj">
+      <Project>{76150B64-C200-4893-8375-479E377389CC}</Project>
+      <Name>LightBDD.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\LightBDD.MsTest2\LightBDD.MsTest2.csproj">
+      <Project>{CBD1B3D9-4B77-4B21-9C3A-7E3A9FB3D780}</Project>
+      <Name>LightBDD.MsTest2</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Example.Domain\Example.Domain.csproj">
       <Project>{F69FD39E-F710-4C37-A1E0-84B02B5C64CB}</Project>
       <Name>Example.Domain</Name>
@@ -186,10 +187,8 @@
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>rmdir /Q /S $(ProjectDir)deps
-mkdir $(ProjectDir)deps
-xcopy $(ProjectDir)..\LightBDD.Example\bin\$(ConfigurationName)\netstandard1.3\*.dll $(ProjectDir)deps
-xcopy $(ProjectDir)..\..\src\LightBDD.MsTest2\bin\$(ConfigurationName)\netstandard1.3\*.dll $(ProjectDir)deps</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
