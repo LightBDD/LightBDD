@@ -1,11 +1,11 @@
+using Example.LightBDD.XUnit2;
 using LightBDD.Core.Configuration;
-using LightBDD.Example.AcceptanceTests.XUnit2;
 using LightBDD.Framework.Reporting.Configuration;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.XUnit2;
 
 [assembly: ConfiguredLightBddScope]
-namespace LightBDD.Example.AcceptanceTests.XUnit2
+namespace Example.LightBDD.XUnit2
 {
     internal class ConfiguredLightBddScopeAttribute : LightBddScopeAttribute
     {

@@ -2,7 +2,7 @@ using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.NUnit2;
 
-namespace LightBDD.Example.AcceptanceTests.NUnit2.Features
+namespace Example.LightBDD.NUnit2.Features
 {
     [FeatureDescription(
 @"In order to access personal data

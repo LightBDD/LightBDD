@@ -1,14 +1,14 @@
 ﻿using System.Threading.Tasks;
-using LightBDD.Example.Helpers;
+using Example.Domain.Helpers;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Basic;
-using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.Framework.Scenarios.Contextual;
+using LightBDD.Framework.Scenarios.Extended;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 #pragma warning disable 1998
 
-namespace LightBDD.Example.AcceptanceTests.MsTest2.UWP.Features
+namespace Example.LightBDD.MsTest2.UWP.Features
 {
     public partial class Customer_journey
     {

@@ -1,10 +1,10 @@
-﻿using LightBDD.Example.Domain;
+﻿using Example.Domain.Domain;
 using LightBDD.Framework;
 using LightBDD.XUnit2;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace LightBDD.Example.AcceptanceTests.XUnit2.Features
+namespace Example.LightBDD.XUnit2.Features
 {
     public partial class Calculator_feature : FeatureFixture
     {

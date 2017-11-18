@@ -1,11 +1,11 @@
 using System.Linq;
-using LightBDD.Example.Domain;
+using Example.Domain.Domain;
 using LightBDD.Framework;
 using LightBDD.Framework.Commenting;
 using LightBDD.MsTest2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD.Example.AcceptanceTests.MsTest2.UWP.Features
+namespace Example.LightBDD.MsTest2.UWP.Features
 {
     public partial class Basket_feature : FeatureFixture
     {

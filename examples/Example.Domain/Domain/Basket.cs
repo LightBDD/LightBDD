@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace LightBDD.Example.Domain
+namespace Example.Domain.Domain
 {
     public class Basket
     {

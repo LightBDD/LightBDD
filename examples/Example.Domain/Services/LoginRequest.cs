@@ -1,4 +1,4 @@
-namespace LightBDD.Example.Services
+namespace Example.Domain.Services
 {
 	public class LoginRequest
 	{

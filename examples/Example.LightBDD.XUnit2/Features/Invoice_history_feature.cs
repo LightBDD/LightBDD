@@ -5,7 +5,7 @@ using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.Framework.Scenarios.Fluent;
 using LightBDD.XUnit2;
 
-namespace LightBDD.Example.AcceptanceTests.XUnit2.Features
+namespace Example.LightBDD.XUnit2.Features
 {
     [Label("STORY-9")]
     [FeatureDescription(

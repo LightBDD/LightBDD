@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using LightBDD.Example.Helpers;
+using Example.Domain.Helpers;
 
-namespace LightBDD.Example.Services
+namespace Example.Domain.Services
 {
     public class LoginService
     {

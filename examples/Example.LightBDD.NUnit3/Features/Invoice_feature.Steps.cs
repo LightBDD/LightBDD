@@ -2,7 +2,7 @@
 using LightBDD.NUnit3;
 using NUnit.Framework;
 
-namespace LightBDD.Example.AcceptanceTests.NUnit3.Features
+namespace Example.LightBDD.NUnit3.Features
 {
     public partial class Invoice_feature : FeatureFixture
     {

@@ -1,10 +1,11 @@
+using System.Collections;
 using System.Globalization;
 using System.Linq;
-using LightBDD.Example.Domain;
+using Example.Domain.Domain;
 using LightBDD.Framework;
 using NUnit.Framework;
 
-namespace LightBDD.Example.AcceptanceTests.NUnit2.Features.Contexts
+namespace Example.LightBDD.NUnit2.Features.Contexts
 {
     public class ContactsManagementContext
     {
@@ -32,7 +33,7 @@ namespace LightBDD.Example.AcceptanceTests.NUnit2.Features.Contexts
         public void Then_all_contacts_should_be_available_in_the_contact_book()
         {
             Assert.That(
-                ContactBook.Contacts.ToArray(),
+                Enumerable.ToArray(ContactBook.Contacts),
                 Is.EquivalentTo(AddedContacts),
                 "Contacts should be added to contact book");
         }
@@ -45,7 +46,7 @@ namespace LightBDD.Example.AcceptanceTests.NUnit2.Features.Contexts
 
         public void When_I_remove_one_contact()
         {
-            RemovedContacts = ContactBook.Contacts.Take(1).ToArray();
+            RemovedContacts = Enumerable.Take(ContactBook.Contacts, 1).ToArray();
             foreach (var contact in RemovedContacts)
                 ContactBook.Remove(contact.Name);
         }
@@ -54,7 +55,7 @@ namespace LightBDD.Example.AcceptanceTests.NUnit2.Features.Contexts
         {
             Assert.AreEqual(
                 Enumerable.Empty<Contact>(),
-                ContactBook.Contacts.Where(c => RemovedContacts.Contains(c)).ToArray(),
+                Enumerable.Where(ContactBook.Contacts, c => RemovedContacts.Contains(c)).ToArray(),
                 "Contact book should not contain removed books");
         }
 
@@ -62,7 +63,7 @@ namespace LightBDD.Example.AcceptanceTests.NUnit2.Features.Contexts
         {
             Assert.That(
                 AddedContacts.Except(RemovedContacts).ToArray(),
-                Is.EquivalentTo(ContactBook.Contacts.ToArray()),
+                Is.EquivalentTo(Enumerable.ToArray(ContactBook.Contacts)),
                 "All contacts that has not been explicitly removed should be still present in contact book");
         }
 
@@ -74,14 +75,14 @@ namespace LightBDD.Example.AcceptanceTests.NUnit2.Features.Contexts
 
         public void When_I_clear_it()
         {
-            foreach (var contact in ContactBook.Contacts.ToArray())
+            foreach (var contact in Enumerable.ToArray(ContactBook.Contacts))
                 ContactBook.Remove(contact.Name);
             StepExecution.Current.Bypass("Contact book clearing is not implemented yet. Contacts are removed one by one.");
         }
 
         public void Then_the_contact_book_should_be_empty()
         {
-            Assert.IsEmpty(ContactBook.Contacts, "Contact book should be empty");
+            Assert.IsEmpty((IEnumerable) ContactBook.Contacts, "Contact book should be empty");
         }
 
         private void AddSomeContacts()

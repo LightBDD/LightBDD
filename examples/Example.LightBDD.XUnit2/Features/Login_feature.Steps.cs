@@ -1,11 +1,11 @@
-using LightBDD.Example.Services;
+using Example.Domain.Services;
 using LightBDD.Framework;
 using LightBDD.Framework.Commenting;
 using LightBDD.XUnit2;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace LightBDD.Example.AcceptanceTests.XUnit2.Features
+namespace Example.LightBDD.XUnit2.Features
 {
     public partial class Login_feature : FeatureFixture
     {
@@ -61,23 +61,23 @@ namespace LightBDD.Example.AcceptanceTests.XUnit2.Features
 
         private void Then_the_login_operation_should_be_successful()
         {
-            Assert.True(_loginResult.IsSuccessful, "Login should succeeded");
+            Assert.True((bool) _loginResult.IsSuccessful, "Login should succeeded");
         }
 
         private void Then_a_welcome_message_containing_user_name_should_be_returned()
         {
             var expectedMessage = string.Format("Welcome {0}!", _validUserName);
-            Assert.Equal(expectedMessage, _loginResult.ResultMessage);
+            Assert.Equal(expectedMessage, (string) _loginResult.ResultMessage);
         }
 
         private void Then_the_login_operation_should_be_unsuccessful()
         {
-            Assert.False(_loginResult.IsSuccessful);
+            Assert.False((bool) _loginResult.IsSuccessful);
         }
 
         private void Then_an_invalid_login_or_password_error_message_should_be_returned()
         {
-            Assert.Equal("Invalid user name or password.", _loginResult.ResultMessage);
+            Assert.Equal((string) "Invalid user name or password.", (string) _loginResult.ResultMessage);
         }
     }
 }

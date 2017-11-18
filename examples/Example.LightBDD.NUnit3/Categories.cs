@@ -1,4 +1,4 @@
-namespace LightBDD.Example.AcceptanceTests.NUnit3
+namespace Example.LightBDD.NUnit3
 {
     public static class Categories
     {

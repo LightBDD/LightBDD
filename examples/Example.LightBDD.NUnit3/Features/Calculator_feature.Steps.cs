@@ -1,8 +1,8 @@
-﻿using LightBDD.Example.Domain;
+﻿using Example.Domain.Domain;
 using LightBDD.NUnit3;
 using NUnit.Framework;
 
-namespace LightBDD.Example.AcceptanceTests.NUnit3.Features
+namespace Example.LightBDD.NUnit3.Features
 {
     public partial class Calculator_feature : FeatureFixture
     {

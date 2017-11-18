@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using LightBDD.Example.Helpers;
+using Example.Domain.Helpers;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.Framework.Scenarios.Contextual;
@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 #pragma warning disable 1998
 
-namespace LightBDD.Example.AcceptanceTests.NUnit3.Features
+namespace Example.LightBDD.NUnit3.Features
 {
     public partial class Customer_journey
     {

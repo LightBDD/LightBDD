@@ -1,10 +1,10 @@
-using LightBDD.Example.Services;
+using Example.Domain.Services;
 using LightBDD.Framework;
 using LightBDD.Framework.Commenting;
 using LightBDD.NUnit3;
 using NUnit.Framework;
 
-namespace LightBDD.Example.AcceptanceTests.NUnit3.Features
+namespace Example.LightBDD.NUnit3.Features
 {
     public partial class Login_feature : FeatureFixture
     {

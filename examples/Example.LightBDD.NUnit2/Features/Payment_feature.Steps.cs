@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
-using LightBDD.Example.Helpers;
+using Example.Domain.Helpers;
 using LightBDD.NUnit2;
 
-namespace LightBDD.Example.AcceptanceTests.NUnit2.Features
+namespace Example.LightBDD.NUnit2.Features
 {
     public partial class Payment_feature : FeatureFixture
     {

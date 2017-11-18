@@ -2,7 +2,7 @@ using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.NUnit3;
 
-namespace LightBDD.Example.AcceptanceTests.NUnit3.Features
+namespace Example.LightBDD.NUnit3.Features
 {
     [FeatureDescription(
 @"In order to pay for products

@@ -1,10 +1,10 @@
 using System.Globalization;
 using System.Linq;
-using LightBDD.Example.Domain;
+using Example.Domain.Domain;
 using LightBDD.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD.Example.AcceptanceTests.MsTest2.Features.Contexts
+namespace Example.LightBDD.MsTest2.Features.Contexts
 {
 public class ContactsManagementContext
 {
@@ -33,7 +33,7 @@ public class ContactsManagementContext
     {
         CollectionAssert.AreEquivalent(
             AddedContacts,
-            ContactBook.Contacts.ToArray(),
+            Enumerable.ToArray(ContactBook.Contacts),
             "Contacts should be added to contact book");
     }
 
@@ -45,7 +45,7 @@ public class ContactsManagementContext
 
     public void When_I_remove_one_contact()
     {
-        RemovedContacts = ContactBook.Contacts.Take(1).ToArray();
+        RemovedContacts = Enumerable.Take(ContactBook.Contacts, 1).ToArray();
         foreach (var contact in RemovedContacts)
             ContactBook.Remove(contact.Name);
     }
@@ -53,14 +53,14 @@ public class ContactsManagementContext
     public void Then_the_contact_book_should_not_contain_removed_contact_any_more()
     {
         Assert.IsFalse(
-            ContactBook.Contacts.Where(c => RemovedContacts.Contains(c)).ToArray().Any(),
+            Enumerable.Any(Enumerable.Where(ContactBook.Contacts, c => RemovedContacts.Contains<Contact>(c)).ToArray()),
             "Contact book should not contain removed books");
     }
 
     public void Then_the_contact_book_should_contains_all_other_contacts()
     {
         CollectionAssert.AreEquivalent(
-                ContactBook.Contacts.ToArray(),
+                Enumerable.ToArray(ContactBook.Contacts),
                 AddedContacts.Except(RemovedContacts).ToArray(),
                 "All contacts that has not been explicitly removed should be still present in contact book");
     }
@@ -73,14 +73,14 @@ public class ContactsManagementContext
 
     public void When_I_clear_it()
     {
-        foreach (var contact in ContactBook.Contacts.ToArray())
+        foreach (var contact in Enumerable.ToArray(ContactBook.Contacts))
             ContactBook.Remove(contact.Name);
         StepExecution.Current.Bypass("Contact book clearing is not implemented yet. Contacts are removed one by one.");
     }
 
     public void Then_the_contact_book_should_be_empty()
     {
-        Assert.IsFalse(ContactBook.Contacts.Any(), "Contact book should be empty");
+        Assert.IsFalse(Enumerable.Any(ContactBook.Contacts), "Contact book should be empty");
     }
 
     private void AddSomeContacts()

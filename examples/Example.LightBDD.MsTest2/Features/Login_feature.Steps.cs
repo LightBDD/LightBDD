@@ -1,10 +1,10 @@
-using LightBDD.Example.Services;
+using Example.Domain.Services;
 using LightBDD.Framework;
 using LightBDD.Framework.Commenting;
 using LightBDD.MsTest2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD.Example.AcceptanceTests.MsTest2.Features
+namespace Example.LightBDD.MsTest2.Features
 {
     public partial class Login_feature : FeatureFixture
     {
@@ -61,7 +61,7 @@ namespace LightBDD.Example.AcceptanceTests.MsTest2.Features
         private void Then_a_welcome_message_containing_user_name_should_be_returned()
         {
             var expectedMessage = string.Format("Welcome {0}!", _validUserName);
-            Assert.AreEqual(expectedMessage, _loginResult.ResultMessage);
+            Assert.AreEqual<string>(expectedMessage, _loginResult.ResultMessage);
         }
 
         private void Then_the_login_operation_should_be_unsuccessful()
@@ -71,7 +71,7 @@ namespace LightBDD.Example.AcceptanceTests.MsTest2.Features
 
         private void Then_an_invalid_login_or_password_error_message_should_be_returned()
         {
-            Assert.AreEqual("Invalid user name or password.", _loginResult.ResultMessage);
+            Assert.AreEqual<string>("Invalid user name or password.", _loginResult.ResultMessage);
         }
     }
 }

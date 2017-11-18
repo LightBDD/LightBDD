@@ -3,7 +3,7 @@ using LightBDD.Framework.Commenting;
 using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.NUnit2;
 
-namespace LightBDD.Example.AcceptanceTests.NUnit2.Features
+namespace Example.LightBDD.NUnit2.Features
 {
     [Label("Story-8")]
     [FeatureDescription(

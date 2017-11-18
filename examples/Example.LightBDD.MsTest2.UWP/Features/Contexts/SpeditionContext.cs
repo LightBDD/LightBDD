@@ -1,4 +1,4 @@
-namespace LightBDD.Example.AcceptanceTests.MsTest2.UWP.Features.Contexts
+namespace Example.LightBDD.MsTest2.UWP.Features.Contexts
 {
     public class SpeditionContext
     {

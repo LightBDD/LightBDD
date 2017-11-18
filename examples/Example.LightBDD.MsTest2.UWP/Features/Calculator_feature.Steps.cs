@@ -1,8 +1,8 @@
-﻿using LightBDD.Example.Domain;
+﻿using Example.Domain.Domain;
 using LightBDD.MsTest2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD.Example.AcceptanceTests.MsTest2.UWP.Features
+namespace Example.LightBDD.MsTest2.UWP.Features
 {
     public partial class Calculator_feature : FeatureFixture
     {

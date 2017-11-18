@@ -7,7 +7,7 @@ using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.MsTest2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD.Example.AcceptanceTests.MsTest2.UWP
+namespace Example.LightBDD.MsTest2.UWP
 {
     [TestClass]
     public class LightBddIntegration

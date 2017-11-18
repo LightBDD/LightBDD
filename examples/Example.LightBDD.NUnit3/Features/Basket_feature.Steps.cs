@@ -1,11 +1,11 @@
 using System.Linq;
-using LightBDD.Example.Domain;
+using Example.Domain.Domain;
 using LightBDD.Framework;
 using LightBDD.Framework.Commenting;
 using LightBDD.NUnit3;
 using NUnit.Framework;
 
-namespace LightBDD.Example.AcceptanceTests.NUnit3.Features
+namespace Example.LightBDD.NUnit3.Features
 {
     public partial class Basket_feature : FeatureFixture
     {
@@ -38,7 +38,7 @@ namespace LightBDD.Example.AcceptanceTests.NUnit3.Features
 
         private void Then_the_basket_should_contain_the_product()
         {
-            Assert.That(_basket.Products.Contains(Product), Is.True);
+            Assert.That(Enumerable.Contains(_basket.Products, Product), Is.True);
         }
 
         private void Then_the_product_addition_should_be_unsuccessful()
@@ -48,13 +48,13 @@ namespace LightBDD.Example.AcceptanceTests.NUnit3.Features
 
         private void Then_the_basket_should_not_contain_the_product()
         {
-            Assert.That(_basket.Products.Contains(Product), Is.False);
+            Assert.That(Enumerable.Contains(_basket.Products, Product), Is.False);
         }
 
         private void Then_the_product_should_be_removed_from_stock()
         {
             Assert.Ignore("Product removal from stock is not implemented yet");
-            Assert.That(_stock.Products.Contains(Product), Is.False);
+            Assert.That(Enumerable.Contains(_stock.Products, Product), Is.False);
         }
 
         #region Setup/Teardown

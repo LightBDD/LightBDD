@@ -5,7 +5,7 @@ using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.Framework.Scenarios.Fluent;
 using LightBDD.MsTest2;
 
-namespace LightBDD.Example.AcceptanceTests.MsTest2.UWP.Features
+namespace Example.LightBDD.MsTest2.UWP.Features
 {
     [Label("STORY-9")]
     [FeatureDescription(

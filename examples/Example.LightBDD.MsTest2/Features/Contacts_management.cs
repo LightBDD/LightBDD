@@ -1,11 +1,11 @@
-using LightBDD.Example.AcceptanceTests.MsTest2.Features.Contexts;
+using Example.LightBDD.MsTest2.Features.Contexts;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Contextual;
 using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.MsTest2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD.Example.AcceptanceTests.MsTest2.Features
+namespace Example.LightBDD.MsTest2.Features
 {
     [TestClass]
     [FeatureDescription(

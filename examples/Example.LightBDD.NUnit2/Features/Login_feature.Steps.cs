@@ -1,10 +1,10 @@
-using LightBDD.Example.Services;
+using Example.Domain.Services;
 using LightBDD.Framework;
 using LightBDD.Framework.Commenting;
 using LightBDD.NUnit2;
 using NUnit.Framework;
 
-namespace LightBDD.Example.AcceptanceTests.NUnit2.Features
+namespace Example.LightBDD.NUnit2.Features
 {
     public partial class Login_feature : FeatureFixture
     {
@@ -61,17 +61,17 @@ namespace LightBDD.Example.AcceptanceTests.NUnit2.Features
         private void Then_a_welcome_message_containing_user_name_should_be_returned()
         {
             var expectedMessage = string.Format("Welcome {0}!", _validUserName);
-            Assert.That(_loginResult.ResultMessage, Is.EqualTo(expectedMessage));
+            Assert.That((object) _loginResult.ResultMessage, Is.EqualTo(expectedMessage));
         }
 
         private void Then_the_login_operation_should_be_unsuccessful()
         {
-            Assert.That(_loginResult.IsSuccessful, Is.False);
+            Assert.That((object) _loginResult.IsSuccessful, Is.False);
         }
 
         private void Then_an_invalid_login_or_password_error_message_should_be_returned()
         {
-            Assert.That(_loginResult.ResultMessage, Is.EqualTo("Invalid user name or password."));
+            Assert.That((object) _loginResult.ResultMessage, Is.EqualTo("Invalid user name or password."));
         }
     }
 }

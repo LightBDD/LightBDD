@@ -1,4 +1,4 @@
-namespace LightBDD.Example.AcceptanceTests.NUnit3.Features.Contexts
+namespace Example.LightBDD.NUnit3.Features.Contexts
 {
     public class SpeditionContext
     {

@@ -1,10 +1,10 @@
 using System.Globalization;
 using System.Linq;
-using LightBDD.Example.Domain;
+using Example.Domain.Domain;
 using LightBDD.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD.Example.AcceptanceTests.MsTest2.UWP.Features.Contexts
+namespace Example.LightBDD.MsTest2.UWP.Features.Contexts
 {
 public class ContactsManagementContext
 {

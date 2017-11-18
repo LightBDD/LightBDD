@@ -1,10 +1,10 @@
-using LightBDD.Example.AcceptanceTests.NUnit3.Features.Contexts;
+using Example.LightBDD.NUnit3.Features.Contexts;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Contextual;
 using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.NUnit3;
 
-namespace LightBDD.Example.AcceptanceTests.NUnit3.Features
+namespace Example.LightBDD.NUnit3.Features
 {
     [FeatureDescription(
 @"In order to maintain my contact book

@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
-using LightBDD.Example.Helpers;
+using Example.Domain.Helpers;
 using LightBDD.Framework.Formatting;
 using LightBDD.MsTest2;
 
-namespace LightBDD.Example.AcceptanceTests.MsTest2.UWP.Features
+namespace Example.LightBDD.MsTest2.UWP.Features
 {
     public partial class Invoice_history_feature : FeatureFixture
     {

@@ -5,7 +5,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
-namespace LightBDD.Example.AcceptanceTests.MsTest2.UWP
+namespace Example.LightBDD.MsTest2.UWP
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.

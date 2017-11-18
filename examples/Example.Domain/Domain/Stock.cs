@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LightBDD.Example.Helpers;
+using Example.Domain.Helpers;
 
-namespace LightBDD.Example.Domain
+namespace Example.Domain.Domain
 {
     public class Stock
     {

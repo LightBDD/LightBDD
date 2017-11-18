@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace LightBDD.Example.Helpers
+namespace Example.Domain.Helpers
 {
     public static class LongRunningOperationSimulator
     {

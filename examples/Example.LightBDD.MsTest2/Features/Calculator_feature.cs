@@ -4,7 +4,7 @@ using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.MsTest2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD.Example.AcceptanceTests.MsTest2.Features
+namespace Example.LightBDD.MsTest2.Features
 {
     [Label("Story-8")]
     [FeatureDescription(
