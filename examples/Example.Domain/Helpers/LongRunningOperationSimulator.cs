@@ -14,7 +14,7 @@ namespace Example.Domain.Helpers
 
         public static Task SimulateAsync()
         {
-            return Task.Delay(TimeSpan.FromMilliseconds(Rand.Next(100, 200)));
+            return Task.Delay(TimeSpan.FromMilliseconds(Rand.Next(1000, 2000)));
         }
     }
 }
