@@ -3,6 +3,9 @@ using LightBDD.Core.Configuration;
 using LightBDD.Framework.Reporting.Configuration;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.NUnit3;
+using NUnit.Framework;
+
+[assembly:Parallelizable(ParallelScope.Fixtures)]
 
 /*
  * This is a way to enable LightBDD - NUnit integration.
