@@ -5,10 +5,11 @@ using LightBDD.XUnit2;
 
 namespace Example.LightBDD.XUnit2.Features
 {
-    /* This feature class presents usage of extended syntax in conjunction with asynchronous steps returning Task.
-     * 
-     * The asynchronous steps are described on: https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#asynchronous-scenario-step-execution
-     */
+    /// <summary>
+    /// This feature class presents usage of extended syntax in conjunction with asynchronous steps returning Task.
+    /// 
+    /// The asynchronous steps are described on: https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#asynchronous-scenario-step-execution
+    /// </summary>
     [FeatureDescription(
 @"In order to get desired products
 As a customer

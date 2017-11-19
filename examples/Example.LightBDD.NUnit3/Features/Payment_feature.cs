@@ -5,6 +5,11 @@ using LightBDD.NUnit3;
 
 namespace Example.LightBDD.NUnit3.Features
 {
+    /// <summary>
+    /// This feature class presents usage of extended syntax in conjunction with asynchronous steps returning Task.
+    /// 
+    /// The asynchronous steps are described on: https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#asynchronous-scenario-step-execution
+    /// </summary>
     [FeatureDescription(
 @"In order to get desired products
 As a customer

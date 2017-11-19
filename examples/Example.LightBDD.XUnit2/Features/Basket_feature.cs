@@ -5,15 +5,16 @@ using LightBDD.XUnit2;
 
 namespace Example.LightBDD.XUnit2.Features
 {
-    /* This feature class presents that it is possible to use basic scenario syntax with step methods of void or async void signature.
-     * Scenarios use here the RunScenarioActionsAsync() method that allows mixing void and async void steps.
-     * 
-     * As using async void methods is generally not recommended practice (and LightBDD offers ways to handle Task methods),
-     * LightBDD properly handles async void steps, waiting for all pending tasks to finish, before proceeding to the next step.
-     * 
-     * Such way of writing tests may be useful when async steps has to be introduced to existing tests that uses only synchronous step methods.
-     * More details can be found here: https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#asynchronous-scenario-step-execution
-     */
+    /// <summary>
+    /// This feature class presents that it is possible to use basic scenario syntax with step methods of void or async void signature.
+    /// Scenarios use here the RunScenarioActionsAsync() method that allows mixing void and async void steps.
+    /// 
+    /// As using async void methods is generally not recommended practice (and LightBDD offers ways to handle Task methods),
+    /// LightBDD properly handles async void steps, waiting for all pending tasks to finish, before proceeding to the next step.
+    /// 
+    /// Such way of writing tests may be useful when async steps has to be introduced to existing tests that uses only synchronous step methods.
+    /// More details can be found here: https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#asynchronous-scenario-step-execution
+    /// </summary>
     [FeatureDescription(
 @"In order to buy products
 As a customer
@@ -33,7 +34,9 @@ I want to add products to basket")]
                 Then_the_basket_should_not_contain_the_product);
         }
 
-        /* This test presents how LightBDD treats tests with Inconclusive / Ignore assertions. */
+        /// <summary>
+        /// This test presents how LightBDD treats tests with Inconclusive / Ignore assertions.
+        /// </summary>
         [Scenario]
         [Label("Ticket-7")]
         [ScenarioCategory(Categories.Sales)]

@@ -4,6 +4,13 @@ using LightBDD.NUnit3;
 
 namespace Example.LightBDD.NUnit3.Features
 {
+    /// <summary>
+    /// This feature class shows presents an usage of extended scenario syntax that allows to call parameterized steps.
+    /// It also presents usage of LabelAttribute, ScenarioCategoryAttribute and FeatureDescriptionAttribute.
+    /// 
+    /// More information on extended syntax can be found here: https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#extended-scenarios
+    /// while attribute usage is described here: https://github.com/LightBDD/LightBDD/wiki/Tests-Structure-and-Conventions
+    /// </summary>
     [FeatureDescription(
 @"In order to pay for products
 As a customer

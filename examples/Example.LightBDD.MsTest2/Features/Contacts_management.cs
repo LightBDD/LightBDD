@@ -7,6 +7,19 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Example.LightBDD.MsTest2.Features
 {
+    /// <summary>
+    /// This feature class presents the usage of contextual scenarios that are used in conjunction with extended step format.
+    /// With contextual scenarios it is possible to share state between all steps, which is useful in the situation where
+    /// sharing state via feature class fields is not desired.
+    /// 
+    /// To use contextual scenarios, the Runner.WithContext() method has to be used and the context object can be then accessed by step with lambda parameter.
+    /// The scenario below shows the recommended usage of context, where given-when-then steps are declared on the context class (it is however not enforced rule).
+    /// 
+    /// Another feature presented here is that if lambda parameter name is 1 character only, it is ignored in the reports, and the step type (GIVEN/WHEN/THEN/etc)
+    /// is inferred from the step method name.
+    /// 
+    /// More information on contextual scenarios can be found here: https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#contextual-scenarios
+    /// </summary>
     [TestClass]
     [FeatureDescription(
    @"In order to maintain my contact book

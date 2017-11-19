@@ -5,6 +5,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Example.LightBDD.MsTest2.UWP.Features
 {
+    /// <summary>
+    /// This feature class presents usage of basic scenario syntax (that is most readable)
+    /// as well as attributes and concepts of creating LightBDD tests.
+    /// 
+    /// More information on basic scenario syntax can be found here: https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#basic-scenarios
+    /// The attributes used here are described on: https://github.com/LightBDD/LightBDD/wiki/Tests-Structure-and-Conventions
+    /// </summary>
     [TestClass]
     [FeatureDescription(
 @"In order to access personal data
@@ -13,6 +20,17 @@ I want to login into system")]
     [Label("Story-1")]
     public partial class Login_feature
     {
+        /// <summary>
+        /// This is a sample scenario.
+        /// When executed, it would appear in the report as "Successful login" and it would consists of following steps:
+        /// 
+        /// GIVEN the user is about to login
+        /// GIVEN the user entered valid login
+        /// GIVEN the user entered valid password
+        /// WHEN the user clicks login button
+        /// THEN the login operation should be successful
+        /// THEN a welcome message containing user name should be returned
+        /// </summary>
         [Scenario]
         [Label("Ticket-1")]
         [ScenarioCategory(Categories.Security)]

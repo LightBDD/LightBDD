@@ -7,12 +7,13 @@ using LightBDD.XUnit2;
 
 namespace Example.LightBDD.XUnit2.Features
 {
-    /* This feature class presents usage of fluent scenario syntax, that is enabled by NewScenario() method.
-     * While this syntax is less readable as it counterparts, it offers a flexibility in mixing various
-     * types of steps and syntax used to compose them, and allows programmatic creation of scenarios.
-     * 
-     * More information on fluent syntax can be found here: https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#fluent-scenarios
-     */
+    /// <summary>
+    /// This feature class presents usage of fluent scenario syntax, that is enabled by NewScenario() method.
+    /// While this syntax is less readable as it counterparts, it offers a flexibility in mixing various
+    /// types of steps and syntax used to compose them, and allows programmatic creation of scenarios.
+    /// 
+    /// More information on fluent syntax can be found here: https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#fluent-scenarios
+    /// </summary>
     [Label("STORY-9")]
     [FeatureDescription(
 @"In order to see all payment details

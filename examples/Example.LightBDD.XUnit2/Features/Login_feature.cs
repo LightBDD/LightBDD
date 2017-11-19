@@ -4,12 +4,13 @@ using LightBDD.XUnit2;
 
 namespace Example.LightBDD.XUnit2.Features
 {
-    /* This feature class presents usage of basic scenario syntax (that is most readable)
-     * as well as attributes and concepts of creating LightBDD tests.
-     * 
-     * More information on basic scenario syntax can be found here: https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#basic-scenarios
-     * The attributes used here are described on: https://github.com/LightBDD/LightBDD/wiki/Tests-Structure-and-Conventions
-     */
+    /// <summary>
+    /// This feature class presents usage of basic scenario syntax (that is most readable)
+    /// as well as attributes and concepts of creating LightBDD tests.
+    /// 
+    /// More information on basic scenario syntax can be found here: https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#basic-scenarios
+    /// The attributes used here are described on: https://github.com/LightBDD/LightBDD/wiki/Tests-Structure-and-Conventions
+    /// </summary>
     [FeatureDescription(
 @"In order to access personal data
 As an user
@@ -17,17 +18,17 @@ I want to login into system")]
     [Label("Story-1")]
     public partial class Login_feature
     {
-        /* This is a sample scenario.
-         * When executed, it would appear in the report as "Successful login" and it would consists of following steps:
-         * 
-         * GIVEN the user is about to login
-         * GIVEN the user entered valid login
-         * GIVEN the user entered valid password
-         * WHEN the user clicks login button
-         * THEN the login operation should be successful
-         * THEN a welcome message containing user name should be returned
-         * 
-         */
+        /// <summary>
+        /// This is a sample scenario.
+        /// When executed, it would appear in the report as "Successful login" and it would consists of following steps:
+        /// 
+        /// GIVEN the user is about to login
+        /// GIVEN the user entered valid login
+        /// GIVEN the user entered valid password
+        /// WHEN the user clicks login button
+        /// THEN the login operation should be successful
+        /// THEN a welcome message containing user name should be returned
+        /// </summary>
         [Scenario]
         [Label("Ticket-1")]
         [ScenarioCategory(Categories.Security)]
@@ -73,7 +74,9 @@ I want to login into system")]
                 Then_an_invalid_login_or_password_error_message_should_be_returned);
         }
 
-        /* This test presents how LightBDD treats test failures */
+        /// <summary>
+        /// This test presents how LightBDD treats test failures 
+        /// </summary>
         [Scenario]
         [Label("Ticket-3")]
         [ScenarioCategory(Categories.Security)]

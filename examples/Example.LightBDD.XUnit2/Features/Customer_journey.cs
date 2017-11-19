@@ -4,17 +4,17 @@ using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.Framework.Scenarios.Contextual;
 using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.XUnit2;
-
 #pragma warning disable 1998
 
 namespace Example.LightBDD.XUnit2.Features
 {
-    /* This feature class shows how to create asynchronous scenario from composite steps using basic syntax.
-     * 
-     * More information on asynchronous scenarios can be found here: https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#asynchronous-scenario-step-execution
-     * The basic scenario syntax is described here: https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#basic-scenarios
-     * The composite steps are described here: https://github.com/LightBDD/LightBDD/wiki/Composite-Steps-Definition
-     */
+    /// <summary>
+    /// This feature class shows how to create asynchronous scenario from composite steps using basic syntax.
+    /// 
+    /// More information on asynchronous scenarios can be found here: https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#asynchronous-scenario-step-execution
+    /// The basic scenario syntax is described here: https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#basic-scenarios
+    /// The composite steps are described here: https://github.com/LightBDD/LightBDD/wiki/Composite-Steps-Definition
+    /// </summary>
     [FeatureDescription(
 @"In order to receive a product
 As an application user
@@ -22,9 +22,10 @@ I want to go through entire customer journey")]
     [Label("Story-6")]
     public partial class Customer_journey : FeatureFixture
     {
-        /* This scenario uses basic syntax for asynchronous steps (it uses RunScenarioAsync() method),
-         * however all of the used steps are composites, where each composite is constructed in different way and use synchronous or asynchronous sub-steps.
-         */
+        /// <summary>
+        /// This scenario uses basic syntax for asynchronous steps (it uses RunScenarioAsync() method),
+        /// however all of the used steps are composites, where each composite is constructed in different way and use synchronous or asynchronous sub-steps.
+        /// </summary>
         [Scenario]
         [Label("Ticket-12")]
         public async Task Ordering_products()
@@ -36,9 +37,10 @@ I want to go through entire customer journey")]
                 Then_customer_should_receive_order_email);
         }
 
-        /* This step shows that it is possible to create a contextual step, where context will be shared between all the sub-steps,
-         * and then use extended syntax to call some asynchronous sub-steps.
-         */
+        /// <summary>
+        /// This step shows that it is possible to create a contextual step, where context will be shared between all the sub-steps,
+        /// and then use extended syntax to call some asynchronous sub-steps.
+        /// </summary>
         private async Task<CompositeStep> Then_customer_should_receive_order_email()
         {
             return CompositeStep.DefineNew()
@@ -49,7 +51,9 @@ I want to go through entire customer journey")]
                 .Build();
         }
 
-        /* This one, on the other hand uses basic syntax and uses synchronous sub-steps. */
+        /// <summary>
+        /// This one, on the other hand uses basic syntax and uses synchronous sub-steps. 
+        /// </summary>
         private async Task<CompositeStep> When_customer_pays_for_products_in_basket()
         {
             return CompositeStep.DefineNew()
@@ -59,7 +63,9 @@ I want to go through entire customer journey")]
                 .Build();
         }
 
-        /* Here, the composite is made of asynchronous steps that are called with extended syntax. */
+        /// <summary>
+        /// Here, the composite is made of asynchronous steps that are called with extended syntax. 
+        /// </summary>
         private async Task<CompositeStep> When_customer_adds_products_to_basket()
         {
             return CompositeStep.DefineNew()
@@ -70,7 +76,9 @@ I want to go through entire customer journey")]
                 .Build();
         }
 
-        /* Finally, this composite uses basic syntax and synchronous steps. */
+        /// <summary>
+        /// Finally, this composite uses basic syntax and synchronous steps. 
+        /// </summary>
         private async Task<CompositeStep> Given_customer_is_logged_in()
         {
             return CompositeStep.DefineNew()

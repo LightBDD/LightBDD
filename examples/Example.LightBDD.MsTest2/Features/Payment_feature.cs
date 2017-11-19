@@ -6,6 +6,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Example.LightBDD.MsTest2.Features
 {
+    /// <summary>
+    /// This feature class presents usage of extended syntax in conjunction with asynchronous steps returning Task.
+    /// 
+    /// The asynchronous steps are described on: https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#asynchronous-scenario-step-execution
+    /// </summary>
     [TestClass]
     [FeatureDescription(
 @"In order to get desired products

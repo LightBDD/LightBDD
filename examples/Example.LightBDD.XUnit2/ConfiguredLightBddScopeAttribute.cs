@@ -4,7 +4,9 @@ using LightBDD.Framework.Reporting.Configuration;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.XUnit2;
 
-/* This is a way to enable LightBDD - XUnit integration. 
+/*
+ * This is a way to enable LightBDD - XUnit integration.
+ * It is required to do it in all assemblies with LightBDD scenarios.
  * It is possible to either use [assembly:LightBddScope] directly to use LightBDD with default configuration, 
  * or customize it in a way that is shown below.
  */
@@ -12,12 +14,17 @@ using LightBDD.XUnit2;
 
 namespace Example.LightBDD.XUnit2
 {
+    /// <summary>
+    /// This class extends LightBddScopeAttribute and allows to customize the default configuration of LightBDD.
+    /// It is also possible here to override OnSetUp() and OnTearDown() methods to execute code that has to be run once, before or after all tests.
+    /// </summary>
     internal class ConfiguredLightBddScopeAttribute : LightBddScopeAttribute
     {
-        /* This method allows to customize LightBDD behavior.
-         * The code below configures LightBDD to produce also a plain text report after all tests are done.
-         * More information on what can be customized can be found on wiki: https://github.com/LightBDD/LightBDD/wiki/LightBDD-Configuration#configurable-lightbdd-features 
-         */
+        /// <summary>
+        /// This method allows to customize LightBDD behavior.
+        /// The code below configures LightBDD to produce also a plain text report after all tests are done.
+        /// More information on what can be customized can be found on wiki: https://github.com/LightBDD/LightBDD/wiki/LightBDD-Configuration#configurable-lightbdd-features 
+        /// </summary>
         protected override void OnConfigure(LightBddConfiguration configuration)
         {
             configuration
