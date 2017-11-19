@@ -1,4 +1,3 @@
-using System.Linq;
 using Example.Domain.Domain;
 using LightBDD.Framework;
 using LightBDD.Framework.Commenting;
@@ -40,7 +39,7 @@ namespace Example.LightBDD.XUnit2.Features
 
         private void Then_the_basket_should_contain_the_product()
         {
-            Assert.True(_basket.Products.Contains("product"));
+            Assert.Contains("product", _basket.Products);
         }
 
         private void Then_the_product_addition_should_be_unsuccessful()
@@ -50,13 +49,13 @@ namespace Example.LightBDD.XUnit2.Features
 
         private void Then_the_basket_should_not_contain_the_product()
         {
-            Assert.False(_basket.Products.Contains("product"));
+            Assert.DoesNotContain("product", _basket.Products);
         }
 
         private void Then_the_product_should_be_removed_from_stock()
         {
             StepExecution.Current.IgnoreScenario("Product removal from stock is not implemented yet");
-            Assert.False(_stock.Products.Contains("product"));
+            Assert.DoesNotContain("product", _stock.Products);
         }
 
         #region Setup/Teardown

@@ -1,9 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Example.Domain.Helpers;
 using LightBDD.Framework;
-using LightBDD.Framework.Scenarios.Basic;
-using LightBDD.Framework.Scenarios.Contextual;
-using LightBDD.Framework.Scenarios.Extended;
 using NUnit.Framework;
 
 #pragma warning disable 1998

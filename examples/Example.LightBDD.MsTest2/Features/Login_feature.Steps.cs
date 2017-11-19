@@ -61,7 +61,7 @@ namespace Example.LightBDD.MsTest2.Features
         private void Then_a_welcome_message_containing_user_name_should_be_returned()
         {
             var expectedMessage = string.Format("Welcome {0}!", _validUserName);
-            Assert.AreEqual<string>(expectedMessage, _loginResult.ResultMessage);
+            Assert.AreEqual(expectedMessage, _loginResult.ResultMessage);
         }
 
         private void Then_the_login_operation_should_be_unsuccessful()
@@ -71,7 +71,7 @@ namespace Example.LightBDD.MsTest2.Features
 
         private void Then_an_invalid_login_or_password_error_message_should_be_returned()
         {
-            Assert.AreEqual<string>("Invalid user name or password.", _loginResult.ResultMessage);
+            Assert.AreEqual("Invalid user name or password.", _loginResult.ResultMessage);
         }
     }
 }

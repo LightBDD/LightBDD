@@ -61,23 +61,23 @@ namespace Example.LightBDD.XUnit2.Features
 
         private void Then_the_login_operation_should_be_successful()
         {
-            Assert.True((bool) _loginResult.IsSuccessful, "Login should succeeded");
+            Assert.True(_loginResult.IsSuccessful, "Login should succeeded");
         }
 
         private void Then_a_welcome_message_containing_user_name_should_be_returned()
         {
             var expectedMessage = string.Format("Welcome {0}!", _validUserName);
-            Assert.Equal(expectedMessage, (string) _loginResult.ResultMessage);
+            Assert.Equal(expectedMessage, _loginResult.ResultMessage);
         }
 
         private void Then_the_login_operation_should_be_unsuccessful()
         {
-            Assert.False((bool) _loginResult.IsSuccessful);
+            Assert.False(_loginResult.IsSuccessful);
         }
 
         private void Then_an_invalid_login_or_password_error_message_should_be_returned()
         {
-            Assert.Equal((string) "Invalid user name or password.", (string) _loginResult.ResultMessage);
+            Assert.Equal("Invalid user name or password.", _loginResult.ResultMessage);
         }
     }
 }

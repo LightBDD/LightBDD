@@ -4,6 +4,7 @@ using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.Framework.Scenarios.Contextual;
 using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.NUnit3;
+
 #pragma warning disable 1998
 
 namespace Example.LightBDD.NUnit3.Features

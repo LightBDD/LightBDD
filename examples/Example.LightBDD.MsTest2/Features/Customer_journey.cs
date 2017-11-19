@@ -5,6 +5,7 @@ using LightBDD.Framework.Scenarios.Contextual;
 using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.MsTest2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 #pragma warning disable 1998
 
 namespace Example.LightBDD.MsTest2.Features

@@ -3,6 +3,7 @@ using Example.Domain.Helpers;
 using LightBDD.Framework;
 using LightBDD.XUnit2;
 using Xunit.Abstractions;
+
 #pragma warning disable 1998
 
 namespace Example.LightBDD.XUnit2.Features
