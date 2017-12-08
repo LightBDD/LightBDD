@@ -26,7 +26,7 @@ namespace LightBDD.AcceptanceTests.Features
             public Context()
             {
                 Driver = DriverPool.Acquire();
-                HtmlFileName = Path.GetFullPath(BaseDirectory + "\\" + Guid.NewGuid() + ".html");
+                HtmlFileName = Path.GetFullPath(BaseDirectory + " + Path.DirectorySeparatorChar + " + Guid.NewGuid() + ".html");
                 ResultBuilder = new ResultBuilder();
             }
 

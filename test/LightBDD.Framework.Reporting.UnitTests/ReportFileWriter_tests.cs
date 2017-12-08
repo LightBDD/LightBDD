@@ -13,9 +13,9 @@ namespace LightBDD.Framework.Reporting.UnitTests
         [Test]
         public void It_should_use_appdomain_base_directory_if_output_starts_with_tilde()
         {
-            var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), "~\\output.txt");
-            var expected = Path.GetFullPath(BaseDirectory + "\\output.txt");
-            Assert.That(writer.OutputPath, Is.EqualTo("~\\output.txt"));
+            var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), "~" + Path.DirectorySeparatorChar + "output.txt");
+            var expected = Path.GetFullPath(BaseDirectory + Path.DirectorySeparatorChar + "output.txt");
+            Assert.That(writer.OutputPath, Is.EqualTo("~" + Path.DirectorySeparatorChar + "output.txt"));
             Assert.That(writer.FullOutputPath, Is.EqualTo(expected));
         }
 
@@ -31,9 +31,9 @@ namespace LightBDD.Framework.Reporting.UnitTests
         [Test]
         public void It_should_preserve_output_path_if_it_is_absolute()
         {
-            var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), "c:\\output.txt");
-            var expected = Path.GetFullPath("c:\\output.txt");
-            Assert.That(writer.OutputPath, Is.EqualTo("c:\\output.txt"));
+            var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), "c:" + Path.DirectorySeparatorChar + "output.txt");
+            var expected = Path.GetFullPath("c:" + Path.DirectorySeparatorChar + "output.txt");
+            Assert.That(writer.OutputPath, Is.EqualTo("c:" + Path.DirectorySeparatorChar + "output.txt"));
             Assert.That(writer.FullOutputPath, Is.EqualTo(expected));
         }
 
@@ -41,7 +41,7 @@ namespace LightBDD.Framework.Reporting.UnitTests
         public void Save_should_use_formatter_to_write_data()
         {
             var expectedFileContent = "text";
-            var outputPath = $"~\\{Guid.NewGuid()}\\output.txt";
+            var outputPath = $"~" + Path.DirectorySeparatorChar + "{Guid.NewGuid()}" + Path.DirectorySeparatorChar + "output.txt";
             var expectedPath = outputPath.Replace("~", BaseDirectory);
 
             var formatter = Mock.Of<IReportFormatter>();
