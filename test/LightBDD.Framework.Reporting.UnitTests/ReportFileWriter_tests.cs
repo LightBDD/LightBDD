@@ -41,7 +41,7 @@ namespace LightBDD.Framework.Reporting.UnitTests
         public void Save_should_use_formatter_to_write_data()
         {
             var expectedFileContent = "text";
-            var outputPath = $"~" + Path.DirectorySeparatorChar + "{Guid.NewGuid()}" + Path.DirectorySeparatorChar + "output.txt";
+            var outputPath = "~" + Path.DirectorySeparatorChar + $"{Guid.NewGuid()}" + Path.DirectorySeparatorChar + "output.txt";
             var expectedPath = outputPath.Replace("~", BaseDirectory);
 
             var formatter = Mock.Of<IReportFormatter>();
