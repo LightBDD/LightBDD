@@ -90,8 +90,8 @@ namespace LightBDD.Framework.Reporting.UnitTests
         private void GenerateRelativeDirPathWithTilde()
         {
             _dirPath = Guid.NewGuid().ToString();
-            _realDirPath = AppDomainHelper.BaseDirectory + "\\" + _dirPath;
-            _dirPath = "~\\" + _dirPath;
+            _realDirPath = AppDomainHelper.BaseDirectory + Path.DirectorySeparatorChar + _dirPath;
+            _dirPath = "~" + Path.DirectorySeparatorChar + _dirPath;
         }
 
         private string PrepareFilePath(string name)

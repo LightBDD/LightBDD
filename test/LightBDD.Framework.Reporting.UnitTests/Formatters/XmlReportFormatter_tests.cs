@@ -20,7 +20,7 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
         public XmlReportFormatter_tests()
         {
             _schema = new XmlSchemaSet();
-            _schema.Add("", AppDomain.CurrentDomain.BaseDirectory + "\\XmlReportFormatterSchema.xsd");
+            _schema.Add("", AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "XmlReportFormatterSchema.xsd");
         }
 
         [SetUp]
