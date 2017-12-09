@@ -15,6 +15,7 @@ namespace LightBDD.MsTest2.Implementation
 
         public TestResult Invoke(object[] arguments)
         {
+            arguments = arguments ?? Arguments;
             try
             {
                 TestContextProvider.Initialize(_target.MethodInfo, arguments);
@@ -39,6 +40,7 @@ namespace LightBDD.MsTest2.Implementation
         public string TestMethodName => _target.TestMethodName;
         public string TestClassName => _target.TestClassName;
         public Type ReturnType => _target.ReturnType;
+        public object[] Arguments => _target.Arguments;
         public ParameterInfo[] ParameterTypes => _target.ParameterTypes;
         public MethodInfo MethodInfo => _target.MethodInfo;
     }
