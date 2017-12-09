@@ -1,14 +1,21 @@
 LightBDD
 ===========================================
 
+Version 2.3.2
+----------------------------------------
+Summary:
++ #80 Updated LightBDD.MsTest2 to use MsTest.TestFramework 1.2.0
++ #87 Fixed directory separator for Unix systems
+Details:
++ #87 (Framework)(Fix) Use the System.IO.Path.DirectorySeparatorChar in file paths to match Unix and Win paths
++ #80 (MsTest2)(Change) Updated LightBDD.MsTest2 to use MsTest.TestFramework 1.2.0: that version is not binary compatible with 1.1.18 so it was not possible to use LightBDD.MsTest2 with newest MsTest
+
 Version 2.3.1
 ----------------------------------------
 Summary:
 + #73 Fixed "Tests accessing Application Settings fails on NET45x with SerializationException: TestContextProvider is not marked as serializable"
-+ #87 Fixed directory separator for Unix systems
 Details:
 + #73 (Framework)(Fix) Corrected AsyncLocalContext<T> in LightBDD targeting NET45x to marshal stored context by ref when transferring it between domains
-+ #87 (Framework)(Fix) Use the System.IO.Path.DirectorySeparatorChar in file paths to match Unix and Win paths
 
 Version 2.3.0
 ----------------------------------------
