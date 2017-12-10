@@ -16,6 +16,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>bdd;tdd;testing;framework;behavior driven development;acceptance criteria</PackageTags>
     <PackageReleaseNotes>Fixed LightBDD targeting NET45x to support tests requiring cross-domain communication; Details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-231 </PackageReleaseNotes>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)'=='Release'">

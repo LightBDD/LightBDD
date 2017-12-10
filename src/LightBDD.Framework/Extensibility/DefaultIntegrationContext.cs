@@ -30,6 +30,8 @@ namespace LightBDD.Framework.Extensibility
         /// </summary>
         public override Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
 
+        public override ILightBddProgressNotifier LightBddProgressNotifier { get;  }
+
         /// <summary>
         /// Returns feature progress notifier.
         /// </summary>
@@ -68,6 +70,7 @@ namespace LightBDD.Framework.Extensibility
             MetadataProvider = metadataProvider;
             ExceptionToStatusMapper = exceptionToStatusMapper;
             FeatureProgressNotifier = configuration.FeatureProgressNotifierConfiguration().Notifier;
+            LightBddProgressNotifier = configuration.LightBddProgressNotifierConfiguration().Notifier;
             ScenarioProgressNotifierProvider = configuration.ScenarioProgressNotifierConfiguration().NotifierProvider;
             ExecutionExtensions = configuration.ExecutionExtensionsConfiguration();
         }

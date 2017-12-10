@@ -28,6 +28,8 @@ namespace LightBDD.Core.Extensibility
         /// </summary>
         public abstract Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
 
+        public abstract ILightBddProgressNotifier LightBddProgressNotifier { get; }
+
         /// <summary>
         /// Returns feature progress notifier.
         /// </summary>

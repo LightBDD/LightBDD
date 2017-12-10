@@ -7,7 +7,7 @@ namespace LightBDD.Framework.Notification
     /// <summary>
     /// Progress notifier implementation that does nothing when called.
     /// </summary>
-    public class NoProgressNotifier : IFeatureProgressNotifier, IScenarioProgressNotifier
+    public class NoProgressNotifier : IFeatureProgressNotifier, IScenarioProgressNotifier, ILightBddProgressNotifier
     {
         private NoProgressNotifier() { }
         /// <summary>
@@ -42,5 +42,13 @@ namespace LightBDD.Framework.Notification
         /// Does nothing.
         /// </summary>
         public void NotifyStepComment(IStepInfo step, string comment) { }
+        /// <summary>
+        /// Does nothing.
+        /// </summary>
+        public void NotifyLightBddStart() { }
+        /// <summary>
+        /// Does nothing.
+        /// </summary>
+        public void NotifyLightBddFinished() { }
     }
 }

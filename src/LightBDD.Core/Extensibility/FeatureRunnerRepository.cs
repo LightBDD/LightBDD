@@ -11,17 +11,17 @@ namespace LightBDD.Core.Extensibility
     /// </summary>
     public abstract class FeatureRunnerRepository
     {
-        private readonly IntegrationContext _integrationContext;
+        internal IntegrationContext IntegrationContext { get; }
         private readonly ConcurrentDictionary<Type, IFeatureRunner> _runners = new ConcurrentDictionary<Type, IFeatureRunner>();
 
         /// <summary>
         /// Constructor instantiating factory with specified integration context.
         /// </summary>
         /// <param name="integrationContext">Integration context.</param>
-        [Obsolete("Use constructor with " + nameof(IntegrationContext), true)]
+        [Obsolete("Use constructor with " + nameof(Extensibility.IntegrationContext), true)]
         protected FeatureRunnerRepository(IIntegrationContext integrationContext)
         {
-            _integrationContext = integrationContext as IntegrationContext ?? new IntegrationContextWrapper(integrationContext);
+            IntegrationContext = integrationContext as IntegrationContext ?? new IntegrationContextWrapper(integrationContext);
         }
         /// <summary>
         /// Constructor instantiating factory with specified runner context.
@@ -29,7 +29,7 @@ namespace LightBDD.Core.Extensibility
         /// <param name="integrationContext">Runner context.</param>
         protected FeatureRunnerRepository(IntegrationContext integrationContext)
         {
-            _integrationContext = integrationContext;
+            IntegrationContext = integrationContext;
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace LightBDD.Core.Extensibility
             if (featureType == null)
                 throw new ArgumentNullException(nameof(featureType));
 
-            return _runners.GetOrAdd(featureType, type => new FeatureRunner(type, _integrationContext));
+            return _runners.GetOrAdd(featureType, type => new FeatureRunner(type, IntegrationContext));
         }
 
         /// <summary>

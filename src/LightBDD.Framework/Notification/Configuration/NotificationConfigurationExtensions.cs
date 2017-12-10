@@ -26,5 +26,14 @@ namespace LightBDD.Framework.Notification.Configuration
         {
             return configuration.Get<ScenarioProgressNotifierConfiguration>();
         }
+        /// <summary>
+        /// Retrieves <see cref="LightBddProgressNotifierConfiguration"/> from <paramref name="configuration"/> for further customizations.
+        /// </summary>
+        /// <param name="configuration">Configuration object.</param>
+        /// <returns>Configuration object.</returns>
+        public static LightBddProgressNotifierConfiguration LightBddProgressNotifierConfiguration(this LightBddConfiguration configuration)
+        {
+            return configuration.Get<LightBddProgressNotifierConfiguration>();
+        }
     }
 }

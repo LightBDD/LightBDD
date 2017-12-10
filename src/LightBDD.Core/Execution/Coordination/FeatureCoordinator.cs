@@ -56,6 +56,12 @@ namespace LightBDD.Core.Execution.Coordination
                     throw new InvalidOperationException($"FeatureCoordinator of {Instance.GetType()} type is already installed");
                 Instance = coordinator;
             }
+            coordinator.OnInstalled();
+        }
+
+        void OnInstalled()
+        {
+            RunnerRepository.IntegrationContext.LightBddProgressNotifier.NotifyLightBddStart();
         }
 
         /// <summary>
@@ -92,6 +98,7 @@ namespace LightBDD.Core.Execution.Coordination
             if (IsDisposed)
                 return;
             IsDisposed = true;
+            RunnerRepository.IntegrationContext.LightBddProgressNotifier.NotifyLightBddFinished();
             CollectFeatureResults();
             _featureAggregator.Dispose();
         }
