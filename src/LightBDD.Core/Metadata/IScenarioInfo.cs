@@ -8,6 +8,11 @@ namespace LightBDD.Core.Metadata
     public interface IScenarioInfo
     {
         /// <summary>
+        /// Unique Id assigned at runtime.
+        /// Please note that the same scenario may have different Ids in consecutive test runs.
+        /// </summary>
+        string RuntimeId { get; }
+        /// <summary>
         /// Returns scenario name.
         /// </summary>
         INameInfo Name { get; }

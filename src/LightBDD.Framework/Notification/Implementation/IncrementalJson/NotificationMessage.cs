@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 
 namespace LightBDD.Framework.Notification.Implementation.IncrementalJson
 {
-    internal interface IJsonItem
+    public interface IJsonItem
     {
-        void WriteTo(InlineJsonStreamWriter writer);
+        void WriteTo(StreamWriter writer);
     }
 
     internal class JsonProperty : IJsonItem
@@ -27,17 +29,19 @@ namespace LightBDD.Framework.Notification.Implementation.IncrementalJson
             _value = value;
         }
 
-        public JsonProperty(string name, bool value):this(name,new JsonBoolean(value))
+        public JsonProperty(string name, bool value) : this(name, new JsonBoolean(value))
         {
         }
 
-        public JsonProperty(string name, double value):this(name,new JsonDouble(value))
+        public JsonProperty(string name, double value) : this(name, new JsonDouble(value))
         {
         }
 
-        public void WriteTo(InlineJsonStreamWriter writer)
+        public void WriteTo(StreamWriter writer)
         {
-            writer.WriteText(_name).WriteDirect(':').Write(_value);
+            writer.WriteText(_name);
+            writer.Write(':');
+            _value.WriteTo(writer);
         }
     }
 
@@ -50,9 +54,9 @@ namespace LightBDD.Framework.Notification.Implementation.IncrementalJson
             _value = value;
         }
 
-        public void WriteTo(InlineJsonStreamWriter writer)
+        public  void WriteTo(StreamWriter writer)
         {
-            writer.WriteDouble(_value);
+             writer.Write(_value.ToString(CultureInfo.InvariantCulture));
         }
     }
 
@@ -65,9 +69,9 @@ namespace LightBDD.Framework.Notification.Implementation.IncrementalJson
             _value = value;
         }
 
-        public void WriteTo(InlineJsonStreamWriter writer)
+        public  void WriteTo(StreamWriter writer)
         {
-            writer.WriteBoolean(_value);
+             writer.Write(_value ? "true" : "false");
         }
     }
 
@@ -80,9 +84,9 @@ namespace LightBDD.Framework.Notification.Implementation.IncrementalJson
             _value = value;
         }
 
-        public void WriteTo(InlineJsonStreamWriter writer)
+        public  void WriteTo(StreamWriter writer)
         {
-            writer.WriteLong(_value);
+             writer.Write(_value.ToString(CultureInfo.InvariantCulture));
         }
     }
 
@@ -95,7 +99,7 @@ namespace LightBDD.Framework.Notification.Implementation.IncrementalJson
             _value = value;
         }
 
-        public void WriteTo(InlineJsonStreamWriter writer)
+        public void WriteTo(StreamWriter writer)
         {
             writer.WriteText(_value);
         }
@@ -109,15 +113,18 @@ namespace LightBDD.Framework.Notification.Implementation.IncrementalJson
         {
             _values = values.ToArray();
         }
-        public void WriteTo(InlineJsonStreamWriter writer)
+        public void WriteTo(StreamWriter writer)
         {
-            writer.WriteDirect('[');
+            writer.Write('[');
             for (var index = 0; index < _values.Length; index++)
             {
-                if (index > 0) writer.WriteDirect(',');
-                writer.Write(_values[index]);
+                if (index > 0)
+                {
+                    writer.Write(',');
+                }
+                _values[index].WriteTo(writer);
             }
-            writer.WriteDirect(']');
+            writer.Write(']');
         }
     }
 
@@ -130,15 +137,18 @@ namespace LightBDD.Framework.Notification.Implementation.IncrementalJson
             _properties = properties;
         }
 
-        public void WriteTo(InlineJsonStreamWriter writer)
+        public void WriteTo(StreamWriter writer)
         {
-            writer.WriteDirect('{');
+            writer.Write('{');
             for (var index = 0; index < _properties.Length; index++)
             {
-                if (index > 0) writer.WriteDirect(',');
-                writer.Write(_properties[index]);
+                if (index > 0)
+                {
+                    writer.Write(',');
+                }
+                _properties[index].WriteTo(writer);
             }
-            writer.WriteDirect('}');
+            writer.Write('}');
         }
     }
 }

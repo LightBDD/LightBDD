@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
+using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Metadata;
@@ -8,52 +11,51 @@ using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
 using LightBDD.Framework.Internals;
 using LightBDD.Framework.Notification.Implementation.IncrementalJson;
-using LightBDD.Framework.Reporting.Implementation;
 
 namespace LightBDD.Framework.Notification
 {
-    public class IncrementalJsonProgressNotifier : IScenarioProgressNotifier, IFeatureProgressNotifier, ILightBddProgressNotifier
+    public abstract class IncrementalJsonProgressNotifier : IScenarioProgressNotifier, IFeatureProgressNotifier, ILightBddProgressNotifier
     {
         private readonly AsyncConcurrentQueue<JsonElement> _queue = new AsyncConcurrentQueue<JsonElement>();
         private readonly Stopwatch _timeLine = new Stopwatch();
-        private readonly Task _backgroundWriter;
+        private Task _backgroundWriter;
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-        private readonly FileStream _fileStream;
-
-        public IncrementalJsonProgressNotifier(string outputPath)
-        {
-            var filePath = FilePathHelper.ResolveAbsolutePath(outputPath);
-            FilePathHelper.EnsureOutputDirectoryExists(filePath);
-            _fileStream = File.Open(filePath, FileMode.Create, FileAccess.Write, FileShare.Read);
-            _backgroundWriter = Task.Run(SaveMessagesAsync);
-        }
 
         private async Task SaveMessagesAsync()
         {
-            using (_fileStream)
-            using (var writer = new InlineJsonStreamWriter(_fileStream))
+            try
             {
+                OnStart();
                 while (!_cancellationTokenSource.IsCancellationRequested)
                 {
                     try
                     {
                         var message = await _queue.DequeueAsync(_cancellationTokenSource.Token);
-                        WriteMessage(message, writer);
+                        WriteMessage(message.WriteTo);
                     }
-                    catch (OperationCanceledException) when (_cancellationTokenSource.IsCancellationRequested) { }
+                    catch (OperationCanceledException) when (_cancellationTokenSource.IsCancellationRequested)
+                    {
+                    }
                 }
 
                 foreach (var message in _queue)
-                    WriteMessage(message, writer);
+                    WriteMessage(message.WriteTo);
+            }
+            finally
+            {
+                OnFinish();
             }
         }
 
-        private static void WriteMessage(JsonElement message, InlineJsonStreamWriter writer)
+        protected virtual void OnStart()
         {
-            message.WriteTo(writer);
-            writer.WriteDirect('\n');
-            writer.Flush();
         }
+
+        protected virtual void OnFinish()
+        {
+        }
+
+        protected abstract void WriteMessage(Action<StreamWriter> writeFn);
 
         public void NotifyScenarioStart(IScenarioInfo scenario)
         {
@@ -92,6 +94,7 @@ namespace LightBDD.Framework.Notification
 
         public void NotifyLightBddStart()
         {
+            _backgroundWriter = Task.Run(SaveMessagesAsync);
             _timeLine.Start();
         }
 

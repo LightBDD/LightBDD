@@ -7,13 +7,15 @@ namespace LightBDD.Core.Metadata.Implementation
     [DebuggerStepThrough]
     internal class FeatureInfo : IFeatureInfo
     {
-        public FeatureInfo(INameInfo name, string[] labels, string description)
+        public FeatureInfo(string runtimeId, INameInfo name, string[] labels, string description)
         {
+            RuntimeId = runtimeId;
             Name = name;
             Labels = labels;
             Description = description;
         }
 
+        public string RuntimeId { get; }
         public INameInfo Name { get; }
         public IEnumerable<string> Labels { get; }
         public string Description { get; }

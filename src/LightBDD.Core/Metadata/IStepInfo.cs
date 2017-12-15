@@ -6,6 +6,11 @@ namespace LightBDD.Core.Metadata
     public interface IStepInfo
     {
         /// <summary>
+        /// Unique Id assigned at runtime.
+        /// Please note that the same step may have different Ids in consecutive test runs.
+        /// </summary>
+        string RuntimeId { get; }
+        /// <summary>
         /// Returns step name.
         /// </summary>
         IStepNameInfo Name { get; }

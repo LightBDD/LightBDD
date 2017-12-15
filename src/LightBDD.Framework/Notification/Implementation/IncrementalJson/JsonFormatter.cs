@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
@@ -15,10 +14,11 @@ namespace LightBDD.Framework.Notification.Implementation.IncrementalJson
             return new JsonElement(
                 ToType("FeatureStarted"),
                 ToTimeLine(timeLine),
+                new JsonProperty(nameof(value.RuntimeId), ToJson(value.RuntimeId)),
                 new JsonProperty(nameof(value.Name), ToJson(value.Name)),
                 new JsonProperty(nameof(value.Labels), value.Labels.ToJsonArray(ToJson)),
                 new JsonProperty(nameof(value.Description), value.Description)
-                );
+            );
         }
 
         public static JsonElement ToJson(this IScenarioInfo value, Stopwatch timeLine)
@@ -26,6 +26,7 @@ namespace LightBDD.Framework.Notification.Implementation.IncrementalJson
             return new JsonElement(
                 ToType("ScenarioStarted"),
                 ToTimeLine(timeLine),
+                new JsonProperty(nameof(value.RuntimeId), ToJson(value.RuntimeId)),
                 new JsonProperty(nameof(value.Name), ToJson(value.Name)),
                 new JsonProperty(nameof(value.Labels), value.Labels.ToJsonArray(ToJson)),
                 new JsonProperty(nameof(value.Categories), value.Categories.ToJsonArray(ToJson))
@@ -37,6 +38,7 @@ namespace LightBDD.Framework.Notification.Implementation.IncrementalJson
             return new JsonElement(
                 ToType("ScenarioFinished"),
                 ToTimeLine(timeLine),
+                new JsonProperty(nameof(value.Info.RuntimeId), ToJson(value.Info.RuntimeId)),
                 new JsonProperty(nameof(value.Status), value.Status.ToString()),
                 new JsonProperty(nameof(value.StatusDetails), value.StatusDetails),
                 new JsonProperty(nameof(value.ExecutionTime), ToJson(value.ExecutionTime))
@@ -48,6 +50,7 @@ namespace LightBDD.Framework.Notification.Implementation.IncrementalJson
             return new JsonElement(
                 ToType("StepFinished"),
                 ToTimeLine(timeLine),
+                new JsonProperty(nameof(value.Info.RuntimeId), ToJson(value.Info.RuntimeId)),
                 new JsonProperty(nameof(value.Status), value.Status.ToString()),
                 new JsonProperty(nameof(value.StatusDetails), value.StatusDetails),
                 new JsonProperty(nameof(value.ExecutionTime), ToJson(value.ExecutionTime))
@@ -59,6 +62,7 @@ namespace LightBDD.Framework.Notification.Implementation.IncrementalJson
             return new JsonElement(
                 ToType("StepComment"),
                 ToTimeLine(timeLine),
+                new JsonProperty(nameof(value.RuntimeId), ToJson(value.RuntimeId)),
                 new JsonProperty("Comment", comment)
             );
         }
@@ -69,7 +73,7 @@ namespace LightBDD.Framework.Notification.Implementation.IncrementalJson
                 new JsonProperty(nameof(executionTime.Start), executionTime.Start.ToString("s")),
                 new JsonProperty(nameof(executionTime.End), executionTime.End.ToString("s")),
                 new JsonProperty(nameof(executionTime.Duration), executionTime.Duration.TotalMilliseconds)
-                );
+            );
         }
 
         private static JsonElement ToJson(INameInfo name)
@@ -106,6 +110,7 @@ namespace LightBDD.Framework.Notification.Implementation.IncrementalJson
             return new JsonElement(
                 ToType("StepStarted"),
                 ToTimeLine(timeLine),
+                new JsonProperty(nameof(value.RuntimeId), ToJson(value.RuntimeId)),
                 new JsonProperty(nameof(value.Name), ToJson(value.Name)),
                 new JsonProperty(nameof(value.GroupPrefix), value.GroupPrefix),
                 new JsonProperty(nameof(value.Number), value.Number),
@@ -124,7 +129,10 @@ namespace LightBDD.Framework.Notification.Implementation.IncrementalJson
 
         public static JsonElement ToJson(this IFeatureResult value, Stopwatch timeLine)
         {
-            return new JsonElement(ToType("FeatureFinished"), ToTimeLine(timeLine));
+            return new JsonElement(
+                ToType("FeatureFinished"),
+                ToTimeLine(timeLine),
+                new JsonProperty(nameof(value.Info.RuntimeId), ToJson(value.Info.RuntimeId)));
         }
 
         public static JsonArray ToJsonArray<T>(this IEnumerable<T> values, Func<T, IJsonItem> formatter)
@@ -134,6 +142,7 @@ namespace LightBDD.Framework.Notification.Implementation.IncrementalJson
 
         private static JsonProperty ToType(string type) => new JsonProperty("t", type);
 
-        private static JsonProperty ToTimeLine(Stopwatch timeLine) => new JsonProperty("l", timeLine.ElapsedMilliseconds);
+        private static JsonProperty ToTimeLine(Stopwatch timeLine) =>
+            new JsonProperty("l", timeLine.ElapsedMilliseconds);
     }
 }

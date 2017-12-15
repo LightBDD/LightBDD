@@ -38,6 +38,7 @@ namespace LightBDD.UnitTests.Helpers
         {
             result.Info = new TestStepInfo
             {
+                RuntimeId = Guid.NewGuid().ToString(),
                 Name = CreateStepName(stepName, stepTypeName, nameFormat, parameters),
                 Number = stepNumber
             };
@@ -109,6 +110,7 @@ namespace LightBDD.UnitTests.Helpers
         {
             return new TestScenarioInfo
             {
+                RuntimeId = Guid.NewGuid().ToString(),
                 Name = name,
                 Labels = label != null ? new[] { label } : new string[0],
                 Categories = categories ?? new string[0]
@@ -138,6 +140,7 @@ namespace LightBDD.UnitTests.Helpers
         {
             return new TestFeatureInfo
             {
+                RuntimeId = Guid.NewGuid().ToString(),
                 Name = CreateNameInfo(name),
                 Description = description,
                 Labels = label != null ? new[] { label } : new string[0]
@@ -208,6 +211,7 @@ namespace LightBDD.UnitTests.Helpers
 
         public class TestStepInfo : IStepInfo
         {
+            public string RuntimeId { get; set; }
             IStepNameInfo IStepInfo.Name => Name;
             public string GroupPrefix { get; set; }
             public TestStepNameInfo Name { get; set; }
@@ -234,6 +238,7 @@ namespace LightBDD.UnitTests.Helpers
 
         public class TestScenarioInfo : IScenarioInfo
         {
+            public string RuntimeId { get; set; }
             INameInfo IScenarioInfo.Name => Name;
             public TestNameInfo Name { get; set; }
             IEnumerable<string> IScenarioInfo.Labels => Labels;
@@ -255,6 +260,7 @@ namespace LightBDD.UnitTests.Helpers
 
         public class TestFeatureInfo : IFeatureInfo
         {
+            public string RuntimeId { get; set; }
             INameInfo IFeatureInfo.Name => Name;
             public TestNameInfo Name { get; set; }
             IEnumerable<string> IFeatureInfo.Labels => Labels;
