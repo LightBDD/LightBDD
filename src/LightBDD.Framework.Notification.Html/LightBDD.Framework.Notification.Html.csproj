@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="progress.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="progress.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LightBDD.Framework\LightBDD.Framework.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+
+</Project>
