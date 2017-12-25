@@ -50,13 +50,15 @@ namespace LightBDD.Core.UnitTests
             _runner.Test().TestScenario(
                 TestStep.CreateAsync(Method_with_replaced_parameter_PARAM_in_name, "abc"),
                 TestStep.CreateAsync(Method_with_inserted_parameter_param_in_name, "abc"),
-                TestStep.CreateAsync(Method_with_appended_parameter_at_the_end_of_name, "abc"));
+                TestStep.CreateAsync(Method_with_appended_parameter_at_the_end_of_name, "abc"),
+                TestStep.CreateAsync(ExtensionSteps.Extension_method_with_parameter_PARAM, "target", "abc"));
 
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
-                new StepResultExpectation(1, 3, "Method with replaced parameter \"abc\" in name", ExecutionStatus.Passed),
-                new StepResultExpectation(2, 3, "Method with inserted parameter param \"abc\" in name", ExecutionStatus.Passed),
-                new StepResultExpectation(3, 3, "Method with appended parameter at the end of name [param: \"abc\"]", ExecutionStatus.Passed)
+                new StepResultExpectation(1, 4, "Method with replaced parameter \"abc\" in name", ExecutionStatus.Passed),
+                new StepResultExpectation(2, 4, "Method with inserted parameter param \"abc\" in name", ExecutionStatus.Passed),
+                new StepResultExpectation(3, 4, "Method with appended parameter at the end of name [param: \"abc\"]", ExecutionStatus.Passed),
+                new StepResultExpectation(4, 4, "Extension method with parameter \"abc\"", ExecutionStatus.Passed)
             );
         }
 
@@ -176,5 +178,10 @@ namespace LightBDD.Core.UnitTests
         private void Method_with_inserted_parameter_param_in_name(object param) { }
         private void Method_with_replaced_parameter_PARAM_in_name(object param) { }
         private void Method_with_wrong_formatter_param([Format("{0")]object param) { }
+    }
+
+    static class ExtensionSteps
+    {
+        public static void Extension_method_with_parameter_PARAM(this object target, object param) { }
     }
 }

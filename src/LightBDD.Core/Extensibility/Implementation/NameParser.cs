@@ -1,6 +1,8 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using LightBDD.Core.Formatting;
 
@@ -16,13 +18,16 @@ namespace LightBDD.Core.Extensibility.Implementation
             _nameFormatter = nameFormatter;
         }
 
-        public string GetNameFormat(string stepRawName, ParameterDescriptor[] stepParameters)
+        public string GetNameFormat(MethodBase targetMethod, string stepRawName, ParameterDescriptor[] stepParameters)
         {
+            var shiftByThisArgument = targetMethod != null && targetMethod.IsDefined(typeof(ExtensionAttribute), true) ? 1 : 0;
+
             var name = _nameFormatter.FormatName(stepRawName);
             var sb = new StringBuilder();
 
             var replacements = stepParameters
-                .Select((param, index) => ToArgumentReplacement(name, param.RawName, index))
+                .Skip(shiftByThisArgument)
+                .Select((param, index) => ToArgumentReplacement(name, param.RawName, index + shiftByThisArgument))
                 .OrderBy(r => r.Position)
                 .ToArray();
             var lastPos = 0;

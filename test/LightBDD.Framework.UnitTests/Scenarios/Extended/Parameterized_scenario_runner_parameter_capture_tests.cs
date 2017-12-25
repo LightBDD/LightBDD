@@ -12,7 +12,6 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
     [TestFixture]
     public class Parameterized_scenario_runner_parameter_capture_tests : ParameterizedScenariosTestBase<NoContext>
     {
-
         [Test]
         public void It_should_capture_constant_parameters_in_sync_mode()
         {
@@ -136,6 +135,49 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
 
         private void Some_step(string parameter)
         {
+        }
+
+        [Test]
+        public void It_should_capture_extension_method_parameters_in_sync_mode()
+        {
+            ExpectSynchronousScenarioRun();
+            var expectedValue = 5;
+            Runner.RunScenario(x => this.Extension_method_with_parameter(expectedValue));
+
+            var step = CapturedSteps.Single();
+            Assert.That(step.Parameters.Length, Is.EqualTo(2));
+            Assert.That(step.Parameters[0].ValueEvaluator.Invoke(null), Is.SameAs(this));
+            Assert.That(step.Parameters[1].ValueEvaluator.Invoke(null), Is.EqualTo(expectedValue));
+        }
+
+        [Test]
+        public async Task It_should_capture_extension_method_parameters_in_async_mode()
+        {
+            ExpectAsynchronousScenarioRun();
+            var expectedValue = 5;
+            await Runner.RunScenarioAsync(x => this.Extension_method_with_parameter_async(expectedValue));
+
+            var step = CapturedSteps.Single();
+            Assert.That(step.Parameters.Length, Is.EqualTo(2));
+            Assert.That(step.Parameters[0].ValueEvaluator.Invoke(null), Is.SameAs(this));
+            Assert.That(step.Parameters[1].ValueEvaluator.Invoke(null), Is.EqualTo(expectedValue));
+        }
+    }
+
+
+    static class MyContextExtensions
+    {
+        public static void Extension_method_with_parameter(
+            this Parameterized_scenario_runner_parameter_capture_tests ctx,
+            int parameter)
+        {
+        }
+
+        public static Task Extension_method_with_parameter_async(
+            this Parameterized_scenario_runner_parameter_capture_tests ctx,
+            int parameter)
+        {
+            return Task.FromResult(0);
         }
     }
 }
