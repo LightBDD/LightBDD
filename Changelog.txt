@@ -5,6 +5,11 @@ Version 2.3.3
 ----------------------------------------
 Summary:
 + #90 Allowed to install new FeatureCoordinator when previous one is disposed in order to allow NCrunch reusing the same process to run LightBDD multiple times
++ #92 Excluded this argument from step name display when extension method is used
+Details:
++ #90 (Core)(Change) Allowed to install new FeatureCoordinator when previous one is disposed in order to allow NCrunch reusing the same process to run LightBDD multiple times
++ #92 (Core)(Change) Excluded this argument from step name display when extension method is used
++ #92 (Core)(Change) Corrected parameter placement in name when having appended parameter of lower index than matching in-text replacement at the end of the name, like: void Step_with_param(string other, string param)
 
 Version 2.3.2
 ----------------------------------------

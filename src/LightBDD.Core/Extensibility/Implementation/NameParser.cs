@@ -1,6 +1,8 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using LightBDD.Core.Formatting;
 
@@ -16,15 +18,18 @@ namespace LightBDD.Core.Extensibility.Implementation
             _nameFormatter = nameFormatter;
         }
 
-        public string GetNameFormat(string stepRawName, ParameterDescriptor[] stepParameters)
+        public string GetNameFormat(MethodBase targetMethod, string stepRawName, ParameterDescriptor[] stepParameters)
         {
+            var shiftByThisArgument = targetMethod != null && targetMethod.IsDefined(typeof(ExtensionAttribute), true) ? 1 : 0;
+
             var name = _nameFormatter.FormatName(stepRawName);
             var sb = new StringBuilder();
 
             var replacements = stepParameters
-                .Select((param, index) => ToArgumentReplacement(name, param.RawName, index))
+                .Skip(shiftByThisArgument)
+                .Select((param, index) => ToArgumentReplacement(name, param.RawName, index + shiftByThisArgument))
                 .OrderBy(r => r.Position)
-                .ToArray();
+                .ThenBy(r => r.Priority);
             var lastPos = 0;
             foreach (var replacement in replacements)
             {
@@ -41,12 +46,16 @@ namespace LightBDD.Core.Extensibility.Implementation
         private static ArgumentReplacement ToArgumentReplacement(string stepName, string parameterName, int argumentIndex)
         {
             var position = FindArgument(stepName, parameterName.ToUpperInvariant(), StringComparison.Ordinal);
+
             if (position >= 0)
-                return new ArgumentReplacement(position, $"\"{{{argumentIndex}}}\"", parameterName.Length);
+                return new ArgumentReplacement(position, $"\"{{{argumentIndex}}}\"", parameterName.Length, 0);
+
             position = FindArgument(stepName, parameterName, StringComparison.OrdinalIgnoreCase);
+
             if (position >= 0)
-                return new ArgumentReplacement(position + parameterName.Length, $" \"{{{argumentIndex}}}\"", 0);
-            return new ArgumentReplacement(stepName.Length, $" [{parameterName}: \"{{{argumentIndex}}}\"]", 0);
+                return new ArgumentReplacement(position + parameterName.Length, $" \"{{{argumentIndex}}}\"", 0, 0);
+
+            return new ArgumentReplacement(stepName.Length, $" [{parameterName}: \"{{{argumentIndex}}}\"]", 0, 1);
         }
 
         private static int FindArgument(string name, string argument, StringComparison stringComparison)
@@ -64,13 +73,14 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         private class ArgumentReplacement
         {
-            public ArgumentReplacement(int position, string value, int charactersToReplace)
+            public ArgumentReplacement(int position, string value, int charactersToReplace, byte priority)
             {
                 Position = position;
                 Value = value;
                 CharactersToReplace = charactersToReplace;
+                Priority = priority;
             }
-
+            public byte Priority { get; }
             public int Position { get; }
             public string Value { get; }
             public int CharactersToReplace { get; }
