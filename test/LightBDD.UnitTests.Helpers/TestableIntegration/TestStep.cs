@@ -42,7 +42,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
         {
             return new StepDescriptor(
                 step.GetMethodInfo(),
-                (ctx, args) => Task.FromResult((IStepResultDescriptor) step.Invoke()));
+                (ctx, args) => Task.FromResult((IStepResultDescriptor)step.Invoke()));
         }
 
         public static StepDescriptor CreateAsync<TArg>(Action<TArg> step, Func<TArg> argEvaluator)
@@ -50,7 +50,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             async Task<IStepResultDescriptor> StepInvocation(object ctx, object[] args)
             {
                 await Task.Yield();
-                step.Invoke((TArg) args[0]);
+                step.Invoke((TArg)args[0]);
                 return DefaultStepResultDescriptor.Instance;
             }
 
@@ -78,7 +78,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
         {
             Task<IStepResultDescriptor> StepInvocation(object ctx, object[] args)
             {
-                step.Invoke((TArg) args[0]);
+                step.Invoke((TArg)args[0]);
                 return Task.FromResult(DefaultStepResultDescriptor.Instance);
             }
 
@@ -90,7 +90,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
         {
             Task<IStepResultDescriptor> StepInvocation(object ctx, object[] args)
             {
-                step.Invoke((TArg) args[0]);
+                step.Invoke((TArg)args[0]);
                 return Task.FromResult(DefaultStepResultDescriptor.Instance);
             }
 
@@ -104,7 +104,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             async Task<IStepResultDescriptor> StepInvocation(object ctx, object[] args)
             {
                 await Task.Yield();
-                step.Invoke((TArg) args[0]);
+                step.Invoke((TArg)args[0]);
                 return DefaultStepResultDescriptor.Instance;
             }
 
@@ -128,11 +128,27 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             return new StepDescriptor(step.GetMethodInfo(), StepInvocation, p1, p2);
         }
 
+        public static StepDescriptor CreateAsync<TArg1, TArg2, TArg3>(Action<TArg1, TArg2, TArg3> step, TArg1 arg1, TArg2 arg2, TArg3 arg3)
+        {
+            async Task<IStepResultDescriptor> StepInvocation(object ctx, object[] args)
+            {
+                await Task.Yield();
+                step.Invoke((TArg1)args[0], (TArg2)args[1], (TArg3)args[2]);
+                return DefaultStepResultDescriptor.Instance;
+            }
+
+            var p1 = ParameterDescriptor.FromConstant(step.GetMethodInfo().GetParameters()[0], arg1);
+            var p2 = ParameterDescriptor.FromConstant(step.GetMethodInfo().GetParameters()[1], arg2);
+            var p3 = ParameterDescriptor.FromConstant(step.GetMethodInfo().GetParameters()[2], arg3);
+
+            return new StepDescriptor(step.GetMethodInfo(), StepInvocation, p1, p2, p3);
+        }
+
         public static StepDescriptor CreateSync<TArg>(Action<TArg> step, TArg arg)
         {
             Task<IStepResultDescriptor> StepInvocation(object ctx, object[] args)
             {
-                step.Invoke((TArg) args[0]);
+                step.Invoke((TArg)args[0]);
                 return Task.FromResult(DefaultStepResultDescriptor.Instance);
             }
 
@@ -144,7 +160,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
         {
             Task<IStepResultDescriptor> StepInvocation(object ctx, object[] args)
             {
-                step.Invoke((TArg) args[0]);
+                step.Invoke((TArg)args[0]);
                 return Task.FromResult(DefaultStepResultDescriptor.Instance);
             }
 
