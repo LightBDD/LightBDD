@@ -63,7 +63,7 @@ namespace LightBDD.Core.Execution.Implementation
             }
             catch (Exception e)
             {
-                _exceptions.Enqueue(e);
+                _exceptions.Enqueue(new ScenarioExecutionException(e));
             }
             finally
             {

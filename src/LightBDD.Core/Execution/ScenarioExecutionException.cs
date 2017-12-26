@@ -10,6 +10,6 @@ namespace LightBDD.Core.Execution
     /// </summary>
     public class ScenarioExecutionException : Exception
     {
-        internal ScenarioExecutionException(Exception inner) : base(string.Empty, inner) { }
+        public ScenarioExecutionException(Exception inner) : base(string.Empty, inner) { }
     }
 }

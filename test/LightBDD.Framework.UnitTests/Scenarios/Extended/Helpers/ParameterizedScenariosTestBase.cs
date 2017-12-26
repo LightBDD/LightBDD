@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using Moq;
@@ -83,8 +84,9 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
             Assert.That(step.Parameters, Is.Empty, nameof(step.Parameters));
             Assert.That(step.PredefinedStepType, Is.EqualTo(expectedPredefinedStepType), nameof(step.PredefinedStepType));
 
-            var ex = Assert.Throws<Exception>(() => step.StepInvocation.Invoke(null, null).GetAwaiter().GetResult());
-            Assert.That(ex.Message, Is.EqualTo(expectedName));
+            var ex = Assert.Throws<ScenarioExecutionException>(() => step.StepInvocation.Invoke(null, null).GetAwaiter().GetResult());
+            Assert.That(ex.InnerException, Is.TypeOf<Exception>());
+            Assert.That(ex.InnerException.Message, Is.EqualTo(expectedName));
         }
     }
 }
