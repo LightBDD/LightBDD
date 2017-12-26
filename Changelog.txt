@@ -1,6 +1,11 @@
 LightBDD
 ===========================================
 
+Version 2.3.3
+----------------------------------------
+Summary:
++ #90 Allowed to install new FeatureCoordinator when previous one is disposed in order to allow NCrunch reusing the same process to run LightBDD multiple times
+
 Version 2.3.2
 ----------------------------------------
 Summary:
