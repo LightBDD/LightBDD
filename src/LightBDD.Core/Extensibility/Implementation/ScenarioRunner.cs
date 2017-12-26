@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Execution.Implementation;
@@ -99,11 +101,19 @@ namespace LightBDD.Core.Extensibility.Implementation
             return this;
         }
 
-        public Task RunAsynchronously()
+        public async Task RunAsynchronously()
         {
-            Validate();
-            return _scenarioExecutor
-                .ExecuteAsync(new ScenarioInfo(_name, _labels, _categories), ProvideSteps, _contextProvider, _progressNotifier, _scenarioDecorators, _exceptionProcessor);
+            try
+            {
+                Validate();
+                await _scenarioExecutor
+                    .ExecuteAsync(new ScenarioInfo(_name, _labels, _categories), ProvideSteps, _contextProvider,
+                        _progressNotifier, _scenarioDecorators, _exceptionProcessor);
+            }
+            catch (ScenarioExecutionException e)
+            {
+                ExceptionDispatchInfo.Capture(e.InnerException).Throw();
+            }
         }
 
         public void RunSynchronously()

@@ -80,13 +80,18 @@ namespace LightBDD.Core.Execution.Implementation
                 InitializeScenario();
                 await _decoratingExecutor.ExecuteScenarioAsync(this, RunScenarioAsync, _scenarioDecorators);
             }
-            catch (StepBypassException ex)
-            {
-                _result.UpdateScenarioResult(ExecutionStatus.Bypassed, ex.Message);
-            }
             catch (StepExecutionException ex)
             {
                 _result.UpdateScenarioResult(ex.StepStatus);
+            }
+            catch (ScenarioExecutionException ex) when (ex.InnerException is StepBypassException)
+            {
+                _result.UpdateScenarioResult(ExecutionStatus.Bypassed, ex.InnerException.Message);
+            }
+            catch (ScenarioExecutionException ex)
+            {
+                _exceptionProcessor.UpdateResultsWithException(_result.UpdateScenarioResult, ex.InnerException);
+                exceptionCollector.Capture(ex);
             }
             catch (Exception ex)
             {
@@ -116,7 +121,7 @@ namespace LightBDD.Core.Execution.Implementation
 
             _result.UpdateException(exception);
 
-            ExceptionDispatchInfo.Capture(exception).Throw();
+            throw new ScenarioExecutionException(exception);
         }
 
         [DebuggerStepThrough]

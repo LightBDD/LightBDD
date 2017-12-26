@@ -13,7 +13,7 @@ namespace LightBDD.Core.Execution.Implementation
 
         public void Capture(Exception exception)
         {
-            _executionException = exception;
+            _executionException = exception is ScenarioExecutionException ? exception.InnerException : exception;
         }
 
         public Exception CollectFor(ExecutionStatus executionStatus, IEnumerable<IStepResult> subSteps)
