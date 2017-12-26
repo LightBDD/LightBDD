@@ -6,7 +6,8 @@ using LightBDD.Core.Extensibility;
 namespace LightBDD.Core.Execution.Coordination
 {
     /// <summary>
-    /// Feature coordinator singleton class holding <see cref="FeatureRunnerRepository"/> allowing to instantiate runners as well as <see cref="IFeatureAggregator"/> used for aggregate execution results on coordinator disposal.
+    /// Feature coordinator class holding <see cref="FeatureRunnerRepository"/> allowing to instantiate runners as well as <see cref="IFeatureAggregator"/> used for aggregate execution results on coordinator disposal.
+    /// The <see cref="Install"/> method allows to install instance that will be used in test execution cycle.
     /// </summary>
     [DebuggerStepThrough]
     public abstract class FeatureCoordinator : IDisposable
@@ -44,7 +45,18 @@ namespace LightBDD.Core.Execution.Coordination
         }
 
         /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="runnerRepository">Runner factory instance that would be used for instantiating runners.</param>
+        /// <param name="featureAggregator">Feature aggregator instance used for aggregating feature results on coordinator disposal.</param>
+        [Obsolete("This constructor is obsolete. Please use other instead.", true)]
+        protected FeatureCoordinator(FeatureRunnerRepository runnerRepository, IFeatureAggregator featureAggregator)
+            : this(runnerRepository, featureAggregator, new LightBddConfiguration()) { }
+
+        /// <summary>
         /// Installs the specified feature coordinator in thread safe manner.
+        /// The installed instance will be used by LightBDD to coordinate tests execution and generate reports upon disposal.
+        /// It is only possible to have one installed instance at given time, however upon disposal, the coordinator uninstalls self, allowing to install new one if needed and start another test cycle.
         /// </summary>
         /// <param name="coordinator">Coordinator instance to install.</param>
         /// <exception cref="InvalidOperationException">Exception thrown if another coordinator is already installed.</exception>
@@ -58,14 +70,16 @@ namespace LightBDD.Core.Execution.Coordination
             }
         }
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="runnerRepository">Runner factory instance that would be used for instantiating runners.</param>
-        /// <param name="featureAggregator">Feature aggregator instance used for aggregating feature results on coordinator disposal.</param>
-        [Obsolete("This constructor is obsolete. Please use other instead.", true)]
-        protected FeatureCoordinator(FeatureRunnerRepository runnerRepository, IFeatureAggregator featureAggregator)
-        : this(runnerRepository, featureAggregator, new LightBddConfiguration()) { }
+        private void UninstallSelf()
+        {
+            if (Instance != this)
+                return;
+            lock (Sync)
+            {
+                if (Instance == this)
+                    Instance = null;
+            }
+        }
 
         /// <summary>
         /// Constructor.
@@ -85,13 +99,16 @@ namespace LightBDD.Core.Execution.Coordination
         /// Each runner belonging to <see cref="RunnerRepository"/>, is disposed and its feature result is aggregated.
         /// After aggregation of all results, the feature aggregator is disposed as well.
         /// 
+        /// If coordinator is installed as LightBDD main coordinator, it is uninstalled as well, allowing a new one to be installed in future.
         /// If coordinator is already disposed, methods does nothing.
         /// </summary>
         public void Dispose()
         {
             if (IsDisposed)
                 return;
+
             IsDisposed = true;
+            UninstallSelf();
             CollectFeatureResults();
             _featureAggregator.Dispose();
         }
