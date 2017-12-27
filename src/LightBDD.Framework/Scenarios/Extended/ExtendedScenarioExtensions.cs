@@ -72,7 +72,9 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// <param name="steps">List of steps to execute in order.</param>
         public static void RunScenario<TContext>(this IBddRunner<TContext> runner, params Expression<Action<TContext>>[] steps)
         {
-            AsExtended(runner).RunScenario(steps);
+            AsExtended(runner)
+                .BuildScenario(steps)
+                .RunSynchronously();
         }
         /// <summary>
         /// Runs test scenario by executing given steps in specified order.<br/>
@@ -133,7 +135,9 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// <param name="steps">List of steps to execute in order.</param>
         public static async Task RunScenarioAsync<TContext>(this IBddRunner<TContext> runner, params Expression<Func<TContext, Task>>[] steps)
         {
-            await AsExtended(runner).RunScenarioAsync(steps);
+            await AsExtended(runner)
+                .BuildAsyncScenario(steps)
+                .RunAsynchronously();
         }
 
         /// <summary>
@@ -212,12 +216,14 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// <param name="steps">List of steps to execute in order.</param>
         public static async Task RunScenarioActionsAsync<TContext>(this IBddRunner<TContext> runner, params Expression<Action<TContext>>[] steps)
         {
-            await AsExtended(runner).RunScenarioAsync(steps);
+            await AsExtended(runner)
+                .BuildAsyncScenario(steps)
+                .RunAsynchronously();
         }
 
-        private static ExtendedScenarioRunner<TContext> AsExtended<TContext>(this IBddRunner<TContext> runner)
+        private static ExtendedScenarioRunnerFactory<TContext> AsExtended<TContext>(this IBddRunner<TContext> runner)
         {
-            return runner.Integrate().AsEnrichable().Enrich(ExtendedScenarioRunner<TContext>.Create);
+            return runner.Integrate().AsEnrichable().Enrich(ExtendedScenarioRunnerFactory<TContext>.Create);
         }
     }
 }

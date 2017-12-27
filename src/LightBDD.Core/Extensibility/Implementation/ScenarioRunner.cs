@@ -105,23 +105,33 @@ namespace LightBDD.Core.Extensibility.Implementation
         {
             try
             {
-                Validate();
-                await _scenarioExecutor
-                    .ExecuteAsync(new ScenarioInfo(_name, _labels, _categories), ProvideSteps, _contextProvider,
-                        _progressNotifier, _scenarioDecorators, _exceptionProcessor);
+                await RunScenarioAsync();
             }
             catch (ScenarioExecutionException e)
             {
-                ExceptionDispatchInfo.Capture(e.InnerException).Throw();
+                e.GetOriginal().Throw();
             }
+        }
+
+        private Task RunScenarioAsync()
+        {
+            Validate();
+            return _scenarioExecutor.ExecuteAsync(new ScenarioInfo(_name, _labels, _categories), ProvideSteps, _contextProvider, _progressNotifier, _scenarioDecorators, _exceptionProcessor);
         }
 
         public void RunSynchronously()
         {
-            var task = RunAsynchronously();
-            if (!task.IsCompleted)
-                throw new InvalidOperationException("Only steps being completed upon return can be run synchronously (all steps have to return completed task). Consider using Async scenario methods for async Task or async void steps.");
-            task.GetAwaiter().GetResult();
+            try
+            {
+                var task = RunScenarioAsync();
+                if (!task.IsCompleted)
+                    throw new InvalidOperationException("Only steps being completed upon return can be run synchronously (all steps have to return completed task). Consider using Async scenario methods for async Task or async void steps.");
+                task.GetAwaiter().GetResult();
+            }
+            catch (ScenarioExecutionException e)
+            {
+                e.GetOriginal().Throw();
+            }
         }
 
         private RunnableStep[] ProvideSteps(DecoratingExecutor decoratingExecutor, object scenarioContext)

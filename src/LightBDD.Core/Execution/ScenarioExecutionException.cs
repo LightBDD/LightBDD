@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.ExceptionServices;
 
 namespace LightBDD.Core.Execution
 {
@@ -11,5 +12,10 @@ namespace LightBDD.Core.Execution
     public class ScenarioExecutionException : Exception
     {
         public ScenarioExecutionException(Exception inner) : base(string.Empty, inner) { }
+
+        public ExceptionDispatchInfo GetOriginal()
+        {
+            return ExceptionDispatchInfo.Capture(InnerException);
+        }
     }
 }

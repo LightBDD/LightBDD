@@ -42,7 +42,9 @@ namespace LightBDD.Framework.Scenarios.Basic
         /// <param name="steps">List of steps to execute in order.</param>
         public static void RunScenario(this IBddRunner runner, params Action[] steps)
         {
-            Basic(runner).RunScenario(steps);
+            Basic(runner)
+                .BuildScenario(steps)
+                .RunSynchronously();
         }
 
         /// <summary>
@@ -75,7 +77,9 @@ namespace LightBDD.Framework.Scenarios.Basic
         /// <param name="steps">List of steps to execute in order.</param>
         public static async Task RunScenarioAsync(this IBddRunner runner, params Func<Task>[] steps)
         {
-            await Basic(runner).RunScenarioAsync(steps);
+            await Basic(runner)
+                .BuildAsyncScenario(steps)
+                .RunAsynchronously();
         }
 
         /// <summary>
@@ -112,12 +116,14 @@ namespace LightBDD.Framework.Scenarios.Basic
         /// <param name="steps">List of steps to execute in order.</param>
         public static async Task RunScenarioActionsAsync(this IBddRunner runner, params Action[] steps)
         {
-            await Basic(runner).RunScenarioAsync(steps);
+            await Basic(runner)
+                .BuildAsyncScenario(steps)
+                .RunAsynchronously();
         }
 
-        private static BasicScenarioRunner Basic(this IBddRunner runner)
+        private static BasicScenarioRunnerFactory Basic(this IBddRunner runner)
         {
-            return new BasicScenarioRunner(runner.Integrate());
+            return new BasicScenarioRunnerFactory(runner.Integrate());
         }
     }
 }
