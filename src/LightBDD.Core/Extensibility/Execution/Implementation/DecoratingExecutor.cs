@@ -62,7 +62,7 @@ namespace LightBDD.Core.Extensibility.Execution.Implementation
                         ? _enumerator.Current.Invoke(_target, ExecuteAsync)
                         : _targetInvocation.Invoke();
 
-                    await task;
+                    await ScenarioExecutionFlow.WrapScenarioExceptions(task);
                 }
                 catch (ScenarioExecutionException)
                 {

@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Security;
 using System.Threading.Tasks;
+using LightBDD.Core.Execution.Implementation;
 
 namespace LightBDD.Core.Execution
 {
@@ -60,8 +61,15 @@ namespace LightBDD.Core.Execution
         {
             if (!_task.IsCompleted)
                 _task.Wait();
+
             if (_task.Exception != null)
-                throw new ScenarioExecutionException(_task.Exception.InnerExceptions[0]);
+            {
+                var exception = _task.Exception.InnerExceptions[0];
+                if (exception is ScenarioExecutionException || exception is StepExecutionException)
+                    ExceptionDispatchInfo.Capture(exception).Throw();
+                throw new ScenarioExecutionException(exception);
+            }
+            _awaiter.GetResult();
         }
     }
 
@@ -91,9 +99,15 @@ namespace LightBDD.Core.Execution
                 _task.Wait();
 
             if (_task.Exception != null)
-                throw new ScenarioExecutionException(_task.Exception.InnerExceptions[0]);
+            {
+                var exception = _task.Exception.InnerExceptions[0];
+                if (exception is ScenarioExecutionException || exception is StepExecutionException)
+                    ExceptionDispatchInfo.Capture(exception).Throw();
+                throw new ScenarioExecutionException(exception);
+            }
 
             return _awaiter.GetResult();
+
         }
     }
 }
