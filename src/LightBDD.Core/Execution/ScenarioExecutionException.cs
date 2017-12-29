@@ -1,5 +1,9 @@
 using System;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
+using System.Security;
+using System.Threading.Tasks;
 
 namespace LightBDD.Core.Execution
 {
@@ -16,6 +20,43 @@ namespace LightBDD.Core.Execution
         public ExceptionDispatchInfo GetOriginal()
         {
             return ExceptionDispatchInfo.Capture(InnerException);
+        }
+    }
+
+    [DebuggerStepThrough]
+    public class ScenarioExecutionFlow
+    {
+        public static ScenarioExceptionWrappingAwaitable WrapScenarioExceptions(Task targetTask)
+        {
+            return new ScenarioExceptionWrappingAwaitable(targetTask);
+        }
+    }
+    [DebuggerStepThrough]
+    public struct ScenarioExceptionWrappingAwaitable : ICriticalNotifyCompletion
+    {
+        private Task _task;
+        private TaskAwaiter _awaiter;
+
+        internal ScenarioExceptionWrappingAwaitable(Task task)
+        {
+            _task = task;
+            _awaiter = _task.GetAwaiter();
+        }
+
+        public ScenarioExceptionWrappingAwaitable GetAwaiter() => this;
+
+        public bool IsCompleted => _awaiter.IsCompleted;
+        [SecuritySafeCritical]
+        public void OnCompleted(Action continuation) => _awaiter.OnCompleted(continuation);
+        [SecurityCritical]
+        public void UnsafeOnCompleted(Action continuation) => _awaiter.UnsafeOnCompleted(continuation);
+
+        public void GetResult()
+        {
+            if (!_task.IsCompleted)
+                _task.Wait();
+            if (_task.Exception != null)
+                throw new ScenarioExecutionException(_task.Exception.InnerExceptions[0]);
         }
     }
 }

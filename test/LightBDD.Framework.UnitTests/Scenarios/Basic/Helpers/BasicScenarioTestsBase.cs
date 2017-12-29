@@ -38,10 +38,10 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers
 
         #region Expectations
 
-        protected void ExpectRunSynchronously()
+        protected void ExpectRunScenario()
         {
             MockScenarioRunner
-                .Setup(r => r.RunSynchronously())
+                .Setup(r => r.RunScenario())
                 .Verifiable();
         }
 
@@ -73,10 +73,10 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers
                 .Verifiable();
         }
 
-        protected void ExpectRunAsynchronously()
+        protected void ExpectRunScenarioAsync()
         {
             MockScenarioRunner
-                .Setup(r => r.RunAsynchronously())
+                .Setup(r => r.RunScenarioAsync())
                 .Returns(Task.FromResult(0))
                 .Verifiable();
         }
@@ -86,7 +86,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers
             ExpectNewScenario();
             ExpectWithCapturedScenarioDetails();
             ExpectWithSteps();
-            ExpectRunSynchronously();
+            ExpectRunScenario();
         }
 
         protected void ExpectAsynchronousExecution()
@@ -94,7 +94,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers
             ExpectNewScenario();
             ExpectWithCapturedScenarioDetails();
             ExpectWithSteps();
-            ExpectRunAsynchronously();
+            ExpectRunScenarioAsync();
         }
 
         protected void VerifyAllExpectations()

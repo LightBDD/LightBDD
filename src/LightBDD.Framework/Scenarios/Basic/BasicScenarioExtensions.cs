@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using LightBDD.Core.Execution;
 using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Scenarios.Basic.Implementation;
 
@@ -42,9 +43,16 @@ namespace LightBDD.Framework.Scenarios.Basic
         /// <param name="steps">List of steps to execute in order.</param>
         public static void RunScenario(this IBddRunner runner, params Action[] steps)
         {
-            Basic(runner)
-                .BuildScenario(steps)
-                .RunSynchronously();
+            try
+            {
+                Basic(runner)
+                    .BuildScenario(steps)
+                    .RunScenario();
+            }
+            catch (ScenarioExecutionException e)
+            {
+                e.GetOriginal().Throw();
+            }
         }
 
         /// <summary>
@@ -77,9 +85,16 @@ namespace LightBDD.Framework.Scenarios.Basic
         /// <param name="steps">List of steps to execute in order.</param>
         public static async Task RunScenarioAsync(this IBddRunner runner, params Func<Task>[] steps)
         {
-            await Basic(runner)
-                .BuildAsyncScenario(steps)
-                .RunAsynchronously();
+            try
+            {
+                await Basic(runner)
+                    .BuildAsyncScenario(steps)
+                    .RunScenarioAsync();
+            }
+            catch (ScenarioExecutionException e)
+            {
+                e.GetOriginal().Throw();
+            }
         }
 
         /// <summary>
@@ -116,9 +131,16 @@ namespace LightBDD.Framework.Scenarios.Basic
         /// <param name="steps">List of steps to execute in order.</param>
         public static async Task RunScenarioActionsAsync(this IBddRunner runner, params Action[] steps)
         {
-            await Basic(runner)
-                .BuildAsyncScenario(steps)
-                .RunAsynchronously();
+            try
+            {
+                await Basic(runner)
+                    .BuildAsyncScenario(steps)
+                    .RunScenarioAsync();
+            }
+            catch (ScenarioExecutionException e)
+            {
+                e.GetOriginal().Throw();
+            }
         }
 
         private static BasicScenarioRunnerFactory Basic(this IBddRunner runner)

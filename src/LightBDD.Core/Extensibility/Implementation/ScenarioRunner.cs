@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Execution.Implementation;
@@ -113,7 +112,7 @@ namespace LightBDD.Core.Extensibility.Implementation
             }
         }
 
-        private Task RunScenarioAsync()
+        public Task RunScenarioAsync()
         {
             Validate();
             return _scenarioExecutor.ExecuteAsync(new ScenarioInfo(_name, _labels, _categories), ProvideSteps, _contextProvider, _progressNotifier, _scenarioDecorators, _exceptionProcessor);
@@ -123,15 +122,20 @@ namespace LightBDD.Core.Extensibility.Implementation
         {
             try
             {
-                var task = RunScenarioAsync();
-                if (!task.IsCompleted)
-                    throw new InvalidOperationException("Only steps being completed upon return can be run synchronously (all steps have to return completed task). Consider using Async scenario methods for async Task or async void steps.");
-                task.GetAwaiter().GetResult();
+                RunScenario();
             }
             catch (ScenarioExecutionException e)
             {
                 e.GetOriginal().Throw();
             }
+        }
+
+        public void RunScenario()
+        {
+            var task = RunScenarioAsync();
+            if (!task.IsCompleted)
+                throw new InvalidOperationException("Only steps being completed upon return can be run synchronously (all steps have to return completed task). Consider using Async scenario methods for async Task or async void steps.");
+            task.GetAwaiter().GetResult();
         }
 
         private RunnableStep[] ProvideSteps(DecoratingExecutor decoratingExecutor, object scenarioContext)

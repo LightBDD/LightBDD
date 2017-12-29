@@ -34,20 +34,13 @@ namespace LightBDD.Framework.Scenarios.Basic.Implementation
 
             public async Task<IStepResultDescriptor> ExecuteAsync(object context, object[] args)
             {
-                try
-                {
-                    var task = _invocation.Invoke();
-                    await task;
+                var task = _invocation.Invoke();
+                await ScenarioExecutionFlow.WrapScenarioExceptions(task);
 
-                    if (HasResultDescriptor(task))
-                        return await ConvertToResultDescriptor(task);
+                if (HasResultDescriptor(task))
+                    return await ConvertToResultDescriptor(task);
 
-                    return DefaultStepResultDescriptor.Instance;
-                }
-                catch (Exception e)
-                {
-                    throw new ScenarioExecutionException(e);
-                }
+                return DefaultStepResultDescriptor.Instance;
             }
 
             private static Task<IStepResultDescriptor> ConvertToResultDescriptor(Task task)
