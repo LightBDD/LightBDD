@@ -12,15 +12,11 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic
         [Test]
         public void It_should_allow_to_run_synchronous_scenarios()
         {
-            ExpectNewScenario();
-            ExpectWithCapturedScenarioDetails();
-            ExpectWithSteps();
-            ExpectRunSynchronously();
+            ExpectSynchronousExecution();
 
             Runner.RunScenario(Step_one, Step_two);
 
-            MockRunner.Verify();
-            MockScenarioRunner.Verify();
+            VerifyAllExpectations();
 
             Assert.That(CapturedSteps, Is.Not.Null);
             Assert.That(CapturedSteps.Length, Is.EqualTo(2));
@@ -32,10 +28,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic
         [Test]
         public void It_should_make_synchronous_steps_finishing_immediately_in_async_mode()
         {
-            ExpectNewScenario();
-            ExpectWithCapturedScenarioDetails();
-            ExpectWithSteps();
-            ExpectRunSynchronously();
+            ExpectSynchronousExecution();
 
             Runner.RunScenario(Step_not_throwing_exception);
 
@@ -48,15 +41,11 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic
         [Test]
         public async Task It_should_allow_to_run_asynchronous_scenarios()
         {
-            ExpectNewScenario();
-            ExpectWithCapturedScenarioDetails();
-            ExpectWithSteps();
-            ExpectRunAsynchronously();
+            ExpectAsynchronousExecution();
 
             await Runner.RunScenarioAsync(Step_one_async, Step_two_async);
 
-            MockRunner.Verify();
-            MockScenarioRunner.Verify();
+            VerifyAllExpectations();
 
             Assert.That(CapturedSteps, Is.Not.Null);
             Assert.That(CapturedSteps.Length, Is.EqualTo(2));
@@ -68,15 +57,11 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic
         [Test]
         public async Task It_should_allow_to_run_void_and_async_void_steps_in_asynchronous_mode()
         {
-            ExpectNewScenario();
-            ExpectWithCapturedScenarioDetails();
-            ExpectWithSteps();
-            ExpectRunAsynchronously();
+            ExpectAsynchronousExecution();
 
             await Runner.RunScenarioActionsAsync(Step_one_async_void, Step_two);
 
-            MockRunner.Verify();
-            MockScenarioRunner.Verify();
+            VerifyAllExpectations();
         }
 
         [Test]

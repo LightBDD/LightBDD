@@ -81,6 +81,27 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers
                 .Verifiable();
         }
 
+        protected void ExpectSynchronousExecution()
+        {
+            ExpectNewScenario();
+            ExpectWithCapturedScenarioDetails();
+            ExpectWithSteps();
+            ExpectRunSynchronously();
+        }
+
+        protected void ExpectAsynchronousExecution()
+        {
+            ExpectNewScenario();
+            ExpectWithCapturedScenarioDetails();
+            ExpectWithSteps();
+            ExpectRunAsynchronously();
+        }
+
+        protected void VerifyAllExpectations()
+        {
+            MockRunner.Verify();
+            MockScenarioRunner.Verify();
+        }
         #endregion
         #region Steps
 
@@ -98,11 +119,6 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers
         {
             await Task.Delay(200);
         }
-        protected async void Step_two_async_void_throwing_exception()
-        {
-            await Task.Delay(200);
-            throw new Exception(nameof(Step_two_async_void_throwing_exception));
-        }
 
         protected async Task Step_two_async()
         {
@@ -110,6 +126,5 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers
             throw new Exception(nameof(Step_two_async));
         }
         #endregion
-
     }
 }
