@@ -10,7 +10,7 @@ using NUnit.Framework;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
 {
-    public class ParameterizedScenariosTestBase<T> : Steps
+    public class ExtendedScenariosTestBase<T> : Steps
     {
         protected StepDescriptor[] CapturedSteps;
         protected Mock<IScenarioRunner> MockScenarioRunner;
@@ -28,20 +28,20 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
         {
             ExpectWithCapturedScenarioDetails();
             ExpectWithSteps();
-            ExpectRunSynchronously();
+            ExpectRunScenario();
         }
 
         protected void ExpectAsynchronousScenarioRun()
         {
             ExpectWithCapturedScenarioDetails();
             ExpectWithSteps();
-            ExpectRunAsynchronously();
+            ExpectRunScenarioAsync();
         }
 
-        protected void ExpectRunSynchronously()
+        protected void ExpectRunScenario()
         {
             MockScenarioRunner
-                .Setup(r => r.RunSynchronously())
+                .Setup(r => r.RunScenario())
                 .Verifiable();
         }
 
@@ -65,10 +65,10 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
                 .Verifiable();
         }
 
-        protected void ExpectRunAsynchronously()
+        protected void ExpectRunScenarioAsync()
         {
             MockScenarioRunner
-                .Setup(r => r.RunAsynchronously())
+                .Setup(r => r.RunScenarioAsync())
                 .Returns(Task.FromResult(0))
                 .Verifiable();
         }

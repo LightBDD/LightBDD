@@ -126,27 +126,13 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
 
         private static async Task<IStepResultDescriptor> ConvertTask<T>(Task<T> parent) where T : IStepResultDescriptor
         {
-            try
-            {
-                return await parent;
-            }
-            catch (Exception e)
-            {
-                throw new ScenarioExecutionException(e);
-            }
+            return await ScenarioExecutionFlow.WrapScenarioExceptions(parent);
         }
 
         private static async Task<IStepResultDescriptor> FinalizeTaskWithDefaultResultDescriptor(Task parent)
         {
-            try
-            {
-                await parent;
-                return DefaultStepResultDescriptor.Instance;
-            }
-            catch (Exception e)
-            {
-                throw new ScenarioExecutionException(e);
-            }
+            await ScenarioExecutionFlow.WrapScenarioExceptions(parent);
+            return DefaultStepResultDescriptor.Instance;
         }
     }
 }

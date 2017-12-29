@@ -30,6 +30,11 @@ namespace LightBDD.Core.Execution
         {
             return new ScenarioExceptionWrappingAwaitable(targetTask);
         }
+
+        public static ScenarioExceptionWrappingAwaitable<T> WrapScenarioExceptions<T>(Task<T> targetTask)
+        {
+            return new ScenarioExceptionWrappingAwaitable<T>(targetTask);
+        }
     }
     [DebuggerStepThrough]
     public struct ScenarioExceptionWrappingAwaitable : ICriticalNotifyCompletion
@@ -57,6 +62,38 @@ namespace LightBDD.Core.Execution
                 _task.Wait();
             if (_task.Exception != null)
                 throw new ScenarioExecutionException(_task.Exception.InnerExceptions[0]);
+        }
+    }
+
+    [DebuggerStepThrough]
+    public struct ScenarioExceptionWrappingAwaitable<T> : ICriticalNotifyCompletion
+    {
+        private Task<T> _task;
+        private TaskAwaiter<T> _awaiter;
+
+        internal ScenarioExceptionWrappingAwaitable(Task<T> task)
+        {
+            _task = task;
+            _awaiter = _task.GetAwaiter();
+        }
+
+        public ScenarioExceptionWrappingAwaitable<T> GetAwaiter() => this;
+
+        public bool IsCompleted => _awaiter.IsCompleted;
+        [SecuritySafeCritical]
+        public void OnCompleted(Action continuation) => _awaiter.OnCompleted(continuation);
+        [SecurityCritical]
+        public void UnsafeOnCompleted(Action continuation) => _awaiter.UnsafeOnCompleted(continuation);
+
+        public T GetResult()
+        {
+            if (!_task.IsCompleted)
+                _task.Wait();
+
+            if (_task.Exception != null)
+                throw new ScenarioExecutionException(_task.Exception.InnerExceptions[0]);
+
+            return _awaiter.GetResult();
         }
     }
 }

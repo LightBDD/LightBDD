@@ -12,7 +12,7 @@ using NUnit.Framework;
 namespace LightBDD.Framework.UnitTests.Scenarios.Extended
 {
     [TestFixture]
-    public class Parameterized_scenario_runner_hierarchical_execution_tests : ParameterizedScenariosTestBase<NoContext>
+    public class Extended_scenario_runner_hierarchical_execution_tests : ExtendedScenariosTestBase<NoContext>
     {
         [Test]
         public async Task It_should_run_grouped_steps()

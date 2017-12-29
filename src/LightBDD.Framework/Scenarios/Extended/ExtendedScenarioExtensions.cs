@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Scenarios.Extended.Implementation;
@@ -72,9 +73,16 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// <param name="steps">List of steps to execute in order.</param>
         public static void RunScenario<TContext>(this IBddRunner<TContext> runner, params Expression<Action<TContext>>[] steps)
         {
-            AsExtended(runner)
-                .BuildScenario(steps)
-                .RunSynchronously();
+            try
+            {
+                AsExtended(runner)
+                    .BuildScenario(steps)
+                    .RunScenario();
+            }
+            catch (ScenarioExecutionException e)
+            {
+                e.GetOriginal().Throw();
+            }
         }
         /// <summary>
         /// Runs test scenario by executing given steps in specified order.<br/>
@@ -135,9 +143,16 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// <param name="steps">List of steps to execute in order.</param>
         public static async Task RunScenarioAsync<TContext>(this IBddRunner<TContext> runner, params Expression<Func<TContext, Task>>[] steps)
         {
-            await AsExtended(runner)
-                .BuildAsyncScenario(steps)
-                .RunAsynchronously();
+            try
+            {
+                await AsExtended(runner)
+                    .BuildAsyncScenario(steps)
+                    .RunScenarioAsync();
+            }
+            catch (ScenarioExecutionException e)
+            {
+                e.GetOriginal().Throw();
+            }
         }
 
         /// <summary>
@@ -216,9 +231,16 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// <param name="steps">List of steps to execute in order.</param>
         public static async Task RunScenarioActionsAsync<TContext>(this IBddRunner<TContext> runner, params Expression<Action<TContext>>[] steps)
         {
-            await AsExtended(runner)
-                .BuildAsyncScenario(steps)
-                .RunAsynchronously();
+            try
+            {
+                await AsExtended(runner)
+                    .BuildAsyncScenario(steps)
+                    .RunScenarioAsync();
+            }
+            catch (ScenarioExecutionException e)
+            {
+                e.GetOriginal().Throw();
+            }
         }
 
         private static ExtendedScenarioRunnerFactory<TContext> AsExtended<TContext>(this IBddRunner<TContext> runner)

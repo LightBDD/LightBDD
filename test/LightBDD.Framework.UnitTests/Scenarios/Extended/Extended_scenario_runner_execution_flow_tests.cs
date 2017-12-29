@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace LightBDD.Framework.UnitTests.Scenarios.Extended
 {
     [TestFixture]
-    public class Parameterized_scenario_runner_execution_flow_tests : ParameterizedScenariosTestBase<NoContext>
+    public class Extended_scenario_runner_execution_flow_tests : ExtendedScenariosTestBase<NoContext>
     {
         [Test]
         public void It_should_allow_to_run_synchronous_scenarios()

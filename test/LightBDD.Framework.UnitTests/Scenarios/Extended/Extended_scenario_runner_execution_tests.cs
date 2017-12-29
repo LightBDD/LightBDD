@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace LightBDD.Framework.UnitTests.Scenarios.Extended
 {
     [TestFixture]
-    public class Parameterized_scenario_runner_execution_tests : ParameterizedScenariosTestBase<NoContext>
+    public class Extended_scenario_runner_execution_tests : ExtendedScenariosTestBase<NoContext>
     {
         [Test]
         public void It_should_make_synchronous_steps_finishing_immediately_in_async_mode()
