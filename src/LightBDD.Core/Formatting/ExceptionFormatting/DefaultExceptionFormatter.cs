@@ -14,7 +14,17 @@ namespace LightBDD.Core.Formatting.ExceptionFormatting
     public class DefaultExceptionFormatter
     {
         private readonly List<Regex> _excludeMembers = new List<Regex>();
-        private int _stackTraceLinesLimit = 4;
+        private int _stackTraceLinesLimit = 8;
+
+        /// <summary>
+        /// Constructor initializing formatter with stack trace lines limit equal 8 and default member exclusions.
+        /// </summary>
+        public DefaultExceptionFormatter()
+        {
+            WithMembersExcludedFromStackTrace(
+                "System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw.*",
+                "System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification.*");
+        }
 
         /// <summary>
         /// Formats the exception by returning exception type name and message, followed by inner exception chain, followed by call stack information.
@@ -56,6 +66,17 @@ namespace LightBDD.Core.Formatting.ExceptionFormatting
         public DefaultExceptionFormatter WithMembersExcludedFromStackTrace(params string[] membersPatterns)
         {
             _excludeMembers.AddRange(membersPatterns.Select(p => new Regex("^\\s*at\\s*" + p, RegexOptions.Compiled)));
+            return this;
+        }
+
+        /// <summary>
+        /// Clears all stack trace members exclusions (the default exclusions will be cleared as well) and removes the line limit.
+        /// </summary>
+        /// <returns>Self</returns>
+        public DefaultExceptionFormatter WithAllMembersIncludedOnStackTrace()
+        {
+            _excludeMembers.Clear();
+            _stackTraceLinesLimit = int.MaxValue;
             return this;
         }
 

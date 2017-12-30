@@ -1,7 +1,9 @@
 using System;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Notification.Configuration;
+using LightBDD.NUnit2.Configuration;
 using LightBDD.NUnit2.Implementation;
 using NUnit.Framework;
 
@@ -53,6 +55,9 @@ namespace LightBDD.NUnit2
 
             configuration.Get<ScenarioProgressNotifierConfiguration>()
                 .UpdateNotifierProvider(NUnit2ProgressNotifier.CreateScenarioProgressNotifier);
+
+            configuration.ExceptionHandlingConfiguration()
+                .UpdateExceptionDetailsFormatter(new DefaultExceptionFormatter().WithTestFrameworkDefaults().Format);
 
             OnConfigure(configuration);
             return configuration;
