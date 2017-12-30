@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Core.Internals;
 
 namespace LightBDD.Core.Configuration
@@ -15,7 +16,7 @@ namespace LightBDD.Core.Configuration
         /// 
         /// The default implementation returns exception type name and message, followed by inner exception chain, followed by shortened call stack information (up to 4 methods).
         /// </summary>
-        public Func<Exception, string> ExceptionDetailsFormatter { get; private set; } = DefaultExceptionFormatter.Format;
+        public Func<Exception, string> ExceptionDetailsFormatter { get; private set; } = new DefaultExceptionFormatter().Format;
 
         /// <summary>
         /// Updates exception details formatter with new function.
@@ -25,9 +26,7 @@ namespace LightBDD.Core.Configuration
         public ExceptionHandlingConfiguration UpdateExceptionDetailsFormatter(Func<Exception, string> exceptionDetailsFormatter)
         {
             ThrowIfSealed();
-            if (exceptionDetailsFormatter == null)
-                throw new ArgumentNullException(nameof(exceptionDetailsFormatter));
-            ExceptionDetailsFormatter = exceptionDetailsFormatter;
+            ExceptionDetailsFormatter = exceptionDetailsFormatter ?? throw new ArgumentNullException(nameof(exceptionDetailsFormatter));
             return this;
         }
     }
