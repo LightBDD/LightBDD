@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace LightBDD.Framework.UnitTests.Scenarios.Extended
 {
     [TestFixture]
-    public class Parameterized_scenario_runner_parameter_capture_tests : ParameterizedScenariosTestBase<NoContext>
+    public class Extended_scenario_runner_parameter_capture_tests : ExtendedScenariosTestBase<NoContext>
     {
         [Test]
         public void It_should_capture_constant_parameters_in_sync_mode()
@@ -168,13 +168,13 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
     static class MyContextExtensions
     {
         public static void Extension_method_with_parameter(
-            this Parameterized_scenario_runner_parameter_capture_tests ctx,
+            this Extended_scenario_runner_parameter_capture_tests ctx,
             int parameter)
         {
         }
 
         public static Task Extension_method_with_parameter_async(
-            this Parameterized_scenario_runner_parameter_capture_tests ctx,
+            this Extended_scenario_runner_parameter_capture_tests ctx,
             int parameter)
         {
             return Task.FromResult(0);

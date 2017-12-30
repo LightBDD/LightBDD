@@ -31,10 +31,10 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
 
         public static StepDescriptor Create(Func<Task> step)
         {
-            return new StepDescriptor(step.GetMethodInfo(), (ctx, args) =>
+            return new StepDescriptor(step.GetMethodInfo(), async (ctx, args) =>
             {
-                step.Invoke();
-                return Task.FromResult(DefaultStepResultDescriptor.Instance);
+                await step.Invoke();
+                return DefaultStepResultDescriptor.Instance;
             });
         }
 

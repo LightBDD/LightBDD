@@ -3,8 +3,8 @@
   <PropertyGroup>
     <Summary>LightBDD Test Framework Core</Summary>
     <Description>Provides LightBDD core features, including asynchronous scenario execution with execution tracking and time measurement, metadata discovery and formatting, reporting, in-code configuration, progress notification and framework extensibility.</Description>
-    <TargetFrameworks>netstandard1.1;net45</TargetFrameworks>
-    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.1' ">1.6.0</NetStandardImplicitPackageVersion>
+    <TargetFrameworks>netstandard1.3;net45</TargetFrameworks>
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.3' ">1.6.0</NetStandardImplicitPackageVersion>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">

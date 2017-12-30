@@ -48,7 +48,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 
         private void ExpectRunAsync()
         {
-            _mockScenarioRunner.Setup(x => x.RunAsynchronously())
+            _mockScenarioRunner.Setup(x => x.RunScenarioAsync())
                 .Returns(Task.FromResult(0))
                 .Verifiable();
         }

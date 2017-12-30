@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Extensibility;
 
@@ -21,11 +22,18 @@ namespace LightBDD.Framework.Scenarios.Fluent.Implementation
 
         public async Task RunAsync()
         {
-            await _runner.Integrate()
-                .NewScenario()
-                .WithCapturedScenarioDetails()
-                .WithSteps(_steps)
-                .RunAsynchronously();
+            try
+            {
+                await _runner.Integrate()
+                    .NewScenario()
+                    .WithCapturedScenarioDetails()
+                    .WithSteps(_steps)
+                    .RunScenarioAsync();
+            }
+            catch (ScenarioExecutionException e)
+            {
+                e.GetOriginal().Throw();
+            }
         }
 
         public IIntegrableStepGroupBuilder AddSteps(IEnumerable<StepDescriptor> steps)

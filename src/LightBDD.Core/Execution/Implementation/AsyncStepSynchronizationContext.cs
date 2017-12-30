@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -86,9 +87,14 @@ namespace LightBDD.Core.Execution.Implementation
             if (!exceptions.Any())
                 _resetEvent.TrySetResult(true); //TODO: why Try is needed?
             else if (exceptions.Length == 1)
-                _resetEvent.TrySetException(exceptions);
+                _resetEvent.TrySetException(WrapIfNeeded(exceptions));
             else
                 _resetEvent.TrySetException(new AggregateException(exceptions));
+        }
+
+        private IEnumerable<Exception> WrapIfNeeded(Exception[] exceptions)
+        {
+            return exceptions.Select(ScenarioExecutionException.WrapIfNeeded);
         }
 
         [DebuggerStepThrough]

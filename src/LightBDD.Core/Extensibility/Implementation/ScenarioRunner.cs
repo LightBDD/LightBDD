@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Execution.Implementation;
@@ -99,16 +100,39 @@ namespace LightBDD.Core.Extensibility.Implementation
             return this;
         }
 
-        public Task RunAsynchronously()
+        public async Task RunAsynchronously()
+        {
+            try
+            {
+                await RunScenarioAsync();
+            }
+            catch (ScenarioExecutionException e)
+            {
+                e.GetOriginal().Throw();
+            }
+        }
+
+        public Task RunScenarioAsync()
         {
             Validate();
-            return _scenarioExecutor
-                .ExecuteAsync(new ScenarioInfo(_name, _labels, _categories), ProvideSteps, _contextProvider, _progressNotifier, _scenarioDecorators, _exceptionProcessor);
+            return _scenarioExecutor.ExecuteAsync(new ScenarioInfo(_name, _labels, _categories), ProvideSteps, _contextProvider, _progressNotifier, _scenarioDecorators, _exceptionProcessor);
         }
 
         public void RunSynchronously()
         {
-            var task = RunAsynchronously();
+            try
+            {
+                RunScenario();
+            }
+            catch (ScenarioExecutionException e)
+            {
+                e.GetOriginal().Throw();
+            }
+        }
+
+        public void RunScenario()
+        {
+            var task = RunScenarioAsync();
             if (!task.IsCompleted)
                 throw new InvalidOperationException("Only steps being completed upon return can be run synchronously (all steps have to return completed task). Consider using Async scenario methods for async Task or async void steps.");
             task.GetAwaiter().GetResult();

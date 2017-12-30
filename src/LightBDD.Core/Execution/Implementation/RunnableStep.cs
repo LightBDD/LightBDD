@@ -79,13 +79,18 @@ namespace LightBDD.Core.Execution.Implementation
                 await TimeMeasuredInvokeAsync();
                 _result.SetStatus(_result.GetSubSteps().GetMostSevereOrNull()?.Status ?? ExecutionStatus.Passed);
             }
-            catch (StepBypassException exception)
-            {
-                _result.SetStatus(ExecutionStatus.Bypassed, exception.Message);
-            }
             catch (StepExecutionException e)
             {
                 _result.SetStatus(e.StepStatus);
+            }
+            catch (ScenarioExecutionException exception) when (exception.InnerException is StepBypassException)
+            {
+                _result.SetStatus(ExecutionStatus.Bypassed, exception.InnerException.Message);
+            }
+            catch (ScenarioExecutionException exception)
+            {
+                _exceptionProcessor.UpdateResultsWithException(_result.SetStatus, exception.InnerException);
+                exceptionCollector.Capture(exception);
             }
             catch (Exception exception)
             {
@@ -169,6 +174,12 @@ namespace LightBDD.Core.Execution.Implementation
             try
             {
                 result = await _stepInvocation.Invoke(_scenarioContext, PrepareParameters());
+            }
+            catch (Exception e)
+            {
+                if (ScenarioExecutionException.TryWrap(e, out var wrapped))
+                    throw wrapped;
+                throw;
             }
             finally
             {

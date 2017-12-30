@@ -10,7 +10,9 @@ namespace LightBDD.Core.Extensibility.Execution
     public interface IScenarioDecorator
     {
         /// <summary>
-        /// Method allowing to decorate scenario invocation specified by <paramref name="scenarioInvocation"/>.
+        /// Method allowing to decorate scenario invocation specified by <paramref name="scenarioInvocation"/>.<br/>
+        /// Any exceptions thrown from <paramref name="scenarioInvocation"/> will be wrapped in <see cref="ScenarioExecutionException"/>, which means that if this method suppose to handle exceptions, it will have to use <see cref="Exception.InnerException"/> property of <see cref="ScenarioExecutionException"/>.
+        /// It is allowed to throw any exception type from this method.
         /// </summary>
         /// <param name="scenario">Scenario that is being executed.</param>
         /// <param name="scenarioInvocation">Invocation that should be called in the method body.</param>

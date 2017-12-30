@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.Execution;
 using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers;
 using LightBDD.Framework.UnitTests.Scenarios.Helpers;
@@ -9,7 +10,7 @@ using NUnit.Framework;
 namespace LightBDD.Framework.UnitTests.Scenarios.Extended
 {
     [TestFixture]
-    public class Parameterized_scenario_runner_execution_tests : ParameterizedScenariosTestBase<NoContext>
+    public class Extended_scenario_runner_execution_tests : ExtendedScenariosTestBase<NoContext>
     {
         [Test]
         public void It_should_make_synchronous_steps_finishing_immediately_in_async_mode()
@@ -31,8 +32,9 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
             Runner.RunScenario(_ => Step_with_parameters(32, "32"));
             var step = CapturedSteps.Single();
 
-            var ex = Assert.Throws<InvalidOperationException>(() => step.StepInvocation(null, step.Parameters.Select(p => p.ValueEvaluator(null)).ToArray()));
-            Assert.That(ex.Message, Is.EqualTo(ExceptionMessageForStep_with_parameters(32)));
+            var ex = Assert.Throws<ScenarioExecutionException>(() => step.StepInvocation(null, step.Parameters.Select(p => p.ValueEvaluator(null)).ToArray()));
+            Assert.That(ex.InnerException, Is.TypeOf<InvalidOperationException>());
+            Assert.That(ex.InnerException.Message, Is.EqualTo(ExceptionMessageForStep_with_parameters(32)));
         }
 
         [Test]
@@ -42,8 +44,9 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
             await Runner.RunScenarioAsync(_ => Step_with_parameters_async(33, "33"));
             var step = CapturedSteps.Single();
 
-            var ex = Assert.ThrowsAsync<InvalidOperationException>(() => step.StepInvocation(null, step.Parameters.Select(p => p.ValueEvaluator(null)).ToArray()));
-            Assert.That(ex.Message, Is.EqualTo(ExceptionMessageForStep_with_parameters(33)));
+            var ex = Assert.ThrowsAsync<ScenarioExecutionException>(() => step.StepInvocation(null, step.Parameters.Select(p => p.ValueEvaluator(null)).ToArray()));
+            Assert.That(ex.InnerException, Is.TypeOf<InvalidOperationException>());
+            Assert.That(ex.InnerException.Message, Is.EqualTo(ExceptionMessageForStep_with_parameters(33)));
         }
 
         [Test]
@@ -63,8 +66,9 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
             builder.AddSteps(_ => Step_with_parameters(32, "32"));
             var step = builder.Steps.Single();
 
-            var ex = Assert.Throws<InvalidOperationException>(() => step.StepInvocation(null, step.Parameters.Select(p => p.ValueEvaluator(null)).ToArray()));
-            Assert.That(ex.Message, Is.EqualTo(ExceptionMessageForStep_with_parameters(32)));
+            var ex = Assert.Throws<ScenarioExecutionException>(() => step.StepInvocation(null, step.Parameters.Select(p => p.ValueEvaluator(null)).ToArray()));
+            Assert.That(ex.InnerException, Is.TypeOf<InvalidOperationException>());
+            Assert.That(ex.InnerException.Message, Is.EqualTo(ExceptionMessageForStep_with_parameters(32)));
         }
 
         [Test]
@@ -74,8 +78,9 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
             builder.AddAsyncSteps(_ => Step_with_parameters_async(33, "33"));
             var step = builder.Steps.Single();
 
-            var ex = Assert.ThrowsAsync<InvalidOperationException>(() => step.StepInvocation(null, step.Parameters.Select(p => p.ValueEvaluator(null)).ToArray()));
-            Assert.That(ex.Message, Is.EqualTo(ExceptionMessageForStep_with_parameters(33)));
+            var ex = Assert.ThrowsAsync<ScenarioExecutionException>(() => step.StepInvocation(null, step.Parameters.Select(p => p.ValueEvaluator(null)).ToArray()));
+            Assert.That(ex.InnerException, Is.TypeOf<InvalidOperationException>());
+            Assert.That(ex.InnerException.Message, Is.EqualTo(ExceptionMessageForStep_with_parameters(33)));
         }
 
         private async void Step_one_async_void()

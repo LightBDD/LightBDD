@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace LightBDD.Framework.UnitTests.Scenarios.Extended
 {
     [TestFixture]
-    public class Parameterized_scenario_runner_step_type_parsing_tests : ParameterizedScenariosTestBase<NoContext>
+    public class Extended_scenario_runner_step_type_parsing_tests : ExtendedScenariosTestBase<NoContext>
     {
         [Test]
         public void It_should_not_capture_single_character_but_everything_else_for_step_type_in_synchronous_run()
