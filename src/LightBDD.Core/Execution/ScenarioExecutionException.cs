@@ -11,8 +11,15 @@ namespace LightBDD.Core.Execution
     /// </summary>
     public class ScenarioExecutionException : Exception
     {
-        public ScenarioExecutionException(Exception inner) : base(string.Empty, inner) { }
+        /// <summary>
+        /// Constructor allowing to specify inner exception
+        /// </summary>
+        /// <param name="inner">Inner exception.</param>
+        public ScenarioExecutionException(Exception inner) : base(string.Empty, inner ?? throw new ArgumentNullException(nameof(inner))) { }
 
+        /// <summary>
+        /// Returns <see cref="ExceptionDispatchInfo"/> of the original exception, allowing to rethrow it.
+        /// </summary>
         public ExceptionDispatchInfo GetOriginal()
         {
             return ExceptionDispatchInfo.Capture(InnerException);
