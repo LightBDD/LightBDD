@@ -83,7 +83,7 @@ namespace LightBDD.Core.Execution.Implementation
             {
                 _result.SetStatus(e.StepStatus);
             }
-            catch (ScenarioExecutionException exception) when(exception.InnerException is StepBypassException)
+            catch (ScenarioExecutionException exception) when (exception.InnerException is StepBypassException)
             {
                 _result.SetStatus(ExecutionStatus.Bypassed, exception.InnerException.Message);
             }
@@ -175,9 +175,11 @@ namespace LightBDD.Core.Execution.Implementation
             {
                 result = await _stepInvocation.Invoke(_scenarioContext, PrepareParameters());
             }
-            catch (Exception e) when (!(e is ScenarioExecutionException))
+            catch (Exception e)
             {
-                throw new ScenarioExecutionException(e);
+                if (ScenarioExecutionException.TryWrap(e, out var wrapped))
+                    throw wrapped;
+                throw;
             }
             finally
             {

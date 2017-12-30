@@ -28,8 +28,8 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic
 @"^\s*at LightBDD.Framework.UnitTests.Scenarios.Basic.Basic_scenario_exception_stack_trace_integration_tests.Step_throwing_exception\(\)[^\n]*
 \s*at LightBDD.Framework.Scenarios.Basic.Implementation.BasicStepCompiler.StepExecutor.Execute\(Object context, Object\[\] args\)[^\n]*
 --- End of stack trace from previous location where exception was thrown ---
-\s*at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw\(\)[^\n]*
-\s*at LightBDD.Framework.Scenarios.Basic.BasicScenarioExtensions.RunScenario\(IBddRunner runner, Action\[\] steps\)[^\n]*");
+([^\n]*
+)?\s*at LightBDD.Framework.Scenarios.Basic.BasicScenarioExtensions.RunScenario\(IBddRunner runner, Action\[\] steps\)[^\n]*");
         }
 
         void Step_throwing_exception()
@@ -44,8 +44,8 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic
             ex.AssertStackTraceMatching(
                 @"^\s*at LightBDD.Framework.UnitTests.Scenarios.Basic.Basic_scenario_exception_stack_trace_integration_tests.<Async_step_throwing_exception_immediatelly>d__5.MoveNext\(\)[^\n]*
 --- End of stack trace from previous location where exception was thrown ---
-\s*at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw\(\)
-\s*at LightBDD.Framework.Scenarios.Basic.BasicScenarioExtensions.<RunScenarioAsync>d__1.MoveNext\(\)[^\n]*");
+([^\n]*
+)?\s*at LightBDD.Framework.Scenarios.Basic.BasicScenarioExtensions.<RunScenarioAsync>d__1.MoveNext\(\)[^\n]*");
         }
 
         async Task Async_step_throwing_exception_immediatelly()
@@ -60,8 +60,8 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic
             ex.AssertStackTraceMatching(
                 @"^\s*at LightBDD.Framework.UnitTests.Scenarios.Basic.Basic_scenario_exception_stack_trace_integration_tests.<Async_step_throwing_exception_after_await>d__7.MoveNext\(\)[^\n]*
 --- End of stack trace from previous location where exception was thrown ---
-\s*at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw\(\)
-\s*at LightBDD.Framework.Scenarios.Basic.BasicScenarioExtensions.<RunScenarioAsync>d__1.MoveNext\(\)[^\n]*");
+([^\n]*
+)?\s*at LightBDD.Framework.Scenarios.Basic.BasicScenarioExtensions.<RunScenarioAsync>d__1.MoveNext\(\)[^\n]*");
         }
 
         async Task Async_step_throwing_exception_after_await()
@@ -77,11 +77,11 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic
             ex.AssertStackTraceMatching(
                 @"^\s*at LightBDD.Framework.UnitTests.Scenarios.Basic.Basic_scenario_exception_stack_trace_integration_tests.<Async_void_step_throwing_exception_after_await>d__9.MoveNext\(\)[^\n]*
 --- End of stack trace from previous location where exception was thrown ---
-\s*at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw\(\)[^\n]*
-\s*at LightBDD.Core.Execution.Implementation.AsyncStepSynchronizationContext.RunWithSelf\(SendOrPostCallback d, Object s\)[^\n]*
+([^\n]*
+)?\s*at LightBDD.Core.Execution.Implementation.AsyncStepSynchronizationContext.RunWithSelf\(SendOrPostCallback d, Object s\)[^\n]*
 --- End of stack trace from previous location where exception was thrown ---
-\s*at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw\(\)[^\n]*
-\s*at LightBDD.Framework.Scenarios.Basic.BasicScenarioExtensions.<RunScenarioActionsAsync>d__2.MoveNext\(\)[^\n]*");
+([^\n]*
+)?\s*at LightBDD.Framework.Scenarios.Basic.BasicScenarioExtensions.<RunScenarioActionsAsync>d__2.MoveNext\(\)[^\n]*");
         }
 
         async void Async_void_step_throwing_exception_after_await()

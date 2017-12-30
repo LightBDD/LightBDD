@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.ExceptionServices;
+using LightBDD.Core.Execution.Implementation;
 
 namespace LightBDD.Core.Execution
 {
@@ -24,5 +25,19 @@ namespace LightBDD.Core.Execution
         {
             return ExceptionDispatchInfo.Capture(InnerException);
         }
+
+        internal static bool TryWrap(Exception exception, out Exception result)
+        {
+            if (exception is ScenarioExecutionException || exception is StepExecutionException)
+            {
+                result = exception;
+                return false;
+            }
+            result = new ScenarioExecutionException(exception);
+            return true;
+        }
+
+        internal static Exception WrapIfNeeded(Exception exception) =>
+            TryWrap(exception, out var result) ? result : exception;
     }
 }

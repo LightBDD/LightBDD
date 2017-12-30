@@ -28,8 +28,8 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
                 @"^\s*at LightBDD.Framework.UnitTests.Scenarios.Fluent.Fluent_scenario_exception_stack_trace_integration_tests.Step_throwing_exception\(\) [^\n]*
 \s*at LightBDD.Framework.Scenarios.Basic.Implementation.BasicStepCompiler.StepExecutor.Execute\(Object context, Object\[\] args\)[^\n]*
 --- End of stack trace from previous location where exception was thrown ---
-\s*at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw\(\)
-\s*at LightBDD.Framework.Scenarios.Fluent.Implementation.ScenarioBuilder`1.<RunAsync>d__4.MoveNext\(\)[^\n]*");
+([^\n]*
+)?\s*at LightBDD.Framework.Scenarios.Fluent.Implementation.ScenarioBuilder`1.<RunAsync>d__4.MoveNext\(\)[^\n]*");
         }
 
         void Step_throwing_exception()

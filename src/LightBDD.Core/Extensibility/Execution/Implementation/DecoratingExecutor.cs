@@ -64,17 +64,11 @@ namespace LightBDD.Core.Extensibility.Execution.Implementation
 
                     await ScenarioExecutionFlow.WrapScenarioExceptions(task);
                 }
-                catch (ScenarioExecutionException)
-                {
-                    throw;
-                }
-                catch (StepExecutionException)
-                {
-                    throw;
-                }
                 catch (Exception ex)
                 {
-                    throw new ScenarioExecutionException(ex);
+                    if (ScenarioExecutionException.TryWrap(ex, out var wrapped))
+                        throw wrapped;
+                    throw;
                 }
             }
         }

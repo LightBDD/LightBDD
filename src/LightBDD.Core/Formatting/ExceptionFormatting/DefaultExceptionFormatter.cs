@@ -22,8 +22,8 @@ namespace LightBDD.Core.Formatting.ExceptionFormatting
         public DefaultExceptionFormatter()
         {
             WithMembersExcludedFromStackTrace(
-                "System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw.*",
-                "System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification.*");
+                "System.Runtime.ExceptionServices.ExceptionDispatchInfo.*",
+                "System.Runtime.CompilerServices.TaskAwaiter.*");
         }
 
         /// <summary>

@@ -94,10 +94,7 @@ namespace LightBDD.Core.Execution.Implementation
 
         private IEnumerable<Exception> WrapIfNeeded(Exception[] exceptions)
         {
-            return exceptions.Select(e =>
-                !(e is ScenarioExecutionException) && !(e is StepExecutionException)
-                    ? new ScenarioExecutionException(e)
-                    : e);
+            return exceptions.Select(ScenarioExecutionException.WrapIfNeeded);
         }
 
         [DebuggerStepThrough]
