@@ -49,6 +49,7 @@ namespace LightBDD.Core.Execution.Implementation
                 await RunStepAsync(step);
         }
 
+        [DebuggerStepThrough]
         private async Task RunStepAsync(RunnableStep step)
         {
             try

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Runtime.ExceptionServices;
 using LightBDD.Core.Execution.Implementation;
 
@@ -10,6 +11,7 @@ namespace LightBDD.Core.Execution
     /// 
     /// The inner exception represents original one that has been thrown by step/scenario.
     /// </summary>
+    [DebuggerStepThrough]
     public class ScenarioExecutionException : Exception
     {
         /// <summary>
