@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using LightBDD.Core.Formatting.ExceptionFormatting;
 using NUnit.Framework;
+#pragma warning disable 1998
 
 namespace LightBDD.Core.UnitTests.Formatting.ExceptionFormatting
 {
