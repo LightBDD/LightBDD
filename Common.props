@@ -1,7 +1,7 @@
 ﻿<Project>
   <PropertyGroup>
     <Copyright>Copyright © Wojciech Kotlarski 2013-2017</Copyright>
-    <VersionPrefix>2.3.2.0</VersionPrefix>
+    <VersionPrefix>2.3.3.0</VersionPrefix>
     <Authors>Wojciech Kotlarski</Authors>
     <Company>https://github.com/LightBDD/LightBDD</Company>
     <PackageIconUrl>https://raw.githubusercontent.com/LightBDD/LightBDD/master/logo/lightbdd.png</PackageIconUrl>
@@ -15,7 +15,7 @@
     <PackageOutputPath>$(SolutionDir)\output</PackageOutputPath>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>bdd;tdd;testing;framework;behavior driven development;acceptance criteria</PackageTags>
-    <PackageReleaseNotes>Fixed directory separator for Unix systems;Updated LightBDD.MsTest2 to use MsTest.TestFramework 1.2.0; Details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-232 </PackageReleaseNotes>
+    <PackageReleaseNotes>Simplified exception stack trace for failed scenarios;Improved integration with NCrunch;Improved support for extension methods used as steps;Added support for disposable scenario/step context; Details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-233 </PackageReleaseNotes>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
