@@ -7,15 +7,20 @@ Summary:
 + #69 Simplified exception stack trace for scenario/step exceptions in reports and underlying test frameworks
 + #90 Allowed to install new FeatureCoordinator when previous one is disposed in order to allow NCrunch reusing the same process to run LightBDD multiple times
 + #92 Excluded this argument from step name display when extension method is used
++ #94 Added support for disposing context instances for contextual scenarios and composite steps
 Details:
-+ #90 (Core)(Change) Allowed to install new FeatureCoordinator when previous one is disposed in order to allow NCrunch reusing the same process to run LightBDD multiple times
-+ #92 (Core)(Change) Excluded this argument from step name display when extension method is used
-+ #92 (Core)(Change) Corrected parameter placement in name when having appended parameter of lower index than matching in-text replacement at the end of the name, like: void Step_with_param(string other, string param)
 + #69 (Core)(Change) Exposed DefaultExceptionFormatter with ability to filter stack trace members and limit number of printed stack trace lines. Excluded async exception rethrow frames by default (reports and progress notifers)
 + #69 (Core)(New) Introduced ScenarioExecutionException to be used to propagate scenario/step exceptions without recording LightBDD internal frames
 + #69 (Framework)(Change) Simplified exception stack trace for basic/extended/fluent step syntax and sync/async runners
 + #69 (all integrations)(Change) Configured DefaultExceptionFormatter to exclude underlying test framework assertion frames from reports and progress notifiers
 + #69 (Core)(Change) Changed minimal required .NET Standard version from 1.1 to 1.3
++ #90 (Core)(Change) Allowed to install new FeatureCoordinator when previous one is disposed in order to allow NCrunch reusing the same process to run LightBDD multiple times
++ #92 (Core)(Change) Excluded this argument from step name display when extension method is used
++ #92 (Core)(Change) Corrected parameter placement in name when having appended parameter of lower index than matching in-text replacement at the end of the name, like: void Step_with_param(string other, string param)
++ #94 (Core)(Change) Added WithContext(Func<object> contextProvider, bool takeOwnership) to IScenarioRunner and IIntegrableCompositeStepBuilder allowing to specify if created context should be disposed by runner
++ #94 (Framework)(Change) Updated contextual scenario and contextual composite step .WithContext<TContext>() methods to automatically dispose context instances
++ #94 (Framework)(Change) Updated contextual scenario and contextual composite step .WithContext<TContext>(TContext context) methods to .WithContext<TContext>(TContext context, bool takeOwnership = false) making possible to configure automatic context disposal (off by default)
++ #94 (Framework)(Change) Updated contextual scenario and contextual composite step .WithContext<TContext>(Func<TContext> contextFactory) methods to .WithContext<TContext>(Func<TContext> contextFactory, bool takeOwnership = true) making possible to configure automatic context disposal (on by default)
 
 Version 2.3.2
 ----------------------------------------
