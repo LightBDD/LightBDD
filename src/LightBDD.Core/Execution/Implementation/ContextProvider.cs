@@ -50,6 +50,7 @@ namespace LightBDD.Core.Execution.Implementation
             }
         }
 
+        [DebuggerStepThrough]
         private class NoContextProvider : IContextProvider
         {
             public void Dispose() { }
