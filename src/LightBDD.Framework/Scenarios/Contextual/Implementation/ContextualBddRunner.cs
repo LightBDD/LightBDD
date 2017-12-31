@@ -11,16 +11,18 @@ namespace LightBDD.Framework.Scenarios.Contextual.Implementation
     {
         private readonly IFeatureFixtureRunner _coreRunner;
         private readonly Func<object> _contextProvider;
+        private readonly bool _takeOwnership;
 
-        public ContextualBddRunner(IBddRunner coreRunner, Func<object> contextProvider)
+        public ContextualBddRunner(IBddRunner coreRunner, Func<object> contextProvider, bool takeOwnership)
         {
             _contextProvider = contextProvider;
+            _takeOwnership = takeOwnership;
             _coreRunner = coreRunner.Integrate();
         }
 
         public IScenarioRunner NewScenario()
         {
-            return _coreRunner.NewScenario().WithContext(_contextProvider);
+            return _coreRunner.NewScenario().WithContext(_contextProvider, _takeOwnership);
         }
 
         public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, LightBddConfiguration, TEnrichedRunner> runnerFactory)

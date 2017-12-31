@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Execution.Implementation;
+using LightBDD.Core.Extensibility.Implementation;
 using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
@@ -20,7 +21,7 @@ namespace LightBDD.Core.Execution.Implementation
         }
 
         [DebuggerStepThrough]
-        public Task ExecuteAsync(ScenarioInfo scenario, Func<DecoratingExecutor, object, RunnableStep[]> stepsProvider, Func<object> contextProvider, IScenarioProgressNotifier progressNotifier, IEnumerable<IScenarioDecorator> scenarioDecorators, ExceptionProcessor exceptionProcessor)
+        public Task ExecuteAsync(ScenarioInfo scenario, Func<DecoratingExecutor, object, RunnableStep[]> stepsProvider, IContextProvider contextProvider, IScenarioProgressNotifier progressNotifier, IEnumerable<IScenarioDecorator> scenarioDecorators, ExceptionProcessor exceptionProcessor)
         {
             var runnableScenario = new RunnableScenario(scenario, stepsProvider, contextProvider, progressNotifier, _decoratingExecutor, scenarioDecorators, exceptionProcessor);
             try

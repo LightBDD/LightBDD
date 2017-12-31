@@ -9,25 +9,24 @@ namespace LightBDD.Core.Execution.Implementation
     [DebuggerStepThrough]
     internal class ExceptionCollector
     {
-        private Exception _executionException;
+        private readonly List<Exception> _executionExceptions = new List<Exception>();
 
         public void Capture(Exception exception)
         {
-            _executionException = exception is ScenarioExecutionException ? exception.InnerException : exception;
+            _executionExceptions.Add(exception is ScenarioExecutionException ? exception.InnerException : exception);
         }
 
         public Exception CollectFor(ExecutionStatus executionStatus, IEnumerable<IStepResult> subSteps)
         {
-            if (_executionException != null)
-                return _executionException;
-
             if (executionStatus < ExecutionStatus.Ignored)
                 return null;
 
-            var exceptions = subSteps
-                .Where(s => s.Status == executionStatus)
-                .Select(s => s.ExecutionException)
-                .Where(x => x != null).ToArray();
+            var exceptions = _executionExceptions.Concat(
+                    subSteps
+                        .Where(s => s.Status == executionStatus)
+                        .Select(s => s.ExecutionException)
+                        .Where(x => x != null))
+                .ToArray();
 
             return executionStatus == ExecutionStatus.Ignored || exceptions.Length == 1
                 ? exceptions.First()

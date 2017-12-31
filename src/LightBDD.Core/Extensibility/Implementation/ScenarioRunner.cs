@@ -25,7 +25,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         private INameInfo _name;
         private string[] _labels = Arrays<string>.Empty();
         private string[] _categories = Arrays<string>.Empty();
-        private Func<object> _contextProvider = ProvideNoContext;
+        private IContextProvider _contextProvider = ContextProvider.NoContext;
         private readonly ExceptionProcessor _exceptionProcessor;
         private IEnumerable<IScenarioDecorator> _scenarioDecorators = Enumerable.Empty<IScenarioDecorator>();
 
@@ -64,7 +64,12 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         public IScenarioRunner WithContext(Func<object> contextProvider)
         {
-            _contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
+            return WithContext(contextProvider, false);
+        }
+
+        public IScenarioRunner WithContext(Func<object> contextProvider, bool takeOwnership)
+        {
+            _contextProvider = new ContextProvider(contextProvider, takeOwnership);
             return this;
         }
 

@@ -9,6 +9,7 @@ using LightBDD.Core.Results;
 using LightBDD.Framework;
 using LightBDD.Framework.Extensibility;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
+using Moq;
 using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests
@@ -30,7 +31,7 @@ namespace LightBDD.Core.UnitTests
         public void Runner_should_instantiate_context_just_before_run_so_its_failure_would_be_included_in_results()
         {
             Assert.Throws<InvalidOperationException>(() => _runner.Test()
-                .WithContext(() => { throw new InvalidOperationException("abc"); })
+                .WithContext(() => throw new InvalidOperationException("abc"), false)
                 .TestScenario(Given_step_one));
 
             var scenario = _feature.GetFeatureResult().GetScenarios().Single();
@@ -46,7 +47,7 @@ namespace LightBDD.Core.UnitTests
             var list = new List<object>();
 
             _runner.Test()
-                .WithContext(() => new object())
+                .WithContext(() => new object(), false)
                 .TestScenario(
                     new StepDescriptor("test1", (ctx, args) => { list.Add(ctx); return Task.FromResult(DefaultStepResultDescriptor.Instance); }, ParameterDescriptor.FromInvocation(someParameterInfo, ctx => { list.Add(ctx); return ctx; })),
                     new StepDescriptor("test1", (ctx, args) => { list.Add(ctx); return Task.FromResult(DefaultStepResultDescriptor.Instance); }, ParameterDescriptor.FromInvocation(someParameterInfo, ctx => { list.Add(ctx); return ctx; })));
@@ -60,7 +61,7 @@ namespace LightBDD.Core.UnitTests
         {
             var list = new List<object>();
 
-            var runnerWithContext = _runner.Test().WithContext(() => new object());
+            var runnerWithContext = _runner.Test().WithContext(() => new object(), false);
             runnerWithContext.TestScenario(
                     new StepDescriptor("test1", (ctx, args) => { list.Add(ctx); return Task.FromResult(DefaultStepResultDescriptor.Instance); }),
                     new StepDescriptor("test1", (ctx, args) => { list.Add(ctx); return Task.FromResult(DefaultStepResultDescriptor.Instance); }));
@@ -73,6 +74,47 @@ namespace LightBDD.Core.UnitTests
             Assert.That(list.Distinct().Count, Is.EqualTo(2), "Each scenario should have own context");
         }
 
+        [Test]
+        [TestCase(true)]
+        [TestCase(false)]
+        public void Runner_should_dispose_context_depending_on_takeOwnership_flag(bool shouldDispose)
+        {
+            var context = Mock.Of<IDisposable>();
+            _runner.Test().WithContext(() => context, shouldDispose).TestScenario(Given_step_one);
+            Mock.Get(context).Verify(x => x.Dispose(), Times.Exactly(shouldDispose ? 1 : 0));
+        }
+
+        [Test]
+        public void Runner_should_propagate_context_disposal_exception()
+        {
+            var exception = new Exception("foo");
+            var context = Mock.Of<IDisposable>();
+            Mock.Get(context).Setup(x => x.Dispose()).Throws(exception);
+            var ex = Assert.Throws<InvalidOperationException>(() => _runner.Test().WithContext(() => context, true).TestScenario(Given_step_one));
+            Assert.That(ex.Message, Is.EqualTo("Scenario context failed to dispose: foo"));
+            Assert.That(ex.InnerException, Is.SameAs(exception));
+        }
+
+        [Test]
+        public void Runner_should_propagate_context_disposal_exception_together_with_failing_scenario()
+        {
+            var exception = new InvalidOperationException("foo");
+            var context = Mock.Of<IDisposable>();
+            Mock.Get(context).Setup(x => x.Dispose()).Throws(exception);
+            var ex = Assert.Throws<AggregateException>(() => _runner.Test().WithContext(() => context, true).TestScenario(Step_throwing_exception));
+
+            Assert.That(ex.InnerExceptions.Select(x => $"{x.GetType().Name}|{x.Message}").ToArray(),
+                Is.EquivalentTo(new[]
+                {
+                    $"{nameof(Exception)}|bar",
+                    $"{nameof(InvalidOperationException)}|Scenario context failed to dispose: foo"
+                }));
+        }
+
+        private void Step_throwing_exception()
+        {
+            throw new Exception("bar");
+        }
         private void Given_step_one() { }
         private void Given_step_two(int parameter) { }
     }

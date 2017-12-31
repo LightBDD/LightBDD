@@ -11,6 +11,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
     {
         private readonly IFeatureFixtureRunner _coreRunner;
         private Func<object> _contextProvider;
+        private bool _takeContextOwnership;
 
         public TestSyntaxRunner(IFeatureFixtureRunner coreRunner)
         {
@@ -37,8 +38,9 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             TestScenarioPurelySync(steps.Select(TestStep.CreateSync).ToArray());
         }
 
-        public TestSyntaxRunner WithContext(Func<object> contextProvider)
+        public TestSyntaxRunner WithContext(Func<object> contextProvider, bool takeOwnership)
         {
+            _takeContextOwnership = takeOwnership;
             _contextProvider = contextProvider;
             return this;
         }
@@ -83,7 +85,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
         {
             var scenarioRunner = _coreRunner.NewScenario();
             return _contextProvider != null
-                ? scenarioRunner.WithContext(_contextProvider)
+                ? scenarioRunner.WithContext(_contextProvider, _takeContextOwnership)
                 : scenarioRunner;
         }
 
