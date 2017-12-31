@@ -90,7 +90,7 @@ namespace LightBDD.Core.Extensibility
         /// <param name="parameters">Step invocation function parameters.</param>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="methodInfo"/>, <paramref name="stepInvocation"/> or <paramref name="parameters"/> is null.</exception>
         public StepDescriptor(MethodBase methodInfo, Func<object, object[], Task<IStepResultDescriptor>> stepInvocation, params ParameterDescriptor[] parameters)
-            : this( methodInfo ?? throw new ArgumentNullException(nameof(methodInfo)), methodInfo.Name, stepInvocation, parameters) { }
+            : this(methodInfo ?? throw new ArgumentNullException(nameof(methodInfo)), methodInfo.Name, stepInvocation, parameters) { }
 
         private StepDescriptor(MethodBase methodInfo, string rawName, Func<object, object[], Task<IStepResultDescriptor>> stepInvocation, params ParameterDescriptor[] parameters)
         {
@@ -117,7 +117,7 @@ namespace LightBDD.Core.Extensibility
         public MethodBase MethodInfo { get; }
 
         /// <summary>
-        /// Returns step invocation function accepting scenario context object configured with <see cref="IScenarioRunner.WithContext"/>() method and step parameters.
+        /// Returns step invocation function accepting scenario context object configured with <see cref="IScenarioRunner.WithContext(Func{object},bool)"/>() method and step parameters.
         /// </summary>
         public Func<object, object[], Task<IStepResultDescriptor>> StepInvocation { get; }
         /// <summary>
