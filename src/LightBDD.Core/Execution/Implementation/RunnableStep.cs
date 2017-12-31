@@ -114,9 +114,8 @@ namespace LightBDD.Core.Execution.Implementation
             {
                 _compositeStepContext?.Dispose();
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                var exception = new InvalidOperationException("Composite step context failed to dispose: " + e.Message, e);
                 _exceptionProcessor.UpdateResultsWithException(_result.SetStatus, exception);
                 exceptionCollector.Capture(exception);
             }

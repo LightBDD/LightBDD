@@ -91,8 +91,9 @@ namespace LightBDD.Core.UnitTests
             var context = Mock.Of<IDisposable>();
             Mock.Get(context).Setup(x => x.Dispose()).Throws(exception);
             var ex = Assert.Throws<InvalidOperationException>(() => _runner.Test().WithContext(() => context, true).TestScenario(Given_step_one));
-            Assert.That(ex.Message, Is.EqualTo("Scenario context failed to dispose: foo"));
+            Assert.That(ex.Message, Is.EqualTo($"Failed to dispose context '{context.GetType().Name}': foo"));
             Assert.That(ex.InnerException, Is.SameAs(exception));
+            Assert.That(ex.StackTrace, Is.Not.Null);
         }
 
         [Test]
@@ -107,7 +108,7 @@ namespace LightBDD.Core.UnitTests
                 Is.EquivalentTo(new[]
                 {
                     $"{nameof(Exception)}|bar",
-                    $"{nameof(InvalidOperationException)}|Scenario context failed to dispose: foo"
+                    $"{nameof(InvalidOperationException)}|Failed to dispose context '{context.GetType().Name}': foo"
                 }));
         }
 

@@ -119,8 +119,9 @@ namespace LightBDD.Core.UnitTests
 
             var ex = Assert.Throws<InvalidOperationException>(() => _runner.Test().TestGroupScenario(StepGroupWithDisposable));
 
-            Assert.That(ex.Message, Is.EqualTo("Composite step context failed to dispose: foo"));
+            Assert.That(ex.Message, Is.EqualTo($"Failed to dispose context '{context.GetType().Name}': foo"));
             Assert.That(ex.InnerException, Is.SameAs(exception));
+            Assert.That(ex.StackTrace, Is.Not.Null);
         }
 
         [Test]
@@ -143,7 +144,7 @@ namespace LightBDD.Core.UnitTests
                 Is.EquivalentTo(new[]
                 {
                     $"{nameof(Exception)}|bar",
-                    $"{nameof(InvalidOperationException)}|Composite step context failed to dispose: foo"
+                    $"{nameof(InvalidOperationException)}|Failed to dispose context '{context.GetType().Name}': foo"
                 }));
         }
 

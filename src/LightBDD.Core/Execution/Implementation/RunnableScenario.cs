@@ -120,9 +120,8 @@ namespace LightBDD.Core.Execution.Implementation
             {
                 _contextProvider.Dispose();
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                var exception = new InvalidOperationException("Scenario context failed to dispose: " + e.Message, e);
                 _exceptionProcessor.UpdateResultsWithException(_result.UpdateScenarioResult, exception);
                 exceptionCollector.Capture(exception);
             }

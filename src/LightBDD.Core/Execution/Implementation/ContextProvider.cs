@@ -34,8 +34,20 @@ namespace LightBDD.Core.Execution.Implementation
             var disposable = _context as IDisposable;
             _context = null;
 
-            if (_contextDescriptor.TakeOwnership)
-                disposable?.Dispose();
+            if (_contextDescriptor.TakeOwnership && disposable != null)
+                DisposeContext(disposable);
+        }
+
+        private static void DisposeContext(IDisposable disposable)
+        {
+            try
+            {
+                disposable.Dispose();
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"Failed to dispose context '{disposable.GetType().Name}': " + e.Message, e);
+            }
         }
 
         private class NoContextProvider : IContextProvider
