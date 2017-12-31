@@ -69,7 +69,7 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         public IScenarioRunner WithContext(Func<object> contextProvider, bool takeOwnership)
         {
-            _contextProvider = new ContextProvider(contextProvider, takeOwnership);
+            _contextProvider = new ContextProvider(new ExecutionContextDescriptor(contextProvider, takeOwnership));
             return this;
         }
 
@@ -197,17 +197,18 @@ namespace LightBDD.Core.Extensibility.Implementation
                 _groupPrefix = groupPrefix;
             }
 
-            public async Task<RunnableStepResult> InvokeAsync(object context, object[] args)
+            public async Task<CompositeStepContext> InvokeAsync(object context, object[] args)
             {
                 var result = await _invocation.Invoke(context, args);
 
                 if (!(result is CompositeStepResultDescriptor compositeDescriptor))
-                    return RunnableStepResult.Empty;
+                    return CompositeStepContext.Empty;
 
-                var subStepsContext = InstantiateSubStepsContext(compositeDescriptor);
+                var contextProvider = new ContextProvider(compositeDescriptor.SubStepsContext);
+                var subStepsContext = InstantiateSubStepsContext(contextProvider);
                 try
                 {
-                    return new RunnableStepResult(_runner.ProvideSteps(_decoratingExecutor, subStepsContext, compositeDescriptor.SubSteps.ToArray(), _groupPrefix));
+                    return new CompositeStepContext(contextProvider, _runner.ProvideSteps(_decoratingExecutor, subStepsContext, compositeDescriptor.SubSteps.ToArray(), _groupPrefix));
                 }
                 catch (Exception e)
                 {
@@ -216,21 +217,16 @@ namespace LightBDD.Core.Extensibility.Implementation
             }
         }
 
-        private static object InstantiateSubStepsContext(CompositeStepResultDescriptor result)
+        private static object InstantiateSubStepsContext(ContextProvider provider)
         {
             try
             {
-                return result.SubStepsContextProvider.Invoke();
+                return provider.GetContext();
             }
             catch (Exception e)
             {
                 throw new InvalidOperationException($"Sub-steps context initialization failed: {e.Message}", e);
             }
-        }
-
-        private static object ProvideNoContext()
-        {
-            return null;
         }
     }
 }

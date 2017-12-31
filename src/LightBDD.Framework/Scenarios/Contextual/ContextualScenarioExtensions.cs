@@ -11,8 +11,8 @@ namespace LightBDD.Framework.Scenarios.Contextual
     public static class ContextualScenarioExtensions
     {
         /// <summary>
-        /// Specifies that scenario would be executed in dedicated context of <typeparamref name="TContext"/> type, created by <paramref name="contextFactory"/> function.
-        /// The context instance would be created by calling default constructor just before scenario execution.
+        /// Specifies that scenario will be executed in dedicated context of <typeparamref name="TContext"/> type, created by <paramref name="contextFactory"/> function.
+        /// The context instance will be created by calling default constructor just before scenario execution.
         /// 
         /// The <paramref name="takeOwnership"/> specifies if created context should be disposed (when implements <see cref="IDisposable"/> interface) by scenario runner. By default is it set to <c>true</c>.
         /// </summary>
@@ -27,7 +27,7 @@ namespace LightBDD.Framework.Scenarios.Contextual
         }
 
         /// <summary>
-        /// Specifies that scenario would be executed in dedicated <paramref name="context"/> of <typeparamref name="TContext"/> type.
+        /// Specifies that scenario will be executed in dedicated <paramref name="context"/> of <typeparamref name="TContext"/> type.
         /// 
         /// The <paramref name="takeOwnership"/> specifies if created context should be disposed (when implements <see cref="IDisposable"/> interface) by scenario runner. By default is it set to <c>false</c>.
         /// </summary>
@@ -42,8 +42,8 @@ namespace LightBDD.Framework.Scenarios.Contextual
         }
 
         /// <summary>
-        /// Returns runner that would be executing scenarios in dedicated context of <typeparamref name="TContext"/> type.<br/>
-        /// The context instance would be created by calling default constructor just before scenario execution.
+        /// Returns runner that will be executing scenarios in dedicated context of <typeparamref name="TContext"/> type.<br/>
+        /// The context instance will be created by calling default constructor just before scenario execution.
         /// 
         /// All context instances implementing <see cref="IDisposable"/> interface will be disposed after scenario.
         /// </summary>

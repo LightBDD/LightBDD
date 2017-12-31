@@ -1,21 +1,20 @@
 using System;
 using System.Diagnostics;
+using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Core.Execution.Implementation
 {
     [DebuggerStepThrough]
     internal class ContextProvider : IContextProvider
     {
-        private readonly Func<object> _contextProvider;
-        private readonly bool _takeOwnership;
+        private readonly ExecutionContextDescriptor _contextDescriptor;
         private bool _disposed;
         private object _context;
         public static readonly IContextProvider NoContext = new NoContextProvider();
 
-        public ContextProvider(Func<object> contextProvider, bool takeOwnership)
+        public ContextProvider(ExecutionContextDescriptor contextDescriptor)
         {
-            _contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider), "Context provider has to be specified.");
-            _takeOwnership = takeOwnership;
+            _contextDescriptor = contextDescriptor ?? throw new ArgumentNullException(nameof(contextDescriptor));
         }
 
         public object GetContext()
@@ -23,7 +22,7 @@ namespace LightBDD.Core.Execution.Implementation
             if (_disposed)
                 throw new ObjectDisposedException("Context is already disposed");
 
-            return _context ?? (_context = _contextProvider.Invoke());
+            return _context ?? (_context = _contextDescriptor.ContextProvider.Invoke());
         }
 
         public void Dispose()
@@ -35,7 +34,7 @@ namespace LightBDD.Core.Execution.Implementation
             var disposable = _context as IDisposable;
             _context = null;
 
-            if (_takeOwnership)
+            if (_contextDescriptor.TakeOwnership)
                 disposable?.Dispose();
         }
 

@@ -9,8 +9,12 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
     public class TestCompositeStep : CompositeStepResultDescriptor
     {
         public TestCompositeStep(params StepDescriptor[] subSteps) : this(() => null, subSteps) { }
-        public TestCompositeStep(Func<object> contextProvider, params StepDescriptor[] subSteps) : base(contextProvider, subSteps) { }
-        public TestCompositeStep(Func<object> contextProvider, IEnumerable<StepDescriptor> subSteps) : base(contextProvider, subSteps) { }
+        public TestCompositeStep(Func<object> contextProvider, params StepDescriptor[] subSteps)
+            : base(new ExecutionContextDescriptor(contextProvider, false), subSteps) { }
+        public TestCompositeStep(Func<object> contextProvider, IEnumerable<StepDescriptor> subSteps)
+            : base(new ExecutionContextDescriptor(contextProvider, false), subSteps) { }
+        public TestCompositeStep(ExecutionContextDescriptor contextDescriptor, params StepDescriptor[] subSteps)
+            : base(contextDescriptor, subSteps) { }
 
         public static TestCompositeStep Create(params Action[] steps)
         {
