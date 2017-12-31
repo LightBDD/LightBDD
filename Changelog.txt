@@ -4,10 +4,10 @@ LightBDD
 Version 2.3.3
 ----------------------------------------
 Summary:
-+ #69 Simplified exception stack trace for scenario/step exceptions in reports and underlying test frameworks
-+ #90 Allowed to install new FeatureCoordinator when previous one is disposed in order to allow NCrunch reusing the same process to run LightBDD multiple times
-+ #92 Excluded 'this' argument from step name display when extension method is used
-+ #94 Added support for disposing context instances for contextual scenarios and composite steps
++ #69 Simplified exception stack trace for failed scenarios
++ #90 Improved integration with NCrunch
++ #92 Improved support for extension methods used as steps
++ #94 Added support for disposable scenario and step context instances
 Details:
 + #69 (Core)(Change) Exposed DefaultExceptionFormatter with ability to filter stack trace members and limit number of printed stack trace lines. Excluded async exception rethrow frames by default (reports and progress notifers)
 + #69 (Core)(New) Introduced ScenarioExecutionException to be used to propagate scenario/step exceptions without recording LightBDD internal frames

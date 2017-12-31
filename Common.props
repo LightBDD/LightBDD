@@ -15,7 +15,7 @@
     <PackageOutputPath>$(SolutionDir)\output</PackageOutputPath>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>bdd;tdd;testing;framework;behavior driven development;acceptance criteria</PackageTags>
-    <PackageReleaseNotes>Simplified exception stack trace for failed scenarios;Improved integration with NCrunch;Improved support for extension methods used as steps;Added support for disposable scenario/step context; Details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-233 </PackageReleaseNotes>
+    <PackageReleaseNotes>Simplified exception stack trace for failed scenarios;Improved integration with NCrunch;Improved support for extension methods used as steps;Added support for disposable scenario and step context instances; Details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-233 </PackageReleaseNotes>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
