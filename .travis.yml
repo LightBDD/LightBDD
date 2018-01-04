@@ -1,0 +1,8 @@
+language: csharp
+solution: LightBDD.sln
+mono: latest
+dotnet: 2.1.3
+script:
+ - dotnet restore
+ - dotnet build
+ - dotnet test test\LightBDD.Core.UnitTests\LightBDD.Core.UnitTests.csproj
