@@ -6,3 +6,5 @@ script:
  - dotnet restore
  - msbuild /p:Configuration=Release LightBDD.sln
  - dotnet test -c Release --no-build test/LightBDD.Core.UnitTests/LightBDD.Core.UnitTests.csproj
+ - dotnet test -c Release --no-build test/LightBDD.Framework.UnitTests/LightBDD.Framework.UnitTests.csproj
+ - dotnet test -c Release --no-build test/LightBDD.Framework.Reporting.UnitTests/LightBDD.Framework.Reporting.UnitTests.csproj

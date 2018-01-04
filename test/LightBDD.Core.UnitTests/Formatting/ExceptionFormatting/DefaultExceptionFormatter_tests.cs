@@ -46,24 +46,20 @@ namespace LightBDD.Core.UnitTests.Formatting.ExceptionFormatting
 at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests.<ThrowSampleExceptionAsync>[^\n]*
 --- End of stack trace from previous location where exception was thrown ---
 \s*at System.Runtime.[^\n]+.Throw[^\n]*
-at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification\(Task task\)
-(at System.Runtime.CompilerServices.TaskAwaiter.GetResult\(\)
-)?at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests.<HandleInnerException>[^\n]*
+(at System.Runtime.CompilerServices.TaskAwaiter.[^\n]*
+)+at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests.<HandleInnerException>[^\n]*
 --- End of stack trace from previous location where exception was thrown ---
 \s*at System.Runtime.[^\n]+.Throw[^\n]*
-at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification\(Task task\)
-(at System.Runtime.CompilerServices.TaskAwaiter.GetResult\(\)
-)?at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests.<WrapInnerExceptionLevel2>[^\n]*
+(at System.Runtime.CompilerServices.TaskAwaiter.[^\n]*
+)+at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests.<WrapInnerExceptionLevel2>[^\n]*
 --- End of stack trace from previous location where exception was thrown ---
 \s*at System.Runtime.[^\n]+.Throw[^\n]*
-at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification\(Task task\)
-(at System.Runtime.CompilerServices.TaskAwaiter.GetResult\(\)
-)?at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests.<WrapInnerExceptionLevel1>[^\n]*
+(at System.Runtime.CompilerServices.TaskAwaiter.[^\n]*
+)+at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests.<WrapInnerExceptionLevel1>[^\n]*
 --- End of stack trace from previous location where exception was thrown ---
 \s*at System.Runtime.[^\n]+.Throw[^\n]*
-at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification\(Task task\)
-(at System.Runtime.CompilerServices.TaskAwaiter.GetResult\(\)
-)?at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests.<MakeSampleException>[^\n]*$";
+(at System.Runtime.CompilerServices.TaskAwaiter.[^\n]*
+)+at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests.<MakeSampleException>[^\n]*$";
 
             var formattedDetails = new DefaultExceptionFormatter().WithAllMembersIncludedOnStackTrace().Format(exception);
             Assert.That(formattedDetails.Replace("\r", ""), Does.Match(expectedExceptionDetails.Replace("\r", "")));

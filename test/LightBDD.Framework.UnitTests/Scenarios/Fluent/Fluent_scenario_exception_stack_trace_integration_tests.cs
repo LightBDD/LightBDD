@@ -25,11 +25,11 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
         {
             var ex = Assert.ThrowsAsync<InvalidOperationException>(() => _runner.NewScenario().AddSteps(Step_throwing_exception).RunAsync());
             ex.AssertStackTraceMatching(
-                @"^\s*at LightBDD.Framework.UnitTests.Scenarios.Fluent.Fluent_scenario_exception_stack_trace_integration_tests.Step_throwing_exception\(\) [^\n]*
-\s*at LightBDD.Framework.Scenarios.Basic.Implementation.BasicStepCompiler.StepExecutor.Execute\(Object context, Object\[\] args\)[^\n]*
+                @"^\s*at LightBDD.Framework.UnitTests.Scenarios.Fluent.Fluent_scenario_exception_stack_trace_integration_tests.Step_throwing_exception\s*\(\) [^\n]*
+\s*at LightBDD.Framework.Scenarios.Basic.Implementation.BasicStepCompiler.StepExecutor.Execute\s*\(Object context, Object\[\] args\)[^\n]*
 --- End of stack trace from previous location where exception was thrown ---
 ([^\n]*
-)?\s*at LightBDD.Framework.Scenarios.Fluent.Implementation.ScenarioBuilder`1.<RunAsync>d__4.MoveNext\(\)[^\n]*");
+)?\s*at LightBDD.Framework.Scenarios.Fluent.Implementation.ScenarioBuilder`1.<RunAsync>[^\n]*");
         }
 
         void Step_throwing_exception()
