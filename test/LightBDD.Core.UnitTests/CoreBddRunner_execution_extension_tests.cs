@@ -183,8 +183,8 @@ namespace LightBDD.Core.UnitTests
                 .TestScenario(Some_step1));
 
             ex.AssertStackTraceMatching(@"^\s*at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator.ProcessStatus[^\n]*
-   at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator.ExecuteAsync[^\n]*
-   at LightBDD.Core.Extensibility.Execution.Implementation.DecoratingExecutor.RecursiveExecutor`1.<ExecuteAsync>[^\n]*
+\s*at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator.ExecuteAsync[^\n]*
+\s*at LightBDD.Core.Extensibility.Execution.Implementation.DecoratingExecutor.RecursiveExecutor`1.<ExecuteAsync>[^\n]*
 --- End of stack trace from previous location where exception was thrown ---
 ([^\n]*
 )?\s*at LightBDD.UnitTests.Helpers.TestableIntegration.TestSyntaxRunner.TestScenario[^\n]*");
