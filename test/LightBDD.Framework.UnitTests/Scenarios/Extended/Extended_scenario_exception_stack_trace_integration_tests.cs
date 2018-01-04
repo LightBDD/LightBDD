@@ -26,8 +26,8 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
         {
             var ex = Assert.Throws<InvalidOperationException>(() => _runner.RunScenario(_ => Step_throwing_exception()));
             ex.AssertStackTraceMatching(
-@"^\s*at LightBDD.Framework.UnitTests.Scenarios.Extended.Extended_scenario_exception_stack_trace_integration_tests.Step_throwing_exception\s*\(\)[^\n]*
-\s*at lambda_method\s*\(Closure , NoContext , Object\[\] \)
+@"^\s*at LightBDD.Framework.UnitTests.Scenarios.Extended.Extended_scenario_exception_stack_trace_integration_tests.Step_throwing_exception[^\n]*
+\s*at [^\n]*lambda_method[^\n]*
 --- End of stack trace from previous location where exception was thrown ---
 ([^\n]*
 )?\s*at LightBDD.Framework.Scenarios.Extended.ExtendedScenarioExtensions.RunScenario[^\n]*");
@@ -40,17 +40,17 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
         }
 
         [Test]
-        public void RunScenarioAsync_should_expose_exception_with_simple_call_stack_when_async_step_throws_it_immediatelly()
+        public void RunScenarioAsync_should_expose_exception_with_simple_call_stack_when_async_step_throws_it_immediately()
         {
-            var ex = Assert.ThrowsAsync<InvalidOperationException>(() => _runner.RunScenarioAsync(_ => Async_step_throwing_exception_immediatelly()));
+            var ex = Assert.ThrowsAsync<InvalidOperationException>(() => _runner.RunScenarioAsync(_ => Async_step_throwing_exception_immediately()));
             ex.AssertStackTraceMatching(
-                @"^\s*at LightBDD.Framework.UnitTests.Scenarios.Extended.Extended_scenario_exception_stack_trace_integration_tests.<Async_step_throwing_exception_immediatelly>[^\n]*
+                @"^\s*at LightBDD.Framework.UnitTests.Scenarios.Extended.Extended_scenario_exception_stack_trace_integration_tests.<Async_step_throwing_exception_immediately>[^\n]*
 --- End of stack trace from previous location where exception was thrown ---
 ([^\n]*
 )?\s*at LightBDD.Framework.Scenarios.Extended.ExtendedScenarioExtensions.<RunScenarioAsync>[^\n]*");
         }
 
-        async Task Async_step_throwing_exception_immediatelly()
+        async Task Async_step_throwing_exception_immediately()
         {
             throw new InvalidOperationException();
         }
@@ -80,7 +80,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
                 @"^\s*at LightBDD.Framework.UnitTests.Scenarios.Extended.Extended_scenario_exception_stack_trace_integration_tests.<Async_void_step_throwing_exception_after_await>[^\n]*
 --- End of stack trace from previous location where exception was thrown ---
 ([^\n]*
-)?\s*at LightBDD.Core.Execution.Implementation.AsyncStepSynchronizationContext.RunWithSelf\s*\(SendOrPostCallback d, Object s\)[^\n]*
+)?\s*at LightBDD.Core.Execution.Implementation.AsyncStepSynchronizationContext.RunWithSelf[^\n]*
 --- End of stack trace from previous location where exception was thrown ---
 ([^\n]*
 )?\s*at LightBDD.Framework.Scenarios.Extended.ExtendedScenarioExtensions.<RunScenarioActionsAsync>[^\n]*");
