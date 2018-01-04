@@ -4,6 +4,8 @@ mono: latest
 dotnet: 2.1.3
 script:
  - dotnet restore
- - xbuild /p:Configuration=Release LightBDD.sln
+ - export FrameworkPathOverride=/usr/lib/mono/4.5
+ - ls /usr/lib/mono/
+ - dotnet build LightBDD.sln -c Release
  - dotnet test  -c Release test\LightBDD.Core.UnitTests\LightBDD.Core.UnitTests.csproj
  - dotnet test  -c Release test\LightBDD.Framework.UnitTests\LightBDD.Framework.UnitTests.csproj
