@@ -4,6 +4,6 @@ mono: latest
 dotnet: 2.1.3
 script:
  - dotnet restore
- - dotnet build -c Release
+ - xbuild /p:Configuration=Release LightBDD.sln
  - dotnet test  -c Release test\LightBDD.Core.UnitTests\LightBDD.Core.UnitTests.csproj
  - dotnet test  -c Release test\LightBDD.Framework.UnitTests\LightBDD.Framework.UnitTests.csproj
