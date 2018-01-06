@@ -3,18 +3,18 @@ mono: latest
 dotnet: 2.0.0
 dist: trusty
 
-addons:
-  apt:
-    sources:
-    - sourceline: 'deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-trusty-prod trusty main'
-      key_url: 'https://packages.microsoft.com/keys/microsoft.asc'
-    packages:
-    - dotnet-hostfxr-1.0.1
-    - dotnet-sharedframework-microsoft.netcore.app-1.1.2
+# dotnet test for net core won't work until msbuild 15.5 (https://github.com/Microsoft/vstest/issues/865)
+#addons:
+#  apt:
+#    sources:
+#    - sourceline: 'deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-trusty-prod trusty main'
+#      key_url: 'https://packages.microsoft.com/keys/microsoft.asc'
+#    packages:
+#    - dotnet-sharedframework-microsoft.netcore.app-1.1.2
 
 script:
  - dotnet restore
  - msbuild /p:Configuration=Release LightBDD.sln
- - dotnet test -c Release --no-build test/LightBDD.Core.UnitTests/LightBDD.Core.UnitTests.csproj
- - dotnet test -c Release --no-build test/LightBDD.Framework.UnitTests/LightBDD.Framework.UnitTests.csproj
- - dotnet test -c Release --no-build test/LightBDD.Framework.Reporting.UnitTests/LightBDD.Framework.Reporting.UnitTests.csproj
+ - dotnet test -c Release -f net46 --no-build test/LightBDD.Core.UnitTests/LightBDD.Core.UnitTests.csproj
+ - dotnet test -c Release -f net46 --no-build test/LightBDD.Framework.UnitTests/LightBDD.Framework.UnitTests.csproj
+ - dotnet test -c Release -f net46 --no-build test/LightBDD.Framework.Reporting.UnitTests/LightBDD.Framework.Reporting.UnitTests.csproj
