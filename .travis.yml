@@ -12,6 +12,7 @@ addons:
     - dotnet-sharedframework-microsoft.netcore.app-1.1.2
 
 script:
+ - echo "{\"appDomain\":\"denied\"}" > test/LightBDD.XUnit2.UnitTests/xunit.runner.json
  - dotnet restore
  - msbuild /p:Configuration=Release LightBDD.sln
  - dotnet test -c Release --no-build test/LightBDD.Core.UnitTests/LightBDD.Core.UnitTests.csproj
