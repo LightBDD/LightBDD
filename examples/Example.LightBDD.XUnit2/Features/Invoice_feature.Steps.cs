@@ -1,18 +1,11 @@
 ﻿using LightBDD.Framework;
 using LightBDD.Framework.Formatting;
 using LightBDD.XUnit2;
-using Xunit.Abstractions;
 
 namespace Example.LightBDD.XUnit2.Features
 {
     public partial class Invoice_feature : FeatureFixture
     {
-        #region Setup/Teardown
-        public Invoice_feature(ITestOutputHelper output) : base(output)
-        {
-        }
-        #endregion
-
         private void Given_product_is_available_in_product_storage(string product)
         {
         }

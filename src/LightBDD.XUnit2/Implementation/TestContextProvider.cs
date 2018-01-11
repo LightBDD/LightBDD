@@ -1,5 +1,6 @@
 using System.Reflection;
 using LightBDD.Framework.ExecutionContext;
+using Xunit.Abstractions;
 
 namespace LightBDD.XUnit2.Implementation
 {
@@ -8,12 +9,13 @@ namespace LightBDD.XUnit2.Implementation
         private static readonly AsyncLocalContext<TestContextProvider> Provider = new AsyncLocalContext<TestContextProvider>();
         public MethodInfo TestMethod { get; }
         public object[] TestMethodArguments { get; }
+        public ITestOutputHelper OutputHelper { get; }
 
         public static TestContextProvider Current => Provider.Value;
 
-        public static void Initialize(MethodInfo testMethod, object[] arguments)
+        public static void Initialize(MethodInfo testMethod, object[] arguments, ITestOutputHelper testOutputHelper)
         {
-            Provider.Value = new TestContextProvider(testMethod, arguments);
+            Provider.Value = new TestContextProvider(testMethod, arguments, testOutputHelper);
         }
 
         public static void Clear()
@@ -21,10 +23,11 @@ namespace LightBDD.XUnit2.Implementation
             Provider.Value = null;
         }
 
-        private TestContextProvider(MethodInfo testMethod, object[] arguments)
+        private TestContextProvider(MethodInfo testMethod, object[] arguments, ITestOutputHelper outputHelper)
         {
             TestMethod = testMethod;
             TestMethodArguments = arguments;
+            OutputHelper = outputHelper;
         }
     }
 }

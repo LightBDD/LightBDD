@@ -23,7 +23,7 @@ namespace Example.LightBDD.XUnit2.Features
 As a spedition manager
 I want to dispatch products to customer as soon as the payment is finalized")]
     [Label("Story-3")]
-    public partial class Product_spedition_feature
+    public class Product_spedition_feature : FeatureFixture
     {
         [Scenario]
         [Label("Ticket-5")]

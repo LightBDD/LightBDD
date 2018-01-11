@@ -3,7 +3,6 @@ using LightBDD.Framework;
 using LightBDD.Framework.Commenting;
 using LightBDD.XUnit2;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Example.LightBDD.XUnit2.Features
 {
@@ -15,12 +14,6 @@ namespace Example.LightBDD.XUnit2.Features
         private LoginRequest _loginRequest;
         private LoginService _loginService;
         private LoginResult _loginResult;
-        #region Setup/Teardown
-        public Login_feature(ITestOutputHelper output)
-            : base(output)
-        {
-        }
-        #endregion
         private void Given_the_user_is_about_to_login()
         {
             _loginService = new LoginService();

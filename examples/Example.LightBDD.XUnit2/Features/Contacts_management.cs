@@ -24,7 +24,7 @@ namespace Example.LightBDD.XUnit2.Features
 As an application user
 I want to add, browse and remove my contacts")]
     [Label("Story-6")]
-    public partial class Contacts_management
+    public class Contacts_management : FeatureFixture
     {
         [Scenario]
         [Label("Ticket-8")]

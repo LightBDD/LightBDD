@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ using Xunit.Sdk;
 namespace LightBDD.XUnit2.Implementation.Customization
 {
     /// <summary>
-    /// ScenarioTestRunner reimplements the TestRunner&lt;&gt; RunAsync() method, allowing to skip test programatically with IgnoreException.
+    /// ScenarioTestRunner re-implements the TestRunner&lt;&gt; RunAsync() method, allowing to skip test programmatically with IgnoreException.
     /// It also captures scenario method details for metadata provider.
     /// </summary>
     internal class ScenarioTestRunner : XunitTestRunner
@@ -87,15 +88,20 @@ namespace LightBDD.XUnit2.Implementation.Customization
             return runSummary;
         }
 
-        protected override async Task<decimal> InvokeTestMethodAsync(ExceptionAggregator aggregator)
+        protected override async Task<Tuple<decimal, string>> InvokeTestAsync(ExceptionAggregator aggregator)
         {
+            var testOutputHelper = ConstructorArguments.OfType<TestOutputHelper>().FirstOrDefault() ?? new TestOutputHelper();
+
+            testOutputHelper.Initialize(MessageBus, Test);
             try
             {
-                TestContextProvider.Initialize(TestMethod, TestMethodArguments);
-                return await base.InvokeTestMethodAsync(aggregator);
+                TestContextProvider.Initialize(TestMethod, TestMethodArguments, testOutputHelper);
+                var totalTime = await InvokeTestMethodAsync(aggregator);
+                return Tuple.Create(totalTime, testOutputHelper.Output);
             }
             finally
             {
+                testOutputHelper.Uninitialize();
                 TestContextProvider.Clear();
             }
         }

@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Example.Domain.Helpers;
 using LightBDD.XUnit2;
-using Xunit.Abstractions;
 
 namespace Example.LightBDD.XUnit2.Features
 {
@@ -18,10 +17,6 @@ namespace Example.LightBDD.XUnit2.Features
         }
 
         private void Then_I_should_see_invoices(params string[] invoices)
-        {
-        }
-
-        public Invoice_history_feature(ITestOutputHelper output) : base(output)
         {
         }
     }
