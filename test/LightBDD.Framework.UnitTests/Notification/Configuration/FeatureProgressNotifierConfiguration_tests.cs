@@ -19,26 +19,67 @@ namespace LightBDD.Framework.UnitTests.Notification.Configuration
         }
 
         [Test]
-        public void It_should_not_allow_null_notifier()
+        public void UpdateNotifier_should_not_allow_null_notifier()
         {
             Assert.Throws<ArgumentNullException>(() => new FeatureProgressNotifierConfiguration().UpdateNotifier(null));
         }
 
         [Test]
-        public void It_should_update_configuration()
+        public void UpdateNotifier_should_update_configuration()
         {
             var configuration = new FeatureProgressNotifierConfiguration().UpdateNotifier(new DelegatingFeatureProgressNotifier());
             Assert.That(configuration.Notifier, Is.InstanceOf<DelegatingFeatureProgressNotifier>());
         }
 
         [Test]
+        public void SetNotifier_should_not_allow_null_notifier()
+        {
+            Assert.Throws<ArgumentNullException>(() => new FeatureProgressNotifierConfiguration().SetNotifier(null));
+        }
+
+        [Test]
+        public void SetNotifier_should_update_configuration()
+        {
+            var configuration = new FeatureProgressNotifierConfiguration().SetNotifier(new DelegatingFeatureProgressNotifier());
+            Assert.That(configuration.Notifier, Is.InstanceOf<DelegatingFeatureProgressNotifier>());
+        }
+
+        [Test]
+        public void ClearNotifier_should_reset_it_to_NoProgressNotifier()
+        {
+            var configuration = new FeatureProgressNotifierConfiguration()
+                .SetNotifier(new DelegatingFeatureProgressNotifier())
+                .ClearNotifier();
+            Assert.That(configuration.Notifier, Is.InstanceOf<NoProgressNotifier>());
+        }
+
+        [Test]
+        public void AppendNotifiers_should_append_notifiers_to_existing_ones()
+        {
+            var notifier1 = Mock.Of<IFeatureProgressNotifier>();
+            var notifier2 = Mock.Of<IFeatureProgressNotifier>();
+            var notifier3 = Mock.Of<IFeatureProgressNotifier>();
+            var notifier4 = Mock.Of<IFeatureProgressNotifier>();
+
+            var configuration = new FeatureProgressNotifierConfiguration()
+                .AppendNotifiers(notifier1, notifier2)
+                .AppendNotifiers(notifier3)
+                .AppendNotifiers(notifier4);
+            Assert.That(configuration.Notifier, Is.InstanceOf<DelegatingFeatureProgressNotifier>());
+            Assert.That(((DelegatingFeatureProgressNotifier)configuration.Notifier).Notifiers, Is.EqualTo(new[] { notifier1, notifier2, notifier3, notifier4 }));
+        }
+
+        [Test]
         public void Configuration_should_be_sealable()
         {
-            var lighbddConfig = new LightBddConfiguration();
-            var cfg = lighbddConfig.Get<FeatureProgressNotifierConfiguration>();
-            lighbddConfig.Seal();
+            var root = new LightBddConfiguration();
+            var cfg = root.Get<FeatureProgressNotifierConfiguration>();
+            root.Seal();
 
             Assert.Throws<InvalidOperationException>(() => cfg.UpdateNotifier(Mock.Of<IFeatureProgressNotifier>()));
+            Assert.Throws<InvalidOperationException>(() => cfg.SetNotifier(Mock.Of<IFeatureProgressNotifier>()));
+            Assert.Throws<InvalidOperationException>(() => cfg.AppendNotifiers(Mock.Of<IFeatureProgressNotifier>()));
+            Assert.Throws<InvalidOperationException>(() => cfg.ClearNotifier());
         }
     }
 }
