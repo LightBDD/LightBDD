@@ -18,6 +18,7 @@ namespace LightBDD.XUnit2
         /// <summary>
         /// Returns <see cref="ITestOutputHelper"/> associated to the test class instance.
         /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when TestOutput is null (scenario was executed from test without [Scenario] attribute or was explicitly initialized with null).</exception>
         public ITestOutputHelper TestOutput => _testOutput ?? throw new InvalidOperationException(nameof(TestOutput) + " is not provided. Ensure that scenario is executed from method with [Scenario] attribute, or " + nameof(ITestOutputHelper) + " instance is provided to " + nameof(FeatureFixture) + " constructor.");
 
         /// <summary>
