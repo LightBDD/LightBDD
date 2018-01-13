@@ -32,23 +32,10 @@ namespace LightBDD.Framework.UnitTests.Notification.Configuration
         }
 
         [Test]
-        public void SetNotifier_should_not_allow_null_notifier()
-        {
-            Assert.Throws<ArgumentNullException>(() => new FeatureProgressNotifierConfiguration().SetNotifier(null));
-        }
-
-        [Test]
-        public void SetNotifier_should_update_configuration()
-        {
-            var configuration = new FeatureProgressNotifierConfiguration().SetNotifier(new DelegatingFeatureProgressNotifier());
-            Assert.That(configuration.Notifier, Is.InstanceOf<DelegatingFeatureProgressNotifier>());
-        }
-
-        [Test]
         public void ClearNotifier_should_reset_it_to_NoProgressNotifier()
         {
             var configuration = new FeatureProgressNotifierConfiguration()
-                .SetNotifier(new DelegatingFeatureProgressNotifier())
+                .UpdateNotifier(new DelegatingFeatureProgressNotifier())
                 .ClearNotifier();
             Assert.That(configuration.Notifier, Is.InstanceOf<NoProgressNotifier>());
         }
@@ -77,7 +64,6 @@ namespace LightBDD.Framework.UnitTests.Notification.Configuration
             root.Seal();
 
             Assert.Throws<InvalidOperationException>(() => cfg.UpdateNotifier(Mock.Of<IFeatureProgressNotifier>()));
-            Assert.Throws<InvalidOperationException>(() => cfg.SetNotifier(Mock.Of<IFeatureProgressNotifier>()));
             Assert.Throws<InvalidOperationException>(() => cfg.AppendNotifiers(Mock.Of<IFeatureProgressNotifier>()));
             Assert.Throws<InvalidOperationException>(() => cfg.ClearNotifier());
         }

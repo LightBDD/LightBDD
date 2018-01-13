@@ -20,9 +20,7 @@ namespace LightBDD.Framework.Notification
         /// <exception cref="ArgumentNullException">Throws when <paramref name="notifiers"/> is null.</exception>
         public DelegatingScenarioProgressNotifier(params IScenarioProgressNotifier[] notifiers)
         {
-            if (notifiers == null)
-                throw new ArgumentNullException(nameof(notifiers));
-            _notifiers = notifiers;
+            _notifiers = notifiers ?? throw new ArgumentNullException(nameof(notifiers));
         }
         /// <summary>
         /// Notifies that scenario has started.

@@ -22,19 +22,7 @@ namespace LightBDD.Framework.Notification.Configuration
         /// <param name="notifier">New notifier to set.</param>
         /// <returns>Self.</returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="notifier"/> is null.</exception>
-        [Obsolete("Use " + nameof(SetNotifier) + " instead that better reflect the effect")]
         public FeatureProgressNotifierConfiguration UpdateNotifier(IFeatureProgressNotifier notifier)
-        {
-            return SetNotifier(notifier);
-        }
-
-        /// <summary>
-        /// Replaces the <see cref="Notifier"/> with <paramref name="notifier"/> value.
-        /// </summary>
-        /// <param name="notifier">New notifier to set.</param>
-        /// <returns>Self.</returns>
-        /// <exception cref="ArgumentNullException">Throws when <paramref name="notifier"/> is null.</exception>
-        public FeatureProgressNotifierConfiguration SetNotifier(IFeatureProgressNotifier notifier)
         {
             ThrowIfSealed();
             Notifier = notifier ?? throw new ArgumentNullException(nameof(notifier));
@@ -60,6 +48,6 @@ namespace LightBDD.Framework.Notification.Configuration
         /// Sets <see cref="Notifier"/> to <see cref="NoProgressNotifier.Default"/> instance that does not report any notifications.
         /// </summary>
         /// <returns>Self.</returns>
-        public FeatureProgressNotifierConfiguration ClearNotifier() => SetNotifier(NoProgressNotifier.Default);
+        public FeatureProgressNotifierConfiguration ClearNotifier() => UpdateNotifier(NoProgressNotifier.Default);
     }
 }

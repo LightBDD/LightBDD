@@ -17,12 +17,10 @@ namespace LightBDD.Framework.Notification.Implementation
 
         public ParallelProgressNotifier(ProgressManager manager, Action<string>[] onNotify)
         {
-            if (manager == null)
-                throw new ArgumentNullException(nameof(manager));
             if (onNotify == null || !onNotify.Any())
                 throw new ArgumentException("At least one on notify action required", nameof(onNotify));
 
-            _manager = manager;
+            _manager = manager ?? throw new ArgumentNullException(nameof(manager));
             _onNotify = onNotify.Aggregate((current, next) => current + next);
             _notifier = new DefaultProgressNotifier(NotifyProgress);
         }

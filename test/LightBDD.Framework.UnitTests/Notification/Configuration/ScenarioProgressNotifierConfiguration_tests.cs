@@ -20,20 +20,20 @@ namespace LightBDD.Framework.UnitTests.Notification.Configuration
         }
 
         [Test]
-        public void It_should_not_allow_null_notifier_provider()
+        public void UpdateNotifierProvider_should_not_allow_null_notifier_provider()
         {
             Assert.Throws<ArgumentNullException>(() => new ScenarioProgressNotifierConfiguration().UpdateNotifierProvider(null));
         }
 
         [Test]
-        public void It_should_update_configuration()
+        public void UpdateNotifierProvider_should_update_configuration()
         {
             var configuration = new ScenarioProgressNotifierConfiguration().UpdateNotifierProvider(() => new DelegatingScenarioProgressNotifier());
             Assert.That(configuration.NotifierProvider(null), Is.InstanceOf<DelegatingScenarioProgressNotifier>());
         }
 
         [Test]
-        public void It_should_update_configuration_with_fixture_object()
+        public void UpdateNotifierProvider_should_update_configuration_with_fixture_object()
         {
             object capturedFixture = null;
             var configuration = new ScenarioProgressNotifierConfiguration().UpdateNotifierProvider<object>(fixture =>
@@ -72,6 +72,7 @@ namespace LightBDD.Framework.UnitTests.Notification.Configuration
             lighbddConfig.Seal();
 
             Assert.Throws<InvalidOperationException>(() => cfg.UpdateNotifierProvider(Mock.Of<IScenarioProgressNotifier>));
+            Assert.Throws<InvalidOperationException>(() => cfg.UpdateNotifierProvider((object fixture)=>Mock.Of<IScenarioProgressNotifier>()));
         }
     }
 }
