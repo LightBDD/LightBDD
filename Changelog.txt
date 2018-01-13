@@ -1,6 +1,14 @@
 LightBDD
 ===========================================
 
+Version 2.3.4
+----------------------------------------
+Summary:
++ #98 Lifted requirement for parameterized constructors in LightBDD.XUnit2 FeatureFixture
+Details:
++ #98 (XUnit2)(Change) Added parameter-less constructor to FeatureFixture
++ #98 (VSIX)(Change) Updated LightBDD.XUnit2 feature tempaltes to generate classes without parameterized constructor
+
 Version 2.3.3
 ----------------------------------------
 Summary:

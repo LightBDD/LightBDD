@@ -1,18 +1,11 @@
 using System.Threading.Tasks;
 using Example.Domain.Helpers;
 using LightBDD.XUnit2;
-using Xunit.Abstractions;
 
 namespace Example.LightBDD.XUnit2.Features
 {
     public partial class Payment_feature : FeatureFixture
     {
-        #region Setup/Teardown
-        public Payment_feature(ITestOutputHelper output)
-            : base(output)
-        {
-        }
-        #endregion
         private async Task Given_customer_has_some_products_in_basket()
         {
             await LongRunningOperationSimulator.SimulateAsync();

@@ -6,7 +6,7 @@ using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.Framework.Scenarios.Extended;
 using Xunit;
-using Xunit.Abstractions;
+using Xunit.Sdk;
 
 namespace LightBDD.XUnit2.UnitTests
 {
@@ -14,11 +14,6 @@ namespace LightBDD.XUnit2.UnitTests
     [ScenarioCategory("Category B")]
     public class IntegrationTests : FeatureFixture
     {
-        public IntegrationTests(ITestOutputHelper output)
-            : base(output)
-        {
-        }
-
         [Scenario]
         [Label(nameof(It_should_capture_scenario_name))]
         public void It_should_capture_scenario_name()
@@ -40,23 +35,23 @@ namespace LightBDD.XUnit2.UnitTests
 
         [Scenario]
         [ScenarioCategory("Category A")]
-        [Label(nameof(It_should_capture_nunit_specific_attributes))]
-        public void It_should_capture_nunit_specific_attributes()
+        [Label(nameof(It_should_capture_xunit_specific_attributes))]
+        public void It_should_capture_xunit_specific_attributes()
         {
             Runner.RunScenario(Some_step);
 
             var result = FeatureRunnerProvider.GetRunnerFor(GetType()).GetFeatureResult();
             Assert.Equal("desc", result.Info.Description);
 
-            var scenario = GetScenarioResult(nameof(It_should_capture_nunit_specific_attributes));
+            var scenario = GetScenarioResult(nameof(It_should_capture_xunit_specific_attributes));
             Assert.Equal(
                 new[] { "Category A", "Category B" },
                 scenario.Info.Categories.ToArray());
         }
 
         [Scenario]
-        [Label(nameof(It_should_capture_nunit_ignore_assertion))]
-        public void It_should_capture_nunit_ignore_assertion()
+        [Label(nameof(It_should_capture_xunit_ignore_assertion))]
+        public void It_should_capture_xunit_ignore_assertion()
         {
             try
             {
@@ -65,18 +60,9 @@ namespace LightBDD.XUnit2.UnitTests
             catch
             {
             }
-            var result = GetScenarioResult(nameof(It_should_capture_nunit_ignore_assertion));
+            var result = GetScenarioResult(nameof(It_should_capture_xunit_ignore_assertion));
             Assert.Equal(ExecutionStatus.Ignored, result.Status);
             Assert.Equal("Step 1: manually ignored", result.StatusDetails);
-        }
-
-        [Fact]
-        public void Runner_should_throw_meaningful_exception_if_scenario_is_not_run_from_Scenario_attribute()
-        {
-            Exception ex = Assert.Throws<InvalidOperationException>(() => Runner.RunScenario(Some_step));
-            Assert.Equal(
-                "Unable to locate Scenario name. Please ensure that scenario is executed from method with [Scenario] attribute.",
-                ex.Message);
         }
 
         [Scenario]
@@ -142,6 +128,27 @@ namespace LightBDD.XUnit2.UnitTests
         [IgnoreScenario("step reason")]
         private void Declaratively_ignored_step()
         {
+        }
+
+        [Scenario]
+        public void TestOutput_should_be_initialized_when_parameterless_ctor_is_used_on_scenario()
+        {
+           Assert.IsType<TestOutputHelper>(TestOutput);
+        }
+
+        [Fact]
+        public void TestOutput_should_throw_when_parameterless_ctor_is_used_with_fact()
+        {
+            var ex = Assert.Throws<InvalidOperationException>(() => TestOutput);
+            Assert.Equal("TestOutput is not provided. Ensure that scenario is executed from method with [Scenario] attribute, or ITestOutputHelper instance is provided to FeatureFixture constructor.", ex.Message);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        public void TestOutput_should_throw_when_parameterless_ctor_is_used_with_theory(bool value)
+        {
+            var ex = Assert.Throws<InvalidOperationException>(() => TestOutput);
+            Assert.Equal("TestOutput is not provided. Ensure that scenario is executed from method with [Scenario] attribute, or ITestOutputHelper instance is provided to FeatureFixture constructor.", ex.Message);
         }
 
         private void Step_with_parameter(string value)

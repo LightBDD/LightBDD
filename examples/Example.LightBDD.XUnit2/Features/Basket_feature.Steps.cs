@@ -3,7 +3,6 @@ using LightBDD.Framework;
 using LightBDD.Framework.Commenting;
 using LightBDD.XUnit2;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Example.LightBDD.XUnit2.Features
 {
@@ -60,7 +59,7 @@ namespace Example.LightBDD.XUnit2.Features
 
         #region Setup/Teardown
 
-        public Basket_feature(ITestOutputHelper output):base(output)
+        public Basket_feature()
         {
             _stock = new Stock();
             _basket = new Basket();

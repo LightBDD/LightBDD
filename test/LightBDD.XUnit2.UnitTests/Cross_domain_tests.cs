@@ -33,10 +33,6 @@ So that I can write tests accessing application settings")]
             [DefaultSettingValue("foo")]
             public string Setting => (string)this["Setting"];
         }
-
-        public Cross_domain_tests(ITestOutputHelper output) : base(output)
-        {
-        }
     }
 }
 #endif

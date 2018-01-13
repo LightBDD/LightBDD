@@ -2,7 +2,6 @@
 using LightBDD.Framework;
 using LightBDD.XUnit2;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Example.LightBDD.XUnit2.Features
 {
@@ -30,10 +29,6 @@ namespace Example.LightBDD.XUnit2.Features
             if (x < 0 || y < 0)
                 StepExecution.Current.IgnoreScenario("Negative numbers are not supported yet");
             Assert.Equal(result, _calculator.Multiply(x, y));
-        }
-
-        public Calculator_feature(ITestOutputHelper output) : base(output)
-        {
         }
     }
 }
