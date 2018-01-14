@@ -5,7 +5,7 @@ Version 2.3.4
 ----------------------------------------
 Summary:
 + #34 Implemented console immediate progress notification for LightBDD.NUnit3
-+ #34 Simplified scenario summary for LightBDD.XUnit2
++ #34 Enhanced scenario progress notification
 + #98 Lifted requirement for parameterized constructors in LightBDD.XUnit2 FeatureFixture
 Details:
 + #34 (NUnit3)(New) Implemented immediate progress notification when executed with `dotnet test` or `nunit3-console.exe`
