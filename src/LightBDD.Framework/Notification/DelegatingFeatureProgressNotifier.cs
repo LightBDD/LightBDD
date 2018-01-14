@@ -54,12 +54,13 @@ namespace LightBDD.Framework.Notification
         }
 
         /// <summary>
-        /// Composes <see cref="IFeatureProgressNotifier"/> from provided notifiers where 
-        /// any notifiers of <see cref="NoProgressNotifier"/> will be excluded 
+        /// Composes <see cref="IFeatureProgressNotifier"/> from provided notifiers where
+        /// any notifiers of <see cref="NoProgressNotifier"/> will be excluded
         /// and any notifiers of <see cref="DelegatingFeatureProgressNotifier"/> will be flattened.
         /// </summary>
         /// <param name="notifiers">Notifiers to compose.</param>
         /// <returns>Composition of provided notifiers.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="notifiers"/> or any of it's items is null.</exception>
         public static IFeatureProgressNotifier Compose(IEnumerable<IFeatureProgressNotifier> notifiers)
         {
             var results = new List<IFeatureProgressNotifier>();
