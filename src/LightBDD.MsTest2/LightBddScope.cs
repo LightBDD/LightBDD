@@ -52,10 +52,10 @@ namespace LightBDD.MsTest2
             var configuration = new LightBddConfiguration().WithFrameworkDefaults();
 
             configuration.Get<FeatureProgressNotifierConfiguration>()
-                .UpdateNotifier(MsTest2ProgressNotifier.CreateFeatureProgressNotifier());
+                .AppendFrameworkDefaultProgressNotifiers();
 
             configuration.Get<ScenarioProgressNotifierConfiguration>()
-                .UpdateNotifierProvider(MsTest2ProgressNotifier.CreateScenarioProgressNotifier);
+                .AppendFrameworkDefaultProgressNotifiers();
 
             configuration.ExceptionHandlingConfiguration()
                 .UpdateExceptionDetailsFormatter(new DefaultExceptionFormatter().WithTestFrameworkDefaults().Format);

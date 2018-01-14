@@ -62,10 +62,10 @@ namespace LightBDD.XUnit2
             var configuration = new LightBddConfiguration().WithFrameworkDefaults();
 
             configuration.Get<FeatureProgressNotifierConfiguration>()
-                .UpdateNotifier(XUnit2ProgressNotifier.CreateFeatureProgressNotifier());
+                .AppendFrameworkDefaultProgressNotifiers();
 
             configuration.Get<ScenarioProgressNotifierConfiguration>()
-                .UpdateNotifierProvider<ITestOutputProvider>(fixture => XUnit2ProgressNotifier.CreateScenarioProgressNotifier(fixture.TestOutput));
+                .AppendFrameworkDefaultProgressNotifiers();
 
             configuration.ExceptionHandlingConfiguration()
                 .UpdateExceptionDetailsFormatter(new DefaultExceptionFormatter().WithTestFrameworkDefaults().Format);
