@@ -1,7 +1,7 @@
 ﻿<Project>
   <PropertyGroup>
     <Copyright>Copyright © Wojciech Kotlarski 2013-2018</Copyright>
-    <VersionPrefix>2.3.3.0</VersionPrefix>
+    <VersionPrefix>2.3.4.0</VersionPrefix>
     <Authors>Wojciech Kotlarski</Authors>
     <Company>https://github.com/LightBDD/LightBDD</Company>
     <PackageIconUrl>https://raw.githubusercontent.com/LightBDD/LightBDD/master/logo/lightbdd.png</PackageIconUrl>
@@ -15,7 +15,7 @@
     <PackageOutputPath>$(SolutionDir)\output</PackageOutputPath>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>bdd;tdd;testing;framework;behavior driven development;acceptance criteria</PackageTags>
-    <PackageReleaseNotes>Simplified exception stack trace for failed scenarios;Improved integration with NCrunch;Improved support for extension methods used as steps;Added support for disposable scenario and step context instances; Details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-233 </PackageReleaseNotes>
+    <PackageReleaseNotes>Implemented console immediate progress notification for LightBDD.NUnit3;Enhanced scenario progress notification;Lifted requirement for parameterized constructors in LightBDD.XUnit2 FeatureFixture; Details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-234 </PackageReleaseNotes>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
