@@ -4,8 +4,15 @@ LightBDD
 Version 2.3.4
 ----------------------------------------
 Summary:
++ #34 Implemented console immediate progress notification for LightBDD.NUnit3
++ #34 Simplified scenario summary for LightBDD.XUnit2
 + #98 Lifted requirement for parameterized constructors in LightBDD.XUnit2 FeatureFixture
 Details:
++ #34 (NUnit3)(New) Implemented immediate progress notification when executed with `dotnet test` or `nunit3-console.exe`
++ #34 (XUnit2)(Change) Simplified scenario summary printed in VisualStudio Test Explorer output / Resharper output and console output for LightBDD.XUnit2
++ #34 (Framework)(New) Added ClearNotifiers() / AppendNotifiers() methods to FeatureProgressNotifierConfiguration in order to simplify combining different notifiers
++ #34 (Framework)(New) Added ClearNotifierProviders() / AppendNotifierProviders() methods to ScenarioProgressNotifierConfiguration in order to simplify combining different notifiers
++ #34 (all integrations)(New) Added AppendFrameworkDefaultProgressNotifiers() extensions to FeatureProgressNotifierConfiguration and ScenarioProgressNotifierConfiguration to allow re-applying integration specific notifiers after they has been cleared
 + #98 (XUnit2)(Change) Added parameter-less constructor to FeatureFixture
 + #98 (VSIX)(Change) Updated LightBDD.XUnit2 feature tempaltes to generate classes without parameterized constructor
 

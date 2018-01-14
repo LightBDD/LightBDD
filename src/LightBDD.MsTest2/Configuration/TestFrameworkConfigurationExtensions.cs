@@ -1,4 +1,6 @@
 ﻿using LightBDD.Core.Formatting.ExceptionFormatting;
+using LightBDD.Framework.Notification.Configuration;
+using LightBDD.MsTest2.Implementation;
 
 namespace LightBDD.MsTest2.Configuration
 {
@@ -16,6 +18,22 @@ namespace LightBDD.MsTest2.Configuration
         {
             return formatter
                 .WithMembersExcludedFromStackTrace("Microsoft\\.VisualStudio\\.TestTools\\..*");
+        }
+
+        /// <summary>
+        /// Appends LightBDD.MsTest2 default scenario progress notifiers.
+        /// </summary>
+        public static ScenarioProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this ScenarioProgressNotifierConfiguration configuration)
+        {
+            return configuration.AppendNotifierProviders(MsTest2ProgressNotifier.CreateScenarioProgressNotifier);
+        }
+
+        /// <summary>
+        /// Appends LightBDD.MsTest2 default feature progress notifiers.
+        /// </summary>
+        public static FeatureProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this FeatureProgressNotifierConfiguration configuration)
+        {
+            return configuration.AppendNotifiers(MsTest2ProgressNotifier.CreateFeatureProgressNotifier());
         }
     }
 }

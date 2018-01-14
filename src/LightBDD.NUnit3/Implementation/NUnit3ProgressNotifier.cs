@@ -8,19 +8,28 @@ namespace LightBDD.NUnit3.Implementation
     [DebuggerStepThrough]
     internal class NUnit3ProgressNotifier
     {
+        private static readonly DefaultProgressNotifier SummarizingProgressNotifier = new DefaultProgressNotifier(WriteOutput);
+
         public static IFeatureProgressNotifier CreateFeatureProgressNotifier()
         {
-            return NoProgressNotifier.Default;
+            return new DelegatingFeatureProgressNotifier(ParallelProgressNotifierProvider.Default.CreateFeatureProgressNotifier(WriteImmediateProgress));
         }
 
         public static IScenarioProgressNotifier CreateScenarioProgressNotifier()
         {
-            return new DefaultProgressNotifier(WriteScenarioProgress);
+            return new DelegatingScenarioProgressNotifier(
+                ParallelProgressNotifierProvider.Default.CreateScenarioProgressNotifier(WriteImmediateProgress),
+                SummarizingProgressNotifier);
         }
 
-        private static void WriteScenarioProgress(string text)
+        private static void WriteOutput(string text)
         {
             TestContext.Out.WriteLine(text);
+        }
+
+        private static void WriteImmediateProgress(string text)
+        {
+            TestContext.Progress.WriteLine(text);
         }
     }
 }

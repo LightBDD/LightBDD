@@ -21,4 +21,6 @@ To run tests from Test Explorer the **NUnitTestAdapter** package has to be added
 ### Using nunit-console.exe
 To run tests with `nunit-console.exe` the [NUnit.Runners](https://www.nuget.org/packages/NUnit.Runners) has to be fetched during build process and executed against the compiled dll.
 
+When executed, the progress of currently executing tests will be printed on console allowing to track the execution of long running tests.
+
 Example usage: `> run-nunit-console.cmd`

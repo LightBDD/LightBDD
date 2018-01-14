@@ -4,9 +4,6 @@ This is a sample project presenting how to create and run LightBDD scenarios wit
 The scenarios created within this project are written in different styles to show various features of LightBDD.
 Also, for better clarity how LightBDD behaves, some of the scenarios are failing or finishing with ignored status.
 
-## Integration notes
-The feature classes have to expose a public constructor with `ITestOutputHelper` parameter and pass it to `FeatureFixture` constructor.
-
 ## Running tests
 
 It is possible to run xunit based LightBDD tests in various ways, which are described below.
@@ -23,7 +20,7 @@ To run tests with `dotnet test` command the **xunit.runner.visualstudio** packag
 
 As this command does not display output of successful tests, it is recommended to call this command with `--logger:"console;verbosity=normal"` argument to change this behaviour.
 
-Please note that as of today, `dotnet test` does not display any progress of currently executing tests so with this command it is not possible to track the execution of long running tests.
+Please note that as of today, running `dotnet test` for xunit2 does not display any progress of currently executing tests so with this command it is not possible to track the execution of long running tests.
 
 Example usage: `> run-dotnet-test.cmd`
 

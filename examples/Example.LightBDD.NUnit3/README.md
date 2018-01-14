@@ -24,15 +24,13 @@ To run tests from Test Explorer the **NUnit3TestAdapter** package has to be adde
 ### Using dotnet test
 To run tests with `dotnet test` command the **NUnit3TestAdapter** package has to be added.
 
-As this command does not display output of successful tests, it is recommended to call this command with `--logger:"console;verbosity=normal"` argument to change this behaviour.
-
-Please note that as of today, `dotnet test` does not display any progress of currently executing tests so with this command it is not possible to track the execution of long running tests.
+When executed, the progress of currently executing tests will be printed on console allowing to track the execution of long running tests.
 
 Example usage: `> run-dotnet-test.cmd`
 
 ### Using nunit3-console.exe
 To run tests with `nunit3-console.exe` the [NUnit.ConsoleRunner](https://www.nuget.org/packages/NUnit.ConsoleRunner) has to be fetched during build process and executed against the compiled dll.
 
-Similarly to above command, `nunit3-console.exe` will not report any progres until the test finish, as current implementation of LightBDD.NUnit3 uses `TestContext.Out.WriteLine` to report progress, that is printed after test is done.
+Similarly to above command, `nunit3-console.exe` will print current progress of executing tests but as a contrary to `dotnet test` it will also print an execution summary of each test when it is finished.
 
 Example usage: `> run-nunit3-console.cmd`

@@ -52,10 +52,10 @@ namespace LightBDD.NUnit3
             var configuration = new LightBddConfiguration().WithFrameworkDefaults();
 
             configuration.Get<FeatureProgressNotifierConfiguration>()
-                .UpdateNotifier(NUnit3ProgressNotifier.CreateFeatureProgressNotifier());
+                .AppendFrameworkDefaultProgressNotifiers();
 
             configuration.Get<ScenarioProgressNotifierConfiguration>()
-                .UpdateNotifierProvider(NUnit3ProgressNotifier.CreateScenarioProgressNotifier);
+                .AppendFrameworkDefaultProgressNotifiers();
 
             configuration.ExceptionHandlingConfiguration()
                 .UpdateExceptionDetailsFormatter(new DefaultExceptionFormatter().WithTestFrameworkDefaults().Format);
