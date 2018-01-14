@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using LightBDD.Core.Notification;
 using LightBDD.Framework.Notification;
-using Xunit.Abstractions;
 
 namespace LightBDD.XUnit2.Implementation
 {
@@ -14,9 +13,14 @@ namespace LightBDD.XUnit2.Implementation
             return ParallelProgressNotifierProvider.Default.CreateFeatureProgressNotifier(Console.WriteLine);
         }
 
-        public static IScenarioProgressNotifier CreateScenarioProgressNotifier(ITestOutputHelper helper)
+        public static IScenarioProgressNotifier CreateImmediateScenarioProgressNotifier()
         {
-            return ParallelProgressNotifierProvider.Default.CreateScenarioProgressNotifier(Console.WriteLine, helper.WriteLine);
+            return ParallelProgressNotifierProvider.Default.CreateScenarioProgressNotifier(Console.WriteLine);
+        }
+
+        public static IScenarioProgressNotifier CreateSummarizingScenarioProgressNotifier(ITestOutputProvider fixture)
+        {
+            return new DefaultProgressNotifier(fixture.TestOutput.WriteLine);
         }
     }
 }
