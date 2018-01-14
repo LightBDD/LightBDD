@@ -89,7 +89,7 @@ namespace LightBDD.Framework.Notification.Configuration
         /// Clears <see cref="NotifierProvider"/> to use <see cref="NoProgressNotifier.Default"/> instance that does not report any notifications.
         /// </summary>
         /// <returns>Self.</returns>
-        public ScenarioProgressNotifierConfiguration ClearNotifierProvider()
+        public ScenarioProgressNotifierConfiguration ClearNotifierProviders()
         {
             ThrowIfSealed();
             _composer.Clear();

@@ -32,11 +32,11 @@ namespace LightBDD.Framework.UnitTests.Notification.Configuration
         }
 
         [Test]
-        public void ClearNotifier_should_reset_it_to_NoProgressNotifier()
+        public void ClearNotifiers_should_reset_it_to_NoProgressNotifier()
         {
             var configuration = new FeatureProgressNotifierConfiguration()
                 .UpdateNotifier(new DelegatingFeatureProgressNotifier())
-                .ClearNotifier();
+                .ClearNotifiers();
             Assert.That(configuration.Notifier, Is.InstanceOf<NoProgressNotifier>());
         }
 
@@ -65,7 +65,7 @@ namespace LightBDD.Framework.UnitTests.Notification.Configuration
 
             Assert.Throws<InvalidOperationException>(() => cfg.UpdateNotifier(Mock.Of<IFeatureProgressNotifier>()));
             Assert.Throws<InvalidOperationException>(() => cfg.AppendNotifiers(Mock.Of<IFeatureProgressNotifier>()));
-            Assert.Throws<InvalidOperationException>(() => cfg.ClearNotifier());
+            Assert.Throws<InvalidOperationException>(() => cfg.ClearNotifiers());
         }
     }
 }

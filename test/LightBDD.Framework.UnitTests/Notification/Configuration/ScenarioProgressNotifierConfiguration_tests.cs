@@ -68,6 +68,15 @@ namespace LightBDD.Framework.UnitTests.Notification.Configuration
         }
 
         [Test]
+        public void ClearNotifierProviders_should_reset_it_to_NoProgressNotifier()
+        {
+            var configuration = new ScenarioProgressNotifierConfiguration()
+                .UpdateNotifierProvider(Mock.Of<IScenarioProgressNotifier>)
+                .ClearNotifierProviders();
+            Assert.That(configuration.NotifierProvider(null), Is.InstanceOf<NoProgressNotifier>());
+        }
+
+        [Test]
         public void AppendNotifierProviders_should_append_notifiers_to_existing_ones()
         {
             var notifier1 = Mock.Of<IScenarioProgressNotifier>();
@@ -132,7 +141,7 @@ namespace LightBDD.Framework.UnitTests.Notification.Configuration
             Assert.Throws<InvalidOperationException>(() => cfg.UpdateNotifierProvider((object fixture) => Mock.Of<IScenarioProgressNotifier>()));
             Assert.Throws<InvalidOperationException>(() => cfg.AppendNotifierProviders((object fixture) => Mock.Of<IScenarioProgressNotifier>()));
             Assert.Throws<InvalidOperationException>(() => cfg.AppendNotifierProviders(Mock.Of<IScenarioProgressNotifier>));
-            Assert.Throws<InvalidOperationException>(() => cfg.ClearNotifierProvider());
+            Assert.Throws<InvalidOperationException>(() => cfg.ClearNotifierProviders());
         }
     }
 }

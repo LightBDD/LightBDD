@@ -48,6 +48,6 @@ namespace LightBDD.Framework.Notification.Configuration
         /// Sets <see cref="Notifier"/> to <see cref="NoProgressNotifier.Default"/> instance that does not report any notifications.
         /// </summary>
         /// <returns>Self.</returns>
-        public FeatureProgressNotifierConfiguration ClearNotifier() => UpdateNotifier(NoProgressNotifier.Default);
+        public FeatureProgressNotifierConfiguration ClearNotifiers() => UpdateNotifier(NoProgressNotifier.Default);
     }
 }
