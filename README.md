@@ -1,6 +1,8 @@
 ![logo](https://github.com/LightBDD/LightBDD/blob/master/logo/lightbdd.ico) Lightweight Behavior Driven Development test framework (LightBDD)
 ===========
 
+[![Join the chat at https://gitter.im/LightBDD/LightBDD](https://badges.gitter.im/LightBDD/LightBDD.svg)](https://gitter.im/LightBDD/LightBDD?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Category|Badge |Platforms
 --------|------|--------
 Build (official) | [![Build status](https://ci.appveyor.com/api/projects/status/xkd7qc950o07o3x8/branch/master?svg=true)](https://ci.appveyor.com/project/Suremaker/lightbdd/branch/master) |
