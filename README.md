@@ -4,7 +4,8 @@
 Category|Badge |Platforms
 --------|------|--------
 Build (official) | [![Build status](https://ci.appveyor.com/api/projects/status/xkd7qc950o07o3x8/branch/master?svg=true)](https://ci.appveyor.com/project/Suremaker/lightbdd/branch/master) |
-Build (linux/mono) | [![Build Status](https://travis-ci.org/LightBDD/LightBDD.svg?branch=master)](https://travis-ci.org/LightBDD/LightBDD) |
+Build (linux/mono) | [![Build Status](https://travis-ci.org/LightBDD/LightBDD.svg?branch=master)](https://travis-ci.org/LightBDD/LightBDD) | 
+Chat (gitter) | [![Join the chat at https://gitter.im/LightBDD/LightBDD](https://badges.gitter.im/LightBDD/LightBDD.svg)](https://gitter.im/LightBDD/LightBDD?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) | 
 LightBDD.NUnit3 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.NUnit3?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.NUnit3/) | .NET Standard >= 1.6 <br> .NET Framework >= 4.5 <br> .NET Core
 LightBDD.NUnit2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.NUnit2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.NUnit2/) | .NET Framework >= 4.5
 LightBDD.XUnit2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.XUnit2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.XUnit2/) | .NET Standard >= 1.3 <br> .NET Framework >= 4.5.2 <br> .NET Core
