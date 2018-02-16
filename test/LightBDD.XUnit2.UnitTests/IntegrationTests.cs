@@ -11,7 +11,8 @@ using Xunit.Sdk;
 namespace LightBDD.XUnit2.UnitTests
 {
     [FeatureDescription("desc")]
-    [ScenarioCategory("Category B")]
+    [ScenarioCategory("Category C")]
+    [Trait("Category", "Category D")]
     public class IntegrationTests : FeatureFixture
     {
         [Scenario]
@@ -35,6 +36,7 @@ namespace LightBDD.XUnit2.UnitTests
 
         [Scenario]
         [ScenarioCategory("Category A")]
+        [Trait("Category", "Category B")]
         [Label(nameof(It_should_capture_xunit_specific_attributes))]
         public void It_should_capture_xunit_specific_attributes()
         {
@@ -45,7 +47,7 @@ namespace LightBDD.XUnit2.UnitTests
 
             var scenario = GetScenarioResult(nameof(It_should_capture_xunit_specific_attributes));
             Assert.Equal(
-                new[] { "Category A", "Category B" },
+                new[] { "Category A", "Category B", "Category C", "Category D" },
                 scenario.Info.Categories.ToArray());
         }
 
@@ -133,7 +135,7 @@ namespace LightBDD.XUnit2.UnitTests
         [Scenario]
         public void TestOutput_should_be_initialized_when_parameterless_ctor_is_used_on_scenario()
         {
-           Assert.IsType<TestOutputHelper>(TestOutput);
+            Assert.IsType<TestOutputHelper>(TestOutput);
         }
 
         [Fact]
