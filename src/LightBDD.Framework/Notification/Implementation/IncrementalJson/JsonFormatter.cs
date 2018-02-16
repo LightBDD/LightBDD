@@ -26,10 +26,25 @@ namespace LightBDD.Framework.Notification.Implementation.IncrementalJson
             return new JsonElement(
                 ToType("ScenarioStarted"),
                 ToTimeLine(timeLine),
+                new JsonProperty("ParentId", ToJson(value.Parent.RuntimeId)),
                 new JsonProperty(nameof(value.RuntimeId), ToJson(value.RuntimeId)),
                 new JsonProperty(nameof(value.Name), ToJson(value.Name)),
                 new JsonProperty(nameof(value.Labels), value.Labels.ToJsonArray(ToJson)),
                 new JsonProperty(nameof(value.Categories), value.Categories.ToJsonArray(ToJson))
+            );
+        }
+
+        public static JsonElement ToJson(this IStepInfo value, Stopwatch timeLine)
+        {
+            return new JsonElement(
+                ToType("StepStarted"),
+                ToTimeLine(timeLine),
+                new JsonProperty("ParentId", ToJson(value.Parent.RuntimeId)),
+                new JsonProperty(nameof(value.RuntimeId), ToJson(value.RuntimeId)),
+                new JsonProperty(nameof(value.Name), ToJson(value.Name)),
+                new JsonProperty(nameof(value.GroupPrefix), value.GroupPrefix),
+                new JsonProperty(nameof(value.Number), value.Number),
+                new JsonProperty(nameof(value.Total), value.Total)
             );
         }
 
@@ -103,19 +118,6 @@ namespace LightBDD.Framework.Notification.Implementation.IncrementalJson
             return new JsonElement(
                 new JsonProperty(nameof(paramInfo.FormattedValue), paramInfo.FormattedValue),
                 new JsonProperty(nameof(paramInfo.IsEvaluated), paramInfo.IsEvaluated));
-        }
-
-        public static JsonElement ToJson(this IStepInfo value, Stopwatch timeLine)
-        {
-            return new JsonElement(
-                ToType("StepStarted"),
-                ToTimeLine(timeLine),
-                new JsonProperty(nameof(value.RuntimeId), ToJson(value.RuntimeId)),
-                new JsonProperty(nameof(value.Name), ToJson(value.Name)),
-                new JsonProperty(nameof(value.GroupPrefix), value.GroupPrefix),
-                new JsonProperty(nameof(value.Number), value.Number),
-                new JsonProperty(nameof(value.Total), value.Total)
-            );
         }
 
         public static JsonElement ToTestsFinished(Stopwatch timeLine)

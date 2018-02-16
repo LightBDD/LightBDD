@@ -26,7 +26,7 @@
 							var encoded = encoder.encode(messages[i]).buffer;
 							self.postMessage(encoded, [encoded]);
 						}
-						remainder = messages[messages.lenght - 1];
+						remainder = messages[messages.length - 1];
 
 						if (!result.done) {
 							return readChunk();
@@ -39,24 +39,26 @@
 				});
 		}
 	</script>
-    <script>
-        function createFeatureView(model) {
-	        var template = document.querySelector('#featureTemplate');
-	        var div = template.content.querySelector("div");
-	        div.innerHTML = model.Name.NameFormat;
-	        containerCtrl.appendChild(document.importNode(template.content, true));
-        }
-    </script>
-    <script>
-	    var items = {};
-	    function addItem(model,view) { items[model.RuntimeId] = { model: model, view: view }; }
-	    function findItem(model) { return items[model.RuntimeId]; }
+	<script>
+		function createFeatureView(model) {
+			var template = document.querySelector('#featureTemplate');
+			var div = template.content.querySelector("div");
+			div.innerHTML = model.Name.NameFormat;
+			containerCtrl.appendChild(document.importNode(template.content, true));
+		}
+	</script>
+	<script>
+		var items = {};
 
-	    var eventProcessor = {};
-	    eventProcessor["FeatureStarted"] = function(model) {
-		    addItem(model,createFeatureView(model));
-	    };
-    </script>
+		function addItem(model, view) { items[model.RuntimeId] = { model: model, view: view }; }
+
+		function findItem(model) { return items[model.RuntimeId]; }
+
+		var eventProcessor = {};
+		eventProcessor["FeatureStarted"] = function(model) {
+			addItem(model, createFeatureView(model));
+		};
+	</script>
 	<script>
 		var containerCtrl = null;
 		var rowTemplate = null;
@@ -72,8 +74,15 @@
 			document.worker.onmessage = function(e) {
 				var view = new DataView(e.data, 0, e.data.byteLength);
 				var value = decoder.decode(view);
-				var event = JSON.parse(value);
-				eventProcessor[event.t](event);
+				try {
+					var event = JSON.parse(value);
+				} catch (xxx) {
+					console.log(xxx);
+				}
+				var processor = eventProcessor[event.t];
+				if (processor) {
+					processor(event);
+				}
 			};
 		}
 

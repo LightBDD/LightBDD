@@ -3,17 +3,16 @@ namespace LightBDD.Core.Metadata
     /// <summary>
     /// Interface describing scenario step metadata.
     /// </summary>
-    public interface IStepInfo
+    public interface IStepInfo : IMetadataInfo
     {
         /// <summary>
-        /// Unique Id assigned at runtime.
-        /// Please note that the same step may have different Ids in consecutive test runs.
+        /// Parent scenario or step.
         /// </summary>
-        string RuntimeId { get; }
+        IMetadataInfo Parent { get; }
         /// <summary>
         /// Returns step name.
         /// </summary>
-        IStepNameInfo Name { get; }
+        new IStepNameInfo Name { get; }
         /// <summary>
         /// Returns group prefix if step belongs to a composite step, or <see cref="string.Empty"/> if step belongs to scenario.
         /// The group prefix is in form of <c>Z.Y.X.</c>, where X,Y,Z corresponds to parent, grand parent, grand-grand parent, etc. step number.

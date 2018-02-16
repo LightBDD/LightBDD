@@ -7,8 +7,9 @@ namespace LightBDD.Core.Metadata.Implementation
     [DebuggerStepThrough]
     internal class ScenarioInfo : IScenarioInfo
     {
-        public ScenarioInfo(string runtimeId,INameInfo name, string[] labels, string[] categories)
+        public ScenarioInfo(IFeatureInfo parent, string runtimeId, INameInfo name, string[] labels, string[] categories)
         {
+            Parent = parent;
             RuntimeId = runtimeId;
             Name = name;
             Labels = labels;
@@ -17,6 +18,7 @@ namespace LightBDD.Core.Metadata.Implementation
 
         public string RuntimeId { get; }
         public INameInfo Name { get; }
+        public IFeatureInfo Parent { get; }
         public IEnumerable<string> Labels { get; }
         public IEnumerable<string> Categories { get; }
 

@@ -5,17 +5,12 @@ namespace LightBDD.Core.Metadata
     /// <summary>
     /// Interface describing scenario metadata.
     /// </summary>
-    public interface IScenarioInfo
+    public interface IScenarioInfo : IMetadataInfo
     {
         /// <summary>
-        /// Unique Id assigned at runtime.
-        /// Please note that the same scenario may have different Ids in consecutive test runs.
+        /// Parent feature.
         /// </summary>
-        string RuntimeId { get; }
-        /// <summary>
-        /// Returns scenario name.
-        /// </summary>
-        INameInfo Name { get; }
+        IFeatureInfo Parent { get; }
         /// <summary>
         /// Returns scenario labels or empty collection if none specified.
         /// </summary>

@@ -17,7 +17,7 @@ namespace LightBDD.Core.Execution.Implementation
     internal class RunnableScenario : IScenario
     {
         private readonly ScenarioInfo _info;
-        private readonly Func<DecoratingExecutor, object, RunnableStep[]> _stepsProvider;
+        private readonly Func<IMetadataInfo, DecoratingExecutor, object, RunnableStep[]> _stepsProvider;
         private readonly Func<object> _contextProvider;
         private readonly IScenarioProgressNotifier _progressNotifier;
         private readonly DecoratingExecutor _decoratingExecutor;
@@ -29,7 +29,7 @@ namespace LightBDD.Core.Execution.Implementation
         private Func<Exception, bool> _shouldAbortSubStepExecutionFn = ex => true;
 
         [DebuggerStepThrough]
-        public RunnableScenario(ScenarioInfo scenario, Func<DecoratingExecutor, object, RunnableStep[]> stepsProvider, Func<object> contextProvider, IScenarioProgressNotifier progressNotifier, DecoratingExecutor decoratingExecutor, IEnumerable<IScenarioDecorator> scenarioDecorators, ExceptionProcessor exceptionProcessor)
+        public RunnableScenario(ScenarioInfo scenario, Func<IMetadataInfo, DecoratingExecutor, object, RunnableStep[]> stepsProvider, Func<object> contextProvider, IScenarioProgressNotifier progressNotifier, DecoratingExecutor decoratingExecutor, IEnumerable<IScenarioDecorator> scenarioDecorators, ExceptionProcessor exceptionProcessor)
         {
             _info = scenario;
             _stepsProvider = stepsProvider;
@@ -124,7 +124,7 @@ namespace LightBDD.Core.Execution.Implementation
         {
             try
             {
-                return _stepsProvider.Invoke(_decoratingExecutor, _scenarioContext);
+                return _stepsProvider.Invoke(_info, _decoratingExecutor, _scenarioContext);
             }
             catch (Exception e)
             {

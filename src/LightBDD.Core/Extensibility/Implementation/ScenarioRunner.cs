@@ -17,6 +17,7 @@ namespace LightBDD.Core.Extensibility.Implementation
     [DebuggerStepThrough]
     internal class ScenarioRunner : IScenarioRunner
     {
+        private readonly IFeatureInfo _featureInfo;
         private readonly ScenarioExecutor _scenarioExecutor;
         private readonly IMetadataProvider _metadataProvider;
         private readonly IScenarioProgressNotifier _progressNotifier;
@@ -28,8 +29,11 @@ namespace LightBDD.Core.Extensibility.Implementation
         private readonly ExceptionProcessor _exceptionProcessor;
         private IEnumerable<IScenarioDecorator> _scenarioDecorators = Enumerable.Empty<IScenarioDecorator>();
 
-        public ScenarioRunner(ScenarioExecutor scenarioExecutor, IMetadataProvider metadataProvider, IScenarioProgressNotifier progressNotifier, ExceptionProcessor exceptionProcessor)
+        public ScenarioRunner(IFeatureInfo featureInfo, ScenarioExecutor scenarioExecutor,
+            IMetadataProvider metadataProvider, IScenarioProgressNotifier progressNotifier,
+            ExceptionProcessor exceptionProcessor)
         {
+            _featureInfo = featureInfo;
             _scenarioExecutor = scenarioExecutor;
             _metadataProvider = metadataProvider;
             _progressNotifier = progressNotifier;
@@ -103,7 +107,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         {
             Validate();
             return _scenarioExecutor
-                .ExecuteAsync(new ScenarioInfo(IdGenerator.Generate(), _name, _labels, _categories), ProvideSteps, _contextProvider, _progressNotifier, _scenarioDecorators, _exceptionProcessor);
+                .ExecuteAsync(new ScenarioInfo(_featureInfo, IdGenerator.Generate(), _name, _labels, _categories), ProvideSteps, _contextProvider, _progressNotifier, _scenarioDecorators, _exceptionProcessor);
         }
 
         public void RunSynchronously()
@@ -114,12 +118,12 @@ namespace LightBDD.Core.Extensibility.Implementation
             task.GetAwaiter().GetResult();
         }
 
-        private RunnableStep[] ProvideSteps(DecoratingExecutor decoratingExecutor, object scenarioContext)
+        private RunnableStep[] ProvideSteps(IMetadataInfo parent, DecoratingExecutor decoratingExecutor, object scenarioContext)
         {
-            return ProvideSteps(decoratingExecutor, scenarioContext, _steps.ToArray(), string.Empty);
+            return ProvideSteps(parent, decoratingExecutor, scenarioContext, _steps.ToArray(), string.Empty);
         }
 
-        private RunnableStep[] ProvideSteps(DecoratingExecutor decoratingExecutor, object scenarioContext, StepDescriptor[] steps, string groupPrefix)
+        private RunnableStep[] ProvideSteps(IMetadataInfo parent, DecoratingExecutor decoratingExecutor, object scenarioContext, StepDescriptor[] steps, string groupPrefix)
         {
             var totalStepsCount = steps.Length;
             string previousStepTypeName = null;
@@ -127,7 +131,7 @@ namespace LightBDD.Core.Extensibility.Implementation
 
             for (var i = 0; i < totalStepsCount; ++i)
             {
-                var step = ToRunnableStep(steps[i], i, totalStepsCount, previousStepTypeName, decoratingExecutor, scenarioContext, groupPrefix);
+                var step = ToRunnableStep(parent, steps[i], i, totalStepsCount, previousStepTypeName, decoratingExecutor, scenarioContext, groupPrefix);
                 result[i] = step;
                 previousStepTypeName = step.Result.Info.Name.StepTypeName?.OriginalName;
             }
@@ -135,14 +139,14 @@ namespace LightBDD.Core.Extensibility.Implementation
             return result;
         }
 
-        private RunnableStep ToRunnableStep(StepDescriptor descriptor, int stepIndex, int totalStepsCount, string previousStepTypeName, DecoratingExecutor decoratingExecutor, object scenarioContext, string groupPrefix)
+        private RunnableStep ToRunnableStep(IMetadataInfo parent, StepDescriptor descriptor, int stepIndex, int totalStepsCount, string previousStepTypeName, DecoratingExecutor decoratingExecutor, object scenarioContext, string groupPrefix)
         {
-            var stepInfo = new StepInfo(IdGenerator.Generate(), _metadataProvider.GetStepName(descriptor, previousStepTypeName), stepIndex + 1, totalStepsCount, groupPrefix);
+            var stepInfo = new StepInfo(parent, IdGenerator.Generate(), _metadataProvider.GetStepName(descriptor, previousStepTypeName), stepIndex + 1, totalStepsCount, groupPrefix);
             var arguments = descriptor.Parameters.Select(p => new MethodArgument(p, _metadataProvider.GetParameterFormatter(p.ParameterInfo))).ToArray();
             var stepGroupPrefix = $"{stepInfo.GroupPrefix}{stepInfo.Number}.";
             return new RunnableStep(
                 stepInfo,
-                new InvocationResultTransformer(this, descriptor.StepInvocation, decoratingExecutor, stepGroupPrefix).InvokeAsync,
+                new InvocationResultTransformer(this, stepInfo, descriptor.StepInvocation, decoratingExecutor, stepGroupPrefix).InvokeAsync,
                 arguments,
                 _exceptionProcessor,
                 _progressNotifier,
@@ -156,13 +160,17 @@ namespace LightBDD.Core.Extensibility.Implementation
         private struct InvocationResultTransformer
         {
             private readonly ScenarioRunner _runner;
+            private readonly IStepInfo _targetStep;
             private readonly Func<object, object[], Task<IStepResultDescriptor>> _invocation;
             private readonly DecoratingExecutor _decoratingExecutor;
             private readonly string _groupPrefix;
 
-            public InvocationResultTransformer(ScenarioRunner runner, Func<object, object[], Task<IStepResultDescriptor>> invocation, DecoratingExecutor decoratingExecutor, string groupPrefix)
+            public InvocationResultTransformer(ScenarioRunner runner, IStepInfo targetStep,
+                Func<object, object[], Task<IStepResultDescriptor>> invocation, DecoratingExecutor decoratingExecutor,
+                string groupPrefix)
             {
                 _runner = runner;
+                _targetStep = targetStep;
                 _invocation = invocation;
                 _decoratingExecutor = decoratingExecutor;
                 _groupPrefix = groupPrefix;
@@ -178,7 +186,7 @@ namespace LightBDD.Core.Extensibility.Implementation
                 var subStepsContext = InstantiateSubStepsContext(compositeDescriptor);
                 try
                 {
-                    return new RunnableStepResult(_runner.ProvideSteps(_decoratingExecutor, subStepsContext, compositeDescriptor.SubSteps.ToArray(), _groupPrefix));
+                    return new RunnableStepResult(_runner.ProvideSteps(_targetStep, _decoratingExecutor, subStepsContext, compositeDescriptor.SubSteps.ToArray(), _groupPrefix));
                 }
                 catch (Exception e)
                 {

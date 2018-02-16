@@ -5,8 +5,9 @@ namespace LightBDD.Core.Metadata.Implementation
     [DebuggerStepThrough]
     internal class StepInfo : IStepInfo
     {
-        public StepInfo(string runtimeId, IStepNameInfo name, int number, int total, string groupPrefix)
+        public StepInfo(IMetadataInfo parent,string runtimeId, IStepNameInfo name, int number, int total, string groupPrefix)
         {
+            Parent = parent;
             RuntimeId = runtimeId;
             Name = name;
             Number = number;
@@ -18,6 +19,8 @@ namespace LightBDD.Core.Metadata.Implementation
         public int Number { get; }
         public int Total { get; }
         public string RuntimeId { get; }
+        public IMetadataInfo Parent { get; }
+        INameInfo IMetadataInfo.Name => Name;
         public IStepNameInfo Name { get; private set; }
 
         public void UpdateName(INameParameterInfo[] parameters)

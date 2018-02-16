@@ -212,6 +212,8 @@ namespace LightBDD.UnitTests.Helpers
         public class TestStepInfo : IStepInfo
         {
             public string RuntimeId { get; set; }
+            public IMetadataInfo Parent { get; set; }
+            INameInfo IMetadataInfo.Name => Name;
             IStepNameInfo IStepInfo.Name => Name;
             public string GroupPrefix { get; set; }
             public TestStepNameInfo Name { get; set; }
@@ -239,8 +241,9 @@ namespace LightBDD.UnitTests.Helpers
         public class TestScenarioInfo : IScenarioInfo
         {
             public string RuntimeId { get; set; }
-            INameInfo IScenarioInfo.Name => Name;
+            INameInfo IMetadataInfo.Name => Name;
             public TestNameInfo Name { get; set; }
+            public IFeatureInfo Parent { get; set; }
             IEnumerable<string> IScenarioInfo.Labels => Labels;
             public string[] Labels { get; set; }
             IEnumerable<string> IScenarioInfo.Categories => Categories;
@@ -261,7 +264,7 @@ namespace LightBDD.UnitTests.Helpers
         public class TestFeatureInfo : IFeatureInfo
         {
             public string RuntimeId { get; set; }
-            INameInfo IFeatureInfo.Name => Name;
+            INameInfo IMetadataInfo.Name => Name;
             public TestNameInfo Name { get; set; }
             IEnumerable<string> IFeatureInfo.Labels => Labels;
             public string[] Labels { get; set; }
