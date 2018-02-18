@@ -1,6 +1,13 @@
 LightBDD
 ===========================================
 
+Version 2.3.5
+----------------------------------------
+Summary:
++ #104 LightBDD does not recognize xunit Category traits
+Details:
++ #104 (XUnit2)(Change) Updated LightBDD.XUnit2 integration to recognize [Trait("Category", "...")] as scenario category
+
 Version 2.3.4
 ----------------------------------------
 Summary:
