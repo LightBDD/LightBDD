@@ -24,8 +24,8 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual.Helpers
         protected void ExpectContext()
         {
             MockScenarioRunner
-                .Setup(s => s.WithContext(It.IsAny<Func<object>>()))
-                .Returns((Func<object> obj) =>
+                .Setup(s => s.WithContext(It.IsAny<Func<object>>(), It.IsAny<bool>()))
+                .Returns((Func<object> obj, bool takeOwnership) =>
                 {
                     CapturedContextProvider = obj;
                     return MockScenarioRunner.Object;

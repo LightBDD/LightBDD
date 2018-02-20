@@ -147,7 +147,16 @@ namespace LightBDD.Core.UnitTests.Extensibility
             Assert.That(formatter(values), Is.EqualTo("#<null> | #i5 | #On | #s5.5 | #my-class | #my-custom-format1 | #my-explicit2 | #my3"));
         }
 
+        [Test]
+        public void GetParameterFormatter_should_honor_custom_attribute_formatters_for_collection_items()
+        {
+            var parameter = ParameterInfoHelper.GetMethodParameter<bool[]>(Step_with_custom_formatter_for_collection_item);
+            var formatter = GetMetadataProvider().GetParameterFormatter(parameter);
+            Assert.That(formatter(new[] { true, false }), Is.EqualTo("On, Off"));
+        }
+
         private void Step_with_custom_formatters([FormatCollection(" | ", "#{0}")][FormatBoolean("On", "Off")][Format("my-custom-format1", SupportedType = typeof(MyFormattable1))]object[] arg) { }
+        private void Step_with_custom_formatter_for_collection_item([FormatBoolean("On", "Off")]bool[] arg) { }
 
         private class MyStructFormatter : IConditionalValueFormatter
         {

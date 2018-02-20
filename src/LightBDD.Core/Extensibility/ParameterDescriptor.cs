@@ -55,7 +55,7 @@ namespace LightBDD.Core.Extensibility
         public ParameterInfo ParameterInfo { get; }
         /// <summary>
         /// Returns parameter value evaluator that would be used to evaluate parameter value during execution.
-        /// The value evaluator function parameter represents scenario context object defined by <see cref="IScenarioRunner.WithContext"/>() method.
+        /// The value evaluator function parameter represents scenario context object defined by <see cref="IScenarioRunner.WithContext(Func{object},bool)"/>() method.
         /// </summary>
         public Func<object, object> ValueEvaluator { get; }
     }

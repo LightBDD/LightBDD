@@ -19,7 +19,7 @@ namespace LightBDD.Core.Execution.Implementation
 {
     internal class RunnableStep : IStep
     {
-        private readonly Func<object, object[], Task<RunnableStepResult>> _stepInvocation;
+        private readonly Func<object, object[], Task<CompositeStepContext>> _stepInvocation;
         private readonly MethodArgument[] _arguments;
         private readonly ExceptionProcessor _exceptionProcessor;
         private readonly IScenarioProgressNotifier _progressNotifier;
@@ -28,11 +28,12 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly IEnumerable<IStepDecorator> _stepDecorators;
         private readonly StepResult _result;
         private Func<Exception, bool> _shouldAbortSubStepExecutionFn = ex => true;
+        private CompositeStepContext _compositeStepContext;
         public IStepResult Result => _result;
         public IStepInfo Info => Result.Info;
 
         [DebuggerStepThrough]
-        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task<RunnableStepResult>> stepInvocation, MethodArgument[] arguments, ExceptionProcessor exceptionProcessor, IScenarioProgressNotifier progressNotifier, DecoratingExecutor decoratingExecutor, object scenarioContext, IEnumerable<IStepDecorator> stepDecorators)
+        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task<CompositeStepContext>> stepInvocation, MethodArgument[] arguments, ExceptionProcessor exceptionProcessor, IScenarioProgressNotifier progressNotifier, DecoratingExecutor decoratingExecutor, object scenarioContext, IEnumerable<IStepDecorator> stepDecorators)
         {
             _result = new StepResult(stepInfo);
             _stepInvocation = stepInvocation;
@@ -81,13 +82,18 @@ namespace LightBDD.Core.Execution.Implementation
                 await TimeMeasuredInvokeAsync();
                 _result.SetStatus(_result.GetSubSteps().GetMostSevereOrNull()?.Status ?? ExecutionStatus.Passed);
             }
-            catch (StepBypassException exception)
-            {
-                _result.SetStatus(ExecutionStatus.Bypassed, exception.Message);
-            }
             catch (StepExecutionException e)
             {
                 _result.SetStatus(e.StepStatus);
+            }
+            catch (ScenarioExecutionException exception) when (exception.InnerException is StepBypassException)
+            {
+                _result.SetStatus(ExecutionStatus.Bypassed, exception.InnerException.Message);
+            }
+            catch (ScenarioExecutionException exception)
+            {
+                _exceptionProcessor.UpdateResultsWithException(_result.SetStatus, exception.InnerException);
+                exceptionCollector.Capture(exception);
             }
             catch (Exception exception)
             {
@@ -96,11 +102,25 @@ namespace LightBDD.Core.Execution.Implementation
             }
             finally
             {
+                DisposeCompositeStep(exceptionCollector);
                 _result.IncludeSubStepDetails();
                 if (stepStartNotified)
                     _progressNotifier.NotifyStepFinished(_result);
             }
             ProcessExceptions(exceptionCollector);
+        }
+
+        private void DisposeCompositeStep(ExceptionCollector exceptionCollector)
+        {
+            try
+            {
+                _compositeStepContext?.Dispose();
+            }
+            catch (Exception exception)
+            {
+                _exceptionProcessor.UpdateResultsWithException(_result.SetStatus, exception);
+                exceptionCollector.Capture(exception);
+            }
         }
 
         [DebuggerStepThrough]
@@ -131,9 +151,9 @@ namespace LightBDD.Core.Execution.Implementation
 
         private async Task InvokeStepAsync()
         {
-            var result = await InvokeStepMethodAsync();
-            if (result.SubSteps.Any())
-                await InvokeSubStepsAsync(result.SubSteps);
+            _compositeStepContext = await InvokeStepMethodAsync();
+            if (_compositeStepContext.SubSteps.Any())
+                await InvokeSubStepsAsync(_compositeStepContext.SubSteps);
         }
 
         private async Task InvokeSubStepsAsync(RunnableStep[] subSteps)
@@ -164,14 +184,20 @@ namespace LightBDD.Core.Execution.Implementation
         }
 
         [DebuggerStepThrough]
-        private async Task<RunnableStepResult> InvokeStepMethodAsync()
+        private async Task<CompositeStepContext> InvokeStepMethodAsync()
         {
-            RunnableStepResult result;
+            CompositeStepContext result;
             var ctx = AsyncStepSynchronizationContext.InstallNew();
             try
             {
                 result = await _stepInvocation.Invoke(_scenarioContext, PrepareParameters());
                 VerifyParameters();
+            }
+            catch (Exception e)
+            {
+                if (ScenarioExecutionException.TryWrap(e, out var wrapped))
+                    throw wrapped;
+                throw;
             }
             finally
             {

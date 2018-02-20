@@ -15,10 +15,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic
         [Test]
         public async Task It_should_run_grouped_async_steps()
         {
-            ExpectNewScenario();
-            ExpectWithCapturedScenarioDetails();
-            ExpectWithSteps();
-            ExpectRunAsynchronously();
+            ExpectAsynchronousExecution();
 
             await Runner.RunScenarioAsync(Async_step_group);
 

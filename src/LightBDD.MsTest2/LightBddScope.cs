@@ -1,7 +1,9 @@
 ﻿using System;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Notification.Configuration;
+using LightBDD.MsTest2.Configuration;
 using LightBDD.MsTest2.Implementation;
 
 namespace LightBDD.MsTest2
@@ -50,10 +52,13 @@ namespace LightBDD.MsTest2
             var configuration = new LightBddConfiguration().WithFrameworkDefaults();
 
             configuration.Get<FeatureProgressNotifierConfiguration>()
-                .UpdateNotifier(MsTest2ProgressNotifier.CreateFeatureProgressNotifier());
+                .AppendFrameworkDefaultProgressNotifiers();
 
             configuration.Get<ScenarioProgressNotifierConfiguration>()
-                .UpdateNotifierProvider(MsTest2ProgressNotifier.CreateScenarioProgressNotifier);
+                .AppendFrameworkDefaultProgressNotifiers();
+
+            configuration.ExceptionHandlingConfiguration()
+                .UpdateExceptionDetailsFormatter(new DefaultExceptionFormatter().WithTestFrameworkDefaults().Format);
 
             onConfigure(configuration);
             return configuration;

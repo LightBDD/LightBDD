@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility.Execution;
 
 namespace LightBDD.Core.Extensibility
@@ -50,7 +51,16 @@ namespace LightBDD.Core.Extensibility
         /// <param name="contextProvider">Context provider function.</param>
         /// <returns>Self.</returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="contextProvider"/> is <c>null</c>.</exception>
+        [Obsolete("Use other " + nameof(WithContext) + "() method instead", true)]
         IScenarioRunner WithContext(Func<object> contextProvider);
+        /// <summary>
+        /// Configures scenario to be executed with context provided by <paramref name="contextProvider"/>.
+        /// </summary>
+        /// <param name="contextProvider">Context provider function.</param>
+        /// <param name="takeOwnership">Specifies if scenario runner should take ownership of the context instance. If set to true and context instance implements <see cref="IDisposable"/>, it will be disposed after scenario finish.</param>
+        /// <returns>Self.</returns>
+        /// <exception cref="ArgumentNullException">Throws when <paramref name="contextProvider"/> is <c>null</c>.</exception>
+        IScenarioRunner WithContext(Func<object> contextProvider, bool takeOwnership);
         /// <summary>
         /// Configures scenario to be executed with additional decorators provided by <paramref name="scenarioDecorators"/>.
         /// </summary>
@@ -63,6 +73,7 @@ namespace LightBDD.Core.Extensibility
         /// </summary>
         /// <returns>Scenario task.</returns>
         /// <exception cref="InvalidOperationException">Throws when name or steps are not defined.</exception>
+        [Obsolete("Use " + nameof(RunScenarioAsync) + " instead (and remeber to handle " + nameof(ScenarioExecutionException) + ")")]
         Task RunAsynchronously();
         /// <summary>
         /// Runs scenario synchronously - guaranteeing that scenario and all steps will execute on the same, calling thread.
@@ -70,6 +81,25 @@ namespace LightBDD.Core.Extensibility
         /// It is expected that only such scenarios can run synchronously whose steps returns completed <see cref="Task"/>. If any step method returns pending task, an <see cref="InvalidOperationException"/> exception will be thrown.
         /// </summary>
         /// <exception cref="InvalidOperationException">Throws when name or steps are not defined before scenario run. Throws also if any step method returns pending task.</exception>
+        [Obsolete("Use " + nameof(RunScenario) + " instead (and remeber to handle " + nameof(ScenarioExecutionException) + ")")]
         void RunSynchronously();
+        /// <summary>
+        /// Runs scenario synchronously - guaranteeing that scenario and all steps will execute on the same, calling thread.
+        /// Before scenario is run, a validation is done if scenario is properly configured (i.e. name is defined and there is defined at least one step to execute).
+        /// It is expected that only such scenarios can run synchronously whose steps returns completed <see cref="Task"/>. If any step method returns pending task, an <see cref="InvalidOperationException"/> exception will be thrown.<br/>
+        /// Any exceptions thrown in scenario steps will be wrapped in <see cref="ScenarioExecutionException"/>. Code calling this method can rethrow the original exception by calling <code>ex.GetOriginal().Throw()</code>
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when name or steps are not defined before scenario run. Throws also if any step method returns pending task.</exception>
+        /// <exception cref="ScenarioExecutionException">Thrown when one of steps throws exception. The original exception is accessible with <see cref="Exception.InnerException"/> property and can be rethrown by calling <code>ex.GetOriginal().Throw()</code></exception>
+        void RunScenario();
+        /// <summary>
+        /// Runs scenario asynchronously and returns task representing it.
+        /// Before scenario is run, a validation is done if scenario is properly configured (i.e. name is defined and there is defined at least one step to execute).
+        /// Any exceptions thrown in scenario steps will be wrapped in <see cref="ScenarioExecutionException"/>. Code calling this method can rethrow the original exception by calling <code>ex.GetOriginal().Throw()</code>
+        /// </summary>
+        /// <returns>Scenario task.</returns>
+        /// <exception cref="InvalidOperationException">Throws when name or steps are not defined.</exception>
+        /// <exception cref="ScenarioExecutionException">Thrown when one of steps throws exception. The original exception is accessible with <see cref="Exception.InnerException"/> property and can be rethrown by calling <code>ex.GetOriginal().Throw()</code></exception>
+        Task RunScenarioAsync();
     }
 }

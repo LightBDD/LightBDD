@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution;
@@ -8,6 +9,7 @@ using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Results;
 using LightBDD.Framework.Extensibility;
+using LightBDD.UnitTests.Helpers;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
@@ -138,6 +140,74 @@ namespace LightBDD.Core.UnitTests
         }
 
         [Test]
+        public void It_should_propagate_exception_thrown_from_step_extension_with_simple_stack_trace()
+        {
+            var featureRunner = CreateRunner(cfg => { });
+            var ex = Assert.Throws<InvalidOperationException>(() => featureRunner
+                .GetBddRunner(this)
+                .Test()
+                .TestScenario(My_failed_step));
+
+            ex.AssertStackTraceMatching(@"^\s*at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator.ProcessStatus[^\n]*
+\s*at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator.ExecuteAsync[^\n]*
+\s*at LightBDD.Core.Extensibility.Execution.Implementation.DecoratingExecutor.RecursiveExecutor`1.<ExecuteAsync>[^\n]*
+--- End of stack trace from previous location where exception was thrown ---
+([^\n]*
+)?\s*at LightBDD.UnitTests.Helpers.TestableIntegration.TestSyntaxRunner.TestScenario[^\n]*");
+        }
+
+        [Test]
+        public void It_should_propagate_exception_thrown_from_async_step_extension_with_simple_stack_trace()
+        {
+            var featureRunner = CreateRunner(cfg => { });
+            var ex = Assert.ThrowsAsync<InvalidOperationException>(() => featureRunner
+                .GetBddRunner(this)
+                .Test()
+                .TestScenarioAsync(My_failed_async_step));
+
+            ex.AssertStackTraceMatching(@"^\s*at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator.ProcessStatus[^\n]*
+\s*at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator.<ProcessStatusAsync>[^\n]*
+--- End of stack trace from previous location where exception was thrown ---
+([^\n]*
+)?\s*at LightBDD.UnitTests.Helpers.TestableIntegration.TestSyntaxRunner.<TestScenarioAsync>[^\n]*");
+        }
+
+        [Test]
+        [MyThrowingDecorator(ExecutionStatus.Failed)]
+        public void It_should_propagate_exception_thrown_from_scenario_extension_with_simple_stack_trace()
+        {
+            var featureRunner = CreateRunner(cfg => { });
+            var ex = Assert.Throws<InvalidOperationException>(() => featureRunner
+                .GetBddRunner(this)
+                .Test()
+                .TestScenario(Some_step1));
+
+            ex.AssertStackTraceMatching(@"^\s*at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator.ProcessStatus[^\n]*
+\s*at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator.ExecuteAsync[^\n]*
+\s*at LightBDD.Core.Extensibility.Execution.Implementation.DecoratingExecutor.RecursiveExecutor`1.<ExecuteAsync>[^\n]*
+--- End of stack trace from previous location where exception was thrown ---
+([^\n]*
+)?\s*at LightBDD.UnitTests.Helpers.TestableIntegration.TestSyntaxRunner.TestScenario[^\n]*");
+        }
+
+        [Test]
+        [MyThrowingDecorator(ExecutionStatus.Failed, true)]
+        public void It_should_propagate_exception_thrown_from_async_scenario_extension_with_simple_stack_trace()
+        {
+            var featureRunner = CreateRunner(cfg => { });
+            var ex = Assert.ThrowsAsync<InvalidOperationException>(() => featureRunner
+                .GetBddRunner(this)
+                .Test()
+                .TestScenarioAsync(Some_async_step));
+
+            ex.AssertStackTraceMatching(@"^\s*at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator.ProcessStatus[^\n]*
+\s*at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator.<ProcessStatusAsync>[^\n]*
+--- End of stack trace from previous location where exception was thrown ---
+([^\n]*
+)?\s*at LightBDD.UnitTests.Helpers.TestableIntegration.TestSyntaxRunner.<TestScenarioAsync>[^\n]*");
+        }
+
+        [Test]
         public void It_should_IGNORE_scenario_based_on_step_extension_attribute()
         {
             var featureRunner = CreateRunner(cfg => { });
@@ -180,6 +250,12 @@ namespace LightBDD.Core.UnitTests
         [MyThrowingDecorator(ExecutionStatus.Failed)]
         private void My_failed_step() { }
 
+        [MyThrowingDecorator(ExecutionStatus.Failed, true)]
+        private async Task My_failed_async_step()
+        {
+            await Task.Yield();
+        }
+
         [MyThrowingDecorator(ExecutionStatus.Ignored)]
         private void My_ignored_step() { }
 
@@ -190,6 +266,11 @@ namespace LightBDD.Core.UnitTests
         [MyCapturingDecorator("s1-ext2", Order = 1)]
         private void Some_step1()
         {
+        }
+
+        private async Task Some_async_step()
+        {
+            await Task.Yield();
         }
 
         [MyCapturingDecorator("s2-ext1", Order = 0)]
@@ -232,20 +313,30 @@ namespace LightBDD.Core.UnitTests
         private class MyThrowingDecorator : Attribute, IScenarioDecoratorAttribute, IStepDecoratorAttribute
         {
             private readonly ExecutionStatus _expected;
+            private readonly bool _async;
 
-            public MyThrowingDecorator(ExecutionStatus expected)
+            public MyThrowingDecorator(ExecutionStatus expected, bool async = false)
             {
                 _expected = expected;
+                _async = async;
             }
-
+            
+            [MethodImpl(MethodImplOptions.NoInlining)]
             public Task ExecuteAsync(IScenario scenario, Func<Task> scenarioInvocation)
             {
-                return ProcessStatus();
+                return _async ? ProcessStatusAsync() : ProcessStatus();
             }
 
+            [MethodImpl(MethodImplOptions.NoInlining)]
             public Task ExecuteAsync(IStep step, Func<Task> stepInvocation)
             {
-                return ProcessStatus();
+                return _async ? ProcessStatusAsync() : ProcessStatus();
+            }
+
+            private async Task ProcessStatusAsync()
+            {
+                await Task.Yield();
+                await ProcessStatus();
             }
 
             private Task ProcessStatus()

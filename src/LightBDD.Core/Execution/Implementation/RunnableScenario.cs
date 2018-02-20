@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Execution.Implementation;
@@ -18,7 +17,7 @@ namespace LightBDD.Core.Execution.Implementation
     {
         private readonly ScenarioInfo _info;
         private readonly Func<DecoratingExecutor, object, RunnableStep[]> _stepsProvider;
-        private readonly Func<object> _contextProvider;
+        private readonly IContextProvider _contextProvider;
         private readonly IScenarioProgressNotifier _progressNotifier;
         private readonly DecoratingExecutor _decoratingExecutor;
         private readonly IEnumerable<IScenarioDecorator> _scenarioDecorators;
@@ -29,7 +28,7 @@ namespace LightBDD.Core.Execution.Implementation
         private Func<Exception, bool> _shouldAbortSubStepExecutionFn = ex => true;
 
         [DebuggerStepThrough]
-        public RunnableScenario(ScenarioInfo scenario, Func<DecoratingExecutor, object, RunnableStep[]> stepsProvider, Func<object> contextProvider, IScenarioProgressNotifier progressNotifier, DecoratingExecutor decoratingExecutor, IEnumerable<IScenarioDecorator> scenarioDecorators, ExceptionProcessor exceptionProcessor)
+        public RunnableScenario(ScenarioInfo scenario, Func<DecoratingExecutor, object, RunnableStep[]> stepsProvider, IContextProvider contextProvider, IScenarioProgressNotifier progressNotifier, DecoratingExecutor decoratingExecutor, IEnumerable<IScenarioDecorator> scenarioDecorators, ExceptionProcessor exceptionProcessor)
         {
             _info = scenario;
             _stepsProvider = stepsProvider;
@@ -49,6 +48,7 @@ namespace LightBDD.Core.Execution.Implementation
                 await RunStepAsync(step);
         }
 
+        [DebuggerStepThrough]
         private async Task RunStepAsync(RunnableStep step)
         {
             try
@@ -80,13 +80,18 @@ namespace LightBDD.Core.Execution.Implementation
                 InitializeScenario();
                 await _decoratingExecutor.ExecuteScenarioAsync(this, RunScenarioAsync, _scenarioDecorators);
             }
-            catch (StepBypassException ex)
-            {
-                _result.UpdateScenarioResult(ExecutionStatus.Bypassed, ex.Message);
-            }
             catch (StepExecutionException ex)
             {
                 _result.UpdateScenarioResult(ex.StepStatus);
+            }
+            catch (ScenarioExecutionException ex) when (ex.InnerException is StepBypassException)
+            {
+                _result.UpdateScenarioResult(ExecutionStatus.Bypassed, ex.InnerException.Message);
+            }
+            catch (ScenarioExecutionException ex)
+            {
+                _exceptionProcessor.UpdateResultsWithException(_result.UpdateScenarioResult, ex.InnerException);
+                exceptionCollector.Capture(ex);
             }
             catch (Exception ex)
             {
@@ -95,6 +100,7 @@ namespace LightBDD.Core.Execution.Implementation
             }
             finally
             {
+                DisposeContext(exceptionCollector);
                 watch.Stop();
 
                 _result.UpdateResult(
@@ -108,6 +114,20 @@ namespace LightBDD.Core.Execution.Implementation
         }
 
         [DebuggerStepThrough]
+        private void DisposeContext(ExceptionCollector exceptionCollector)
+        {
+            try
+            {
+                _contextProvider.Dispose();
+            }
+            catch (Exception exception)
+            {
+                _exceptionProcessor.UpdateResultsWithException(_result.UpdateScenarioResult, exception);
+                exceptionCollector.Capture(exception);
+            }
+        }
+
+        [DebuggerStepThrough]
         private void ProcessExceptions(ExceptionCollector exceptionCollector)
         {
             var exception = exceptionCollector.CollectFor(_result.Status, _result.GetSteps());
@@ -116,7 +136,7 @@ namespace LightBDD.Core.Execution.Implementation
 
             _result.UpdateException(exception);
 
-            ExceptionDispatchInfo.Capture(exception).Throw();
+            throw new ScenarioExecutionException(exception);
         }
 
         [DebuggerStepThrough]
@@ -137,7 +157,7 @@ namespace LightBDD.Core.Execution.Implementation
         {
             try
             {
-                return _contextProvider.Invoke();
+                return _contextProvider.GetContext();
             }
             catch (Exception e)
             {

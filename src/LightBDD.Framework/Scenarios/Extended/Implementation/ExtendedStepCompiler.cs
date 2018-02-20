@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Results;
 
@@ -13,6 +14,7 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
     [DebuggerStepThrough]
     internal class ExtendedStepCompiler<TContext>
     {
+        private static readonly ConstructorInfo ScenarioExecutionExceptionCtor = typeof(ScenarioExecutionException).GetTypeInfo().DeclaredConstructors.Single();
         private readonly LightBddConfiguration _configuration;
 
         public ExtendedStepCompiler(LightBddConfiguration configuration)
@@ -64,6 +66,12 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
             return genericStepCallFunction;
         }
 
+        private static Expression WithScenarioExecutionException(Expression body)
+        {
+            var exceptionParameter = Expression.Parameter(typeof(Exception), "ex");
+            return Expression.TryCatch(body, Expression.Catch(exceptionParameter, Expression.Throw(Expression.New(ScenarioExecutionExceptionCtor, exceptionParameter), body.Type)));
+        }
+
         private static Expression ConvertReturnType(Type currentReturnType, Expression body)
         {
             var currentTypeInfo = currentReturnType.GetTypeInfo();
@@ -87,7 +95,9 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
             if (typeof(IStepResultDescriptor).GetTypeInfo().IsAssignableFrom(currentTypeInfo))
                 return Expression.Call(null, fromResult.GetMethodInfo(), body);
 
-            return Expression.Block(body, Expression.Call(null, fromResult.GetMethodInfo(), Expression.Constant(DefaultStepResultDescriptor.Instance)));
+            body = Expression.Block(body, Expression.Call(null, fromResult.GetMethodInfo(), Expression.Constant(DefaultStepResultDescriptor.Instance)));
+            body = WithScenarioExecutionException(body);
+            return body;
         }
 
         private ParameterDescriptor CompileArgument(Expression argumentExpression, ParameterExpression contextParameter, ParameterInfo parameterInfo)
@@ -106,8 +116,7 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
 
         private static MethodCallExpression GetMethodExpression<T>(Expression<T> stepExpression)
         {
-            var methodExpression = stepExpression.Body as MethodCallExpression;
-            if (methodExpression == null)
+            if (!(stepExpression.Body is MethodCallExpression methodExpression))
                 throw new ArgumentException("Unsupported step expression. Expected MethodCallExpression, got: " + stepExpression);
 
             if (methodExpression.Method.GetParameters().Any(p => p.IsOut || p.ParameterType.IsByRef))
@@ -117,12 +126,12 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
 
         private static async Task<IStepResultDescriptor> ConvertTask<T>(Task<T> parent) where T : IStepResultDescriptor
         {
-            return await parent;
+            return await ScenarioExecutionFlow.WrapScenarioExceptions(parent);
         }
 
         private static async Task<IStepResultDescriptor> FinalizeTaskWithDefaultResultDescriptor(Task parent)
         {
-            await parent;
+            await ScenarioExecutionFlow.WrapScenarioExceptions(parent);
             return DefaultStepResultDescriptor.Instance;
         }
     }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B3AFFD69-36B4-43D6-A6AA-72914D15055C}"
 	ProjectSection(SolutionItems) = preProject
@@ -37,13 +37,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.MsTest2.UnitTests"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.AcceptanceTests", "test\LightBDD.AcceptanceTests\LightBDD.AcceptanceTests.csproj", "{17CF2456-692D-4D8D-996B-59BD067E9175}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Example", "examples\LightBDD.Example\LightBDD.Example.csproj", "{F69FD39E-F710-4C37-A1E0-84B02B5C64CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Domain", "examples\Example.Domain\Example.Domain.csproj", "{F69FD39E-F710-4C37-A1E0-84B02B5C64CB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Example.AcceptanceTests.MsTest2", "examples\LightBDD.Example.AcceptanceTests.MsTest2\LightBDD.Example.AcceptanceTests.MsTest2.csproj", "{0617D510-15E8-4665-B4FF-A07CD38E5F25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.LightBDD.MsTest2", "examples\Example.LightBDD.MsTest2\Example.LightBDD.MsTest2.csproj", "{0617D510-15E8-4665-B4FF-A07CD38E5F25}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Example.AcceptanceTests.NUnit3", "examples\LightBDD.Example.AcceptanceTests.NUnit3\LightBDD.Example.AcceptanceTests.NUnit3.csproj", "{1EADD5AD-ECC1-4755-8DAF-C3B747B7F385}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.LightBDD.NUnit3", "examples\Example.LightBDD.NUnit3\Example.LightBDD.NUnit3.csproj", "{1EADD5AD-ECC1-4755-8DAF-C3B747B7F385}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Example.AcceptanceTests.XUnit2", "examples\LightBDD.Example.AcceptanceTests.XUnit2\LightBDD.Example.AcceptanceTests.XUnit2.csproj", "{7B0B7668-FC01-417F-AB48-6B0C00976EB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.LightBDD.XUnit2", "examples\Example.LightBDD.XUnit2\Example.LightBDD.XUnit2.csproj", "{7B0B7668-FC01-417F-AB48-6B0C00976EB8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Framework", "src\LightBDD.Framework\LightBDD.Framework.csproj", "{76150B64-C200-4893-8375-479E377389CC}"
 EndProject
@@ -55,9 +55,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.NUnit2", "src\Ligh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.NUnit2.NUnitTests", "test\LightBDD.NUnit2.NUnitTests\LightBDD.NUnit2.NUnitTests.csproj", "{13B7FE09-7153-4AC4-BF2A-8C63FBB3EF3C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Example.AcceptanceTests.NUnit2", "examples\LightBDD.Example.AcceptanceTests.NUnit2\LightBDD.Example.AcceptanceTests.NUnit2.csproj", "{A160FFD6-0AF8-4B6B-9E96-45F06A08CFD2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.LightBDD.NUnit2", "examples\Example.LightBDD.NUnit2\Example.LightBDD.NUnit2.csproj", "{A160FFD6-0AF8-4B6B-9E96-45F06A08CFD2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.Example.AcceptanceTests.MsTest2.UWP", "examples\LightBDD.Example.AcceptanceTests.MsTest2.UWP\LightBDD.Example.AcceptanceTests.MsTest2.UWP.csproj", "{C78B34DF-5DC2-4EE7-91D0-4C474B49FBB1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.LightBDD.MsTest2.UWP", "examples\Example.LightBDD.MsTest2.UWP\Example.LightBDD.MsTest2.UWP.csproj", "{C78B34DF-5DC2-4EE7-91D0-4C474B49FBB1}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F69FD39E-F710-4C37-A1E0-84B02B5C64CB} = {F69FD39E-F710-4C37-A1E0-84B02B5C64CB}
 		{CBD1B3D9-4B77-4B21-9C3A-7E3A9FB3D780} = {CBD1B3D9-4B77-4B21-9C3A-7E3A9FB3D780}
@@ -436,5 +436,8 @@ Global
 		{13B7FE09-7153-4AC4-BF2A-8C63FBB3EF3C} = {A7491D1D-7E5B-4021-8105-4098683807EB}
 		{A160FFD6-0AF8-4B6B-9E96-45F06A08CFD2} = {731BA391-CF84-4BA6-8A44-8B3B85D6F79E}
 		{C78B34DF-5DC2-4EE7-91D0-4C474B49FBB1} = {731BA391-CF84-4BA6-8A44-8B3B85D6F79E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0768D221-78A3-4008-968F-3A4D4E43A7D8}
 	EndGlobalSection
 EndGlobal

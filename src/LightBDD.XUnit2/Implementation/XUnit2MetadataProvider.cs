@@ -6,6 +6,7 @@ using System.Reflection;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Formatting.Configuration;
+using Xunit;
 
 namespace LightBDD.XUnit2.Implementation
 {
@@ -33,7 +34,11 @@ namespace LightBDD.XUnit2.Implementation
 
         protected override IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member)
         {
-            return Enumerable.Empty<string>();
+            return member.CustomAttributes
+                .Where(attr => attr.AttributeType == typeof(TraitAttribute))
+                .Select(attr => attr.ConstructorArguments)
+                .Where(args =>args.Count == 2 && Equals(args[0].Value, "Category"))
+                .Select(args => args[1].Value?.ToString());
         }
 
         protected override string GetImplementationSpecificFeatureDescription(Type featureType)

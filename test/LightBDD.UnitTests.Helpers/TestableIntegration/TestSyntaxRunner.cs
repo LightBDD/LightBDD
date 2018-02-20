@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 
 namespace LightBDD.UnitTests.Helpers.TestableIntegration
@@ -10,6 +11,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
     {
         private readonly IFeatureFixtureRunner _coreRunner;
         private Func<object> _contextProvider;
+        private bool _takeContextOwnership;
 
         public TestSyntaxRunner(IFeatureFixtureRunner coreRunner)
         {
@@ -36,8 +38,9 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             TestScenarioPurelySync(steps.Select(TestStep.CreateSync).ToArray());
         }
 
-        public TestSyntaxRunner WithContext(Func<object> contextProvider)
+        public TestSyntaxRunner WithContext(Func<object> contextProvider, bool takeOwnership)
         {
+            _takeContextOwnership = takeOwnership;
             _contextProvider = contextProvider;
             return this;
         }
@@ -49,35 +52,56 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
 
         public void TestScenario(IEnumerable<StepDescriptor> steps)
         {
-            NewScenario()
-                  .WithCapturedScenarioDetails()
-                  .WithSteps(steps)
-                  .RunAsynchronously()
-                  .GetAwaiter()
-                  .GetResult();
+            try
+            {
+                NewScenario()
+                    .WithCapturedScenarioDetails()
+                    .WithSteps(steps)
+                    .RunScenarioAsync()
+                    .GetAwaiter()
+                    .GetResult();
+            }
+            catch (ScenarioExecutionException e)
+            {
+                e.GetOriginal().Throw();
+            }
         }
-        public Task TestScenarioAsync(params StepDescriptor[] steps)
+        public async Task TestScenarioAsync(params StepDescriptor[] steps)
         {
-            return NewScenario()
-                .WithCapturedScenarioDetails()
-                .WithSteps(steps)
-                .RunAsynchronously();
+            try
+            {
+                await NewScenario()
+                    .WithCapturedScenarioDetails()
+                    .WithSteps(steps)
+                    .RunScenarioAsync();
+            }
+            catch (ScenarioExecutionException e)
+            {
+                e.GetOriginal().Throw();
+            }
         }
 
         private IScenarioRunner NewScenario()
         {
             var scenarioRunner = _coreRunner.NewScenario();
             return _contextProvider != null
-                ? scenarioRunner.WithContext(_contextProvider)
+                ? scenarioRunner.WithContext(_contextProvider, _takeContextOwnership)
                 : scenarioRunner;
         }
 
         public void TestScenarioPurelySync(params StepDescriptor[] steps)
         {
-            NewScenario()
-                .WithCapturedScenarioDetails()
-                .WithSteps(steps)
-                .RunSynchronously();
+            try
+            {
+                NewScenario()
+                    .WithCapturedScenarioDetails()
+                    .WithSteps(steps)
+                    .RunScenario();
+            }
+            catch (ScenarioExecutionException e)
+            {
+                e.GetOriginal().Throw();
+            }
         }
 
         public void TestNamedScenario(string name, params StepDescriptor[] steps)
@@ -87,13 +111,20 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
                 .GetResult();
         }
 
-        public Task TestNamedScenarioAsync(string name, params StepDescriptor[] steps)
+        public async Task TestNamedScenarioAsync(string name, params StepDescriptor[] steps)
         {
-            return _coreRunner
-                .NewScenario()
-                .WithName(name)
-                .WithSteps(steps)
-                .RunAsynchronously();
+            try
+            {
+                await _coreRunner
+                    .NewScenario()
+                    .WithName(name)
+                    .WithSteps(steps)
+                    .RunScenarioAsync();
+            }
+            catch (ScenarioExecutionException e)
+            {
+                e.GetOriginal().Throw();
+            }
         }
     }
 }

@@ -24,21 +24,21 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
         {
             var context = new object();
             var stepGroup = _builder.WithContext(context).Build();
-            Assert.That(stepGroup.SubStepsContextProvider.Invoke(), Is.SameAs(context));
+            Assert.That(stepGroup.SubStepsContext.ContextProvider.Invoke(), Is.SameAs(context));
         }
 
         [Test]
         public void It_should_allow_to_apply_context_provider()
         {
             var stepGroup = _builder.WithContext(() => TimeSpan.FromSeconds(5)).Build();
-            Assert.That(stepGroup.SubStepsContextProvider.Invoke(), Is.EqualTo(TimeSpan.FromSeconds(5)));
+            Assert.That(stepGroup.SubStepsContext.ContextProvider.Invoke(), Is.EqualTo(TimeSpan.FromSeconds(5)));
         }
 
         [Test]
         public void It_should_allow_to_apply_context_with_parameterless_constructor()
         {
             var stepGroup = _builder.WithContext<MyContext>().Build();
-            Assert.That(stepGroup.SubStepsContextProvider.Invoke(), Is.InstanceOf<MyContext>());
+            Assert.That(stepGroup.SubStepsContext.ContextProvider.Invoke(), Is.InstanceOf<MyContext>());
         }
 
         [Test]

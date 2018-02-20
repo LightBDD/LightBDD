@@ -1,23 +1,85 @@
 LightBDD
 ===========================================
 
-Version vNext
+Version 2.3.5
 ----------------------------------------
 Summary:
-+ #20 Reworked parameter formatting and added default formatters for scenario/step parameters as well as facility to register own assembly-wide formatters.
-+ (Core) #28 Updated parameter formatters to distinguish null values and format them as "<null>"
-+ (all integrations)(New) #42 Added IgnoreScenarioAttribute allowing to declaratively ignore the scenario when applied on scenario or step method
-+ (Framework)(New) #18 Added MultiAssertAttribute that if applied on scenario or composite step, will make all sub-steps executed irrespectively of their status and report any exceptions at the end of execution
-+ (Core) #42 Added IScenarioDecoratorAttribute, IStepDecoratorAttribute interfaces allowing to describe execution decorator attributes applicable on scenario or step methods
-+ (Core)(Change) #18 Added IScenarioDecorator/IStepDecorator interfaces in favor of IScenarioExecutionExtension/IStepExecutionExtension ones which are obsoleted now (updated ExecutionExtensionsConfiguration and IExecutionExtensions to use new interfaces)
-+ (Framework) #17 Added fluent interface for defining and executing scenarios in basic and extended syntax.
-+ (Framework)(Change) #17 Moved ICompositeStepBuilder<T> to LightBDD.Framework.Scenarios namespace
++ #104 LightBDD does not recognize xunit Category traits
 Details:
-+ (Core) #20 Added IValueFormattingService allowing to format values of any type, based on format attributes, assembly-wide formatters, ISelfFormattable interface or ToString() method.
-+ (Core) #20 Added IValueFormatter, IConditionalValueFormatter interfaces allowing to assembly-wide formatters for scenario and step parameters
-+ (Core) #20 Added ISelfFormattable interface allowing to define value formatting method on type level
-+ (Core) #20 Aded ValueFormattingConfiguration allowing to configure assembly-wide formatters for scenario/step parameters
-+ (Core) #20 Updated ParameterFormatterAttribute to implement IConditionalValueFormatter interface, and allowed to apply multiple format attributes on a single parameter to customize formatting of various types within complex types.
++ #104 (XUnit2)(Change) Updated LightBDD.XUnit2 integration to recognize [Trait("Category", "...")] as scenario category
+
+Version 2.3.4
+----------------------------------------
+Summary:
++ #34 Implemented console immediate progress notification for LightBDD.NUnit3
++ #34 Enhanced scenario progress notification
++ #98 Lifted requirement for parameterized constructors in LightBDD.XUnit2 FeatureFixture
+Details:
++ #34 (NUnit3)(New) Implemented immediate progress notification when executed with `dotnet test` or `nunit3-console.exe`
++ #34 (XUnit2)(Change) Simplified scenario summary printed in VisualStudio Test Explorer output / Resharper output and console output for LightBDD.XUnit2
++ #34 (Framework)(New) Added ClearNotifiers() / AppendNotifiers() methods to FeatureProgressNotifierConfiguration in order to simplify combining different notifiers
++ #34 (Framework)(New) Added ClearNotifierProviders() / AppendNotifierProviders() methods to ScenarioProgressNotifierConfiguration in order to simplify combining different notifiers
++ #34 (all integrations)(New) Added AppendFrameworkDefaultProgressNotifiers() extensions to FeatureProgressNotifierConfiguration and ScenarioProgressNotifierConfiguration to allow re-applying integration specific notifiers after they has been cleared
++ #98 (XUnit2)(Change) Added parameter-less constructor to FeatureFixture
++ #98 (VSIX)(Change) Updated LightBDD.XUnit2 feature tempaltes to generate classes without parameterized constructor
+
+Version 2.3.3
+----------------------------------------
+Summary:
++ #69 Simplified exception stack trace for failed scenarios
++ #90 Improved integration with NCrunch
++ #92 Improved support for extension methods used as steps
++ #94 Added support for disposable scenario and step context instances
+Details:
++ #69 (Core)(Change) Exposed DefaultExceptionFormatter with ability to filter stack trace members and limit number of printed stack trace lines. Excluded async exception rethrow frames by default (reports and progress notifers)
++ #69 (Core)(New) Introduced ScenarioExecutionException to be used to propagate scenario/step exceptions without recording LightBDD internal frames
++ #69 (Framework)(Change) Simplified exception stack trace for basic/extended/fluent step syntax and sync/async runners
++ #69 (all integrations)(Change) Configured DefaultExceptionFormatter to exclude underlying test framework assertion frames from reports and progress notifiers
++ #69 (Core)(Change) Changed minimal required .NET Standard version from 1.1 to 1.3
++ #90 (Core)(Change) Allowed to install new FeatureCoordinator when previous one is disposed in order to allow NCrunch reusing the same process to run LightBDD multiple times
++ #92 (Core)(Change) Excluded 'this' argument from step name display when extension method is used
++ #92 (Core)(Change) Corrected parameter placement in name when having appended parameter of lower index than matching in-text replacement at the end of the name, like: void Step_with_param(string other, string param)
++ #94 (Core)(Change) Added WithContext(Func<object> contextProvider, bool takeOwnership) to IScenarioRunner and IIntegrableCompositeStepBuilder allowing to specify if created context should be disposed by runner
++ #94 (Framework)(Change) Updated contextual scenario and contextual composite step .WithContext<TContext>() methods to automatically dispose context instances
++ #94 (Framework)(Change) Updated contextual scenario and contextual composite step .WithContext<TContext>(TContext context) methods to .WithContext<TContext>(TContext context, bool takeOwnership = false) making possible to configure automatic context disposal (off by default)
++ #94 (Framework)(Change) Updated contextual scenario and contextual composite step .WithContext<TContext>(Func<TContext> contextFactory) methods to .WithContext<TContext>(Func<TContext> contextFactory, bool takeOwnership = true) making possible to configure automatic context disposal (on by default)
+
+Version 2.3.2
+----------------------------------------
+Summary:
++ #80 Updated LightBDD.MsTest2 to use MsTest.TestFramework 1.2.0
++ #87 Fixed directory separator for Unix systems
+Details:
++ #87 (Framework)(Fix) Use the System.IO.Path.DirectorySeparatorChar in file paths to match Unix and Win paths
++ #80 (MsTest2)(Change) Updated LightBDD.MsTest2 to use MsTest.TestFramework 1.2.0: that version is not binary compatible with 1.1.18 so it was not possible to use LightBDD.MsTest2 with newest MsTest
+
+Version 2.3.1
+----------------------------------------
+Summary:
++ #73 Fixed "Tests accessing Application Settings fails on NET45x with SerializationException: TestContextProvider is not marked as serializable"
+Details:
++ #73 (Framework)(Fix) Corrected AsyncLocalContext<T> in LightBDD targeting NET45x to marshal stored context by ref when transferring it between domains
+
+Version 2.3.0
+----------------------------------------
+Summary:
++ #20 Reworked parameter formatting and added default formatters for scenario/step parameters as well as facility to register own assembly-wide formatters
++ #28 Updated parameter formatters to distinguish null values and format them as "<null>"
++ #42 Added IgnoreScenarioAttribute allowing to declaratively ignore the scenario when applied on scenario or step method
++ #18 Added MultiAssertAttribute that if applied on scenario or composite step, will make all sub-steps executed irrespectively of previous step status and report any exceptions at the end of all sub-steps execution
++ #17 Added fluent interface for defining and executing scenarios in basic and extended syntax.
+Details:
++ (Core)(New) #42 Added IScenarioDecoratorAttribute, IStepDecoratorAttribute interfaces allowing to describe execution decorator attributes applicable on scenario or step methods
++ (Core)(Change) #18 Added IScenarioDecorator/IStepDecorator interfaces in favor of IScenarioExecutionExtension/IStepExecutionExtension ones which are obsoleted now
++ (Framework)(Change) #17 Moved ICompositeStepBuilder<T> to LightBDD.Framework.Scenarios namespace
++ (Core)(New) #20 Added IValueFormattingService allowing to format values of any type, based on format attributes, assembly-wide formatters, ISelfFormattable interface or ToString() method
++ (Core)(New) #20 Added IValueFormatter, IConditionalValueFormatter interfaces allowing to assembly-wide formatters for scenario and step parameters
++ (Core)(New) #20 Added ISelfFormattable interface allowing to define value formatting method on type level
++ (Core)(New) #20 Added ValueFormattingConfiguration allowing to configure assembly-wide formatters for scenario/step parameters
++ (Core)(Change) #20 Updated ParameterFormatterAttribute to implement IConditionalValueFormatter interface, and allowed to apply multiple format attributes on a single parameter to customize formatting of various types within complex types
++ (Framework)(Change) #20 Added SupportedType property to FormatAttribute allowing to narrow it's applicability
++ (Framework)(New) #17 Added NewScenario() extension method for IBddRunner<T>, allowing to define scenarios is fluent way
++ (Framework)(New) #17 Added AddSteps() extension method for IScenarioBuilder, allowing to add basic and extended steps to a fluent scenario builder
 
 
 Version 2.2.0

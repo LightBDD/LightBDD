@@ -50,13 +50,20 @@ namespace LightBDD.Core.UnitTests
             _runner.Test().TestScenario(
                 TestStep.CreateAsync(Method_with_replaced_parameter_PARAM_in_name, "abc"),
                 TestStep.CreateAsync(Method_with_inserted_parameter_param_in_name, "abc"),
-                TestStep.CreateAsync(Method_with_appended_parameter_at_the_end_of_name, "abc"));
+                TestStep.CreateAsync(Method_with_appended_parameter_at_the_end_of_name, "abc"),
+                TestStep.CreateAsync(ExtensionSteps.Extension_method_with_parameter_PARAM, "target", "abc"),
+                TestStep.CreateAsync(Method_with_param1_param2_param3, "abc", "def", "123"),
+                TestStep.CreateAsync(Method_with_appended_and_normal_param, "abc", "def", "123")
+                );
 
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
-                new StepResultExpectation(1, 3, "Method with replaced parameter \"abc\" in name", ExecutionStatus.Passed),
-                new StepResultExpectation(2, 3, "Method with inserted parameter param \"abc\" in name", ExecutionStatus.Passed),
-                new StepResultExpectation(3, 3, "Method with appended parameter at the end of name [param: \"abc\"]", ExecutionStatus.Passed)
+                new StepResultExpectation(1, 6, "Method with replaced parameter \"abc\" in name", ExecutionStatus.Passed),
+                new StepResultExpectation(2, 6, "Method with inserted parameter param \"abc\" in name", ExecutionStatus.Passed),
+                new StepResultExpectation(3, 6, "Method with appended parameter at the end of name [param: \"abc\"]", ExecutionStatus.Passed),
+                new StepResultExpectation(4, 6, "Extension method with parameter \"abc\"", ExecutionStatus.Passed),
+                new StepResultExpectation(5, 6, "Method with param1 \"def\" param2 \"123\" param3 \"abc\"", ExecutionStatus.Passed),
+                new StepResultExpectation(6, 6, "Method with appended and normal param \"def\" [appended1: \"abc\"] [appended2: \"123\"]", ExecutionStatus.Passed)
             );
         }
 
@@ -176,5 +183,12 @@ namespace LightBDD.Core.UnitTests
         private void Method_with_inserted_parameter_param_in_name(object param) { }
         private void Method_with_replaced_parameter_PARAM_in_name(object param) { }
         private void Method_with_wrong_formatter_param([Format("{0")]object param) { }
+        private void Method_with_appended_and_normal_param(object appended1, object param, object appended2) { }
+        private void Method_with_param1_param2_param3(object param3, object param1, object param2) { }
+    }
+
+    static class ExtensionSteps
+    {
+        public static void Extension_method_with_parameter_PARAM(this object target, object param) { }
     }
 }

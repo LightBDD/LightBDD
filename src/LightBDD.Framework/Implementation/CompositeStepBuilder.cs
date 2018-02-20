@@ -15,11 +15,11 @@ namespace LightBDD.Framework.Implementation
         private static readonly IEnumerable<StepDescriptor> EmptySteps = Enumerable.Empty<StepDescriptor>();
 
         private IEnumerable<StepDescriptor> _steps = EmptySteps;
-        private Func<object> _contextProvider;
+        private ExecutionContextDescriptor _contextDescriptor;
 
         public CompositeStep Build()
         {
-            return new CompositeStep(_contextProvider ?? ProvideNoContext, _steps);
+            return new CompositeStep(_contextDescriptor ?? ExecutionContextDescriptor.NoContext, _steps);
         }
 
         public IIntegrableStepGroupBuilder AddSteps(IEnumerable<StepDescriptor> steps)
@@ -30,23 +30,26 @@ namespace LightBDD.Framework.Implementation
             return this;
         }
 
+        /// <summary>
+        /// For backward compatibility
+        /// </summary>
         public IIntegrableCompositeStepBuilder WithStepContext(Func<object> contextProvider)
         {
-            if (_contextProvider != null || !ReferenceEquals(_steps, EmptySteps))
+            return WithStepContext(contextProvider, false);
+        }
+
+        public IIntegrableCompositeStepBuilder WithStepContext(Func<object> contextProvider, bool takeOwnership)
+        {
+            if (_contextDescriptor != null || !ReferenceEquals(_steps, EmptySteps))
                 throw new InvalidOperationException("Step context can be specified only once, when no steps are specified yet.");
 
-            _contextProvider = contextProvider;
+            _contextDescriptor = new ExecutionContextDescriptor(contextProvider, takeOwnership);
             return this;
         }
 
         public TEnrichedBuilder Enrich<TEnrichedBuilder>(Func<IIntegrableStepGroupBuilder, LightBddConfiguration, TEnrichedBuilder> builderFactory)
         {
             return builderFactory(this, Configuration);
-        }
-
-        private static object ProvideNoContext()
-        {
-            return null;
         }
     }
 }

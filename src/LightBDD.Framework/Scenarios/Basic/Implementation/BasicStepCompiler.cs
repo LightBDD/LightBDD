@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Results;
 
@@ -34,7 +35,7 @@ namespace LightBDD.Framework.Scenarios.Basic.Implementation
             public async Task<IStepResultDescriptor> ExecuteAsync(object context, object[] args)
             {
                 var task = _invocation.Invoke();
-                await task;
+                await ScenarioExecutionFlow.WrapScenarioExceptions(task);
 
                 if (HasResultDescriptor(task))
                     return await ConvertToResultDescriptor(task);
@@ -75,8 +76,15 @@ namespace LightBDD.Framework.Scenarios.Basic.Implementation
             }
             public Task<IStepResultDescriptor> Execute(object context, object[] args)
             {
-                _invocation.Invoke();
-                return Task.FromResult(DefaultStepResultDescriptor.Instance);
+                try
+                {
+                    _invocation.Invoke();
+                    return Task.FromResult(DefaultStepResultDescriptor.Instance);
+                }
+                catch (Exception e)
+                {
+                    throw new ScenarioExecutionException(e);
+                }
             }
         }
     }

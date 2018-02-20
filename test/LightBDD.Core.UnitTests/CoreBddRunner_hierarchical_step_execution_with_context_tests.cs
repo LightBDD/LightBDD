@@ -9,6 +9,7 @@ using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
 using LightBDD.Framework.Extensibility;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
+using Moq;
 using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests
@@ -59,11 +60,92 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void Runner_should_instantiate_context_just_before_run_so_its_failure_would_be_included_in_results()
         {
-            Assert.Throws<InvalidOperationException>(() =>  _runner.Test().TestGroupScenario(StepGroupWithInvalidContext));
+            Assert.Throws<InvalidOperationException>(() => _runner.Test().TestGroupScenario(StepGroupWithInvalidContext));
 
             var scenario = _feature.GetFeatureResult().GetScenarios().Single();
             Assert.That(scenario.Status, Is.EqualTo(ExecutionStatus.Failed));
             Assert.That(scenario.StatusDetails, Is.EqualTo("Step 1: Sub-steps context initialization failed: abc"));
+        }
+
+        [Test]
+        [TestCase(true)]
+        [TestCase(false)]
+        public void Runner_should_dispose_context_depending_on_takeOwnership_flag(bool shouldDispose)
+        {
+            var context = Mock.Of<IDisposable>();
+
+            TestCompositeStep StepGroupWithDisposable()
+            {
+                return new TestCompositeStep(new ExecutionContextDescriptor(() => context, shouldDispose), MakeStep("step"));
+            }
+
+            _runner.Test().TestGroupScenario(StepGroupWithDisposable);
+            Mock.Get(context).Verify(x => x.Dispose(), Times.Exactly(shouldDispose ? 1 : 0));
+        }
+
+        [Test]
+        public void Runner_should_dispose_context_after_last_step()
+        {
+            var context = Mock.Of<IDisposable>();
+
+            Task<IStepResultDescriptor> VerifyNotDisposed(object ctx, object[] args)
+            {
+                Mock.Get((IDisposable) ctx).Verify(x => x.Dispose(), Times.Never);
+                return Task.FromResult(DefaultStepResultDescriptor.Instance);
+            }
+            TestCompositeStep StepGroupWithDisposable()
+            {
+                return new TestCompositeStep(
+                    new ExecutionContextDescriptor(() => context, true),
+                    new StepDescriptor("step1", VerifyNotDisposed),
+                    new StepDescriptor("step2", VerifyNotDisposed));
+            }
+
+            Assert.DoesNotThrow(()=>_runner.Test().TestGroupScenario(StepGroupWithDisposable));
+            Mock.Get(context).Verify(x => x.Dispose(), Times.Once);
+        }
+
+        [Test]
+        public void Runner_should_propagate_context_disposal_exception()
+        {
+            var exception = new Exception("foo");
+            var context = Mock.Of<IDisposable>();
+            Mock.Get(context).Setup(x => x.Dispose()).Throws(exception);
+
+            TestCompositeStep StepGroupWithDisposable()
+            {
+                return new TestCompositeStep(new ExecutionContextDescriptor(() => context, true), MakeStep("step"));
+            }
+
+            var ex = Assert.Throws<InvalidOperationException>(() => _runner.Test().TestGroupScenario(StepGroupWithDisposable));
+
+            Assert.That(ex.Message, Is.EqualTo($"Failed to dispose context '{context.GetType().Name}': foo"));
+            Assert.That(ex.InnerException, Is.SameAs(exception));
+            Assert.That(ex.StackTrace, Is.Not.Null);
+        }
+
+        [Test]
+        public void Runner_should_propagate_context_disposal_exception_together_with_failing_scenario()
+        {
+            var exception = new InvalidOperationException("foo");
+            var context = Mock.Of<IDisposable>();
+            Mock.Get(context).Setup(x => x.Dispose()).Throws(exception);
+
+            TestCompositeStep StepGroupWithDisposable()
+            {
+                return new TestCompositeStep(
+                    new ExecutionContextDescriptor(() => context, true),
+                    new StepDescriptor("step", (ctx, args) => throw new Exception("bar")));
+            }
+
+            var ex = Assert.Throws<AggregateException>(() => _runner.Test().TestGroupScenario(StepGroupWithDisposable));
+
+            Assert.That(ex.InnerExceptions.Select(x => $"{x.GetType().Name}|{x.Message}").ToArray(),
+                Is.EquivalentTo(new[]
+                {
+                    $"{nameof(Exception)}|bar",
+                    $"{nameof(InvalidOperationException)}|Failed to dispose context '{context.GetType().Name}': foo"
+                }));
         }
 
         private TestCompositeStep StepGroupWithInvalidContext()

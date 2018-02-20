@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using Moq;
 using NUnit.Framework;
@@ -30,16 +31,17 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers
             Assert.That(step.Parameters, Is.Empty, nameof(step.Parameters));
             Assert.That(step.PredefinedStepType, Is.Null, nameof(step.PredefinedStepType));
 
-            var ex = Assert.Throws<Exception>(() => step.StepInvocation.Invoke(null, null).GetAwaiter().GetResult());
-            Assert.That(ex.Message, Is.EqualTo(expectedName));
+            var ex = Assert.Throws<ScenarioExecutionException>(() => step.StepInvocation.Invoke(null, null).GetAwaiter().GetResult());
+            Assert.That(ex.InnerException, Is.TypeOf<Exception>());
+            Assert.That(ex.InnerException?.Message, Is.EqualTo(expectedName));
         }
 
         #region Expectations
 
-        protected void ExpectRunSynchronously()
+        protected void ExpectRunScenario()
         {
             MockScenarioRunner
-                .Setup(r => r.RunSynchronously())
+                .Setup(r => r.RunScenario())
                 .Verifiable();
         }
 
@@ -71,14 +73,35 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers
                 .Verifiable();
         }
 
-        protected void ExpectRunAsynchronously()
+        protected void ExpectRunScenarioAsync()
         {
             MockScenarioRunner
-                .Setup(r => r.RunAsynchronously())
+                .Setup(r => r.RunScenarioAsync())
                 .Returns(Task.FromResult(0))
                 .Verifiable();
         }
 
+        protected void ExpectSynchronousExecution()
+        {
+            ExpectNewScenario();
+            ExpectWithCapturedScenarioDetails();
+            ExpectWithSteps();
+            ExpectRunScenario();
+        }
+
+        protected void ExpectAsynchronousExecution()
+        {
+            ExpectNewScenario();
+            ExpectWithCapturedScenarioDetails();
+            ExpectWithSteps();
+            ExpectRunScenarioAsync();
+        }
+
+        protected void VerifyAllExpectations()
+        {
+            MockRunner.Verify();
+            MockScenarioRunner.Verify();
+        }
         #endregion
         #region Steps
 
@@ -96,11 +119,6 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers
         {
             await Task.Delay(200);
         }
-        protected async void Step_two_async_void_throwing_exception()
-        {
-            await Task.Delay(200);
-            throw new Exception(nameof(Step_two_async_void_throwing_exception));
-        }
 
         protected async Task Step_two_async()
         {
@@ -108,6 +126,5 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers
             throw new Exception(nameof(Step_two_async));
         }
         #endregion
-
     }
 }

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
+using LightBDD.Core.Execution.Implementation;
 
 namespace LightBDD.Core.Extensibility.Execution.Implementation
 {
@@ -53,11 +54,22 @@ namespace LightBDD.Core.Extensibility.Execution.Implementation
                 _targetInvocation = targetInvocation;
             }
 
-            public Task ExecuteAsync()
+            public async Task ExecuteAsync()
             {
-                return _enumerator.MoveNext()
-                    ? _enumerator.Current.Invoke(_target, ExecuteAsync)
-                    : _targetInvocation.Invoke();
+                try
+                {
+                    var task = _enumerator.MoveNext()
+                        ? _enumerator.Current.Invoke(_target, ExecuteAsync)
+                        : _targetInvocation.Invoke();
+
+                    await ScenarioExecutionFlow.WrapScenarioExceptions(task);
+                }
+                catch (Exception ex)
+                {
+                    if (ScenarioExecutionException.TryWrap(ex, out var wrapped))
+                        throw wrapped;
+                    throw;
+                }
             }
         }
     }

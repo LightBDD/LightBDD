@@ -1,3 +1,4 @@
+using System.IO;
 using LightBDD.AcceptanceTests;
 using LightBDD.AcceptanceTests.Helpers;
 using LightBDD.Core.Configuration;
@@ -17,7 +18,7 @@ namespace LightBDD.AcceptanceTests
         protected override void OnConfigure(LightBddConfiguration configuration)
         {
             configuration.ReportWritersConfiguration()
-                .Add(new ReportFileWriter(new PlainTextReportFormatter(), "~\\Reports\\FeaturesReport.txt"));
+                .Add(new ReportFileWriter(new PlainTextReportFormatter(), "~" + Path.DirectorySeparatorChar + "Reports" + Path.DirectorySeparatorChar + "FeaturesReport.txt"));
         }
 
         protected override void OnTearDown()

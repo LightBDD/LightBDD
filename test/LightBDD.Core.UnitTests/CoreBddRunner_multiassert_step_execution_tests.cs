@@ -98,8 +98,8 @@ namespace LightBDD.Core.UnitTests
 
             var steps = scenario.GetSteps().ToArray();
             StepResultExpectation.AssertEqual(steps,
-                new StepResultExpectation(1, 3, "Multiassert ignoring steps", ExecutionStatus.Ignored, "Step 1.1: ignoring\r\nStep 1.2: ignoring"),
-                new StepResultExpectation(2, 3, "Multiassert failing composite", ExecutionStatus.Failed, "Step 2.1: failing\r\nStep 2.2: failing"),
+                new StepResultExpectation(1, 3, "Multiassert ignoring steps", ExecutionStatus.Ignored, $"Step 1.1: ignoring{Environment.NewLine}Step 1.2: ignoring"),
+                new StepResultExpectation(2, 3, "Multiassert failing composite", ExecutionStatus.Failed, $"Step 2.1: failing{Environment.NewLine}Step 2.2: failing"),
                 new StepResultExpectation(3, 3, "Passing composite", ExecutionStatus.Passed)
                 );
 

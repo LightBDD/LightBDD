@@ -27,8 +27,8 @@ namespace LightBDD.Framework
     [DebuggerStepThrough]
     public class CompositeStep : CompositeStepResultDescriptor
     {
-        internal CompositeStep(Func<object> contextProvider, IEnumerable<StepDescriptor> steps)
-        : base(contextProvider, steps) { }
+        internal CompositeStep(ExecutionContextDescriptor contextDescriptor, IEnumerable<StepDescriptor> steps)
+        : base(contextDescriptor, steps) { }
 
         /// <summary>
         /// Instantiates a new <see cref="ICompositeStepBuilder"/> allowing to build <see cref="CompositeStep"/> instance.<br/>

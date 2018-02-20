@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Execution.Implementation;
@@ -24,7 +25,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         private INameInfo _name;
         private string[] _labels = Arrays<string>.Empty();
         private string[] _categories = Arrays<string>.Empty();
-        private Func<object> _contextProvider = ProvideNoContext;
+        private IContextProvider _contextProvider = ContextProvider.NoContext;
         private readonly ExceptionProcessor _exceptionProcessor;
         private IEnumerable<IScenarioDecorator> _scenarioDecorators = Enumerable.Empty<IScenarioDecorator>();
 
@@ -63,7 +64,12 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         public IScenarioRunner WithContext(Func<object> contextProvider)
         {
-            _contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
+            return WithContext(contextProvider, false);
+        }
+
+        public IScenarioRunner WithContext(Func<object> contextProvider, bool takeOwnership)
+        {
+            _contextProvider = new ContextProvider(new ExecutionContextDescriptor(contextProvider, takeOwnership));
             return this;
         }
 
@@ -99,16 +105,39 @@ namespace LightBDD.Core.Extensibility.Implementation
             return this;
         }
 
-        public Task RunAsynchronously()
+        public async Task RunAsynchronously()
+        {
+            try
+            {
+                await RunScenarioAsync();
+            }
+            catch (ScenarioExecutionException e)
+            {
+                e.GetOriginal().Throw();
+            }
+        }
+
+        public Task RunScenarioAsync()
         {
             Validate();
-            return _scenarioExecutor
-                .ExecuteAsync(new ScenarioInfo(_name, _labels, _categories), ProvideSteps, _contextProvider, _progressNotifier, _scenarioDecorators, _exceptionProcessor);
+            return _scenarioExecutor.ExecuteAsync(new ScenarioInfo(_name, _labels, _categories), ProvideSteps, _contextProvider, _progressNotifier, _scenarioDecorators, _exceptionProcessor);
         }
 
         public void RunSynchronously()
         {
-            var task = RunAsynchronously();
+            try
+            {
+                RunScenario();
+            }
+            catch (ScenarioExecutionException e)
+            {
+                e.GetOriginal().Throw();
+            }
+        }
+
+        public void RunScenario()
+        {
+            var task = RunScenarioAsync();
             if (!task.IsCompleted)
                 throw new InvalidOperationException("Only steps being completed upon return can be run synchronously (all steps have to return completed task). Consider using Async scenario methods for async Task or async void steps.");
             task.GetAwaiter().GetResult();
@@ -168,17 +197,18 @@ namespace LightBDD.Core.Extensibility.Implementation
                 _groupPrefix = groupPrefix;
             }
 
-            public async Task<RunnableStepResult> InvokeAsync(object context, object[] args)
+            public async Task<CompositeStepContext> InvokeAsync(object context, object[] args)
             {
                 var result = await _invocation.Invoke(context, args);
 
                 if (!(result is CompositeStepResultDescriptor compositeDescriptor))
-                    return RunnableStepResult.Empty;
+                    return CompositeStepContext.Empty;
 
-                var subStepsContext = InstantiateSubStepsContext(compositeDescriptor);
+                var contextProvider = new ContextProvider(compositeDescriptor.SubStepsContext);
+                var subStepsContext = InstantiateSubStepsContext(contextProvider);
                 try
                 {
-                    return new RunnableStepResult(_runner.ProvideSteps(_decoratingExecutor, subStepsContext, compositeDescriptor.SubSteps.ToArray(), _groupPrefix));
+                    return new CompositeStepContext(contextProvider, _runner.ProvideSteps(_decoratingExecutor, subStepsContext, compositeDescriptor.SubSteps.ToArray(), _groupPrefix));
                 }
                 catch (Exception e)
                 {
@@ -187,21 +217,16 @@ namespace LightBDD.Core.Extensibility.Implementation
             }
         }
 
-        private static object InstantiateSubStepsContext(CompositeStepResultDescriptor result)
+        private static object InstantiateSubStepsContext(ContextProvider provider)
         {
             try
             {
-                return result.SubStepsContextProvider.Invoke();
+                return provider.GetContext();
             }
             catch (Exception e)
             {
                 throw new InvalidOperationException($"Sub-steps context initialization failed: {e.Message}", e);
             }
-        }
-
-        private static object ProvideNoContext()
-        {
-            return null;
         }
     }
 }

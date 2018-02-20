@@ -1,8 +1,0 @@
-﻿1. Right click on project and click "Set as StartUp Project"
-2. Select in menu to run on "Local Machine"
-3. Right click on project and click "Deploy"
-4. Open Test Explorer and run tests.
-
-After tests are executed, the LightBDD HTML report should open.
-
-Please note that this project is excluded from Release build - it only builds in debug.
