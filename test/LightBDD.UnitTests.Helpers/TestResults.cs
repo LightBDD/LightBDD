@@ -197,11 +197,14 @@ namespace LightBDD.UnitTests.Helpers
             ExecutionTime IStepResult.ExecutionTime => ExecutionTime?.ToMockedType();
             IEnumerable<string> IStepResult.Comments => Comments;
             public Exception ExecutionException { get; }
+            IEnumerable<IParameterResult> IStepResult.Parameters => Parameters;
+
             public IEnumerable<IStepResult> GetSubSteps()
             {
                 return SubSteps;
             }
 
+            public IParameterResult[] Parameters { get; set; }
             public TestStepResult[] SubSteps { get; set; } = new TestStepResult[0];
             public string[] Comments { get; set; }
         }
@@ -265,6 +268,7 @@ namespace LightBDD.UnitTests.Helpers
         public class TestNameParameterInfo : INameParameterInfo
         {
             public bool IsEvaluated { get; set; }
+            public ParameterVerificationStatus VerificationStatus { get; set; }
             public string FormattedValue { get; set; }
         }
 

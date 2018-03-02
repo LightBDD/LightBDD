@@ -37,7 +37,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         public INameParameterInfo FormatNameParameter()
         {
             return IsEvaluated
-                ? new NameParameterInfo(true, _formattingService.FormatValue(Value))
+                ? new NameParameterInfo(true, _formattingService.FormatValue(Value), ParameterVerificationStatus.NotApplicable)
                 : NameParameterInfo.Unknown;
         }
 
