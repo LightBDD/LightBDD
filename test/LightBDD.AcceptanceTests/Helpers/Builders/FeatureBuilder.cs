@@ -18,7 +18,7 @@ namespace LightBDD.AcceptanceTests.Helpers.Builders
 
         public ScenarioBuilder NewScenario(ExecutionStatus status)
         {
-            var builder = new ScenarioBuilder(status);
+            var builder = new ScenarioBuilder(status).WithSampleSteps();
             _scenarios.Add(builder);
             return builder;
         }
@@ -26,6 +26,18 @@ namespace LightBDD.AcceptanceTests.Helpers.Builders
         public IFeatureResult Build()
         {
             return TestResults.CreateFeatureResult(Name, "descr", "label", _scenarios.Select(s => s.Build()).ToArray());
+        }
+
+        public ScenarioBuilder NewEmptyScenario(string scenario, ExecutionStatus status)
+        {
+            var builder = new ScenarioBuilder(status).WithName(scenario);
+            _scenarios.Add(builder);
+            return builder;
+        }
+
+        public ScenarioBuilder ForScenario(string scenario)
+        {
+            return _scenarios.First(s => s.Name == scenario);
         }
     }
 }

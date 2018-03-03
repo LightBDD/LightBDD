@@ -8,11 +8,11 @@ namespace LightBDD.Core.Metadata
         /// <summary>
         /// TODO
         /// </summary>
-        NotApplicable = -1,
+        NotApplicable,
         /// <summary>
         /// TODO
         /// </summary>
-        Success = 0,
+        Success,
         /// <summary>
         /// TODO
         /// </summary>
@@ -24,6 +24,6 @@ namespace LightBDD.Core.Metadata
         /// <summary>
         /// TODO
         /// </summary>
-        NotVerified
+        NotProvided
     }
 }

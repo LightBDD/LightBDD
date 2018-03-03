@@ -1,8 +1,12 @@
 using System;
 using LightBDD.Core.Metadata;
 
-namespace LightBDD.Core.Results
+namespace LightBDD.Core.Results.Parameters
 {
+    public interface IInlineParameterResult : IParameterResult
+    {
+        IValueResult Value { get; }
+    }
     /// <summary>
     /// TODO
     /// </summary>
@@ -11,11 +15,11 @@ namespace LightBDD.Core.Results
         /// <summary>
         /// TODO
         /// </summary>
-        string Output { get; }
+        string Value { get; }
         /// <summary>
         /// TODO
         /// </summary>
-        string Input { get; }
+        string Expectation { get; }
         /// <summary>
         /// TODO
         /// </summary>

@@ -66,9 +66,25 @@ input[type="radio"]:not(:checked) + * .chbox:before{border-radius: 50%; backgrou
 input[type="radio"]:checked + * .chbox:before{border-radius: 50%; background-color: #eeeeee;content: "\2713";}
 .stepType{ font-style: italic;}
 .stepParam{ color: #aa00aa;}
-.stepParamUnknown{ color: #aa55aa;}
+.stepParamSuccess{ color: #00aa00;}
+.stepParamFailure{ color: #aa0000;}
+.stepParamUnknown{ color: #aa77aa;}
 label{ display: inline-block;}
 .optionsPanel #optionsLink {display: block; visibility: hidden;margin: 0.1em 0 0.5em 6em;font-weight: bold;}
 .optionsPanel:hover #optionsLink{ visibility: visible;}
 .footer{ font-size: x-small;text-align: center;}
 .footer a{ font-weight: bold;}
+table.param{ border-collapse: collapse; margin-top:0.1em;}
+table.param,th.param, td.param{ border: 1px solid #777777;}
+div.param{padding-top:0.3em;}
+td.param, th.param { text-align: left; padding-left: 0.3em; padding-right: 0.3em;}
+th.param.column{ background: #f0f0f0; text-align: left;font-weight: normal;}
+th.param.column.key { font-weight: bold;}
+td.param.type { font-size:0.64em;color: #444444;}
+td.param.value.success {background: #aaffaa}
+td.param.value.failure {background: #ffaaaa;}
+td.param.value.exception {background: #ffaaaa;}
+td.param.value.notprovided {background: #ffaaaa;}
+hr {border-top: 1px dashed #777777;border-bottom: 0px; margin: 2px; padding: 0;}
+span.expected{font-size: 0.8em;}
+span.expected:before{font-size:0.8em; content: "expected: "; color: #444444;}

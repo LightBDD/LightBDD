@@ -6,6 +6,7 @@ using System.Linq;
 using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
+using LightBDD.Core.Results.Parameters;
 
 namespace LightBDD.Core.Results.Implementation
 {
