@@ -1,5 +1,6 @@
 ﻿using System;
 using LightBDD.Core.Formatting.Values;
+using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Formatting.Parameters
 {
@@ -17,5 +18,9 @@ namespace LightBDD.Core.Formatting.Parameters
         /// Function returning validation exception or null, if parameter validation is successful.
         /// </summary>
         Exception GetValidationException();
+        /// <summary>
+        /// TODO
+        /// </summary>
+        ParameterVerificationStatus Status { get; }
     }
 }

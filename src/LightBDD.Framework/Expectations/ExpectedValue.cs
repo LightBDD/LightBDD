@@ -4,6 +4,7 @@ using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using LightBDD.Core.Formatting.Parameters;
 using LightBDD.Core.Formatting.Values;
+using LightBDD.Core.Metadata;
 
 namespace LightBDD.Framework.Expectations
 {
@@ -145,6 +146,8 @@ namespace LightBDD.Framework.Expectations
                 ? null
                 : new ArgumentException(ToString(), _innerException);
         }
+
+        public ParameterVerificationStatus Status => ParameterVerificationStatus.NotApplicable;
 
         /// <summary>
         /// Returns current state of the <see cref="ExpectedValue{T}"/>.

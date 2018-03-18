@@ -66,9 +66,10 @@ input[type="radio"]:not(:checked) + * .chbox:before{border-radius: 50%; backgrou
 input[type="radio"]:checked + * .chbox:before{border-radius: 50%; background-color: #eeeeee;content: "\2713";}
 .stepType{ font-style: italic;}
 .stepParam{ color: #aa00aa;}
-.stepParamSuccess{ color: #00aa00;}
-.stepParamFailure{ color: #aa0000;}
-.stepParamUnknown{ color: #aa77aa;}
+.stepParamSuccess{ color: #007700;}
+.stepParamFailure{ color: #dd0000;}
+.stepParamNotProvided{ color: #ff9133;}
+.stepParamUnknown{ color: #aa55aa;}
 label{ display: inline-block;}
 .optionsPanel #optionsLink {display: block; visibility: hidden;margin: 0.1em 0 0.5em 6em;font-weight: bold;}
 .optionsPanel:hover #optionsLink{ visibility: visible;}

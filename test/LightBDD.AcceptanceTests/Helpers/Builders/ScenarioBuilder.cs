@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
-using LightBDD.Core.Results.Parameters;
 using LightBDD.UnitTests.Helpers;
-using NUnit.Framework;
 
 namespace LightBDD.AcceptanceTests.Helpers.Builders
 {

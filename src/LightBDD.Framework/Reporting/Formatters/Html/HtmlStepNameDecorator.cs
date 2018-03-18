@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -32,8 +31,9 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                     return "stepParamSuccess";
                 case ParameterVerificationStatus.Failure:
                 case ParameterVerificationStatus.Exception:
-                case ParameterVerificationStatus.NotProvided:
                     return "stepParamFailure";
+                case ParameterVerificationStatus.NotProvided:
+                    return "stepParamNotProvided";
                 case ParameterVerificationStatus.NotApplicable:
                 default:
                     return "stepParam";
