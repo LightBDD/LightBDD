@@ -32,9 +32,9 @@
                 return this;
             }
         }
-        public Expected<T> Create(IExpectation<T> expectation)
+        public Expectation<T> Compose(Expectation<T> expectation)
         {
-            return new Expected<T>(_isNot ? new NotExpectation<T>(expectation) : expectation);
+            return _isNot ? new NotExpectation<T>(expectation) : expectation;
         }
     }
 }

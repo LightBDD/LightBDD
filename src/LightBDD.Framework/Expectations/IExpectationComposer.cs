@@ -9,6 +9,6 @@
     public interface IExpectationComposer<T>
     {
         IExpectationComposer<T> Not { get; }
-        Expected<T> Create(IExpectation<T> expectation);
+        Expectation<T> Compose(Expectation<T> expectation);
     }
 }

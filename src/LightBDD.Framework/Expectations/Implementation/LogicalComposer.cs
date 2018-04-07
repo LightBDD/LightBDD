@@ -2,10 +2,10 @@
 {
     internal abstract class LogicalComposer<T> : IExpectationComposer<T>
     {
-        private readonly IExpectation<T> _left;
+        private readonly Expectation<T> _left;
         private IExpectationComposer<T> _right = new ExpectationComposer<T>();
 
-        public LogicalComposer(IExpectation<T> left)
+        public LogicalComposer(Expectation<T> left)
         {
             _left = left;
         }
@@ -18,12 +18,11 @@
                 return this;
             }
         }
-        public Expected<T> Create(IExpectation<T> expectation)
+        public Expectation<T> Compose(Expectation<T> expectation)
         {
-            var r = _right.Create(expectation);
-            return new Expected<T>(CreateExpectation(_left, r.Expectation));
+            return Compose(_left, _right.Compose(expectation));
         }
 
-        protected abstract IExpectation<T> CreateExpectation(IExpectation<T> left, IExpectation<T> right);
+        protected abstract Expectation<T> Compose(Expectation<T> left, Expectation<T> right);
     }
 }

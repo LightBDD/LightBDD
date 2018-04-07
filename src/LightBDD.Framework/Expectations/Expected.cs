@@ -10,10 +10,11 @@ namespace LightBDD.Framework.Expectations
     {
         private IValueFormattingService _formattingService;
         private string _actualText;
-        public IExpectation<T> Expectation { get; }
+        private ExpectationResult _result;
+        public Expectation<T> Expectation { get; }
         public T Actual { get; private set; }
         public Exception Exception { get; private set; }
-        public bool IsValid { get; private set; }
+        public bool IsValid => _result.IsValid;
         public ParameterVerificationStatus Status
         {
             get
@@ -26,7 +27,7 @@ namespace LightBDD.Framework.Expectations
         }
 
 
-        public Expected(IExpectation<T> expectation)
+        public Expected(Expectation<T> expectation)
         {
             Expectation = expectation;
         }
@@ -36,7 +37,7 @@ namespace LightBDD.Framework.Expectations
             Exception = null;
             Actual = value;
             _actualText = _formattingService.FormatValue(value);
-            IsValid = Expectation.IsValid(value);
+            _result = Expectation.Verify(value,_formattingService);
             return this;
         }
 
@@ -79,12 +80,17 @@ namespace LightBDD.Framework.Expectations
         {
             if (Status == ParameterVerificationStatus.NotProvided)
                 return new InvalidOperationException(ToString() + ", but did not received anything");
-            return IsValid ? null : new InvalidOperationException(ToString(), Exception);
+            return IsValid ? null : new InvalidOperationException(_result.Message, Exception);
         }
 
         public static implicit operator Expected<T>(T expected)
         {
             return Expect.To.Equal(expected);
+        }
+
+        public static implicit operator Expected<T>(Expectation<T> expectation)
+        {
+            return new Expected<T>(expectation);
         }
 
         public override string ToString()

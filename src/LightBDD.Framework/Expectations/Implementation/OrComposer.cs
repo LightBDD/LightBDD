@@ -2,11 +2,11 @@
 {
     internal class OrComposer<T> : LogicalComposer<T>
     {
-        public OrComposer(IExpectation<T> left) : base(left)
+        public OrComposer(Expectation<T> left) : base(left)
         {
         }
 
-        protected override IExpectation<T> CreateExpectation(IExpectation<T> left, IExpectation<T> right)
+        protected override Expectation<T> Compose(Expectation<T> left, Expectation<T> right)
         {
             return new OrExpectation<T>(left, right);
         }

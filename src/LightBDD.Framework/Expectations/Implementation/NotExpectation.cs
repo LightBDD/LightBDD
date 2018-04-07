@@ -2,22 +2,23 @@
 
 namespace LightBDD.Framework.Expectations.Implementation
 {
-    internal class NotExpectation<T> : IExpectation<T>
+    internal class NotExpectation<T> : Expectation<T>
     {
-        private readonly IExpectation<T> _expectation;
+        private readonly Expectation<T> _expectation;
 
-        public NotExpectation(IExpectation<T> expectation)
+        public NotExpectation(Expectation<T> expectation)
         {
             _expectation = expectation;
         }
 
-        public string Description => "not " + _expectation.Description;
-        public bool IsValid(T value)
+        public override ExpectationResult Verify(T value, IValueFormattingService formattingService)
         {
-            return !_expectation.IsValid(value);
+            if (!_expectation.Verify(value, formattingService))
+                return ExpectationResult.Success;
+            return FormatFailure(formattingService, "it was");
         }
 
-        public string Format(IValueFormattingService formattingService)
+        public override string Format(IValueFormattingService formattingService)
         {
             return "not " + _expectation.Format(formattingService);
         }
