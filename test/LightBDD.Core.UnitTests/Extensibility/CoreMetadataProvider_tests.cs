@@ -105,9 +105,8 @@ namespace LightBDD.Core.UnitTests.Extensibility
         }
 
 
-
         [Test]
-        public void GetStepDecorators_should_return_extensions_in_order()
+        public void GetStepDecorators_should_return_extensions_in_order_if_declaring_type_does_not_have_extensions()
         {
             Action<int> step = new Feature_type().Some_step_with_argument;
             var extensions = _metadataProvider.GetStepDecorators(new StepDescriptor(step.GetMethodInfo(), (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance)));
@@ -118,14 +117,18 @@ namespace LightBDD.Core.UnitTests.Extensibility
         }
 
         [Test]
-        public void GetStepDecorators_should_return_empty_collection_if_descriptor_has_null_MethodInfo()
+        public void GetStepDecorators_should_return_extensions_in_order_favoring_declaring_type_extensions()
         {
-            var extensions = _metadataProvider.GetStepDecorators(new StepDescriptor("abc123", (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance)));
-            Assert.That(extensions, Is.Empty);
+            Action<int> step = new Feature_with_class_decorators().Some_step_with_argument;
+            var extensions = _metadataProvider.GetStepDecorators(new StepDescriptor(step.GetMethodInfo(), (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance)));
+            var expectedOrder = new[] { 3, 4, 6, 7, 8 };
+
+            Assert.That(extensions.Cast<IStepDecoratorAttribute>().Select(x => x.Order).ToArray(),
+                Is.EqualTo(expectedOrder));
         }
 
         [Test]
-        public void GetStepDecorators_should_return_empty_collection_if_method_does_not_have_extensions()
+        public void GetStepDecorators_should_return_empty_collection_if_method_and_declaring_type_does_not_have_extensions()
         {
             Action<int, string> step = new Feature_type().Some_method_with_argument_arg1_and_arg2;
             var extensions = _metadataProvider.GetStepDecorators(new StepDescriptor(step.GetMethodInfo(), (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance)));
@@ -133,7 +136,14 @@ namespace LightBDD.Core.UnitTests.Extensibility
         }
 
         [Test]
-        public void GetScenarioDecorators_should_return_extensions_in_order()
+        public void GetStepDecorators_should_return_empty_collection_if_descriptor_has_null_MethodInfo()
+        {
+            var extensions = _metadataProvider.GetStepDecorators(new StepDescriptor("abc123", (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance)));
+            Assert.That(extensions, Is.Empty);
+        }
+
+        [Test]
+        public void GetScenarioDecorators_should_return_extensions_in_order_if_declaring_type_does_not_have_extensions()
         {
             Action<int> step = new Feature_type().Some_method;
             var extensions = _metadataProvider.GetScenarioDecorators(new ScenarioDescriptor(step.GetMethodInfo(), null));
@@ -144,7 +154,19 @@ namespace LightBDD.Core.UnitTests.Extensibility
         }
 
         [Test]
-        public void GetScenarioDecorators_should_return_empty_collection_if_method_does_not_have_extensions()
+        public void GetScenarioDecorators_should_return_extensions_in_order_favoring_declaring_type_extensions()
+        {
+            Action<int> step = new Feature_with_class_decorators().Some_method;
+            var extensions = _metadataProvider.GetScenarioDecorators(new ScenarioDescriptor(step.GetMethodInfo(), null));
+            var expectedOrder = new[] { 1, 2, -5, -3, -2 };
+
+            Assert.That(extensions.Cast<IScenarioDecoratorAttribute>().Select(x => x.Order).ToArray(),
+                Is.EqualTo(expectedOrder));
+        }
+
+
+        [Test]
+        public void GetScenarioDecorators_should_return_empty_collection_if_method_and_declaring_type_does_not_have_extensions()
         {
             Action step = new Feature_type().Some_method_without_arguments;
             var extensions = _metadataProvider.GetScenarioDecorators(new ScenarioDescriptor(step.GetMethodInfo(), null));
@@ -176,6 +198,26 @@ namespace LightBDD.Core.UnitTests.Extensibility
             public void Some_step_with_argument(int argument) { }
         }
 
+        [MyScenarioClassDecorator(Order = 2)]
+        [MyScenarioClassDecorator(Order = 1)]
+        [MyStepClassDecorator(Order = 4)]
+        [MyStepClassDecorator(Order = 3)]
+        private class Feature_with_class_decorators
+        {
+            [MyScenarioDecorator(Order = -3)]
+            [MyScenarioDecorator(Order = -2)]
+            [MyScenarioDecorator(Order = -5)]
+            public void Some_method(int argument) { }
+
+            public void Some_method_without_arguments() { }
+            public void Some_method_with_argument_arg1_and_arg2(int arg1, string arg2) { }
+
+            [MyStepDecorator(Order = 7)]
+            [MyStepDecorator(Order = 6)]
+            [MyStepDecorator(Order = 8)]
+            public void Some_step_with_argument(int argument) { }
+        }
+
         [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
         private class MyStepDecoratorAttribute : Attribute, IStepDecoratorAttribute
         {
@@ -190,6 +232,26 @@ namespace LightBDD.Core.UnitTests.Extensibility
         private class MyScenarioDecorator : Attribute, IScenarioDecoratorAttribute
         {
             public Task ExecuteAsync(IScenario scenario, Func<Task> scenarioInvocation)
+            {
+                throw new NotImplementedException();
+            }
+
+            public int Order { get; set; }
+        }
+        [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+        private class MyScenarioClassDecorator : Attribute, IScenarioDecoratorAttribute
+        {
+            public Task ExecuteAsync(IScenario scenario, Func<Task> scenarioInvocation)
+            {
+                throw new NotImplementedException();
+            }
+
+            public int Order { get; set; }
+        }
+        [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+        private class MyStepClassDecorator : Attribute, IStepDecoratorAttribute
+        {
+            public Task ExecuteAsync(IStep step, Func<Task> stepInvocation)
             {
                 throw new NotImplementedException();
             }
