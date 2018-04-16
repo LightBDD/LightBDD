@@ -18,7 +18,7 @@ namespace LightBDD.Framework.Expectations.Implementation
         {
             if (_predicateFn(value))
                 return ExpectationResult.Success;
-            return FormatFailure(formattingService, $"got: {formattingService.FormatValue(value)}");
+            return FormatFailure(formattingService, $"got: '{formattingService.FormatValue(value)}'");
         }
 
         public override string Format(IValueFormattingService formattingService)
