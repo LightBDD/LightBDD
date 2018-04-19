@@ -31,9 +31,24 @@ namespace LightBDD.Framework.Expectations
 
         public static Expectation<string> MatchWild(this IExpectationComposer<string> builder, string pattern)
         {
+            return MatchWild(builder, pattern, RegexOptions.None, $"matching '{pattern}'");
+        }
+
+        public static Expectation<string> MatchWildIgnoreCase(this IExpectationComposer builder, string pattern)
+        {
+            return builder.For<string>().MatchWildIgnoreCase(pattern);
+        }
+
+        public static Expectation<string> MatchWildIgnoreCase(this IExpectationComposer<string> builder, string pattern)
+        {
+            return MatchWild(builder, pattern, RegexOptions.IgnoreCase, $"matching any case '{pattern}'");
+        }
+
+        private static Expectation<string> MatchWild(IExpectationComposer<string> builder, string pattern, RegexOptions options, string format)
+        {
             var regexPattern = "^" + Regex.Escape(pattern).Replace("\\?", ".").Replace("\\*", ".*").Replace("\\#", "\\d") + "$";
-            var regex = new Regex(regexPattern);
-            return builder.ComposeUnary(formatter => $"matching '{pattern}'", value => value != null && regex.IsMatch(value));
+            var regex = new Regex(regexPattern, options);
+            return builder.ComposeUnary(formatter => format, value => value != null && regex.IsMatch(value));
         }
 
         public static Expectation<string> MatchRegex(this IExpectationComposer builder, string pattern)
@@ -43,8 +58,23 @@ namespace LightBDD.Framework.Expectations
 
         public static Expectation<string> MatchRegex(this IExpectationComposer<string> builder, string pattern)
         {
-            var regex = new Regex(pattern);
-            return builder.ComposeUnary(formatter => $"matching regex '{pattern}'", value => value != null && regex.IsMatch(value));
+            return MatchRegex(builder, pattern, RegexOptions.None, $"matching regex '{pattern}'");
+        }
+
+        public static Expectation<string> MatchRegexIgnoreCase(this IExpectationComposer builder, string pattern)
+        {
+            return builder.For<string>().MatchRegexIgnoreCase(pattern);
+        }
+
+        public static Expectation<string> MatchRegexIgnoreCase(this IExpectationComposer<string> builder, string pattern)
+        {
+            return MatchRegex(builder, pattern, RegexOptions.IgnoreCase, $"matching regex any case '{pattern}'");
+        }
+
+        private static Expectation<string> MatchRegex(IExpectationComposer<string> builder, string pattern, RegexOptions options, string format)
+        {
+            var regex = new Regex(pattern, options);
+            return builder.ComposeUnary(formatter => format, value => value != null && regex.IsMatch(value));
         }
 
         public static Expectation<T> Null<T>(this IExpectationComposer builder) where T : class
