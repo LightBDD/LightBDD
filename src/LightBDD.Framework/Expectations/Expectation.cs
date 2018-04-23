@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using LightBDD.Core.Formatting.Values;
 
 namespace LightBDD.Framework.Expectations
@@ -15,6 +17,11 @@ namespace LightBDD.Framework.Expectations
         }
 
         protected ExpectationResult FormatFailure(IValueFormattingService formattingService, string failureMessage, params string[] details)
+        {
+            return FormatFailure(formattingService, failureMessage, details.AsEnumerable());
+        }
+
+        protected ExpectationResult FormatFailure(IValueFormattingService formattingService, string failureMessage, IEnumerable<string> details)
         {
             var builder = new StringBuilder();
             builder.Append("expected: ").Append(Format(formattingService)).Append(", but ").Append(failureMessage);

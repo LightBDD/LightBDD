@@ -1,4 +1,5 @@
-﻿using LightBDD.Core.Formatting.Values;
+﻿using System.Collections.Generic;
+using LightBDD.Core.Formatting.Values;
 
 namespace LightBDD.Framework.Expectations.Implementation
 {
@@ -20,15 +21,18 @@ namespace LightBDD.Framework.Expectations.Implementation
             if (lvalue && rvalue)
                 return ExpectationResult.Success;
 
-            return FormatFailure(formattingService,
-                $"got: {formattingService.FormatValue(value)}",
-                "left: " + lvalue.Message,
-                "right: " + rvalue.Message);
+            var details = new List<string>();
+            if (!lvalue)
+                details.Add("left: " + lvalue.Message);
+            if (!rvalue)
+                details.Add("right: " + rvalue.Message);
+
+            return FormatFailure(formattingService, $"got: '{formattingService.FormatValue(value)}'", details);
         }
 
         public override string Format(IValueFormattingService formattingService)
         {
-            return $"( {_left.Format(formattingService)} and {_right.Format(formattingService)} )";
+            return $"({_left.Format(formattingService)} and {_right.Format(formattingService)})";
         }
     }
 }

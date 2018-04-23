@@ -2,7 +2,6 @@
 using LightBDD.Framework;
 using LightBDD.Framework.Expectations;
 using LightBDD.XUnit2;
-using Xunit;
 
 namespace Example.LightBDD.XUnit2.Features
 {

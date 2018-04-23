@@ -9,10 +9,12 @@ namespace LightBDD.Framework.UnitTests.Expectations.Helpers
     public class ExpectationScenario<T> : IExpectationScenario
     {
         public string Format { get; }
+        public string NegatedFormat { get; }
 
         public ExpectationScenario(string format, Func<IExpectationComposer, Expectation<T>> inferredExpectationFn, Func<IExpectationComposer<T>, Expectation<T>> explicitExpectationFn)
         {
             Format = format;
+            NegatedFormat = "not " + format;
             Expectation = inferredExpectationFn(Expect.To);
             NegatedExpectation = inferredExpectationFn(Expect.To.Not);
             ExplicitExpectation = explicitExpectationFn(Expect.To.For<T>());
@@ -25,7 +27,7 @@ namespace LightBDD.Framework.UnitTests.Expectations.Helpers
         public ExpectationScenario<T> WithMatchingValues(params T[] values)
         {
             foreach (var value in values)
-                MatchingValues.Add((value, $"expected: not {Format}, but it was"));
+                MatchingValues.Add((value, $"expected: {NegatedFormat}, but it was"));
             return this;
         }
 
@@ -44,8 +46,8 @@ namespace LightBDD.Framework.UnitTests.Expectations.Helpers
         {
             AssertFormat(Expectation, Format);
             AssertFormat(ExplicitExpectation, Format);
-            AssertFormat(NegatedExpectation, "not " + Format);
-            AssertFormat(ExplicitNegatedExpectation, "not " + Format);
+            AssertFormat(NegatedExpectation, NegatedFormat);
+            AssertFormat(ExplicitNegatedExpectation, NegatedFormat);
         }
 
         public void AssertExpectationMatchingValues()

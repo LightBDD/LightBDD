@@ -1,5 +1,4 @@
 ﻿using Example.Domain.Domain;
-using LightBDD.Framework;
 using LightBDD.Framework.Expectations;
 using LightBDD.MsTest2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
