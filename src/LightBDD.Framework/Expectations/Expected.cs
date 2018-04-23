@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using LightBDD.Core.Formatting.Parameters;
 using LightBDD.Core.Formatting.Values;
@@ -8,24 +9,32 @@ namespace LightBDD.Framework.Expectations
 {
     public sealed class Expected<T> : IVerifiableParameter
     {
-        private IValueFormattingService _formattingService;
+        private IValueFormattingService _formattingService = DefaultValueFormattingService.Instance;
+        private Exception _exception;
         private string _actualText;
+        private T _actual;
         private ExpectationResult _result;
         public Expectation<T> Expectation { get; }
-        public T Actual { get; private set; }
-        public Exception Exception { get; private set; }
-        public bool IsValid => _result.IsValid;
+
+        public T GetActual()
+        {
+            if (Status == ParameterVerificationStatus.NotProvided)
+                throw new InvalidOperationException("Actual value is not set");
+            if (_exception != null)
+                ExceptionDispatchInfo.Capture(_exception).Throw();
+            return _actual;
+        }
+
         public ParameterVerificationStatus Status
         {
             get
             {
-                if (Exception != null) return ParameterVerificationStatus.Exception;
+                if (_exception != null) return ParameterVerificationStatus.Exception;
                 if (_actualText == null) return ParameterVerificationStatus.NotProvided;
-                if (IsValid) return ParameterVerificationStatus.Success;
+                if (_result.IsValid) return ParameterVerificationStatus.Success;
                 return ParameterVerificationStatus.Failure;
             }
         }
-
 
         public Expected(Expectation<T> expectation)
         {
@@ -34,23 +43,27 @@ namespace LightBDD.Framework.Expectations
 
         public Expected<T> SetActual(T value)
         {
-            Exception = null;
-            Actual = value;
+            if (Status != ParameterVerificationStatus.NotProvided)
+                throw new InvalidOperationException("Actual value has been already specified");
+            _exception = null;
+            _actual = value;
             _actualText = _formattingService.FormatValue(value);
-            _result = Expectation.Verify(value,_formattingService);
+            _result = Expectation.Verify(value, _formattingService);
             return this;
         }
 
         public Expected<T> SetActual(Func<T> valueFn)
         {
+            if (Status != ParameterVerificationStatus.NotProvided)
+                throw new InvalidOperationException("Actual value has been already specified");
             try
             {
                 return SetActual(valueFn());
             }
             catch (Exception e)
             {
-                Exception = e;
-                _actualText = "<exception>";
+                _exception = e;
+                _actualText = $"<{e.GetType().Name}>";
             }
 
             return this;
@@ -58,29 +71,31 @@ namespace LightBDD.Framework.Expectations
 
         public async Task<Expected<T>> SetActualAsync(Func<Task<T>> valueFn)
         {
+            if (Status != ParameterVerificationStatus.NotProvided)
+                throw new InvalidOperationException("Actual value has been already specified");
             try
             {
                 return SetActual(await valueFn());
             }
             catch (Exception e)
             {
-                Exception = e;
-                _actualText = "<exception>";
+                _exception = e;
+                _actualText = $"<{e.GetType().Name}>";
             }
 
             return this;
         }
 
-        public void SetValueFormattingService(IValueFormattingService formattingService)
+        void IVerifiableParameter.SetValueFormattingService(IValueFormattingService formattingService)
         {
             _formattingService = formattingService;
         }
 
-        public Exception GetValidationException()
+        Exception IVerifiableParameter.GetValidationException()
         {
             if (Status == ParameterVerificationStatus.NotProvided)
                 return new InvalidOperationException(ToString() + ", but did not received anything");
-            return IsValid ? null : new InvalidOperationException(_result.Message, Exception);
+            return _result.IsValid ? null : new InvalidOperationException(_result.Message ?? ToString(), _exception);
         }
 
         public static implicit operator Expected<T>(T expected)
@@ -97,7 +112,7 @@ namespace LightBDD.Framework.Expectations
         {
             if (_actualText == null)
                 return $"expected: {Expectation.Format(_formattingService)}";
-            if (IsValid)
+            if (_result.IsValid)
                 return $"{_actualText}";
             return $"expected: {Expectation.Format(_formattingService)}, but got: '{_actualText}'";
         }
