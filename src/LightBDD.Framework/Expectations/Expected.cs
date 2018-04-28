@@ -4,12 +4,13 @@ using System.Threading.Tasks;
 using LightBDD.Core.Formatting.Parameters;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Metadata;
+using LightBDD.Framework.Formatting.Values;
 
 namespace LightBDD.Framework.Expectations
 {
     public sealed class Expected<T> : IVerifiableParameter
     {
-        private IValueFormattingService _formattingService = DefaultValueFormattingService.Instance;
+        private IValueFormattingService _formattingService = ValueFormattingServices.Current;
         private Exception _exception;
         private string _actualText;
         private T _actual;

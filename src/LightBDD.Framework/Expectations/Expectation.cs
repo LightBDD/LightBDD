@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using LightBDD.Core.Formatting.Values;
+using LightBDD.Framework.Formatting.Values;
 
 namespace LightBDD.Framework.Expectations
 {
@@ -13,7 +14,7 @@ namespace LightBDD.Framework.Expectations
 
         public override string ToString()
         {
-            return Format(DefaultValueFormattingService.Instance);
+            return Format(ValueFormattingServices.Current);
         }
 
         protected ExpectationResult FormatFailure(IValueFormattingService formattingService, string failureMessage, params string[] details)

@@ -5,14 +5,18 @@ using System.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting.Parameters.Implementation;
+using LightBDD.Core.Formatting.Values.Implementation;
 
-namespace LightBDD.Core.Formatting.Values.Implementation
+namespace LightBDD.Core.Formatting.Values
 {
-    internal class ValueFormattingService : IValueFormattingService
+    public class ValueFormattingService : IValueFormattingService
     {
         private readonly IConditionalValueFormatter[] _generalFormatters;
         private readonly ConcurrentDictionary<Type, IValueFormatter> _formatters;
         private readonly ICultureInfoProvider _cultureInfoProvider;
+
+        public ValueFormattingService(LightBddConfiguration configuration) : this(configuration.Get<ValueFormattingConfiguration>(), configuration.CultureInfoProviderConfiguration().CultureInfoProvider)
+        { }
 
         public ValueFormattingService(ValueFormattingConfiguration configuration, ICultureInfoProvider cultureInfoProvider)
         {

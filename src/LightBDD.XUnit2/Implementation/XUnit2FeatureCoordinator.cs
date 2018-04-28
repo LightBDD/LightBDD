@@ -3,11 +3,12 @@ using System.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution.Coordination;
 using LightBDD.Core.Reporting;
+using LightBDD.Framework.Execution.Coordination;
 using LightBDD.Framework.Reporting.Configuration;
 
 namespace LightBDD.XUnit2.Implementation
 {
-    internal class XUnit2FeatureCoordinator : FeatureCoordinator
+    internal class XUnit2FeatureCoordinator : FrameworkFeatureCoordinator
     {
         public new static FeatureCoordinator GetInstance()
         {

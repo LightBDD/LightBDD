@@ -1,5 +1,5 @@
-﻿using LightBDD.Core.Formatting.Values;
-using LightBDD.Framework.Expectations;
+﻿using LightBDD.Framework.Expectations;
+using LightBDD.Framework.Formatting.Values;
 using NUnit.Framework;
 
 namespace LightBDD.Framework.UnitTests.Expectations
@@ -11,14 +11,14 @@ namespace LightBDD.Framework.UnitTests.Expectations
         public void It_should_pass_validation()
         {
             var expectation = Expect.To.GreaterThan(3).And().LessThan(5);
-            Assert.True(expectation.Verify(4, DefaultValueFormattingService.Instance));
+            Assert.True(expectation.Verify(4, ValueFormattingServices.Current));
         }
 
         [Test]
         public void It_should_pass_negated_validation()
         {
             var expectation = Expect.To.Not.LessThan(3).And().Not.GreaterThan(5);
-            Assert.True(expectation.Verify(4, DefaultValueFormattingService.Instance));
+            Assert.True(expectation.Verify(4, ValueFormattingServices.Current));
         }
 
         [Test]
@@ -27,7 +27,7 @@ namespace LightBDD.Framework.UnitTests.Expectations
         public void It_should_fail_validation(int value, string expectedMessage)
         {
             var expectation = Expect.To.GreaterThan(3).And().LessThan(5);
-            var result = expectation.Verify(value, DefaultValueFormattingService.Instance);
+            var result = expectation.Verify(value, ValueFormattingServices.Current);
             Assert.False(result);
             Assert.That(result.Message.Replace("\r", ""), Is.EqualTo(expectedMessage.Replace("\r", "")));
         }
@@ -38,7 +38,7 @@ namespace LightBDD.Framework.UnitTests.Expectations
         public void It_should_fail_negated_validation(int value, string expectedMessage)
         {
             var expectation = Expect.To.Not.LessThan(3).And().Not.GreaterThan(5);
-            var result = expectation.Verify(value, DefaultValueFormattingService.Instance);
+            var result = expectation.Verify(value, ValueFormattingServices.Current);
             Assert.False(result);
             Assert.That(result.Message.Replace("\r", ""), Is.EqualTo(expectedMessage.Replace("\r", "")));
         }

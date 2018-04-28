@@ -9,7 +9,6 @@ using LightBDD.Core.Extensibility.Implementation;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Formatting.Parameters;
 using LightBDD.Core.Formatting.Values;
-using LightBDD.Core.Formatting.Values.Implementation;
 using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;

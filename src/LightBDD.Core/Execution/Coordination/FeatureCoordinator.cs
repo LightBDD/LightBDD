@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
+using LightBDD.Core.Formatting.Values;
 
 namespace LightBDD.Core.Execution.Coordination
 {
@@ -31,6 +32,8 @@ namespace LightBDD.Core.Execution.Coordination
         /// </summary>
         public LightBddConfiguration Configuration { get; }
 
+        public IValueFormattingService ValueFormattingService { get; }
+
         /// <summary>
         /// Returns instance of installed <see cref="FeatureCoordinator"/>.
         /// </summary>
@@ -41,6 +44,14 @@ namespace LightBDD.Core.Execution.Coordination
             var coordinator = Instance ?? throw new InvalidOperationException("LightBDD is not initialized yet.");
             if (coordinator.IsDisposed)
                 throw new InvalidOperationException("LightBDD scenario test execution is already finished.");
+            return coordinator;
+        }
+
+        protected internal static FeatureCoordinator TryGetInstance()
+        {
+            var coordinator = Instance;
+            if (coordinator == null || coordinator.IsDisposed)
+                return null;
             return coordinator;
         }
 
@@ -92,6 +103,8 @@ namespace LightBDD.Core.Execution.Coordination
             _featureAggregator = featureAggregator;
             RunnerRepository = runnerRepository;
             Configuration = configuration;
+            //TODO: Rework in LightBDD 3.X to use the same instance as CoreMetadataProvider (introduce IoC?)
+            ValueFormattingService = new ValueFormattingService(Configuration);
         }
 
         /// <summary>

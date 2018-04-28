@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using LightBDD.Core.Formatting.Values;
 using LightBDD.Framework.Expectations;
+using LightBDD.Framework.Formatting.Values;
 using NUnit.Framework;
 
 namespace LightBDD.Framework.UnitTests.Expectations.Helpers
@@ -88,21 +88,21 @@ namespace LightBDD.Framework.UnitTests.Expectations.Helpers
 
         private void AssertSuccess(Expectation<T> expectation, T value)
         {
-            var result = expectation.Verify(value, DefaultValueFormattingService.Instance);
+            var result = expectation.Verify(value, ValueFormattingServices.Current);
             Assert.True(result, $"{value}");
             Assert.IsEmpty(result.Message, $"{value}");
         }
 
         private void AssertFailure(Expectation<T> expectation, T value, string expectedMessage)
         {
-            var result = expectation.Verify(value, DefaultValueFormattingService.Instance);
+            var result = expectation.Verify(value, ValueFormattingServices.Current);
             Assert.False(result, $"{value}");
             Assert.That(result.Message, Is.EqualTo(expectedMessage), $"{value}");
         }
 
         private void AssertFormat(Expectation<T> expectation, string format)
         {
-            Assert.That(expectation.Format(DefaultValueFormattingService.Instance), Is.EqualTo(format));
+            Assert.That(expectation.Format(ValueFormattingServices.Current), Is.EqualTo(format));
             Assert.That(expectation.ToString(), Is.EqualTo(format));
         }
     }

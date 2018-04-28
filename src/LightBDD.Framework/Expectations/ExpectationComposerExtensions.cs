@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Framework.Expectations.Implementation;
@@ -22,6 +23,18 @@ namespace LightBDD.Framework.Expectations
             return composer.ComposeUnary(
                 formatter => $"equal '{formatter.FormatValue(expected)}'",
                 x => Equals(x, expected));
+        }
+
+        public static Expectation<T> In<T>(this IExpectationComposer composer, params T[] expectedCollection)
+        {
+            return composer.For<T>().In(expectedCollection);
+        }
+
+        public static Expectation<T> In<T>(this IExpectationComposer<T> composer, params T[] expectedCollection)
+        {
+            return composer.ComposeUnary(
+                formatter => $"in '{formatter.FormatValue(expectedCollection)}'",
+                expectedCollection.Contains);
         }
 
         public static Expectation<string> MatchWild(this IExpectationComposer builder, string pattern)
