@@ -6,7 +6,7 @@ using LightBDD.Framework.Formatting.Values;
 
 namespace LightBDD.Framework.Expectations
 {
-    public abstract class Expectation<T> : ISelfFormattable
+    public abstract class Expectation<T> : IExpectation<T>
     {
         public abstract ExpectationResult Verify(T value, IValueFormattingService formattingService);
 

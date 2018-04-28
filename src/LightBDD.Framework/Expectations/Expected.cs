@@ -15,7 +15,7 @@ namespace LightBDD.Framework.Expectations
         private string _actualText;
         private T _actual;
         private ExpectationResult _result;
-        public Expectation<T> Expectation { get; }
+        public IExpectation<T> Expectation { get; }
 
         public T GetActual()
         {
@@ -37,7 +37,7 @@ namespace LightBDD.Framework.Expectations
             }
         }
 
-        public Expected(Expectation<T> expectation)
+        public Expected(IExpectation<T> expectation)
         {
             Expectation = expectation;
         }

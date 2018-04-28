@@ -11,14 +11,14 @@ namespace LightBDD.Framework.UnitTests.Expectations.Helpers
         public string Format { get; }
         public string NegatedFormat { get; }
 
-        public ExpectationScenario(string format, Func<IExpectationComposer, Expectation<T>> inferredExpectationFn, Func<IExpectationComposer<T>, Expectation<T>> explicitExpectationFn)
+        public ExpectationScenario(string format, Func<IExpectationComposer, IExpectation<T>> inferredExpectationFn, Func<IExpectationComposer, IExpectation<T>> explicitExpectationFn)
         {
             Format = format;
             NegatedFormat = "not " + format;
             Expectation = inferredExpectationFn(Expect.To);
             NegatedExpectation = inferredExpectationFn(Expect.To.Not);
-            ExplicitExpectation = explicitExpectationFn(Expect.To.For<T>());
-            ExplicitNegatedExpectation = explicitExpectationFn(Expect.To.For<T>().Not);
+            ExplicitExpectation = explicitExpectationFn(Expect.To);
+            ExplicitNegatedExpectation = explicitExpectationFn(Expect.To.Not);
         }
         public IList<(T value, string failureMessage)> MatchingValues { get; } = new List<(T value, string failureMessage)>();
         public IList<(T value, string failureMessage)> NotMatchingValues { get; } = new List<(T value, string failureMessage)>();
@@ -37,10 +37,10 @@ namespace LightBDD.Framework.UnitTests.Expectations.Helpers
             return this;
         }
 
-        public Expectation<T> ExplicitNegatedExpectation { get; }
-        public Expectation<T> ExplicitExpectation { get; }
-        public Expectation<T> NegatedExpectation { get; }
-        public Expectation<T> Expectation { get; }
+        public IExpectation<T> ExplicitNegatedExpectation { get; }
+        public IExpectation<T> ExplicitExpectation { get; }
+        public IExpectation<T> NegatedExpectation { get; }
+        public IExpectation<T> Expectation { get; }
 
         public void AssertFormat()
         {
@@ -86,21 +86,21 @@ namespace LightBDD.Framework.UnitTests.Expectations.Helpers
             }
         }
 
-        private void AssertSuccess(Expectation<T> expectation, T value)
+        private void AssertSuccess(IExpectation<T> expectation, T value)
         {
             var result = expectation.Verify(value, ValueFormattingServices.Current);
             Assert.True(result, $"{value}");
             Assert.IsEmpty(result.Message, $"{value}");
         }
 
-        private void AssertFailure(Expectation<T> expectation, T value, string expectedMessage)
+        private void AssertFailure(IExpectation<T> expectation, T value, string expectedMessage)
         {
             var result = expectation.Verify(value, ValueFormattingServices.Current);
             Assert.False(result, $"{value}");
-            Assert.That(result.Message, Is.EqualTo(expectedMessage), $"{value}");
+            Assert.That(result.Message.Replace("\r", ""), Is.EqualTo(expectedMessage.Replace("\r", "")), $"{value}");
         }
 
-        private void AssertFormat(Expectation<T> expectation, string format)
+        private void AssertFormat(IExpectation<T> expectation, string format)
         {
             Assert.That(expectation.Format(ValueFormattingServices.Current), Is.EqualTo(format));
             Assert.That(expectation.ToString(), Is.EqualTo(format));

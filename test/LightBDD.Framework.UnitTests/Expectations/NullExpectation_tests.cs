@@ -11,7 +11,7 @@ namespace LightBDD.Framework.UnitTests.Expectations
         protected override IEnumerable<IExpectationScenario> GetScenarios()
         {
             yield return new ExpectationScenario<object>("null",
-                    x => x.Null<object>(),
+                    x => x.Null(),
                     x => x.Null())
                 .WithMatchingValue(null)
                 .WithNotMatchingValue(5, "expected: null, but got: '5'")

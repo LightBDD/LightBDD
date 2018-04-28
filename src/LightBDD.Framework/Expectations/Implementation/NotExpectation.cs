@@ -4,9 +4,9 @@ namespace LightBDD.Framework.Expectations.Implementation
 {
     internal class NotExpectation<T> : Expectation<T>
     {
-        private readonly Expectation<T> _expectation;
+        private readonly IExpectation<T> _expectation;
 
-        public NotExpectation(Expectation<T> expectation)
+        public NotExpectation(IExpectation<T> expectation)
         {
             _expectation = expectation;
         }
