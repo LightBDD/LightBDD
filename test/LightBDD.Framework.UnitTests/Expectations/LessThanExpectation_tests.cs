@@ -11,7 +11,6 @@ namespace LightBDD.Framework.UnitTests.Expectations
         protected override IEnumerable<IExpectationScenario> GetScenarios()
         {
             yield return new ExpectationScenario<int>("less than '2'",
-                    x => x.LessThan(2),
                     x => x.LessThan(2))
                 .WithMatchingValues(0, 1)
                 .WithNotMatchingValue(2, "expected: less than '2', but got: '2'")
@@ -19,7 +18,6 @@ namespace LightBDD.Framework.UnitTests.Expectations
 
             yield return new ExpectationScenario<string>(
                     "less than 'ab'",
-                    x => x.LessThan("ab"),
                     x => x.LessThan("ab"))
                 .WithMatchingValues("aa", "aaa")
                 .WithNotMatchingValue("ab", "expected: less than 'ab', but got: 'ab'")

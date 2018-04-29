@@ -11,7 +11,6 @@ namespace LightBDD.Framework.UnitTests.Expectations
         protected override IEnumerable<IExpectationScenario> GetScenarios()
         {
             yield return new ExpectationScenario<int>("between '2' and '5'",
-                    x => x.Between(2, 5),
                     x => x.Between(2, 5))
                 .WithMatchingValues(2, 3, 4, 5)
                 .WithNotMatchingValue(6, "expected: between '2' and '5', but got: '6'")
@@ -19,7 +18,6 @@ namespace LightBDD.Framework.UnitTests.Expectations
 
             yield return new ExpectationScenario<string>(
                 "between 'aha' and 'ada'",
-                x => x.Between("aha", "ada"),
                 x => x.Between("aha", "ada"))
                 .WithMatchingValues("ada", "aea", "afa", "aga", "aha", "adaa")
                 .WithNotMatchingValue("aia", "expected: between 'aha' and 'ada', but got: 'aia'")

@@ -11,14 +11,12 @@ namespace LightBDD.Framework.UnitTests.Expectations.Helpers
         public string Format { get; }
         public string NegatedFormat { get; }
 
-        public ExpectationScenario(string format, Func<IExpectationComposer, IExpectation<T>> inferredExpectationFn, Func<IExpectationComposer, IExpectation<T>> explicitExpectationFn)
+        public ExpectationScenario(string format, Func<IExpectationComposer, IExpectation<T>> expectationFn)
         {
             Format = format;
             NegatedFormat = "not " + format;
-            Expectation = inferredExpectationFn(Expect.To);
-            NegatedExpectation = inferredExpectationFn(Expect.To.Not);
-            ExplicitExpectation = explicitExpectationFn(Expect.To);
-            ExplicitNegatedExpectation = explicitExpectationFn(Expect.To.Not);
+            Expectation = expectationFn(Expect.To);
+            NegatedExpectation = expectationFn(Expect.To.Not);
         }
         public IList<(T value, string failureMessage)> MatchingValues { get; } = new List<(T value, string failureMessage)>();
         public IList<(T value, string failureMessage)> NotMatchingValues { get; } = new List<(T value, string failureMessage)>();
@@ -37,53 +35,37 @@ namespace LightBDD.Framework.UnitTests.Expectations.Helpers
             return this;
         }
 
-        public IExpectation<T> ExplicitNegatedExpectation { get; }
-        public IExpectation<T> ExplicitExpectation { get; }
         public IExpectation<T> NegatedExpectation { get; }
         public IExpectation<T> Expectation { get; }
 
         public void AssertFormat()
         {
             AssertFormat(Expectation, Format);
-            AssertFormat(ExplicitExpectation, Format);
             AssertFormat(NegatedExpectation, NegatedFormat);
-            AssertFormat(ExplicitNegatedExpectation, NegatedFormat);
         }
 
         public void AssertExpectationMatchingValues()
         {
             foreach (var (value, _) in MatchingValues)
-            {
                 AssertSuccess(Expectation, value);
-                AssertSuccess(ExplicitExpectation, value);
-            }
         }
 
         public void AssertExpectationNotMatchingValues()
         {
             foreach (var (value, expectedMessage) in NotMatchingValues)
-            {
                 AssertFailure(Expectation, value, expectedMessage);
-                AssertFailure(ExplicitExpectation, value, expectedMessage);
-            }
         }
 
         public void AssertNegatedExpectationNotMatchingValues()
         {
             foreach (var (value, expectedMessage) in MatchingValues)
-            {
                 AssertFailure(NegatedExpectation, value, expectedMessage);
-                AssertFailure(ExplicitNegatedExpectation, value, expectedMessage);
-            }
         }
 
         public void AssertNegatedExpectationMatchingValues()
         {
             foreach (var (value, _) in NotMatchingValues)
-            {
                 AssertSuccess(NegatedExpectation, value);
-                AssertSuccess(ExplicitNegatedExpectation, value);
-            }
         }
 
         private void AssertSuccess(IExpectation<T> expectation, T value)

@@ -11,7 +11,6 @@ namespace LightBDD.Framework.UnitTests.Expectations
         protected override IEnumerable<IExpectationScenario> GetScenarios()
         {
             yield return new ExpectationScenario<string>("matching 'fi?e*.txt'",
-                    x => x.MatchWild("fi?e*.txt"),
                     x => x.MatchWild("fi?e*.txt"))
                 .WithMatchingValues("file.txt", "file123.txt", "fine123.txt", "fine.txt")
                 .WithNotMatchingValue(null, "expected: matching 'fi?e*.txt', but got: '<null>'")
@@ -19,7 +18,6 @@ namespace LightBDD.Framework.UnitTests.Expectations
                 .WithNotMatchingValue("afile.txt", "expected: matching 'fi?e*.txt', but got: 'afile.txt'");
 
             yield return new ExpectationScenario<string>("matching 'no###'",
-                    x => x.MatchWild("no###"),
                     x => x.MatchWild("no###"))
                 .WithMatchingValues("no000", "no123")
                 .WithNotMatchingValue(null, "expected: matching 'no###', but got: '<null>'")
@@ -28,7 +26,6 @@ namespace LightBDD.Framework.UnitTests.Expectations
                 .WithNotMatchingValue("noabc", "expected: matching 'no###', but got: 'noabc'");
 
             yield return new ExpectationScenario<string>("matching any case 'no###'",
-                    x => x.MatchWildIgnoreCase("no###"),
                     x => x.MatchWildIgnoreCase("no###"))
                 .WithMatchingValues("no000", "nO123", "No123")
                 .WithNotMatchingValue(null, "expected: matching any case 'no###', but got: '<null>'")

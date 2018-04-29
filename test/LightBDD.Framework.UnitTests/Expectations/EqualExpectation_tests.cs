@@ -12,7 +12,6 @@ namespace LightBDD.Framework.UnitTests.Expectations
         {
             yield return new ExpectationScenario<string>(
                     "equal 'abc'",
-                    x => x.Equal("abc"),
                     x => x.Equal("abc"))
                 .WithMatchingValues("abc")
                 .WithNotMatchingValue(null, "expected: equal 'abc', but got: '<null>'")

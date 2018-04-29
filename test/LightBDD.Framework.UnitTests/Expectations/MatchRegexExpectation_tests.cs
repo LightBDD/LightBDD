@@ -11,7 +11,6 @@ namespace LightBDD.Framework.UnitTests.Expectations
         protected override IEnumerable<IExpectationScenario> GetScenarios()
         {
             yield return new ExpectationScenario<string>("matching regex 'fi.e[0-9]+.txt'",
-                    x => x.MatchRegex("fi.e[0-9]+.txt"),
                     x => x.MatchRegex("fi.e[0-9]+.txt"))
                 .WithMatchingValues("file1.txt", "file123.txt", "fine123.txt", "afile1.txt", "fine123.txt2")
                 .WithNotMatchingValue(null, "expected: matching regex 'fi.e[0-9]+.txt', but got: '<null>'")
@@ -19,7 +18,6 @@ namespace LightBDD.Framework.UnitTests.Expectations
                 .WithNotMatchingValue("afile.txt", "expected: matching regex 'fi.e[0-9]+.txt', but got: 'afile.txt'");
 
             yield return new ExpectationScenario<string>("matching regex any case 'fi.e[0-9]+.txt'",
-                    x => x.MatchRegexIgnoreCase("fi.e[0-9]+.txt"),
                     x => x.MatchRegexIgnoreCase("fi.e[0-9]+.txt"))
                 .WithMatchingValues("fILE1.tXt", "fIle123.txt", "FINE123.txt", "afile1.txt", "fine123.txt2")
                 .WithNotMatchingValue(null, "expected: matching regex any case 'fi.e[0-9]+.txt', but got: '<null>'")

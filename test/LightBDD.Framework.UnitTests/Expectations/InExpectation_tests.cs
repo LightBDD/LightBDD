@@ -12,7 +12,6 @@ namespace LightBDD.Framework.UnitTests.Expectations
         {
             yield return new ExpectationScenario<string>(
                         "in 'banana, orange, pear'",
-                        x => x.In("banana", "orange", "pear"),
                         x => x.In("banana", "orange", "pear"))
                     .WithMatchingValues("banana", "orange", "pear")
                     .WithNotMatchingValue(null, "expected: in 'banana, orange, pear', but got: '<null>'")
