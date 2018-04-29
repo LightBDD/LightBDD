@@ -1,38 +1,36 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using LightBDD.Core.Formatting.Values;
 
 namespace LightBDD.Framework.Expectations.Implementation
 {
     internal class AndExpectation<T> : Expectation<T>
     {
-        private readonly Expectation<T> _left;
-        private readonly Expectation<T> _right;
+        private readonly IExpectation<T>[] _expectations;
 
-        public AndExpectation(Expectation<T> left, Expectation<T> right)
+        public AndExpectation(params IExpectation<T>[] expectations)
         {
-            _left = left;
-            _right = right;
+            _expectations = expectations;
         }
 
         public override ExpectationResult Verify(T value, IValueFormattingService formattingService)
         {
-            var lvalue = _left.Verify(value, formattingService);
-            var rvalue = _right.Verify(value, formattingService);
-            if (lvalue && rvalue)
-                return ExpectationResult.Success;
-
             var details = new List<string>();
-            if (!lvalue)
-                details.Add("left: " + lvalue.Message);
-            if (!rvalue)
-                details.Add("right: " + rvalue.Message);
+            foreach (var expectation in _expectations)
+            {
+                var result = expectation.Verify(value, formattingService);
+                if (!result)
+                    details.Add(result.Message);
+            }
 
-            return FormatFailure(formattingService, $"got: '{formattingService.FormatValue(value)}'", details);
+            return !details.Any()
+                ? ExpectationResult.Success
+                : FormatFailure(formattingService, $"got: '{formattingService.FormatValue(value)}'", details);
         }
 
         public override string Format(IValueFormattingService formattingService)
         {
-            return $"({_left.Format(formattingService)} and {_right.Format(formattingService)})";
+            return $"({string.Join(" and ", _expectations.Select(x => x.Format(formattingService)))})";
         }
     }
 }

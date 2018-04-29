@@ -24,7 +24,7 @@ namespace LightBDD.Framework.UnitTests.Expectations
         }
 
         [Test]
-        [TestCase(4, "expected: (less than '3' or greater than '5'), but got: '4'\n\tleft: expected: less than '3', but got: '4'\n\tright: expected: greater than '5', but got: '4'")]
+        [TestCase(4, "expected: (less than '3' or greater than '5'), but got: '4'\n\texpected: less than '3', but got: '4'\n\texpected: greater than '5', but got: '4'")]
         public void It_should_fail_validation(int value, string expectedMessage)
         {
             var expectation = Expect.To.LessThan(3).Or(x => x.GreaterThan(5));
@@ -34,7 +34,7 @@ namespace LightBDD.Framework.UnitTests.Expectations
         }
 
         [Test]
-        [TestCase(4, "expected: (not greater than '3' or not less than '5'), but got: '4'\n\tleft: expected: not greater than '3', but it was\n\tright: expected: not less than '5', but it was")]
+        [TestCase(4, "expected: (not greater than '3' or not less than '5'), but got: '4'\n\texpected: not greater than '3', but it was\n\texpected: not less than '5', but it was")]
         public void It_should_fail_negated_validation(int value, string expectedMessage)
         {
             var expectation = Expect.To.Not.GreaterThan(3).Or(x => x.Not.LessThan(5));

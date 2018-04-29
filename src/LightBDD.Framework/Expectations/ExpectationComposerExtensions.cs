@@ -114,6 +114,16 @@ namespace LightBDD.Framework.Expectations
             return builder.ComposeUnary<T>(formatter => $"less or equal '{formatter.FormatValue(a)}'", x => x != null && x.CompareTo(a) <= 0);
         }
 
+        public static Expectation<T> AllTrue<T>(this IExpectationComposer composer, params Func<IExpectationComposer, IExpectation<T>>[] expectationBuilder)
+        {
+            return composer.Compose(new AndExpectation<T>(expectationBuilder.Select(x => x.Invoke(Expect.To)).ToArray()));
+        }
+
+        public static Expectation<T> AnyTrue<T>(this IExpectationComposer composer, params Func<IExpectationComposer, IExpectation<T>>[] expectationBuilder)
+        {
+            return composer.Compose(new OrExpectation<T>(expectationBuilder.Select(x => x.Invoke(Expect.To)).ToArray()));
+        }
+
         public static Expectation<T> And<T>(this Expectation<T> left, Func<IExpectationComposer, Expectation<T>> right)
         {
             return new AndExpectation<T>(left, right(Expect.To));
