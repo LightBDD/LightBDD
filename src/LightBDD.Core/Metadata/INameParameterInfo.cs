@@ -10,7 +10,7 @@ namespace LightBDD.Core.Metadata
         /// </summary>
         bool IsEvaluated { get; }
         /// <summary>
-        /// TODO
+        /// Returns verification status.
         /// </summary>
         ParameterVerificationStatus VerificationStatus { get; }
         /// <summary>

@@ -32,6 +32,9 @@ namespace LightBDD.Core.Execution.Coordination
         /// </summary>
         public LightBddConfiguration Configuration { get; }
 
+        /// <summary>
+        /// Returns <see cref="IValueFormattingService"/> configured in this coordinator.
+        /// </summary>
         public IValueFormattingService ValueFormattingService { get; }
 
         /// <summary>
@@ -47,6 +50,10 @@ namespace LightBDD.Core.Execution.Coordination
             return coordinator;
         }
 
+        /// <summary>
+        /// Returns the installed instance of <see cref="FeatureCoordinator"/> or null if instance is not installed (or already disposed).
+        /// </summary>
+        /// <returns><see cref="FeatureCoordinator"/> or null.</returns>
         protected internal static FeatureCoordinator TryGetInstance()
         {
             var coordinator = Instance;

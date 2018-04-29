@@ -19,7 +19,7 @@ namespace LightBDD.Core.Formatting.Parameters
         /// </summary>
         Exception GetValidationException();
         /// <summary>
-        /// TODO
+        /// Returns verification status.
         /// </summary>
         ParameterVerificationStatus Status { get; }
     }

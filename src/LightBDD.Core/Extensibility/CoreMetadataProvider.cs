@@ -187,7 +187,7 @@ namespace LightBDD.Core.Extensibility
                .Cast<IConditionalValueFormatter>()
                .ToArray();
 
-            return _valueFormattingService.WithDeclaredFormatters(declaredFormatters);
+            return _valueFormattingService.WithFormattersOverride(declaredFormatters);
         }
 
         /// <summary>

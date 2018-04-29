@@ -3,29 +3,25 @@ using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Results.Parameters
 {
-    public interface IInlineParameterResult : IParameterResult
-    {
-        IValueResult Value { get; }
-    }
     /// <summary>
-    /// TODO
+    /// Interface representing value result.
     /// </summary>
     public interface IValueResult
     {
         /// <summary>
-        /// TODO
+        /// Returns actual value.
         /// </summary>
         string Value { get; }
         /// <summary>
-        /// TODO
+        /// Returns parameter expectation.
         /// </summary>
         string Expectation { get; }
         /// <summary>
-        /// TODO
+        /// Returns parameter evaluation exception, or null if none is present.
         /// </summary>
         Exception Exception { get; }
         /// <summary>
-        /// TODO
+        /// Returns parameter value verification status.
         /// </summary>
         ParameterVerificationStatus VerificationStatus { get; }
     }

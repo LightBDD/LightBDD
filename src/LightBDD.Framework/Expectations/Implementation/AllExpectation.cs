@@ -2,9 +2,9 @@
 using System.Linq;
 using LightBDD.Core.Formatting.Values;
 
-namespace LightBDD.Framework.Expectations
+namespace LightBDD.Framework.Expectations.Implementation
 {
-    public class AllExpectation<TValue> : Expectation<IEnumerable<TValue>>
+    internal class AllExpectation<TValue> : Expectation<IEnumerable<TValue>>
     {
         private readonly IExpectation<TValue> _itemExpectation;
 

@@ -1,28 +1,28 @@
 namespace LightBDD.Core.Metadata
 {
     /// <summary>
-    /// TODO
+    /// Parameter verification status.
     /// </summary>
     public enum ParameterVerificationStatus
     {
         /// <summary>
-        /// TODO
+        /// Indicates that given parameter is not verifiable.
         /// </summary>
         NotApplicable,
         /// <summary>
-        /// TODO
+        /// Indicates successful verification.
         /// </summary>
         Success,
         /// <summary>
-        /// TODO
+        /// Indicates unsuccessful verification.
         /// </summary>
         Failure,
         /// <summary>
-        /// TODO
+        /// Indicates exception being thrown during verification.
         /// </summary>
         Exception,
         /// <summary>
-        /// TODO
+        /// Indicates that verifiable parameter was not verified.
         /// </summary>
         NotProvided
     }
