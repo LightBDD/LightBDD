@@ -20,6 +20,11 @@ namespace LightBDD.Framework.UnitTests.Expectations
                 .WithNotMatchingValue(Enumerable.Empty<string>(), "expected: equivalent collection 'banana, apple', but got: ''\n\texpected collection of 2 item(s), but got one of 0 item(s)\n\tmissing: 'banana'\n\tmissing: 'apple'")
                 .WithNotMatchingValue(new[] { "pear", "orange", "banana" }, "expected: equivalent collection 'banana, apple', but got: 'pear, orange, banana'\n\texpected collection of 2 item(s), but got one of 3 item(s)\n\tmissing: 'apple'\n\tsurplus: 'pear'\n\tsurplus: 'orange'")
                 .WithNotMatchingValue(new[] { "banana", "banana" }, "expected: equivalent collection 'banana, apple', but got: 'banana, banana'\n\tmissing: 'apple'\n\tsurplus: 'banana'");
+
+            yield return new ExpectationScenario<IEnumerable<int>>(
+                    "equivalent collection '5, 4, -3'",
+                    x => x.EquivalentCollection(5, 4, -3))
+                .WithMatchingValues(new[] { 5, 4, -3 }, new List<int> { -3, 4, 5 });
         }
     }
 }

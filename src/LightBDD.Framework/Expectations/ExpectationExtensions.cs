@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -72,7 +73,7 @@ namespace LightBDD.Framework.Expectations
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="collection"/> is null.</exception>
         public static Expectation<IEnumerable<T>> EqualCollection<T>(this IExpectationComposer composer, IEnumerable<T> collection)
         {
-            if (collection == null) 
+            if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
             return composer.Compose(new EqualCollection<T>(collection));
         }
@@ -86,7 +87,7 @@ namespace LightBDD.Framework.Expectations
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="collection"/> is null.</exception>
         public static Expectation<IEnumerable<T>> EqualCollection<T>(this IExpectationComposer composer, params T[] collection)
         {
-            if (collection == null) 
+            if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
             return composer.EqualCollection(collection.AsEnumerable());
         }
@@ -100,7 +101,7 @@ namespace LightBDD.Framework.Expectations
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="collection"/> is null.</exception>
         public static Expectation<IEnumerable<T>> EquivalentCollection<T>(this IExpectationComposer composer, IEnumerable<T> collection)
         {
-            if (collection == null) 
+            if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
             return composer.Compose(new EquivalentCollection<T>(collection));
         }
@@ -114,7 +115,7 @@ namespace LightBDD.Framework.Expectations
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="collection"/> is null.</exception>
         public static Expectation<IEnumerable<T>> EquivalentCollection<T>(this IExpectationComposer composer, params T[] collection)
         {
-            if (collection == null) 
+            if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
             return composer.EquivalentCollection(collection.AsEnumerable());
         }
@@ -218,6 +219,15 @@ namespace LightBDD.Framework.Expectations
         }
 
         /// <summary>
+        /// Creates expectation for collections to be empty.
+        /// </summary>
+        /// <param name="builder"></param>
+        public static Expectation<IEnumerable> Empty(this IExpectationComposer builder)
+        {
+            return builder.ComposeSimple<IEnumerable>(formatter => "empty", x => x != null && !x.Cast<object>().Any());
+        }
+
+        /// <summary>
         /// Creates expectation for comparable types to be between values specified by <paramref name="a"/> and <paramref name="b"/> parameters, where parameter values are not included.
         /// The <paramref name="a"/> parameter value may be greater or lower than value of <paramref name="b"/> - both scenarios are supported.
         /// None of the provided parameters can be null.
@@ -306,7 +316,7 @@ namespace LightBDD.Framework.Expectations
         /// <summary>
         /// Combines the existing expectation with one specified by <paramref name="andExpectation"/> parameter where both have to be fulfilled by values.
         /// </summary>
-        public static Expectation<T> And<T>(this Expectation<T> expectation, Func<IExpectationComposer, Expectation<T>> andExpectation)
+        public static Expectation<T> And<T>(this IExpectation<T> expectation, Func<IExpectationComposer, IExpectation<T>> andExpectation)
         {
             return new AndExpectation<T>(expectation, andExpectation(Expect.To));
         }
@@ -314,7 +324,7 @@ namespace LightBDD.Framework.Expectations
         /// <summary>
         /// Combines the existing expectation with one specified by <paramref name="orExpectation"/> parameter where at least one has to be fulfilled by values.
         /// </summary>
-        public static Expectation<T> Or<T>(this Expectation<T> expectation, Func<IExpectationComposer, Expectation<T>> orExpectation)
+        public static Expectation<T> Or<T>(this IExpectation<T> expectation, Func<IExpectationComposer, IExpectation<T>> orExpectation)
         {
             return new OrExpectation<T>(expectation, orExpectation(Expect.To));
         }

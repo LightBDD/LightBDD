@@ -16,6 +16,15 @@ namespace LightBDD.Framework.UnitTests.Expectations
         }
 
         [Test]
+        public void It_should_pass_complex_validation()
+        {
+            var expectation = Expect.To.Empty().Or(x => x.Null()).Or(x => x.Contains('c'));
+            Assert.True(expectation.Verify("abc", ValueFormattingServices.Current));
+            Assert.True(expectation.Verify("", ValueFormattingServices.Current));
+            Assert.True(expectation.Verify(null, ValueFormattingServices.Current));
+        }
+
+        [Test]
         public void It_should_pass_negated_validation()
         {
             var expectation = Expect.To.Not.GreaterThan(3).Or(x => x.Not.LessThan(5));
