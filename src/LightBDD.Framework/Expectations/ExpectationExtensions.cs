@@ -10,7 +10,7 @@ namespace LightBDD.Framework.Expectations
     /// <summary>
     /// Extensions offering methods for defining expectations.
     /// </summary>
-    public static class ExpectationComposerExtensions
+    public static class ExpectationExtensions
     {
         /// <summary>
         /// Helper method creating simple expectation based on <paramref name="predicateFn"/> and <paramref name="descriptionFn"/>.
@@ -61,6 +61,62 @@ namespace LightBDD.Framework.Expectations
             return composer.ComposeSimple<IEnumerable<T>>(
                 formatter => $"contains '{formatter.FormatValue(value)}'",
                 x => x != null && x.Contains(value));
+        }
+
+        /// <summary>
+        /// Creates expectation for collections to equal sequence specified by <paramref name="collection"/> parameter.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="composer"></param>
+        /// <param name="collection">Expected collection</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="collection"/> is null.</exception>
+        public static Expectation<IEnumerable<T>> EqualCollection<T>(this IExpectationComposer composer, IEnumerable<T> collection)
+        {
+            if (collection == null) 
+                throw new ArgumentNullException(nameof(collection));
+            return composer.Compose(new EqualCollection<T>(collection));
+        }
+
+        /// <summary>
+        /// Creates expectation for collections to equal sequence specified by <paramref name="collection"/> parameter.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="composer"></param>
+        /// <param name="collection">Expected collection</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="collection"/> is null.</exception>
+        public static Expectation<IEnumerable<T>> EqualCollection<T>(this IExpectationComposer composer, params T[] collection)
+        {
+            if (collection == null) 
+                throw new ArgumentNullException(nameof(collection));
+            return composer.EqualCollection(collection.AsEnumerable());
+        }
+
+        /// <summary>
+        /// Creates expectation for collections to equivalent sequence specified by <paramref name="collection"/> parameter.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="composer"></param>
+        /// <param name="collection">Expected collection</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="collection"/> is null.</exception>
+        public static Expectation<IEnumerable<T>> EquivalentCollection<T>(this IExpectationComposer composer, IEnumerable<T> collection)
+        {
+            if (collection == null) 
+                throw new ArgumentNullException(nameof(collection));
+            return composer.Compose(new EquivalentCollection<T>(collection));
+        }
+
+        /// <summary>
+        /// Creates expectation for collections to equivalent sequence specified by <paramref name="collection"/> parameter.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="composer"></param>
+        /// <param name="collection">Expected collection</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="collection"/> is null.</exception>
+        public static Expectation<IEnumerable<T>> EquivalentCollection<T>(this IExpectationComposer composer, params T[] collection)
+        {
+            if (collection == null) 
+                throw new ArgumentNullException(nameof(collection));
+            return composer.EquivalentCollection(collection.AsEnumerable());
         }
 
         /// <summary>
