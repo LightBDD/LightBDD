@@ -192,8 +192,8 @@ namespace LightBDD.Core.Extensibility
 
         /// <summary>
         /// Returns a collection of <see cref="IStepDecorator"/> decorators that are applied on step described by <paramref name="stepDescriptor"/> parameter.
-        /// The <see cref="IStepDecorator"/> are inferred from method attributes that implements <see cref="IStepDecoratorAttribute"/> type.
-        /// The returned collection would be sorted ascending based on <see cref="IOrderedAttribute.Order"/> property.
+        /// The <see cref="IStepDecorator"/> are inferred from declaring type and method attributes that implements <see cref="IStepDecoratorAttribute"/> type.
+        /// The returned collection would be sorted ascending based on <see cref="IOrderedAttribute.Order"/> from declaring type and then based on <see cref="IOrderedAttribute.Order"/> from method.
         /// </summary>
         /// <param name="stepDescriptor">Step descriptor.</param>
         /// <returns>Collection of decorators or empty collection if none are present.</returns>
@@ -202,21 +202,23 @@ namespace LightBDD.Core.Extensibility
             if (stepDescriptor.MethodInfo == null)
                 return Enumerable.Empty<IStepDecorator>();
 
-            return ExtractAttributes<IStepDecoratorAttribute>(stepDescriptor.MethodInfo)
-                .OrderBy(x => x.Order);
+            return ConcatAndOrderAttributes(
+                ExtractAttributes<IStepDecoratorAttribute>(stepDescriptor.MethodInfo.DeclaringType),
+                ExtractAttributes<IStepDecoratorAttribute>(stepDescriptor.MethodInfo));
         }
 
         /// <summary>
         /// Returns a collection of <see cref="IScenarioDecorator"/> decorators that are applied on scenario described by <paramref name="scenarioDescriptor"/> parameter.
-        /// The <see cref="IScenarioDecorator"/> are inferred from method attributes that implements <see cref="IScenarioDecoratorAttribute"/> type.
-        /// The returned collection would be sorted ascending based on <see cref="IOrderedAttribute.Order"/> property.
+        /// The <see cref="IScenarioDecorator"/> are inferred from declaring type and method attributes that implements <see cref="IScenarioDecoratorAttribute"/> type.
+        /// The returned collection would be sorted ascending based on <see cref="IOrderedAttribute.Order"/> from declaring type and then based on <see cref="IOrderedAttribute.Order"/> from method.
         /// </summary>
         /// <param name="scenarioDescriptor">Scenario descriptor.</param>
         /// <returns>Collection of decorators or empty collection if none are present.</returns>
         public IEnumerable<IScenarioDecorator> GetScenarioDecorators(ScenarioDescriptor scenarioDescriptor)
         {
-            return ExtractAttributes<IScenarioDecoratorAttribute>(scenarioDescriptor.MethodInfo)
-                .OrderBy(x => x.Order);
+            return ConcatAndOrderAttributes(
+                ExtractAttributes<IScenarioDecoratorAttribute>(scenarioDescriptor.MethodInfo.DeclaringType),
+                ExtractAttributes<IScenarioDecoratorAttribute>(scenarioDescriptor.MethodInfo));
         }
 
         /// <summary>
@@ -273,6 +275,18 @@ namespace LightBDD.Core.Extensibility
         }
 
         /// <summary>
+        /// Provides all attributes of type <typeparamref name="TAttribute"/> applied on <paramref name="type"/> or empty collection if none are applied.
+        /// The attribute is searched in <paramref name="type"/>.
+        /// </summary>
+        /// <param name="type">Type to analyze for specified attribute.</param>
+        /// <typeparam name="TAttribute">Type of attribute to extract.</typeparam>
+        /// <returns>All attributes or empty collection.</returns>
+        protected static IEnumerable<TAttribute> ExtractAttributes<TAttribute>(Type type)
+        {
+            return type.GetTypeInfo().GetCustomAttributes(true).OfType<TAttribute>();
+        }
+
+        /// <summary>
         /// Provides labels from  attributes implementing <see cref="ILabelAttribute"/>, applied on <paramref name="featureType"/>, or empty array if none are present.
         /// </summary>
         /// <param name="featureType">Feature type.</param>
@@ -293,7 +307,7 @@ namespace LightBDD.Core.Extensibility
         }
 
         /// <summary>
-        /// Provides feature description which is determined from attribute implementing <see cref="IFeatureDescriptionAttribute"/> in first instance, then by <see cref="GetImplementationSpecificFeatureDescription"/>() method. 
+        /// Provides feature description which is determined from attribute implementing <see cref="IFeatureDescriptionAttribute"/> in first instance, then by <see cref="GetImplementationSpecificFeatureDescription"/>() method.
         /// Returns description or <c>null</c> if none is present.
         /// </summary>
         /// <param name="featureType">Feature type.</param>
@@ -333,6 +347,11 @@ namespace LightBDD.Core.Extensibility
             {
                 throw new InvalidOperationException($"Unable to obtain scenario name for method {scenarioDescriptor.MethodInfo.Name}: {e.Message}", e);
             }
+        }
+
+        private IEnumerable<T> ConcatAndOrderAttributes<T>(params IEnumerable<T>[] sequences) where T : IOrderedAttribute
+        {
+            return sequences.SelectMany(sequence => sequence.OrderBy(orderable => orderable.Order));
         }
     }
 }

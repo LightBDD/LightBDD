@@ -1,6 +1,11 @@
 LightBDD
 ===========================================
 
+Version 2.3.6
+----------------------------------------
+Summary:
++ #108 (Core)(Change) Allowed IStepDecoratorAttribute and IScenarioDecoratorAttribute to be applied on class level
+
 Version 2.3.5
 ----------------------------------------
 Summary:
