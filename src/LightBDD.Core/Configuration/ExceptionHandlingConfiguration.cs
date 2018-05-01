@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using LightBDD.Core.Formatting.ExceptionFormatting;
-using LightBDD.Core.Internals;
 
 namespace LightBDD.Core.Configuration
 {

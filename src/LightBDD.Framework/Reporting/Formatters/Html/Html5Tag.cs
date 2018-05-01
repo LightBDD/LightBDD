@@ -25,6 +25,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         Script,
         Body,
         Thead,
-        H2
+        H2,
+        Hr
     }
 }

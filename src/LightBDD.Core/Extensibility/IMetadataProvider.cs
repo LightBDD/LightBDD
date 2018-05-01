@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility.Execution;
+using LightBDD.Core.Formatting.Parameters;
+using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Extensibility
@@ -73,14 +75,23 @@ namespace LightBDD.Core.Extensibility
         /// </summary>
         /// <param name="parameterInfo"><see cref="ParameterInfo"/> object describing step or scenario method parameter.</param>
         /// <returns>Formatter function.</returns>
-        [Obsolete("Use " + nameof(GetParameterFormatter) + "() instead.")]
+        [Obsolete("Use " + nameof(GetValueFormattingServiceFor) + " instead.", true)]
         Func<object, string> GetStepParameterFormatter(ParameterInfo parameterInfo);
         /// <summary>
         /// Provides parameter formatter function for provided <paramref name="parameterInfo"/>.
         /// </summary>
         /// <param name="parameterInfo"><see cref="ParameterInfo"/> object describing step or scenario method parameter.</param>
         /// <returns>Formatter function.</returns>
+        [Obsolete("Use " + nameof(GetValueFormattingServiceFor) + " instead.", true)]
         Func<object, string> GetParameterFormatter(ParameterInfo parameterInfo);
+        /// <summary>
+        /// Returns <see cref="IValueFormattingService"/> instance for provided <paramref name="parameterInfo"/>.
+        /// The returned formatting service is aware of any <see cref="ParameterFormatterAttribute"/> instance(s) are applied on <paramref name="parameterInfo"/> and would use them to format value before any other configured formatters.
+        /// If many instances of <see cref="ParameterFormatterAttribute"/> are present, they would be applied in <see cref="IOrderedAttribute.Order"/> order.
+        /// </summary>
+        /// <param name="parameterInfo"><see cref="ParameterInfo"/> object describing step or scenario method parameter.</param>
+        /// <returns><see cref="IValueFormattingService"/> instance.</returns>
+        IValueFormattingService GetValueFormattingServiceFor(ParameterInfo parameterInfo);
         /// <summary>
         /// Returns a collection of <see cref="IStepDecorator"/> decorators that are applied on step described by <paramref name="stepDescriptor"/> parameter.
         /// The <see cref="IStepDecorator"/> are inferred from method attributes that implements <see cref="IStepDecoratorAttribute"/> type.

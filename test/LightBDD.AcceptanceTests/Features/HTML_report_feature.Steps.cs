@@ -5,9 +5,12 @@ using System.Text;
 using System.Threading;
 using LightBDD.AcceptanceTests.Helpers;
 using LightBDD.AcceptanceTests.Helpers.Builders;
+using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
+using LightBDD.Core.Results.Parameters;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.NUnit3;
+using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -55,7 +58,7 @@ namespace LightBDD.AcceptanceTests.Features
 
         private static string BaseDirectory => AppContext.BaseDirectory;
 
-        private void a_various_features_with_scenarios_and_categories()
+        private void Given_a_various_features_with_scenarios_and_categories()
         {
             var feature = ContextValue.ResultBuilder.NewFeature("featureA");
             feature.NewScenario(ExecutionStatus.Passed).WithCategories("catA", "catB");
@@ -68,7 +71,7 @@ namespace LightBDD.AcceptanceTests.Features
             ContextValue.ResultBuilder.NewFeature("featureE").NewScenario(ExecutionStatus.Failed);
         }
 
-        private void a_various_features_with_scenarios_but_no_categories()
+        private void Given_a_various_features_with_scenarios_but_no_categories()
         {
             var feature = ContextValue.ResultBuilder.NewFeature("featureA");
             feature.NewScenario(ExecutionStatus.Passed);
@@ -81,38 +84,38 @@ namespace LightBDD.AcceptanceTests.Features
             ContextValue.ResultBuilder.NewFeature("featureE").NewScenario(ExecutionStatus.Failed);
         }
 
-        private void a_html_report_is_created()
+        private void Given_a_html_report_is_created()
         {
             ContextValue.Features = ContextValue.ResultBuilder.Build();
             var htmlText = FormatResults(ContextValue.Features.ToArray());
             File.WriteAllText(ContextValue.HtmlFileName, htmlText);
         }
 
-        private void a_html_report_is_opened()
+        private void When_a_html_report_is_opened()
         {
             ContextValue.Driver.Navigate().GoToUrl(ContextValue.HtmlFileName);
             ContextValue.Driver.EnsurePageIsLoaded();
         }
 
-        private void all_features_are_VISIBLE([VisibleFormat]bool visible)
+        private void Then_all_features_should_be_VISIBLE([VisibleFormat]bool visible)
         {
             var actual = ContextValue.Driver.FindFeatures().Count(e => e.Displayed == visible);
             Assert.That(actual, Is.EqualTo(ContextValue.Features.Count()));
         }
 
-        private void all_scenarios_are_VISIBLE([VisibleFormat]bool visible)
+        private void Then_all_scenarios_should_be_VISIBLE([VisibleFormat]bool visible)
         {
             var actual = ContextValue.Driver.FindAllScenarios().Count(e => e.Displayed == visible);
             Assert.That(actual, Is.EqualTo(ContextValue.Features.SelectMany(f => f.GetScenarios()).Count()));
         }
 
-        private void all_steps_are_VISIBLE([VisibleFormat]bool visible)
+        private void Then_all_steps_should_be_VISIBLE([VisibleFormat]bool visible)
         {
             var actual = ContextValue.Driver.FindAllSteps().Count(e => e.Displayed == visible);
             Assert.That(actual, Is.EqualTo(ContextValue.Features.SelectMany(f => f.GetScenarios()).SelectMany(s => s.GetSteps()).Count()));
         }
 
-        private void a_feature_collapse_button_is_clicked(int feature)
+        private void When_a_feature_collapse_button_is_clicked(int feature)
         {
             ClickLabeledButton(ToFeatureToggle(feature));
         }
@@ -140,13 +143,13 @@ namespace LightBDD.AcceptanceTests.Features
             return $"toggle{feature}";
         }
 
-        private void the_feature_scenarios_are_VISIBLE(int feature, [VisibleFormat]bool visible)
+        private void Then_the_feature_scenarios_should_be_VISIBLE(int feature, [VisibleFormat]bool visible)
         {
             var actual = ContextValue.Driver.FindFeature(feature).FindScenarios().Count(e => e.Displayed == visible);
             Assert.That(actual, Is.EqualTo(ContextValue.Features[feature - 1].GetScenarios().Count()));
         }
 
-        private void a_feature_scenario_collapse_button_is_clicked(int feature, int scenario)
+        private void When_a_feature_scenario_collapse_button_is_clicked(int feature, int scenario)
         {
             ClickLabeledButton(ToScenarioToggle(feature, scenario));
         }
@@ -156,57 +159,57 @@ namespace LightBDD.AcceptanceTests.Features
             return $"toggle{feature}_{scenario - 1}";
         }
 
-        private void the_feature_scenario_steps_are_VISIBLE(int feature, int scenario, [VisibleFormat]bool visible)
+        private void Then_the_feature_scenario_steps_should_be_VISIBLE(int feature, int scenario, [VisibleFormat]bool visible)
         {
             var actual = ContextValue.Driver.FindFeature(feature).FindScenario(scenario).FindSteps().Count(e => e.Displayed == visible);
             Assert.That(actual, Is.EqualTo(ContextValue.Features[feature - 1].GetScenarios().ElementAt(scenario - 1).GetSteps().Count()));
         }
 
-        private void a_feature_filter_button_is_clicked()
+        private void When_a_feature_filter_button_is_clicked()
         {
             ClickLabeledButtonSync("toggleFeatures");
         }
 
-        private void a_scenario_filter_button_is_clicked()
+        private void When_a_scenario_filter_button_is_clicked()
         {
             ClickLabeledButtonSync("toggleScenarios");
         }
 
-        private void the_scenario_filter_button_is_SELECTED([SelectedFormat]bool selected)
+        private void Then_the_scenario_filter_button_should_be_SELECTED([SelectedFormat]bool selected)
         {
             Assert.That(ContextValue.Driver.FindElementById("toggleScenarios").Selected, Is.EqualTo(selected));
         }
 
-        private void the_feature_filter_button_is_SELECTED([SelectedFormat]bool selected)
+        private void Then_the_feature_filter_button_should_be_SELECTED([SelectedFormat]bool selected)
         {
             Assert.That(ContextValue.Driver.FindElementById("toggleFeatures").Selected, Is.EqualTo(selected));
         }
 
-        private void a_filter_status_button_is_clicked(ExecutionStatus status)
+        private void When_a_filter_status_button_is_clicked(ExecutionStatus status)
         {
             ClickLabeledButton($"show{status}");
         }
 
-        private void the_filter_status_button_is_SELECTED(ExecutionStatus status, [SelectedFormat]bool selected)
+        private void Then_the_filter_status_button_should_be_SELECTED(ExecutionStatus status, [SelectedFormat]bool selected)
         {
             Assert.That(ContextValue.Driver.FindElementById($"show{status}").Selected, Is.EqualTo(selected));
         }
 
-        private void all_scenarios_with_status_are_VISIBLE(ExecutionStatus status, [VisibleFormat]bool visible)
+        private void Then_all_scenarios_with_status_should_be_VISIBLE(ExecutionStatus status, [VisibleFormat]bool visible)
         {
             var elements = ContextValue.Driver.FindAllScenarios().Where(s => s.HasClassName(status.ToString().ToLower())).ToArray();
             Assert.That(elements, Is.Not.Empty);
             Assert.That(elements.All(s => s.Displayed == visible));
         }
 
-        private void all_scenarios_with_status_other_than_STATUS_are_VISIBLE(ExecutionStatus status, [VisibleFormat]bool visible)
+        private void Then_all_scenarios_with_status_other_than_STATUS_should_be_VISIBLE(ExecutionStatus status, [VisibleFormat]bool visible)
         {
             var elements = ContextValue.Driver.FindAllScenarios().Where(s => !s.HasClassName(status.ToString().ToLower())).ToArray();
             Assert.That(elements, Is.Not.Empty);
             Assert.That(elements.All(s => s.Displayed == visible));
         }
 
-        private void all_features_having_all_scenarios_of_status_are_VISIBLE(ExecutionStatus status, [VisibleFormat]bool visible)
+        private void Then_all_features_having_all_scenarios_of_status_should_be_VISIBLE(ExecutionStatus status, [VisibleFormat]bool visible)
         {
             var expected = new[] { "feature", status.ToString().ToLower() };
             var elements = ContextValue.Driver.FindFeatures().Where(f => f.GetClassNames().SequenceEqual(expected)).ToArray();
@@ -214,13 +217,13 @@ namespace LightBDD.AcceptanceTests.Features
             Assert.That(elements.All(s => s.Displayed == visible));
         }
 
-        private void a_category_filter_button_is_clicked(string category)
+        private void When_a_category_filter_button_is_clicked(string category)
         {
             ContextValue.Driver.FindLabelByText(category)
                 .ClickSync(ContextValue.Driver);
         }
 
-        private void the_link_to_details_of_STATUS_scenarios_is_clicked(ExecutionStatus status)
+        private void When_the_link_to_details_of_STATUS_scenarios_is_clicked(ExecutionStatus status)
         {
             ContextValue.Driver.FindElementsByTagName("table").First(t => t.HasClassName("summary"))
                 .FindElements(By.TagName("td"))
@@ -229,50 +232,76 @@ namespace LightBDD.AcceptanceTests.Features
                 .Click();
         }
 
-        private void the_category_filter_button_is_SELECTED(string category, [SelectedFormat]bool selected)
+        private void Then_the_category_filter_button_should_be_SELECTED(string category, [SelectedFormat]bool selected)
         {
             var label = ContextValue.Driver.FindLabelByText(category);
             Assert.That(ContextValue.Driver.FindLabelTarget(label).Selected, Is.EqualTo(selected));
         }
 
-        private void the_feature_scenario_is_VISIBLE(int feature, int scenario, [VisibleFormat]bool visible)
+        private void Then_the_feature_scenario_should_be_VISIBLE(int feature, int scenario, [VisibleFormat]bool visible)
         {
             Assert.That(ContextValue.Driver.FindFeature(feature).FindScenario(scenario).Displayed, Is.EqualTo(visible));
         }
 
-        private void the_feature_is_VISIBLE(int feature, [VisibleFormat]bool visible)
+        private void Then_the_feature_should_be_VISIBLE(int feature, [VisibleFormat]bool visible)
         {
             Assert.That(ContextValue.Driver.FindFeature(feature).Displayed, Is.EqualTo(visible));
         }
 
-        private void a_feature_result(string feature)
+        private void Given_a_feature_result(string feature)
         {
             ContextValue.ResultBuilder.NewFeature(feature);
         }
 
-        private void the_feature_has_scenario_result_of_status_and_categories(string feature, ExecutionStatus status, params string[] categories)
+        private void Given_the_feature_has_scenario_result_of_status_and_categories(string feature, ExecutionStatus status, params string[] categories)
         {
             ContextValue.ResultBuilder.ForFeature(feature).NewScenario(status).WithCategories(categories);
         }
 
-        private void the_feature_has_scenario_result_of_status(string feature, ExecutionStatus status)
+        private void Given_the_feature_has_scenario_result_of_status(string feature, ExecutionStatus status)
         {
             ContextValue.ResultBuilder.ForFeature(feature).NewScenario(status);
         }
 
-        private void the_options_link_is_VISIBLE([VisibleFormat]bool visible)
+        private void Given_the_feature_has_scenario_result_of_status(string feature, string scenario, ExecutionStatus status)
+        {
+            ContextValue.ResultBuilder.ForFeature(feature).NewEmptyScenario(scenario, status);
+        }
+
+        private void Given_the_feature_scenario_has_step_result_with_status_and_tabular_parameter_and_content(string feature, string scenario, string step, ExecutionStatus status, string parameter, params (TableRowType type, string id, string name, string value)[] content)
+        {
+            var tabular = TestResults.CreateTabularParameterResult(parameter)
+                .WithKeyColumns("Id")
+                .WithValueColumns("Name", "Value");
+
+            foreach (var row in content)
+            {
+                tabular.AddRow(row.type,
+                    TestResults.CreateTabularParameterValue(row.id),
+                    TestResults.CreateTabularParameterValue(row.name, row.name, ParameterVerificationStatus.Success),
+                    TestResults.CreateTabularParameterValue(row.value, row.value, ParameterVerificationStatus.Success));
+            }
+
+            ContextValue.ResultBuilder
+                .ForFeature(feature)
+                .ForScenario(scenario)
+                .AddStep(step, status)
+               .WithStepParameters(tabular);
+        }
+
+        private void Then_the_options_link_should_be_VISIBLE([VisibleFormat]bool visible)
         {
             Assert.That(ContextValue.Driver.FindElementById("optionsLink").Displayed, Is.EqualTo(visible));
         }
 
-        private void the_options_link_is_clicked()
+        private void When_the_options_link_is_clicked()
         {
             ContextValue.Driver
                 .FindElementById("optionsLink")
                 .Click();
         }
 
-        private void the_page_is_redirected_to_url_with_query_part()
+        private void Then_the_page_should_be_redirected_to_url_with_query_part()
         {
             Repeat.Until(
                 () => ContextValue.Driver.Url.Contains("?"),
@@ -280,7 +309,7 @@ namespace LightBDD.AcceptanceTests.Features
             ContextValue.Driver.EnsurePageIsLoaded();
         }
 
-        private void the_Feature_Summary_table_is_sorted_ASCENDING_by_column([OrderFormat]bool ascending, FeatureSummaryColumn column)
+        private void Then_the_Feature_Summary_table_should_be_sorted_ASCENDING_by_column([OrderFormat]bool ascending, FeatureSummaryColumn column)
         {
             var values = ContextValue.Driver
                 .FindElementById("featuresSummary")
@@ -295,7 +324,7 @@ namespace LightBDD.AcceptanceTests.Features
                 Assert.That(values, Is.EqualTo(values.OrderByDescending(v => v).ToArray()));
         }
 
-        private void the_Feature_Summary_table_column_is_clicked(FeatureSummaryColumn column)
+        private void When_the_Feature_Summary_table_column_is_clicked(FeatureSummaryColumn column)
         {
             var webElement = ContextValue.Driver
                 .FindElementById("featuresSummary")
@@ -310,6 +339,21 @@ namespace LightBDD.AcceptanceTests.Features
             webElement.ClickSync(ContextValue.Driver);
         }
 
+        private void Then_the_step_should_have_tabular_parameter_visible_with_rows(string step, string parameter, params (string id, string name, string value)[] rows)
+        {
+            var tableRows = ContextValue.Driver.FindAllSteps()
+                .First(x => x.Text.Contains(step))
+                .FindElement(By.ClassName("step-parameters"))
+                .FindElements(By.ClassName("param")).First(e => e.FindElement(By.TagName("div")).Text.Equals($"{parameter}:"))
+                .FindElement(By.TagName("table"))
+                .FindElement(By.TagName("tbody"))
+                .FindElements(By.TagName("tr"));
+
+            var actual = tableRows.Select(row => row.FindElements(By.TagName("td")).Skip(1).Select(x => x.Text).ToArray()).ToArray();
+
+            Assert.That(actual, Is.EqualTo(rows.Select(r => new[] { r.id, r.name, r.value }).ToArray()));
+        }
+
         private string FormatResults(params IFeatureResult[] results)
         {
             using (var memory = new MemoryStream())
@@ -318,7 +362,6 @@ namespace LightBDD.AcceptanceTests.Features
                 return Encoding.UTF8.GetString(memory.ToArray());
             }
         }
-
     }
 
     internal enum FeatureSummaryColumn

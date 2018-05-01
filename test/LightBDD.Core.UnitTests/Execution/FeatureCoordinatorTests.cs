@@ -2,6 +2,7 @@
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution.Coordination;
 using LightBDD.Core.Reporting;
+using LightBDD.Framework.Execution.Coordination;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
@@ -10,7 +11,7 @@ namespace LightBDD.Core.UnitTests.Execution
     [TestFixture]
     public class FeatureCoordinatorTests
     {
-        class TestableFeatureCoordinator : FeatureCoordinator
+        class TestableFeatureCoordinator : FrameworkFeatureCoordinator
         {
             public TestableFeatureCoordinator()
                 : base(new TestableFeatureRunnerRepository(), new FeatureReportGenerator(), new LightBddConfiguration())

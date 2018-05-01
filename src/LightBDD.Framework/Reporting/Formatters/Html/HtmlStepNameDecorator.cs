@@ -17,8 +17,27 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         {
             return AsString(
                 Html.Tag(Html5Tag.Span)
-                    .Class(parameter.IsEvaluated ? "stepParam" : "stepParamUnknown")
+                    .Class(GetParameterValueClass(parameter))
                     .Content(parameter.FormattedValue));
+        }
+
+        private static string GetParameterValueClass(INameParameterInfo parameter)
+        {
+            if(!parameter.IsEvaluated)
+                return "stepParamUnknown";
+            switch (parameter.VerificationStatus)
+            {
+                case ParameterVerificationStatus.Success:
+                    return "stepParamSuccess";
+                case ParameterVerificationStatus.Failure:
+                case ParameterVerificationStatus.Exception:
+                    return "stepParamFailure";
+                case ParameterVerificationStatus.NotProvided:
+                    return "stepParamNotProvided";
+                case ParameterVerificationStatus.NotApplicable:
+                default:
+                    return "stepParam";
+            }
         }
 
         public string DecorateNameFormat(string nameFormat)

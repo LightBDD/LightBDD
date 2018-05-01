@@ -4,6 +4,7 @@ using System.Linq;
 using LightBDD.Core.Formatting.NameDecorators;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
+using LightBDD.Core.Results.Parameters;
 
 namespace LightBDD.UnitTests.Helpers
 {
@@ -53,6 +54,12 @@ namespace LightBDD.UnitTests.Helpers
         public static TestStepResult WithExecutionTime(this TestStepResult result, DateTimeOffset executionStart, TimeSpan executionTime)
         {
             result.ExecutionTime = new TestExecutionTime { Start = executionStart, Duration = executionTime };
+            return result;
+        }
+
+        public static TestStepResult WithStepParameters(this TestStepResult result, params IParameterResult[] parameters)
+        {
+            result.Parameters = parameters;
             return result;
         }
 
@@ -134,6 +141,44 @@ namespace LightBDD.UnitTests.Helpers
             };
         }
 
+        public static TestInlineParameterResult CreateInlineParameterResult(string name, string value)
+        {
+            return new TestInlineParameterResult(name, value);
+        }
+
+        public static TestTabularParameterResult CreateTabularParameterResult(string name)
+        {
+            return new TestTabularParameterResult(name);
+        }
+
+        public static TestTabularParameterResult WithKeyColumns(this TestTabularParameterResult result, params string[] columns)
+        {
+            result.Columns.AddRange(columns.Select(x => new TestTableColumn(true, x)));
+            return result;
+        }
+
+        public static TestTabularParameterResult WithValueColumns(this TestTabularParameterResult result, params string[] columns)
+        {
+            result.Columns.AddRange(columns.Select(x => new TestTableColumn(false, x)));
+            return result;
+        }
+
+        public static TestTabularParameterResult AddRow(this TestTabularParameterResult result, TableRowType type, params TestValueResult[] values)
+        {
+            result.Rows.Add(new TestTableRow(type, values));
+            return result;
+        }
+
+        public static TestValueResult CreateTabularParameterValue(string value)
+        {
+            return new TestValueResult { Value = value, VerificationStatus = ParameterVerificationStatus.NotApplicable };
+        }
+
+        public static TestValueResult CreateTabularParameterValue(string expected, string value, ParameterVerificationStatus status)
+        {
+            return new TestValueResult { Value = value, VerificationStatus = status, Expectation = expected };
+        }
+
         private static TestFeatureInfo CreateFeatureInfo(string name, string description, string label)
         {
             return new TestFeatureInfo
@@ -172,7 +217,7 @@ namespace LightBDD.UnitTests.Helpers
             public TestStepTypeNameInfo StepTypeName { get; set; }
             IStepTypeNameInfo IStepNameInfo.StepTypeName => StepTypeName;
 
-            public string Format(IStepNameDecorator stepNameDecorator)
+            public string Format(IStepNameDecorator decorator)
             {
                 return FormattedName;
             }
@@ -197,13 +242,16 @@ namespace LightBDD.UnitTests.Helpers
             ExecutionTime IStepResult.ExecutionTime => ExecutionTime?.ToMockedType();
             IEnumerable<string> IStepResult.Comments => Comments;
             public Exception ExecutionException { get; }
+            IEnumerable<IParameterResult> IStepResult.Parameters => Parameters;
+
             public IEnumerable<IStepResult> GetSubSteps()
             {
                 return SubSteps;
             }
 
+            public IParameterResult[] Parameters { get; set; } = new IParameterResult[0];
             public TestStepResult[] SubSteps { get; set; } = new TestStepResult[0];
-            public string[] Comments { get; set; }
+            public string[] Comments { get; set; } = new string[0];
         }
 
         public class TestStepInfo : IStepInfo
@@ -265,6 +313,7 @@ namespace LightBDD.UnitTests.Helpers
         public class TestNameParameterInfo : INameParameterInfo
         {
             public bool IsEvaluated { get; set; }
+            public ParameterVerificationStatus VerificationStatus { get; set; }
             public string FormattedValue { get; set; }
         }
 
@@ -276,6 +325,70 @@ namespace LightBDD.UnitTests.Helpers
             {
                 return Name;
             }
+        }
+
+        public class TestInlineParameterResult : IInlineParameterResult
+        {
+            public TestInlineParameterResult(string name, string value)
+            {
+                Name = name;
+                Value = new TestValueResult
+                {
+                    Value = value,
+                    VerificationStatus = ParameterVerificationStatus.NotApplicable
+                };
+            }
+
+            public string Name { get; set; }
+            IValueResult IInlineParameterResult.Value => Value;
+            public TestValueResult Value { get; set; }
+        }
+
+        public class TestTabularParameterResult : ITabularParameterResult
+        {
+            public TestTabularParameterResult(string name)
+            {
+                Name = name;
+            }
+
+            public string Name { get; }
+            IEnumerable<ITableColumn> ITabularParameterResult.Columns => Columns;
+            IEnumerable<ITableRow> ITabularParameterResult.Rows => Rows;
+
+            public List<TestTableColumn> Columns { get; } = new List<TestTableColumn>();
+            public List<TestTableRow> Rows { get; } = new List<TestTableRow>();
+        }
+
+        public class TestTableRow : ITableRow
+        {
+            public TestTableRow(TableRowType type, TestValueResult[] values)
+            {
+                Type = type;
+                Values = values;
+            }
+
+            public TableRowType Type { get; }
+            IEnumerable<IValueResult> ITableRow.Values => Values;
+            public TestValueResult[] Values { get; }
+        }
+
+        public class TestTableColumn : ITableColumn
+        {
+            public TestTableColumn(bool isKey, string name)
+            {
+                IsKey = isKey;
+                Name = name;
+            }
+            public string Name { get; }
+            public bool IsKey { get; }
+        }
+
+        public class TestValueResult : IValueResult
+        {
+            public string Value { get; set; } = "<null>";
+            public string Expectation { get; set; } = "<null>";
+            public Exception Exception { get; set; }
+            public ParameterVerificationStatus VerificationStatus { get; set; }
         }
 
         public class TestExecutionTime

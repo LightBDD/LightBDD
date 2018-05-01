@@ -1,7 +1,7 @@
 ﻿using Example.Domain.Domain;
 using LightBDD.Framework;
+using LightBDD.Framework.Expectations;
 using LightBDD.XUnit2;
-using Xunit;
 
 namespace Example.LightBDD.XUnit2.Features
 {
@@ -14,21 +14,21 @@ namespace Example.LightBDD.XUnit2.Features
             _calculator = new Calculator();
         }
 
-        private void Then_adding_X_to_Y_should_give_RESULT(int x, int y, int result)
+        private void Then_adding_X_to_Y_should_give_RESULT(int x, int y, Expected<int> result)
         {
-            Assert.Equal(result, _calculator.Add(x, y));
+            result.SetActual(() => _calculator.Add(x, y));
         }
 
-        private void Then_dividing_X_by_Y_should_give_RESULT(int x, int y, int result)
+        private void Then_dividing_X_by_Y_should_give_RESULT(int x, int y, Expected<int> result)
         {
-            Assert.Equal(result, _calculator.Divide(x, y));
+            result.SetActual(() => _calculator.Divide(x, y));
         }
 
-        private void Then_multiplying_X_by_Y_should_give_RESULT(int x, int y, int result)
+        private void Then_multiplying_X_by_Y_should_give_RESULT(int x, int y, Expected<int> result)
         {
             if (x < 0 || y < 0)
                 StepExecution.Current.IgnoreScenario("Negative numbers are not supported yet");
-            Assert.Equal(result, _calculator.Multiply(x, y));
+            result.SetActual(() => _calculator.Multiply(x, y));
         }
     }
 }
