@@ -65,63 +65,63 @@ namespace LightBDD.Core.UnitTests.Extensibility
         }
 
         [Test]
-        public void GetParameterFormatter_should_capture_parameter_formatters()
+        public void GetValueFormattingServiceFor_should_capture_parameter_formatters()
         {
             var parameter1 = ParameterInfoHelper.GetMethodParameter<int>(new Feature_type().Some_step_with_argument);
             var parameter2 = ParameterInfoHelper.GetMethodParameter<int>(new Feature_type().Some_step_with_formatted_argument);
-            var formatter1 = GetMetadataProvider().GetParameterFormatter(parameter1);
-            var formatter2 = GetMetadataProvider().GetParameterFormatter(parameter2);
+            var formatter1 = GetMetadataProvider().GetValueFormattingServiceFor(parameter1);
+            var formatter2 = GetMetadataProvider().GetValueFormattingServiceFor(parameter2);
 
-            Assert.That(formatter1.Invoke(5), Is.EqualTo($"{5}"));
-            Assert.That(formatter2.Invoke(3), Is.EqualTo($"--{3}--"));
+            Assert.That(formatter1.FormatValue(5), Is.EqualTo($"{5}"));
+            Assert.That(formatter2.FormatValue(3), Is.EqualTo($"--{3}--"));
         }
 
         [Test]
-        public void GetParameterFormatter_should_honor_multiple_parameter_formatters()
+        public void GetValueFormattingServiceFor_should_honor_multiple_parameter_formatters()
         {
             var parameter = ParameterInfoHelper.GetMethodParameter<int>(new Feature_type().Some_step_with_multiple_formatters_on_argument);
-            var formatter = GetMetadataProvider().GetParameterFormatter(parameter);
-            Assert.That(formatter(3), Is.EqualTo("--3--"));
+            var formatter = GetMetadataProvider().GetValueFormattingServiceFor(parameter);
+            Assert.That(formatter.FormatValue(3), Is.EqualTo("--3--"));
         }
 
         [Test]
-        public void GetParameterFormatter_should_format_null()
+        public void GetValueFormattingServiceFor_should_format_null()
         {
             void Step(string[] collection) { }
 
             var parameter = ParameterInfoHelper.GetMethodParameter<string[]>(Step);
-            var formatter = GetMetadataProvider().GetParameterFormatter(parameter);
-            Assert.That(formatter(null), Is.EqualTo("<null>"));
+            var formatter = GetMetadataProvider().GetValueFormattingServiceFor(parameter);
+            Assert.That(formatter.FormatValue(null), Is.EqualTo("<null>"));
         }
 
         [Test]
-        public void GetParameterFormatter_should_format_collection_honoring_null_values()
+        public void GetValueFormattingServiceFor_should_format_collection_honoring_null_values()
         {
             void Step(string[] collection) { }
 
             var parameter = ParameterInfoHelper.GetMethodParameter<string[]>(Step);
-            var formatter = GetMetadataProvider().GetParameterFormatter(parameter);
-            Assert.That(formatter(new[] { "abc", null, "def" }), Is.EqualTo("abc, <null>, def"));
+            var formatter = GetMetadataProvider().GetValueFormattingServiceFor(parameter);
+            Assert.That(formatter.FormatValue(new[] { "abc", null, "def" }), Is.EqualTo("abc, <null>, def"));
         }
 
         [Test]
-        public void GetParameterFormatter_should_format_dictionaries_honoring_null_values()
+        public void GetValueFormattingServiceFor_should_format_dictionaries_honoring_null_values()
         {
             void Step(Dictionary<string, string> collection) { }
 
             var parameter = ParameterInfoHelper.GetMethodParameter<Dictionary<string, string>>(Step);
-            var formatter = GetMetadataProvider().GetParameterFormatter(parameter);
+            var formatter = GetMetadataProvider().GetValueFormattingServiceFor(parameter);
             var dict = new Dictionary<string, string>
             {
                 {"0", null},
                 {"abc", null},
                 {"def", "value"}
             };
-            Assert.That(formatter(dict), Is.EqualTo("0: <null>, abc: <null>, def: value"));
+            Assert.That(formatter.FormatValue(dict), Is.EqualTo("0: <null>, abc: <null>, def: value"));
         }
 
         [Test]
-        public void GetParameterFormatter_should_honor_custom_formatters_then_explicit_then_formattable_then_general_then_ToString()
+        public void GetValueFormattingServiceFor_should_honor_custom_formatters_then_explicit_then_formattable_then_general_then_ToString()
         {
             var config = new ValueFormattingConfiguration()
                 .RegisterFrameworkDefaultGeneralFormatters()
@@ -131,7 +131,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
                 .RegisterGeneral(new MyStructFormatter());
 
             var parameter = ParameterInfoHelper.GetMethodParameter<object[]>(Step_with_custom_formatters);
-            var formatter = GetMetadataProvider(config).GetParameterFormatter(parameter);
+            var formatter = GetMetadataProvider(config).GetValueFormattingServiceFor(parameter);
 
             var values = new object[]
             {
@@ -144,15 +144,25 @@ namespace LightBDD.Core.UnitTests.Extensibility
                 new MyFormattable2(), // explicit formatter
                 new MyFormattable3() // ISelfFormattable
             };
-            Assert.That(formatter(values), Is.EqualTo("#<null> | #i5 | #On | #s5.5 | #my-class | #my-custom-format1 | #my-explicit2 | #my3"));
+            Assert.That(formatter.FormatValue(values), Is.EqualTo("#<null> | #i5 | #On | #s5.5 | #my-class | #my-custom-format1 | #my-explicit2 | #my3"));
         }
 
         [Test]
-        public void GetParameterFormatter_should_honor_custom_attribute_formatters_for_collection_items()
+        public void GetValueFormattingServiceFor_should_honor_custom_attribute_formatters_for_collection_items()
         {
             var parameter = ParameterInfoHelper.GetMethodParameter<bool[]>(Step_with_custom_formatter_for_collection_item);
+            var formatter = GetMetadataProvider().GetValueFormattingServiceFor(parameter);
+            Assert.That(formatter.FormatValue(new[] { true, false }), Is.EqualTo("On, Off"));
+        }
+
+        [Test]
+        public void GetValueFormattingService_should_format_values()
+        {
+            var parameter = ParameterInfoHelper.GetMethodParameter<int>(new Feature_type().Some_step_with_multiple_formatters_on_argument);
+#pragma warning disable CS0618 // Type or member is obsolete
             var formatter = GetMetadataProvider().GetParameterFormatter(parameter);
-            Assert.That(formatter(new[] { true, false }), Is.EqualTo("On, Off"));
+#pragma warning restore CS0618 // Type or member is obsolete
+            Assert.That(formatter.Invoke(3), Is.EqualTo("--3--"));
         }
 
         private void Step_with_custom_formatters([FormatCollection(" | ", "#{0}")][FormatBoolean("On", "Off")][Format("my-custom-format1", SupportedType = typeof(MyFormattable1))]object[] arg) { }
