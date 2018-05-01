@@ -3,19 +3,21 @@ using System.Globalization;
 using System.Linq;
 using Example.Domain.Domain;
 using LightBDD.Framework;
+using LightBDD.Framework.Expectations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Example.LightBDD.MsTest2.Features.Contexts
 {
     public class ContactsManagementContext
     {
-        public ContactBook ContactBook { get; private set; } = new ContactBook();
-        public List<Contact> AddedContacts { get; } = new List<Contact>();
-        public List<Contact> RemovedContacts { get; } = new List<Contact>();
+        private ContactBook _contactBook = new ContactBook();
+        private readonly List<Contact> _addedContacts = new List<Contact>();
+        private readonly List<Contact> _removedContacts = new List<Contact>();
+        private Contact[] _searchResults = new Contact[0];
 
         public void Given_my_contact_book_is_empty()
         {
-            ContactBook = new ContactBook();
+            _contactBook = new ContactBook();
         }
 
         public void When_I_add_new_contacts()
@@ -26,59 +28,59 @@ namespace Example.LightBDD.MsTest2.Features.Contexts
         public void Then_all_contacts_should_be_available_in_the_contact_book()
         {
             CollectionAssert.AreEquivalent(
-                AddedContacts,
-                ContactBook.Contacts.ToArray(),
+                _addedContacts,
+                _contactBook.Contacts.ToArray(),
                 "Contacts should be added to contact book");
         }
 
         public void Given_my_contact_book_is_filled_with_contacts()
         {
-            ContactBook = new ContactBook();
+            _contactBook = new ContactBook();
             AddSomeContacts();
         }
 
         public void When_I_remove_one_contact()
         {
-            RemoveContact(ContactBook.Contacts.First());
+            RemoveContact(_contactBook.Contacts.First());
         }
 
         public void Then_the_contact_book_should_not_contain_removed_contact_any_more()
         {
             Assert.IsFalse(
-                ContactBook.Contacts.Where(c => RemovedContacts.Contains(c)).ToArray().Any(),
+                _contactBook.Contacts.Where(c => _removedContacts.Contains(c)).ToArray().Any(),
                 "Contact book should not contain removed books");
         }
 
         public void Then_the_contact_book_should_contains_all_other_contacts()
         {
             CollectionAssert.AreEquivalent(
-                    ContactBook.Contacts.ToArray(),
-                    AddedContacts.Except(RemovedContacts).ToArray(),
+                    _contactBook.Contacts.ToArray(),
+                    _addedContacts.Except(_removedContacts).ToArray(),
                     "All contacts that has not been explicitly removed should be still present in contact book");
         }
 
         public void Given_my_contact_book_is_filled_with_many_contacts()
         {
             for (var i = 0; i < 10000; ++i)
-                ContactBook.AddContact(i.ToString(CultureInfo.InvariantCulture), i.ToString(CultureInfo.InvariantCulture), i.ToString(CultureInfo.InvariantCulture));
+                _contactBook.AddContact(i.ToString(CultureInfo.InvariantCulture), i.ToString(CultureInfo.InvariantCulture), i.ToString(CultureInfo.InvariantCulture));
         }
 
         public void When_I_clear_it()
         {
-            foreach (var contact in ContactBook.Contacts.ToArray())
+            foreach (var contact in _contactBook.Contacts.ToArray())
                 RemoveContact(contact);
             StepExecution.Current.Bypass("Contact book clearing is not implemented yet. Contacts are removed one by one.");
         }
 
         private void RemoveContact(Contact contact)
         {
-            RemovedContacts.Add(contact);
-            ContactBook.Remove(contact.Name);
+            _removedContacts.Add(contact);
+            _contactBook.Remove(contact.Name);
         }
 
         public void Then_the_contact_book_should_be_empty()
         {
-            Assert.IsFalse(ContactBook.Contacts.Any(), "Contact book should be empty");
+            Assert.IsFalse(_contactBook.Contacts.Any(), "Contact book should be empty");
         }
 
         private void AddSomeContacts()
@@ -96,8 +98,25 @@ namespace Example.LightBDD.MsTest2.Features.Contexts
 
         private void AddContact(Contact contact)
         {
-            AddedContacts.Add(contact);
-            ContactBook.AddContact(contact.Name, contact.PhoneNumber, contact.Email);
+            _addedContacts.Add(contact);
+            _contactBook.AddContact(contact.Name, contact.PhoneNumber, contact.Email);
+        }
+
+        public void Given_I_added_contact_with_name_phone_and_email(string name, string phone, string email)
+        {
+            AddContact(new Contact(name, phone, email));
+        }
+
+        public void When_I_search_for_contacts_by_phone_starting_with(string with)
+        {
+            _searchResults = _contactBook.SearchByPhoneStartingWith(with).ToArray();
+        }
+
+        public void Then_the_result_should_contain_name_with_phone_and_email(string name, Expected<string> phone, Expected<string> email)
+        {
+            var contact = _searchResults.First(x => x.Name == name);
+            phone.SetActual(contact.PhoneNumber);
+            email.SetActual(contact.Email);
         }
     }
 }

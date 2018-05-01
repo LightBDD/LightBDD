@@ -10,14 +10,14 @@ namespace Example.LightBDD.XUnit2.Features.Contexts
 {
     public class ContactsManagementContext
     {
-        private ContactBook ContactBook = new ContactBook();
-        private List<Contact> AddedContacts = new List<Contact>();
-        private List<Contact> RemovedContacts = new List<Contact>();
-        private Contact[] SearchResults = new Contact[0];
+        private ContactBook _contactBook = new ContactBook();
+        private readonly List<Contact> _addedContacts = new List<Contact>();
+        private readonly List<Contact> _removedContacts = new List<Contact>();
+        private Contact[] _searchResults = new Contact[0];
 
         public void Given_my_contact_book_is_empty()
         {
-            ContactBook = new ContactBook();
+            _contactBook = new ContactBook();
         }
 
         public void When_I_add_new_contacts()
@@ -28,57 +28,57 @@ namespace Example.LightBDD.XUnit2.Features.Contexts
         public void Then_all_contacts_should_be_available_in_the_contact_book()
         {
             Assert.Equal(
-                   AddedContacts,
-                   ContactBook.Contacts.ToArray());
+                   _addedContacts,
+                   _contactBook.Contacts.ToArray());
         }
 
         public void Given_my_contact_book_is_filled_with_contacts()
         {
-            ContactBook = new ContactBook();
+            _contactBook = new ContactBook();
             AddSomeContacts();
         }
 
         public void When_I_remove_one_contact()
         {
-            RemoveContact(ContactBook.Contacts.First());
+            RemoveContact(_contactBook.Contacts.First());
         }
 
         public void Then_the_contact_book_should_not_contain_removed_contact_any_more()
         {
             Assert.Equal(
                  Enumerable.Empty<Contact>(),
-                 ContactBook.Contacts.Where(c => RemovedContacts.Contains(c)).ToArray());
+                 _contactBook.Contacts.Where(c => _removedContacts.Contains(c)).ToArray());
         }
 
         public void Then_the_contact_book_should_contains_all_other_contacts()
         {
             Assert.Equal(
-                   ContactBook.Contacts.ToArray(),
-                   AddedContacts.Except(RemovedContacts).ToArray());
+                   _contactBook.Contacts.ToArray(),
+                   _addedContacts.Except(_removedContacts).ToArray());
         }
 
         public void Given_my_contact_book_is_filled_with_many_contacts()
         {
             for (var i = 0; i < 10000; ++i)
-                ContactBook.AddContact(i.ToString(CultureInfo.InvariantCulture), i.ToString(CultureInfo.InvariantCulture), i.ToString(CultureInfo.InvariantCulture));
+                _contactBook.AddContact(i.ToString(CultureInfo.InvariantCulture), i.ToString(CultureInfo.InvariantCulture), i.ToString(CultureInfo.InvariantCulture));
         }
 
         public void When_I_clear_it()
         {
-            foreach (var contact in ContactBook.Contacts.ToArray())
+            foreach (var contact in _contactBook.Contacts.ToArray())
                 RemoveContact(contact);
             StepExecution.Current.Bypass("Contact book clearing is not implemented yet. Contacts are removed one by one.");
         }
 
         private void RemoveContact(Contact contact)
         {
-            RemovedContacts.Add(contact);
-            ContactBook.Remove(contact.Name);
+            _removedContacts.Add(contact);
+            _contactBook.Remove(contact.Name);
         }
 
         public void Then_the_contact_book_should_be_empty()
         {
-            Assert.Empty(ContactBook.Contacts);
+            Assert.Empty(_contactBook.Contacts);
         }
 
         private void AddSomeContacts()
@@ -96,8 +96,8 @@ namespace Example.LightBDD.XUnit2.Features.Contexts
 
         private void AddContact(Contact contact)
         {
-            AddedContacts.Add(contact);
-            ContactBook.AddContact(contact.Name, contact.PhoneNumber, contact.Email);
+            _addedContacts.Add(contact);
+            _contactBook.AddContact(contact.Name, contact.PhoneNumber, contact.Email);
         }
 
         public void Given_I_added_contact_with_name_phone_and_email(string name, string phone, string email)
@@ -107,12 +107,12 @@ namespace Example.LightBDD.XUnit2.Features.Contexts
 
         public void When_I_search_for_contacts_by_phone_starting_with(string with)
         {
-            SearchResults = ContactBook.SearchByPhoneStartingWith(with).ToArray();
+            _searchResults = _contactBook.SearchByPhoneStartingWith(with).ToArray();
         }
 
         public void Then_the_result_should_contain_name_with_phone_and_email(string name, Expected<string> phone, Expected<string> email)
         {
-            var contact = SearchResults.First(x => x.Name == name);
+            var contact = _searchResults.First(x => x.Name == name);
             phone.SetActual(contact.PhoneNumber);
             email.SetActual(contact.Email);
         }
