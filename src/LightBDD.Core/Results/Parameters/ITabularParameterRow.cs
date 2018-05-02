@@ -5,7 +5,7 @@ namespace LightBDD.Core.Results.Parameters
     /// <summary>
     /// Interface representing tabular parameter result table row
     /// </summary>
-    public interface ITableRow
+    public interface ITabularParameterRow
     {
         /// <summary>
         /// Returns row type.

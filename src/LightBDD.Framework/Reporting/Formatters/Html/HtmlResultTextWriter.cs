@@ -410,15 +410,15 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
         private static IHtmlNode GetStepParameter(IParameterResult parameter)
         {
-            if (parameter is ITabularParameterResult table)
-                return GetTabularParameter(table);
+            if (parameter.Result is ITabularParameterResult table)
+                return GetTabularParameter(parameter.Name, table);
             return Html.Nothing();
         }
 
-        private static IHtmlNode GetTabularParameter(ITabularParameterResult table)
+        private static IHtmlNode GetTabularParameter(string parameterName, ITabularParameterResult table)
         {
             return Html.Tag(Html5Tag.Div).Class("param").Content(
-                Html.Tag(Html5Tag.Div).Content($"{table.Name}:"),
+                Html.Tag(Html5Tag.Div).Content($"{parameterName}:"),
                 Html.Tag(Html5Tag.Table).Class("param").Content(GetParameterTable(table)));
         }
 
@@ -434,14 +434,14 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             yield return Html.Tag(Html5Tag.Tbody).Content(table.Rows.Select(GetParameterTableRow));
         }
 
-        private static IHtmlNode GetParameterTableRow(ITableRow row)
+        private static IHtmlNode GetParameterTableRow(ITabularParameterRow row)
         {
             var values = row.Values.Select(GetRowValue).ToList();
             values.Insert(0, Html.Tag(Html5Tag.Td).Class("param type").Content(GetRowTypeContent(row)));
             return Html.Tag(Html5Tag.Tr).Content(values);
         }
 
-        private static string GetRowTypeContent(ITableRow row)
+        private static string GetRowTypeContent(ITabularParameterRow row)
         {
             switch (row.Type)
             {

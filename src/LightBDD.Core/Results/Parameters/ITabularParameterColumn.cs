@@ -3,7 +3,7 @@ namespace LightBDD.Core.Results.Parameters
     /// <summary>
     /// Interface representing tabular parameter result table column
     /// </summary>
-    public interface ITableColumn
+    public interface ITabularParameterColumn
     {
         /// <summary>
         /// Returns column name.

@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using LightBDD.Core.Formatting.Parameters;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Metadata;
+using LightBDD.Core.Results.Parameters;
 using LightBDD.Framework.Formatting.Values;
+using LightBDD.Framework.Results.Implementation;
 
 namespace LightBDD.Framework.Expectations
 {
@@ -154,7 +156,9 @@ namespace LightBDD.Framework.Expectations
             _formattingService = formattingService;
         }
 
-        Exception IVerifiableParameter.GetValidationException()
+        IParameterVerificationResult IVerifiableParameter.Result => new InlineParameterResult(Expectation.Format(_formattingService), _actualText, Status, GetValidationException());
+
+        private Exception GetValidationException()
         {
             if (Status == ParameterVerificationStatus.NotProvided)
                 return new InvalidOperationException(ToString() + ", but did not received anything");

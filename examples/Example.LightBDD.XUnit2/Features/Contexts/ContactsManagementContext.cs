@@ -116,5 +116,9 @@ namespace Example.LightBDD.XUnit2.Features.Contexts
             phone.SetActual(contact.PhoneNumber);
             email.SetActual(contact.Email);
         }
+
+        public void Then_I_should_receive(Table<KeyValuePair<string, Contact>> table)
+        {
+        }
     }
 }

@@ -14,6 +14,7 @@ using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Implementation;
+using LightBDD.Core.Results.Parameters;
 
 namespace LightBDD.Core.Execution.Implementation
 {
@@ -210,11 +211,20 @@ namespace LightBDD.Core.Execution.Implementation
 
         private void VerifyParameters()
         {
-            var exceptions = _arguments
-                .Select(a => a.Value)
-                .OfType<IVerifiableParameter>()
-                .Select(p => p.GetValidationException())
-                .Where(ex => ex != null)
+            //TODO: test
+            var results = new List<IParameterResult>();
+            foreach (var argument in _arguments)
+            {
+                if (!(argument.Value is IVerifiableParameter verifiable))
+                    continue;
+                results.Add(new ParameterResult(argument.RawName, verifiable.Result));
+            }
+
+            _result.SetParameters(results);
+
+            var exceptions = results
+                .Select(x => x.Result.Exception)
+                .Where(e => e != null)
                 .ToArray();
 
             if (!exceptions.Any())

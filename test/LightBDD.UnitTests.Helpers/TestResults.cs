@@ -141,31 +141,36 @@ namespace LightBDD.UnitTests.Helpers
             };
         }
 
-        public static TestInlineParameterResult CreateInlineParameterResult(string name, string value)
+        public static IParameterResult CreateTestParameter(string parameter, IParameterVerificationResult result)
         {
-            return new TestInlineParameterResult(name, value);
+            return new TestParameterResult(parameter, result);
         }
 
-        public static TestTabularParameterResult CreateTabularParameterResult(string name)
+        public static TestInlineParameterResult CreateInlineParameterResult(string value)
         {
-            return new TestTabularParameterResult(name);
+            return new TestInlineParameterResult(value);
+        }
+
+        public static TestTabularParameterResult CreateTabularParameterResult()
+        {
+            return new TestTabularParameterResult();
         }
 
         public static TestTabularParameterResult WithKeyColumns(this TestTabularParameterResult result, params string[] columns)
         {
-            result.Columns.AddRange(columns.Select(x => new TestTableColumn(true, x)));
+            result.Columns.AddRange(columns.Select(x => new TestTabularParameterColumn(true, x)));
             return result;
         }
 
         public static TestTabularParameterResult WithValueColumns(this TestTabularParameterResult result, params string[] columns)
         {
-            result.Columns.AddRange(columns.Select(x => new TestTableColumn(false, x)));
+            result.Columns.AddRange(columns.Select(x => new TestTabularParameterColumn(false, x)));
             return result;
         }
 
         public static TestTabularParameterResult AddRow(this TestTabularParameterResult result, TableRowType type, params TestValueResult[] values)
         {
-            result.Rows.Add(new TestTableRow(type, values));
+            result.Rows.Add(new TestTabularParameterRow(type, values));
             return result;
         }
 
@@ -329,52 +334,44 @@ namespace LightBDD.UnitTests.Helpers
 
         public class TestInlineParameterResult : IInlineParameterResult
         {
-            public TestInlineParameterResult(string name, string value)
+            public TestInlineParameterResult(string value)
             {
-                Name = name;
-                Value = new TestValueResult
-                {
-                    Value = value,
-                    VerificationStatus = ParameterVerificationStatus.NotApplicable
-                };
+                Value = value;
             }
 
-            public string Name { get; set; }
-            IValueResult IInlineParameterResult.Value => Value;
-            public TestValueResult Value { get; set; }
+            public Exception Exception { get; }
+            public ParameterVerificationStatus VerificationStatus { get; } = ParameterVerificationStatus.NotApplicable;
+            public string Value { get; }
+            public string Expectation { get; }
         }
 
         public class TestTabularParameterResult : ITabularParameterResult
         {
-            public TestTabularParameterResult(string name)
-            {
-                Name = name;
-            }
+            public Exception Exception { get; }
+            public ParameterVerificationStatus VerificationStatus { get; }
+            IEnumerable<ITabularParameterColumn> ITabularParameterResult.Columns => Columns;
+            IEnumerable<ITabularParameterRow> ITabularParameterResult.Rows => Rows;
 
-            public string Name { get; }
-            IEnumerable<ITableColumn> ITabularParameterResult.Columns => Columns;
-            IEnumerable<ITableRow> ITabularParameterResult.Rows => Rows;
-
-            public List<TestTableColumn> Columns { get; } = new List<TestTableColumn>();
-            public List<TestTableRow> Rows { get; } = new List<TestTableRow>();
+            public List<TestTabularParameterColumn> Columns { get; } = new List<TestTabularParameterColumn>();
+            public List<TestTabularParameterRow> Rows { get; } = new List<TestTabularParameterRow>();
         }
 
-        public class TestTableRow : ITableRow
+        public class TestTabularParameterRow : ITabularParameterRow
         {
-            public TestTableRow(TableRowType type, TestValueResult[] values)
+            public TestTabularParameterRow(TableRowType type, TestValueResult[] values)
             {
                 Type = type;
                 Values = values;
             }
 
             public TableRowType Type { get; }
-            IEnumerable<IValueResult> ITableRow.Values => Values;
+            IEnumerable<IValueResult> ITabularParameterRow.Values => Values;
             public TestValueResult[] Values { get; }
         }
 
-        public class TestTableColumn : ITableColumn
+        public class TestTabularParameterColumn : ITabularParameterColumn
         {
-            public TestTableColumn(bool isKey, string name)
+            public TestTabularParameterColumn(bool isKey, string name)
             {
                 IsKey = isKey;
                 Name = name;
@@ -401,6 +398,19 @@ namespace LightBDD.UnitTests.Helpers
             public TimeSpan Duration { get; set; }
             public DateTimeOffset Start { get; set; }
         }
+
+        public class TestParameterResult : IParameterResult
+        {
+            public string Name { get; }
+            public IParameterVerificationResult Result { get; }
+
+            public TestParameterResult(string name, IParameterVerificationResult result)
+            {
+                Name = name;
+                Result = result;
+            }
+        }
+
         #endregion
     }
 }

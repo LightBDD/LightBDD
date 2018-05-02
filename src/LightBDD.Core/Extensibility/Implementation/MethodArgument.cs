@@ -40,7 +40,7 @@ namespace LightBDD.Core.Extensibility.Implementation
                 return NameParameterInfo.Unknown;
 
             if (Value is IVerifiableParameter p)
-                return new NameParameterInfo(true, _formattingService.FormatValue(Value), p.Status);
+                return new NameParameterInfo(true, _formattingService.FormatValue(Value), p.Result.VerificationStatus);
             return new NameParameterInfo(true, _formattingService.FormatValue(Value), ParameterVerificationStatus.NotApplicable);
         }
 

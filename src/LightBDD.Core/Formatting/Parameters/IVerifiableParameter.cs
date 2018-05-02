@@ -1,6 +1,5 @@
-﻿using System;
-using LightBDD.Core.Formatting.Values;
-using LightBDD.Core.Metadata;
+﻿using LightBDD.Core.Formatting.Values;
+using LightBDD.Core.Results.Parameters;
 
 namespace LightBDD.Core.Formatting.Parameters
 {
@@ -14,13 +13,10 @@ namespace LightBDD.Core.Formatting.Parameters
         /// </summary>
         /// <param name="formattingService">Formatting service to use.</param>
         void SetValueFormattingService(IValueFormattingService formattingService);
+
         /// <summary>
-        /// Function returning validation exception or null, if parameter validation is successful.
+        /// Returns parameter verification result.
         /// </summary>
-        Exception GetValidationException();
-        /// <summary>
-        /// Returns verification status.
-        /// </summary>
-        ParameterVerificationStatus Status { get; }
+        IParameterVerificationResult Result { get; }
     }
 }

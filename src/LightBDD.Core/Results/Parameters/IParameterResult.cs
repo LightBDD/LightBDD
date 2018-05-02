@@ -9,5 +9,9 @@ namespace LightBDD.Core.Results.Parameters
         /// Parameter name.
         /// </summary>
         string Name { get; }
+        /// <summary>
+        /// Parameter value.
+        /// </summary>
+        IParameterVerificationResult Result { get; }
     }
 }

@@ -270,7 +270,7 @@ namespace LightBDD.AcceptanceTests.Features
 
         private void Given_the_feature_scenario_has_step_result_with_status_and_tabular_parameter_and_content(string feature, string scenario, string step, ExecutionStatus status, string parameter, params (TableRowType type, string id, string name, string value)[] content)
         {
-            var tabular = TestResults.CreateTabularParameterResult(parameter)
+            var tabular = TestResults.CreateTabularParameterResult()
                 .WithKeyColumns("Id")
                 .WithValueColumns("Name", "Value");
 
@@ -286,7 +286,7 @@ namespace LightBDD.AcceptanceTests.Features
                 .ForFeature(feature)
                 .ForScenario(scenario)
                 .AddStep(step, status)
-               .WithStepParameters(tabular);
+               .WithStepParameters(TestResults.CreateTestParameter(parameter, tabular));
         }
 
         private void Then_the_options_link_should_be_VISIBLE([VisibleFormat]bool visible)
