@@ -1,6 +1,7 @@
 ﻿using Example.Domain.Domain;
 using LightBDD.Framework;
 using LightBDD.Framework.Expectations;
+using LightBDD.Framework.Parameters;
 using LightBDD.XUnit2;
 
 namespace Example.LightBDD.XUnit2.Features

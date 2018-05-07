@@ -3,13 +3,12 @@ using System.Globalization;
 using System.Threading.Tasks;
 using LightBDD.Core.Formatting.Parameters;
 using LightBDD.Core.Metadata;
-using LightBDD.Framework.Expectations;
+using LightBDD.Framework.Parameters;
 using LightBDD.Framework.UnitTests.Formatting;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 using RandomTestValues;
 
-namespace LightBDD.Framework.UnitTests.Expectations
+namespace LightBDD.Framework.UnitTests.Parameters
 {
     [TestFixture]
     public class Expected_tests

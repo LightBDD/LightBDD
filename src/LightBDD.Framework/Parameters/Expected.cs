@@ -5,10 +5,11 @@ using LightBDD.Core.Formatting.Parameters;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters;
+using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Formatting.Values;
 using LightBDD.Framework.Results.Implementation;
 
-namespace LightBDD.Framework.Expectations
+namespace LightBDD.Framework.Parameters
 {
     /// <summary>
     /// Type allowing to specify verifiable parameters for LightBDD steps, which outcome is inlined in the step name.
@@ -26,6 +27,7 @@ namespace LightBDD.Framework.Expectations
     /// </example>
     /// </summary>
     /// <typeparam name="T">Type of the expected parameter</typeparam>
+    //TODO: consider renaming, consider moving to root
     public sealed class Expected<T> : IVerifiableParameter
     {
         private IValueFormattingService _formattingService = ValueFormattingServices.Current;

@@ -4,6 +4,7 @@ using System.Linq;
 using Example.Domain.Domain;
 using LightBDD.Framework;
 using LightBDD.Framework.Expectations;
+using LightBDD.Framework.Parameters;
 using NUnit.Framework;
 
 namespace Example.LightBDD.NUnit2.Features.Contexts
