@@ -18,10 +18,10 @@ namespace LightBDD.Framework.Parameters
         public IReadOnlyList<TRow> Actual { get; private set; }
         public IReadOnlyList<VerifiableTableColumn<TRow>> Columns { get; }
 
-        public VerifiableTable(IEnumerable<TRow> expected, params VerifiableTableColumn<TRow>[] columns)
+        public VerifiableTable(IEnumerable<TRow> expected, IEnumerable<VerifiableTableColumn<TRow>> columns)
         {
             Expected = expected.ToArray();
-            Columns = columns;
+            Columns = columns.ToArray();
         }
 
         public VerifiableTable<TRow> SetActual(IEnumerable<TRow> actual)
@@ -117,7 +117,7 @@ namespace LightBDD.Framework.Parameters
             _formattingService = formattingService;
         }
 
-        public IParameterVerificationResult Result { get; private set; }=new TabularParameterResult(Enumerable.Empty<ITabularParameterColumn>(),Enumerable.Empty<ITabularParameterRow>());
+        public IParameterVerificationResult Result { get; private set; } = new TabularParameterResult(Enumerable.Empty<ITabularParameterColumn>(), Enumerable.Empty<ITabularParameterRow>());
 
         /// <summary>
         /// Returns inline representation of table

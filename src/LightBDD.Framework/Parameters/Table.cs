@@ -20,7 +20,7 @@ namespace LightBDD.Framework.Parameters
         public Table(IReadOnlyList<TRow> rows, IEnumerable<TableColumn<TRow>> columns)
         {
             _rows = rows;
-            _columns = columns.OrderBy(x=>x.Name).ToArray();
+            _columns = columns.ToArray();
         }
 
         void IVerifiableParameter.SetValueFormattingService(IValueFormattingService formattingService)

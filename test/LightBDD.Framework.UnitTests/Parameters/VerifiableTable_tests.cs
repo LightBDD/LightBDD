@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace LightBDD.Framework.UnitTests.Parameters
 {
     [TestFixture]
-    public class Table_tests
+    public class VerifiableTable_tests
     {
         class Base
         {
@@ -40,7 +40,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         [Test]
         public void It_should_infer_columns_from_class_collection()
         {
-            TestCollectionAsTable(new[]
+            TestCollectionAsVerifiableTable(new[]
                 {
                     new Derived {Field = "a", Name = "b", Text = "c", Value = "d", Virtual = 5},
                     new Derived {Field = "a2", Name = "b2", Text = "c2", Value = "d2", Virtual = 10}
@@ -53,7 +53,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         [Test]
         public void It_should_infer_columns_from_struct_collection()
         {
-            TestCollectionAsTable(
+            TestCollectionAsVerifiableTable(
                 new[]
                 {
                     new Point(2, 3),
@@ -67,7 +67,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         [Test]
         public void It_should_infer_columns_from_ValueTuple_collection()
         {
-            TestCollectionAsTable(
+            TestCollectionAsVerifiableTable(
                 new[]
                 {
                     (name: "Joe", surname: "Smith"),
@@ -81,7 +81,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         [Test]
         public void It_should_infer_columns_from_unnamed_ValueTuple_collection()
         {
-            TestCollectionAsTable(
+            TestCollectionAsVerifiableTable(
                 new[]
                 {
                     ( "Joe",  "Smith"),
@@ -95,7 +95,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         [Test]
         public void It_should_infer_columns_from_Tuple_collection()
         {
-            TestCollectionAsTable(
+            TestCollectionAsVerifiableTable(
                 new[]
                 {
                     Tuple.Create("Joe", "Smith"),
@@ -109,7 +109,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         [Test]
         public void It_should_infer_columns_from_Int_collection()
         {
-            TestCollectionAsTable(
+            TestCollectionAsVerifiableTable(
                 new[] { 1, 2, 3 },
                 new[] { "Item" },
                 1,
@@ -119,7 +119,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         [Test]
         public void It_should_infer_columns_from_String_collection()
         {
-            TestCollectionAsTable(
+            TestCollectionAsVerifiableTable(
                 new[] { "t1", "t2", "t3" },
                 new[] { "Item" },
                 1,
@@ -129,8 +129,8 @@ namespace LightBDD.Framework.UnitTests.Parameters
         [Test]
         public void It_should_infer_columns_from_Object_collection()
         {
-            TestCollectionAsTable(
-                new object[] { "t1", 2,'c' },
+            TestCollectionAsVerifiableTable(
+                new object[] { "t1", 2, 'c' },
                 new[] { "Item" },
                 1,
                 new[] { ColumnValue.From(2) });
@@ -139,16 +139,16 @@ namespace LightBDD.Framework.UnitTests.Parameters
         [Test]
         public void It_should_infer_columns_from_multi_dimensional_collection()
         {
-            TestCollectionAsTable(
+            TestCollectionAsVerifiableTable(
                 new[]
                 {
                     new[]{1,2},
                     new[]{3,4,5},
                     new[]{6,7,8,9}
                 },
-                new[] { "[0]", "[1]", "[2]", "[3]" },
+                new[] { "Length", "[0]", "[1]", "[2]", "[3]" },
                 1,
-                new[] { ColumnValue.From(3), ColumnValue.From(4), ColumnValue.From(5), ColumnValue.None });
+                new[] { ColumnValue.From(3), ColumnValue.From(3), ColumnValue.From(4), ColumnValue.From(5), ColumnValue.None });
         }
 
         [Test]
@@ -159,16 +159,16 @@ namespace LightBDD.Framework.UnitTests.Parameters
 {""name"":""Sarah"",""surname"":""Smith""},
 {""name"":""Joe"",""surname"":""Smith"",""age"":27}
 ]";
-            TestCollectionAsTable(
+            TestCollectionAsVerifiableTable(
                 JsonConvert.DeserializeObject<ExpandoObject[]>(json),
                 new[] { "age", "name", "surname" },
                 1,
                 new[] { ColumnValue.None, ColumnValue.From("Sarah"), ColumnValue.From("Smith") });
         }
 
-        private static void TestCollectionAsTable<T>(T[] input, string[] expectedColumns, int index, ColumnValue[] expectedValues)
+        private static void TestCollectionAsVerifiableTable<T>(T[] input, string[] expectedColumns, int index, ColumnValue[] expectedValues)
         {
-            var table = input.AsTable();
+            var table = input.AsVerifiableTable();
             Assert.That(table.Columns.All(x => !x.IsKey), Is.True);
             Assert.That(table.Columns.Select(c => c.Name).ToArray(), Is.EqualTo(expectedColumns));
 
