@@ -1,12 +1,11 @@
 ﻿using System.Threading.Tasks;
+using LightBDD.Fixie2;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.Framework.Scenarios.Fluent;
-using LightBDD.MsTest2;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Example.LightBDD.MsTest2.UWP.Features
+namespace Example.LightBDD.Fixie2.Features
 {
     /// <summary>
     /// This feature class presents usage of fluent scenario syntax, that is enabled by NewScenario() method.
@@ -15,7 +14,6 @@ namespace Example.LightBDD.MsTest2.UWP.Features
     /// 
     /// More information on fluent syntax can be found here: https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#fluent-scenarios
     /// </summary>
-    [TestClass]
     [Label("STORY-9")]
     [FeatureDescription(
 @"In order to see all payment details
