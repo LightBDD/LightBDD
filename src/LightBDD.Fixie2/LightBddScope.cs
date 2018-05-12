@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Fixie;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Formatting.ExceptionFormatting;
@@ -23,11 +24,13 @@ namespace LightBDD.Fixie2
     /// </summary>
     public class LightBddScope : Execution, IDisposable
     {
+        [DebuggerStepThrough]
         void Execution.Execute(TestClass testClass)
         {
             testClass.RunCases(c => RunCase(testClass, c));
         }
 
+        [DebuggerStepThrough]
         private void RunCase(TestClass testClass, Case testCase)
         {
             var instance = testClass.Construct();
