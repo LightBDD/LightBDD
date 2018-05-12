@@ -66,8 +66,8 @@ namespace LightBDD.Framework.Parameters
             else
             {
                 columns.AddRange(
-                    GetProperties(typeof(TRow)).Where(x => x.CanRead).Select(property => createColumn(property.Name, false, r => r != null ? ColumnValue.From(property.GetValue(r)) : ColumnValue.None))
-                    .Concat(GetFields(typeof(TRow)).Where(x => x.IsPublic && !x.IsStatic).Select(field => createColumn(field.Name, false, r => r != null ? ColumnValue.From(field.GetValue(r)) : ColumnValue.None)))
+                    GetProperties(typeof(TRow)).Select(property => createColumn(property.Name, false, r => r != null ? ColumnValue.From(property.GetValue(r)) : ColumnValue.None))
+                    .Concat(GetFields(typeof(TRow)).Select(field => createColumn(field.Name, false, r => r != null ? ColumnValue.From(field.GetValue(r)) : ColumnValue.None)))
                     .OrderBy(x => x.Name));
             }
 

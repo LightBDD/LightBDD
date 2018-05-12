@@ -4,6 +4,7 @@ using System.Linq;
 using Example.Domain.Domain;
 using LightBDD.Framework;
 using LightBDD.Framework.Expectations;
+using LightBDD.Framework.Parameters;
 using Shouldly;
 
 namespace Example.LightBDD.Fixie2.Features.Contexts

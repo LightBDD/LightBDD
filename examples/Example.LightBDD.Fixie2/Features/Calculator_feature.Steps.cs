@@ -1,7 +1,7 @@
 ﻿using Example.Domain.Domain;
 using LightBDD.Fixie2;
 using LightBDD.Framework;
-using LightBDD.Framework.Expectations;
+using LightBDD.Framework.Parameters;
 
 namespace Example.LightBDD.Fixie2.Features
 {
