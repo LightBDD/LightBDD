@@ -12,7 +12,7 @@ namespace LightBDD.Fixie2.Implementation
         public new static FeatureCoordinator GetInstance()
         {
             if (Instance == null)
-                throw new InvalidOperationException($"LightBDD integration is not initialized. Please ensure that following classes are defined in test assembly: \nclass ConfiguredLightBddScope : {nameof(LightBddScope)} {{ }}\n class WithLightBddConventions : {nameof(LightBddDiscoveryConvention)} {{ }}");
+                throw new InvalidOperationException($"LightBDD integration is not initialized. Please ensure that following classes are defined in test assembly: \nclass ConfiguredLightBddScope : {nameof(LightBddScope)} {{ }}\nclass WithLightBddConventions : {nameof(LightBddDiscoveryConvention)} {{ }}");
             if (Instance.IsDisposed)
                 throw new InvalidOperationException("LightBDD scenario test execution is already finished. Please ensure that no tests are executed outside  of assembly execution scope.");
             return Instance;
