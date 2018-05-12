@@ -16,6 +16,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>bdd;tdd;testing;framework;behavior driven development;acceptance criteria</PackageTags>
     <PackageReleaseNotes>Allowed IStepDecoratorAttribute and IScenarioDecoratorAttribute to be applied on class level; Details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-236</PackageReleaseNotes>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)'=='Release'">

@@ -1,6 +1,11 @@
 LightBDD
 ===========================================
 
+Version 2.4.0
+----------------------------------------
+Summary:
++ #67 (Fixie)(New) Added LightBdd.Fixie2 integration project with https://github.com/fixie/fixie
+
 Version 2.3.6
 ----------------------------------------
 Summary:
