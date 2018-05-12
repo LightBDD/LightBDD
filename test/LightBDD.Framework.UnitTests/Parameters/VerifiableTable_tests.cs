@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using LightBDD.Framework.Parameters;
@@ -166,13 +167,39 @@ namespace LightBDD.Framework.UnitTests.Parameters
                 new[] { ColumnValue.None, ColumnValue.From("Sarah"), ColumnValue.From("Smith") });
         }
 
+        [Test]
+        public void It_should_infer_columns_from_Dictionary()
+        {
+            var input = new Dictionary<string, Point>
+            {
+                {"key1", new Point(3, 5)},
+                {"key2", new Point(2, 7)}
+            };
+            var table = input.AsVerifiableTable();
+            AssertColumnNames(table, "Key", "X", "Y");
+            Assert.That(table.Columns[0].IsKey, Is.True);
+            Assert.That(table.Columns[1].IsKey, Is.False);
+            Assert.That(table.Columns[2].IsKey, Is.False);
+
+            AssertValues(table, input.First(), ColumnValue.From("key1"), ColumnValue.From(3), ColumnValue.From(5));
+        }
+
         private static void TestCollectionAsVerifiableTable<T>(T[] input, string[] expectedColumns, int index, ColumnValue[] expectedValues)
         {
             var table = input.AsVerifiableTable();
             Assert.That(table.Columns.All(x => !x.IsKey), Is.True);
-            Assert.That(table.Columns.Select(c => c.Name).ToArray(), Is.EqualTo(expectedColumns));
+            AssertColumnNames(table, expectedColumns);
+            AssertValues(table, input[index], expectedValues);
+        }
 
-            Assert.That(table.Columns.Select(c => c.GetValue(input[index])).ToArray(), Is.EqualTo(expectedValues));
+        private static void AssertValues<T>(VerifiableTable<T> table, T row, params ColumnValue[] expectedValues)
+        {
+            Assert.That(table.Columns.Select(c => c.GetValue(row)).ToArray(), Is.EqualTo(expectedValues));
+        }
+
+        private static void AssertColumnNames<T>(VerifiableTable<T> table, params string[] expectedColumns)
+        {
+            Assert.That(table.Columns.Select(c => c.Name).ToArray(), Is.EqualTo(expectedColumns));
         }
     }
 }
