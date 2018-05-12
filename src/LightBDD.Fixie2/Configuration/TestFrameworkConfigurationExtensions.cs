@@ -10,18 +10,17 @@ namespace LightBDD.Fixie2.Configuration
     public static class TestFrameworkConfigurationExtensions
     {
         /// <summary>
-        /// Adds xunit specific stack trace member exclusions.
+        /// Adds Fixie specific stack trace member exclusions.
         /// </summary>
         /// <param name="formatter">Formatter.</param>
         /// <returns>Formatter.</returns>
         public static DefaultExceptionFormatter WithTestFrameworkDefaults(this DefaultExceptionFormatter formatter)
         {
-            return formatter
-                .WithMembersExcludedFromStackTrace("Xunit\\..*");
+            return formatter;
         }
 
         /// <summary>
-        /// Appends LightBDD.XUnit2 default scenario progress notifiers.
+        /// Appends LightBDD.Fixie2 default scenario progress notifiers.
         /// </summary>
         public static ScenarioProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this ScenarioProgressNotifierConfiguration configuration)
         {
@@ -30,7 +29,7 @@ namespace LightBDD.Fixie2.Configuration
         }
 
         /// <summary>
-        /// Appends LightBDD.XUnit2 default feature progress notifiers.
+        /// Appends LightBDD.Fixie2 default feature progress notifiers.
         /// </summary>
         public static FeatureProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this FeatureProgressNotifierConfiguration configuration)
         {
