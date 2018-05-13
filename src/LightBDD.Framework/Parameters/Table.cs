@@ -14,10 +14,10 @@ namespace LightBDD.Framework.Parameters
     public class Table<TRow> : IVerifiableParameter, ISelfFormattable, IReadOnlyList<TRow>
     {
         private readonly IReadOnlyList<TRow> _rows;
-        private readonly TableColumn<TRow>[] _columns;
+        private readonly TableColumn[] _columns;
         private IValueFormattingService _formattingService = ValueFormattingServices.Current;
 
-        public Table(IReadOnlyList<TRow> rows, IEnumerable<TableColumn<TRow>> columns)
+        public Table(IReadOnlyList<TRow> rows, IEnumerable<TableColumn> columns)
         {
             _rows = rows;
             _columns = columns.ToArray();
@@ -61,7 +61,7 @@ namespace LightBDD.Framework.Parameters
         }
 
         public TRow this[int index] => _rows[index];
-        public IReadOnlyList<TableColumn<TRow>> Columns => _columns;
+        public IReadOnlyList<TableColumn> Columns => _columns;
 
         IEnumerator IEnumerable.GetEnumerator()
         {

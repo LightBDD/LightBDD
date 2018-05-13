@@ -16,9 +16,9 @@ namespace LightBDD.Framework.Parameters
         private IValueFormattingService _formattingService = ValueFormattingServices.Current;
         public IReadOnlyList<TRow> Expected { get; }
         public IReadOnlyList<TRow> Actual { get; private set; }
-        public IReadOnlyList<VerifiableTableColumn<TRow>> Columns { get; }
+        public IReadOnlyList<VerifiableTableColumn> Columns { get; }
 
-        public VerifiableTable(IEnumerable<TRow> expected, IEnumerable<VerifiableTableColumn<TRow>> columns)
+        public VerifiableTable(IEnumerable<TRow> expected, IEnumerable<VerifiableTableColumn> columns)
         {
             Expected = expected.ToArray();
             Columns = columns.ToArray();
@@ -32,15 +32,20 @@ namespace LightBDD.Framework.Parameters
         private IEnumerable<RowMatch> MatchRows(IReadOnlyList<TRow> expected, IReadOnlyList<TRow> actual)
         {
             if (!Columns.Any(c => c.IsKey))
+            {
                 return expected
                     .Zip(actual, (e, a) => new RowMatch(TableRowType.Matching, e, a))
                     .Concat(expected.Skip(actual.Count).Select(e => new RowMatch(TableRowType.Missing, e, default(TRow))))
                     .Concat(actual.Skip(expected.Count).Select(a => new RowMatch(TableRowType.Surplus, default(TRow), a)));
+            }
 
             var result = new List<RowMatch>(expected.Count);
 
             var keySelector = Columns.Where(x => x.IsKey).Select(x => x.GetValue).ToArray();
-            int[] GetHashes(TRow row) => keySelector.Select(s => s.Invoke(row).Value?.GetHashCode() ?? 0).ToArray();
+            int[] GetHashes(TRow row)
+            {
+                return keySelector.Select(s => s.Invoke(row).Value?.GetHashCode() ?? 0).ToArray();
+            }
 
             var remaining = actual.Select(x => new KeyValuePair<int[], TRow>(GetHashes(x), x)).ToList();
             foreach (var e in expected)
@@ -97,7 +102,7 @@ namespace LightBDD.Framework.Parameters
             {
                 var expected = c.GetValue(row.Expected);
                 var actual = c.GetValue(row.Actual);
-                var result = c.Verify(row.Expected, row.Actual, _formattingService);
+                var result = c.Expectation(row.Expected).Verify(row.Actual, _formattingService);
                 return new ValueResult(
                     _formattingService.FormatValue(expected),
                     _formattingService.FormatValue(actual),

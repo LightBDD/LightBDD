@@ -1,16 +1,15 @@
 ﻿using System;
-using LightBDD.Core.Formatting.Values;
 using LightBDD.Framework.Expectations;
 
 namespace LightBDD.Framework.Parameters
 {
-    public class VerifiableTableColumn<TRow> : TableColumn<TRow>
+    public class VerifiableTableColumn : TableColumn
     {
-        public Func<TRow, TRow, IValueFormattingService, ExpectationResult> Verify { get; }
+        public Func<object,IExpectation<object>> Expectation { get; }
 
-        public VerifiableTableColumn(string name, bool isKey, Func<TRow, ColumnValue> getValue, Func<TRow, TRow, IValueFormattingService, ExpectationResult> verify) : base(name, isKey, getValue)
+        public VerifiableTableColumn(string name, bool isKey, Func<object, ColumnValue> getValue, Func<object, IExpectation<object>> expectation) : base(name, isKey, getValue)
         {
-            Verify = verify;
+            Expectation = expectation;
         }
     }
 }
