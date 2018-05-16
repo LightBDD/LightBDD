@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -39,7 +40,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void It_should_infer_columns_from_class_collection()
+        public void AsVerifiableTable_should_infer_columns_from_class_collection()
         {
             TestCollectionAsVerifiableTable(new[]
                 {
@@ -52,7 +53,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void It_should_infer_columns_from_struct_collection()
+        public void AsVerifiableTable_should_infer_columns_from_struct_collection()
         {
             TestCollectionAsVerifiableTable(
                 new[]
@@ -66,7 +67,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void It_should_infer_columns_from_ValueTuple_collection()
+        public void AsVerifiableTable_should_infer_columns_from_ValueTuple_collection()
         {
             TestCollectionAsVerifiableTable(
                 new[]
@@ -80,7 +81,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void It_should_infer_columns_from_unnamed_ValueTuple_collection()
+        public void AsVerifiableTable_should_infer_columns_from_unnamed_ValueTuple_collection()
         {
             TestCollectionAsVerifiableTable(
                 new[]
@@ -94,7 +95,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void It_should_infer_columns_from_Tuple_collection()
+        public void AsVerifiableTable_should_infer_columns_from_Tuple_collection()
         {
             TestCollectionAsVerifiableTable(
                 new[]
@@ -108,7 +109,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void It_should_infer_columns_from_Int_collection()
+        public void AsVerifiableTable_should_infer_columns_from_Int_collection()
         {
             TestCollectionAsVerifiableTable(
                 new[] { 1, 2, 3 },
@@ -118,7 +119,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void It_should_infer_columns_from_String_collection()
+        public void AsVerifiableTable_should_infer_columns_from_String_collection()
         {
             TestCollectionAsVerifiableTable(
                 new[] { "t1", "t2", "t3" },
@@ -128,7 +129,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void It_should_infer_columns_from_Object_collection()
+        public void AsVerifiableTable_should_infer_columns_from_Object_collection()
         {
             TestCollectionAsVerifiableTable(
                 new object[] { "t1", 2, 'c' },
@@ -138,7 +139,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void It_should_infer_columns_from_multi_dimensional_collection()
+        public void AsVerifiableTable_should_infer_columns_from_multi_dimensional_collection()
         {
             TestCollectionAsVerifiableTable(
                 new[]
@@ -153,7 +154,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void It_should_infer_columns_from_ExpandoObject_collection()
+        public void AsVerifiableTable_should_infer_columns_from_ExpandoObject_collection()
         {
             var json = @"[
 {""name"":""John""},
@@ -168,7 +169,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void It_should_infer_columns_from_Dictionary()
+        public void AsVerifiableTable_should_infer_columns_from_Dictionary()
         {
             var input = new Dictionary<string, Point>
             {
@@ -182,6 +183,31 @@ namespace LightBDD.Framework.UnitTests.Parameters
             Assert.That(table.Columns[2].IsKey, Is.False);
 
             AssertValues(table, input.First(), ColumnValue.From("key1"), ColumnValue.From(3), ColumnValue.From(5));
+        }
+
+        [Test]
+        public void AsVerifiableTable_should_allow_defining_custom_columns()
+        {
+            var input = new[]
+            {
+                new {Id=123,X=5,Y=7}
+            };
+
+            var table = input.AsVerifiableTable(r => r
+                .WithKey(v => v.Id)
+                .WithKey("Secondary", v => $"{v.Id}_{v.X}_{v.Y}")
+                .WithColumn(v => v.X)
+                .WithColumn(v => v.Y)
+                .WithColumn("Sum", v => v.X + v.Y));
+
+            AssertColumnNames(table,"Id","Secondary", "X", "Y", "Sum");
+            Assert.That(table.Columns[0].IsKey, Is.True);
+            Assert.That(table.Columns[1].IsKey, Is.True);
+            Assert.That(table.Columns[2].IsKey, Is.False);
+            Assert.That(table.Columns[3].IsKey, Is.False);
+            Assert.That(table.Columns[4].IsKey, Is.False);
+
+            AssertValues(table, input[0], ColumnValue.From(123), ColumnValue.From("123_5_7"), ColumnValue.From(5), ColumnValue.From(7), ColumnValue.From(12));
         }
 
         private static void TestCollectionAsVerifiableTable<T>(T[] input, string[] expectedColumns, int index, ColumnValue[] expectedValues)
