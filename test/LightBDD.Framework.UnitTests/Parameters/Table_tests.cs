@@ -177,9 +177,6 @@ namespace LightBDD.Framework.UnitTests.Parameters
             };
             var table = input.AsTable();
             AssertColumnNames(table, "Key", "X", "Y");
-            Assert.That(table.Columns[0].IsKey, Is.True);
-            Assert.That(table.Columns[1].IsKey, Is.False);
-            Assert.That(table.Columns[2].IsKey, Is.False);
 
             AssertValues(table,input.First(),ColumnValue.From("key1"),ColumnValue.From(3),ColumnValue.From(5));
         }
@@ -187,7 +184,6 @@ namespace LightBDD.Framework.UnitTests.Parameters
         private static void TestCollectionAsTable<T>(T[] input, string[] expectedColumns, int index, ColumnValue[] expectedValues)
         {
             var table = input.AsTable();
-            Assert.That(table.Columns.All(x => !x.IsKey), Is.True);
             AssertColumnNames(table, expectedColumns);
             AssertValues(table, input[index], expectedValues);
         }

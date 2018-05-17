@@ -42,7 +42,7 @@ namespace LightBDD.Framework.Parameters
 
         private IEnumerable<ITabularParameterColumn> GetColumns()
         {
-            return _columns.Select(x => new TabularParameterColumn(x.Name, x.IsKey));
+            return _columns.Select(x => new TabularParameterColumn(x.Name, false));
         }
 
         /// <summary>

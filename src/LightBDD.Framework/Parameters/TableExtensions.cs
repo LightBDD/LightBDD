@@ -11,7 +11,7 @@ namespace LightBDD.Framework.Parameters
         public static Table<T> AsTable<T>(this IEnumerable<T> items)
         {
             var rows = items.ToArray();
-            var columns = TableColumnProvider.InferColumns(rows).Select(i => new TableColumn(i.Name, false, i.GetValue));
+            var columns = TableColumnProvider.InferColumns(rows).Select(i => new TableColumn(i.Name, i.GetValue));
             return new Table<T>(rows, columns);
         }
 
@@ -19,9 +19,9 @@ namespace LightBDD.Framework.Parameters
         {
             var rows = items.OrderBy(x => x.Key).ToArray();
             var values = rows.Select(x => x.Value).ToArray();
-            var valueColumns = TableColumnProvider.InferColumns(values).Select(i => new TableColumn(i.Name, false,
+            var valueColumns = TableColumnProvider.InferColumns(values).Select(i => new TableColumn(i.Name,
                 pair => i.GetValue(((KeyValuePair<TKey, TValue>)pair).Value)));
-            var columns = new[] { new TableColumn("Key", true, x => ColumnValue.From(((KeyValuePair<TKey, TValue>)x).Key)) }
+            var columns = new[] { new TableColumn("Key", x => ColumnValue.From(((KeyValuePair<TKey, TValue>)x).Key)) }
                 .Concat(valueColumns);
             return new Table<KeyValuePair<TKey, TValue>>(rows, columns);
         }

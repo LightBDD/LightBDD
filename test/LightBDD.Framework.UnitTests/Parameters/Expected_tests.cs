@@ -130,7 +130,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         public void SetValueFormattingService_should_allow_using_custom_formatter()
         {
             var expected = RandomValue.Int();
-            var actualValue = RandomValue.Int();
+            var actualValue = expected * 2;
             Expected<int> expectation = expected;
             ((IVerifiableParameter)expectation).SetValueFormattingService(new ValueFormattingServiceStub(CultureInfo.InvariantCulture, "--{0}--"));
             expectation.SetActual(() => actualValue);
@@ -189,7 +189,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
 
         private Exception GetException(Expected<string> expectation)
         {
-            return ((IVerifiableParameter) expectation).Result.Exception;
+            return ((IVerifiableParameter)expectation).Result.Exception;
         }
     }
 }
