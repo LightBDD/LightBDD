@@ -15,12 +15,12 @@ namespace LightBDD.Framework.Parameters.Implementation
 
         public IVerifiableTableBuilder<TRow> WithColumn<TValue>(Expression<Func<TRow, TValue>> columnExpression)
         {
-            return Add(GetMemberName(columnExpression), false, columnExpression.Compile(), x => Expect.To.Equal(x));
+            return Add(Reflector.GetMemberName(columnExpression), false, columnExpression.Compile(), x => Expect.To.Equal(x));
         }
 
         public IVerifiableTableBuilder<TRow> WithColumn<TValue>(Expression<Func<TRow, TValue>> columnExpression, Func<TValue, IExpectation<TValue>> expectationFn)
         {
-            return Add(GetMemberName(columnExpression), false, columnExpression.Compile(), expectationFn);
+            return Add(Reflector.GetMemberName(columnExpression), false, columnExpression.Compile(), expectationFn);
         }
 
         public IVerifiableTableBuilder<TRow> WithColumn<TValue>(string columnName, Func<TRow, TValue> columnExpression)
@@ -30,12 +30,12 @@ namespace LightBDD.Framework.Parameters.Implementation
 
         public IVerifiableTableBuilder<TRow> WithKey<TValue>(Expression<Func<TRow, TValue>> columnExpression)
         {
-            return Add(GetMemberName(columnExpression), true, columnExpression.Compile(), x => Expect.To.Equal(x));
+            return Add(Reflector.GetMemberName(columnExpression), true, columnExpression.Compile(), x => Expect.To.Equal(x));
         }
 
         public IVerifiableTableBuilder<TRow> WithKey<TValue>(Expression<Func<TRow, TValue>> columnExpression, Func<TValue, IExpectation<TValue>> expectationFn)
         {
-            return Add(GetMemberName(columnExpression), true, columnExpression.Compile(), expectationFn);
+            return Add(Reflector.GetMemberName(columnExpression), true, columnExpression.Compile(), expectationFn);
         }
 
         public IVerifiableTableBuilder<TRow> WithKey<TValue>(string columnName, Func<TRow, TValue> columnExpression, Func<TValue, IExpectation<TValue>> expectationFn)
@@ -61,13 +61,6 @@ namespace LightBDD.Framework.Parameters.Implementation
                 row => ColumnValue.From(columnExpression((TRow)row)),
                 value => new ColumnExpectation<TValue>(expectationFn((TValue)value))));
             return this;
-        }
-
-        private string GetMemberName<TValue>(Expression<Func<TRow, TValue>> columnExpression)
-        {
-            if (columnExpression.Body is MemberExpression memberExpression)
-                return memberExpression.Member.Name;
-            throw new InvalidOperationException($"Expected {nameof(columnExpression)} to be member expression, got: {columnExpression}");
         }
     }
 }

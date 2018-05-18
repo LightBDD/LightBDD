@@ -26,6 +26,13 @@ namespace LightBDD.Framework.Parameters
             return new Table<KeyValuePair<TKey, TValue>>(rows, columns);
         }
 
+        public static Table<T> AsTable<T>(this IEnumerable<T> items, Action<ITableBuilder<T>> builderFn)
+        {
+            var builder = new TableBuilder<T>();
+            builderFn(builder);
+            return builder.Build(items);
+        }
+
         public static VerifiableTable<T> AsVerifiableTable<T>(this IEnumerable<T> items)
         {
             var rows = items.ToArray();

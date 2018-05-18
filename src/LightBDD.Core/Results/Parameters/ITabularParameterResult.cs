@@ -10,10 +10,10 @@ namespace LightBDD.Core.Results.Parameters
         /// <summary>
         /// Returns list of table columns.
         /// </summary>
-        IEnumerable<ITabularParameterColumn> Columns { get; }
+        IReadOnlyList<ITabularParameterColumn> Columns { get; }
         /// <summary>
         /// Returns list of table rows.
         /// </summary>
-        IEnumerable<ITabularParameterRow> Rows { get; }
+        IReadOnlyList<ITabularParameterRow> Rows { get; }
     }
 }

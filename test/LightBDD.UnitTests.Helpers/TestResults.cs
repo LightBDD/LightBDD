@@ -349,8 +349,8 @@ namespace LightBDD.UnitTests.Helpers
         {
             public Exception Exception { get; }
             public ParameterVerificationStatus VerificationStatus { get; }
-            IEnumerable<ITabularParameterColumn> ITabularParameterResult.Columns => Columns;
-            IEnumerable<ITabularParameterRow> ITabularParameterResult.Rows => Rows;
+            IReadOnlyList<ITabularParameterColumn> ITabularParameterResult.Columns => Columns;
+            IReadOnlyList<ITabularParameterRow> ITabularParameterResult.Rows => Rows;
 
             public List<TestTabularParameterColumn> Columns { get; } = new List<TestTabularParameterColumn>();
             public List<TestTabularParameterRow> Rows { get; } = new List<TestTabularParameterRow>();
@@ -365,8 +365,10 @@ namespace LightBDD.UnitTests.Helpers
             }
 
             public TableRowType Type { get; }
-            IEnumerable<IValueResult> ITabularParameterRow.Values => Values;
+            IReadOnlyList<IValueResult> ITabularParameterRow.Values => Values;
             public TestValueResult[] Values { get; }
+            public Exception Exception { get; }
+            public ParameterVerificationStatus VerificationStatus { get; }
         }
 
         public class TestTabularParameterColumn : ITabularParameterColumn

@@ -35,9 +35,9 @@ namespace LightBDD.Framework.Parameters
             return _rows.Select(GetRow);
         }
 
-        private ITabularParameterRow GetRow(TRow row)
+        private ITabularParameterRow GetRow(TRow row, int index)
         {
-            return new TabularParameterRow(_columns.Select(x => _formattingService.FormatValue(x.GetValue(row))));
+            return new TabularParameterRow(index, _columns.Select(x => _formattingService.FormatValue(x.GetValue(row))));
         }
 
         private IEnumerable<ITabularParameterColumn> GetColumns()

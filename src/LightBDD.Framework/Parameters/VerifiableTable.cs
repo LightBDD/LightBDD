@@ -6,6 +6,7 @@ using LightBDD.Core.Formatting.Parameters;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters;
+using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Formatting.Values;
 using LightBDD.Framework.Results.Implementation;
 
@@ -86,7 +87,7 @@ namespace LightBDD.Framework.Parameters
         private VerifiableTable<TRow> SetMatchedActual(IEnumerable<RowMatch> results)
         {
             var matches = results.ToArray();
-            Result = new TabularParameterResult(GetColumns(), GetRows(matches));
+            _result = new TabularParameterResult(GetColumns(), GetRows(matches));
             Actual = matches.Where(x => x.Type != TableRowType.Missing).Select(x => x.Actual).ToArray();
             return this;
         }
@@ -96,21 +97,30 @@ namespace LightBDD.Framework.Parameters
             return results.Select(GetRow);
         }
 
-        private TabularParameterRow GetRow(RowMatch row)
+        private TabularParameterRow GetRow(RowMatch row, int index)
         {
             var values = Columns.Select(c =>
             {
-                var expected = c.GetValue(row.Expected);
-                var actual = c.GetValue(row.Actual);
-                var result = c.Expectation(row.Expected).Verify(row.Actual, _formattingService);
+                var expected = row.Expected != null ? c.GetValue(row.Expected) : ColumnValue.None;
+                var actual = row.Actual != null ? c.GetValue(row.Actual) : ColumnValue.None;
+                var result = VerifyExpectation(expected, actual, c.Expectation);
                 return new ValueResult(
                     _formattingService.FormatValue(expected),
                     _formattingService.FormatValue(actual),
                     result ? ParameterVerificationStatus.Success : ParameterVerificationStatus.Failure,
-                    result ? null : new InvalidOperationException(result.Message)
+                    result ? null : new InvalidOperationException($"{c.Name}: {result.Message}")
                 );
             });
-            return new TabularParameterRow(row.Type, values);
+            return new TabularParameterRow(index, row.Type, values);
+        }
+
+        private ExpectationResult VerifyExpectation(ColumnValue expected, ColumnValue actual, Func<object, IExpectation<object>> columnExpectation)
+        {
+            if (expected.HasValue && !actual.HasValue)
+                return ExpectationResult.Failure("missing value");
+            if (!expected.HasValue && actual.HasValue)
+                return ExpectationResult.Failure("unexpected value");
+            return columnExpectation.Invoke(expected.Value).Verify(actual.Value, _formattingService);
         }
 
         private IEnumerable<ITabularParameterColumn> GetColumns()
@@ -122,7 +132,30 @@ namespace LightBDD.Framework.Parameters
             _formattingService = formattingService;
         }
 
-        public IParameterVerificationResult Result { get; private set; } = new TabularParameterResult(Enumerable.Empty<ITabularParameterColumn>(), Enumerable.Empty<ITabularParameterRow>());
+        IParameterVerificationResult IVerifiableParameter.Result => Result;
+        private TabularParameterResult _result;
+        public ITabularParameterResult Result => GetResultLazily();
+
+        private ITabularParameterResult GetResultLazily()
+        {
+            if (_result != null) return _result;
+            return _result = new TabularParameterResult(GetColumns(), Expected.Select(ToMissingRow), ParameterVerificationStatus.NotProvided);
+        }
+
+        private ITabularParameterRow ToMissingRow(TRow row, int index)
+        {
+            var values = Columns.Select(c =>
+            {
+                var expected = c.GetValue(row);
+                return new ValueResult(
+                    _formattingService.FormatValue(expected),
+                    _formattingService.FormatValue(ColumnValue.None),
+                    ParameterVerificationStatus.NotProvided,
+                    new InvalidOperationException($"{c.Name}: Value not provided")
+                );
+            });
+            return new TabularParameterRow(index, TableRowType.Missing, values);
+        }
 
         /// <summary>
         /// Returns inline representation of table

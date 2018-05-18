@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using LightBDD.Core.Metadata;
 using LightBDD.Framework.Parameters;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -39,7 +40,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void It_should_infer_columns_from_class_collection()
+        public void AsTable_should_infer_columns_from_class_collection()
         {
             TestCollectionAsTable(new[]
                 {
@@ -52,7 +53,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void It_should_infer_columns_from_struct_collection()
+        public void AsTable_should_infer_columns_from_struct_collection()
         {
             TestCollectionAsTable(
                 new[]
@@ -66,7 +67,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void It_should_infer_columns_from_ValueTuple_collection()
+        public void AsTable_should_infer_columns_from_ValueTuple_collection()
         {
             TestCollectionAsTable(
                 new[]
@@ -80,7 +81,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void It_should_infer_columns_from_unnamed_ValueTuple_collection()
+        public void AsTable_should_infer_columns_from_unnamed_ValueTuple_collection()
         {
             TestCollectionAsTable(
                 new[]
@@ -94,7 +95,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void It_should_infer_columns_from_Tuple_collection()
+        public void AsTable_should_infer_columns_from_Tuple_collection()
         {
             TestCollectionAsTable(
                 new[]
@@ -108,7 +109,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void It_should_infer_columns_from_Int_collection()
+        public void AsTable_should_infer_columns_from_Int_collection()
         {
             TestCollectionAsTable(
                 new[] { 1, 2, 3 },
@@ -118,7 +119,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void It_should_infer_columns_from_String_collection()
+        public void AsTable_should_infer_columns_from_String_collection()
         {
             TestCollectionAsTable(
                 new[] { "t1", "t2", "t3" },
@@ -128,7 +129,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void It_should_infer_columns_from_Object_collection()
+        public void AsTable_should_infer_columns_from_Object_collection()
         {
             TestCollectionAsTable(
                 new object[] { "t1", 2, 'c' },
@@ -138,7 +139,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void It_should_infer_columns_from_multi_dimensional_collection()
+        public void AsTable_should_infer_columns_from_multi_dimensional_collection()
         {
             TestCollectionAsTable(
                 new[]
@@ -153,7 +154,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void It_should_infer_columns_from_ExpandoObject_collection()
+        public void AsTable_should_infer_columns_from_ExpandoObject_collection()
         {
             var json = @"[
 {""name"":""John""},
@@ -168,7 +169,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void It_should_infer_columns_from_Dictionary()
+        public void AsTable_should_infer_columns_from_Dictionary()
         {
             var input = new Dictionary<string, Point>
             {
@@ -178,7 +179,49 @@ namespace LightBDD.Framework.UnitTests.Parameters
             var table = input.AsTable();
             AssertColumnNames(table, "Key", "X", "Y");
 
-            AssertValues(table,input.First(),ColumnValue.From("key1"),ColumnValue.From(3),ColumnValue.From(5));
+            AssertValues(table, input.First(), ColumnValue.From("key1"), ColumnValue.From(3), ColumnValue.From(5));
+        }
+
+        [Test]
+        public void AsTable_should_allow_defining_custom_columns()
+        {
+            var input = new[]
+            {
+                new {Id = 123, X = 5, Y = 7}
+            };
+
+            var table = input.AsTable(r => r
+                .WithColumn(v => v.Id)
+                .WithColumn(v => v.X)
+                .WithColumn(v => v.Y)
+                .WithColumn("Sum", v => v.X + v.Y));
+
+            AssertColumnNames(table, "Id", "X", "Y", "Sum");
+            AssertValues(table, input[0], ColumnValue.From(123), ColumnValue.From(5), ColumnValue.From(7), ColumnValue.From(12));
+        }
+
+        [Test]
+        public void Table_should_allow_enumerating_through_provided_rows()
+        {
+            var input = new[]
+            {
+                new {Id = 6, X = 2, Y = 5},
+                new {Id = 7, X = 3, Y = 7}
+            };
+            Assert.That(input.AsTable().AsEnumerable(), Is.EqualTo(input));
+        }
+
+        [Test]
+        public void Table_should_allow_accessing_provided_rows_via_indexer()
+        {
+            var input = new[]
+            {
+                new {Id = 6, X = 2, Y = 5},
+                new {Id = 7, X = 3, Y = 7}
+            };
+            var table = input.AsTable();
+            Assert.That(table[0], Is.EqualTo(input[0]));
+            Assert.That(table[1], Is.EqualTo(input[1]));
         }
 
         private static void TestCollectionAsTable<T>(T[] input, string[] expectedColumns, int index, ColumnValue[] expectedValues)

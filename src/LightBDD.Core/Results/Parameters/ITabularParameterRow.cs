@@ -5,7 +5,7 @@ namespace LightBDD.Core.Results.Parameters
     /// <summary>
     /// Interface representing tabular parameter result table row
     /// </summary>
-    public interface ITabularParameterRow
+    public interface ITabularParameterRow : IVerificationResult
     {
         /// <summary>
         /// Returns row type.
@@ -14,6 +14,6 @@ namespace LightBDD.Core.Results.Parameters
         /// <summary>
         /// Returns row values, where order corresponds to the column order specified in <see cref="ITabularParameterResult"/>.
         /// </summary>
-        IEnumerable<IValueResult> Values { get; }
+        IReadOnlyList<IValueResult> Values { get; }
     }
 }
