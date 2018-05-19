@@ -1,4 +1,5 @@
 ﻿using System;
+using LightBDD.Framework.Parameters.Implementation;
 
 namespace LightBDD.Framework.Parameters
 {
@@ -12,5 +13,10 @@ namespace LightBDD.Framework.Parameters
 
         public string Name { get; }
         public Func<object, ColumnValue> GetValue { get; }
+
+        internal static TableColumn FromColumnInfo(ColumnInfo columnInfo)
+        {
+            return new TableColumn(columnInfo.Name, columnInfo.GetValue);
+        }
     }
 }

@@ -201,6 +201,23 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
+        public void AsVerifiableTable_should_allow_inferring_columns_with_custom_override()
+        {
+            var input = new[]
+            {
+                new {Id = 123, X = 5, Y = 7}
+            };
+
+            var table = input.AsTable(r => r
+                .WithInferredColumns()
+                .WithColumn("Sum", v => v.X + v.Y)
+                .WithColumn("Y", v => v.Y * 2));
+
+            AssertColumnNames(table, "Id", "X", "Y", "Sum");
+            AssertValues(table, input[0], ColumnValue.From(123), ColumnValue.From(5), ColumnValue.From(14), ColumnValue.From(12));
+        }
+
+        [Test]
         public void Table_should_allow_enumerating_through_provided_rows()
         {
             var input = new[]

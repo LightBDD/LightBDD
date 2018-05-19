@@ -1,5 +1,6 @@
 ﻿using System;
 using LightBDD.Framework.Expectations;
+using LightBDD.Framework.Parameters.Implementation;
 
 namespace LightBDD.Framework.Parameters
 {
@@ -12,6 +13,11 @@ namespace LightBDD.Framework.Parameters
         {
             Expectation = expectation;
             IsKey = isKey;
+        }
+
+        internal static VerifiableTableColumn FromColumnInfo(ColumnInfo columnInfo)
+        {
+            return new VerifiableTableColumn(columnInfo.Name, false, columnInfo.GetValue, expectedColumnValue => Expect.To.Equal(expectedColumnValue));
         }
     }
 }

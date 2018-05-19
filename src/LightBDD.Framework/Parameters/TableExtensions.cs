@@ -11,7 +11,7 @@ namespace LightBDD.Framework.Parameters
         public static Table<T> AsTable<T>(this IEnumerable<T> items)
         {
             var rows = items.ToArray();
-            var columns = TableColumnProvider.InferColumns(rows).Select(i => new TableColumn(i.Name, i.GetValue));
+            var columns = TableColumnProvider.InferColumns(rows).Select(TableColumn.FromColumnInfo);
             return new Table<T>(rows, columns);
         }
 
@@ -36,7 +36,7 @@ namespace LightBDD.Framework.Parameters
         public static VerifiableTable<T> AsVerifiableTable<T>(this IEnumerable<T> items)
         {
             var rows = items.ToArray();
-            var columns = TableColumnProvider.InferColumns(rows, true).Select(i => new VerifiableTableColumn(i.Name, false, i.GetValue, expectedColumnValue => Expect.To.Equal(expectedColumnValue)));
+            var columns = TableColumnProvider.InferColumns(rows, true).Select(VerifiableTableColumn.FromColumnInfo);
             return new VerifiableTable<T>(rows, columns);
         }
 

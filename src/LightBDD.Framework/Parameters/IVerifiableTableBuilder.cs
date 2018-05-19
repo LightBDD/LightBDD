@@ -15,5 +15,6 @@ namespace LightBDD.Framework.Parameters
         IVerifiableTableBuilder<TRow> WithKey<TValue>(Expression<Func<TRow, TValue>> columnExpression, Func<TValue, IExpectation<TValue>> expectationFn);
         IVerifiableTableBuilder<TRow> WithKey<TValue>(string columnName, Func<TRow, TValue> columnExpression, Func<TValue, IExpectation<TValue>> expectationFn);
         IVerifiableTableBuilder<TRow> WithKey<TValue>(string columnName, Func<TRow, TValue> columnExpression);
+        IVerifiableTableBuilder<TRow> WithInferredColumns();
     }
 }

@@ -7,5 +7,6 @@ namespace LightBDD.Framework.Parameters
     {
         ITableBuilder<TRow> WithColumn<TValue>(Expression<Func<TRow, TValue>> columnExpression);
         ITableBuilder<TRow> WithColumn<TValue>(string columnName, Func<TRow, TValue> columnExpression);
+        ITableBuilder<TRow> WithInferredColumns();
     }
 }

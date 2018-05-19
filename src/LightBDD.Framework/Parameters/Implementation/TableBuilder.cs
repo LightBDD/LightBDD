@@ -5,12 +5,12 @@ using System.Linq.Expressions;
 
 namespace LightBDD.Framework.Parameters.Implementation
 {
-    internal class TableBuilder<TRow> : ITableBuilder<TRow>
+    internal class TableBuilder<TRow> : AbstractTableBuilder<TRow, TableColumn>, ITableBuilder<TRow>
     {
-        private readonly List<TableColumn> _columns = new List<TableColumn>();
         public Table<TRow> Build(IEnumerable<TRow> items)
         {
-            return new Table<TRow>(items.ToArray(), _columns);
+            var rows = items.ToArray();
+            return new Table<TRow>(rows, BuildColumns(rows));
         }
 
         public ITableBuilder<TRow> WithColumn<TValue>(Expression<Func<TRow, TValue>> columnExpression)
@@ -23,12 +23,24 @@ namespace LightBDD.Framework.Parameters.Implementation
             return Add(columnName, columnExpression);
         }
 
+        public ITableBuilder<TRow> WithInferredColumns()
+        {
+            InferColumns = true;
+            return this;
+        }
+
         private ITableBuilder<TRow> Add<TValue>(string columnName, Func<TRow, TValue> columnExpression)
         {
-            _columns.Add(new TableColumn(
+            AddCustomColumn(new TableColumn(
                 columnName,
                 row => ColumnValue.From(columnExpression((TRow)row))));
+
             return this;
+        }
+
+        protected override TableColumn CreateColumn(ColumnInfo columnInfo)
+        {
+            return TableColumn.FromColumnInfo(columnInfo);
         }
     }
 }

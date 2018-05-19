@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using LightBDD.Framework.Expectations;
 
 namespace LightBDD.Framework.Parameters.Implementation
 {
-    internal class VerifiableTableBuilder<TRow> : IVerifiableTableBuilder<TRow>
+    internal class VerifiableTableBuilder<TRow> : AbstractTableBuilder<TRow, VerifiableTableColumn>, IVerifiableTableBuilder<TRow>
     {
-        private readonly List<VerifiableTableColumn> _columns = new List<VerifiableTableColumn>();
         public VerifiableTable<TRow> Build(IEnumerable<TRow> items)
         {
-            return new VerifiableTable<TRow>(items, _columns);
+            var rows = items.ToArray();
+            return new VerifiableTable<TRow>(rows, BuildColumns(rows));
         }
 
         public IVerifiableTableBuilder<TRow> WithColumn<TValue>(Expression<Func<TRow, TValue>> columnExpression)
@@ -48,6 +49,12 @@ namespace LightBDD.Framework.Parameters.Implementation
             return Add(columnName, true, columnExpression, x => Expect.To.Equal(x));
         }
 
+        public IVerifiableTableBuilder<TRow> WithInferredColumns()
+        {
+            InferColumns = true;
+            return this;
+        }
+
         public IVerifiableTableBuilder<TRow> WithColumn<TValue>(string columnName, Func<TRow, TValue> columnExpression, Func<TValue, IExpectation<TValue>> expectationFn)
         {
             return Add(columnName, false, columnExpression, expectationFn);
@@ -55,12 +62,18 @@ namespace LightBDD.Framework.Parameters.Implementation
 
         private IVerifiableTableBuilder<TRow> Add<TValue>(string columnName, bool isKey, Func<TRow, TValue> columnExpression, Func<TValue, IExpectation<TValue>> expectationFn)
         {
-            _columns.Add(new VerifiableTableColumn(
+            AddCustomColumn(new VerifiableTableColumn(
                 columnName,
                 isKey,
                 row => ColumnValue.From(columnExpression((TRow)row)),
                 value => new ColumnExpectation<TValue>(expectationFn((TValue)value))));
+
             return this;
+        }
+
+        protected override VerifiableTableColumn CreateColumn(ColumnInfo columnInfo)
+        {
+            return VerifiableTableColumn.FromColumnInfo(columnInfo);
         }
     }
 }
