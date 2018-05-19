@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Results;
+using LightBDD.Core.Results.Parameters;
 
 namespace LightBDD.Framework.Reporting.Formatters
 {
@@ -145,9 +146,21 @@ namespace LightBDD.Framework.Reporting.Formatters
                 writer.Write(")");
             }
             writer.WriteLine();
+            foreach (var parameterResult in step.Parameters)
+                FormatParameter(writer, parameterResult);
             CollectComments(step, commentBuilder);
             foreach (var subStep in step.GetSubSteps())
                 FormatStep(writer, subStep, commentBuilder, indent + 1);
+        }
+
+        private static void FormatParameter(TextWriter writer, IParameterResult parameterResult)
+        {
+            if (parameterResult.Result is ITabularParameterResult table)
+            {
+                writer.Write(parameterResult.Name);
+                writer.WriteLine(":");
+                new TextTableRenderer(table, writer).Render();
+            }
         }
 
         private static void FormatSummary(TextWriter writer, IFeatureResult[] features)
