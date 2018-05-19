@@ -172,6 +172,24 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
+        public void AsVerifiableTable_should_infer_columns_from_dynamic_collection_of_unified_item_types()
+        {
+            var values = new[]
+                {
+                    new Point(2, 3),
+                    new Point(3, 4)
+                }
+                .Cast<dynamic>()
+                .ToArray();
+
+            TestCollectionAsVerifiableTable(
+                values,
+                new[] { "X", "Y" },
+                1,
+                new[] { ColumnValue.From(3), ColumnValue.From(4) });
+        }
+
+        [Test]
         public void AsVerifiableTable_should_infer_columns_from_Dictionary()
         {
             var input = new Dictionary<string, Point>
@@ -360,7 +378,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         {
             var expected = new[]
             {
-                new {X = 1, Y = 2},
+                new {X = 1, Y = 2}
             };
             var actual = new[]
             {
@@ -392,7 +410,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             };
             var actual = new[]
             {
-                new {X = 1, Y = 2},
+                new {X = 1, Y = 2}
             };
 
             var table = expected.AsVerifiableTable().SetActual(actual);
@@ -456,15 +474,77 @@ namespace LightBDD.Framework.UnitTests.Parameters
             AssertRowValues(result.Rows[8], TableRowType.Surplus, ParameterVerificationStatus.Failure, "C|<none>", "0|<none>", "0|<none>", "1000|<none>");
         }
 
+        [Test]
+        public void SetActual_should_handle_uneven_arrays()
+        {
+            var expected = new[]
+            {
+                new[] {1, 2, 3},
+                new[] {1, 2},
+                new[] {3}
+            };
+            var actual = new[]
+            {
+                new[] {1, 2, 4},
+                new[] {1, 2},
+                new[] {3,6,7,8}
+            };
+
+            var table = expected.AsVerifiableTable();
+            AssertResultColumnsMatchingTable(table);
+            var result = table.SetActual(actual).Result;
+
+            Assert.That(result.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Failure));
+            Assert.That(result.Rows.Count, Is.EqualTo(3));
+
+            AssertRow(result.Rows[0], TableRowType.Matching, ParameterVerificationStatus.Failure, "Success|3|3|null", "Success|1|1|null", "Success|2|2|null", "Failure|4|3|[2]: expected: equal '3', but got: '4'");
+            AssertRow(result.Rows[1], TableRowType.Matching, ParameterVerificationStatus.Success, "Success|2|2|null", "Success|1|1|null", "Success|2|2|null", "Success|<none>|<none>|null");
+            AssertRow(result.Rows[2], TableRowType.Matching, ParameterVerificationStatus.Failure, "Failure|4|1|Length: expected: equal '1', but got: '4'", "Success|3|3|null", "Failure|6|<none>|[1]: unexpected value", "Failure|7|<none>|[2]: unexpected value");
+        }
+
+        [Test]
+        public void SetActual_should_handle_expando_objects()
+        {
+            var expected = @"[
+  {""Name"":""Joe"",""Surname"":""Smith"",""ContactType"":""email"",""Email"":""joe.smith@mymail.com""},
+  {""Name"":""Adam"",""Surname"":""Kowalski"",""ContactType"":""phone"",""Phone"":""00441122233444""},
+  {""Name"":""Mary"",""Surname"":""Adams"",""ContactType"":""postal"",""Mail"":""XX1 1XX, Hight Street 55""}
+]";
+            var actual = @"[
+  {""Name"":""Mary"",""Surname"":""Adams"",""ContactType"":""POSTAL"",""Mail"":""XX1 1XX, Hight Street 55""},
+  {""Name"":""Joe"",""Surname"":""Smith"",""ContactType"":""EMAIL"",""Email"":""joe.smith@mymail.com""},
+  {""Name"":""Adam"",""Surname"":""Kowalski"",""ContactType"":""PHONE"",""Phone"":""00441122233445""}
+]";
+
+            IEnumerable<dynamic> FromJson(string json) => JsonConvert.DeserializeObject<ExpandoObject[]>(json);
+            var table = FromJson(expected)
+                .AsVerifiableTable(b => b.WithInferredColumns()
+                    .WithKey("Surname", x => x.Surname)
+                    .WithKey("Name", x => x.Name)
+                    .WithColumn<string>("ContactType", x => x.ContactType, value => Expect.To.MatchWildIgnoreCase(value))
+                );
+
+            AssertResultColumnsMatchingTable(table);
+            var result = table.SetActual(FromJson(actual)).Result;
+
+            Assert.That(result.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Failure));
+            Assert.That(result.Rows.Count, Is.EqualTo(3));
+
+            AssertRow(result.Rows[0], TableRowType.Matching, ParameterVerificationStatus.Success, "Success|Joe|Joe|null", "Success|Smith|Smith|null", "Success|EMAIL|email|null", "Success|joe.smith@mymail.com|joe.smith@mymail.com|null", "Success|<none>|<none>|null", "Success|<none>|<none>|null");
+            AssertRow(result.Rows[1], TableRowType.Matching, ParameterVerificationStatus.Failure, "Success|Adam|Adam|null", "Success|Kowalski|Kowalski|null", "Success|PHONE|phone|null", "Success|<none>|<none>|null", "Success|<none>|<none>|null", "Failure|00441122233445|00441122233444|Phone: expected: equal '00441122233444', but got: '00441122233445'");
+            AssertRow(result.Rows[2], TableRowType.Matching, ParameterVerificationStatus.Success, "Success|Mary|Mary|null", "Success|Adams|Adams|null", "Success|POSTAL|postal|null", "Success|<none>|<none>|null", "Success|XX1 1XX, Hight Street 55|XX1 1XX, Hight Street 55|null", "Success|<none>|<none>|null");
+        }
+
         private void AssertRow(ITabularParameterRow row, TableRowType rowType, ParameterVerificationStatus rowStatus, params string[] expectedValueDetails)
         {
             Assert.That(row.Type, Is.EqualTo(rowType));
-            Assert.That(row.VerificationStatus, Is.EqualTo(rowStatus));
 
             var actual = row.Values
                 .Select(v => $"{v.VerificationStatus}|{v.Value}|{v.Expectation}|{v.Exception?.Message ?? "null"}")
                 .ToArray();
             Assert.That(actual, Is.EqualTo(expectedValueDetails));
+
+            Assert.That(row.VerificationStatus, Is.EqualTo(rowStatus));
         }
 
         private void AssertRowValues(ITabularParameterRow row, TableRowType rowType, ParameterVerificationStatus rowStatus, params string[] expectedValues)

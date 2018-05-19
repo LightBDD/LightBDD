@@ -1,4 +1,5 @@
-﻿using LightBDD.Framework.Expectations.Implementation;
+﻿using System;
+using LightBDD.Framework.Expectations.Implementation;
 
 namespace LightBDD.Framework.Expectations
 {
@@ -11,5 +12,10 @@ namespace LightBDD.Framework.Expectations
         /// Creates expectation composer.
         /// </summary>
         public static IExpectationComposer To => new ExpectationComposer();
+
+        public static TypeHelper<T> Type<T>()
+        {
+            return new TypeHelper<T>();
+        }
     }
 }

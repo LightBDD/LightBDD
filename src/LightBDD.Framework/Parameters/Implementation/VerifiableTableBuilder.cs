@@ -66,7 +66,7 @@ namespace LightBDD.Framework.Parameters.Implementation
                 columnName,
                 isKey,
                 row => ColumnValue.From(columnExpression((TRow)row)),
-                value => new ColumnExpectation<TValue>(expectationFn((TValue)value))));
+                value => expectationFn((TValue)value).CastFrom(Expect.Type<object>())));
 
             return this;
         }

@@ -169,6 +169,24 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
+        public void AsVerifiableTable_should_infer_columns_from_dynamic_collection_of_unified_item_types()
+        {
+            var values = new[]
+                {
+                    new Point(2, 3),
+                    new Point(3, 4)
+                }
+                .Cast<dynamic>()
+                .ToArray();
+
+            TestCollectionAsTable(
+                values,
+                new[] { "X", "Y" },
+                1,
+                new[] { ColumnValue.From(3), ColumnValue.From(4) });
+        }
+
+        [Test]
         public void AsTable_should_infer_columns_from_Dictionary()
         {
             var input = new Dictionary<string, Point>

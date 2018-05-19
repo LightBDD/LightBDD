@@ -12,6 +12,9 @@ namespace LightBDD.Framework.Parameters.Implementation
         {
             var typeInfo = typeof(TRow).GetTypeInfo();
 
+            if (IsObject(typeInfo))
+                typeInfo = TrySpecifyType(rows);
+
             if (IsSimpleType(typeInfo))
                 return AsSimpleColumn();
             if (IsExpando(typeInfo))
@@ -19,14 +22,33 @@ namespace LightBDD.Framework.Parameters.Implementation
             if (IsCollection(typeInfo))
                 return AsCollection(rows, addLengthToCollections);
 
-            return AsPoco<TRow>();
+            return AsPoco(typeInfo.AsType());
         }
 
-        private static IEnumerable<ColumnInfo> AsPoco<TRow>()
+        private static TypeInfo TrySpecifyType<TRow>(TRow[] rows)
         {
-            return GetProperties(typeof(TRow))
+            Type type = null;
+            foreach (var row in rows)
+            {
+                var rowType = row?.GetType();
+                if (type != null && type != rowType)
+                    return typeof(object).GetTypeInfo();
+                type = rowType;
+            }
+
+            return (type ?? typeof(object)).GetTypeInfo();
+        }
+
+        private static bool IsObject(TypeInfo typeInfo)
+        {
+            return typeInfo.AsType() == typeof(object);
+        }
+
+        private static IEnumerable<ColumnInfo> AsPoco(Type type)
+        {
+            return GetProperties(type)
                 .Select(property => new ColumnInfo(property.Name, r => r != null ? ColumnValue.From(property.GetValue(r)) : ColumnValue.None))
-                .Concat(GetFields(typeof(TRow))
+                .Concat(GetFields(type)
                     .Select(field => new ColumnInfo(field.Name, r => r != null ? ColumnValue.From(field.GetValue(r)) : ColumnValue.None)))
                 .OrderBy(x => x.Name);
         }

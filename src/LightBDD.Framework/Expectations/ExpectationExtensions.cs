@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Framework.Expectations.Implementation;
+using LightBDD.Framework.Parameters.Implementation;
 
 namespace LightBDD.Framework.Expectations
 {
@@ -327,6 +328,11 @@ namespace LightBDD.Framework.Expectations
         public static Expectation<T> Or<T>(this IExpectation<T> expectation, Func<IExpectationComposer, IExpectation<T>> orExpectation)
         {
             return new OrExpectation<T>(expectation, orExpectation(Expect.To));
+        }
+
+        public static Expectation<TBase> CastFrom<T, TBase>(this IExpectation<T> expectation, TypeHelper<TBase> baseType) where T : TBase
+        {
+            return new CastedExpectation<T, TBase>(expectation);
         }
     }
 }

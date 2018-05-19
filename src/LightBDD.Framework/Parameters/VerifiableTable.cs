@@ -22,7 +22,7 @@ namespace LightBDD.Framework.Parameters
         public VerifiableTable(IEnumerable<TRow> expected, IEnumerable<VerifiableTableColumn> columns)
         {
             Expected = expected.ToArray();
-            Columns = columns.ToArray();
+            Columns = columns.OrderByDescending(x => x.IsKey).ToArray();
         }
 
         public VerifiableTable<TRow> SetActual(IEnumerable<TRow> actual)
