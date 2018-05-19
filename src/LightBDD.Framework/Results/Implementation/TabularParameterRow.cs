@@ -15,20 +15,24 @@ namespace LightBDD.Framework.Results.Implementation
         {
         }
 
-        public TabularParameterRow(int rowId, TableRowType type, IEnumerable<IValueResult> values)
+        public TabularParameterRow(int rowId, TableRowType type, IEnumerable<IValueResult> values, Exception rowException = null)
         {
             Type = type;
             Values = values.ToArray();
             VerificationStatus = CollectVerificationStatus();
-            Exception = CaptureException(rowId);
+            Exception = CaptureException(rowException, rowId);
         }
 
-        private Exception CaptureException(int rowId)
+        private Exception CaptureException(Exception rowException, int rowId)
         {
-            var errors = Values
+            var errors = new List<string>();
+
+            if (rowException != null)
+                errors.Add($"[{rowId}]: Failed to retrieve row: {rowException.Message}");
+
+            errors.AddRange(Values
                 .Where(t => t.Exception != null)
-                .Select(t => $"[{rowId}].{t.Exception.Message}")
-                .ToArray();
+                .Select(t => $"[{rowId}].{t.Exception.Message}"));
 
             return errors.Any()
                 ? new InvalidOperationException(string.Join("\n", errors))

@@ -36,7 +36,7 @@ namespace LightBDD.Framework.Parameters
             {
                 return expected
                     .Zip(actual, (e, a) => new RowMatch(TableRowType.Matching, e, a))
-                    .Concat(expected.Skip(actual.Count).Select(e => new RowMatch(TableRowType.Missing, e, default(TRow))))
+                    .Concat(expected.Skip(actual.Count).Select(e => new RowMatch(TableRowType.Missing, e, default(ActualRowValue))))
                     .Concat(actual.Skip(expected.Count).Select(a => new RowMatch(TableRowType.Surplus, default(TRow), a)));
             }
 
@@ -75,12 +75,36 @@ namespace LightBDD.Framework.Parameters
 
         public VerifiableTable<TRow> SetActual(Func<TRow, TRow> provideActualFn)
         {
-            return SetMatchedActual(Expected.Select(e => new RowMatch(TableRowType.Matching, e, provideActualFn(e))));
+            return SetMatchedActual(Expected.Select(e => new RowMatch(TableRowType.Matching, e, Evaluate(provideActualFn, e))));
+        }
+
+        private static ActualRowValue Evaluate(Func<TRow, TRow> provideActualFn, TRow row)
+        {
+            try
+            {
+                return provideActualFn(row);
+            }
+            catch (Exception ex)
+            {
+                return new ActualRowValue(ex);
+            }
+        }
+
+        private async Task<ActualRowValue> EvaluateAsync(Func<TRow, Task<TRow>> provideActualFn, TRow row)
+        {
+            try
+            {
+                return await provideActualFn(row);
+            }
+            catch (Exception ex)
+            {
+                return new ActualRowValue(ex);
+            }
         }
 
         public async Task<VerifiableTable<TRow>> SetActualAsync(Func<TRow, Task<TRow>> provideActualFn)
         {
-            var results = await Task.WhenAll(Expected.Select(provideActualFn));
+            var results = await Task.WhenAll(Expected.Select(e => EvaluateAsync(provideActualFn, e)));
             return SetMatchedActual(Expected.Zip(results, (e, a) => new RowMatch(TableRowType.Matching, e, a)));
         }
 
@@ -88,7 +112,10 @@ namespace LightBDD.Framework.Parameters
         {
             var matches = results.ToArray();
             _result = new TabularParameterResult(GetColumns(), GetRows(matches));
-            Actual = matches.Where(x => x.Type != TableRowType.Missing).Select(x => x.Actual).ToArray();
+            Actual = matches
+                .Where(x => x.Type != TableRowType.Missing)
+                .Select(x => x.Actual.Value)
+                .ToArray();
             return this;
         }
 
@@ -102,7 +129,7 @@ namespace LightBDD.Framework.Parameters
             var values = Columns.Select(c =>
             {
                 var expected = row.Expected != null ? c.GetValue(row.Expected) : ColumnValue.None;
-                var actual = row.Actual != null ? c.GetValue(row.Actual) : ColumnValue.None;
+                var actual = row.Actual.Exception == null && row.Actual.Value != null ? c.GetValue(row.Actual.Value) : ColumnValue.None;
                 var result = VerifyExpectation(expected, actual, c.Expectation);
                 return new ValueResult(
                     _formattingService.FormatValue(expected),
@@ -111,7 +138,7 @@ namespace LightBDD.Framework.Parameters
                     result ? null : new InvalidOperationException($"{c.Name}: {result.Message}")
                 );
             });
-            return new TabularParameterRow(index, row.Type, values);
+            return new TabularParameterRow(index, row.Type, values, row.Actual.Exception);
         }
 
         private ExpectationResult VerifyExpectation(ColumnValue expected, ColumnValue actual, Func<object, IExpectation<object>> columnExpectation)
@@ -169,14 +196,34 @@ namespace LightBDD.Framework.Parameters
         {
             public TableRowType Type { get; }
             public TRow Expected { get; }
-            public TRow Actual { get; }
+            public ActualRowValue Actual { get; }
 
-            public RowMatch(TableRowType type, TRow expected, TRow actual)
+            public RowMatch(TableRowType type, TRow expected, ActualRowValue actual)
             {
                 Type = type;
                 Expected = expected;
                 Actual = actual;
             }
+        }
+
+        private struct ActualRowValue
+        {
+            public ActualRowValue(TRow value)
+            {
+                Value = value;
+                Exception = null;
+            }
+
+            public ActualRowValue(Exception exception)
+            {
+                Value = default(TRow);
+                Exception = exception;
+            }
+
+            public TRow Value { get; }
+            public Exception Exception { get; }
+
+            public static implicit operator ActualRowValue(TRow row) => new ActualRowValue(row);
         }
     }
 }

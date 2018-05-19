@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -533,6 +534,83 @@ namespace LightBDD.Framework.UnitTests.Parameters
             AssertRow(result.Rows[0], TableRowType.Matching, ParameterVerificationStatus.Success, "Success|Joe|Joe|null", "Success|Smith|Smith|null", "Success|EMAIL|email|null", "Success|joe.smith@mymail.com|joe.smith@mymail.com|null", "Success|<none>|<none>|null", "Success|<none>|<none>|null");
             AssertRow(result.Rows[1], TableRowType.Matching, ParameterVerificationStatus.Failure, "Success|Adam|Adam|null", "Success|Kowalski|Kowalski|null", "Success|PHONE|phone|null", "Success|<none>|<none>|null", "Success|<none>|<none>|null", "Failure|00441122233445|00441122233444|Phone: expected: equal '00441122233444', but got: '00441122233445'");
             AssertRow(result.Rows[2], TableRowType.Matching, ParameterVerificationStatus.Success, "Success|Mary|Mary|null", "Success|Adams|Adams|null", "Success|POSTAL|postal|null", "Success|<none>|<none>|null", "Success|XX1 1XX, Hight Street 55|XX1 1XX, Hight Street 55|null", "Success|<none>|<none>|null");
+        }
+
+        [Test]
+        public async Task SetActualAsync_with_lookup_should_allow_concurrent_lookup()
+        {
+            var expected = Enumerable.Range(0, 100).Select(i => i).ToArray();
+            var delay = TimeSpan.FromMilliseconds(500);
+            var table = expected.AsVerifiableTable();
+
+            var stopwatch = Stopwatch.StartNew();
+            await table.SetActualAsync(async exp =>
+            {
+                await Task.Delay(delay);
+                return exp;
+            });
+            stopwatch.Stop();
+
+            Assert.That(table.Result.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Success));
+            Assert.That(stopwatch.ElapsedMilliseconds, Is.LessThan(delay.TotalMilliseconds * expected.Length));
+        }
+
+        [Test]
+        public void SetActual_with_lookup_should_capture_exceptions()
+        {
+            var expected = new[] { 1, 2, 3 };
+            var result = expected
+                .AsVerifiableTable()
+                .SetActual(v => v % 2 == 0 ? v : throw new Exception($"Reason {v}"))
+                .Result;
+
+            Assert.That(result.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Failure));
+            Assert.That(result.Rows.Count, Is.EqualTo(3));
+
+            AssertRow(result.Rows[0], TableRowType.Matching, ParameterVerificationStatus.Failure, "Failure|<none>|1|Item: missing value");
+            AssertRow(result.Rows[1], TableRowType.Matching, ParameterVerificationStatus.Success, "Success|2|2|null");
+            AssertRow(result.Rows[2], TableRowType.Matching, ParameterVerificationStatus.Failure, "Failure|<none>|3|Item: missing value");
+
+            Assert.That(result.Rows[0].Exception?.Message, Is.EqualTo("[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value"));
+            Assert.That(result.Rows[2].Exception?.Message, Is.EqualTo("[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value"));
+            Assert.That(result.Exception?.Message, Is.EqualTo("[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value\n[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value"));
+        }
+
+        [Test]
+        public async Task SetActualAsync_with_lookup_should_capture_exceptions()
+        {
+            var expected = new[] { 1, 2, 3 };
+            var table = await expected
+                .AsVerifiableTable()
+                .SetActualAsync(async v =>
+                {
+                    await Task.Yield();
+                    return v % 2 == 0 ? v : throw new Exception($"Reason {v}");
+                });
+            var result = table.Result;
+
+            Assert.That(result.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Failure));
+            Assert.That(result.Rows.Count, Is.EqualTo(3));
+
+            AssertRow(result.Rows[0], TableRowType.Matching, ParameterVerificationStatus.Failure, "Failure|<none>|1|Item: missing value");
+            AssertRow(result.Rows[1], TableRowType.Matching, ParameterVerificationStatus.Success, "Success|2|2|null");
+            AssertRow(result.Rows[2], TableRowType.Matching, ParameterVerificationStatus.Failure, "Failure|<none>|3|Item: missing value");
+
+            Assert.That(result.Rows[0].Exception?.Message, Is.EqualTo("[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value"));
+            Assert.That(result.Rows[2].Exception?.Message, Is.EqualTo("[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value"));
+            Assert.That(result.Exception?.Message, Is.EqualTo("[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value\n[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value"));
+        }
+
+        [Test]
+        public void SetActual_with_lookup_should_make_Actual_property_returning_default_values_for_rows_with_exceptions()
+        {
+            var expected = new[] { 1, 2, 3, 4 };
+            var result = expected
+                .AsVerifiableTable()
+                .SetActual(v => v % 2 == 0 ? v : throw new Exception(v.ToString()))
+                .Actual;
+
+            Assert.That(result, Is.EqualTo(new[] { 0, 2, 0, 4 }));
         }
 
         private void AssertRow(ITabularParameterRow row, TableRowType rowType, ParameterVerificationStatus rowStatus, params string[] expectedValueDetails)
