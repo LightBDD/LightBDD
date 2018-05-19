@@ -79,8 +79,9 @@ namespace LightBDD.Framework.Notification
             {
                 if (parameter.Result is ITabularParameterResult table)
                 {
-                    report.Add($"    {parameter.Name}:");
-                    report.Add(new TextTableRenderer(table).Render("    "));
+                    //TODO: rework
+                    report.Add($"     {parameter.Name}:");
+                    report.Add(" " + new TextTableRenderer(table).Render("    "));
                 }
             }
             _onNotify(string.Join("\n", report));
