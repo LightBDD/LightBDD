@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters;
 
@@ -9,13 +10,11 @@ namespace LightBDD.Framework.Reporting.Formatters
 {
     internal class TextTableRenderer
     {
-        private readonly TextWriter _writer;
         private readonly TextColumn[] _columns;
         private readonly List<TextRow> _rows = new List<TextRow>();
 
-        public TextTableRenderer(ITabularParameterResult table, TextWriter writer)
+        public TextTableRenderer(ITabularParameterResult table)
         {
-            _writer = writer;
             _columns = table.Columns.Select(c => new TextColumn(c.Name)).ToArray();
             foreach (var row in table.Rows)
                 AddRow(row);
@@ -23,7 +22,7 @@ namespace LightBDD.Framework.Reporting.Formatters
 
         private void AddRow(ITabularParameterRow row)
         {
-            var textRow = new TextRow();
+            var textRow = new TextRow(row.Type, row.VerificationStatus);
             for (var i = 0; i < row.Values.Count; i++)
             {
                 var cell = new TextCell(row.Values[i]);
@@ -47,32 +46,45 @@ namespace LightBDD.Framework.Reporting.Formatters
             public string Text { get; }
         }
 
-        public void Render()
+        public string Render(string prefix)
         {
-            WriteHRule();
-            _writer.Write('|');
-            foreach (var column in _columns)
-            {
-                column.Render(_writer);
-                _writer.Write('|');
-            }
-            _writer.WriteLine();
-            WriteHRule();
-
-            foreach (var row in _rows)
-                row.Render(_writer, _columns);
-            WriteHRule();
+            var builder = new StringBuilder();
+            using (var writer = new StringWriter(builder))
+                Render(writer, prefix);
+            return builder.ToString();
         }
 
-        private void WriteHRule()
+        public void Render(TextWriter writer, string prefix)
         {
-            _writer.Write('+');
+            WriteHRule(writer, prefix);
+            writer.Write(prefix);
+            writer.Write("|#|");
             foreach (var column in _columns)
             {
-                WriteFill(_writer, '-', column.Size);
-                _writer.Write('+');
+                column.Render(writer);
+                writer.Write('|');
             }
-            _writer.WriteLine();
+            writer.WriteLine();
+            WriteHRule(writer, prefix);
+
+            foreach (var row in _rows)
+            {
+                writer.Write(prefix);
+                row.Render(writer, _columns);
+            }
+            WriteHRule(writer, prefix);
+        }
+
+        private void WriteHRule(TextWriter writer, string prefix)
+        {
+            writer.Write(prefix);
+            writer.Write("+-+");
+            foreach (var column in _columns)
+            {
+                WriteFill(writer, '-', column.Size);
+                writer.Write('+');
+            }
+            writer.WriteLine();
         }
 
         private static void WriteFill(TextWriter writer, char c, int repeat)
@@ -84,6 +96,34 @@ namespace LightBDD.Framework.Reporting.Formatters
         class TextRow
         {
             private readonly List<TextCell> _cells = new List<TextCell>();
+            private readonly char _status;
+
+            public TextRow(TableRowType rowType, ParameterVerificationStatus rowVerificationStatus)
+            {
+                _status = GetStatus(rowType, rowVerificationStatus);
+            }
+
+            private static char GetStatus(TableRowType type, ParameterVerificationStatus status)
+            {
+                switch (type)
+                {
+                    case TableRowType.Missing:
+                        return '-';
+                    case TableRowType.Surplus:
+                        return '+';
+                }
+
+                switch (status)
+                {
+                    case ParameterVerificationStatus.Success:
+                        return '=';
+                    case ParameterVerificationStatus.NotApplicable:
+                        return ' ';
+                }
+
+                return '!';
+            }
+
             public void Add(TextCell cell)
             {
                 _cells.Add(cell);
@@ -91,6 +131,8 @@ namespace LightBDD.Framework.Reporting.Formatters
 
             public void Render(TextWriter writer, TextColumn[] columns)
             {
+                writer.Write('|');
+                writer.Write(_status);
                 writer.Write('|');
                 for (var i = 0; i < _cells.Count; i++)
                 {

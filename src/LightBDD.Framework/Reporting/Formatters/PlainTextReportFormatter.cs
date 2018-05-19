@@ -131,8 +131,9 @@ namespace LightBDD.Framework.Reporting.Formatters
 
         private static void FormatStep(TextWriter writer, IStepResult step, StringBuilder commentBuilder, int indent = 0)
         {
-            writer.Write(new string('\t', indent));
-            writer.Write("\t\tStep ");
+            var stepIndent = new string('\t', indent + 2);
+            writer.Write(stepIndent);
+            writer.Write("Step ");
             writer.Write(step.Info.GroupPrefix);
             writer.Write(step.Info.Number);
             writer.Write(": ");
@@ -147,19 +148,20 @@ namespace LightBDD.Framework.Reporting.Formatters
             }
             writer.WriteLine();
             foreach (var parameterResult in step.Parameters)
-                FormatParameter(writer, parameterResult);
+                FormatParameter(writer, parameterResult, stepIndent);
             CollectComments(step, commentBuilder);
             foreach (var subStep in step.GetSubSteps())
                 FormatStep(writer, subStep, commentBuilder, indent + 1);
         }
 
-        private static void FormatParameter(TextWriter writer, IParameterResult parameterResult)
+        private static void FormatParameter(TextWriter writer, IParameterResult parameterResult, string stepIndent)
         {
             if (parameterResult.Result is ITabularParameterResult table)
             {
+                writer.Write(stepIndent);
                 writer.Write(parameterResult.Name);
                 writer.WriteLine(":");
-                new TextTableRenderer(table, writer).Render();
+                new TextTableRenderer(table).Render(writer, stepIndent);
             }
         }
 

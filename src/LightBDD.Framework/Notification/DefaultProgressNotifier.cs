@@ -1,11 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
+using LightBDD.Core.Results.Parameters;
+using LightBDD.Framework.Reporting.Formatters;
 
 namespace LightBDD.Framework.Notification
 {
@@ -67,7 +71,19 @@ namespace LightBDD.Framework.Notification
         /// <param name="step">Step result.</param>
         public void NotifyStepFinished(IStepResult step)
         {
-            _onNotify($"  STEP {step.Info.GroupPrefix}{step.Info.Number}/{step.Info.GroupPrefix}{step.Info.Total}: {step.Info.Name} ({step.Status} after {step.ExecutionTime.Duration.FormatPretty()})");
+            var report = new List<string>
+            {
+                $"  STEP {step.Info.GroupPrefix}{step.Info.Number}/{step.Info.GroupPrefix}{step.Info.Total}: {step.Info.Name} ({step.Status} after {step.ExecutionTime.Duration.FormatPretty()})"
+            };
+            foreach (var parameter in step.Parameters)
+            {
+                if (parameter.Result is ITabularParameterResult table)
+                {
+                    report.Add($"    {parameter.Name}:");
+                    report.Add(new TextTableRenderer(table).Render("    "));
+                }
+            }
+            _onNotify(string.Join("\n", report));
         }
 
         /// <summary>
