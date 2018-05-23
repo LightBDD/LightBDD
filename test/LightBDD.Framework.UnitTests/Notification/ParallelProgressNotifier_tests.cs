@@ -1,11 +1,14 @@
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LightBDD.Core.Formatting;
+using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
+using LightBDD.Core.Results.Parameters;
 using LightBDD.Framework.ExecutionContext;
 using LightBDD.Framework.Notification;
 using LightBDD.UnitTests.Helpers;
@@ -53,6 +56,37 @@ namespace LightBDD.Framework.UnitTests.Notification
             var scenarioInfo = RandomValue.Object<TestResults.TestScenarioInfo>();
             var stepInfo = RandomValue.Object<TestResults.TestStepInfo>();
             var stepResult = RandomValue.Object<TestResults.TestStepResult>();
+            stepResult.Parameters = new IParameterResult[]
+            {
+                new TestResults.TestParameterResult("table",
+                    TestResults.CreateTabularParameterResult()
+                        .WithKeyColumns("Key")
+                        .WithValueColumns("Value1", "Value2")
+                        .AddRow(TableRowType.Matching,
+                            ParameterVerificationStatus.Success,
+                            TestResults.CreateTabularParameterValue("1"),
+                            TestResults.CreateTabularParameterValue("abc"),
+                            TestResults.CreateTabularParameterValue("some value"))
+                        .AddRow(TableRowType.Matching,
+                            ParameterVerificationStatus.Failure,
+                            TestResults.CreateTabularParameterValue("2"),
+                            TestResults.CreateTabularParameterValue("def"),
+                            TestResults.CreateTabularParameterValue("value", "val", ParameterVerificationStatus.Failure))
+                        .AddRow(TableRowType.Missing,
+                            ParameterVerificationStatus.Failure,
+                            TestResults.CreateTabularParameterValue("3"),
+                            TestResults.CreateTabularParameterValue("XXX", "<null>", ParameterVerificationStatus.NotProvided),
+                            TestResults.CreateTabularParameterValue("YYY", "<null>", ParameterVerificationStatus.NotProvided))
+                        .AddRow(TableRowType.Surplus,
+                            ParameterVerificationStatus.Failure,
+                            TestResults.CreateTabularParameterValue("4"),
+                            TestResults.CreateTabularParameterValue("<null>", "XXX",
+                                ParameterVerificationStatus.Failure),
+                            TestResults.CreateTabularParameterValue("<null>", "YYY",
+                                ParameterVerificationStatus.Failure))
+                )
+            };
+
             var scenarioResult = RandomValue.Object<TestResults.TestScenarioResult>();
             scenarioResult.Status = ExecutionStatus.Passed;
 
@@ -71,14 +105,28 @@ namespace LightBDD.Framework.UnitTests.Notification
             featureNotifier.NotifyFeatureFinished(featureResult);
 
             var headerLength = "Fi=000,Fa=000,Pe=000 #   > ".Length;
+            var padding = new string(' ',headerLength);
+
+            var expectedTable = $@"{padding}    table:
+{padding}    +-+---+----------+----------+
+{padding}    |#|Key|Value1    |Value2    |
+{padding}    +-+---+----------+----------+
+{padding}    |=|1  |abc       |some value|
+{padding}    |!|2  |def       |val/value |
+{padding}    |-|3  |<null>/XXX|<null>/YYY|
+{padding}    |+|4  |XXX/<null>|YYY/<null>|
+{padding}    +-+---+----------+----------+"
+                .Replace("\r", "")
+                .Replace("\n", Environment.NewLine);
+
             var expected = new[]
             {
-                $"Fi=000,Fa=000,Pe=000 #   > FEATURE: [{string.Join("][", featureInfo.Labels)}] {featureInfo.Name}\n{new string(' ',headerLength)}  {featureInfo.Description}",
+                $"Fi=000,Fa=000,Pe=000 #   > FEATURE: [{string.Join("][", featureInfo.Labels)}] {featureInfo.Name}{Environment.NewLine}{padding}  {featureInfo.Description}",
                 $"Fi=000,Fa=000,Pe=001 #  1> SCENARIO: [{string.Join("][", scenarioInfo.Labels)}] {scenarioInfo.Name}",
                 $"Fi=000,Fa=000,Pe=001 #  1>   STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: {stepInfo.Name}...",
                 $"Fi=000,Fa=000,Pe=001 #  1>   STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: /* {comment} */",
-                $"Fi=000,Fa=000,Pe=001 #  1>   STEP {stepResult.Info.GroupPrefix}{stepResult.Info.Number}/{stepResult.Info.GroupPrefix}{stepResult.Info.Total}: {stepResult.Info.Name} ({stepResult.Status} after {stepResult.ExecutionTime.Duration.FormatPretty()})",
-                $"Fi=001,Fa=000,Pe=000 #  1>   SCENARIO RESULT: {scenarioResult.Status} after {scenarioResult.ExecutionTime.Duration.FormatPretty()}\n{new string(' ',headerLength)}    {scenarioResult.StatusDetails}",
+                $"Fi=000,Fa=000,Pe=001 #  1>   STEP {stepResult.Info.GroupPrefix}{stepResult.Info.Number}/{stepResult.Info.GroupPrefix}{stepResult.Info.Total}: {stepResult.Info.Name} ({stepResult.Status} after {stepResult.ExecutionTime.Duration.FormatPretty()}){Environment.NewLine}{expectedTable}",
+                $"Fi=001,Fa=000,Pe=000 #  1>   SCENARIO RESULT: {scenarioResult.Status} after {scenarioResult.ExecutionTime.Duration.FormatPretty()}{Environment.NewLine}{padding}    {scenarioResult.StatusDetails}",
                 $"Fi=001,Fa=000,Pe=000 #   > FEATURE FINISHED: {featureResult.Info.Name}"
             };
 
@@ -103,7 +151,7 @@ namespace LightBDD.Framework.UnitTests.Notification
             GetFeatureNotifier().NotifyFeatureStart(featureInfo);
 
             var header = "Fi=000,Fa=000,Pe=000 #   > ";
-            var expected = $"{header}FEATURE: {featureInfo.Name}\n{new string(' ', header.Length)}  {featureInfo.Description}";
+            var expected = $"{header}FEATURE: {featureInfo.Name}{Environment.NewLine}{new string(' ', header.Length)}  {featureInfo.Description}";
             Assert.That(CapturedItems.Single(), Is.EqualTo(expected));
         }
 
@@ -166,9 +214,9 @@ namespace LightBDD.Framework.UnitTests.Notification
             var expected = new[]
             {
                 $"Fi=000,Fa=000,Pe=001 #  1> SCENARIO: {scenarioInfo.Name}",
-                $"Fi=001,Fa=000,Pe=000 #  1>   SCENARIO RESULT: {scenarioResult.Status} after {scenarioResult.ExecutionTime.Duration.FormatPretty()}\n{new string(' ',headerLength)}    {scenarioResult.StatusDetails}",
+                $"Fi=001,Fa=000,Pe=000 #  1>   SCENARIO RESULT: {scenarioResult.Status} after {scenarioResult.ExecutionTime.Duration.FormatPretty()}{Environment.NewLine}{new string(' ',headerLength)}    {scenarioResult.StatusDetails}",
                 $"Fi=001,Fa=000,Pe=001 #  2> SCENARIO: {scenarioInfo2.Name}",
-                $"Fi=002,Fa=001,Pe=000 #  2>   SCENARIO RESULT: {scenarioResult2.Status} after {scenarioResult2.ExecutionTime.Duration.FormatPretty()}\n{new string(' ',headerLength)}    {scenarioResult2.StatusDetails}"
+                $"Fi=002,Fa=001,Pe=000 #  2>   SCENARIO RESULT: {scenarioResult2.Status} after {scenarioResult2.ExecutionTime.Duration.FormatPretty()}{Environment.NewLine}{new string(' ',headerLength)}    {scenarioResult2.StatusDetails}"
 
             };
             Assert.That(CapturedItems.ToArray(), Is.EqualTo(expected));
@@ -193,7 +241,7 @@ namespace LightBDD.Framework.UnitTests.Notification
             var expected = new[]
             {
                 $"Fi=000,Fa=000,Pe=001 #  1> SCENARIO: {scenarioInfo.Name}",
-                $"Fi=001,Fa=000,Pe=000 #  1>   SCENARIO RESULT: {scenarioResult.Status}\n{new string(' ',headerLength)}    {scenarioResult.StatusDetails}"
+                $"Fi=001,Fa=000,Pe=000 #  1>   SCENARIO RESULT: {scenarioResult.Status}{Environment.NewLine}{new string(' ',headerLength)}    {scenarioResult.StatusDetails}"
             };
             Assert.That(CapturedItems.ToArray(), Is.EqualTo(expected));
         }

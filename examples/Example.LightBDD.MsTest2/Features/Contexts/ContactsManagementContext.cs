@@ -119,5 +119,10 @@ namespace Example.LightBDD.MsTest2.Features.Contexts
             phone.SetActual(contact.PhoneNumber);
             email.SetActual(contact.Email);
         }
+
+        public void Then_I_should_receive_contacts(VerifiableTable<KeyValuePair<string, Contact>> contacts)
+        {
+            contacts.SetActual(_searchResults.ToDictionary(x => x.Name, x => x));
+        }
     }
 }

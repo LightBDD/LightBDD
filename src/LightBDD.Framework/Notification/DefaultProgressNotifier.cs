@@ -50,7 +50,7 @@ namespace LightBDD.Framework.Notification
                 : $"  SCENARIO RESULT: {scenario.Status}";
 
             var scenarioDetails = !string.IsNullOrWhiteSpace(scenario.StatusDetails)
-                ? $"\n    {scenario.StatusDetails.Replace("\n", "\n    ")}"
+                ? $"{Environment.NewLine}    {scenario.StatusDetails.Replace("\n", "\n    ")}"
                 : string.Empty;
 
             _onNotify(scenarioText + scenarioDetails);
@@ -80,11 +80,11 @@ namespace LightBDD.Framework.Notification
                 if (parameter.Result is ITabularParameterResult table)
                 {
                     //TODO: rework
-                    report.Add($"     {parameter.Name}:");
-                    report.Add(" " + new TextTableRenderer(table).Render("    "));
+                    report.Add($"    {parameter.Name}:");
+                    report.Add(new TextTableRenderer(table).Render("    "));
                 }
             }
-            _onNotify(string.Join("\n", report));
+            _onNotify(string.Join(Environment.NewLine, report));
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace LightBDD.Framework.Notification
         {
             return string.IsNullOrWhiteSpace(description)
                 ? string.Empty
-                : $"\n  {description.Replace("\n", "\n  ")}";
+                : $"{Environment.NewLine}  {description.Replace("\n", "\n  ")}";
         }
 
         private static string FormatLabels(IEnumerable<string> labels)

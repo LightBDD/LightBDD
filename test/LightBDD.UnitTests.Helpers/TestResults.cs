@@ -168,9 +168,9 @@ namespace LightBDD.UnitTests.Helpers
             return result;
         }
 
-        public static TestTabularParameterResult AddRow(this TestTabularParameterResult result, TableRowType type, params TestValueResult[] values)
+        public static TestTabularParameterResult AddRow(this TestTabularParameterResult result, TableRowType type, ParameterVerificationStatus status, params TestValueResult[] values)
         {
-            result.Rows.Add(new TestTabularParameterRow(type, values));
+            result.Rows.Add(new TestTabularParameterRow(type, status, values));
             return result;
         }
 
@@ -358,9 +358,10 @@ namespace LightBDD.UnitTests.Helpers
 
         public class TestTabularParameterRow : ITabularParameterRow
         {
-            public TestTabularParameterRow(TableRowType type, TestValueResult[] values)
+            public TestTabularParameterRow(TableRowType type, ParameterVerificationStatus verificationStatus, TestValueResult[] values)
             {
                 Type = type;
+                VerificationStatus = verificationStatus;
                 Values = values;
             }
 

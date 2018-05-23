@@ -57,6 +57,7 @@ namespace LightBDD.Framework.Reporting.Formatters
         public void Render(TextWriter writer, string prefix)
         {
             WriteHRule(writer, prefix);
+            writer.WriteLine();
             writer.Write(prefix);
             writer.Write("|#|");
             foreach (var column in _columns)
@@ -66,6 +67,7 @@ namespace LightBDD.Framework.Reporting.Formatters
             }
             writer.WriteLine();
             WriteHRule(writer, prefix);
+            writer.WriteLine();
 
             foreach (var row in _rows)
             {
@@ -84,7 +86,6 @@ namespace LightBDD.Framework.Reporting.Formatters
                 WriteFill(writer, '-', column.Size);
                 writer.Write('+');
             }
-            writer.WriteLine();
         }
 
         private static void WriteFill(TextWriter writer, char c, int repeat)
