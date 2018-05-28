@@ -41,7 +41,7 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
   <Summary TestExecutionStart=""2014-09-23T19:21:58.055Z"" TestExecutionEnd=""2014-09-23T19:23:00.155Z"" TestExecutionTime=""PT1M2.1S"">
     <Features Count=""1"" />
     <Scenarios Count=""2"" Passed=""0"" Bypassed=""0"" Failed=""1"" Ignored=""1"" />
-    <Steps Count=""9"" Passed=""3"" Bypassed=""1"" Failed=""1"" Ignored=""2"" NotRun=""2"" />
+    <Steps Count=""10"" Passed=""3"" Bypassed=""1"" Failed=""2"" Ignored=""2"" NotRun=""2"" />
   </Summary>
   <Feature Name=""My feature"">
     <Label Name=""Label 1"" />
@@ -72,10 +72,13 @@ comment</Comment>
           <StatusDetails>Not implemented yet</StatusDetails>
           <StepName Format=""substep 3"" />
           <Comment>sub-comment</Comment>
-          <SubStep Status=""NotRun"" Number=""1"" Name=""sub-substep 1"" GroupPrefix=""2.3."">
+          <SubStep Status=""Failed"" Number=""1"" Name=""sub-substep 1"" GroupPrefix=""2.3."">
             <StepName Format=""sub-substep 1"" />
             <Comment>sub-sub-multiline
 comment</Comment>
+          </SubStep>
+          <SubStep Status=""NotRun"" Number=""2"" Name=""sub-substep 2"" GroupPrefix=""2.3."">
+            <StepName Format=""sub-substep 2"" />
           </SubStep>
         </SubStep>
       </Step>

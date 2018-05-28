@@ -162,6 +162,7 @@ namespace LightBDD.Framework.Reporting.Formatters
                 writer.Write(parameterResult.Name);
                 writer.WriteLine(":");
                 new TextTableRenderer(table).Render(writer, stepIndent);
+                writer.WriteLine();
             }
         }
 
