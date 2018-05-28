@@ -223,17 +223,24 @@ namespace LightBDD.Core.Execution.Implementation
             _result.SetParameters(results);
 
             var exceptions = results
-                .Select(x => x.Result.Exception)
-                .Where(e => e != null)
-                .ToArray();
+                .Where(x => x.Result.VerificationStatus > ParameterVerificationStatus.Success)
+                .Select(FormatException)
+                .ToArray<Exception>();
 
             if (!exceptions.Any())
                 return;
 
             if (exceptions.Length > 1)
-                throw new AggregateException("Expectation failed", exceptions);
+                throw new AggregateException("Parameter verification failed", exceptions);
 
             ExceptionDispatchInfo.Capture(exceptions[0]).Throw();
+        }
+
+        [DebuggerStepThrough]
+        private static InvalidOperationException FormatException(IParameterResult result)
+        {
+            var message = $"Parameter '{result.Name}' verification failed: {result.Result.Exception.Message.Replace("\n", "\n\t")}";
+            return new InvalidOperationException(message,result.Result.Exception?.InnerException);
         }
 
         [DebuggerStepThrough]
