@@ -15,9 +15,12 @@ namespace LightBDD.Framework.Parameters
     public class VerifiableTable<TRow> : IVerifiableParameter, ISelfFormattable
     {
         private IValueFormattingService _formattingService = ValueFormattingServices.Current;
+        private TabularParameterResult _result;
         public IReadOnlyList<TRow> Expected { get; }
         public IReadOnlyList<TRow> Actual { get; private set; }
         public IReadOnlyList<VerifiableTableColumn> Columns { get; }
+        IParameterVerificationResult IVerifiableParameter.Result => Result;
+        public ITabularParameterResult Result => GetResultLazily();
 
         public VerifiableTable(IEnumerable<TRow> expected, IEnumerable<VerifiableTableColumn> columns)
         {
@@ -25,57 +28,63 @@ namespace LightBDD.Framework.Parameters
             Columns = columns.OrderByDescending(x => x.IsKey).ToArray();
         }
 
-        public VerifiableTable<TRow> SetActual(IEnumerable<TRow> actual)
+        public VerifiableTable<TRow> SetActual(IEnumerable<TRow> actualCollection)
         {
-            return SetMatchedActual(MatchRows(Expected, actual.ToArray()));
+            if (actualCollection == null)
+                throw new ArgumentNullException(nameof(actualCollection));
+
+            EnsureActualNotSet();
+            return SetMatchedActual(MatchRows(Expected, actualCollection.ToArray()));
         }
 
-        private IEnumerable<RowMatch> MatchRows(IReadOnlyList<TRow> expected, IReadOnlyList<TRow> actual)
+        public async Task<VerifiableTable<TRow>> SetActualAsync(Func<Task<IEnumerable<TRow>>> actualCollectionFn)
         {
-            if (!Columns.Any(c => c.IsKey))
+            if (actualCollectionFn == null)
+                throw new ArgumentNullException(nameof(actualCollectionFn));
+
+            EnsureActualNotSet();
+            IEnumerable<TRow> actualCollection;
+
+            try
             {
-                return expected
-                    .Zip(actual, (e, a) => new RowMatch(TableRowType.Matching, e, a))
-                    .Concat(expected.Skip(actual.Count).Select(e => new RowMatch(TableRowType.Missing, e, default(ActualRowValue))))
-                    .Concat(actual.Skip(expected.Count).Select(a => new RowMatch(TableRowType.Surplus, default(TRow), a)));
+                actualCollection = await actualCollectionFn();
             }
-
-            var result = new List<RowMatch>(expected.Count);
-
-            var keySelector = Columns.Where(x => x.IsKey).Select(x => x.GetValue).ToArray();
-            int[] GetHashes(TRow row)
+            catch (Exception ex)
             {
-                return keySelector.Select(s => s.Invoke(row).Value?.GetHashCode() ?? 0).ToArray();
+                _result = new TabularParameterResult(
+                    GetColumns(),
+                    Expected.Select(ToMissingRow),
+                    ParameterVerificationStatus.Exception,
+                    new InvalidOperationException($"Failed to retrieve rows: {ex.Message}", ex));
+                Actual = new TRow[0];
+                return this;
             }
-
-            var remaining = actual.Select(x => new KeyValuePair<int[], TRow>(GetHashes(x), x)).ToList();
-            foreach (var e in expected)
-            {
-                var eHash = GetHashes(e);
-                var index = remaining.FindIndex(r => r.Key.SequenceEqual(eHash));
-                if (index >= 0)
-                {
-                    result.Add(new RowMatch(TableRowType.Matching, e, remaining[index].Value));
-                    remaining.RemoveAt(index);
-                }
-                else
-                    result.Add(new RowMatch(TableRowType.Missing, e, default(TRow)));
-            }
-
-            foreach (var r in remaining)
-                result.Add(new RowMatch(TableRowType.Surplus, default(TRow), r.Value));
-
-            return result;
+            return SetActual(actualCollection);
         }
 
-        public async Task<VerifiableTable<TRow>> SetActualAsync(Func<Task<IEnumerable<TRow>>> actualFn)
+        public VerifiableTable<TRow> SetActual(Func<TRow, TRow> lookupFn)
         {
-            return SetActual(await actualFn());
+            if (lookupFn == null)
+                throw new ArgumentNullException(nameof(lookupFn));
+
+            EnsureActualNotSet();
+            return SetMatchedActual(Expected.Select(e => new RowMatch(TableRowType.Matching, e, Evaluate(lookupFn, e))));
         }
 
-        public VerifiableTable<TRow> SetActual(Func<TRow, TRow> provideActualFn)
+        public async Task<VerifiableTable<TRow>> SetActualAsync(Func<TRow, Task<TRow>> lookupFn)
         {
-            return SetMatchedActual(Expected.Select(e => new RowMatch(TableRowType.Matching, e, Evaluate(provideActualFn, e))));
+            if (lookupFn == null)
+                throw new ArgumentNullException(nameof(lookupFn));
+
+            EnsureActualNotSet();
+            var results = await Task.WhenAll(Expected.Select(e => EvaluateAsync(lookupFn, e)));
+            return SetMatchedActual(Expected.Zip(results, (e, a) => new RowMatch(TableRowType.Matching, e, a)));
+        }
+
+        private void EnsureActualNotSet()
+        {
+            if (Actual != null)
+                throw new InvalidOperationException("Actual values have been already specified");
         }
 
         private static ActualRowValue Evaluate(Func<TRow, TRow> provideActualFn, TRow row)
@@ -100,12 +109,6 @@ namespace LightBDD.Framework.Parameters
             {
                 return new ActualRowValue(ex);
             }
-        }
-
-        public async Task<VerifiableTable<TRow>> SetActualAsync(Func<TRow, Task<TRow>> provideActualFn)
-        {
-            var results = await Task.WhenAll(Expected.Select(e => EvaluateAsync(provideActualFn, e)));
-            return SetMatchedActual(Expected.Zip(results, (e, a) => new RowMatch(TableRowType.Matching, e, a)));
         }
 
         private VerifiableTable<TRow> SetMatchedActual(IEnumerable<RowMatch> results)
@@ -154,18 +157,16 @@ namespace LightBDD.Framework.Parameters
         {
             return Columns.Select(x => new TabularParameterColumn(x.Name, x.IsKey));
         }
+
         void IVerifiableParameter.SetValueFormattingService(IValueFormattingService formattingService)
         {
             _formattingService = formattingService;
         }
 
-        IParameterVerificationResult IVerifiableParameter.Result => Result;
-        private TabularParameterResult _result;
-        public ITabularParameterResult Result => GetResultLazily();
-
         private ITabularParameterResult GetResultLazily()
         {
-            if (_result != null) return _result;
+            if (_result != null)
+                return _result;
             return _result = new TabularParameterResult(GetColumns(), Expected.Select(ToMissingRow), ParameterVerificationStatus.NotProvided);
         }
 
@@ -224,6 +225,44 @@ namespace LightBDD.Framework.Parameters
             public Exception Exception { get; }
 
             public static implicit operator ActualRowValue(TRow row) => new ActualRowValue(row);
+        }
+
+        private IEnumerable<RowMatch> MatchRows(IReadOnlyList<TRow> expected, IReadOnlyList<TRow> actual)
+        {
+            if (!Columns.Any(c => c.IsKey))
+            {
+                return expected
+                    .Zip(actual, (e, a) => new RowMatch(TableRowType.Matching, e, a))
+                    .Concat(expected.Skip(actual.Count).Select(e => new RowMatch(TableRowType.Missing, e, default(ActualRowValue))))
+                    .Concat(actual.Skip(expected.Count).Select(a => new RowMatch(TableRowType.Surplus, default(TRow), a)));
+            }
+
+            var result = new List<RowMatch>(expected.Count);
+
+            var keySelector = Columns.Where(x => x.IsKey).Select(x => x.GetValue).ToArray();
+            int[] GetHashes(TRow row)
+            {
+                return keySelector.Select(s => s.Invoke(row).Value?.GetHashCode() ?? 0).ToArray();
+            }
+
+            var remaining = actual.Select(x => new KeyValuePair<int[], TRow>(GetHashes(x), x)).ToList();
+            foreach (var e in expected)
+            {
+                var eHash = GetHashes(e);
+                var index = remaining.FindIndex(r => r.Key.SequenceEqual(eHash));
+                if (index >= 0)
+                {
+                    result.Add(new RowMatch(TableRowType.Matching, e, remaining[index].Value));
+                    remaining.RemoveAt(index);
+                }
+                else
+                    result.Add(new RowMatch(TableRowType.Missing, e, default(TRow)));
+            }
+
+            foreach (var r in remaining)
+                result.Add(new RowMatch(TableRowType.Surplus, default(TRow), r.Value));
+
+            return result;
         }
     }
 }

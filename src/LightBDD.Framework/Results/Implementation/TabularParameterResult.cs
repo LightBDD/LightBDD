@@ -8,25 +8,30 @@ namespace LightBDD.Framework.Results.Implementation
 {
     internal class TabularParameterResult : ITabularParameterResult
     {
-        public TabularParameterResult(IEnumerable<ITabularParameterColumn> columns,IEnumerable<ITabularParameterRow> rows, ParameterVerificationStatus verificationStatus)
-            : this(columns, rows)
+        public TabularParameterResult(IEnumerable<ITabularParameterColumn> columns, IEnumerable<ITabularParameterRow> rows, ParameterVerificationStatus verificationStatus, Exception tableException = null)
+            : this(columns, rows, tableException)
         {
             VerificationStatus = verificationStatus;
         }
 
-        public TabularParameterResult(IEnumerable<ITabularParameterColumn> columns, IEnumerable<ITabularParameterRow> rows)
+        public TabularParameterResult(IEnumerable<ITabularParameterColumn> columns, IEnumerable<ITabularParameterRow> rows, Exception tableException = null)
         {
             Columns = columns.ToArray();
             Rows = rows.ToArray();
             VerificationStatus = Rows.Any() ? Rows.Max(x => x.VerificationStatus) : ParameterVerificationStatus.NotApplicable;
-            Exception = CollectException();
+            Exception = CollectExceptions(tableException);
         }
 
-        private Exception CollectException()
+        private Exception CollectExceptions(Exception tableException)
         {
-            var message = string.Join("\n", Rows.Where(x => x.Exception != null).Select(x => x.Exception.Message));
-            return string.IsNullOrWhiteSpace(message) 
-                ? null 
+            var exceptions = Enumerable.Repeat(tableException, 1)
+                .Concat(Rows.Select(x => x.Exception))
+                .Where(exception => exception != null)
+                .Select(x => x.Message);
+
+            var message = string.Join("\n", exceptions);
+            return string.IsNullOrWhiteSpace(message)
+                ? null
                 : new InvalidOperationException(message);
         }
 

@@ -613,6 +613,50 @@ namespace LightBDD.Framework.UnitTests.Parameters
             Assert.That(result, Is.EqualTo(new[] { 0, 2, 0, 4 }));
         }
 
+        [Test]
+        public void SetActual_should_be_callable_once()
+        {
+            var table = new[] { 1 }.AsVerifiableTable();
+            table.SetActual(e => e);
+
+            var ex = Assert.Throws<InvalidOperationException>(() => table.SetActual(e => e));
+            Assert.That(ex.Message, Is.EqualTo("Actual values have been already specified"));
+            Assert.Throws<InvalidOperationException>(() => table.SetActual(new[] { 0 }));
+            Assert.ThrowsAsync<InvalidOperationException>(() => table.SetActualAsync(() => Task.FromResult(Enumerable.Empty<int>())));
+            Assert.ThrowsAsync<InvalidOperationException>(() => table.SetActualAsync(Task.FromResult));
+        }
+
+        [Test]
+        public async Task SetActualAsync_should_capture_exception()
+        {
+            var table = Enumerable.Empty<int>().AsVerifiableTable();
+            await table.SetActualAsync(() => throw new Exception("foo"));
+            Assert.That(table.Result.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Exception));
+            Assert.That(table.Result.Exception?.Message, Is.EqualTo("Failed to retrieve rows: foo"));
+            Assert.That(table.Actual, Is.Empty);
+        }
+
+        [Test]
+        public async Task SetActualAsync_should_capture_exception_and_still_should_be_callable_once()
+        {
+            var table = Enumerable.Empty<int>().AsVerifiableTable();
+            await table.SetActualAsync(() => throw new Exception("foo"));
+
+            var ex = Assert.Throws<InvalidOperationException>(() => table.SetActual(e => e));
+            Assert.That(ex.Message, Is.EqualTo("Actual values have been already specified"));
+        }
+
+        [Test]
+        public void SetActual_should_not_accept_nulls()
+        {
+            var table = Enumerable.Empty<int>().AsVerifiableTable();
+            Assert.Throws<ArgumentNullException>(() => table.SetActual((IEnumerable<int>)null));
+            Assert.Throws<ArgumentNullException>(() => table.SetActual((Func<int, int>)null));
+            Assert.ThrowsAsync<ArgumentNullException>(() => table.SetActualAsync((Func<Task<IEnumerable<int>>>)null));
+            Assert.ThrowsAsync<ArgumentNullException>(() => table.SetActualAsync(() => Task.FromResult<IEnumerable<int>>(null)));
+            Assert.ThrowsAsync<ArgumentNullException>(() => table.SetActualAsync((Func<int, Task<int>>)null));
+        }
+
         private void AssertRow(ITabularParameterRow row, TableRowType rowType, ParameterVerificationStatus rowStatus, params string[] expectedValueDetails)
         {
             Assert.That(row.Type, Is.EqualTo(rowType));
