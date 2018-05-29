@@ -277,6 +277,7 @@ namespace LightBDD.AcceptanceTests.Features
             foreach (var row in content)
             {
                 tabular.AddRow(row.type,
+                    ParameterVerificationStatus.Success,
                     TestResults.CreateTabularParameterValue(row.id),
                     TestResults.CreateTabularParameterValue(row.name, row.name, ParameterVerificationStatus.Success),
                     TestResults.CreateTabularParameterValue(row.value, row.value, ParameterVerificationStatus.Success));

@@ -74,6 +74,63 @@ comment</Comment>
           <Comment>sub-comment</Comment>
           <SubStep Status=""Failed"" Number=""1"" Name=""sub-substep 1"" GroupPrefix=""2.3."">
             <StepName Format=""sub-substep 1"" />
+            <Parameter Name=""table1"">
+              <Table Status=""NotApplicable"">
+                <Column Index=""0"" Name=""Key"" IsKey=""true"" />
+                <Column Index=""1"" Name=""X"" IsKey=""false"" />
+                <Column Index=""2"" Name=""Y"" IsKey=""false"" />
+                <Row Status=""Success"" Type=""Matching"">
+                  <Value Index=""0"" Status=""NotApplicable"" Value=""Key1"" Expectation=""&lt;null&gt;"" />
+                  <Value Index=""1"" Status=""NotApplicable"" Value=""1"" Expectation=""&lt;null&gt;"" />
+                  <Value Index=""2"" Status=""NotApplicable"" Value=""2"" Expectation=""&lt;null&gt;"" />
+                </Row>
+                <Row Status=""Failure"" Type=""Matching"">
+                  <Value Index=""0"" Status=""NotApplicable"" Value=""Key2"" Expectation=""&lt;null&gt;"" />
+                  <Value Index=""1"" Status=""Failure"" Value=""1"" Expectation=""2"" />
+                  <Value Index=""2"" Status=""NotApplicable"" Value=""4"" Expectation=""&lt;null&gt;"" />
+                </Row>
+                <Row Status=""Failure"" Type=""Missing"">
+                  <Value Index=""0"" Status=""NotApplicable"" Value=""Key3"" Expectation=""&lt;null&gt;"" />
+                  <Value Index=""1"" Status=""Failure"" Value=""&lt;none&gt;"" Expectation=""3"" />
+                  <Value Index=""2"" Status=""Failure"" Value=""&lt;none&gt;"" Expectation=""6"" />
+                </Row>
+                <Row Status=""Failure"" Type=""Surplus"">
+                  <Value Index=""0"" Status=""NotApplicable"" Value=""Key4"" Expectation=""&lt;null&gt;"" />
+                  <Value Index=""1"" Status=""Failure"" Value=""3"" Expectation=""&lt;none&gt;"" />
+                  <Value Index=""2"" Status=""Failure"" Value=""6"" Expectation=""&lt;none&gt;"" />
+                </Row>
+              </Table>
+            </Parameter>
+            <Parameter Name=""table2"">
+              <Table Status=""NotApplicable"">
+                <Column Index=""0"" Name=""Key"" IsKey=""true"" />
+                <Column Index=""1"" Name=""X"" IsKey=""false"" />
+                <Column Index=""2"" Name=""Y"" IsKey=""false"" />
+                <Row Status=""Success"" Type=""Matching"">
+                  <Value Index=""0"" Status=""NotApplicable"" Value=""Key1"" Expectation=""&lt;null&gt;"" />
+                  <Value Index=""1"" Status=""NotApplicable"" Value=""1"" Expectation=""&lt;null&gt;"" />
+                  <Value Index=""2"" Status=""NotApplicable"" Value=""2"" Expectation=""&lt;null&gt;"" />
+                </Row>
+                <Row Status=""Failure"" Type=""Matching"">
+                  <Value Index=""0"" Status=""NotApplicable"" Value=""Key2"" Expectation=""&lt;null&gt;"" />
+                  <Value Index=""1"" Status=""Failure"" Value=""1"" Expectation=""2"" />
+                  <Value Index=""2"" Status=""NotApplicable"" Value=""4"" Expectation=""&lt;null&gt;"" />
+                </Row>
+                <Row Status=""Failure"" Type=""Missing"">
+                  <Value Index=""0"" Status=""NotApplicable"" Value=""Key3"" Expectation=""&lt;null&gt;"" />
+                  <Value Index=""1"" Status=""Failure"" Value=""&lt;none&gt;"" Expectation=""3"" />
+                  <Value Index=""2"" Status=""Failure"" Value=""&lt;none&gt;"" Expectation=""6"" />
+                </Row>
+                <Row Status=""Failure"" Type=""Surplus"">
+                  <Value Index=""0"" Status=""NotApplicable"" Value=""Key4"" Expectation=""&lt;null&gt;"" />
+                  <Value Index=""1"" Status=""Failure"" Value=""3"" Expectation=""&lt;none&gt;"" />
+                  <Value Index=""2"" Status=""Failure"" Value=""6"" Expectation=""&lt;none&gt;"" />
+                </Row>
+              </Table>
+            </Parameter>
+            <Parameter Name=""inline"">
+              <Value Status=""NotApplicable"" Value=""foo"" />
+            </Parameter>
             <Comment>sub-sub-multiline
 comment</Comment>
           </SubStep>

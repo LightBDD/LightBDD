@@ -35,12 +35,13 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
                                             .AddRow(TableRowType.Missing, ParameterVerificationStatus.Failure, TestResults.CreateTabularParameterValue("Key3"), TestResults.CreateTabularParameterValue("3", "<none>", ParameterVerificationStatus.Failure), TestResults.CreateTabularParameterValue("6", "<none>", ParameterVerificationStatus.Failure))
                                             .AddRow(TableRowType.Surplus, ParameterVerificationStatus.Failure, TestResults.CreateTabularParameterValue("Key4"), TestResults.CreateTabularParameterValue("<none>", "3", ParameterVerificationStatus.Failure), TestResults.CreateTabularParameterValue("<none>", "6", ParameterVerificationStatus.Failure))),
                                         TestResults.CreateTestParameter("table2", TestResults.CreateTabularParameterResult()
-                                                .WithKeyColumns("Key")
-                                                .WithValueColumns("X", "Y")
-                                                .AddRow(TableRowType.Matching, ParameterVerificationStatus.Success, TestResults.CreateTabularParameterValue("Key1"), TestResults.CreateTabularParameterValue("1"), TestResults.CreateTabularParameterValue("2"))
-                                                .AddRow(TableRowType.Matching, ParameterVerificationStatus.Failure, TestResults.CreateTabularParameterValue("Key2"), TestResults.CreateTabularParameterValue("2", "1", ParameterVerificationStatus.Failure), TestResults.CreateTabularParameterValue("4"))
-                                                .AddRow(TableRowType.Missing, ParameterVerificationStatus.Failure, TestResults.CreateTabularParameterValue("Key3"), TestResults.CreateTabularParameterValue("3", "<none>", ParameterVerificationStatus.Failure), TestResults.CreateTabularParameterValue("6", "<none>", ParameterVerificationStatus.Failure))
-                                                .AddRow(TableRowType.Surplus, ParameterVerificationStatus.Failure, TestResults.CreateTabularParameterValue("Key4"), TestResults.CreateTabularParameterValue("<none>", "3", ParameterVerificationStatus.Failure), TestResults.CreateTabularParameterValue("<none>", "6", ParameterVerificationStatus.Failure)))),
+                                            .WithKeyColumns("Key")
+                                            .WithValueColumns("X", "Y")
+                                            .AddRow(TableRowType.Matching, ParameterVerificationStatus.Success, TestResults.CreateTabularParameterValue("Key1"), TestResults.CreateTabularParameterValue("1"), TestResults.CreateTabularParameterValue("2"))
+                                            .AddRow(TableRowType.Matching, ParameterVerificationStatus.Failure, TestResults.CreateTabularParameterValue("Key2"), TestResults.CreateTabularParameterValue("2", "1", ParameterVerificationStatus.Failure), TestResults.CreateTabularParameterValue("4"))
+                                            .AddRow(TableRowType.Missing, ParameterVerificationStatus.Failure, TestResults.CreateTabularParameterValue("Key3"), TestResults.CreateTabularParameterValue("3", "<none>", ParameterVerificationStatus.Failure), TestResults.CreateTabularParameterValue("6", "<none>", ParameterVerificationStatus.Failure))
+                                            .AddRow(TableRowType.Surplus, ParameterVerificationStatus.Failure, TestResults.CreateTabularParameterValue("Key4"), TestResults.CreateTabularParameterValue("<none>", "3", ParameterVerificationStatus.Failure), TestResults.CreateTabularParameterValue("<none>", "6", ParameterVerificationStatus.Failure))),
+                                        TestResults.CreateTestParameter("inline",TestResults.CreateInlineParameterResult("foo"))),
                                     TestResults.CreateStepResult(2, "sub-substep 2", ExecutionStatus.NotRun).WithGroupPrefix("2.3."))
                         )),
 
