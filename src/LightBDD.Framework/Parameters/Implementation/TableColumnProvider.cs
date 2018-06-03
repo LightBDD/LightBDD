@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
 namespace LightBDD.Framework.Parameters.Implementation
 {
+    [DebuggerStepThrough]
     internal static class TableColumnProvider
     {
         public static IEnumerable<ColumnInfo> InferColumns<TRow>(TRow[] rows, bool addLengthToCollections = false)

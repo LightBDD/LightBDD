@@ -1,4 +1,5 @@
-﻿using LightBDD.Core.Formatting.Values;
+﻿using System.Diagnostics;
+using LightBDD.Core.Formatting.Values;
 using LightBDD.Framework.Formatting.Values;
 
 namespace LightBDD.Framework.Parameters
@@ -6,6 +7,7 @@ namespace LightBDD.Framework.Parameters
     /// <summary>
     /// Type representing column value.
     /// </summary>
+    [DebuggerStepThrough]
     public struct ColumnValue : ISelfFormattable
     {
         /// <summary>

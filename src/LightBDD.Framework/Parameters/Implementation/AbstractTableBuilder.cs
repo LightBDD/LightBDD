@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace LightBDD.Framework.Parameters.Implementation
 {
+    [DebuggerStepThrough]
     internal abstract class AbstractTableBuilder<TRow, TColumn> where TColumn : TableColumn
     {
         private readonly List<TColumn> _customColumns = new List<TColumn>();

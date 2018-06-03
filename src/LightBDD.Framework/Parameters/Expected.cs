@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
@@ -28,6 +29,7 @@ namespace LightBDD.Framework.Parameters
     /// </summary>
     /// <typeparam name="T">Type of the expected parameter</typeparam>
     //TODO: consider renaming, consider moving to root
+    [DebuggerStepThrough]
     public sealed class Expected<T> : IComplexParameter
     {
         private IValueFormattingService _formattingService = ValueFormattingServices.Current;

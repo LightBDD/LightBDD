@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters.Implementation;
@@ -9,6 +10,7 @@ namespace LightBDD.Framework.Parameters
     /// <summary>
     /// Table extensions allowing to create <see cref="Table{TRow}"/> and <see cref="VerifiableTable{TRow}"/> from collections.
     /// </summary>
+    [DebuggerStepThrough]
     public static class TableExtensions
     {
         /// <summary>

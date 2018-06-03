@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
@@ -21,6 +22,7 @@ namespace LightBDD.Framework.Parameters
     /// Please see <see cref="TableExtensions"/> type to learn how to create tables effectively.
     /// </summary>
     /// <typeparam name="TRow">Row type.</typeparam>
+    [DebuggerStepThrough]
     public class VerifiableTable<TRow> : IComplexParameter, ISelfFormattable
     {
         private IValueFormattingService _formattingService = ValueFormattingServices.Current;
@@ -252,6 +254,7 @@ namespace LightBDD.Framework.Parameters
             return "<table>";
         }
 
+        [DebuggerStepThrough]
         private struct RowMatch
         {
             public TableRowType Type { get; }
@@ -297,17 +300,12 @@ namespace LightBDD.Framework.Parameters
             }
 
             var result = new List<RowMatch>(expected.Count);
-
             var keySelector = Columns.Where(x => x.IsKey).Select(x => x.GetValue).ToArray();
-            int[] GetHashes(TRow row)
-            {
-                return keySelector.Select(s => s.Invoke(row).Value?.GetHashCode() ?? 0).ToArray();
-            }
 
-            var remaining = actual.Select(x => new KeyValuePair<int[], TRow>(GetHashes(x), x)).ToList();
+            var remaining = actual.Select(x => new KeyValuePair<int[], TRow>(GetHashes(keySelector,x), x)).ToList();
             foreach (var e in expected)
             {
-                var eHash = GetHashes(e);
+                var eHash = GetHashes(keySelector,e);
                 var index = remaining.FindIndex(r => r.Key.SequenceEqual(eHash));
                 if (index >= 0)
                 {
@@ -322,6 +320,11 @@ namespace LightBDD.Framework.Parameters
                 result.Add(new RowMatch(TableRowType.Surplus, default(TRow), r.Value));
 
             return result;
+        }
+
+        private static int[] GetHashes(Func<object, ColumnValue>[] keySelector, TRow row)
+        {
+            return keySelector.Select(s => s.Invoke(row).Value?.GetHashCode() ?? 0).ToArray();
         }
     }
 }

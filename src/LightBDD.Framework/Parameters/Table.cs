@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Formatting.Values;
@@ -19,6 +20,7 @@ namespace LightBDD.Framework.Parameters
     /// Please see <see cref="TableExtensions"/> type to learn how to create tables effectively.
     /// </summary>
     /// <typeparam name="TRow">Row type.</typeparam>
+    [DebuggerStepThrough]
     public class Table<TRow> : IComplexParameter, ISelfFormattable, IReadOnlyList<TRow>
     {
         private readonly IReadOnlyList<TRow> _rows;

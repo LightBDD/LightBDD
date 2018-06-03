@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using LightBDD.Framework.Expectations;
 
 namespace LightBDD.Framework.Parameters.Implementation
 {
+    [DebuggerStepThrough]
     internal class VerifiableTableBuilder<TRow> : AbstractTableBuilder<TRow, VerifiableTableColumn>, IVerifiableTableBuilder<TRow>
     {
         public VerifiableTable<TRow> Build(IEnumerable<TRow> items)

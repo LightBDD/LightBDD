@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace LightBDD.Framework.Parameters.Implementation
 {
+    [DebuggerStepThrough]
     internal struct ColumnInfo
     {
         public ColumnInfo(string name, Func<object, ColumnValue> getValue)

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq.Expressions;
 
 namespace LightBDD.Framework.Parameters.Implementation
 {
+    [DebuggerStepThrough]
     internal static class Reflector
     {
         public static string GetMemberName<T>(Expression<T> columnExpression)
