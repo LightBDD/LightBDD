@@ -11,12 +11,12 @@ namespace LightBDD.Framework.UnitTests.Expectations
         protected override IEnumerable<IExpectationScenario> GetScenarios()
         {
             yield return new ExpectationScenario<string>(
-                    "equal 'abc'",
+                    "equals 'abc'",
                     x => x.Equal("abc"))
                 .WithMatchingValues("abc")
-                .WithNotMatchingValue(null, "expected: equal 'abc', but got: '<null>'")
-                .WithNotMatchingValue("Abc", "expected: equal 'abc', but got: 'Abc'")
-                .WithNotMatchingValue("Something", "expected: equal 'abc', but got: 'Something'");
+                .WithNotMatchingValue(null, "expected: equals 'abc', but got: '<null>'")
+                .WithNotMatchingValue("Abc", "expected: equals 'abc', but got: 'Abc'")
+                .WithNotMatchingValue("Something", "expected: equals 'abc', but got: 'Something'");
         }
     }
 }

@@ -15,7 +15,7 @@ namespace LightBDD.Framework.UnitTests.Expectations
         [Test]
         public void It_should_convert_to_verifiable()
         {
-            var expectation = Expect.To.Not.Empty().And(x => x.All(item => item.Not.Null()));
+            var expectation = Expect.To.Not.BeEmpty().And(x => x.EveryItem(item => item.Not.BeNull()));
             Assert.AreEqual(ParameterVerificationStatus.Failure, expectation.ToVerifiable().SetActual(Enumerable.Empty<string>()).Status);
             Assert.AreEqual(ParameterVerificationStatus.Failure, expectation.ToVerifiable<string[]>().SetActual(new string[0]).Status);
             Assert.AreEqual(ParameterVerificationStatus.Failure, expectation.ToVerifiable<string[]>().SetActual(new[] { null, "abc" }).Status);

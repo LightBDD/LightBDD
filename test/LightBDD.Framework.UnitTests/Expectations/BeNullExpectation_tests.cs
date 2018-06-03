@@ -6,12 +6,12 @@ using NUnit.Framework;
 namespace LightBDD.Framework.UnitTests.Expectations
 {
     [TestFixture]
-    public class NullExpectation_tests : ExpectationTests
+    public class BeNullExpectation_tests : ExpectationTests
     {
         protected override IEnumerable<IExpectationScenario> GetScenarios()
         {
             yield return new ExpectationScenario<object>("null",
-                    x => x.Null())
+                    x => x.BeNull())
                 .WithMatchingValue(null)
                 .WithNotMatchingValue(5, "expected: null, but got: '5'")
                 .WithNotMatchingValue("abc", "expected: null, but got: 'abc'")

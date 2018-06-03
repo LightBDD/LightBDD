@@ -4,11 +4,11 @@ using LightBDD.Core.Formatting.Values;
 
 namespace LightBDD.Framework.Expectations.Implementation
 {
-    internal class AnyExpectation<TValue> : Expectation<IEnumerable<TValue>>
+    internal class EveryItemExpectation<TValue> : Expectation<IEnumerable<TValue>>
     {
         private readonly IExpectation<TValue> _itemExpectation;
 
-        public AnyExpectation(IExpectation<TValue> itemExpectation)
+        public EveryItemExpectation(IExpectation<TValue> itemExpectation)
         {
             _itemExpectation = itemExpectation;
         }
@@ -20,17 +20,18 @@ namespace LightBDD.Framework.Expectations.Implementation
             foreach (var item in collection ?? Enumerable.Empty<TValue>())
             {
                 var result = _itemExpectation.Verify(item, formattingService);
-                if (result)
-                    return ExpectationResult.Success;
-                errors.Add($"[{i++}]: {result.Message}");
+                if (!result)
+                    errors.Add($"[{i}]: {result.Message}");
+                ++i;
             }
-
+            if (collection != null && errors.Count == 0)
+                return ExpectationResult.Success;
             return FormatFailure(formattingService, $"got: '{formattingService.FormatValue(collection)}'", errors);
         }
 
         public override string Format(IValueFormattingService formattingService)
         {
-            return "any " + _itemExpectation.Format(formattingService);
+            return "every item " + _itemExpectation.Format(formattingService);
         }
     }
 }

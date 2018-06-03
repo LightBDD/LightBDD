@@ -35,7 +35,7 @@ namespace LightBDD.Framework.Expectations
         public static Expectation<T> Equal<T>(this IExpectationComposer composer, T expected)
         {
             return composer.ComposeSimple<T>(
-                formatter => $"equal '{formatter.FormatValue(expected)}'",
+                formatter => $"equals '{formatter.FormatValue(expected)}'",
                 x => Equals(x, expected));
         }
 
@@ -45,7 +45,7 @@ namespace LightBDD.Framework.Expectations
         /// <typeparam name="T">Expectation value type</typeparam>
         /// <param name="composer">Composer</param>
         /// <param name="expectedCollection">Collection of expected values</param>
-        public static Expectation<T> In<T>(this IExpectationComposer composer, params T[] expectedCollection)
+        public static Expectation<T> BeIn<T>(this IExpectationComposer composer, params T[] expectedCollection)
         {
             return composer.ComposeSimple<T>(
                 formatter => $"in '{formatter.FormatValue(expectedCollection)}'",
@@ -58,7 +58,7 @@ namespace LightBDD.Framework.Expectations
         /// <typeparam name="T">Expectation value type</typeparam>
         /// <param name="composer">Composer</param>
         /// <param name="value">Expected value</param>
-        public static Expectation<IEnumerable<T>> Contains<T>(this IExpectationComposer composer, T value)
+        public static Expectation<IEnumerable<T>> Contain<T>(this IExpectationComposer composer, T value)
         {
             return composer.ComposeSimple<IEnumerable<T>>(
                 formatter => $"contains '{formatter.FormatValue(value)}'",
@@ -122,25 +122,25 @@ namespace LightBDD.Framework.Expectations
         }
 
         /// <summary>
-        /// Creates expectation for collections with at least one value fulfilling expectation specified by <paramref name="expectationBuilder"/> parameter.
+        /// Creates expectation for collections with at least one item fulfilling expectation specified by <paramref name="expectationBuilder"/> parameter.
         /// </summary>
         /// <typeparam name="T">Expectation value type</typeparam>
         /// <param name="composer">Composer</param>
         /// <param name="expectationBuilder">Expectation builder</param>
-        public static Expectation<IEnumerable<T>> Any<T>(this IExpectationComposer composer, Func<IExpectationComposer, IExpectation<T>> expectationBuilder)
+        public static Expectation<IEnumerable<T>> AnyItem<T>(this IExpectationComposer composer, Func<IExpectationComposer, IExpectation<T>> expectationBuilder)
         {
-            return composer.Compose(new AnyExpectation<T>(expectationBuilder.Invoke(Expect.To)));
+            return composer.Compose(new AnyItemExpectation<T>(expectationBuilder.Invoke(Expect.To)));
         }
 
         /// <summary>
-        /// Creates expectation for collections with all values fulfilling expectation specified by <paramref name="expectationBuilder"/> parameter.
+        /// Creates expectation for collections with every item fulfilling expectation specified by <paramref name="expectationBuilder"/> parameter.
         /// </summary>
         /// <typeparam name="T">Expectation value type</typeparam>
         /// <param name="composer">Composer</param>
         /// <param name="expectationBuilder">Expectation builder</param>
-        public static Expectation<IEnumerable<T>> All<T>(this IExpectationComposer composer, Func<IExpectationComposer, IExpectation<T>> expectationBuilder)
+        public static Expectation<IEnumerable<T>> EveryItem<T>(this IExpectationComposer composer, Func<IExpectationComposer, IExpectation<T>> expectationBuilder)
         {
-            return composer.Compose(new AllExpectation<T>(expectationBuilder.Invoke(Expect.To)));
+            return composer.Compose(new EveryItemExpectation<T>(expectationBuilder.Invoke(Expect.To)));
         }
 
         /// <summary>
@@ -155,9 +155,9 @@ namespace LightBDD.Framework.Expectations
         /// </summary>
         /// <param name="composer">Composer</param>
         /// <param name="pattern">Expected pattern</param>
-        public static Expectation<string> MatchWild(this IExpectationComposer composer, string pattern)
+        public static Expectation<string> Match(this IExpectationComposer composer, string pattern)
         {
-            return MatchWild(composer, pattern, RegexOptions.None, $"matching '{pattern}'");
+            return Match(composer, pattern, RegexOptions.None, $"matches '{pattern}'");
         }
 
         /// <summary>
@@ -172,12 +172,12 @@ namespace LightBDD.Framework.Expectations
         /// </summary>
         /// <param name="composer">Composer</param>
         /// <param name="pattern">Expected pattern</param>
-        public static Expectation<string> MatchWildIgnoreCase(this IExpectationComposer composer, string pattern)
+        public static Expectation<string> MatchIgnoreCase(this IExpectationComposer composer, string pattern)
         {
-            return MatchWild(composer, pattern, RegexOptions.IgnoreCase, $"matching '{pattern}' ignore case");
+            return Match(composer, pattern, RegexOptions.IgnoreCase, $"matches '{pattern}' ignore case");
         }
 
-        private static Expectation<string> MatchWild(IExpectationComposer composer, string pattern, RegexOptions options, string format)
+        private static Expectation<string> Match(IExpectationComposer composer, string pattern, RegexOptions options, string format)
         {
             var regexPattern = "^" + Regex.Escape(pattern).Replace("\\?", ".").Replace("\\*", ".*").Replace("\\#", "\\d") + "$";
             var regex = new Regex(regexPattern, options);
@@ -191,7 +191,7 @@ namespace LightBDD.Framework.Expectations
         /// <param name="pattern">Expected pattern</param>
         public static Expectation<string> MatchRegex(this IExpectationComposer composer, string pattern)
         {
-            return MatchRegex(composer, pattern, RegexOptions.None, $"matching regex '{pattern}'");
+            return MatchRegex(composer, pattern, RegexOptions.None, $"matches regex '{pattern}'");
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace LightBDD.Framework.Expectations
         /// <param name="pattern">Expected pattern</param>
         public static Expectation<string> MatchRegexIgnoreCase(this IExpectationComposer composer, string pattern)
         {
-            return MatchRegex(composer, pattern, RegexOptions.IgnoreCase, $"matching regex '{pattern}' ignore case");
+            return MatchRegex(composer, pattern, RegexOptions.IgnoreCase, $"matches regex '{pattern}' ignore case");
         }
 
         private static Expectation<string> MatchRegex(IExpectationComposer composer, string pattern, RegexOptions options, string format)
@@ -214,7 +214,7 @@ namespace LightBDD.Framework.Expectations
         /// Creates expectation for values to be null.
         /// </summary>
         /// <param name="builder"></param>
-        public static Expectation<object> Null(this IExpectationComposer builder)
+        public static Expectation<object> BeNull(this IExpectationComposer builder)
         {
             return builder.ComposeSimple<object>(formatter => "null", x => x == null);
         }
@@ -223,7 +223,7 @@ namespace LightBDD.Framework.Expectations
         /// Creates expectation for collections to be empty.
         /// </summary>
         /// <param name="builder"></param>
-        public static Expectation<IEnumerable> Empty(this IExpectationComposer builder)
+        public static Expectation<IEnumerable> BeEmpty(this IExpectationComposer builder)
         {
             return builder.ComposeSimple<IEnumerable>(formatter => "empty", x => x != null && !x.Cast<object>().Any());
         }
@@ -237,7 +237,7 @@ namespace LightBDD.Framework.Expectations
         /// <param name="a">Parameter A.</param>
         /// <param name="b">Parameter B.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="a"/> or <paramref name="b"/> is null.</exception>
-        public static Expectation<T> Between<T>(this IExpectationComposer composer, T a, T b) where T : IComparable<T>
+        public static Expectation<T> BeBetween<T>(this IExpectationComposer composer, T a, T b) where T : IComparable<T>
         {
             if (a == null) throw new ArgumentNullException(nameof(a));
             if (b == null) throw new ArgumentNullException(nameof(b));
@@ -250,7 +250,7 @@ namespace LightBDD.Framework.Expectations
         /// <param name="composer">Composer</param>
         /// <param name="value">Value</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="value"/> parameter value is null.</exception>
-        public static Expectation<T> GreaterThan<T>(this IExpectationComposer composer, T value) where T : IComparable<T>
+        public static Expectation<T> BeGreaterThan<T>(this IExpectationComposer composer, T value) where T : IComparable<T>
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
             return composer.ComposeSimple<T>(formatter => $"greater than '{formatter.FormatValue(value)}'", x => x != null && x.CompareTo(value) > 0);
@@ -262,7 +262,7 @@ namespace LightBDD.Framework.Expectations
         /// <param name="composer">Composer</param>
         /// <param name="value">Value</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="value"/> parameter value is null.</exception>
-        public static Expectation<T> LessThan<T>(this IExpectationComposer composer, T value) where T : IComparable<T>
+        public static Expectation<T> BeLessThan<T>(this IExpectationComposer composer, T value) where T : IComparable<T>
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
             return composer.ComposeSimple<T>(formatter => $"less than '{formatter.FormatValue(value)}'", x => x != null && x.CompareTo(value) < 0);
@@ -274,7 +274,7 @@ namespace LightBDD.Framework.Expectations
         /// <param name="composer">Composer</param>
         /// <param name="value">Value</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="value"/> parameter value is null.</exception>
-        public static Expectation<T> GreaterOrEqual<T>(this IExpectationComposer composer, T value) where T : IComparable<T>
+        public static Expectation<T> BeGreaterOrEqual<T>(this IExpectationComposer composer, T value) where T : IComparable<T>
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
             return composer.ComposeSimple<T>(formatter => $"greater or equal '{formatter.FormatValue(value)}'", x => x != null && x.CompareTo(value) >= 0);
@@ -286,7 +286,7 @@ namespace LightBDD.Framework.Expectations
         /// <param name="composer">Composer</param>
         /// <param name="value">Value</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="value"/> parameter value is null.</exception>
-        public static Expectation<T> LessOrEqual<T>(this IExpectationComposer composer, T value) where T : IComparable<T>
+        public static Expectation<T> BeLessOrEqual<T>(this IExpectationComposer composer, T value) where T : IComparable<T>
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
             return composer.ComposeSimple<T>(formatter => $"less or equal '{formatter.FormatValue(value)}'", x => x != null && x.CompareTo(value) <= 0);
@@ -298,7 +298,7 @@ namespace LightBDD.Framework.Expectations
         /// <typeparam name="T">Expectation value type</typeparam>
         /// <param name="composer">Composer</param>
         /// <param name="expectationBuilder">Expectation builder</param>
-        public static Expectation<T> AllTrue<T>(this IExpectationComposer composer, params Func<IExpectationComposer, IExpectation<T>>[] expectationBuilder)
+        public static Expectation<T> BeAllTrue<T>(this IExpectationComposer composer, params Func<IExpectationComposer, IExpectation<T>>[] expectationBuilder)
         {
             return composer.Compose(new AndExpectation<T>(expectationBuilder.Select(x => x.Invoke(Expect.To)).ToArray()));
         }
@@ -309,7 +309,7 @@ namespace LightBDD.Framework.Expectations
         /// <typeparam name="T">Expectation value type</typeparam>
         /// <param name="composer">Composer</param>
         /// <param name="expectationBuilder">Expectation builder</param>
-        public static Expectation<T> AnyTrue<T>(this IExpectationComposer composer, params Func<IExpectationComposer, IExpectation<T>>[] expectationBuilder)
+        public static Expectation<T> BeAnyTrue<T>(this IExpectationComposer composer, params Func<IExpectationComposer, IExpectation<T>>[] expectationBuilder)
         {
             return composer.Compose(new OrExpectation<T>(expectationBuilder.Select(x => x.Invoke(Expect.To)).ToArray()));
         }

@@ -13,7 +13,7 @@ namespace LightBDD.Framework.UnitTests.Expectations
         {
             yield return new ExpectationScenario<IEnumerable<string>>(
                     "contains 'banana'",
-                    x => x.Contains("banana"))
+                    x => x.Contain("banana"))
                 .WithMatchingValues(new[] { "apple", "banana" })
                 .WithNotMatchingValue(null, "expected: contains 'banana', but got: '<null>'")
                 .WithNotMatchingValue(Enumerable.Empty<string>(), "expected: contains 'banana', but got: ''")
@@ -21,7 +21,7 @@ namespace LightBDD.Framework.UnitTests.Expectations
 
             yield return new ExpectationScenario<string>(
                     "contains 'c'",
-                    x => x.Contains('c'))
+                    x => x.Contain('c'))
                 .WithMatchingValues("oracle", "colosseum")
                 .WithNotMatchingValue("faro", "expected: contains 'c', but got: 'faro'")
                 .WithNotMatchingValue(null, "expected: contains 'c', but got: '<null>'");

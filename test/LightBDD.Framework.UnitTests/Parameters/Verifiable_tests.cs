@@ -20,7 +20,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
 
             Verifiable<int> verifiable = value;
             Assert.That(verifiable.SetActual(value).Status, Is.EqualTo(ParameterVerificationStatus.Success));
-            Assert.That(verifiable.Expectation.ToString(), Is.EqualTo($"equal '{value}'"));
+            Assert.That(verifiable.Expectation.ToString(), Is.EqualTo($"equals '{value}'"));
         }
 
         [Test]
@@ -38,7 +38,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             var value = RandomValue.Int();
             Verifiable<int> expectation = value;
 
-            Assert.That(expectation.ToString(), Is.EqualTo(string.Format(CultureInfo.InvariantCulture, "expected: equal '{0}'", value)));
+            Assert.That(expectation.ToString(), Is.EqualTo(string.Format(CultureInfo.InvariantCulture, "expected: equals '{0}'", value)));
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
 
         [Test]
         [TestCase(55, 55, true, "55")]
-        [TestCase(55, 32, false, "expected: equal '55', but got: '32'")]
+        [TestCase(55, 32, false, "expected: equals '55', but got: '32'")]
         public void SetActual_should_verify_expectation_and_update_formatting(int expected, int actual, bool shouldMatch, string message)
         {
             Verifiable<int> expectation = expected;
@@ -66,7 +66,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
 
         [Test]
         [TestCase(55, 55, true, "55")]
-        [TestCase(55, 32, false, "expected: equal '55', but got: '32'")]
+        [TestCase(55, 32, false, "expected: equals '55', but got: '32'")]
         public async Task SetActualAsync_should_verify_expectation_and_update_formatting(int expected, int actual, bool shouldMatch, string message)
         {
             Verifiable<int> expectation = expected;
@@ -89,7 +89,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             expectation.SetActual(() => throw new DivideByZeroException());
 
             Assert.That(expectation.Status, Is.EqualTo(ParameterVerificationStatus.Exception));
-            Assert.That(expectation.ToString(), Is.EqualTo($"expected: equal '{expected}', but got: '<{nameof(DivideByZeroException)}>'"));
+            Assert.That(expectation.ToString(), Is.EqualTo($"expected: equals '{expected}', but got: '<{nameof(DivideByZeroException)}>'"));
             Assert.Throws<DivideByZeroException>(() => expectation.GetActual());
         }
 
@@ -102,7 +102,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             await expectation.SetActualAsync(() => throw new DivideByZeroException());
 
             Assert.That(expectation.Status, Is.EqualTo(ParameterVerificationStatus.Exception));
-            Assert.That(expectation.ToString(), Is.EqualTo($"expected: equal '{expected}', but got: '<{nameof(DivideByZeroException)}>'"));
+            Assert.That(expectation.ToString(), Is.EqualTo($"expected: equals '{expected}', but got: '<{nameof(DivideByZeroException)}>'"));
             Assert.Throws<DivideByZeroException>(() => expectation.GetActual());
         }
 
@@ -135,7 +135,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             ((IComplexParameter)expectation).SetValueFormattingService(new ValueFormattingServiceStub(CultureInfo.InvariantCulture, "--{0}--"));
             expectation.SetActual(() => actualValue);
 
-            Assert.That(expectation.ToString(), Is.EqualTo($"expected: equal '--{expected}--', but got: '--{actualValue}--'"));
+            Assert.That(expectation.ToString(), Is.EqualTo($"expected: equals '--{expected}--', but got: '--{actualValue}--'"));
         }
     }
 }

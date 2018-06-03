@@ -367,12 +367,12 @@ namespace LightBDD.Framework.UnitTests.Parameters
             Assert.That(result.Rows.Count, Is.EqualTo(4));
 
             AssertRow(result.Rows[0], TableRowType.Matching, ParameterVerificationStatus.Success, "Success|1|1|null", "Success|2|2|null");
-            AssertRow(result.Rows[1], TableRowType.Matching, ParameterVerificationStatus.Failure, "Success|2|2|null", "Failure|2|4|Y: expected: equal '4', but got: '2'");
-            AssertRow(result.Rows[2], TableRowType.Matching, ParameterVerificationStatus.Failure, "Failure|-3|3|X: expected: equal '3', but got: '-3'", "Failure|-6|6|Y: expected: equal '6', but got: '-6'");
+            AssertRow(result.Rows[1], TableRowType.Matching, ParameterVerificationStatus.Failure, "Success|2|2|null", "Failure|2|4|Y: expected: equals '4', but got: '2'");
+            AssertRow(result.Rows[2], TableRowType.Matching, ParameterVerificationStatus.Failure, "Failure|-3|3|X: expected: equals '3', but got: '-3'", "Failure|-6|6|Y: expected: equals '6', but got: '-6'");
             AssertRow(result.Rows[3], TableRowType.Matching, ParameterVerificationStatus.Success, "Success|4|4|null", "Success|8|8|null");
-            AssertVerificationMessage(result.Rows[1].VerificationMessage, "[1].Y: expected: equal '4', but got: '2'");
-            AssertVerificationMessage(result.Rows[2].VerificationMessage, "[2].X: expected: equal '3', but got: '-3'\n[2].Y: expected: equal '6', but got: '-6'");
-            AssertVerificationMessage(result.VerificationMessage, "[1].Y: expected: equal '4', but got: '2'\n[2].X: expected: equal '3', but got: '-3'\n[2].Y: expected: equal '6', but got: '-6'");
+            AssertVerificationMessage(result.Rows[1].VerificationMessage, "[1].Y: expected: equals '4', but got: '2'");
+            AssertVerificationMessage(result.Rows[2].VerificationMessage, "[2].X: expected: equals '3', but got: '-3'\n[2].Y: expected: equals '6', but got: '-6'");
+            AssertVerificationMessage(result.VerificationMessage, "[1].Y: expected: equals '4', but got: '2'\n[2].X: expected: equals '3', but got: '-3'\n[2].Y: expected: equals '6', but got: '-6'");
         }
 
         [Test]
@@ -499,9 +499,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
             Assert.That(result.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Failure));
             Assert.That(result.Rows.Count, Is.EqualTo(3));
 
-            AssertRow(result.Rows[0], TableRowType.Matching, ParameterVerificationStatus.Failure, "Success|3|3|null", "Success|1|1|null", "Success|2|2|null", "Failure|4|3|[2]: expected: equal '3', but got: '4'");
+            AssertRow(result.Rows[0], TableRowType.Matching, ParameterVerificationStatus.Failure, "Success|3|3|null", "Success|1|1|null", "Success|2|2|null", "Failure|4|3|[2]: expected: equals '3', but got: '4'");
             AssertRow(result.Rows[1], TableRowType.Matching, ParameterVerificationStatus.Success, "Success|2|2|null", "Success|1|1|null", "Success|2|2|null", "Success|<none>|<none>|null");
-            AssertRow(result.Rows[2], TableRowType.Matching, ParameterVerificationStatus.Failure, "Failure|4|1|Length: expected: equal '1', but got: '4'", "Success|3|3|null", "Failure|6|<none>|[1]: unexpected value", "Failure|7|<none>|[2]: unexpected value");
+            AssertRow(result.Rows[2], TableRowType.Matching, ParameterVerificationStatus.Failure, "Failure|4|1|Length: expected: equals '1', but got: '4'", "Success|3|3|null", "Failure|6|<none>|[1]: unexpected value", "Failure|7|<none>|[2]: unexpected value");
         }
 
         [Test]
@@ -523,7 +523,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
                 .ToVerifiableTable(b => b.WithInferredColumns()
                     .WithKey("Surname", x => x.Surname)
                     .WithKey("Name", x => x.Name)
-                    .WithColumn<string>("ContactType", x => x.ContactType, value => Expect.To.MatchWildIgnoreCase(value))
+                    .WithColumn<string>("ContactType", x => x.ContactType, value => Expect.To.MatchIgnoreCase(value))
                 );
 
             AssertResultColumnsMatchingTable(table);
@@ -533,7 +533,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             Assert.That(result.Rows.Count, Is.EqualTo(3));
 
             AssertRow(result.Rows[0], TableRowType.Matching, ParameterVerificationStatus.Success, "Success|Joe|Joe|null", "Success|Smith|Smith|null", "Success|EMAIL|email|null", "Success|joe.smith@mymail.com|joe.smith@mymail.com|null", "Success|<none>|<none>|null", "Success|<none>|<none>|null");
-            AssertRow(result.Rows[1], TableRowType.Matching, ParameterVerificationStatus.Failure, "Success|Adam|Adam|null", "Success|Kowalski|Kowalski|null", "Success|PHONE|phone|null", "Success|<none>|<none>|null", "Success|<none>|<none>|null", "Failure|00441122233445|00441122233444|Phone: expected: equal '00441122233444', but got: '00441122233445'");
+            AssertRow(result.Rows[1], TableRowType.Matching, ParameterVerificationStatus.Failure, "Success|Adam|Adam|null", "Success|Kowalski|Kowalski|null", "Success|PHONE|phone|null", "Success|<none>|<none>|null", "Success|<none>|<none>|null", "Failure|00441122233445|00441122233444|Phone: expected: equals '00441122233444', but got: '00441122233445'");
             AssertRow(result.Rows[2], TableRowType.Matching, ParameterVerificationStatus.Success, "Success|Mary|Mary|null", "Success|Adams|Adams|null", "Success|POSTAL|postal|null", "Success|<none>|<none>|null", "Success|XX1 1XX, Hight Street 55|XX1 1XX, Hight Street 55|null", "Success|<none>|<none>|null");
         }
 

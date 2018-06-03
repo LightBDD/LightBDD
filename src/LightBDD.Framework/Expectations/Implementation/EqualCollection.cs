@@ -46,7 +46,7 @@ namespace LightBDD.Framework.Expectations.Implementation
 
         public override string Format(IValueFormattingService formattingService)
         {
-            return $"equal collection '{formattingService.FormatValue(_expected)}'";
+            return $"equals collection '{formattingService.FormatValue(_expected)}'";
         }
     }
 }
