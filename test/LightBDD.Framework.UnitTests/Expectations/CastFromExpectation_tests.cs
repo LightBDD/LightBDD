@@ -24,7 +24,7 @@ namespace LightBDD.Framework.UnitTests.Expectations
         {
             var result = Expect.To.Match("abc").CastFrom(Expect.Type<object>()).Verify(5, ValueFormattingServices.Current);
             Assert.False(result);
-            Assert.That(result.Message, Is.EqualTo("value of type 'Int32' cannot be casted to 'String'"));
+            Assert.That(result.Message, Is.EqualTo("value of type 'Int32' cannot be cast to 'String'"));
         }
     }
 }

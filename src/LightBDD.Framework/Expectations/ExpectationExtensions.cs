@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using LightBDD.Core.Formatting.Values;
@@ -12,6 +13,7 @@ namespace LightBDD.Framework.Expectations
     /// <summary>
     /// Extensions offering methods for defining expectations.
     /// </summary>
+    [DebuggerStepThrough]
     public static class ExpectationExtensions
     {
         /// <summary>
@@ -342,7 +344,7 @@ namespace LightBDD.Framework.Expectations
         /// <returns>Base type expectation.</returns>
         public static Expectation<TBase> CastFrom<TDerived, TBase>(this IExpectation<TDerived> expectation, TypeRef<TBase> baseTypeRef) where TDerived : TBase
         {
-            return new CastedExpectation<TDerived, TBase>(expectation);
+            return new CastExpectation<TDerived, TBase>(expectation);
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using LightBDD.Core.Configuration;
@@ -12,6 +13,7 @@ namespace LightBDD.Core.Formatting.Values
     /// <summary>
     /// Default implementation of <see cref="IValueFormattingService"/> allowing to format values basing on the provided <see cref="LightBddConfiguration"/> configuration as well as offering ability to override formatters.
     /// </summary>
+    [DebuggerStepThrough]
     public class ValueFormattingService : IValueFormattingService
     {
         private readonly IConditionalValueFormatter[] _generalFormatters;

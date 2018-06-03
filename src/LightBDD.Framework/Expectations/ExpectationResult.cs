@@ -1,8 +1,11 @@
-﻿namespace LightBDD.Framework.Expectations
+﻿using System.Diagnostics;
+
+namespace LightBDD.Framework.Expectations
 {
     /// <summary>
     /// Expectation verification result.
     /// </summary>
+    [DebuggerStepThrough]
     public struct ExpectationResult
     {
         /// <summary>
