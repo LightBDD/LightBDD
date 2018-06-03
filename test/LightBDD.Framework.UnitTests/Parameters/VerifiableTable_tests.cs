@@ -10,6 +10,7 @@ using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;
 using Newtonsoft.Json;
 using NUnit.Framework;
+#pragma warning disable 1998
 
 namespace LightBDD.Framework.UnitTests.Parameters
 {
@@ -26,7 +27,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
 
         class Derived : Base
         {
-            public string Value { get; set; }
+            public new string Value { get; set; }
             public string Text { get; set; }
             public override int Virtual { get; set; }
         }
