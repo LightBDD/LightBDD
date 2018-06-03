@@ -48,7 +48,7 @@ namespace LightBDD.Framework.Notification
                 : $"  SCENARIO RESULT: {scenario.Status}";
 
             var scenarioDetails = !string.IsNullOrWhiteSpace(scenario.StatusDetails)
-                ? $"{Environment.NewLine}    {scenario.StatusDetails.Replace("\n", "\n    ")}"
+                ? $"{Environment.NewLine}    {scenario.StatusDetails.Replace(Environment.NewLine, Environment.NewLine + "    ")}"
                 : string.Empty;
 
             _onNotify(scenarioText + scenarioDetails);
@@ -116,7 +116,7 @@ namespace LightBDD.Framework.Notification
         {
             return string.IsNullOrWhiteSpace(description)
                 ? string.Empty
-                : $"{Environment.NewLine}  {description.Replace("\n", "\n  ")}";
+                : $"{Environment.NewLine}  {description.Replace(Environment.NewLine, Environment.NewLine + "  ")}";
         }
 
         private static string FormatLabels(IEnumerable<string> labels)

@@ -280,9 +280,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
 
             AssertRow(result.Rows[0], TableRowType.Missing, ParameterVerificationStatus.Failure, "NotProvided|<none>|abc|Item: Value not provided");
             AssertRow(result.Rows[1], TableRowType.Missing, ParameterVerificationStatus.Failure, "NotProvided|<none>|def|Item: Value not provided");
-            Assert.That(result.Rows[0].VerificationMessage, Is.EqualTo("[0].Item: Value not provided"));
-            Assert.That(result.Rows[1].VerificationMessage, Is.EqualTo("[1].Item: Value not provided"));
-            Assert.That(result.VerificationMessage, Is.EqualTo("[0].Item: Value not provided\n[1].Item: Value not provided"));
+            AssertVerificationMessage(result.Rows[0].VerificationMessage, "[0].Item: Value not provided");
+            AssertVerificationMessage(result.Rows[1].VerificationMessage, "[1].Item: Value not provided");
+            AssertVerificationMessage(result.VerificationMessage, "[0].Item: Value not provided\n[1].Item: Value not provided");
         }
 
         [Test]
@@ -370,9 +370,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
             AssertRow(result.Rows[1], TableRowType.Matching, ParameterVerificationStatus.Failure, "Success|2|2|null", "Failure|2|4|Y: expected: equal '4', but got: '2'");
             AssertRow(result.Rows[2], TableRowType.Matching, ParameterVerificationStatus.Failure, "Failure|-3|3|X: expected: equal '3', but got: '-3'", "Failure|-6|6|Y: expected: equal '6', but got: '-6'");
             AssertRow(result.Rows[3], TableRowType.Matching, ParameterVerificationStatus.Success, "Success|4|4|null", "Success|8|8|null");
-            Assert.That(result.Rows[1].VerificationMessage, Is.EqualTo("[1].Y: expected: equal '4', but got: '2'"));
-            Assert.That(result.Rows[2].VerificationMessage, Is.EqualTo("[2].X: expected: equal '3', but got: '-3'\n[2].Y: expected: equal '6', but got: '-6'"));
-            Assert.That(result.VerificationMessage, Is.EqualTo("[1].Y: expected: equal '4', but got: '2'\n[2].X: expected: equal '3', but got: '-3'\n[2].Y: expected: equal '6', but got: '-6'"));
+            AssertVerificationMessage(result.Rows[1].VerificationMessage, "[1].Y: expected: equal '4', but got: '2'");
+            AssertVerificationMessage(result.Rows[2].VerificationMessage, "[2].X: expected: equal '3', but got: '-3'\n[2].Y: expected: equal '6', but got: '-6'");
+            AssertVerificationMessage(result.VerificationMessage, "[1].Y: expected: equal '4', but got: '2'\n[2].X: expected: equal '3', but got: '-3'\n[2].Y: expected: equal '6', but got: '-6'");
         }
 
         [Test]
@@ -572,9 +572,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
             AssertRow(result.Rows[1], TableRowType.Matching, ParameterVerificationStatus.Success, "Success|2|2|null");
             AssertRow(result.Rows[2], TableRowType.Matching, ParameterVerificationStatus.Failure, "Failure|<none>|3|Item: missing value");
 
-            Assert.That(result.Rows[0].VerificationMessage, Is.EqualTo("[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value"));
-            Assert.That(result.Rows[2].VerificationMessage, Is.EqualTo("[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value"));
-            Assert.That(result.VerificationMessage, Is.EqualTo("[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value\n[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value"));
+            AssertVerificationMessage(result.Rows[0].VerificationMessage, "[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value");
+            AssertVerificationMessage(result.Rows[2].VerificationMessage, "[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value");
+            AssertVerificationMessage(result.VerificationMessage, "[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value\n[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value");
         }
 
         [Test]
@@ -597,9 +597,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
             AssertRow(result.Rows[1], TableRowType.Matching, ParameterVerificationStatus.Success, "Success|2|2|null");
             AssertRow(result.Rows[2], TableRowType.Matching, ParameterVerificationStatus.Failure, "Failure|<none>|3|Item: missing value");
 
-            Assert.That(result.Rows[0].VerificationMessage, Is.EqualTo("[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value"));
-            Assert.That(result.Rows[2].VerificationMessage, Is.EqualTo("[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value"));
-            Assert.That(result.VerificationMessage, Is.EqualTo("[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value\n[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value"));
+            AssertVerificationMessage(result.Rows[0].VerificationMessage, "[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value");
+            AssertVerificationMessage(result.Rows[2].VerificationMessage, "[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value");
+            AssertVerificationMessage(result.VerificationMessage, "[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value\n[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value");
         }
 
         [Test]
@@ -703,6 +703,11 @@ namespace LightBDD.Framework.UnitTests.Parameters
         {
             Assert.That(table.Details.Columns.Select(c => $"{c.IsKey}|{c.Name}").ToArray(),
                 Is.EqualTo(table.Columns.Select(c => $"{c.IsKey}|{c.Name}").ToArray()));
+        }
+
+        private static void AssertVerificationMessage(string actual, string expected)
+        {
+            Assert.That(actual, Is.EqualTo(expected.Replace("\n", Environment.NewLine)));
         }
     }
 }

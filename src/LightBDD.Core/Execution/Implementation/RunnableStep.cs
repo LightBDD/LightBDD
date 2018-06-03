@@ -233,7 +233,7 @@ namespace LightBDD.Core.Execution.Implementation
         [DebuggerStepThrough]
         private static string FormatErrorMessage(IParameterResult result)
         {
-            return $"Parameter '{result.Name}' verification failed: {result.Details.VerificationMessage?.Replace("\n", "\n\t") ?? string.Empty}";
+            return $"Parameter '{result.Name}' verification failed: {result.Details.VerificationMessage?.Replace(Environment.NewLine, Environment.NewLine + "\t") ?? string.Empty}";
         }
 
         [DebuggerStepThrough]

@@ -38,7 +38,7 @@ namespace LightBDD.Framework.Results.Implementation
                 .Select(t => $"[{rowId}].{t.VerificationMessage}"));
 
             return errors.Any()
-                ? string.Join("\n", errors)
+                ? string.Join(Environment.NewLine, errors)
                 : null;
         }
 

@@ -30,7 +30,7 @@ namespace LightBDD.Framework.Results.Implementation
                 .Concat(Rows.Select(x => x.VerificationMessage))
                 .Where(msg => !string.IsNullOrWhiteSpace(msg));
 
-            var message = string.Join("\n", messages);
+            var message = string.Join(Environment.NewLine, messages);
             return string.IsNullOrWhiteSpace(message)
                 ? null
                 : message;
