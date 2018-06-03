@@ -1,7 +1,6 @@
 ﻿using System;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
-using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.UnitTests.Helpers;
 

@@ -1,4 +1,3 @@
-using System;
 using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Results.Parameters

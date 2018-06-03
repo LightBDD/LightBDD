@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Metadata;
-using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
 
 namespace LightBDD.Framework.Results.Implementation

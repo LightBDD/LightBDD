@@ -5,7 +5,6 @@ using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Metadata;
-using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;

@@ -1,5 +1,4 @@
-﻿using System;
-using LightBDD.Framework.Expectations.Implementation;
+﻿using LightBDD.Framework.Expectations.Implementation;
 
 namespace LightBDD.Framework.Expectations
 {

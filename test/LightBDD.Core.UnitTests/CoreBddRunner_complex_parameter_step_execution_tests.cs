@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
-using LightBDD.Core.Formatting.Parameters;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;

@@ -7,7 +7,6 @@ using LightBDD.AcceptanceTests.Helpers;
 using LightBDD.AcceptanceTests.Helpers.Builders;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
-using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.NUnit3;

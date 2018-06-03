@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
-using LightBDD.Core.Metadata;
 using LightBDD.Framework.Parameters;
 using Newtonsoft.Json;
 using NUnit.Framework;

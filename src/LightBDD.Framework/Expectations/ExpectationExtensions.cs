@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Framework.Expectations.Implementation;
-using LightBDD.Framework.Parameters.Implementation;
 
 namespace LightBDD.Framework.Expectations
 {
