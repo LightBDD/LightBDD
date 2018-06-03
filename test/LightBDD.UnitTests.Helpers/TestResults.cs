@@ -247,7 +247,7 @@ namespace LightBDD.UnitTests.Helpers
             ExecutionTime IStepResult.ExecutionTime => ExecutionTime?.ToMockedType();
             IEnumerable<string> IStepResult.Comments => Comments;
             public Exception ExecutionException { get; }
-            IEnumerable<IParameterResult> IStepResult.Parameters => Parameters;
+            IReadOnlyList<IParameterResult> IStepResult.Parameters => Parameters;
 
             public IEnumerable<IStepResult> GetSubSteps()
             {
@@ -339,7 +339,15 @@ namespace LightBDD.UnitTests.Helpers
                 Value = value;
             }
 
-            public Exception Exception { get; }
+            public TestInlineParameterResult(string expected, string actual, ParameterVerificationStatus status, string message)
+            {
+                Expectation = expected;
+                Value = actual;
+                VerificationStatus = status;
+                Message = message;
+            }
+
+            public string Message { get; } = "inline message";
             public ParameterVerificationStatus VerificationStatus { get; } = ParameterVerificationStatus.NotApplicable;
             public string Value { get; }
             public string Expectation { get; }
@@ -347,7 +355,7 @@ namespace LightBDD.UnitTests.Helpers
 
         public class TestTabularParameterResult : ITabularParameterResult
         {
-            public Exception Exception { get; }
+            public string Message { get; } = "tabular message";
             public ParameterVerificationStatus VerificationStatus { get; }
             IReadOnlyList<ITabularParameterColumn> ITabularParameterResult.Columns => Columns;
             IReadOnlyList<ITabularParameterRow> ITabularParameterResult.Rows => Rows;
@@ -368,7 +376,7 @@ namespace LightBDD.UnitTests.Helpers
             public TableRowType Type { get; }
             IReadOnlyList<IValueResult> ITabularParameterRow.Values => Values;
             public TestValueResult[] Values { get; }
-            public Exception Exception { get; }
+            public string Message { get; } = "row message";
             public ParameterVerificationStatus VerificationStatus { get; }
         }
 
@@ -387,7 +395,7 @@ namespace LightBDD.UnitTests.Helpers
         {
             public string Value { get; set; } = "<null>";
             public string Expectation { get; set; } = "<null>";
-            public Exception Exception { get; set; }
+            public string Message { get; set; } = "value message";
             public ParameterVerificationStatus VerificationStatus { get; set; }
         }
 

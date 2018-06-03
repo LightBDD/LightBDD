@@ -279,9 +279,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
 
             AssertRow(result.Rows[0], TableRowType.Missing, ParameterVerificationStatus.Failure, "NotProvided|<none>|abc|Item: Value not provided");
             AssertRow(result.Rows[1], TableRowType.Missing, ParameterVerificationStatus.Failure, "NotProvided|<none>|def|Item: Value not provided");
-            Assert.That(result.Rows[0].Exception?.Message, Is.EqualTo("[0].Item: Value not provided"));
-            Assert.That(result.Rows[1].Exception?.Message, Is.EqualTo("[1].Item: Value not provided"));
-            Assert.That(result.Exception?.Message, Is.EqualTo("[0].Item: Value not provided\n[1].Item: Value not provided"));
+            Assert.That(result.Rows[0].Message, Is.EqualTo("[0].Item: Value not provided"));
+            Assert.That(result.Rows[1].Message, Is.EqualTo("[1].Item: Value not provided"));
+            Assert.That(result.Message, Is.EqualTo("[0].Item: Value not provided\n[1].Item: Value not provided"));
         }
 
         [Test]
@@ -369,9 +369,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
             AssertRow(result.Rows[1], TableRowType.Matching, ParameterVerificationStatus.Failure, "Success|2|2|null", "Failure|2|4|Y: expected: equal '4', but got: '2'");
             AssertRow(result.Rows[2], TableRowType.Matching, ParameterVerificationStatus.Failure, "Failure|-3|3|X: expected: equal '3', but got: '-3'", "Failure|-6|6|Y: expected: equal '6', but got: '-6'");
             AssertRow(result.Rows[3], TableRowType.Matching, ParameterVerificationStatus.Success, "Success|4|4|null", "Success|8|8|null");
-            Assert.That(result.Rows[1].Exception?.Message, Is.EqualTo("[1].Y: expected: equal '4', but got: '2'"));
-            Assert.That(result.Rows[2].Exception?.Message, Is.EqualTo("[2].X: expected: equal '3', but got: '-3'\n[2].Y: expected: equal '6', but got: '-6'"));
-            Assert.That(result.Exception?.Message, Is.EqualTo("[1].Y: expected: equal '4', but got: '2'\n[2].X: expected: equal '3', but got: '-3'\n[2].Y: expected: equal '6', but got: '-6'"));
+            Assert.That(result.Rows[1].Message, Is.EqualTo("[1].Y: expected: equal '4', but got: '2'"));
+            Assert.That(result.Rows[2].Message, Is.EqualTo("[2].X: expected: equal '3', but got: '-3'\n[2].Y: expected: equal '6', but got: '-6'"));
+            Assert.That(result.Message, Is.EqualTo("[1].Y: expected: equal '4', but got: '2'\n[2].X: expected: equal '3', but got: '-3'\n[2].Y: expected: equal '6', but got: '-6'"));
         }
 
         [Test]
@@ -571,9 +571,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
             AssertRow(result.Rows[1], TableRowType.Matching, ParameterVerificationStatus.Success, "Success|2|2|null");
             AssertRow(result.Rows[2], TableRowType.Matching, ParameterVerificationStatus.Failure, "Failure|<none>|3|Item: missing value");
 
-            Assert.That(result.Rows[0].Exception?.Message, Is.EqualTo("[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value"));
-            Assert.That(result.Rows[2].Exception?.Message, Is.EqualTo("[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value"));
-            Assert.That(result.Exception?.Message, Is.EqualTo("[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value\n[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value"));
+            Assert.That(result.Rows[0].Message, Is.EqualTo("[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value"));
+            Assert.That(result.Rows[2].Message, Is.EqualTo("[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value"));
+            Assert.That(result.Message, Is.EqualTo("[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value\n[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value"));
         }
 
         [Test]
@@ -596,9 +596,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
             AssertRow(result.Rows[1], TableRowType.Matching, ParameterVerificationStatus.Success, "Success|2|2|null");
             AssertRow(result.Rows[2], TableRowType.Matching, ParameterVerificationStatus.Failure, "Failure|<none>|3|Item: missing value");
 
-            Assert.That(result.Rows[0].Exception?.Message, Is.EqualTo("[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value"));
-            Assert.That(result.Rows[2].Exception?.Message, Is.EqualTo("[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value"));
-            Assert.That(result.Exception?.Message, Is.EqualTo("[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value\n[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value"));
+            Assert.That(result.Rows[0].Message, Is.EqualTo("[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value"));
+            Assert.That(result.Rows[2].Message, Is.EqualTo("[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value"));
+            Assert.That(result.Message, Is.EqualTo("[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value\n[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value"));
         }
 
         [Test]
@@ -632,7 +632,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             var table = Enumerable.Empty<int>().AsVerifiableTable();
             await table.SetActualAsync(() => throw new Exception("foo"));
             Assert.That(table.Result.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Exception));
-            Assert.That(table.Result.Exception?.Message, Is.EqualTo("Failed to retrieve rows: foo"));
+            Assert.That(table.Result.Message, Is.EqualTo("Failed to retrieve rows: foo"));
             Assert.That(table.Actual, Is.Empty);
         }
 
@@ -662,7 +662,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             Assert.That(row.Type, Is.EqualTo(rowType));
 
             var actual = row.Values
-                .Select(v => $"{v.VerificationStatus}|{v.Value}|{v.Expectation}|{v.Exception?.Message ?? "null"}")
+                .Select(v => $"{v.VerificationStatus}|{v.Value}|{v.Expectation}|{v.Message ?? "null"}")
                 .ToArray();
             Assert.That(actual, Is.EqualTo(expectedValueDetails));
 

@@ -26,7 +26,7 @@ namespace LightBDD.Core.Results.Implementation
         public ExecutionStatus Status { get; private set; }
         public string StatusDetails { get; private set; }
         public Exception ExecutionException { get; private set; }
-        public IEnumerable<IParameterResult> Parameters { get; private set; } = Enumerable.Empty<IParameterResult>();
+        public IReadOnlyList<IParameterResult> Parameters { get; private set; } = Arrays<IParameterResult>.Empty();
         public ExecutionTime ExecutionTime { get; private set; }
         public IEnumerable<string> Comments => _comments;
         public IEnumerable<IStepResult> GetSubSteps()

@@ -19,23 +19,22 @@ namespace LightBDD.Framework.Results.Implementation
             Columns = columns.ToArray();
             Rows = rows.ToArray();
             VerificationStatus = Rows.Any() ? Rows.Max(x => x.VerificationStatus) : ParameterVerificationStatus.NotApplicable;
-            Exception = CollectExceptions(tableException);
+            Message = CollectMessages(tableException);
         }
 
-        private Exception CollectExceptions(Exception tableException)
+        private string CollectMessages(Exception tableException)
         {
-            var exceptions = Enumerable.Repeat(tableException, 1)
-                .Concat(Rows.Select(x => x.Exception))
-                .Where(exception => exception != null)
-                .Select(x => x.Message);
+            var messages = Enumerable.Repeat(tableException?.Message, 1)
+                .Concat(Rows.Select(x => x.Message))
+                .Where(msg => !string.IsNullOrWhiteSpace(msg));
 
-            var message = string.Join("\n", exceptions);
+            var message = string.Join("\n", messages);
             return string.IsNullOrWhiteSpace(message)
                 ? null
-                : new InvalidOperationException(message);
+                : message;
         }
 
-        public Exception Exception { get; }
+        public string Message { get; }
         public ParameterVerificationStatus VerificationStatus { get; }
         public IReadOnlyList<ITabularParameterColumn> Columns { get; }
         public IReadOnlyList<ITabularParameterRow> Rows { get; }

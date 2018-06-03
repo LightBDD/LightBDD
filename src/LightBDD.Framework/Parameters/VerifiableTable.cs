@@ -138,7 +138,7 @@ namespace LightBDD.Framework.Parameters
                     _formattingService.FormatValue(expected),
                     _formattingService.FormatValue(actual),
                     result ? ParameterVerificationStatus.Success : ParameterVerificationStatus.Failure,
-                    result ? null : new InvalidOperationException($"{c.Name}: {result.Message}")
+                    result ? null : $"{c.Name}: {result.Message}"
                 );
             });
             return new TabularParameterRow(index, row.Type, values, row.Actual.Exception);
@@ -179,7 +179,7 @@ namespace LightBDD.Framework.Parameters
                     _formattingService.FormatValue(expected),
                     _formattingService.FormatValue(ColumnValue.None),
                     ParameterVerificationStatus.NotProvided,
-                    new InvalidOperationException($"{c.Name}: Value not provided")
+                    $"{c.Name}: Value not provided"
                 );
             });
             return new TabularParameterRow(index, TableRowType.Missing, values);

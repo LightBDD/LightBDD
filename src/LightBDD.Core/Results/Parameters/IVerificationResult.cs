@@ -8,7 +8,7 @@ namespace LightBDD.Core.Results.Parameters
         /// <summary>
         /// Returns verification exception or null, if parameter validation is successful.
         /// </summary>
-        Exception Exception { get; }
+        string Message { get; }
         /// <summary>
         /// Returns verification status.
         /// </summary>

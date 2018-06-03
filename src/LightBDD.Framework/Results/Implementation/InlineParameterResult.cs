@@ -6,15 +6,15 @@ namespace LightBDD.Framework.Results.Implementation
 {
     internal class InlineParameterResult : IInlineParameterResult
     {
-        public InlineParameterResult(string expectation, string value, ParameterVerificationStatus verificationStatus, Exception exception)
+        public InlineParameterResult(string expectation, string value, ParameterVerificationStatus verificationStatus, string message)
         {
             Expectation = expectation;
             Value = value;
             VerificationStatus = verificationStatus;
-            Exception = exception;
+            Message = message;
         }
 
-        public Exception Exception { get; }
+        public string Message { get; }
         public ParameterVerificationStatus VerificationStatus { get; }
         public string Value { get; }
         public string Expectation { get; }

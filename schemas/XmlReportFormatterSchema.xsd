@@ -123,7 +123,7 @@
     <xs:attribute name="Status" type="VerificationStatus" use="required"/>
     <xs:attribute name="Value" type="xs:string" use="optional"/>
     <xs:attribute name="Expectation" type="xs:string" use="optional"/>
-    <xs:attribute name="Exception" type="xs:string" use="optional"/>
+    <xs:attribute name="Message" type="xs:string" use="optional"/>
   </xs:complexType>
   <xs:complexType name="Step">
     <xs:sequence>
@@ -167,12 +167,12 @@
                       </xs:sequence>
                       <xs:attribute name="Status" type="VerificationStatus" use="required"/>
                       <xs:attribute name="Type" type="TabularParameterRowType" use="required"/>
-                      <xs:attribute name="Exception" type="xs:string" use="optional"/>
+                      <xs:attribute name="Message" type="xs:string" use="optional"/>
                     </xs:complexType>
                   </xs:element>
                 </xs:sequence>
                 <xs:attribute name="Status" type="VerificationStatus" use="required"/>
-                <xs:attribute name="Exception" type="xs:string" use="optional"/>
+                <xs:attribute name="Message" type="xs:string" use="optional"/>
               </xs:complexType>
             </xs:element>
           </xs:choice>

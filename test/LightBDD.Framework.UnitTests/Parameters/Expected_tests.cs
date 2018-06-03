@@ -137,59 +137,5 @@ namespace LightBDD.Framework.UnitTests.Parameters
 
             Assert.That(expectation.ToString(), Is.EqualTo($"expected: equal '--{expected}--', but got: '--{actualValue}--'"));
         }
-
-        [Test]
-        public void GetValidationException_should_return_exception_if_actual_was_not_set()
-        {
-            var expected = RandomValue.String();
-            Expected<string> expectation = expected;
-            var ex = GetException(expectation);
-            Assert.That(ex, Is.InstanceOf<InvalidOperationException>());
-            Assert.That(ex.Message, Is.EqualTo($"expected: equal '{expected}', but did not received anything"));
-        }
-
-        [Test]
-        public void GetValidationException_should_return_exception_if_actual_value_did_not_match()
-        {
-            var expected = RandomValue.String();
-            var actualValue = $"!{expected}";
-
-            Expected<string> expectation = expected;
-            expectation.SetActual(() => actualValue);
-
-            var ex = GetException(expectation);
-            Assert.That(ex, Is.InstanceOf<InvalidOperationException>());
-            Assert.That(ex.Message, Is.EqualTo($"expected: equal '{expected}', but got: '{actualValue}'"));
-        }
-
-        [Test]
-        public void GetValidationException_should_return_exception_if_SetActual_failed_with_exception()
-        {
-            var expected = RandomValue.String();
-
-            Expected<string> expectation = expected;
-            expectation.SetActual(() => throw new DivideByZeroException());
-
-            var ex = GetException(expectation);
-            Assert.That(ex, Is.InstanceOf<InvalidOperationException>());
-            Assert.That(ex.Message, Is.EqualTo($"expected: equal '{expected}', but got: '<{nameof(DivideByZeroException)}>'"));
-            Assert.That(ex.InnerException, Is.InstanceOf<DivideByZeroException>());
-        }
-
-        [Test]
-        public void GetValidationException_should_return_null_if_actual_match_expected_value()
-        {
-            var expected = RandomValue.String();
-            Expected<string> expectation = expected;
-            expectation.SetActual(expected);
-
-            var ex = GetException(expectation);
-            Assert.That(ex, Is.Null);
-        }
-
-        private Exception GetException(Expected<string> expectation)
-        {
-            return ((IVerifiableParameter)expectation).Result.Exception;
-        }
     }
 }

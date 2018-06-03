@@ -31,10 +31,11 @@ namespace LightBDD.Framework.Parameters
     public sealed class Expected<T> : IVerifiableParameter
     {
         private IValueFormattingService _formattingService = ValueFormattingServices.Current;
-        private Exception _exception;
         private string _actualText;
         private T _actual;
         private ExpectationResult _result;
+        private Exception _exception;
+
         /// <summary>
         /// Specified expectation.
         /// </summary>
@@ -158,13 +159,14 @@ namespace LightBDD.Framework.Parameters
             _formattingService = formattingService;
         }
 
-        IParameterVerificationResult IVerifiableParameter.Result => new InlineParameterResult(Expectation.Format(_formattingService), _actualText, Status, GetValidationException());
+        IParameterVerificationResult IVerifiableParameter.Result => new InlineParameterResult(Expectation.Format(_formattingService), _actualText, Status, GetValidationMessage());
 
-        private Exception GetValidationException()
+        private string GetValidationMessage()
         {
             if (Status == ParameterVerificationStatus.NotProvided)
-                return new InvalidOperationException(ToString() + ", but did not received anything");
-            return _result.IsValid ? null : new InvalidOperationException(_result.Message ?? ToString(), _exception);
+                return ToString() + ", but did not received anything";
+            var message = _result.IsValid ? null : _result.Message;
+            return message ?? ToString();
         }
 
         /// <summary>

@@ -6,17 +6,17 @@ namespace LightBDD.Framework.Results.Implementation
 {
     internal class ValueResult : IValueResult
     {
-        public ValueResult(string expectation, string value, ParameterVerificationStatus verificationStatus, Exception exception)
+        public ValueResult(string expectation, string value, ParameterVerificationStatus verificationStatus, string message)
         {
             Expectation = expectation;
             Value = value;
             VerificationStatus = verificationStatus;
-            Exception = exception;
+            Message = message;
         }
 
         public string Value { get; }
         public string Expectation { get; }
-        public Exception Exception { get; }
+        public string Message { get; }
         public ParameterVerificationStatus VerificationStatus { get; }
     }
 }

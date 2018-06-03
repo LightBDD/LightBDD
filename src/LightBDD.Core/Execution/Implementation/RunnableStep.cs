@@ -211,7 +211,6 @@ namespace LightBDD.Core.Execution.Implementation
 
         private void VerifyParameters()
         {
-            //TODO: test
             var results = new List<IParameterResult>();
             foreach (var argument in _arguments)
             {
@@ -222,25 +221,21 @@ namespace LightBDD.Core.Execution.Implementation
 
             _result.SetParameters(results);
 
-            var exceptions = results
+            var errors = results
                 .Where(x => x.Result.VerificationStatus > ParameterVerificationStatus.Success)
-                .Select(FormatException)
-                .ToArray<Exception>();
+                .Select(FormatErrorMessage)
+                .ToArray();
 
-            if (!exceptions.Any())
+            if (!errors.Any())
                 return;
 
-            if (exceptions.Length > 1)
-                throw new AggregateException("Parameter verification failed", exceptions);
-
-            ExceptionDispatchInfo.Capture(exceptions[0]).Throw();
+            throw new InvalidOperationException(string.Join(Environment.NewLine, errors));
         }
 
         [DebuggerStepThrough]
-        private static InvalidOperationException FormatException(IParameterResult result)
+        private static string FormatErrorMessage(IParameterResult result)
         {
-            var message = $"Parameter '{result.Name}' verification failed: {result.Result.Exception.Message.Replace("\n", "\n\t")}";
-            return new InvalidOperationException(message,result.Result.Exception?.InnerException);
+            return $"Parameter '{result.Name}' verification failed: {result.Result.Message?.Replace("\n", "\n\t") ?? string.Empty}";
         }
 
         [DebuggerStepThrough]
