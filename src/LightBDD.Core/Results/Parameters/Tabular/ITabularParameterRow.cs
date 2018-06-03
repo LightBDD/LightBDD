@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace LightBDD.Core.Results.Parameters.Tabular
 {
     /// <summary>
-    /// Interface representing tabular parameter result table row
+    /// Interface representing tabular parameter result table row.
     /// </summary>
     public interface ITabularParameterRow : IVerificationResult
     {

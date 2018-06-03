@@ -2,6 +2,9 @@ using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Results.Parameters
 {
+    /// <summary>
+    /// Interface offering the verification details of the parameter or it's value.
+    /// </summary>
     public interface IVerificationResult
     {
         /// <summary>

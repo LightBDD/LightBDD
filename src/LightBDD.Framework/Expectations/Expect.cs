@@ -12,9 +12,12 @@ namespace LightBDD.Framework.Expectations
         /// </summary>
         public static IExpectationComposer To => new ExpectationComposer();
 
-        public static TypeHelper<T> Type<T>()
+        /// <summary>
+        /// Returns <see cref="TypeRef{T}"/> that is used for inferring type <typeparamref name="T"/> in generic methods.
+        /// </summary>
+        public static TypeRef<T> Type<T>()
         {
-            return new TypeHelper<T>();
+            return new TypeRef<T>();
         }
     }
 }

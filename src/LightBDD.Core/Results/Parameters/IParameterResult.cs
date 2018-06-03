@@ -10,7 +10,7 @@ namespace LightBDD.Core.Results.Parameters
         /// </summary>
         string Name { get; }
         /// <summary>
-        /// Parameter value.
+        /// Parameter details.
         /// </summary>
         IParameterDetails Details { get; }
     }

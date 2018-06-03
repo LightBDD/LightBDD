@@ -329,9 +329,19 @@ namespace LightBDD.Framework.Expectations
             return new OrExpectation<T>(expectation, orExpectation(Expect.To));
         }
 
-        public static Expectation<TBase> CastFrom<T, TBase>(this IExpectation<T> expectation, TypeHelper<TBase> baseType) where T : TBase
+        /// <summary>
+        /// Creates a base type expectation for given expectation, that internally will cast <typeparamref name="TBase"/> to <typeparamref name="TDerived"/> during evaluation.
+        ///
+        /// Example usage: <code>Expect.To.MatchRegex("[0-9]+").CastFrom(Expect.Type&lt;object&gt;)</code>
+        /// </summary>
+        /// <typeparam name="TDerived">Derived type.</typeparam>
+        /// <typeparam name="TBase">Base type.</typeparam>
+        /// <param name="expectation">Expectation.</param>
+        /// <param name="baseTypeRef">Base type.</param>
+        /// <returns>Base type expectation.</returns>
+        public static Expectation<TBase> CastFrom<TDerived, TBase>(this IExpectation<TDerived> expectation, TypeRef<TBase> baseTypeRef) where TDerived : TBase
         {
-            return new CastedExpectation<T, TBase>(expectation);
+            return new CastedExpectation<TDerived, TBase>(expectation);
         }
     }
 }

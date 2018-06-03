@@ -13,79 +13,137 @@ using LightBDD.Framework.Results.Implementation;
 
 namespace LightBDD.Framework.Parameters
 {
+    /// <summary>
+    /// Type representing verifiable tabular step parameter.
+    /// When used in step methods, the tabular representation of the parameter will be rendered in reports and progress notification, including verification details.<br/>
+    /// The table rows and column values will be verified independently, and included in the reports, where any unsuccessful verification will make step to fail.
+    ///
+    /// Please see <see cref="TableExtensions"/> type to learn how to create tables effectively.
+    /// </summary>
+    /// <typeparam name="TRow">Row type.</typeparam>
     public class VerifiableTable<TRow> : IComplexParameter, ISelfFormattable
     {
         private IValueFormattingService _formattingService = ValueFormattingServices.Current;
         private TabularParameterDetails _details;
-        public IReadOnlyList<TRow> Expected { get; }
-        public IReadOnlyList<TRow> Actual { get; private set; }
+        /// <summary>
+        /// Returns list of expected rows.
+        /// </summary>
+        public IReadOnlyList<TRow> ExpectedRows { get; }
+        /// <summary>
+        /// Returns list of actual rows, or null if actual rows were not provided.
+        /// </summary>
+        public IReadOnlyList<TRow> ActualRows { get; private set; }
+        /// <summary>
+        /// Returns list of column definitions.
+        /// </summary>
         public IReadOnlyList<VerifiableTableColumn> Columns { get; }
         IParameterDetails IComplexParameter.Details => Details;
+        /// <summary>
+        /// Returns table verification details.
+        /// </summary>
         public ITabularParameterDetails Details => GetResultLazily();
 
-        public VerifiableTable(IEnumerable<TRow> expected, IEnumerable<VerifiableTableColumn> columns)
+        /// <summary>
+        /// Constructor creating verifiable table with specified <paramref name="columns"/> and <paramref name="expectedRows"/>.
+        /// </summary>
+        /// <param name="columns">Table columns.</param>
+        /// <param name="expectedRows">Table rows.</param>
+        public VerifiableTable(IEnumerable<VerifiableTableColumn> columns, IEnumerable<TRow> expectedRows)
         {
-            Expected = expected.ToArray();
+            ExpectedRows = expectedRows.ToArray();
             Columns = columns.OrderByDescending(x => x.IsKey).ToArray();
         }
 
-        public VerifiableTable<TRow> SetActual(IEnumerable<TRow> actualCollection)
+        /// <summary>
+        /// Sets the actual rows specified by <paramref name="actualRows"/> parameter and verifies them against <see cref="ExpectedRows"/> collection.
+        /// </summary>
+        /// <param name="actualRows">Actual rows.</param>
+        /// <returns>Self.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="actualRows"/> is null.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if <see cref="ActualRows"/> collection has been already set.</exception>
+        public VerifiableTable<TRow> SetActual(IEnumerable<TRow> actualRows)
         {
-            if (actualCollection == null)
-                throw new ArgumentNullException(nameof(actualCollection));
+            if (actualRows == null)
+                throw new ArgumentNullException(nameof(actualRows));
 
             EnsureActualNotSet();
-            return SetMatchedActual(MatchRows(Expected, actualCollection.ToArray()));
+            return SetMatchedActual(MatchRows(ExpectedRows, actualRows.ToArray()));
         }
 
-        public async Task<VerifiableTable<TRow>> SetActualAsync(Func<Task<IEnumerable<TRow>>> actualCollectionFn)
+        /// <summary>
+        /// Sets the actual rows specified by <paramref name="actualRowsProvider"/> parameter and verifies them against <see cref="ExpectedRows"/> collection.<br/>
+        /// If evaluation of <paramref name="actualRowsProvider"/> throws, the exception will be included in the report, but won't be propagated out of this method.
+        /// </summary>
+        /// <param name="actualRowsProvider">Actual rows provider.</param>
+        /// <returns>Self.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="actualRowsProvider"/> is null.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if <see cref="ActualRows"/> collection has been already set.</exception>
+        public async Task<VerifiableTable<TRow>> SetActualAsync(Func<Task<IEnumerable<TRow>>> actualRowsProvider)
         {
-            if (actualCollectionFn == null)
-                throw new ArgumentNullException(nameof(actualCollectionFn));
+            if (actualRowsProvider == null)
+                throw new ArgumentNullException(nameof(actualRowsProvider));
 
             EnsureActualNotSet();
             IEnumerable<TRow> actualCollection;
 
             try
             {
-                actualCollection = await actualCollectionFn();
+                actualCollection = await actualRowsProvider();
             }
             catch (Exception ex)
             {
                 _details = new TabularParameterDetails(
                     GetColumns(),
-                    Expected.Select(ToMissingRow),
+                    ExpectedRows.Select(ToMissingRow),
                     ParameterVerificationStatus.Exception,
                     new InvalidOperationException($"Failed to retrieve rows: {ex.Message}", ex));
-                Actual = new TRow[0];
+                ActualRows = new TRow[0];
                 return this;
             }
             return SetActual(actualCollection);
         }
 
-        public VerifiableTable<TRow> SetActual(Func<TRow, TRow> lookupFn)
+        /// <summary>
+        /// Sets the actual rows by calling <paramref name="actualRowLookup"/> for each expected row and verifies them against <see cref="ExpectedRows"/> collection.<br/>
+        /// If evaluation of <paramref name="actualRowLookup"/> throws, the exception will be included in the report, but won't be propagated out of this method.
+        /// </summary>
+        /// <param name="actualRowLookup">Actual row lookup function that will be called for each expected row.</param>
+        /// <returns>Self.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="actualRowLookup"/> is null.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if <see cref="ActualRows"/> collection has been already set.</exception>
+        public VerifiableTable<TRow> SetActual(Func<TRow, TRow> actualRowLookup)
         {
-            if (lookupFn == null)
-                throw new ArgumentNullException(nameof(lookupFn));
+            if (actualRowLookup == null)
+                throw new ArgumentNullException(nameof(actualRowLookup));
 
             EnsureActualNotSet();
-            return SetMatchedActual(Expected.Select(e => new RowMatch(TableRowType.Matching, e, Evaluate(lookupFn, e))));
+            return SetMatchedActual(ExpectedRows.Select(e => new RowMatch(TableRowType.Matching, e, Evaluate(actualRowLookup, e))));
         }
 
-        public async Task<VerifiableTable<TRow>> SetActualAsync(Func<TRow, Task<TRow>> lookupFn)
+        /// <summary>
+        /// Sets the actual rows by calling <paramref name="actualRowLookup"/> for each expected row and verifies them against <see cref="ExpectedRows"/> collection.<br/>
+        /// If evaluation of <paramref name="actualRowLookup"/> throws, the exception will be included in the report, but won't be propagated out of this method.<br/>
+        ///
+        /// Please note that async <paramref name="actualRowLookup"/> calls will be executed concurrently (<see cref="Task.WhenAll(System.Collections.Generic.IEnumerable{System.Threading.Tasks.Task})"/> is used).
+        /// </summary>
+        /// <param name="actualRowLookup">Actual row lookup function that will be called for each expected row.</param>
+        /// <returns>Self.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="actualRowLookup"/> is null.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if <see cref="ActualRows"/> collection has been already set.</exception>
+        public async Task<VerifiableTable<TRow>> SetActualAsync(Func<TRow, Task<TRow>> actualRowLookup)
         {
-            if (lookupFn == null)
-                throw new ArgumentNullException(nameof(lookupFn));
+            if (actualRowLookup == null)
+                throw new ArgumentNullException(nameof(actualRowLookup));
 
             EnsureActualNotSet();
-            var results = await Task.WhenAll(Expected.Select(e => EvaluateAsync(lookupFn, e)));
-            return SetMatchedActual(Expected.Zip(results, (e, a) => new RowMatch(TableRowType.Matching, e, a)));
+            var results = await Task.WhenAll(ExpectedRows.Select(e => EvaluateAsync(actualRowLookup, e)));
+            return SetMatchedActual(ExpectedRows.Zip(results, (e, a) => new RowMatch(TableRowType.Matching, e, a)));
         }
 
         private void EnsureActualNotSet()
         {
-            if (Actual != null)
-                throw new InvalidOperationException("Actual values have been already specified");
+            if (ActualRows != null)
+                throw new InvalidOperationException("Actual rows have been already specified");
         }
 
         private static ActualRowValue Evaluate(Func<TRow, TRow> provideActualFn, TRow row)
@@ -116,7 +174,7 @@ namespace LightBDD.Framework.Parameters
         {
             var matches = results.ToArray();
             _details = new TabularParameterDetails(GetColumns(), GetRows(matches));
-            Actual = matches
+            ActualRows = matches
                 .Where(x => x.Type != TableRowType.Missing)
                 .Select(x => x.Actual.Value)
                 .ToArray();
@@ -168,7 +226,7 @@ namespace LightBDD.Framework.Parameters
         {
             if (_details != null)
                 return _details;
-            return _details = new TabularParameterDetails(GetColumns(), Expected.Select(ToMissingRow), ParameterVerificationStatus.NotProvided);
+            return _details = new TabularParameterDetails(GetColumns(), ExpectedRows.Select(ToMissingRow), ParameterVerificationStatus.NotProvided);
         }
 
         private ITabularParameterRow ToMissingRow(TRow row, int index)
@@ -187,7 +245,7 @@ namespace LightBDD.Framework.Parameters
         }
 
         /// <summary>
-        /// Returns inline representation of table
+        /// Returns inline representation of table.
         /// </summary>
         public string Format(IValueFormattingService formattingService)
         {

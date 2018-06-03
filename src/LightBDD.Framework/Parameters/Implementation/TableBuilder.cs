@@ -10,7 +10,7 @@ namespace LightBDD.Framework.Parameters.Implementation
         public Table<TRow> Build(IEnumerable<TRow> items)
         {
             var rows = items.ToArray();
-            return new Table<TRow>(rows, BuildColumns(rows));
+            return new Table<TRow>(BuildColumns(rows), rows);
         }
 
         public ITableBuilder<TRow> WithColumn<TValue>(Expression<Func<TRow, TValue>> columnExpression)

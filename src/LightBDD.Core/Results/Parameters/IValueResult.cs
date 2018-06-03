@@ -10,7 +10,7 @@ namespace LightBDD.Core.Results.Parameters
         /// </summary>
         string Value { get; }
         /// <summary>
-        /// Returns parameter expectation.
+        /// Returns expectation.
         /// </summary>
         string Expectation { get; }
     }

@@ -263,7 +263,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
                 new {Id = 6, X = 2, Y = 5},
                 new {Id = 7, X = 3, Y = 7}
             };
-            Assert.That(input.AsVerifiableTable().Expected, Is.EqualTo(input));
+            Assert.That(input.AsVerifiableTable().ExpectedRows, Is.EqualTo(input));
         }
 
         [Test]
@@ -294,7 +294,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             };
 
             var table = input.AsVerifiableTable().SetActual(input);
-            Assert.That(table.Actual, Is.EqualTo(input));
+            Assert.That(table.ActualRows, Is.EqualTo(input));
             Assert.That(table.Details.VerificationStatus, Is.Not.EqualTo(ParameterVerificationStatus.NotProvided));
         }
 
@@ -308,7 +308,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             };
 
             var table = await input.AsVerifiableTable().SetActualAsync(async () => input);
-            Assert.That(table.Actual, Is.EqualTo(input));
+            Assert.That(table.ActualRows, Is.EqualTo(input));
             Assert.That(table.Details.VerificationStatus, Is.Not.EqualTo(ParameterVerificationStatus.NotProvided));
         }
 
@@ -322,7 +322,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
                 };
 
             var table = input.AsVerifiableTable().SetActual(expected => expected);
-            Assert.That(table.Actual, Is.EqualTo(input));
+            Assert.That(table.ActualRows, Is.EqualTo(input));
             Assert.That(table.Details.VerificationStatus, Is.Not.EqualTo(ParameterVerificationStatus.NotProvided));
         }
 
@@ -336,7 +336,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             };
 
             var table = await input.AsVerifiableTable().SetActualAsync(async expected => expected);
-            Assert.That(table.Actual, Is.EqualTo(input));
+            Assert.That(table.ActualRows, Is.EqualTo(input));
             Assert.That(table.Details.VerificationStatus, Is.Not.EqualTo(ParameterVerificationStatus.NotProvided));
         }
 
@@ -608,7 +608,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             var result = expected
                 .AsVerifiableTable()
                 .SetActual(v => v % 2 == 0 ? v : throw new Exception(v.ToString()))
-                .Actual;
+                .ActualRows;
 
             Assert.That(result, Is.EqualTo(new[] { 0, 2, 0, 4 }));
         }
@@ -620,7 +620,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             table.SetActual(e => e);
 
             var ex = Assert.Throws<InvalidOperationException>(() => table.SetActual(e => e));
-            Assert.That(ex.Message, Is.EqualTo("Actual values have been already specified"));
+            Assert.That(ex.Message, Is.EqualTo("Actual rows have been already specified"));
             Assert.Throws<InvalidOperationException>(() => table.SetActual(new[] { 0 }));
             Assert.ThrowsAsync<InvalidOperationException>(() => table.SetActualAsync(() => Task.FromResult(Enumerable.Empty<int>())));
             Assert.ThrowsAsync<InvalidOperationException>(() => table.SetActualAsync(Task.FromResult));
@@ -633,7 +633,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             await table.SetActualAsync(() => throw new Exception("foo"));
             Assert.That(table.Details.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Exception));
             Assert.That(table.Details.VerificationMessage, Is.EqualTo("Failed to retrieve rows: foo"));
-            Assert.That(table.Actual, Is.Empty);
+            Assert.That(table.ActualRows, Is.Empty);
         }
 
         [Test]
@@ -643,7 +643,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             await table.SetActualAsync(() => throw new Exception("foo"));
 
             var ex = Assert.Throws<InvalidOperationException>(() => table.SetActual(e => e));
-            Assert.That(ex.Message, Is.EqualTo("Actual values have been already specified"));
+            Assert.That(ex.Message, Is.EqualTo("Actual rows have been already specified"));
         }
 
         [Test]

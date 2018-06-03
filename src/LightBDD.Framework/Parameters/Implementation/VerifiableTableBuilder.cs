@@ -11,7 +11,7 @@ namespace LightBDD.Framework.Parameters.Implementation
         public VerifiableTable<TRow> Build(IEnumerable<TRow> items)
         {
             var rows = items.ToArray();
-            return new VerifiableTable<TRow>(rows, BuildColumns(rows));
+            return new VerifiableTable<TRow>(BuildColumns(rows), rows);
         }
 
         public IVerifiableTableBuilder<TRow> WithColumn<TValue>(Expression<Func<TRow, TValue>> columnExpression)

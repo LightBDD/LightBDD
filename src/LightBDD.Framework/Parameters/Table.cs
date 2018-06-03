@@ -10,15 +10,27 @@ using LightBDD.Framework.Results.Implementation;
 
 namespace LightBDD.Framework.Parameters
 {
-    //TODO: consider moving to root
-    //TODO: consider introducing IComplexParameter (that won't necessarily is verifiable)
+    /// <summary>
+    /// Type representing tabular step parameter.
+    /// When used in step methods, the tabular representation of the parameter will be rendered in reports and progress notification.<br/>
+    ///
+    /// Beside special rendering, the table behaves as a standard collection, i.e it offers <see cref="Count"/>, <see cref="GetEnumerator()"/> and indexing operator members.<br/>
+    ///
+    /// Please see <see cref="TableExtensions"/> type to learn how to create tables effectively.
+    /// </summary>
+    /// <typeparam name="TRow">Row type.</typeparam>
     public class Table<TRow> : IComplexParameter, ISelfFormattable, IReadOnlyList<TRow>
     {
         private readonly IReadOnlyList<TRow> _rows;
         private readonly TableColumn[] _columns;
         private IValueFormattingService _formattingService = ValueFormattingServices.Current;
 
-        public Table(IReadOnlyList<TRow> rows, IEnumerable<TableColumn> columns)
+        /// <summary>
+        /// Constructor creating table with specified <paramref name="columns"/> and <paramref name="rows"/>
+        /// </summary>
+        /// <param name="columns">Table columns.</param>
+        /// <param name="rows">Table rows.</param>
+        public Table(IEnumerable<TableColumn> columns, IReadOnlyList<TRow> rows)
         {
             _rows = rows;
             _columns = columns.ToArray();
@@ -47,21 +59,35 @@ namespace LightBDD.Framework.Parameters
         }
 
         /// <summary>
-        /// Returns inline representation of table
+        /// Returns inline representation of table.
         /// </summary>
         public string Format(IValueFormattingService formattingService)
         {
             return "<table>";
         }
 
+        /// <summary>
+        /// Returns number of rows.
+        /// </summary>
         public int Count => _rows.Count;
 
+        /// <summary>
+        /// Returns enumerator for the table rows.
+        /// </summary>
         public IEnumerator<TRow> GetEnumerator()
         {
             return _rows.AsEnumerable().GetEnumerator();
         }
 
+        /// <summary>
+        /// Returns row at specified <paramref name="index"/>.
+        /// </summary>
+        /// <param name="index">Row index</param>
         public TRow this[int index] => _rows[index];
+
+        /// <summary>
+        /// Returns columns collection.
+        /// </summary>
         public IReadOnlyList<TableColumn> Columns => _columns;
 
         IEnumerator IEnumerable.GetEnumerator()
