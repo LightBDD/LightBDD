@@ -25,13 +25,13 @@ namespace LightBDD.Framework.UnitTests.Expectations
                 .WithNotMatchingValue("no1234", "expected: matching 'no###', but got: 'no1234'")
                 .WithNotMatchingValue("noabc", "expected: matching 'no###', but got: 'noabc'");
 
-            yield return new ExpectationScenario<string>("matching any case 'no###'",
+            yield return new ExpectationScenario<string>("matching 'no###' ignore case",
                     x => x.MatchWildIgnoreCase("no###"))
                 .WithMatchingValues("no000", "nO123", "No123")
-                .WithNotMatchingValue(null, "expected: matching any case 'no###', but got: '<null>'")
-                .WithNotMatchingValue("no1", "expected: matching any case 'no###', but got: 'no1'")
-                .WithNotMatchingValue("no1234", "expected: matching any case 'no###', but got: 'no1234'")
-                .WithNotMatchingValue("noabc", "expected: matching any case 'no###', but got: 'noabc'");
+                .WithNotMatchingValue(null, "expected: matching 'no###' ignore case, but got: '<null>'")
+                .WithNotMatchingValue("no1", "expected: matching 'no###' ignore case, but got: 'no1'")
+                .WithNotMatchingValue("no1234", "expected: matching 'no###' ignore case, but got: 'no1234'")
+                .WithNotMatchingValue("noabc", "expected: matching 'no###' ignore case, but got: 'noabc'");
         }
     }
 }

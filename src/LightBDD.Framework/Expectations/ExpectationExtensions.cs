@@ -173,7 +173,7 @@ namespace LightBDD.Framework.Expectations
         /// <param name="pattern">Expected pattern</param>
         public static Expectation<string> MatchWildIgnoreCase(this IExpectationComposer composer, string pattern)
         {
-            return MatchWild(composer, pattern, RegexOptions.IgnoreCase, $"matching any case '{pattern}'");
+            return MatchWild(composer, pattern, RegexOptions.IgnoreCase, $"matching '{pattern}' ignore case");
         }
 
         private static Expectation<string> MatchWild(IExpectationComposer composer, string pattern, RegexOptions options, string format)
@@ -200,12 +200,12 @@ namespace LightBDD.Framework.Expectations
         /// <param name="pattern">Expected pattern</param>
         public static Expectation<string> MatchRegexIgnoreCase(this IExpectationComposer composer, string pattern)
         {
-            return MatchRegex(composer, pattern, RegexOptions.IgnoreCase, $"matching regex any case '{pattern}'");
+            return MatchRegex(composer, pattern, RegexOptions.IgnoreCase, $"matching regex '{pattern}' ignore case");
         }
 
         private static Expectation<string> MatchRegex(IExpectationComposer composer, string pattern, RegexOptions options, string format)
         {
-            var regex = new Regex(pattern, options);
+            var regex = new Regex($"^{pattern}$", options);
             return composer.ComposeSimple(formatter => format, (string value) => value != null && regex.IsMatch(value));
         }
 
