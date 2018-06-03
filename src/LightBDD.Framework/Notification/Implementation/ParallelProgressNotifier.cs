@@ -29,7 +29,7 @@ namespace LightBDD.Framework.Notification.Implementation
         {
             var progress = _manager.GetProgress();
             var header = $"Fi={progress.FinishedScenarios:D3},Fa={progress.FailedScenarios:D3},Pe={progress.PendingScenarios:D3} #{_currentScenarioNumber,3}> ";
-            _onNotify(header + message.Replace("\n", "\n" + new string(' ', header.Length)));
+            _onNotify(header + message.Replace(Environment.NewLine, Environment.NewLine + new string(' ', header.Length)));
         }
 
         public void NotifyFeatureStart(IFeatureInfo feature)

@@ -1,6 +1,6 @@
 ﻿using System;
 using LightBDD.Core.Results;
-using LightBDD.Core.Results.Parameters;
+using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.NUnit3;

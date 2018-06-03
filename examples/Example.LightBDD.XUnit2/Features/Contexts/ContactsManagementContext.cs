@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Linq;
 using Example.Domain.Domain;
 using LightBDD.Framework;
-using LightBDD.Framework.Expectations;
+using LightBDD.Framework.Parameters;
 using Xunit;
 
 namespace Example.LightBDD.XUnit2.Features.Contexts
@@ -115,6 +115,11 @@ namespace Example.LightBDD.XUnit2.Features.Contexts
             var contact = _searchResults.First(x => x.Name == name);
             phone.SetActual(contact.PhoneNumber);
             email.SetActual(contact.Email);
+        }
+
+        public void Then_I_should_receive_contacts(VerifiableTable<KeyValuePair<string, Contact>> contacts)
+        {
+            contacts.SetActual(_searchResults.ToDictionary(x => x.Name, x => x));
         }
     }
 }

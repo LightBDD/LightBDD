@@ -7,7 +7,7 @@ using LightBDD.AcceptanceTests.Helpers;
 using LightBDD.AcceptanceTests.Helpers.Builders;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
-using LightBDD.Core.Results.Parameters;
+using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.NUnit3;
 using LightBDD.UnitTests.Helpers;
@@ -270,23 +270,24 @@ namespace LightBDD.AcceptanceTests.Features
 
         private void Given_the_feature_scenario_has_step_result_with_status_and_tabular_parameter_and_content(string feature, string scenario, string step, ExecutionStatus status, string parameter, params (TableRowType type, string id, string name, string value)[] content)
         {
-            var tabular = TestResults.CreateTabularParameterResult(parameter)
+            var tabular = TestResults.CreateTabularParameterDetails()
                 .WithKeyColumns("Id")
                 .WithValueColumns("Name", "Value");
 
             foreach (var row in content)
             {
                 tabular.AddRow(row.type,
-                    TestResults.CreateTabularParameterValue(row.id),
-                    TestResults.CreateTabularParameterValue(row.name, row.name, ParameterVerificationStatus.Success),
-                    TestResults.CreateTabularParameterValue(row.value, row.value, ParameterVerificationStatus.Success));
+                    ParameterVerificationStatus.Success,
+                    TestResults.CreateValueResult(row.id),
+                    TestResults.CreateValueResult(row.name, row.name, ParameterVerificationStatus.Success),
+                    TestResults.CreateValueResult(row.value, row.value, ParameterVerificationStatus.Success));
             }
 
             ContextValue.ResultBuilder
                 .ForFeature(feature)
                 .ForScenario(scenario)
                 .AddStep(step, status)
-               .WithStepParameters(tabular);
+               .WithStepParameters(TestResults.CreateTestParameter(parameter, tabular));
         }
 
         private void Then_the_options_link_should_be_VISIBLE([VisibleFormat]bool visible)

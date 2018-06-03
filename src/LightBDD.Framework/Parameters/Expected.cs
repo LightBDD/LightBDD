@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
-using LightBDD.Core.Formatting.Parameters;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Metadata;
+using LightBDD.Core.Results.Parameters;
+using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Formatting.Values;
+using LightBDD.Framework.Results.Implementation;
 
-namespace LightBDD.Framework.Expectations
+namespace LightBDD.Framework.Parameters
 {
     /// <summary>
     /// Type allowing to specify verifiable parameters for LightBDD steps, which outcome is inlined in the step name.
@@ -24,13 +28,15 @@ namespace LightBDD.Framework.Expectations
     /// </example>
     /// </summary>
     /// <typeparam name="T">Type of the expected parameter</typeparam>
-    public sealed class Expected<T> : IVerifiableParameter
+    [DebuggerStepThrough]
+    public sealed class Expected<T> : IComplexParameter
     {
         private IValueFormattingService _formattingService = ValueFormattingServices.Current;
-        private Exception _exception;
         private string _actualText;
         private T _actual;
         private ExpectationResult _result;
+        private Exception _exception;
+
         /// <summary>
         /// Specified expectation.
         /// </summary>
@@ -149,16 +155,19 @@ namespace LightBDD.Framework.Expectations
             return this;
         }
 
-        void IVerifiableParameter.SetValueFormattingService(IValueFormattingService formattingService)
+        void IComplexParameter.SetValueFormattingService(IValueFormattingService formattingService)
         {
             _formattingService = formattingService;
         }
 
-        Exception IVerifiableParameter.GetValidationException()
+        IParameterDetails IComplexParameter.Details => new InlineParameterDetails(Expectation.Format(_formattingService), _actualText, Status, GetValidationMessage());
+
+        private string GetValidationMessage()
         {
             if (Status == ParameterVerificationStatus.NotProvided)
-                return new InvalidOperationException(ToString() + ", but did not received anything");
-            return _result.IsValid ? null : new InvalidOperationException(_result.Message ?? ToString(), _exception);
+                return ToString() + ", but did not received anything";
+            var message = _result.IsValid ? null : _result.Message;
+            return message ?? ToString();
         }
 
         /// <summary>

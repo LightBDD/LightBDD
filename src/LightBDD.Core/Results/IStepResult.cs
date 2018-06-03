@@ -38,7 +38,7 @@ namespace LightBDD.Core.Results
         /// <summary>
         /// Returns the step parameter evaluation results.
         /// </summary>
-        IEnumerable<IParameterResult> Parameters { get; }
+        IReadOnlyList<IParameterResult> Parameters { get; }
         /// <summary>
         /// Returns sub-steps if given step consists of any, or empty collection.
         /// </summary>

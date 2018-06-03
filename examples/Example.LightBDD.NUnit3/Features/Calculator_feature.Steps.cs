@@ -1,5 +1,5 @@
 ﻿using Example.Domain.Domain;
-using LightBDD.Framework.Expectations;
+using LightBDD.Framework.Parameters;
 using LightBDD.NUnit3;
 using NUnit.Framework;
 

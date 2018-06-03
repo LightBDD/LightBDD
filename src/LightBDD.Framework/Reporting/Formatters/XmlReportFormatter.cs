@@ -5,6 +5,8 @@ using System.Text;
 using System.Xml.Linq;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
+using LightBDD.Core.Results.Parameters;
+using LightBDD.Core.Results.Parameters.Tabular;
 
 namespace LightBDD.Framework.Reporting.Formatters
 {
@@ -54,9 +56,9 @@ namespace LightBDD.Framework.Reporting.Formatters
             var objects = new List<object>
             {
                 new XAttribute("Status", scenario.Status.ToString()),
-                new XAttribute("Name", scenario.Info.Name)
+                new XAttribute("Name", scenario.Info.Name),
+                ToXElement(scenario.Info.Name)
             };
-            objects.Add(ToXElement(scenario.Info.Name));
             objects.AddRange(scenario.Info.Labels.Select(label => new XElement("Label", new XAttribute("Name", label))));
 
             if (scenario.ExecutionTime != null)
@@ -92,9 +94,93 @@ namespace LightBDD.Framework.Reporting.Formatters
             if (step.StatusDetails != null)
                 objects.Add(new XElement("StatusDetails", step.StatusDetails));
             objects.Add(ToXElement(step.Info.Name));
+            objects.AddRange(step.Parameters.Select(ToXElement));
             objects.AddRange(step.Comments.Select(c => new XElement("Comment", c)));
             objects.AddRange(step.GetSubSteps().Select(s => ToXElement(s, "SubStep")));
             return new XElement(elementName, objects);
+        }
+
+        private static XElement ToXElement(IParameterResult parameterResult)
+        {
+            var objects = new List<object>
+            {
+                new XAttribute("Name", parameterResult.Name)
+            };
+            var result = ToXElement(parameterResult.Details);
+            if (result != null)
+                objects.Add(result);
+            return new XElement("Parameter", objects);
+        }
+
+        private static XElement ToXElement(IParameterDetails parameterVerification)
+        {
+            switch (parameterVerification)
+            {
+                case IInlineParameterDetails inline:
+                    return ToXElement((IValueResult)inline);
+                case ITabularParameterDetails tabular:
+                    return ToXElement(tabular);
+            }
+
+            return null;
+        }
+
+        private static XElement ToXElement(ITabularParameterDetails tabularDetails)
+        {
+            var objects = new List<object>
+            {
+                ToXAttribute(tabularDetails.VerificationStatus)
+            };
+
+            if (!string.IsNullOrWhiteSpace(tabularDetails.VerificationMessage))
+                objects.Add(new XAttribute("Message", tabularDetails.VerificationMessage));
+            objects.AddRange(tabularDetails.Columns.Select(ToXElement));
+            objects.AddRange(tabularDetails.Rows.Select(ToXElement));
+            return new XElement("Table", objects);
+        }
+
+        private static XElement ToXElement(ITabularParameterRow row)
+        {
+            var objects = new List<object>
+            {
+                ToXAttribute(row.VerificationStatus),
+                new XAttribute("Type", row.Type.ToString())
+            };
+            if (!string.IsNullOrWhiteSpace(row.VerificationMessage))
+                objects.Add(new XAttribute("Message", row.VerificationMessage));
+            objects.AddRange(row.Values.Select((v, i) => ToXElement(v, i)));
+            return new XElement("Row", objects);
+        }
+
+        private static XAttribute ToXAttribute(ParameterVerificationStatus status)
+        {
+            return new XAttribute("Status", status.ToString());
+        }
+
+        private static XElement ToXElement(ITabularParameterColumn column, int index)
+        {
+            var objects = new List<object>
+            {
+                new XAttribute("Index", index),
+                new XAttribute("Name", column.Name),
+                new XAttribute("IsKey", column.IsKey)
+            };
+            return new XElement("Column", objects);
+        }
+
+        private static XElement ToXElement(IValueResult valueResult, int? index = null)
+        {
+            var objects = new List<object>();
+            if (index.HasValue)
+                objects.Add(new XAttribute("Index", index.Value));
+            objects.Add(ToXAttribute(valueResult.VerificationStatus));
+            if (valueResult.Value != null)
+                objects.Add(new XAttribute("Value", valueResult.Value));
+            if (valueResult.Expectation != null)
+                objects.Add(new XAttribute("Expectation", valueResult.Expectation));
+            if (!string.IsNullOrWhiteSpace(valueResult.VerificationMessage))
+                objects.Add(new XAttribute("Message", valueResult.VerificationMessage));
+            return new XElement("Value", objects);
         }
 
         private static XElement ToXElement(IStepNameInfo stepName)
@@ -110,9 +196,11 @@ namespace LightBDD.Framework.Reporting.Formatters
 
         private static XElement ToXElement(INameInfo name)
         {
-            var objects = new List<object>();
-            objects.Add(new XAttribute("Format", name.NameFormat));
-            objects.Add(name.Parameters.Select(ToXElement).Cast<object>().ToArray());
+            var objects = new List<object>
+            {
+                new XAttribute("Format", name.NameFormat),
+                name.Parameters.Select(ToXElement).Cast<object>().ToArray()
+            };
 
             return new XElement("Name", objects);
         }

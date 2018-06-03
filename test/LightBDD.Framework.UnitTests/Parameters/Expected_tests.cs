@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading.Tasks;
-using LightBDD.Core.Formatting.Parameters;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Metadata;
-using LightBDD.Framework.Expectations;
+using LightBDD.Framework.Parameters;
 using LightBDD.Framework.UnitTests.Formatting;
 using NUnit.Framework;
 using RandomTestValues;
 
-namespace LightBDD.Framework.UnitTests.Expectations
+namespace LightBDD.Framework.UnitTests.Parameters
 {
     [TestFixture]
     public class Expected_tests
@@ -130,61 +130,12 @@ namespace LightBDD.Framework.UnitTests.Expectations
         public void SetValueFormattingService_should_allow_using_custom_formatter()
         {
             var expected = RandomValue.Int();
-            var actualValue = RandomValue.Int();
+            var actualValue = expected * 2;
             Expected<int> expectation = expected;
-            ((IVerifiableParameter)expectation).SetValueFormattingService(new ValueFormattingServiceStub(CultureInfo.InvariantCulture, "--{0}--"));
+            ((IComplexParameter)expectation).SetValueFormattingService(new ValueFormattingServiceStub(CultureInfo.InvariantCulture, "--{0}--"));
             expectation.SetActual(() => actualValue);
 
             Assert.That(expectation.ToString(), Is.EqualTo($"expected: equal '--{expected}--', but got: '--{actualValue}--'"));
-        }
-
-        [Test]
-        public void GetValidationException_should_return_exception_if_actual_was_not_set()
-        {
-            var expected = RandomValue.String();
-            Expected<string> expectation = expected;
-            var ex = ((IVerifiableParameter)expectation).GetValidationException();
-            Assert.That(ex, Is.InstanceOf<InvalidOperationException>());
-            Assert.That(ex.Message, Is.EqualTo($"expected: equal '{expected}', but did not received anything"));
-        }
-
-        [Test]
-        public void GetValidationException_should_return_exception_if_actual_value_did_not_match()
-        {
-            var expected = RandomValue.String();
-            var actualValue = $"!{expected}";
-
-            Expected<string> expectation = expected;
-            expectation.SetActual(() => actualValue);
-
-            var ex = ((IVerifiableParameter)expectation).GetValidationException();
-            Assert.That(ex, Is.InstanceOf<InvalidOperationException>());
-            Assert.That(ex.Message, Is.EqualTo($"expected: equal '{expected}', but got: '{actualValue}'"));
-        }
-
-        [Test]
-        public void GetValidationException_should_return_exception_if_SetActual_failed_with_exception()
-        {
-            var expected = RandomValue.String();
-
-            Expected<string> expectation = expected;
-            expectation.SetActual(() => throw new DivideByZeroException());
-
-            var ex = ((IVerifiableParameter)expectation).GetValidationException();
-            Assert.That(ex, Is.InstanceOf<InvalidOperationException>());
-            Assert.That(ex.Message, Is.EqualTo($"expected: equal '{expected}', but got: '<{nameof(DivideByZeroException)}>'"));
-            Assert.That(ex.InnerException, Is.InstanceOf<DivideByZeroException>());
-        }
-
-        [Test]
-        public void GetValidationException_should_return_null_if_actual_match_expected_value()
-        {
-            var expected = RandomValue.String();
-            Expected<string> expectation = expected;
-            expectation.SetActual(expected);
-
-            var ex = ((IVerifiableParameter)expectation).GetValidationException();
-            Assert.That(ex, Is.Null);
         }
     }
 }

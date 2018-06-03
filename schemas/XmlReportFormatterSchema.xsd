@@ -102,6 +102,29 @@
       <xs:enumeration value="NotRun"/>
     </xs:restriction>
   </xs:simpleType>
+  <xs:simpleType name="VerificationStatus">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NotApplicable"/>
+      <xs:enumeration value="Success"/>
+      <xs:enumeration value="Failure"/>
+      <xs:enumeration value="Exception"/>
+      <xs:enumeration value="NotProvided"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="TabularParameterRowType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Matching"/>
+      <xs:enumeration value="Surplus"/>
+      <xs:enumeration value="Missing"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="ParameterValue">
+    <xs:attribute name="Index" type="xs:int" use="optional"/>
+    <xs:attribute name="Status" type="VerificationStatus" use="required"/>
+    <xs:attribute name="Value" type="xs:string" use="optional"/>
+    <xs:attribute name="Expectation" type="xs:string" use="optional"/>
+    <xs:attribute name="Message" type="xs:string" use="optional"/>
+  </xs:complexType>
   <xs:complexType name="Step">
     <xs:sequence>
       <xs:element name="StatusDetails" type="xs:string" minOccurs="0" maxOccurs="1"/>
@@ -121,6 +144,39 @@
           </xs:sequence>
           <xs:attribute name="StepType" type="xs:string" use="optional"/>
           <xs:attribute name="Format" type="xs:string" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Parameter" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:choice>
+            <xs:element name="Value" type="ParameterValue"/>
+            <xs:element name="Table">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="Column" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                      <xs:attribute name="Index" type="xs:int" use="required"/>
+                      <xs:attribute name="Name" type="xs:string" use="required"/>
+                      <xs:attribute name="IsKey" type="xs:boolean" use="required"/>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="Row" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="Value" minOccurs="0" maxOccurs="unbounded" type="ParameterValue"/>
+                      </xs:sequence>
+                      <xs:attribute name="Status" type="VerificationStatus" use="required"/>
+                      <xs:attribute name="Type" type="TabularParameterRowType" use="required"/>
+                      <xs:attribute name="Message" type="xs:string" use="optional"/>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+                <xs:attribute name="Status" type="VerificationStatus" use="required"/>
+                <xs:attribute name="Message" type="xs:string" use="optional"/>
+              </xs:complexType>
+            </xs:element>
+          </xs:choice>
+          <xs:attribute name="Name" type="xs:string" use="required"/>
         </xs:complexType>
       </xs:element>
       <xs:element name="Comment" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>

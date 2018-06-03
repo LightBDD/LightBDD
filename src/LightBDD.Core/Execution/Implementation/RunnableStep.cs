@@ -2,18 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Execution.Implementation;
 using LightBDD.Core.Extensibility.Implementation;
-using LightBDD.Core.Formatting.Parameters;
 using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Implementation;
+using LightBDD.Core.Results.Parameters;
 
 namespace LightBDD.Core.Execution.Implementation
 {
@@ -208,22 +207,33 @@ namespace LightBDD.Core.Execution.Implementation
             return result;
         }
 
+        [DebuggerStepThrough]
         private void VerifyParameters()
         {
-            var exceptions = _arguments
-                .Select(a => a.Value)
-                .OfType<IVerifiableParameter>()
-                .Select(p => p.GetValidationException())
-                .Where(ex => ex != null)
+            var results = new List<IParameterResult>();
+            foreach (var argument in _arguments)
+            {
+                if (argument.Value is IComplexParameter complex)
+                    results.Add(new ParameterResult(argument.RawName, complex.Details));
+            }
+
+            _result.SetParameters(results);
+
+            var errors = results
+                .Where(x => x.Details.VerificationStatus > ParameterVerificationStatus.Success)
+                .Select(FormatErrorMessage)
                 .ToArray();
 
-            if (!exceptions.Any())
+            if (!errors.Any())
                 return;
 
-            if (exceptions.Length > 1)
-                throw new AggregateException("Expectation failed", exceptions);
+            throw new InvalidOperationException(string.Join(Environment.NewLine, errors));
+        }
 
-            ExceptionDispatchInfo.Capture(exceptions[0]).Throw();
+        [DebuggerStepThrough]
+        private static string FormatErrorMessage(IParameterResult result)
+        {
+            return $"Parameter '{result.Name}' verification failed: {result.Details.VerificationMessage?.Replace(Environment.NewLine, Environment.NewLine + "\t") ?? string.Empty}";
         }
 
         [DebuggerStepThrough]

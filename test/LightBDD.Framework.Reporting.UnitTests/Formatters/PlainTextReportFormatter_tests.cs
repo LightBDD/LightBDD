@@ -39,10 +39,10 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
 	Bypassed scenarios              : 0
 	Failed scenarios                : 1
 	Ignored scenarios               : 1
-	Number of steps                 : 9
+	Number of steps                 : 10
 	Passed steps                    : 3
 	Bypassed steps                  : 1
-	Failed steps                    : 1
+	Failed steps                    : 2
 	Ignored steps                   : 2
 	Not Run steps                   : 2
 
@@ -57,7 +57,26 @@ Feature: My feature [Label 1]
 			Step 2.1: substep 1 - Passed (100ms)
 			Step 2.2: substep 2 - Passed (1s)
 			Step 2.3: substep 3 - Ignored (0ms)
-				Step 2.3.1: sub-substep 1 - NotRun
+				Step 2.3.1: sub-substep 1 - Failed
+				table1:
+				+-+----+--------+--------+
+				|#|Key |X       |Y       |
+				+-+----+--------+--------+
+				|=|Key1|1       |2       |
+				|!|Key2|1/2     |4       |
+				|-|Key3|<none>/3|<none>/6|
+				|+|Key4|3/<none>|6/<none>|
+				+-+----+--------+--------+
+				table2:
+				+-+----+--------+--------+
+				|#|Key |X       |Y       |
+				+-+----+--------+--------+
+				|=|Key1|1       |2       |
+				|!|Key2|1/2     |4       |
+				|-|Key3|<none>/3|<none>/6|
+				|+|Key4|3/<none>|6/<none>|
+				+-+----+--------+--------+
+				Step 2.3.2: sub-substep 2 - NotRun
 		Details:
 			Step 2: Not implemented yet
 		Comments:

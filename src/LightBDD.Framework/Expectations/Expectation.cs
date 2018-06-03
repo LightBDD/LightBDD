@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using LightBDD.Core.Formatting.Values;
@@ -50,7 +51,7 @@ namespace LightBDD.Framework.Expectations
             var builder = new StringBuilder();
             builder.Append("expected: ").Append(Format(formattingService)).Append(", but ").Append(failureMessage);
             foreach (var line in details)
-                builder.AppendLine().Append('\t').Append(line.Replace("\n", "\n\t"));
+                builder.AppendLine().Append('\t').Append(line.Replace(Environment.NewLine, Environment.NewLine + "\t"));
             return ExpectationResult.Failure(builder.ToString());
         }
     }

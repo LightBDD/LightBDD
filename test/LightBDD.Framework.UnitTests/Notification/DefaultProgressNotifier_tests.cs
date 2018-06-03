@@ -1,8 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Formatting;
+using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
+using LightBDD.Core.Results.Parameters;
+using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Notification;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
@@ -35,6 +39,36 @@ namespace LightBDD.Framework.UnitTests.Notification
             var scenarioInfo = RandomValue.Object<TestResults.TestScenarioInfo>();
             var stepInfo = RandomValue.Object<TestResults.TestStepInfo>();
             var stepResult = RandomValue.Object<TestResults.TestStepResult>();
+            stepResult.Parameters = new IParameterResult[]
+            {
+                new TestResults.TestParameterResult("table",
+                    TestResults.CreateTabularParameterDetails()
+                        .WithKeyColumns("Key")
+                        .WithValueColumns("Value1", "Value2")
+                        .AddRow(TableRowType.Matching,
+                            ParameterVerificationStatus.Success,
+                            TestResults.CreateValueResult("1"),
+                            TestResults.CreateValueResult("abc"),
+                            TestResults.CreateValueResult("some value"))
+                        .AddRow(TableRowType.Matching,
+                            ParameterVerificationStatus.Failure,
+                            TestResults.CreateValueResult("2"),
+                            TestResults.CreateValueResult("def"),
+                            TestResults.CreateValueResult("value", "val", ParameterVerificationStatus.Failure))
+                        .AddRow(TableRowType.Missing,
+                            ParameterVerificationStatus.Failure,
+                            TestResults.CreateValueResult("3"),
+                            TestResults.CreateValueResult("XXX", "<null>", ParameterVerificationStatus.NotProvided),
+                            TestResults.CreateValueResult("YYY", "<null>", ParameterVerificationStatus.NotProvided))
+                        .AddRow(TableRowType.Surplus,
+                            ParameterVerificationStatus.Failure,
+                            TestResults.CreateValueResult("4"),
+                            TestResults.CreateValueResult("<null>", "XXX",
+                                ParameterVerificationStatus.Failure),
+                            TestResults.CreateValueResult("<null>", "YYY",
+                                ParameterVerificationStatus.Failure))
+                )
+            };
             var scenarioResult = RandomValue.Object<TestResults.TestScenarioResult>();
             scenarioResult.Status = ExecutionStatus.Passed;
 
@@ -52,14 +86,26 @@ namespace LightBDD.Framework.UnitTests.Notification
             scenarioNotifier.NotifyScenarioFinished(scenarioResult);
             featureNotifier.NotifyFeatureFinished(featureResult);
 
+            var expectedTable = @"    table:
+    +-+---+----------+----------+
+    |#|Key|Value1    |Value2    |
+    +-+---+----------+----------+
+    |=|1  |abc       |some value|
+    |!|2  |def       |val/value |
+    |-|3  |<null>/XXX|<null>/YYY|
+    |+|4  |XXX/<null>|YYY/<null>|
+    +-+---+----------+----------+"
+                .Replace("\r", "")
+                .Replace("\n", Environment.NewLine);
+
             var expected = new[]
             {
-                $"FEATURE: [{string.Join("][", featureInfo.Labels)}] {featureInfo.Name}\n  {featureInfo.Description}",
+                $"FEATURE: [{string.Join("][", featureInfo.Labels)}] {featureInfo.Name}{Environment.NewLine}  {featureInfo.Description}",
                 $"SCENARIO: [{string.Join("][", scenarioInfo.Labels)}] {scenarioInfo.Name}",
                 $"  STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: {stepInfo.Name}...",
                 $"  STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: /* {comment} */",
-                $"  STEP {stepResult.Info.GroupPrefix}{stepResult.Info.Number}/{stepResult.Info.GroupPrefix}{stepResult.Info.Total}: {stepResult.Info.Name} ({stepResult.Status} after {stepResult.ExecutionTime.Duration.FormatPretty()})",
-                $"  SCENARIO RESULT: {scenarioResult.Status} after {scenarioResult.ExecutionTime.Duration.FormatPretty()}\n    {scenarioResult.StatusDetails}",
+                $"  STEP {stepResult.Info.GroupPrefix}{stepResult.Info.Number}/{stepResult.Info.GroupPrefix}{stepResult.Info.Total}: {stepResult.Info.Name} ({stepResult.Status} after {stepResult.ExecutionTime.Duration.FormatPretty()}){Environment.NewLine}{expectedTable}",
+                $"  SCENARIO RESULT: {scenarioResult.Status} after {scenarioResult.ExecutionTime.Duration.FormatPretty()}{Environment.NewLine}    {scenarioResult.StatusDetails}",
                 $"FEATURE FINISHED: {featureResult.Info.Name}"
             };
 
@@ -83,7 +129,7 @@ namespace LightBDD.Framework.UnitTests.Notification
             featureInfo.Labels = new string[0];
             ((IFeatureProgressNotifier)_notifier).NotifyFeatureStart(featureInfo);
 
-            var expected = $"FEATURE: {featureInfo.Name}\n  {featureInfo.Description}";
+            var expected = $"FEATURE: {featureInfo.Name}{Environment.NewLine}  {featureInfo.Description}";
             Assert.That(_captured.Single(), Is.EqualTo(expected));
         }
 
@@ -115,7 +161,7 @@ namespace LightBDD.Framework.UnitTests.Notification
             var expected = new[]
             {
                 $"SCENARIO: {scenarioInfo.Name}",
-                $"  SCENARIO RESULT: {scenarioResult.Status}\n    {scenarioResult.StatusDetails}"
+                $"  SCENARIO RESULT: {scenarioResult.Status}{Environment.NewLine}    {scenarioResult.StatusDetails}"
             };
             Assert.That(_captured.ToArray(), Is.EqualTo(expected));
         }
