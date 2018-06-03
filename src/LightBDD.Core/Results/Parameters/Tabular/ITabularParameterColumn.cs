@@ -1,4 +1,4 @@
-namespace LightBDD.Core.Results.Parameters
+namespace LightBDD.Core.Results.Parameters.Tabular
 {
     /// <summary>
     /// Interface representing tabular parameter result table column

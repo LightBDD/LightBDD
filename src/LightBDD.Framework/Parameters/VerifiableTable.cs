@@ -2,25 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Formatting.Parameters;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters;
+using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Formatting.Values;
 using LightBDD.Framework.Results.Implementation;
 
 namespace LightBDD.Framework.Parameters
 {
-    public class VerifiableTable<TRow> : IVerifiableParameter, ISelfFormattable
+    public class VerifiableTable<TRow> : IComplexParameter, ISelfFormattable
     {
         private IValueFormattingService _formattingService = ValueFormattingServices.Current;
-        private TabularParameterResult _result;
+        private TabularParameterDetails _details;
         public IReadOnlyList<TRow> Expected { get; }
         public IReadOnlyList<TRow> Actual { get; private set; }
         public IReadOnlyList<VerifiableTableColumn> Columns { get; }
-        IParameterVerificationResult IVerifiableParameter.Result => Result;
-        public ITabularParameterResult Result => GetResultLazily();
+        IParameterDetails IComplexParameter.Details => Details;
+        public ITabularParameterDetails Details => GetResultLazily();
 
         public VerifiableTable(IEnumerable<TRow> expected, IEnumerable<VerifiableTableColumn> columns)
         {
@@ -51,7 +53,7 @@ namespace LightBDD.Framework.Parameters
             }
             catch (Exception ex)
             {
-                _result = new TabularParameterResult(
+                _details = new TabularParameterDetails(
                     GetColumns(),
                     Expected.Select(ToMissingRow),
                     ParameterVerificationStatus.Exception,
@@ -114,7 +116,7 @@ namespace LightBDD.Framework.Parameters
         private VerifiableTable<TRow> SetMatchedActual(IEnumerable<RowMatch> results)
         {
             var matches = results.ToArray();
-            _result = new TabularParameterResult(GetColumns(), GetRows(matches));
+            _details = new TabularParameterDetails(GetColumns(), GetRows(matches));
             Actual = matches
                 .Where(x => x.Type != TableRowType.Missing)
                 .Select(x => x.Actual.Value)
@@ -158,16 +160,16 @@ namespace LightBDD.Framework.Parameters
             return Columns.Select(x => new TabularParameterColumn(x.Name, x.IsKey));
         }
 
-        void IVerifiableParameter.SetValueFormattingService(IValueFormattingService formattingService)
+        void IComplexParameter.SetValueFormattingService(IValueFormattingService formattingService)
         {
             _formattingService = formattingService;
         }
 
-        private ITabularParameterResult GetResultLazily()
+        private ITabularParameterDetails GetResultLazily()
         {
-            if (_result != null)
-                return _result;
-            return _result = new TabularParameterResult(GetColumns(), Expected.Select(ToMissingRow), ParameterVerificationStatus.NotProvided);
+            if (_details != null)
+                return _details;
+            return _details = new TabularParameterDetails(GetColumns(), Expected.Select(ToMissingRow), ParameterVerificationStatus.NotProvided);
         }
 
         private ITabularParameterRow ToMissingRow(TRow row, int index)

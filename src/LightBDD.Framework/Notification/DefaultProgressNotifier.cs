@@ -9,6 +9,7 @@ using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters;
+using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Reporting.Formatters;
 
 namespace LightBDD.Framework.Notification
@@ -77,7 +78,7 @@ namespace LightBDD.Framework.Notification
             };
             foreach (var parameter in step.Parameters)
             {
-                if (parameter.Result is ITabularParameterResult table)
+                if (parameter.Details is ITabularParameterDetails table)
                 {
                     report.Add($"    {parameter.Name}:");
                     report.Add(new TextTableRenderer(table).Render("    "));

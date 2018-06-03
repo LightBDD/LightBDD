@@ -12,6 +12,6 @@ namespace LightBDD.Core.Results.Parameters
         /// <summary>
         /// Parameter value.
         /// </summary>
-        IParameterVerificationResult Result { get; }
+        IParameterDetails Details { get; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Formatting.Parameters;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Metadata;
@@ -28,7 +29,7 @@ namespace LightBDD.Framework.Parameters
     /// </summary>
     /// <typeparam name="T">Type of the expected parameter</typeparam>
     //TODO: consider renaming, consider moving to root
-    public sealed class Expected<T> : IVerifiableParameter
+    public sealed class Expected<T> : IComplexParameter
     {
         private IValueFormattingService _formattingService = ValueFormattingServices.Current;
         private string _actualText;
@@ -154,12 +155,12 @@ namespace LightBDD.Framework.Parameters
             return this;
         }
 
-        void IVerifiableParameter.SetValueFormattingService(IValueFormattingService formattingService)
+        void IComplexParameter.SetValueFormattingService(IValueFormattingService formattingService)
         {
             _formattingService = formattingService;
         }
 
-        IParameterVerificationResult IVerifiableParameter.Result => new InlineParameterResult(Expectation.Format(_formattingService), _actualText, Status, GetValidationMessage());
+        IParameterDetails IComplexParameter.Details => new InlineParameterDetails(Expectation.Format(_formattingService), _actualText, Status, GetValidationMessage());
 
         private string GetValidationMessage()
         {

@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Formatting.Parameters;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Metadata;
@@ -29,8 +30,8 @@ namespace LightBDD.Core.Extensibility.Implementation
         {
             if (IsEvaluated) return;
             Value = _valueEvaluator.Invoke(context);
-            if (Value is IVerifiableParameter verifiable)
-                verifiable.SetValueFormattingService(_formattingService);
+            if (Value is IComplexParameter complex)
+                complex.SetValueFormattingService(_formattingService);
             IsEvaluated = true;
         }
 
@@ -39,8 +40,8 @@ namespace LightBDD.Core.Extensibility.Implementation
             if( !IsEvaluated)
                 return NameParameterInfo.Unknown;
 
-            if (Value is IVerifiableParameter p)
-                return new NameParameterInfo(true, _formattingService.FormatValue(Value), p.Result.VerificationStatus);
+            if (Value is IComplexParameter p)
+                return new NameParameterInfo(true, _formattingService.FormatValue(Value), p.Details.VerificationStatus);
             return new NameParameterInfo(true, _formattingService.FormatValue(Value), ParameterVerificationStatus.NotApplicable);
         }
 

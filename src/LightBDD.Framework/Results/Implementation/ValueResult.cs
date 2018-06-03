@@ -11,12 +11,12 @@ namespace LightBDD.Framework.Results.Implementation
             Expectation = expectation;
             Value = value;
             VerificationStatus = verificationStatus;
-            Message = message;
+            VerificationMessage = message;
         }
 
         public string Value { get; }
         public string Expectation { get; }
-        public string Message { get; }
+        public string VerificationMessage { get; }
         public ParameterVerificationStatus VerificationStatus { get; }
     }
 }

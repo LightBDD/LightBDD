@@ -8,6 +8,7 @@ using LightBDD.AcceptanceTests.Helpers.Builders;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters;
+using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.NUnit3;
 using LightBDD.UnitTests.Helpers;
@@ -270,7 +271,7 @@ namespace LightBDD.AcceptanceTests.Features
 
         private void Given_the_feature_scenario_has_step_result_with_status_and_tabular_parameter_and_content(string feature, string scenario, string step, ExecutionStatus status, string parameter, params (TableRowType type, string id, string name, string value)[] content)
         {
-            var tabular = TestResults.CreateTabularParameterResult()
+            var tabular = TestResults.CreateTabularParameterDetails()
                 .WithKeyColumns("Id")
                 .WithValueColumns("Name", "Value");
 
@@ -278,9 +279,9 @@ namespace LightBDD.AcceptanceTests.Features
             {
                 tabular.AddRow(row.type,
                     ParameterVerificationStatus.Success,
-                    TestResults.CreateTabularParameterValue(row.id),
-                    TestResults.CreateTabularParameterValue(row.name, row.name, ParameterVerificationStatus.Success),
-                    TestResults.CreateTabularParameterValue(row.value, row.value, ParameterVerificationStatus.Success));
+                    TestResults.CreateValueResult(row.id),
+                    TestResults.CreateValueResult(row.name, row.name, ParameterVerificationStatus.Success),
+                    TestResults.CreateValueResult(row.value, row.value, ParameterVerificationStatus.Success));
             }
 
             ContextValue.ResultBuilder

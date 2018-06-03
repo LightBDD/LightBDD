@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters;
+using LightBDD.Core.Results.Parameters.Tabular;
 
 namespace LightBDD.Framework.Reporting.Formatters
 {
@@ -105,36 +106,36 @@ namespace LightBDD.Framework.Reporting.Formatters
             {
                 new XAttribute("Name", parameterResult.Name)
             };
-            var result = ToXElement(parameterResult.Result);
+            var result = ToXElement(parameterResult.Details);
             if (result != null)
                 objects.Add(result);
             return new XElement("Parameter", objects);
         }
 
-        private static XElement ToXElement(IParameterVerificationResult parameterVerification)
+        private static XElement ToXElement(IParameterDetails parameterVerification)
         {
             switch (parameterVerification)
             {
-                case IInlineParameterResult inline:
+                case IInlineParameterDetails inline:
                     return ToXElement((IValueResult)inline);
-                case ITabularParameterResult tabular:
+                case ITabularParameterDetails tabular:
                     return ToXElement(tabular);
             }
 
             return null;
         }
 
-        private static XElement ToXElement(ITabularParameterResult tabularResult)
+        private static XElement ToXElement(ITabularParameterDetails tabularDetails)
         {
             var objects = new List<object>
             {
-                ToXAttribute(tabularResult.VerificationStatus)
+                ToXAttribute(tabularDetails.VerificationStatus)
             };
 
-            if (!string.IsNullOrWhiteSpace(tabularResult.Message))
-                objects.Add(new XAttribute("Message", tabularResult.Message));
-            objects.AddRange(tabularResult.Columns.Select(ToXElement));
-            objects.AddRange(tabularResult.Rows.Select(ToXElement));
+            if (!string.IsNullOrWhiteSpace(tabularDetails.VerificationMessage))
+                objects.Add(new XAttribute("Message", tabularDetails.VerificationMessage));
+            objects.AddRange(tabularDetails.Columns.Select(ToXElement));
+            objects.AddRange(tabularDetails.Rows.Select(ToXElement));
             return new XElement("Table", objects);
         }
 
@@ -145,8 +146,8 @@ namespace LightBDD.Framework.Reporting.Formatters
                 ToXAttribute(row.VerificationStatus),
                 new XAttribute("Type", row.Type.ToString())
             };
-            if (!string.IsNullOrWhiteSpace(row.Message))
-                objects.Add(new XAttribute("Message", row.Message));
+            if (!string.IsNullOrWhiteSpace(row.VerificationMessage))
+                objects.Add(new XAttribute("Message", row.VerificationMessage));
             objects.AddRange(row.Values.Select((v, i) => ToXElement(v, i)));
             return new XElement("Row", objects);
         }
@@ -177,8 +178,8 @@ namespace LightBDD.Framework.Reporting.Formatters
                 objects.Add(new XAttribute("Value", valueResult.Value));
             if (valueResult.Expectation != null)
                 objects.Add(new XAttribute("Expectation", valueResult.Expectation));
-            if (!string.IsNullOrWhiteSpace(valueResult.Message))
-                objects.Add(new XAttribute("Message", valueResult.Message));
+            if (!string.IsNullOrWhiteSpace(valueResult.VerificationMessage))
+                objects.Add(new XAttribute("Message", valueResult.VerificationMessage));
             return new XElement("Value", objects);
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading.Tasks;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Formatting.Parameters;
 using LightBDD.Core.Metadata;
 using LightBDD.Framework.Parameters;
@@ -132,7 +133,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             var expected = RandomValue.Int();
             var actualValue = expected * 2;
             Expected<int> expectation = expected;
-            ((IVerifiableParameter)expectation).SetValueFormattingService(new ValueFormattingServiceStub(CultureInfo.InvariantCulture, "--{0}--"));
+            ((IComplexParameter)expectation).SetValueFormattingService(new ValueFormattingServiceStub(CultureInfo.InvariantCulture, "--{0}--"));
             expectation.SetActual(() => actualValue);
 
             Assert.That(expectation.ToString(), Is.EqualTo($"expected: equal '--{expected}--', but got: '--{actualValue}--'"));

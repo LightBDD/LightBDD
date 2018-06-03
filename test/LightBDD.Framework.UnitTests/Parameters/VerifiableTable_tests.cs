@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters;
+using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;
 using Newtonsoft.Json;
@@ -272,16 +273,16 @@ namespace LightBDD.Framework.UnitTests.Parameters
             var input = new[] { "abc", "def" };
             var table = input.AsVerifiableTable();
             AssertResultColumnsMatchingTable(table);
-            var result = table.Result;
+            var result = table.Details;
 
             Assert.That(result.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.NotProvided));
             Assert.That(result.Rows.Count, Is.EqualTo(2));
 
             AssertRow(result.Rows[0], TableRowType.Missing, ParameterVerificationStatus.Failure, "NotProvided|<none>|abc|Item: Value not provided");
             AssertRow(result.Rows[1], TableRowType.Missing, ParameterVerificationStatus.Failure, "NotProvided|<none>|def|Item: Value not provided");
-            Assert.That(result.Rows[0].Message, Is.EqualTo("[0].Item: Value not provided"));
-            Assert.That(result.Rows[1].Message, Is.EqualTo("[1].Item: Value not provided"));
-            Assert.That(result.Message, Is.EqualTo("[0].Item: Value not provided\n[1].Item: Value not provided"));
+            Assert.That(result.Rows[0].VerificationMessage, Is.EqualTo("[0].Item: Value not provided"));
+            Assert.That(result.Rows[1].VerificationMessage, Is.EqualTo("[1].Item: Value not provided"));
+            Assert.That(result.VerificationMessage, Is.EqualTo("[0].Item: Value not provided\n[1].Item: Value not provided"));
         }
 
         [Test]
@@ -295,7 +296,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
 
             var table = input.AsVerifiableTable().SetActual(input);
             Assert.That(table.Actual, Is.EqualTo(input));
-            Assert.That(table.Result.VerificationStatus, Is.Not.EqualTo(ParameterVerificationStatus.NotProvided));
+            Assert.That(table.Details.VerificationStatus, Is.Not.EqualTo(ParameterVerificationStatus.NotProvided));
         }
 
         [Test]
@@ -309,7 +310,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
 
             var table = await input.AsVerifiableTable().SetActualAsync(async () => input);
             Assert.That(table.Actual, Is.EqualTo(input));
-            Assert.That(table.Result.VerificationStatus, Is.Not.EqualTo(ParameterVerificationStatus.NotProvided));
+            Assert.That(table.Details.VerificationStatus, Is.Not.EqualTo(ParameterVerificationStatus.NotProvided));
         }
 
         [Test]
@@ -323,7 +324,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
 
             var table = input.AsVerifiableTable().SetActual(expected => expected);
             Assert.That(table.Actual, Is.EqualTo(input));
-            Assert.That(table.Result.VerificationStatus, Is.Not.EqualTo(ParameterVerificationStatus.NotProvided));
+            Assert.That(table.Details.VerificationStatus, Is.Not.EqualTo(ParameterVerificationStatus.NotProvided));
         }
 
         [Test]
@@ -337,7 +338,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
 
             var table = await input.AsVerifiableTable().SetActualAsync(async expected => expected);
             Assert.That(table.Actual, Is.EqualTo(input));
-            Assert.That(table.Result.VerificationStatus, Is.Not.EqualTo(ParameterVerificationStatus.NotProvided));
+            Assert.That(table.Details.VerificationStatus, Is.Not.EqualTo(ParameterVerificationStatus.NotProvided));
         }
 
         [Test]
@@ -361,7 +362,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             var table = expected.AsVerifiableTable().SetActual(actual);
             AssertResultColumnsMatchingTable(table);
 
-            var result = table.Result;
+            var result = table.Details;
             Assert.That(result.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Failure));
             Assert.That(result.Rows.Count, Is.EqualTo(4));
 
@@ -369,9 +370,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
             AssertRow(result.Rows[1], TableRowType.Matching, ParameterVerificationStatus.Failure, "Success|2|2|null", "Failure|2|4|Y: expected: equal '4', but got: '2'");
             AssertRow(result.Rows[2], TableRowType.Matching, ParameterVerificationStatus.Failure, "Failure|-3|3|X: expected: equal '3', but got: '-3'", "Failure|-6|6|Y: expected: equal '6', but got: '-6'");
             AssertRow(result.Rows[3], TableRowType.Matching, ParameterVerificationStatus.Success, "Success|4|4|null", "Success|8|8|null");
-            Assert.That(result.Rows[1].Message, Is.EqualTo("[1].Y: expected: equal '4', but got: '2'"));
-            Assert.That(result.Rows[2].Message, Is.EqualTo("[2].X: expected: equal '3', but got: '-3'\n[2].Y: expected: equal '6', but got: '-6'"));
-            Assert.That(result.Message, Is.EqualTo("[1].Y: expected: equal '4', but got: '2'\n[2].X: expected: equal '3', but got: '-3'\n[2].Y: expected: equal '6', but got: '-6'"));
+            Assert.That(result.Rows[1].VerificationMessage, Is.EqualTo("[1].Y: expected: equal '4', but got: '2'"));
+            Assert.That(result.Rows[2].VerificationMessage, Is.EqualTo("[2].X: expected: equal '3', but got: '-3'\n[2].Y: expected: equal '6', but got: '-6'"));
+            Assert.That(result.VerificationMessage, Is.EqualTo("[1].Y: expected: equal '4', but got: '2'\n[2].X: expected: equal '3', but got: '-3'\n[2].Y: expected: equal '6', but got: '-6'"));
         }
 
         [Test]
@@ -391,7 +392,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             var table = expected.AsVerifiableTable().SetActual(actual);
             AssertResultColumnsMatchingTable(table);
 
-            var result = table.Result;
+            var result = table.Details;
             Assert.That(result.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Failure));
             Assert.That(result.Rows.Count, Is.EqualTo(3));
 
@@ -417,7 +418,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             var table = expected.AsVerifiableTable().SetActual(actual);
             AssertResultColumnsMatchingTable(table);
 
-            var result = table.Result;
+            var result = table.Details;
             Assert.That(result.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Failure));
             Assert.That(result.Rows.Count, Is.EqualTo(3));
 
@@ -460,7 +461,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
                 .SetActual(actual);
             AssertResultColumnsMatchingTable(table);
 
-            var result = table.Result;
+            var result = table.Details;
             Assert.That(result.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Failure));
             Assert.That(result.Rows.Count, Is.EqualTo(9));
 
@@ -493,7 +494,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
 
             var table = expected.AsVerifiableTable();
             AssertResultColumnsMatchingTable(table);
-            var result = table.SetActual(actual).Result;
+            var result = table.SetActual(actual).Details;
 
             Assert.That(result.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Failure));
             Assert.That(result.Rows.Count, Is.EqualTo(3));
@@ -526,7 +527,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
                 );
 
             AssertResultColumnsMatchingTable(table);
-            var result = table.SetActual(FromJson(actual)).Result;
+            var result = table.SetActual(FromJson(actual)).Details;
 
             Assert.That(result.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Failure));
             Assert.That(result.Rows.Count, Is.EqualTo(3));
@@ -551,7 +552,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             });
             stopwatch.Stop();
 
-            Assert.That(table.Result.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Success));
+            Assert.That(table.Details.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Success));
             Assert.That(stopwatch.ElapsedMilliseconds, Is.LessThan(delay.TotalMilliseconds * expected.Length));
         }
 
@@ -562,7 +563,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             var result = expected
                 .AsVerifiableTable()
                 .SetActual(v => v % 2 == 0 ? v : throw new Exception($"Reason {v}"))
-                .Result;
+                .Details;
 
             Assert.That(result.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Failure));
             Assert.That(result.Rows.Count, Is.EqualTo(3));
@@ -571,9 +572,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
             AssertRow(result.Rows[1], TableRowType.Matching, ParameterVerificationStatus.Success, "Success|2|2|null");
             AssertRow(result.Rows[2], TableRowType.Matching, ParameterVerificationStatus.Failure, "Failure|<none>|3|Item: missing value");
 
-            Assert.That(result.Rows[0].Message, Is.EqualTo("[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value"));
-            Assert.That(result.Rows[2].Message, Is.EqualTo("[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value"));
-            Assert.That(result.Message, Is.EqualTo("[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value\n[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value"));
+            Assert.That(result.Rows[0].VerificationMessage, Is.EqualTo("[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value"));
+            Assert.That(result.Rows[2].VerificationMessage, Is.EqualTo("[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value"));
+            Assert.That(result.VerificationMessage, Is.EqualTo("[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value\n[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value"));
         }
 
         [Test]
@@ -587,7 +588,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
                     await Task.Yield();
                     return v % 2 == 0 ? v : throw new Exception($"Reason {v}");
                 });
-            var result = table.Result;
+            var result = table.Details;
 
             Assert.That(result.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Failure));
             Assert.That(result.Rows.Count, Is.EqualTo(3));
@@ -596,9 +597,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
             AssertRow(result.Rows[1], TableRowType.Matching, ParameterVerificationStatus.Success, "Success|2|2|null");
             AssertRow(result.Rows[2], TableRowType.Matching, ParameterVerificationStatus.Failure, "Failure|<none>|3|Item: missing value");
 
-            Assert.That(result.Rows[0].Message, Is.EqualTo("[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value"));
-            Assert.That(result.Rows[2].Message, Is.EqualTo("[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value"));
-            Assert.That(result.Message, Is.EqualTo("[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value\n[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value"));
+            Assert.That(result.Rows[0].VerificationMessage, Is.EqualTo("[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value"));
+            Assert.That(result.Rows[2].VerificationMessage, Is.EqualTo("[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value"));
+            Assert.That(result.VerificationMessage, Is.EqualTo("[0]: Failed to retrieve row: Reason 1\n[0].Item: missing value\n[2]: Failed to retrieve row: Reason 3\n[2].Item: missing value"));
         }
 
         [Test]
@@ -631,8 +632,8 @@ namespace LightBDD.Framework.UnitTests.Parameters
         {
             var table = Enumerable.Empty<int>().AsVerifiableTable();
             await table.SetActualAsync(() => throw new Exception("foo"));
-            Assert.That(table.Result.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Exception));
-            Assert.That(table.Result.Message, Is.EqualTo("Failed to retrieve rows: foo"));
+            Assert.That(table.Details.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Exception));
+            Assert.That(table.Details.VerificationMessage, Is.EqualTo("Failed to retrieve rows: foo"));
             Assert.That(table.Actual, Is.Empty);
         }
 
@@ -662,7 +663,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             Assert.That(row.Type, Is.EqualTo(rowType));
 
             var actual = row.Values
-                .Select(v => $"{v.VerificationStatus}|{v.Value}|{v.Expectation}|{v.Message ?? "null"}")
+                .Select(v => $"{v.VerificationStatus}|{v.Value}|{v.Expectation}|{v.VerificationMessage ?? "null"}")
                 .ToArray();
             Assert.That(actual, Is.EqualTo(expectedValueDetails));
 
@@ -700,7 +701,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
 
         private static void AssertResultColumnsMatchingTable<T>(VerifiableTable<T> table)
         {
-            Assert.That(table.Result.Columns.Select(c => $"{c.IsKey}|{c.Name}").ToArray(),
+            Assert.That(table.Details.Columns.Select(c => $"{c.IsKey}|{c.Name}").ToArray(),
                 Is.EqualTo(table.Columns.Select(c => $"{c.IsKey}|{c.Name}").ToArray()));
         }
     }

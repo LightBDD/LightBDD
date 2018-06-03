@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters;
+using LightBDD.Core.Results.Parameters.Tabular;
 
 namespace LightBDD.Framework.Reporting.Formatters
 {
@@ -13,7 +14,7 @@ namespace LightBDD.Framework.Reporting.Formatters
         private readonly TextColumn[] _columns;
         private readonly List<TextRow> _rows = new List<TextRow>();
 
-        public TextTableRenderer(ITabularParameterResult table)
+        public TextTableRenderer(ITabularParameterDetails table)
         {
             _columns = table.Columns.Select(c => new TextColumn(c.Name)).ToArray();
             foreach (var row in table.Rows)

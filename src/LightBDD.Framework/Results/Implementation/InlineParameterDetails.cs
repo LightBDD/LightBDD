@@ -4,17 +4,17 @@ using LightBDD.Core.Results.Parameters;
 
 namespace LightBDD.Framework.Results.Implementation
 {
-    internal class InlineParameterResult : IInlineParameterResult
+    internal class InlineParameterDetails : IInlineParameterDetails
     {
-        public InlineParameterResult(string expectation, string value, ParameterVerificationStatus verificationStatus, string message)
+        public InlineParameterDetails(string expectation, string value, ParameterVerificationStatus verificationStatus, string message)
         {
             Expectation = expectation;
             Value = value;
             VerificationStatus = verificationStatus;
-            Message = message;
+            VerificationMessage = message;
         }
 
-        public string Message { get; }
+        public string VerificationMessage { get; }
         public ParameterVerificationStatus VerificationStatus { get; }
         public string Value { get; }
         public string Expectation { get; }

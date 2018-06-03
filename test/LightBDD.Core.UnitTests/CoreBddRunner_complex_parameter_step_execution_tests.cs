@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting.Parameters;
 using LightBDD.Core.Formatting.Values;
@@ -108,9 +109,9 @@ namespace LightBDD.Core.UnitTests
         private void AssertParameter(IParameterResult parameter, string name, ParameterVerificationStatus status, string message)
         {
             Assert.That(parameter.Name, Is.EqualTo(name));
-            Assert.That(parameter.Result, Is.Not.Null);
-            Assert.That(parameter.Result.VerificationStatus, Is.EqualTo(status));
-            Assert.That(parameter.Result.Message, Is.EqualTo(message));
+            Assert.That(parameter.Details, Is.Not.Null);
+            Assert.That(parameter.Details.VerificationStatus, Is.EqualTo(status));
+            Assert.That(parameter.Details.VerificationMessage, Is.EqualTo(message));
         }
 
         private void Step_with_parameters(Complex arg1, Complex arg2, Complex arg3) { }
@@ -123,18 +124,18 @@ namespace LightBDD.Core.UnitTests
             return _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
         }
 
-        private class Complex : IVerifiableParameter
+        private class Complex : IComplexParameter
         {
             public Complex(string expected, string actual, ParameterVerificationStatus status, string message = null)
             {
-                Result = new TestResults.TestInlineParameterResult(expected, actual, status, message);
+                Details = new TestResults.TestInlineParameterDetails(expected, actual, status, message);
             }
 
             public void SetValueFormattingService(IValueFormattingService formattingService)
             {
             }
 
-            public IParameterVerificationResult Result { get; }
+            public IParameterDetails Details { get; }
 
             public static Complex Failed()
             {

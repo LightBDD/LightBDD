@@ -209,20 +209,20 @@ namespace LightBDD.Core.Execution.Implementation
             return result;
         }
 
+        [DebuggerStepThrough]
         private void VerifyParameters()
         {
             var results = new List<IParameterResult>();
             foreach (var argument in _arguments)
             {
-                if (!(argument.Value is IVerifiableParameter verifiable))
-                    continue;
-                results.Add(new ParameterResult(argument.RawName, verifiable.Result));
+                if (argument.Value is IComplexParameter complex)
+                    results.Add(new ParameterResult(argument.RawName, complex.Details));
             }
 
             _result.SetParameters(results);
 
             var errors = results
-                .Where(x => x.Result.VerificationStatus > ParameterVerificationStatus.Success)
+                .Where(x => x.Details.VerificationStatus > ParameterVerificationStatus.Success)
                 .Select(FormatErrorMessage)
                 .ToArray();
 
@@ -235,7 +235,7 @@ namespace LightBDD.Core.Execution.Implementation
         [DebuggerStepThrough]
         private static string FormatErrorMessage(IParameterResult result)
         {
-            return $"Parameter '{result.Name}' verification failed: {result.Result.Message?.Replace("\n", "\n\t") ?? string.Empty}";
+            return $"Parameter '{result.Name}' verification failed: {result.Details.VerificationMessage?.Replace("\n", "\n\t") ?? string.Empty}";
         }
 
         [DebuggerStepThrough]

@@ -1,4 +1,4 @@
-namespace LightBDD.Core.Results.Parameters
+namespace LightBDD.Core.Results.Parameters.Tabular
 {
     /// <summary>
     /// Tabular parameter result table row type.

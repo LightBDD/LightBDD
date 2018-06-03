@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 
-namespace LightBDD.Core.Results.Parameters
+namespace LightBDD.Core.Results.Parameters.Tabular
 {
     /// <summary>
     /// Interface representing tabular parameter result.
     /// </summary>
-    public interface ITabularParameterResult : IParameterVerificationResult
+    public interface ITabularParameterDetails : IParameterDetails
     {
         /// <summary>
         /// Returns list of table columns.

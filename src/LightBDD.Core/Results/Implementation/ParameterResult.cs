@@ -5,12 +5,12 @@ namespace LightBDD.Core.Results.Implementation
     internal class ParameterResult : IParameterResult
     {
         public string Name { get; }
-        public IParameterVerificationResult Result { get; }
+        public IParameterDetails Details { get; }
 
-        public ParameterResult(string name, IParameterVerificationResult result)
+        public ParameterResult(string name, IParameterDetails result)
         {
             Name = name;
-            Result = result;
+            Details = result;
         }
     }
 }

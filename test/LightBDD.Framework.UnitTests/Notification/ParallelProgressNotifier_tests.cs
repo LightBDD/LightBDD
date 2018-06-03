@@ -9,6 +9,7 @@ using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters;
+using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.ExecutionContext;
 using LightBDD.Framework.Notification;
 using LightBDD.UnitTests.Helpers;
@@ -59,30 +60,30 @@ namespace LightBDD.Framework.UnitTests.Notification
             stepResult.Parameters = new IParameterResult[]
             {
                 new TestResults.TestParameterResult("table",
-                    TestResults.CreateTabularParameterResult()
+                    TestResults.CreateTabularParameterDetails()
                         .WithKeyColumns("Key")
                         .WithValueColumns("Value1", "Value2")
                         .AddRow(TableRowType.Matching,
                             ParameterVerificationStatus.Success,
-                            TestResults.CreateTabularParameterValue("1"),
-                            TestResults.CreateTabularParameterValue("abc"),
-                            TestResults.CreateTabularParameterValue("some value"))
+                            TestResults.CreateValueResult("1"),
+                            TestResults.CreateValueResult("abc"),
+                            TestResults.CreateValueResult("some value"))
                         .AddRow(TableRowType.Matching,
                             ParameterVerificationStatus.Failure,
-                            TestResults.CreateTabularParameterValue("2"),
-                            TestResults.CreateTabularParameterValue("def"),
-                            TestResults.CreateTabularParameterValue("value", "val", ParameterVerificationStatus.Failure))
+                            TestResults.CreateValueResult("2"),
+                            TestResults.CreateValueResult("def"),
+                            TestResults.CreateValueResult("value", "val", ParameterVerificationStatus.Failure))
                         .AddRow(TableRowType.Missing,
                             ParameterVerificationStatus.Failure,
-                            TestResults.CreateTabularParameterValue("3"),
-                            TestResults.CreateTabularParameterValue("XXX", "<null>", ParameterVerificationStatus.NotProvided),
-                            TestResults.CreateTabularParameterValue("YYY", "<null>", ParameterVerificationStatus.NotProvided))
+                            TestResults.CreateValueResult("3"),
+                            TestResults.CreateValueResult("XXX", "<null>", ParameterVerificationStatus.NotProvided),
+                            TestResults.CreateValueResult("YYY", "<null>", ParameterVerificationStatus.NotProvided))
                         .AddRow(TableRowType.Surplus,
                             ParameterVerificationStatus.Failure,
-                            TestResults.CreateTabularParameterValue("4"),
-                            TestResults.CreateTabularParameterValue("<null>", "XXX",
+                            TestResults.CreateValueResult("4"),
+                            TestResults.CreateValueResult("<null>", "XXX",
                                 ParameterVerificationStatus.Failure),
-                            TestResults.CreateTabularParameterValue("<null>", "YYY",
+                            TestResults.CreateValueResult("<null>", "YYY",
                                 ParameterVerificationStatus.Failure))
                 )
             };

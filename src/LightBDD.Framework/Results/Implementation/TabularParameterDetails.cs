@@ -3,29 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters;
+using LightBDD.Core.Results.Parameters.Tabular;
 
 namespace LightBDD.Framework.Results.Implementation
 {
-    internal class TabularParameterResult : ITabularParameterResult
+    internal class TabularParameterDetails : ITabularParameterDetails
     {
-        public TabularParameterResult(IEnumerable<ITabularParameterColumn> columns, IEnumerable<ITabularParameterRow> rows, ParameterVerificationStatus verificationStatus, Exception tableException = null)
+        public TabularParameterDetails(IEnumerable<ITabularParameterColumn> columns, IEnumerable<ITabularParameterRow> rows, ParameterVerificationStatus verificationStatus, Exception tableException = null)
             : this(columns, rows, tableException)
         {
             VerificationStatus = verificationStatus;
         }
 
-        public TabularParameterResult(IEnumerable<ITabularParameterColumn> columns, IEnumerable<ITabularParameterRow> rows, Exception tableException = null)
+        public TabularParameterDetails(IEnumerable<ITabularParameterColumn> columns, IEnumerable<ITabularParameterRow> rows, Exception tableException = null)
         {
             Columns = columns.ToArray();
             Rows = rows.ToArray();
             VerificationStatus = Rows.Any() ? Rows.Max(x => x.VerificationStatus) : ParameterVerificationStatus.NotApplicable;
-            Message = CollectMessages(tableException);
+            VerificationMessage = CollectMessages(tableException);
         }
 
         private string CollectMessages(Exception tableException)
         {
             var messages = Enumerable.Repeat(tableException?.Message, 1)
-                .Concat(Rows.Select(x => x.Message))
+                .Concat(Rows.Select(x => x.VerificationMessage))
                 .Where(msg => !string.IsNullOrWhiteSpace(msg));
 
             var message = string.Join("\n", messages);
@@ -34,7 +35,7 @@ namespace LightBDD.Framework.Results.Implementation
                 : message;
         }
 
-        public string Message { get; }
+        public string VerificationMessage { get; }
         public ParameterVerificationStatus VerificationStatus { get; }
         public IReadOnlyList<ITabularParameterColumn> Columns { get; }
         public IReadOnlyList<ITabularParameterRow> Rows { get; }

@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Formatting.Parameters;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Results.Parameters;
+using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Formatting.Values;
 using LightBDD.Framework.Results.Implementation;
 
@@ -11,7 +13,7 @@ namespace LightBDD.Framework.Parameters
 {
     //TODO: consider moving to root
     //TODO: consider introducing IComplexParameter (that won't necessarily is verifiable)
-    public class Table<TRow> : IVerifiableParameter, ISelfFormattable, IReadOnlyList<TRow>
+    public class Table<TRow> : IComplexParameter, ISelfFormattable, IReadOnlyList<TRow>
     {
         private readonly IReadOnlyList<TRow> _rows;
         private readonly TableColumn[] _columns;
@@ -23,12 +25,12 @@ namespace LightBDD.Framework.Parameters
             _columns = columns.ToArray();
         }
 
-        void IVerifiableParameter.SetValueFormattingService(IValueFormattingService formattingService)
+        void IComplexParameter.SetValueFormattingService(IValueFormattingService formattingService)
         {
             _formattingService = formattingService;
         }
 
-        IParameterVerificationResult IVerifiableParameter.Result => new TabularParameterResult(GetColumns(), GetRows());
+        IParameterDetails IComplexParameter.Details => new TabularParameterDetails(GetColumns(), GetRows());
 
         private IEnumerable<ITabularParameterRow> GetRows()
         {

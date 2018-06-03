@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters;
+using LightBDD.Core.Results.Parameters.Tabular;
 
 namespace LightBDD.Framework.Results.Implementation
 {
@@ -20,7 +21,7 @@ namespace LightBDD.Framework.Results.Implementation
             Type = type;
             Values = values.ToArray();
             VerificationStatus = CollectVerificationStatus();
-            Message = CaptureMessage(rowException, rowId);
+            VerificationMessage = CaptureMessage(rowException, rowId);
         }
 
         private string CaptureMessage(Exception rowException, int rowId)
@@ -31,8 +32,8 @@ namespace LightBDD.Framework.Results.Implementation
                 errors.Add($"[{rowId}]: Failed to retrieve row: {rowException.Message}");
 
             errors.AddRange(Values
-                .Where(t => !string.IsNullOrWhiteSpace(t.Message))
-                .Select(t => $"[{rowId}].{t.Message}"));
+                .Where(t => !string.IsNullOrWhiteSpace(t.VerificationMessage))
+                .Select(t => $"[{rowId}].{t.VerificationMessage}"));
 
             return errors.Any()
                 ? string.Join("\n", errors)
@@ -55,7 +56,7 @@ namespace LightBDD.Framework.Results.Implementation
 
         public TableRowType Type { get; }
         public IReadOnlyList<IValueResult> Values { get; }
-        public string Message { get; }
+        public string VerificationMessage { get; }
         public ParameterVerificationStatus VerificationStatus { get; }
     }
 }

@@ -1,12 +1,12 @@
 ﻿using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Results.Parameters;
 
-namespace LightBDD.Core.Formatting.Parameters
+namespace LightBDD.Core.Execution
 {
     /// <summary>
     /// Interface describing a method parameter that is verifiable.
     /// </summary>
-    public interface IVerifiableParameter
+    public interface IComplexParameter
     {
         /// <summary>
         /// Updates parameter with <see cref="IValueFormattingService"/> that should be used to format expected/actual values.
@@ -15,8 +15,8 @@ namespace LightBDD.Core.Formatting.Parameters
         void SetValueFormattingService(IValueFormattingService formattingService);
 
         /// <summary>
-        /// Returns parameter verification result.
+        /// Returns parameter details.
         /// </summary>
-        IParameterVerificationResult Result { get; }
+        IParameterDetails Details { get; }
     }
 }

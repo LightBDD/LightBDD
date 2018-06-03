@@ -6,6 +6,7 @@ using System.Text;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters;
+using LightBDD.Core.Results.Parameters.Tabular;
 
 namespace LightBDD.Framework.Reporting.Formatters
 {
@@ -156,7 +157,7 @@ namespace LightBDD.Framework.Reporting.Formatters
 
         private static void FormatParameter(TextWriter writer, IParameterResult parameterResult, string stepIndent)
         {
-            if (parameterResult.Result is ITabularParameterResult table)
+            if (parameterResult.Details is ITabularParameterDetails table)
             {
                 writer.Write(stepIndent);
                 writer.Write(parameterResult.Name);
