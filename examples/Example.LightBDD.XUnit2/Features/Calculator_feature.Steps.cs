@@ -14,17 +14,17 @@ namespace Example.LightBDD.XUnit2.Features
             _calculator = new Calculator();
         }
 
-        private void Then_adding_X_to_Y_should_give_RESULT(int x, int y, Expected<int> result)
+        private void Then_adding_X_to_Y_should_give_RESULT(int x, int y, Verifiable<int> result)
         {
             result.SetActual(() => _calculator.Add(x, y));
         }
 
-        private void Then_dividing_X_by_Y_should_give_RESULT(int x, int y, Expected<int> result)
+        private void Then_dividing_X_by_Y_should_give_RESULT(int x, int y, Verifiable<int> result)
         {
             result.SetActual(() => _calculator.Divide(x, y));
         }
 
-        private void Then_multiplying_X_by_Y_should_give_RESULT(int x, int y, Expected<int> result)
+        private void Then_multiplying_X_by_Y_should_give_RESULT(int x, int y, Verifiable<int> result)
         {
             if (x < 0 || y < 0)
                 StepExecution.Current.IgnoreScenario("Negative numbers are not supported yet");
