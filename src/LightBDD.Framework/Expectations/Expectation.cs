@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using LightBDD.Core.Formatting.Values;
@@ -11,6 +12,7 @@ namespace LightBDD.Framework.Expectations
     /// Base class that should be used for all <see cref="IExpectation{T}"/> implementations.
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    [DebuggerStepThrough]
     public abstract class Expectation<T> : IExpectation<T>
     {
         /// <inheritdoc />

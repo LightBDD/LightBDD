@@ -11,22 +11,22 @@ using RandomTestValues;
 namespace LightBDD.Framework.UnitTests.Parameters
 {
     [TestFixture]
-    public class Expected_tests
+    public class Verifiable_tests
     {
         [Test]
         public void It_should_initialize_instance_with_implicit_cast()
         {
             var value = RandomValue.Int();
 
-            Expected<int> expected = value;
-            Assert.That(expected.SetActual(value).Status, Is.EqualTo(ParameterVerificationStatus.Success));
-            Assert.That(expected.Expectation.ToString(), Is.EqualTo($"equal '{value}'"));
+            Verifiable<int> verifiable = value;
+            Assert.That(verifiable.SetActual(value).Status, Is.EqualTo(ParameterVerificationStatus.Success));
+            Assert.That(verifiable.Expectation.ToString(), Is.EqualTo($"equals '{value}'"));
         }
 
         [Test]
         public void It_should_initialize_instance_with_NotProvided_status()
         {
-            Expected<int> expectation = RandomValue.Int();
+            Verifiable<int> expectation = RandomValue.Int();
             Assert.That(expectation.Status, Is.EqualTo(ParameterVerificationStatus.NotProvided));
             var ex = Assert.Throws<InvalidOperationException>(() => expectation.GetActual());
             Assert.That(ex.Message, Is.EqualTo("Actual value is not set"));
@@ -36,16 +36,16 @@ namespace LightBDD.Framework.UnitTests.Parameters
         public void It_should_initialize_instance_with_default_formatting()
         {
             var value = RandomValue.Int();
-            Expected<int> expectation = value;
+            Verifiable<int> expectation = value;
 
-            Assert.That(expectation.ToString(), Is.EqualTo(string.Format(CultureInfo.InvariantCulture, "expected: equal '{0}'", value)));
+            Assert.That(expectation.ToString(), Is.EqualTo(string.Format(CultureInfo.InvariantCulture, "expected: equals '{0}'", value)));
         }
 
         [Test]
         public void SetActual_should_set_actual_value()
         {
             var actualValue = RandomValue.Int();
-            Expected<int> expectation = RandomValue.Int();
+            Verifiable<int> expectation = RandomValue.Int();
             expectation.SetActual(actualValue);
 
             Assert.That(expectation.Status, Is.Not.EqualTo(ParameterVerificationStatus.NotProvided));
@@ -54,10 +54,10 @@ namespace LightBDD.Framework.UnitTests.Parameters
 
         [Test]
         [TestCase(55, 55, true, "55")]
-        [TestCase(55, 32, false, "expected: equal '55', but got: '32'")]
+        [TestCase(55, 32, false, "expected: equals '55', but got: '32'")]
         public void SetActual_should_verify_expectation_and_update_formatting(int expected, int actual, bool shouldMatch, string message)
         {
-            Expected<int> expectation = expected;
+            Verifiable<int> expectation = expected;
             expectation.SetActual(() => actual);
 
             Assert.That(expectation.Status, Is.EqualTo(shouldMatch ? ParameterVerificationStatus.Success : ParameterVerificationStatus.Failure));
@@ -66,10 +66,10 @@ namespace LightBDD.Framework.UnitTests.Parameters
 
         [Test]
         [TestCase(55, 55, true, "55")]
-        [TestCase(55, 32, false, "expected: equal '55', but got: '32'")]
+        [TestCase(55, 32, false, "expected: equals '55', but got: '32'")]
         public async Task SetActualAsync_should_verify_expectation_and_update_formatting(int expected, int actual, bool shouldMatch, string message)
         {
-            Expected<int> expectation = expected;
+            Verifiable<int> expectation = expected;
             await expectation.SetActualAsync(async () =>
             {
                 await Task.Yield();
@@ -85,11 +85,11 @@ namespace LightBDD.Framework.UnitTests.Parameters
         {
             var expected = RandomValue.Int();
 
-            Expected<int> expectation = expected;
+            Verifiable<int> expectation = expected;
             expectation.SetActual(() => throw new DivideByZeroException());
 
             Assert.That(expectation.Status, Is.EqualTo(ParameterVerificationStatus.Exception));
-            Assert.That(expectation.ToString(), Is.EqualTo($"expected: equal '{expected}', but got: '<{nameof(DivideByZeroException)}>'"));
+            Assert.That(expectation.ToString(), Is.EqualTo($"expected: equals '{expected}', but got: '<{nameof(DivideByZeroException)}>'"));
             Assert.Throws<DivideByZeroException>(() => expectation.GetActual());
         }
 
@@ -98,18 +98,18 @@ namespace LightBDD.Framework.UnitTests.Parameters
         {
             var expected = RandomValue.Int();
 
-            Expected<int> expectation = expected;
+            Verifiable<int> expectation = expected;
             await expectation.SetActualAsync(() => throw new DivideByZeroException());
 
             Assert.That(expectation.Status, Is.EqualTo(ParameterVerificationStatus.Exception));
-            Assert.That(expectation.ToString(), Is.EqualTo($"expected: equal '{expected}', but got: '<{nameof(DivideByZeroException)}>'"));
+            Assert.That(expectation.ToString(), Is.EqualTo($"expected: equals '{expected}', but got: '<{nameof(DivideByZeroException)}>'"));
             Assert.Throws<DivideByZeroException>(() => expectation.GetActual());
         }
 
         [Test]
         public void SetActual_should_be_allowed_once()
         {
-            Expected<int> expectation = RandomValue.Int();
+            Verifiable<int> expectation = RandomValue.Int();
             expectation.SetActual(() => RandomValue.Int());
             var ex = Assert.Throws<InvalidOperationException>(() => expectation.SetActual(() => RandomValue.Int()));
             Assert.That(ex.Message, Is.EqualTo("Actual value has been already specified"));
@@ -120,7 +120,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         [Test]
         public void SetActualAsync_should_be_allowed_once()
         {
-            Expected<int> expectation = RandomValue.Int();
+            Verifiable<int> expectation = RandomValue.Int();
             expectation.SetActual(() => RandomValue.Int());
             var ex = Assert.ThrowsAsync<InvalidOperationException>(() => expectation.SetActualAsync(() => Task.FromResult(RandomValue.Int())));
             Assert.That(ex.Message, Is.EqualTo("Actual value has been already specified"));
@@ -130,12 +130,12 @@ namespace LightBDD.Framework.UnitTests.Parameters
         public void SetValueFormattingService_should_allow_using_custom_formatter()
         {
             var expected = RandomValue.Int();
-            var actualValue = expected * 2;
-            Expected<int> expectation = expected;
+            var actualValue = expected + 1;
+            Verifiable<int> expectation = expected;
             ((IComplexParameter)expectation).SetValueFormattingService(new ValueFormattingServiceStub(CultureInfo.InvariantCulture, "--{0}--"));
             expectation.SetActual(() => actualValue);
 
-            Assert.That(expectation.ToString(), Is.EqualTo($"expected: equal '--{expected}--', but got: '--{actualValue}--'"));
+            Assert.That(expectation.ToString(), Is.EqualTo($"expected: equals '--{expected}--', but got: '--{actualValue}--'"));
         }
     }
 }

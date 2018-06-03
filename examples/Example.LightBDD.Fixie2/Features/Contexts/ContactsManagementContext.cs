@@ -104,7 +104,7 @@ namespace Example.LightBDD.Fixie2.Features.Contexts
             _searchResults = _contactBook.SearchByPhoneStartingWith(with).ToArray();
         }
 
-        public void Then_the_result_should_contain_name_with_phone_and_email(string name, Expected<string> phone, Expected<string> email)
+        public void Then_the_result_should_contain_name_with_phone_and_email(string name, Verifiable<string> phone, Verifiable<string> email)
         {
             var contact = _searchResults.First(x => x.Name == name);
             phone.SetActual(contact.PhoneNumber);

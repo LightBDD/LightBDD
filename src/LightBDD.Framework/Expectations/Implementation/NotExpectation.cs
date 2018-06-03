@@ -1,7 +1,9 @@
-﻿using LightBDD.Core.Formatting.Values;
+﻿using System.Diagnostics;
+using LightBDD.Core.Formatting.Values;
 
 namespace LightBDD.Framework.Expectations.Implementation
 {
+    [DebuggerStepThrough]
     internal class NotExpectation<T> : Expectation<T>
     {
         private readonly IExpectation<T> _expectation;

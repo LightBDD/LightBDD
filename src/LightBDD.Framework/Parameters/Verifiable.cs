@@ -16,9 +16,10 @@ namespace LightBDD.Framework.Parameters
     /// Type allowing to specify verifiable parameters for LightBDD steps, which outcome is inlined in the step name.
     /// It is initialized with expectation expression that has to be fulfilled upon validation in the step method body, with one of <see cref="SetActual(T)"/>, <see cref="SetActual(System.Func{T})"/> or <see cref="SetActualAsync"/> method call.
     /// In contrary to regular assertions, it is possible to evaluate all the verifiable parameters, as mentioned methods does not throw upon failed validation, but their outcome is collected after step method is finished.<br/>
+    /// 
     /// Example:
     /// <example>
-    /// void Then_user_should_have_login_and_email(Expected&lt;string&gt; login, Expected&lt;string&gt; email)
+    /// void Then_user_should_have_login_and_email(Verifiable&lt;string&gt; login, Verifiable&lt;string&gt; email)
     /// {
     ///     login.SetActual(_user.Login);
     ///     email.SetActual(_user.Email);
@@ -29,7 +30,7 @@ namespace LightBDD.Framework.Parameters
     /// </summary>
     /// <typeparam name="T">Type of the expected parameter</typeparam>
     [DebuggerStepThrough]
-    public sealed class Expected<T> : IComplexParameter
+    public sealed class Verifiable<T> : IComplexParameter
     {
         private IValueFormattingService _formattingService = ValueFormattingServices.Current;
         private string _actualText;
@@ -76,7 +77,7 @@ namespace LightBDD.Framework.Parameters
         /// Initializes the instance with the provided expectation.
         /// </summary>
         /// <param name="expectation">Expectation.</param>
-        public Expected(IExpectation<T> expectation)
+        public Verifiable(IExpectation<T> expectation)
         {
             Expectation = expectation;
         }
@@ -90,7 +91,7 @@ namespace LightBDD.Framework.Parameters
         /// <param name="value">Value to set.</param>
         /// <returns>Self.</returns>
         /// <exception cref="InvalidOperationException">Thrown when actual value is already set.</exception>
-        public Expected<T> SetActual(T value)
+        public Verifiable<T> SetActual(T value)
         {
             if (Status != ParameterVerificationStatus.NotProvided)
                 throw new InvalidOperationException("Actual value has been already specified");
@@ -111,7 +112,7 @@ namespace LightBDD.Framework.Parameters
         /// <param name="valueFn">Function providing actual value.</param>
         /// <returns>Self.</returns>
         /// <exception cref="InvalidOperationException">Thrown when actual value is already set.</exception>
-        public Expected<T> SetActual(Func<T> valueFn)
+        public Verifiable<T> SetActual(Func<T> valueFn)
         {
             if (Status != ParameterVerificationStatus.NotProvided)
                 throw new InvalidOperationException("Actual value has been already specified");
@@ -138,7 +139,7 @@ namespace LightBDD.Framework.Parameters
         /// <param name="valueFn">Function providing actual value.</param>
         /// <returns>Self.</returns>
         /// <exception cref="InvalidOperationException">Thrown when actual value is already set.</exception>
-        public async Task<Expected<T>> SetActualAsync(Func<Task<T>> valueFn)
+        public async Task<Verifiable<T>> SetActualAsync(Func<Task<T>> valueFn)
         {
             if (Status != ParameterVerificationStatus.NotProvided)
                 throw new InvalidOperationException("Actual value has been already specified");
@@ -174,7 +175,7 @@ namespace LightBDD.Framework.Parameters
         /// Initializes the instance with expectation that the actual value should equal to <paramref name="expected"/> value.
         /// </summary>
         /// <param name="expected"></param>
-        public static implicit operator Expected<T>(T expected)
+        public static implicit operator Verifiable<T>(T expected)
         {
             return Expect.To.Equal(expected);
         }
@@ -183,9 +184,9 @@ namespace LightBDD.Framework.Parameters
         /// Initializes the instance with provided expectation.
         /// </summary>
         /// <param name="expectation"></param>
-        public static implicit operator Expected<T>(Expectation<T> expectation)
+        public static implicit operator Verifiable<T>(Expectation<T> expectation)
         {
-            return new Expected<T>(expectation);
+            return new Verifiable<T>(expectation);
         }
 
         /// <summary>

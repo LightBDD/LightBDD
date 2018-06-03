@@ -18,7 +18,7 @@ namespace LightBDD.Framework.Parameters
         /// </summary>
         /// <param name="items">Table rows.</param>
         /// <returns>Table</returns>
-        public static Table<T> AsTable<T>(this IEnumerable<T> items)
+        public static Table<T> ToTable<T>(this IEnumerable<T> items)
         {
             var rows = items.ToArray();
             var columns = TableColumnProvider.InferColumns(rows).Select(TableColumn.FromColumnInfo);
@@ -30,7 +30,7 @@ namespace LightBDD.Framework.Parameters
         /// </summary>
         /// <param name="items">Table rows.</param>
         /// <returns>Table</returns>
-        public static Table<KeyValuePair<TKey, TValue>> AsTable<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> items)
+        public static Table<KeyValuePair<TKey, TValue>> ToTable<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> items)
         {
             var rows = items.OrderBy(x => x.Key).ToArray();
             var values = rows.Select(x => x.Value).ToArray();
@@ -47,7 +47,7 @@ namespace LightBDD.Framework.Parameters
         /// <param name="items">Table rows.</param>
         /// <param name="tableDefinitionBuilder">Table definition builder.</param>
         /// <returns>Table</returns>
-        public static Table<T> AsTable<T>(this IEnumerable<T> items, Action<ITableBuilder<T>> tableDefinitionBuilder)
+        public static Table<T> ToTable<T>(this IEnumerable<T> items, Action<ITableBuilder<T>> tableDefinitionBuilder)
         {
             var builder = new TableBuilder<T>();
             tableDefinitionBuilder(builder);
@@ -62,7 +62,7 @@ namespace LightBDD.Framework.Parameters
         /// </summary>
         /// <param name="items">Table rows.</param>
         /// <returns>Verifiable table</returns>
-        public static VerifiableTable<T> AsVerifiableTable<T>(this IEnumerable<T> items)
+        public static VerifiableTable<T> ToVerifiableTable<T>(this IEnumerable<T> items)
         {
             var rows = items.ToArray();
             var columns = TableColumnProvider.InferColumns(rows, true).Select(VerifiableTableColumn.FromColumnInfo);
@@ -75,7 +75,7 @@ namespace LightBDD.Framework.Parameters
         /// <param name="items">Table rows.</param>
         /// <param name="tableDefinitionBuilder">Table definition builder.</param>
         /// <returns>Verifiable table</returns>
-        public static VerifiableTable<T> AsVerifiableTable<T>(this IEnumerable<T> items, Action<IVerifiableTableBuilder<T>> tableDefinitionBuilder)
+        public static VerifiableTable<T> ToVerifiableTable<T>(this IEnumerable<T> items, Action<IVerifiableTableBuilder<T>> tableDefinitionBuilder)
         {
             var builder = new VerifiableTableBuilder<T>();
             tableDefinitionBuilder(builder);
@@ -90,7 +90,7 @@ namespace LightBDD.Framework.Parameters
         /// </summary>
         /// <param name="items">Table rows.</param>
         /// <returns>Verifiable table</returns>
-        public static VerifiableTable<KeyValuePair<TKey, TValue>> AsVerifiableTable<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> items)
+        public static VerifiableTable<KeyValuePair<TKey, TValue>> ToVerifiableTable<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> items)
         {
             var rows = items.OrderBy(x => x.Key).ToArray();
             var values = rows.Select(x => x.Value).ToArray();

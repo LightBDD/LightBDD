@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Globalization;
 
 namespace LightBDD.Core.Formatting.Values
@@ -5,6 +6,7 @@ namespace LightBDD.Core.Formatting.Values
     /// <summary>
     /// Default implementation of <see cref="IValueFormatter"/> using <see cref="string.Format(System.IFormatProvider,string,object[])"/> to format provided value.
     /// </summary>
+    [DebuggerStepThrough]
     public class DefaultValueFormatter : IValueFormatter
     {
         private DefaultValueFormatter()

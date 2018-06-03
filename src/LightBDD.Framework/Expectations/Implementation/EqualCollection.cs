@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using LightBDD.Core.Formatting.Values;
 
 namespace LightBDD.Framework.Expectations.Implementation
 {
+    [DebuggerStepThrough]
     internal class EqualCollection<T> : Expectation<IEnumerable<T>>
     {
         private readonly T[] _expected;
@@ -46,7 +48,7 @@ namespace LightBDD.Framework.Expectations.Implementation
 
         public override string Format(IValueFormattingService formattingService)
         {
-            return $"equal collection '{formattingService.FormatValue(_expected)}'";
+            return $"equals collection '{formattingService.FormatValue(_expected)}'";
         }
     }
 }

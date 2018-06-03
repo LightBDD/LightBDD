@@ -12,17 +12,17 @@ namespace LightBDD.Framework.UnitTests.Expectations
         protected override IEnumerable<IExpectationScenario> GetScenarios()
         {
             yield return new ExpectationScenario<IEnumerable<string>>(
-                    "equal collection 'banana, apple'",
+                    "equals collection 'banana, apple'",
                     x => x.EqualCollection("banana", "apple"))
                 .WithMatchingValues(new[] { "banana", "apple" })
-                .WithNotMatchingValue(null, "expected: equal collection 'banana, apple', but got: '<null>'")
-                .WithNotMatchingValue(new[] { "banana", "Apple" }, "expected: equal collection 'banana, apple', but got: 'banana, Apple'\n\t[1]: expected: 'apple', but got: 'Apple'")
-                .WithNotMatchingValue(new[] { "apple", "banana" }, "expected: equal collection 'banana, apple', but got: 'apple, banana'\n\t[0]: expected: 'banana', but got: 'apple'\n\t[1]: expected: 'apple', but got: 'banana'")
-                .WithNotMatchingValue(Enumerable.Empty<string>(), "expected: equal collection 'banana, apple', but got: ''\n\texpected collection of 2 item(s), but got one of 0 item(s)\n\t[0]: missing: 'banana'\n\t[1]: missing: 'apple'")
-                .WithNotMatchingValue(new[] { "banana", "pear", "orange" }, "expected: equal collection 'banana, apple', but got: 'banana, pear, orange'\n\texpected collection of 2 item(s), but got one of 3 item(s)\n\t[1]: expected: 'apple', but got: 'pear'\n\t[2]: surplus: 'orange'");
+                .WithNotMatchingValue(null, "expected: equals collection 'banana, apple', but got: '<null>'")
+                .WithNotMatchingValue(new[] { "banana", "Apple" }, "expected: equals collection 'banana, apple', but got: 'banana, Apple'\n\t[1]: expected: 'apple', but got: 'Apple'")
+                .WithNotMatchingValue(new[] { "apple", "banana" }, "expected: equals collection 'banana, apple', but got: 'apple, banana'\n\t[0]: expected: 'banana', but got: 'apple'\n\t[1]: expected: 'apple', but got: 'banana'")
+                .WithNotMatchingValue(Enumerable.Empty<string>(), "expected: equals collection 'banana, apple', but got: ''\n\texpected collection of 2 item(s), but got one of 0 item(s)\n\t[0]: missing: 'banana'\n\t[1]: missing: 'apple'")
+                .WithNotMatchingValue(new[] { "banana", "pear", "orange" }, "expected: equals collection 'banana, apple', but got: 'banana, pear, orange'\n\texpected collection of 2 item(s), but got one of 3 item(s)\n\t[1]: expected: 'apple', but got: 'pear'\n\t[2]: surplus: 'orange'");
 
             yield return new ExpectationScenario<IEnumerable<int>>(
-                    "equal collection '5, 4, -3'",
+                    "equals collection '5, 4, -3'",
                     x => x.EqualCollection(5, 4, -3))
                 .WithMatchingValues(new[] {5, 4, -3},new List<int>{5,4,-3});
         }

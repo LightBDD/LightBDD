@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using LightBDD.Core.Formatting.Values;
 
 namespace LightBDD.Framework.Expectations.Implementation
 {
-    internal class AnyExpectation<TValue> : Expectation<IEnumerable<TValue>>
+    [DebuggerStepThrough]
+    internal class AnyItemExpectation<TValue> : Expectation<IEnumerable<TValue>>
     {
         private readonly IExpectation<TValue> _itemExpectation;
 
-        public AnyExpectation(IExpectation<TValue> itemExpectation)
+        public AnyItemExpectation(IExpectation<TValue> itemExpectation)
         {
             _itemExpectation = itemExpectation;
         }
@@ -30,7 +32,7 @@ namespace LightBDD.Framework.Expectations.Implementation
 
         public override string Format(IValueFormattingService formattingService)
         {
-            return "any " + _itemExpectation.Format(formattingService);
+            return "any item " + _itemExpectation.Format(formattingService);
         }
     }
 }
