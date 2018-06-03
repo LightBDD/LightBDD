@@ -28,7 +28,6 @@ namespace LightBDD.Framework.Parameters
     /// </example>
     /// </summary>
     /// <typeparam name="T">Type of the expected parameter</typeparam>
-    //TODO: consider renaming, consider moving to root
     [DebuggerStepThrough]
     public sealed class Expected<T> : IComplexParameter
     {
