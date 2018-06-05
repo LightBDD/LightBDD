@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.Execution.Dependencies;
+using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Execution.Implementation;
 using LightBDD.Core.Metadata;
@@ -16,27 +18,33 @@ namespace LightBDD.Core.Execution.Implementation
     internal class RunnableScenario : IScenario
     {
         private readonly ScenarioInfo _info;
-        private readonly Func<DecoratingExecutor, object, RunnableStep[]> _stepsProvider;
-        private readonly IContextProvider _contextProvider;
+        private readonly Func<DecoratingExecutor, object, IDependencyContainer, RunnableStep[]> _stepsProvider;
+        private readonly ExecutionContextDescriptor _contextDescriptor;
         private readonly IScenarioProgressNotifier _progressNotifier;
         private readonly DecoratingExecutor _decoratingExecutor;
         private readonly IEnumerable<IScenarioDecorator> _scenarioDecorators;
         private readonly ExceptionProcessor _exceptionProcessor;
+        private readonly IDependencyContainer _container;
         private readonly ScenarioResult _result;
         private RunnableStep[] _preparedSteps = new RunnableStep[0];
         private object _scenarioContext;
         private Func<Exception, bool> _shouldAbortSubStepExecutionFn = ex => true;
+        private IDependencyContainer _scope;
 
         [DebuggerStepThrough]
-        public RunnableScenario(ScenarioInfo scenario, Func<DecoratingExecutor, object, RunnableStep[]> stepsProvider, IContextProvider contextProvider, IScenarioProgressNotifier progressNotifier, DecoratingExecutor decoratingExecutor, IEnumerable<IScenarioDecorator> scenarioDecorators, ExceptionProcessor exceptionProcessor)
+        public RunnableScenario(ScenarioInfo scenario, Func<DecoratingExecutor, object, IDependencyContainer, RunnableStep[]> stepsProvider,
+            ExecutionContextDescriptor contextDescriptor, IScenarioProgressNotifier progressNotifier,
+            DecoratingExecutor decoratingExecutor, IEnumerable<IScenarioDecorator> scenarioDecorators,
+            ExceptionProcessor exceptionProcessor, IDependencyContainer container)
         {
             _info = scenario;
             _stepsProvider = stepsProvider;
-            _contextProvider = contextProvider;
+            _contextDescriptor = contextDescriptor;
             _progressNotifier = progressNotifier;
             _decoratingExecutor = decoratingExecutor;
             _scenarioDecorators = scenarioDecorators;
             _exceptionProcessor = exceptionProcessor;
+            _container = container;
             _result = new ScenarioResult(_info);
         }
 
@@ -63,10 +71,23 @@ namespace LightBDD.Core.Execution.Implementation
         }
 
         [DebuggerStepThrough]
-        private void InitializeScenario()
+        private async Task InitializeScenarioAsync()
         {
-            _scenarioContext = CreateExecutionContext();
+            _scope = CreateContainerScope();
+            _scenarioContext = await CreateExecutionContextAsync();
             _preparedSteps = PrepareSteps();
+        }
+
+        private IDependencyContainer CreateContainerScope()
+        {
+            try
+            {
+                return _container.BeginScope();
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"Container scope initialization failed: {e.Message}", e);
+            }
         }
 
         [DebuggerStepThrough]
@@ -77,7 +98,7 @@ namespace LightBDD.Core.Execution.Implementation
             var watch = ExecutionTimeWatch.StartNew();
             try
             {
-                InitializeScenario();
+                await InitializeScenarioAsync();
                 await _decoratingExecutor.ExecuteScenarioAsync(this, RunScenarioAsync, _scenarioDecorators);
             }
             catch (StepExecutionException ex)
@@ -100,7 +121,7 @@ namespace LightBDD.Core.Execution.Implementation
             }
             finally
             {
-                DisposeContext(exceptionCollector);
+                DisposeScope(exceptionCollector);
                 watch.Stop();
 
                 _result.UpdateResult(
@@ -114,11 +135,11 @@ namespace LightBDD.Core.Execution.Implementation
         }
 
         [DebuggerStepThrough]
-        private void DisposeContext(ExceptionCollector exceptionCollector)
+        private void DisposeScope(ExceptionCollector exceptionCollector)
         {
             try
             {
-                _contextProvider.Dispose();
+                _scope.Dispose();
             }
             catch (Exception exception)
             {
@@ -144,7 +165,7 @@ namespace LightBDD.Core.Execution.Implementation
         {
             try
             {
-                return _stepsProvider.Invoke(_decoratingExecutor, _scenarioContext);
+                return _stepsProvider.Invoke(_decoratingExecutor, _scenarioContext, _scope);
             }
             catch (Exception e)
             {
@@ -153,11 +174,11 @@ namespace LightBDD.Core.Execution.Implementation
         }
 
         [DebuggerStepThrough]
-        private object CreateExecutionContext()
+        private async Task<object> CreateExecutionContextAsync()
         {
             try
             {
-                return _contextProvider.GetContext();
+                return await _contextDescriptor.ContextResolver(_scope);
             }
             catch (Exception e)
             {

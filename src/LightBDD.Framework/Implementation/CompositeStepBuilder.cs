@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Execution.Dependencies;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Scenarios;
@@ -38,12 +40,22 @@ namespace LightBDD.Framework.Implementation
             return WithStepContext(contextProvider, false);
         }
 
+        public IIntegrableCompositeStepBuilder WithStepContext(Func<IDependencyResolver, Task<object>> contextProvider)
+        {
+            return WithStepContext(new ExecutionContextDescriptor(contextProvider));
+        }
+
         public IIntegrableCompositeStepBuilder WithStepContext(Func<object> contextProvider, bool takeOwnership)
+        {
+            return WithStepContext(new ExecutionContextDescriptor(contextProvider, takeOwnership));
+        }
+
+        private IIntegrableCompositeStepBuilder WithStepContext(ExecutionContextDescriptor contextDescriptor)
         {
             if (_contextDescriptor != null || !ReferenceEquals(_steps, EmptySteps))
                 throw new InvalidOperationException("Step context can be specified only once, when no steps are specified yet.");
 
-            _contextDescriptor = new ExecutionContextDescriptor(contextProvider, takeOwnership);
+            _contextDescriptor = contextDescriptor;
             return this;
         }
 

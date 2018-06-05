@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using LightBDD.Core.Execution.Dependencies;
 using LightBDD.Framework.Scenarios;
 using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.Framework.Scenarios.Contextual;
@@ -20,25 +22,28 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
         }
 
         [Test]
-        public void It_should_allow_to_apply_context_instance()
+        public async Task It_should_allow_to_apply_context_instance()
         {
             var context = new object();
             var stepGroup = _builder.WithContext(context).Build();
-            Assert.That(stepGroup.SubStepsContext.ContextProvider.Invoke(), Is.SameAs(context));
+            var instance = await stepGroup.SubStepsContext.ContextResolver(new SimpleDependencyContainer());
+            Assert.That(instance, Is.SameAs(context));
         }
 
         [Test]
-        public void It_should_allow_to_apply_context_provider()
+        public async Task It_should_allow_to_apply_context_provider()
         {
             var stepGroup = _builder.WithContext(() => TimeSpan.FromSeconds(5)).Build();
-            Assert.That(stepGroup.SubStepsContext.ContextProvider.Invoke(), Is.EqualTo(TimeSpan.FromSeconds(5)));
+            var instance = await stepGroup.SubStepsContext.ContextResolver(new SimpleDependencyContainer());
+            Assert.That(instance, Is.EqualTo(TimeSpan.FromSeconds(5)));
         }
 
         [Test]
-        public void It_should_allow_to_apply_context_with_parameterless_constructor()
+        public async Task It_should_allow_to_apply_context_with_parameterless_constructor()
         {
             var stepGroup = _builder.WithContext<MyContext>().Build();
-            Assert.That(stepGroup.SubStepsContext.ContextProvider.Invoke(), Is.InstanceOf<MyContext>());
+            var instance = await stepGroup.SubStepsContext.ContextResolver(new SimpleDependencyContainer());
+            Assert.That(instance, Is.InstanceOf<MyContext>());
         }
 
         [Test]

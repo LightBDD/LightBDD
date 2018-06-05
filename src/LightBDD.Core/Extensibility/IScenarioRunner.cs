@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
+using LightBDD.Core.Execution.Dependencies;
 using LightBDD.Core.Extensibility.Execution;
 
 namespace LightBDD.Core.Extensibility
@@ -60,7 +61,15 @@ namespace LightBDD.Core.Extensibility
         /// <param name="takeOwnership">Specifies if scenario runner should take ownership of the context instance. If set to true and context instance implements <see cref="IDisposable"/>, it will be disposed after scenario finish.</param>
         /// <returns>Self.</returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="contextProvider"/> is <c>null</c>.</exception>
+        [Obsolete("Use other " + nameof(WithContext) + "() method instead")]
         IScenarioRunner WithContext(Func<object> contextProvider, bool takeOwnership);
+        /// <summary>
+        /// Configures scenario to be executed with context provided by <paramref name="contextProvider"/>.
+        /// </summary>
+        /// <param name="contextProvider">Context provider function.</param>
+        /// <returns>Self.</returns>
+        /// <exception cref="ArgumentNullException">Throws when <paramref name="contextProvider"/> is <c>null</c>.</exception>
+        IScenarioRunner WithContext(Func<IDependencyResolver, Task<object>> contextProvider);
         /// <summary>
         /// Configures scenario to be executed with additional decorators provided by <paramref name="scenarioDecorators"/>.
         /// </summary>

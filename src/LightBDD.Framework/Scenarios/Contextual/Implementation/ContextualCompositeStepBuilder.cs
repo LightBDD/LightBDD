@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Execution.Dependencies;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Extensibility;
 
@@ -37,6 +39,12 @@ namespace LightBDD.Framework.Scenarios.Contextual.Implementation
         public IIntegrableCompositeStepBuilder WithStepContext(Func<object> contextProvider)
         {
             _target.WithStepContext(contextProvider, false);
+            return this;
+        }
+
+        public IIntegrableCompositeStepBuilder WithStepContext(Func<IDependencyResolver, Task<object>> contextProvider)
+        {
+            _target.WithStepContext(contextProvider);
             return this;
         }
 

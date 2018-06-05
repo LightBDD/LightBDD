@@ -1,25 +1,26 @@
 using System;
 using System.Diagnostics;
+using LightBDD.Core.Execution.Dependencies;
 
 namespace LightBDD.Core.Execution.Implementation
 {
     [DebuggerStepThrough]
     internal class CompositeStepContext : IDisposable
     {
-        public static readonly CompositeStepContext Empty = new CompositeStepContext(ContextProvider.NoContext, new RunnableStep[0]);
+        private readonly IDependencyContainer _subStepContainer;
+        public static readonly CompositeStepContext Empty = new CompositeStepContext(null, new RunnableStep[0]);
 
-        public CompositeStepContext(IContextProvider contextProvider, RunnableStep[] subSteps)
+        public CompositeStepContext(IDependencyContainer subStepContainer, RunnableStep[] subSteps)
         {
-            Context = contextProvider;
+            _subStepContainer = subStepContainer;
             SubSteps = subSteps;
         }
 
-        public IContextProvider Context { get; }
         public RunnableStep[] SubSteps { get; }
 
         public void Dispose()
         {
-            Context.Dispose();
+            _subStepContainer?.Dispose();
         }
     }
 }

@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using LightBDD.Core.Execution.Dependencies;
 using LightBDD.Framework.Scenarios;
 using LightBDD.Framework.Scenarios.Contextual;
 using LightBDD.Framework.UnitTests.Scenarios.Helpers;
+using Moq;
 using NUnit.Framework;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
@@ -10,11 +13,13 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
     public class Contextual_runner_hierarchical_execution_context_disposal_tests
     {
         private ICompositeStepBuilder _builder;
+        private Mock<IDependencyContainer> _container;
 
         [SetUp]
         public void SetUp()
         {
             _builder = new TestableCompositeStepBuilder();
+            _container = new Mock<IDependencyContainer>();
         }
 
         [Test]
@@ -23,7 +28,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
             var step = _builder
                  .WithContext(new object())
                  .Build();
-            Assert.That(step.SubStepsContext.TakeOwnership, Is.False);
+            AssertRegistration(step, false);
         }
 
         [Test]
@@ -32,7 +37,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
             var step = _builder
                 .WithContext(new object(), true)
                 .Build();
-            Assert.That(step.SubStepsContext.TakeOwnership, Is.True);
+            AssertRegistration(step, true);
         }
 
         [Test]
@@ -41,7 +46,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
             var step = _builder
                 .WithContext(() => new object())
                 .Build();
-            Assert.That(step.SubStepsContext.TakeOwnership, Is.True);
+            AssertRegistration(step, true);
         }
 
         [Test]
@@ -50,7 +55,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
             var step = _builder
                 .WithContext(() => new object(), false)
                 .Build();
-            Assert.That(step.SubStepsContext.TakeOwnership, Is.False);
+            AssertRegistration(step, false);
         }
 
         [Test]
@@ -58,8 +63,13 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
         {
             var step = _builder
                 .WithContext<List<string>>()
-                .Build();
-            Assert.That(step.SubStepsContext.TakeOwnership, Is.True);
+                .Build(); AssertRegistration(step, true);
+        }
+
+        private void AssertRegistration(CompositeStep step, bool shouldTakeOwnership)
+        {
+            step.SubStepsContext.ContextResolver(_container.Object).GetAwaiter().GetResult();
+            _container.Verify(x => x.RegisterInstance(It.IsAny<object>(), shouldTakeOwnership));
         }
     }
 }

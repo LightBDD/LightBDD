@@ -32,7 +32,10 @@ namespace LightBDD.Core.Execution.Implementation
         public IStepInfo Info => Result.Info;
 
         [DebuggerStepThrough]
-        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task<CompositeStepContext>> stepInvocation, MethodArgument[] arguments, ExceptionProcessor exceptionProcessor, IScenarioProgressNotifier progressNotifier, DecoratingExecutor decoratingExecutor, object scenarioContext, IEnumerable<IStepDecorator> stepDecorators)
+        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task<CompositeStepContext>> stepInvocation,
+            MethodArgument[] arguments, ExceptionProcessor exceptionProcessor,
+            IScenarioProgressNotifier progressNotifier, DecoratingExecutor decoratingExecutor, object scenarioContext,
+            IEnumerable<IStepDecorator> stepDecorators)
         {
             _result = new StepResult(stepInfo);
             _stepInvocation = stepInvocation;
