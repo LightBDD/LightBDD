@@ -4,28 +4,27 @@ using System.Threading.Tasks;
 
 namespace LightBDD.Core.Execution.Dependencies
 {
-    public class SimpleDependencyContainer : IDependencyContainer
+    public class SimpleDependencyContainer : IDependencyContainer, IContainerConfigurer
     {
-        private readonly ConcurrentQueue<IDisposable> _items = new ConcurrentQueue<IDisposable>();
+        private readonly ConcurrentQueue<IDisposable> _disposable = new ConcurrentQueue<IDisposable>();
+        private readonly ConcurrentDictionary<Type, object> _items = new ConcurrentDictionary<Type, object>();
+
+        public SimpleDependencyContainer(Action<IContainerConfigurer> configuration = null)
+        {
+            configuration?.Invoke(this);
+        }
 
         public async Task<object> ResolveAsync(Type type)
         {
-            var item = Activator.CreateInstance(type);
-            if (item is IDisposable disposable)
-                _items.Enqueue(disposable);
-            return item;
-        }
+            if (_items.TryGetValue(type, out var cached))
+                return cached;
 
-        public async Task<object> RegisterInstance(object instance, bool takeOwnership)
-        {
-            if (takeOwnership && instance is IDisposable disposable)
-                _items.Enqueue(disposable);
-            return instance;
+            return EnlistDisposable(Activator.CreateInstance(type));
         }
 
         public void Dispose()
         {
-            while (_items.TryDequeue(out var item))
+            while (_disposable.TryDequeue(out var item))
             {
                 try
                 {
@@ -38,9 +37,27 @@ namespace LightBDD.Core.Execution.Dependencies
             }
         }
 
-        public IDependencyContainer BeginScope()
+        public IDependencyContainer BeginScope(Action<IContainerConfigurer> configuration = null)
         {
-            return new SimpleDependencyContainer();
+            return new SimpleDependencyContainer(configuration);
+        }
+
+        void IContainerConfigurer.RegisterInstance(object instance, RegistrationOptions options)
+        {
+            if (instance == null)
+                throw new ArgumentNullException(nameof(instance));
+            _items.AddOrUpdate(instance.GetType(), _ => instance, (_, __) => instance);
+            if (options.TakeOwnership)
+                EnlistDisposable(instance);
+        }
+
+        private object EnlistDisposable(object item)
+        {
+            if (item is IDisposable disposable)
+                _disposable.Enqueue(disposable);
+            return item;
         }
     }
+
+
 }

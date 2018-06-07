@@ -26,7 +26,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
         {
             var context = new object();
             var stepGroup = _builder.WithContext(context).Build();
-            var instance = await stepGroup.SubStepsContext.ContextResolver(new SimpleDependencyContainer());
+            var instance = await ResolveInstance(stepGroup);
             Assert.That(instance, Is.SameAs(context));
         }
 
@@ -34,7 +34,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
         public async Task It_should_allow_to_apply_context_provider()
         {
             var stepGroup = _builder.WithContext(() => TimeSpan.FromSeconds(5)).Build();
-            var instance = await stepGroup.SubStepsContext.ContextResolver(new SimpleDependencyContainer());
+            var instance = await ResolveInstance(stepGroup);
             Assert.That(instance, Is.EqualTo(TimeSpan.FromSeconds(5)));
         }
 
@@ -42,7 +42,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
         public async Task It_should_allow_to_apply_context_with_parameterless_constructor()
         {
             var stepGroup = _builder.WithContext<MyContext>().Build();
-            var instance = await stepGroup.SubStepsContext.ContextResolver(new SimpleDependencyContainer());
+            var instance = await ResolveInstance(stepGroup);
             Assert.That(instance, Is.InstanceOf<MyContext>());
         }
 
@@ -62,6 +62,11 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
             _builder.AddSteps(() => { });
             var ex = Assert.Throws<InvalidOperationException>(() => _builder.WithContext(ctx));
             Assert.That(ex.Message, Is.EqualTo("Step context can be specified only once, when no steps are specified yet."));
+        }
+
+        private static async Task<object> ResolveInstance(CompositeStep stepGroup)
+        {
+            return await stepGroup.SubStepsContext.ContextResolver(new SimpleDependencyContainer(stepGroup.SubStepsContext.ScopeConfigurer));
         }
     }
 }

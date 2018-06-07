@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using LightBDD.Core.Execution.Dependencies;
 using LightBDD.Framework.Scenarios;
 using LightBDD.Framework.Scenarios.Contextual;
@@ -13,63 +14,83 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
     public class Contextual_runner_hierarchical_execution_context_disposal_tests
     {
         private ICompositeStepBuilder _builder;
-        private Mock<IDependencyContainer> _container;
 
         [SetUp]
         public void SetUp()
         {
             _builder = new TestableCompositeStepBuilder();
-            _container = new Mock<IDependencyContainer>();
         }
 
         [Test]
-        public void WithContext_accepting_instance_should_not_takeOwnership_by_default()
+        public async Task WithContext_accepting_instance_should_not_takeOwnership_by_default()
         {
+            var instance = new Testable();
             var step = _builder
-                 .WithContext(new object())
+                 .WithContext(instance)
                  .Build();
-            AssertRegistration(step, false);
+            await AssertRegistration(instance, step, false);
         }
 
         [Test]
-        public void WithContext_accepting_instance_should_honor_takeOwnership_override()
+        public async Task WithContext_accepting_instance_should_honor_takeOwnership_override()
         {
+            var instance = new Testable();
             var step = _builder
-                .WithContext(new object(), true)
+                .WithContext(instance, true)
                 .Build();
-            AssertRegistration(step, true);
+            await AssertRegistration(instance, step, true);
         }
 
         [Test]
-        public void WithContext_accepting_instance_factory_should_takeOwnership_by_default()
+        public async Task WithContext_accepting_instance_factory_should_takeOwnership_by_default()
         {
+            var instance = new Testable();
             var step = _builder
-                .WithContext(() => new object())
+                .WithContext(() => instance)
                 .Build();
-            AssertRegistration(step, true);
+            await AssertRegistration(instance, step, true);
         }
 
         [Test]
-        public void WithContext_accepting_instance_factory_should_honor_takeOwnership_override()
+        public async Task WithContext_accepting_instance_factory_should_honor_takeOwnership_override()
         {
+            var instance = new Testable();
             var step = _builder
-                .WithContext(() => new object(), false)
+                .WithContext(() => instance, false)
                 .Build();
-            AssertRegistration(step, false);
+            await AssertRegistration(instance, step, false);
         }
 
         [Test]
-        public void Generic_WithContext_should_takeOwnership_by_default()
+        public async Task Generic_WithContext_should_takeOwnership_by_default()
         {
             var step = _builder
-                .WithContext<List<string>>()
-                .Build(); AssertRegistration(step, true);
+                .WithContext<Testable>()
+                .Build();
+            await AssertRegistration(null, step, true);
         }
 
-        private void AssertRegistration(CompositeStep step, bool shouldTakeOwnership)
+        private async Task AssertRegistration(Testable instance, CompositeStep step, bool shouldTakeOwnership)
         {
-            step.SubStepsContext.ContextResolver(_container.Object).GetAwaiter().GetResult();
-            _container.Verify(x => x.RegisterInstance(It.IsAny<object>(), shouldTakeOwnership));
+            var container = new SimpleDependencyContainer();
+            Testable actual;
+            using (var scope = container.BeginScope(step.SubStepsContext.ScopeConfigurer))
+            {
+                actual = (Testable) await step.SubStepsContext.ContextResolver(scope);
+                if (instance != null)
+                    Assert.That(actual, Is.SameAs(instance));
+            }
+            Assert.That(actual.Disposed, Is.EqualTo(shouldTakeOwnership));
+        }
+
+        class Testable : IDisposable
+        {
+            public void Dispose()
+            {
+                Disposed = true;
+            }
+
+            public bool Disposed { get; set; }
         }
     }
 }

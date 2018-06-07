@@ -82,7 +82,7 @@ namespace LightBDD.Core.Execution.Implementation
         {
             try
             {
-                return _container.BeginScope();
+                return _container.BeginScope(_contextDescriptor.ScopeConfigurer);
             }
             catch (Exception e)
             {

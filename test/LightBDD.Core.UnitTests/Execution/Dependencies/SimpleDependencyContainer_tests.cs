@@ -15,8 +15,10 @@ namespace LightBDD.Core.UnitTests.Execution.Dependencies
         public async Task RegisterInstance_should_handle_disposal(bool expectDispose)
         {
             var instance = new Mock<IDisposable>();
-            using (var container = new SimpleDependencyContainer())
-                Assert.AreSame(instance.Object, await container.RegisterInstance(instance.Object, expectDispose));
+            using (var container = new SimpleDependencyContainer(cfg => cfg.RegisterInstance(instance.Object, new RegistrationOptions { TakeOwnership = expectDispose })))
+            {
+                Assert.AreSame(instance.Object, await container.ResolveAsync(instance.Object.GetType()));
+            }
 
             instance.Verify(x => x.Dispose(), Times.Exactly(expectDispose ? 1 : 0));
         }

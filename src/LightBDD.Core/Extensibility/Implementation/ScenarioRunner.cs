@@ -76,9 +76,9 @@ namespace LightBDD.Core.Extensibility.Implementation
             return this;
         }
 
-        public IScenarioRunner WithContext(Func<IDependencyResolver, Task<object>> contextProvider)
+        public IScenarioRunner WithContext(Func<IDependencyResolver, Task<object>> contextProvider, Action<IContainerConfigurer> scopeConfigurer)
         {
-            _contextDescriptor = new ExecutionContextDescriptor(contextProvider);
+            _contextDescriptor = new ExecutionContextDescriptor(contextProvider, scopeConfigurer);
             return this;
         }
 
@@ -218,7 +218,7 @@ namespace LightBDD.Core.Extensibility.Implementation
                     return CompositeStepContext.Empty;
 
                 //TODO:handle instantiation failure
-                var subStepScope = _container.BeginScope();
+                var subStepScope = _container.BeginScope(compositeDescriptor.SubStepsContext.ScopeConfigurer);
                 var subStepsContext = await InstantiateSubStepsContextAsync(compositeDescriptor.SubStepsContext, subStepScope);
                 try
                 {

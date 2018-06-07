@@ -42,9 +42,10 @@ namespace LightBDD.Framework.Scenarios.Contextual.Implementation
             return this;
         }
 
-        public IIntegrableCompositeStepBuilder WithStepContext(Func<IDependencyResolver, Task<object>> contextProvider)
+        public IIntegrableCompositeStepBuilder WithStepContext(Func<IDependencyResolver, Task<object>> contextProvider,
+            Action<IContainerConfigurer> scopeConfigurer)
         {
-            _target.WithStepContext(contextProvider);
+            _target.WithStepContext(contextProvider, scopeConfigurer);
             return this;
         }
 

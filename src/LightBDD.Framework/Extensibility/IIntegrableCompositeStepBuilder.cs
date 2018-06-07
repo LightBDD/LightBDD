@@ -37,9 +37,11 @@ namespace LightBDD.Framework.Extensibility
         /// Please note that context can be specified only once and only when there is no steps added yet.
         /// </summary>
         /// <param name="contextProvider">Context provider function.</param>
+        /// <param name="scopeConfigurer"></param>
         /// <returns>Self.</returns>
         /// <exception cref="InvalidOperationException">Thrown if context is already specified or if some steps has been already added.</exception>
-        IIntegrableCompositeStepBuilder WithStepContext(Func<IDependencyResolver, Task<object>> contextProvider); //TODO: test
+        IIntegrableCompositeStepBuilder WithStepContext(Func<IDependencyResolver, Task<object>> contextProvider,
+            Action<IContainerConfigurer> scopeConfigurer); //TODO: test
 
         /// <summary>
         /// Builds <see cref="CompositeStep"/> based on specified steps and step context provider.
