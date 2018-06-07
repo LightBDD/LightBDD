@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LightBDD.Core.Execution.Dependencies;
+using LightBDD.Core.Dependencies;
 using LightBDD.Framework.Scenarios;
 using LightBDD.Framework.Scenarios.Contextual;
 using LightBDD.Framework.UnitTests.Scenarios.Helpers;
@@ -72,7 +72,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
 
         private async Task AssertRegistration(Testable instance, CompositeStep step, bool shouldTakeOwnership)
         {
-            var container = new SimpleDependencyContainer();
+            var container = new BasicDependencyContainer();
             Testable actual;
             using (var scope = container.BeginScope(step.SubStepsContext.ScopeConfigurer))
             {

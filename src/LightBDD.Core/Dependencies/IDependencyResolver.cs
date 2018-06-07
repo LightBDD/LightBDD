@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace LightBDD.Core.Execution.Dependencies
+namespace LightBDD.Core.Dependencies
 {
     public interface IDependencyResolver
     {

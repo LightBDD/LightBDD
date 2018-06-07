@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using LightBDD.Core.Execution.Dependencies;
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Framework.Extensibility

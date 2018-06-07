@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using LightBDD.Core.Execution.Dependencies;
+using LightBDD.Core.Dependencies;
 using Moq;
 using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests.Execution.Dependencies
 {
     [TestFixture]
-    public class SimpleDependencyContainer_tests
+    public class BasicDependencyContainer_tests
     {
         [Test]
         [TestCase(true)]
@@ -15,7 +15,7 @@ namespace LightBDD.Core.UnitTests.Execution.Dependencies
         public async Task RegisterInstance_should_handle_disposal(bool expectDispose)
         {
             var instance = new Mock<IDisposable>();
-            using (var container = new SimpleDependencyContainer(cfg => cfg.RegisterInstance(instance.Object, new RegistrationOptions { TakeOwnership = expectDispose })))
+            using (var container = new BasicDependencyContainer(cfg => cfg.RegisterInstance(instance.Object, new RegistrationOptions { TakeOwnership = expectDispose })))
             {
                 Assert.AreSame(instance.Object, await container.ResolveAsync(instance.Object.GetType()));
             }
@@ -38,7 +38,7 @@ namespace LightBDD.Core.UnitTests.Execution.Dependencies
         {
             Disposable d1;
             Disposable d2;
-            using (var container = new SimpleDependencyContainer())
+            using (var container = new BasicDependencyContainer())
             {
                 d1 = (Disposable)await container.ResolveAsync(typeof(Disposable));
                 d2 = (Disposable)await container.ResolveAsync(typeof(Disposable));
@@ -55,7 +55,7 @@ namespace LightBDD.Core.UnitTests.Execution.Dependencies
         {
             Disposable outer;
             Disposable inner;
-            using (var container = new SimpleDependencyContainer())
+            using (var container = new BasicDependencyContainer())
             {
                 outer = (Disposable)await container.ResolveAsync(typeof(Disposable));
                 using (var container2 = container.BeginScope())

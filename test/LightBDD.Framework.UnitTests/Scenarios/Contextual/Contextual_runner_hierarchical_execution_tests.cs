@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using LightBDD.Core.Execution.Dependencies;
+using LightBDD.Core.Dependencies;
 using LightBDD.Framework.Scenarios;
 using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.Framework.Scenarios.Contextual;
@@ -66,7 +66,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
 
         private static async Task<object> ResolveInstance(CompositeStep stepGroup)
         {
-            return await stepGroup.SubStepsContext.ContextResolver(new SimpleDependencyContainer(stepGroup.SubStepsContext.ScopeConfigurer));
+            return await stepGroup.SubStepsContext.ContextResolver(new BasicDependencyContainer(stepGroup.SubStepsContext.ScopeConfigurer));
         }
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using LightBDD.Core.Execution.Dependencies;
+using LightBDD.Core.Dependencies;
 
 namespace LightBDD.Core.Extensibility
 {

@@ -2,14 +2,14 @@
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
-namespace LightBDD.Core.Execution.Dependencies
+namespace LightBDD.Core.Dependencies
 {
-    public class SimpleDependencyContainer : IDependencyContainer, IContainerConfigurer
+    public class BasicDependencyContainer : IDependencyContainer, IContainerConfigurer
     {
         private readonly ConcurrentQueue<IDisposable> _disposable = new ConcurrentQueue<IDisposable>();
         private readonly ConcurrentDictionary<Type, object> _items = new ConcurrentDictionary<Type, object>();
 
-        public SimpleDependencyContainer(Action<IContainerConfigurer> configuration = null)
+        public BasicDependencyContainer(Action<IContainerConfigurer> configuration = null)
         {
             configuration?.Invoke(this);
         }
@@ -39,7 +39,7 @@ namespace LightBDD.Core.Execution.Dependencies
 
         public IDependencyContainer BeginScope(Action<IContainerConfigurer> configuration = null)
         {
-            return new SimpleDependencyContainer(configuration);
+            return new BasicDependencyContainer(configuration);
         }
 
         void IContainerConfigurer.RegisterInstance(object instance, RegistrationOptions options)
@@ -58,6 +58,4 @@ namespace LightBDD.Core.Execution.Dependencies
             return item;
         }
     }
-
-
 }

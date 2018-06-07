@@ -1,6 +1,6 @@
 using System;
 using LightBDD.Core.Configuration;
-using LightBDD.Core.Execution.Dependencies;
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Notification;
@@ -24,6 +24,6 @@ namespace LightBDD.Core.Extensibility.Implementation
         public override Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider => _integrationContext.ScenarioProgressNotifierProvider;
         public override IExecutionExtensions ExecutionExtensions => _integrationContext.ExecutionExtensions;
         public override LightBddConfiguration Configuration { get; } = new LightBddConfiguration();
-        public override IDependencyContainer DependencyContainer { get; } = new SimpleDependencyContainer();//TODO: test
+        public override IDependencyContainer DependencyContainer { get; } = new BasicDependencyContainer();//TODO: test
     }
 }

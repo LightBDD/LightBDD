@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LightBDD.Core.Execution.Dependencies
+namespace LightBDD.Core.Dependencies
 {
     public interface IDependencyContainer : IDependencyResolver, IDisposable
     {

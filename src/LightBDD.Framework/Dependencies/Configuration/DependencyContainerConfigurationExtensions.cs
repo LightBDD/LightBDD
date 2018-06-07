@@ -1,6 +1,6 @@
 ﻿using LightBDD.Core.Configuration;
 
-namespace LightBDD.Framework.Execution.Dependencies.Configuration
+namespace LightBDD.Framework.Dependencies.Configuration
 {
     /// <summary>
     /// Configuration class allowing to retrieve <see cref="DependencyContainerConfiguration"/> for further customizations.
