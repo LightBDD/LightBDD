@@ -10,7 +10,10 @@ namespace LightBDD.Autofac
             this DependencyContainerConfiguration configuration,
             ILifetimeScope container)
         {
-            configuration.UseContainer(new AutofacContainer(container.BeginLifetimeScope()));
+            var autofacScope = new AutofacContainer();
+            autofacScope.AutofacScope = container.BeginLifetimeScope(builder => autofacScope.RegisterSelf(builder));
+
+            configuration.UseContainer(autofacScope);
             return configuration;
         }
 
@@ -18,7 +21,10 @@ namespace LightBDD.Autofac
             this DependencyContainerConfiguration configuration,
             ContainerBuilder builder)
         {
-            configuration.UseContainer(new AutofacContainer(builder));
+            var container = new AutofacContainer();
+            container.AutofacScope = container.RegisterSelf(builder).Build();
+
+            configuration.UseContainer(container);
             return configuration;
         }
     }

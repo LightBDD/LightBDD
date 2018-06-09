@@ -6,31 +6,33 @@ namespace LightBDD.Autofac.Implementation
 {
     internal class AutofacContainer : IDependencyContainer
     {
-        private readonly ILifetimeScope _lifetimeScope;
-
-        public AutofacContainer(ContainerBuilder builder)
-            : this(builder.Build())
-        {
-        }
-
-        public AutofacContainer(ILifetimeScope lifetimeScope)
-        {
-            _lifetimeScope = lifetimeScope;
-        }
+        public ILifetimeScope AutofacScope { get; set; }
 
         public object Resolve(Type type)
         {
-            return _lifetimeScope.Resolve(type);
+            return AutofacScope.Resolve(type);
         }
 
         public void Dispose()
         {
-            _lifetimeScope.Dispose();
+            AutofacScope.Dispose();
         }
 
         public IDependencyContainer BeginScope(Action<IContainerConfigurer> configuration = null)
         {
-            return new AutofacContainer(_lifetimeScope.BeginLifetimeScope(builder => new AutofacContainerBuilder(builder).Configure(configuration)));
+            var innerScope = new AutofacContainer();
+            innerScope.AutofacScope = AutofacScope.BeginLifetimeScope(builder =>
+            {
+                new AutofacContainerBuilder(builder).Configure(configuration);
+                innerScope.RegisterSelf(builder);
+            });
+            return innerScope;
+        }
+
+        public ContainerBuilder RegisterSelf(ContainerBuilder builder)
+        {
+            builder.RegisterInstance(this).As<IDependencyContainer>().ExternallyOwned();
+            return builder;
         }
     }
 }

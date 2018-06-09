@@ -15,6 +15,9 @@ namespace LightBDD.Core.Dependencies.Implementation
 
         public object Resolve(Type type)
         {
+            if (type == typeof(IDependencyContainer))
+                return this;
+
             if (_items.TryGetValue(type, out var cached))
                 return cached;
 

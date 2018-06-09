@@ -65,6 +65,19 @@ namespace LightBDD.UnitTests.Helpers
             }
         }
 
+        [Test]
+        public void It_should_resolve_current_container()
+        {
+            using (var container = CreateContainer())
+            {
+                using (var scope = container.BeginScope())
+                {
+                    Assert.That(scope.Resolve<IDependencyContainer>(), Is.SameAs(scope));
+                    Assert.That(container.Resolve<IDependencyContainer>(), Is.SameAs(container));
+                }
+            }
+        }
+
         protected abstract IDependencyContainer CreateContainer();
 
         protected class Disposable : IDisposable
