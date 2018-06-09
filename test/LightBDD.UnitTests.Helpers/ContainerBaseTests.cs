@@ -15,7 +15,11 @@ namespace LightBDD.UnitTests.Helpers
             var instance = new Mock<IDisposable>();
             using (var container = CreateContainer())
             {
-                using (var scope = container.BeginScope(cfg => cfg.RegisterInstance(instance.Object, new RegistrationOptions { TakeOwnership = expectDispose })))
+                var options = new RegistrationOptions().As(instance.Object.GetType());
+                if (!expectDispose)
+                    options.ExtenrallyOwned();
+
+                using (var scope = container.BeginScope(cfg => cfg.RegisterInstance(instance.Object, options)))
                     Assert.AreSame(instance.Object, scope.Resolve(instance.Object.GetType()));
             }
 
@@ -58,7 +62,7 @@ namespace LightBDD.UnitTests.Helpers
             var instance = new Disposable();
             using (var container = CreateContainer())
             {
-                using (var scope = container.BeginScope(cfg => cfg.RegisterInstance(instance, new RegistrationOptions { TakeOwnership = true })))
+                using (var scope = container.BeginScope(cfg => cfg.RegisterInstance(instance, new RegistrationOptions().As<Disposable>())))
                     Assert.That(scope.Resolve<Disposable>(), Is.SameAs(instance));
 
                 Assert.True(instance.Disposed);
@@ -74,6 +78,22 @@ namespace LightBDD.UnitTests.Helpers
                 {
                     Assert.That(scope.Resolve<IDependencyContainer>(), Is.SameAs(scope));
                     Assert.That(container.Resolve<IDependencyContainer>(), Is.SameAs(container));
+                }
+            }
+        }
+
+        [Test]
+        public void RegisterInstance_should_honor_types()
+        {
+            var disposable = new Disposable();
+            using (var container = CreateContainer())
+            {
+                using (var scope = container.BeginScope(c => c.RegisterInstance(disposable,
+                    new RegistrationOptions().As<Disposable>().As<IDisposable>().As<object>())))
+                {
+                    Assert.That(scope.Resolve<object>(), Is.SameAs(disposable));
+                    Assert.That(scope.Resolve<IDisposable>(), Is.SameAs(disposable));
+                    Assert.That(scope.Resolve<Disposable>(), Is.SameAs(disposable));
                 }
             }
         }

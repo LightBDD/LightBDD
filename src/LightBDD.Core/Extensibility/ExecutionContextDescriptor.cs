@@ -39,7 +39,11 @@ namespace LightBDD.Core.Extensibility
         /// </summary>
         public ExecutionContextDescriptor(Func<object> contextProvider, bool takeOwnership)
         {
-            ScopeConfigurer = cfg => cfg.RegisterInstance(new ContextWrapper(contextProvider, takeOwnership), RegistrationOptions.Default);
+            var options = new RegistrationOptions().As<ContextWrapper>();
+            if (!takeOwnership)
+                options.ExtenrallyOwned();
+
+            ScopeConfigurer = cfg => cfg.RegisterInstance(new ContextWrapper(contextProvider, takeOwnership), options);
             ContextResolver = ResolveContextWrapper;
         }
 

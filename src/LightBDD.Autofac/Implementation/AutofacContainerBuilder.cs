@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Autofac;
 using LightBDD.Core.Dependencies;
 
@@ -25,9 +26,9 @@ namespace LightBDD.Autofac.Implementation
 
             var registration = Builder
                 .RegisterInstance(instance)
-                .As(instance.GetType());
+                .As(options.AsTypes.ToArray());
 
-            if (!options.TakeOwnership)
+            if (options.IsExternallyOwned)
                 registration.ExternallyOwned();
         }
     }

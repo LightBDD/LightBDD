@@ -1,4 +1,5 @@
-﻿using LightBDD.Core.Dependencies;
+﻿using System;
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Dependencies.Implementation;
 
 namespace LightBDD.Core.Configuration
@@ -18,6 +19,11 @@ namespace LightBDD.Core.Configuration
             ThrowIfSealed();
             DependencyContainer = container;
             return this;
+        }
+
+        public DependencyContainerConfiguration UseDefaultContainer(Action<IContainerConfigurer> configurer = null)
+        {
+            return UseContainer(new BasicDependencyContainer(configurer));
         }
     }
 }
