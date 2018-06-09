@@ -219,7 +219,7 @@ namespace LightBDD.Core.Extensibility.Implementation
 
                 //TODO:handle instantiation failure
                 var subStepScope = _container.BeginScope(compositeDescriptor.SubStepsContext.ScopeConfigurer);
-                var subStepsContext = await InstantiateSubStepsContextAsync(compositeDescriptor.SubStepsContext, subStepScope);
+                var subStepsContext = InstantiateSubStepsContext(compositeDescriptor.SubStepsContext, subStepScope);
                 try
                 {
                     return new CompositeStepContext(subStepScope, _runner.ProvideSteps(_decoratingExecutor, subStepsContext, subStepScope, compositeDescriptor.SubSteps.ToArray(), _groupPrefix));
@@ -231,11 +231,11 @@ namespace LightBDD.Core.Extensibility.Implementation
             }
         }
 
-        private static async Task<object> InstantiateSubStepsContextAsync(ExecutionContextDescriptor contextDescriptor, IDependencyContainer container)
+        private static object InstantiateSubStepsContext(ExecutionContextDescriptor contextDescriptor, IDependencyContainer container)
         {
             try
             {
-                return await contextDescriptor.ContextResolver(container);
+                return contextDescriptor.ContextResolver(container);
             }
             catch (Exception e)
             {

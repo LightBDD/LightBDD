@@ -5,12 +5,12 @@ namespace LightBDD.Core.Dependencies
 {
     public interface IDependencyResolver
     {
-        Task<object> ResolveAsync(Type type);
+        object Resolve(Type type);
     }
 
     public static class DependencyResolverExtensions
     {
-        public static async Task<T> ResolveAsync<T>(this IDependencyResolver resolver)
-            => (T)await resolver.ResolveAsync(typeof(T));
+        public static T Resolve<T>(this IDependencyResolver resolver)
+            => (T)resolver.Resolve(typeof(T));
     }
 }

@@ -23,12 +23,12 @@ namespace LightBDD.Core.Extensibility
 
 
         public Action<IContainerConfigurer> ScopeConfigurer { get; }
-        public Func<IDependencyResolver, Task<object>> ContextResolver { get; }
+        public Func<IDependencyResolver, object> ContextResolver { get; }
 
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public ExecutionContextDescriptor(Func<IDependencyResolver, Task<object>> contextResolver, Action<IContainerConfigurer> scopeConfigurer)
+        public ExecutionContextDescriptor(Func<IDependencyResolver, object> contextResolver, Action<IContainerConfigurer> scopeConfigurer)
         {
             ScopeConfigurer = scopeConfigurer;
             ContextResolver = contextResolver ?? throw new ArgumentNullException(nameof(contextResolver));
@@ -43,9 +43,9 @@ namespace LightBDD.Core.Extensibility
             ContextResolver = ResolveContextWrapper;
         }
 
-        private static async Task<object> ResolveContextWrapper(IDependencyResolver resolver)
+        private static object ResolveContextWrapper(IDependencyResolver resolver)
         {
-            return (await resolver.ResolveAsync<ContextWrapper>()).GetContext();
+            return resolver.Resolve<ContextWrapper>().GetContext();
         }
 
         /// <summary>
@@ -54,9 +54,9 @@ namespace LightBDD.Core.Extensibility
         [Obsolete]
         public bool TakeOwnership => throw new NotSupportedException($"{nameof(TakeOwnership)} is no longer supported");
 
-        private static Task<object> ProvideNoContext(IDependencyResolver _)
+        private static object ProvideNoContext(IDependencyResolver _)
         {
-            return Task.FromResult<object>(null);
+            return null;
         }
 
         [DebuggerStepThrough]

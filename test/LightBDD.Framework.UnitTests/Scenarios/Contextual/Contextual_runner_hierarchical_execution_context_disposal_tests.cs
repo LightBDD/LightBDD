@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
 using LightBDD.Framework.Scenarios;
 using LightBDD.Framework.Scenarios.Contextual;
@@ -22,61 +23,61 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
         }
 
         [Test]
-        public async Task WithContext_accepting_instance_should_not_takeOwnership_by_default()
+        public void WithContext_accepting_instance_should_not_takeOwnership_by_default()
         {
             var instance = new Testable();
             var step = _builder
                  .WithContext(instance)
                  .Build();
-            await AssertRegistration(instance, step, false);
+            AssertRegistration(instance, step, false);
         }
 
         [Test]
-        public async Task WithContext_accepting_instance_should_honor_takeOwnership_override()
+        public void WithContext_accepting_instance_should_honor_takeOwnership_override()
         {
             var instance = new Testable();
             var step = _builder
                 .WithContext(instance, true)
                 .Build();
-            await AssertRegistration(instance, step, true);
+            AssertRegistration(instance, step, true);
         }
 
         [Test]
-        public async Task WithContext_accepting_instance_factory_should_takeOwnership_by_default()
+        public void WithContext_accepting_instance_factory_should_takeOwnership_by_default()
         {
             var instance = new Testable();
             var step = _builder
                 .WithContext(() => instance)
                 .Build();
-            await AssertRegistration(instance, step, true);
+            AssertRegistration(instance, step, true);
         }
 
         [Test]
-        public async Task WithContext_accepting_instance_factory_should_honor_takeOwnership_override()
+        public void WithContext_accepting_instance_factory_should_honor_takeOwnership_override()
         {
             var instance = new Testable();
             var step = _builder
                 .WithContext(() => instance, false)
                 .Build();
-            await AssertRegistration(instance, step, false);
+            AssertRegistration(instance, step, false);
         }
 
         [Test]
-        public async Task Generic_WithContext_should_takeOwnership_by_default()
+        public void Generic_WithContext_should_takeOwnership_by_default()
         {
             var step = _builder
                 .WithContext<Testable>()
                 .Build();
-            await AssertRegistration(null, step, true);
+            AssertRegistration(null, step, true);
         }
 
-        private async Task AssertRegistration(Testable instance, CompositeStep step, bool shouldTakeOwnership)
+        private void AssertRegistration(Testable instance, CompositeStep step, bool shouldTakeOwnership)
         {
-            var container = new BasicDependencyContainer();
+            var container = new DependencyContainerConfiguration().DependencyContainer;
             Testable actual;
             using (var scope = container.BeginScope(step.SubStepsContext.ScopeConfigurer))
             {
-                actual = (Testable) await step.SubStepsContext.ContextResolver(scope);
+                actual = (Testable)step.SubStepsContext.ContextResolver(scope);
                 if (instance != null)
                     Assert.That(actual, Is.SameAs(instance));
             }

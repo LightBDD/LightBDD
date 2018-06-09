@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Threading.Tasks;
 
-namespace LightBDD.Core.Dependencies
+namespace LightBDD.Core.Dependencies.Implementation
 {
-    public class BasicDependencyContainer : IDependencyContainer, IContainerConfigurer
+    internal class BasicDependencyContainer : IDependencyContainer, IContainerConfigurer
     {
         private readonly ConcurrentQueue<IDisposable> _disposable = new ConcurrentQueue<IDisposable>();
         private readonly ConcurrentDictionary<Type, object> _items = new ConcurrentDictionary<Type, object>();
@@ -14,7 +13,7 @@ namespace LightBDD.Core.Dependencies
             configuration?.Invoke(this);
         }
 
-        public async Task<object> ResolveAsync(Type type)
+        public object Resolve(Type type)
         {
             if (_items.TryGetValue(type, out var cached))
                 return cached;

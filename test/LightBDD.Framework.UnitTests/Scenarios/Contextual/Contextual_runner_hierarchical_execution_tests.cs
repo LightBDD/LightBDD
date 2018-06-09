@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
 using LightBDD.Framework.Scenarios;
 using LightBDD.Framework.Scenarios.Basic;
@@ -22,27 +23,27 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
         }
 
         [Test]
-        public async Task It_should_allow_to_apply_context_instance()
+        public void It_should_allow_to_apply_context_instance()
         {
             var context = new object();
             var stepGroup = _builder.WithContext(context).Build();
-            var instance = await ResolveInstance(stepGroup);
+            var instance = ResolveInstance(stepGroup);
             Assert.That(instance, Is.SameAs(context));
         }
 
         [Test]
-        public async Task It_should_allow_to_apply_context_provider()
+        public void It_should_allow_to_apply_context_provider()
         {
             var stepGroup = _builder.WithContext(() => TimeSpan.FromSeconds(5)).Build();
-            var instance = await ResolveInstance(stepGroup);
+            var instance = ResolveInstance(stepGroup);
             Assert.That(instance, Is.EqualTo(TimeSpan.FromSeconds(5)));
         }
 
         [Test]
-        public async Task It_should_allow_to_apply_context_with_parameterless_constructor()
+        public void It_should_allow_to_apply_context_with_parameterless_constructor()
         {
             var stepGroup = _builder.WithContext<MyContext>().Build();
-            var instance = await ResolveInstance(stepGroup);
+            var instance = ResolveInstance(stepGroup);
             Assert.That(instance, Is.InstanceOf<MyContext>());
         }
 
@@ -64,9 +65,10 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
             Assert.That(ex.Message, Is.EqualTo("Step context can be specified only once, when no steps are specified yet."));
         }
 
-        private static async Task<object> ResolveInstance(CompositeStep stepGroup)
+        private static object ResolveInstance(CompositeStep stepGroup)
         {
-            return await stepGroup.SubStepsContext.ContextResolver(new BasicDependencyContainer(stepGroup.SubStepsContext.ScopeConfigurer));
+            var container = new DependencyContainerConfiguration().DependencyContainer.BeginScope(stepGroup.SubStepsContext.ScopeConfigurer);
+            return stepGroup.SubStepsContext.ContextResolver(container);
         }
     }
 }

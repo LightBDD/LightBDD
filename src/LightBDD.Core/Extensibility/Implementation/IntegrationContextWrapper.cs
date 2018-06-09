@@ -1,6 +1,7 @@
 using System;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
+using LightBDD.Core.Dependencies.Implementation;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Notification;

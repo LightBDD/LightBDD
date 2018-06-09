@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.6;net45;net46</TargetFrameworks>
-    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.0</NetStandardImplicitPackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="NUnit" Version="3.7.1" />
+    <PackageReference Include="Moq" Version="4.8.2" />
   </ItemGroup>
 
 </Project>

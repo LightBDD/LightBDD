@@ -71,10 +71,10 @@ namespace LightBDD.Core.Execution.Implementation
         }
 
         [DebuggerStepThrough]
-        private async Task InitializeScenarioAsync()
+        private void InitializeScenario()
         {
             _scope = CreateContainerScope();
-            _scenarioContext = await CreateExecutionContextAsync();
+            _scenarioContext = CreateExecutionContext();
             _preparedSteps = PrepareSteps();
         }
 
@@ -98,7 +98,7 @@ namespace LightBDD.Core.Execution.Implementation
             var watch = ExecutionTimeWatch.StartNew();
             try
             {
-                await InitializeScenarioAsync();
+                InitializeScenario();
                 await _decoratingExecutor.ExecuteScenarioAsync(this, RunScenarioAsync, _scenarioDecorators);
             }
             catch (StepExecutionException ex)
@@ -174,11 +174,11 @@ namespace LightBDD.Core.Execution.Implementation
         }
 
         [DebuggerStepThrough]
-        private async Task<object> CreateExecutionContextAsync()
+        private object CreateExecutionContext()
         {
             try
             {
-                return await _contextDescriptor.ContextResolver(_scope);
+                return _contextDescriptor.ContextResolver(_scope);
             }
             catch (Exception e)
             {
