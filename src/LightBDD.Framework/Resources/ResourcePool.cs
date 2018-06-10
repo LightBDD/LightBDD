@@ -7,14 +7,24 @@ using System.Threading.Tasks;
 
 namespace LightBDD.Framework.Resources
 {
+    /// <summary>
+    /// Class allowing to create a pool of resources.
+    /// The class is designed for the scenarios where given resource can be used only by one task at a time, but can be reused later and it supports resource limits.
+    /// The resource can be obtained from the pool with <see cref="ResourceHandle{TResource}"/> where it will return it back upon it's disposal.
+    /// </summary>
+    /// <typeparam name="TResource"></typeparam>
     public class ResourcePool<TResource> : IDisposable
     {
         private readonly Func<TResource> _resourceFactory;
         private readonly SemaphoreSlim _semaphore;
         private readonly ConcurrentQueue<TResource> _resources = new ConcurrentQueue<TResource>();
         private readonly ConcurrentQueue<TResource> _pool = new ConcurrentQueue<TResource>();
-        private bool _controlDisposal;
+        private readonly bool _controlDisposal;
 
+        /// <summary>
+        /// Creates resource pool with pre-set list of resources, specified by <paramref name="resources"/> parameter.
+        /// If <paramref name="takeOwnership"/> is set to true, the resources implementing <see cref="IDisposable"/> interface will be disposed upon pool disposal.
+        /// </summary>
         public ResourcePool(TResource[] resources, bool takeOwnership = true)
         {
             if (resources == null || !resources.Any())
@@ -31,6 +41,12 @@ namespace LightBDD.Framework.Resources
             }
         }
 
+        /// <summary>
+        /// Creates resource pool of dynamically managed resource number.
+        /// The pool will start with no resources and grow up to the number of resources specified by <paramref name="limit"/> parameter.
+        /// The new resources will be created if needed by calling <paramref name="resourceFactory"/> function.
+        /// If resources implement <see cref="IDisposable"/> interface, they will be disposed upon pool disposal.
+        /// </summary>
         public ResourcePool(Func<TResource> resourceFactory, int limit = int.MaxValue)
         {
             if (limit <= 0)
@@ -38,6 +54,14 @@ namespace LightBDD.Framework.Resources
             _resourceFactory = resourceFactory ?? throw new ArgumentNullException(nameof(resourceFactory));
             _semaphore = new SemaphoreSlim(limit);
             _controlDisposal = true;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="ResourceHandle{TResource}"/> instance that allow to obtain the resource from the pool and return it upon it's disposal.
+        /// </summary>
+        public ResourceHandle<TResource> CreateHandle()
+        {
+            return new ResourceHandle<TResource>(this);
         }
 
         internal async Task<TResource> ObtainAsync(CancellationToken token)
@@ -69,6 +93,10 @@ namespace LightBDD.Framework.Resources
             _semaphore.Release();
         }
 
+        /// <summary>
+        /// Disposed the pool.
+        /// If resources belonging to the pool are disposable and pool is configured to own them, they will be disposed as well.
+        /// </summary>
         public void Dispose()
         {
             if (!_controlDisposal)
@@ -82,46 +110,6 @@ namespace LightBDD.Framework.Resources
             }
             if (exceptions.Any())
                 throw new AggregateException("ResourcePool failed to dispose some resources", exceptions);
-        }
-    }
-
-    public class ResourceProvider<TResource> : IDisposable
-    {
-        private readonly ResourcePool<TResource> _pool;
-        private readonly object _lock = new object();
-        private Task<TResource> _instanceTask;
-
-        public ResourceProvider(ResourcePool<TResource> pool)
-        {
-            _pool = pool;
-        }
-
-        public Task<TResource> ObtainAsync() => ObtainAsync(CancellationToken.None);
-        public Task<TResource> ObtainAsync(CancellationToken token)
-        {
-            if (_instanceTask == null)
-            {
-                lock (_lock)
-                {
-                    if (_instanceTask == null)
-                        _instanceTask = _pool.ObtainAsync(token);
-                }
-            }
-
-            return _instanceTask;
-        }
-
-        public void Dispose()
-        {
-            if (_instanceTask == null)
-                return;
-
-            try
-            {
-                _pool.Release(_instanceTask.GetAwaiter().GetResult());
-                _instanceTask = null;
-            }
-            catch { }
         }
     }
 }

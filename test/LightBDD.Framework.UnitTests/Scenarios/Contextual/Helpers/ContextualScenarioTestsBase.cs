@@ -39,7 +39,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual.Helpers
         {
             MockScenarioRunner
                 .Setup(s => s.WithContext(It.IsAny<Func<IDependencyResolver, object>>(), null))
-                .Returns((Func<IDependencyResolver, object> contextResolver, Action<IContainerConfigurer> _) =>
+                .Returns((Func<IDependencyResolver, object> contextResolver, Action<ContainerConfigurator> _) =>
                 {
                     CapturedContextResolver = contextResolver;
                     return MockScenarioRunner.Object;

@@ -70,7 +70,7 @@ namespace LightBDD.Core.Extensibility
         /// <param name="scopeConfigurer"></param>
         /// <returns>Self.</returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="contextProvider"/> is <c>null</c>.</exception>
-        IScenarioRunner WithContext(Func<IDependencyResolver, object> contextProvider, Action<IContainerConfigurer> scopeConfigurer = null);
+        IScenarioRunner WithContext(Func<IDependencyResolver, object> contextProvider, Action<ContainerConfigurator> scopeConfigurer = null);
         /// <summary>
         /// Configures scenario to be executed with additional decorators provided by <paramref name="scenarioDecorators"/>.
         /// </summary>

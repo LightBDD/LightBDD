@@ -25,6 +25,6 @@ namespace LightBDD.Core.Extensibility.Implementation
         public override Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider => _integrationContext.ScenarioProgressNotifierProvider;
         public override IExecutionExtensions ExecutionExtensions => _integrationContext.ExecutionExtensions;
         public override LightBddConfiguration Configuration { get; } = new LightBddConfiguration();
-        public override IDependencyContainer DependencyContainer { get; } = new BasicDependencyContainer();//TODO: test
+        public override IDependencyContainer DependencyContainer { get; } = new BasicDependencyContainer();
     }
 }

@@ -22,16 +22,16 @@ namespace LightBDD.AcceptanceTests.Features
 {
     public class HtmlReportContext
     {
-        private readonly ResourceProvider<ChromeDriver> _driverProvider;
+        private readonly ResourceHandle<ChromeDriver> _driverHandle;
         private static string BaseDirectory => AppContext.BaseDirectory;
         private string HtmlFileName { get; }
         private ChromeDriver Driver { get; set; }
         private IFeatureResult[] Features { get; set; }
         private ResultBuilder ResultBuilder { get; }
 
-        public HtmlReportContext(ResourceProvider<ChromeDriver> driverProvider)
+        public HtmlReportContext(ResourceHandle<ChromeDriver> driverHandle)
         {
-            _driverProvider = driverProvider;
+            _driverHandle = driverHandle;
             HtmlFileName = Path.GetFullPath(BaseDirectory + Path.DirectorySeparatorChar + Guid.NewGuid() + ".html");
             ResultBuilder = new ResultBuilder();
         }
@@ -71,7 +71,7 @@ namespace LightBDD.AcceptanceTests.Features
 
         public async Task When_a_html_report_is_opened()
         {
-            Driver = await _driverProvider.ObtainAsync();
+            Driver = await _driverHandle.ObtainAsync();
             Driver.Navigate().GoToUrl(HtmlFileName);
             Driver.EnsurePageIsLoaded();
         }

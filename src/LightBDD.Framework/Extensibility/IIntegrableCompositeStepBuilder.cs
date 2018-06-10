@@ -29,7 +29,6 @@ namespace LightBDD.Framework.Extensibility
         /// <param name="takeOwnership">Specifies if scenario runner should take ownership of the context instance. If set to true and context instance implements <see cref="IDisposable"/>, it will be disposed after scenario finish.</param>
         /// <returns>Self.</returns>
         /// <exception cref="InvalidOperationException">Thrown if context is already specified or if some steps has been already added.</exception>
-        [Obsolete("Use other " + nameof(WithStepContext) + "() method instead")]
         IIntegrableCompositeStepBuilder WithStepContext(Func<object> contextProvider, bool takeOwnership);
 
         /// <summary>
@@ -40,8 +39,7 @@ namespace LightBDD.Framework.Extensibility
         /// <param name="scopeConfigurer"></param>
         /// <returns>Self.</returns>
         /// <exception cref="InvalidOperationException">Thrown if context is already specified or if some steps has been already added.</exception>
-        IIntegrableCompositeStepBuilder WithStepContext(Func<IDependencyResolver, Task<object>> contextProvider,
-            Action<IContainerConfigurer> scopeConfigurer); //TODO: test
+        IIntegrableCompositeStepBuilder WithStepContext(Func<IDependencyResolver, Task<object>> contextProvider, Action<ContainerConfigurator> scopeConfigurer);
 
         /// <summary>
         /// Builds <see cref="CompositeStep"/> based on specified steps and step context provider.

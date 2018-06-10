@@ -76,7 +76,7 @@ namespace LightBDD.Core.Extensibility.Implementation
             return this;
         }
 
-        public IScenarioRunner WithContext(Func<IDependencyResolver, object> contextProvider, Action<IContainerConfigurer> scopeConfigurer)
+        public IScenarioRunner WithContext(Func<IDependencyResolver, object> contextProvider, Action<ContainerConfigurator> scopeConfigurer)
         {
             _contextDescriptor = new ExecutionContextDescriptor(contextProvider, scopeConfigurer);
             return this;
@@ -220,8 +220,7 @@ namespace LightBDD.Core.Extensibility.Implementation
                 if (!(result is CompositeStepResultDescriptor compositeDescriptor))
                     return CompositeStepContext.Empty;
 
-                //TODO:handle instantiation failure
-                var subStepScope = _container.BeginScope(compositeDescriptor.SubStepsContext.ScopeConfigurer);
+                var subStepScope = _container.BeginScope(compositeDescriptor.SubStepsContext.ScopeConfigurator);
                 var subStepsContext = InstantiateSubStepsContext(compositeDescriptor.SubStepsContext, subStepScope);
                 try
                 {

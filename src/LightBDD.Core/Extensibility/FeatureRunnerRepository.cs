@@ -52,6 +52,7 @@ namespace LightBDD.Core.Extensibility
         /// </summary>
         public IEnumerable<IFeatureRunner> AllRunners => _runners.Values;
 
+        /// <inheritdoc />
         public void Dispose()
         {
             _integrationContext.DependencyContainer.Dispose();

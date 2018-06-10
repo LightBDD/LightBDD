@@ -21,16 +21,21 @@ namespace LightBDD.Core.Extensibility
         [Obsolete("Use " + nameof(ContextResolver) + " instead", true)]
         public Func<object> ContextProvider => throw new NotSupportedException($"{nameof(ContextProvider)} is no longer supported");
 
-
-        public Action<IContainerConfigurer> ScopeConfigurer { get; }
+        /// <summary>
+        /// Returns container configurator function used to configure container used in the execution context scope.
+        /// </summary>
+        public Action<ContainerConfigurator> ScopeConfigurator { get; }
+        /// <summary>
+        /// Returns context resolver function used to create context.
+        /// </summary>
         public Func<IDependencyResolver, object> ContextResolver { get; }
 
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public ExecutionContextDescriptor(Func<IDependencyResolver, object> contextResolver, Action<IContainerConfigurer> scopeConfigurer)
+        public ExecutionContextDescriptor(Func<IDependencyResolver, object> contextResolver, Action<ContainerConfigurator> scopeConfigurator)
         {
-            ScopeConfigurer = scopeConfigurer;
+            ScopeConfigurator = scopeConfigurator;
             ContextResolver = contextResolver ?? throw new ArgumentNullException(nameof(contextResolver));
         }
 
@@ -41,9 +46,9 @@ namespace LightBDD.Core.Extensibility
         {
             var options = new RegistrationOptions().As<ContextWrapper>();
             if (!takeOwnership)
-                options.ExtenrallyOwned();
+                options.ExternallyOwned();
 
-            ScopeConfigurer = cfg => cfg.RegisterInstance(new ContextWrapper(contextProvider, takeOwnership), options);
+            ScopeConfigurator = cfg => cfg.RegisterInstance(new ContextWrapper(contextProvider, takeOwnership), options);
             ContextResolver = ResolveContextWrapper;
         }
 

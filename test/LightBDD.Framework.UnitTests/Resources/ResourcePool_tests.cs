@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Framework.Resources;
 using Moq;
@@ -64,7 +65,7 @@ namespace LightBDD.Framework.UnitTests.Resources
             ResourcePool<IDisposable> pool;
             async Task RunTask()
             {
-                using (var provider = new ResourceProvider<IDisposable>(pool))
+                using (var provider = new ResourceHandle<IDisposable>(pool))
                 {
                     var instance = await provider.ObtainAsync();
                     usage.AddOrUpdate(instance, instance, (_, __) => throw new InvalidOperationException("Instance already in use!"));
@@ -97,11 +98,82 @@ namespace LightBDD.Framework.UnitTests.Resources
         }
 
         [Test]
-        public async Task ResourceProvider_should_return_the_same_instance()
+        public async Task ResourceHandle_should_return_the_same_instance()
         {
             using (var pool = new ResourcePool<IDisposable>(new InstanceHolder().CreateInstance))
-            using (var provider = new ResourceProvider<IDisposable>(pool))
-                Assert.That(await provider.ObtainAsync(), Is.SameAs(await provider.ObtainAsync()));
+            using (var handle = new ResourceHandle<IDisposable>(pool))
+                Assert.That(await handle.ObtainAsync(), Is.SameAs(await handle.ObtainAsync()));
+        }
+
+        [Test]
+        public void ResourceHandle_should_return_instance_to_pool_upon_disposal_even_if_not_fully_obtained()
+        {
+            using (var pool = new ResourcePool<IDisposable>(new InstanceHolder().CreateInstance, 1))
+            {
+                using (var handle = pool.CreateHandle())
+                { var _ = handle.ObtainAsync(); }
+
+                using (var handle2 = pool.CreateHandle())
+                    Assert.DoesNotThrowAsync(() => handle2.ObtainAsync(new CancellationTokenSource(1000).Token));
+            }
+        }
+
+        [Test]
+        public async Task ResourceHandle_should_cancel_obtain_upon_disposal()
+        {
+
+            using (var pool = new ResourcePool<IDisposable>(new InstanceHolder().CreateInstance, 1))
+            {
+                using (var handle = pool.CreateHandle())
+                {
+                    await handle.ObtainAsync();
+
+                    Task task;
+                    using (var handle2 = pool.CreateHandle())
+                        task = handle2.ObtainAsync();
+                    Assert.ThrowsAsync<OperationCanceledException>(() => task);
+                }
+            }
+        }
+
+        [Test]
+        public async Task ResourceHandle_should_cancel_obtain_upon_disposal_allowing_other_handles_to_retrieve_resource()
+        {
+            using (var pool = new ResourcePool<IDisposable>(new InstanceHolder().CreateInstance, 1))
+            {
+                using (var handle = pool.CreateHandle())
+                {
+                    await handle.ObtainAsync();
+
+                    using (var handle2 = pool.CreateHandle())
+                    { var _ = handle2.ObtainAsync(); }
+
+                    handle.Dispose();
+
+                    using (var handle3 = pool.CreateHandle())
+                        Assert.DoesNotThrowAsync(() => handle3.ObtainAsync(new CancellationTokenSource(1000).Token));
+                }
+            }
+        }
+
+        [Test]
+        public async Task ResourceHandle_should_always_return_the_same_resource_even_if_task_did_not_finish()
+        {
+            using (var pool = new ResourcePool<IDisposable>(new InstanceHolder().CreateInstance, 1))
+            {
+                using (var handle = pool.CreateHandle())
+                {
+                    await handle.ObtainAsync();
+
+                    using (var handle2 = pool.CreateHandle())
+                    {
+                        var t1 = handle2.ObtainAsync();
+                        var t2 = handle2.ObtainAsync();
+                        handle.Dispose();
+                        Assert.That(await t1, Is.SameAs(await t2));
+                    }
+                }
+            }
         }
 
         private Task RunTasks(int count, Func<Task> task)
@@ -113,7 +185,7 @@ namespace LightBDD.Framework.UnitTests.Resources
         {
             async Task RunTask()
             {
-                using (var provider = new ResourceProvider<IDisposable>(pool))
+                using (var provider = new ResourceHandle<IDisposable>(pool))
                 {
                     await Task.Yield();
                     await provider.ObtainAsync();

@@ -17,7 +17,7 @@ namespace LightBDD.UnitTests.Helpers
             {
                 var options = new RegistrationOptions().As(instance.Object.GetType());
                 if (!expectDispose)
-                    options.ExtenrallyOwned();
+                    options.ExternallyOwned();
 
                 using (var scope = container.BeginScope(cfg => cfg.RegisterInstance(instance.Object, options)))
                     Assert.AreSame(instance.Object, scope.Resolve(instance.Object.GetType()));
@@ -104,7 +104,7 @@ namespace LightBDD.UnitTests.Helpers
 
         protected class Disposable : IDisposable
         {
-            public void Dispose()
+            public virtual void Dispose()
             {
                 Disposed = true;
             }

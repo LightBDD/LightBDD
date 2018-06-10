@@ -75,7 +75,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
         {
             var container = new DependencyContainerConfiguration().DependencyContainer;
             Testable actual;
-            using (var scope = container.BeginScope(step.SubStepsContext.ScopeConfigurer))
+            using (var scope = container.BeginScope(step.SubStepsContext.ScopeConfigurator))
             {
                 actual = (Testable)step.SubStepsContext.ContextResolver(scope);
                 if (instance != null)

@@ -5,26 +5,26 @@ using LightBDD.Core.Dependencies;
 
 namespace LightBDD.Autofac.Implementation
 {
-    internal class AutofacContainerBuilder : IContainerConfigurer
+    internal class AutofacContainerBuilder : ContainerConfigurator
     {
-        public ContainerBuilder Builder { get; }
+        private readonly ContainerBuilder _builder;
 
         public AutofacContainerBuilder(ContainerBuilder builder)
         {
-            Builder = builder;
+            _builder = builder;
         }
 
-        public void Configure(Action<IContainerConfigurer> configuration)
+        public void Configure(Action<ContainerConfigurator> configuration)
         {
             configuration?.Invoke(this);
         }
 
-        void IContainerConfigurer.RegisterInstance(object instance, RegistrationOptions options)
+        public override void RegisterInstance(object instance, RegistrationOptions options)
         {
             if (instance == null)
                 throw new ArgumentNullException(nameof(instance));
 
-            var registration = Builder
+            var registration = _builder
                 .RegisterInstance(instance)
                 .As(options.AsTypes.ToArray());
 

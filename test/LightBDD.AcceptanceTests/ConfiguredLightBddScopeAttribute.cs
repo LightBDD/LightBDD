@@ -27,7 +27,7 @@ namespace LightBDD.AcceptanceTests
             configuration.DependencyContainerConfiguration().UseDefaultContainer(ConfigureContainer);
         }
 
-        private void ConfigureContainer(IContainerConfigurer config)
+        private void ConfigureContainer(ContainerConfigurator config)
         {
             config.RegisterInstance(new ResourcePool<ChromeDriver>(CreateDriver), new RegistrationOptions());
         }
