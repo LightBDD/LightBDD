@@ -1,5 +1,4 @@
 ﻿using LightBDD.Core.Configuration;
-using LightBDD.Framework.Commenting.Implementation;
 using LightBDD.Framework.Configuration;
 using LightBDD.Framework.ExecutionContext;
 using LightBDD.Framework.ExecutionContext.Configuration;
@@ -14,13 +13,13 @@ namespace LightBDD.Framework.Commenting.Configuration
     {
         /// <summary>
         /// Enables ability to comment steps.
-        /// This feature enables <see cref="FrameworkConfigurationExtensions.EnableCurrentStepManagement"/>() as it depends on it.
+        /// This feature enables <see cref="FrameworkConfigurationExtensions.EnableCurrentScenarioTracking"/>() as it depends on it.
         /// </summary>
         /// <param name="configuration">Configuration object.</param>
         /// <returns>Configuration object.</returns>
         public static ExecutionExtensionsConfiguration EnableStepCommenting(this ExecutionExtensionsConfiguration configuration)
         {
-            return configuration.EnableCurrentStepManagement();
+            return configuration.EnableCurrentScenarioTracking();
         }
     }
 }

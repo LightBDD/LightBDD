@@ -31,7 +31,7 @@ namespace LightBDD.Autofac.Implementation
 
         public ContainerBuilder RegisterSelf(ContainerBuilder builder)
         {
-            builder.RegisterInstance(this).As<IDependencyContainer>().ExternallyOwned();
+            builder.RegisterInstance(this).As<IDependencyContainer>().As<IDependencyResolver>().ExternallyOwned();
             return builder;
         }
     }

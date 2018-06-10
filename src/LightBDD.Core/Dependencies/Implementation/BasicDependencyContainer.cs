@@ -21,7 +21,7 @@ namespace LightBDD.Core.Dependencies.Implementation
 
         public object Resolve(Type type)
         {
-            if (type == typeof(IDependencyContainer))
+            if (type == typeof(IDependencyContainer) || type == typeof(IDependencyResolver))
                 return this;
 
             if (ResolveCached(this, type, out var cached))

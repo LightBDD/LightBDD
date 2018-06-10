@@ -19,7 +19,7 @@ namespace LightBDD.Core.Execution.Implementation
 {
     internal class RunnableStep : IStep
     {
-        private readonly Func<object, IDependencyContainer, object[], Task<CompositeStepContext>> _stepInvocation;
+        private readonly Func<object, object[], Task<CompositeStepContext>> _stepInvocation;
         private readonly MethodArgument[] _arguments;
         private readonly ExceptionProcessor _exceptionProcessor;
         private readonly IScenarioProgressNotifier _progressNotifier;
@@ -29,14 +29,13 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly StepResult _result;
         private Func<Exception, bool> _shouldAbortSubStepExecutionFn = ex => true;
         private CompositeStepContext _compositeStepContext;
-        private IDependencyContainer _scope;
         public IStepResult Result => _result;
         public IStepInfo Info => Result.Info;
-        public IDependencyResolver DependencyResolver => _scope;
+        public IDependencyResolver DependencyResolver => _container;
         public object Context { get; }
 
         [DebuggerStepThrough]
-        public RunnableStep(StepInfo stepInfo, Func<object, IDependencyContainer, object[], Task<CompositeStepContext>> stepInvocation,
+        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task<CompositeStepContext>> stepInvocation,
             MethodArgument[] arguments, ExceptionProcessor exceptionProcessor,
             IScenarioProgressNotifier progressNotifier, DecoratingExecutor decoratingExecutor, object context,
             IEnumerable<IStepDecorator> stepDecorators, IDependencyContainer container)
@@ -82,7 +81,6 @@ namespace LightBDD.Core.Execution.Implementation
             var stepStartNotified = false;
             try
             {
-                _scope = CreateContainerScope();
                 EvaluateParameters();
                 _progressNotifier.NotifyStepStart(_result.Info);
                 stepStartNotified = true;
@@ -111,26 +109,11 @@ namespace LightBDD.Core.Execution.Implementation
             finally
             {
                 DisposeCompositeStep(exceptionCollector);
-                DisposeScope(exceptionCollector);
                 _result.IncludeSubStepDetails();
                 if (stepStartNotified)
                     _progressNotifier.NotifyStepFinished(_result);
             }
             ProcessExceptions(exceptionCollector);
-        }
-
-        [DebuggerStepThrough]
-        private void DisposeScope(ExceptionCollector exceptionCollector)
-        {
-            try
-            {
-                _scope.Dispose();
-            }
-            catch (Exception exception)
-            {
-                _exceptionProcessor.UpdateResultsWithException(_result.SetStatus, exception);
-                exceptionCollector.Capture(exception);
-            }
         }
 
         [DebuggerStepThrough]
@@ -227,7 +210,7 @@ namespace LightBDD.Core.Execution.Implementation
             var ctx = AsyncStepSynchronizationContext.InstallNew();
             try
             {
-                result = await _stepInvocation.Invoke(Context, _scope, PrepareParameters());
+                result = await _stepInvocation.Invoke(Context, PrepareParameters());
                 VerifyParameters();
             }
             catch (Exception e)

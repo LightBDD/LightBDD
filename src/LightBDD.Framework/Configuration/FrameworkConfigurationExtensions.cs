@@ -1,8 +1,8 @@
 ﻿using LightBDD.Core.Configuration;
 using LightBDD.Framework.Commenting.Configuration;
-using LightBDD.Framework.Commenting.Implementation;
 using LightBDD.Framework.ExecutionContext;
 using LightBDD.Framework.ExecutionContext.Configuration;
+using LightBDD.Framework.Extensibility.Implementation;
 using LightBDD.Framework.Formatting.Configuration;
 using LightBDD.Framework.Formatting.Values;
 
@@ -22,7 +22,7 @@ namespace LightBDD.Framework.Configuration
         {
             configuration
                 .ExecutionExtensionsConfiguration()
-                .EnableCurrentStepManagement();
+                .EnableCurrentScenarioTracking();
 
             configuration
                 .ValueFormattingConfiguration()
@@ -49,10 +49,11 @@ namespace LightBDD.Framework.Configuration
         /// </summary>
         /// <param name="configuration">Configuration object.</param>
         /// <returns>Configuration object.</returns>
-        public static ExecutionExtensionsConfiguration EnableCurrentStepManagement(this ExecutionExtensionsConfiguration configuration)
+        public static ExecutionExtensionsConfiguration EnableCurrentScenarioTracking(this ExecutionExtensionsConfiguration configuration)
         {
             return configuration
                 .EnableScenarioExecutionContext()
+                .EnableScenarioDecorator<CurrentScenarioDecorator>()
                 .EnableStepDecorator<CurrentStepDecorator>();
         }
     }

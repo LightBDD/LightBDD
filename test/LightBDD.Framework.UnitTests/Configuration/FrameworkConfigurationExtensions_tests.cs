@@ -36,7 +36,8 @@ namespace LightBDD.Framework.UnitTests.Configuration
             var configuration = new LightBddConfiguration().WithFrameworkDefaults().ExecutionExtensionsConfiguration();
 
             var expected = new LightBddConfiguration().ExecutionExtensionsConfiguration()
-                .EnableScenarioExecutionContext();
+                .EnableScenarioExecutionContext()
+                .EnableCurrentScenarioTracking();
 
             Assert.That(configuration
                     .ScenarioDecorators

@@ -77,7 +77,9 @@ namespace LightBDD.UnitTests.Helpers
                 using (var scope = container.BeginScope())
                 {
                     Assert.That(scope.Resolve<IDependencyContainer>(), Is.SameAs(scope));
+                    Assert.That(scope.Resolve<IDependencyResolver>(), Is.SameAs(scope));
                     Assert.That(container.Resolve<IDependencyContainer>(), Is.SameAs(container));
+                    Assert.That(container.Resolve<IDependencyResolver>(), Is.SameAs(container));
                 }
             }
         }

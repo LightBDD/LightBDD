@@ -5,7 +5,7 @@ using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Framework.ExecutionContext;
 
-namespace LightBDD.Framework.Commenting.Implementation
+namespace LightBDD.Framework.Extensibility.Implementation
 {
     [DebuggerStepThrough]
     internal class CurrentStepDecorator : IStepDecorator
