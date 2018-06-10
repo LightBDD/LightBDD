@@ -33,9 +33,9 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
             return this;
         }
 
-        public IIntegrableCompositeStepBuilder WithStepContext(Func<IDependencyResolver, Task<object>> contextProvider, Action<ContainerConfigurator> scopeConfigurer)
+        public IIntegrableCompositeStepBuilder WithStepContext(Func<IDependencyResolver, object> contextProvider, Action<ContainerConfigurator> scopeConfigurator)
         {
-            _internal.Integrate().WithStepContext(contextProvider, scopeConfigurer);
+            _internal.Integrate().WithStepContext(contextProvider, scopeConfigurator);
             return this;
         }
 

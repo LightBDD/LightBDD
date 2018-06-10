@@ -50,9 +50,9 @@ namespace LightBDD.Framework.Scenarios.Contextual
         /// <param name="runner"><see cref="ICompositeStepBuilder"/> instance.</param>
         /// <typeparam name="TContext">Context type.</typeparam>
         /// <returns>Contextual runner.</returns>
-        public static ICompositeStepBuilder<TContext> WithContext<TContext>(this ICompositeStepBuilder runner) where TContext : new()
+        public static ICompositeStepBuilder<TContext> WithContext<TContext>(this ICompositeStepBuilder runner)
         {
-            return new ContextualCompositeStepBuilder<TContext>(runner, () => new TContext(), true);
+            return new ContextualCompositeStepBuilder<TContext>(runner, resolver => resolver.Resolve(typeof(TContext)));
         }
     }
 }

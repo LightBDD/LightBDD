@@ -19,6 +19,11 @@ namespace LightBDD.Framework.Scenarios.Contextual.Implementation
             _target = runner.Integrate().WithStepContext(contextProvider, takeOwnership);
         }
 
+        public ContextualCompositeStepBuilder(ICompositeStepBuilder runner, Func<IDependencyResolver, object> contextResolver)
+        {
+            _target = runner.Integrate().WithStepContext(contextResolver);
+        }
+
         public CompositeStep Build()
         {
             return _target.Build();
@@ -42,10 +47,9 @@ namespace LightBDD.Framework.Scenarios.Contextual.Implementation
             return this;
         }
 
-        public IIntegrableCompositeStepBuilder WithStepContext(Func<IDependencyResolver, Task<object>> contextProvider,
-            Action<ContainerConfigurator> scopeConfigurer)
+        public IIntegrableCompositeStepBuilder WithStepContext(Func<IDependencyResolver, object> contextProvider, Action<ContainerConfigurator> scopeConfigurator)
         {
-            _target.WithStepContext(contextProvider, scopeConfigurer);
+            _target.WithStepContext(contextProvider, scopeConfigurator);
             return this;
         }
 

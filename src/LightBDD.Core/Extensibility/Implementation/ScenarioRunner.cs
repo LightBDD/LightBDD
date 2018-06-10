@@ -76,9 +76,9 @@ namespace LightBDD.Core.Extensibility.Implementation
             return this;
         }
 
-        public IScenarioRunner WithContext(Func<IDependencyResolver, object> contextProvider, Action<ContainerConfigurator> scopeConfigurer)
+        public IScenarioRunner WithContext(Func<IDependencyResolver, object> contextProvider, Action<ContainerConfigurator> scopeConfigurator)
         {
-            _contextDescriptor = new ExecutionContextDescriptor(contextProvider, scopeConfigurer);
+            _contextDescriptor = new ExecutionContextDescriptor(contextProvider, scopeConfigurator);
             return this;
         }
 
