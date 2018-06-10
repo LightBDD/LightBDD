@@ -182,13 +182,14 @@ namespace LightBDD.Core.Extensibility.Implementation
             var stepGroupPrefix = $"{stepInfo.GroupPrefix}{stepInfo.Number}.";
             return new RunnableStep(
                 stepInfo,
-                new InvocationResultTransformer(this, container, descriptor.StepInvocation, decoratingExecutor, stepGroupPrefix).InvokeAsync,
+                new InvocationResultTransformer(this, descriptor.StepInvocation, decoratingExecutor, stepGroupPrefix).InvokeAsync,
                 arguments,
                 _exceptionProcessor,
                 _progressNotifier,
                 decoratingExecutor,
                 scenarioContext,
-                _metadataProvider.GetStepDecorators(descriptor));
+                _metadataProvider.GetStepDecorators(descriptor),
+                container);
         }
 
 
@@ -196,21 +197,19 @@ namespace LightBDD.Core.Extensibility.Implementation
         private struct InvocationResultTransformer
         {
             private readonly ScenarioRunner _runner;
-            private readonly IDependencyContainer _container;
             private readonly Func<object, object[], Task<IStepResultDescriptor>> _invocation;
             private readonly DecoratingExecutor _decoratingExecutor;
             private readonly string _groupPrefix;
 
-            public InvocationResultTransformer(ScenarioRunner runner, IDependencyContainer container, Func<object, object[], Task<IStepResultDescriptor>> invocation, DecoratingExecutor decoratingExecutor, string groupPrefix)
+            public InvocationResultTransformer(ScenarioRunner runner, Func<object, object[], Task<IStepResultDescriptor>> invocation, DecoratingExecutor decoratingExecutor, string groupPrefix)
             {
                 _runner = runner;
-                _container = container;
                 _invocation = invocation;
                 _decoratingExecutor = decoratingExecutor;
                 _groupPrefix = groupPrefix;
             }
 
-            public async Task<CompositeStepContext> InvokeAsync(object context, object[] args)
+            public async Task<CompositeStepContext> InvokeAsync(object context, IDependencyContainer container, object[] args)
             {
                 var result = await _invocation.Invoke(context, args);
 
@@ -218,7 +217,7 @@ namespace LightBDD.Core.Extensibility.Implementation
                     return CompositeStepContext.Empty;
 
                 //TODO:handle instantiation failure
-                var subStepScope = _container.BeginScope(compositeDescriptor.SubStepsContext.ScopeConfigurer);
+                var subStepScope = container.BeginScope(compositeDescriptor.SubStepsContext.ScopeConfigurer);
                 var subStepsContext = InstantiateSubStepsContext(compositeDescriptor.SubStepsContext, subStepScope);
                 try
                 {

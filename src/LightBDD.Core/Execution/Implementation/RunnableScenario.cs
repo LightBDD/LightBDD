@@ -27,9 +27,11 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly IDependencyContainer _container;
         private readonly ScenarioResult _result;
         private RunnableStep[] _preparedSteps = new RunnableStep[0];
-        private object _scenarioContext;
         private Func<Exception, bool> _shouldAbortSubStepExecutionFn = ex => true;
         private IDependencyContainer _scope;
+        public IScenarioInfo Info => _info;
+        public IDependencyResolver DependencyResolver => _scope;
+        public object Context { get; private set; }
 
         [DebuggerStepThrough]
         public RunnableScenario(ScenarioInfo scenario, Func<DecoratingExecutor, object, IDependencyContainer, RunnableStep[]> stepsProvider,
@@ -74,10 +76,11 @@ namespace LightBDD.Core.Execution.Implementation
         private void InitializeScenario()
         {
             _scope = CreateContainerScope();
-            _scenarioContext = CreateExecutionContext();
+            Context = CreateExecutionContext();
             _preparedSteps = PrepareSteps();
         }
 
+        [DebuggerStepThrough]
         private IDependencyContainer CreateContainerScope()
         {
             try
@@ -165,7 +168,7 @@ namespace LightBDD.Core.Execution.Implementation
         {
             try
             {
-                return _stepsProvider.Invoke(_decoratingExecutor, _scenarioContext, _scope);
+                return _stepsProvider.Invoke(_decoratingExecutor, Context, _scope);
             }
             catch (Exception e)
             {
@@ -191,7 +194,5 @@ namespace LightBDD.Core.Execution.Implementation
         {
             _shouldAbortSubStepExecutionFn = shouldAbortExecutionFn ?? throw new ArgumentNullException(nameof(shouldAbortExecutionFn));
         }
-
-        public IScenarioInfo Info => _info;
     }
 }

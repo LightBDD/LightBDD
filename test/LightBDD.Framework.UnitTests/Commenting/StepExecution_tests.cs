@@ -26,7 +26,7 @@ namespace LightBDD.Framework.UnitTests.Commenting
 
             var exception = Assert.Throws<InvalidOperationException>(() => runner.Test().TestScenario(TestStep.CreateAsync(Commented_step, "some comment")));
 
-            Assert.That(exception.Message, Is.EqualTo("Current task is not executing any scenario steps or commenting feature is not enabled in LightBddConfiguration. Ensure that configuration.ExecutionExtensionsConfiguration().EnableStepCommenting() is called during LightBDD initialization and commenting feature is called from task running scenario step."));
+            Assert.That(exception.Message, Is.EqualTo("Current task is not executing any scenario steps or current step management feature is not enabled in LightBddConfiguration. Ensure that configuration.ExecutionExtensionsConfiguration().EnableCurrentStepManagement() is called during LightBDD initialization and commenting feature is called from task running scenario step."));
         }
 
         [Test]

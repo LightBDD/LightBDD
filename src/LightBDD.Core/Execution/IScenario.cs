@@ -1,3 +1,4 @@
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Execution
@@ -11,5 +12,13 @@ namespace LightBDD.Core.Execution
         /// Scenario information details.
         /// </summary>
         IScenarioInfo Info { get; }
+        /// <summary>
+        /// Returns the dependency resolver used by this scenario.
+        /// </summary>
+        IDependencyResolver DependencyResolver { get; }
+        /// <summary>
+        /// Returns the context used by this scenario (or null if none were provided).
+        /// </summary>
+        object Context { get; }
     }
 }

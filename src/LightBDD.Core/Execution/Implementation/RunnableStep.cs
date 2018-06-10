@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Execution.Implementation;
 using LightBDD.Core.Extensibility.Implementation;
@@ -18,24 +19,27 @@ namespace LightBDD.Core.Execution.Implementation
 {
     internal class RunnableStep : IStep
     {
-        private readonly Func<object, object[], Task<CompositeStepContext>> _stepInvocation;
+        private readonly Func<object, IDependencyContainer, object[], Task<CompositeStepContext>> _stepInvocation;
         private readonly MethodArgument[] _arguments;
         private readonly ExceptionProcessor _exceptionProcessor;
         private readonly IScenarioProgressNotifier _progressNotifier;
         private readonly DecoratingExecutor _decoratingExecutor;
-        private readonly object _scenarioContext;
         private readonly IEnumerable<IStepDecorator> _stepDecorators;
+        private readonly IDependencyContainer _container;
         private readonly StepResult _result;
         private Func<Exception, bool> _shouldAbortSubStepExecutionFn = ex => true;
         private CompositeStepContext _compositeStepContext;
+        private IDependencyContainer _scope;
         public IStepResult Result => _result;
         public IStepInfo Info => Result.Info;
+        public IDependencyResolver DependencyResolver => _scope;
+        public object Context { get; }
 
         [DebuggerStepThrough]
-        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task<CompositeStepContext>> stepInvocation,
+        public RunnableStep(StepInfo stepInfo, Func<object, IDependencyContainer, object[], Task<CompositeStepContext>> stepInvocation,
             MethodArgument[] arguments, ExceptionProcessor exceptionProcessor,
-            IScenarioProgressNotifier progressNotifier, DecoratingExecutor decoratingExecutor, object scenarioContext,
-            IEnumerable<IStepDecorator> stepDecorators)
+            IScenarioProgressNotifier progressNotifier, DecoratingExecutor decoratingExecutor, object context,
+            IEnumerable<IStepDecorator> stepDecorators, IDependencyContainer container)
         {
             _result = new StepResult(stepInfo);
             _stepInvocation = stepInvocation;
@@ -43,8 +47,9 @@ namespace LightBDD.Core.Execution.Implementation
             _exceptionProcessor = exceptionProcessor;
             _progressNotifier = progressNotifier;
             _decoratingExecutor = decoratingExecutor;
-            _scenarioContext = scenarioContext;
+            Context = context;
             _stepDecorators = stepDecorators;
+            _container = container;
             UpdateNameDetails();
         }
 
@@ -77,6 +82,7 @@ namespace LightBDD.Core.Execution.Implementation
             var stepStartNotified = false;
             try
             {
+                _scope = CreateContainerScope();
                 EvaluateParameters();
                 _progressNotifier.NotifyStepStart(_result.Info);
                 stepStartNotified = true;
@@ -105,6 +111,7 @@ namespace LightBDD.Core.Execution.Implementation
             finally
             {
                 DisposeCompositeStep(exceptionCollector);
+                DisposeScope(exceptionCollector);
                 _result.IncludeSubStepDetails();
                 if (stepStartNotified)
                     _progressNotifier.NotifyStepFinished(_result);
@@ -112,6 +119,21 @@ namespace LightBDD.Core.Execution.Implementation
             ProcessExceptions(exceptionCollector);
         }
 
+        [DebuggerStepThrough]
+        private void DisposeScope(ExceptionCollector exceptionCollector)
+        {
+            try
+            {
+                _scope.Dispose();
+            }
+            catch (Exception exception)
+            {
+                _exceptionProcessor.UpdateResultsWithException(_result.SetStatus, exception);
+                exceptionCollector.Capture(exception);
+            }
+        }
+
+        [DebuggerStepThrough]
         private void DisposeCompositeStep(ExceptionCollector exceptionCollector)
         {
             try
@@ -135,6 +157,19 @@ namespace LightBDD.Core.Execution.Implementation
             _result.UpdateException(exception);
 
             throw new StepExecutionException(exception, _result.Status);
+        }
+
+        [DebuggerStepThrough]
+        private IDependencyContainer CreateContainerScope()
+        {
+            try
+            {
+                return _container.BeginScope();
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"Container scope initialization failed: {e.Message}", e);
+            }
         }
 
         [DebuggerStepThrough]
@@ -192,7 +227,7 @@ namespace LightBDD.Core.Execution.Implementation
             var ctx = AsyncStepSynchronizationContext.InstallNew();
             try
             {
-                result = await _stepInvocation.Invoke(_scenarioContext, PrepareParameters());
+                result = await _stepInvocation.Invoke(Context, _scope, PrepareParameters());
                 VerifyParameters();
             }
             catch (Exception e)
@@ -243,7 +278,7 @@ namespace LightBDD.Core.Execution.Implementation
         private void EvaluateParameters()
         {
             foreach (var parameter in _arguments)
-                parameter.Evaluate(_scenarioContext);
+                parameter.Evaluate(Context);
             UpdateNameDetails();
         }
 

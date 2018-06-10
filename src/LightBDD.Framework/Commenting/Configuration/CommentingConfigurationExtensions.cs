@@ -1,5 +1,6 @@
 ﻿using LightBDD.Core.Configuration;
 using LightBDD.Framework.Commenting.Implementation;
+using LightBDD.Framework.Configuration;
 using LightBDD.Framework.ExecutionContext;
 using LightBDD.Framework.ExecutionContext.Configuration;
 
@@ -12,16 +13,14 @@ namespace LightBDD.Framework.Commenting.Configuration
     public static class CommentingConfigurationExtensions
     {
         /// <summary>
-        /// Enables configuration feature in provided <paramref name="configuration"/> object.
-        /// As this feature depends on <see cref="ScenarioExecutionContext"/>, it enables it as well with <see cref="ScenarioExecutionContextConfigurationExtensions.EnableScenarioExecutionContext"/>().
+        /// Enables ability to comment steps.
+        /// This feature enables <see cref="FrameworkConfigurationExtensions.EnableCurrentStepManagement"/>() as it depends on it.
         /// </summary>
         /// <param name="configuration">Configuration object.</param>
         /// <returns>Configuration object.</returns>
         public static ExecutionExtensionsConfiguration EnableStepCommenting(this ExecutionExtensionsConfiguration configuration)
         {
-            return configuration
-                .EnableScenarioExecutionContext()
-                .EnableStepDecorator<StepCommentingDecorator>();
+            return configuration.EnableCurrentStepManagement();
         }
     }
 }

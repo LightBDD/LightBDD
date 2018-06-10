@@ -38,7 +38,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             });
         }
 
-        public static StepDescriptor CreateForGroup(Func<TestCompositeStep> step)
+        public static StepDescriptor CreateComposite(Func<TestCompositeStep> step)
         {
             return new StepDescriptor(
                 step.GetMethodInfo(),

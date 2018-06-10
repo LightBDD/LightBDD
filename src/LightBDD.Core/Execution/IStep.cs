@@ -1,3 +1,4 @@
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Execution
@@ -17,5 +18,13 @@ namespace LightBDD.Core.Execution
         /// </summary>
         /// <param name="comment">Comment.</param>
         void Comment(string comment);
+        /// <summary>
+        /// Returns the dependency resolver used by this step.
+        /// </summary>
+        IDependencyResolver DependencyResolver { get; }
+        /// <summary>
+        /// Returns the context used by this step (or null if none were provided).
+        /// </summary>
+        object Context { get; }
     }
 }
