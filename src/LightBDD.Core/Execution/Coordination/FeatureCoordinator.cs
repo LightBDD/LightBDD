@@ -131,6 +131,7 @@ namespace LightBDD.Core.Execution.Coordination
             UninstallSelf();
             CollectFeatureResults();
             _featureAggregator.Dispose();
+            RunnerRepository.Dispose();
         }
 
         private void CollectFeatureResults()

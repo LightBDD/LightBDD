@@ -9,7 +9,7 @@ namespace LightBDD.Core.Extensibility
     /// Abstract runner factory allowing to create <see cref="IFeatureRunner"/> instances and maintaining list of instantiated runners.
     /// This class should be used by projects integrating LightBDD with testing frameworks.
     /// </summary>
-    public abstract class FeatureRunnerRepository
+    public abstract class FeatureRunnerRepository : IDisposable
     {
         private readonly IntegrationContext _integrationContext;
         private readonly ConcurrentDictionary<Type, IFeatureRunner> _runners = new ConcurrentDictionary<Type, IFeatureRunner>();
@@ -52,5 +52,9 @@ namespace LightBDD.Core.Extensibility
         /// </summary>
         public IEnumerable<IFeatureRunner> AllRunners => _runners.Values;
 
+        public void Dispose()
+        {
+            _integrationContext.DependencyContainer.Dispose();
+        }
     }
 }
