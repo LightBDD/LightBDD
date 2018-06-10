@@ -5,6 +5,9 @@ Version 2.4.0
 ----------------------------------------
 Summary:
 + #38 (all)(New) Added ability to specify verifiable parameters
++ #59 (Core)(New) Added support for DI container
++ #59 (Framework)(New) Implemented default DI container
++ #59 (Autofac)(New) Added LightBDD.Autofac integration for Autofac DI container
 + #67 (Fixie)(New) Added LightBdd.Fixie2 integration project with https://github.com/fixie/fixie
 + #70 (all)(New) Added Table<TRow> and VerifiableTable<TRow> to represent tabular step method parameters
 
