@@ -48,7 +48,14 @@ namespace LightBDD.Core.Dependencies.Implementation
 
         private object Create(Type type)
         {
-            return _ctorCache.GetOrAdd(type, FindConstructor).Invoke();
+            try
+            {
+                return _ctorCache.GetOrAdd(type, FindConstructor).Invoke();
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"Unable to resolve type {type}:{Environment.NewLine}{e.Message}", e);
+            }
         }
 
         private Func<object> FindConstructor(Type type)
@@ -69,7 +76,7 @@ namespace LightBDD.Core.Dependencies.Implementation
 
         public void Dispose()
         {
-            var exceptions=new List<Exception>();
+            var exceptions = new List<Exception>();
             while (_disposable.TryDequeue(out var item))
             {
                 try

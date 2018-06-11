@@ -42,7 +42,7 @@ namespace LightBDD.Core.UnitTests.Dependencies
             using (var container = CreateContainer())
             {
                 var ex = Assert.Throws<InvalidOperationException>(() => container.Resolve<NoCtorType>());
-                Assert.That(ex.Message, Is.EqualTo($"Type '{typeof(NoCtorType)}' has to have have exactly one public constructor (number of public constructors: 0)."));
+                Assert.That(ex.Message, Is.EqualTo($"Unable to resolve type {typeof(NoCtorType)}:{Environment.NewLine}Type '{typeof(NoCtorType)}' has to have have exactly one public constructor (number of public constructors: 0)."));
             }
         }
 
@@ -52,7 +52,7 @@ namespace LightBDD.Core.UnitTests.Dependencies
             using (var container = CreateContainer())
             {
                 var ex = Assert.Throws<InvalidOperationException>(() => container.Resolve<IDisposable>());
-                Assert.That(ex.Message, Is.EqualTo($"Type '{typeof(IDisposable)}' has to be non-abstract class or value type."));
+                Assert.That(ex.Message, Is.EqualTo($"Unable to resolve type {typeof(IDisposable)}:{Environment.NewLine}Type '{typeof(IDisposable)}' has to be non-abstract class or value type."));
             }
         }
 
@@ -62,7 +62,7 @@ namespace LightBDD.Core.UnitTests.Dependencies
             using (var container = CreateContainer())
             {
                 var ex = Assert.Throws<InvalidOperationException>(() => container.Resolve<Abstract>());
-                Assert.That(ex.Message, Is.EqualTo($"Type '{typeof(Abstract)}' has to be non-abstract class or value type."));
+                Assert.That(ex.Message, Is.EqualTo($"Unable to resolve type {typeof(Abstract)}:{Environment.NewLine}Type '{typeof(Abstract)}' has to be non-abstract class or value type."));
             }
         }
 
@@ -72,7 +72,7 @@ namespace LightBDD.Core.UnitTests.Dependencies
             using (var container = CreateContainer())
             {
                 var ex = Assert.Throws<InvalidOperationException>(() => container.Resolve<MultiCtorType>());
-                Assert.That(ex.Message, Is.EqualTo($"Type '{typeof(MultiCtorType)}' has to have have exactly one public constructor (number of public constructors: 2)."));
+                Assert.That(ex.Message, Is.EqualTo($"Unable to resolve type {typeof(MultiCtorType)}:{Environment.NewLine}Type '{typeof(MultiCtorType)}' has to have have exactly one public constructor (number of public constructors: 2)."));
             }
         }
 
@@ -153,9 +153,36 @@ namespace LightBDD.Core.UnitTests.Dependencies
             Assert.That(ex.Message, Is.EqualTo($"Failed to dispose dependency '{typeof(FaultyDisposable).Name}': boom!"));
         }
 
+        [Test]
+        public void Resolve_should_throw_meaningful_exception_if_type_cannot_be_resolved()
+        {
+            using (var container = CreateContainer())
+            {
+                var ex = Assert.Throws<InvalidOperationException>(() => container.Resolve<Holder<ProblematicType>>());
+                Assert.That(ex.Message, Is.EqualTo($"Unable to resolve type {typeof(Holder<ProblematicType>)}:{Environment.NewLine}Unable to resolve type {typeof(ProblematicType)}:{Environment.NewLine}Unable to resolve type {typeof(MultiCtorType)}:{Environment.NewLine}Type '{typeof(MultiCtorType)}' has to have have exactly one public constructor (number of public constructors: 2)."));
+            }
+        }
+
         protected override IDependencyContainer CreateContainer()
         {
             return new DependencyContainerConfiguration().UseDefaultContainer().DependencyContainer;
+        }
+
+        class Holder<T>
+        {
+            public T Value { get; }
+
+            public Holder(T value)
+            {
+                Value = value;
+            }
+        }
+
+        class ProblematicType
+        {
+            public ProblematicType(Disposable disposable, MultiCtorType param2)
+            {
+            }
         }
 
         class NoCtorType
