@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
-using LightBDD.Core.Dependencies;
 using LightBDD.Framework.Scenarios;
 using LightBDD.Framework.Scenarios.Contextual;
 using LightBDD.Framework.UnitTests.Scenarios.Helpers;
-using Moq;
 using NUnit.Framework;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Contextual

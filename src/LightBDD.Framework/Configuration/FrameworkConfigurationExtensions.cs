@@ -1,5 +1,4 @@
 ﻿using LightBDD.Core.Configuration;
-using LightBDD.Framework.Commenting.Configuration;
 using LightBDD.Framework.ExecutionContext;
 using LightBDD.Framework.ExecutionContext.Configuration;
 using LightBDD.Framework.Extensibility.Implementation;

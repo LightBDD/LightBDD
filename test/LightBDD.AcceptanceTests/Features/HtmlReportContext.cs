@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.AcceptanceTests.Helpers;
 using LightBDD.AcceptanceTests.Helpers.Builders;
@@ -11,7 +10,6 @@ using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.Framework.Resources;
-using LightBDD.NUnit3;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 using OpenQA.Selenium;

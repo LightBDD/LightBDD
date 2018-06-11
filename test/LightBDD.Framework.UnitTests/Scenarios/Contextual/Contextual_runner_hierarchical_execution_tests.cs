@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
-using LightBDD.Core.Dependencies;
 using LightBDD.Framework.Scenarios;
 using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.Framework.Scenarios.Contextual;

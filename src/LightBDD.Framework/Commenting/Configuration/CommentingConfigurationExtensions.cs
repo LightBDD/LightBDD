@@ -1,7 +1,5 @@
 ﻿using LightBDD.Core.Configuration;
 using LightBDD.Framework.Configuration;
-using LightBDD.Framework.ExecutionContext;
-using LightBDD.Framework.ExecutionContext.Configuration;
 
 namespace LightBDD.Framework.Commenting.Configuration
 {

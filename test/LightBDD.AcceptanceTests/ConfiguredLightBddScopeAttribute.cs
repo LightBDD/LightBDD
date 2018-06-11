@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using LightBDD.AcceptanceTests;
-using LightBDD.AcceptanceTests.Helpers;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
 using LightBDD.Framework.Reporting;
