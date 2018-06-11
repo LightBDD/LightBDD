@@ -1,10 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using LightBDD.Core.Metadata;
 using LightBDD.Framework.Expectations;
-using LightBDD.Framework.Formatting.Values;
-using LightBDD.Framework.Parameters;
 using NUnit.Framework;
 
 namespace LightBDD.Framework.UnitTests.Expectations

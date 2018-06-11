@@ -3,11 +3,12 @@ using System.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution.Coordination;
 using LightBDD.Core.Reporting;
+using LightBDD.Framework.Execution.Coordination;
 using LightBDD.Framework.Reporting.Configuration;
 
 namespace LightBDD.Fixie2.Implementation
 {
-    internal class FixieFeatureCoordinator : FeatureCoordinator
+    internal class FixieFeatureCoordinator : FrameworkFeatureCoordinator
     {
         public new static FeatureCoordinator GetInstance()
         {

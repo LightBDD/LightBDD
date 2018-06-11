@@ -1,5 +1,6 @@
 using System;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Notification;
@@ -48,5 +49,10 @@ namespace LightBDD.Core.Extensibility
         /// It is expected that returned object will be sealed which means that it should be used only for reading configuration, but not altering it.
         /// </summary>
         public abstract LightBddConfiguration Configuration { get; }
+
+        /// <summary>
+        /// Returns configured <see cref="IDependencyContainer"/>, used to resolve dependencies for LightBDD contexts.
+        /// </summary>
+        public abstract IDependencyContainer DependencyContainer { get; }
     }
 }

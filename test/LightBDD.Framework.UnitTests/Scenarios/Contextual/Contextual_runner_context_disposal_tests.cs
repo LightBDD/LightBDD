@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using LightBDD.Core.Dependencies;
 using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Scenarios.Contextual;
 using LightBDD.Framework.UnitTests.Scenarios.Contextual.Helpers;
@@ -64,16 +65,16 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
         }
 
         [Test]
-        public void Generic_WithContext_should_takeOwnership_by_default()
+        public void Generic_WithContext_should_use_DI_container()
         {
             ExpectNewScenario();
-            ExpectContext();
+            ExpectResolvedContext();
 
             Runner.Object
                 .WithContext<List<string>>()
                 .Integrate().NewScenario();
 
-            MockScenarioRunner.Verify(x => x.WithContext(It.IsAny<Func<object>>(), true));
+            MockScenarioRunner.Verify(x => x.WithContext(It.IsAny<Func<IDependencyResolver, object>>(), null));
         }
     }
 }

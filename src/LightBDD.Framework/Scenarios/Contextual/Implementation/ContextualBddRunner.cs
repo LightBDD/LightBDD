@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Extensibility;
 
@@ -10,19 +11,23 @@ namespace LightBDD.Framework.Scenarios.Contextual.Implementation
     internal class ContextualBddRunner<TContext> : IBddRunner<TContext>, IEnrichableFeatureFixtureRunner
     {
         private readonly IFeatureFixtureRunner _coreRunner;
-        private readonly Func<object> _contextProvider;
-        private readonly bool _takeOwnership;
+        private readonly Func<IScenarioRunner, IScenarioRunner> _configureScenarioContext;
 
         public ContextualBddRunner(IBddRunner coreRunner, Func<object> contextProvider, bool takeOwnership)
         {
-            _contextProvider = contextProvider;
-            _takeOwnership = takeOwnership;
+            _configureScenarioContext = scenario => scenario.WithContext(contextProvider, takeOwnership);
+            _coreRunner = coreRunner.Integrate();
+        }
+
+        public ContextualBddRunner(IBddRunner coreRunner, Func<IDependencyResolver, object> contextResolver)
+        {
+            _configureScenarioContext = scenario => scenario.WithContext(contextResolver);
             _coreRunner = coreRunner.Integrate();
         }
 
         public IScenarioRunner NewScenario()
         {
-            return _coreRunner.NewScenario().WithContext(_contextProvider, _takeOwnership);
+            return _configureScenarioContext(_coreRunner.NewScenario());
         }
 
         public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, LightBddConfiguration, TEnrichedRunner> runnerFactory)

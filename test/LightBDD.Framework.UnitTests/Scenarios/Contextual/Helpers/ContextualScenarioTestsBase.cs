@@ -1,4 +1,5 @@
 ﻿using System;
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility;
 using Moq;
 using NUnit.Framework;
@@ -10,6 +11,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual.Helpers
         protected Mock<ITestableBddRunner> Runner;
         protected Mock<IScenarioRunner> MockScenarioRunner;
         protected Func<object> CapturedContextProvider;
+        protected Func<IDependencyResolver, object> CapturedContextResolver;
 
         public interface ITestableBddRunner : IBddRunner, IFeatureFixtureRunner { }
 
@@ -28,6 +30,18 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual.Helpers
                 .Returns((Func<object> obj, bool takeOwnership) =>
                 {
                     CapturedContextProvider = obj;
+                    return MockScenarioRunner.Object;
+                })
+                .Verifiable();
+        }
+
+        protected void ExpectResolvedContext()
+        {
+            MockScenarioRunner
+                .Setup(s => s.WithContext(It.IsAny<Func<IDependencyResolver, object>>(), null))
+                .Returns((Func<IDependencyResolver, object> contextResolver, Action<ContainerConfigurator> _) =>
+                {
+                    CapturedContextResolver = contextResolver;
                     return MockScenarioRunner.Object;
                 })
                 .Verifiable();

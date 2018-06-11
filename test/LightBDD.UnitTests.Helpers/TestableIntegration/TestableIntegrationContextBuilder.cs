@@ -47,9 +47,9 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             _configuration.ScenarioProgressNotifierConfiguration().UpdateNotifierProvider(provider);
             return this;
         }
-        public TestableIntegrationContextBuilder WithConfiguration(Action<LightBddConfiguration> configurer)
+        public TestableIntegrationContextBuilder WithConfiguration(Action<LightBddConfiguration> configurator)
         {
-            configurer(_configuration);
+            configurator.Invoke(_configuration);
             return this;
         }
 

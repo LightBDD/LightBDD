@@ -47,5 +47,15 @@ namespace LightBDD.Core.Configuration
         {
             return cfg.Get<ExceptionHandlingConfiguration>();
         }
+
+        /// <summary>
+        /// Retrieves <see cref="DependencyContainerConfiguration"/> from <paramref name="configuration"/> for further customizations.
+        /// </summary>
+        /// <param name="configuration">Configuration object.</param>
+        /// <returns>Configuration object.</returns>
+        public static DependencyContainerConfiguration DependencyContainerConfiguration(this LightBddConfiguration configuration)
+        {
+            return configuration.Get<DependencyContainerConfiguration>();
+        }
     }
 }
