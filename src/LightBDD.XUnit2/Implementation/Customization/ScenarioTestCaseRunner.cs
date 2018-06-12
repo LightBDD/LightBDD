@@ -68,7 +68,7 @@ namespace LightBDD.XUnit2.Implementation.Customization
                         var test = new XunitTest(TestCase, theoryDisplayName);
 
                         _testRunners.Add(new ScenarioTestRunner(test, MessageBus, TestClass, ConstructorArguments, methodToRun,
-                            convertedDataRow, SkipReason, BeforeAfterAttributes, Aggregator, CancellationTokenSource));
+                            convertedDataRow, SkipReason, BeforeAfterAttributes, new ExceptionAggregator(Aggregator), CancellationTokenSource));
                     }
                 }
             }
