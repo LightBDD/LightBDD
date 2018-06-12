@@ -11,6 +11,12 @@ using LightBDD.XUnit2;
  * or customize it in a way that is shown below.
  */
 [assembly: ConfiguredLightBddScope]
+/*
+ * This is a LightBDD specific, experimental attribute enabling inter-class test parallelization
+ * (as long as class does not implement IClassFixture<T> nor ICollectionFixture<T> attribute
+ * nor have defined named collection [Collection] attribute)
+ */
+[assembly: ClassCollectionBehavior(AllowTestParallelization = true)]
 
 namespace Example.LightBDD.XUnit2
 {

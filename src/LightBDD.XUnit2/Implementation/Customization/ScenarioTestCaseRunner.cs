@@ -68,7 +68,7 @@ namespace LightBDD.XUnit2.Implementation.Customization
                         var test = new XunitTest(TestCase, theoryDisplayName);
 
                         _testRunners.Add(new ScenarioTestRunner(test, MessageBus, TestClass, ConstructorArguments, methodToRun,
-                            convertedDataRow, SkipReason, BeforeAfterAttributes, Aggregator, CancellationTokenSource));
+                            convertedDataRow, SkipReason, BeforeAfterAttributes, new ExceptionAggregator(Aggregator), CancellationTokenSource));
                     }
                 }
             }
@@ -91,9 +91,11 @@ namespace LightBDD.XUnit2.Implementation.Customization
             if (_dataDiscoveryException != null)
                 return RunTest_DataDiscoveryException();
 
-            var runSummary = new RunSummary();
-            foreach (var testRunner in _testRunners)
-                runSummary.Aggregate(await testRunner.RunScenarioAsync());
+
+            var runSummary = await TaskExecutor.RunAsync(
+                CancellationTokenSource.Token,
+                _testRunners.Select(r => (Func<Task<RunSummary>>)r.RunScenarioAsync).ToArray(),
+                TestCase.TestMethod.TestClass);
 
             // Run the cleanup here so we can include cleanup time in the run summary,
             // but save any exceptions so we can surface them during the cleanup phase,
