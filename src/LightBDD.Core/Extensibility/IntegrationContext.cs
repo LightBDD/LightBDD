@@ -1,6 +1,7 @@
 using System;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
+using LightBDD.Core.Dependencies.Implementation;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Notification;
@@ -53,6 +54,6 @@ namespace LightBDD.Core.Extensibility
         /// <summary>
         /// Returns configured <see cref="IDependencyContainer"/>, used to resolve dependencies for LightBDD contexts.
         /// </summary>
-        public abstract IDependencyContainer DependencyContainer { get; }
+        public virtual IDependencyContainer DependencyContainer { get; } = new BasicDependencyContainer();
     }
 }
