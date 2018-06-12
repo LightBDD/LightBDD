@@ -12,9 +12,9 @@ using LightBDD.XUnit2;
  */
 [assembly: ConfiguredLightBddScope]
 /*
- * This is a LightBDD specific attribute enabling inter-class test parallelization
- * (as long as class does not implement IClassFixture<T> or ICollectionFixture<T> attribute
- * or have defined named collection)
+ * This is a LightBDD specific, experimental attribute enabling inter-class test parallelization
+ * (as long as class does not implement IClassFixture<T> nor ICollectionFixture<T> attribute
+ * nor have defined named collection [Collection] attribute)
  */
 [assembly: ClassCollectionBehavior(AllowTestParallelization = true)]
 

@@ -44,7 +44,7 @@ namespace LightBDD.XUnit2.Implementation.Customization
             if (!AssemblySettings.Current.EnableInterClassParallelization)
                 return false;
 
-            if (testClass.TestCollection.CollectionDefinition != null)
+            if (testClass.Class.GetCustomAttributes(typeof(CollectionAttribute)).Any())
                 return false;
 
             return testClass.Class.Interfaces.All(type => !type.IsGenericType || !FixtureTypes.Contains(type.ToRuntimeType().GetGenericTypeDefinition()));
