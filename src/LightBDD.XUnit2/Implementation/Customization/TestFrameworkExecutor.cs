@@ -20,17 +20,29 @@ namespace LightBDD.XUnit2.Implementation.Customization
         {
             var assembly = GetAssembly();
             var bddScopeAttribute = GetLightBddScopeAttribute(assembly);
-            AssemblySettings.SetSettings(new AssemblySettings { EnableInterClassParallelization = ShallEnableInterClassParallelization(assembly, executionOptions) });
+
+            var enableInterClassParallelization = ShallEnableInterClassParallelization(assembly, executionOptions);
+            AssemblySettings.SetSettings(new AssemblySettings { EnableInterClassParallelization = enableInterClassParallelization });
+
             bddScopeAttribute?.SetUp();
             try
             {
-                using (var assemblyRunner = new TestFrameworkAssemblyRunner(TestAssembly, testCases, DiagnosticMessageSink, executionMessageSink, executionOptions))
+                using (var assemblyRunner = CreateAssemblyRunner(testCases, executionMessageSink, executionOptions, enableInterClassParallelization))
                     assemblyRunner.RunAsync().Wait();
             }
             finally
             {
                 bddScopeAttribute?.TearDown();
             }
+        }
+
+        private XunitTestAssemblyRunner CreateAssemblyRunner(IEnumerable<IXunitTestCase> testCases,
+            IMessageSink executionMessageSink, ITestFrameworkExecutionOptions executionOptions,
+            bool enableInterClassParallelization)
+        {
+            return enableInterClassParallelization
+                ? new TestFrameworkAssemblyRunner(TestAssembly, testCases, DiagnosticMessageSink, executionMessageSink, executionOptions)
+                : new XunitTestAssemblyRunner(TestAssembly, testCases, DiagnosticMessageSink, executionMessageSink, executionOptions);
         }
 
         private bool ShallEnableInterClassParallelization(Assembly assembly, ITestFrameworkExecutionOptions executionOptions)
