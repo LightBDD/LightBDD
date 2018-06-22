@@ -247,7 +247,7 @@ namespace LightBDD.AcceptanceTests.Features
 
         public async Task Given_the_feature_scenario_has_step_result_with_status_and_tabular_parameter_and_content(string feature, string scenario, string step, ExecutionStatus status, string parameter, params (TableRowType type, string id, string name, string value)[] content)
         {
-            var tabular = TestResults.CreateTabularParameterDetails()
+            var tabular = TestResults.CreateTabularParameterDetails(status == ExecutionStatus.Passed ? ParameterVerificationStatus.Success : ParameterVerificationStatus.Failure)
                 .WithKeyColumns("Id")
                 .WithValueColumns("Name", "Value");
 

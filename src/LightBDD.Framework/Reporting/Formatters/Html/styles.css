@@ -81,7 +81,7 @@ div.param{padding-top:0.3em;}
 td.param, th.param { text-align: left; padding-left: 0.3em; padding-right: 0.3em;}
 th.param.column{ background: #f0f0f0; text-align: left;font-weight: normal;}
 th.param.column.key { font-weight: bold;}
-td.param.type { font-size:0.64em;color: #444444;}
+td.param.type { font-size:0.64em;color: #444444; text-align: center; }
 td.param.value.success {background: #aaffaa}
 td.param.value.failure {background: #ffaaaa;}
 td.param.value.exception {background: #ffaaaa;}

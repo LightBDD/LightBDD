@@ -68,14 +68,13 @@ Feature: My feature [Label 1]
 				|+|Key4|3/<none>|6/<none>|
 				+-+----+--------+--------+
 				table2:
-				+-+----+--------+--------+
-				|#|Key |X       |Y       |
-				+-+----+--------+--------+
-				|=|Key1|1       |2       |
-				|!|Key2|1/2     |4       |
-				|-|Key3|<none>/3|<none>/6|
-				|+|Key4|3/<none>|6/<none>|
-				+-+----+--------+--------+
+				+----+-+-+
+				|Key |X|Y|
+				+----+-+-+
+				|Key1|1|2|
+				|Key2|2|4|
+				|Key3|3|6|
+				+----+-+-+
 				Step 2.3.2: sub-substep 2 - NotRun
 		Details:
 			Step 2: Not implemented yet

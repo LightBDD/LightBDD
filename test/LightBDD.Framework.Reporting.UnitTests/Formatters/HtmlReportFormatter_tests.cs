@@ -72,8 +72,8 @@ Ignored 2.3. substep 3 (0ms)
 Failed 2.3.1. sub-substep 1
 table1:
 # Key X Y
-Key1 1 2
-Key2
+= Key1 1 2
+! Key2
 12
 4
 (missing) Key3
@@ -83,17 +83,10 @@ Key2
 3&lt;none&gt;
 6&lt;none&gt;
 table2:
-# Key X Y
+Key X Y
 Key1 1 2
-Key2
-12
-4
-(missing) Key3
-&lt;none&gt;3
-&lt;none&gt;6
-(surplus) Key4
-3&lt;none&gt;
-6&lt;none&gt;
+Key2 2 4
+Key3 3 6
 NotRun 2.3.2. sub-substep 2
 Step 2: Not implemented yet
 // Step 1: multiline

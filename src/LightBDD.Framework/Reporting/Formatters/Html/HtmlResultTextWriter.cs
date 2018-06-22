@@ -426,33 +426,37 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         private static IEnumerable<IHtmlNode> GetParameterTable(ITabularParameterDetails table)
         {
             var columns = table.Columns.Select(col => Html.Tag(Html5Tag.Th).Class(col.IsKey ? "param column key" : "param column value").Content(col.Name)).ToList();
-            columns.Insert(0, Html.Tag(Html5Tag.Th).Class("param column").Content("#"));
+            var renderRowStatus = table.VerificationStatus != ParameterVerificationStatus.NotApplicable;
+
+            if (renderRowStatus)
+                columns.Insert(0, Html.Tag(Html5Tag.Th).Class("param column").Content("#"));
 
             yield return Html.Tag(Html5Tag.Thead)
                 .Content(Html.Tag(Html5Tag.Tr)
                     .Content(columns));
 
-            yield return Html.Tag(Html5Tag.Tbody).Content(table.Rows.Select(GetParameterTableRow));
+            yield return Html.Tag(Html5Tag.Tbody).Content(table.Rows.Select(row => GetParameterTableRow(row, renderRowStatus)));
         }
 
-        private static IHtmlNode GetParameterTableRow(ITabularParameterRow row)
+        private static IHtmlNode GetParameterTableRow(ITabularParameterRow row, bool renderRowStatus)
         {
             var values = row.Values.Select(GetRowValue).ToList();
-            values.Insert(0, Html.Tag(Html5Tag.Td).Class("param type").Content(GetRowTypeContent(row)));
+            if (renderRowStatus)
+                values.Insert(0, Html.Tag(Html5Tag.Td).Class("param type").Content(GetRowTypeContent(row)));
             return Html.Tag(Html5Tag.Tr).Content(values);
         }
 
         private static string GetRowTypeContent(ITabularParameterRow row)
         {
-            switch (row.Type)
-            {
-                case TableRowType.Surplus:
-                    return "(surplus)";
-                case TableRowType.Missing:
-                    return "(missing)";
-                default:
-                    return " ";
-            }
+            if (row.Type == TableRowType.Surplus)
+                return "(surplus)";
+            if (row.Type == TableRowType.Missing)
+                return "(missing)";
+            if (row.VerificationStatus == ParameterVerificationStatus.Success)
+                return "=";
+            if (row.VerificationStatus == ParameterVerificationStatus.NotApplicable)
+                return " ";
+            return "!";
         }
 
         private static IHtmlNode GetRowValue(IValueResult value)

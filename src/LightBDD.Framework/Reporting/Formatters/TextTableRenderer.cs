@@ -13,9 +13,12 @@ namespace LightBDD.Framework.Reporting.Formatters
     {
         private readonly TextColumn[] _columns;
         private readonly List<TextRow> _rows = new List<TextRow>();
+        private readonly bool _renderRowStatus;
 
         public TextTableRenderer(ITabularParameterDetails table)
         {
+            _renderRowStatus = table.VerificationStatus != ParameterVerificationStatus.NotApplicable;
+
             _columns = table.Columns.Select(c => new TextColumn(c.Name)).ToArray();
             foreach (var row in table.Rows)
                 AddRow(row);
@@ -60,7 +63,9 @@ namespace LightBDD.Framework.Reporting.Formatters
             WriteHRule(writer, prefix);
             writer.WriteLine();
             writer.Write(prefix);
-            writer.Write("|#|");
+            writer.Write("|");
+            if (_renderRowStatus)
+                writer.Write("#|");
             foreach (var column in _columns)
             {
                 column.Render(writer);
@@ -73,7 +78,7 @@ namespace LightBDD.Framework.Reporting.Formatters
             foreach (var row in _rows)
             {
                 writer.Write(prefix);
-                row.Render(writer, _columns);
+                row.Render(writer, _columns, _renderRowStatus);
             }
             WriteHRule(writer, prefix);
         }
@@ -81,7 +86,9 @@ namespace LightBDD.Framework.Reporting.Formatters
         private void WriteHRule(TextWriter writer, string prefix)
         {
             writer.Write(prefix);
-            writer.Write("+-+");
+            if (_renderRowStatus)
+                writer.Write("+-");
+            writer.Write("+");
             foreach (var column in _columns)
             {
                 WriteFill(writer, '-', column.Size);
@@ -131,10 +138,13 @@ namespace LightBDD.Framework.Reporting.Formatters
                 _cells.Add(cell);
             }
 
-            public void Render(TextWriter writer, TextColumn[] columns)
+            public void Render(TextWriter writer, TextColumn[] columns, bool renderRowStatus)
             {
-                writer.Write('|');
-                writer.Write(_status);
+                if (renderRowStatus)
+                {
+                    writer.Write('|');
+                    writer.Write(_status);
+                }
                 writer.Write('|');
                 for (var i = 0; i < _cells.Count; i++)
                 {

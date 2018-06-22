@@ -152,9 +152,9 @@ namespace LightBDD.UnitTests.Helpers
             return new TestInlineParameterDetails(value);
         }
 
-        public static TestTabularParameterDetails CreateTabularParameterDetails()
+        public static TestTabularParameterDetails CreateTabularParameterDetails(ParameterVerificationStatus status)
         {
-            return new TestTabularParameterDetails();
+            return new TestTabularParameterDetails(status);
         }
 
         public static TestTabularParameterDetails WithKeyColumns(this TestTabularParameterDetails details, params string[] columns)
@@ -356,6 +356,11 @@ namespace LightBDD.UnitTests.Helpers
 
         public class TestTabularParameterDetails : ITabularParameterDetails
         {
+            public TestTabularParameterDetails(ParameterVerificationStatus verificationStatus)
+            {
+                VerificationStatus = verificationStatus;
+            }
+
             public string VerificationMessage { get; } = "tabular message";
             public ParameterVerificationStatus VerificationStatus { get; }
             IReadOnlyList<ITabularParameterColumn> ITabularParameterDetails.Columns => Columns;

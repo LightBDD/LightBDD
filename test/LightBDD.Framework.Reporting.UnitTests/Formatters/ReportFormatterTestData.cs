@@ -27,20 +27,19 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
                                     .WithGroupPrefix("2.3.")
                                     .WithComments($"sub-sub-multiline{Environment.NewLine}comment")
                                     .WithStepParameters(
-                                        TestResults.CreateTestParameter("table1", TestResults.CreateTabularParameterDetails()
+                                        TestResults.CreateTestParameter("table1", TestResults.CreateTabularParameterDetails(ParameterVerificationStatus.Failure)
                                             .WithKeyColumns("Key")
                                             .WithValueColumns("X", "Y")
                                             .AddRow(TableRowType.Matching, ParameterVerificationStatus.Success, TestResults.CreateValueResult("Key1"), TestResults.CreateValueResult("1"), TestResults.CreateValueResult("2"))
                                             .AddRow(TableRowType.Matching, ParameterVerificationStatus.Failure, TestResults.CreateValueResult("Key2"), TestResults.CreateValueResult("2", "1", ParameterVerificationStatus.Failure), TestResults.CreateValueResult("4"))
                                             .AddRow(TableRowType.Missing, ParameterVerificationStatus.Failure, TestResults.CreateValueResult("Key3"), TestResults.CreateValueResult("3", "<none>", ParameterVerificationStatus.Failure), TestResults.CreateValueResult("6", "<none>", ParameterVerificationStatus.Failure))
                                             .AddRow(TableRowType.Surplus, ParameterVerificationStatus.Failure, TestResults.CreateValueResult("Key4"), TestResults.CreateValueResult("<none>", "3", ParameterVerificationStatus.Failure), TestResults.CreateValueResult("<none>", "6", ParameterVerificationStatus.Failure))),
-                                        TestResults.CreateTestParameter("table2", TestResults.CreateTabularParameterDetails()
+                                        TestResults.CreateTestParameter("table2", TestResults.CreateTabularParameterDetails(ParameterVerificationStatus.NotApplicable)
                                             .WithKeyColumns("Key")
                                             .WithValueColumns("X", "Y")
-                                            .AddRow(TableRowType.Matching, ParameterVerificationStatus.Success, TestResults.CreateValueResult("Key1"), TestResults.CreateValueResult("1"), TestResults.CreateValueResult("2"))
-                                            .AddRow(TableRowType.Matching, ParameterVerificationStatus.Failure, TestResults.CreateValueResult("Key2"), TestResults.CreateValueResult("2", "1", ParameterVerificationStatus.Failure), TestResults.CreateValueResult("4"))
-                                            .AddRow(TableRowType.Missing, ParameterVerificationStatus.Failure, TestResults.CreateValueResult("Key3"), TestResults.CreateValueResult("3", "<none>", ParameterVerificationStatus.Failure), TestResults.CreateValueResult("6", "<none>", ParameterVerificationStatus.Failure))
-                                            .AddRow(TableRowType.Surplus, ParameterVerificationStatus.Failure, TestResults.CreateValueResult("Key4"), TestResults.CreateValueResult("<none>", "3", ParameterVerificationStatus.Failure), TestResults.CreateValueResult("<none>", "6", ParameterVerificationStatus.Failure))),
+                                            .AddRow(TableRowType.Matching, ParameterVerificationStatus.NotApplicable, TestResults.CreateValueResult("Key1"), TestResults.CreateValueResult("1"), TestResults.CreateValueResult("2"))
+                                            .AddRow(TableRowType.Matching, ParameterVerificationStatus.NotApplicable, TestResults.CreateValueResult("Key2"), TestResults.CreateValueResult("2"), TestResults.CreateValueResult("4"))
+                                            .AddRow(TableRowType.Matching, ParameterVerificationStatus.NotApplicable, TestResults.CreateValueResult("Key3"), TestResults.CreateValueResult("3"), TestResults.CreateValueResult("6"))),
                                         TestResults.CreateTestParameter("inline", TestResults.CreateInlineParameterDetails("foo"))),
                                     TestResults.CreateStepResult(2, "sub-substep 2", ExecutionStatus.NotRun).WithGroupPrefix("2.3."))
                         )),

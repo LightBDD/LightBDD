@@ -60,7 +60,7 @@ namespace LightBDD.Framework.UnitTests.Notification
             stepResult.Parameters = new IParameterResult[]
             {
                 new TestResults.TestParameterResult("table",
-                    TestResults.CreateTabularParameterDetails()
+                    TestResults.CreateTabularParameterDetails(ParameterVerificationStatus.Failure)
                         .WithKeyColumns("Key")
                         .WithValueColumns("Value1", "Value2")
                         .AddRow(TableRowType.Matching,
