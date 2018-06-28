@@ -13,14 +13,14 @@ namespace LightBDD.Framework.Extensibility.Implementation
         public async Task ExecuteAsync(IStep step, Func<Task> stepInvocation)
         {
             var stepProperty = ScenarioExecutionContext.Current.Get<CurrentStepProperty>();
+            var last = stepProperty.Update(step);
             try
             {
-                stepProperty.Step = step;
                 await stepInvocation();
             }
             finally
             {
-                stepProperty.Step = null;
+                stepProperty.Update(last);
             }
         }
     }

@@ -21,7 +21,13 @@ namespace LightBDD.Framework.Extensibility.Implementation
                     return step;
                 throw new InvalidOperationException($"Current task is not executing any scenario steps or current step management feature is not enabled in {nameof(LightBddConfiguration)}. Ensure that configuration.{nameof(ConfigurationExtensions.ExecutionExtensionsConfiguration)}().{nameof(FrameworkConfigurationExtensions.EnableCurrentScenarioTracking)}() is called during LightBDD initialization and feature is used within task running scenario step.");
             }
-            set => _step = value;
+        }
+
+        public IStep Update(IStep newStep)
+        {
+            var old = _step;
+            _step = newStep;
+            return old;
         }
     }
 }
