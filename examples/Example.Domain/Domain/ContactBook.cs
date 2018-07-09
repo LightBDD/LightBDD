@@ -9,12 +9,12 @@ namespace Example.Domain.Domain
 
         public void AddContact(string name, string phone, string email)
         {
-            _contacts.Add(name, new Contact(name, phone, email));
+            _contacts.Add(email, new Contact(name, phone, email));
         }
 
-        public void Remove(string name)
+        public void Remove(string email)
         {
-            _contacts.Remove(name);
+            _contacts.Remove(email);
         }
 
         public IEnumerable<Contact> Contacts => _contacts.Values;
@@ -22,6 +22,11 @@ namespace Example.Domain.Domain
         public IEnumerable<Contact> SearchByPhoneStartingWith(string number)
         {
             return _contacts.Values.Where(x => x.PhoneNumber.StartsWith(number));
+        }
+
+        public IEnumerable<Contact> GetNameSortedContacts()
+        {
+            return Contacts.OrderBy(x => x.Name);
         }
     }
 }

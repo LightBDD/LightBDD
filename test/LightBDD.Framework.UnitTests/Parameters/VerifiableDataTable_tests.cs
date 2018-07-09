@@ -15,7 +15,7 @@ using NUnit.Framework;
 namespace LightBDD.Framework.UnitTests.Parameters
 {
     [TestFixture]
-    public class VerifiableTable_tests
+    public class VerifiableDataTable_tests
     {
         class Base
         {
@@ -45,9 +45,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void ToVerifiableTable_should_infer_columns_from_class_collection()
+        public void ToVerifiableDataTable_should_infer_columns_from_class_collection()
         {
-            TestCollectionToVerifiableTable(new[]
+            TestCollectionToVerifiableDataTable(new[]
                 {
                     new Derived {Field = "a", Name = "b", Text = "c", Value = "d", Virtual = 5},
                     new Derived {Field = "a2", Name = "b2", Text = "c2", Value = "d2", Virtual = 10}
@@ -58,9 +58,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void ToVerifiableTable_should_infer_columns_from_struct_collection()
+        public void ToVerifiableDataTable_should_infer_columns_from_struct_collection()
         {
-            TestCollectionToVerifiableTable(
+            TestCollectionToVerifiableDataTable(
                 new[]
                 {
                     new Point(2, 3),
@@ -72,9 +72,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void ToVerifiableTable_should_infer_columns_from_ValueTuple_collection()
+        public void ToVerifiableDataTable_should_infer_columns_from_ValueTuple_collection()
         {
-            TestCollectionToVerifiableTable(
+            TestCollectionToVerifiableDataTable(
                 new[]
                 {
                     (name: "Joe", surname: "Smith"),
@@ -86,9 +86,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void ToVerifiableTable_should_infer_columns_from_unnamed_ValueTuple_collection()
+        public void ToVerifiableDataTable_should_infer_columns_from_unnamed_ValueTuple_collection()
         {
-            TestCollectionToVerifiableTable(
+            TestCollectionToVerifiableDataTable(
                 new[]
                 {
                     ( "Joe",  "Smith"),
@@ -100,9 +100,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void ToVerifiableTable_should_infer_columns_from_Tuple_collection()
+        public void ToVerifiableDataTable_should_infer_columns_from_Tuple_collection()
         {
-            TestCollectionToVerifiableTable(
+            TestCollectionToVerifiableDataTable(
                 new[]
                 {
                     Tuple.Create("Joe", "Smith"),
@@ -114,9 +114,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void ToVerifiableTable_should_infer_columns_from_Int_collection()
+        public void ToVerifiableDataTable_should_infer_columns_from_Int_collection()
         {
-            TestCollectionToVerifiableTable(
+            TestCollectionToVerifiableDataTable(
                 new[] { 1, 2, 3 },
                 new[] { "Item" },
                 1,
@@ -124,9 +124,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void ToVerifiableTable_should_infer_columns_from_String_collection()
+        public void ToVerifiableDataTable_should_infer_columns_from_String_collection()
         {
-            TestCollectionToVerifiableTable(
+            TestCollectionToVerifiableDataTable(
                 new[] { "t1", "t2", "t3" },
                 new[] { "Item" },
                 1,
@@ -134,9 +134,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void ToVerifiableTable_should_infer_columns_from_Object_collection()
+        public void ToVerifiableDataTable_should_infer_columns_from_Object_collection()
         {
-            TestCollectionToVerifiableTable(
+            TestCollectionToVerifiableDataTable(
                 new object[] { "t1", 2, 'c' },
                 new[] { "Item" },
                 1,
@@ -144,9 +144,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void ToVerifiableTable_should_infer_columns_from_multi_dimensional_collection()
+        public void ToVerifiableDataTable_should_infer_columns_from_multi_dimensional_collection()
         {
-            TestCollectionToVerifiableTable(
+            TestCollectionToVerifiableDataTable(
                 new[]
                 {
                     new[]{1,2},
@@ -159,14 +159,14 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void ToVerifiableTable_should_infer_columns_from_ExpandoObject_collection()
+        public void ToVerifiableDataTable_should_infer_columns_from_ExpandoObject_collection()
         {
             var json = @"[
 {""name"":""John""},
 {""name"":""Sarah"",""surname"":""Smith""},
 {""name"":""Joe"",""surname"":""Smith"",""age"":27}
 ]";
-            TestCollectionToVerifiableTable(
+            TestCollectionToVerifiableDataTable(
                 JsonConvert.DeserializeObject<ExpandoObject[]>(json),
                 new[] { "age", "name", "surname" },
                 1,
@@ -174,7 +174,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void ToVerifiableTable_should_infer_columns_from_dynamic_collection_of_unified_item_types()
+        public void ToVerifiableDataTable_should_infer_columns_from_dynamic_collection_of_unified_item_types()
         {
             var values = new[]
                 {
@@ -184,7 +184,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
                 .Cast<dynamic>()
                 .ToArray();
 
-            TestCollectionToVerifiableTable(
+            TestCollectionToVerifiableDataTable(
                 values,
                 new[] { "X", "Y" },
                 1,
@@ -192,14 +192,14 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void ToVerifiableTable_should_infer_columns_from_Dictionary()
+        public void ToVerifiableDataTable_should_infer_columns_from_Dictionary()
         {
             var input = new Dictionary<string, Point>
             {
                 {"key1", new Point(3, 5)},
                 {"key2", new Point(2, 7)}
             };
-            var table = input.ToVerifiableTable();
+            var table = input.ToVerifiableDataTable();
             AssertColumnNames(table, "Key", "X", "Y");
             Assert.That(table.Columns[0].IsKey, Is.True);
             Assert.That(table.Columns[1].IsKey, Is.False);
@@ -209,14 +209,14 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void ToVerifiableTable_should_allow_defining_custom_columns()
+        public void ToVerifiableDataTable_should_allow_defining_custom_columns()
         {
             var input = new[]
             {
                 new {Id = 123, X = 5, Y = 7}
             };
 
-            var table = input.ToVerifiableTable(r => r
+            var table = input.ToVerifiableDataTable(r => r
                 .WithKey(v => v.Id)
                 .WithKey("Secondary", v => $"{v.Id}_{v.X}_{v.Y}")
                 .WithColumn(v => v.X)
@@ -234,14 +234,14 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void ToVerifiableTable_should_allow_inferring_columns_with_custom_override()
+        public void ToVerifiableDataTable_should_allow_inferring_columns_with_custom_override()
         {
             var input = new[]
             {
                 new {Id = 123, X = 5, Y = 7}
             };
 
-            var table = input.ToVerifiableTable(r => r
+            var table = input.ToVerifiableDataTable(r => r
                 .WithInferredColumns()
                 .WithKey(v => v.Id)
                 .WithColumn("Sum", v => v.X + v.Y)
@@ -264,14 +264,14 @@ namespace LightBDD.Framework.UnitTests.Parameters
                 new {Id = 6, X = 2, Y = 5},
                 new {Id = 7, X = 3, Y = 7}
             };
-            Assert.That(input.ToVerifiableTable().ExpectedRows, Is.EqualTo(input));
+            Assert.That(input.ToVerifiableDataTable().ExpectedRows, Is.EqualTo(input));
         }
 
         [Test]
         public void VerifiableTable_with_no_actual_should_have_NotProvided_status()
         {
             var input = new[] { "abc", "def" };
-            var table = input.ToVerifiableTable();
+            var table = input.ToVerifiableDataTable();
             AssertResultColumnsMatchingTable(table);
             var result = table.Details;
 
@@ -294,7 +294,8 @@ namespace LightBDD.Framework.UnitTests.Parameters
                 new {Id = 7, X = 3, Y = 7}
             };
 
-            var table = input.ToVerifiableTable().SetActual(input);
+            var table = input.ToVerifiableDataTable();
+            table.SetActual(input);
             Assert.That(table.ActualRows, Is.EqualTo(input));
             Assert.That(table.Details.VerificationStatus, Is.Not.EqualTo(ParameterVerificationStatus.NotProvided));
         }
@@ -308,7 +309,8 @@ namespace LightBDD.Framework.UnitTests.Parameters
                 new {Id = 7, X = 3, Y = 7}
             };
 
-            var table = await input.ToVerifiableTable().SetActualAsync(async () => input);
+            var table = input.ToVerifiableDataTable();
+            await table.SetActualAsync(async () => input);
             Assert.That(table.ActualRows, Is.EqualTo(input));
             Assert.That(table.Details.VerificationStatus, Is.Not.EqualTo(ParameterVerificationStatus.NotProvided));
         }
@@ -322,7 +324,8 @@ namespace LightBDD.Framework.UnitTests.Parameters
                     new {Id = 7, X = 3, Y = 7}
                 };
 
-            var table = input.ToVerifiableTable().SetActual(expected => expected);
+            var table = input.ToVerifiableDataTable();
+            table.SetActual(expected => expected);
             Assert.That(table.ActualRows, Is.EqualTo(input));
             Assert.That(table.Details.VerificationStatus, Is.Not.EqualTo(ParameterVerificationStatus.NotProvided));
         }
@@ -336,7 +339,8 @@ namespace LightBDD.Framework.UnitTests.Parameters
                 new {Id = 7, X = 3, Y = 7}
             };
 
-            var table = await input.ToVerifiableTable().SetActualAsync(async expected => expected);
+            var table = input.ToVerifiableDataTable();
+            await table.SetActualAsync(async expected => expected);
             Assert.That(table.ActualRows, Is.EqualTo(input));
             Assert.That(table.Details.VerificationStatus, Is.Not.EqualTo(ParameterVerificationStatus.NotProvided));
         }
@@ -359,7 +363,8 @@ namespace LightBDD.Framework.UnitTests.Parameters
                 new {X = 4, Y = 8}
             };
 
-            var table = expected.ToVerifiableTable().SetActual(actual);
+            var table = expected.ToVerifiableDataTable();
+            table.SetActual(actual);
             AssertResultColumnsMatchingTable(table);
 
             var result = table.Details;
@@ -389,7 +394,8 @@ namespace LightBDD.Framework.UnitTests.Parameters
                 new {X = 3, Y = 6}
             };
 
-            var table = expected.ToVerifiableTable().SetActual(actual);
+            var table = expected.ToVerifiableDataTable();
+            table.SetActual(actual);
             AssertResultColumnsMatchingTable(table);
 
             var result = table.Details;
@@ -415,7 +421,8 @@ namespace LightBDD.Framework.UnitTests.Parameters
                 new {X = 1, Y = 2}
             };
 
-            var table = expected.ToVerifiableTable().SetActual(actual);
+            var table = expected.ToVerifiableDataTable();
+            table.SetActual(actual);
             AssertResultColumnsMatchingTable(table);
 
             var result = table.Details;
@@ -453,12 +460,12 @@ namespace LightBDD.Framework.UnitTests.Parameters
                 new {Key1 = "B", Key2 = 0, Key3 = 0, Value = 105}
             };
 
-            var table = expected.ToVerifiableTable(x => x
+            var table = expected.ToVerifiableDataTable(x => x
                     .WithKey(c => c.Key1)
                     .WithKey(c => c.Key2)
                     .WithKey(c => c.Key3)
-                    .WithColumn(c => c.Value))
-                .SetActual(actual);
+                    .WithColumn(c => c.Value));
+            table.SetActual(actual);
             AssertResultColumnsMatchingTable(table);
 
             var result = table.Details;
@@ -492,9 +499,10 @@ namespace LightBDD.Framework.UnitTests.Parameters
                 new[] {3,6,7,8}
             };
 
-            var table = expected.ToVerifiableTable();
+            var table = expected.ToVerifiableDataTable();
             AssertResultColumnsMatchingTable(table);
-            var result = table.SetActual(actual).Details;
+            table.SetActual(actual);
+            var result = table.Details;
 
             Assert.That(result.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Failure));
             Assert.That(result.Rows.Count, Is.EqualTo(3));
@@ -520,14 +528,15 @@ namespace LightBDD.Framework.UnitTests.Parameters
 
             IEnumerable<dynamic> FromJson(string json) => JsonConvert.DeserializeObject<ExpandoObject[]>(json);
             var table = FromJson(expected)
-                .ToVerifiableTable(b => b.WithInferredColumns()
+                .ToVerifiableDataTable(b => b.WithInferredColumns()
                     .WithKey("Surname", x => x.Surname)
                     .WithKey("Name", x => x.Name)
                     .WithColumn<string>("ContactType", x => x.ContactType, value => Expect.To.MatchIgnoreCase(value))
                 );
 
             AssertResultColumnsMatchingTable(table);
-            var result = table.SetActual(FromJson(actual)).Details;
+            table.SetActual(FromJson(actual));
+            var result = table.Details;
 
             Assert.That(result.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Failure));
             Assert.That(result.Rows.Count, Is.EqualTo(3));
@@ -542,7 +551,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         {
             var expected = Enumerable.Range(0, 100).Select(i => i).ToArray();
             var delay = TimeSpan.FromMilliseconds(500);
-            var table = expected.ToVerifiableTable();
+            var table = expected.ToVerifiableDataTable();
 
             var stopwatch = Stopwatch.StartNew();
             await table.SetActualAsync(async exp =>
@@ -560,10 +569,10 @@ namespace LightBDD.Framework.UnitTests.Parameters
         public void SetActual_with_lookup_should_capture_exceptions()
         {
             var expected = new[] { 1, 2, 3 };
-            var result = expected
-                .ToVerifiableTable()
-                .SetActual(v => v % 2 == 0 ? v : throw new Exception($"Reason {v}"))
-                .Details;
+            var table = expected.ToVerifiableDataTable();
+            table.SetActual(v => v % 2 == 0 ? v : throw new Exception($"Reason {v}"));
+
+            var result = table.Details;
 
             Assert.That(result.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Failure));
             Assert.That(result.Rows.Count, Is.EqualTo(3));
@@ -581,13 +590,13 @@ namespace LightBDD.Framework.UnitTests.Parameters
         public async Task SetActualAsync_with_lookup_should_capture_exceptions()
         {
             var expected = new[] { 1, 2, 3 };
-            var table = await expected
-                .ToVerifiableTable()
-                .SetActualAsync(async v =>
-                {
-                    await Task.Yield();
-                    return v % 2 == 0 ? v : throw new Exception($"Reason {v}");
-                });
+            var table = expected.ToVerifiableDataTable();
+
+            await table.SetActualAsync(async v =>
+            {
+                await Task.Yield();
+                return v % 2 == 0 ? v : throw new Exception($"Reason {v}");
+            });
             var result = table.Details;
 
             Assert.That(result.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Failure));
@@ -606,18 +615,16 @@ namespace LightBDD.Framework.UnitTests.Parameters
         public void SetActual_with_lookup_should_make_Actual_property_returning_default_values_for_rows_with_exceptions()
         {
             var expected = new[] { 1, 2, 3, 4 };
-            var result = expected
-                .ToVerifiableTable()
-                .SetActual(v => v % 2 == 0 ? v : throw new Exception(v.ToString()))
-                .ActualRows;
+            var table = expected.ToVerifiableDataTable();
+            table.SetActual(v => v % 2 == 0 ? v : throw new Exception(v.ToString()));
 
-            Assert.That(result, Is.EqualTo(new[] { 0, 2, 0, 4 }));
+            Assert.That(table.ActualRows, Is.EqualTo(new[] { 0, 2, 0, 4 }));
         }
 
         [Test]
         public void SetActual_should_be_callable_once()
         {
-            var table = new[] { 1 }.ToVerifiableTable();
+            var table = new[] { 1 }.ToVerifiableDataTable();
             table.SetActual(e => e);
 
             var ex = Assert.Throws<InvalidOperationException>(() => table.SetActual(e => e));
@@ -630,7 +637,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         [Test]
         public async Task SetActualAsync_should_capture_exception()
         {
-            var table = Enumerable.Empty<int>().ToVerifiableTable();
+            var table = Enumerable.Empty<int>().ToVerifiableDataTable();
             await table.SetActualAsync(() => throw new Exception("foo"));
             Assert.That(table.Details.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Exception));
             Assert.That(table.Details.VerificationMessage, Is.EqualTo("Failed to retrieve rows: foo"));
@@ -640,7 +647,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         [Test]
         public async Task SetActualAsync_should_capture_exception_and_still_should_be_callable_once()
         {
-            var table = Enumerable.Empty<int>().ToVerifiableTable();
+            var table = Enumerable.Empty<int>().ToVerifiableDataTable();
             await table.SetActualAsync(() => throw new Exception("foo"));
 
             var ex = Assert.Throws<InvalidOperationException>(() => table.SetActual(e => e));
@@ -650,7 +657,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         [Test]
         public void SetActual_should_not_accept_nulls()
         {
-            var table = Enumerable.Empty<int>().ToVerifiableTable();
+            var table = Enumerable.Empty<int>().ToVerifiableDataTable();
             Assert.Throws<ArgumentNullException>(() => table.SetActual((IEnumerable<int>)null));
             Assert.Throws<ArgumentNullException>(() => table.SetActual((Func<int, int>)null));
             Assert.ThrowsAsync<ArgumentNullException>(() => table.SetActualAsync((Func<Task<IEnumerable<int>>>)null));
@@ -681,9 +688,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
             Assert.That(actual, Is.EqualTo(expectedValues));
         }
 
-        private static void TestCollectionToVerifiableTable<T>(T[] input, string[] expectedColumns, int index, ColumnValue[] expectedValues)
+        private static void TestCollectionToVerifiableDataTable<T>(T[] input, string[] expectedColumns, int index, ColumnValue[] expectedValues)
         {
-            var table = input.ToVerifiableTable();
+            var table = input.ToVerifiableDataTable();
             Assert.That(table.Columns.All(x => !x.IsKey), Is.True);
             AssertColumnNames(table, expectedColumns);
             AssertValues(table, input[index], expectedValues);

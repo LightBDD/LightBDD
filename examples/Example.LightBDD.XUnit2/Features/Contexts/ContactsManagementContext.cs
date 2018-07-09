@@ -73,7 +73,7 @@ namespace Example.LightBDD.XUnit2.Features.Contexts
         private void RemoveContact(Contact contact)
         {
             _removedContacts.Add(contact);
-            _contactBook.Remove(contact.Name);
+            _contactBook.Remove(contact.Email);
         }
 
         public void Then_the_contact_book_should_be_empty()
@@ -100,26 +100,25 @@ namespace Example.LightBDD.XUnit2.Features.Contexts
             _contactBook.AddContact(contact.Name, contact.PhoneNumber, contact.Email);
         }
 
-        public void Given_I_added_contact_with_name_phone_and_email(string name, string phone, string email)
-        {
-            AddContact(new Contact(name, phone, email));
-        }
-
         public void When_I_search_for_contacts_by_phone_starting_with(string with)
         {
             _searchResults = _contactBook.SearchByPhoneStartingWith(with).ToArray();
         }
 
-        public void Then_the_result_should_contain_name_with_phone_and_email(string name, Verifiable<string> phone, Verifiable<string> email)
+        public void Then_I_should_receive_contacts(VerifiableTable<Contact> contacts)
         {
-            var contact = _searchResults.First(x => x.Name == name);
-            phone.SetActual(contact.PhoneNumber);
-            email.SetActual(contact.Email);
+            contacts.SetActual(_searchResults);
         }
 
-        public void Then_I_should_receive_contacts(VerifiableTable<KeyValuePair<string, Contact>> contacts)
+        public void Given_I_added_contacts(InputTable<Contact> contacts)
         {
-            contacts.SetActual(_searchResults.ToDictionary(x => x.Name, x => x));
+            foreach (var contact in contacts)
+                AddContact(contact);
+        }
+
+        public void When_I_request_contacts_sorted_by_name()
+        {
+            _searchResults = _contactBook.GetNameSortedContacts().ToArray();
         }
     }
 }

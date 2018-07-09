@@ -106,9 +106,6 @@
       <DependentUpon>Calculator_feature.cs</DependentUpon>
     </Compile>
     <Compile Include="Features\Contacts_management.cs" />
-    <Compile Include="Features\Contacts_management.Steps.cs">
-      <DependentUpon>Contacts_management.cs</DependentUpon>
-    </Compile>
     <Compile Include="Features\Contexts\ContactsManagementContext.cs" />
     <Compile Include="Features\Contexts\SpeditionContext.cs" />
     <Compile Include="Features\Customer_journey.cs" />

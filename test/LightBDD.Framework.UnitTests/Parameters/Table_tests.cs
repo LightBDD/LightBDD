@@ -265,12 +265,12 @@ namespace LightBDD.Framework.UnitTests.Parameters
             AssertValues(table, input[index], expectedValues);
         }
 
-        private static void AssertValues<T>(Table<T> table, T row, params ColumnValue[] expectedValues)
+        private static void AssertValues<T>(InputTable<T> table, T row, params ColumnValue[] expectedValues)
         {
             Assert.That(table.Columns.Select(c => c.GetValue(row)).ToArray(), Is.EqualTo(expectedValues));
         }
 
-        private static void AssertColumnNames<T>(Table<T> table, params string[] expectedColumns)
+        private static void AssertColumnNames<T>(InputTable<T> table, params string[] expectedColumns)
         {
             Assert.That(table.Columns.Select(c => c.Name).ToArray(), Is.EqualTo(expectedColumns));
         }

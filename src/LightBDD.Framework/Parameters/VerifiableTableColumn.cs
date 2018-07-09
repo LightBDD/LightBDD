@@ -9,7 +9,7 @@ namespace LightBDD.Framework.Parameters
     /// Type representing <see cref="VerifiableTable{TRow}"/> column.
     /// </summary>
     [DebuggerStepThrough]
-    public class VerifiableTableColumn : TableColumn
+    public class VerifiableTableColumn : InputTableColumn
     {
         /// <summary>
         /// Returns true if column is a key column.

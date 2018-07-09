@@ -3,7 +3,7 @@ namespace LightBDD.Core.Results.Parameters.Tabular
     /// <summary>
     /// Tabular parameter result table row type.
     /// </summary>
-    public enum TableRowType
+    public enum TableRowType : byte
     {
         /// <summary>
         /// Matching row
