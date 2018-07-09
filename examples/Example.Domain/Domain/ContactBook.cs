@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Example.Domain.Domain
 {
@@ -9,12 +10,17 @@ namespace Example.Domain.Domain
 
         public void AddContact(string name, string phone, string email)
         {
-            _contacts.Add(name, new Contact(name, phone, email));
+            _contacts.Add(email, new Contact(name, FormatPhone(phone), email?.ToLowerInvariant()));
         }
 
-        public void Remove(string name)
+        private string FormatPhone(string phone)
         {
-            _contacts.Remove(name);
+            return phone.Replace(" ", "").Replace("-", "").Replace("+", "");
+        }
+
+        public void Remove(string email)
+        {
+            _contacts.Remove(email);
         }
 
         public IEnumerable<Contact> Contacts => _contacts.Values;
@@ -22,6 +28,11 @@ namespace Example.Domain.Domain
         public IEnumerable<Contact> SearchByPhoneStartingWith(string number)
         {
             return _contacts.Values.Where(x => x.PhoneNumber.StartsWith(number));
+        }
+
+        public IEnumerable<Contact> GetNameSortedContacts()
+        {
+            return Contacts.OrderBy(x => x.Name);
         }
     }
 }

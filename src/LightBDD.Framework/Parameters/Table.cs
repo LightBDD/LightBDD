@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -7,17 +8,88 @@ using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Formatting.Values;
+using LightBDD.Framework.Parameters.Implementation;
 using LightBDD.Framework.Results.Implementation;
 
 namespace LightBDD.Framework.Parameters
 {
+    /// <summary>
+    /// Table extensions allowing to create <see cref="Table{TRow}"/>.
+    /// </summary>
+    [DebuggerStepThrough]
+    public static class Table
+    {
+        /// <summary>
+        /// Returns <see cref="Table{TRow}"/> with inferred columns and rows specified by <paramref name="items"/> collection.
+        /// </summary>
+        /// <param name="items">Table rows.</param>
+        /// <returns>Table</returns>
+        public static Table<T> ToTable<T>(this IEnumerable<T> items)
+        {
+            return CreateFor(items.ToArray());
+        }
+
+        /// <summary>
+        /// Returns <see cref="Table{TRow}"/> with inferred columns and rows specified by <paramref name="items"/> collection.
+        /// </summary>
+        /// <param name="items">Table rows.</param>
+        /// <returns>Table</returns>
+        public static Table<T> CreateFor<T>(params T[] items)
+        {
+            var columns = TableColumnProvider.InferColumns(items).Select(TableColumn.FromColumnInfo);
+            return new Table<T>(columns, items);
+        }
+
+        /// <summary>
+        /// Returns <see cref="Table{TRow}"/> with inferred columns and rows specified by <paramref name="items"/> collection.
+        /// </summary>
+        /// <param name="items">Table rows.</param>
+        /// <returns>Table</returns>
+        public static Table<KeyValuePair<TKey, TValue>> ToTable<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> items)
+        {
+            var rows = items.OrderBy(x => x.Key).ToArray();
+            var values = rows.Select(x => x.Value).ToArray();
+            var valueColumns = TableColumnProvider.InferColumns(values).Select(i => new TableColumn(i.Name,
+                pair => i.GetValue(((KeyValuePair<TKey, TValue>)pair).Value)));
+            var columns = new[] { new TableColumn("Key", x => ColumnValue.From(((KeyValuePair<TKey, TValue>)x).Key)) }
+                .Concat(valueColumns);
+            return new Table<KeyValuePair<TKey, TValue>>(columns, rows);
+        }
+
+        /// <summary>
+        /// Returns <see cref="Table{TRow}"/> defined by <paramref name="tableDefinitionBuilder"/> and rows specified by <paramref name="items"/> collection.
+        /// </summary>
+        /// <param name="items">Table rows.</param>
+        /// <param name="tableDefinitionBuilder">Table definition builder.</param>
+        /// <returns>Table</returns>
+        public static Table<T> ToTable<T>(this IEnumerable<T> items, Action<ITableBuilder<T>> tableDefinitionBuilder)
+        {
+            var builder = new TableBuilder<T>();
+            tableDefinitionBuilder(builder);
+            return builder.Build(items);
+        }
+
+        /// <summary>
+        /// Returns <see cref="Table{TRow}"/> defined by <paramref name="tableDefinitionBuilder"/> and rows specified by <paramref name="items"/> collection.
+        /// </summary>
+        /// <param name="items">Table rows.</param>
+        /// <param name="tableDefinitionBuilder">Table definition builder.</param>
+        /// <returns>Table</returns>
+        public static Table<T> CreateFor<T>(Action<ITableBuilder<T>> tableDefinitionBuilder, params T[] items)
+        {
+            var builder = new TableBuilder<T>();
+            tableDefinitionBuilder(builder);
+            return builder.Build(items);
+        }
+    }
+
     /// <summary>
     /// Type representing tabular step parameter.
     /// When used in step methods, the tabular representation of the parameter will be rendered in reports and progress notification.<br/>
     ///
     /// Beside special rendering, the table behaves as a standard collection, i.e it offers <see cref="Count"/>, <see cref="GetEnumerator()"/> and indexing operator members.<br/>
     ///
-    /// Please see <see cref="TableExtensions"/> type to learn how to create tables effectively.
+    /// Please see <see cref="Table"/> type to learn how to create tables effectively.
     /// </summary>
     /// <typeparam name="TRow">Row type.</typeparam>
     [DebuggerStepThrough]
@@ -97,4 +169,6 @@ namespace LightBDD.Framework.Parameters
             return GetEnumerator();
         }
     }
+
+
 }

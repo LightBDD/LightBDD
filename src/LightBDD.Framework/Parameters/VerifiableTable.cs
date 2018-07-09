@@ -10,6 +10,7 @@ using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Formatting.Values;
+using LightBDD.Framework.Parameters.Implementation;
 using LightBDD.Framework.Results.Implementation;
 
 namespace LightBDD.Framework.Parameters
@@ -19,18 +20,14 @@ namespace LightBDD.Framework.Parameters
     /// When used in step methods, the tabular representation of the parameter will be rendered in reports and progress notification, including verification details.<br/>
     /// The table rows and column values will be verified independently, and included in the reports, where any unsuccessful verification will make step to fail.
     ///
-    /// Please see <see cref="TableExtensions"/> type to learn how to create tables effectively.
+    /// Please see <see cref="VerifiableTable"/> type to learn how to create tables effectively.
     /// </summary>
     /// <typeparam name="TRow">Row type.</typeparam>
     [DebuggerStepThrough]
     public class VerifiableTable<TRow> : IComplexParameter, ISelfFormattable
     {
-        private IValueFormattingService _formattingService = ValueFormattingServices.Current;
+        internal IValueFormattingService _formattingService = ValueFormattingServices.Current;
         private TabularParameterDetails _details;
-        /// <summary>
-        /// Returns list of expected rows.
-        /// </summary>
-        public IReadOnlyList<TRow> ExpectedRows { get; }
         /// <summary>
         /// Returns list of actual rows, or null if actual rows were not provided.
         /// </summary>
@@ -46,18 +43,16 @@ namespace LightBDD.Framework.Parameters
         public ITabularParameterDetails Details => GetResultLazily();
 
         /// <summary>
-        /// Constructor creating verifiable table with specified <paramref name="columns"/> and <paramref name="expectedRows"/>.
+        /// Constructor creating verifiable table with specified <paramref name="columns"/>.
         /// </summary>
         /// <param name="columns">Table columns.</param>
-        /// <param name="expectedRows">Table rows.</param>
-        public VerifiableTable(IEnumerable<VerifiableTableColumn> columns, IEnumerable<TRow> expectedRows)
+        public VerifiableTable(IEnumerable<VerifiableTableColumn> columns)
         {
-            ExpectedRows = expectedRows.ToArray();
             Columns = columns.OrderByDescending(x => x.IsKey).ToArray();
         }
 
         /// <summary>
-        /// Sets the actual rows specified by <paramref name="actualRows"/> parameter and verifies them against <see cref="ExpectedRows"/> collection.
+        /// Sets the actual rows specified by <paramref name="actualRows"/> parameter and verifies them against expectations.
         /// </summary>
         /// <param name="actualRows">Actual rows.</param>
         /// <returns>Self.</returns>
@@ -69,7 +64,7 @@ namespace LightBDD.Framework.Parameters
                 throw new ArgumentNullException(nameof(actualRows));
 
             EnsureActualNotSet();
-            return SetMatchedActual(MatchRows(ExpectedRows, actualRows.ToArray()));
+            return SetMatchedActual(MatchRows(actualRows.ToArray()));
         }
 
         /// <summary>
@@ -96,7 +91,7 @@ namespace LightBDD.Framework.Parameters
             {
                 _details = new TabularParameterDetails(
                     GetColumns(),
-                    ExpectedRows.Select(ToMissingRow),
+                    GetExpectedRows(),
                     ParameterVerificationStatus.Exception,
                     new InvalidOperationException($"Failed to retrieve rows: {ex.Message}", ex));
                 ActualRows = new TRow[0];
@@ -105,74 +100,13 @@ namespace LightBDD.Framework.Parameters
             return SetActual(actualCollection);
         }
 
-        /// <summary>
-        /// Sets the actual rows by calling <paramref name="actualRowLookup"/> for each expected row and verifies them against <see cref="ExpectedRows"/> collection.<br/>
-        /// If evaluation of <paramref name="actualRowLookup"/> throws, the exception will be included in the report, but won't be propagated out of this method.
-        /// </summary>
-        /// <param name="actualRowLookup">Actual row lookup function that will be called for each expected row.</param>
-        /// <returns>Self.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="actualRowLookup"/> is null.</exception>
-        /// <exception cref="InvalidOperationException">Thrown if <see cref="ActualRows"/> collection has been already set.</exception>
-        public VerifiableTable<TRow> SetActual(Func<TRow, TRow> actualRowLookup)
-        {
-            if (actualRowLookup == null)
-                throw new ArgumentNullException(nameof(actualRowLookup));
-
-            EnsureActualNotSet();
-            return SetMatchedActual(ExpectedRows.Select(e => new RowMatch(TableRowType.Matching, e, Evaluate(actualRowLookup, e))));
-        }
-
-        /// <summary>
-        /// Sets the actual rows by calling <paramref name="actualRowLookup"/> for each expected row and verifies them against <see cref="ExpectedRows"/> collection.<br/>
-        /// If evaluation of <paramref name="actualRowLookup"/> throws, the exception will be included in the report, but won't be propagated out of this method.<br/>
-        ///
-        /// Please note that async <paramref name="actualRowLookup"/> calls will be executed concurrently (<see cref="Task.WhenAll(System.Collections.Generic.IEnumerable{System.Threading.Tasks.Task})"/> is used).
-        /// </summary>
-        /// <param name="actualRowLookup">Actual row lookup function that will be called for each expected row.</param>
-        /// <returns>Self.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="actualRowLookup"/> is null.</exception>
-        /// <exception cref="InvalidOperationException">Thrown if <see cref="ActualRows"/> collection has been already set.</exception>
-        public async Task<VerifiableTable<TRow>> SetActualAsync(Func<TRow, Task<TRow>> actualRowLookup)
-        {
-            if (actualRowLookup == null)
-                throw new ArgumentNullException(nameof(actualRowLookup));
-
-            EnsureActualNotSet();
-            var results = await Task.WhenAll(ExpectedRows.Select(e => EvaluateAsync(actualRowLookup, e)));
-            return SetMatchedActual(ExpectedRows.Zip(results, (e, a) => new RowMatch(TableRowType.Matching, e, a)));
-        }
-
-        private void EnsureActualNotSet()
+        internal void EnsureActualNotSet()
         {
             if (ActualRows != null)
                 throw new InvalidOperationException("Actual rows have been already specified");
         }
 
-        private static ActualRowValue Evaluate(Func<TRow, TRow> provideActualFn, TRow row)
-        {
-            try
-            {
-                return provideActualFn(row);
-            }
-            catch (Exception ex)
-            {
-                return new ActualRowValue(ex);
-            }
-        }
-
-        private async Task<ActualRowValue> EvaluateAsync(Func<TRow, Task<TRow>> provideActualFn, TRow row)
-        {
-            try
-            {
-                return await provideActualFn(row);
-            }
-            catch (Exception ex)
-            {
-                return new ActualRowValue(ex);
-            }
-        }
-
-        private VerifiableTable<TRow> SetMatchedActual(IEnumerable<RowMatch> results)
+        internal VerifiableTable<TRow> SetMatchedActual(IEnumerable<RowMatch> results)
         {
             var matches = results.ToArray();
             _details = new TabularParameterDetails(GetColumns(), GetRows(matches));
@@ -195,22 +129,23 @@ namespace LightBDD.Framework.Parameters
                 var expected = row.Expected != null ? c.GetValue(row.Expected) : ColumnValue.None;
                 var actual = row.Actual.Exception == null && row.Actual.Value != null ? c.GetValue(row.Actual.Value) : ColumnValue.None;
                 var result = VerifyExpectation(expected, actual, c.Expectation);
-                return new ValueResult(
-                    _formattingService.FormatValue(expected),
-                    _formattingService.FormatValue(actual),
-                    result ? ParameterVerificationStatus.Success : ParameterVerificationStatus.Failure,
-                    result ? null : $"{c.Name}: {result.Message}"
-                );
+                return GetValueResult(expected, actual, result, c);
             });
             return new TabularParameterRow(index, row.Type, values, row.Actual.Exception);
         }
 
-        private ExpectationResult VerifyExpectation(ColumnValue expected, ColumnValue actual, Func<object, IExpectation<object>> columnExpectation)
+        internal virtual ValueResult GetValueResult(ColumnValue expected, ColumnValue actual, ExpectationResult result, VerifiableTableColumn column)
         {
-            if (expected.HasValue && !actual.HasValue)
-                return ExpectationResult.Failure("missing value");
-            if (!expected.HasValue && actual.HasValue)
-                return ExpectationResult.Failure("unexpected value");
+            return new ValueResult(
+                column.Expectation(null).Format(_formattingService),
+                _formattingService.FormatValue(actual),
+                result ? ParameterVerificationStatus.Success : ParameterVerificationStatus.Failure,
+                result ? null : $"{column.Name}: {result.Message}"
+            );
+        }
+
+        internal virtual ExpectationResult VerifyExpectation(ColumnValue expected, ColumnValue actual, Func<object, IExpectation<object>> columnExpectation)
+        {
             return columnExpectation.Invoke(expected.Value).Verify(actual.Value, _formattingService);
         }
 
@@ -228,22 +163,20 @@ namespace LightBDD.Framework.Parameters
         {
             if (_details != null)
                 return _details;
-            return _details = new TabularParameterDetails(GetColumns(), ExpectedRows.Select(ToMissingRow), ParameterVerificationStatus.NotProvided);
+            return _details = new TabularParameterDetails(GetColumns(), GetExpectedRows(), ParameterVerificationStatus.NotProvided);
         }
 
-        private ITabularParameterRow ToMissingRow(TRow row, int index)
+        internal virtual IEnumerable<ITabularParameterRow> GetExpectedRows()
         {
-            var values = Columns.Select(c =>
+            var columns = Columns
+                .Select(x => x.Expectation(null))
+                .Select(x => new ValueResult(x.Format(_formattingService), string.Empty, ParameterVerificationStatus.NotApplicable, string.Empty))
+                .ToArray();
+
+            return new[]
             {
-                var expected = c.GetValue(row);
-                return new ValueResult(
-                    _formattingService.FormatValue(expected),
-                    _formattingService.FormatValue(ColumnValue.None),
-                    ParameterVerificationStatus.NotProvided,
-                    $"{c.Name}: Value not provided"
-                );
-            });
-            return new TabularParameterRow(index, TableRowType.Missing, values);
+                new TabularParameterRow(0, TableRowType.Missing, columns)
+            };
         }
 
         /// <summary>
@@ -255,7 +188,7 @@ namespace LightBDD.Framework.Parameters
         }
 
         [DebuggerStepThrough]
-        private struct RowMatch
+        internal struct RowMatch
         {
             public TableRowType Type { get; }
             public TRow Expected { get; }
@@ -269,7 +202,7 @@ namespace LightBDD.Framework.Parameters
             }
         }
 
-        private struct ActualRowValue
+        internal struct ActualRowValue
         {
             public ActualRowValue(TRow value)
             {
@@ -289,42 +222,23 @@ namespace LightBDD.Framework.Parameters
             public static implicit operator ActualRowValue(TRow row) => new ActualRowValue(row);
         }
 
-        private IEnumerable<RowMatch> MatchRows(IReadOnlyList<TRow> expected, IReadOnlyList<TRow> actual)
+        internal virtual IEnumerable<RowMatch> MatchRows(IReadOnlyList<TRow> actual)
         {
-            if (!Columns.Any(c => c.IsKey))
-            {
-                return expected
-                    .Zip(actual, (e, a) => new RowMatch(TableRowType.Matching, e, a))
-                    .Concat(expected.Skip(actual.Count).Select(e => new RowMatch(TableRowType.Missing, e, default(ActualRowValue))))
-                    .Concat(actual.Skip(expected.Count).Select(a => new RowMatch(TableRowType.Surplus, default(TRow), a)));
-            }
-
-            var result = new List<RowMatch>(expected.Count);
-            var keySelector = Columns.Where(x => x.IsKey).Select(x => x.GetValue).ToArray();
-
-            var remaining = actual.Select(x => new KeyValuePair<int[], TRow>(GetHashes(keySelector,x), x)).ToList();
-            foreach (var e in expected)
-            {
-                var eHash = GetHashes(keySelector,e);
-                var index = remaining.FindIndex(r => r.Key.SequenceEqual(eHash));
-                if (index >= 0)
-                {
-                    result.Add(new RowMatch(TableRowType.Matching, e, remaining[index].Value));
-                    remaining.RemoveAt(index);
-                }
-                else
-                    result.Add(new RowMatch(TableRowType.Missing, e, default(TRow)));
-            }
-
-            foreach (var r in remaining)
-                result.Add(new RowMatch(TableRowType.Surplus, default(TRow), r.Value));
-
-            return result;
+            return actual.Select(a => new RowMatch(TableRowType.Matching, default(TRow), a));
         }
+    }
 
-        private static int[] GetHashes(Func<object, ColumnValue>[] keySelector, TRow row)
+    /// <summary>
+    /// Table extensions allowing to create <see cref="VerifiableTable{TRow}"/> from collections.
+    /// </summary>
+    [DebuggerStepThrough]
+    public static class VerifiableTable
+    {
+        public static VerifiableTable<T> Create<T>(Action<IVerifiableTableBuilder<T>> tableDefinitionBuilder)
         {
-            return keySelector.Select(s => s.Invoke(row).Value?.GetHashCode() ?? 0).ToArray();
+            var builder = new VerifiableTableBuilder<T>();
+            tableDefinitionBuilder(builder);
+            return builder.Build();
         }
     }
 }
