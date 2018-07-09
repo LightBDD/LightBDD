@@ -10,28 +10,30 @@ namespace LightBDD.Framework.UnitTests.Expectations
     {
         protected override IEnumerable<IExpectationScenario> GetScenarios()
         {
-            yield return new ExpectationScenario<string>("matches 'fi?e*.txt'",
-                    x => x.Match("fi?e*.txt"))
-                .WithMatchingValues("file.txt", "file123.txt", "fine123.txt", "fine.txt")
-                .WithNotMatchingValue(null, "expected: matches 'fi?e*.txt', but got: '<null>'")
-                .WithNotMatchingValue("File.txt", "expected: matches 'fi?e*.txt', but got: 'File.txt'")
-                .WithNotMatchingValue("afile.txt", "expected: matches 'fi?e*.txt', but got: 'afile.txt'");
+            yield return new ExpectationScenario<string>(
+                    "matches 'fi.e[0-9]+.txt'",
+                    x => x.Match("fi.e[0-9]+.txt"))
+                .WithMatchingValues("file1.txt", "file123.txt", "fine123.txt")
+                .WithNotMatchingValue(null, "expected: matches 'fi.e[0-9]+.txt', but got: '<null>'")
+                .WithNotMatchingValue("File.txt", "expected: matches 'fi.e[0-9]+.txt', but got: 'File.txt'")
+                .WithNotMatchingValue("file.txt", "expected: matches 'fi.e[0-9]+.txt', but got: 'file.txt'")
+                .WithNotMatchingValue("afile1.txt", "expected: matches 'fi.e[0-9]+.txt', but got: 'afile1.txt'")
+                .WithNotMatchingValue("fine123.txt2", "expected: matches 'fi.e[0-9]+.txt', but got: 'fine123.txt2'");
 
-            yield return new ExpectationScenario<string>("matches 'no###'",
-                    x => x.Match("no###"))
-                .WithMatchingValues("no000", "no123")
-                .WithNotMatchingValue(null, "expected: matches 'no###', but got: '<null>'")
-                .WithNotMatchingValue("no1", "expected: matches 'no###', but got: 'no1'")
-                .WithNotMatchingValue("no1234", "expected: matches 'no###', but got: 'no1234'")
-                .WithNotMatchingValue("noabc", "expected: matches 'no###', but got: 'noabc'");
 
-            yield return new ExpectationScenario<string>("matches 'no###' ignore case",
-                    x => x.MatchIgnoreCase("no###"))
-                .WithMatchingValues("no000", "nO123", "No123")
-                .WithNotMatchingValue(null, "expected: matches 'no###' ignore case, but got: '<null>'")
-                .WithNotMatchingValue("no1", "expected: matches 'no###' ignore case, but got: 'no1'")
-                .WithNotMatchingValue("no1234", "expected: matches 'no###' ignore case, but got: 'no1234'")
-                .WithNotMatchingValue("noabc", "expected: matches 'no###' ignore case, but got: 'noabc'");
+            yield return new ExpectationScenario<string>(
+                    "matches 'fi.e[0-9]+.txt' ignore case",
+                    x => x.MatchIgnoreCase("fi.e[0-9]+.txt"))
+                .WithMatchingValues("fILE1.tXt", "fIle123.txt", "FINE123.txt")
+                .WithNotMatchingValue(null, "expected: matches 'fi.e[0-9]+.txt' ignore case, but got: '<null>'")
+                .WithNotMatchingValue("file.txt", "expected: matches 'fi.e[0-9]+.txt' ignore case, but got: 'file.txt'")
+                .WithNotMatchingValue("afile1.txt", "expected: matches 'fi.e[0-9]+.txt' ignore case, but got: 'afile1.txt'")
+                .WithNotMatchingValue("fine123.txt2", "expected: matches 'fi.e[0-9]+.txt' ignore case, but got: 'fine123.txt2'");
+
+            yield return new ExpectationScenario<string>(
+                    "matches '.*some-text.*'",
+                    x => x.Match(".*some-text.*"))
+                .WithMatchingValues("some-text", "awesome-texture");
         }
     }
 }

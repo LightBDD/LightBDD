@@ -157,9 +157,9 @@ namespace LightBDD.Framework.Expectations
         /// </summary>
         /// <param name="composer">Composer</param>
         /// <param name="pattern">Expected pattern</param>
-        public static Expectation<string> Match(this IExpectationComposer composer, string pattern)
+        public static Expectation<string> BeLike(this IExpectationComposer composer, string pattern)
         {
-            return Match(composer, pattern, RegexOptions.None, $"matches '{pattern}'");
+            return BeLike(composer, pattern, RegexOptions.None, $"like '{pattern}'");
         }
 
         /// <summary>
@@ -174,12 +174,12 @@ namespace LightBDD.Framework.Expectations
         /// </summary>
         /// <param name="composer">Composer</param>
         /// <param name="pattern">Expected pattern</param>
-        public static Expectation<string> MatchIgnoreCase(this IExpectationComposer composer, string pattern)
+        public static Expectation<string> BeLikeIgnoreCase(this IExpectationComposer composer, string pattern)
         {
-            return Match(composer, pattern, RegexOptions.IgnoreCase, $"matches '{pattern}' ignore case");
+            return BeLike(composer, pattern, RegexOptions.IgnoreCase, $"like '{pattern}' ignore case");
         }
 
-        private static Expectation<string> Match(IExpectationComposer composer, string pattern, RegexOptions options, string format)
+        private static Expectation<string> BeLike(IExpectationComposer composer, string pattern, RegexOptions options, string format)
         {
             var regexPattern = "^" + Regex.Escape(pattern).Replace("\\?", ".").Replace("\\*", ".*").Replace("\\#", "\\d") + "$";
             var regex = new Regex(regexPattern, options);
@@ -191,9 +191,9 @@ namespace LightBDD.Framework.Expectations
         /// </summary>
         /// <param name="composer">Composer</param>
         /// <param name="pattern">Expected pattern</param>
-        public static Expectation<string> MatchRegex(this IExpectationComposer composer, string pattern)
+        public static Expectation<string> Match(this IExpectationComposer composer, string pattern)
         {
-            return MatchRegex(composer, pattern, RegexOptions.None, $"matches regex '{pattern}'");
+            return Match(composer, pattern, RegexOptions.None, $"matches '{pattern}'");
         }
 
         /// <summary>
@@ -201,12 +201,12 @@ namespace LightBDD.Framework.Expectations
         /// </summary>
         /// <param name="composer">Composer</param>
         /// <param name="pattern">Expected pattern</param>
-        public static Expectation<string> MatchRegexIgnoreCase(this IExpectationComposer composer, string pattern)
+        public static Expectation<string> MatchIgnoreCase(this IExpectationComposer composer, string pattern)
         {
-            return MatchRegex(composer, pattern, RegexOptions.IgnoreCase, $"matches regex '{pattern}' ignore case");
+            return Match(composer, pattern, RegexOptions.IgnoreCase, $"matches '{pattern}' ignore case");
         }
 
-        private static Expectation<string> MatchRegex(IExpectationComposer composer, string pattern, RegexOptions options, string format)
+        private static Expectation<string> Match(IExpectationComposer composer, string pattern, RegexOptions options, string format)
         {
             var regex = new Regex($"^{pattern}$", options);
             return composer.ComposeSimple(formatter => format, (string value) => value != null && regex.IsMatch(value));

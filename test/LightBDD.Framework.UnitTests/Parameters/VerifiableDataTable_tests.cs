@@ -531,7 +531,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
                 .ToVerifiableDataTable(b => b.WithInferredColumns()
                     .WithKey("Surname", x => x.Surname)
                     .WithKey("Name", x => x.Name)
-                    .WithColumn<string>("ContactType", x => x.ContactType, value => Expect.To.MatchIgnoreCase(value))
+                    .WithColumn<string>("ContactType", x => x.ContactType, value => Expect.To.BeLikeIgnoreCase(value))
                 );
 
             AssertResultColumnsMatchingTable(table);

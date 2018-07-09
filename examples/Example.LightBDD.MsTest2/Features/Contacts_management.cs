@@ -116,8 +116,8 @@ I want to add, browse and remove my contacts")]
                 c => c.When_I_request_contacts_sorted_by_name(),
                 c => c.Then_I_should_receive_contacts(Table.Validate<Contact>(b => b
                     .WithColumn(x => x.Name, Expect.To.Not.BeEmpty())
-                    .WithColumn(x => x.Email, Expect.To.MatchRegex("[a-z0-9.-]+@[a-z0-9.-]+"))
-                    .WithColumn(x => x.PhoneNumber, Expect.To.MatchRegex("[0-9]{10,14}"))
+                    .WithColumn(x => x.Email, Expect.To.Match("[a-z0-9.-]+@[a-z0-9.-]+"))
+                    .WithColumn(x => x.PhoneNumber, Expect.To.Match("[0-9]{10,14}"))
                 )));
         }
     }
