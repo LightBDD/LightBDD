@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Example.Domain.Domain;
 using Example.LightBDD.XUnit2.Features.Contexts;
 using LightBDD.Framework;
@@ -7,7 +6,6 @@ using LightBDD.Framework.Parameters;
 using LightBDD.Framework.Scenarios.Contextual;
 using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.XUnit2;
-using Xunit;
 
 namespace Example.LightBDD.XUnit2.Features
 {

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Example.Domain.Domain;
 using Example.LightBDD.NUnit2.Features.Contexts;
 using LightBDD.Framework;

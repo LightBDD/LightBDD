@@ -4,7 +4,6 @@ using System.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility;
-using LightBDD.Framework.Commenting;
 using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Dependencies;
 using LightBDD.Framework.Extensibility;
