@@ -8,7 +8,7 @@ namespace LightBDD.Framework.Parameters
     /// Interface allowing to define <see cref="VerifiableTable{TRow}"/>.
     /// </summary>
     /// <typeparam name="TRow">Type of table row.</typeparam>
-    public interface IExpectedTableBuilder<TRow>
+    public interface IVerifiableDataTableBuilder<TRow>
     {
         /// <summary>
         /// Defines column, based on <paramref name="columnExpression"/>.
@@ -20,7 +20,7 @@ namespace LightBDD.Framework.Parameters
         /// <param name="columnExpression">Field/property accessor expression</param>
         /// <exception cref="InvalidOperationException">Thrown if <paramref name="columnExpression"/> is not member expression.</exception>
         /// <returns>Self</returns>
-        IExpectedTableBuilder<TRow> WithColumn<TValue>(Expression<Func<TRow, TValue>> columnExpression);
+        IVerifiableDataTableBuilder<TRow> WithColumn<TValue>(Expression<Func<TRow, TValue>> columnExpression);
 
         /// <summary>
         /// Defines column, based on <paramref name="columnExpression"/>.
@@ -33,7 +33,7 @@ namespace LightBDD.Framework.Parameters
         /// <param name="expectationFn">Function returning column expectation expression.</param>
         /// <exception cref="InvalidOperationException">Thrown if <paramref name="columnExpression"/> is not member expression.</exception>
         /// <returns>Self</returns>
-        IExpectedTableBuilder<TRow> WithColumn<TValue>(Expression<Func<TRow, TValue>> columnExpression, Func<TValue, IExpectation<TValue>> expectationFn);
+        IVerifiableDataTableBuilder<TRow> WithColumn<TValue>(Expression<Func<TRow, TValue>> columnExpression, Func<TValue, IExpectation<TValue>> expectationFn);
 
         /// <summary>
         /// Defines column, based on <paramref name="columnExpression"/>.
@@ -46,7 +46,7 @@ namespace LightBDD.Framework.Parameters
         /// <param name="columnExpression">Field/property accessor expression</param>
         /// <param name="expectationFn">Function returning column expectation expression.</param>
         /// <returns>Self</returns>
-        IExpectedTableBuilder<TRow> WithColumn<TValue>(string columnName, Func<TRow, TValue> columnExpression, Func<TValue, IExpectation<TValue>> expectationFn);
+        IVerifiableDataTableBuilder<TRow> WithColumn<TValue>(string columnName, Func<TRow, TValue> columnExpression, Func<TValue, IExpectation<TValue>> expectationFn);
 
         /// <summary>
         /// Defines column, based on <paramref name="columnExpression"/>.
@@ -58,7 +58,7 @@ namespace LightBDD.Framework.Parameters
         /// <param name="columnName">Column name.</param>
         /// <param name="columnExpression">Field/property accessor expression</param>
         /// <returns>Self</returns>
-        IExpectedTableBuilder<TRow> WithColumn<TValue>(string columnName, Func<TRow, TValue> columnExpression);
+        IVerifiableDataTableBuilder<TRow> WithColumn<TValue>(string columnName, Func<TRow, TValue> columnExpression);
 
         /// <summary>
         /// Defines column, based on <paramref name="columnExpression"/>.
@@ -71,7 +71,7 @@ namespace LightBDD.Framework.Parameters
         /// <param name="expectation">Function returning column expectation expression.</param>
         /// <exception cref="InvalidOperationException">Thrown if <paramref name="columnExpression"/> is not member expression.</exception>
         /// <returns>Self</returns>
-        IExpectedTableBuilder<TRow> WithColumn<TValue>(Expression<Func<TRow, TValue>> columnExpression, IExpectation<TValue> expectation);
+        IVerifiableDataTableBuilder<TRow> WithColumn<TValue>(Expression<Func<TRow, TValue>> columnExpression, IExpectation<TValue> expectation);
 
         /// <summary>
         /// Defines column, based on <paramref name="columnExpression"/>.
@@ -84,7 +84,7 @@ namespace LightBDD.Framework.Parameters
         /// <param name="columnExpression">Field/property accessor expression</param>
         /// <param name="expectation">Function returning column expectation expression.</param>
         /// <returns>Self</returns>
-        IExpectedTableBuilder<TRow> WithColumn<TValue>(string columnName, Func<TRow, TValue> columnExpression, IExpectation<TValue> expectation);
+        IVerifiableDataTableBuilder<TRow> WithColumn<TValue>(string columnName, Func<TRow, TValue> columnExpression, IExpectation<TValue> expectation);
 
         /// <summary>
         /// Defines key column, based on <paramref name="columnExpression"/>.
@@ -96,7 +96,7 @@ namespace LightBDD.Framework.Parameters
         /// <param name="columnExpression">Field/property accessor expression</param>
         /// <exception cref="InvalidOperationException">Thrown if <paramref name="columnExpression"/> is not member expression.</exception>
         /// <returns>Self</returns>
-        IExpectedTableBuilder<TRow> WithKey<TValue>(Expression<Func<TRow, TValue>> columnExpression);
+        IVerifiableDataTableBuilder<TRow> WithKey<TValue>(Expression<Func<TRow, TValue>> columnExpression);
 
         /// <summary>
         /// Defines key column, based on <paramref name="columnExpression"/>.
@@ -109,7 +109,7 @@ namespace LightBDD.Framework.Parameters
         /// <param name="expectationFn">Function returning column expectation expression.</param>
         /// <exception cref="InvalidOperationException">Thrown if <paramref name="columnExpression"/> is not member expression.</exception>
         /// <returns>Self</returns>
-        IExpectedTableBuilder<TRow> WithKey<TValue>(Expression<Func<TRow, TValue>> columnExpression, Func<TValue, IExpectation<TValue>> expectationFn);
+        IVerifiableDataTableBuilder<TRow> WithKey<TValue>(Expression<Func<TRow, TValue>> columnExpression, Func<TValue, IExpectation<TValue>> expectationFn);
 
         /// <summary>
         /// Defines key column, based on <paramref name="columnExpression"/>.
@@ -122,7 +122,7 @@ namespace LightBDD.Framework.Parameters
         /// <param name="columnExpression">Field/property accessor expression</param>
         /// <param name="expectationFn">Function returning column expectation expression.</param>
         /// <returns>Self</returns>
-        IExpectedTableBuilder<TRow> WithKey<TValue>(string columnName, Func<TRow, TValue> columnExpression, Func<TValue, IExpectation<TValue>> expectationFn);
+        IVerifiableDataTableBuilder<TRow> WithKey<TValue>(string columnName, Func<TRow, TValue> columnExpression, Func<TValue, IExpectation<TValue>> expectationFn);
 
         /// <summary>
         /// Defines key column, based on <paramref name="columnExpression"/>.
@@ -134,7 +134,7 @@ namespace LightBDD.Framework.Parameters
         /// <param name="columnName">Column name.</param>
         /// <param name="columnExpression">Field/property accessor expression</param>
         /// <returns>Self</returns>
-        IExpectedTableBuilder<TRow> WithKey<TValue>(string columnName, Func<TRow, TValue> columnExpression);
+        IVerifiableDataTableBuilder<TRow> WithKey<TValue>(string columnName, Func<TRow, TValue> columnExpression);
 
         /// <summary>
         /// Defines key column, based on <paramref name="columnExpression"/>.
@@ -147,7 +147,7 @@ namespace LightBDD.Framework.Parameters
         /// <param name="expectation">Function returning column expectation expression.</param>
         /// <exception cref="InvalidOperationException">Thrown if <paramref name="columnExpression"/> is not member expression.</exception>
         /// <returns>Self</returns>
-        IExpectedTableBuilder<TRow> WithKey<TValue>(Expression<Func<TRow, TValue>> columnExpression, IExpectation<TValue> expectation);
+        IVerifiableDataTableBuilder<TRow> WithKey<TValue>(Expression<Func<TRow, TValue>> columnExpression, IExpectation<TValue> expectation);
 
         /// <summary>
         /// Defines key column, based on <paramref name="columnExpression"/>.
@@ -160,15 +160,15 @@ namespace LightBDD.Framework.Parameters
         /// <param name="columnExpression">Field/property accessor expression</param>
         /// <param name="expectation">Function returning column expectation expression.</param>
         /// <returns>Self</returns>
-        IExpectedTableBuilder<TRow> WithKey<TValue>(string columnName, Func<TRow, TValue> columnExpression, IExpectation<TValue> expectation);
+        IVerifiableDataTableBuilder<TRow> WithKey<TValue>(string columnName, Func<TRow, TValue> columnExpression, IExpectation<TValue> expectation);
 
 
         /// <summary>
-        /// Instructs <see cref="ITableBuilder{TRow}"/> to infer columns basing on the <typeparamref name="TRow"/> type.
+        /// Instructs <see cref="IInputTableBuilder{TRow}"/> to infer columns basing on the <typeparamref name="TRow"/> type.
         /// It is possible to use this methods together with <c>WithColumn() / WithKey()</c> methods, where manually specified columns will override inferred columns of the same name.
         /// The inferred columns will always use <c>Expect.To.Equal(value)</c> expression for verifying column values.
         /// </summary>
         /// <returns>Self.</returns>
-        IExpectedTableBuilder<TRow> WithInferredColumns();
+        IVerifiableDataTableBuilder<TRow> WithInferredColumns();
     }
 }

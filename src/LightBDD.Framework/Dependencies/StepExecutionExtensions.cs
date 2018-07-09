@@ -4,7 +4,7 @@ using LightBDD.Framework.Configuration;
 using LightBDD.Framework.ExecutionContext;
 using LightBDD.Framework.Extensibility.Implementation;
 
-namespace LightBDD.Framework.Commenting
+namespace LightBDD.Framework.Dependencies
 {
     /// <summary>
     /// Extension class for <see cref="StepExecution"/> allowing to access dependency resolver used by this step.

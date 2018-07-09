@@ -5,10 +5,10 @@ using LightBDD.Framework.Parameters.Implementation;
 namespace LightBDD.Framework.Parameters
 {
     /// <summary>
-    /// Type representing <see cref="Table{TRow}"/> column.
+    /// Type representing <see cref="InputTable{TRow}"/> column.
     /// </summary>
     [DebuggerStepThrough]
-    public class TableColumn
+    public class InputTableColumn
     {
         /// <summary>
         /// Column name.
@@ -24,15 +24,15 @@ namespace LightBDD.Framework.Parameters
         /// </summary>
         /// <param name="name">Column name.</param>
         /// <param name="getValue">Function providing column value for specified row object.</param>
-        public TableColumn(string name, Func<object, ColumnValue> getValue)
+        public InputTableColumn(string name, Func<object, ColumnValue> getValue)
         {
             Name = name;
             GetValue = getValue;
         }
 
-        internal static TableColumn FromColumnInfo(ColumnInfo columnInfo)
+        internal static InputTableColumn FromColumnInfo(ColumnInfo columnInfo)
         {
-            return new TableColumn(columnInfo.Name, columnInfo.GetValue);
+            return new InputTableColumn(columnInfo.Name, columnInfo.GetValue);
         }
     }
 }

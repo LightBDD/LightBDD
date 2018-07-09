@@ -1,174 +1,168 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using LightBDD.Core.Execution;
-using LightBDD.Core.Formatting.Values;
-using LightBDD.Core.Results.Parameters;
-using LightBDD.Core.Results.Parameters.Tabular;
-using LightBDD.Framework.Formatting.Values;
+using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters.Implementation;
-using LightBDD.Framework.Results.Implementation;
 
 namespace LightBDD.Framework.Parameters
 {
     /// <summary>
-    /// Table extensions allowing to create <see cref="Table{TRow}"/>.
+    /// Static class allowing to create various type of table parameters.
     /// </summary>
-    [DebuggerStepThrough]
     public static class Table
     {
         /// <summary>
-        /// Returns <see cref="Table{TRow}"/> with inferred columns and rows specified by <paramref name="items"/> collection.
+        /// Returns <see cref="InputTable{TRow}"/> with inferred columns and rows specified by <paramref name="items"/> collection.
         /// </summary>
         /// <param name="items">Table rows.</param>
         /// <returns>Table</returns>
-        public static Table<T> ToTable<T>(this IEnumerable<T> items)
+        public static InputTable<TRow> ToTable<TRow>(this IEnumerable<TRow> items)
         {
-            return CreateFor(items.ToArray());
+            if (items == null) throw new ArgumentNullException(nameof(items));
+            return For(items.ToArray());
         }
 
         /// <summary>
-        /// Returns <see cref="Table{TRow}"/> with inferred columns and rows specified by <paramref name="items"/> collection.
+        /// Returns <see cref="InputTable{TRow}"/> with inferred columns and rows specified by <paramref name="items"/> collection.
         /// </summary>
         /// <param name="items">Table rows.</param>
         /// <returns>Table</returns>
-        public static Table<T> CreateFor<T>(params T[] items)
-        {
-            var columns = TableColumnProvider.InferColumns(items).Select(TableColumn.FromColumnInfo);
-            return new Table<T>(columns, items);
-        }
-
-        /// <summary>
-        /// Returns <see cref="Table{TRow}"/> with inferred columns and rows specified by <paramref name="items"/> collection.
-        /// </summary>
-        /// <param name="items">Table rows.</param>
-        /// <returns>Table</returns>
-        public static Table<KeyValuePair<TKey, TValue>> ToTable<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> items)
+        public static InputTable<KeyValuePair<TKey, TValue>> ToTable<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> items)
         {
             var rows = items.OrderBy(x => x.Key).ToArray();
             var values = rows.Select(x => x.Value).ToArray();
-            var valueColumns = TableColumnProvider.InferColumns(values).Select(i => new TableColumn(i.Name,
+            var valueColumns = TableColumnProvider.InferColumns(values).Select(i => new InputTableColumn(i.Name,
                 pair => i.GetValue(((KeyValuePair<TKey, TValue>)pair).Value)));
-            var columns = new[] { new TableColumn("Key", x => ColumnValue.From(((KeyValuePair<TKey, TValue>)x).Key)) }
+            var columns = new[] { new InputTableColumn("Key", x => ColumnValue.From(((KeyValuePair<TKey, TValue>)x).Key)) }
                 .Concat(valueColumns);
-            return new Table<KeyValuePair<TKey, TValue>>(columns, rows);
+            return new InputTable<KeyValuePair<TKey, TValue>>(columns, rows);
         }
 
         /// <summary>
-        /// Returns <see cref="Table{TRow}"/> defined by <paramref name="tableDefinitionBuilder"/> and rows specified by <paramref name="items"/> collection.
+        /// Returns <see cref="InputTable{TRow}"/> defined by <paramref name="definitionBuilder"/> and rows specified by <paramref name="items"/> collection.
         /// </summary>
         /// <param name="items">Table rows.</param>
-        /// <param name="tableDefinitionBuilder">Table definition builder.</param>
+        /// <param name="definitionBuilder">Table definition builder.</param>
         /// <returns>Table</returns>
-        public static Table<T> ToTable<T>(this IEnumerable<T> items, Action<ITableBuilder<T>> tableDefinitionBuilder)
+        public static InputTable<T> ToTable<T>(this IEnumerable<T> items, Action<IInputTableBuilder<T>> definitionBuilder)
         {
-            var builder = new TableBuilder<T>();
-            tableDefinitionBuilder(builder);
+            var builder = new InputTableBuilder<T>();
+            definitionBuilder(builder);
             return builder.Build(items);
         }
 
         /// <summary>
-        /// Returns <see cref="Table{TRow}"/> defined by <paramref name="tableDefinitionBuilder"/> and rows specified by <paramref name="items"/> collection.
+        /// Returns <see cref="InputTable{TRow}"/> with inferred columns and rows specified by <paramref name="items"/> collection.
         /// </summary>
         /// <param name="items">Table rows.</param>
-        /// <param name="tableDefinitionBuilder">Table definition builder.</param>
         /// <returns>Table</returns>
-        public static Table<T> CreateFor<T>(Action<ITableBuilder<T>> tableDefinitionBuilder, params T[] items)
+        public static InputTable<TRow> For<TRow>(params TRow[] items)
         {
-            var builder = new TableBuilder<T>();
-            tableDefinitionBuilder(builder);
+            if (items == null) throw new ArgumentNullException(nameof(items));
+            var columns = TableColumnProvider.InferColumns(items).Select(InputTableColumn.FromColumnInfo);
+            return new InputTable<TRow>(columns, items);
+        }
+
+        /// <summary>
+        /// Returns <see cref="InputTable{TRow}"/> defined by <paramref name="definitionBuilder"/> and rows specified by <paramref name="items"/> collection.
+        /// </summary>
+        /// <param name="items">Table rows.</param>
+        /// <param name="definitionBuilder">Table definition builder.</param>
+        /// <returns>Table</returns>
+        public static InputTable<T> For<T>(Action<IInputTableBuilder<T>> definitionBuilder, params T[] items)
+        {
+            var builder = new InputTableBuilder<T>();
+            definitionBuilder(builder);
             return builder.Build(items);
         }
+
+        /// <summary>
+        /// Returns <see cref="TableValidator{TRow}"/> defined by <paramref name="definitionBuilder"/>.
+        /// </summary>
+        /// <param name="definitionBuilder">Definition builder.</param>
+        /// <returns></returns>
+        public static TableValidator<TRow> Validate<TRow>(Action<ITableValidatorBuilder<TRow>> definitionBuilder)
+        {
+            var builder = new TableValidatorBuilder<TRow>();
+            definitionBuilder(builder);
+            return builder.Build();
+        }
+
+        /// <summary>
+        /// Returns <see cref="VerifiableDataTable{TRow}"/> with inferred columns and rows specified by <paramref name="items"/> collection.<br/>
+        ///
+        /// The created table will have no key columns (the row verification will be index based).<br/>
+        /// All columns will use equality expression for verifying values.
+        /// </summary>
+        /// <param name="items">Table rows.</param>
+        /// <returns>Verifiable table</returns>
+        public static VerifiableDataTable<TRow> ExpectData<TRow>(params TRow[] items)
+        {
+            var columns = TableColumnProvider.InferColumns(items, true).Select(VerifiableTableColumn.FromColumnInfo);
+            return new VerifiableDataTable<TRow>(columns, items);
+        }
+
+        /// <summary>
+        /// Returns <see cref="VerifiableDataTable{TRow}"/> defined by <paramref name="definitionBuilder"/> and rows specified by <paramref name="items"/> collection.<br/>
+        /// </summary>
+        /// <param name="items">Table rows.</param>
+        /// <param name="definitionBuilder">Table definition builder.</param>
+        /// <returns>Verifiable table</returns>
+        public static VerifiableDataTable<TRow> ExpectData<TRow>(Action<IVerifiableDataTableBuilder<TRow>> definitionBuilder, params TRow[] items)
+        {
+            var builder = new VerifiableDataTableBuilder<TRow>();
+            definitionBuilder(builder);
+            return builder.Build(items);
+        }
+
+        /// <summary>
+        /// Returns <see cref="VerifiableDataTable{TRow}"/> with inferred columns and rows specified by <paramref name="items"/> collection.<br/>
+        ///
+        /// The created table will have no key columns (the row verification will be index based).<br/>
+        /// All columns will use equality expression for verifying values.
+        /// </summary>
+        /// <param name="items">Table rows.</param>
+        /// <returns>Verifiable table</returns>
+        public static VerifiableDataTable<T> ToVerifiableDataTable<T>(this IEnumerable<T> items)
+        {
+            return ExpectData(items.ToArray());
+        }
+
+        /// <summary>
+        /// Returns <see cref="VerifiableDataTable{TRow}"/> defined by <paramref name="definitionBuilder"/> and rows specified by <paramref name="items"/> collection.<br/>
+        /// </summary>
+        /// <param name="items">Table rows.</param>
+        /// <param name="definitionBuilder">Table definition builder.</param>
+        /// <returns>Verifiable table</returns>
+        public static VerifiableDataTable<T> ToVerifiableDataTable<T>(this IEnumerable<T> items, Action<IVerifiableDataTableBuilder<T>> definitionBuilder)
+        {
+            var builder = new VerifiableDataTableBuilder<T>();
+            definitionBuilder(builder);
+            return builder.Build(items);
+        }
+
+        /// <summary>
+        /// Returns <see cref="VerifiableDataTableBuilder{TRow}"/> with inferred columns and rows specified by <paramref name="items"/> collection.<br/>
+        ///
+        /// The created table will use Key column to compare rows.<br/>
+        /// All columns will use equality expression for verifying values.
+        /// </summary>
+        /// <param name="items">Table rows.</param>
+        /// <returns>Verifiable table</returns>
+        public static VerifiableDataTable<KeyValuePair<TKey, TValue>> ToVerifiableDataTable<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> items)
+        {
+            var rows = items.OrderBy(x => x.Key).ToArray();
+            var values = rows.Select(x => x.Value).ToArray();
+            var valueColumns = TableColumnProvider.InferColumns(values).Select(i => new VerifiableTableColumn(i.Name,
+                false,
+                pair => i.GetValue(((KeyValuePair<TKey, TValue>)pair).Value), Expect.To.Equal));
+            var columns = new[]
+                {
+                    new VerifiableTableColumn("Key", true, x => ColumnValue.From(((KeyValuePair<TKey, TValue>) x).Key),
+                        Expect.To.Equal)
+                }
+                .Concat(valueColumns);
+            return new VerifiableDataTable<KeyValuePair<TKey, TValue>>(columns, rows);
+        }
     }
-
-    /// <summary>
-    /// Type representing tabular step parameter.
-    /// When used in step methods, the tabular representation of the parameter will be rendered in reports and progress notification.<br/>
-    ///
-    /// Beside special rendering, the table behaves as a standard collection, i.e it offers <see cref="Count"/>, <see cref="GetEnumerator()"/> and indexing operator members.<br/>
-    ///
-    /// Please see <see cref="Table"/> type to learn how to create tables effectively.
-    /// </summary>
-    /// <typeparam name="TRow">Row type.</typeparam>
-    [DebuggerStepThrough]
-    public class Table<TRow> : IComplexParameter, ISelfFormattable, IReadOnlyList<TRow>
-    {
-        private readonly IReadOnlyList<TRow> _rows;
-        private readonly TableColumn[] _columns;
-        private IValueFormattingService _formattingService = ValueFormattingServices.Current;
-
-        /// <summary>
-        /// Constructor creating table with specified <paramref name="columns"/> and <paramref name="rows"/>
-        /// </summary>
-        /// <param name="columns">Table columns.</param>
-        /// <param name="rows">Table rows.</param>
-        public Table(IEnumerable<TableColumn> columns, IReadOnlyList<TRow> rows)
-        {
-            _rows = rows;
-            _columns = columns.ToArray();
-        }
-
-        void IComplexParameter.SetValueFormattingService(IValueFormattingService formattingService)
-        {
-            _formattingService = formattingService;
-        }
-
-        IParameterDetails IComplexParameter.Details => new TabularParameterDetails(GetColumns(), GetRows());
-
-        private IEnumerable<ITabularParameterRow> GetRows()
-        {
-            return _rows.Select(GetRow);
-        }
-
-        private ITabularParameterRow GetRow(TRow row, int index)
-        {
-            return new TabularParameterRow(index, _columns.Select(x => _formattingService.FormatValue(x.GetValue(row))));
-        }
-
-        private IEnumerable<ITabularParameterColumn> GetColumns()
-        {
-            return _columns.Select(x => new TabularParameterColumn(x.Name, false));
-        }
-
-        /// <summary>
-        /// Returns inline representation of table.
-        /// </summary>
-        public string Format(IValueFormattingService formattingService)
-        {
-            return "<table>";
-        }
-
-        /// <summary>
-        /// Returns number of rows.
-        /// </summary>
-        public int Count => _rows.Count;
-
-        /// <summary>
-        /// Returns enumerator for the table rows.
-        /// </summary>
-        public IEnumerator<TRow> GetEnumerator()
-        {
-            return _rows.AsEnumerable().GetEnumerator();
-        }
-
-        /// <summary>
-        /// Returns row at specified <paramref name="index"/>.
-        /// </summary>
-        /// <param name="index">Row index</param>
-        public TRow this[int index] => _rows[index];
-
-        /// <summary>
-        /// Returns columns collection.
-        /// </summary>
-        public IReadOnlyList<TableColumn> Columns => _columns;
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-    }
-
-
 }

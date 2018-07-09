@@ -106,19 +106,12 @@ namespace Example.LightBDD.XUnit2.Features.Contexts
             _searchResults = _contactBook.SearchByPhoneStartingWith(with).ToArray();
         }
 
-        public void Then_the_result_should_contain_name_with_phone_and_email(string name, Verifiable<string> phone, Verifiable<string> email)
-        {
-            var contact = _searchResults.First(x => x.Name == name);
-            phone.SetActual(contact.PhoneNumber);
-            email.SetActual(contact.Email);
-        }
-
         public void Then_I_should_receive_contacts(VerifiableTable<Contact> contacts)
         {
             contacts.SetActual(_searchResults);
         }
 
-        public void Given_I_added_contacts(Table<Contact> contacts)
+        public void Given_I_added_contacts(InputTable<Contact> contacts)
         {
             foreach (var contact in contacts)
                 AddContact(contact);

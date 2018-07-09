@@ -72,7 +72,7 @@ I want to add, browse and remove my contacts")]
                 c => c.Given_I_added_contact_with_name_phone_and_email("Emily", "111-222-5556", "emily1@gmail.com"),
 
                 c => c.When_I_search_for_contacts_by_phone_starting_with("111"),
-                c => c.Then_I_should_receive_contacts(new Dictionary<string, Contact> { { "John", new Contact("John", "111-333-444", "jo@hotmail.com") } }.ToVerifiableTable()),
+                c => c.Then_I_should_receive_contacts(new Dictionary<string, Contact> { { "John", new Contact("John", "111-333-444", "jo@hotmail.com") } }.ToVerifiableDataTable()),
                 c => c.Then_the_result_should_contain_name_with_phone_and_email("John", Expect.To.Match("111*"), "john123@gmail.com"),
                 c => c.Then_the_result_should_contain_name_with_phone_and_email("Emily", Expect.To.Match("111*").And(x => x.MatchRegex("[0-9]{3}(-[0-9]{3}){2}")), "emily1@gmail.com")
             );

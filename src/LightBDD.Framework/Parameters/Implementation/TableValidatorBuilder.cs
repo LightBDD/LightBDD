@@ -8,11 +8,11 @@ using LightBDD.Framework.Expectations;
 namespace LightBDD.Framework.Parameters.Implementation
 {
     [DebuggerStepThrough]
-    internal class VerifiableTableBuilder<TRow> : AbstractTableBuilder<TRow, VerifiableTableColumn>, IVerifiableTableBuilder<TRow>
+    internal class TableValidatorBuilder<TRow> : AbstractTableBuilder<TRow, VerifiableTableColumn>, ITableValidatorBuilder<TRow>
     {
-        public VerifiableTable<TRow> Build()
+        public TableValidator<TRow> Build()
         {
-            return new VerifiableTable<TRow>(BuildColumns(new TRow[0]));
+            return new TableValidator<TRow>(BuildColumns(new TRow[0]));
         }
 
         protected override VerifiableTableColumn CreateColumn(ColumnInfo columnInfo)
@@ -20,17 +20,17 @@ namespace LightBDD.Framework.Parameters.Implementation
             return VerifiableTableColumn.FromColumnInfo(columnInfo);
         }
 
-        public IVerifiableTableBuilder<TRow> WithColumn<TValue>(Expression<Func<TRow, TValue>> columnExpression, IExpectation<TValue> expectation)
+        public ITableValidatorBuilder<TRow> WithColumn<TValue>(Expression<Func<TRow, TValue>> columnExpression, IExpectation<TValue> expectation)
         {
             return Add(Reflector.GetMemberName(columnExpression), false, columnExpression.Compile(), _ => expectation);
         }
 
-        public IVerifiableTableBuilder<TRow> WithColumn<TValue>(string columnName, Func<TRow, TValue> columnExpression, IExpectation<TValue> expectation)
+        public ITableValidatorBuilder<TRow> WithColumn<TValue>(string columnName, Func<TRow, TValue> columnExpression, IExpectation<TValue> expectation)
         {
             return Add(columnName, false, columnExpression, _ => expectation);
         }
 
-        private IVerifiableTableBuilder<TRow> Add<TValue>(string columnName, bool isKey, Func<TRow, TValue> columnExpression, Func<TValue, IExpectation<TValue>> expectationFn)
+        private ITableValidatorBuilder<TRow> Add<TValue>(string columnName, bool isKey, Func<TRow, TValue> columnExpression, Func<TValue, IExpectation<TValue>> expectationFn)
         {
             AddCustomColumn(new VerifiableTableColumn(
                 columnName,

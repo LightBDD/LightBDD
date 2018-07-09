@@ -67,14 +67,14 @@ I want to add, browse and remove my contacts")]
         {
             Runner.WithContext<ContactsManagementContext>().RunScenario(
                 c => c.Given_my_contact_book_is_empty(),
-                c => c.Given_I_added_contacts(Table.CreateFor(
+                c => c.Given_I_added_contacts(Table.For(
                     new Contact("John", "111-222-333", "john123@gmail.com"),
                     new Contact("John", "111-303-404", "jo@hotmail.com"),
                     new Contact("Greg", "213-444-444", "greg22@gmail.com"),
                     new Contact("Emily", "111-222-5556", "emily1@gmail.com"),
                     new Contact("Kathy", "111-555-330", "ka321@gmail.com"))),
                 c => c.When_I_search_for_contacts_by_phone_starting_with("111"),
-                c => c.Then_I_should_receive_contacts(ExpectedTable.CreateFor(
+                c => c.Then_I_should_receive_contacts(Table.ExpectData(
                     b => b.WithInferredColumns()
                         .WithKey(x => x.Name),
                     new Contact("Emily", "1112225556", "emily1@gmail.com"),
@@ -89,13 +89,13 @@ I want to add, browse and remove my contacts")]
         {
             Runner.WithContext<ContactsManagementContext>().RunScenario(
                 c => c.Given_my_contact_book_is_empty(),
-                c => c.Given_I_added_contacts(Table.CreateFor(
+                c => c.Given_I_added_contacts(Table.For(
                     new Contact("John", "111-222-333", "john123@gmail.com"),
                     new Contact("Greg", "213-444-444", "greg22@gmail.com"),
                     new Contact("Emily", "111-222-5556", "emily1@gmail.com"),
                     new Contact("Kathy", "111-555-330", "ka321@gmail.com"))),
                 c => c.When_I_request_contacts_sorted_by_name(),
-                c => c.Then_I_should_receive_contacts(ExpectedTable.CreateFor(
+                c => c.Then_I_should_receive_contacts(Table.ExpectData(
                     new Contact("Emily", "1112225556", "emily1@gmail.com"),
                     new Contact("Greg", "213444444", "greg22@gmail.com"),
                     new Contact("John", "111222333", "john123@gmail.com"),
@@ -106,13 +106,13 @@ I want to add, browse and remove my contacts")]
         public void Normalizing_contact_details()
         {
             Runner.WithContext<ContactsManagementContext>().RunScenario(
-                c => c.Given_I_added_contacts(Table.CreateFor(
+                c => c.Given_I_added_contacts(Table.For(
                     new Contact("John", "+44 11 233 44 555", "John253@MYMAIL.com"),
                     new Contact("Jenny", "11 233 4455", "JENNY213@MYMAIL.com"),
                     new Contact("Jerry", "1-12-33-44-55-6", "jerry123@MYMAIL.com"),
                     new Contact("Josh", "12 111 333 444", "jos#@mymail.com"))),
                 c => c.When_I_request_contacts_sorted_by_name(),
-                c => c.Then_I_should_receive_contacts(VerifiableTable.Create<Contact>(b => b
+                c => c.Then_I_should_receive_contacts(Table.Validate<Contact>(b => b
                     .WithColumn(x => x.Name, Expect.To.Not.BeEmpty())
                     .WithColumn(x => x.Email, Expect.To.MatchRegex("[a-z0-9.-]+@[a-z0-9.-]+"))
                     .WithColumn(x => x.PhoneNumber, Expect.To.MatchRegex("[0-9]{10,14}"))

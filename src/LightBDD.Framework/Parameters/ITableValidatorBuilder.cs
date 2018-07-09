@@ -4,7 +4,10 @@ using LightBDD.Framework.Expectations;
 
 namespace LightBDD.Framework.Parameters
 {
-    public interface IVerifiableTableBuilder<TRow>
+    /// <summary>
+    /// Builder interface allowing to define <see cref="TableValidator{TRow}"/> instance.
+    /// </summary>
+    public interface ITableValidatorBuilder<TRow>
     {
         /// <summary>
         /// Defines column, based on <paramref name="columnExpression"/>.
@@ -17,7 +20,7 @@ namespace LightBDD.Framework.Parameters
         /// <param name="expectation">Function returning column expectation expression.</param>
         /// <exception cref="InvalidOperationException">Thrown if <paramref name="columnExpression"/> is not member expression.</exception>
         /// <returns>Self</returns>
-        IVerifiableTableBuilder<TRow> WithColumn<TValue>(Expression<Func<TRow, TValue>> columnExpression, IExpectation<TValue> expectation);
+        ITableValidatorBuilder<TRow> WithColumn<TValue>(Expression<Func<TRow, TValue>> columnExpression, IExpectation<TValue> expectation);
 
         /// <summary>
         /// Defines column, based on <paramref name="columnExpression"/>.
@@ -30,6 +33,6 @@ namespace LightBDD.Framework.Parameters
         /// <param name="columnExpression">Field/property accessor expression</param>
         /// <param name="expectation">Function returning column expectation expression.</param>
         /// <returns>Self</returns>
-        IVerifiableTableBuilder<TRow> WithColumn<TValue>(string columnName, Func<TRow, TValue> columnExpression, IExpectation<TValue> expectation);
+        ITableValidatorBuilder<TRow> WithColumn<TValue>(string columnName, Func<TRow, TValue> columnExpression, IExpectation<TValue> expectation);
     }
 }
