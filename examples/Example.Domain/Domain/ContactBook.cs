@@ -10,12 +10,7 @@ namespace Example.Domain.Domain
 
         public void AddContact(string name, string phone, string email)
         {
-            _contacts.Add(email, new Contact(name, FormatPhone(phone), email?.ToLowerInvariant()));
-        }
-
-        private string FormatPhone(string phone)
-        {
-            return phone.Replace(" ", "").Replace("-", "").Replace("+", "");
+            _contacts.Add(email, new Contact(name, phone, email));
         }
 
         public void Remove(string email)

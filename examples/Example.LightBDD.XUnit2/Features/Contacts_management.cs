@@ -21,6 +21,8 @@ namespace Example.LightBDD.XUnit2.Features
     /// 
     /// Another feature presented here is that if lambda parameter name is 1 character only, it is ignored in the reports, and the step type (GIVEN/WHEN/THEN/etc)
     /// is inferred from the step method name.
+    ///
+    /// Finally, the scenarios presents usage of tabular parameters, including <see cref="InputTable{TRow}"/>, <see cref="VerifiableDataTable{TRow}"/> and <see cref="TableValidator{TRow}"/>.
     /// 
     /// More information on contextual scenarios can be found here: https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#contextual-scenarios
     /// </summary>
@@ -77,10 +79,10 @@ I want to add, browse and remove my contacts")]
                 c => c.Then_I_should_receive_contacts(Table.ExpectData(
                     b => b.WithInferredColumns()
                         .WithKey(x => x.Name),
-                    new Contact("Emily", "1112225556", "emily1@gmail.com"),
-                    new Contact("John", "111222333", "john@hotmail.com"),
-                    new Contact("John", "111303404", "jo@hotmail.com"),
-                    new Contact("Kathie", "111555330", "ka321@gmail.com")
+                    new Contact("Emily", "111-222-5556", "emily1@gmail.com"),
+                    new Contact("John", "111-222-333", "john@hotmail.com"),
+                    new Contact("John", "111-303-404", "jo@hotmail.com"),
+                    new Contact("Kathie", "111-555-330", "ka321@gmail.com")
                 )));
         }
 
@@ -96,10 +98,10 @@ I want to add, browse and remove my contacts")]
                     new Contact("Kathy", "111-555-330", "ka321@gmail.com"))),
                 c => c.When_I_request_contacts_sorted_by_name(),
                 c => c.Then_I_should_receive_contacts(Table.ExpectData(
-                    new Contact("Emily", "1112225556", "emily1@gmail.com"),
-                    new Contact("Greg", "213444444", "greg22@gmail.com"),
-                    new Contact("John", "111222333", "john123@gmail.com"),
-                    new Contact("Kathy", "111555330", "ka321@gmail.com"))));
+                    new Contact("Emily", "111-222-5556", "emily1@gmail.com"),
+                    new Contact("Greg", "213-444-444", "greg22@gmail.com"),
+                    new Contact("John", "111-222-333", "john123@gmail.com"),
+                    new Contact("Kathy", "111-555-330", "ka321@gmail.com"))));
         }
 
         [Scenario]
@@ -107,10 +109,10 @@ I want to add, browse and remove my contacts")]
         {
             Runner.WithContext<ContactsManagementContext>().RunScenario(
                 c => c.Given_I_added_contacts(Table.For(
-                    new Contact("John", "+44 11 233 44 555", "John253@MYMAIL.com"),
-                    new Contact("Jenny", "11 233 4455", "JENNY213@MYMAIL.com"),
-                    new Contact("Jerry", "1-12-33-44-55-6", "jerry123@MYMAIL.com"),
-                    new Contact("Josh", "12 111 333 444", "jos#@mymail.com"))),
+                    new Contact("John", "00441123344555", "john253@mymail.com"),
+                    new Contact("Jenny", "112334455", "jenny213@mymail.com"),
+                    new Contact("Jerry", "1123344556", "jerry123@mymail.com"),
+                    new Contact("Josh", "12111333444", "jos#@mymail.com"))),
                 c => c.When_I_request_contacts_sorted_by_name(),
                 c => c.Then_I_should_receive_contacts(Table.Validate<Contact>(b => b
                     .WithColumn(x => x.Name, Expect.To.Not.BeEmpty())
