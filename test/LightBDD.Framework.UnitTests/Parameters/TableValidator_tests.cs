@@ -6,6 +6,7 @@ using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;
 using NUnit.Framework;
+#pragma warning disable 1998
 
 namespace LightBDD.Framework.UnitTests.Parameters
 {
@@ -176,35 +177,6 @@ namespace LightBDD.Framework.UnitTests.Parameters
             Assert.That(actual, Is.EqualTo(expectedValueDetails));
 
             Assert.That(row.VerificationStatus, Is.EqualTo(rowStatus));
-        }
-
-        private void AssertRowValues(ITabularParameterRow row, TableRowType rowType, ParameterVerificationStatus rowStatus, params string[] expectedValues)
-        {
-            Assert.That(row.Type, Is.EqualTo(rowType));
-            Assert.That(row.VerificationStatus, Is.EqualTo(rowStatus));
-
-            var actual = row.Values
-                .Select(v => $"{v.Value}|{v.Expectation}")
-                .ToArray();
-            Assert.That(actual, Is.EqualTo(expectedValues));
-        }
-
-        private static void TestCollectionToVerifiableDataTable<T>(T[] input, string[] expectedColumns, int index, ColumnValue[] expectedValues)
-        {
-            var table = input.ToVerifiableDataTable();
-            Assert.That(table.Columns.All(x => !x.IsKey), Is.True);
-            AssertColumnNames(table, expectedColumns);
-            AssertValues(table, input[index], expectedValues);
-        }
-
-        private static void AssertValues<T>(VerifiableTable<T> table, T row, params ColumnValue[] expectedValues)
-        {
-            Assert.That(table.Columns.Select(c => c.GetValue(row)).ToArray(), Is.EqualTo(expectedValues));
-        }
-
-        private static void AssertColumnNames<T>(VerifiableTable<T> table, params string[] expectedColumns)
-        {
-            Assert.That(table.Columns.Select(c => c.Name).ToArray(), Is.EqualTo(expectedColumns));
         }
 
         private static void AssertResultColumnsMatchingTable<T>(VerifiableTable<T> table)
