@@ -1,1 +1,1 @@
-dotnet fixie -- category:Delivery category:Security
+dotnet fixie -- --category Delivery --category Security

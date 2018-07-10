@@ -16,11 +16,11 @@ namespace Example.LightBDD.Fixie2
     internal class WithLightBddConventions : LightBddDiscoveryConvention
     {
         /// <summary>
-        /// This constructor is required in order to pass category filters. Please also remember that <c>params</c> modifier is required here.
+        /// This constructor allows to specify category filters.
         /// </summary>
-        public WithLightBddConventions(params string[] args)
-            : base(args)
+        public WithLightBddConventions(string[] category)
         {
+            IncludeCategories(category);
         }
     }
 

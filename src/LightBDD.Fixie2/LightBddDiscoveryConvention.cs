@@ -20,41 +20,32 @@ namespace LightBDD.Fixie2
     /// </summary>
     public abstract class LightBddDiscoveryConvention : Discovery
     {
+        private string[] _categoriesToInclude = new string[0];
         /// <summary>
-        /// Constructor describing the LightBDD discovery conventions, accepting additional arguments.
-        /// Currently, LightBDD recognizes the arguments of format <c>category:MyCategory</c> and uses them for running only the tests marked with such categories.
+        /// Constructor describing the LightBDD discovery conventions.
         /// </summary>
-        protected LightBddDiscoveryConvention(string[] args)
+        protected LightBddDiscoveryConvention()
         {
-            if (args == null)
-                throw new ArgumentNullException(nameof(args));
-
-            var categoriesToInclude = GetCategoriesToInclude(args);
             Classes.Where(x => x.Has<FeatureFixtureAttribute>());
-            Methods.Where(x => x.Has<ScenarioAttribute>() && HasAnyCategory(x, categoriesToInclude));
+            Methods.Where(x => x.Has<ScenarioAttribute>() && HasAnyCategory(x));
             Parameters.Add<ScenarioCaseProvider>();
         }
 
-        private static string[] GetCategoriesToInclude(string[] args)
+        /// <summary>
+        /// Runs only tests annotated with one of category specified by <paramref name="categoriesToInclude"/>.
+        ///
+        /// If <paramref name="categoriesToInclude"/> is empty, all tests will be executed.
+        /// </summary>
+        protected void IncludeCategories(IEnumerable<string> categoriesToInclude)
         {
-            var categoryPrefix = "category:";
-
-            var categoriesToInclude = args
-                .Where(x => x.StartsWith(categoryPrefix, StringComparison.OrdinalIgnoreCase))
-                .Select(x => x.Substring(categoryPrefix.Length))
-                .ToArray();
-
-            return categoriesToInclude;
+            if (categoriesToInclude == null)
+                throw new ArgumentNullException(nameof(categoriesToInclude));
+            _categoriesToInclude = categoriesToInclude.ToArray();
         }
 
-        /// <summary>
-        /// Default constructor describing the LightBDD discovery conventions, if no additional arguments are needed.
-        /// </summary>
-        protected LightBddDiscoveryConvention() : this(new string[0]) { }
-
-        private bool HasAnyCategory(MethodInfo method, string[] categoriesToInclude)
+        private bool HasAnyCategory(MethodInfo method)
         {
-            return !categoriesToInclude.Any() || GetCategories(method).Any(categoriesToInclude.Contains);
+            return !_categoriesToInclude.Any() || GetCategories(method).Any(_categoriesToInclude.Contains);
         }
 
         private IEnumerable<string> GetCategories(MethodInfo method)

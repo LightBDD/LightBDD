@@ -32,19 +32,16 @@ Example usage: `> run-dotnet-fixie.cmd`
 _Note: `dotnet fixie` command works only if it is executed from project directory_
 
 ### Filtering scenarios by categories
-To run only a subset of tests it is possible to run dotnet fixie command with category filters as follows: `dotnet fixie -- category:MyCategory1 category:MyCategory2`.
+To run only a subset of tests it is possible to run dotnet fixie command with category filters as follows: `dotnet fixie -- --category MyCategory1 --category MyCategory2`.
 When executed, only scenarios with `[ScenarioCategory("MyCategory1")]` or `[ScenarioCategory("MyCategory2")]` attributes being present on scenario method or fixture class will run.
 
 Please note, that category filters will be passed only if test project contains LightBdd discovery conventions defined as follows:
 ```c#
 internal class WithLightBddConventions : LightBddDiscoveryConvention
 {
-    /// <summary>
-    /// This constructor is required in order to pass category filters. Please also remember that <c>params</c> modifier is required here.
-    /// </summary>
-    public WithLightBddConventions(params string[] args)
-        : base(args)
+    public WithLightBddConventions(string[] category)
     {
+        IncludeCategories(category);
     }
 }
 ```
