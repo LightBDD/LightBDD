@@ -5,11 +5,12 @@ Version 2.4.0
 ----------------------------------------
 Summary:
 + #38 (all)(New) Added ability to specify verifiable parameters
++ #38 (all)(New) Added Expect.To.* expectation expressions
 + #59 (Core)(New) Added support for DI container
 + #59 (Framework)(New) Implemented default DI container
 + #59 (Autofac)(New) Added LightBDD.Autofac integration for Autofac DI container
 + #67 (Fixie)(New) Added LightBdd.Fixie2 integration project with https://github.com/fixie/fixie
-+ #70 (all)(New) Added Table<TRow> and VerifiableTable<TRow> to represent tabular step method parameters
++ #70 (all)(New) Added InlineTable<TRow>, VerifiableDataTable<TRow>, TableValidator<TRow> classes to represent tabular step method parameters and Table class to create them
 + #117 (XUnit2)(New) Added experimental ClassCollectionBehavior attribute allowing inter-class test parallelization
 + #120 (Framework)(Fix) StepExecution.Current.Comment() does not work after leaving sub-step in composite step
 
