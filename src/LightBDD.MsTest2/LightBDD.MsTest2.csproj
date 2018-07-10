@@ -9,7 +9,9 @@ High level features:
 * Xml/Html/Plain text reports generation;
 * cross-platform support (.NET Standard / .NET Framework);
 * asynchronous execution support;
-* in-code LightBDD configuration.</Description>
+* in-code LightBDD configuration;
+* DI support;
+* inline and tabular parameters support.</Description>
     <TargetFrameworks>netstandard1.3;net45;net46</TargetFrameworks>
     <PackageTags>$(PackageTags);mstest;mstest2</PackageTags>
     <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.3' ">$(PackageTargetFallback);dotnet</PackageTargetFallback>

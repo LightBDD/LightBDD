@@ -15,7 +15,7 @@
     <PackageOutputPath>$(SolutionDir)\output</PackageOutputPath>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>bdd;tdd;testing;framework;behavior driven development;acceptance criteria</PackageTags>
-    <PackageReleaseNotes>Allowed IStepDecoratorAttribute and IScenarioDecoratorAttribute to be applied on class level; Details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-236</PackageReleaseNotes>
+    <PackageReleaseNotes>Added verifiable inline and tabular parameters; Added DI support; Added fixie integration; Added inter-class parallelization for LightBDD.XUnit2; Details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-240</PackageReleaseNotes>
     <IsPackable>true</IsPackable>
   </PropertyGroup>
   

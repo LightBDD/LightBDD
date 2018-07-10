@@ -4,12 +4,14 @@
     <Description>Allows creating acceptance tests in developer friendly environment by offering LightBDD.Framework features on top of Fixie testing framework.
 
 High level features:
-* user friendly bdd scenario definitions,
-* test execution tracing and time measurement, helpful during longer test execution,
-* Xml/Html/Plain text reports generation,
-* cross-platform support (.NET Standard / .NET Framework),
-* asynchronous execution support,
-* in-code LightBDD configuration.</Description>
+* user friendly bdd scenario definitions;
+* test execution tracing and time measurement, helpful during longer test execution;
+* Xml/Html/Plain text reports generation;
+* cross-platform support (.NET Standard / .NET Framework);
+* asynchronous execution support;
+* in-code LightBDD configuration;
+* DI support;
+* inline and tabular parameters support.</Description>
     <TargetFrameworks>net452;netcoreapp2.0</TargetFrameworks>
     <PackageTags>$(PackageTags);fixie</PackageTags>
   </PropertyGroup>
