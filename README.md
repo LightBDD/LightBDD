@@ -36,16 +36,18 @@ This additional layer becomes the root of most problems when maintaining tests, 
 * Easy to read scenario definitions,
 * Scenario steps execution tracking and time measurement, usable during longer test execution,
 * Support for parameterized steps with smart rules of inserting argument values to formatted step name,
+* Support for advanced in-line and tabular verifiable parameters,
 * Support for contextual scenario execution where steps shares dedicated context,
+* Support for DI containers,
 * Feature report generation in XML, HTML or Plain text format,
 * In-code LightBDD configuration allowing to customize all LightBDD features,
 * VisualStudio templates for test classes ([see details](#vs-item-templates)),
-* Integrated with [NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/) and [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/) frameworks,
+* Integrated with [NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/), [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/) and [Fixie](http://fixie.github.io/) frameworks,
 * Async scenario and steps execution support,
 * Cross-platform support (.NET Framework / .NET Standard / .NET Core / UWP).
 
 ### Tests structure and conventions
-**LightBDD** is integrated with well known testing frameworks ([NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/) and [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/)) which makes it very easy to learn, adapt and use - please see [Tests Structure and Conventions](https://github.com/LightBDD/LightBDD/wiki/Tests-structure-and-conventions) wiki section for details.
+**LightBDD** is integrated with well known testing frameworks ([NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/), [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/) and [Fixie](http://fixie.github.io/)) which makes it very easy to learn, adapt and use - please see [Tests Structure and Conventions](https://github.com/LightBDD/LightBDD/wiki/Tests-structure-and-conventions) wiki section for details.
 
 ### Example 
 ```C#
@@ -192,6 +194,7 @@ The LightBDD is available on [NuGet](https://www.nuget.org/packages?q=LightBDD):
 * `PM> Install-Package LightBDD.NUnit2` for package using NUnit 2x
 * `PM> Install-Package LightBDD.XUnit2` for package using xUnit 2x
 * `PM> Install-Package LightBDD.MsTest2` for package using MsTest.TestFramework
+* `PM> Install-Package LightBDD.Fixie2` for package using Fixie 2x
 
 ## VS Item Templates
 **LightBDD** project offers also set of templates that can be installed in Visual Studio.
