@@ -1,7 +1,9 @@
 ﻿using System;
+using LightBDD.Core.Dependencies;
 using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Scenarios.Contextual;
 using LightBDD.Framework.UnitTests.Scenarios.Contextual.Helpers;
+using Moq;
 using NUnit.Framework;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
@@ -35,15 +37,19 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
         }
 
         [Test]
-        public void It_should_allow_to_apply_context_with_parameterless_constructor()
+        public void It_should_allow_to_apply_context_resolved_with_DI_container()
         {
             ExpectNewScenario();
-            ExpectContext();
+            ExpectResolvedContext();
 
             Runner.Object.WithContext<MyContext>().Integrate().NewScenario();
 
             VerifyAllExpectations();
-            Assert.That(CapturedContextProvider.Invoke(), Is.InstanceOf<MyContext>());
+
+            var resolver = new Mock<IDependencyResolver>();
+
+            CapturedContextResolver.Invoke(resolver.Object);
+            resolver.Verify(x => x.Resolve(typeof(MyContext)));
         }
     }
 }

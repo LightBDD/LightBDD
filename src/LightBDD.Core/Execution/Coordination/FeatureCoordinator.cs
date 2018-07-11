@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
+using LightBDD.Core.Formatting.Values;
 
 namespace LightBDD.Core.Execution.Coordination
 {
@@ -32,6 +33,11 @@ namespace LightBDD.Core.Execution.Coordination
         public LightBddConfiguration Configuration { get; }
 
         /// <summary>
+        /// Returns <see cref="IValueFormattingService"/> configured in this coordinator.
+        /// </summary>
+        public IValueFormattingService ValueFormattingService { get; }
+
+        /// <summary>
         /// Returns instance of installed <see cref="FeatureCoordinator"/>.
         /// </summary>
         /// <returns>Instance of <see cref="FeatureCoordinator"/>.</returns>
@@ -41,6 +47,18 @@ namespace LightBDD.Core.Execution.Coordination
             var coordinator = Instance ?? throw new InvalidOperationException("LightBDD is not initialized yet.");
             if (coordinator.IsDisposed)
                 throw new InvalidOperationException("LightBDD scenario test execution is already finished.");
+            return coordinator;
+        }
+
+        /// <summary>
+        /// Returns the installed instance of <see cref="FeatureCoordinator"/> or null if instance is not installed (or already disposed).
+        /// </summary>
+        /// <returns><see cref="FeatureCoordinator"/> or null.</returns>
+        protected internal static FeatureCoordinator TryGetInstance()
+        {
+            var coordinator = Instance;
+            if (coordinator == null || coordinator.IsDisposed)
+                return null;
             return coordinator;
         }
 
@@ -92,6 +110,8 @@ namespace LightBDD.Core.Execution.Coordination
             _featureAggregator = featureAggregator;
             RunnerRepository = runnerRepository;
             Configuration = configuration;
+            //TODO: Rework in LightBDD 3.X to use the same instance as CoreMetadataProvider (introduce IoC?)
+            ValueFormattingService = new ValueFormattingService(Configuration);
         }
 
         /// <summary>
@@ -111,6 +131,7 @@ namespace LightBDD.Core.Execution.Coordination
             UninstallSelf();
             CollectFeatureResults();
             _featureAggregator.Dispose();
+            RunnerRepository.Dispose();
         }
 
         private void CollectFeatureResults()

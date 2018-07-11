@@ -1,4 +1,5 @@
 ﻿using Example.Domain.Domain;
+using LightBDD.Framework.Parameters;
 using LightBDD.MsTest2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -13,21 +14,21 @@ namespace Example.LightBDD.MsTest2.UWP.Features
             _calculator = new Calculator();
         }
 
-        private void Then_adding_X_to_Y_should_give_RESULT(int x, int y, int result)
+        private void Then_adding_X_to_Y_should_give_RESULT(int x, int y, Verifiable<int> result)
         {
-            Assert.AreEqual(result, _calculator.Add(x, y));
+            result.SetActual(() => _calculator.Add(x, y));
         }
 
-        private void Then_dividing_X_by_Y_should_give_RESULT(int x, int y, int result)
+        private void Then_dividing_X_by_Y_should_give_RESULT(int x, int y, Verifiable<int> result)
         {
-            Assert.AreEqual(result, _calculator.Divide(x, y));
+            result.SetActual(() => _calculator.Divide(x, y));
         }
 
-        private void Then_multiplying_X_by_Y_should_give_RESULT(int x, int y, int result)
+        private void Then_multiplying_X_by_Y_should_give_RESULT(int x, int y, Verifiable<int> result)
         {
             if (x < 0 || y < 0)
                 Assert.Inconclusive("Negative numbers are not supported yet");
-            Assert.AreEqual(result, _calculator.Multiply(x, y));
+            result.SetActual(() => _calculator.Multiply(x, y));
         }
     }
 }

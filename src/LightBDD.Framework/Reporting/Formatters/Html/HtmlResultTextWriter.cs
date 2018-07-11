@@ -7,7 +7,10 @@ using System.Reflection;
 using System.Text;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Formatting.NameDecorators;
+using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
+using LightBDD.Core.Results.Parameters;
+using LightBDD.Core.Results.Parameters.Tabular;
 
 namespace LightBDD.Framework.Reporting.Formatters.Html
 {
@@ -402,7 +405,71 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 GetStatus(step.Status),
                 Html.Text(string.Format("{0}{1}. {2}", step.Info.GroupPrefix, step.Info.Number, step.Info.Name.Format(StepNameDecorator))).Trim(),
                 GetDuration(step.ExecutionTime),
+                Html.Tag(Html5Tag.Div).Class("step-parameters").Content(step.Parameters.Select(GetStepParameter)).SkipEmpty(),
                 Html.Tag(Html5Tag.Div).Class("sub-steps").Content(step.GetSubSteps().Select(GetStep)).SkipEmpty());
+        }
+
+        private static IHtmlNode GetStepParameter(IParameterResult parameter)
+        {
+            if (parameter.Details is ITabularParameterDetails table)
+                return GetTabularParameter(parameter.Name, table);
+            return Html.Nothing();
+        }
+
+        private static IHtmlNode GetTabularParameter(string parameterName, ITabularParameterDetails table)
+        {
+            return Html.Tag(Html5Tag.Div).Class("param").Content(
+                Html.Tag(Html5Tag.Div).Content($"{parameterName}:"),
+                Html.Tag(Html5Tag.Table).Class("param").Content(GetParameterTable(table)));
+        }
+
+        private static IEnumerable<IHtmlNode> GetParameterTable(ITabularParameterDetails table)
+        {
+            var columns = table.Columns.Select(col => Html.Tag(Html5Tag.Th).Class(col.IsKey ? "param column key" : "param column value").Content(col.Name)).ToList();
+            var renderRowStatus = table.VerificationStatus != ParameterVerificationStatus.NotApplicable;
+
+            if (renderRowStatus)
+                columns.Insert(0, Html.Tag(Html5Tag.Th).Class("param column").Content("#"));
+
+            yield return Html.Tag(Html5Tag.Thead)
+                .Content(Html.Tag(Html5Tag.Tr)
+                    .Content(columns));
+
+            yield return Html.Tag(Html5Tag.Tbody).Content(table.Rows.Select(row => GetParameterTableRow(row, renderRowStatus)));
+        }
+
+        private static IHtmlNode GetParameterTableRow(ITabularParameterRow row, bool renderRowStatus)
+        {
+            var values = row.Values.Select(GetRowValue).ToList();
+            if (renderRowStatus)
+                values.Insert(0, Html.Tag(Html5Tag.Td).Class("param type").Content(GetRowTypeContent(row)));
+            return Html.Tag(Html5Tag.Tr).Content(values);
+        }
+
+        private static string GetRowTypeContent(ITabularParameterRow row)
+        {
+            if (row.Type == TableRowType.Surplus)
+                return "(surplus)";
+            if (row.Type == TableRowType.Missing)
+                return "(missing)";
+            if (row.VerificationStatus == ParameterVerificationStatus.Success)
+                return "=";
+            if (row.VerificationStatus == ParameterVerificationStatus.NotApplicable)
+                return " ";
+            return "!";
+        }
+
+        private static IHtmlNode GetRowValue(IValueResult value)
+        {
+            var tag = Html.Tag(Html5Tag.Td).Class("param value " + value.VerificationStatus.ToString().ToLowerInvariant());
+            if (value.VerificationStatus == ParameterVerificationStatus.NotApplicable ||
+                value.VerificationStatus == ParameterVerificationStatus.Success)
+                return tag.Content(value.Value);
+
+            return tag.Content(Html.Tag(Html5Tag.Div).Content(
+                Html.Text(value.Value).Escape(),
+                Html.Tag(Html5Tag.Hr),
+                Html.Tag(Html5Tag.Span).Class("expected").Content(value.Expectation)));
         }
 
         private static string GetStatusClass(ExecutionStatus status)

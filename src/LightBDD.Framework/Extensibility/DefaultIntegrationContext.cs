@@ -1,5 +1,6 @@
 using System;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Formatting;
@@ -50,6 +51,9 @@ namespace LightBDD.Framework.Extensibility
         /// </summary>
         public override LightBddConfiguration Configuration { get; }
 
+        /// <inheritdoc />
+        public override IDependencyContainer DependencyContainer { get; }
+
         /// <summary>
         /// Default constructor sealing provided <paramref name="configuration"/> and initializing all properties.
         /// </summary>
@@ -70,6 +74,7 @@ namespace LightBDD.Framework.Extensibility
             FeatureProgressNotifier = configuration.FeatureProgressNotifierConfiguration().Notifier;
             ScenarioProgressNotifierProvider = configuration.ScenarioProgressNotifierConfiguration().NotifierProvider;
             ExecutionExtensions = configuration.ExecutionExtensionsConfiguration();
+            DependencyContainer = configuration.DependencyContainerConfiguration().DependencyContainer;
         }
     }
 }

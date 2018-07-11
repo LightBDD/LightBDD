@@ -50,9 +50,9 @@ namespace LightBDD.Framework.Scenarios.Contextual
         /// <param name="runner"><see cref="IBddRunner"/> instance.</param>
         /// <typeparam name="TContext">Context type.</typeparam>
         /// <returns>Contextual runner.</returns>
-        public static IBddRunner<TContext> WithContext<TContext>(this IBddRunner runner) where TContext : new()
+        public static IBddRunner<TContext> WithContext<TContext>(this IBddRunner runner)
         {
-            return new ContextualBddRunner<TContext>(runner, () => new TContext(), true);
+            return new ContextualBddRunner<TContext>(runner, resolver => resolver.Resolve(typeof(TContext)));
         }
     }
 }

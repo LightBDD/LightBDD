@@ -6,6 +6,8 @@ using LightBDD.Core.Formatting;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
+using LightBDD.Core.Results.Parameters.Tabular;
+using LightBDD.Framework.Reporting.Formatters;
 
 namespace LightBDD.Framework.Notification
 {
@@ -46,7 +48,7 @@ namespace LightBDD.Framework.Notification
                 : $"  SCENARIO RESULT: {scenario.Status}";
 
             var scenarioDetails = !string.IsNullOrWhiteSpace(scenario.StatusDetails)
-                ? $"\n    {scenario.StatusDetails.Replace("\n", "\n    ")}"
+                ? $"{Environment.NewLine}    {scenario.StatusDetails.Replace(Environment.NewLine, Environment.NewLine + "    ")}"
                 : string.Empty;
 
             _onNotify(scenarioText + scenarioDetails);
@@ -67,7 +69,19 @@ namespace LightBDD.Framework.Notification
         /// <param name="step">Step result.</param>
         public void NotifyStepFinished(IStepResult step)
         {
-            _onNotify($"  STEP {step.Info.GroupPrefix}{step.Info.Number}/{step.Info.GroupPrefix}{step.Info.Total}: {step.Info.Name} ({step.Status} after {step.ExecutionTime.Duration.FormatPretty()})");
+            var report = new List<string>
+            {
+                $"  STEP {step.Info.GroupPrefix}{step.Info.Number}/{step.Info.GroupPrefix}{step.Info.Total}: {step.Info.Name} ({step.Status} after {step.ExecutionTime.Duration.FormatPretty()})"
+            };
+            foreach (var parameter in step.Parameters)
+            {
+                if (parameter.Details is ITabularParameterDetails table)
+                {
+                    report.Add($"    {parameter.Name}:");
+                    report.Add(new TextTableRenderer(table).Render("    "));
+                }
+            }
+            _onNotify(string.Join(Environment.NewLine, report));
         }
 
         /// <summary>
@@ -102,7 +116,7 @@ namespace LightBDD.Framework.Notification
         {
             return string.IsNullOrWhiteSpace(description)
                 ? string.Empty
-                : $"\n  {description.Replace("\n", "\n  ")}";
+                : $"{Environment.NewLine}  {description.Replace(Environment.NewLine, Environment.NewLine + "  ")}";
         }
 
         private static string FormatLabels(IEnumerable<string> labels)

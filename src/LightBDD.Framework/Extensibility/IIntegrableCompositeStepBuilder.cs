@@ -1,4 +1,5 @@
 ﻿using System;
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Framework.Extensibility
@@ -28,6 +29,16 @@ namespace LightBDD.Framework.Extensibility
         /// <returns>Self.</returns>
         /// <exception cref="InvalidOperationException">Thrown if context is already specified or if some steps has been already added.</exception>
         IIntegrableCompositeStepBuilder WithStepContext(Func<object> contextProvider, bool takeOwnership);
+
+        /// <summary>
+        /// Uses <paramref name="contextProvider"/> to instantiate context that will be shared with all sub-steps.
+        /// Please note that context can be specified only once and only when there is no steps added yet.
+        /// </summary>
+        /// <param name="contextProvider">Context provider function.</param>
+        /// <param name="scopeConfigurator">Scope configurator used to configure container, if provided.</param>
+        /// <returns>Self.</returns>
+        /// <exception cref="InvalidOperationException">Thrown if context is already specified or if some steps has been already added.</exception>
+        IIntegrableCompositeStepBuilder WithStepContext(Func<IDependencyResolver, object> contextProvider, Action<ContainerConfigurator> scopeConfigurator = null);
 
         /// <summary>
         /// Builds <see cref="CompositeStep"/> based on specified steps and step context provider.

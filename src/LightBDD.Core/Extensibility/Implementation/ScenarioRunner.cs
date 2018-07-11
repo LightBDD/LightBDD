@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Extensibility.Execution;
@@ -25,16 +26,18 @@ namespace LightBDD.Core.Extensibility.Implementation
         private INameInfo _name;
         private string[] _labels = Arrays<string>.Empty();
         private string[] _categories = Arrays<string>.Empty();
-        private IContextProvider _contextProvider = ContextProvider.NoContext;
+        private ExecutionContextDescriptor _contextDescriptor = ExecutionContextDescriptor.NoContext;
         private readonly ExceptionProcessor _exceptionProcessor;
+        private readonly IDependencyContainer _container;
         private IEnumerable<IScenarioDecorator> _scenarioDecorators = Enumerable.Empty<IScenarioDecorator>();
 
-        public ScenarioRunner(ScenarioExecutor scenarioExecutor, IMetadataProvider metadataProvider, IScenarioProgressNotifier progressNotifier, ExceptionProcessor exceptionProcessor)
+        public ScenarioRunner(ScenarioExecutor scenarioExecutor, IMetadataProvider metadataProvider, IScenarioProgressNotifier progressNotifier, ExceptionProcessor exceptionProcessor, IDependencyContainer container)
         {
             _scenarioExecutor = scenarioExecutor;
             _metadataProvider = metadataProvider;
             _progressNotifier = progressNotifier;
             _exceptionProcessor = exceptionProcessor;
+            _container = container;
         }
 
         public IScenarioRunner WithSteps(IEnumerable<StepDescriptor> steps)
@@ -69,7 +72,13 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         public IScenarioRunner WithContext(Func<object> contextProvider, bool takeOwnership)
         {
-            _contextProvider = new ContextProvider(new ExecutionContextDescriptor(contextProvider, takeOwnership));
+            _contextDescriptor = new ExecutionContextDescriptor(contextProvider, takeOwnership);
+            return this;
+        }
+
+        public IScenarioRunner WithContext(Func<IDependencyResolver, object> contextProvider, Action<ContainerConfigurator> scopeConfigurator)
+        {
+            _contextDescriptor = new ExecutionContextDescriptor(contextProvider, scopeConfigurator);
             return this;
         }
 
@@ -120,7 +129,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         public Task RunScenarioAsync()
         {
             Validate();
-            return _scenarioExecutor.ExecuteAsync(new ScenarioInfo(_name, _labels, _categories), ProvideSteps, _contextProvider, _progressNotifier, _scenarioDecorators, _exceptionProcessor);
+            return _scenarioExecutor.ExecuteAsync(new ScenarioInfo(_name, _labels, _categories), ProvideSteps, _contextDescriptor, _progressNotifier, _scenarioDecorators, _exceptionProcessor, _container);
         }
 
         public void RunSynchronously()
@@ -143,12 +152,12 @@ namespace LightBDD.Core.Extensibility.Implementation
             task.GetAwaiter().GetResult();
         }
 
-        private RunnableStep[] ProvideSteps(DecoratingExecutor decoratingExecutor, object scenarioContext)
+        private RunnableStep[] ProvideSteps(DecoratingExecutor decoratingExecutor, object scenarioContext, IDependencyContainer container)
         {
-            return ProvideSteps(decoratingExecutor, scenarioContext, _steps.ToArray(), string.Empty);
+            return ProvideSteps(decoratingExecutor, scenarioContext, container, _steps.ToArray(), string.Empty);
         }
 
-        private RunnableStep[] ProvideSteps(DecoratingExecutor decoratingExecutor, object scenarioContext, StepDescriptor[] steps, string groupPrefix)
+        private RunnableStep[] ProvideSteps(DecoratingExecutor decoratingExecutor, object scenarioContext, IDependencyContainer container, StepDescriptor[] steps, string groupPrefix)
         {
             var totalStepsCount = steps.Length;
             string previousStepTypeName = null;
@@ -156,7 +165,7 @@ namespace LightBDD.Core.Extensibility.Implementation
 
             for (var i = 0; i < totalStepsCount; ++i)
             {
-                var step = ToRunnableStep(steps[i], i, totalStepsCount, previousStepTypeName, decoratingExecutor, scenarioContext, groupPrefix);
+                var step = ToRunnableStep(steps[i], i, totalStepsCount, previousStepTypeName, decoratingExecutor, scenarioContext, container, groupPrefix);
                 result[i] = step;
                 previousStepTypeName = step.Result.Info.Name.StepTypeName?.OriginalName;
             }
@@ -164,20 +173,23 @@ namespace LightBDD.Core.Extensibility.Implementation
             return result;
         }
 
-        private RunnableStep ToRunnableStep(StepDescriptor descriptor, int stepIndex, int totalStepsCount, string previousStepTypeName, DecoratingExecutor decoratingExecutor, object scenarioContext, string groupPrefix)
+        private RunnableStep ToRunnableStep(StepDescriptor descriptor, int stepIndex, int totalStepsCount,
+            string previousStepTypeName, DecoratingExecutor decoratingExecutor, object scenarioContext,
+            IDependencyContainer container, string groupPrefix)
         {
             var stepInfo = new StepInfo(_metadataProvider.GetStepName(descriptor, previousStepTypeName), stepIndex + 1, totalStepsCount, groupPrefix);
-            var arguments = descriptor.Parameters.Select(p => new MethodArgument(p, _metadataProvider.GetParameterFormatter(p.ParameterInfo))).ToArray();
+            var arguments = descriptor.Parameters.Select(p => new MethodArgument(p, _metadataProvider.GetValueFormattingServiceFor(p.ParameterInfo))).ToArray();
             var stepGroupPrefix = $"{stepInfo.GroupPrefix}{stepInfo.Number}.";
             return new RunnableStep(
                 stepInfo,
-                new InvocationResultTransformer(this, descriptor.StepInvocation, decoratingExecutor, stepGroupPrefix).InvokeAsync,
+                new InvocationResultTransformer(this, container, descriptor.StepInvocation, decoratingExecutor, stepGroupPrefix).InvokeAsync,
                 arguments,
                 _exceptionProcessor,
                 _progressNotifier,
                 decoratingExecutor,
                 scenarioContext,
-                _metadataProvider.GetStepDecorators(descriptor));
+                _metadataProvider.GetStepDecorators(descriptor),
+                container);
         }
 
 
@@ -185,13 +197,17 @@ namespace LightBDD.Core.Extensibility.Implementation
         private struct InvocationResultTransformer
         {
             private readonly ScenarioRunner _runner;
+            private readonly IDependencyContainer _container;
             private readonly Func<object, object[], Task<IStepResultDescriptor>> _invocation;
             private readonly DecoratingExecutor _decoratingExecutor;
             private readonly string _groupPrefix;
 
-            public InvocationResultTransformer(ScenarioRunner runner, Func<object, object[], Task<IStepResultDescriptor>> invocation, DecoratingExecutor decoratingExecutor, string groupPrefix)
+            public InvocationResultTransformer(ScenarioRunner runner, IDependencyContainer container,
+                Func<object, object[], Task<IStepResultDescriptor>> invocation, DecoratingExecutor decoratingExecutor,
+                string groupPrefix)
             {
                 _runner = runner;
+                _container = container;
                 _invocation = invocation;
                 _decoratingExecutor = decoratingExecutor;
                 _groupPrefix = groupPrefix;
@@ -204,11 +220,11 @@ namespace LightBDD.Core.Extensibility.Implementation
                 if (!(result is CompositeStepResultDescriptor compositeDescriptor))
                     return CompositeStepContext.Empty;
 
-                var contextProvider = new ContextProvider(compositeDescriptor.SubStepsContext);
-                var subStepsContext = InstantiateSubStepsContext(contextProvider);
+                var subStepScope = _container.BeginScope(compositeDescriptor.SubStepsContext.ScopeConfigurator);
+                var subStepsContext = InstantiateSubStepsContext(compositeDescriptor.SubStepsContext, subStepScope);
                 try
                 {
-                    return new CompositeStepContext(contextProvider, _runner.ProvideSteps(_decoratingExecutor, subStepsContext, compositeDescriptor.SubSteps.ToArray(), _groupPrefix));
+                    return new CompositeStepContext(subStepScope, _runner.ProvideSteps(_decoratingExecutor, subStepsContext, subStepScope, compositeDescriptor.SubSteps.ToArray(), _groupPrefix));
                 }
                 catch (Exception e)
                 {
@@ -217,11 +233,11 @@ namespace LightBDD.Core.Extensibility.Implementation
             }
         }
 
-        private static object InstantiateSubStepsContext(ContextProvider provider)
+        private static object InstantiateSubStepsContext(ExecutionContextDescriptor contextDescriptor, IDependencyContainer container)
         {
             try
             {
-                return provider.GetContext();
+                return contextDescriptor.ContextResolver(container);
             }
             catch (Exception e)
             {

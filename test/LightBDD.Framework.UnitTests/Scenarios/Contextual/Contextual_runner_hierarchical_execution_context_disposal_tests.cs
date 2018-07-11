@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using LightBDD.Core.Configuration;
 using LightBDD.Framework.Scenarios;
 using LightBDD.Framework.Scenarios.Contextual;
 using LightBDD.Framework.UnitTests.Scenarios.Helpers;
@@ -20,46 +21,73 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
         [Test]
         public void WithContext_accepting_instance_should_not_takeOwnership_by_default()
         {
+            var instance = new Testable();
             var step = _builder
-                 .WithContext(new object())
+                 .WithContext(instance)
                  .Build();
-            Assert.That(step.SubStepsContext.TakeOwnership, Is.False);
+            AssertRegistration(instance, step, false);
         }
 
         [Test]
         public void WithContext_accepting_instance_should_honor_takeOwnership_override()
         {
+            var instance = new Testable();
             var step = _builder
-                .WithContext(new object(), true)
+                .WithContext(instance, true)
                 .Build();
-            Assert.That(step.SubStepsContext.TakeOwnership, Is.True);
+            AssertRegistration(instance, step, true);
         }
 
         [Test]
         public void WithContext_accepting_instance_factory_should_takeOwnership_by_default()
         {
+            var instance = new Testable();
             var step = _builder
-                .WithContext(() => new object())
+                .WithContext(() => instance)
                 .Build();
-            Assert.That(step.SubStepsContext.TakeOwnership, Is.True);
+            AssertRegistration(instance, step, true);
         }
 
         [Test]
         public void WithContext_accepting_instance_factory_should_honor_takeOwnership_override()
         {
+            var instance = new Testable();
             var step = _builder
-                .WithContext(() => new object(), false)
+                .WithContext(() => instance, false)
                 .Build();
-            Assert.That(step.SubStepsContext.TakeOwnership, Is.False);
+            AssertRegistration(instance, step, false);
         }
 
         [Test]
         public void Generic_WithContext_should_takeOwnership_by_default()
         {
             var step = _builder
-                .WithContext<List<string>>()
+                .WithContext<Testable>()
                 .Build();
-            Assert.That(step.SubStepsContext.TakeOwnership, Is.True);
+            AssertRegistration(null, step, true);
+        }
+
+        private void AssertRegistration(Testable instance, CompositeStep step, bool shouldTakeOwnership)
+        {
+            var container = new DependencyContainerConfiguration().DependencyContainer;
+            Testable actual;
+            using (var scope = container.BeginScope(step.SubStepsContext.ScopeConfigurator))
+            {
+                actual = (Testable)step.SubStepsContext.ContextResolver(scope);
+                if (instance != null)
+                    Assert.That(actual, Is.SameAs(instance));
+            }
+            Assert.That(actual.Disposed, Is.EqualTo(shouldTakeOwnership));
+        }
+
+        class Testable : IDisposable
+        {
+            public void Dispose()
+            {
+                Disposed = true;
+            }
+
+            public bool Disposed { get; set; }
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Execution.Implementation;
 using LightBDD.Core.Extensibility.Implementation;
@@ -12,6 +13,7 @@ using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Implementation;
+using LightBDD.Core.Results.Parameters;
 
 namespace LightBDD.Core.Execution.Implementation
 {
@@ -22,16 +24,21 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly ExceptionProcessor _exceptionProcessor;
         private readonly IScenarioProgressNotifier _progressNotifier;
         private readonly DecoratingExecutor _decoratingExecutor;
-        private readonly object _scenarioContext;
         private readonly IEnumerable<IStepDecorator> _stepDecorators;
+        private readonly IDependencyContainer _container;
         private readonly StepResult _result;
         private Func<Exception, bool> _shouldAbortSubStepExecutionFn = ex => true;
         private CompositeStepContext _compositeStepContext;
         public IStepResult Result => _result;
         public IStepInfo Info => Result.Info;
+        public IDependencyResolver DependencyResolver => _container;
+        public object Context { get; }
 
         [DebuggerStepThrough]
-        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task<CompositeStepContext>> stepInvocation, MethodArgument[] arguments, ExceptionProcessor exceptionProcessor, IScenarioProgressNotifier progressNotifier, DecoratingExecutor decoratingExecutor, object scenarioContext, IEnumerable<IStepDecorator> stepDecorators)
+        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task<CompositeStepContext>> stepInvocation,
+            MethodArgument[] arguments, ExceptionProcessor exceptionProcessor,
+            IScenarioProgressNotifier progressNotifier, DecoratingExecutor decoratingExecutor, object context,
+            IEnumerable<IStepDecorator> stepDecorators, IDependencyContainer container)
         {
             _result = new StepResult(stepInfo);
             _stepInvocation = stepInvocation;
@@ -39,8 +46,9 @@ namespace LightBDD.Core.Execution.Implementation
             _exceptionProcessor = exceptionProcessor;
             _progressNotifier = progressNotifier;
             _decoratingExecutor = decoratingExecutor;
-            _scenarioContext = scenarioContext;
+            Context = context;
             _stepDecorators = stepDecorators;
+            _container = container;
             UpdateNameDetails();
         }
 
@@ -108,6 +116,7 @@ namespace LightBDD.Core.Execution.Implementation
             ProcessExceptions(exceptionCollector);
         }
 
+        [DebuggerStepThrough]
         private void DisposeCompositeStep(ExceptionCollector exceptionCollector)
         {
             try
@@ -188,7 +197,8 @@ namespace LightBDD.Core.Execution.Implementation
             var ctx = AsyncStepSynchronizationContext.InstallNew();
             try
             {
-                result = await _stepInvocation.Invoke(_scenarioContext, PrepareParameters());
+                result = await _stepInvocation.Invoke(Context, PrepareParameters());
+                VerifyParameters();
             }
             catch (Exception e)
             {
@@ -198,6 +208,7 @@ namespace LightBDD.Core.Execution.Implementation
             }
             finally
             {
+                UpdateNameDetails();
                 ctx.RestoreOriginal();
                 await ctx.WaitForTasksAsync();
             }
@@ -205,10 +216,39 @@ namespace LightBDD.Core.Execution.Implementation
         }
 
         [DebuggerStepThrough]
+        private void VerifyParameters()
+        {
+            var results = new List<IParameterResult>();
+            foreach (var argument in _arguments)
+            {
+                if (argument.Value is IComplexParameter complex)
+                    results.Add(new ParameterResult(argument.RawName, complex.Details));
+            }
+
+            _result.SetParameters(results);
+
+            var errors = results
+                .Where(x => x.Details.VerificationStatus > ParameterVerificationStatus.Success)
+                .Select(FormatErrorMessage)
+                .ToArray();
+
+            if (!errors.Any())
+                return;
+
+            throw new InvalidOperationException(string.Join(Environment.NewLine, errors));
+        }
+
+        [DebuggerStepThrough]
+        private static string FormatErrorMessage(IParameterResult result)
+        {
+            return $"Parameter '{result.Name}' verification failed: {result.Details.VerificationMessage?.Replace(Environment.NewLine, Environment.NewLine + "\t") ?? string.Empty}";
+        }
+
+        [DebuggerStepThrough]
         private void EvaluateParameters()
         {
             foreach (var parameter in _arguments)
-                parameter.Evaluate(_scenarioContext);
+                parameter.Evaluate(Context);
             UpdateNameDetails();
         }
 

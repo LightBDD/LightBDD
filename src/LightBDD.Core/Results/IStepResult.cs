@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LightBDD.Core.Metadata;
+using LightBDD.Core.Results.Parameters;
 
 namespace LightBDD.Core.Results
 {
@@ -34,7 +35,10 @@ namespace LightBDD.Core.Results
         /// Returns exception caught during step execution or null if none occurred.
         /// </summary>
         Exception ExecutionException { get; }
-
+        /// <summary>
+        /// Returns the step parameter evaluation results.
+        /// </summary>
+        IReadOnlyList<IParameterResult> Parameters { get; }
         /// <summary>
         /// Returns sub-steps if given step consists of any, or empty collection.
         /// </summary>

@@ -2,9 +2,11 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
+using LightBDD.Core.Results.Parameters;
 
 namespace LightBDD.Core.Results.Implementation
 {
@@ -24,6 +26,7 @@ namespace LightBDD.Core.Results.Implementation
         public ExecutionStatus Status { get; private set; }
         public string StatusDetails { get; private set; }
         public Exception ExecutionException { get; private set; }
+        public IReadOnlyList<IParameterResult> Parameters { get; private set; } = Arrays<IParameterResult>.Empty();
         public ExecutionTime ExecutionTime { get; private set; }
         public IEnumerable<string> Comments => _comments;
         public IEnumerable<IStepResult> GetSubSteps()
@@ -75,6 +78,11 @@ namespace LightBDD.Core.Results.Implementation
         public void IncludeSubStepDetails()
         {
             StatusDetails = GetSubSteps().MergeStatusDetails(StatusDetails);
+        }
+
+        public void SetParameters(IEnumerable<IParameterResult> parameters)
+        {
+            Parameters = parameters.ToArray();
         }
     }
 }

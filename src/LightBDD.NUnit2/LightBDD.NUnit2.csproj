@@ -4,11 +4,13 @@
     <Description>Allows creating acceptance tests in developer friendly environment by offering LightBDD.Framework features on top of NUnit 2 testing framework.
 
 High level features:
-* user friendly bdd scenario definitions,
-* test execution tracing and time measurement, helpful during longer test execution,
-* Xml/Html/Plain text reports generation,
-* asynchronous execution support,
-* in-code LightBDD configuration.</Description>
+* user friendly bdd scenario definitions;
+* test execution tracing and time measurement, helpful during longer test execution;
+* Xml/Html/Plain text reports generation;
+* asynchronous execution support;
+* in-code LightBDD configuration;
+* DI support;
+* inline and tabular parameters support.</Description>
     <TargetFrameworks>net45;net46</TargetFrameworks>
     <PackageTags>$(PackageTags);nunit;nunit2</PackageTags>
   </PropertyGroup>

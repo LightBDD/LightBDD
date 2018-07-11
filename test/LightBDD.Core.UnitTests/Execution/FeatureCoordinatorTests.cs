@@ -1,8 +1,12 @@
 ﻿using System;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution.Coordination;
+using LightBDD.Core.Extensibility;
 using LightBDD.Core.Reporting;
+using LightBDD.Framework.Execution.Coordination;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
+using Moq;
 using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests.Execution
@@ -10,12 +14,12 @@ namespace LightBDD.Core.UnitTests.Execution
     [TestFixture]
     public class FeatureCoordinatorTests
     {
-        class TestableFeatureCoordinator : FeatureCoordinator
+        class TestableFeatureCoordinator : FrameworkFeatureCoordinator
         {
-            public TestableFeatureCoordinator()
-                : base(new TestableFeatureRunnerRepository(), new FeatureReportGenerator(), new LightBddConfiguration())
-            {
-            }
+            public TestableFeatureCoordinator(FeatureRunnerRepository runnerRepository)
+                : base(runnerRepository, new FeatureReportGenerator(), new LightBddConfiguration()) { }
+
+            public TestableFeatureCoordinator() : this(new TestableFeatureRunnerRepository()) { }
 
             public TestableFeatureCoordinator InstallSelf()
             {
@@ -64,6 +68,17 @@ namespace LightBDD.Core.UnitTests.Execution
                 using (new TestableFeatureCoordinator()) { }
                 Assert.That(TestableFeatureCoordinator.GetInstalled(), Is.SameAs(installedCoordinator));
             }
+        }
+
+        [Test]
+        public void Disposal_of_coordinator_should_dispose_DI_container()
+        {
+            var container = new Mock<IDependencyContainer>();
+            var contextBuilder = TestableIntegrationContextBuilder.Default()
+                .WithConfiguration(c => c.DependencyContainerConfiguration().UseContainer(container.Object));
+            new TestableFeatureCoordinator(new TestableFeatureRunnerRepository(contextBuilder)).Dispose();
+
+            container.Verify(x => x.Dispose());
         }
     }
 }

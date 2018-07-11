@@ -23,7 +23,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
 
         public static TestCompositeStep CreateFromComposites(params Func<TestCompositeStep>[] steps)
         {
-            return new TestCompositeStep(steps.Select(TestStep.CreateForGroup).ToArray());
+            return new TestCompositeStep(steps.Select(TestStep.CreateComposite).ToArray());
         }
     }
 }

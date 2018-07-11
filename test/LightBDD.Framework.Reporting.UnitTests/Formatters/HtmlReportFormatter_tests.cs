@@ -45,15 +45,15 @@ Passed scenarios: 0
 Bypassed scenarios: 0
 Failed scenarios: 1 (see details)
 Ignored scenarios: 1 (see details)
-Number of steps: 9
+Number of steps: 10
 Passed steps: 3
 Bypassed steps: 1
-Failed steps: 1
+Failed steps: 2
 Ignored steps: 2
 Not Run steps: 2
 Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
-My feature [Label 1] 2 0 0 1 1 9 3 1 1 2 2 1m 02s 621000000 1m 04s 642570000 32s 128ms 321285000
+My feature [Label 1] 2 0 0 1 1 10 3 1 2 2 2 1m 02s 621000000 1m 04s 642570000 32s 128ms 321285000
 Feature details[&#8734;link]
 Toggle: Features Scenarios
 Filter: Passed Bypassed Failed Ignored Not Run
@@ -69,7 +69,25 @@ Ignored 2. step2 (1s 100ms)
 Passed 2.1. substep 1 (100ms)
 Passed 2.2. substep 2 (1s)
 Ignored 2.3. substep 3 (0ms)
-NotRun 2.3.1. sub-substep 1
+Failed 2.3.1. sub-substep 1
+table1:
+# Key X Y
+= Key1 1 2
+! Key2
+12
+4
+(missing) Key3
+&lt;none&gt;3
+&lt;none&gt;6
+(surplus) Key4
+3&lt;none&gt;
+6&lt;none&gt;
+table2:
+Key X Y
+Key1 1 2
+Key2 2 4
+Key3 3 6
+NotRun 2.3.2. sub-substep 2
 Step 2: Not implemented yet
 // Step 1: multiline
 comment

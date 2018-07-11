@@ -1,5 +1,8 @@
+using Example.Domain.Domain;
 using Example.LightBDD.NUnit3.Features.Contexts;
 using LightBDD.Framework;
+using LightBDD.Framework.Expectations;
+using LightBDD.Framework.Parameters;
 using LightBDD.Framework.Scenarios.Contextual;
 using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.NUnit3;
@@ -16,6 +19,8 @@ namespace Example.LightBDD.NUnit3.Features
     /// 
     /// Another feature presented here is that if lambda parameter name is 1 character only, it is ignored in the reports, and the step type (GIVEN/WHEN/THEN/etc)
     /// is inferred from the step method name.
+    ///
+    /// Finally, the scenarios presents usage of tabular parameters, including <see cref="InputTable{TRow}"/>, <see cref="VerifiableDataTable{TRow}"/> and <see cref="TableValidator{TRow}"/>.
     /// 
     /// More information on contextual scenarios can be found here: https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#contextual-scenarios
     /// </summary>
@@ -24,7 +29,7 @@ namespace Example.LightBDD.NUnit3.Features
 As an application user
 I want to add, browse and remove my contacts")]
     [Label("Story-6")]
-    public partial class Contacts_management
+    public class Contacts_management : FeatureFixture
     {
         [Scenario]
         [Label("Ticket-8")]
@@ -55,6 +60,63 @@ I want to add, browse and remove my contacts")]
                 _ => _.Given_my_contact_book_is_filled_with_many_contacts(),
                 _ => _.When_I_clear_it(),
                 _ => _.Then_the_contact_book_should_be_empty());
+        }
+
+        [Scenario]
+        public void Searching_for_contacts_by_phone()
+        {
+            Runner.WithContext<ContactsManagementContext>().RunScenario(
+                c => c.Given_my_contact_book_is_empty(),
+                c => c.Given_I_added_contacts(Table.For(
+                    new Contact("John", "111-222-333", "john123@gmail.com"),
+                    new Contact("John", "111-303-404", "jo@hotmail.com"),
+                    new Contact("Greg", "213-444-444", "greg22@gmail.com"),
+                    new Contact("Emily", "111-222-5556", "emily1@gmail.com"),
+                    new Contact("Kathy", "111-555-330", "ka321@gmail.com"))),
+                c => c.When_I_search_for_contacts_by_phone_starting_with("111"),
+                c => c.Then_I_should_receive_contacts(Table.ExpectData(
+                    b => b.WithInferredColumns()
+                        .WithKey(x => x.Name),
+                    new Contact("Emily", "111-222-5556", "emily1@gmail.com"),
+                    new Contact("John", "111-222-333", "john@hotmail.com"),
+                    new Contact("John", "111-303-404", "jo@hotmail.com"),
+                    new Contact("Kathie", "111-555-330", "ka321@gmail.com")
+                )));
+        }
+
+        [Scenario]
+        public void Displaying_contacts_alphabetically()
+        {
+            Runner.WithContext<ContactsManagementContext>().RunScenario(
+                c => c.Given_my_contact_book_is_empty(),
+                c => c.Given_I_added_contacts(Table.For(
+                    new Contact("John", "111-222-333", "john123@gmail.com"),
+                    new Contact("Greg", "213-444-444", "greg22@gmail.com"),
+                    new Contact("Emily", "111-222-5556", "emily1@gmail.com"),
+                    new Contact("Kathy", "111-555-330", "ka321@gmail.com"))),
+                c => c.When_I_request_contacts_sorted_by_name(),
+                c => c.Then_I_should_receive_contacts(Table.ExpectData(
+                    new Contact("Emily", "111-222-5556", "emily1@gmail.com"),
+                    new Contact("Greg", "213-444-444", "greg22@gmail.com"),
+                    new Contact("John", "111-222-333", "john123@gmail.com"),
+                    new Contact("Kathy", "111-555-330", "ka321@gmail.com"))));
+        }
+
+        [Scenario]
+        public void Normalizing_contact_details()
+        {
+            Runner.WithContext<ContactsManagementContext>().RunScenario(
+                c => c.Given_I_added_contacts(Table.For(
+                    new Contact("John", "00441123344555", "john253@mymail.com"),
+                    new Contact("Jenny", "112334455", "jenny213@mymail.com"),
+                    new Contact("Jerry", "1123344556", "jerry123@mymail.com"),
+                    new Contact("Josh", "12111333444", "jos#@mymail.com"))),
+                c => c.When_I_request_contacts_sorted_by_name(),
+                c => c.Then_I_should_receive_contacts(Table.Validate<Contact>(b => b
+                    .WithColumn(x => x.Name, Expect.To.Not.BeEmpty())
+                    .WithColumn(x => x.Email, Expect.To.Match("[a-z0-9.-]+@[a-z0-9.-]+"))
+                    .WithColumn(x => x.PhoneNumber, Expect.To.Match("[0-9]{10,14}"))
+                )));
         }
     }
 }
