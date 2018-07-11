@@ -222,12 +222,30 @@ namespace LightBDD.Framework.Expectations
         }
 
         /// <summary>
+        /// Creates expectation for values to be null.
+        /// </summary>
+        /// <param name="builder"></param>
+        public static Expectation<T> BeNull<T>(this IExpectationComposer builder) where T : class
+        {
+            return builder.ComposeSimple<T>(formatter => "null", x => x == null);
+        }
+
+        /// <summary>
         /// Creates expectation for collections to be empty.
         /// </summary>
         /// <param name="builder"></param>
         public static Expectation<IEnumerable> BeEmpty(this IExpectationComposer builder)
         {
             return builder.ComposeSimple<IEnumerable>(formatter => "empty", x => x != null && !x.Cast<object>().Any());
+        }
+
+        /// <summary>
+        /// Creates expectation for collections to be empty.
+        /// </summary>
+        /// <param name="builder"></param>
+        public static Expectation<T> BeEmpty<T>(this IExpectationComposer builder) where T : IEnumerable
+        {
+            return builder.ComposeSimple<T>(formatter => "empty", x => x != null && !x.Cast<object>().Any());
         }
 
         /// <summary>

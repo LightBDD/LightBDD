@@ -18,6 +18,13 @@ namespace LightBDD.Framework.UnitTests.Expectations
                 .WithNotMatchingValue(null, "expected: empty, but got: '<null>'")
                 .WithNotMatchingValue("abc", "expected: empty, but got: 'abc'");
 
+            yield return new ExpectationScenario<string>(
+                    "empty",
+                    x => x.BeEmpty<string>())
+                .WithMatchingValues(string.Empty, "")
+                .WithNotMatchingValue(null, "expected: empty, but got: '<null>'")
+                .WithNotMatchingValue("abc", "expected: empty, but got: 'abc'");
+
             yield return new ExpectationScenario<IEnumerable<int>>(
                     "empty",
                     x => x.BeEmpty())

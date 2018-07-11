@@ -16,6 +16,12 @@ namespace LightBDD.Framework.UnitTests.Expectations
                 .WithNotMatchingValue(5, "expected: null, but got: '5'")
                 .WithNotMatchingValue("abc", "expected: null, but got: 'abc'")
                 .WithNotMatchingValue("", "expected: null, but got: ''");
+
+            yield return new ExpectationScenario<string>("null",
+                    x => x.BeNull<string>())
+                .WithMatchingValue(null)
+                .WithNotMatchingValue("abc", "expected: null, but got: 'abc'")
+                .WithNotMatchingValue("", "expected: null, but got: ''");
         }
     }
 }
