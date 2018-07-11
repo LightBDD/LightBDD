@@ -143,19 +143,6 @@ namespace LightBDD.Core.Execution.Implementation
         }
 
         [DebuggerStepThrough]
-        private IDependencyContainer CreateContainerScope()
-        {
-            try
-            {
-                return _container.BeginScope();
-            }
-            catch (Exception e)
-            {
-                throw new InvalidOperationException($"Container scope initialization failed: {e.Message}", e);
-            }
-        }
-
-        [DebuggerStepThrough]
         private async Task TimeMeasuredInvokeAsync()
         {
             var watch = ExecutionTimeWatch.StartNew();
