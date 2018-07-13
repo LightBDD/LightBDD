@@ -36,5 +36,11 @@ namespace LightBDD.XUnit2.Implementation.Customization
 
             return await TaskExecutor.RunAsync(CancellationTokenSource.Token, tasks, TestClass);
         }
+
+        protected override Task<RunSummary> RunTestMethodAsync(ITestMethod testMethod, IReflectionMethodInfo method, IEnumerable<IXunitTestCase> testCases,
+            object[] constructorArguments)
+        {
+            return new TestFrameworkTestMethodRunner(TestClass, testMethod, Class, method, testCases, DiagnosticMessageSink, MessageBus, new ExceptionAggregator(Aggregator), CancellationTokenSource, constructorArguments).RunAsync();
+        }
     }
 }

@@ -16,7 +16,7 @@ namespace LightBDD.XUnit2
     /// It is possible to customize the LightBDD configuration by overriding the <see cref="OnConfigure"/>() method,
     /// as well as execute code before any test and after all tests by overriding the <see cref="OnSetUp"/>() / <see cref="OnTearDown"/>() methods.
     /// </summary>
-    [TestFrameworkDiscoverer("LightBDD.XUnit2.Implementation.Customization.TestFrameworkTypeDiscoverer", "LightBDD.XUnit2")]
+    [TestFrameworkDiscoverer("LightBDD.XUnit2.Implementation.Customization." + nameof(TestFrameworkTypeDiscoverer), "LightBDD.XUnit2")]
     [AttributeUsage(AttributeTargets.Assembly)]
     public class LightBddScopeAttribute : Attribute, ITestFrameworkAttribute
     {

@@ -1,4 +1,5 @@
 using System;
+using LightBDD.XUnit2.Implementation.Customization;
 using Xunit;
 using Xunit.Sdk;
 
@@ -11,7 +12,7 @@ namespace LightBDD.XUnit2
     /// The ScenarioAttribute represents scenario test method.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
-    [XunitTestCaseDiscoverer("LightBDD.XUnit2.Implementation.Customization.ScenarioTestCaseDiscoverer", "LightBDD.XUnit2")]
+    [XunitTestCaseDiscoverer("LightBDD.XUnit2.Implementation.Customization." + nameof(ScenarioTestCaseDiscoverer), "LightBDD.XUnit2")]
     public class ScenarioAttribute : FactAttribute
     {
         /// <summary>
