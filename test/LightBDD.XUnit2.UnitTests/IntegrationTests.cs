@@ -7,6 +7,7 @@ using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.Framework.Scenarios.Extended;
 using Xunit;
 using Xunit.Sdk;
+#pragma warning disable xUnit1026
 
 namespace LightBDD.XUnit2.UnitTests
 {

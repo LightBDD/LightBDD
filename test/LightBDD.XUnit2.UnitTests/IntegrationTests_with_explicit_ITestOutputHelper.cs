@@ -2,6 +2,7 @@
 using LightBDD.Framework.Scenarios.Basic;
 using Xunit;
 using Xunit.Abstractions;
+#pragma warning disable xUnit1026
 
 namespace LightBDD.XUnit2.UnitTests
 {
