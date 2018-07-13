@@ -43,27 +43,4 @@ namespace LightBDD.XUnit2.Implementation.Customization
             return new TestFrameworkTestMethodRunner(TestClass, testMethod, Class, method, testCases, DiagnosticMessageSink, MessageBus, new ExceptionAggregator(Aggregator), CancellationTokenSource, constructorArguments).RunAsync();
         }
     }
-
-    internal class TestFrameworkTestMethodRunner : XunitTestMethodRunner
-    {
-        private readonly ITestClass _testClass;
-
-        public TestFrameworkTestMethodRunner(ITestClass testClass, ITestMethod testMethod, IReflectionTypeInfo @class,
-            IReflectionMethodInfo method, IEnumerable<IXunitTestCase> testCases, IMessageSink diagnosticMessageSink,
-            IMessageBus messageBus, ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource,
-            object[] constructorArguments)
-            : base(testMethod, @class, method, testCases, diagnosticMessageSink,
-            messageBus, aggregator, cancellationTokenSource, constructorArguments)
-        {
-            _testClass = testClass;
-        }
-
-        protected override Task<RunSummary> RunTestCasesAsync()
-        {
-            return TaskExecutor.RunAsync(
-                CancellationTokenSource.Token,
-                TestCases.Select(c => (Func<Task<RunSummary>>)(() => RunTestCaseAsync(c))).ToArray(),
-                _testClass);
-        }
-    }
 }
