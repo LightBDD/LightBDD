@@ -6,9 +6,9 @@
         <Description xml:space="preserve">A collection of Item templates for LightBDD testing framework</Description>
         <MoreInfo>https://github.com/LightBDD/LightBDD</MoreInfo>
         <License>LICENSE.txt</License>
-        <Icon>lightbdd_small.ico</Icon>
+        <Icon>lightbdd_128.png</Icon>
         <PreviewImage>Preview.PNG</PreviewImage>
-        <Tags>lightbdd bdd tdd testing framework behavior driven development acceptance criteria nunit mstest vstest fixie</Tags>
+        <Tags>lightbdd;bdd;tdd;test;nunit;mstest;vstest;fixie</Tags>
     </Metadata>
     <Installation>
         <InstallationTarget Version="[11.0,)" Id="Microsoft.VisualStudio.Community"/>
