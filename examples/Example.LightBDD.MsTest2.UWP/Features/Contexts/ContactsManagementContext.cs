@@ -75,7 +75,7 @@ namespace Example.LightBDD.MsTest2.UWP.Features.Contexts
         private void RemoveContact(Contact contact)
         {
             _removedContacts.Add(contact);
-            _contactBook.Remove(contact.Name);
+            _contactBook.Remove(contact.Email);
         }
 
         public void Then_the_contact_book_should_be_empty()
