@@ -57,7 +57,8 @@ Define-Step -Name 'Prepare templates' -Target 'all,pack' -Body {
     Get-ChildItem '.\templates' -Recurse -Filter '*.vsixmanifest' | %{
         $templateDirectory = $_.Directory.FullName
         Write-ShortStatus "Processing: $templateDirectory"
-        Copy-Item 'logo\lightbdd_small.ico' -Destination "$templateDirectory\lightbdd_small.ico" | Out-Null
+        Copy-Item 'logo\lightbdd_128.png' -Destination "$templateDirectory\lightbdd_128.png" | Out-Null
+        Copy-Item 'logo\lightbdd_32.ico' -Destination "$templateDirectory\lightbdd_32.ico" | Out-Null
     }
 }
 

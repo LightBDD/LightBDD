@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 
 namespace LightBDD.Core.Dependencies.Implementation
 {
@@ -92,9 +93,10 @@ namespace LightBDD.Core.Dependencies.Implementation
             if (!exceptions.Any())
                 return;
 
-            throw exceptions.Count == 1
-                ? exceptions[0]
-                : new AggregateException("Failed to dispose dependencies", exceptions);
+            if (exceptions.Count == 1)
+                ExceptionDispatchInfo.Capture(exceptions[0]).Throw();
+
+            throw new AggregateException("Failed to dispose dependencies", exceptions);
         }
 
         public IDependencyContainer BeginScope(Action<ContainerConfigurator> configuration = null)

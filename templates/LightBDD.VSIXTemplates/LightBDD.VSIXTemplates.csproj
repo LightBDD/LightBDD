@@ -10,7 +10,7 @@
     <OldToolsVersion>14.0</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>lightbdd_small.ico</ApplicationIcon>
+    <ApplicationIcon>lightbdd_32.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -74,9 +74,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="lightbdd_small.ico">
+    <Content Include="lightbdd_128.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="lightbdd_32.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Preview.PNG">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
