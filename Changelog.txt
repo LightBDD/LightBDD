@@ -4,6 +4,7 @@ LightBDD
 Version 2.4.1
 ----------------------------------------
 Summary:
++ #122 (LightBDD.Extensions.DependencyInjection)(New) Provided integration with DI containers implementing Microsoft DI abstractions
 + #123 (LightBDD.XUnit3)(Change) Improved experience with running parameterized scenarios
 
 Version 2.4.0
