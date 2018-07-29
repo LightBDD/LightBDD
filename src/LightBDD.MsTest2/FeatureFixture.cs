@@ -1,6 +1,5 @@
 ﻿using LightBDD.Framework;
 using LightBDD.Framework.Extensibility;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.MsTest2
 {
@@ -9,7 +8,7 @@ namespace LightBDD.MsTest2
     /// It offers <see cref="Runner"/> property allowing to execute scenarios belonging to the feature class.
     /// </summary>
     [FeatureFixture]
-    public class FeatureFixture : ITestContextProvider
+    public class FeatureFixture
     {
         /// <summary>
         /// Returns <see cref="IBddRunner"/> allowing to execute scenarios belonging to the feature class.
@@ -22,11 +21,5 @@ namespace LightBDD.MsTest2
         {
             Runner = FeatureRunnerProvider.GetRunnerFor(GetType()).GetBddRunner(this);
         }
-
-        /// <summary>
-        /// Gives access to currently executed test context, including ability to write output.
-        /// The property is set by the MsTest Framework.
-        /// </summary>
-        public TestContext TestContext { get; set; }
     }
 }
