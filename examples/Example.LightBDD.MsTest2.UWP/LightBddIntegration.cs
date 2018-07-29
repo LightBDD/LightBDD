@@ -6,7 +6,6 @@ using LightBDD.Framework.Reporting.Configuration;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.MsTest2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-[assembly: Parallelize(Scope = ExecutionScope.MethodLevel)]
 
 namespace Example.LightBDD.MsTest2.UWP
 {
