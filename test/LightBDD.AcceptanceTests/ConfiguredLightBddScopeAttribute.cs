@@ -33,7 +33,9 @@ namespace LightBDD.AcceptanceTests
 
         private ChromeDriver CreateDriver()
         {
-            var driver = new ChromeDriver();
+            var options = new ChromeOptions();
+            options.AddArguments("no-sandbox");
+            var driver = new ChromeDriver(options);
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(0);
             return driver;
         }
