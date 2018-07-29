@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using LightBDD.Core.Extensibility.Implementation;
 
 namespace LightBDD.Core.Extensibility
@@ -12,7 +14,7 @@ namespace LightBDD.Core.Extensibility
     public abstract class FeatureRunnerRepository : IDisposable
     {
         private readonly IntegrationContext _integrationContext;
-        private readonly ConcurrentDictionary<Type, IFeatureRunner> _runners = new ConcurrentDictionary<Type, IFeatureRunner>();
+        private readonly ConcurrentDictionary<Type, Lazy<IFeatureRunner>> _runners = new ConcurrentDictionary<Type, Lazy<IFeatureRunner>>();
 
         /// <summary>
         /// Constructor instantiating factory with specified integration context.
@@ -44,13 +46,17 @@ namespace LightBDD.Core.Extensibility
             if (featureType == null)
                 throw new ArgumentNullException(nameof(featureType));
 
-            return _runners.GetOrAdd(featureType, type => new FeatureRunner(type, _integrationContext));
+            var lazyRunnerFor = _runners.GetOrAdd(
+                featureType,
+                type => new Lazy<IFeatureRunner>(() => new FeatureRunner(type, _integrationContext), LazyThreadSafetyMode.ExecutionAndPublication));
+
+            return lazyRunnerFor.Value;
         }
 
         /// <summary>
         /// All currently instantiated runners.
         /// </summary>
-        public IEnumerable<IFeatureRunner> AllRunners => _runners.Values;
+        public IEnumerable<IFeatureRunner> AllRunners => _runners.Values.Select(x => x.Value);
 
         /// <inheritdoc />
         public void Dispose()
