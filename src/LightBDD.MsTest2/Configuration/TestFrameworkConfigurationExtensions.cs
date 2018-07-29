@@ -25,7 +25,7 @@ namespace LightBDD.MsTest2.Configuration
         /// </summary>
         public static ScenarioProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this ScenarioProgressNotifierConfiguration configuration)
         {
-            return configuration.AppendNotifierProviders(MsTest2ProgressNotifier.CreateScenarioProgressNotifier);
+            return configuration.AppendNotifierProviders<ITestContextProvider>(MsTest2ProgressNotifier.CreateScenarioProgressNotifier);
         }
 
         /// <summary>

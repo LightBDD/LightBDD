@@ -8,16 +8,16 @@ namespace LightBDD.MsTest2.Implementation
     [DebuggerStepThrough]
     internal class MsTest2ProgressNotifier
     {
-        private static readonly DefaultProgressNotifier ProgressNotifier = new DefaultProgressNotifier(Console.WriteLine);
-
         public static IFeatureProgressNotifier CreateFeatureProgressNotifier()
         {
-            return ProgressNotifier;
+            return NoProgressNotifier.Default;
         }
 
-        public static IScenarioProgressNotifier CreateScenarioProgressNotifier()
+        public static IScenarioProgressNotifier CreateScenarioProgressNotifier(ITestContextProvider fixture)
         {
-            return ProgressNotifier;
+            if (fixture.TestContext == null)
+                throw new InvalidOperationException($"The {nameof(ITestContextProvider.TestContext)} property value is not set.\nPlease ensure that {fixture.GetType()} does not hide {nameof(FeatureFixture)}.{nameof(FeatureFixture.TestContext)} property and if not, report issue for LightBDD.");
+            return new DefaultProgressNotifier(fixture.TestContext.WriteLine);
         }
     }
 }
