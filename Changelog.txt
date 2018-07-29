@@ -4,6 +4,7 @@ LightBDD
 Version 2.4.2
 ----------------------------------------
 Summary:
++ #127 (LightBDD.Core)(Fix) Fixed FeatureRunnerRepository to instantiate FeatureRunner once per feature type
 + #128 (LightBDD.MsTest2)(Change) Updated progress notifiers to work with scenarios executed in parallel
 
 Version 2.4.1
