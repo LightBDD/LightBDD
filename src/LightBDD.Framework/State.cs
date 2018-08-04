@@ -39,9 +39,9 @@ namespace LightBDD.Framework
         }
 
         /// <summary>
-        /// Returns the held value or <paramref name="defaultValue"/> if state is not initialized or held value is null (in case where <typeparam name="T"></typeparam> is reference type).
+        /// Returns the held value or <paramref name="defaultValue"/> if state is not initialized or held value is null (in case where <typeparamref name="T"/> is reference type).
         /// </summary>
-        public T GetValueOrDefault(T defaultValue = default(T))
+        public T GetValueOrDefault(T defaultValue = default)
         {
             if (!IsInitialized)
                 return defaultValue;
