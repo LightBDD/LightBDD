@@ -17,6 +17,7 @@
     <PackageTags>bdd;tdd;testing;framework;behavior driven development;acceptance criteria</PackageTags>
     <PackageReleaseNotes>Added LightBDD.Extensions.DependencyInjection; Improved parameterized scenarios experience in LightBDD.XUnit2. Details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-241</PackageReleaseNotes>
     <IsPackable>true</IsPackable>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)'=='Release'">

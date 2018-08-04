@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  <Import Project="..\..\Common.Tests.props" />
   <PropertyGroup>
     <TargetFrameworks>netcoreapp1.1;net45;net46</TargetFrameworks>
     <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netcoreapp1.1' ">$(PackageTargetFallback);dotnet</PackageTargetFallback>
