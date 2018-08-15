@@ -49,7 +49,6 @@ namespace LightBDD.Framework.Reporting.UnitTests
             var outputPath = @"\\machine\c$\reports\output.txt";
 
             var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), outputPath);
-            var expected = Path.GetFullPath(outputPath);
             Assert.That(writer.OutputPath, Is.EqualTo(outputPath));
             Assert.That(writer.FullOutputPath, Is.EqualTo(outputPath));
         }
