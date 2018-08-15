@@ -7,6 +7,7 @@ Summary:
 + #127 (LightBDD.Core)(Fix) Fixed FeatureRunnerRepository to instantiate FeatureRunner once per feature type
 + #128 (LightBDD.MsTest2)(Change) Updated progress notifiers to work with scenarios executed in parallel
 + #134 (LightBDD.Framework)(New) Added State<T> helper struct managing uninitialized shared state fields
++ #137 (LightBDD.Framework)(Bug) Unable to specify absolute path to report location on Linux
 
 Version 2.4.1
 ----------------------------------------
