@@ -1,20 +1,40 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 namespace LightBDD.Framework.Reporting.Implementation
 {
     internal class FilePathHelper
     {
+        private static readonly char[] Separators = { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
         internal static string ResolveAbsolutePath(string outputPath)
         {
             if (outputPath.StartsWith("~"))
-#if NET45
-                return Combine(AppDomain.CurrentDomain.BaseDirectory, outputPath.Substring(1));
-#else
-                return Combine(AppContext.BaseDirectory, outputPath.Substring(1));
-#endif
+                return GetBaseDirectory().TrimEnd(Separators) + Path.DirectorySeparatorChar + outputPath.Substring(1).TrimStart(Separators);
 
-            return Combine(Directory.GetCurrentDirectory(), outputPath);
+            if (IsUnc(outputPath))
+                return outputPath;
+
+            if (IsStartingWithDirSeparator(outputPath))
+                return CombineRootedPathWithCurrentRoot(outputPath);
+
+            return Path.Combine(Directory.GetCurrentDirectory(), outputPath);
+        }
+
+        private static string CombineRootedPathWithCurrentRoot(string rootedOutputPath)
+        {
+            var workingRoot = Path.GetPathRoot(Directory.GetCurrentDirectory());
+            return Path.Combine(workingRoot, rootedOutputPath.TrimStart(Separators));
+        }
+
+        private static bool IsStartingWithDirSeparator(string outputPath)
+        {
+            return outputPath.Length > 0 && Separators.Any(s => outputPath[0] == s);
+        }
+
+        private static bool IsUnc(string outputPath)
+        {
+            return outputPath.StartsWith("\\\\");
         }
 
         internal static void EnsureOutputDirectoryExists(string outputPath)
@@ -24,9 +44,13 @@ namespace LightBDD.Framework.Reporting.Implementation
                 Directory.CreateDirectory(directory);
         }
 
-        private static string Combine(string baseDirectory, string subPath)
+        private static string GetBaseDirectory()
         {
-            return Path.Combine(baseDirectory.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar), subPath.TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
+#if NET45
+            return AppDomain.CurrentDomain.BaseDirectory;
+#else
+            return AppContext.BaseDirectory;
+#endif
         }
     }
 }
