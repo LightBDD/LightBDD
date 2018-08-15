@@ -1,9 +1,9 @@
-﻿using System;
-using System.IO;
-using LightBDD.Core.Results;
+﻿using LightBDD.Core.Results;
 using LightBDD.Framework.Reporting.Formatters;
 using Moq;
 using NUnit.Framework;
+using System;
+using System.IO;
 
 namespace LightBDD.Framework.Reporting.UnitTests
 {
@@ -13,27 +13,54 @@ namespace LightBDD.Framework.Reporting.UnitTests
         [Test]
         public void It_should_use_appdomain_base_directory_if_output_starts_with_tilde()
         {
-            var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), "~" + Path.DirectorySeparatorChar + "output.txt");
+            var outputPath = "~" + Path.DirectorySeparatorChar + "output.txt";
+
+            var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), outputPath);
             var expected = Path.GetFullPath(BaseDirectory + Path.DirectorySeparatorChar + "output.txt");
-            Assert.That(writer.OutputPath, Is.EqualTo("~" + Path.DirectorySeparatorChar + "output.txt"));
+            Assert.That(writer.OutputPath, Is.EqualTo(outputPath));
             Assert.That(writer.FullOutputPath, Is.EqualTo(expected));
         }
 
         [Test]
         public void It_should_use_working_directory_if_output_is_relative_path()
         {
-            var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), "output.txt");
-            var expected = Path.GetFullPath("output.txt");
-            Assert.That(writer.OutputPath, Is.EqualTo("output.txt"));
+            var outputPath = "output.txt";
+
+            var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), outputPath);
+            var expected = Path.GetFullPath(outputPath);
+            Assert.That(writer.OutputPath, Is.EqualTo(outputPath));
             Assert.That(writer.FullOutputPath, Is.EqualTo(expected));
         }
 
         [Test]
         public void It_should_preserve_output_path_if_it_is_absolute()
         {
-            var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), "c:" + Path.DirectorySeparatorChar + "output.txt");
-            var expected = Path.GetFullPath("c:" + Path.DirectorySeparatorChar + "output.txt");
-            Assert.That(writer.OutputPath, Is.EqualTo("c:" + Path.DirectorySeparatorChar + "output.txt"));
+            var outputPath = "c:" + Path.DirectorySeparatorChar + "output.txt";
+
+            var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), outputPath);
+            var expected = Path.GetFullPath(outputPath);
+            Assert.That(writer.OutputPath, Is.EqualTo(outputPath));
+            Assert.That(writer.FullOutputPath, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void It_should_preserve_output_path_if_it_is_unc()
+        {
+            var outputPath = @"\\machine\c$\reports\output.txt";
+
+            var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), outputPath);
+            Assert.That(writer.OutputPath, Is.EqualTo(outputPath));
+            Assert.That(writer.FullOutputPath, Is.EqualTo(outputPath));
+        }
+
+        [Test]
+        public void It_should_preserve_output_path_but_with_working_directory_root_if_it_refers_to_root_directory()
+        {
+            var outputPath = Path.DirectorySeparatorChar + "output.txt";
+
+            var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), outputPath);
+            var expected = Path.GetFullPath(outputPath);
+            Assert.That(writer.OutputPath, Is.EqualTo(outputPath));
             Assert.That(writer.FullOutputPath, Is.EqualTo(expected));
         }
 
@@ -53,7 +80,7 @@ namespace LightBDD.Framework.Reporting.UnitTests
 
             Mock.Get(formatter)
                 .Setup(f => f.Format(It.IsAny<Stream>(), results))
-                .Callback((Stream stream,IFeatureResult[] r) =>
+                .Callback((Stream stream, IFeatureResult[] r) =>
                 {
                     using (var writer = new StreamWriter(stream))
                         writer.Write(expectedFileContent);
