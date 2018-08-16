@@ -13,7 +13,7 @@ addons:
 
 script:
  - dotnet restore
- - msbuild /p:Configuration=Release LightBDD.sln
+ - msbuild /p:Configuration=Release /p:EnableSourceLink=no LightBDD.sln
  - dotnet test -c Release --no-build test/LightBDD.Core.UnitTests/LightBDD.Core.UnitTests.csproj
  - dotnet test -c Release --no-build test/LightBDD.Framework.UnitTests/LightBDD.Framework.UnitTests.csproj
  - dotnet test -c Release --no-build test/LightBDD.Framework.Reporting.UnitTests/LightBDD.Framework.Reporting.UnitTests.csproj
