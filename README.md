@@ -206,15 +206,22 @@ Please check project [wiki](https://github.com/LightBDD/LightBDD/wiki) for more 
 
 ## Debugging LightBDD from NuGet packages
 
-The nuget packages for LightBDD are being pushed together with symbol packages.
-[The easy way to publish NuGet packages with sources](http://blog.davidebbo.com/2011/04/easy-way-to-publish-nuget-packages-with.html) article describes how to enable debugging with symbols downloaded from **SymbolSource.org**. Please check *What the package Consumer needs to do* article section for details.
+LightBDD supports two modes of exposing symbol packages for debugging:
+1. via [Sourcelink](https://github.com/dotnet/sourcelink) (since 2.4.2)
 
-In short, it is needed to do two actions in Visual Studio:
-* go to TOOLS->Options->Debugging->General and uncheck 'Enable Just My Code',
-* go to TOOLS->Options->Debugging->General and check 'Enable source server support',
-* go to TOOLS->Options->Debugging->Symbols and add 'http://srv.symbolsource.org/pdb/Public' as a symbol location
+    The LightBDD projects are now integrated with SourceLink, which should make debugging seamless for people using Visual Studio 15.3+ or other tools supporting it.
 
-More information on: [http://www.symbolsource.org/Public/Home/VisualStudio](http://www.symbolsource.org/Public/Home/VisualStudio).
+2. via [SymbolSource](https://github.com/SymbolSource/SymbolSource)
+
+    The nuget packages for LightBDD are being pushed together with symbol packages.
+    [The easy way to publish NuGet packages with sources](http://blog.davidebbo.com/2011/04/easy-way-to-publish-nuget-packages-with.html) article describes how to enable debugging with symbols downloaded from **SymbolSource.org**. Please check *What the package Consumer needs to do* article section for details.
+
+    In short, it is needed to do two actions in Visual Studio:
+    * go to TOOLS->Options->Debugging->General and uncheck 'Enable Just My Code',
+    * go to TOOLS->Options->Debugging->General and check 'Enable source server support',
+    * go to TOOLS->Options->Debugging->Symbols and add 'https://nuget.smbsrc.net' as a symbol location (please note that former 'http://srv.symbolsource.org/pdb/Public' is deprecated now)
+
+    More information on: [http://www.symbolsource.org/Public/Home/VisualStudio](http://www.symbolsource.org/Public/Home/VisualStudio).
 
 ## More information about LightBDD
 

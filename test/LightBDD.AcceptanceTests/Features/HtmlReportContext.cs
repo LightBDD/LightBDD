@@ -8,6 +8,7 @@ using LightBDD.AcceptanceTests.Helpers.Builders;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters.Tabular;
+using LightBDD.Framework;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.Framework.Resources;
 using LightBDD.UnitTests.Helpers;
@@ -22,10 +23,13 @@ namespace LightBDD.AcceptanceTests.Features
     {
         private readonly ResourceHandle<ChromeDriver> _driverHandle;
         private static string BaseDirectory => AppContext.BaseDirectory;
+        private State<ChromeDriver> _driver;
+        private State<IFeatureResult[]> _features;
+
         private string HtmlFileName { get; }
-        private ChromeDriver Driver { get; set; }
-        private IFeatureResult[] Features { get; set; }
+        private ChromeDriver Driver => _driver.GetValue(nameof(Driver));
         private ResultBuilder ResultBuilder { get; }
+        private IFeatureResult[] Features => _features.GetValue(nameof(Features));
 
         public HtmlReportContext(ResourceHandle<ChromeDriver> driverHandle)
         {
@@ -62,14 +66,14 @@ namespace LightBDD.AcceptanceTests.Features
 
         public async Task Given_a_html_report_is_created()
         {
-            Features = ResultBuilder.Build();
+            _features = ResultBuilder.Build();
             var htmlText = FormatResults(Features.ToArray());
             File.WriteAllText(HtmlFileName, htmlText);
         }
 
         public async Task When_a_html_report_is_opened()
         {
-            Driver = await _driverHandle.ObtainAsync();
+            _driver = await _driverHandle.ObtainAsync();
             Driver.Navigate().GoToUrl(HtmlFileName);
             Driver.EnsurePageIsLoaded();
         }

@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  <Import Project="..\..\Common.Tests.props" />
   <PropertyGroup>
     <TargetFrameworks>net45;net46</TargetFrameworks>
   </PropertyGroup>
