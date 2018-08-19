@@ -15,7 +15,7 @@
     <PackageOutputPath>$(SolutionDir)\output</PackageOutputPath>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>bdd;tdd;testing;framework;behavior driven development;acceptance criteria</PackageTags>
-    <PackageReleaseNotes>Added LightBDD.Extensions.DependencyInjection; Improved parameterized scenarios experience in LightBDD.XUnit2. Details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-241</PackageReleaseNotes>
+    <PackageReleaseNotes>Added sourcelink integration; Added State helper type; Improved LightBDD.MstTest2 parallel test progress notifications; Fixed bugs; Details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-242</PackageReleaseNotes>
     <IsPackable>true</IsPackable>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>

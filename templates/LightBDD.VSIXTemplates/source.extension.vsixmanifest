@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="d6382c7a-fe20-47e5-b4e1-4d798cef97f1" Version="2.4.1" Language="en-US" Publisher="Wojciech Kotlarski" />
+        <Identity Id="d6382c7a-fe20-47e5-b4e1-4d798cef97f1" Version="2.4.2" Language="en-US" Publisher="Wojciech Kotlarski" />
         <DisplayName>LightBDD for Visual Studio</DisplayName>
         <Description xml:space="preserve">A collection of Item templates for LightBDD testing framework</Description>
         <MoreInfo>https://github.com/LightBDD/LightBDD</MoreInfo>
