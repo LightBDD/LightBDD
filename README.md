@@ -207,7 +207,7 @@ Please check project [wiki](https://github.com/LightBDD/LightBDD/wiki) for more 
 ## Debugging LightBDD from NuGet packages
 
 LightBDD supports two modes of exposing symbol packages for debugging:
-1. via [Sourcelink](https://github.com/dotnet/sourcelink) (since 2.4.2)
+1. via [SourceLink](https://github.com/dotnet/sourcelink) (since 2.4.2)
 
     The LightBDD projects are now integrated with SourceLink, which should make debugging seamless for people using Visual Studio 15.3+ or other tools supporting it.
 
