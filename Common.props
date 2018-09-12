@@ -15,7 +15,7 @@
     <PackageOutputPath>$(SolutionDir)\output</PackageOutputPath>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>bdd;tdd;testing;framework;behavior driven development;acceptance criteria</PackageTags>
-    <PackageReleaseNotes>Fixed null assignment to nullable parameters in parameterized steps; Details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-243</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixed bug in parameterized scenarios with nullable parameters; Details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-243</PackageReleaseNotes>
     <IsPackable>true</IsPackable>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
