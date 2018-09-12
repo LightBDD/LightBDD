@@ -1,8 +1,8 @@
+using LightBDD.Core.Internals;
+using LightBDD.Core.Metadata;
 using System;
 using System.Diagnostics;
 using System.Reflection;
-using LightBDD.Core.Internals;
-using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Extensibility
 {
@@ -50,12 +50,28 @@ namespace LightBDD.Core.Extensibility
             {
                 var parameterType = parameters[i].ParameterType.GetTypeInfo();
                 var argument = arguments[i];
-                var argumentType = argument?.GetType();
-                if (argument == null && parameterType.IsValueType || argument != null && !parameterType.IsAssignableFrom(argument.GetType().GetTypeInfo()))
-                    throw new InvalidOperationException($"Provided argument {argumentType} '{argument ?? "null"}' is not assignable to parameter index {i} of method {methodInfo}");
+                var argumentType = argument?.GetType().GetTypeInfo();
+                if (IsNullAssignmentToStruct(argument, parameterType) || IsArgumentTypeNotCompatible(argumentType, parameterType))
+                {
+                    var argumentDescription = argumentType != null
+                        ? $"{argumentType} '{argument}'"
+                        : "<null>";
+
+                    throw new InvalidOperationException($"Provided argument {argumentDescription} is not assignable to parameter index {i} of method {methodInfo}");
+                }
                 results[i] = ParameterDescriptor.FromConstant(parameters[i], argument);
             }
             return results;
+        }
+
+        private static bool IsArgumentTypeNotCompatible(TypeInfo argumentType, TypeInfo parameterType)
+        {
+            return argumentType != null && !parameterType.IsAssignableFrom(argumentType);
+        }
+
+        private static bool IsNullAssignmentToStruct(object argument, TypeInfo parameterType)
+        {
+            return argument == null && parameterType.IsValueType && Nullable.GetUnderlyingType(parameterType.AsType()) == null;
         }
     }
 }
