@@ -1,6 +1,11 @@
 LightBDD
 ===========================================
 
+Version 2.4.3
+----------------------------------------
+Summary:
++ #145 (LightBDD.Core)(Fix) NULL value not assignable to Nullable<bool> parameter
+
 Version 2.4.2
 ----------------------------------------
 Summary:
