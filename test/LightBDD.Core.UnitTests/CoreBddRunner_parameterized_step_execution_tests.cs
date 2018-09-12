@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using LightBDD.Framework;
+﻿using LightBDD.Framework;
 using LightBDD.Framework.Extensibility;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
 
 namespace LightBDD.Core.UnitTests
 {
@@ -26,13 +26,17 @@ namespace LightBDD.Core.UnitTests
             _runner.Test().TestScenario(
                 TestStep.CreateAsync(Given_step_one, "abc"),
                 TestStep.CreateAsync(When_step_two, 123),
-                TestStep.CreateAsync(Then_step_three, 3.25));
+                TestStep.CreateAsync(Then_step_three, 3.25),
+                TestStep.CreateAsync(Then_another_step, (double?)3.25),
+                TestStep.CreateAsync(Then_another_step, (double?)null));
 
             var expected = new[]
             {
-                Tuple.Create("Given_step_one", (object)"abc"),
-                Tuple.Create("When_step_two", (object)123),
-                Tuple.Create("Then_step_three", (object)3.25)
+                Tuple.Create(nameof(Given_step_one), (object)"abc"),
+                Tuple.Create(nameof(When_step_two), (object)123),
+                Tuple.Create(nameof(Then_step_three), (object)3.25),
+                Tuple.Create(nameof(Then_another_step), (object)3.25),
+                Tuple.Create(nameof(Then_another_step), (object)null)
             };
 
             Assert.That(_executedSteps, Is.EqualTo(expected));
@@ -49,9 +53,9 @@ namespace LightBDD.Core.UnitTests
 
             var expected = new[]
             {
-                Tuple.Create("Given_step_one", (object)"1"),
-                Tuple.Create("When_step_two", (object)2),
-                Tuple.Create("Then_step_three", (object)3.0)
+                Tuple.Create(nameof(Given_step_one), (object)"1"),
+                Tuple.Create(nameof(When_step_two), (object)2),
+                Tuple.Create(nameof(Then_step_three), (object)3.0)
             };
 
             Assert.That(_executedSteps, Is.EqualTo(expected));
@@ -70,12 +74,13 @@ namespace LightBDD.Core.UnitTests
 
             Assert.That(ex.Message, Is.EqualTo("reason"));
 
-            var expected = new[] { Tuple.Create("Given_step_one", (object)"def") };
+            var expected = new[] { Tuple.Create(nameof(Given_step_one), (object)"def") };
             Assert.That(_executedSteps, Is.EqualTo(expected));
         }
 
-        private void Given_step_one(string parameter) { _executedSteps.Add(Tuple.Create("Given_step_one", (object)parameter)); }
-        private void When_step_two(int parameter) { _executedSteps.Add(Tuple.Create("When_step_two", (object)parameter)); }
-        private void Then_step_three(double parameter) { _executedSteps.Add(Tuple.Create("Then_step_three", (object)parameter)); }
+        private void Given_step_one(string parameter) { _executedSteps.Add(Tuple.Create(nameof(Given_step_one), (object)parameter)); }
+        private void When_step_two(int parameter) { _executedSteps.Add(Tuple.Create(nameof(When_step_two), (object)parameter)); }
+        private void Then_step_three(double parameter) { _executedSteps.Add(Tuple.Create(nameof(Then_step_three), (object)parameter)); }
+        private void Then_another_step(double? parameter) { _executedSteps.Add(Tuple.Create(nameof(Then_another_step), (object)parameter)); }
     }
 }
