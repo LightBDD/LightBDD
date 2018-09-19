@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>LightBDD async scenario method</Title>
+      <Author>
+      </Author>
+      <Description>LightBDD async scenario method</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>lbscena</Shortcut>
+    </Header>
+    <Snippet>
+      <Imports>
+        <Import>
+          <Namespace>LightBDD.Framework.Scenarios.Basic</Namespace>
+        </Import>
+        <Import>
+          <Namespace>LightBDD.Framework.Scenarios.Extended</Namespace>
+        </Import>
+        <Import>
+          <Namespace>System.Threading.Tasks</Namespace>
+        </Import>
+      </Imports>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>ScenarioName</ID>
+          <ToolTip>Scenario name</ToolTip>
+          <Default>My_async_scenario</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp" Delimiter="$"><![CDATA[[Scenario]
+public async Task $ScenarioName$()
+{
+    await Runner.RunScenarioAsync(
+        $end$);
+}]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>LightBDD composite step method</Title>
+      <Author>
+      </Author>
+      <Description>LightBDD composite step method</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>lbcomp</Shortcut>
+    </Header>
+    <Snippet>
+      <Imports>
+        <Import>
+          <Namespace>LightBDD.Framework</Namespace>
+        </Import>
+        <Import>
+          <Namespace>LightBDD.Framework.Scenarios.Basic</Namespace>
+        </Import>
+        <Import>
+          <Namespace>System.Threading.Tasks</Namespace>
+        </Import>
+        <Import>
+          <Namespace>LightBDD.Framework.Scenarios.Extended</Namespace>
+        </Import>
+      </Imports>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>StepName</ID>
+          <ToolTip>Composite step name</ToolTip>
+          <Default>My_composite_step</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp" Delimiter="$"><![CDATA[private CompositeStep $StepName$()
+{
+    return CompositeStep.DefineNew()
+        .AddSteps(
+            $end$)
+        .Build();
+}]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
