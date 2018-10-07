@@ -20,7 +20,9 @@ Define-Step -Name 'Update version' -Target 'all,build' -Body {
     Replace-InFile 'Common.props' $version '<VersionPrefix>%</VersionPrefix>'
     Replace-InFile 'QuickStart.txt' $version 'version %!'
     Replace-InFile 'templates\LightBDD.VSIXTemplates\source.extension.vsixmanifest' $version 'Identity Id="d6382c7a-fe20-47e5-b4e1-4d798cef97f1" Version="%"'
-    
+    Get-ChildItem '.\templates' 'ProjectTemplate.csproj' -Recurse | %{
+        Replace-InFile $_.FullName $version 'Include="LightBDD.Fixie2" Version="%"','Include="LightBDD.NUnit2" Version="%"','Include="LightBDD.NUnit3" Version="%"','Include="LightBDD.XUnit2" Version="%"','Include="LightBDD.MsTest2" Version="%"'
+    }
 }
 
 Define-Step -Name 'Build' -Target 'all,build' -Body {
