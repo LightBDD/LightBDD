@@ -42,7 +42,7 @@ This additional layer becomes the root of most problems when maintaining tests, 
 * Support for DI containers,
 * Feature report generation in XML, HTML or Plain text format,
 * In-code LightBDD configuration allowing to customize all LightBDD features,
-* VisualStudio extension with Feature Class Templates and Code Snippets ([see details](#vs-extension)),
+* VisualStudio extension with Feature Class Templates, Project Templates and Code Snippets ([see details](#vs-extension)),
 * Integrated with [NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/), [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/) and [Fixie](http://fixie.github.io/) frameworks,
 * Async scenario and steps execution support,
 * Cross-platform support (.NET Framework / .NET Standard / .NET Core / UWP).
@@ -199,7 +199,8 @@ The LightBDD is available on [NuGet](https://www.nuget.org/packages?q=LightBDD):
 
 ## VS Extension
 **LightBDD** project offers also a VSIX extension containing:
-* Feature Class templates for all integrations (nunit/xunit/mstest/fixie),
+* Feature Class Templates for all integrations (nunit/xunit/mstest/fixie),
+* Project Templates for all integrations (nunit/xunit/mstest/fixie),
 * Code Snippets for creating Scenarios and Composite Steps.
 
 The VSIX extension can be downloaded from: [Visual Studio Gallery](https://visualstudiogallery.msdn.microsoft.com/99be2036-a6b3-462c-9111-3ca31a317da2) (Visual Studio 2012 and newer versions supported).
