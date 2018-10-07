@@ -3,7 +3,7 @@
     <Metadata>
         <Identity Id="d6382c7a-fe20-47e5-b4e1-4d798cef97f1" Version="2.4.3" Language="en-US" Publisher="Wojciech Kotlarski" />
         <DisplayName>LightBDD for Visual Studio</DisplayName>
-        <Description xml:space="preserve">A collection of Item templates for LightBDD testing framework</Description>
+        <Description xml:space="preserve">A collection of Item Templates and Code Snippets for LightBDD testing framework</Description>
         <MoreInfo>https://github.com/LightBDD/LightBDD</MoreInfo>
         <License>LICENSE.txt</License>
         <Icon>lightbdd_128.png</Icon>
@@ -24,6 +24,7 @@
         <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="LightBDD.MsTest2.FeatureTemplate" d:TargetPath="|LightBDD.MsTest2.FeatureTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
         <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="LightBDD.NUnit2.FeatureTemplate" d:TargetPath="|LightBDD.NUnit2.FeatureTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
         <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="LightBDD.Fixie2.FeatureTemplate" d:TargetPath="|LightBDD.Fixie2.FeatureTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="File" Path="LightBDD Snippets\LightBDD.pkgdef" />
     </Assets>
     <Prerequisites>
         <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,)" DisplayName="Visual Studio core editor" />

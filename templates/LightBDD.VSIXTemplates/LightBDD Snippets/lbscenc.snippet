@@ -5,13 +5,12 @@
       <SnippetTypes>
         <SnippetType>Expansion</SnippetType>
       </SnippetTypes>
-      <Title>LightBDD scenario method</Title>
-      <Author>
-      </Author>
-      <Description>LightBDD scenario method</Description>
+      <Title>LightBDD contextual scenario method</Title>
+      <Author>Wojciech Kotlarski</Author>
+      <Description>LightBDD contextual scenario method</Description>
       <HelpUrl>
       </HelpUrl>
-      <Shortcut>lbscen</Shortcut>
+      <Shortcut>lbscenc</Shortcut>
     </Header>
     <Snippet>
       <Imports>
@@ -20,6 +19,9 @@
         </Import>
         <Import>
           <Namespace>LightBDD.Framework.Scenarios.Extended</Namespace>
+        </Import>
+        <Import>
+          <Namespace>LightBDD.Framework.Scenarios.Contextual</Namespace>
         </Import>
       </Imports>
       <Declarations>
@@ -30,12 +32,21 @@
           <Function>
           </Function>
         </Literal>
+        <Literal Editable="true">
+          <ID>ContextType</ID>
+          <ToolTip>ContextType</ToolTip>
+          <Default>ContextType</Default>
+          <Function>
+          </Function>
+        </Literal>
       </Declarations>
       <Code Language="csharp" Delimiter="$"><![CDATA[[Scenario]
 public void $ScenarioName$()
 {
-    Runner.RunScenario(
-        $end$);
+    Runner
+        .WithContext<$ContextType$>()
+        .RunScenario(
+            x => x.$end$);
 }]]></Code>
     </Snippet>
   </CodeSnippet>

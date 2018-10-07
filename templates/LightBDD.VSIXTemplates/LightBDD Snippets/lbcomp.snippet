@@ -5,16 +5,18 @@
       <SnippetTypes>
         <SnippetType>Expansion</SnippetType>
       </SnippetTypes>
-      <Title>LightBDD async scenario method</Title>
-      <Author>
-      </Author>
-      <Description>LightBDD async scenario method</Description>
+      <Title>LightBDD composite step method</Title>
+      <Author>Wojciech Kotlarski</Author>
+      <Description>LightBDD composite step method</Description>
       <HelpUrl>
       </HelpUrl>
-      <Shortcut>lbscena</Shortcut>
+      <Shortcut>lbcomp</Shortcut>
     </Header>
     <Snippet>
       <Imports>
+        <Import>
+          <Namespace>LightBDD.Framework</Namespace>
+        </Import>
         <Import>
           <Namespace>LightBDD.Framework.Scenarios.Basic</Namespace>
         </Import>
@@ -27,18 +29,19 @@
       </Imports>
       <Declarations>
         <Literal Editable="true">
-          <ID>ScenarioName</ID>
-          <ToolTip>Scenario name</ToolTip>
-          <Default>My_async_scenario</Default>
+          <ID>StepName</ID>
+          <ToolTip>Composite step name</ToolTip>
+          <Default>My_composite_step</Default>
           <Function>
           </Function>
         </Literal>
       </Declarations>
-      <Code Language="csharp" Delimiter="$"><![CDATA[[Scenario]
-public async Task $ScenarioName$()
+      <Code Language="csharp" Delimiter="$"><![CDATA[private CompositeStep $StepName$()
 {
-    await Runner.RunScenarioAsync(
-        $end$);
+    return CompositeStep.DefineNew()
+        .AddSteps(
+            $end$)
+        .Build();
 }]]></Code>
     </Snippet>
   </CodeSnippet>
