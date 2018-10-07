@@ -1,6 +1,11 @@
 LightBDD
 ===========================================
 
+Version 2.5.0
+----------------------------------------
+Summary:
++ #61 Implemented snippets for scenario and composite steps in VSIX extension
+
 Version 2.4.3
 ----------------------------------------
 Summary:
