@@ -1,17 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using LightBDD.Core.Formatting.Values;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using LightBDD.Core.Formatting.Values;
 
 namespace LightBDD.Framework.Expectations.Implementation
 {
     [DebuggerStepThrough]
     internal class OrExpectation<T> : Expectation<T>
     {
+        private readonly string _prefix;
         private readonly IExpectation<T>[] _expectations;
 
-        public OrExpectation(params IExpectation<T>[] expectations)
+        public OrExpectation(string prefix, params IExpectation<T>[] expectations)
         {
+            _prefix = prefix;
             _expectations = expectations;
         }
 
@@ -25,14 +27,12 @@ namespace LightBDD.Framework.Expectations.Implementation
                     return ExpectationResult.Success;
                 details.Add(result.Message);
             }
-            return !details.Any()
-                ? ExpectationResult.Success
-                : FormatFailure(formattingService, $"got: '{formattingService.FormatValue(value)}'", details);
+            return FormatFailure(formattingService, $"got: '{formattingService.FormatValue(value)}'", details);
         }
 
         public override string Format(IValueFormattingService formattingService)
         {
-            return $"({string.Join(" or ", _expectations.Select(x => x.Format(formattingService)))})";
+            return $"{_prefix}({string.Join(" or ", _expectations.Select(x => x.Format(formattingService)))})";
         }
     }
 }
