@@ -1,12 +1,12 @@
-﻿using System;
+﻿using LightBDD.Core.Formatting.Values;
+using LightBDD.Framework.Expectations.Implementation;
+using LightBDD.Framework.Parameters;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
-using LightBDD.Core.Formatting.Values;
-using LightBDD.Framework.Expectations.Implementation;
-using LightBDD.Framework.Parameters;
 
 namespace LightBDD.Framework.Expectations
 {
@@ -320,7 +320,7 @@ namespace LightBDD.Framework.Expectations
         /// <param name="expectationBuilder">Expectation builder</param>
         public static Expectation<T> BeAllTrue<T>(this IExpectationComposer composer, params Func<IExpectationComposer, IExpectation<T>>[] expectationBuilder)
         {
-            return composer.Compose(new AndExpectation<T>(expectationBuilder.Select(x => x.Invoke(Expect.To)).ToArray()));
+            return composer.Compose(new AndExpectation<T>("all true ", expectationBuilder.Select(x => x.Invoke(Expect.To)).ToArray()));
         }
 
         /// <summary>
@@ -331,7 +331,7 @@ namespace LightBDD.Framework.Expectations
         /// <param name="expectationBuilder">Expectation builder</param>
         public static Expectation<T> BeAnyTrue<T>(this IExpectationComposer composer, params Func<IExpectationComposer, IExpectation<T>>[] expectationBuilder)
         {
-            return composer.Compose(new OrExpectation<T>(expectationBuilder.Select(x => x.Invoke(Expect.To)).ToArray()));
+            return composer.Compose(new OrExpectation<T>("any true ", expectationBuilder.Select(x => x.Invoke(Expect.To)).ToArray()));
         }
 
         /// <summary>
@@ -339,7 +339,7 @@ namespace LightBDD.Framework.Expectations
         /// </summary>
         public static Expectation<T> And<T>(this IExpectation<T> expectation, Func<IExpectationComposer, IExpectation<T>> andExpectation)
         {
-            return new AndExpectation<T>(expectation, andExpectation(Expect.To));
+            return new AndExpectation<T>(string.Empty, expectation, andExpectation(Expect.To));
         }
 
         /// <summary>
@@ -347,7 +347,7 @@ namespace LightBDD.Framework.Expectations
         /// </summary>
         public static Expectation<T> Or<T>(this IExpectation<T> expectation, Func<IExpectationComposer, IExpectation<T>> orExpectation)
         {
-            return new OrExpectation<T>(expectation, orExpectation(Expect.To));
+            return new OrExpectation<T>(string.Empty, expectation, orExpectation(Expect.To));
         }
 
         /// <summary>

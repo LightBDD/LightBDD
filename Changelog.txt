@@ -4,8 +4,9 @@ LightBDD
 Version 2.5.0
 ----------------------------------------
 Summary:
-+ #60 Implemented Project Templates in VSIX extension
-+ #61 Implemented snippets for scenario and composite steps in VSIX extension
++ #60 (VSIX)(New) Implemented Project Templates in VSIX extension
++ #61 (VSIX)(New) Implemented snippets for scenario and composite steps in VSIX extension
++ #148 (Framework)(Fix) Expect.To.BeAnyTrue<T>() with no sub-expectations should fail
 
 Version 2.4.3
 ----------------------------------------

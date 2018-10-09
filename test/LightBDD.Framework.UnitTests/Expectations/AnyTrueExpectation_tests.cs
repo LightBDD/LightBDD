@@ -24,7 +24,15 @@ namespace LightBDD.Framework.UnitTests.Expectations
         }
 
         [Test]
-        [TestCase(3, "expected: (less than '2' or greater than '5' or equals '4'), but got: '3'\n\texpected: less than '2', but got: '3'\n\texpected: greater than '5', but got: '3'\n\texpected: equals '4', but got: '3'")]
+        public void It_should_fail_when_no_parameters()
+        {
+            var result = Expect.To.BeAnyTrue<int>().Verify(0, ValueFormattingServices.Current);
+            Assert.False(result);
+            Assert.That(result.Message, Is.EqualTo("expected: any true (), but got: '0'"));
+        }
+
+        [Test]
+        [TestCase(3, "expected: any true (less than '2' or greater than '5' or equals '4'), but got: '3'\n\texpected: less than '2', but got: '3'\n\texpected: greater than '5', but got: '3'\n\texpected: equals '4', but got: '3'")]
         public void It_should_fail_validation(int value, string expectedMessage)
         {
             var expectation = Expect.To.BeAnyTrue(x => x.BeLessThan(2), x => x.BeGreaterThan(5), x => x.Equal(4));
@@ -34,9 +42,9 @@ namespace LightBDD.Framework.UnitTests.Expectations
         }
 
         [Test]
-        [TestCase(4, "expected: not (less than '2' or greater than '5' or equals '4'), but it was")]
-        [TestCase(1, "expected: not (less than '2' or greater than '5' or equals '4'), but it was")]
-        [TestCase(6, "expected: not (less than '2' or greater than '5' or equals '4'), but it was")]
+        [TestCase(4, "expected: not any true (less than '2' or greater than '5' or equals '4'), but it was")]
+        [TestCase(1, "expected: not any true (less than '2' or greater than '5' or equals '4'), but it was")]
+        [TestCase(6, "expected: not any true (less than '2' or greater than '5' or equals '4'), but it was")]
         public void It_should_fail_negated_validation(int value, string expectedMessage)
         {
             var expectation = Expect.To.Not.BeAnyTrue(x => x.BeLessThan(2), x => x.BeGreaterThan(5), x => x.Equal(4));
@@ -48,7 +56,7 @@ namespace LightBDD.Framework.UnitTests.Expectations
         [Test]
         public void It_should_format()
         {
-            Assert.That(Expect.To.BeAnyTrue(x => x.BeLessThan(2), x => x.BeGreaterThan(5), x => x.Equal(4)).ToString(), Is.EqualTo("(less than '2' or greater than '5' or equals '4')"));
+            Assert.That(Expect.To.BeAnyTrue(x => x.BeLessThan(2), x => x.BeGreaterThan(5), x => x.Equal(4)).ToString(), Is.EqualTo("any true (less than '2' or greater than '5' or equals '4')"));
         }
     }
 }

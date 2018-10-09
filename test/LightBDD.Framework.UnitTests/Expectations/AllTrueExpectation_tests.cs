@@ -22,8 +22,17 @@ namespace LightBDD.Framework.UnitTests.Expectations
         }
 
         [Test]
-        [TestCase(3, "expected: (greater than '2' and less than '5' and not equals '3'), but got: '3'\n\texpected: not equals '3', but it was")]
-        [TestCase(6, "expected: (greater than '2' and less than '5' and not equals '3'), but got: '6'\n\texpected: less than '5', but got: '6'")]
+        public void It_should_pass_when_no_parameters()
+        {
+            var expectation = Expect.To.BeAllTrue<int>();
+            var result = expectation.Verify(0, ValueFormattingServices.Current);
+            Assert.True(result);
+            Assert.That(expectation.ToString(), Is.EqualTo("all true ()"));
+        }
+
+        [Test]
+        [TestCase(3, "expected: all true (greater than '2' and less than '5' and not equals '3'), but got: '3'\n\texpected: not equals '3', but it was")]
+        [TestCase(6, "expected: all true (greater than '2' and less than '5' and not equals '3'), but got: '6'\n\texpected: less than '5', but got: '6'")]
         public void It_should_fail_validation(int value, string expectedMessage)
         {
             var expectation = Expect.To.BeAllTrue(x => x.BeGreaterThan(2), x => x.BeLessThan(5), x => x.Not.Equal(3));
@@ -33,7 +42,7 @@ namespace LightBDD.Framework.UnitTests.Expectations
         }
 
         [Test]
-        [TestCase(4, "expected: not (greater than '2' and less than '5' and not equals '3'), but it was")]
+        [TestCase(4, "expected: not all true (greater than '2' and less than '5' and not equals '3'), but it was")]
         public void It_should_fail_negated_validation(int value, string expectedMessage)
         {
             var expectation = Expect.To.Not.BeAllTrue(x => x.BeGreaterThan(2), x => x.BeLessThan(5), x => x.Not.Equal(3));
@@ -45,7 +54,7 @@ namespace LightBDD.Framework.UnitTests.Expectations
         [Test]
         public void It_should_format()
         {
-            Assert.That(Expect.To.BeAllTrue(x => x.BeGreaterThan(2), x => x.BeLessThan(5), x => x.Not.Equal(3)).ToString(), Is.EqualTo("(greater than '2' and less than '5' and not equals '3')"));
+            Assert.That(Expect.To.BeAllTrue(x => x.BeGreaterThan(2), x => x.BeLessThan(5), x => x.Not.Equal(3)).ToString(), Is.EqualTo("all true (greater than '2' and less than '5' and not equals '3')"));
         }
     }
 }
