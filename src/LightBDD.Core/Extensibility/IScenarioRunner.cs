@@ -111,5 +111,8 @@ namespace LightBDD.Core.Extensibility
         /// <exception cref="InvalidOperationException">Throws when name or steps are not defined.</exception>
         /// <exception cref="ScenarioExecutionException">Thrown when one of steps throws exception. The original exception is accessible with <see cref="Exception.InnerException"/> property and can be rethrown by calling <code>ex.GetOriginal().Throw()</code></exception>
         Task RunScenarioAsync();
+
+        void WithSetup(Func<object, Task> onSetup);
+        void WithTearDown(Func<object, Task> onTearDown);
     }
 }

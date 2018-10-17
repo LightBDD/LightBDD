@@ -15,6 +15,7 @@ using LightBDD.Core.Results.Implementation;
 
 namespace LightBDD.Core.Execution.Implementation
 {
+    //TODO: rework in 3.x
     internal class RunnableScenario : IScenario
     {
         private readonly ScenarioInfo _info;
@@ -25,6 +26,8 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly IEnumerable<IScenarioDecorator> _scenarioDecorators;
         private readonly ExceptionProcessor _exceptionProcessor;
         private readonly IDependencyContainer _container;
+        private readonly IEnumerable<Func<object, Task>> _setupFunctions;
+        private readonly IEnumerable<Func<object, Task>> _tearDownFunctions;
         private readonly ScenarioResult _result;
         private RunnableStep[] _preparedSteps = new RunnableStep[0];
         private Func<Exception, bool> _shouldAbortSubStepExecutionFn = ex => true;
@@ -34,10 +37,13 @@ namespace LightBDD.Core.Execution.Implementation
         public object Context { get; private set; }
 
         [DebuggerStepThrough]
-        public RunnableScenario(ScenarioInfo scenario, Func<DecoratingExecutor, object, IDependencyContainer, RunnableStep[]> stepsProvider,
+        public RunnableScenario(ScenarioInfo scenario,
+            Func<DecoratingExecutor, object, IDependencyContainer, RunnableStep[]> stepsProvider,
             ExecutionContextDescriptor contextDescriptor, IScenarioProgressNotifier progressNotifier,
             DecoratingExecutor decoratingExecutor, IEnumerable<IScenarioDecorator> scenarioDecorators,
-            ExceptionProcessor exceptionProcessor, IDependencyContainer container)
+            ExceptionProcessor exceptionProcessor, IDependencyContainer container,
+            IEnumerable<Func<object, Task>> setupFunctions, 
+            IEnumerable<Func<object, Task>> tearDownFunctions)
         {
             _info = scenario;
             _stepsProvider = stepsProvider;
@@ -47,6 +53,8 @@ namespace LightBDD.Core.Execution.Implementation
             _scenarioDecorators = scenarioDecorators;
             _exceptionProcessor = exceptionProcessor;
             _container = container;
+            _setupFunctions = setupFunctions;
+            _tearDownFunctions = tearDownFunctions;
             _result = new ScenarioResult(_info);
         }
 

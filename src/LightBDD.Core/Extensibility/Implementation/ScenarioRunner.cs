@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Execution.Implementation;
@@ -13,6 +8,11 @@ using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Notification;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LightBDD.Core.Extensibility.Implementation
 {
@@ -30,6 +30,8 @@ namespace LightBDD.Core.Extensibility.Implementation
         private readonly ExceptionProcessor _exceptionProcessor;
         private readonly IDependencyContainer _container;
         private IEnumerable<IScenarioDecorator> _scenarioDecorators = Enumerable.Empty<IScenarioDecorator>();
+        private IList<Func<object, Task>> _setupFunctions = null;
+        private IList<Func<object, Task>> _tearDownFunctions = null;
 
         public ScenarioRunner(ScenarioExecutor scenarioExecutor, IMetadataProvider metadataProvider, IScenarioProgressNotifier progressNotifier, ExceptionProcessor exceptionProcessor, IDependencyContainer container)
         {
@@ -129,7 +131,23 @@ namespace LightBDD.Core.Extensibility.Implementation
         public Task RunScenarioAsync()
         {
             Validate();
-            return _scenarioExecutor.ExecuteAsync(new ScenarioInfo(_name, _labels, _categories), ProvideSteps, _contextDescriptor, _progressNotifier, _scenarioDecorators, _exceptionProcessor, _container);
+            return _scenarioExecutor.ExecuteAsync(
+                new ScenarioInfo(_name, _labels, _categories),
+                ProvideSteps, _contextDescriptor, _progressNotifier, _scenarioDecorators, _exceptionProcessor, _container,
+                _setupFunctions ?? Enumerable.Empty<Func<object, Task>>(),
+                _tearDownFunctions ?? Enumerable.Empty<Func<object, Task>>());
+        }
+
+        public void WithSetup(Func<object, Task> onSetup)
+        {
+            _setupFunctions = _setupFunctions ?? new List<Func<object, Task>>();
+            _setupFunctions.Add(onSetup);
+        }
+
+        public void WithTearDown(Func<object, Task> onTearDown)
+        {
+            _tearDownFunctions = _tearDownFunctions ?? new List<Func<object, Task>>();
+            _tearDownFunctions.Add(onTearDown);
         }
 
         public void RunSynchronously()

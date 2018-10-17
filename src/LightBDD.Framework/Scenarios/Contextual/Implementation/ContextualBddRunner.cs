@@ -1,9 +1,8 @@
-using System;
-using System.Diagnostics;
 using LightBDD.Core.Configuration;
-using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Extensibility;
+using System;
+using System.Diagnostics;
 
 namespace LightBDD.Framework.Scenarios.Contextual.Implementation
 {
@@ -11,23 +10,25 @@ namespace LightBDD.Framework.Scenarios.Contextual.Implementation
     internal class ContextualBddRunner<TContext> : IBddRunner<TContext>, IEnrichableFeatureFixtureRunner
     {
         private readonly IFeatureFixtureRunner _coreRunner;
-        private readonly Func<IScenarioRunner, IScenarioRunner> _configureScenarioContext;
+        private Action<IScenarioRunner> _configureFn = ConfigureNothing;
+        private static void ConfigureNothing(IScenarioRunner runner) { }
 
-        public ContextualBddRunner(IBddRunner coreRunner, Func<object> contextProvider, bool takeOwnership)
+        public ContextualBddRunner(IFeatureFixtureRunner coreRunner)
         {
-            _configureScenarioContext = scenario => scenario.WithContext(contextProvider, takeOwnership);
-            _coreRunner = coreRunner.Integrate();
+            _coreRunner = coreRunner;
         }
 
-        public ContextualBddRunner(IBddRunner coreRunner, Func<IDependencyResolver, object> contextResolver)
+        public ContextualBddRunner<TContext> Configure(Action<IScenarioRunner> configureFn)
         {
-            _configureScenarioContext = scenario => scenario.WithContext(contextResolver);
-            _coreRunner = coreRunner.Integrate();
+            _configureFn += configureFn;
+            return this;
         }
 
         public IScenarioRunner NewScenario()
         {
-            return _configureScenarioContext(_coreRunner.NewScenario());
+            var runner = _coreRunner.NewScenario();
+            _configureFn(runner);
+            return runner;
         }
 
         public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, LightBddConfiguration, TEnrichedRunner> runnerFactory)
