@@ -12,6 +12,7 @@ namespace Example.LightBDD.MsTest2.UWP.Features
 @"As LightBDD user,
 I want to be able to write compact scenarios,
 So that I can use LightBDD for more unit-test like tests as well")]
+    [TestClass]
     public class Compact_calculator_scenarios : FeatureFixture
     {
         [Scenario]
