@@ -4,7 +4,7 @@
     <TargetFramework>net452</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="LightBDD.Fixie2" Version="2.4.3" />
+    <PackageReference Include="LightBDD.Fixie2" Version="2.5.0" />
     <PackageReference Include="Fixie" Version="2.0.2" />
     <DotNetCliToolReference Include="Fixie.Console" Version="2.0.2" />
   </ItemGroup>
