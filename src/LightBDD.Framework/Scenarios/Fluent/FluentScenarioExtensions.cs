@@ -1,10 +1,12 @@
 ﻿using LightBDD.Framework.Scenarios.Fluent.Implementation;
+using System.Diagnostics;
 
 namespace LightBDD.Framework.Scenarios.Fluent
 {
     /// <summary>
     /// Extensions class allowing to define LightBDD scenarios in fluent way.
     /// </summary>
+    [DebuggerStepThrough]
     public static class FluentScenarioExtensions
     {
         /// <summary>

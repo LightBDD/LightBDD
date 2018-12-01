@@ -105,6 +105,7 @@
       <SubType>Code</SubType>
       <DependentUpon>Calculator_feature.cs</DependentUpon>
     </Compile>
+    <Compile Include="Features\Compact_calculator_scenarios.cs" />
     <Compile Include="Features\Contacts_management.cs" />
     <Compile Include="Features\Contexts\ContactsManagementContext.cs" />
     <Compile Include="Features\Contexts\SpeditionContext.cs" />
