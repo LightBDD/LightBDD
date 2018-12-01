@@ -1,1 +1,1 @@
-dotnet test --logger:"console;verbosity=normal"
+dotnet test --logger:"console;verbosity=detailed"
