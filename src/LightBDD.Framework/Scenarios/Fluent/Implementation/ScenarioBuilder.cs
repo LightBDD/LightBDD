@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
@@ -9,6 +10,7 @@ using LightBDD.Framework.Extensibility;
 
 namespace LightBDD.Framework.Scenarios.Fluent.Implementation
 {
+    [DebuggerStepThrough]
     internal class ScenarioBuilder<TContext> : LightBddConfigurationAware, IScenarioBuilder<TContext>, IIntegrableStepGroupBuilder
     {
         private readonly IBddRunner<TContext> _runner;
