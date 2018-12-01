@@ -6,7 +6,6 @@
     <Company>https://github.com/LightBDD/LightBDD</Company>
     <PackageIconUrl>https://raw.githubusercontent.com/LightBDD/LightBDD/master/logo/lightbdd.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/LightBDD/LightBDD</PackageProjectUrl>
-    <PackageLicenseUrl>http://opensource.org/licenses/BSD-2-Clause</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/LightBDD/LightBDD</RepositoryUrl>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
@@ -18,6 +17,7 @@
     <PackageReleaseNotes>Fixed bug in parameterized scenarios with nullable parameters; Details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-243</PackageReleaseNotes>
     <IsPackable>true</IsPackable>
     <LangVersion>latest</LangVersion>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
@@ -31,5 +31,8 @@
 
   <ItemGroup Condition="'$(EnableSourceLink)' != 'no'">
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All"/>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\LICENSE.txt" Pack="true" PackagePath="$(PackageLicenseFile)"/>
   </ItemGroup>
 </Project>
