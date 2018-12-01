@@ -9,6 +9,7 @@ Summary:
 + #148 (Framework)(Fix) Expect.To.BeAnyTrue<T>() with no sub-expectations should fail
 + #153 (LightBDD.XUnit2)(Examples) Updated dotnet test examples for xunit2 to reflect the newest framework changes
 + #156 (Framework)(New) Implemented compact step syntax allowing inline step definitions
++ #160 (LightBDD.Fixie2)(Change) Updated Fixie dependency to v2.0.2 to detect tests in VS 15.8 and higher
 
 Version 2.4.3
 ----------------------------------------
