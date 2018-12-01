@@ -7,6 +7,7 @@ Summary:
 + #60 (VSIX)(New) Implemented Project Templates in VSIX extension
 + #61 (VSIX)(New) Implemented snippets for scenario and composite steps in VSIX extension
 + #148 (Framework)(Fix) Expect.To.BeAnyTrue<T>() with no sub-expectations should fail
++ #153 (LightBDD.XUnit2)(Examples) Updated dotnet test examples for xunit2 to reflect the newest framework changes
 + #156 (Framework)(New) Implemented compact step syntax allowing inline step definitions
 
 Version 2.4.3
