@@ -14,7 +14,7 @@
     <PackageOutputPath>$(SolutionDir)\output</PackageOutputPath>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>bdd;tdd;testing;framework;behavior driven development;acceptance criteria</PackageTags>
-    <PackageReleaseNotes>Fixed bug in parameterized scenarios with nullable parameters; Details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-243</PackageReleaseNotes>
+    <PackageReleaseNotes>Added compact scenarios syntax, Added Project Templates and Code Snippets, Other minor improvements; Details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-250</PackageReleaseNotes>
     <IsPackable>true</IsPackable>
     <LangVersion>latest</LangVersion>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
