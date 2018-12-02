@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>LightBDD scenario method</Title>
+      <Author>Wojciech Kotlarski</Author>
+      <Description>LightBDD scenario method</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>lbscen</Shortcut>
+    </Header>
+    <Snippet>
+      <Imports>
+        <Import>
+          <Namespace>LightBDD.Framework.Scenarios.Basic</Namespace>
+        </Import>
+        <Import>
+          <Namespace>LightBDD.Framework.Scenarios.Extended</Namespace>
+        </Import>
+      </Imports>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>ScenarioName</ID>
+          <ToolTip>Scenario name</ToolTip>
+          <Default>My_scenario</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp" Delimiter="$"><![CDATA[[Scenario]
+public void $ScenarioName$()
+{
+    Runner.RunScenario(
+        $end$);
+}]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

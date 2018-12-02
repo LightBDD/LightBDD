@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>LightBDD async contextual scenario method</Title>
+      <Author>Wojciech Kotlarski</Author>
+      <Description>LightBDD async contextual scenario method</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>lbscenca</Shortcut>
+    </Header>
+    <Snippet>
+      <Imports>
+        <Import>
+          <Namespace>LightBDD.Framework.Scenarios.Basic</Namespace>
+        </Import>
+        <Import>
+          <Namespace>LightBDD.Framework.Scenarios.Contextual</Namespace>
+        </Import>
+        <Import>
+          <Namespace>LightBDD.Framework.Scenarios.Extended</Namespace>
+        </Import>
+        <Import>
+          <Namespace>System.Threading.Tasks</Namespace>
+        </Import>
+      </Imports>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>ScenarioName</ID>
+          <ToolTip>Scenario name</ToolTip>
+          <Default>My_async_scenario</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>ContextType</ID>
+          <ToolTip>ContextType</ToolTip>
+          <Default>ContextType</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp" Delimiter="$"><![CDATA[[Scenario]
+public async Task $ScenarioName$()
+{
+    await Runner
+        .WithContext<$ContextType$>()
+        .RunScenarioAsync(
+            x => x.$end$);
+}]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

@@ -1,17 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using LightBDD.Core.Formatting.Values;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using LightBDD.Core.Formatting.Values;
 
 namespace LightBDD.Framework.Expectations.Implementation
 {
     [DebuggerStepThrough]
     internal class AndExpectation<T> : Expectation<T>
     {
+        private readonly string _prefix;
         private readonly IExpectation<T>[] _expectations;
 
-        public AndExpectation(params IExpectation<T>[] expectations)
+        public AndExpectation(string prefix, params IExpectation<T>[] expectations)
         {
+            _prefix = prefix;
             _expectations = expectations;
         }
 
@@ -32,7 +34,7 @@ namespace LightBDD.Framework.Expectations.Implementation
 
         public override string Format(IValueFormattingService formattingService)
         {
-            return $"({string.Join(" and ", _expectations.Select(x => x.Format(formattingService)))})";
+            return $"{_prefix}({string.Join(" and ", _expectations.Select(x => x.Format(formattingService)))})";
         }
     }
 }

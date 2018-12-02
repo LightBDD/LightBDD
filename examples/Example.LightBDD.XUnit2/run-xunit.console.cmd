@@ -1,5 +1,5 @@
 dotnet build
-..\..\.nuget\nuget.exe install xunit.runner.console -Version 2.3.1 -NonInteractive -ExcludeVersion -Output packages
+..\..\.nuget\nuget.exe install xunit.runner.console -Version 2.4.1 -NonInteractive -ExcludeVersion -Output packages
 
 @echo.
 @echo Running tests

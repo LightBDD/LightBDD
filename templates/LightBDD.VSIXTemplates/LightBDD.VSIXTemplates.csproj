@@ -64,6 +64,42 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />
+    <Content Include="LightBDD Snippets\lbcomp.snippet">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="LightBDD Snippets\lbcompc.snippet">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="LightBDD Snippets\lbcompca.snippet">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="LightBDD Snippets\lbcompa.snippet">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="LightBDD Snippets\lbscen.snippet">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="LightBDD Snippets\lbscenc.snippet">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="LightBDD Snippets\lbscenca.snippet">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="LightBDD Snippets\lbscena.snippet">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="LightBDD Snippets\LightBDD.pkgdef">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
@@ -119,6 +155,69 @@
       <Project>{8B8652D8-A72D-4D29-900D-9783BB753164}</Project>
       <Name>LightBDD.Fixie2.FeatureTemplate</Name>
       <VSIXSubPath>ItemTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectTemplates\LightBDD.Fixie2.NetCore.ProjectTemplate\LightBDD.Fixie2.NetCore.ProjectTemplate.csproj">
+      <Project>{07E95C84-7731-46EB-BC35-E752D4ACD42F}</Project>
+      <Name>LightBDD.Fixie2.NetCore.ProjectTemplate</Name>
+      <VSIXSubPath>ProjectTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectTemplates\LightBDD.Fixie2.NetFramework.ProjectTemplate\LightBDD.Fixie2.NetFramework.ProjectTemplate.csproj">
+      <Project>{3F97164C-BABB-44F7-888B-E595030F9AEE}</Project>
+      <Name>LightBDD.Fixie2.NetFramework.ProjectTemplate</Name>
+      <VSIXSubPath>ProjectTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectTemplates\LightBDD.MsTest2.NetCore.ProjectTemplate\LightBDD.MsTest2.NetCore.ProjectTemplate.csproj">
+      <Project>{75DB73FE-2995-4EA6-80E0-9A079EE8BAFA}</Project>
+      <Name>LightBDD.MsTest2.NetCore.ProjectTemplate</Name>
+      <VSIXSubPath>ProjectTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectTemplates\LightBDD.MsTest2.NetFramework.ProjectTemplate\LightBDD.MsTest2.NetFramework.ProjectTemplate.csproj">
+      <Project>{45823098-2947-412A-946B-4E14A7811563}</Project>
+      <Name>LightBDD.MsTest2.NetFramework.ProjectTemplate</Name>
+      <VSIXSubPath>ProjectTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectTemplates\LightBDD.NUnit2.NetFramework.ProjectTemplate\LightBDD.NUnit2.NetFramework.ProjectTemplate.csproj">
+      <Project>{843AC1CF-B645-4BEA-82E5-040ED4EFFC8F}</Project>
+      <Name>LightBDD.NUnit2.NetFramework.ProjectTemplate</Name>
+      <VSIXSubPath>ProjectTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectTemplates\LightBDD.NUnit3.NetCore.ProjectTemplate\LightBDD.NUnit3.NetCore.ProjectTemplate.csproj">
+      <Project>{2AC3866E-95A0-4DC8-9596-AA663F1E6DA9}</Project>
+      <Name>LightBDD.NUnit3.NetCore.ProjectTemplate</Name>
+      <VSIXSubPath>ProjectTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectTemplates\LightBDD.NUnit3.NetFramework.ProjectTemplate\LightBDD.NUnit3.NetFramework.ProjectTemplate.csproj">
+      <Project>{0A42647F-2C7D-4A83-AE83-508D0BC3BF98}</Project>
+      <Name>LightBDD.NUnit3.NetFramework.ProjectTemplate</Name>
+      <VSIXSubPath>ProjectTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectTemplates\LightBDD.XUnit2.NetCore.ProjectTemplate\LightBDD.XUnit2.NetCore.ProjectTemplate.csproj">
+      <Project>{1EBDCE2F-215D-4A19-ABC0-0EA09A512975}</Project>
+      <Name>LightBDD.XUnit2.NetCore.ProjectTemplate</Name>
+      <VSIXSubPath>ProjectTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectTemplates\LightBDD.XUnit2.NetFramework.ProjectTemplate\LightBDD.XUnit2.NetFramework.ProjectTemplate.csproj">
+      <Project>{63EED70E-E2EE-4DE6-A61B-5FD58A5169DF}</Project>
+      <Name>LightBDD.XUnit2.NetFramework.ProjectTemplate</Name>
+      <VSIXSubPath>ProjectTemplates</VSIXSubPath>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
     </ProjectReference>
