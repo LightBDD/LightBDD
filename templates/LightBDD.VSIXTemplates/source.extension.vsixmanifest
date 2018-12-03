@@ -1,41 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
-    <Metadata>
-        <Identity Id="d6382c7a-fe20-47e5-b4e1-4d798cef97f1" Version="2.5.0" Language="en-US" Publisher="Wojciech Kotlarski" />
-        <DisplayName>LightBDD for Visual Studio</DisplayName>
-        <Description xml:space="preserve">A collection of Project Templates, Item Templates and Code Snippets for LightBDD testing framework</Description>
-        <MoreInfo>https://github.com/LightBDD/LightBDD</MoreInfo>
-        <License>LICENSE.txt</License>
-        <Icon>lightbdd_128.png</Icon>
-        <PreviewImage>Preview.PNG</PreviewImage>
-        <Tags>lightbdd;bdd;tdd;test;nunit;xunit;mstest;vstest;fixie</Tags>
-    </Metadata>
-    <Installation>
-        <InstallationTarget Version="[11.0,)" Id="Microsoft.VisualStudio.Community"/>
-        <InstallationTarget Version="[11.0,)" Id="Microsoft.VisualStudio.Pro" />
-        <InstallationTarget Version="[11.0,)" Id="Microsoft.VisualStudio.Enterprise" />
-    </Installation>
-    <Dependencies>
-        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
-    </Dependencies>
-    <Assets>
-        <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="LightBDD.NUnit3.FeatureTemplate" d:TargetPath="|LightBDD.NUnit3.FeatureTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
-        <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="LightBDD.XUnit2.FeatureTemplate" d:TargetPath="|LightBDD.XUnit2.FeatureTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
-        <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="LightBDD.MsTest2.FeatureTemplate" d:TargetPath="|LightBDD.MsTest2.FeatureTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
-        <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="LightBDD.NUnit2.FeatureTemplate" d:TargetPath="|LightBDD.NUnit2.FeatureTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
-        <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="LightBDD.Fixie2.FeatureTemplate" d:TargetPath="|LightBDD.Fixie2.FeatureTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
-        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="File" Path="LightBDD Snippets\LightBDD.pkgdef" />
-        <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="LightBDD.Fixie2.NetCore.ProjectTemplate" d:TargetPath="|LightBDD.Fixie2.NetCore.ProjectTemplate;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
-        <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="LightBDD.XUnit2.NetFramework.ProjectTemplate" d:TargetPath="|LightBDD.XUnit2.NetFramework.ProjectTemplate;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
-        <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="LightBDD.NUnit3.NetFramework.ProjectTemplate" d:TargetPath="|LightBDD.NUnit3.NetFramework.ProjectTemplate;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
-        <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="LightBDD.MsTest2.NetFramework.ProjectTemplate" d:TargetPath="|LightBDD.MsTest2.NetFramework.ProjectTemplate;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
-        <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="LightBDD.NUnit2.NetFramework.ProjectTemplate" d:TargetPath="|LightBDD.NUnit2.NetFramework.ProjectTemplate;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
-        <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="LightBDD.XUnit2.NetCore.ProjectTemplate" d:TargetPath="|LightBDD.XUnit2.NetCore.ProjectTemplate;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
-        <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="LightBDD.MsTest2.NetCore.ProjectTemplate" d:TargetPath="|LightBDD.MsTest2.NetCore.ProjectTemplate;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
-        <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="LightBDD.NUnit3.NetCore.ProjectTemplate" d:TargetPath="|LightBDD.NUnit3.NetCore.ProjectTemplate;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
-        <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="LightBDD.Fixie2.NetFramework.ProjectTemplate" d:TargetPath="|LightBDD.Fixie2.NetFramework.ProjectTemplate;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
-    </Assets>
-    <Prerequisites>
-        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,)" DisplayName="Visual Studio core editor" />
-    </Prerequisites>
+  <Metadata>
+    <Identity Id="fe1ca06b-95ef-41a1-8e09-fe903b2945a4" Version="2.5.0" Language="en-US" Publisher="Wojciech Kotlarski" />
+    <DisplayName>LightBDD for Visual Studio</DisplayName>
+    <Description xml:space="preserve">A collection of Project Templates, Item Templates and Code Snippets for LightBDD testing framework.</Description>
+    <MoreInfo>https://github.com/LightBDD/LightBDD</MoreInfo>
+    <License>LICENSE.txt</License>
+    <Icon>lightbdd_128.png</Icon>
+    <PreviewImage>Preview.PNG</PreviewImage>
+    <Tags>lightbdd;bdd;tdd;test;nunit;xunit;mstest;vstest;fixie</Tags>
+  </Metadata>
+  <Installation>
+    <InstallationTarget Version="[11.0,)" Id="Microsoft.VisualStudio.Community"/>
+    <InstallationTarget Version="[11.0,)" Id="Microsoft.VisualStudio.Pro" />
+    <InstallationTarget Version="[11.0,)" Id="Microsoft.VisualStudio.Enterprise" />
+  </Installation>
+  <Dependencies>
+    <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+  </Dependencies>
+  <Assets>
+    <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="LightBDD.NUnit3.FeatureTemplate" d:TargetPath="|LightBDD.NUnit3.FeatureTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
+    <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="LightBDD.XUnit2.FeatureTemplate" d:TargetPath="|LightBDD.XUnit2.FeatureTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
+    <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="LightBDD.MsTest2.FeatureTemplate" d:TargetPath="|LightBDD.MsTest2.FeatureTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
+    <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="LightBDD.NUnit2.FeatureTemplate" d:TargetPath="|LightBDD.NUnit2.FeatureTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
+    <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="LightBDD.Fixie2.FeatureTemplate" d:TargetPath="|LightBDD.Fixie2.FeatureTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
+    <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="File" Path="LightBDD Snippets\LightBDD.pkgdef" />
+    <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="LightBDD.Fixie2.NetCore.ProjectTemplate" d:TargetPath="|LightBDD.Fixie2.NetCore.ProjectTemplate;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
+    <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="LightBDD.XUnit2.NetFramework.ProjectTemplate" d:TargetPath="|LightBDD.XUnit2.NetFramework.ProjectTemplate;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
+    <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="LightBDD.NUnit3.NetFramework.ProjectTemplate" d:TargetPath="|LightBDD.NUnit3.NetFramework.ProjectTemplate;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
+    <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="LightBDD.MsTest2.NetFramework.ProjectTemplate" d:TargetPath="|LightBDD.MsTest2.NetFramework.ProjectTemplate;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
+    <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="LightBDD.NUnit2.NetFramework.ProjectTemplate" d:TargetPath="|LightBDD.NUnit2.NetFramework.ProjectTemplate;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
+    <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="LightBDD.XUnit2.NetCore.ProjectTemplate" d:TargetPath="|LightBDD.XUnit2.NetCore.ProjectTemplate;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
+    <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="LightBDD.MsTest2.NetCore.ProjectTemplate" d:TargetPath="|LightBDD.MsTest2.NetCore.ProjectTemplate;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
+    <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="LightBDD.NUnit3.NetCore.ProjectTemplate" d:TargetPath="|LightBDD.NUnit3.NetCore.ProjectTemplate;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
+    <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="LightBDD.Fixie2.NetFramework.ProjectTemplate" d:TargetPath="|LightBDD.Fixie2.NetFramework.ProjectTemplate;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
+  </Assets>
+  <Prerequisites>
+    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,)" DisplayName="Visual Studio core editor" />
+  </Prerequisites>
 </PackageManifest>
