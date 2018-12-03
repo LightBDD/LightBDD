@@ -203,7 +203,7 @@ The LightBDD is available on [NuGet](https://www.nuget.org/packages?q=LightBDD):
 * Project Templates for all integrations (nunit/xunit/mstest/fixie),
 * Code Snippets for creating Scenarios and Composite Steps.
 
-The VSIX extension can be downloaded from: [Visual Studio Gallery](https://visualstudiogallery.msdn.microsoft.com/99be2036-a6b3-462c-9111-3ca31a317da2) (Visual Studio 2012 and newer versions supported).  
+The VSIX extension can be downloaded from: [Visual Studio Gallery](https://marketplace.visualstudio.com/items?itemName=Suremaker.lightbdd) (Visual Studio 2012 and newer versions supported).  
 More information can be found on wiki page: [Visual Studio Extensions](https://github.com/LightBDD/LightBDD/wiki/Visual-Studio-Extensions).
 
 ## Wiki
