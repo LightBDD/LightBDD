@@ -29,7 +29,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 \s*at LightBDD.Framework.Scenarios.Basic.Implementation.BasicStepCompiler.StepExecutor.Execute[^\n]*
 --- End of stack trace from previous location where exception was thrown ---
 ([^\n]*
-)?\s*at LightBDD.Framework.Scenarios.Fluent.Implementation.ScenarioBuilder`1.<RunAsync>[^\n]*");
+)?\s*at LightBDD.Framework.Scenarios.Fluent.Implementation.ScenarioBuilder[^\n]*RunAsync[^\n]*");
         }
 
         void Step_throwing_exception()

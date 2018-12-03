@@ -44,10 +44,10 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
         {
             var ex = Assert.ThrowsAsync<InvalidOperationException>(() => _runner.RunScenarioAsync(_ => Async_step_throwing_exception_immediately()));
             ex.AssertStackTraceMatching(
-                @"^\s*at LightBDD.Framework.UnitTests.Scenarios.Extended.Extended_scenario_exception_stack_trace_integration_tests.<Async_step_throwing_exception_immediately>[^\n]*
+                @"^\s*at LightBDD.Framework.UnitTests.Scenarios.Extended.Extended_scenario_exception_stack_trace_integration_tests[^\n]*Async_step_throwing_exception_immediately[^\n]*
 --- End of stack trace from previous location where exception was thrown ---
 ([^\n]*
-)?\s*at LightBDD.Framework.Scenarios.Extended.ExtendedScenarioExtensions.<RunScenarioAsync>[^\n]*");
+)?\s*at LightBDD.Framework.Scenarios.Extended.ExtendedScenarioExtensions[^\n]*RunScenarioAsync[^\n]*");
         }
 
         async Task Async_step_throwing_exception_immediately()
@@ -60,10 +60,10 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
         {
             var ex = Assert.ThrowsAsync<InvalidOperationException>(() => _runner.RunScenarioAsync(_ => Async_step_throwing_exception_after_await()));
             ex.AssertStackTraceMatching(
-                @"^\s*at LightBDD.Framework.UnitTests.Scenarios.Extended.Extended_scenario_exception_stack_trace_integration_tests.<Async_step_throwing_exception_after_await>[^\n]*
+                @"^\s*at LightBDD.Framework.UnitTests.Scenarios.Extended.Extended_scenario_exception_stack_trace_integration_tests[^\n]*Async_step_throwing_exception_after_await[^\n]*
 --- End of stack trace from previous location where exception was thrown ---
 ([^\n]*
-)?\s*at LightBDD.Framework.Scenarios.Extended.ExtendedScenarioExtensions.<RunScenarioAsync>[^\n]*");
+)?\s*at LightBDD.Framework.Scenarios.Extended.ExtendedScenarioExtensions[^\n]*RunScenarioAsync[^\n]*");
         }
 
         async Task Async_step_throwing_exception_after_await()
@@ -77,13 +77,13 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
         {
             var ex = Assert.ThrowsAsync<InvalidOperationException>(() => _runner.RunScenarioActionsAsync(_ => Async_void_step_throwing_exception_after_await()));
             ex.AssertStackTraceMatching(
-                @"^\s*at LightBDD.Framework.UnitTests.Scenarios.Extended.Extended_scenario_exception_stack_trace_integration_tests.<Async_void_step_throwing_exception_after_await>[^\n]*
+                @"^\s*at LightBDD.Framework.UnitTests.Scenarios.Extended.Extended_scenario_exception_stack_trace_integration_tests[^\n]*Async_void_step_throwing_exception_after_await[^\n]*
 --- End of stack trace from previous location where exception was thrown ---
 ([^\n]*
 ){0,2}\s*at LightBDD.Core.Execution.Implementation.AsyncStepSynchronizationContext.RunWithSelf[^\n]*
 --- End of stack trace from previous location where exception was thrown ---
 ([^\n]*
-)?\s*at LightBDD.Framework.Scenarios.Extended.ExtendedScenarioExtensions.<RunScenarioActionsAsync>[^\n]*");
+)?\s*at LightBDD.Framework.Scenarios.Extended.ExtendedScenarioExtensions[^\n]*RunScenarioActionsAsync[^\n]*");
         }
 
         async void Async_void_step_throwing_exception_after_await()
