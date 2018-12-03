@@ -150,8 +150,7 @@ namespace LightBDD.Core.UnitTests
 
             ex.AssertStackTraceMatching(@"^\s*at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator.ProcessStatus[^\n]*
 \s*at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator.ExecuteAsync[^\n]*
-\s*at LightBDD.Core.Extensibility.Execution.Implementation.DecoratingExecutor.RecursiveExecutor`1.<ExecuteAsync>[^\n]*
---- End of stack trace from previous location where exception was thrown ---
+\s*at LightBDD.Core.Extensibility.Execution.Implementation.DecoratingExecutor.RecursiveExecutor[^\n]+ExecuteAsync[^\n]*
 ([^\n]*
 )?\s*at LightBDD.UnitTests.Helpers.TestableIntegration.TestSyntaxRunner.TestScenario[^\n]*");
         }
@@ -166,10 +165,9 @@ namespace LightBDD.Core.UnitTests
                 .TestScenarioAsync(My_failed_async_step));
 
             ex.AssertStackTraceMatching(@"^\s*at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator.ProcessStatus[^\n]*
-\s*at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator.<ProcessStatusAsync>[^\n]*
---- End of stack trace from previous location where exception was thrown ---
+\s*at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator[^\n]+ProcessStatusAsync[^\n]*
 ([^\n]*
-)?\s*at LightBDD.UnitTests.Helpers.TestableIntegration.TestSyntaxRunner.<TestScenarioAsync>[^\n]*");
+)?\s*at LightBDD.UnitTests.Helpers.TestableIntegration.TestSyntaxRunner[^\n]+TestScenarioAsync[^\n]*");
         }
 
         [Test]
@@ -184,8 +182,7 @@ namespace LightBDD.Core.UnitTests
 
             ex.AssertStackTraceMatching(@"^\s*at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator.ProcessStatus[^\n]*
 \s*at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator.ExecuteAsync[^\n]*
-\s*at LightBDD.Core.Extensibility.Execution.Implementation.DecoratingExecutor.RecursiveExecutor`1.<ExecuteAsync>[^\n]*
---- End of stack trace from previous location where exception was thrown ---
+\s*at LightBDD.Core.Extensibility.Execution.Implementation.DecoratingExecutor.RecursiveExecutor[^\n]+ExecuteAsync[^\n]*
 ([^\n]*
 )?\s*at LightBDD.UnitTests.Helpers.TestableIntegration.TestSyntaxRunner.TestScenario[^\n]*");
         }
@@ -201,10 +198,9 @@ namespace LightBDD.Core.UnitTests
                 .TestScenarioAsync(Some_async_step));
 
             ex.AssertStackTraceMatching(@"^\s*at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator.ProcessStatus[^\n]*
-\s*at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator.<ProcessStatusAsync>[^\n]*
---- End of stack trace from previous location where exception was thrown ---
+\s*at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator[^\n]+ProcessStatusAsync[^\n]*
 ([^\n]*
-)?\s*at LightBDD.UnitTests.Helpers.TestableIntegration.TestSyntaxRunner.<TestScenarioAsync>[^\n]*");
+)?\s*at LightBDD.UnitTests.Helpers.TestableIntegration.TestSyntaxRunner[^\n]+TestScenarioAsync[^\n]*");
         }
 
         [Test]

@@ -45,30 +45,12 @@ namespace LightBDD.Core.UnitTests.Formatting.ExceptionFormatting
 			---> System.NotImplementedException : Not implemented yet
 			---> System.Exception : other
 at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests[^\n]+ThrowSampleExceptionAsync[^\n]*
---- End of stack trace from previous location where exception was thrown ---
 (\s*at System.Runtime.[^\n]+.Throw[^\n]*
 (at System.Runtime.CompilerServices.TaskAwaiter.[^\n]*
-)+)?at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests[^\n]+RecurrentCall[^\n]*
---- End of stack trace from previous location where exception was thrown ---
+)+)?(at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests[^\n]+RecurrentCall[^\n]*
 (\s*at System.Runtime.[^\n]+.Throw[^\n]*
 (at System.Runtime.CompilerServices.TaskAwaiter.[^\n]*
-)+)?at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests[^\n]+RecurrentCall[^\n]*
---- End of stack trace from previous location where exception was thrown ---
-(\s*at System.Runtime.[^\n]+.Throw[^\n]*
-(at System.Runtime.CompilerServices.TaskAwaiter.[^\n]*
-)+)?at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests[^\n]+RecurrentCall[^\n]*
---- End of stack trace from previous location where exception was thrown ---
-(\s*at System.Runtime.[^\n]+.Throw[^\n]*
-(at System.Runtime.CompilerServices.TaskAwaiter.[^\n]*
-)+)?at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests[^\n]+RecurrentCall[^\n]*
---- End of stack trace from previous location where exception was thrown ---
-(\s*at System.Runtime.[^\n]+.Throw[^\n]*
-(at System.Runtime.CompilerServices.TaskAwaiter.[^\n]*
-)+)?at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests[^\n]+RecurrentCall[^\n]*
---- End of stack trace from previous location where exception was thrown ---
-(\s*at System.Runtime.[^\n]+.Throw[^\n]*
-(at System.Runtime.CompilerServices.TaskAwaiter.[^\n]*
-)+)?at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests[^\n]+MakeSampleException[^\n]*
+)+)?)+at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests[^\n]+MakeSampleException[^\n]*
 $";
 
             var formattedDetails = new DefaultExceptionFormatter().WithAllMembersIncludedOnStackTrace().Format(exception);
@@ -85,8 +67,8 @@ $";
 		---> System.AggregateException : One or more errors occurred\..*
 			---> System.NotImplementedException : Not implemented yet
 			---> System.Exception : other
-at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests[^\n]+ThrowSampleExceptionAsync[^\n]*
---- End of stack trace from previous location where exception was thrown ---$";
+at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests[^\n]+ThrowSampleExceptionAsync[^\n]+
+at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests[^\n]+RecurrentCall[^\n]+$";
 
             var formattedDetails = new DefaultExceptionFormatter().WithStackTraceLinesLimit(2).Format(exception);
             Assert.That(formattedDetails.Replace("\r", ""), Does.Match(expectedExceptionDetails.Replace("\r", "")));
@@ -103,7 +85,6 @@ at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormat
 			---> System.NotImplementedException : Not implemented yet
 			---> System.Exception : other
 at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests[^\n]+ThrowSampleExceptionAsync[^\n]+
---- End of stack trace from previous location where exception was thrown ---
 at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests[^\n]+MakeSampleException[^\n]+$";
             var formattedDetails = new DefaultExceptionFormatter()
                 .WithMembersExcludedFromStackTrace("System.Runtime.*",".*RecurrentCall.*")
@@ -116,7 +97,7 @@ at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormat
             Exception exception = null;
             try
             {
-                await RecurrentCall(4);
+                await RecurrentCall(7);
             }
             catch (Exception e)
             {
