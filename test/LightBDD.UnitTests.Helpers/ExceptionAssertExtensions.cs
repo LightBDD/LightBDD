@@ -7,7 +7,8 @@ namespace LightBDD.UnitTests.Helpers
     {
         public static void AssertStackTraceMatching(this Exception ex, string expectedStackTracePattern)
         {
-            Assert.That(ex.StackTrace.Replace("\r", ""), Does.Match(expectedStackTracePattern.Replace("\r", "")));
+            var actual = ex.StackTrace.Replace("\r", "").Replace("--- End of stack trace from previous location where exception was thrown ---\n","");
+            Assert.That(actual, Does.Match(expectedStackTracePattern.Replace("\r", "")));
         }
     }
 }

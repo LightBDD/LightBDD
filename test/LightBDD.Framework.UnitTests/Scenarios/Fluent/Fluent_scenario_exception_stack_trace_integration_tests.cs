@@ -27,9 +27,8 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
             ex.AssertStackTraceMatching(
                 @"^\s*at LightBDD.Framework.UnitTests.Scenarios.Fluent.Fluent_scenario_exception_stack_trace_integration_tests.Step_throwing_exception[^\n]*
 \s*at LightBDD.Framework.Scenarios.Basic.Implementation.BasicStepCompiler.StepExecutor.Execute[^\n]*
---- End of stack trace from previous location where exception was thrown ---
 ([^\n]*
-)?\s*at LightBDD.Framework.Scenarios.Fluent.Implementation.ScenarioBuilder`1.<RunAsync>[^\n]*");
+)?\s*at LightBDD.Framework.Scenarios.Fluent.Implementation.ScenarioBuilder[^\n]*RunAsync[^\n]*");
         }
 
         void Step_throwing_exception()

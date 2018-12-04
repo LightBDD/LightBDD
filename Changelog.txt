@@ -1,6 +1,10 @@
 LightBDD
 ===========================================
 
+Version vNext
+----------------------------------------
++ #163 (Core)(Change) Updated DefaultExceptionFormatter to exclude "End of stack trace" lines
+
 Version 2.5.0
 ----------------------------------------
 Summary:

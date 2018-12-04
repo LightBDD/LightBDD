@@ -37,7 +37,6 @@ namespace LightBDD.Core.Formatting.ExceptionFormatting
             var builder = new StringBuilder();
 
             FormatExceptionDetails(exception, builder);
-
             foreach (var line in exception.StackTrace.Split('\n').Where(ShouldPrintLine).Take(_stackTraceLinesLimit))
                 builder.AppendLine(line.Trim());
 
@@ -46,6 +45,8 @@ namespace LightBDD.Core.Formatting.ExceptionFormatting
 
         private bool ShouldPrintLine(string line)
         {
+            if (line.StartsWith("--- End "))
+                return false;
             foreach (var excludeMember in _excludeMembers)
             {
                 if (excludeMember.IsMatch(line))
