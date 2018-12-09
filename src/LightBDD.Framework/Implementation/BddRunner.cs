@@ -14,11 +14,6 @@ namespace LightBDD.Framework.Implementation
         {
             _coreRunner = coreRunner;
         }
-        [Obsolete("Use " + nameof(IEnrichableFeatureFixtureRunner), true)]
-        public BddRunner(IFeatureFixtureRunner coreRunner)
-        {
-            _coreRunner = coreRunner;
-        }
 
         public IScenarioRunner NewScenario()
         {

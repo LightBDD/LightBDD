@@ -46,14 +46,7 @@ namespace LightBDD.Core.Extensibility
         /// <returns>Self.</returns>
         /// <exception cref="ArgumentException">Throws when <paramref name="name"/> is <c>null</c> or empty.</exception>
         IScenarioRunner WithName(string name);
-        /// <summary>
-        /// Configures scenario to be executed with context provided by <paramref name="contextProvider"/>.
-        /// </summary>
-        /// <param name="contextProvider">Context provider function.</param>
-        /// <returns>Self.</returns>
-        /// <exception cref="ArgumentNullException">Throws when <paramref name="contextProvider"/> is <c>null</c>.</exception>
-        [Obsolete("Use other " + nameof(WithContext) + "() method instead", true)]
-        IScenarioRunner WithContext(Func<object> contextProvider);
+
         /// <summary>
         /// Configures scenario to be executed with context provided by <paramref name="contextProvider"/>.
         /// </summary>
@@ -77,22 +70,7 @@ namespace LightBDD.Core.Extensibility
         /// <param name="scenarioDecorators">Decorators to use.</param>
         /// <returns>Self.</returns>
         IScenarioRunner WithScenarioDecorators(IEnumerable<IScenarioDecorator> scenarioDecorators);
-        /// <summary>
-        /// Runs scenario asynchronously and returns task representing it.
-        /// Before scenario is run, a validation is done if scenario is properly configured (i.e. name is defined and there is defined at least one step to execute).
-        /// </summary>
-        /// <returns>Scenario task.</returns>
-        /// <exception cref="InvalidOperationException">Throws when name or steps are not defined.</exception>
-        [Obsolete("Use " + nameof(RunScenarioAsync) + " instead (and remeber to handle " + nameof(ScenarioExecutionException) + ")")]
-        Task RunAsynchronously();
-        /// <summary>
-        /// Runs scenario synchronously - guaranteeing that scenario and all steps will execute on the same, calling thread.
-        /// Before scenario is run, a validation is done if scenario is properly configured (i.e. name is defined and there is defined at least one step to execute).
-        /// It is expected that only such scenarios can run synchronously whose steps returns completed <see cref="Task"/>. If any step method returns pending task, an <see cref="InvalidOperationException"/> exception will be thrown.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">Throws when name or steps are not defined before scenario run. Throws also if any step method returns pending task.</exception>
-        [Obsolete("Use " + nameof(RunScenario) + " instead (and remeber to handle " + nameof(ScenarioExecutionException) + ")")]
-        void RunSynchronously();
+
         /// <summary>
         /// Runs scenario synchronously - guaranteeing that scenario and all steps will execute on the same, calling thread.
         /// Before scenario is run, a validation is done if scenario is properly configured (i.e. name is defined and there is defined at least one step to execute).

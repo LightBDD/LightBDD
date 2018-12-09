@@ -63,15 +63,6 @@ namespace LightBDD.Core.Execution.Coordination
         }
 
         /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="runnerRepository">Runner factory instance that would be used for instantiating runners.</param>
-        /// <param name="featureAggregator">Feature aggregator instance used for aggregating feature results on coordinator disposal.</param>
-        [Obsolete("This constructor is obsolete. Please use other instead.", true)]
-        protected FeatureCoordinator(FeatureRunnerRepository runnerRepository, IFeatureAggregator featureAggregator)
-            : this(runnerRepository, featureAggregator, new LightBddConfiguration()) { }
-
-        /// <summary>
         /// Installs the specified feature coordinator in thread safe manner.
         /// The installed instance will be used by LightBDD to coordinate tests execution and generate reports upon disposal.
         /// It is only possible to have one installed instance at given time, however upon disposal, the coordinator uninstalls self, allowing to install new one if needed and start another test cycle.

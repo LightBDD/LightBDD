@@ -17,15 +17,6 @@ namespace LightBDD.Core.Extensibility
         private readonly ConcurrentDictionary<Type, Lazy<IFeatureRunner>> _runners = new ConcurrentDictionary<Type, Lazy<IFeatureRunner>>();
 
         /// <summary>
-        /// Constructor instantiating factory with specified integration context.
-        /// </summary>
-        /// <param name="integrationContext">Integration context.</param>
-        [Obsolete("Use constructor with " + nameof(IntegrationContext), true)]
-        protected FeatureRunnerRepository(IIntegrationContext integrationContext)
-        {
-            _integrationContext = integrationContext as IntegrationContext ?? new IntegrationContextWrapper(integrationContext);
-        }
-        /// <summary>
         /// Constructor instantiating factory with specified runner context.
         /// </summary>
         /// <param name="integrationContext">Runner context.</param>

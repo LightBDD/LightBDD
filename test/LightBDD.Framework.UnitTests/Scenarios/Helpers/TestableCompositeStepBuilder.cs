@@ -44,12 +44,6 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
             return this;
         }
 
-        public IIntegrableCompositeStepBuilder WithStepContext(Func<object> contextProvider)
-        {
-            _internal.Integrate().WithStepContext(contextProvider, false);
-            return this;
-        }
-
         public TStepGroupBuilder Enrich<TStepGroupBuilder>(
             Func<IIntegrableStepGroupBuilder, LightBddConfiguration, TStepGroupBuilder> builderFactory)
         {

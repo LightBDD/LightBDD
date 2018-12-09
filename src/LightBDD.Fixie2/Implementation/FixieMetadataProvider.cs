@@ -26,11 +26,6 @@ namespace LightBDD.Fixie2.Implementation
             return new ScenarioDescriptor(context.TestMethod, context.TestMethodArguments);
         }
 
-        public override MethodBase CaptureCurrentScenarioMethod()
-        {
-            return CaptureCurrentScenario().MethodInfo;
-        }
-
         protected override IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member)
         {
             return Enumerable.Empty<string>();

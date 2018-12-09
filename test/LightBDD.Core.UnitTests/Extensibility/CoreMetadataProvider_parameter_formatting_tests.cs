@@ -155,16 +155,6 @@ namespace LightBDD.Core.UnitTests.Extensibility
             Assert.That(formatter.FormatValue(new[] { true, false }), Is.EqualTo("On, Off"));
         }
 
-        [Test]
-        public void GetValueFormattingService_should_format_values()
-        {
-            var parameter = ParameterInfoHelper.GetMethodParameter<int>(new Feature_type().Some_step_with_multiple_formatters_on_argument);
-#pragma warning disable CS0618 // Type or member is obsolete
-            var formatter = GetMetadataProvider().GetParameterFormatter(parameter);
-#pragma warning restore CS0618 // Type or member is obsolete
-            Assert.That(formatter.Invoke(3), Is.EqualTo("--3--"));
-        }
-
         private void Step_with_custom_formatters([FormatCollection(" | ", "#{0}")][FormatBoolean("On", "Off")][Format("my-custom-format1", SupportedType = typeof(MyFormattable1))]object[] arg) { }
         private void Step_with_custom_formatter_for_collection_item([FormatBoolean("On", "Off")]bool[] arg) { }
 

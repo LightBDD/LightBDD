@@ -11,11 +11,6 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
     public class TestMetadataProvider : CoreMetadataProvider
     {
-        public override MethodBase CaptureCurrentScenarioMethod()
-        {
-            return TestExecutionContext.CurrentContext.CurrentTest.Method.MethodInfo;
-        }
-
         protected override IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member)
         {
             return ExtractAttributePropertyValues<CustomCategoryAttribute>(member, a => a.Name);
@@ -25,6 +20,11 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
         {
             return ExtractAttributePropertyValue<CustomFeatureDescriptionAttribute>(featureType.GetTypeInfo(),
                 a => a.Description);
+        }
+
+        public override ScenarioDescriptor CaptureCurrentScenario()
+        {
+            return new ScenarioDescriptor(TestExecutionContext.CurrentContext.CurrentTest.Method.MethodInfo, null);
         }
 
         public TestMetadataProvider(ValueFormattingConfiguration formattingConfiguration):

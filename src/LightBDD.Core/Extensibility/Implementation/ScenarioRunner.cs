@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Dependencies;
-using LightBDD.Core.Execution;
 using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Execution.Implementation;
@@ -65,11 +64,6 @@ namespace LightBDD.Core.Extensibility.Implementation
             return this;
         }
 
-        public IScenarioRunner WithContext(Func<object> contextProvider)
-        {
-            return WithContext(contextProvider, false);
-        }
-
         public IScenarioRunner WithContext(Func<object> contextProvider, bool takeOwnership)
         {
             _contextDescriptor = new ExecutionContextDescriptor(contextProvider, takeOwnership);
@@ -114,34 +108,10 @@ namespace LightBDD.Core.Extensibility.Implementation
             return this;
         }
 
-        public async Task RunAsynchronously()
-        {
-            try
-            {
-                await RunScenarioAsync();
-            }
-            catch (ScenarioExecutionException e)
-            {
-                e.GetOriginal().Throw();
-            }
-        }
-
         public Task RunScenarioAsync()
         {
             Validate();
             return _scenarioExecutor.ExecuteAsync(new ScenarioInfo(_name, _labels, _categories), ProvideSteps, _contextDescriptor, _progressNotifier, _scenarioDecorators, _exceptionProcessor, _container);
-        }
-
-        public void RunSynchronously()
-        {
-            try
-            {
-                RunScenario();
-            }
-            catch (ScenarioExecutionException e)
-            {
-                e.GetOriginal().Throw();
-            }
         }
 
         public void RunScenario()

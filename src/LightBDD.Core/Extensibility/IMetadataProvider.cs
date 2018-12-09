@@ -20,25 +20,13 @@ namespace LightBDD.Core.Extensibility
         /// <param name="featureType">Feature type.</param>
         /// <returns><see cref="IFeatureInfo"/> object.</returns>
         IFeatureInfo GetFeatureInfo(Type featureType);
-        /// <summary>
-        /// Provides currently executed scenario method.
-        /// </summary>
-        /// <returns><see cref="MethodBase"/> describing currently executed scenario method.</returns>
-        /// <exception cref="InvalidOperationException">Thrown when called outside of scenario method.</exception>
-        [Obsolete("Use " + nameof(CaptureCurrentScenario) + "() instead.")]
-        MethodBase CaptureCurrentScenarioMethod();
+
         /// <summary>
         /// Provides currently executed scenario details, that later can be used to build scenario metadata.
         /// </summary>
         /// <returns><see cref="ScenarioDescriptor"/> object.</returns>
         ScenarioDescriptor CaptureCurrentScenario();
-        /// <summary>
-        /// Provides <see cref="INameInfo"/> object containing information about scenario name represented by <paramref name="scenarioMethod"/>.
-        /// </summary>
-        /// <param name="scenarioMethod">Scenario method.</param>
-        /// <returns><see cref="INameInfo"/> object.</returns>
-        [Obsolete("Use " + nameof(GetScenarioName) + "(ScenarioDescriptor descriptor)")]
-        INameInfo GetScenarioName(MethodBase scenarioMethod);
+
         /// <summary>
         /// Provides <see cref="INameInfo"/> object containing information about scenario name represented by <paramref name="scenarioDescriptor"/>.
         /// </summary>
@@ -70,20 +58,7 @@ namespace LightBDD.Core.Extensibility
         /// <param name="previousStepTypeName">Step type name of previous step, or <c>null</c> if current step is first one.</param>
         /// <returns><see cref="IStepNameInfo"/> object.</returns>
         IStepNameInfo GetStepName(StepDescriptor stepDescriptor, string previousStepTypeName);
-        /// <summary>
-        /// Provides step parameter formatter function for provided <paramref name="parameterInfo"/>.
-        /// </summary>
-        /// <param name="parameterInfo"><see cref="ParameterInfo"/> object describing step or scenario method parameter.</param>
-        /// <returns>Formatter function.</returns>
-        [Obsolete("Use " + nameof(GetValueFormattingServiceFor) + " instead.", true)]
-        Func<object, string> GetStepParameterFormatter(ParameterInfo parameterInfo);
-        /// <summary>
-        /// Provides parameter formatter function for provided <paramref name="parameterInfo"/>.
-        /// </summary>
-        /// <param name="parameterInfo"><see cref="ParameterInfo"/> object describing step or scenario method parameter.</param>
-        /// <returns>Formatter function.</returns>
-        [Obsolete("Use " + nameof(GetValueFormattingServiceFor) + " instead.", true)]
-        Func<object, string> GetParameterFormatter(ParameterInfo parameterInfo);
+
         /// <summary>
         /// Returns <see cref="IValueFormattingService"/> instance for provided <paramref name="parameterInfo"/>.
         /// The returned formatting service is aware of any <see cref="ParameterFormatterAttribute"/> instance(s) are applied on <paramref name="parameterInfo"/> and would use them to format value before any other configured formatters.

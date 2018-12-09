@@ -28,11 +28,6 @@ namespace LightBDD.NUnit3.Implementation
             return new ScenarioDescriptor(testMethod, context.TestMethodArguments);
         }
 
-        public override MethodBase CaptureCurrentScenarioMethod()
-        {
-            return CaptureCurrentScenario().MethodInfo;
-        }
-
         protected override IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member)
         {
             return ExtractAttributePropertyValues<CategoryAttribute>(member, a => a.Name);

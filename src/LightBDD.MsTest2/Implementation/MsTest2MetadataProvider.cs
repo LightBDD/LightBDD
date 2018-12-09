@@ -19,11 +19,6 @@ namespace LightBDD.MsTest2.Implementation
                 configuration.CultureInfoProviderConfiguration().CultureInfoProvider,
                 configuration.ValueFormattingConfiguration()) { }
 
-        public override MethodBase CaptureCurrentScenarioMethod()
-        {
-            return CaptureCurrentScenario().MethodInfo;
-        }
-
         public override ScenarioDescriptor CaptureCurrentScenario()
         {
             var context = TestContextProvider.Current;

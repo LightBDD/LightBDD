@@ -15,15 +15,6 @@ namespace LightBDD.Core.Extensibility.Results
         /// <summary>
         /// Constructor allowing to initialize instance with sub steps and context provider.
         /// </summary>
-        /// <param name="subStepsContextProvider">Function providing context for all sub-steps.</param>
-        /// <param name="subSteps">Sub steps.</param>
-        [Obsolete("Use other constructors instead", true)]
-        public CompositeStepResultDescriptor(Func<object> subStepsContextProvider, IEnumerable<StepDescriptor> subSteps)
-            : this(new ExecutionContextDescriptor(subStepsContextProvider, false), subSteps) { }
-
-        /// <summary>
-        /// Constructor allowing to initialize instance with sub steps and context provider.
-        /// </summary>
         /// <param name="subStepsContext">Context descriptor that will be used to instantiate context for the sub steps.</param>
         /// <param name="subSteps">Sub steps.</param>
         public CompositeStepResultDescriptor(ExecutionContextDescriptor subStepsContext, IEnumerable<StepDescriptor> subSteps)
@@ -38,11 +29,6 @@ namespace LightBDD.Core.Extensibility.Results
         /// </summary>
         public IEnumerable<StepDescriptor> SubSteps { get; }
 
-        /// <summary>
-        /// Function providing instance of context for executing sub-steps.
-        /// </summary>
-        [Obsolete("Use " + nameof(SubStepsContext) + " instead", true)]
-        public Func<object> SubStepsContextProvider => SubStepsContext.ContextProvider;
         /// <summary>
         /// Returns context descriptor that will be used to instantiate context for the sub steps.
         /// </summary>

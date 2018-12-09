@@ -14,36 +14,6 @@ namespace LightBDD.Core.Extensibility
     [DebuggerStepThrough]
     public class StepDescriptor
     {
-        /// <summary>
-        /// Constructor allowing to specify name, step invocation function and step parameters.
-        /// The <see cref="PredefinedStepType"/> is set to <c>null</c>.
-        /// </summary>
-        /// <param name="rawName">Step raw name.</param>
-        /// <param name="stepInvocation">Step invocation function.</param>
-        /// <param name="parameters">Step invocation function parameters.</param>
-        /// <exception cref="ArgumentException">Throws when <paramref name="rawName"/> is null or empty.</exception>
-        /// <exception cref="ArgumentNullException">Throws when <paramref name="stepInvocation"/> or <paramref name="parameters"/> is null.</exception>
-        [Obsolete("Please use other constructors", true)]
-        public StepDescriptor(string rawName, Func<object, object[], Task> stepInvocation, params ParameterDescriptor[] parameters)
-            : this(null, rawName, stepInvocation, parameters)
-        {
-        }
-
-        /// <summary>
-        /// Constructor allowing to specify predefined step type, name, step invocation function and step parameters.
-        /// </summary>
-        /// <param name="predefinedStepType">Predefined step type - it can be <c>null</c>.</param>
-        /// <param name="rawName">Step raw name.</param>
-        /// <param name="stepInvocation">Step invocation function.</param>
-        /// <param name="parameters">Step invocation function parameters.</param>
-        /// <exception cref="ArgumentException">Throws when <paramref name="rawName"/> is null or empty.</exception>
-        /// <exception cref="ArgumentNullException">Throws when <paramref name="stepInvocation"/> or <paramref name="parameters"/> is null.</exception>
-        [Obsolete("Please use other constructors", true)]
-        public StepDescriptor(string predefinedStepType, string rawName, Func<object, object[], Task> stepInvocation, params ParameterDescriptor[] parameters)
-            : this(predefinedStepType, rawName, TransformStepInvocation(stepInvocation), parameters)
-        {
-        }
-
         private static Func<object, object[], Task<IStepResultDescriptor>> TransformStepInvocation(Func<object, object[], Task> stepInvocation)
         {
             return async (ctx, args) =>
@@ -51,22 +21,6 @@ namespace LightBDD.Core.Extensibility
                 await stepInvocation(ctx, args);
                 return DefaultStepResultDescriptor.Instance;
             };
-        }
-
-        /// <summary>
-        /// Constructor allowing to specify predefined step type, name, step invocation function and step parameters.
-        /// </summary>
-        /// <param name="predefinedStepType">Predefined step type - it can be <c>null</c>.</param>
-        /// <param name="rawName">Step raw name.</param>
-        /// <param name="stepInvocation">Step invocation function.</param>
-        /// <param name="parameters">Step invocation function parameters.</param>
-        /// <exception cref="ArgumentException">Throws when <paramref name="rawName"/> is null or empty.</exception>
-        /// <exception cref="ArgumentNullException">Throws when <paramref name="stepInvocation"/> or <paramref name="parameters"/> is null.</exception>
-        [Obsolete("Please use other constructors", true)]
-        public StepDescriptor(string predefinedStepType, string rawName, Func<object, object[], Task<IStepResultDescriptor>> stepInvocation, params ParameterDescriptor[] parameters)
-            : this(rawName, stepInvocation, parameters)
-        {
-            PredefinedStepType = predefinedStepType;
         }
 
         /// <summary>

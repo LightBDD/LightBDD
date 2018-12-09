@@ -43,16 +43,6 @@ namespace LightBDD.Core.UnitTests.Extensibility
         }
 
         [Test]
-        public void GetScenarioName_should_capture_scenario_name_from_method()
-        {
-            var method = typeof(Feature_type).GetMethod(nameof(Feature_type.Some_method));
-            var scenarioName = _metadataProvider.GetScenarioName(method);
-
-            Assert.That(scenarioName.ToString(), Is.EqualTo("Some method"));
-            Assert.That(scenarioName.Parameters, Is.Empty);
-        }
-
-        [Test]
         public void GetScenarioName_should_capture_parameterless_scenario_name_from_descriptor()
         {
             var method = typeof(Feature_type).GetMethod(nameof(Feature_type.Some_method_without_arguments));

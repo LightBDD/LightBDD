@@ -31,14 +31,6 @@ namespace LightBDD.Framework.Implementation
             return this;
         }
 
-        /// <summary>
-        /// For backward compatibility
-        /// </summary>
-        public IIntegrableCompositeStepBuilder WithStepContext(Func<object> contextProvider)
-        {
-            return WithStepContext(contextProvider, false);
-        }
-
         public IIntegrableCompositeStepBuilder WithStepContext(Func<IDependencyResolver, object> contextProvider, Action<ContainerConfigurator> scopeConfigurator)
         {
             return WithStepContext(new ExecutionContextDescriptor(contextProvider, scopeConfigurator));

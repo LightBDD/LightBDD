@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace LightBDD.Core.Extensibility.Execution
@@ -16,16 +15,5 @@ namespace LightBDD.Core.Extensibility.Execution
         /// Collection of step decorators.
         /// </summary>
         IEnumerable<IStepDecorator> StepDecorators { get; }
-
-        /// <summary>
-        /// Collection of scenario execution extensions.
-        /// </summary>
-        [Obsolete("Use ScenarioDecorators instead", true)]
-        IEnumerable<IScenarioExecutionExtension> ScenarioExecutionExtensions { get; }
-        /// <summary>
-        /// Collection of step execution extensions.
-        /// </summary>
-        [Obsolete("Use StepDecorators instead", true)]
-        IEnumerable<IStepExecutionExtension> StepExecutionExtensions { get; }
     }
 }
