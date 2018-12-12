@@ -1,32 +1,32 @@
-﻿using System;
+﻿using LightBDD.Core.Configuration;
+using LightBDD.Core.Execution;
+using LightBDD.Core.Extensibility;
+using LightBDD.Framework.Extensibility;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using LightBDD.Core.Configuration;
-using LightBDD.Core.Execution;
-using LightBDD.Core.Extensibility;
-using LightBDD.Framework.Extensibility;
 
 namespace LightBDD.Framework.Scenarios.Fluent.Implementation
 {
     [DebuggerStepThrough]
-    internal class ScenarioBuilder<TContext> : LightBddConfigurationAware, IScenarioBuilder<TContext>, IIntegrableStepGroupBuilder
+    internal class ScenarioBuilder<TContext> : IScenarioBuilder<TContext>, IIntegrableStepGroupBuilder
     {
-        private readonly IBddRunner<TContext> _runner;
+        private readonly IFeatureFixtureRunner _runner;
         private static readonly IEnumerable<StepDescriptor> EmptySteps = Enumerable.Empty<StepDescriptor>();
         private IEnumerable<StepDescriptor> _steps = EmptySteps;
 
         public ScenarioBuilder(IBddRunner<TContext> runner)
         {
-            _runner = runner;
+            _runner = runner.Integrate();
         }
 
         public async Task RunAsync()
         {
             try
             {
-                await _runner.Integrate()
+                await _runner
                     .NewScenario()
                     .WithCapturedScenarioDetails()
                     .WithSteps(_steps)
@@ -46,9 +46,6 @@ namespace LightBDD.Framework.Scenarios.Fluent.Implementation
             return this;
         }
 
-        public TEnrichedBuilder Enrich<TEnrichedBuilder>(Func<IIntegrableStepGroupBuilder, LightBddConfiguration, TEnrichedBuilder> builderFactory)
-        {
-            return builderFactory(this, Configuration);
-        }
+        public LightBddConfiguration Configuration => _runner.Configuration;
     }
 }

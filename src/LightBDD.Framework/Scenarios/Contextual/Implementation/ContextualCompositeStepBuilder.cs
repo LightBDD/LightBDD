@@ -9,7 +9,7 @@ using LightBDD.Framework.Extensibility;
 namespace LightBDD.Framework.Scenarios.Contextual.Implementation
 {
     [DebuggerStepThrough]
-    internal class ContextualCompositeStepBuilder<TContext> : ICompositeStepBuilder<TContext>, IIntegrableCompositeStepBuilder
+    internal class ContextualCompositeStepBuilder<TContext> : LightBddConfigurationAware, ICompositeStepBuilder<TContext>, IIntegrableCompositeStepBuilder
     {
         private readonly IIntegrableCompositeStepBuilder _target;
 
@@ -34,6 +34,8 @@ namespace LightBDD.Framework.Scenarios.Contextual.Implementation
             return this;
         }
 
+        LightBddConfiguration IIntegrableStepGroupBuilder.Configuration => Configuration;
+
         public IIntegrableCompositeStepBuilder WithStepContext(Func<object> contextProvider, bool takeOwnership)
         {
             _target.WithStepContext(contextProvider, takeOwnership);
@@ -44,30 +46,6 @@ namespace LightBDD.Framework.Scenarios.Contextual.Implementation
         {
             _target.WithStepContext(contextProvider, scopeConfigurator);
             return this;
-        }
-
-        public TEnrichedBuilder Enrich<TEnrichedBuilder>(Func<IIntegrableStepGroupBuilder, LightBddConfiguration, TEnrichedBuilder> builderFactory)
-        {
-            return _target.Enrich(new ContextualCompositeStepBuilderEnricher<TEnrichedBuilder>(this, builderFactory)
-                .Enrich);
-        }
-
-        [DebuggerStepThrough]
-        private struct ContextualCompositeStepBuilderEnricher<TEnrichedBuilder>
-        {
-            private readonly IIntegrableStepGroupBuilder _builder;
-            private readonly Func<IIntegrableStepGroupBuilder, LightBddConfiguration, TEnrichedBuilder> _builderFactory;
-
-            public ContextualCompositeStepBuilderEnricher(IIntegrableStepGroupBuilder builder, Func<IIntegrableStepGroupBuilder, LightBddConfiguration, TEnrichedBuilder> builderFactory)
-            {
-                _builder = builder;
-                _builderFactory = builderFactory;
-            }
-
-            public TEnrichedBuilder Enrich(IIntegrableStepGroupBuilder _, LightBddConfiguration ctx)
-            {
-                return _builderFactory(_builder, ctx);
-            }
         }
     }
 }

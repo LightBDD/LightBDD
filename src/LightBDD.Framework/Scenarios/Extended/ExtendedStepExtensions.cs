@@ -119,7 +119,7 @@ namespace LightBDD.Framework.Scenarios.Extended
 
         private static ExtendedCompositeStepBuilder<TContext> AsExtended<TContext>(this ICompositeStepBuilder<TContext> runner)
         {
-            return runner.Integrate().Enrich(ExtendedCompositeStepBuilder<TContext>.Create);
+            return new ExtendedCompositeStepBuilder<TContext>(runner.Integrate());
         }
     }
 }

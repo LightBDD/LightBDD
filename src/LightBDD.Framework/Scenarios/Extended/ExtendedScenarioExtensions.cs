@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
-using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Scenarios.Extended.Implementation;
 
@@ -245,7 +244,7 @@ namespace LightBDD.Framework.Scenarios.Extended
 
         private static ExtendedScenarioRunnerFactory<TContext> AsExtended<TContext>(this IBddRunner<TContext> runner)
         {
-            return runner.Integrate().AsEnrichable().Enrich(ExtendedScenarioRunnerFactory<TContext>.Create);
+            return new ExtendedScenarioRunnerFactory<TContext>(runner.Integrate());
         }
     }
 }

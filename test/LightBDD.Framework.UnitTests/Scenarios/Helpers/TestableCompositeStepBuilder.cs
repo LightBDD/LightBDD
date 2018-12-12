@@ -11,14 +11,14 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
     internal class TestableCompositeStepBuilder : ICompositeStepBuilder, IIntegrableCompositeStepBuilder
     {
         private readonly ICompositeStepBuilder _internal = CompositeStep.DefineNew();
-        private readonly LightBddConfiguration _configuration;
 
         public TestableCompositeStepBuilder() : this(new LightBddConfiguration())
         {
         }
+
         public TestableCompositeStepBuilder(LightBddConfiguration configuration)
         {
-            _configuration = configuration;
+            Configuration = configuration;
         }
 
         public CompositeStep Build()
@@ -32,6 +32,8 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
             return this;
         }
 
+        public LightBddConfiguration Configuration { get; }
+
         public IIntegrableCompositeStepBuilder WithStepContext(Func<IDependencyResolver, object> contextProvider, Action<ContainerConfigurator> scopeConfigurator)
         {
             _internal.Integrate().WithStepContext(contextProvider, scopeConfigurator);
@@ -42,12 +44,6 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
         {
             _internal.Integrate().WithStepContext(contextProvider, takeOwnership);
             return this;
-        }
-
-        public TStepGroupBuilder Enrich<TStepGroupBuilder>(
-            Func<IIntegrableStepGroupBuilder, LightBddConfiguration, TStepGroupBuilder> builderFactory)
-        {
-            return builderFactory(_internal.Integrate(), _configuration);
         }
     }
 }

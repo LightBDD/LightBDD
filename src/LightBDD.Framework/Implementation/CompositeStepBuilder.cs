@@ -31,6 +31,8 @@ namespace LightBDD.Framework.Implementation
             return this;
         }
 
+        LightBddConfiguration IIntegrableStepGroupBuilder.Configuration => Configuration;
+
         public IIntegrableCompositeStepBuilder WithStepContext(Func<IDependencyResolver, object> contextProvider, Action<ContainerConfigurator> scopeConfigurator)
         {
             return WithStepContext(new ExecutionContextDescriptor(contextProvider, scopeConfigurator));
@@ -48,11 +50,6 @@ namespace LightBDD.Framework.Implementation
 
             _contextDescriptor = contextDescriptor;
             return this;
-        }
-
-        public TEnrichedBuilder Enrich<TEnrichedBuilder>(Func<IIntegrableStepGroupBuilder, LightBddConfiguration, TEnrichedBuilder> builderFactory)
-        {
-            return builderFactory(this, Configuration);
         }
     }
 }

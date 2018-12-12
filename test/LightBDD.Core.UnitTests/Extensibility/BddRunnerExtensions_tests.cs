@@ -1,7 +1,6 @@
 ﻿using System;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
-using LightBDD.Core.Results;
 using LightBDD.Framework;
 using LightBDD.Framework.Extensibility;
 using NUnit.Framework;
@@ -33,32 +32,14 @@ namespace LightBDD.Core.UnitTests.Extensibility
 
         private class IncompleteRunner : IBddRunner { }
 
-        private class CompleteRunner : IBddRunner, IEnrichableFeatureFixtureRunner
+        private class CompleteRunner : IBddRunner, IFeatureFixtureRunner
         {
-            public void Dispose()
-            {
-                throw new NotImplementedException();
-            }
-
-            public IFeatureResult GetFeatureResult()
-            {
-                throw new NotImplementedException();
-            }
-
             public IScenarioRunner NewScenario()
             {
                 throw new NotImplementedException();
             }
 
-            public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, LightBddConfiguration, TEnrichedRunner> runnerFactory)
-            {
-                throw new NotImplementedException();
-            }
-
-            public IBddRunner AsBddRunner()
-            {
-                throw new NotImplementedException();
-            }
+            public LightBddConfiguration Configuration { get; }
         }
     }
 }

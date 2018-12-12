@@ -1,3 +1,5 @@
+using LightBDD.Core.Configuration;
+
 namespace LightBDD.Core.Extensibility
 {
     /// <summary>
@@ -11,5 +13,11 @@ namespace LightBDD.Core.Extensibility
         /// </summary>
         /// <returns>Scenario runner instance.</returns>
         IScenarioRunner NewScenario();
+
+        //TODO: review before 3.0
+        /// <summary>
+        /// Configuration.
+        /// </summary>
+        LightBddConfiguration Configuration { get; }
     }
 }

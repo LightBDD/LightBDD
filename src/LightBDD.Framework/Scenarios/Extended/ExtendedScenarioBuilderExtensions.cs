@@ -118,7 +118,7 @@ namespace LightBDD.Framework.Scenarios.Extended
 
         private static ExtendedScenarioBuilder<TContext> AsExtended<TContext>(this IScenarioBuilder<TContext> runner)
         {
-            return runner.Integrate().Enrich(ExtendedScenarioBuilder<TContext>.Create);
+            return ExtendedScenarioBuilder<TContext>.Create(runner.Integrate());
         }
     }
 }

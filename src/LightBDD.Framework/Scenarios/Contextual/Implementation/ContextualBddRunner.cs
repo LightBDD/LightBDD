@@ -1,14 +1,14 @@
-using System;
-using System.Diagnostics;
-using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Extensibility;
+using System;
+using System.Diagnostics;
+using LightBDD.Core.Configuration;
 
 namespace LightBDD.Framework.Scenarios.Contextual.Implementation
 {
     [DebuggerStepThrough]
-    internal class ContextualBddRunner<TContext> : IBddRunner<TContext>, IEnrichableFeatureFixtureRunner
+    internal class ContextualBddRunner<TContext> : IBddRunner<TContext>, IFeatureFixtureRunner
     {
         private readonly IFeatureFixtureRunner _coreRunner;
         private readonly Func<IScenarioRunner, IScenarioRunner> _configureScenarioContext;
@@ -30,27 +30,6 @@ namespace LightBDD.Framework.Scenarios.Contextual.Implementation
             return _configureScenarioContext(_coreRunner.NewScenario());
         }
 
-        public TEnrichedRunner Enrich<TEnrichedRunner>(Func<IFeatureFixtureRunner, LightBddConfiguration, TEnrichedRunner> runnerFactory)
-        {
-            return _coreRunner.AsEnrichable().Enrich(new ContextualRunnerEnricher<TEnrichedRunner>(this, runnerFactory).Enrich);
-        }
-
-        [DebuggerStepThrough]
-        private struct ContextualRunnerEnricher<TRunner>
-        {
-            private readonly IFeatureFixtureRunner _contextualRunner;
-            private readonly Func<IFeatureFixtureRunner, LightBddConfiguration, TRunner> _runnerFactory;
-
-            public ContextualRunnerEnricher(IFeatureFixtureRunner contextualRunner, Func<IFeatureFixtureRunner, LightBddConfiguration, TRunner> runnerFactory)
-            {
-                _contextualRunner = contextualRunner;
-                _runnerFactory = runnerFactory;
-            }
-
-            public TRunner Enrich(IFeatureFixtureRunner _, LightBddConfiguration ctx)
-            {
-                return _runnerFactory(_contextualRunner, ctx);
-            }
-        }
+        public LightBddConfiguration Configuration => _coreRunner.Configuration;
     }
 }

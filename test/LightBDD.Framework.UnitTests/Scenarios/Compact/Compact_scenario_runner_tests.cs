@@ -5,7 +5,6 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LightBDD.Core.Configuration;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Compact
 {
