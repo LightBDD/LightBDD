@@ -11,11 +11,7 @@ namespace LightBDD.Framework.Execution.Coordination
     [DebuggerStepThrough]
     public abstract class FrameworkFeatureCoordinator : FeatureCoordinator
     {
-        internal new static FeatureCoordinator GetInstance()
-        {
-            return FeatureCoordinator.GetInstance();
-        }
-
+        //TODO: review before 3.0
         internal new static FeatureCoordinator TryGetInstance()
         {
             return FeatureCoordinator.TryGetInstance();

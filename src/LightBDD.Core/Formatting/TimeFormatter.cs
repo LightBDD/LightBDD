@@ -18,27 +18,7 @@ namespace LightBDD.Core.Formatting
             new Tuple<string, int, Func<TimeSpan, int>>("s", 2, GetSeconds),
             new Tuple<string, int, Func<TimeSpan, int>>("ms", 3, GetMilliseconds)
         };
-        /// <summary>
-        /// Formats given value if provided or returns empty string.
-        /// 
-        /// This method returns up to 2 most meaningful time components of given time, to make it most readable.
-        /// Maximal supported time component is 'day', while the minimal is 'millisecond'.
-        /// TimeSpan value being less than 1ms but larger than 0 would be presented as &lt;1ms. 
-        /// 
-        /// Example values:
-        /// <list type="bullet">
-        /// <item><description>1d 12h</description></item>
-        /// <item><description>5h</description></item>
-        /// <item><description>5m 02s</description></item>
-        /// <item><description>2s 527ms</description></item>
-        /// <item><description>&lt;1ms</description></item>
-        /// <item><description>0ms</description></item>
-        /// </list>
-        /// </summary>
-        public static string FormatPretty(this TimeSpan? ts)
-        {
-            return ts.HasValue ? ts.Value.FormatPretty() : string.Empty;
-        }
+
         /// <summary>
         /// This method returns up to 2 most meaningful time components of given time, to make it most readable.
         /// Maximal supported time component is 'day', while the minimal is 'millisecond'.

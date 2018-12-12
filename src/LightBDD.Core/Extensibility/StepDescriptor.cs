@@ -14,15 +14,6 @@ namespace LightBDD.Core.Extensibility
     [DebuggerStepThrough]
     public class StepDescriptor
     {
-        private static Func<object, object[], Task<IStepResultDescriptor>> TransformStepInvocation(Func<object, object[], Task> stepInvocation)
-        {
-            return async (ctx, args) =>
-            {
-                await stepInvocation(ctx, args);
-                return DefaultStepResultDescriptor.Instance;
-            };
-        }
-
         /// <summary>
         /// Constructor allowing to specify name, step invocation function and step parameters.
         /// The <see cref="PredefinedStepType"/> is set to <c>null</c>.
@@ -33,7 +24,7 @@ namespace LightBDD.Core.Extensibility
         /// <exception cref="ArgumentException">Throws when <paramref name="rawName"/> is null or empty.</exception>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="stepInvocation"/> or <paramref name="parameters"/> is null.</exception>
         public StepDescriptor(string rawName, Func<object, object[], Task<IStepResultDescriptor>> stepInvocation, params ParameterDescriptor[] parameters)
-            : this((MethodBase)null, rawName, stepInvocation, parameters)
+            : this(null, rawName, stepInvocation, parameters)
         {
         }
         /// <summary>

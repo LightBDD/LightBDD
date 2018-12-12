@@ -209,7 +209,7 @@ namespace LightBDD.Framework.Parameters
             /// </summary>
             public RowDataActualValue(Exception exception)
             {
-                Value = default(TRow);
+                Value = default;
                 Exception = exception;
             }
 

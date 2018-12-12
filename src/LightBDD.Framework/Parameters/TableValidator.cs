@@ -51,7 +51,7 @@ namespace LightBDD.Framework.Parameters
         /// <inheritdoc />
         protected override IEnumerable<RowData> MatchRows(IReadOnlyList<TRow> actual)
         {
-            return actual.Select(a => new RowData(TableRowType.Matching, default(TRow), a));
+            return actual.Select(a => new RowData(TableRowType.Matching, default, a));
         }
     }
 }

@@ -5,7 +5,7 @@ namespace LightBDD.Framework.Expectations.Implementation
     [DebuggerStepThrough]
     internal class ExpectationComposer : IExpectationComposer
     {
-        private bool _isNot = false;
+        private bool _isNot;
         public IExpectationComposer Not
         {
             get

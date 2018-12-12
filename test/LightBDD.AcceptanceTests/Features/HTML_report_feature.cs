@@ -15,7 +15,7 @@ namespace LightBDD.AcceptanceTests.Features
 As a QA
 I want to have HTML report")]
     [TestFixture]
-    public partial class HTML_report_feature : FeatureFixture
+    public class HTML_report_feature : FeatureFixture
     {
         [Scenario]
         public async Task Should_collapse_feature_details()
