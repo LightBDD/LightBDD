@@ -28,58 +28,51 @@ namespace LightBDD.Framework.Implementation
 		void Run(IBddRunner runner);
 	}
 
-	public class Feature : IGiven,IWhen,IThen
+	public class Scenario : IGiven,IWhen,IThen
 	{
-		private readonly List<Action> givens = new List<Action>();
-		private readonly List<Action> whens = new List<Action>();
-		private readonly List<Action> thens = new List<Action>();
+		private readonly List<Action> actions = new List<Action>();
 
 		public static IGiven Given(Action given) {
-			return new Feature(given);
+			return new Scenario(given);
 		}
 
-		Feature(Action given)
+		Scenario(Action given)
 		{
-			this.givens.Add(given);
+			this.actions.Add(given);
 		}
 
 		public void Run(IBddRunner runner)
 		{
-			var list = new List<Action>();
-			list.AddRange(this.givens);
-			list.AddRange(this.whens);
-			list.AddRange(this.thens);
-
-			runner.RunScenario(list.ToArray());
+			runner.RunScenario(this.actions.ToArray());
 		}
 
 		public IGiven And(Action given)
 		{
-			this.givens.Add(given);
+			this.actions.Add(given);
 			return this;
 		}
 
 		IWhen IWhen.And(Action when)
 		{
-			this.whens.Add(when);
+			this.actions.Add(when);
 			return this;
 		}
 
 		IThen IThen.And(Action then)
 		{
-			this.thens.Add(then);
+			this.actions.Add(then);
 			return this;
 		}
 
 		public IWhen When(Action when)
 		{
-			this.whens.Add(when);
+			this.actions.Add(when);
 			return this;
 		}
 
 		public IThen Then(Action then)
 		{
-			this.thens.Add(then);
+			this.actions.Add(then);
 			return this;
 		}
 	}
