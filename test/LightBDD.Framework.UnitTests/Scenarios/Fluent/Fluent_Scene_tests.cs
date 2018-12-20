@@ -22,7 +22,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 			int then = 0;
 
 			var actions =
-				SceneBase<Action>.GivenAsync
+				Scene
 				.Given(() => ++given)
 				.And(() => ++given)
 				.When(() => ++when)
