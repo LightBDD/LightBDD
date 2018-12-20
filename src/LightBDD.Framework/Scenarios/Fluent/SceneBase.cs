@@ -6,11 +6,6 @@ namespace LightBDD.Framework.Scenarios.Fluent
 {
 	public class SceneBase<T> : IGiven<T>, IWhen<T>, IThen<T>
 	{
-		public static IGiven<Func<Task>> GivenAsync(Func<Task> given)
-		{
-			return new SceneBase<Func<Task>>(given);
-		}
-
 		protected List<T> actions = new List<T>();
 		public T[] End()
 		{
