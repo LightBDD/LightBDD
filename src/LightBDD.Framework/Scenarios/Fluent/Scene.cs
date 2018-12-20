@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace LightBDD.Framework.Fluent
+namespace LightBDD.Framework.Scenarios.Fluent
 {
 	public class Scene<T> : IGiven<T>, IWhen<T>, IThen<T>
 	{

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LightBDD.Framework.Fluent
+namespace LightBDD.Framework.Scenarios.Fluent
 {
 	public interface IThen<T>
 	{
