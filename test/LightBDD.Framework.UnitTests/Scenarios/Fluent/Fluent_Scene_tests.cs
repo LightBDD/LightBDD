@@ -12,47 +12,47 @@ using NUnit.Framework;
 namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 {
 	[TestFixture]
-	public class Fluent_Scene_tests 
+	public partial class Fluent_Scene_tests : BasicScenarioTestsBase
 	{
 
 		[Test]
 		public void FluentApi_should_generate_array_of_steps()
 		{
-			int given = 0;
-			int when = 0;
-			int then = 0;
+			ExpectSynchronousExecution();
 
-			var runner = Mock.Of<IBddRunner>();
-			
-			runner
-				.Given(() => ++given)
-				.And(() => ++given)
-				.When(() => ++when)
-				.And(() => ++when)
-				.Then(() => ++then)
-				.And(() => ++then)
+			Runner
+				.Given(Given_A)
+				.And(Given_B)
+				.When(When_A)
+				.And(When_B)
+				.Then(Then_A)
+				.And(Then_B)
 				.Run();
 
-			return;
+			VerifyAllExpectations();
+
+			Assert.That(CapturedSteps, Is.Not.Null);
+			Assert.That(CapturedSteps.Length, Is.EqualTo(6));
 		}
 
 		[Test]
-		public Task FluentApi_should_generate_array_of_steps_async()
+		public async Task FluentApi_should_generate_array_of_steps_async()
 		{
-			int given = 0;
-			int when = 0;
-			int then = 0;
+			ExpectAsynchronousExecution();
 
-			var runner = Mock.Of<IBddRunner>();
-
-			return runner
-				.Given(() => new Task(() => ++given))
-				.And(() => new Task(() => ++given))
-				.When(() => new Task(() => ++when))
-				.And(() => new Task(() => ++when))
-				.Then(() => new Task(() => ++then))
-				.And(() => new Task(() => ++then))
+			await Runner
+				.Given(Task_Given_A)
+				.And(Task_Given_B)
+				.When(Task_When_A)
+				.And(Task_When_B)
+				.Then(Task_Then_A)
+				.And(Task_Then_B)
 				.RunAsync();
+
+			VerifyAllExpectations();
+
+			Assert.That(CapturedSteps, Is.Not.Null);
+			Assert.That(CapturedSteps.Length, Is.EqualTo(6));
 		}
 	}
 }
