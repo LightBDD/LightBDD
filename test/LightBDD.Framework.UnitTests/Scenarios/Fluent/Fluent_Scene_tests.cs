@@ -1,74 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using LightBDD.Core.Extensibility;
-using LightBDD.Framework.Scenarios.Basic;
-using LightBDD.Framework.Scenarios.Fluent;
+﻿using LightBDD.Framework.Scenarios.Fluent;
 using LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers;
-using Moq;
 using NUnit.Framework;
+using System;
+using System.Threading.Tasks;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 {
 	[TestFixture]
-	public class Fluent_Scene_tests 
+	public partial class Fluent_Scene_tests : BasicScenarioTestsBase
 	{
 
 		[Test]
 		public void FluentApi_should_generate_array_of_steps()
 		{
-			int given = 0;
-			int when = 0;
-			int then = 0;
+			ExpectSynchronousExecution();
 
-			var actions =
-				Scene
-				.Given(() => ++given)
-				.And(() => ++given)
-				.When(() => ++when)
-				.And(() => ++when)
-				.Then(() => ++then)
-				.And(() => ++then)
-				.End();
+			Runner
+				.Given(Given_A)
+				.Given(Given_A)
+				.And(Given_B)
+				.When(When_A)
+				.When(When_A)
+				.And(When_B)
+				.Then(Then_A)
+				.Then(Then_A)
+				.And(Then_B)
+				.Run();
 
-			foreach (var action in actions)
-				action();
+			VerifyAllExpectations();
 
-			Assert.That(actions.Length, Is.EqualTo(6));
-			Assert.That(given, Is.EqualTo(2));
-			Assert.That(when, Is.EqualTo(2));
-			Assert.That(then, Is.EqualTo(2));
+			Assert.That(CapturedSteps, Is.Not.Null);
+			Assert.That(CapturedSteps.Length, Is.EqualTo(9));
 		}
 
 		[Test]
-		public void FluentApi_should_generate_array_of_steps_async()
+		public async Task FluentApi_should_generate_array_of_steps_async()
 		{
-			int given = 0;
-			int when = 0;
-			int then = 0;
+			ExpectAsynchronousExecution();
 
-			var actions =
-				SceneAsync
-				.Given(() => new Task(() => ++given))
-				.And(() => new Task(() => ++given))
-				.When(() => new Task(() => ++when))
-				.And(() => new Task(() => ++when))
-				.Then(() => new Task(() => ++then))
-				.And(() => new Task(() => ++then))
-				.End();
+			await Runner
+				.Given(Task_Given_A)
+				.And(Task_Given_B)
+				.When(Task_When_A)
+				.And(Task_When_B)
+				.Then(Task_Then_A)
+				.And(Task_Then_B)
+				.RunAsync();
 
-			foreach (var action in actions)
-			{
-				var task = action();
-				task.Start();
-				task.Wait();
-			}
+			VerifyAllExpectations();
 
-			Assert.That(actions.Length, Is.EqualTo(6));
-			Assert.That(given, Is.EqualTo(2));
-			Assert.That(when, Is.EqualTo(2));
-			Assert.That(then, Is.EqualTo(2));
+			Assert.That(CapturedSteps, Is.Not.Null);
+			Assert.That(CapturedSteps.Length, Is.EqualTo(6));
 		}
 	}
 }
