@@ -21,23 +21,22 @@ namespace LightBDD.Framework.Scenarios.Fluent
 			return actions.ToArray();
 		}
 
-		public Scene(T given, IBddRunner runner)
+		public Scene(IBddRunner runner)
 		{
 			this.Runner = runner;
+		}
+
+		public IGiven<T> Given(T given)
+		{
 			this.actions.Add(given);
+			return this;
 		}
 
 		public IGiven<T> And(T given)
 		{
-			this.actions.Add(given);
-			return this;
+			return Given(given);
 		}
 
-		public IThen<T> Then(T then)
-		{
-			this.actions.Add(then);
-			return this;
-		}
 
 		public IWhen<T> When(T when)
 		{
@@ -46,15 +45,18 @@ namespace LightBDD.Framework.Scenarios.Fluent
 		}
 
 		IWhen<T> IWhen<T>.And(T when)
-		{
-			this.actions.Add(when);
-			return this;
+		{			
+			return When(when);
 		}
 
-		IThen<T> IThen<T>.And(T then)
+		public IThen<T> Then(T then)
 		{
 			this.actions.Add(then);
 			return this;
+		}
+		IThen<T> IThen<T>.And(T then)
+		{
+			return Then(then);
 		}
 	}
 }

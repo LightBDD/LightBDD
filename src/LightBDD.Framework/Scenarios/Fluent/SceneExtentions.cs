@@ -10,12 +10,14 @@ namespace LightBDD.Framework.Scenarios.Fluent
 	{
 		public static IGiven<Action> Given(this IBddRunner runner, Action given)
 		{
-			return new Scene<Action>(given, runner);
+			return new Scene<Action>(runner)
+				.Given(given);
 		}
 
 		public static IGiven<Func<Task>> Given(this IBddRunner runner, Func<Task> given)
 		{
-			return new Scene<Func<Task>>(given, runner);
+			return new Scene<Func<Task>>(runner)
+				.Given(given);
 		}
 
 		public static void Run<T>(this IThen<T> then)

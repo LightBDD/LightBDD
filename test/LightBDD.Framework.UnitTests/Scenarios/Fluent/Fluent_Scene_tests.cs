@@ -22,9 +22,12 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 
 			Runner
 				.Given(Given_A)
+				.Given(Given_A)
 				.And(Given_B)
 				.When(When_A)
+				.When(When_A)
 				.And(When_B)
+				.Then(Then_A)
 				.Then(Then_A)
 				.And(Then_B)
 				.Run();
@@ -32,7 +35,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 			VerifyAllExpectations();
 
 			Assert.That(CapturedSteps, Is.Not.Null);
-			Assert.That(CapturedSteps.Length, Is.EqualTo(6));
+			Assert.That(CapturedSteps.Length, Is.EqualTo(9));
 		}
 
 		[Test]
