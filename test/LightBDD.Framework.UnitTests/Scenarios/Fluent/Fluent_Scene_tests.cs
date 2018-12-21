@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using LightBDD.Core.Extensibility;
-using LightBDD.Framework.Scenarios.Basic;
-using LightBDD.Framework.Scenarios.Fluent;
+﻿using LightBDD.Framework.Scenarios.Fluent;
 using LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers;
-using Moq;
 using NUnit.Framework;
+using System;
+using System.Threading.Tasks;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 {
