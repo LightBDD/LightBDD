@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using LightBDD.Core.Formatting;
 using LightBDD.Framework;
+using LightBDD.Framework.Formatting;
 using LightBDD.Framework.Scenarios.Fluent;
 using NUnit.Framework;
 
@@ -25,13 +27,15 @@ namespace LightBDD.NUnit3.UnitTests
 				.Run();
 		}
 
-		[Description("Given")]
+		[Given("A")]
 		void Given_A()
 		{
 		}
+		[When]
 		void B()
 		{
 		}
+		[Then]
 		void C()
 		{
 		}
