@@ -22,53 +22,37 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 			int when = 0;
 			int then = 0;
 
-			var actions =
-				Scene
+			var runner = Mock.Of<IBddRunner>();
+			
+			runner
 				.Given(() => ++given)
 				.And(() => ++given)
 				.When(() => ++when)
 				.And(() => ++when)
 				.Then(() => ++then)
 				.And(() => ++then)
-				.End();
+				.Run();
 
-			foreach (var action in actions)
-				action();
-
-			Assert.That(actions.Length, Is.EqualTo(6));
-			Assert.That(given, Is.EqualTo(2));
-			Assert.That(when, Is.EqualTo(2));
-			Assert.That(then, Is.EqualTo(2));
+			return;
 		}
 
 		[Test]
-		public void FluentApi_should_generate_array_of_steps_async()
+		public Task FluentApi_should_generate_array_of_steps_async()
 		{
 			int given = 0;
 			int when = 0;
 			int then = 0;
 
-			var actions =
-				SceneAsync
+			var runner = Mock.Of<IBddRunner>();
+
+			return runner
 				.Given(() => new Task(() => ++given))
 				.And(() => new Task(() => ++given))
 				.When(() => new Task(() => ++when))
 				.And(() => new Task(() => ++when))
 				.Then(() => new Task(() => ++then))
 				.And(() => new Task(() => ++then))
-				.End();
-
-			foreach (var action in actions)
-			{
-				var task = action();
-				task.Start();
-				task.Wait();
-			}
-
-			Assert.That(actions.Length, Is.EqualTo(6));
-			Assert.That(given, Is.EqualTo(2));
-			Assert.That(when, Is.EqualTo(2));
-			Assert.That(then, Is.EqualTo(2));
+				.RunAsync();
 		}
 	}
 }

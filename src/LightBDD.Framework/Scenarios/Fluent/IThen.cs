@@ -6,6 +6,6 @@ namespace LightBDD.Framework.Scenarios.Fluent
 	{
 		IThen<T> And(T when);
 
-		T[] End();
+		T[] End();		
 	}
 }
