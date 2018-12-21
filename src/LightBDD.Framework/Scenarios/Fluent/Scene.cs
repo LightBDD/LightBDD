@@ -8,23 +8,22 @@ namespace LightBDD.Framework.Scenarios.Fluent
 {
 	public class Scene<T> : IGiven<T>, IWhen<T>, IThen<T>
 	{
-		readonly List<List<T>> givens = new List<List<T>>();
-		readonly List<List<T>> whens = new List<List<T>>();
-		readonly List<List<T>> thens = new List<List<T>>();
-
 		public IBddRunner Runner
 		{
 			get;
 			private set;
 		}
+		public List<List<T>> Givens { get; } = new List<List<T>>();
+		public List<List<T>> Whens { get; } = new List<List<T>>();
+		public List<List<T>> Thens { get; } = new List<List<T>>();
 
 		public T[] End()
 		{
 			var list = new List<T>();
 
-			AddTo(list, this.givens);
-			AddTo(list, this.whens);
-			AddTo(list, this.thens);
+			AddTo(list, this.Givens);
+			AddTo(list, this.Whens);
+			AddTo(list, this.Thens);
 
 			return list.ToArray();
 		}
@@ -42,14 +41,14 @@ namespace LightBDD.Framework.Scenarios.Fluent
 
 		public IGiven<T> Given(T given)
 		{
-			AddToList(this.givens, given, newList: true);
+			AddToList(this.Givens, given, newList: true);
 
 			return this;
 		}
 
 		public IGiven<T> And(T given)
 		{
-			AddToList(this.givens, given);
+			AddToList(this.Givens, given);
 
 			return this;
 		}
@@ -64,27 +63,27 @@ namespace LightBDD.Framework.Scenarios.Fluent
 
 		public IWhen<T> When(T when)
 		{
-			AddToList(this.whens, when, newList: true);
+			AddToList(this.Whens, when, newList: true);
 
 			return this;
 		}
 
 		IWhen<T> IWhen<T>.And(T when)
 		{
-			AddToList(this.whens, when);
+			AddToList(this.Whens, when);
 
 			return this;
 		}
 
 		public IThen<T> Then(T then)
 		{
-			AddToList(this.thens, then, newList: true);
+			AddToList(this.Thens, then, newList: true);
 
 			return this;
 		}
 		IThen<T> IThen<T>.And(T then)
 		{
-			AddToList(this.thens, then);
+			AddToList(this.Thens, then);
 
 			return this;
 		}
