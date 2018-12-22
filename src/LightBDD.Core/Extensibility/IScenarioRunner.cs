@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LightBDD.Core.Dependencies;
-using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility.Execution;
 
 namespace LightBDD.Core.Extensibility

@@ -6,7 +6,7 @@ using System.Threading;
 
 #endif
 
-namespace LightBDD.Framework.ExecutionContext
+namespace LightBDD.Core.ExecutionContext
 {
     /// <summary>
     /// Class offering async local storage

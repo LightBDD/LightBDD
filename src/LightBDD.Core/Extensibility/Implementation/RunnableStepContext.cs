@@ -1,9 +1,6 @@
 using System;
-using System.Threading.Tasks;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution.Implementation;
-using LightBDD.Core.Extensibility.Results;
-using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
 
 namespace LightBDD.Core.Extensibility.Implementation

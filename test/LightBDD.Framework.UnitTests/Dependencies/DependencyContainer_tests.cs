@@ -5,7 +5,6 @@ using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Configuration;
-using LightBDD.Framework.Dependencies;
 using LightBDD.Framework.Extensibility;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
@@ -78,8 +77,7 @@ namespace LightBDD.Framework.UnitTests.Dependencies
 
         private IFeatureRunner GetFeatureRunner()
         {
-            var context = TestableIntegrationContextBuilder.Default()
-                .WithConfiguration(cfg => cfg.ExecutionExtensionsConfiguration().EnableCurrentScenarioTracking());
+            var context = TestableIntegrationContextBuilder.Default();
 
             return new TestableFeatureRunnerRepository(context).GetRunnerFor(GetType());
         }

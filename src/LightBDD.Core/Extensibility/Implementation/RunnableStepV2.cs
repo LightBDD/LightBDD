@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Execution.Implementation;
+using LightBDD.Core.ExecutionContext;
+using LightBDD.Core.ExecutionContext.Implementation;
 using LightBDD.Core.Extensibility.Results;
 using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
@@ -187,10 +189,12 @@ namespace LightBDD.Core.Extensibility.Implementation
         {
             EvaluateParameters();
             _stepContext.ProgressNotifier.NotifyStepStart(_result.Info);
+            ScenarioExecutionContext.Current.Get<CurrentStepProperty>().Stash(this);
         }
 
         private void StopStep(ExecutionTimeWatch watch, bool stepStartNotified)
         {
+            ScenarioExecutionContext.Current.Get<CurrentStepProperty>().RemoveCurrent(this);
             _subStepScope?.Dispose();
             watch.Stop();
             _result.SetExecutionTime(watch.GetTime());

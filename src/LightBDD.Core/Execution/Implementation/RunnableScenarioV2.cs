@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.ExecutionContext;
+using LightBDD.Core.ExecutionContext.Implementation;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Metadata.Implementation;
 
@@ -68,6 +70,7 @@ namespace LightBDD.Core.Execution.Implementation
 
         private void StopScenario(ExecutionTimeWatch watch)
         {
+            ScenarioExecutionContext.Current = null;
             DisposeScope();
             watch.Stop();
             _result.UpdateResult(
@@ -118,6 +121,14 @@ namespace LightBDD.Core.Execution.Implementation
             _scope = CreateContainerScope();
             Context = CreateExecutionContext();
             _preparedSteps = PrepareSteps();
+            ScenarioExecutionContext.Current = CreateCurrentContext();
+        }
+
+        private ScenarioExecutionContext CreateCurrentContext()
+        {
+            var executionContext = new ScenarioExecutionContext();
+            executionContext.Get<CurrentScenarioProperty>().Scenario = this;
+            return executionContext;
         }
 
         private IDependencyContainer CreateContainerScope()

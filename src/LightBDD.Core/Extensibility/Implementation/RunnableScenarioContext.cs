@@ -1,5 +1,4 @@
 using LightBDD.Core.Execution.Implementation;
-using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
 using System;

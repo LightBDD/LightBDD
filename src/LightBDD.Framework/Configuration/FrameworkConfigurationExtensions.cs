@@ -1,7 +1,4 @@
 ﻿using LightBDD.Core.Configuration;
-using LightBDD.Framework.ExecutionContext;
-using LightBDD.Framework.ExecutionContext.Configuration;
-using LightBDD.Framework.Extensibility.Implementation;
 using LightBDD.Framework.Formatting.Configuration;
 using LightBDD.Framework.Formatting.Values;
 
@@ -20,10 +17,6 @@ namespace LightBDD.Framework.Configuration
         public static LightBddConfiguration WithFrameworkDefaults(this LightBddConfiguration configuration)
         {
             configuration
-                .ExecutionExtensionsConfiguration()
-                .EnableCurrentScenarioTracking();
-
-            configuration
                 .ValueFormattingConfiguration()
                 .RegisterFrameworkDefaultGeneralFormatters();
 
@@ -40,20 +33,6 @@ namespace LightBDD.Framework.Configuration
             return configuration
                  .RegisterGeneral(new DictionaryFormatter())
                  .RegisterGeneral(new CollectionFormatter());
-        }
-
-        /// <summary>
-        /// Enables ability to access currently executed step with <see cref="StepExecution.Current"/> extension methods.
-        /// This feature depends on <see cref="ScenarioExecutionContext"/>, it enables it as well with <see cref="ScenarioExecutionContextConfigurationExtensions.EnableScenarioExecutionContext"/>().
-        /// </summary>
-        /// <param name="configuration">Configuration object.</param>
-        /// <returns>Configuration object.</returns>
-        public static ExecutionExtensionsConfiguration EnableCurrentScenarioTracking(this ExecutionExtensionsConfiguration configuration)
-        {
-            return configuration
-                .EnableScenarioExecutionContext()
-                .EnableScenarioDecorator<CurrentScenarioDecorator>()
-                .EnableStepDecorator<CurrentStepDecorator>();
         }
     }
 }

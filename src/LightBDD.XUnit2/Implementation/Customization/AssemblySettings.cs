@@ -1,4 +1,4 @@
-using LightBDD.Framework.ExecutionContext;
+using LightBDD.Core.ExecutionContext;
 
 namespace LightBDD.XUnit2.Implementation.Customization
 {

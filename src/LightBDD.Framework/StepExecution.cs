@@ -1,5 +1,7 @@
 using System.Diagnostics;
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution;
+using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.Results;
 
 namespace LightBDD.Framework
@@ -41,6 +43,27 @@ namespace LightBDD.Framework
         public void Bypass(string reason)
         {
             throw new StepBypassException(reason);
+        }
+
+        /// <summary>
+        /// Comments currently executed step with a <paramref name="comment"/> text.
+        /// The comment would be included in progress notification, as well as in execution reports.
+        /// </summary>
+        /// <param name="comment">Comment to add. If comment is <c>null</c> or empty, it will not be added.</param>
+        public void Comment(string comment)
+        {
+            if (!string.IsNullOrWhiteSpace(comment))
+                ScenarioExecutionContext.CurrentStep.Comment(comment);
+        }
+
+        /// <summary>
+        /// Retrieves <see cref="IDependencyResolver"/> for currently executed scenario.
+        /// Please note that for contextual scenarios or composite steps, it is better to specify <see cref="IDependencyResolver"/> in context constructor.
+        /// </summary>
+        public IDependencyResolver GetScenarioDependencyResolver()
+        {
+            //TODO: check if can be done better, not in StepExecution
+            return ScenarioExecutionContext.CurrentScenario.DependencyResolver;
         }
     }
 }

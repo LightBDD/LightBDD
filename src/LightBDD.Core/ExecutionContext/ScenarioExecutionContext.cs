@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using LightBDD.Core.Configuration;
-using LightBDD.Framework.ExecutionContext.Configuration;
+using LightBDD.Core.Execution;
+using LightBDD.Core.ExecutionContext.Implementation;
 
-namespace LightBDD.Framework.ExecutionContext
+namespace LightBDD.Core.ExecutionContext
 {
     /// <summary>
     /// Scenario execution context class allowing to store and retrieve scenario properties that would be available for all steps and tasks executed within the scenario.
-    /// 
-    /// <para>This feature has to be enabled in <see cref="LightBddConfiguration"/> via <see cref="ScenarioExecutionContextConfigurationExtensions.EnableScenarioExecutionContext"/>() prior to usage.</para>
     /// </summary>
     [DebuggerStepThrough]
+    //TODO: review naming!
     public sealed class ScenarioExecutionContext
     {
         private static readonly AsyncLocalContext<ScenarioExecutionContext> CurrentContext = new AsyncLocalContext<ScenarioExecutionContext>();
@@ -39,9 +38,21 @@ namespace LightBDD.Framework.ExecutionContext
                 var ctx = CurrentContext.Value;
                 if (ctx != null)
                     return ctx;
-                throw new InvalidOperationException($"Current task is not executing any scenarios or {nameof(ScenarioExecutionContext)} is not enabled in {nameof(LightBddConfiguration)}. Ensure that configuration.{nameof(ConfigurationExtensions.ExecutionExtensionsConfiguration)}().{nameof(ScenarioExecutionContextConfigurationExtensions.EnableScenarioExecutionContext)}() is called during LightBDD initialization and operation accessing {nameof(ScenarioExecutionContext)} is called from task running scenario.");
+                throw new InvalidOperationException($"Current task is not executing any scenarios. Ensure that operation accessing {nameof(ScenarioExecutionContext)} is called from task running scenario.");
             }
             set => CurrentContext.Value = value;
         }
+
+        /// <summary>
+        /// Returns currently executed step.
+        /// <exception cref="InvalidOperationException">Thrown if no step is executed by current task.</exception>
+        /// </summary>
+        public static IStep CurrentStep => Current.Get<CurrentStepProperty>().Step;
+
+        /// <summary>
+        /// Returns currently executed scenario.
+        /// <exception cref="InvalidOperationException">Thrown if no scenario is executed by current task.</exception>
+        /// </summary>
+        public static IScenario CurrentScenario => Current.Get<CurrentScenarioProperty>().Scenario;
     }
 }
