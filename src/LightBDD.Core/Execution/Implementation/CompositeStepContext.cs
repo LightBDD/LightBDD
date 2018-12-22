@@ -4,7 +4,7 @@ using LightBDD.Core.Dependencies;
 
 namespace LightBDD.Core.Execution.Implementation
 {
-    [DebuggerStepThrough]
+    [DebuggerStepThrough]//TODO: delete
     internal class CompositeStepContext : IDisposable
     {
         private readonly IDependencyContainer _subStepContainer;

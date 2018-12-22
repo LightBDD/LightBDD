@@ -168,12 +168,12 @@ namespace LightBDD.Core.Extensibility.Implementation
         {
             private readonly ScenarioRunner _runner;
             private readonly IDependencyContainer _container;
-            private readonly Func<object, object[], Task<IStepResultDescriptor>> _invocation;
+            private readonly StepFunc _invocation;
             private readonly DecoratingExecutor _decoratingExecutor;
             private readonly string _groupPrefix;
 
             public InvocationResultTransformer(ScenarioRunner runner, IDependencyContainer container,
-                Func<object, object[], Task<IStepResultDescriptor>> invocation, DecoratingExecutor decoratingExecutor,
+                StepFunc invocation, DecoratingExecutor decoratingExecutor,
                 string groupPrefix)
             {
                 _runner = runner;

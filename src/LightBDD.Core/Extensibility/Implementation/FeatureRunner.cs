@@ -1,9 +1,8 @@
-using System;
-using System.Diagnostics;
 using LightBDD.Core.Execution.Implementation;
-using LightBDD.Core.Extensibility.Execution.Implementation;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Implementation;
+using System;
+using System.Diagnostics;
 
 namespace LightBDD.Core.Extensibility.Implementation
 {
@@ -11,20 +10,17 @@ namespace LightBDD.Core.Extensibility.Implementation
     internal class FeatureRunner : IFeatureRunner
     {
         private readonly FeatureResult _featureResult;
-        private readonly ScenarioExecutor _scenarioExecutor;
         private readonly IntegrationContext _integrationContext;
         private readonly Type _featureType;
         private bool _disposed;
+        private readonly ExceptionProcessor _exceptionProcessor;
 
         public FeatureRunner(Type featureType, IntegrationContext integrationContext)
         {
             _featureType = featureType;
             _integrationContext = integrationContext;
+            _exceptionProcessor = new ExceptionProcessor(_integrationContext);
             _featureResult = new FeatureResult(_integrationContext.MetadataProvider.GetFeatureInfo(featureType));
-
-            _scenarioExecutor = new ScenarioExecutor(new DecoratingExecutor(integrationContext.ExecutionExtensions));
-            _scenarioExecutor.ScenarioExecuted += _featureResult.AddScenario;
-
             integrationContext.FeatureProgressNotifier.NotifyFeatureStart(_featureResult.Info);
         }
 
@@ -43,7 +39,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         private IScenarioRunner CreateScenarioRunner(object fixture)
         {
             VerifyDisposed();
-            return new ScenarioRunner(_scenarioExecutor, _integrationContext.MetadataProvider, _integrationContext.ScenarioProgressNotifierProvider.Invoke(fixture), new ExceptionProcessor(_integrationContext), _integrationContext.DependencyContainer);
+            return new ScenarioRunnerV2(fixture, _integrationContext, _exceptionProcessor, _featureResult.AddScenario);
         }
 
         private void VerifyDisposed()

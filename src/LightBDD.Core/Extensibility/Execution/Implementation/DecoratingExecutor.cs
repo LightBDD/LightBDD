@@ -7,6 +7,7 @@ using LightBDD.Core.Execution;
 
 namespace LightBDD.Core.Extensibility.Execution.Implementation
 {
+    //TODO: remove
     [DebuggerStepThrough]
     internal class DecoratingExecutor
     {

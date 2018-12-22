@@ -64,12 +64,10 @@ namespace LightBDD.Framework.Extensibility
         {
             if (configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
-            if (metadataProvider == null)
-                throw new ArgumentNullException(nameof(metadataProvider));
-
             Configuration = configuration.Seal();
+            MetadataProvider = metadataProvider ?? throw new ArgumentNullException(nameof(metadataProvider));
+
             NameFormatter = configuration.NameFormatterConfiguration().Formatter;
-            MetadataProvider = metadataProvider;
             ExceptionToStatusMapper = exceptionToStatusMapper;
             FeatureProgressNotifier = configuration.FeatureProgressNotifierConfiguration().Notifier;
             ScenarioProgressNotifierProvider = configuration.ScenarioProgressNotifierConfiguration().NotifierProvider;

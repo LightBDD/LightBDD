@@ -48,7 +48,7 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
             return methodExpression.Arguments.Select((arg, index) => CompileArgument(arg, contextParameter, methodParameterInfo[index])).ToArray();
         }
 
-        private Func<object, object[], Task<IStepResultDescriptor>> CompileStepAction(MethodCallExpression methodCall, ParameterExpression contextParameter)
+        private StepFunc CompileStepAction(MethodCallExpression methodCall, ParameterExpression contextParameter)
         {
             var targetParam = Expression.Parameter(typeof(object), "target");
             var argsParam = Expression.Parameter(typeof(object[]), "args");
@@ -59,7 +59,7 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
 
             var stepCallFunction = Expression.Lambda<Func<TContext, object[], Task<IStepResultDescriptor>>>(body, contextParameter, argsParam).Compile();
 
-            var genericStepCallFunction = Expression.Lambda<Func<object, object[], Task<IStepResultDescriptor>>>(
+            var genericStepCallFunction = Expression.Lambda<StepFunc>(
                     Expression.Invoke(Expression.Constant(stepCallFunction), Expression.Convert(targetParam, contextParameter.Type), argsParam),
                     targetParam, argsParam)
                 .Compile();
