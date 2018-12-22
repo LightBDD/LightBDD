@@ -27,11 +27,11 @@ namespace LightBDD.NUnit3.UnitTests
 				.Run();
 		}
 
-		[Given("A")]
+		[Given("T")]
 		void Given_A()
 		{
 		}
-		[When]
+		
 		void B()
 		{
 		}
