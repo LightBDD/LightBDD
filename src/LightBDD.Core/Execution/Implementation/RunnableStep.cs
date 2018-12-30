@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Dependencies;
-using LightBDD.Core.Execution;
-using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.ExecutionContext.Implementation;
+using LightBDD.Core.Extensibility;
+using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Results;
 using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
@@ -15,13 +15,14 @@ using LightBDD.Core.Results;
 using LightBDD.Core.Results.Implementation;
 using LightBDD.Core.Results.Parameters;
 
-namespace LightBDD.Core.Extensibility.Implementation
+namespace LightBDD.Core.Execution.Implementation
 {
-    internal class RunnableStepV2 : IStep
+    internal class RunnableStep : IStep
     {
         private readonly RunnableStepContext _stepContext;
         private readonly StepFunc _invocation;
         private readonly MethodArgument[] _arguments;
+        private readonly Func<Task> _decoratedStepMethod;
         private readonly StepResult _result;
         private readonly ExceptionCollector _exceptionCollector = new ExceptionCollector();
         private Func<Exception, bool> _shouldAbortSubStepExecutionFn = _ => true;
@@ -31,11 +32,12 @@ namespace LightBDD.Core.Extensibility.Implementation
         public IDependencyResolver DependencyResolver => _stepContext.Container;
         public object Context => _stepContext.Context;
 
-        public RunnableStepV2(RunnableStepContext stepContext, StepInfo info, StepFunc invocation, MethodArgument[] arguments)
+        public RunnableStep(RunnableStepContext stepContext, StepInfo info, StepFunc invocation, MethodArgument[] arguments, IEnumerable<IStepDecorator> stepDecorators)
         {
             _stepContext = stepContext;
             _invocation = invocation;
             _arguments = arguments;
+            _decoratedStepMethod = DecoratingExecutor.DecorateStep(this, RunStepAsync, stepDecorators);
             _result = new StepResult(info);
             UpdateNameDetails();
         }
@@ -48,10 +50,7 @@ namespace LightBDD.Core.Extensibility.Implementation
             {
                 StartStep();
                 stepStartNotified = true;
-
-                var result = await InvokeStepMethodAsync();
-                await InvokeSubStepsAsync(result);
-
+                await _decoratedStepMethod.Invoke();
                 UpdateStepStatus();
             }
             catch (Exception ex)
@@ -83,10 +82,10 @@ namespace LightBDD.Core.Extensibility.Implementation
             }
         }
 
-        private RunnableStepV2[] InitializeComposite(IStepResultDescriptor result)
+        private RunnableStep[] InitializeComposite(IStepResultDescriptor result)
         {
             if (!(result is CompositeStepResultDescriptor compositeDescriptor))
-                return Arrays<RunnableStepV2>.Empty();
+                return Arrays<RunnableStep>.Empty();
 
             _subStepScope = _stepContext.Container.BeginScope(compositeDescriptor.SubStepsContext.ScopeConfigurator);
             var subStepsContext = InstantiateSubStepsContext(compositeDescriptor.SubStepsContext, _subStepScope);
@@ -114,7 +113,7 @@ namespace LightBDD.Core.Extensibility.Implementation
             }
         }
 
-        private async Task<IStepResultDescriptor> InvokeStepMethodAsync()
+        private async Task RunStepAsync()
         {
             IStepResultDescriptor result;
             var ctx = AsyncStepSynchronizationContext.InstallNew();
@@ -135,7 +134,8 @@ namespace LightBDD.Core.Extensibility.Implementation
                 ctx.RestoreOriginal();
                 await ctx.WaitForTasksAsync();
             }
-            return result;
+
+            await InvokeSubStepsAsync(result);
         }
 
         private void VerifyParameters()
@@ -187,20 +187,33 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         private void StartStep()
         {
+            ScenarioExecutionContext.Current.Get<CurrentStepProperty>().Stash(this);
             EvaluateParameters();
             _stepContext.ProgressNotifier.NotifyStepStart(_result.Info);
-            ScenarioExecutionContext.Current.Get<CurrentStepProperty>().Stash(this);
         }
 
         private void StopStep(ExecutionTimeWatch watch, bool stepStartNotified)
         {
             ScenarioExecutionContext.Current.Get<CurrentStepProperty>().RemoveCurrent(this);
-            _subStepScope?.Dispose();
+            DisposeComposite();
             watch.Stop();
             _result.SetExecutionTime(watch.GetTime());
             _result.IncludeSubStepDetails();
             if (stepStartNotified)
                 _stepContext.ProgressNotifier.NotifyStepFinished(_result);
+        }
+
+        private void DisposeComposite()
+        {
+            try
+            {
+                _subStepScope?.Dispose();
+            }
+            catch (Exception exception)
+            {
+                _stepContext.ExceptionProcessor.UpdateResultsWithException(_result.SetStatus, exception);
+                _exceptionCollector.Capture(exception);
+            }
         }
 
         private void HandleException(Exception exception)

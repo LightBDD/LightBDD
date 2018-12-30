@@ -1,9 +1,8 @@
 using System;
 using LightBDD.Core.Dependencies;
-using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Notification;
 
-namespace LightBDD.Core.Extensibility.Implementation
+namespace LightBDD.Core.Execution.Implementation
 {
     internal class RunnableStepContext
     {

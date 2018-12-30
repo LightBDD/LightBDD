@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Implementation;
 using LightBDD.Core.Formatting;

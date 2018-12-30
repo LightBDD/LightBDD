@@ -1,38 +1,43 @@
 using LightBDD.Core.Dependencies;
-using LightBDD.Core.Extensibility.Implementation;
+using LightBDD.Core.ExecutionContext;
+using LightBDD.Core.ExecutionContext.Implementation;
+using LightBDD.Core.Extensibility;
+using LightBDD.Core.Extensibility.Execution;
+using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
+using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Implementation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LightBDD.Core.ExecutionContext;
-using LightBDD.Core.ExecutionContext.Implementation;
-using LightBDD.Core.Extensibility;
-using LightBDD.Core.Metadata.Implementation;
 
 namespace LightBDD.Core.Execution.Implementation
 {
-    internal class RunnableScenarioV2 : IScenario
+    internal class RunnableScenario : IScenario
     {
         private readonly RunnableScenarioContext _scenarioContext;
         private readonly IEnumerable<StepDescriptor> _stepDescriptors;
         private readonly ExecutionContextDescriptor _contextDescriptor;
         private readonly ScenarioResult _result;
         private readonly ExceptionCollector _exceptionCollector = new ExceptionCollector();
+        private readonly Func<Task> _decoratedScenarioMethod;
         private IDependencyContainer _scope;
         private Func<Exception, bool> _shouldAbortSubStepExecutionFn = ex => true;
-        private RunnableStepV2[] _preparedSteps;
+        private RunnableStep[] _preparedSteps = Arrays<RunnableStep>.Empty();
         public IScenarioInfo Info => _result.Info;
         public IDependencyResolver DependencyResolver => _scope;
         public object Context { get; private set; }
 
-        public RunnableScenarioV2(RunnableScenarioContext scenarioContext, ScenarioInfo scenarioInfo, IEnumerable<StepDescriptor> stepDescriptors, ExecutionContextDescriptor contextDescriptor)
+        public RunnableScenario(RunnableScenarioContext scenarioContext, ScenarioInfo scenarioInfo,
+            IEnumerable<StepDescriptor> stepDescriptors, ExecutionContextDescriptor contextDescriptor,
+            IEnumerable<IScenarioDecorator> scenarioDecorators)
         {
             _scenarioContext = scenarioContext;
             _stepDescriptors = stepDescriptors;
             _contextDescriptor = contextDescriptor;
+            _decoratedScenarioMethod = DecoratingExecutor.DecorateScenario(this, RunScenarioAsync, scenarioDecorators);
             _result = new ScenarioResult(scenarioInfo);
         }
 
@@ -42,9 +47,7 @@ namespace LightBDD.Core.Execution.Implementation
             try
             {
                 StartScenario();
-
-                foreach (var step in _preparedSteps)
-                    await step.ExecuteAsync();
+                await _decoratedScenarioMethod.Invoke();
             }
             catch (Exception ex)
             {
@@ -56,6 +59,12 @@ namespace LightBDD.Core.Execution.Implementation
             }
 
             ProcessExceptions();
+        }
+
+        private async Task RunScenarioAsync()
+        {
+            foreach (var step in _preparedSteps)
+                await step.ExecuteAsync();
         }
 
         private void ProcessExceptions()
@@ -155,7 +164,7 @@ namespace LightBDD.Core.Execution.Implementation
             }
         }
 
-        private RunnableStepV2[] PrepareSteps()
+        private RunnableStep[] PrepareSteps()
         {
             try
             {

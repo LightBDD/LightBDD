@@ -1,11 +1,11 @@
 using System;
 using System.Diagnostics;
-using LightBDD.Core.Execution;
+using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
 
-namespace LightBDD.Core.Extensibility.Implementation
+namespace LightBDD.Core.Execution.Implementation
 {
     [DebuggerStepThrough]
     internal class MethodArgument

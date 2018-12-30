@@ -1,3 +1,4 @@
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Extensibility.Execution;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace LightBDD.Core.Extensibility.Implementation
 {
-    internal class ScenarioRunnerV2 : IScenarioRunner
+    internal class ScenarioRunner : IScenarioRunner
     {
         private readonly RunnableScenarioContext _context;
         private INameInfo _name;
@@ -20,8 +21,9 @@ namespace LightBDD.Core.Extensibility.Implementation
         private string[] _categories = Arrays<string>.Empty();
         private IEnumerable<StepDescriptor> _steps = Enumerable.Empty<StepDescriptor>();
         private ExecutionContextDescriptor _contextDescriptor = ExecutionContextDescriptor.NoContext;
+        private IEnumerable<IScenarioDecorator> _scenarioDecorators = Enumerable.Empty<IScenarioDecorator>();
 
-        public ScenarioRunnerV2(object fixture, IntegrationContext integrationContext, ExceptionProcessor exceptionProcessor, Action<IScenarioResult> onScenarioFinished)
+        public ScenarioRunner(object fixture, IntegrationContext integrationContext, ExceptionProcessor exceptionProcessor, Action<IScenarioResult> onScenarioFinished)
         {
             _context = new RunnableScenarioContext(
                 integrationContext,
@@ -87,6 +89,7 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         public IScenarioRunner WithScenarioDecorators(IEnumerable<IScenarioDecorator> scenarioDecorators)
         {
+            _scenarioDecorators = scenarioDecorators ?? throw new ArgumentNullException(nameof(scenarioDecorators));
             return this;
         }
 
@@ -101,7 +104,14 @@ namespace LightBDD.Core.Extensibility.Implementation
         public Task RunScenarioAsync()
         {
             ValidateContext();
-            return new RunnableScenarioV2(_context, new ScenarioInfo(_name, _labels, _categories), _steps, _contextDescriptor).ExecuteAsync();
+            var scenario = new RunnableScenario(_context, new ScenarioInfo(_name, _labels, _categories), _steps, _contextDescriptor, GetScenarioDecorators());
+            return scenario.ExecuteAsync();
+        }
+
+        private IEnumerable<IScenarioDecorator> GetScenarioDecorators()
+        {
+            return _context.IntegrationContext.Configuration.ExecutionExtensionsConfiguration()
+                .ScenarioDecorators.Concat(_scenarioDecorators);
         }
 
         private void ValidateContext()
@@ -110,7 +120,7 @@ namespace LightBDD.Core.Extensibility.Implementation
                 throw new InvalidOperationException("Scenario name is not provided.");
         }
 
-        private RunnableStepV2[] ProvideSteps(IEnumerable<StepDescriptor> stepDescriptors, object context, IDependencyContainer container, string groupPrefix, Func<Exception, bool> shouldAbortSubStepExecutionFn)
+        private RunnableStep[] ProvideSteps(IEnumerable<StepDescriptor> stepDescriptors, object context, IDependencyContainer container, string groupPrefix, Func<Exception, bool> shouldAbortSubStepExecutionFn)
         {
             var descriptors = stepDescriptors.ToArray();
             if (!descriptors.Any())
@@ -119,9 +129,10 @@ namespace LightBDD.Core.Extensibility.Implementation
             var metadataProvider = _context.IntegrationContext.MetadataProvider;
 
             var totalSteps = descriptors.Length;
-            var steps = new RunnableStepV2[totalSteps];
+            var steps = new RunnableStep[totalSteps];
             string previousStepTypeName = null;
 
+            var extensions = _context.IntegrationContext.Configuration.ExecutionExtensionsConfiguration();
             var stepContext = new RunnableStepContext(_context.ExceptionProcessor, _context.ProgressNotifier, container, context, ProvideSteps, shouldAbortSubStepExecutionFn);
             for (var stepIndex = 0; stepIndex < totalSteps; ++stepIndex)
             {
@@ -129,7 +140,7 @@ namespace LightBDD.Core.Extensibility.Implementation
                 var stepInfo = new StepInfo(metadataProvider.GetStepName(descriptor, previousStepTypeName), stepIndex + 1, totalSteps, groupPrefix);
                 var arguments = descriptor.Parameters.Select(p => new MethodArgument(p, metadataProvider.GetValueFormattingServiceFor(p.ParameterInfo))).ToArray();
 
-                steps[stepIndex] = new RunnableStepV2(stepContext, stepInfo, descriptor.StepInvocation, arguments);
+                steps[stepIndex] = new RunnableStep(stepContext, stepInfo, descriptor.StepInvocation, arguments, extensions.StepDecorators.Concat(metadataProvider.GetStepDecorators(descriptor)));
                 previousStepTypeName = stepInfo.Name.StepTypeName?.OriginalName;
             }
 
