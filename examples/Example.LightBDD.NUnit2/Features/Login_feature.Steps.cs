@@ -1,6 +1,5 @@
 using Example.Domain.Services;
 using LightBDD.Framework;
-using LightBDD.Framework.Commenting;
 using LightBDD.NUnit2;
 using NUnit.Framework;
 
