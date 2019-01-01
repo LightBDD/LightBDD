@@ -55,16 +55,6 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic
         }
 
         [Test]
-        public async Task It_should_allow_to_run_void_and_async_void_steps_in_asynchronous_mode()
-        {
-            ExpectAsynchronousExecution();
-
-            await Runner.RunScenarioActionsAsync(Step_one_async_void, Step_two);
-
-            VerifyAllExpectations();
-        }
-
-        [Test]
         public void It_should_allow_to_run_sync_scenarios_in_fluent_way()
         {
             var builder = new TestableScenarioBuilder<NoContext>();

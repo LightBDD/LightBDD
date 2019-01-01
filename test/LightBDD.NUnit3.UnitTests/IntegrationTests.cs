@@ -5,6 +5,7 @@ using LightBDD.Core.Results;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.Framework.Scenarios.Extended;
+using LightBDD.Framework.Scenarios.Fluent;
 using NUnit.Framework;
 
 namespace LightBDD.NUnit3.UnitTests
@@ -107,7 +108,7 @@ namespace LightBDD.NUnit3.UnitTests
             };
             Action step2 = () => Assert.IsTrue(finished);
 
-            Assert.DoesNotThrowAsync(() => Runner.RunScenarioActionsAsync(step1, step2));
+            Assert.DoesNotThrowAsync(() => Runner.NewScenario().AddSteps(step1, step2).RunAsync());
         }
 
         [Scenario]
