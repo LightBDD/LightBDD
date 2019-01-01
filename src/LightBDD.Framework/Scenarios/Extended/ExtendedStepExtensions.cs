@@ -1,9 +1,8 @@
-﻿using System;
+﻿using LightBDD.Framework.Scenarios.Extended.Implementation;
+using System;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using LightBDD.Framework.Extensibility;
-using LightBDD.Framework.Scenarios.Extended.Implementation;
 
 namespace LightBDD.Framework.Scenarios.Extended
 {
@@ -61,8 +60,7 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// <returns><paramref name="builder"/> instance.</returns>
         public static ICompositeStepBuilder<TContext> AddSteps<TContext>(this ICompositeStepBuilder<TContext> builder, params Expression<Action<TContext>>[] steps)
         {
-            AsExtended(builder).AddSteps(steps);
-            return builder;
+            return new ExtendedStepsBuilder<ICompositeStepBuilder<TContext>, TContext>(builder).AddSteps(steps);
         }
 
         /// <summary>
@@ -113,13 +111,7 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// <returns><paramref name="builder"/> instance.</returns>
         public static ICompositeStepBuilder<TContext> AddAsyncSteps<TContext>(this ICompositeStepBuilder<TContext> builder, params Expression<Func<TContext, Task>>[] steps)
         {
-            AsExtended(builder).AddSteps(steps);
-            return builder;
-        }
-
-        private static ExtendedCompositeStepBuilder<TContext> AsExtended<TContext>(this ICompositeStepBuilder<TContext> runner)
-        {
-            return new ExtendedCompositeStepBuilder<TContext>(runner.Integrate());
+            return new ExtendedStepsBuilder<ICompositeStepBuilder<TContext>, TContext>(builder).AddSteps(steps);
         }
     }
 }

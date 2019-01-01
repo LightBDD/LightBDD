@@ -35,13 +35,5 @@ namespace LightBDD.Framework.Scenarios.Extended.Implementation
                 .WithCapturedScenarioDetails()
                 .WithSteps(steps.Select(_stepCompiler.ToStep));
         }
-
-        public IScenarioRunner BuildAsyncScenario(params Expression<Action<TContext>>[] steps)
-        {
-            return _runner
-                .NewScenario()
-                .WithCapturedScenarioDetails()
-                .WithSteps(steps.Select(_stepCompiler.ToStep));
-        }
     }
 }

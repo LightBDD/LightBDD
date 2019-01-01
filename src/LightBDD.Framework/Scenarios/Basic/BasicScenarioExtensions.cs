@@ -1,9 +1,10 @@
-﻿using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using LightBDD.Core.Execution;
+﻿using LightBDD.Core.Execution;
 using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Scenarios.Basic.Implementation;
+using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LightBDD.Framework.Scenarios.Basic
 {
@@ -13,6 +14,63 @@ namespace LightBDD.Framework.Scenarios.Basic
     [DebuggerStepThrough]
     public static class BasicScenarioExtensions
     {
+        /// <summary>
+        /// Adds steps specified by <paramref name="steps"/> parameter.<br/>
+        /// The steps would be executed in specified order.<br/>
+        /// If given step throws, other are not executed.<br/>
+        /// The step name is determined from corresponding action name.<br/>
+        /// Example usage:
+        /// <code>
+        /// builder.AddSteps(
+        ///     Given_the_user_is_about_to_login,
+        ///     Given_the_user_entered_valid_login,
+        ///     Given_the_user_entered_valid_password,
+        ///     When_the_user_clicks_login_button,
+        ///     Then_the_login_operation_should_be_successful,
+        ///     Then_a_welcome_message_containing_user_name_should_be_returned);
+        /// </code>
+        /// Expected step signature:
+        /// <code>
+        /// void Given_the_user_is_about_to_login() { /* ... */ }
+        /// </code>
+        /// </summary>
+        /// <param name="builder">Scenario builder.</param>
+        /// <param name="steps">Steps to add.</param>
+        /// <returns><paramref name="builder"/> instance.</returns>
+        public static TBuilder AddSteps<TBuilder>(this TBuilder builder, params Action[] steps) where TBuilder : IStepGroupBuilder<NoContext>
+        {
+            builder.Integrate().AddSteps(steps.Select(BasicStepCompiler.ToSynchronousStep));
+            return builder;
+        }
+        /// <summary>
+        /// Adds steps specified by <paramref name="steps"/> parameter.<br/>
+        /// The steps would be executed in specified order.<br/>
+        /// If given step throws, other are not executed.<br/>
+        /// The step name is determined from corresponding action name.<br/>
+        /// Example usage:
+        /// <code>
+        /// builder.AddAsyncSteps(
+        ///     Given_the_user_is_about_to_login,
+        ///     Given_the_user_entered_valid_login,
+        ///     Given_the_user_entered_valid_password,
+        ///     When_the_user_clicks_login_button,
+        ///     Then_the_login_operation_should_be_successful,
+        ///     Then_a_welcome_message_containing_user_name_should_be_returned);
+        /// </code>
+        /// Expected step signature:
+        /// <code>
+        /// async Task Given_the_user_is_about_to_login() { /* ... */ }
+        /// </code>
+        /// </summary>
+        /// <param name="builder">Scenario builder.</param>
+        /// <param name="steps">Steps to add.</param>
+        /// <returns><paramref name="builder"/> instance.</returns>
+        public static TBuilder AddAsyncSteps<TBuilder>(this TBuilder builder, params Func<Task>[] steps) where TBuilder : IStepGroupBuilder<NoContext>
+        {
+            builder.Integrate().AddSteps(steps.Select(BasicStepCompiler.ToAsynchronousStep));
+            return builder;
+        }
+
         /// <summary>
         /// Runs test scenario by executing given steps in specified order.<br/>
         /// If given step throws, other are not executed.<br/>
@@ -45,8 +103,10 @@ namespace LightBDD.Framework.Scenarios.Basic
         {
             try
             {
-                Basic(runner)
-                    .BuildScenario(steps)
+                runner.Integrate()
+                    .NewScenario()
+                    .WithCapturedScenarioDetails()
+                    .WithSteps(steps.Select(BasicStepCompiler.ToSynchronousStep))
                     .RunScenario();
             }
             catch (ScenarioExecutionException e)
@@ -87,19 +147,16 @@ namespace LightBDD.Framework.Scenarios.Basic
         {
             try
             {
-                await Basic(runner)
-                    .BuildAsyncScenario(steps)
+                await runner.Integrate()
+                    .NewScenario()
+                    .WithCapturedScenarioDetails()
+                    .WithSteps(steps.Select(BasicStepCompiler.ToAsynchronousStep))
                     .RunScenarioAsync();
             }
             catch (ScenarioExecutionException e)
             {
                 e.GetOriginal().Throw();
             }
-        }
-
-        private static BasicScenarioRunnerFactory Basic(this IBddRunner runner)
-        {
-            return new BasicScenarioRunnerFactory(runner.Integrate());
         }
     }
 }
