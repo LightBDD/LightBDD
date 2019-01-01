@@ -1,5 +1,4 @@
-﻿using LightBDD.Framework.Extensibility;
-using LightBDD.Framework.Scenarios.Compact.Implementation;
+﻿using LightBDD.Framework.Scenarios.Compact.Implementation;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -20,10 +19,9 @@ namespace LightBDD.Framework.Scenarios.Compact
         /// <param name="name">Step name to be rendered.</param>
         /// <param name="step">Step action</param>
         /// <returns>Builder.</returns>
-        public static IScenarioBuilder<TContext> AddStep<TContext>(this IScenarioBuilder<TContext> builder, string name, Action<TContext> step)
+        public static IScenarioRunner<TContext> AddStep<TContext>(this IScenarioBuilder<TContext> builder, string name, Action<TContext> step)
         {
-            builder.Integrate().AddSteps(new[] { CompactStepCompiler.ToSynchronousStep(name, step) });
-            return builder;
+            return builder.Integrate().Configure(x => x.AddSteps(new[] { CompactStepCompiler.ToSynchronousStep(name, step) }));
         }
 
         /// <summary>
@@ -34,10 +32,9 @@ namespace LightBDD.Framework.Scenarios.Compact
         /// <param name="name">Step name to be rendered.</param>
         /// <param name="step">Step action</param>
         /// <returns>Builder.</returns>
-        public static IScenarioBuilder<TContext> AddAsyncStep<TContext>(this IScenarioBuilder<TContext> builder, string name, Func<TContext, Task> step)
+        public static IScenarioRunner<TContext> AddAsyncStep<TContext>(this IScenarioBuilder<TContext> builder, string name, Func<TContext, Task> step)
         {
-            builder.Integrate().AddSteps(new[] { CompactStepCompiler.ToAsynchronousStep(name, step) });
-            return builder;
+            return builder.Integrate().Configure(x => x.AddSteps(new[] { CompactStepCompiler.ToAsynchronousStep(name, step) }));
         }
     }
 }

@@ -19,8 +19,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
             ExpectContext();
 
             Runner.Object
-                .WithContext(new object())
-                .Integrate().NewScenario();
+                .WithContext(new object());
 
             MockScenarioRunner.Verify(x => x.WithContext(It.IsAny<Func<object>>(), false));
         }
@@ -32,8 +31,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
             ExpectContext();
 
             Runner.Object
-                .WithContext(new object(), true)
-                .Integrate().NewScenario();
+                .WithContext(new object(), true);
 
             MockScenarioRunner.Verify(x => x.WithContext(It.IsAny<Func<object>>(), true));
         }
@@ -45,8 +43,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
             ExpectContext();
 
             Runner.Object
-                .WithContext(() => new object())
-                .Integrate().NewScenario();
+                .WithContext(() => new object());
 
             MockScenarioRunner.Verify(x => x.WithContext(It.IsAny<Func<object>>(), true));
         }
@@ -58,8 +55,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
             ExpectContext();
 
             Runner.Object
-                .WithContext(() => new object(), false)
-                .Integrate().NewScenario();
+                .WithContext(() => new object(), false);
 
             MockScenarioRunner.Verify(x => x.WithContext(It.IsAny<Func<object>>(), false));
         }
@@ -71,8 +67,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
             ExpectResolvedContext();
 
             Runner.Object
-                .WithContext<List<string>>()
-                .Integrate().NewScenario();
+                .WithContext<List<string>>();
 
             MockScenarioRunner.Verify(x => x.WithContext(It.IsAny<Func<IDependencyResolver, object>>(), null));
         }

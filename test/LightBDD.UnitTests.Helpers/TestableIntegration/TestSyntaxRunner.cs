@@ -4,18 +4,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
+using LightBDD.Framework;
+using LightBDD.Framework.Scenarios;
+using LightBDD.Framework.Scenarios.Contextual;
 
 namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
     public class TestSyntaxRunner
     {
-        private readonly IFeatureFixtureRunner _coreRunner;
+        private readonly IBddRunner _coreRunner;
         private Func<object> _contextProvider;
         private bool _takeContextOwnership;
 
-        public TestSyntaxRunner(IFeatureFixtureRunner coreRunner)
+        public TestSyntaxRunner(IBddRunner runner)
         {
-            _coreRunner = coreRunner;
+            _coreRunner = runner;
         }
 
         public void TestScenario(params Action[] steps)
@@ -56,7 +59,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             {
                 NewScenario()
                     .WithCapturedScenarioDetails()
-                    .WithSteps(steps)
+                    .AddSteps(steps)
                     .RunScenarioAsync()
                     .GetAwaiter()
                     .GetResult();
@@ -72,7 +75,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             {
                 await NewScenario()
                     .WithCapturedScenarioDetails()
-                    .WithSteps(steps)
+                    .AddSteps(steps)
                     .RunScenarioAsync();
             }
             catch (ScenarioExecutionException e)
@@ -81,9 +84,9 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             }
         }
 
-        private IScenarioRunner NewScenario()
+        private ICoreScenarioBuilder NewScenario()
         {
-            var scenarioRunner = _coreRunner.NewScenario();
+            var scenarioRunner = _coreRunner.Integrate().Core;
             return _contextProvider != null
                 ? scenarioRunner.WithContext(_contextProvider, _takeContextOwnership)
                 : scenarioRunner;
@@ -95,7 +98,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             {
                 NewScenario()
                     .WithCapturedScenarioDetails()
-                    .WithSteps(steps)
+                    .AddSteps(steps)
                     .RunScenario();
             }
             catch (ScenarioExecutionException e)
@@ -116,9 +119,10 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             try
             {
                 await _coreRunner
-                    .NewScenario()
+                    .Integrate()
+                    .Core
                     .WithName(name)
-                    .WithSteps(steps)
+                    .AddSteps(steps)
                     .RunScenarioAsync();
             }
             catch (ScenarioExecutionException e)

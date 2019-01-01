@@ -33,13 +33,13 @@ namespace LightBDD.Core.Extensibility.Implementation
             if (fixture.GetType() != _featureType)
                 throw new ArgumentException($"Provided fixture instance '{fixture.GetType()}' type does not match feature type '{_featureType}'");
 
-            return new FeatureFixtureRunner(fixture, CreateScenarioRunner, _integrationContext.Configuration);
+            return new FeatureFixtureRunner(fixture, CreateScenarioRunner);
         }
 
-        private IScenarioRunner CreateScenarioRunner(object fixture)
+        private ICoreScenarioBuilder CreateScenarioRunner(object fixture)
         {
             VerifyDisposed();
-            return new ScenarioRunner(fixture, _integrationContext, _exceptionProcessor, _featureResult.AddScenario);
+            return new ScenarioBuilder(fixture, _integrationContext, _exceptionProcessor, _featureResult.AddScenario);
         }
 
         private void VerifyDisposed()

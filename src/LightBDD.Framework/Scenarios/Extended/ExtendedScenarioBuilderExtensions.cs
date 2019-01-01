@@ -1,6 +1,7 @@
 ﻿using LightBDD.Framework.Scenarios.Extended.Implementation;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -58,9 +59,11 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// <param name="builder">Scenario builder.</param>
         /// <param name="steps">Steps to add.</param>
         /// <returns><paramref name="builder"/> instance.</returns>
-        public static IScenarioBuilder<TContext> AddSteps<TContext>(this IScenarioBuilder<TContext> builder, params Expression<Action<TContext>>[] steps)
+        public static IScenarioRunner<TContext> AddSteps<TContext>(this IScenarioBuilder<TContext> builder, params Expression<Action<TContext>>[] steps)
         {
-            return new ExtendedStepsBuilder<IScenarioBuilder<TContext>, TContext>(builder).AddSteps(steps);
+            var coreBuilder = builder.Integrate();
+            var compiler = new ExtendedStepCompiler<TContext>(coreBuilder.Core.Configuration);
+            return coreBuilder.Configure(x => x.AddSteps(steps.Select(compiler.ToStep)));
         }
 
         /// <summary>
@@ -109,9 +112,11 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// <param name="builder">Scenario builder.</param>
         /// <param name="steps">Steps to add.</param>
         /// <returns><paramref name="builder"/> instance.</returns>
-        public static IScenarioBuilder<TContext> AddAsyncSteps<TContext>(this IScenarioBuilder<TContext> builder, params Expression<Func<TContext, Task>>[] steps)
+        public static IScenarioRunner<TContext> AddAsyncSteps<TContext>(this IScenarioBuilder<TContext> builder, params Expression<Func<TContext, Task>>[] steps)
         {
-            return new ExtendedStepsBuilder<IScenarioBuilder<TContext>, TContext>(builder).AddSteps(steps);
+            var coreBuilder = builder.Integrate();
+            var compiler = new ExtendedStepCompiler<TContext>(coreBuilder.Core.Configuration);
+            return coreBuilder.Configure(x => x.AddSteps(steps.Select(compiler.ToStep)));
         }
     }
 }

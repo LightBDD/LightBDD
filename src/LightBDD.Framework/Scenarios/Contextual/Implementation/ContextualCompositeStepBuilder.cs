@@ -13,20 +13,22 @@ namespace LightBDD.Framework.Scenarios.Contextual.Implementation
     {
         private readonly IIntegrableCompositeStepBuilder _target;
 
-        public ContextualCompositeStepBuilder(ICompositeStepBuilder runner, Func<object> contextProvider, bool takeOwnership)
+        public ContextualCompositeStepBuilder(ICompositeStepBuilder builder, Func<object> contextProvider, bool takeOwnership)
         {
-            _target = runner.Integrate().WithStepContext(contextProvider, takeOwnership);
+            _target = builder.Integrate().WithStepContext(contextProvider, takeOwnership);
         }
 
-        public ContextualCompositeStepBuilder(ICompositeStepBuilder runner, Func<IDependencyResolver, object> contextResolver)
+        public ContextualCompositeStepBuilder(ICompositeStepBuilder builder, Func<IDependencyResolver, object> contextResolver)
         {
-            _target = runner.Integrate().WithStepContext(contextResolver);
+            _target = builder.Integrate().WithStepContext(contextResolver);
         }
 
         public CompositeStep Build()
         {
             return _target.Build();
         }
+
+        public IIntegrableCompositeStepBuilder Integrate() => this;
 
         public IIntegrableStepGroupBuilder AddSteps(IEnumerable<StepDescriptor> steps)
         {

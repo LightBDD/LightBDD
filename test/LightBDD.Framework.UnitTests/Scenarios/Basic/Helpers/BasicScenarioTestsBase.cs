@@ -13,7 +13,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers
     {
         public interface ITestableBddRunner : IBddRunner, IFeatureFixtureRunner { }
         protected StepDescriptor[] CapturedSteps;
-        protected Mock<IScenarioRunner> MockScenarioRunner;
+        protected Mock<ICoreScenarioBuilder> MockScenarioRunner;
         protected Mock<ITestableBddRunner> MockRunner;
         protected ITestableBddRunner Runner => MockRunner.Object;
 
@@ -21,7 +21,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers
         public void SetUp()
         {
             CapturedSteps = null;
-            MockScenarioRunner = new Mock<IScenarioRunner>();
+            MockScenarioRunner = new Mock<ICoreScenarioBuilder>();
             MockRunner = new Mock<ITestableBddRunner>();
         }
 
@@ -48,7 +48,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers
         protected void ExpectWithSteps()
         {
             MockScenarioRunner
-                .Setup(s => s.WithSteps(It.IsAny<IEnumerable<StepDescriptor>>()))
+                .Setup(s => s.AddSteps(It.IsAny<IEnumerable<StepDescriptor>>()))
                 .Returns((IEnumerable<StepDescriptor> desc) =>
                 {
                     CapturedSteps = desc.ToArray();

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace LightBDD.Core.Extensibility.Implementation
 {
-    internal class ScenarioRunner : IScenarioRunner
+    internal class ScenarioBuilder : ICoreScenarioBuilder
     {
         private readonly RunnableScenarioContext _context;
         private INameInfo _name;
@@ -23,7 +23,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         private ExecutionContextDescriptor _contextDescriptor = ExecutionContextDescriptor.NoContext;
         private IEnumerable<IScenarioDecorator> _scenarioDecorators = Enumerable.Empty<IScenarioDecorator>();
 
-        public ScenarioRunner(object fixture, IntegrationContext integrationContext, ExceptionProcessor exceptionProcessor, Action<IScenarioResult> onScenarioFinished)
+        public ScenarioBuilder(object fixture, IntegrationContext integrationContext, ExceptionProcessor exceptionProcessor, Action<IScenarioResult> onScenarioFinished)
         {
             _context = new RunnableScenarioContext(
                 integrationContext,
@@ -33,13 +33,13 @@ namespace LightBDD.Core.Extensibility.Implementation
                 ProvideSteps);
         }
 
-        public IScenarioRunner WithSteps(IEnumerable<StepDescriptor> steps)
+        public ICoreScenarioBuilder AddSteps(IEnumerable<StepDescriptor> steps)
         {
             _steps = steps ?? throw new ArgumentNullException(nameof(steps));
             return this;
         }
 
-        public IScenarioRunner WithCapturedScenarioDetails()
+        public ICoreScenarioBuilder WithCapturedScenarioDetails()
         {
             var metadataProvider = _context.IntegrationContext.MetadataProvider;
             var scenario = metadataProvider.CaptureCurrentScenario();
@@ -49,19 +49,19 @@ namespace LightBDD.Core.Extensibility.Implementation
                 .WithScenarioDecorators(metadataProvider.GetScenarioDecorators(scenario));
         }
 
-        public IScenarioRunner WithLabels(string[] labels)
+        public ICoreScenarioBuilder WithLabels(string[] labels)
         {
             _labels = labels ?? throw new ArgumentNullException(nameof(labels));
             return this;
         }
 
-        public IScenarioRunner WithCategories(string[] categories)
+        public ICoreScenarioBuilder WithCategories(string[] categories)
         {
             _categories = categories ?? throw new ArgumentNullException(nameof(categories));
             return this;
         }
 
-        public IScenarioRunner WithName(string name)
+        public ICoreScenarioBuilder WithName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Unable to create scenario without name", nameof(name));
@@ -69,25 +69,25 @@ namespace LightBDD.Core.Extensibility.Implementation
             return this;
         }
 
-        private IScenarioRunner WithName(INameInfo name)
+        private ICoreScenarioBuilder WithName(INameInfo name)
         {
             _name = name ?? throw new ArgumentNullException(nameof(name));
             return this;
         }
 
-        public IScenarioRunner WithContext(Func<object> contextProvider, bool takeOwnership)
+        public ICoreScenarioBuilder WithContext(Func<object> contextProvider, bool takeOwnership)
         {
             _contextDescriptor = new ExecutionContextDescriptor(contextProvider, takeOwnership);
             return this;
         }
 
-        public IScenarioRunner WithContext(Func<IDependencyResolver, object> contextProvider, Action<ContainerConfigurator> scopeConfigurator)
+        public ICoreScenarioBuilder WithContext(Func<IDependencyResolver, object> contextProvider, Action<ContainerConfigurator> scopeConfigurator)
         {
             _contextDescriptor = new ExecutionContextDescriptor(contextProvider, scopeConfigurator);
             return this;
         }
 
-        public IScenarioRunner WithScenarioDecorators(IEnumerable<IScenarioDecorator> scenarioDecorators)
+        public ICoreScenarioBuilder WithScenarioDecorators(IEnumerable<IScenarioDecorator> scenarioDecorators)
         {
             _scenarioDecorators = scenarioDecorators ?? throw new ArgumentNullException(nameof(scenarioDecorators));
             return this;
@@ -107,6 +107,8 @@ namespace LightBDD.Core.Extensibility.Implementation
             var scenario = new RunnableScenario(_context, new ScenarioInfo(_name, _labels, _categories), _steps, _contextDescriptor, GetScenarioDecorators());
             return scenario.ExecuteAsync();
         }
+
+        public LightBddConfiguration Configuration => _context.IntegrationContext.Configuration;
 
         private IEnumerable<IScenarioDecorator> GetScenarioDecorators()
         {
@@ -147,4 +149,6 @@ namespace LightBDD.Core.Extensibility.Implementation
             return steps;
         }
     }
+
+    
 }

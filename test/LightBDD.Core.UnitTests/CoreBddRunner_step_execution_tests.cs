@@ -51,7 +51,7 @@ namespace LightBDD.Core.UnitTests
         public void Disposed_feature_should_not_allow_creating_new_scenarios()
         {
             _feature.Dispose();
-            Assert.Throws<ObjectDisposedException>(() => _runner.Integrate().NewScenario());
+            Assert.Throws<ObjectDisposedException>(() => _runner.Integrate());
         }
 
         [Test]

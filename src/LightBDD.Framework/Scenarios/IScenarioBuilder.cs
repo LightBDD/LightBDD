@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using LightBDD.Core.Extensibility;
+using System;
+using System.Threading.Tasks;
 
 namespace LightBDD.Framework.Scenarios
 {
@@ -6,11 +8,23 @@ namespace LightBDD.Framework.Scenarios
     /// Interface allowing to compose scenario in fluent way.
     /// </summary>
     /// <typeparam name="TContext"></typeparam>
-    public interface IScenarioBuilder<TContext> : IStepGroupBuilder<TContext>
+    public interface IScenarioBuilder<TContext>
+    {
+        IIntegratedScenarioBuilder<TContext> Integrate();
+    }
+
+    public interface IScenarioRunner<TContext> : IScenarioBuilder<TContext>
     {
         /// <summary>
         /// Runs test scenario by executing all specified steps.
         /// </summary>
         Task RunAsync();
+    }
+
+    public interface IIntegratedScenarioBuilder<TContext> : IScenarioRunner<TContext>
+    {
+        ICoreScenarioBuilder Core { get; }
+        IIntegratedScenarioBuilder<TContext> Configure(Action<ICoreScenarioBuilder> builder);
+        Func<Task> Build();
     }
 }

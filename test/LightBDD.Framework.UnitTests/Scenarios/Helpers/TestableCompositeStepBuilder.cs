@@ -26,6 +26,11 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
             return _internal.Build();
         }
 
+        public IIntegrableCompositeStepBuilder Integrate()
+        {
+            return this;
+        }
+
         public IIntegrableStepGroupBuilder AddSteps(IEnumerable<StepDescriptor> steps)
         {
             _internal.Integrate().AddSteps(steps);

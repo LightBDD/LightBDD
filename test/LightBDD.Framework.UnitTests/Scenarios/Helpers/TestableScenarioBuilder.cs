@@ -8,21 +8,30 @@ using LightBDD.Framework.Scenarios;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
 {
-    public class TestableScenarioBuilder<T> : IScenarioBuilder<T>, IIntegrableStepGroupBuilder
+    public class TestableScenarioBuilder<T> :  IIntegratedScenarioBuilder<T>
     {
         public readonly List<StepDescriptor> Steps = new List<StepDescriptor>();
 
-        public Task RunAsync()
+
+        public IIntegratedScenarioBuilder<T> Integrate()
         {
             throw new NotImplementedException();
         }
 
-        public IIntegrableStepGroupBuilder AddSteps(IEnumerable<StepDescriptor> steps)
+        public async Task RunAsync()
         {
-            Steps.AddRange(steps);
-            return this;
+            throw new NotImplementedException();
         }
 
-        public LightBddConfiguration Configuration { get; } = new LightBddConfiguration();
+        public ICoreScenarioBuilder Core { get; }
+        public IIntegratedScenarioBuilder<T> Configure(Action<ICoreScenarioBuilder> builder)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Func<Task> Build()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

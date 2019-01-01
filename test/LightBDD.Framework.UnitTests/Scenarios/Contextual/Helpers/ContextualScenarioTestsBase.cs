@@ -9,7 +9,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual.Helpers
     public class ContextualScenarioTestsBase
     {
         protected Mock<ITestableBddRunner> Runner;
-        protected Mock<IScenarioRunner> MockScenarioRunner;
+        protected Mock<ICoreScenarioBuilder> MockScenarioRunner;
         protected Func<object> CapturedContextProvider;
         protected Func<IDependencyResolver, object> CapturedContextResolver;
 
@@ -59,7 +59,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual.Helpers
         public void SetUp()
         {
             Runner = new Mock<ITestableBddRunner>(MockBehavior.Strict);
-            MockScenarioRunner = new Mock<IScenarioRunner>(MockBehavior.Strict);
+            MockScenarioRunner = new Mock<ICoreScenarioBuilder>(MockBehavior.Strict);
             CapturedContextProvider = null;
         }
     }

@@ -5,7 +5,6 @@ using LightBDD.Core.Results;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.Framework.Scenarios.Extended;
-using LightBDD.Framework.Scenarios.Fluent;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.MsTest2.UnitTests
@@ -97,7 +96,7 @@ namespace LightBDD.MsTest2.UnitTests
             };
             Action step2 = () => Assert.IsTrue(finished);
 
-            await Runner.NewScenario().AddSteps(step1, step2).RunAsync();
+            await Runner.AddSteps(step1, step2).RunAsync();
         }
 
         [Scenario]

@@ -2,7 +2,6 @@
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.Framework.Scenarios.Extended;
-using LightBDD.Framework.Scenarios.Fluent;
 using LightBDD.MsTest2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -30,7 +29,6 @@ Example usage of fluent scenarios")]
         public async Task Browsing_invoices()
         {
             await Runner
-                .NewScenario()
                 .AddAsyncSteps(
                     _ => Given_invoice("Invoice-1"),
                     _ => Given_invoice("Invoice-2"))

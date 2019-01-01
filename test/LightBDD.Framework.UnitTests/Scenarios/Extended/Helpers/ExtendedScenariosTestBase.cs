@@ -13,14 +13,14 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
     public class ExtendedScenariosTestBase<T> : Steps
     {
         protected StepDescriptor[] CapturedSteps;
-        protected Mock<IScenarioRunner> MockScenarioRunner;
+        protected Mock<ICoreScenarioBuilder> MockScenarioRunner;
         protected IBddRunner<T> Runner;
 
         [SetUp]
         public void SetUp()
         {
             CapturedSteps = null;
-            MockScenarioRunner = new Mock<IScenarioRunner>();
+            MockScenarioRunner = new Mock<ICoreScenarioBuilder>();
             Runner = new MockBddRunner<T>(TestableIntegrationContextBuilder.Default().Build().Configuration, MockScenarioRunner.Object);
         }
 
@@ -48,7 +48,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
         protected void ExpectWithSteps()
         {
             MockScenarioRunner
-                .Setup(s => s.WithSteps(It.IsAny<IEnumerable<StepDescriptor>>()))
+                .Setup(s => s.AddSteps(It.IsAny<IEnumerable<StepDescriptor>>()))
                 .Returns((IEnumerable<StepDescriptor> steps) =>
                 {
                     CapturedSteps = steps.ToArray();

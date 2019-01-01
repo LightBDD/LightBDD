@@ -1,10 +1,9 @@
-﻿using System;
+﻿using LightBDD.Core.Execution;
+using LightBDD.Framework.Scenarios.Implementation;
+using System;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using LightBDD.Core.Execution;
-using LightBDD.Framework.Extensibility;
-using LightBDD.Framework.Scenarios.Extended.Implementation;
 
 namespace LightBDD.Framework.Scenarios.Extended
 {
@@ -74,9 +73,11 @@ namespace LightBDD.Framework.Scenarios.Extended
         {
             try
             {
-                AsExtended(runner)
-                    .BuildScenario(steps)
-                    .RunScenario();
+                runner
+                    .AddSteps(steps)
+                    .Integrate()
+                    .Core.RunScenarioAsync()
+                    .AwaitSyncScenario();
             }
             catch (ScenarioExecutionException e)
             {
@@ -144,19 +145,15 @@ namespace LightBDD.Framework.Scenarios.Extended
         {
             try
             {
-                await AsExtended(runner)
-                    .BuildAsyncScenario(steps)
-                    .RunScenarioAsync();
+                await runner
+                    .AddAsyncSteps(steps)
+                    .Integrate()
+                    .Core.RunScenarioAsync();
             }
             catch (ScenarioExecutionException e)
             {
                 e.GetOriginal().Throw();
             }
-        }
-
-        private static ExtendedScenarioRunnerFactory<TContext> AsExtended<TContext>(this IBddRunner<TContext> runner)
-        {
-            return new ExtendedScenarioRunnerFactory<TContext>(runner.Integrate());
         }
     }
 }

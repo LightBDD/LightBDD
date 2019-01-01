@@ -3,33 +3,40 @@ using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Extensibility;
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 
 namespace LightBDD.Framework.Scenarios.Contextual.Implementation
 {
     [DebuggerStepThrough]
-    internal class ContextualBddRunner<TContext> : IBddRunner<TContext>, IFeatureFixtureRunner
+    internal class ContextualBddRunner<TContext> : IBddRunner<TContext>,IIntegratedScenarioBuilder<TContext>
     {
-        private readonly IFeatureFixtureRunner _coreRunner;
-        private readonly Func<IScenarioRunner, IScenarioRunner> _configureScenarioContext;
-
         public ContextualBddRunner(IBddRunner coreRunner, Func<object> contextProvider, bool takeOwnership)
         {
-            _configureScenarioContext = scenario => scenario.WithContext(contextProvider, takeOwnership);
-            _coreRunner = coreRunner.Integrate();
+            Core = coreRunner.Integrate().Core.WithContext(contextProvider, takeOwnership);
         }
 
         public ContextualBddRunner(IBddRunner coreRunner, Func<IDependencyResolver, object> contextResolver)
         {
-            _configureScenarioContext = scenario => scenario.WithContext(contextResolver);
-            _coreRunner = coreRunner.Integrate();
+            Core = coreRunner.Integrate().Core.WithContext(contextResolver);
         }
 
-        public IScenarioRunner NewScenario()
+        public IIntegratedScenarioBuilder<TContext> Integrate()
         {
-            return _configureScenarioContext(_coreRunner.NewScenario());
+            return this;
         }
 
-        public LightBddConfiguration Configuration => _coreRunner.Configuration;
+        //TODO: remove?
+        public Task RunAsync() => Build().Invoke();
+
+        public ICoreScenarioBuilder Core { get; }
+
+        public IIntegratedScenarioBuilder<TContext> Configure(Action<ICoreScenarioBuilder> builder)
+        {
+            builder(Core);
+            return this;
+        }
+        //TODO: remove?
+        public Func<Task> Build() => Core.RunScenarioAsync;
     }
 }

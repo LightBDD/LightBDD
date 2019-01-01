@@ -2,7 +2,6 @@
 using Example.Domain.Domain;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Compact;
-using LightBDD.Framework.Scenarios.Fluent;
 using LightBDD.MsTest2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -22,7 +21,6 @@ So that I can use LightBDD for more unit-test like tests as well")]
             var result = 0;
 
             await Runner
-                .NewScenario()
                 .AddStep("Given calculator", _ => calc = new Calculator())
                 .AddStep("When I add two numbers", _ => result = calc.Add(3, 5))
                 .AddStep("Then I should get an expected result", _ => Assert.AreEqual(8, result))

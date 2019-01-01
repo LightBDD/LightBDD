@@ -5,7 +5,6 @@ using LightBDD.Core.Results;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.Framework.Scenarios.Extended;
-using LightBDD.Framework.Scenarios.Fluent;
 using Xunit;
 using Xunit.Sdk;
 #pragma warning disable xUnit1026
@@ -80,7 +79,7 @@ namespace LightBDD.XUnit2.UnitTests
             };
             Action step2 = () => Assert.True(finished);
 
-            await Runner.NewScenario().AddSteps(step1, step2).RunAsync();
+            await Runner.AddSteps(step1, step2).RunAsync();
         }
 
         [Scenario]

@@ -18,7 +18,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
             ExpectContext();
 
             var context = new object();
-            Runner.Object.WithContext(context).Integrate().NewScenario();
+            Runner.Object.WithContext(context);
 
             VerifyAllExpectations();
             Assert.That(CapturedContextProvider.Invoke(), Is.SameAs(context));
@@ -30,7 +30,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
             ExpectNewScenario();
             ExpectContext();
 
-            Runner.Object.WithContext(() => TimeSpan.FromSeconds(5)).Integrate().NewScenario();
+            Runner.Object.WithContext(() => TimeSpan.FromSeconds(5));
 
             VerifyAllExpectations();
             Assert.That(CapturedContextProvider.Invoke(), Is.EqualTo(TimeSpan.FromSeconds(5)));
@@ -42,7 +42,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
             ExpectNewScenario();
             ExpectResolvedContext();
 
-            Runner.Object.WithContext<MyContext>().Integrate().NewScenario();
+            Runner.Object.WithContext<MyContext>();
 
             VerifyAllExpectations();
 
