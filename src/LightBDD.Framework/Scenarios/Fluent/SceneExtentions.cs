@@ -20,16 +20,34 @@ namespace LightBDD.Framework.Scenarios.Fluent
 				.Given(given);
 		}
 
+		public static void Run<T>(this ThenResult<T, Action> then)
+		{
+			var scene = (Scene<Action>)then.To();
+			scene.Runner.RunScenario(scene.End());
+		}
+
 		public static void Run(this IThen<Action> then)
 		{
 			var scene = (Scene<Action>)then;
 			scene.Runner.RunScenario(scene.End());
 		}
 
+		public static Task RunAsync<T>(this ThenResult<T, Func<Task>> then)
+		{
+			var scene = (Scene<Func<Task>>)then.To();
+			return scene.Runner.RunScenarioAsync(scene.End());
+		}
+
 		public static Task RunAsync(this IThen<Func<Task>> then) 
 		{
 			var scene = (Scene<Func<Task>>)then;
 			return scene.Runner.RunScenarioAsync(scene.End());
+		}
+
+		public static Task RunActionsAsync<T>(this ThenResult<T, Action> then)
+		{
+			var scene = (Scene<Action>)then.To();
+			return scene.Runner.RunScenarioActionsAsync(scene.End());
 		}
 
 		public static Task RunActionsAsync(this IThen<Action> then)
