@@ -13,9 +13,9 @@ namespace LightBDD.Framework.Scenarios.Fluent
 			get;
 			private set;
 		}
-		public List<List<T>> Givens { get; } = new List<List<T>>();
-		public List<List<T>> Whens { get; } = new List<List<T>>();
-		public List<List<T>> Thens { get; } = new List<List<T>>();
+		List<List<T>> Givens { get; } = new List<List<T>>();
+		List<List<T>> Whens { get; } = new List<List<T>>();
+		List<List<T>> Thens { get; } = new List<List<T>>();
 
 		public T[] End()
 		{

@@ -19,14 +19,14 @@ namespace LightBDD.NUnit3.UnitTests
 		public void Test()
 		{
 			this.Runner
-				.Given(Given_A)
+				.Given(A)
 				.When(B)
 				.Then(C)
 				.Run();
 		}
 
 		[Description("Given")]
-		void Given_A()
+		void A()
 		{
 		}
 		void B()
