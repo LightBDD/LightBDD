@@ -13,8 +13,8 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 		, ActionTestContext
 		, Action>
 		{
-			public ActionTestContext(Fluent_SceneContext_tests context)
-				: base(null, null, null, a => context.Runner.Given(a))
+			public ActionTestContext(IBddRunner runner)
+				: base(null, null, null, a => runner.Given(a))
 			{
 				Init(this, this, this);
 			}

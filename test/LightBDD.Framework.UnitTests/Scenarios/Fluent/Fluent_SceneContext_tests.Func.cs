@@ -14,8 +14,8 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 		, FuncTestContext
 		, Func<Task>>
 		{
-			public FuncTestContext(Fluent_SceneContext_tests context)
-				: base(null, null, null, a => context.Runner.Given(a))
+			public FuncTestContext(IBddRunner runner)
+				: base(null, null, null, a => runner.Given(a))
 			{
 				Init(this, this, this);
 			}

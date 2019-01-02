@@ -16,7 +16,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 		{
 			ExpectSynchronousExecution();
 
-			new ActionTestContext(this)
+			new ActionTestContext(this.Runner)
 				.Given.A
 				.When.B(5)
 				.Then.C
@@ -33,7 +33,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 		{
 			ExpectAsynchronousExecution();
 
-			await new FuncTestContext(this)
+			await new FuncTestContext(this.Runner)
 				.Given.TaskA
 				.When.TaskB
 				.Then.TaskC
