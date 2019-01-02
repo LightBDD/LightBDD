@@ -9,57 +9,8 @@ using NUnit.Framework;
 namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 {
 	[TestFixture]
-	public class Fluent_SceneContext_tests : BasicScenarioTestsBase
+	public partial class Fluent_SceneContext_tests : BasicScenarioTestsBase
 	{
-		class ActionTestContext 
-			: SceneContext<
-				ActionTestContext
-				, ActionTestContext
-				, ActionTestContext
-				, Action>
-		{
-			public ActionTestContext(Fluent_SceneContext_tests context) 
-				: base(null, null, null, a => context.Runner.Given(a))
-			{
-				Init(this, this, this);
-			}
-
-			void Given_A() { }
-			void When_B() { }
-			void Then_C() { }
-
-			public GivenResult<ActionTestContext, ActionTestContext> A
-				=> CreateGiven(Given_A);
-			public WhenResult<ActionTestContext, ActionTestContext> B()
-				=> CreateWhen(When_B);
-			public ThenResult<ActionTestContext, Action> C
-				=> CreateThen(Then_C);
-		}
-		class FuncTestContext
-			: SceneContext<
-				FuncTestContext
-				, FuncTestContext
-				, FuncTestContext
-				, Func<Task>>
-		{
-			public FuncTestContext(Fluent_SceneContext_tests context)
-				: base(null, null, null, a => context.Runner.Given(a))
-			{
-				Init(this, this, this);
-			}
-
-			Task Given_Task_A() => new Task(() => { });
-			Task When_Task_B() => new Task(() => { });
-			Task Then_Task_C() => new Task(() => { });
-
-			public GivenResult<FuncTestContext, FuncTestContext> TaskA
-				=> CreateGiven(Given_Task_A);
-			public WhenResult<FuncTestContext, FuncTestContext> TaskB
-				=> CreateWhen(When_Task_B);
-			public ThenResult<FuncTestContext, Func<Task>> TaskC
-				=> CreateThen(Then_Task_C);
-		}
-
 		[Test]
 		public void FluentApi_Context_should_generate_array_of_steps()
 		{
@@ -67,7 +18,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 
 			new ActionTestContext(this)
 				.Given.A
-				.When.B()
+				.When.B(5)
 				.Then.C
 				.Run();			
 
