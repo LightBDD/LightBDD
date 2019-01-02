@@ -4,19 +4,19 @@ using System.Text;
 
 namespace LightBDD.Framework.Scenarios.Fluent
 {
-	public class WhenResult<W,T>
+	public class WhenResult<TWhen,TThen>
 	{
-		public WhenResult(W when, T then)
+		public WhenResult(TWhen when, TThen then)
 		{
 			this.Then = then;
 			this.And = when;
 		}
 
-		public W And
+		public TWhen And
 		{
 			get;
 		}
-		public T Then
+		public TThen Then
 		{
 			get;
 		}

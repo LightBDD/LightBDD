@@ -4,62 +4,67 @@ using System.Text;
 
 namespace LightBDD.Framework.Scenarios.Fluent
 {
-	public class SceneContext<G,W,T,A>
+	public class SceneContext<TGiven,TWhen,TThen,TFunc_Given>
 	{
-		readonly G givenContext;
-		readonly W whenContext;
-		readonly T thenContext;
+		TGiven givenContext;
+		TWhen whenContext;
+		TThen thenContext;
 
-		static SceneContext<G, W, T, A> Instance = null;
-		readonly Func<A, IGiven<A>> givenInit;
+		static SceneContext<TGiven, TWhen, TThen, TFunc_Given> Instance = null;
+		readonly Func<TFunc_Given, IGiven<TFunc_Given>> givenInit;
 
-		public SceneContext(G givenContext, W whenContext, T thenContext, Func<A, IGiven<A>> createGiven)
+		public SceneContext(TGiven givenContext, TWhen whenContext, TThen thenContext, Func<TFunc_Given, IGiven<TFunc_Given>> createGiven)
 		{
 			this.givenInit = createGiven;
-			this.thenContext = thenContext;
-			this.whenContext = whenContext;
-			this.givenContext = givenContext;
+			Init(givenContext, whenContext, thenContext);
 
 			Instance = this;
 		}
 
-		IGiven<A> given = null;
-		IWhen<A> when = null;
-		IThen<A> then
+		protected void Init(TGiven givenContext, TWhen whenContext, TThen thenContext)
 		{
-			get => ThenResult<T, A>.then;
-			set => ThenResult<T, A>.then = value;
+			this.thenContext = thenContext;
+			this.whenContext = whenContext;
+			this.givenContext = givenContext;
 		}
 
-		public static GivenResult<G, W> CreateGiven(A given)
+		IGiven<TFunc_Given> given = null;
+		IWhen<TFunc_Given> when = null;
+		IThen<TFunc_Given> then
+		{
+			get => ThenResult<TThen, TFunc_Given>.then;
+			set => ThenResult<TThen, TFunc_Given>.then = value;
+		}
+
+		public static GivenResult<TGiven, TWhen> CreateGiven(TFunc_Given given)
 		{
 			if (Instance.given != null)
 				Instance.given = Instance.given.And(given);
 			else
 				Instance.given = Instance.givenInit(given);
 
-			return new GivenResult<G, W>(Instance.givenContext, Instance.whenContext);
+			return new GivenResult<TGiven, TWhen>(Instance.givenContext, Instance.whenContext);
 		}
-		public static WhenResult<W, T> CreateWhen(A when)
+		public static WhenResult<TWhen, TThen> CreateWhen(TFunc_Given when)
 		{
 			if (Instance.when == null)
 				Instance.when = Instance.given.When(when);
 			else
 				Instance.when = Instance.when.And(when);
 
-			return new WhenResult<W, T>(Instance.whenContext, Instance.thenContext);
+			return new WhenResult<TWhen, TThen>(Instance.whenContext, Instance.thenContext);
 		}
-		public static ThenResult<T,A> CreateThen(A then)
+		public static ThenResult<TThen,TFunc_Given> CreateThen(TFunc_Given then)
 		{
 			if (Instance.then == null)
 				Instance.then = Instance.when.Then(then);
 			else
 				Instance.then = Instance.then.And(then);
 
-			return new ThenResult<T,A>(Instance.thenContext);
+			return new ThenResult<TThen,TFunc_Given>(Instance.thenContext);
 		}
 
-		public G Given
+		public TGiven Given
 		{
 			get
 			{

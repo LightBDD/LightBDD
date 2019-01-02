@@ -12,39 +12,52 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 	public class Fluent_SceneContext_tests : BasicScenarioTestsBase
 	{
 		class ActionTestContext 
-			: SceneContext<Fluent_SceneContext_tests
-				, Fluent_SceneContext_tests
-				, Fluent_SceneContext_tests
+			: SceneContext<
+				ActionTestContext
+				, ActionTestContext
+				, ActionTestContext
 				, Action>
 		{
-			public static ActionTestContext Instance { get; private set; }
-
 			public ActionTestContext(Fluent_SceneContext_tests context) 
-				: base(context, context, context, a => context.Runner.Given(a))
+				: base(null, null, null, a => context.Runner.Given(a))
 			{
-				Instance = this;
+				Init(this, this, this);
 			}
-			public void Given_A() { }
-			public void When_B() { }
-			public void Then_C() { }
+
+			void Given_A() { }
+			void When_B() { }
+			void Then_C() { }
+
+			public GivenResult<ActionTestContext, ActionTestContext> A
+				=> CreateGiven(Given_A);
+			public WhenResult<ActionTestContext, ActionTestContext> B()
+				=> CreateWhen(When_B);
+			public ThenResult<ActionTestContext, Action> C
+				=> CreateThen(Then_C);
 		}
 		class FuncTestContext
-			: SceneContext<Fluent_SceneContext_tests
-				, Fluent_SceneContext_tests
-				, Fluent_SceneContext_tests
+			: SceneContext<
+				FuncTestContext
+				, FuncTestContext
+				, FuncTestContext
 				, Func<Task>>
 		{
-			public static FuncTestContext Instance { get; private set; }
-
 			public FuncTestContext(Fluent_SceneContext_tests context)
-				: base(context, context, context, a => context.Runner.Given(a))
+				: base(null, null, null, a => context.Runner.Given(a))
 			{
-				Instance = this;
+				Init(this, this, this);
 			}
 
-			public Task Given_Task_A() => new Task(() => { });
-			public Task When_Task_B() => new Task(() => { });
-			public Task Then_Task_C() => new Task(() => { });
+			Task Given_Task_A() => new Task(() => { });
+			Task When_Task_B() => new Task(() => { });
+			Task Then_Task_C() => new Task(() => { });
+
+			public GivenResult<FuncTestContext, FuncTestContext> TaskA
+				=> CreateGiven(Given_Task_A);
+			public WhenResult<FuncTestContext, FuncTestContext> TaskB
+				=> CreateWhen(When_Task_B);
+			public ThenResult<FuncTestContext, Func<Task>> TaskC
+				=> CreateThen(Then_Task_C);
 		}
 
 		[Test]
@@ -54,7 +67,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 
 			new ActionTestContext(this)
 				.Given.A
-				.When.B
+				.When.B()
 				.Then.C
 				.Run();			
 
@@ -80,19 +93,5 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 			Assert.That(CapturedSteps, Is.Not.Null);
 			Assert.That(CapturedSteps.Length, Is.EqualTo(3));
 		}
-
-		GivenResult<Fluent_SceneContext_tests, Fluent_SceneContext_tests> A 
-			=> ActionTestContext.CreateGiven(ActionTestContext.Instance.Given_A);
-		WhenResult<Fluent_SceneContext_tests, Fluent_SceneContext_tests> B 
-			=> ActionTestContext.CreateWhen(ActionTestContext.Instance.When_B);
-		ThenResult<Fluent_SceneContext_tests,Action> C 
-			=> ActionTestContext.CreateThen(ActionTestContext.Instance.Then_C);
-
-		GivenResult<Fluent_SceneContext_tests, Fluent_SceneContext_tests> TaskA 
-			=> FuncTestContext.CreateGiven(FuncTestContext.Instance.Given_Task_A);
-		WhenResult<Fluent_SceneContext_tests, Fluent_SceneContext_tests> TaskB 
-			=> FuncTestContext.CreateWhen(FuncTestContext.Instance.When_Task_B);
-		ThenResult<Fluent_SceneContext_tests, Func<Task>> TaskC 
-			=> FuncTestContext.CreateThen(FuncTestContext.Instance.Then_Task_C);
 	}
 }

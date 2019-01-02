@@ -1,18 +1,18 @@
 ﻿namespace LightBDD.Framework.Scenarios.Fluent
 {
-	public class GivenResult<G,W>
+	public class GivenResult<TGiven,TWhen>
 	{
-		public GivenResult(G given, W when)
+		public GivenResult(TGiven given, TWhen when)
 		{
 			this.When = when;
 			this.And = given;
 		}
 
-		public G And
+		public TGiven And
 		{
 			get;
 		}
-		public W When
+		public TWhen When
 		{
 			get;
 		}

@@ -4,20 +4,20 @@ using System.Text;
 
 namespace LightBDD.Framework.Scenarios.Fluent
 {
-	public class ThenResult<T,A>
+	public class ThenResult<TThen,TAction>
 	{
-		internal static IThen<A> then;
+		internal static IThen<TAction> then;
 
-		public ThenResult(T then)
+		public ThenResult(TThen then)
 		{
 			this.And = then;
 		}
 
-		public T And
+		public TThen And
 		{
 			get;
 		}
 
-		public IThen<A> To() => then;
+		public IThen<TAction> To() => then;
 	}
 }
