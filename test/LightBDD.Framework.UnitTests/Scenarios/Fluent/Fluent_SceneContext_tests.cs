@@ -11,12 +11,35 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 	[TestFixture]
 	public class Fluent_SceneContext_tests : BasicScenarioTestsBase
 	{
+		class ActionTestContext 
+			: SceneContext<Fluent_SceneContext_tests
+				, Fluent_SceneContext_tests
+				, Fluent_SceneContext_tests
+				, Action>
+		{
+			public ActionTestContext(Fluent_SceneContext_tests context) 
+				: base(context, context, context, a => context.Runner.Given(a))
+			{
+			}
+		}
+		class FuncTestContext
+			: SceneContext<Fluent_SceneContext_tests
+				, Fluent_SceneContext_tests
+				, Fluent_SceneContext_tests
+				, Func<Task>>
+		{
+			public FuncTestContext(Fluent_SceneContext_tests context)
+				: base(context, context, context, a => context.Runner.Given(a))
+			{
+			}
+		}
+	
 		[Test]
 		public void FluentApi_Context_should_generate_array_of_steps()
 		{
 			ExpectSynchronousExecution();
 
-			new SceneContext<Fluent_SceneContext_tests, Fluent_SceneContext_tests, Fluent_SceneContext_tests, Action>(this, this, this, a => this.Runner.Given(a))
+			new ActionTestContext(this)
 				.Given.A
 				.When.B
 				.Then.C
@@ -33,7 +56,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 		{
 			ExpectAsynchronousExecution();
 
-			await new SceneContext<Fluent_SceneContext_tests, Fluent_SceneContext_tests, Fluent_SceneContext_tests, Func<Task>>(this, this, this, b => this.Runner.Given(b))
+			await new FuncTestContext(this)
 				.Given.TaskA
 				.When.TaskB
 				.Then.TaskC
@@ -46,18 +69,19 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 		}
 
 
-		GivenResult<Fluent_SceneContext_tests, Fluent_SceneContext_tests> A => SceneContext<Fluent_SceneContext_tests, Fluent_SceneContext_tests, Fluent_SceneContext_tests, Action>.CreateGiven(() =>
-		{
-		});
-		WhenResult<Fluent_SceneContext_tests, Fluent_SceneContext_tests> B => SceneContext<Fluent_SceneContext_tests, Fluent_SceneContext_tests, Fluent_SceneContext_tests, Action>.CreateWhen(() =>
-		{
-		});
-		ThenResult<Fluent_SceneContext_tests,Action> C => SceneContext<Fluent_SceneContext_tests, Fluent_SceneContext_tests, Fluent_SceneContext_tests, Action>.CreateThen(() =>
-		{
-		});
+		GivenResult<Fluent_SceneContext_tests, Fluent_SceneContext_tests> A => ActionTestContext.CreateGiven(Given_A);
+		WhenResult<Fluent_SceneContext_tests, Fluent_SceneContext_tests> B => ActionTestContext.CreateWhen(When_B);
+		ThenResult<Fluent_SceneContext_tests,Action> C => ActionTestContext.CreateThen(Then_C);
 
-		GivenResult<Fluent_SceneContext_tests, Fluent_SceneContext_tests> TaskA => SceneContext<Fluent_SceneContext_tests, Fluent_SceneContext_tests, Fluent_SceneContext_tests, Func<Task>>.CreateGiven(() => new Task(() => { }));
-		WhenResult<Fluent_SceneContext_tests, Fluent_SceneContext_tests> TaskB => SceneContext<Fluent_SceneContext_tests, Fluent_SceneContext_tests, Fluent_SceneContext_tests, Func<Task>>.CreateWhen(() => new Task(() => { }));
-		ThenResult<Fluent_SceneContext_tests, Func<Task>> TaskC => SceneContext<Fluent_SceneContext_tests, Fluent_SceneContext_tests, Fluent_SceneContext_tests, Func<Task>>.CreateThen(()=> new Task( () =>{}));
+		GivenResult<Fluent_SceneContext_tests, Fluent_SceneContext_tests> TaskA => FuncTestContext.CreateGiven(Given_Task_A);
+		WhenResult<Fluent_SceneContext_tests, Fluent_SceneContext_tests> TaskB => FuncTestContext.CreateWhen(When_Task_B);
+		ThenResult<Fluent_SceneContext_tests, Func<Task>> TaskC => FuncTestContext.CreateThen(Then_Task_C);
+
+		void Given_A() { }
+		void When_B() { }
+		void Then_C() { }
+		Task Given_Task_A() => new Task(() => { });
+		Task When_Task_B() => new Task(() => { });
+		Task Then_Task_C() => new Task(() => { });
 	}
 }
