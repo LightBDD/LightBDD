@@ -6,20 +6,20 @@ using LightBDD.Framework.Scenarios.Extended;
 
 namespace LightBDD.Framework.Scenarios.Fluent
 {
-	public class Scene<T> : IGiven<T>, IWhen<T>, IThen<T>
+	public class Scene<TAction> : IGiven<TAction>, IWhen<TAction>, IThen<TAction>
 	{
 		public IBddRunner Runner
 		{
 			get;
 			private set;
 		}
-		List<List<T>> Givens { get; } = new List<List<T>>();
-		List<List<T>> Whens { get; } = new List<List<T>>();
-		List<List<T>> Thens { get; } = new List<List<T>>();
+		List<List<TAction>> Givens { get; } = new List<List<TAction>>();
+		List<List<TAction>> Whens { get; } = new List<List<TAction>>();
+		List<List<TAction>> Thens { get; } = new List<List<TAction>>();
 
-		public T[] End()
+		public TAction[] End()
 		{
-			var list = new List<T>();
+			var list = new List<TAction>();
 
 			AddTo(list, this.Givens);
 			AddTo(list, this.Whens);
@@ -28,7 +28,7 @@ namespace LightBDD.Framework.Scenarios.Fluent
 			return list.ToArray();
 		}
 
-		private void AddTo(List<T> list, List<List<T>> childList)
+		private void AddTo(List<TAction> list, List<List<TAction>> childList)
 		{
 			foreach (var item in childList)
 				list.AddRange(item);
@@ -39,49 +39,49 @@ namespace LightBDD.Framework.Scenarios.Fluent
 			this.Runner = runner;
 		}
 
-		public IGiven<T> Given(T given)
+		public IGiven<TAction> Given(TAction given)
 		{
 			AddToList(this.Givens, given, newList: true);
 
 			return this;
 		}
 
-		public IGiven<T> And(T given)
+		public IGiven<TAction> And(TAction given)
 		{
 			AddToList(this.Givens, given);
 
 			return this;
 		}
 
-		private void AddToList(List<List<T>> list, T add, bool newList = false)
+		private void AddToList(List<List<TAction>> list, TAction add, bool newList = false)
 		{
 			if (list.Count == 0 || newList)
-				list.Add(new List<T>());
+				list.Add(new List<TAction>());
 
 			list[list.Count - 1].Add(add);
 		}
 
-		public IWhen<T> When(T when)
+		public IWhen<TAction> When(TAction when)
 		{
 			AddToList(this.Whens, when, newList: true);
 
 			return this;
 		}
 
-		IWhen<T> IWhen<T>.And(T when)
+		IWhen<TAction> IWhen<TAction>.And(TAction when)
 		{
 			AddToList(this.Whens, when);
 
 			return this;
 		}
 
-		public IThen<T> Then(T then)
+		public IThen<TAction> Then(TAction then)
 		{
 			AddToList(this.Thens, then, newList: true);
 
 			return this;
 		}
-		IThen<T> IThen<T>.And(T then)
+		IThen<TAction> IThen<TAction>.And(TAction then)
 		{
 			AddToList(this.Thens, then);
 

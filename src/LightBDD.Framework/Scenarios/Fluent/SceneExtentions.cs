@@ -20,7 +20,7 @@ namespace LightBDD.Framework.Scenarios.Fluent
 				.Given(given);
 		}
 
-		public static void Run<T>(this ThenResult<T, Action> then)
+		public static void Run<TThen>(this ThenResult<TThen, Action> then)
 		{
 			var scene = (Scene<Action>)then.To();
 			scene.Runner.RunScenario(scene.End());
@@ -32,7 +32,7 @@ namespace LightBDD.Framework.Scenarios.Fluent
 			scene.Runner.RunScenario(scene.End());
 		}
 
-		public static Task RunAsync<T>(this ThenResult<T, Func<Task>> then)
+		public static Task RunAsync<TThen>(this ThenResult<TThen, Func<Task>> then)
 		{
 			var scene = (Scene<Func<Task>>)then.To();
 			return scene.Runner.RunScenarioAsync(scene.End());
@@ -44,7 +44,7 @@ namespace LightBDD.Framework.Scenarios.Fluent
 			return scene.Runner.RunScenarioAsync(scene.End());
 		}
 
-		public static Task RunActionsAsync<T>(this ThenResult<T, Action> then)
+		public static Task RunActionsAsync<TThen>(this ThenResult<TThen, Action> then)
 		{
 			var scene = (Scene<Action>)then.To();
 			return scene.Runner.RunScenarioActionsAsync(scene.End());
