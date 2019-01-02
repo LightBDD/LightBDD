@@ -33,7 +33,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 		{
 			ExpectAsynchronousExecution();
 
-			var c = new SceneContext<Fluent_SceneContext_tests, Fluent_SceneContext_tests, Fluent_SceneContext_tests, Func<Task>>(this, this, this, b => this.Runner.Given(b))
+			await new SceneContext<Fluent_SceneContext_tests, Fluent_SceneContext_tests, Fluent_SceneContext_tests, Func<Task>>(this, this, this, b => this.Runner.Given(b))
 				.Given.TaskA
 				.When.TaskB
 				.Then.TaskC
