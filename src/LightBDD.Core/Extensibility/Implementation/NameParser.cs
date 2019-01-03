@@ -31,11 +31,11 @@ namespace LightBDD.Core.Extensibility.Implementation
 
 				if (stepName != null)
 				{
-					if (stepName?.Text != null)
-						name = stepName.Text;
+					if (stepName?.Description != null)
+						name = stepName.Description;
 
-					if (!name.StartsWith(stepName?.Titel))
-						name = stepName.Titel + " " + name;
+					if (!name.StartsWith(stepName?.Name))
+						name = stepName.Name + " " + name;
 				}
 			}
 

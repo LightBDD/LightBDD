@@ -4,39 +4,29 @@ using System.Text;
 
 namespace LightBDD.Core.Formatting
 {
+	/// <summary>
+	/// Attribute to describe the Stepname
+	/// </summary>
 	public class StepNameAttribute : Attribute
 	{
-		public StepNameAttribute(string titel, string text)
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="name">Stepname</param>
+		/// <param name="description">Text to describe the step</param>
+		public StepNameAttribute(string name, string description)
 		{
-			Titel = titel;
-			Text = text;
+			Name = name;
+			Description = description;
 		}
 
-		public string Titel { get; }
-		public string Text { get; }
-	}
-
-	public class GivenAttribute : StepNameAttribute
-	{
-		public GivenAttribute(string text=null) : base("GIVEN", text)
-		{
-
-		}
-	}
-
-	public class WhenAttribute : StepNameAttribute
-	{
-		public WhenAttribute(string text=null) : base("WHEN", text)
-		{
-
-		}
-	}
-
-	public class ThenAttribute : StepNameAttribute
-	{
-		public ThenAttribute(string text=null) : base("THEN", text)
-		{
-
-		}
+		/// <summary>
+		/// Name of the step
+		/// </summary>
+		public string Name { get; }
+		/// <summary>
+		/// Description of the step
+		/// </summary>
+		public string Description { get; }
 	}
 }
