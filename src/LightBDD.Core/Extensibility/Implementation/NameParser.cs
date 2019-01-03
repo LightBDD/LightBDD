@@ -8,7 +8,7 @@ using LightBDD.Core.Formatting;
 
 namespace LightBDD.Core.Extensibility.Implementation
 {
-	[DebuggerStepThrough]
+//	[DebuggerStepThrough]
 	internal class NameParser
 	{
 		private readonly INameFormatter _nameFormatter;
@@ -23,7 +23,7 @@ namespace LightBDD.Core.Extensibility.Implementation
 			var shiftByThisArgument = targetMethod != null && targetMethod.IsDefined(typeof(ExtensionAttribute), true) ? 1 : 0;
 
 			var name = _nameFormatter.FormatName(stepRawName);
-			var attributes = targetMethod.GetCustomAttributes(typeof(StepNameAttribute));
+			var attributes = targetMethod?.GetCustomAttributes(typeof(StepNameAttribute));
 
 			if (attributes != null)
 			{
@@ -34,7 +34,7 @@ namespace LightBDD.Core.Extensibility.Implementation
 					if (stepName?.Description != null)
 						name = stepName.Description;
 
-					if (!name.StartsWith(stepName?.Name))
+					if (name != null && !name.StartsWith(stepName?.Name))
 						name = stepName.Name + " " + name;
 				}
 			}
