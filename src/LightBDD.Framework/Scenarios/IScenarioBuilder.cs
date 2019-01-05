@@ -1,5 +1,4 @@
 ﻿using LightBDD.Core.Extensibility;
-using System;
 using System.Threading.Tasks;
 
 namespace LightBDD.Framework.Scenarios
@@ -24,7 +23,5 @@ namespace LightBDD.Framework.Scenarios
     public interface IIntegratedScenarioBuilder<TContext> : IScenarioRunner<TContext>
     {
         ICoreScenarioBuilder Core { get; }
-        IIntegratedScenarioBuilder<TContext> Configure(Action<ICoreScenarioBuilder> builder);
-        Func<Task> Build();
     }
 }

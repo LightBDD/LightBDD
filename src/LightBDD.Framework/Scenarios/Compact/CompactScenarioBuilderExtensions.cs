@@ -21,7 +21,9 @@ namespace LightBDD.Framework.Scenarios.Compact
         /// <returns>Builder.</returns>
         public static IScenarioRunner<TContext> AddStep<TContext>(this IScenarioBuilder<TContext> builder, string name, Action<TContext> step)
         {
-            return builder.Integrate().Configure(x => x.AddSteps(new[] { CompactStepCompiler.ToSynchronousStep(name, step) }));
+            var integration = builder.Integrate();
+            integration.Core.AddSteps(new[] { CompactStepCompiler.ToSynchronousStep(name, step) });
+            return integration;
         }
 
         /// <summary>
@@ -34,7 +36,9 @@ namespace LightBDD.Framework.Scenarios.Compact
         /// <returns>Builder.</returns>
         public static IScenarioRunner<TContext> AddAsyncStep<TContext>(this IScenarioBuilder<TContext> builder, string name, Func<TContext, Task> step)
         {
-            return builder.Integrate().Configure(x => x.AddSteps(new[] { CompactStepCompiler.ToAsynchronousStep(name, step) }));
+            var integration = builder.Integrate();
+            integration.Core.AddSteps(new[] { CompactStepCompiler.ToAsynchronousStep(name, step) });
+            return integration;
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
@@ -19,7 +18,7 @@ namespace LightBDD.Framework.Implementation
         {
             try
             {
-                await Build().Invoke();
+                await Core.Build().Invoke();
             }
             catch (ScenarioExecutionException e)
             {
@@ -28,15 +27,5 @@ namespace LightBDD.Framework.Implementation
         }
 
         public ICoreScenarioBuilder Core { get; }
-        public IIntegratedScenarioBuilder<T> Configure(Action<ICoreScenarioBuilder> builder)
-        {
-            builder(Core);
-            return this;
-        }
-
-        public Func<Task> Build()
-        {
-            return Core.RunScenarioAsync;
-        }
     }
 }

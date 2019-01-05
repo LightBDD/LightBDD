@@ -11,21 +11,20 @@ namespace LightBDD.Framework.Scenarios.Basic
     /// <summary>
     /// Extensions class allowing to use basic scenario syntax for running LightBDD tests.
     /// </summary>
-    [DebuggerStepThrough]
     public static class BasicScenarioExtensions
     {
         public static IScenarioRunner<NoContext> AddSteps(this IScenarioBuilder<NoContext> builder, params Action[] steps)
         {
-            return builder
-                .Integrate()
-                .Configure(x => x.AddSteps(steps.Select(BasicStepCompiler.ToSynchronousStep)));
+            var integration = builder.Integrate();
+            integration.Core.AddSteps(steps.Select(BasicStepCompiler.ToSynchronousStep));
+            return integration;
         }
 
         public static IScenarioRunner<NoContext> AddAsyncSteps(this IScenarioBuilder<NoContext> builder, params Func<Task>[] steps)
         {
-            return builder
-                .Integrate()
-                .Configure(x => x.AddSteps(steps.Select(BasicStepCompiler.ToAsynchronousStep)));
+            var integration = builder.Integrate();
+            integration.Core.AddSteps(steps.Select(BasicStepCompiler.ToAsynchronousStep));
+            return integration;
         }
 
         public static ICompositeStepBuilder<NoContext> AddSteps(this ICompositeStepBuilder<NoContext> builder, params Action[] steps)
@@ -74,8 +73,9 @@ namespace LightBDD.Framework.Scenarios.Basic
             {
                 runner
                     .AddSteps(steps)
-                    .Integrate().Core
-                    .RunScenarioAsync()
+                    .Integrate()
+                    .Core.Build()
+                    .Invoke()
                     .AwaitSyncScenario();
             }
             catch (ScenarioExecutionException e)
@@ -118,8 +118,9 @@ namespace LightBDD.Framework.Scenarios.Basic
             {
                 await runner
                     .AddAsyncSteps(steps)
-                    .Integrate().Core
-                    .RunScenarioAsync();
+                    .Integrate()
+                    .Core.Build()
+                    .Invoke();
             }
             catch (ScenarioExecutionException e)
             {

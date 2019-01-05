@@ -61,9 +61,10 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// <returns><paramref name="builder"/> instance.</returns>
         public static IScenarioRunner<TContext> AddSteps<TContext>(this IScenarioBuilder<TContext> builder, params Expression<Action<TContext>>[] steps)
         {
-            var coreBuilder = builder.Integrate();
-            var compiler = new ExtendedStepCompiler<TContext>(coreBuilder.Core.Configuration);
-            return coreBuilder.Configure(x => x.AddSteps(steps.Select(compiler.ToStep)));
+            var integration = builder.Integrate();
+            var compiler = new ExtendedStepCompiler<TContext>(integration.Core.Configuration);
+            integration.Core.AddSteps(steps.Select(compiler.ToStep));
+            return integration;
         }
 
         /// <summary>
@@ -114,9 +115,10 @@ namespace LightBDD.Framework.Scenarios.Extended
         /// <returns><paramref name="builder"/> instance.</returns>
         public static IScenarioRunner<TContext> AddAsyncSteps<TContext>(this IScenarioBuilder<TContext> builder, params Expression<Func<TContext, Task>>[] steps)
         {
-            var coreBuilder = builder.Integrate();
-            var compiler = new ExtendedStepCompiler<TContext>(coreBuilder.Core.Configuration);
-            return coreBuilder.Configure(x => x.AddSteps(steps.Select(compiler.ToStep)));
+            var integration = builder.Integrate();
+            var compiler = new ExtendedStepCompiler<TContext>(integration.Core.Configuration);
+            integration.Core.AddSteps(steps.Select(compiler.ToStep));
+            return integration;
         }
     }
 }

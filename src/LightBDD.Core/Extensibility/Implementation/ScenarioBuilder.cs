@@ -93,19 +93,11 @@ namespace LightBDD.Core.Extensibility.Implementation
             return this;
         }
 
-        public void RunScenario()
-        {
-            var task = RunScenarioAsync();
-            if (!task.IsCompleted)
-                throw new InvalidOperationException("Only steps being completed upon return can be run synchronously (all steps have to return completed task). Consider using Async scenario methods for async Task or async void steps.");
-            task.GetAwaiter().GetResult();
-        }
-
-        public Task RunScenarioAsync()
+        public Func<Task> Build()
         {
             ValidateContext();
             var scenario = new RunnableScenario(_context, new ScenarioInfo(_name, _labels, _categories), _steps, _contextDescriptor, GetScenarioDecorators());
-            return scenario.ExecuteAsync();
+            return scenario.ExecuteAsync;
         }
 
         public LightBddConfiguration Configuration => _context.IntegrationContext.Configuration;
@@ -150,5 +142,5 @@ namespace LightBDD.Core.Extensibility.Implementation
         }
     }
 
-    
+
 }

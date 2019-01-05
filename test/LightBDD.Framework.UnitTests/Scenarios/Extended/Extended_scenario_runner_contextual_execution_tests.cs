@@ -14,28 +14,30 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
         [Test]
         public void It_should_allow_executing_steps_and_parameters_with_context_in_sync_mode()
         {
-            ExpectSynchronousScenarioRun();
+            var capturedSteps = Builder.ExpectAddSteps();
+            Builder.ExpectBuild();
 
             var context = new MyContext();
             Runner.RunScenario(
                 ctx => ctx.AssertIsSameAs(context), //passing context to step
                 ctx => ctx.AssertIsSameAs(ctx)); // passing context to step and step argument
 
-            foreach (var step in CapturedSteps)
+            foreach (var step in capturedSteps)
                 Assert.DoesNotThrowAsync(() => step.StepInvocation(context, step.Parameters.Select(p => p.ValueEvaluator(context)).ToArray()));
         }
 
         [Test]
         public async Task It_should_allow_executing_steps_and_parameters_with_context_in_async_mode()
         {
-            ExpectAsynchronousScenarioRun();
+            var capturedSteps = Builder.ExpectAddSteps();
+            Builder.ExpectBuild();
 
             var context = new MyContext();
             await Runner.RunScenarioAsync(
                 ctx => ctx.AssertIsSameAsAsync(context), //passing context to step
                 ctx => ctx.AssertIsSameAsAsync(ctx)); // passing context to step and step argument
 
-            foreach (var step in CapturedSteps)
+            foreach (var step in capturedSteps)
                 Assert.DoesNotThrowAsync(() => step.StepInvocation(context, step.Parameters.Select(p => p.ValueEvaluator(context)).ToArray()));
         }
 

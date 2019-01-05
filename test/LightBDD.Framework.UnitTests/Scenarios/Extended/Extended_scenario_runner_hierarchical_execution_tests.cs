@@ -1,11 +1,11 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using LightBDD.Core.Extensibility.Results;
 using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers;
 using LightBDD.Framework.UnitTests.Scenarios.Helpers;
 using NUnit.Framework;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 
@@ -17,15 +17,15 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
         [Test]
         public async Task It_should_run_grouped_steps()
         {
-            ExpectSynchronousScenarioRun();
+            var capturedSteps = Builder.ExpectAddSteps();
+            Builder.ExpectBuild();
 
             Runner.RunScenario(_ => Step_group());
 
-            Assert.That(CapturedSteps, Is.Not.Null);
-            Assert.That(CapturedSteps.Length, Is.EqualTo(1));
-            Assert.That(CapturedSteps[0].RawName, Is.EqualTo(nameof(Step_group)));
+            Assert.That(capturedSteps.Count, Is.EqualTo(1));
+            Assert.That(capturedSteps[0].RawName, Is.EqualTo(nameof(Step_group)));
 
-            var result = (CompositeStepResultDescriptor)await CapturedSteps[0].StepInvocation.Invoke(null, null);
+            var result = (CompositeStepResultDescriptor)await capturedSteps[0].StepInvocation.Invoke(null, null);
             var subSteps = result.SubSteps.ToArray();
             Assert.That(subSteps.Length, Is.EqualTo(2));
             AssertStep(subSteps[0], nameof(Step_one));
@@ -35,15 +35,15 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
         [Test]
         public async Task It_should_run_grouped_async_steps()
         {
-            ExpectAsynchronousScenarioRun();
+            var capturedSteps = Builder.ExpectAddSteps();
+            Builder.ExpectBuild();
 
             await Runner.RunScenarioAsync(_ => Async_step_group());
 
-            Assert.That(CapturedSteps, Is.Not.Null);
-            Assert.That(CapturedSteps.Length, Is.EqualTo(1));
-            Assert.That(CapturedSteps[0].RawName, Is.EqualTo(nameof(Async_step_group)));
+            Assert.That(capturedSteps.Count, Is.EqualTo(1));
+            Assert.That(capturedSteps[0].RawName, Is.EqualTo(nameof(Async_step_group)));
 
-            var result = (CompositeStepResultDescriptor)await CapturedSteps[0].StepInvocation.Invoke(null, null);
+            var result = (CompositeStepResultDescriptor)await capturedSteps[0].StepInvocation.Invoke(null, null);
             var subSteps = result.SubSteps.ToArray();
             Assert.That(subSteps.Length, Is.EqualTo(2));
             AssertStep(subSteps[0], nameof(Step_one_async));

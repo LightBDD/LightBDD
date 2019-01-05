@@ -1,28 +1,26 @@
+using LightBDD.Core.Execution;
+using LightBDD.Core.Extensibility;
+using LightBDD.Framework.Scenarios;
+using Moq;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LightBDD.Core.Execution;
-using LightBDD.Core.Extensibility;
-using Moq;
-using NUnit.Framework;
+using LightBDD.Framework.UnitTests.Scenarios.Helpers;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers
 {
     public class BasicScenarioTestsBase
     {
-        public interface ITestableBddRunner : IBddRunner, IFeatureFixtureRunner { }
-        protected StepDescriptor[] CapturedSteps;
-        protected Mock<ICoreScenarioBuilder> MockScenarioRunner;
-        protected Mock<ITestableBddRunner> MockRunner;
-        protected ITestableBddRunner Runner => MockRunner.Object;
+        protected Mock<ICoreScenarioBuilder> Builder;
+        protected IBddRunner Runner;
 
         [SetUp]
         public void SetUp()
         {
-            CapturedSteps = null;
-            MockScenarioRunner = new Mock<ICoreScenarioBuilder>();
-            MockRunner = new Mock<ITestableBddRunner>();
+            Builder = ScenarioMocks.CreateScenarioBuilder();
+            Runner = ScenarioMocks.CreateBddRunner(Builder);
         }
 
         protected void AssertStep(StepDescriptor step, string expectedName)
@@ -36,73 +34,6 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers
             Assert.That(ex.InnerException?.Message, Is.EqualTo(expectedName));
         }
 
-        #region Expectations
-
-        protected void ExpectRunScenario()
-        {
-            MockScenarioRunner
-                .Setup(r => r.RunScenario())
-                .Verifiable();
-        }
-
-        protected void ExpectWithSteps()
-        {
-            MockScenarioRunner
-                .Setup(s => s.AddSteps(It.IsAny<IEnumerable<StepDescriptor>>()))
-                .Returns((IEnumerable<StepDescriptor> desc) =>
-                {
-                    CapturedSteps = desc.ToArray();
-                    return MockScenarioRunner.Object;
-                })
-                .Verifiable();
-        }
-
-        protected void ExpectWithCapturedScenarioDetails()
-        {
-            MockScenarioRunner
-                .Setup(s => s.WithCapturedScenarioDetails())
-                .Returns(MockScenarioRunner.Object)
-                .Verifiable();
-        }
-
-        protected void ExpectNewScenario()
-        {
-            MockRunner
-                .Setup(r => r.NewScenario())
-                .Returns(MockScenarioRunner.Object)
-                .Verifiable();
-        }
-
-        protected void ExpectRunScenarioAsync()
-        {
-            MockScenarioRunner
-                .Setup(r => r.RunScenarioAsync())
-                .Returns(Task.FromResult(0))
-                .Verifiable();
-        }
-
-        protected void ExpectSynchronousExecution()
-        {
-            ExpectNewScenario();
-            ExpectWithCapturedScenarioDetails();
-            ExpectWithSteps();
-            ExpectRunScenario();
-        }
-
-        protected void ExpectAsynchronousExecution()
-        {
-            ExpectNewScenario();
-            ExpectWithCapturedScenarioDetails();
-            ExpectWithSteps();
-            ExpectRunScenarioAsync();
-        }
-
-        protected void VerifyAllExpectations()
-        {
-            MockRunner.Verify();
-            MockScenarioRunner.Verify();
-        }
-        #endregion
         #region Steps
 
         protected void Step_one() { throw new Exception(nameof(Step_one)); }

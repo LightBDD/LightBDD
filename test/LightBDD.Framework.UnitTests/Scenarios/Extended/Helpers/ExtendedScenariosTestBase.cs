@@ -1,81 +1,25 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using Moq;
 using NUnit.Framework;
+using System;
+using LightBDD.Framework.UnitTests.Scenarios.Helpers;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
 {
     public class ExtendedScenariosTestBase<T> : Steps
     {
-        protected StepDescriptor[] CapturedSteps;
-        protected Mock<ICoreScenarioBuilder> MockScenarioRunner;
+        protected Mock<ICoreScenarioBuilder> Builder;
         protected IBddRunner<T> Runner;
 
         [SetUp]
         public void SetUp()
         {
-            CapturedSteps = null;
-            MockScenarioRunner = new Mock<ICoreScenarioBuilder>();
-            Runner = new MockBddRunner<T>(TestableIntegrationContextBuilder.Default().Build().Configuration, MockScenarioRunner.Object);
-        }
-
-        protected void ExpectSynchronousScenarioRun()
-        {
-            ExpectWithCapturedScenarioDetails();
-            ExpectWithSteps();
-            ExpectRunScenario();
-        }
-
-        protected void ExpectAsynchronousScenarioRun()
-        {
-            ExpectWithCapturedScenarioDetails();
-            ExpectWithSteps();
-            ExpectRunScenarioAsync();
-        }
-
-        protected void ExpectRunScenario()
-        {
-            MockScenarioRunner
-                .Setup(r => r.RunScenario())
-                .Verifiable();
-        }
-
-        protected void ExpectWithSteps()
-        {
-            MockScenarioRunner
-                .Setup(s => s.AddSteps(It.IsAny<IEnumerable<StepDescriptor>>()))
-                .Returns((IEnumerable<StepDescriptor> steps) =>
-                {
-                    CapturedSteps = steps.ToArray();
-                    return MockScenarioRunner.Object;
-                })
-                .Verifiable();
-        }
-
-        protected void ExpectWithCapturedScenarioDetails()
-        {
-            MockScenarioRunner
-                .Setup(s => s.WithCapturedScenarioDetails())
-                .Returns(MockScenarioRunner.Object)
-                .Verifiable();
-        }
-
-        protected void ExpectRunScenarioAsync()
-        {
-            MockScenarioRunner
-                .Setup(r => r.RunScenarioAsync())
-                .Returns(Task.FromResult(0))
-                .Verifiable();
-        }
-
-        protected void VerifyExpectations()
-        {
-            MockScenarioRunner.VerifyAll();
+            Builder = ScenarioMocks.CreateScenarioBuilder();
+            var configuration = TestableIntegrationContextBuilder.Default().Build().Configuration;
+            Builder.SetupConfiguration(configuration);
+            Runner = new MockBddRunner<T>(configuration, Builder.Object);
         }
 
         protected void AssertStep(StepDescriptor step, string expectedName, string expectedPredefinedStepType = null)
