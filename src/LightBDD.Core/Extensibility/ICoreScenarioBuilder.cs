@@ -27,6 +27,11 @@ namespace LightBDD.Core.Extensibility
         /// <returns>Self.</returns>
         ICoreScenarioBuilder WithCapturedScenarioDetails();
         /// <summary>
+        /// Configures scenario details with values inferred by <see cref="IMetadataProvider"/>, but only if scenario name has not been provided yet.
+        /// </summary>
+        /// <returns>Self.</returns>
+        ICoreScenarioBuilder WithCapturedScenarioDetailsIfNotSpecified();
+        /// <summary>
         /// Configures scenario with labels.
         /// </summary>
         /// <param name="labels">Labels to set.</param>

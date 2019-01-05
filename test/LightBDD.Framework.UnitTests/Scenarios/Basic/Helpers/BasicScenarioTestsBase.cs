@@ -1,13 +1,11 @@
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
-using LightBDD.Framework.Scenarios;
+using LightBDD.Framework.UnitTests.Scenarios.Helpers;
 using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using LightBDD.Framework.UnitTests.Scenarios.Helpers;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers
 {
@@ -21,6 +19,14 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers
         {
             Builder = ScenarioMocks.CreateScenarioBuilder();
             Runner = ScenarioMocks.CreateBddRunner(Builder);
+        }
+
+        protected (List<StepDescriptor> scenarioCapture, Capture<bool> runCapture) ExpectBasicScenarioRun()
+        {
+            var stepsCapture = Builder.ExpectAddSteps();
+            Builder.ExpectWithCapturedScenarioDetails();
+            var runCapture = Builder.ExpectBuild();
+            return (stepsCapture, runCapture);
         }
 
         protected void AssertStep(StepDescriptor step, string expectedName)

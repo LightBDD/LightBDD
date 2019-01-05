@@ -27,6 +27,8 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
             return runner.Object;
         }
 
+        public static Mock<ICoreScenarioBuilder> CreateScenarioBuilder() => new Mock<ICoreScenarioBuilder>();
+
         public static List<StepDescriptor> ExpectAddSteps(this Mock<ICoreScenarioBuilder> builder)
         {
             var capture = new List<StepDescriptor>();
@@ -54,9 +56,26 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
             return capture;
         }
 
-        public static void SetupConfiguration(this Mock<ICoreScenarioBuilder> builder, LightBddConfiguration cfg)
+        public static Mock<ICoreScenarioBuilder> SetupConfiguration(this Mock<ICoreScenarioBuilder> builder, LightBddConfiguration cfg)
         {
             builder.Setup(x => x.Configuration).Returns(cfg);
+            return builder;
+        }
+
+        public static Mock<ICoreScenarioBuilder> ExpectWithCapturedScenarioDetailsIfNotSpecified(this Mock<ICoreScenarioBuilder> builder)
+        {
+            builder
+                .Setup(x => x.WithCapturedScenarioDetailsIfNotSpecified()).Returns(builder.Object)
+                .Verifiable();
+            return builder;
+        }
+
+        public static Mock<ICoreScenarioBuilder> ExpectWithCapturedScenarioDetails(this Mock<ICoreScenarioBuilder> builder)
+        {
+            builder
+                .Setup(x => x.WithCapturedScenarioDetails()).Returns(builder.Object)
+                .Verifiable();
+            return builder;
         }
 
         public static Capture<bool> ExpectBuild(this Mock<ICoreScenarioBuilder> builder)
@@ -86,7 +105,5 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
                 .Verifiable();
             return capture;
         }
-
-        public static Mock<ICoreScenarioBuilder> CreateScenarioBuilder() => new Mock<ICoreScenarioBuilder>();
     }
 }

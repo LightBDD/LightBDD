@@ -49,6 +49,13 @@ namespace LightBDD.Core.Extensibility.Implementation
                 .WithScenarioDecorators(metadataProvider.GetScenarioDecorators(scenario));
         }
 
+        public ICoreScenarioBuilder WithCapturedScenarioDetailsIfNotSpecified()
+        {
+            return _name == null
+                ? WithCapturedScenarioDetails()
+                : this;
+        }
+
         public ICoreScenarioBuilder WithLabels(string[] labels)
         {
             _labels = labels ?? throw new ArgumentNullException(nameof(labels));

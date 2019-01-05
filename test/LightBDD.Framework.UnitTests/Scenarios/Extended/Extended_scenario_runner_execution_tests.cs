@@ -1,11 +1,11 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers;
 using LightBDD.Framework.UnitTests.Scenarios.Helpers;
 using NUnit.Framework;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Extended
 {
@@ -15,25 +15,26 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
         [Test]
         public void It_should_make_synchronous_steps_finishing_immediately_in_async_mode()
         {
-            var capturedSteps = Builder.ExpectAddSteps();
-            Builder.ExpectBuild();
+            var (stepsCapture, runCapture) = ExpectExtendedScenarioRun();
 
             Runner.RunScenario(_ => Step_not_throwing_exception());
 
-            Assert.That(capturedSteps.Count, Is.EqualTo(1));
-
-            Assert.True(capturedSteps[0].StepInvocation.Invoke(null, null).IsCompleted, "Synchronous step should be completed after invocation");
+            Builder.Verify();
+            Assert.That(runCapture.Value, Is.True);
+            Assert.That(stepsCapture.Count, Is.EqualTo(1));
+            Assert.True(stepsCapture[0].StepInvocation.Invoke(null, null).IsCompleted, "Synchronous step should be completed after invocation");
         }
 
         [Test]
         public void It_should_allow_to_execute_parameterized_steps_in_sync_mode()
         {
-            var capturedSteps = Builder.ExpectAddSteps();
-            Builder.ExpectBuild();
+            var (stepsCapture, runCapture) = ExpectExtendedScenarioRun();
 
             Runner.RunScenario(_ => Step_with_parameters(32, "32"));
-            var step = capturedSteps.Single();
 
+            Builder.Verify();
+            Assert.That(runCapture.Value, Is.True);
+            var step = stepsCapture.Single();
             var ex = Assert.Throws<ScenarioExecutionException>(() => step.StepInvocation(null, step.Parameters.Select(p => p.ValueEvaluator(null)).ToArray()));
             Assert.That(ex.InnerException, Is.TypeOf<InvalidOperationException>());
             Assert.That(ex.InnerException.Message, Is.EqualTo(ExceptionMessageForStep_with_parameters(32)));
@@ -42,12 +43,13 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
         [Test]
         public async Task It_should_allow_to_execute_parameterized_steps_in_async_mode()
         {
-            var capturedSteps = Builder.ExpectAddSteps();
-            Builder.ExpectBuild();
+            var (stepsCapture, runCapture) = ExpectExtendedScenarioRun();
 
             await Runner.RunScenarioAsync(_ => Step_with_parameters_async(33, "33"));
-            var step = capturedSteps.Single();
 
+            Builder.Verify();
+            Assert.That(runCapture.Value, Is.True);
+            var step = stepsCapture.Single();
             var ex = Assert.ThrowsAsync<ScenarioExecutionException>(() => step.StepInvocation(null, step.Parameters.Select(p => p.ValueEvaluator(null)).ToArray()));
             Assert.That(ex.InnerException, Is.TypeOf<InvalidOperationException>());
             Assert.That(ex.InnerException.Message, Is.EqualTo(ExceptionMessageForStep_with_parameters(33)));

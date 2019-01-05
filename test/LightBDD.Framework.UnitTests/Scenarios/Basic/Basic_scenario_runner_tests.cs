@@ -12,41 +12,41 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic
         [Test]
         public void It_should_allow_to_run_synchronous_scenarios()
         {
-            var capturedSteps = Builder.ExpectAddSteps();
-            var capturedRun = Builder.ExpectBuild();
+            var (stepsCapture, runCapture) = ExpectBasicScenarioRun();
 
             Runner.RunScenario(Step_one, Step_two);
 
-            Assert.That(capturedRun.Value, Is.True);
-            Assert.That(capturedSteps.Count, Is.EqualTo(2));
-            AssertStep(capturedSteps[0], nameof(Step_one));
-            AssertStep(capturedSteps[1], nameof(Step_two));
+            Builder.Verify();
+            Assert.That(runCapture.Value, Is.True);
+            Assert.That(stepsCapture.Count, Is.EqualTo(2));
+            AssertStep(stepsCapture[0], nameof(Step_one));
+            AssertStep(stepsCapture[1], nameof(Step_two));
         }
 
         [Test]
         public async Task It_should_allow_to_run_asynchronous_scenarios()
         {
-            var capturedSteps = Builder.ExpectAddSteps();
-            var capturedRun = Builder.ExpectBuild();
+            var (stepsCapture, runCapture) = ExpectBasicScenarioRun();
 
             await Runner.RunScenarioAsync(Step_one_async, Step_two_async);
 
-            Assert.That(capturedRun.Value, Is.True);
-            Assert.That(capturedSteps.Count, Is.EqualTo(2));
-            AssertStep(capturedSteps[0], nameof(Step_one_async));
-            AssertStep(capturedSteps[1], nameof(Step_two_async));
+            Builder.Verify();
+            Assert.That(runCapture.Value, Is.True);
+            Assert.That(stepsCapture.Count, Is.EqualTo(2));
+            AssertStep(stepsCapture[0], nameof(Step_one_async));
+            AssertStep(stepsCapture[1], nameof(Step_two_async));
         }
 
         [Test]
         public void It_should_make_synchronous_steps_finishing_immediately_in_async_mode()
         {
-            var capturedSteps = Builder.ExpectAddSteps();
-            Builder.ExpectBuild();
+            var (stepsCapture, _) = ExpectBasicScenarioRun();
 
             Runner.RunScenario(Step_not_throwing_exception);
 
-            Assert.That(capturedSteps.Count, Is.EqualTo(1));
-            Assert.True(capturedSteps[0].StepInvocation.Invoke(null, null).IsCompleted, "Synchronous step should be completed after invocation");
+            Builder.Verify();
+            Assert.That(stepsCapture.Count, Is.EqualTo(1));
+            Assert.True(stepsCapture[0].StepInvocation.Invoke(null, null).IsCompleted, "Synchronous step should be completed after invocation");
         }
 
         [Test]

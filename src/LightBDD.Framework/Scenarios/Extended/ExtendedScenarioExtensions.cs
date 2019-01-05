@@ -75,8 +75,9 @@ namespace LightBDD.Framework.Scenarios.Extended
             {
                 runner
                     .AddSteps(steps)
-                    .Integrate()
-                    .Core.Build()
+                    .Integrate().Core
+                    .WithCapturedScenarioDetails()
+                    .Build()
                     .Invoke()
                     .AwaitSyncScenario();
             }
@@ -148,8 +149,9 @@ namespace LightBDD.Framework.Scenarios.Extended
             {
                 await runner
                     .AddAsyncSteps(steps)
-                    .Integrate()
-                    .Core.Build()
+                    .Integrate().Core
+                    .WithCapturedScenarioDetails()
+                    .Build()
                     .Invoke();
             }
             catch (ScenarioExecutionException e)

@@ -4,6 +4,7 @@ using LightBDD.UnitTests.Helpers.TestableIntegration;
 using Moq;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using LightBDD.Framework.UnitTests.Scenarios.Helpers;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
@@ -20,6 +21,14 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
             var configuration = TestableIntegrationContextBuilder.Default().Build().Configuration;
             Builder.SetupConfiguration(configuration);
             Runner = new MockBddRunner<T>(configuration, Builder.Object);
+        }
+
+        protected (List<StepDescriptor> scenarioCapture, Capture<bool> runCapture) ExpectExtendedScenarioRun()
+        {
+            var stepsCapture = Builder.ExpectAddSteps();
+            Builder.ExpectWithCapturedScenarioDetails();
+            var runCapture = Builder.ExpectBuild();
+            return (stepsCapture, runCapture);
         }
 
         protected void AssertStep(StepDescriptor step, string expectedName, string expectedPredefinedStepType = null)

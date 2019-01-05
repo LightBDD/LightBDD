@@ -1,8 +1,7 @@
-﻿using System.Threading.Tasks;
-using LightBDD.Framework.Scenarios.Extended;
+﻿using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers;
-using LightBDD.Framework.UnitTests.Scenarios.Helpers;
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Extended
 {
@@ -12,8 +11,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
         [Test]
         public void It_should_allow_to_run_synchronous_scenarios()
         {
-            Builder.ExpectAddSteps();
-            Builder.ExpectBuild();
+            ExpectExtendedScenarioRun();
 
             Runner.RunScenario(
                 _ => Step_one(),
@@ -25,8 +23,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
         [Test]
         public async Task It_should_allow_to_run_asynchronous_scenarios()
         {
-            Builder.ExpectAddSteps();
-            Builder.ExpectBuild();
+            ExpectExtendedScenarioRun();
 
             await Runner.RunScenarioAsync(
                 _ => Step_one_async(),

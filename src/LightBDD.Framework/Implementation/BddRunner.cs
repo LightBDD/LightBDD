@@ -13,7 +13,7 @@ namespace LightBDD.Framework.Implementation
         {
             _coreRunner = coreRunner;
         }
-        //TODO: fix WithCapturedScenarioDetails
-        public IIntegratedScenarioBuilder<NoContext> Integrate() => new IntegratedScenarioBuilder<NoContext>(_coreRunner.NewScenario().WithCapturedScenarioDetails());
+
+        public IIntegratedScenarioBuilder<NoContext> Integrate() => new IntegratedScenarioBuilder<NoContext>(_coreRunner.NewScenario());
     }
 }
