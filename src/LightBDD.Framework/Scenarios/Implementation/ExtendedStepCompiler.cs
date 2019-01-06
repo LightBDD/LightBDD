@@ -9,7 +9,7 @@ using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Results;
 
-namespace LightBDD.Framework.Scenarios.Extended.Implementation
+namespace LightBDD.Framework.Scenarios.Implementation
 {
     [DebuggerStepThrough]
     internal class ExtendedStepCompiler<TContext>

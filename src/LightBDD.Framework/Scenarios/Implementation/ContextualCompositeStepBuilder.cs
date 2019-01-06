@@ -6,7 +6,7 @@ using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Extensibility;
 
-namespace LightBDD.Framework.Scenarios.Contextual.Implementation
+namespace LightBDD.Framework.Scenarios.Implementation
 {
     [DebuggerStepThrough]
     internal class ContextualCompositeStepBuilder<TContext> : LightBddConfigurationAware, ICompositeStepBuilder<TContext>, IIntegrableCompositeStepBuilder

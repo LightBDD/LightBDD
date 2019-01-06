@@ -1,12 +1,11 @@
 using LightBDD.Core.Extensibility;
-using LightBDD.Framework.Scenarios.Extended;
 using LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers;
-using LightBDD.Framework.UnitTests.Scenarios.Helpers;
 using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using LightBDD.Framework.Scenarios;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Extended
 {

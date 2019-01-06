@@ -1,11 +1,11 @@
-using LightBDD.Core.Dependencies;
-using LightBDD.Core.Execution;
-using LightBDD.Core.Extensibility;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using LightBDD.Core.Dependencies;
+using LightBDD.Core.Execution;
+using LightBDD.Core.Extensibility;
 
-namespace LightBDD.Framework.Scenarios.Contextual.Implementation
+namespace LightBDD.Framework.Scenarios.Implementation
 {
     [DebuggerStepThrough]
     internal class ContextualBddRunner<TContext> : IBddRunner<TContext>, IIntegratedScenarioBuilder<TContext>

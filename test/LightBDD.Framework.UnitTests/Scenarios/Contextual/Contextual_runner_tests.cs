@@ -1,10 +1,10 @@
 ﻿using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility;
-using LightBDD.Framework.Scenarios.Contextual;
 using LightBDD.Framework.UnitTests.Scenarios.Helpers;
 using Moq;
 using NUnit.Framework;
 using System;
+using LightBDD.Framework.Scenarios;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
 {

@@ -1,16 +1,15 @@
-﻿using LightBDD.Core.Execution;
-using LightBDD.Framework.Scenarios.Basic.Implementation;
-using System;
-using System.Diagnostics;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.Execution;
+using LightBDD.Framework.Scenarios.Implementation;
 
-namespace LightBDD.Framework.Scenarios.Basic
+namespace LightBDD.Framework.Scenarios
 {
     /// <summary>
     /// Extensions class allowing to use basic scenario syntax for running LightBDD tests.
     /// </summary>
-    public static class BasicScenarioExtensions
+    public static class BasicExtensions
     {
         public static IScenarioRunner<NoContext> AddSteps(this IScenarioBuilder<NoContext> builder, params Action[] steps)
         {

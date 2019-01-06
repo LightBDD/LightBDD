@@ -3,8 +3,7 @@ using System.Threading.Tasks;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework;
-using LightBDD.Framework.Scenarios.Contextual;
-using LightBDD.Framework.Scenarios.Extended;
+using LightBDD.Framework.Scenarios;
 using LightBDD.NUnit3;
 using NUnit.Framework;
 

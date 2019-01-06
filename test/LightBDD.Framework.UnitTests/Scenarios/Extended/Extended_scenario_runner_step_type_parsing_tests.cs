@@ -1,7 +1,7 @@
-﻿using LightBDD.Framework.Scenarios.Extended;
-using LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers;
+﻿using LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers;
 using NUnit.Framework;
 using System.Threading.Tasks;
+using LightBDD.Framework.Scenarios;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Extended
 {

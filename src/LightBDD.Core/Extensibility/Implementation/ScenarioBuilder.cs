@@ -9,7 +9,6 @@ using LightBDD.Core.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 
 namespace LightBDD.Core.Extensibility.Implementation
