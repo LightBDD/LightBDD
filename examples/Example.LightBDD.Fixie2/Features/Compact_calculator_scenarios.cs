@@ -2,7 +2,7 @@
 using Example.Domain.Domain;
 using LightBDD.Fixie2;
 using LightBDD.Framework;
-using LightBDD.Framework.Scenarios.Compact;
+using LightBDD.Framework.Scenarios;
 using Shouldly;
 
 namespace Example.LightBDD.Fixie2.Features

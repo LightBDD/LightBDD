@@ -1,7 +1,7 @@
 using LightBDD.Framework;
-using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.NUnit3;
 using System.Threading.Tasks;
+using LightBDD.Framework.Scenarios;
 
 namespace Example.LightBDD.NUnit3.Features
 {

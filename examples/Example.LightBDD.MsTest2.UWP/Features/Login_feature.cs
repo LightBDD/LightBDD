@@ -1,5 +1,5 @@
 using LightBDD.Framework;
-using LightBDD.Framework.Scenarios.Basic;
+using LightBDD.Framework.Scenarios;
 using LightBDD.MsTest2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

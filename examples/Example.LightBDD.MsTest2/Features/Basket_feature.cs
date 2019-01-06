@@ -1,8 +1,8 @@
 using LightBDD.Framework;
-using LightBDD.Framework.Scenarios.Basic;
 using LightBDD.MsTest2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
+using LightBDD.Framework.Scenarios;
 
 namespace Example.LightBDD.MsTest2.Features
 {

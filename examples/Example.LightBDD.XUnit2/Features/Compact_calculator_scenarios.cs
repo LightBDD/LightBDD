@@ -1,8 +1,8 @@
 ﻿using Example.Domain.Domain;
 using LightBDD.Framework;
-using LightBDD.Framework.Scenarios.Compact;
 using LightBDD.XUnit2;
 using System.Threading.Tasks;
+using LightBDD.Framework.Scenarios;
 using Xunit;
 
 namespace Example.LightBDD.XUnit2.Features

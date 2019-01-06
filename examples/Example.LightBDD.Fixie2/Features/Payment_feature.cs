@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using LightBDD.Fixie2;
 using LightBDD.Framework;
-using LightBDD.Framework.Scenarios.Extended;
+using LightBDD.Framework.Scenarios;
 
 namespace Example.LightBDD.Fixie2.Features
 {

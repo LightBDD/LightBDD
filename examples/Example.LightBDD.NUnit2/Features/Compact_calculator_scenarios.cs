@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Example.Domain.Domain;
 using LightBDD.Framework;
-using LightBDD.Framework.Scenarios.Compact;
+using LightBDD.Framework.Scenarios;
 using LightBDD.NUnit2;
 using NUnit.Framework;
 

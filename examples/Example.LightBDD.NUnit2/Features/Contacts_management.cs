@@ -3,8 +3,7 @@ using Example.LightBDD.NUnit2.Features.Contexts;
 using LightBDD.Framework;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;
-using LightBDD.Framework.Scenarios.Contextual;
-using LightBDD.Framework.Scenarios.Extended;
+using LightBDD.Framework.Scenarios;
 using LightBDD.NUnit2;
 
 namespace Example.LightBDD.NUnit2.Features

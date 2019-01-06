@@ -4,8 +4,7 @@ using LightBDD.Fixie2;
 using LightBDD.Framework;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;
-using LightBDD.Framework.Scenarios.Contextual;
-using LightBDD.Framework.Scenarios.Extended;
+using LightBDD.Framework.Scenarios;
 
 namespace Example.LightBDD.Fixie2.Features
 {
