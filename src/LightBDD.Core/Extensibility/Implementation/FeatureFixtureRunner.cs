@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using LightBDD.Core.Configuration;
 
 namespace LightBDD.Core.Extensibility.Implementation
 {
@@ -8,20 +7,17 @@ namespace LightBDD.Core.Extensibility.Implementation
     internal class FeatureFixtureRunner : IFeatureFixtureRunner
     {
         private readonly object _fixture;
-        private readonly Func<object, IScenarioRunner> _scenarioRunnerProvider;
+        private readonly Func<object, ICoreScenarioBuilder> _scenarioRunnerProvider;
 
-        public FeatureFixtureRunner(object fixture, Func<object, IScenarioRunner> scenarioRunnerProvider, LightBddConfiguration configuration)
+        public FeatureFixtureRunner(object fixture, Func<object, ICoreScenarioBuilder> scenarioRunnerProvider)
         {
-            Configuration = configuration;
             _fixture = fixture;
             _scenarioRunnerProvider = scenarioRunnerProvider;
         }
 
-        public IScenarioRunner NewScenario()
+        public ICoreScenarioBuilder NewScenario()
         {
             return _scenarioRunnerProvider.Invoke(_fixture);
         }
-
-        public LightBddConfiguration Configuration { get; }
     }
 }

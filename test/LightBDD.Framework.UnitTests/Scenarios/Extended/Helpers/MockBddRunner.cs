@@ -1,23 +1,35 @@
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
+using LightBDD.Framework.Scenarios;
+using System.Threading.Tasks;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
 {
-    public class MockBddRunner<T> : IBddRunner<T>, IFeatureFixtureRunner
+    public class MockBddRunner<T> : IBddRunner<T>, IIntegratedScenarioBuilder<T>
     {
-        private readonly IScenarioRunner _scenarioRunner;
-
         public LightBddConfiguration Configuration { get; }
 
-        public MockBddRunner(LightBddConfiguration configuration, IScenarioRunner scenarioRunner)
+        public MockBddRunner(LightBddConfiguration configuration, ICoreScenarioBuilder scenarioRunner)
         {
             Configuration = configuration;
-            _scenarioRunner = scenarioRunner;
+            Core = scenarioRunner;
         }
 
-        public IScenarioRunner NewScenario()
+        public IIntegratedScenarioBuilder<T> Integrate() => this;
+
+        public async Task RunAsync()
         {
-            return _scenarioRunner;
+            try
+            {
+                await Core.Build().ExecuteAsync();
+            }
+            catch (ScenarioExecutionException e)
+            {
+                e.GetOriginal().Throw();
+            }
         }
+
+        public ICoreScenarioBuilder Core { get; }
     }
 }

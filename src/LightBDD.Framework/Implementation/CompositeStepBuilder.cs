@@ -23,6 +23,11 @@ namespace LightBDD.Framework.Implementation
             return new CompositeStep(_contextDescriptor ?? ExecutionContextDescriptor.NoContext, _steps);
         }
 
+        public IIntegrableCompositeStepBuilder Integrate()
+        {
+            return this;
+        }
+
         public IIntegrableStepGroupBuilder AddSteps(IEnumerable<StepDescriptor> steps)
         {
             if (steps == null)

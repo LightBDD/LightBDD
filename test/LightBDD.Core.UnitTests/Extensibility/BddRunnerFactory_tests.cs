@@ -50,8 +50,10 @@ namespace LightBDD.Core.UnitTests.Extensibility
         public void It_should_return_all_runners()
         {
             _repository.GetRunnerFor(GetType());
-            _repository.GetRunnerFor(typeof(BddRunnerExtensions_tests));
+            _repository.GetRunnerFor(typeof(SomeOther_tests));
             Assert.That(_repository.AllRunners.Count(), Is.EqualTo(2));
         }
+
+        class SomeOther_tests{}
     }
 }

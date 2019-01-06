@@ -3,9 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Results;
 using LightBDD.Framework;
-using LightBDD.Framework.Scenarios.Basic;
-using LightBDD.Framework.Scenarios.Extended;
-using LightBDD.Framework.Scenarios.Fluent;
+using LightBDD.Framework.Scenarios;
 using NUnit.Framework;
 
 namespace LightBDD.NUnit2.NUnitTests
@@ -108,7 +106,7 @@ namespace LightBDD.NUnit2.NUnitTests
             };
             Action step2 = () => Assert.IsTrue(finished);
 
-            Assert.DoesNotThrow(() => Runner.NewScenario().AddSteps(step1, step2).RunAsync().Wait());
+            Assert.DoesNotThrow(() => Runner.AddSteps(step1, step2).RunAsync().Wait());
         }
 
         [Scenario]

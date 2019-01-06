@@ -6,35 +6,35 @@ using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Results;
 
-namespace LightBDD.Framework.Scenarios.Basic.Implementation
+namespace LightBDD.Framework.Scenarios.Implementation
 {
     [DebuggerStepThrough]
-    internal static class BasicStepCompiler
+    internal static class CompactStepCompiler
     {
-        public static StepDescriptor ToAsynchronousStep(Func<Task> step)
+        public static StepDescriptor ToAsynchronousStep<TContext>(string name, Func<TContext, Task> step)
         {
-            return new StepDescriptor(step.GetMethodInfo(), new AsyncStepExecutor(step).ExecuteAsync);
+            return new StepDescriptor(name, new AsyncStepExecutor<TContext>(step).ExecuteAsync);
         }
 
-        public static StepDescriptor ToSynchronousStep(Action step)
+        public static StepDescriptor ToSynchronousStep<TContext>(string name, Action<TContext> step)
         {
-            return new StepDescriptor(step.GetMethodInfo(), new StepExecutor(step).Execute);
+            return new StepDescriptor(name, new StepExecutor<TContext>(step).Execute);
         }
 
         [DebuggerStepThrough]
-        private class AsyncStepExecutor
+        private class AsyncStepExecutor<TContext>
         {
             private static readonly MethodInfo AsCompositeStepMethod = ((Func<Task, Task<IStepResultDescriptor>>)AsCompositeStep<IStepResultDescriptor>).GetMethodInfo().GetGenericMethodDefinition();
-            private readonly Func<Task> _invocation;
+            private readonly Func<TContext,Task> _invocation;
 
-            public AsyncStepExecutor(Func<Task> invocation)
+            public AsyncStepExecutor(Func<TContext, Task> invocation)
             {
                 _invocation = invocation;
             }
 
             public async Task<IStepResultDescriptor> ExecuteAsync(object context, object[] args)
             {
-                var task = _invocation.Invoke();
+                var task = _invocation.Invoke((TContext)context);
                 await ScenarioExecutionFlow.WrapScenarioExceptions(task);
 
                 if (HasResultDescriptor(task))
@@ -66,11 +66,11 @@ namespace LightBDD.Framework.Scenarios.Basic.Implementation
         }
 
         [DebuggerStepThrough]
-        private class StepExecutor
+        private class StepExecutor<TContext>
         {
-            private readonly Action _invocation;
+            private readonly Action<TContext> _invocation;
 
-            public StepExecutor(Action invocation)
+            public StepExecutor(Action<TContext> invocation)
             {
                 _invocation = invocation;
             }
@@ -78,7 +78,7 @@ namespace LightBDD.Framework.Scenarios.Basic.Implementation
             {
                 try
                 {
-                    _invocation.Invoke();
+                    _invocation.Invoke((TContext) context);
                     return Task.FromResult(DefaultStepResultDescriptor.Instance);
                 }
                 catch (Exception e)

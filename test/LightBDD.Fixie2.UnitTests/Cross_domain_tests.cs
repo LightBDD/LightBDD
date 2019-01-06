@@ -3,7 +3,7 @@ using System.Configuration;
 using System.Diagnostics;
 using LightBDD.Fixie2;
 using LightBDD.Framework;
-using LightBDD.Framework.Scenarios.Extended;
+using LightBDD.Framework.Scenarios;
 using Shouldly;
 
 namespace LightBDD.Fixie.UnitTests

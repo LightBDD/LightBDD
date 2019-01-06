@@ -3,9 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Results;
 using LightBDD.Framework;
-using LightBDD.Framework.Scenarios.Basic;
-using LightBDD.Framework.Scenarios.Extended;
-using LightBDD.Framework.Scenarios.Fluent;
+using LightBDD.Framework.Scenarios;
 using Shouldly;
 
 namespace LightBDD.Fixie2.UnitTests
@@ -78,7 +76,7 @@ namespace LightBDD.Fixie2.UnitTests
                 finished = true;
             };
             Action step2 = () => finished.ShouldBeTrue();
-            Should.NotThrow(() => Runner.NewScenario().AddSteps(step1, step2).RunAsync());
+            Should.NotThrow(() => Runner.AddSteps(step1, step2).RunAsync());
         }
 
         [Scenario]
