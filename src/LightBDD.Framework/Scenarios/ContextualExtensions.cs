@@ -7,7 +7,6 @@ namespace LightBDD.Framework.Scenarios
     /// <summary>
     /// Extensions allowing to create contextual <see cref="IBddRunner"/> instance.
     /// </summary>
-    [DebuggerStepThrough]
     public static class ContextualExtensions
     {
         /// <summary>

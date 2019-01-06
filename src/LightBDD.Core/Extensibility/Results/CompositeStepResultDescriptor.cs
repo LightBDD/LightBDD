@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace LightBDD.Core.Extensibility.Results
 {
@@ -9,7 +8,6 @@ namespace LightBDD.Core.Extensibility.Results
     /// It allows to define a list of additional sub steps that would be included in step execution, making given step passing only if all are successful.
     /// It allows also to specify dedicated context instance that would be passed to all sub-steps.
     /// </summary>
-    [DebuggerStepThrough]
     public class CompositeStepResultDescriptor : IStepResultDescriptor
     {
         /// <summary>

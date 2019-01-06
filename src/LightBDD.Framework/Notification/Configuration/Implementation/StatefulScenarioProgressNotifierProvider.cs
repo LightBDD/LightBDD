@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
 using LightBDD.Core.Notification;
 
 namespace LightBDD.Framework.Notification.Configuration.Implementation
 {
-    [DebuggerStepThrough]
     internal class StatefulScenarioProgressNotifierProvider<TFixture> : IScenarioProgressNotifierProvider
     {
         private readonly Func<TFixture, IScenarioProgressNotifier> _notifierProvider;

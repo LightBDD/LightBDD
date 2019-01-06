@@ -8,7 +8,6 @@ namespace LightBDD.Framework.Scenarios
     /// <summary>
     /// Extensions class allowing to use compact steps for defining LightBDD test steps.
     /// </summary>
-    [DebuggerStepThrough]
     public static class CompactExtensions
     {
         /// <summary>

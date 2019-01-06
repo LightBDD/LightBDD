@@ -1,12 +1,10 @@
 using System;
-using System.Diagnostics;
 
 namespace LightBDD.Core.Results
 {
     /// <summary>
     /// Class describing execution time.
     /// </summary>
-    [DebuggerStepThrough]
     public class ExecutionTime
     {
         /// <summary>

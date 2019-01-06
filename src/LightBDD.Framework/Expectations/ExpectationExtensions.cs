@@ -4,7 +4,6 @@ using LightBDD.Framework.Parameters;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -13,7 +12,6 @@ namespace LightBDD.Framework.Expectations
     /// <summary>
     /// Extensions offering methods for defining expectations.
     /// </summary>
-    [DebuggerStepThrough]
     public static class ExpectationExtensions
     {
         /// <summary>

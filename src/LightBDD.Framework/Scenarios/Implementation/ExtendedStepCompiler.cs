@@ -11,7 +11,6 @@ using LightBDD.Core.Extensibility.Results;
 
 namespace LightBDD.Framework.Scenarios.Implementation
 {
-    [DebuggerStepThrough]
     internal class ExtendedStepCompiler<TContext>
     {
         private static readonly ConstructorInfo ScenarioExecutionExceptionCtor = typeof(ScenarioExecutionException).GetTypeInfo().DeclaredConstructors.Single();

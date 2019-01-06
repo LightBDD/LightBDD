@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using LightBDD.Core.Configuration;
@@ -10,7 +9,6 @@ using Xunit;
 
 namespace LightBDD.XUnit2.Implementation
 {
-    [DebuggerStepThrough]
     internal class XUnit2MetadataProvider : CoreMetadataProvider
     {
         public XUnit2MetadataProvider(LightBddConfiguration configuration)

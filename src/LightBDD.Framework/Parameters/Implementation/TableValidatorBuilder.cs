@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq.Expressions;
 using LightBDD.Framework.Expectations;
 
 namespace LightBDD.Framework.Parameters.Implementation
 {
-    [DebuggerStepThrough]
     internal class TableValidatorBuilder<TRow> : AbstractTableBuilder<TRow, VerifiableTableColumn>, ITableValidatorBuilder<TRow>
     {
         public TableValidator<TRow> Build()

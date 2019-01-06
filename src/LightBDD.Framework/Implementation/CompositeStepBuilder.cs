@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
@@ -10,7 +9,6 @@ using LightBDD.Framework.Scenarios;
 
 namespace LightBDD.Framework.Implementation
 {
-    [DebuggerStepThrough]
     internal class CompositeStepBuilder : LightBddConfigurationAware, ICompositeStepBuilder, IIntegrableCompositeStepBuilder
     {
         private static readonly IEnumerable<StepDescriptor> EmptySteps = Enumerable.Empty<StepDescriptor>();

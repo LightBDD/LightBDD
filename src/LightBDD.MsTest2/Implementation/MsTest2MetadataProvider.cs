@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using LightBDD.Core.Configuration;
@@ -10,7 +9,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.MsTest2.Implementation
 {
-    [DebuggerStepThrough]
     internal class MsTest2MetadataProvider : CoreMetadataProvider
     {
         public MsTest2MetadataProvider(LightBddConfiguration configuration)

@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using LightBDD.Core.Notification;
 
 namespace LightBDD.Framework.Notification.Configuration.Implementation
 {
-    [DebuggerStepThrough]
     internal class ScenarioProgressNotifierComposer
     {
         private readonly List<IScenarioProgressNotifierProvider> _providers;

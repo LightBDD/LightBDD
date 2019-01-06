@@ -13,7 +13,6 @@ namespace LightBDD.Framework
     /// All exceptions that have occurred during sub-steps execution would be included in the LightBDD report.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
-    [DebuggerStepThrough]
     public class MultiAssertAttribute : Attribute, IStepDecoratorAttribute, IScenarioDecoratorAttribute
     {
         /// <summary>

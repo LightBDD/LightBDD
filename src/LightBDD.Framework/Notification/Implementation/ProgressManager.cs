@@ -1,10 +1,8 @@
-﻿using System.Diagnostics;
-using System.Threading;
+﻿using System.Threading;
 using LightBDD.Core.Results;
 
 namespace LightBDD.Framework.Notification.Implementation
 {
-    [DebuggerStepThrough]
     internal class ProgressManager
     {
         private readonly object _sync = new object();

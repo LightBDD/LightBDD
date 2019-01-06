@@ -5,7 +5,6 @@ using LightBDD.Framework.Notification;
 
 namespace LightBDD.Fixie2.Implementation
 {
-    [DebuggerStepThrough]
     internal class FixieProgressNotifier
     {
         public static IFeatureProgressNotifier CreateFeatureProgressNotifier()

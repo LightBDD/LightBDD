@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using LightBDD.Core.Dependencies;
 
 namespace LightBDD.Core.Extensibility
@@ -7,7 +6,6 @@ namespace LightBDD.Core.Extensibility
     /// <summary>
     /// Class describing execution context for contextual scenarios or steps.
     /// </summary>
-    [DebuggerStepThrough]
     public class ExecutionContextDescriptor
     {
         /// <summary>
@@ -55,8 +53,6 @@ namespace LightBDD.Core.Extensibility
         {
             return null;
         }
-
-        [DebuggerStepThrough]
         private class ContextWrapper : IDisposable
         {
             private readonly Func<object> _contextProvider;

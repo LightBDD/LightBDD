@@ -5,7 +5,6 @@ using LightBDD.Framework.Notification;
 
 namespace LightBDD.NUnit2.Implementation
 {
-    [DebuggerStepThrough]
     internal class NUnit2ProgressNotifier
     {
         private static readonly DefaultProgressNotifier Notifier = new DefaultProgressNotifier(Console.WriteLine);

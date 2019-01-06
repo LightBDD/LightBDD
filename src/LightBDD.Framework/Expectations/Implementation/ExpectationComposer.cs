@@ -1,8 +1,5 @@
-﻿using System.Diagnostics;
-
-namespace LightBDD.Framework.Expectations.Implementation
+﻿namespace LightBDD.Framework.Expectations.Implementation
 {
-    [DebuggerStepThrough]
     internal class ExpectationComposer : IExpectationComposer
     {
         private bool _isNot;

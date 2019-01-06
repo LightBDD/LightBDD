@@ -8,7 +8,6 @@ using LightBDD.Framework.Extensibility;
 
 namespace LightBDD.Framework.Scenarios.Implementation
 {
-    [DebuggerStepThrough]
     internal class ContextualCompositeStepBuilder<TContext> : LightBddConfigurationAware, ICompositeStepBuilder<TContext>, IIntegrableCompositeStepBuilder
     {
         private readonly IIntegrableCompositeStepBuilder _target;

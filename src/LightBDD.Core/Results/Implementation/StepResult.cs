@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
@@ -10,7 +9,6 @@ using LightBDD.Core.Results.Parameters;
 
 namespace LightBDD.Core.Results.Implementation
 {
-    [DebuggerStepThrough]
     internal class StepResult : IStepResult
     {
         private readonly StepInfo _info;

@@ -1,14 +1,12 @@
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Implementation;
 using System;
-using System.Diagnostics;
 
 namespace LightBDD.Framework.Extensibility
 {
     /// <summary>
     /// <see cref="IBddRunner{TContext}"/> extensions.
     /// </summary>
-    [DebuggerStepThrough]
     public static class BddRunnerExtensions
     {
         /// <summary>

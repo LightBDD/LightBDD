@@ -2,11 +2,9 @@ using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Implementation;
 using System;
-using System.Diagnostics;
 
 namespace LightBDD.Core.Extensibility.Implementation
 {
-    [DebuggerStepThrough]
     internal class FeatureRunner : IFeatureRunner
     {
         private readonly FeatureResult _featureResult;

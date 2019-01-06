@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Results;
@@ -8,7 +7,6 @@ using NUnit.Framework;
 
 namespace LightBDD.NUnit3.Implementation
 {
-    [DebuggerStepThrough]
     internal class NUnit3IntegrationContext : DefaultIntegrationContext
     {
         public NUnit3IntegrationContext(LightBddConfiguration configuration)

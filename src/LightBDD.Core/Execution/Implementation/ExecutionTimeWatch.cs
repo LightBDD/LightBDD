@@ -4,7 +4,6 @@ using LightBDD.Core.Results;
 
 namespace LightBDD.Core.Execution.Implementation
 {
-    [DebuggerStepThrough]
     internal class ExecutionTimeWatch
     {
         private DateTimeOffset _start;

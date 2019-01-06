@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
 using LightBDD.Core.Execution;
 
 namespace LightBDD.Core.ExecutionContext.Implementation
 {
-    [DebuggerStepThrough]
     internal class CurrentScenarioProperty : IContextProperty
     {
         private IScenario _scenario;

@@ -7,7 +7,6 @@ using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Framework.Scenarios.Implementation
 {
-    [DebuggerStepThrough]
     internal class ContextualBddRunner<TContext> : IBddRunner<TContext>, IIntegratedScenarioBuilder<TContext>
     {
         public ContextualBddRunner(IBddRunner coreRunner, Func<object> contextProvider, bool takeOwnership)

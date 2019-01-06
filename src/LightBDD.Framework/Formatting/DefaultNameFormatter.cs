@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using LightBDD.Core.Formatting;
 
 namespace LightBDD.Framework.Formatting
@@ -6,7 +5,6 @@ namespace LightBDD.Framework.Formatting
     /// <summary>
     /// Default implementation of <see cref="INameFormatter"/> interface.
     /// </summary>
-    [DebuggerStepThrough]
     public class DefaultNameFormatter : INameFormatter
     {
         /// <summary>

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using LightBDD.Core.Execution;
 
 namespace LightBDD.Core.ExecutionContext.Implementation
 {
-    [DebuggerStepThrough]
     internal class CurrentStepProperty : IContextProperty
     {
         private readonly Stack<IStep> _steps = new Stack<IStep>();

@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Results;
@@ -8,7 +7,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.MsTest2.Implementation
 {
-    [DebuggerStepThrough]
     internal class MsTest2IntegrationContext : DefaultIntegrationContext
     {
         public MsTest2IntegrationContext(LightBddConfiguration configuration)

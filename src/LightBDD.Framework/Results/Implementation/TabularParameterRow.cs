@@ -8,7 +8,6 @@ using LightBDD.Core.Results.Parameters.Tabular;
 
 namespace LightBDD.Framework.Results.Implementation
 {
-    [DebuggerStepThrough]
     internal class TabularParameterRow : ITabularParameterRow
     {
         public TabularParameterRow(int rowId, IEnumerable<string> values)

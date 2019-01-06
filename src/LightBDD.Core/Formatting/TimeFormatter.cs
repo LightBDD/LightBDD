@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -8,7 +7,6 @@ namespace LightBDD.Core.Formatting
     /// <summary>
     /// Extension methods for formatting TimeSpan values.
     /// </summary>
-    [DebuggerStepThrough]
     public static class TimeFormatter
     {
         private static readonly Tuple<string, int, Func<TimeSpan, int>>[] Formatters = {

@@ -8,7 +8,6 @@ using NUnit.Framework;
 
 namespace LightBDD.NUnit2.Implementation
 {
-    [DebuggerStepThrough]
     internal class NUnit2IntegrationContext : DefaultIntegrationContext
     {
         public NUnit2IntegrationContext(LightBddConfiguration configuration)

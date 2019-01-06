@@ -7,7 +7,6 @@ using LightBDD.Framework.Extensibility;
 
 namespace LightBDD.Fixie2.Implementation
 {
-    [DebuggerStepThrough]
     internal class FixieIntegrationContext : DefaultIntegrationContext
     {
         public FixieIntegrationContext(LightBddConfiguration configuration)

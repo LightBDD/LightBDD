@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting.Values;
@@ -10,7 +9,6 @@ namespace LightBDD.Core.Execution.Coordination
     /// Feature coordinator class holding <see cref="FeatureRunnerRepository"/> allowing to instantiate runners as well as <see cref="IFeatureAggregator"/> used for aggregate execution results on coordinator disposal.
     /// The <see cref="Install"/> method allows to install instance that will be used in test execution cycle.
     /// </summary>
-    [DebuggerStepThrough]
     public abstract class FeatureCoordinator : IDisposable
     {
         private static readonly object Sync = new object();

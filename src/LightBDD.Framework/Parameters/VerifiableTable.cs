@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
@@ -21,7 +20,6 @@ namespace LightBDD.Framework.Parameters
     /// This class is an abstract base that can be extended to provide specialized verifiable tables.
     /// </summary>
     /// <typeparam name="TRow">Row type.</typeparam>
-    [DebuggerStepThrough]
     public abstract class VerifiableTable<TRow> : IComplexParameter, ISelfFormattable
     {
         private TabularParameterDetails _details;
@@ -157,7 +155,6 @@ namespace LightBDD.Framework.Parameters
         /// <summary>
         /// Row data containing expected value, actual value as well as row type.
         /// </summary>
-        [DebuggerStepThrough]
         protected class RowData
         {
             /// <summary>
@@ -187,7 +184,6 @@ namespace LightBDD.Framework.Parameters
         /// <summary>
         /// Type representing actual row value that can be row instance or exception.
         /// </summary>
-        [DebuggerStepThrough]
         protected struct RowDataActualValue
         {
             /// <summary>

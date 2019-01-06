@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility.Execution;
 
 namespace LightBDD.Core.Execution.Implementation
 {
-    [DebuggerStepThrough]
     internal class DecoratingExecutor
     {
         private static IEnumerable<Func<IStep, Func<Task>, Task>> ToInvocations(IEnumerable<IStepDecorator> extensions)
@@ -30,8 +28,6 @@ namespace LightBDD.Core.Execution.Implementation
             return new DecoratingExecutor<IStep>(ToInvocations(stepDecorators), step, stepInvocation).ExecuteAsync;
         }
     }
-
-    [DebuggerStepThrough]
     internal class DecoratingExecutor<T>
     {
         private readonly IEnumerator<Func<T, Func<Task>, Task>> _enumerator;

@@ -9,7 +9,6 @@ namespace LightBDD.Framework
     /// <summary>
     /// Step execution class, allowing to control step execution from method executing step.
     /// </summary>
-    [DebuggerStepThrough]
     public class StepExecution
     {
         /// <summary>

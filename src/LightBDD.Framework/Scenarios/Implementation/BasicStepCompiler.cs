@@ -8,7 +8,6 @@ using LightBDD.Core.Extensibility.Results;
 
 namespace LightBDD.Framework.Scenarios.Implementation
 {
-    [DebuggerStepThrough]
     internal static class BasicStepCompiler
     {
         public static StepDescriptor ToAsynchronousStep(Func<Task> step)
@@ -20,8 +19,6 @@ namespace LightBDD.Framework.Scenarios.Implementation
         {
             return new StepDescriptor(step.GetMethodInfo(), new StepExecutor(step).Execute);
         }
-
-        [DebuggerStepThrough]
         private class AsyncStepExecutor
         {
             private static readonly MethodInfo AsCompositeStepMethod = ((Func<Task, Task<IStepResultDescriptor>>)AsCompositeStep<IStepResultDescriptor>).GetMethodInfo().GetGenericMethodDefinition();
@@ -64,8 +61,6 @@ namespace LightBDD.Framework.Scenarios.Implementation
                 return await (Task<T>)stepTask;
             }
         }
-
-        [DebuggerStepThrough]
         private class StepExecutor
         {
             private readonly Action _invocation;

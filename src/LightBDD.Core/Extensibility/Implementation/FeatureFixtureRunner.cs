@@ -1,9 +1,7 @@
 using System;
-using System.Diagnostics;
 
 namespace LightBDD.Core.Extensibility.Implementation
 {
-    [DebuggerStepThrough]
     internal class FeatureFixtureRunner : IFeatureFixtureRunner
     {
         private readonly object _fixture;

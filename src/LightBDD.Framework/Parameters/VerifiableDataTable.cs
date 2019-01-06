@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Metadata;
@@ -19,7 +18,6 @@ namespace LightBDD.Framework.Parameters
     /// Please see <see cref="Table"/> type to learn how to create tables effectively.
     /// </summary>
     /// <typeparam name="TRow">Row type.</typeparam>
-    [DebuggerStepThrough]
     public class VerifiableDataTable<TRow> : VerifiableTable<TRow>
     {
         /// <summary>

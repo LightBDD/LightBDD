@@ -10,7 +10,6 @@ using NUnit.Framework;
 
 namespace LightBDD.NUnit2.Implementation
 {
-    [DebuggerStepThrough]
     internal class NUnit2MetadataProvider : CoreMetadataProvider
     {
         public NUnit2MetadataProvider(LightBddConfiguration configuration)

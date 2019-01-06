@@ -1,12 +1,10 @@
-﻿using System.Diagnostics;
-using LightBDD.Framework.Expectations.Implementation;
+﻿using LightBDD.Framework.Expectations.Implementation;
 
 namespace LightBDD.Framework.Expectations
 {
     /// <summary>
     /// Type allowing to define expectations.
     /// </summary>
-    [DebuggerStepThrough]
     public static class Expect
     {
         /// <summary>

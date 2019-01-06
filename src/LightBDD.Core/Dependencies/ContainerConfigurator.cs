@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 
 namespace LightBDD.Core.Dependencies
 {
     /// <summary>
     /// An abstract class allowing to configure container.
     /// </summary>
-    [DebuggerStepThrough]
     public abstract class ContainerConfigurator
     {
         /// <summary>

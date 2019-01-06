@@ -1,7 +1,6 @@
 using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using System;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace LightBDD.Core.Extensibility
@@ -10,7 +9,6 @@ namespace LightBDD.Core.Extensibility
     /// Class describing scenario including the scenario method info and parameters.
     /// It is designed to provide all required information for <see cref="IMetadataProvider"/>() method to build <see cref="IScenarioInfo"/> object.
     /// </summary>
-    [DebuggerStepThrough]
     public class ScenarioDescriptor
     {
         /// <summary>

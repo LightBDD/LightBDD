@@ -7,7 +7,6 @@ using LightBDD.Core.Results.Parameters.Tabular;
 
 namespace LightBDD.Framework.Results.Implementation
 {
-    [DebuggerStepThrough]
     internal class TabularParameterDetails : ITabularParameterDetails
     {
         public TabularParameterDetails(IEnumerable<ITabularParameterColumn> columns, IEnumerable<ITabularParameterRow> rows, ParameterVerificationStatus verificationStatus, Exception tableException = null)

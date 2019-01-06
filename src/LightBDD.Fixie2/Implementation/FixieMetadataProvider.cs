@@ -9,7 +9,6 @@ using LightBDD.Framework.Formatting.Configuration;
 
 namespace LightBDD.Fixie2.Implementation
 {
-    [DebuggerStepThrough]
     internal class FixieMetadataProvider : CoreMetadataProvider
     {
         public FixieMetadataProvider(LightBddConfiguration configuration)

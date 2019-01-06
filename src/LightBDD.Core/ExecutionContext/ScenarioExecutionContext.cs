@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Diagnostics;
 using LightBDD.Core.Execution;
 using LightBDD.Core.ExecutionContext.Implementation;
 
@@ -9,7 +8,6 @@ namespace LightBDD.Core.ExecutionContext
     /// <summary>
     /// Scenario execution context class allowing to store and retrieve scenario properties that would be available for all steps and tasks executed within the scenario.
     /// </summary>
-    [DebuggerStepThrough]
     //TODO: review naming!
     public sealed class ScenarioExecutionContext
     {
