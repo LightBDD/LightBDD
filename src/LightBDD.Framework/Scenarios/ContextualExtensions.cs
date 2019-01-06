@@ -42,7 +42,7 @@ namespace LightBDD.Framework.Scenarios
         }
 
         /// <summary>
-        /// Returns runner that will be executing scenarios in dedicated context of <typeparamref name="TContext"/> type.<br/>
+        /// Specifies that scenario will be executed in dedicated context of <typeparamref name="TContext"/> type.
         /// The context instance will be created by calling default constructor just before scenario execution.
         /// 
         /// All context instances implementing <see cref="IDisposable"/> interface will be disposed after scenario.
@@ -56,10 +56,10 @@ namespace LightBDD.Framework.Scenarios
         }
 
         /// <summary>
-        /// Specifies that scenario will be executed in dedicated context of <typeparamref name="TContext"/> type, created by <paramref name="contextFactory"/> function.
+        /// Specifies that composite step will be executed in dedicated context of <typeparamref name="TContext"/> type, created by <paramref name="contextFactory"/> function.
         /// The context instance will be created by calling default constructor just before scenario execution.
         /// 
-        /// The <paramref name="takeOwnership"/> specifies if created context should be disposed (when implements <see cref="IDisposable"/> interface) by scenario runner. By default is it set to <c>true</c>.
+        /// The <paramref name="takeOwnership"/> specifies if created context should be disposed (when implements <see cref="IDisposable"/> interface) by runner. By default is it set to <c>true</c>.
         /// </summary>
         /// <typeparam name="TContext">Context type.</typeparam>
         /// <param name="runner"><see cref="ICompositeStepBuilder"/> instance.</param>
@@ -72,9 +72,9 @@ namespace LightBDD.Framework.Scenarios
         }
 
         /// <summary>
-        /// Specifies that scenario will be executed in dedicated <paramref name="context"/> of <typeparamref name="TContext"/> type.
+        /// Specifies that composite step will be executed in dedicated <paramref name="context"/> of <typeparamref name="TContext"/> type.
         /// 
-        /// The <paramref name="takeOwnership"/> specifies if created context should be disposed (when implements <see cref="IDisposable"/> interface) by scenario runner. By default is it set to <c>false</c>.
+        /// The <paramref name="takeOwnership"/> specifies if created context should be disposed (when implements <see cref="IDisposable"/> interface) by runner. By default is it set to <c>false</c>.
         /// </summary>
         /// <typeparam name="TContext">Context type.</typeparam>
         /// <param name="runner"><see cref="ICompositeStepBuilder"/> instance.</param>
@@ -87,7 +87,7 @@ namespace LightBDD.Framework.Scenarios
         }
 
         /// <summary>
-        /// Returns runner that will be executing scenarios in dedicated context of <typeparamref name="TContext"/> type.<br/>
+        /// Specifies that composite step will be executed in dedicated context <typeparamref name="TContext"/> type.
         /// The context instance will be created by calling default constructor just before scenario execution.
         /// 
         /// All context instances implementing <see cref="IDisposable"/> interface will be disposed after scenario.

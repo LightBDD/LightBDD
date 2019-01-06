@@ -1,16 +1,29 @@
-﻿using System;
+﻿using LightBDD.Core.Execution;
+using LightBDD.Framework.Scenarios.Implementation;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LightBDD.Core.Execution;
-using LightBDD.Framework.Scenarios.Implementation;
 
 namespace LightBDD.Framework.Scenarios
 {
     /// <summary>
-    /// Extensions class allowing to use basic scenario syntax for running LightBDD tests.
+    /// Extensions class allowing to use basic syntax for defining and running LightBDD tests.
     /// </summary>
     public static class BasicExtensions
     {
+        /// <summary>
+        /// Adds steps specified by <paramref name="steps"/> to the scenario, where steps names are inferred directly from provided action names.<br/>
+        /// Example usage:
+        /// <code>
+        /// AddSteps(
+        ///         Given_numbers_5_and_8,
+        ///         When_I_add_them,
+        ///         I_should_receive_number_13)
+        /// </code>
+        /// Expected step signature: <code>void Given_numbers_5_and_8() { /* ... */ }</code>
+        /// </summary>
+        /// <param name="builder">Builder.</param>
+        /// <param name="steps">Steps to add, like: <c>AddSteps(Given_numbers_5_and_8, When_I_add_them, I_should_receive_number_13)</c></param>
         public static IScenarioRunner<NoContext> AddSteps(this IScenarioBuilder<NoContext> builder, params Action[] steps)
         {
             var integration = builder.Integrate();
@@ -18,6 +31,19 @@ namespace LightBDD.Framework.Scenarios
             return integration;
         }
 
+        /// <summary>
+        /// Adds asynchronous steps specified by <paramref name="steps"/> to the scenario, where steps names are inferred directly from provided action names.<br/>
+        /// Example usage:
+        /// <code>
+        /// AddAsyncSteps(
+        ///         Given_numbers_5_and_8,
+        ///         When_I_add_them,
+        ///         I_should_receive_number_13)
+        /// </code>
+        /// Expected step signature: <code>Task Given_numbers_5_and_8() { /* ... */ }</code>
+        /// </summary>
+        /// <param name="builder">Builder.</param>
+        /// <param name="steps">Steps to add, like: <c>AddAsyncSteps(Given_numbers_5_and_8, When_I_add_them, I_should_receive_number_13)</c></param>
         public static IScenarioRunner<NoContext> AddAsyncSteps(this IScenarioBuilder<NoContext> builder, params Func<Task>[] steps)
         {
             var integration = builder.Integrate();
@@ -25,12 +51,38 @@ namespace LightBDD.Framework.Scenarios
             return integration;
         }
 
+        /// <summary>
+        /// Adds steps specified by <paramref name="steps"/> to the composite step, where steps names are inferred directly from provided action names.<br/>
+        /// Example usage:
+        /// <code>
+        /// AddSteps(
+        ///         Given_numbers_5_and_8,
+        ///         When_I_add_them,
+        ///         I_should_receive_number_13)
+        /// </code>
+        /// Expected step signature: <code>void Given_numbers_5_and_8() { /* ... */ }</code>
+        /// </summary>
+        /// <param name="builder">Builder.</param>
+        /// <param name="steps">Steps to add, like: <c>AddSteps(Given_numbers_5_and_8, When_I_add_them, I_should_receive_number_13)</c></param>
         public static ICompositeStepBuilder<NoContext> AddSteps(this ICompositeStepBuilder<NoContext> builder, params Action[] steps)
         {
             builder.Integrate().AddSteps(steps.Select(BasicStepCompiler.ToSynchronousStep));
             return builder;
         }
 
+        /// <summary>
+        /// Adds asynchronous steps specified by <paramref name="steps"/> to the composite step, where steps names are inferred directly from provided action names.<br/>
+        /// Example usage:
+        /// <code>
+        /// AddAsyncSteps(
+        ///         Given_numbers_5_and_8,
+        ///         When_I_add_them,
+        ///         I_should_receive_number_13)
+        /// </code>
+        /// Expected step signature: <code>Task Given_numbers_5_and_8() { /* ... */ }</code>
+        /// </summary>
+        /// <param name="builder">Builder.</param>
+        /// <param name="steps">Steps to add, like: <c>AddAsyncSteps(Given_numbers_5_and_8, When_I_add_them, I_should_receive_number_13)</c></param>
         public static ICompositeStepBuilder<NoContext> AddAsyncSteps(this ICompositeStepBuilder<NoContext> builder, params Func<Task>[] steps)
         {
             builder.Integrate().AddSteps(steps.Select(BasicStepCompiler.ToAsynchronousStep));
@@ -40,28 +92,17 @@ namespace LightBDD.Framework.Scenarios
         /// <summary>
         /// Runs test scenario by executing given steps in specified order.<br/>
         /// If given step throws, other are not executed.<br/>
-        /// Scenario name is determined from the method name in which <see cref="RunScenario"/>() method is called.<br/>
+        /// The scenario name is determined from the current scenario test method.<br/>
         /// Scenario labels are determined from <see cref="LabelAttribute"/> attributes applied on scenario method.<br/>
-        /// Step name is determined from corresponding action name.<br/>
+        /// The step name is determined from corresponding action name.<br/>
         /// Example usage:
         /// <code>
-        /// [Scenario]
-        /// [Label("Ticket-1")]
-        /// public void Successful_login()
-        /// {
-        ///     Runner.RunScenario(
-        ///         Given_the_user_is_about_to_login,
-        ///         Given_the_user_entered_valid_login,
-        ///         Given_the_user_entered_valid_password,
-        ///         When_the_user_clicks_login_button,
-        ///         Then_the_login_operation_should_be_successful,
-        ///         Then_a_welcome_message_containing_user_name_should_be_returned);
-        /// }
+        /// Runner.RunScenario(
+        ///         Given_numbers_5_and_8,
+        ///         When_I_add_them,
+        ///         I_should_receive_number_13);
         /// </code>
-        /// Expected step signature:
-        /// <code>
-        /// void Given_the_user_is_about_to_login() { /* ... */ }
-        /// </code>
+        /// Expected step signature: <code>void Given_numbers_5_and_8() { /* ... */ }</code>
         /// </summary>
         /// <param name="runner">Runner.</param>
         /// <param name="steps">List of steps to execute in order.</param>
@@ -83,31 +124,24 @@ namespace LightBDD.Framework.Scenarios
         }
 
         /// <summary>
-        /// Runs test scenario by executing given steps in specified order.<br/>
+        /// Runs asynchronous test scenario by executing given steps in specified order.<br/>
         /// If given step throws, other are not executed.<br/>
-        /// Scenario name is determined from the method name in which <see cref="RunScenarioAsync"/>() method is called.<br/>
+        /// The scenario name is determined from the current scenario test method.<br/>
         /// Scenario labels are determined from <see cref="LabelAttribute"/> attributes applied on scenario method.<br/>
-        /// Step name is determined from corresponding action name.<br/>
+        /// The step name is determined from corresponding action name.<br/>
         /// Example usage:
         /// <code>
-        /// [Scenario]
-        /// [Label("Ticket-1")]
-        /// public Task Successful_login()
-        /// {
-        ///     return Runner.RunScenarioAsync(
-        ///         Given_the_user_is_about_to_login,
-        ///         Given_the_user_entered_valid_login,
-        ///         Given_the_user_entered_valid_password,
-        ///         When_the_user_clicks_login_button,
-        ///         Then_the_login_operation_should_be_successful,
-        ///         Then_a_welcome_message_containing_user_name_should_be_returned);
-        /// }
+        /// await Runner.RunScenarioAsync(
+        ///         Given_numbers_5_and_8,
+        ///         When_I_add_them,
+        ///         I_should_receive_number_13);
         /// </code>
         /// Expected step signature:
         /// <code>
-        /// async Task Given_the_user_is_about_to_login() { /* ... */ }
+        /// async Task Given_numbers_5_and_8() { /* ... */ }
         /// </code>
         /// </summary>
+        /// <remarks>This is an asynchronous method and should be awaited.</remarks>
         /// <param name="runner">Runner.</param>
         /// <param name="steps">List of steps to execute in order.</param>
         public static async Task RunScenarioAsync(this IBddRunner runner, params Func<Task>[] steps)

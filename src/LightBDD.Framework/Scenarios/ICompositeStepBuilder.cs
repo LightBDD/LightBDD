@@ -14,6 +14,10 @@ namespace LightBDD.Framework.Scenarios
         /// <returns><see cref="CompositeStep"/> instance.</returns>
         CompositeStep Build();
 
+        /// <summary>
+        /// This method should not be used by LightBDD users, but code extending LightBDD capabilities.<br/>
+        /// Returns core version of the builder, allowing to configure composite step.<br/>
+        /// </summary>
         IIntegrableCompositeStepBuilder Integrate();
     }
 
