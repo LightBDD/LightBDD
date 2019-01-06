@@ -29,8 +29,10 @@ namespace LightBDD.Framework.Scenarios.Contextual.Implementation
         {
             try
             {
-                //TODO: test
-                await Core.Build().ExecuteAsync();
+                await Core
+                    .WithCapturedScenarioDetailsIfNotSpecified()
+                    .Build()
+                    .ExecuteAsync();
             }
             catch (ScenarioExecutionException e)
             {
