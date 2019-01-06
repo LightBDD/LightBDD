@@ -78,12 +78,11 @@ namespace LightBDD.Core.Extensibility
         ICoreScenarioBuilder WithScenarioDecorators(IEnumerable<IScenarioDecorator> scenarioDecorators);
 
         /// <summary>
-        /// Builds scenario and returns delegate to it.
-        /// Any exceptions thrown in scenario steps will be wrapped in <see cref="ScenarioExecutionException"/>. Code calling this method can rethrow the original exception by calling <code>ex.GetOriginal().Throw()</code>
+        /// Builds scenario.
         /// </summary>
-        /// <returns>Scenario task.</returns>
+        /// <returns>Scenario.</returns>
         /// <exception cref="InvalidOperationException">Throws when name or steps are not defined.</exception>
-        Func<Task> Build();
+        IRunnableScenario Build();
         /// <summary>
         /// TODO:fix
         /// </summary>

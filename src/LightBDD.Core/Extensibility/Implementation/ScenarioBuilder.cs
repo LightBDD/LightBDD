@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.Execution;
 
 namespace LightBDD.Core.Extensibility.Implementation
 {
@@ -100,11 +101,10 @@ namespace LightBDD.Core.Extensibility.Implementation
             return this;
         }
 
-        public Func<Task> Build()
+        public IRunnableScenario Build()
         {
             ValidateContext();
-            var scenario = new RunnableScenario(_context, new ScenarioInfo(_name, _labels, _categories), _steps, _contextDescriptor, GetScenarioDecorators());
-            return scenario.ExecuteAsync;
+            return new RunnableScenario(_context, new ScenarioInfo(_name, _labels, _categories), _steps, _contextDescriptor, GetScenarioDecorators());
         }
 
         public LightBddConfiguration Configuration => _context.IntegrationContext.Configuration;

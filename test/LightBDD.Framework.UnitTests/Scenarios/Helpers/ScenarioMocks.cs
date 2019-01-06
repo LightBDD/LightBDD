@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Scenarios;
 using Moq;
@@ -19,7 +20,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
             {
                 var integrated = new Mock<IIntegratedScenarioBuilder<NoContext>>();
                 integrated.Setup(x => x.Core).Returns(builder.Object);
-                integrated.Setup(x => x.RunAsync()).Returns(() => builder.Object.Build().Invoke());
+                integrated.Setup(x => x.RunAsync()).Returns(() => builder.Object.Build().ExecuteAsync());
                 integrated.Setup(x => x.Integrate()).Returns(integrated.Object);
                 sequence = sequence.Returns(integrated.Object);
             }
@@ -81,13 +82,18 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
         public static Capture<bool> ExpectBuild(this Mock<ICoreScenarioBuilder> builder)
         {
             var capture = new Capture<bool>();
-            builder
-                .Setup(s => s.Build())
+            
+            var runnable = new Mock<IRunnableScenario>();
+            runnable.Setup(x => x.ExecuteAsync())
                 .Returns(() =>
                 {
                     capture.Value = true;
                     return Task.FromResult(0);
-                })
+                });
+
+            builder
+                .Setup(s => s.Build())
+                .Returns(runnable.Object)
                 .Verifiable();
             return capture;
         }

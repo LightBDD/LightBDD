@@ -11,12 +11,15 @@ using LightBDD.Core.Results.Implementation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LightBDD.Core.Execution.Implementation
 {
-    internal class RunnableScenario : IScenario
+    internal class RunnableScenario : IScenario, IRunnableScenario
     {
+        private const int NotRunValue = 0;
+        private const int RunValue = 1;
         private readonly RunnableScenarioContext _scenarioContext;
         private readonly IEnumerable<StepDescriptor> _stepDescriptors;
         private readonly ExecutionContextDescriptor _contextDescriptor;
@@ -26,6 +29,7 @@ namespace LightBDD.Core.Execution.Implementation
         private IDependencyContainer _scope;
         private Func<Exception, bool> _shouldAbortSubStepExecutionFn = ex => true;
         private RunnableStep[] _preparedSteps = Arrays<RunnableStep>.Empty();
+        private int _alreadyRun = NotRunValue;
         public IScenarioInfo Info => _result.Info;
         public IDependencyResolver DependencyResolver => _scope;
         public object Context { get; private set; }
@@ -43,6 +47,9 @@ namespace LightBDD.Core.Execution.Implementation
 
         public async Task ExecuteAsync()
         {
+            if (Interlocked.Exchange(ref _alreadyRun, RunValue) != NotRunValue)
+                throw new InvalidOperationException("Scenario can be run only once");
+
             var watch = ExecutionTimeWatch.StartNew();
             try
             {

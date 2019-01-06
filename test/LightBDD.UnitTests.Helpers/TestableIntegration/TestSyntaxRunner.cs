@@ -61,7 +61,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
                     .WithCapturedScenarioDetails()
                     .AddSteps(steps)
                     .Build()
-                    .Invoke()
+                    .ExecuteAsync()
                     .GetAwaiter()
                     .GetResult();
             }
@@ -78,7 +78,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
                     .WithCapturedScenarioDetails()
                     .AddSteps(steps)
                     .Build()
-                    .Invoke();
+                    .ExecuteAsync();
             }
             catch (ScenarioExecutionException e)
             {
@@ -98,13 +98,11 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
         {
             try
             {
-                //TODO: check?
                 NewScenario()
                     .WithCapturedScenarioDetails()
                     .AddSteps(steps)
                     .Build()
-                    .Invoke()
-                    .GetAwaiter().GetResult();
+                    .ExecuteSync();
             }
             catch (ScenarioExecutionException e)
             {
@@ -129,7 +127,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
                     .WithName(name)
                     .AddSteps(steps)
                     .Build()
-                    .Invoke();
+                    .ExecuteAsync();
             }
             catch (ScenarioExecutionException e)
             {

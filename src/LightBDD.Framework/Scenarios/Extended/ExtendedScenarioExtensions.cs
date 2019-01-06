@@ -1,5 +1,4 @@
 ﻿using LightBDD.Core.Execution;
-using LightBDD.Framework.Scenarios.Implementation;
 using System;
 using System.Diagnostics;
 using System.Linq.Expressions;
@@ -78,8 +77,7 @@ namespace LightBDD.Framework.Scenarios.Extended
                     .Integrate().Core
                     .WithCapturedScenarioDetails()
                     .Build()
-                    .Invoke()
-                    .AwaitSyncScenario();
+                    .ExecuteSync();
             }
             catch (ScenarioExecutionException e)
             {
@@ -152,7 +150,7 @@ namespace LightBDD.Framework.Scenarios.Extended
                     .Integrate().Core
                     .WithCapturedScenarioDetails()
                     .Build()
-                    .Invoke();
+                    .ExecuteAsync();
             }
             catch (ScenarioExecutionException e)
             {

@@ -22,7 +22,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
         {
             try
             {
-                await Core.Build().Invoke();
+                await Core.Build().ExecuteAsync();
             }
             catch (ScenarioExecutionException e)
             {

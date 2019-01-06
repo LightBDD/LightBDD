@@ -21,7 +21,7 @@ namespace LightBDD.Framework.Implementation
                 await Core
                     .WithCapturedScenarioDetailsIfNotSpecified()
                     .Build()
-                    .Invoke();
+                    .ExecuteAsync();
             }
             catch (ScenarioExecutionException e)
             {
