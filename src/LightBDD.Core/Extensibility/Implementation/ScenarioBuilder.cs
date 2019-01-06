@@ -110,8 +110,7 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         private IEnumerable<IScenarioDecorator> GetScenarioDecorators()
         {
-            return _context.IntegrationContext.Configuration.ExecutionExtensionsConfiguration()
-                .ScenarioDecorators.Concat(_scenarioDecorators);
+            return _context.IntegrationContext.ExecutionExtensions.ScenarioDecorators.Concat(_scenarioDecorators);
         }
 
         private void ValidateContext()
@@ -132,7 +131,7 @@ namespace LightBDD.Core.Extensibility.Implementation
             var steps = new RunnableStep[totalSteps];
             string previousStepTypeName = null;
 
-            var extensions = _context.IntegrationContext.Configuration.ExecutionExtensionsConfiguration();
+            var extensions = _context.IntegrationContext.ExecutionExtensions;
             var stepContext = new RunnableStepContext(_context.ExceptionProcessor, _context.ProgressNotifier, container, context, ProvideSteps, shouldAbortSubStepExecutionFn);
             for (var stepIndex = 0; stepIndex < totalSteps; ++stepIndex)
             {

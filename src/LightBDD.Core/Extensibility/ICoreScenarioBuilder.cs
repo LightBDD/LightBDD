@@ -82,8 +82,9 @@ namespace LightBDD.Core.Extensibility
         /// <returns>Scenario.</returns>
         /// <exception cref="InvalidOperationException">Throws when name or steps are not defined.</exception>
         IRunnableScenario Build();
+
         /// <summary>
-        /// TODO:fix
+        /// Returns current <see cref="LightBddConfiguration"/> instance.
         /// </summary>
         LightBddConfiguration Configuration { get; }
     }

@@ -54,7 +54,5 @@ namespace LightBDD.Core.Extensibility
         /// Returns configured <see cref="IDependencyContainer"/>, used to resolve dependencies for LightBDD contexts.
         /// </summary>
         public abstract IDependencyContainer DependencyContainer { get; }
-
-        //TODO: remove IFeatureRunner and make a configurable method here to instantiate one
     }
 }
