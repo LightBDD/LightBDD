@@ -6,7 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B3AFFD69-36B4-43D6-A6AA-72914D15055C}"
 	ProjectSection(SolutionItems) = preProject
 		Changelog.txt = Changelog.txt
-		Common.props = Common.props
 		LICENSE.txt = LICENSE.txt
 		QuickStart.txt = QuickStart.txt
 		README.md = README.md
@@ -14,6 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A7491D1D-7E5B-4021-8105-4098683807EB}"
+	ProjectSection(SolutionItems) = preProject
+		test\Common.Tests.props = test\Common.Tests.props
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Core", "src\LightBDD.Core\LightBDD.Core.csproj", "{1404165C-13B2-43E2-A78D-6B271EB62FC8}"
 EndProject
@@ -62,6 +64,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integrations", "Integrations", "{527D4497-4F9D-474C-93C7-773D6D48FCF3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{795CD637-D3F6-44AB-A408-AA89B7C18356}"
+	ProjectSection(SolutionItems) = preProject
+		src\Common.props = src\Common.props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

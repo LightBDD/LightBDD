@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\..\Common.props" />
+  <Import Project="..\Common.props" />
   <PropertyGroup>
     <Description>Allows creating acceptance tests in developer friendly environment by offering LightBDD.Framework features on top of NUnit 2 testing framework.
 
