@@ -17,7 +17,7 @@ Define-Step -Name 'Update version' -Target 'all,build' -Body {
     Write-ShortStatus "Updating version to $version..."
 
     Replace-InFile 'AssemblyVersion.cs' $version 'Version("%")'
-    Replace-InFile 'Common.props' $version '<VersionPrefix>%</VersionPrefix>'
+    Replace-InFile 'src\Common.props' $version '<VersionPrefix>%</VersionPrefix>'
     Replace-InFile 'QuickStart.txt' $version 'version %!'
     Replace-InFile 'templates\LightBDD.VSIXTemplates\source.extension.vsixmanifest' $version 'Identity Id="fe1ca06b-95ef-41a1-8e09-fe903b2945a4" Version="%"'
     Get-ChildItem '.\templates' 'ProjectTemplate.csproj' -Recurse | %{
