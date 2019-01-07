@@ -36,8 +36,6 @@ Define-Step -Name 'Tests' -Target 'all,test' -Body {
     . (require 'psmake.mod.testing')
 
     $tests = Define-DotnetTests -TestProject "*.UnitTests.csproj"
-    $tests += Define-NUnitTests -GroupName "NUnit 2 tests (net45)" -TestAssembly "*\bin\Release\net45\*.NUnitTests.dll"
-    $tests += Define-NUnitTests -GroupName "NUnit 2 tests (net46)" -TestAssembly "*\bin\Release\net46\*.NUnitTests.dll"
     $tests += Define-DotnetTests -TestProject "*.AcceptanceTests.csproj"
 
     $tests | Run-Tests
