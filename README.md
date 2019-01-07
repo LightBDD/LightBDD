@@ -7,17 +7,14 @@ Build (official) | [![Build status](https://ci.appveyor.com/api/projects/status/
 Build (linux/mono) | [![Build Status](https://travis-ci.org/LightBDD/LightBDD.svg?branch=master)](https://travis-ci.org/LightBDD/LightBDD) | 
 Chat (gitter) | [![Join the chat at https://gitter.im/LightBDD/LightBDD](https://badges.gitter.im/LightBDD/LightBDD.svg)](https://gitter.im/LightBDD/LightBDD?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) | 
 LightBDD.NUnit3 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.NUnit3?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.NUnit3/) | .NET Standard >= 1.6 <br> .NET Framework >= 4.5 <br> .NET Core >= 1.0
-LightBDD.NUnit2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.NUnit2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.NUnit2/) | .NET Framework >= 4.5
 LightBDD.XUnit2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.XUnit2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.XUnit2/) | .NET Standard >= 1.3 <br> .NET Framework >= 4.5.2 <br> .NET Core >= 1.0
 LightBDD.MsTest2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MsTest2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.MsTest2/) | .NET Standard >= 1.3 <br> .NET Framework >= 4.5 <br> .NET Core >= 1.0 <br> UWP
 LightBDD.Fixie2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Fixie2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Fixie2/) | .NET Framework >= 4.5.2 <br> .NET Core >= 2.0
 LightBDD.Autofac | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Autofac?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Autofac/) | .NET Standard >= 1.3 <br> .NET Framework >= 4.5
 LightBDD.Extensions.DependencyInjection | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Extensions.DependencyInjection?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Extensions.DependencyInjection/) | .NET Standard >= 2.0
+LightBDD.NUnit2 (2.x) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.NUnit2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.NUnit2/) | .NET Framework >= 4.5
 LightBDD.MbUnit (1.x) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MbUnit?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.MbUnit/) | .NET Framework >= 4.0
 LightBDD.MsTest (1.x) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MsTest?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.MsTest/) | .NET Framework >= 4.0
-LightBDD.NUnit (deprecated) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.NUnit?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.NUnit/) |
-LightBDD.XUnit (deprecated) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.XUnit?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.XUnit/) |
-LightBDD (deprecated) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD?includePreReleases=true)](https://www.nuget.org/packages/LightBDD/) |
 
 Have you ever been using the BDD methodology? Yes? - cool.
 Now, have you tried to write stories or acceptance criteria using tools like [SpecFlow](http://www.specflow.org/) or [Fitnesse](http://fitnesse.org/)?
@@ -192,7 +189,6 @@ To read more, please see [Generating Reports](https://github.com/LightBDD/LightB
 The LightBDD is available on [NuGet](https://www.nuget.org/packages?q=LightBDD): 
 
 * `PM> Install-Package LightBDD.NUnit3` for package using NUnit 3x
-* `PM> Install-Package LightBDD.NUnit2` for package using NUnit 2x
 * `PM> Install-Package LightBDD.XUnit2` for package using xUnit 2x
 * `PM> Install-Package LightBDD.MsTest2` for package using MsTest.TestFramework
 * `PM> Install-Package LightBDD.Fixie2` for package using Fixie 2x
