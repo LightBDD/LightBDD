@@ -19,7 +19,7 @@
     <LangVersion>latest</LangVersion>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\lightbdd.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\lightbdd.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
