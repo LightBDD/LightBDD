@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\..\Common.props" />
+  <Import Project="..\Common.props" />
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <Description>Provides LightBDD integration with Microsoft.Extensions.DependencyInjection, allowing to use Microsoft DI compatible container for LightBDD scenarios.
