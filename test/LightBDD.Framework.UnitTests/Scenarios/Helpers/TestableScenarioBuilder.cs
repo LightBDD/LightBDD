@@ -23,7 +23,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
 
         public IIntegratedScenarioBuilder<T> Integrate() => this;
 
-        public async Task RunAsync()
+        public Task RunAsync()
         {
             throw new NotImplementedException();
         }
