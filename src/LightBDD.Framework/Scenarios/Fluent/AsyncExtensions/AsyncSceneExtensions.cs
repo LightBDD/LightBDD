@@ -4,12 +4,12 @@ using System.Text;
 using System.Threading.Tasks;
 using LightBDD.Framework.Scenarios.Basic;
 
-namespace LightBDD.Framework.Scenarios.Fluent
+namespace LightBDD.Framework.Scenarios.Fluent.AsyncExtensions
 {
 	/// <summary>
 	/// Extention methods for Given-When-Then
 	/// </summary>
-	public static class AsyncSceneExtentions
+	public static class AsyncSceneExtensions
 	{
 		/// <summary>
 		/// Given Extention for IBddRunner 

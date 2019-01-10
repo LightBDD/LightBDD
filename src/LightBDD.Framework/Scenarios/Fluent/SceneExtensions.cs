@@ -9,7 +9,7 @@ namespace LightBDD.Framework.Scenarios.Fluent
 	/// <summary>
 	/// Extention methods for Given-When-Then
 	/// </summary>
-	public static class SceneExtentions
+	public static class SceneExtensions
 	{
 		/// <summary>
 		/// Given Extention for IBddRunner 
