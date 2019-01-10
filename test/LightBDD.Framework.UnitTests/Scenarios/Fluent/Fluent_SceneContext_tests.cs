@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using LightBDD.Framework.Scenarios.Fluent;
+using LightBDD.Framework.Scenarios.Fluent.AsyncExtensions;
 using LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers;
 using NUnit.Framework;
 

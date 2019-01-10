@@ -1,4 +1,5 @@
 ﻿using LightBDD.Framework.Scenarios.Fluent;
+using LightBDD.Framework.Scenarios.Fluent.AsyncExtensions;
 using System;
 using System.Collections.Generic;
 using System.Text;
