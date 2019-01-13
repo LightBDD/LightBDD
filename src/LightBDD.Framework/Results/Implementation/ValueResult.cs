@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using LightBDD.Core.Metadata;
+﻿using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters;
 
 namespace LightBDD.Framework.Results.Implementation

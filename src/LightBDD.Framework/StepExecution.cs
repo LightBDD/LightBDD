@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution;
 using LightBDD.Core.ExecutionContext;
@@ -61,7 +60,6 @@ namespace LightBDD.Framework
         /// </summary>
         public IDependencyResolver GetScenarioDependencyResolver()
         {
-            //TODO: check if can be done better, not in StepExecution
             return ScenarioExecutionContext.CurrentScenario.DependencyResolver;
         }
     }

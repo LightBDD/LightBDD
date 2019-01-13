@@ -7,10 +7,8 @@ using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Results;
-using LightBDD.Core.Formatting;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
-using LightBDD.Framework.Formatting;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 

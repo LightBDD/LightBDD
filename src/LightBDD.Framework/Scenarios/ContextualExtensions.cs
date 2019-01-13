@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using LightBDD.Framework.Scenarios.Implementation;
 
 namespace LightBDD.Framework.Scenarios

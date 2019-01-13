@@ -17,7 +17,6 @@ namespace LightBDD.Framework.Extensibility
         /// <returns>Self.</returns>
         IIntegrableStepGroupBuilder AddSteps(IEnumerable<StepDescriptor> steps);
 
-        //TODO: review before 3.0
         /// <summary>
         /// Configuration.
         /// </summary>

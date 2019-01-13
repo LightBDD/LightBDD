@@ -6,7 +6,6 @@ using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
 using System;
 using LightBDD.Core.Formatting.Values;
-using LightBDD.Core.Reporting;
 
 namespace LightBDD.Core.Extensibility
 {

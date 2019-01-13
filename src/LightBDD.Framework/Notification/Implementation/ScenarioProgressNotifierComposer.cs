@@ -2,7 +2,7 @@
 using System.Linq;
 using LightBDD.Core.Notification;
 
-namespace LightBDD.Framework.Notification.Configuration.Implementation
+namespace LightBDD.Framework.Notification.Implementation
 {
     internal class ScenarioProgressNotifierComposer
     {

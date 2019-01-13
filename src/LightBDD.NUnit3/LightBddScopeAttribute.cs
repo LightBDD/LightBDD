@@ -2,7 +2,6 @@ using System;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Framework.Configuration;
-using LightBDD.Framework.Notification.Configuration;
 using LightBDD.NUnit3.Configuration;
 using LightBDD.NUnit3.Implementation;
 using NUnit.Framework;

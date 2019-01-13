@@ -4,10 +4,10 @@ using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
+using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Formatting;
 using LightBDD.Framework.Notification;
-using LightBDD.Framework.Notification.Configuration;
 
 namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {

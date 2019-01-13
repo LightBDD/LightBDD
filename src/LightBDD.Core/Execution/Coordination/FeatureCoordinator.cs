@@ -32,7 +32,6 @@ namespace LightBDD.Core.Execution.Coordination
         /// </summary>
         public LightBddConfiguration Configuration { get; }
 
-        //TODO: check
         /// <summary>
         /// Returns <see cref="IValueFormattingService"/> configured in this coordinator.
         /// </summary>

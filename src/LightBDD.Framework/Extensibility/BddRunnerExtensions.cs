@@ -20,7 +20,6 @@ namespace LightBDD.Framework.Extensibility
         {
             if (featureRunner == null)
                 throw new ArgumentNullException(nameof(featureRunner));
-            //TODO: review before 3.0
             return new BddRunner(featureRunner.ForFixture(fixture));
         }
     }

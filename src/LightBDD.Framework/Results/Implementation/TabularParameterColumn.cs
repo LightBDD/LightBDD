@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using LightBDD.Core.Results.Parameters.Tabular;
+﻿using LightBDD.Core.Results.Parameters.Tabular;
 
 namespace LightBDD.Framework.Results.Implementation
 {

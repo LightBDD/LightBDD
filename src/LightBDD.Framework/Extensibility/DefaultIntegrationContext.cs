@@ -6,8 +6,8 @@ using LightBDD.Core.Formatting;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
-using LightBDD.Framework.Notification.Configuration;
 using System;
+using LightBDD.Framework.Configuration;
 
 namespace LightBDD.Framework.Extensibility
 {

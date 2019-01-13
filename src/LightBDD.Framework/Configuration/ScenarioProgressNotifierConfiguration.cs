@@ -1,9 +1,10 @@
 ﻿using System;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Notification;
-using LightBDD.Framework.Notification.Configuration.Implementation;
+using LightBDD.Framework.Notification;
+using LightBDD.Framework.Notification.Implementation;
 
-namespace LightBDD.Framework.Notification.Configuration
+namespace LightBDD.Framework.Configuration
 {
     /// <summary>
     /// Configuration class allowing to customize scenario progress notification behavior.

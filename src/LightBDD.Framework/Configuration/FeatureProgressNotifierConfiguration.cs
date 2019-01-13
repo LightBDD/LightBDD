@@ -2,8 +2,9 @@
 using System.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Notification;
+using LightBDD.Framework.Notification;
 
-namespace LightBDD.Framework.Notification.Configuration
+namespace LightBDD.Framework.Configuration
 {
     /// <summary>
     /// Configuration class allowing to customize feature progress notification behavior.

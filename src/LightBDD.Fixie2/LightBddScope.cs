@@ -1,12 +1,10 @@
 using System;
-using System.Diagnostics;
 using Fixie;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Fixie2.Configuration;
 using LightBDD.Fixie2.Implementation;
 using LightBDD.Framework.Configuration;
-using LightBDD.Framework.Notification.Configuration;
 
 namespace LightBDD.Fixie2
 {

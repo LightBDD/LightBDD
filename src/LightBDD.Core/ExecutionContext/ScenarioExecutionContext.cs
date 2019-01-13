@@ -8,7 +8,6 @@ namespace LightBDD.Core.ExecutionContext
     /// <summary>
     /// Scenario execution context class allowing to store and retrieve scenario properties that would be available for all steps and tasks executed within the scenario.
     /// </summary>
-    //TODO: review naming!
     public sealed class ScenarioExecutionContext
     {
         private static readonly AsyncLocalContext<ScenarioExecutionContext> CurrentContext = new AsyncLocalContext<ScenarioExecutionContext>();

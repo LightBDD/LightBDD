@@ -2,7 +2,6 @@
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution.Coordination;
-using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Execution.Coordination;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using Moq;

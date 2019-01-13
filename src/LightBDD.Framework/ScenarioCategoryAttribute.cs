@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Framework

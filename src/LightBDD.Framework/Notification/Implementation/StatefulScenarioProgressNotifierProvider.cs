@@ -1,7 +1,7 @@
 ﻿using System;
 using LightBDD.Core.Notification;
 
-namespace LightBDD.Framework.Notification.Configuration.Implementation
+namespace LightBDD.Framework.Notification.Implementation
 {
     internal class StatefulScenarioProgressNotifierProvider<TFixture> : IScenarioProgressNotifierProvider
     {
