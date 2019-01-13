@@ -1,5 +1,6 @@
 ﻿using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Fixie2.Implementation;
+using LightBDD.Framework.Configuration;
 
 namespace LightBDD.Fixie2.Configuration
 {
