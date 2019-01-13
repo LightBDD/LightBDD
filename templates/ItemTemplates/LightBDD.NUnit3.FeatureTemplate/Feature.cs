@@ -1,6 +1,5 @@
 ﻿using LightBDD.Framework;
-using LightBDD.Framework.Scenarios.Basic;
-using LightBDD.Framework.Scenarios.Extended;
+using LightBDD.Framework.Scenarios;
 using LightBDD.NUnit3;
 
 namespace $rootnamespace$

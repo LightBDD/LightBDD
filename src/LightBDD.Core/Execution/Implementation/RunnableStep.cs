@@ -119,8 +119,9 @@ namespace LightBDD.Core.Execution.Implementation
             var ctx = AsyncStepSynchronizationContext.InstallNew();
             try
             {
-                result = await _invocation.Invoke(Context, PrepareParameters());
-                VerifyParameters();
+                var args = PrepareArguments();
+                result = await _invocation.Invoke(Context, args);
+                VerifyArguments();
             }
             catch (Exception e)
             {
@@ -138,7 +139,7 @@ namespace LightBDD.Core.Execution.Implementation
             await InvokeSubStepsAsync(result);
         }
 
-        private void VerifyParameters()
+        private void VerifyArguments()
         {
             var results = new List<IParameterResult>();
             foreach (var argument in _arguments)
@@ -164,7 +165,7 @@ namespace LightBDD.Core.Execution.Implementation
             return $"Parameter '{result.Name}' verification failed: {result.Details.VerificationMessage?.Replace(Environment.NewLine, Environment.NewLine + "\t") ?? string.Empty}";
         }
 
-        private object[] PrepareParameters()
+        private object[] PrepareArguments()
         {
             return _arguments.Select(p => p.Value).ToArray();
         }

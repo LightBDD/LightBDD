@@ -1,7 +1,7 @@
 LightBDD
 ===========================================
 
-Version vNext
+Version 3.0.0
 ----------------------------------------
 + #157 (All) Signed all assemblies except LightBDD.Fixie2
 + #163 (Core)(Change) Updated DefaultExceptionFormatter to exclude "End of stack trace" lines

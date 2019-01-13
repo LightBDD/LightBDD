@@ -1,8 +1,8 @@
-using System;
-using System.Threading.Tasks;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
+using System;
+using System.Threading.Tasks;
 
 namespace LightBDD.Framework.Scenarios.Implementation
 {
@@ -27,10 +27,11 @@ namespace LightBDD.Framework.Scenarios.Implementation
         {
             try
             {
-                await Core
+                var scenario = Core
                     .WithCapturedScenarioDetailsIfNotSpecified()
-                    .Build()
-                    .ExecuteAsync();
+                    .Build();
+
+                await scenario.ExecuteAsync();
             }
             catch (ScenarioExecutionException e)
             {
