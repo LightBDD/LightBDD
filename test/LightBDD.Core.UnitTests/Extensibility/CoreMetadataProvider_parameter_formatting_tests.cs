@@ -35,12 +35,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
 
         private static TestMetadataProvider GetMetadataProvider()
         {
-            return GetMetadataProvider(new ValueFormattingConfiguration().RegisterFrameworkDefaultGeneralFormatters());
-        }
-
-        private static TestMetadataProvider GetMetadataProvider(ValueFormattingConfiguration cfg)
-        {
-            return new TestMetadataProvider(cfg);
+            return new TestMetadataProvider(cfg=>cfg.ValueFormattingConfiguration().RegisterFrameworkDefaultGeneralFormatters());
         }
 
         [Test]
@@ -123,15 +118,16 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [Test]
         public void GetValueFormattingServiceFor_should_honor_custom_formatters_then_explicit_then_formattable_then_general_then_ToString()
         {
-            var config = new ValueFormattingConfiguration()
+            var testMetadataProvider = new TestMetadataProvider(cfg => cfg.ValueFormattingConfiguration()
                 .RegisterFrameworkDefaultGeneralFormatters()
                 .RegisterExplicit(typeof(bool), new FormatAttribute(">{0}<"))
                 .RegisterExplicit(typeof(int), new FormatAttribute("i{0}"))
                 .RegisterExplicit(typeof(MyFormattable2), new FormatAttribute("my-explicit2"))
-                .RegisterGeneral(new MyStructFormatter());
+                .RegisterGeneral(new MyStructFormatter()));
 
             var parameter = ParameterInfoHelper.GetMethodParameter<object[]>(Step_with_custom_formatters);
-            var formatter = GetMetadataProvider(config).GetValueFormattingServiceFor(parameter);
+            var formatter = testMetadataProvider
+                .GetValueFormattingServiceFor(parameter);
 
             var values = new object[]
             {

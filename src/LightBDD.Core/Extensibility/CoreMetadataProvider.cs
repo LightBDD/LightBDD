@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Extensibility.Execution;
@@ -12,45 +8,42 @@ using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace LightBDD.Core.Extensibility
 {
     /// <summary>
     /// Metadata provider offering core implementation for providing feature, scenario and step metadata.
     /// </summary>
-    public abstract class CoreMetadataProvider : IMetadataProvider
+    public abstract class CoreMetadataProvider
     {
-        private readonly ValueFormattingService _valueFormattingService;
         private readonly NameParser _nameParser;
         private readonly StepTypeProcessor _stepTypeProcessor;
+        /// <summary>
+        /// Returns <see cref="Formatting.Values.ValueFormattingService"/> .
+        /// </summary>
+        public ValueFormattingService ValueFormattingService { get; }
+        /// <summary>
+        /// Returns <see cref="INameFormatter"/>.
+        /// </summary>
+        public INameFormatter NameFormatter { get; }
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="nameFormatter"><see cref="INameFormatter"/> object used to format names.</param>
-        /// <param name="stepTypeConfiguration"><see cref="StepTypeConfiguration"/> object used in providing step metadata.</param>
-        /// <param name="cultureInfoProvider"><see cref="ICultureInfoProvider"/> object used in providing step parameter formatters.</param>
-        /// <param name="valueFormattingConfiguration"><see cref="IValueFormattingService"/> object used to format parameters.</param>
-        protected CoreMetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration, ICultureInfoProvider cultureInfoProvider, ValueFormattingConfiguration valueFormattingConfiguration)
+        protected CoreMetadataProvider(LightBddConfiguration configuration)
         {
-            if (stepTypeConfiguration == null)
-                throw new ArgumentNullException(nameof(stepTypeConfiguration));
-            _valueFormattingService = new ValueFormattingService(valueFormattingConfiguration, cultureInfoProvider);
+            if (configuration == null) 
+                throw new ArgumentNullException(nameof(configuration));
 
-            NameFormatter = nameFormatter ?? throw new ArgumentNullException(nameof(nameFormatter));
-            CultureInfoProvider = cultureInfoProvider ?? throw new ArgumentNullException(nameof(cultureInfoProvider));
-            _nameParser = new NameParser(nameFormatter);
-            _stepTypeProcessor = new StepTypeProcessor(nameFormatter, stepTypeConfiguration);
+            ValueFormattingService = new ValueFormattingService(configuration);
+            NameFormatter = configuration.NameFormatterConfiguration().GetFormatter();
+            _nameParser = new NameParser(NameFormatter);
+            _stepTypeProcessor = new StepTypeProcessor(NameFormatter, configuration.StepTypeConfiguration());
         }
-
-        /// <summary>
-        /// Returns currently used <see cref="ICultureInfoProvider"/> instance.
-        /// </summary>
-        protected ICultureInfoProvider CultureInfoProvider { get; }
-        /// <summary>
-        /// Returns currently used <see cref="INameFormatter"/> instance.
-        /// </summary>
-        protected INameFormatter NameFormatter { get; }
 
         /// <summary>
         /// Provides <see cref="IFeatureInfo"/> object containing information about feature represented by <paramref name="featureType"/>.
@@ -132,7 +125,7 @@ namespace LightBDD.Core.Extensibility
                .Cast<IConditionalValueFormatter>()
                .ToArray();
 
-            return _valueFormattingService.WithFormattersOverride(declaredFormatters);
+            return ValueFormattingService.WithFormattersOverride(declaredFormatters);
         }
 
         /// <summary>

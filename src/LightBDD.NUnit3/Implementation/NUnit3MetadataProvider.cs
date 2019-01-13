@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
-using LightBDD.Framework.Formatting.Configuration;
 using NUnit.Framework;
 
 namespace LightBDD.NUnit3.Implementation
@@ -12,10 +11,7 @@ namespace LightBDD.NUnit3.Implementation
     internal class NUnit3MetadataProvider : CoreMetadataProvider
     {
         public NUnit3MetadataProvider(LightBddConfiguration configuration)
-            : base(configuration.NameFormatterConfiguration().Formatter,
-                configuration.StepTypeConfiguration(),
-                configuration.CultureInfoProviderConfiguration().CultureInfoProvider,
-                configuration.ValueFormattingConfiguration()) { }
+            : base(configuration) { }
 
         public override ScenarioDescriptor CaptureCurrentScenario()
         {

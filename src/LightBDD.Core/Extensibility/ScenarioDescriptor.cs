@@ -7,7 +7,7 @@ namespace LightBDD.Core.Extensibility
 {
     /// <summary>
     /// Class describing scenario including the scenario method info and parameters.
-    /// It is designed to provide all required information for <see cref="IMetadataProvider"/>() method to build <see cref="IScenarioInfo"/> object.
+    /// It is designed to provide all required information for <see cref="CoreMetadataProvider"/>() method to build <see cref="IScenarioInfo"/> object.
     /// </summary>
     public class ScenarioDescriptor
     {

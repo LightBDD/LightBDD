@@ -16,7 +16,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [SetUp]
         public void SetUp()
         {
-            _metadataProvider = new TestMetadataProvider(new DefaultNameFormatter());
+            _metadataProvider = new TestMetadataProvider();
         }
 
         [Test]

@@ -18,11 +18,8 @@ namespace LightBDD.Framework.Execution.Coordination
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="runnerRepository">Runner factory instance that would be used for instantiating runners.</param>
-        /// <param name="featureAggregator">Feature aggregator instance used for aggregating feature results on coordinator disposal.</param>
-        /// <param name="configuration"><see cref="LightBddConfiguration"/> instance used to initialize LightBDD tests.</param>
-        protected FrameworkFeatureCoordinator(FeatureRunnerRepository runnerRepository, IFeatureAggregator featureAggregator, LightBddConfiguration configuration)
-            : base(runnerRepository, featureAggregator, configuration)
+        protected FrameworkFeatureCoordinator(IntegrationContext context)
+            : base(context)
         {
         }
     }

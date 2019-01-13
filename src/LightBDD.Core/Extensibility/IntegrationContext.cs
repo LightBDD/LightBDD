@@ -5,19 +5,20 @@ using LightBDD.Core.Formatting;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
 using System;
+using LightBDD.Core.Formatting.Values;
+using LightBDD.Core.Reporting;
 
 namespace LightBDD.Core.Extensibility
 {
     /// <summary>
     /// A context offering integration objects used to configure runners.
-    /// In comparison to <see cref="IntegrationContext"/>, this class offers also <see cref="Configuration"/> property to retrieve configuration.
     /// </summary>
     public abstract class IntegrationContext
     {
         /// <summary>
         /// Returns metadata provider.
         /// </summary>
-        public abstract IMetadataProvider MetadataProvider { get; }
+        public abstract CoreMetadataProvider MetadataProvider { get; }
 
         /// <summary>
         /// Returns name formatter.
@@ -54,5 +55,10 @@ namespace LightBDD.Core.Extensibility
         /// Returns configured <see cref="IDependencyContainer"/>, used to resolve dependencies for LightBDD contexts.
         /// </summary>
         public abstract IDependencyContainer DependencyContainer { get; }
+
+        /// <summary>
+        /// Returns value formatting service.
+        /// </summary>
+        public abstract ValueFormattingService ValueFormattingService { get; }
     }
 }

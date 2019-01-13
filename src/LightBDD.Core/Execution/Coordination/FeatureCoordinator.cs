@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting.Values;
+using LightBDD.Core.Reporting;
 
 namespace LightBDD.Core.Execution.Coordination
 {
@@ -30,6 +32,7 @@ namespace LightBDD.Core.Execution.Coordination
         /// </summary>
         public LightBddConfiguration Configuration { get; }
 
+        //TODO: check
         /// <summary>
         /// Returns <see cref="IValueFormattingService"/> configured in this coordinator.
         /// </summary>
@@ -91,16 +94,13 @@ namespace LightBDD.Core.Execution.Coordination
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="runnerRepository">Runner factory instance that would be used for instantiating runners.</param>
-        /// <param name="featureAggregator">Feature aggregator instance used for aggregating feature results on coordinator disposal.</param>
-        /// <param name="configuration"><see cref="LightBddConfiguration"/> instance used to initialize LightBDD tests.</param>
-        protected FeatureCoordinator(FeatureRunnerRepository runnerRepository, IFeatureAggregator featureAggregator, LightBddConfiguration configuration)
+        /// <param name="context">Integration context.</param>
+        protected FeatureCoordinator(IntegrationContext context)
         {
-            _featureAggregator = featureAggregator;
-            RunnerRepository = runnerRepository;
-            Configuration = configuration;
-            //TODO: Rework in LightBDD 3.X to use the same instance as CoreMetadataProvider (introduce IoC?)
-            ValueFormattingService = new ValueFormattingService(Configuration);
+            Configuration = context.Configuration;
+            _featureAggregator = new FeatureReportGenerator(Configuration.ReportWritersConfiguration().ToArray());
+            RunnerRepository = new FeatureRunnerRepository(context);
+            ValueFormattingService = context.ValueFormattingService;
         }
 
         /// <summary>

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
-using LightBDD.Framework.Formatting.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.MsTest2.Implementation
@@ -12,10 +11,7 @@ namespace LightBDD.MsTest2.Implementation
     internal class MsTest2MetadataProvider : CoreMetadataProvider
     {
         public MsTest2MetadataProvider(LightBddConfiguration configuration)
-            : base(configuration.NameFormatterConfiguration().Formatter,
-                configuration.StepTypeConfiguration(),
-                configuration.CultureInfoProviderConfiguration().CultureInfoProvider,
-                configuration.ValueFormattingConfiguration()) { }
+            : base(configuration) { }
 
         public override ScenarioDescriptor CaptureCurrentScenario()
         {

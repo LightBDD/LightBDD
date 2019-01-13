@@ -1,6 +1,4 @@
-﻿using LightBDD.Core.Configuration;
-
-namespace LightBDD.Framework.Reporting.Configuration
+﻿namespace LightBDD.Core.Configuration
 {
     /// <summary>
     /// Configuration class allowing to retrieve report writers configurations for further customizations.

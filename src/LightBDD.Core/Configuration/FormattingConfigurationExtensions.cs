@@ -1,6 +1,4 @@
-﻿using LightBDD.Core.Configuration;
-
-namespace LightBDD.Framework.Formatting.Configuration
+﻿namespace LightBDD.Core.Configuration
 {
     /// <summary>
     /// Configuration class allowing to retrieve <see cref="NameFormatterConfiguration"/> for further customizations.

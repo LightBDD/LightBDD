@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Framework.Configuration;
-using LightBDD.Framework.Formatting.Configuration;
 using LightBDD.Framework.Formatting.Values;
 using NUnit.Framework;
 

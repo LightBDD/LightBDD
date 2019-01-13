@@ -21,12 +21,12 @@ namespace LightBDD.Core.Extensibility
         /// <exception cref="ArgumentNullException">Throws when <paramref name="steps"/> are <c>null</c>.</exception>
         ICoreScenarioBuilder AddSteps(IEnumerable<StepDescriptor> steps);
         /// <summary>
-        /// Configures scenario details with values inferred by <see cref="IMetadataProvider"/>.
+        /// Configures scenario details with values inferred by <see cref="CoreMetadataProvider"/>.
         /// </summary>
         /// <returns>Self.</returns>
         ICoreScenarioBuilder WithCapturedScenarioDetails();
         /// <summary>
-        /// Configures scenario details with values inferred by <see cref="IMetadataProvider"/>, but only if scenario name has not been provided yet.
+        /// Configures scenario details with values inferred by <see cref="CoreMetadataProvider"/>, but only if scenario name has not been provided yet.
         /// </summary>
         /// <returns>Self.</returns>
         ICoreScenarioBuilder WithCapturedScenarioDetailsIfNotSpecified();

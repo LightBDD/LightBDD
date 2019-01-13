@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using LightBDD.Core.Configuration;
 using LightBDD.Core.Reporting;
-using LightBDD.Framework.Reporting.Formatters;
 
-namespace LightBDD.Framework.Reporting.Configuration
+namespace LightBDD.Core.Configuration
 {
     /// <summary>
     /// Configuration class allowing to customize report writers.
@@ -14,15 +11,6 @@ namespace LightBDD.Framework.Reporting.Configuration
     public class ReportWritersConfiguration : FeatureConfiguration, IEnumerable<IReportWriter>
     {
         private readonly List<IReportWriter> _writers = new List<IReportWriter>();
-
-        /// <summary>
-        /// Default constructor initializing configuration to generate <c>~\\Reports\\FeaturesReport.xml</c>(Win) <c>~/Reports/FeaturesReport.xml</c>(Unix) and <c>~\\Reports\\FeaturesReport.html</c>(Win) <c>~/Reports/FeaturesReport.html</c>(Unix) reports.
-        /// </summary>
-        public ReportWritersConfiguration()
-        {
-            Add(new ReportFileWriter(new XmlReportFormatter(), "~" + Path.DirectorySeparatorChar + "Reports" + Path.DirectorySeparatorChar + "FeaturesReport.xml"));
-            Add(new ReportFileWriter(new HtmlReportFormatter(), "~" + Path.DirectorySeparatorChar + "Reports" + Path.DirectorySeparatorChar + "FeaturesReport.html"));
-        }
 
         /// <summary>
         /// Adds <paramref name="writer"/> to report writers collection.

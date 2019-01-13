@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
@@ -23,13 +24,13 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [SetUp]
         public void SetUp()
         {
-            _metadataProvider = new TestMetadataProvider(new DefaultNameFormatter());
+            _metadataProvider = new TestMetadataProvider();
         }
 
         [Test]
         public void It_should_throw_if_nameFormatter_is_null()
         {
-            Assert.Throws<ArgumentNullException>(() => new TestMetadataProvider((INameFormatter)null));
+            Assert.Throws<ArgumentNullException>(() => new TestMetadataProvider((LightBddConfiguration)null));
         }
 
         [Test]

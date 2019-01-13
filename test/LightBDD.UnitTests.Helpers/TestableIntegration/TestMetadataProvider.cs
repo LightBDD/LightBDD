@@ -27,22 +27,25 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             return new ScenarioDescriptor(TestExecutionContext.CurrentContext.CurrentTest.Method.MethodInfo, null);
         }
 
-        public TestMetadataProvider(ValueFormattingConfiguration formattingConfiguration):
-            base(new DefaultNameFormatter(), new StepTypeConfiguration(), new DefaultCultureInfoProvider(),formattingConfiguration){}
-
-        public TestMetadataProvider(INameFormatter nameFormatter)
-            : base(nameFormatter, new StepTypeConfiguration(), new DefaultCultureInfoProvider(), new ValueFormattingConfiguration())
+        public TestMetadataProvider() : base(Configure(_=>{}))
         {
         }
 
-        public TestMetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration)
-            : base(nameFormatter, stepTypeConfiguration, new DefaultCultureInfoProvider(), new ValueFormattingConfiguration())
+        public TestMetadataProvider(LightBddConfiguration configuration):
+            base(configuration){}
+
+
+        public TestMetadataProvider(Action<LightBddConfiguration> onConfigure)
+            :base(Configure(onConfigure))
         {
         }
 
-        public TestMetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration, ICultureInfoProvider cultureInfoProvider)
-            : base(nameFormatter, stepTypeConfiguration, cultureInfoProvider, new ValueFormattingConfiguration())
+        private static LightBddConfiguration Configure(Action<LightBddConfiguration> onConfigure)
         {
+            var configuration = new LightBddConfiguration();
+            configuration.NameFormatterConfiguration().UpdateFormatter(DefaultNameFormatter.Instance);
+            onConfigure(configuration);
+            return configuration;
         }
     }
 }

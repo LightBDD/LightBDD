@@ -4,7 +4,6 @@ using LightBDD.AcceptanceTests;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
 using LightBDD.Framework.Reporting;
-using LightBDD.Framework.Reporting.Configuration;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.Framework.Resources;
 using LightBDD.NUnit3;

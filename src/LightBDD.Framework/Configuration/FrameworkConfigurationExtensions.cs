@@ -1,6 +1,9 @@
-﻿using LightBDD.Core.Configuration;
-using LightBDD.Framework.Formatting.Configuration;
+﻿using System.IO;
+using LightBDD.Core.Configuration;
+using LightBDD.Framework.Formatting;
 using LightBDD.Framework.Formatting.Values;
+using LightBDD.Framework.Reporting;
+using LightBDD.Framework.Reporting.Formatters;
 
 namespace LightBDD.Framework.Configuration
 {
@@ -20,6 +23,14 @@ namespace LightBDD.Framework.Configuration
                 .ValueFormattingConfiguration()
                 .RegisterFrameworkDefaultGeneralFormatters();
 
+            configuration
+                .ReportWritersConfiguration()
+                .RegisterFrameworkDefaultReportWriters();
+
+            configuration
+                .NameFormatterConfiguration()
+                .UpdateFormatter(DefaultNameFormatter.Instance);
+
             return configuration;
         }
 
@@ -33,6 +44,14 @@ namespace LightBDD.Framework.Configuration
             return configuration
                  .RegisterGeneral(new DictionaryFormatter())
                  .RegisterGeneral(new CollectionFormatter());
+        }
+
+        /// <summary>
+        /// Applies default report generators to generate <c>~\\Reports\\FeaturesReport.html</c>(Win) <c>~/Reports/FeaturesReport.html</c>(Unix) reports.
+        /// </summary>
+        public static ReportWritersConfiguration RegisterFrameworkDefaultReportWriters(this ReportWritersConfiguration configuration)
+        {
+            return configuration.Add(new ReportFileWriter(new HtmlReportFormatter(), "~" + Path.DirectorySeparatorChar + "Reports" + Path.DirectorySeparatorChar + "FeaturesReport.html"));
         }
     }
 }
