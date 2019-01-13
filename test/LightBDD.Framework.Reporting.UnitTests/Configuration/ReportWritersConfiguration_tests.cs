@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Reporting;
-using LightBDD.Framework.Reporting.Configuration;
+using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Reporting.Formatters;
 using Moq;
 using NUnit.Framework;
@@ -16,13 +16,11 @@ namespace LightBDD.Framework.Reporting.UnitTests.Configuration
         [Test]
         public void It_should_return_default_configuration()
         {
-            var configuration = new ReportWritersConfiguration();
-            Assert.That(configuration.Count, Is.EqualTo(2));
+            var configuration = new ReportWritersConfiguration().RegisterFrameworkDefaultReportWriters();
+            Assert.That(configuration.Count, Is.EqualTo(1));
 
-            var featuresReportXml = $"~{Path.DirectorySeparatorChar}Reports{Path.DirectorySeparatorChar}FeaturesReport.xml";
             var featuresReportHtml = $"~{Path.DirectorySeparatorChar}Reports{Path.DirectorySeparatorChar}FeaturesReport.html";
 
-            AssertWriter(configuration, featuresReportXml, typeof(XmlReportFormatter), featuresReportXml.Replace("~", AppDomainHelper.BaseDirectory));
             AssertWriter(configuration, featuresReportHtml, typeof(HtmlReportFormatter), featuresReportHtml.Replace("~", AppDomainHelper.BaseDirectory));
         }
 

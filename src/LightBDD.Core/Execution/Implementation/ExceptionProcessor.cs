@@ -1,12 +1,10 @@
 using System;
-using System.Diagnostics;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Results;
 
 namespace LightBDD.Core.Execution.Implementation
 {
-    [DebuggerStepThrough]
     internal class ExceptionProcessor
     {
         private readonly Func<Exception, ExecutionStatus> _exceptionToStatusMapper;

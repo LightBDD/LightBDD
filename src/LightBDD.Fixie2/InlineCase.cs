@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace LightBDD.Fixie2
 {
@@ -8,7 +7,6 @@ namespace LightBDD.Fixie2
     /// Attribute allowing to declare parameters for parameterized scenarios.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-    [DebuggerStepThrough]
     public class InlineCase : Attribute, IScenarioCaseSourceAttribute
     {
         private readonly object[] _arguments;

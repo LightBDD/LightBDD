@@ -2,7 +2,6 @@ using System.Linq;
 using System.Reflection;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework;
-using LightBDD.Framework.Formatting;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
@@ -16,7 +15,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [SetUp]
         public void SetUp()
         {
-            _metadataProvider = new TestMetadataProvider(new DefaultNameFormatter());
+            _metadataProvider = new TestMetadataProvider();
         }
 
         [Test]

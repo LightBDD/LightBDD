@@ -1,8 +1,5 @@
-using System.Diagnostics;
-
 namespace LightBDD.Core.Metadata.Implementation
 {
-    [DebuggerStepThrough]
     internal class StepTypeNameInfo : IStepTypeNameInfo
     {
         public StepTypeNameInfo(string name, string originalName)

@@ -1,8 +1,5 @@
-using System.Diagnostics;
-
 namespace LightBDD.Core.Internals
 {
-    [DebuggerStepThrough]
     internal class Arrays<T>
     {
         private static readonly T[] EmptyArray = new T[0];

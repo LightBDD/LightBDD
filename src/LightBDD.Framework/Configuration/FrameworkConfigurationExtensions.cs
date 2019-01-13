@@ -1,9 +1,9 @@
-﻿using LightBDD.Core.Configuration;
-using LightBDD.Framework.ExecutionContext;
-using LightBDD.Framework.ExecutionContext.Configuration;
-using LightBDD.Framework.Extensibility.Implementation;
-using LightBDD.Framework.Formatting.Configuration;
+﻿using System.IO;
+using LightBDD.Core.Configuration;
+using LightBDD.Framework.Formatting;
 using LightBDD.Framework.Formatting.Values;
+using LightBDD.Framework.Reporting;
+using LightBDD.Framework.Reporting.Formatters;
 
 namespace LightBDD.Framework.Configuration
 {
@@ -20,12 +20,16 @@ namespace LightBDD.Framework.Configuration
         public static LightBddConfiguration WithFrameworkDefaults(this LightBddConfiguration configuration)
         {
             configuration
-                .ExecutionExtensionsConfiguration()
-                .EnableCurrentScenarioTracking();
-
-            configuration
                 .ValueFormattingConfiguration()
                 .RegisterFrameworkDefaultGeneralFormatters();
+
+            configuration
+                .ReportWritersConfiguration()
+                .RegisterFrameworkDefaultReportWriters();
+
+            configuration
+                .NameFormatterConfiguration()
+                .UpdateFormatter(DefaultNameFormatter.Instance);
 
             return configuration;
         }
@@ -43,17 +47,11 @@ namespace LightBDD.Framework.Configuration
         }
 
         /// <summary>
-        /// Enables ability to access currently executed step with <see cref="StepExecution.Current"/> extension methods.
-        /// This feature depends on <see cref="ScenarioExecutionContext"/>, it enables it as well with <see cref="ScenarioExecutionContextConfigurationExtensions.EnableScenarioExecutionContext"/>().
+        /// Applies default report generators to generate <c>~\\Reports\\FeaturesReport.html</c>(Win) <c>~/Reports/FeaturesReport.html</c>(Unix) reports.
         /// </summary>
-        /// <param name="configuration">Configuration object.</param>
-        /// <returns>Configuration object.</returns>
-        public static ExecutionExtensionsConfiguration EnableCurrentScenarioTracking(this ExecutionExtensionsConfiguration configuration)
+        public static ReportWritersConfiguration RegisterFrameworkDefaultReportWriters(this ReportWritersConfiguration configuration)
         {
-            return configuration
-                .EnableScenarioExecutionContext()
-                .EnableScenarioDecorator<CurrentScenarioDecorator>()
-                .EnableStepDecorator<CurrentStepDecorator>();
+            return configuration.Add(new ReportFileWriter(new HtmlReportFormatter(), "~" + Path.DirectorySeparatorChar + "Reports" + Path.DirectorySeparatorChar + "FeaturesReport.html"));
         }
     }
 }

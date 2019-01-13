@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Globalization;
 
 namespace LightBDD.Core.Extensibility
@@ -6,7 +5,6 @@ namespace LightBDD.Core.Extensibility
     /// <summary>
     /// Default implementation of <see cref="ICultureInfoProvider"/> returning <c>CultureInfo.InvariantCulture</c>.
     /// </summary>
-    [DebuggerStepThrough]
     public class DefaultCultureInfoProvider : ICultureInfoProvider
     {
         /// <summary>

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Core.Configuration
@@ -7,7 +6,6 @@ namespace LightBDD.Core.Configuration
     /// <summary>
     /// Culture info provider configuration.
     /// </summary>
-    [DebuggerStepThrough]
     public class CultureInfoProviderConfiguration : FeatureConfiguration
     {
         /// <summary>

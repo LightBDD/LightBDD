@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace LightBDD.Core.Execution.Implementation
 {
-    [DebuggerStepThrough]
     internal class AsyncStepSynchronizationContext : SynchronizationContext
     {
         private readonly SynchronizationContext _inner;
@@ -96,8 +94,6 @@ namespace LightBDD.Core.Execution.Implementation
         {
             return exceptions.Select(ScenarioExecutionException.WrapIfNeeded);
         }
-
-        [DebuggerStepThrough]
         private struct RunWithSelfDelegate
         {
             private readonly SendOrPostCallback _callback;

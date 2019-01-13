@@ -1,11 +1,8 @@
-using System.Diagnostics;
-
 namespace LightBDD.Core.Formatting.NameDecorators
 {
     /// <summary>
     /// Class providing step name decorator instances.
     /// </summary>
-    [DebuggerStepThrough]
     public static class StepNameDecorators
     {
         /// <summary>

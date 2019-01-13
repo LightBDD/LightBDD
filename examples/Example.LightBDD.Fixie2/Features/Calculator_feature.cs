@@ -1,7 +1,6 @@
 ﻿using LightBDD.Fixie2;
 using LightBDD.Framework;
-using LightBDD.Framework.Commenting;
-using LightBDD.Framework.Scenarios.Extended;
+using LightBDD.Framework.Scenarios;
 
 namespace Example.LightBDD.Fixie2.Features
 {

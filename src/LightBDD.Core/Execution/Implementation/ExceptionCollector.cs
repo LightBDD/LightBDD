@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using LightBDD.Core.Results;
 
 namespace LightBDD.Core.Execution.Implementation
 {
-    [DebuggerStepThrough]
     internal class ExceptionCollector
     {
         private readonly List<Exception> _executionExceptions = new List<Exception>();

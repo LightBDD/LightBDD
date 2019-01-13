@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using LightBDD.Core.Formatting;
 
 namespace LightBDD.Framework.Formatting
@@ -6,9 +5,17 @@ namespace LightBDD.Framework.Formatting
     /// <summary>
     /// Default implementation of <see cref="INameFormatter"/> interface.
     /// </summary>
-    [DebuggerStepThrough]
     public class DefaultNameFormatter : INameFormatter
     {
+        private DefaultNameFormatter()
+        {
+        }
+
+        /// <summary>
+        /// Returns instance of the <see cref="DefaultNameFormatter"/>.
+        /// </summary>
+        public static DefaultNameFormatter Instance { get; } = new DefaultNameFormatter();
+
         /// <summary>
         /// Formats name into readable text.
         /// This method applies following replacements:<br/>

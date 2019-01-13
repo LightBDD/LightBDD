@@ -2,8 +2,6 @@
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution.Coordination;
-using LightBDD.Core.Extensibility;
-using LightBDD.Core.Reporting;
 using LightBDD.Framework.Execution.Coordination;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using Moq;
@@ -16,10 +14,13 @@ namespace LightBDD.Core.UnitTests.Execution
     {
         class TestableFeatureCoordinator : FrameworkFeatureCoordinator
         {
-            public TestableFeatureCoordinator(FeatureRunnerRepository runnerRepository)
-                : base(runnerRepository, new FeatureReportGenerator(), new LightBddConfiguration()) { }
+            public TestableFeatureCoordinator()
+                : this(TestableIntegrationContextBuilder.Default()) { }
 
-            public TestableFeatureCoordinator() : this(new TestableFeatureRunnerRepository()) { }
+            public TestableFeatureCoordinator(TestableIntegrationContextBuilder builder)
+                : base(builder.Build())
+            {
+            }
 
             public TestableFeatureCoordinator InstallSelf()
             {
@@ -76,7 +77,7 @@ namespace LightBDD.Core.UnitTests.Execution
             var container = new Mock<IDependencyContainer>();
             var contextBuilder = TestableIntegrationContextBuilder.Default()
                 .WithConfiguration(c => c.DependencyContainerConfiguration().UseContainer(container.Object));
-            new TestableFeatureCoordinator(new TestableFeatureRunnerRepository(contextBuilder)).Dispose();
+            new TestableFeatureCoordinator(contextBuilder).Dispose();
 
             container.Verify(x => x.Dispose());
         }

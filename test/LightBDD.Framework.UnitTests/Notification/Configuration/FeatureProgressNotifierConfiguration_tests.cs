@@ -1,8 +1,8 @@
 using System;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Notification;
+using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Notification;
-using LightBDD.Framework.Notification.Configuration;
 using Moq;
 using NUnit.Framework;
 

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace LightBDD.Core.Extensibility.Results
 {
@@ -9,18 +8,8 @@ namespace LightBDD.Core.Extensibility.Results
     /// It allows to define a list of additional sub steps that would be included in step execution, making given step passing only if all are successful.
     /// It allows also to specify dedicated context instance that would be passed to all sub-steps.
     /// </summary>
-    [DebuggerStepThrough]
     public class CompositeStepResultDescriptor : IStepResultDescriptor
     {
-        /// <summary>
-        /// Constructor allowing to initialize instance with sub steps and context provider.
-        /// </summary>
-        /// <param name="subStepsContextProvider">Function providing context for all sub-steps.</param>
-        /// <param name="subSteps">Sub steps.</param>
-        [Obsolete("Use other constructors instead", true)]
-        public CompositeStepResultDescriptor(Func<object> subStepsContextProvider, IEnumerable<StepDescriptor> subSteps)
-            : this(new ExecutionContextDescriptor(subStepsContextProvider, false), subSteps) { }
-
         /// <summary>
         /// Constructor allowing to initialize instance with sub steps and context provider.
         /// </summary>
@@ -38,11 +27,6 @@ namespace LightBDD.Core.Extensibility.Results
         /// </summary>
         public IEnumerable<StepDescriptor> SubSteps { get; }
 
-        /// <summary>
-        /// Function providing instance of context for executing sub-steps.
-        /// </summary>
-        [Obsolete("Use " + nameof(SubStepsContext) + " instead", true)]
-        public Func<object> SubStepsContextProvider => SubStepsContext.ContextProvider;
         /// <summary>
         /// Returns context descriptor that will be used to instantiate context for the sub steps.
         /// </summary>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
@@ -10,7 +9,6 @@ using LightBDD.Framework.Scenarios;
 
 namespace LightBDD.Framework.Implementation
 {
-    [DebuggerStepThrough]
     internal class CompositeStepBuilder : LightBddConfigurationAware, ICompositeStepBuilder, IIntegrableCompositeStepBuilder
     {
         private static readonly IEnumerable<StepDescriptor> EmptySteps = Enumerable.Empty<StepDescriptor>();
@@ -23,6 +21,11 @@ namespace LightBDD.Framework.Implementation
             return new CompositeStep(_contextDescriptor ?? ExecutionContextDescriptor.NoContext, _steps);
         }
 
+        public IIntegrableCompositeStepBuilder Integrate()
+        {
+            return this;
+        }
+
         public IIntegrableStepGroupBuilder AddSteps(IEnumerable<StepDescriptor> steps)
         {
             if (steps == null)
@@ -31,13 +34,7 @@ namespace LightBDD.Framework.Implementation
             return this;
         }
 
-        /// <summary>
-        /// For backward compatibility
-        /// </summary>
-        public IIntegrableCompositeStepBuilder WithStepContext(Func<object> contextProvider)
-        {
-            return WithStepContext(contextProvider, false);
-        }
+        LightBddConfiguration IIntegrableStepGroupBuilder.Configuration => Configuration;
 
         public IIntegrableCompositeStepBuilder WithStepContext(Func<IDependencyResolver, object> contextProvider, Action<ContainerConfigurator> scopeConfigurator)
         {
@@ -56,11 +53,6 @@ namespace LightBDD.Framework.Implementation
 
             _contextDescriptor = contextDescriptor;
             return this;
-        }
-
-        public TEnrichedBuilder Enrich<TEnrichedBuilder>(Func<IIntegrableStepGroupBuilder, LightBddConfiguration, TEnrichedBuilder> builderFactory)
-        {
-            return builderFactory(this, Configuration);
         }
     }
 }

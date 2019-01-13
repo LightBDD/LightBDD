@@ -1,11 +1,8 @@
-﻿using System.Diagnostics;
-
-namespace LightBDD.Core.Configuration
+﻿namespace LightBDD.Core.Configuration
 {
     /// <summary>
     /// Extension class allowing to configure core parts of LightBDD.
     /// </summary>
-    [DebuggerStepThrough]
     public static class ConfigurationExtensions
     {
         /// <summary>

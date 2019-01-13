@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Metadata;
@@ -19,7 +18,6 @@ namespace LightBDD.Framework.Parameters
     /// Please see <see cref="Table"/> type to learn how to create tables effectively.
     /// </summary>
     /// <typeparam name="TRow">Row type.</typeparam>
-    [DebuggerStepThrough]
     public class VerifiableDataTable<TRow> : VerifiableTable<TRow>
     {
         /// <summary>
@@ -150,7 +148,7 @@ namespace LightBDD.Framework.Parameters
                 return ExpectedRows
                     .Zip(actual, (e, a) => new RowData(TableRowType.Matching, e, a))
                     .Concat(ExpectedRows.Skip(actual.Count).Select(e => new RowData(TableRowType.Missing, e, RowDataActualValue.None)))
-                    .Concat(actual.Skip(ExpectedRows.Count).Select(a => new RowData(TableRowType.Surplus, default(TRow), a)));
+                    .Concat(actual.Skip(ExpectedRows.Count).Select(a => new RowData(TableRowType.Surplus, default, a)));
             }
 
             var result = new List<RowData>(ExpectedRows.Count);
@@ -171,7 +169,7 @@ namespace LightBDD.Framework.Parameters
             }
 
             foreach (var r in remaining)
-                result.Add(new RowData(TableRowType.Surplus, default(TRow), r.Value));
+                result.Add(new RowData(TableRowType.Surplus, default, r.Value));
 
             return result;
         }

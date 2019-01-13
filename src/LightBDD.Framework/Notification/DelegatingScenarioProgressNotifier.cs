@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
@@ -11,7 +10,6 @@ namespace LightBDD.Framework.Notification
     /// <summary>
     /// Scenario progress notifier allowing to delegate notification to zero or more notifiers.
     /// </summary>
-    [DebuggerStepThrough]
     public class DelegatingScenarioProgressNotifier : IScenarioProgressNotifier
     {
         /// <summary>

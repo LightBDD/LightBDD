@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Windows.Storage;
 using LightBDD.Core.Configuration;
-using LightBDD.Framework.Reporting.Configuration;
+using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.MsTest2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

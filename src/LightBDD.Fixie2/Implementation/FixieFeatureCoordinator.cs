@@ -1,10 +1,10 @@
-using System;
-using System.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution.Coordination;
-using LightBDD.Core.Reporting;
+using LightBDD.Core.Extensibility;
+using LightBDD.Core.Results;
 using LightBDD.Framework.Execution.Coordination;
-using LightBDD.Framework.Reporting.Configuration;
+using LightBDD.Framework.Extensibility;
+using System;
 
 namespace LightBDD.Fixie2.Implementation
 {
@@ -19,16 +19,26 @@ namespace LightBDD.Fixie2.Implementation
             return Instance;
         }
 
-        private FixieFeatureCoordinator(LightBddConfiguration configuration) : base(
-            new FixieFeatureRunnerRepository(configuration),
-            new FeatureReportGenerator(configuration.ReportWritersConfiguration().ToArray()),
-            configuration)
+        private FixieFeatureCoordinator(LightBddConfiguration configuration)
+            : base(CreateContext(configuration))
         {
+        }
+
+        private static IntegrationContext CreateContext(LightBddConfiguration configuration)
+        {
+            return new DefaultIntegrationContext(configuration, new FixieMetadataProvider(configuration), MapExceptionToStatus);
         }
 
         internal static void InstallSelf(LightBddConfiguration configuration)
         {
             Install(new FixieFeatureCoordinator(configuration));
+        }
+
+        private static ExecutionStatus MapExceptionToStatus(Exception ex)
+        {
+            return ex is IgnoreException
+                ? ExecutionStatus.Ignored
+                : ExecutionStatus.Failed;
         }
     }
 }

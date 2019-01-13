@@ -1,9 +1,7 @@
-﻿using System.Diagnostics;
-using LightBDD.Core.Formatting.Values;
+﻿using LightBDD.Core.Formatting.Values;
 
 namespace LightBDD.Framework.Expectations.Implementation
 {
-    [DebuggerStepThrough]
     internal class CastExpectation<TDerived, TBase> : Expectation<TBase> where TDerived : TBase
     {
         private readonly IExpectation<TDerived> _expectation;

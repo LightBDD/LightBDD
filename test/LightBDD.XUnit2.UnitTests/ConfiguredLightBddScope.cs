@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using LightBDD.Core.Configuration;
+using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Notification;
-using LightBDD.Framework.Notification.Configuration;
 using LightBDD.XUnit2.UnitTests;
 
 [assembly: ConfiguredLightBddScope]

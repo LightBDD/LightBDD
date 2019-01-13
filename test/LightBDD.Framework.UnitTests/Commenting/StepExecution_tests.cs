@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
-using LightBDD.Framework.Commenting;
-using LightBDD.Framework.Commenting.Configuration;
-using LightBDD.Framework.ExecutionContext.Configuration;
 using LightBDD.Framework.Extensibility;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
@@ -17,21 +13,6 @@ namespace LightBDD.Framework.UnitTests.Commenting
     [TestFixture]
     public class StepExecution_tests
     {
-        [Test]
-        public void Comment_should_throw_exception_if_feature_is_not_enabled()
-        {
-            var runner = new TestableFeatureRunnerRepository(
-                    TestableIntegrationContextBuilder.Default()
-                    .WithConfiguration(cfg => cfg.ExecutionExtensionsConfiguration().EnableScenarioExecutionContext())
-                )
-                .GetRunnerFor(GetType())
-                .GetBddRunner(this);
-
-            var exception = Assert.Throws<InvalidOperationException>(() => runner.Test().TestScenario(TestStep.CreateAsync(Commented_step, "some comment")));
-
-            Assert.That(exception.Message, Is.EqualTo("Current task is not executing any scenario steps or current step management feature is not enabled in LightBddConfiguration. Ensure that configuration.ExecutionExtensionsConfiguration().EnableCurrentScenarioTracking() is called during LightBDD initialization and feature is used within task running scenario step."));
-        }
-
         [Test]
         [TestCase(null)]
         [TestCase("\t\n\r ")]
@@ -116,10 +97,7 @@ namespace LightBDD.Framework.UnitTests.Commenting
 
         private IFeatureRunner GetFeatureRunner()
         {
-            var context = TestableIntegrationContextBuilder.Default()
-                .WithConfiguration(cfg => cfg.ExecutionExtensionsConfiguration().EnableStepCommenting());
-
-            return new TestableFeatureRunnerRepository(context).GetRunnerFor(GetType());
+            return new TestableFeatureRunnerRepository(TestableIntegrationContextBuilder.Default()).GetRunnerFor(GetType());
         }
 
         private class CommentingDecoratorAttribute : Attribute, IStepDecoratorAttribute

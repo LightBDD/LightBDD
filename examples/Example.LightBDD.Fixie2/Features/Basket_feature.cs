@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using LightBDD.Fixie2;
 using LightBDD.Framework;
-using LightBDD.Framework.Scenarios.Basic;
+using LightBDD.Framework.Scenarios;
 
 namespace Example.LightBDD.Fixie2.Features
 {
@@ -27,11 +27,12 @@ I want to add products to basket")]
         [ScenarioCategory(Categories.Sales)]
         public async Task No_product_in_stock()
         {
-            await Runner.RunScenarioActionsAsync(
-                Given_product_is_out_of_stock,
-                When_customer_adds_it_to_the_basket,
-                Then_the_product_addition_should_be_unsuccessful,
-                Then_the_basket_should_not_contain_the_product);
+            await Runner.AddSteps(
+                    Given_product_is_out_of_stock,
+                    When_customer_adds_it_to_the_basket,
+                    Then_the_product_addition_should_be_unsuccessful,
+                    Then_the_basket_should_not_contain_the_product)
+                .RunAsync();
         }
 
         /// <summary>
@@ -42,12 +43,13 @@ I want to add products to basket")]
         [ScenarioCategory(Categories.Sales)]
         public async Task Successful_addition()
         {
-            await Runner.RunScenarioActionsAsync(
-                Given_product_is_in_stock,
-                When_customer_adds_it_to_the_basket,
-                Then_the_product_addition_should_be_successful,
-                Then_the_basket_should_contain_the_product,
-                Then_the_product_should_be_removed_from_stock);
+            await Runner.AddSteps(
+                    Given_product_is_in_stock,
+                    When_customer_adds_it_to_the_basket,
+                    Then_the_product_addition_should_be_successful,
+                    Then_the_basket_should_contain_the_product,
+                    Then_the_product_should_be_removed_from_stock)
+                .RunAsync();
         }
     }
 }

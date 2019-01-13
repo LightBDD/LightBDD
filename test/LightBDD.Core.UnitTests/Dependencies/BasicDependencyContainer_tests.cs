@@ -196,7 +196,6 @@ namespace LightBDD.Core.UnitTests.Dependencies
         }
         abstract class Abstract
         {
-            public Abstract() { }
         }
 
         class Struct

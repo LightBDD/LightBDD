@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -8,7 +7,6 @@ using LightBDD.Core.Formatting;
 
 namespace LightBDD.Core.Extensibility.Implementation
 {
-    [DebuggerStepThrough]
     internal class NameParser
     {
         private readonly INameFormatter _nameFormatter;

@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.Diagnostics;
 using LightBDD.Framework;
-using LightBDD.Framework.Scenarios.Extended;
+using LightBDD.Framework.Scenarios;
 using NUnit.Framework;
 
 namespace LightBDD.NUnit3.UnitTests
