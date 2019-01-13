@@ -1,6 +1,6 @@
 ﻿<Project>
   <PropertyGroup>
-    <Copyright>Copyright © Wojciech Kotlarski 2013-2018</Copyright>
+    <Copyright>Copyright © Wojciech Kotlarski 2013-2019</Copyright>
     <VersionPrefix>3.0.0</VersionPrefix>
     <Authors>Wojciech Kotlarski</Authors>
     <Company>https://github.com/LightBDD/LightBDD</Company>
@@ -14,7 +14,7 @@
     <PackageOutputPath>$(SolutionDir)\output</PackageOutputPath>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>bdd;tdd;testing;framework;behavior driven development;acceptance criteria</PackageTags>
-    <PackageReleaseNotes>Added compact scenarios syntax, Added Project Templates and Code Snippets, Other minor improvements; Details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-250</PackageReleaseNotes>
+    <PackageReleaseNotes>Major LightBDD release; Details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-30</PackageReleaseNotes>
     <IsPackable>true</IsPackable>
     <LangVersion>latest</LangVersion>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>

@@ -54,5 +54,35 @@
         {
             return configuration.Get<DependencyContainerConfiguration>();
         }
+
+        /// <summary>
+        /// Retrieves <see cref="ReportWritersConfiguration"/> from <paramref name="configuration"/> for further customizations.
+        /// </summary>
+        /// <param name="configuration">Configuration object.</param>
+        /// <returns>Configuration object.</returns>
+        public static ReportWritersConfiguration ReportWritersConfiguration(this LightBddConfiguration configuration)
+        {
+            return configuration.Get<ReportWritersConfiguration>();
+        }
+
+        /// <summary>
+        /// Retrieves <see cref="NameFormatterConfiguration"/> from <paramref name="configuration"/> for further customizations.
+        /// </summary>
+        /// <param name="configuration">Configuration object.</param>
+        /// <returns>Configuration object.</returns>
+        public static NameFormatterConfiguration NameFormatterConfiguration(this LightBddConfiguration configuration)
+        {
+            return configuration.Get<NameFormatterConfiguration>();
+        }
+
+        /// <summary>
+        /// Retrieves <see cref="ValueFormattingConfiguration"/> from <paramref name="configuration"/> for further customizations.
+        /// </summary>
+        /// <param name="configuration">Configuration object.</param>
+        /// <returns>Configuration object.</returns>
+        public static ValueFormattingConfiguration ValueFormattingConfiguration(this LightBddConfiguration configuration)
+        {
+            return configuration.Get<ValueFormattingConfiguration>();
+        }
     }
 }

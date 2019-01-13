@@ -8,7 +8,7 @@ using LightBDD.Framework.Reporting.Formatters;
 namespace LightBDD.Framework.Configuration
 {
     /// <summary>
-    /// Extensions allowing to apply framework default configuration.
+    /// Extensions allowing to apply and configure framework default configuration.
     /// </summary>
     public static class FrameworkConfigurationExtensions
     {
@@ -52,6 +52,37 @@ namespace LightBDD.Framework.Configuration
         public static ReportWritersConfiguration RegisterFrameworkDefaultReportWriters(this ReportWritersConfiguration configuration)
         {
             return configuration.Add(new ReportFileWriter(new HtmlReportFormatter(), "~" + Path.DirectorySeparatorChar + "Reports" + Path.DirectorySeparatorChar + "FeaturesReport.html"));
+        }
+
+        /// <summary>
+        /// Retrieves <see cref="FeatureProgressNotifierConfiguration"/> from <paramref name="configuration"/> for further customizations.
+        /// </summary>
+        /// <param name="configuration">Configuration object.</param>
+        /// <returns>Configuration object.</returns>
+        public static FeatureProgressNotifierConfiguration FeatureProgressNotifierConfiguration(this LightBddConfiguration configuration)
+        {
+            return configuration.Get<FeatureProgressNotifierConfiguration>();
+        }
+        /// <summary>
+        /// Retrieves <see cref="ScenarioProgressNotifierConfiguration"/> from <paramref name="configuration"/> for further customizations.
+        /// </summary>
+        /// <param name="configuration">Configuration object.</param>
+        /// <returns>Configuration object.</returns>
+        public static ScenarioProgressNotifierConfiguration ScenarioProgressNotifierConfiguration(this LightBddConfiguration configuration)
+        {
+            return configuration.Get<ScenarioProgressNotifierConfiguration>();
+        }
+
+        /// <summary>
+        /// Adds <see cref="ReportFileWriter"/> instance configured to format report with <typeparamref name="TFormatter"/> and write it to <paramref name="outputPath"/>.
+        /// </summary>
+        /// <typeparam name="TFormatter">Type of report formatter.</typeparam>
+        /// <param name="configuration">Configuration.</param>
+        /// <param name="outputPath">Output path for the report.</param>
+        /// <returns>Configuration.</returns>
+        public static ReportWritersConfiguration AddFileWriter<TFormatter>(this ReportWritersConfiguration configuration, string outputPath) where TFormatter : IReportFormatter, new()
+        {
+            return configuration.Add(new ReportFileWriter(new TFormatter(), outputPath));
         }
     }
 }
