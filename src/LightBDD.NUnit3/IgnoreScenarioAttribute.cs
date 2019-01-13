@@ -7,11 +7,12 @@ using NUnit.Framework;
 namespace LightBDD.NUnit3
 {
     /// <summary>
-    /// Attribute allowing to ignore scenario in declarative way. It can be applied on scenario method or step method.
+    /// Attribute allowing to ignore scenario in declarative way. It can be applied on scenario method or step method as well as feature class.
     /// If applied on scenario, no steps will be executed, but scenario will be included in reports.
+    /// If applied on class level, all scenarios in this class will get ignored.
     /// It is recommended to use this attribute in favor of <see cref="IgnoreAttribute"/>.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
     public class IgnoreScenarioAttribute : Attribute, IScenarioDecoratorAttribute, IStepDecoratorAttribute
     {
         /// <summary>

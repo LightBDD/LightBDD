@@ -30,7 +30,7 @@ High level features:
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">

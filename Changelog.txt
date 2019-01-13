@@ -21,6 +21,7 @@ Version 3.0.0
 + #152 (VSIX) Updated templates and snippets
 + #152 (All) Updated logo
 + #165 (Framework) Updated basic syntax compiler to not accept compiler generated methods
++ #174 Allowed IgnoreScenarioAttribute on class level to ignore all scenarios in feature
 
 Version 2.5.0
 ----------------------------------------
