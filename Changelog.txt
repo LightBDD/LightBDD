@@ -6,6 +6,20 @@ Version 3.0.0
 + #157 (All) Signed all assemblies except LightBDD.Fixie2
 + #163 (Core)(Change) Updated DefaultExceptionFormatter to exclude "End of stack trace" lines
 + #170 (NUnit2) Removed LightBDD.NUnit2
++ #152 (All) Removed obsolete code
++ #152 (Framework) Unified scenario extensions
+  * Unified scenario extension namespaces to `LightBDD.Framework.Scenarios`
+  * Removed `RunScenarioActionsAsync()` method in favor of `Runner.AddSteps(/*async void*/).RunAsync()`
+  * Removed `Runner.NewScenario()` in favor of Runner being fluent by default
++ #152 (Framework) Unified configuration namespaces to either `LightBDD.Core.Configuration` or `LightBDD.Framework.Configuration`
++ #152 (Framework/Core) Reworked framework-core abstractions
+  * Removed `Enrich()` methods
+  * Reimplemented internals of scenario / step execution code
+  * Removed optional enabling of commenting feature and other basic features and made them always enabled
+  * Rework how `LightBDDConfiguration` and `IntegrationContext` is being passed to framework and implementations
+  * Removed `DebuggerStepThrough` attributes
++ #152 (VSIX) Updated templates and snippets
++ #152 (All) Updated logo
 
 Version 2.5.0
 ----------------------------------------
