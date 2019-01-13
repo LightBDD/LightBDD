@@ -69,21 +69,31 @@ namespace LightBDD.Fixie2.UnitTests
         [Scenario]
         public void Runner_should_support_async_void_scenarios()
         {
-            var finished = false;
-            Action step1 = async () =>
+            var scenario = new AsyncScenario();
+
+            Should.NotThrow(() => Runner
+                .AddSteps(
+                    scenario.Async_void_step,
+                    scenario.Assert_finished)
+                .RunAsync());
+        }
+
+        class AsyncScenario
+        {
+            private bool _finished;
+
+            public async void Async_void_step()
             {
                 await Task.Delay(200);
-                finished = true;
-            };
-            Action step2 = () => finished.ShouldBeTrue();
-            Should.NotThrow(() => Runner.AddSteps(step1, step2).RunAsync());
+                _finished = true;
+            }
+            public void Assert_finished() => _finished.ShouldBe(true);
         }
 
         [Scenario]
         public void Runner_should_not_support_async_void_scenarios_if_executed_in_sync_mode()
         {
-            Action step = async () => await Task.Delay(200);
-            Should.Throw<InvalidOperationException>(() => Runner.RunScenario(step))
+            Should.Throw<InvalidOperationException>(() => Runner.RunScenario(Async_void_step))
                 .Message.ShouldBe(
                     "Only steps being completed upon return can be run synchronously (all steps have to return completed task). Consider using Async scenario methods for async Task or async void steps.");
         }
@@ -144,6 +154,8 @@ namespace LightBDD.Fixie2.UnitTests
         private void Some_step()
         {
         }
+        
+        private async void Async_void_step() => await Task.Delay(200);
 
         private IScenarioResult GetScenarioResult(string scenarioId)
         {
