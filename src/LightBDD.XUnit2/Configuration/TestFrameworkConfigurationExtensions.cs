@@ -1,5 +1,5 @@
 ﻿using LightBDD.Core.Formatting.ExceptionFormatting;
-using LightBDD.Framework.Notification.Configuration;
+using LightBDD.Framework.Configuration;
 using LightBDD.XUnit2.Implementation;
 
 namespace LightBDD.XUnit2.Configuration

@@ -1,11 +1,9 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using LightBDD.Core.Formatting.NameDecorators;
 
 namespace LightBDD.Core.Metadata.Implementation
 {
-    [DebuggerStepThrough]
     internal class NameInfo : INameInfo
     {
         public string NameFormat { get; }

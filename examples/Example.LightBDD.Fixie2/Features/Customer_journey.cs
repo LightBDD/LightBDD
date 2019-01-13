@@ -1,9 +1,7 @@
 ﻿using System.Threading.Tasks;
 using LightBDD.Fixie2;
 using LightBDD.Framework;
-using LightBDD.Framework.Scenarios.Basic;
-using LightBDD.Framework.Scenarios.Contextual;
-using LightBDD.Framework.Scenarios.Extended;
+using LightBDD.Framework.Scenarios;
 
 #pragma warning disable 1998
 

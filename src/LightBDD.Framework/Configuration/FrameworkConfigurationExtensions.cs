@@ -1,14 +1,14 @@
-﻿using LightBDD.Core.Configuration;
-using LightBDD.Framework.ExecutionContext;
-using LightBDD.Framework.ExecutionContext.Configuration;
-using LightBDD.Framework.Extensibility.Implementation;
-using LightBDD.Framework.Formatting.Configuration;
+﻿using System.IO;
+using LightBDD.Core.Configuration;
+using LightBDD.Framework.Formatting;
 using LightBDD.Framework.Formatting.Values;
+using LightBDD.Framework.Reporting;
+using LightBDD.Framework.Reporting.Formatters;
 
 namespace LightBDD.Framework.Configuration
 {
     /// <summary>
-    /// Extensions allowing to apply framework default configuration.
+    /// Extensions allowing to apply and configure framework default configuration.
     /// </summary>
     public static class FrameworkConfigurationExtensions
     {
@@ -20,12 +20,16 @@ namespace LightBDD.Framework.Configuration
         public static LightBddConfiguration WithFrameworkDefaults(this LightBddConfiguration configuration)
         {
             configuration
-                .ExecutionExtensionsConfiguration()
-                .EnableCurrentScenarioTracking();
-
-            configuration
                 .ValueFormattingConfiguration()
                 .RegisterFrameworkDefaultGeneralFormatters();
+
+            configuration
+                .ReportWritersConfiguration()
+                .RegisterFrameworkDefaultReportWriters();
+
+            configuration
+                .NameFormatterConfiguration()
+                .UpdateFormatter(DefaultNameFormatter.Instance);
 
             return configuration;
         }
@@ -43,17 +47,42 @@ namespace LightBDD.Framework.Configuration
         }
 
         /// <summary>
-        /// Enables ability to access currently executed step with <see cref="StepExecution.Current"/> extension methods.
-        /// This feature depends on <see cref="ScenarioExecutionContext"/>, it enables it as well with <see cref="ScenarioExecutionContextConfigurationExtensions.EnableScenarioExecutionContext"/>().
+        /// Applies default report generators to generate <c>~\\Reports\\FeaturesReport.html</c>(Win) <c>~/Reports/FeaturesReport.html</c>(Unix) reports.
+        /// </summary>
+        public static ReportWritersConfiguration RegisterFrameworkDefaultReportWriters(this ReportWritersConfiguration configuration)
+        {
+            return configuration.Add(new ReportFileWriter(new HtmlReportFormatter(), "~" + Path.DirectorySeparatorChar + "Reports" + Path.DirectorySeparatorChar + "FeaturesReport.html"));
+        }
+
+        /// <summary>
+        /// Retrieves <see cref="FeatureProgressNotifierConfiguration"/> from <paramref name="configuration"/> for further customizations.
         /// </summary>
         /// <param name="configuration">Configuration object.</param>
         /// <returns>Configuration object.</returns>
-        public static ExecutionExtensionsConfiguration EnableCurrentScenarioTracking(this ExecutionExtensionsConfiguration configuration)
+        public static FeatureProgressNotifierConfiguration FeatureProgressNotifierConfiguration(this LightBddConfiguration configuration)
         {
-            return configuration
-                .EnableScenarioExecutionContext()
-                .EnableScenarioDecorator<CurrentScenarioDecorator>()
-                .EnableStepDecorator<CurrentStepDecorator>();
+            return configuration.Get<FeatureProgressNotifierConfiguration>();
+        }
+        /// <summary>
+        /// Retrieves <see cref="ScenarioProgressNotifierConfiguration"/> from <paramref name="configuration"/> for further customizations.
+        /// </summary>
+        /// <param name="configuration">Configuration object.</param>
+        /// <returns>Configuration object.</returns>
+        public static ScenarioProgressNotifierConfiguration ScenarioProgressNotifierConfiguration(this LightBddConfiguration configuration)
+        {
+            return configuration.Get<ScenarioProgressNotifierConfiguration>();
+        }
+
+        /// <summary>
+        /// Adds <see cref="ReportFileWriter"/> instance configured to format report with <typeparamref name="TFormatter"/> and write it to <paramref name="outputPath"/>.
+        /// </summary>
+        /// <typeparam name="TFormatter">Type of report formatter.</typeparam>
+        /// <param name="configuration">Configuration.</param>
+        /// <param name="outputPath">Output path for the report.</param>
+        /// <returns>Configuration.</returns>
+        public static ReportWritersConfiguration AddFileWriter<TFormatter>(this ReportWritersConfiguration configuration, string outputPath) where TFormatter : IReportFormatter, new()
+        {
+            return configuration.Add(new ReportFileWriter(new TFormatter(), outputPath));
         }
     }
 }

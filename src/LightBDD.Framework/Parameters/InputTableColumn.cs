@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using LightBDD.Framework.Parameters.Implementation;
 
 namespace LightBDD.Framework.Parameters
@@ -7,7 +6,6 @@ namespace LightBDD.Framework.Parameters
     /// <summary>
     /// Type representing <see cref="InputTable{TRow}"/> column.
     /// </summary>
-    [DebuggerStepThrough]
     public class InputTableColumn
     {
         /// <summary>

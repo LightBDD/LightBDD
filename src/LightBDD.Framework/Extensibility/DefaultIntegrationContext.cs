@@ -1,13 +1,13 @@
-using System;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Formatting;
+using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
-using LightBDD.Framework.Formatting.Configuration;
-using LightBDD.Framework.Notification.Configuration;
+using System;
+using LightBDD.Framework.Configuration;
 
 namespace LightBDD.Framework.Extensibility
 {
@@ -16,60 +16,44 @@ namespace LightBDD.Framework.Extensibility
     /// </summary>
     public class DefaultIntegrationContext : IntegrationContext
     {
-        /// <summary>
-        /// Returns metadata provider.
-        /// </summary>
-        public override IMetadataProvider MetadataProvider { get; }
+        /// <inheritdoc />
+        public override CoreMetadataProvider MetadataProvider { get; }
 
-        /// <summary>
-        /// Returns name formatter.
-        /// </summary>
-        public override INameFormatter NameFormatter { get; }
-
-        /// <summary>
-        /// Returns exception to status mapping method.
-        /// </summary>
+        /// <inheritdoc />
         public override Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
 
-        /// <summary>
-        /// Returns feature progress notifier.
-        /// </summary>
+        /// <inheritdoc />
         public override IFeatureProgressNotifier FeatureProgressNotifier { get; }
 
-        /// <summary>
-        /// Returns scenario progress notifier provider method.
-        /// </summary>
+        /// <inheritdoc />
         public override Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider { get; }
 
-        /// <summary>
-        /// Returns LightBDD execution extensions.
-        /// </summary>
+        /// <inheritdoc />
         public override IExecutionExtensions ExecutionExtensions { get; }
 
-        /// <summary>
-        /// Returns LightBDD Configuration.
-        /// </summary>
+        /// <inheritdoc />
         public override LightBddConfiguration Configuration { get; }
 
         /// <inheritdoc />
         public override IDependencyContainer DependencyContainer { get; }
 
+        /// <inheritdoc />
+        public override INameFormatter NameFormatter => MetadataProvider.NameFormatter;
+
+        /// <inheritdoc />
+        public override ValueFormattingService ValueFormattingService => MetadataProvider.ValueFormattingService;
+
         /// <summary>
         /// Default constructor sealing provided <paramref name="configuration"/> and initializing all properties.
         /// </summary>
         /// <param name="configuration">Configuration to use.</param>
-        /// <param name="metadataProvider"><see cref="IMetadataProvider"/> instance to use.</param>
+        /// <param name="metadataProvider"><see cref="CoreMetadataProvider"/> instance to use.</param>
         /// <param name="exceptionToStatusMapper">Exception to status mapper function.</param>
-        public DefaultIntegrationContext(LightBddConfiguration configuration, IMetadataProvider metadataProvider, Func<Exception, ExecutionStatus> exceptionToStatusMapper)
+        public DefaultIntegrationContext(LightBddConfiguration configuration, CoreMetadataProvider metadataProvider, Func<Exception, ExecutionStatus> exceptionToStatusMapper)
         {
-            if (configuration == null)
-                throw new ArgumentNullException(nameof(configuration));
-            if (metadataProvider == null)
-                throw new ArgumentNullException(nameof(metadataProvider));
+            Configuration = configuration?.Seal() ?? throw new ArgumentNullException(nameof(configuration));
+            MetadataProvider = metadataProvider ?? throw new ArgumentNullException(nameof(metadataProvider));
 
-            Configuration = configuration.Seal();
-            NameFormatter = configuration.NameFormatterConfiguration().Formatter;
-            MetadataProvider = metadataProvider;
             ExceptionToStatusMapper = exceptionToStatusMapper;
             FeatureProgressNotifier = configuration.FeatureProgressNotifierConfiguration().Notifier;
             ScenarioProgressNotifierProvider = configuration.ScenarioProgressNotifierConfiguration().NotifierProvider;

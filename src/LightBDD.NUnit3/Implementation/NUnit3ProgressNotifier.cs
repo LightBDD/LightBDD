@@ -1,11 +1,9 @@
-﻿using System.Diagnostics;
-using LightBDD.Core.Notification;
+﻿using LightBDD.Core.Notification;
 using LightBDD.Framework.Notification;
 using NUnit.Framework;
 
 namespace LightBDD.NUnit3.Implementation
 {
-    [DebuggerStepThrough]
     internal class NUnit3ProgressNotifier
     {
         private static readonly DefaultProgressNotifier SummarizingProgressNotifier = new DefaultProgressNotifier(WriteOutput);

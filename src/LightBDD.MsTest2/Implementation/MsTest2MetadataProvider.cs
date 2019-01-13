@@ -1,28 +1,17 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
-using LightBDD.Framework.Formatting.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.MsTest2.Implementation
 {
-    [DebuggerStepThrough]
     internal class MsTest2MetadataProvider : CoreMetadataProvider
     {
         public MsTest2MetadataProvider(LightBddConfiguration configuration)
-            : base(configuration.NameFormatterConfiguration().Formatter,
-                configuration.StepTypeConfiguration(),
-                configuration.CultureInfoProviderConfiguration().CultureInfoProvider,
-                configuration.ValueFormattingConfiguration()) { }
-
-        public override MethodBase CaptureCurrentScenarioMethod()
-        {
-            return CaptureCurrentScenario().MethodInfo;
-        }
+            : base(configuration) { }
 
         public override ScenarioDescriptor CaptureCurrentScenario()
         {

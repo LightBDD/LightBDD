@@ -10,7 +10,7 @@ namespace LightBDD.XUnit2.Implementation.Customization
 {
     internal class TaskExecutor
     {
-        private static readonly Type[] FixtureTypes = new[] { typeof(IClassFixture<>), typeof(ICollectionFixture<>) };
+        private static readonly Type[] FixtureTypes = { typeof(IClassFixture<>), typeof(ICollectionFixture<>) };
 
         private static Task<RunSummary> RunOnThreadPool(CancellationToken token, Func<Task<RunSummary>> code)
         {

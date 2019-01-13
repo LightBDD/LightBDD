@@ -1,10 +1,9 @@
-﻿using System.Threading.Tasks;
-using LightBDD.Core.Configuration;
+﻿using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Results;
-using LightBDD.Framework.Formatting;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace LightBDD.Core.UnitTests.Extensibility
 {
@@ -28,7 +27,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [TestCase("\t\n\r something\t\n\r ", "", "SOMETHING")]
         public void GetStepName_should_properly_convert_predefined_step_type(string inputStepType, string lastStepType, string expectedStepType)
         {
-            var metadataProvider = new TestMetadataProvider(new DefaultNameFormatter());
+            var metadataProvider = new TestMetadataProvider();
 
             var descriptor = new StepDescriptor("some_test_method", (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance)) { PredefinedStepType = inputStepType };
             var stepName = metadataProvider.GetStepName(descriptor, lastStepType);
@@ -52,7 +51,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [TestCase("else_my_method", "else", null, "else my method")]
         public void GetStepName_should_properly_infer_default_step_type_from_method_name(string methodName, string lastStepType, string expectedStepType, string expectedStepNameFormat)
         {
-            var metadataProvider = new TestMetadataProvider(new DefaultNameFormatter());
+            var metadataProvider = new TestMetadataProvider();
 
             var descriptor = new StepDescriptor(methodName, (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance));
             var stepName = metadataProvider.GetStepName(descriptor, lastStepType);
@@ -63,7 +62,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [Test]
         public void GetStepName_should_not_extract_step_type_if_nothing_is_left_after_it()
         {
-            var metadataProvider = new TestMetadataProvider(new DefaultNameFormatter());
+            var metadataProvider = new TestMetadataProvider();
 
             var descriptor = new StepDescriptor("given", (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance));
             var stepName = metadataProvider.GetStepName(descriptor, null);
@@ -77,7 +76,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [TestCase(" \r\n\t")]
         public void Should_disable_normalization_if_replacementString_is_empty(string repeatedStepReplacement)
         {
-            var metadataProvider = new TestMetadataProvider(new DefaultNameFormatter(), new StepTypeConfiguration().UpdateRepeatedStepReplacement(repeatedStepReplacement));
+            var metadataProvider = new TestMetadataProvider(cfg => cfg.StepTypeConfiguration().UpdateRepeatedStepReplacement(repeatedStepReplacement));
 
             var stepTypeName = "given";
 
@@ -92,7 +91,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [TestCase("then_something", null, "then something")]
         public void Should_allow_to_reconfigure_predefined_step_types(string formattedName, string expectedType, string expectedNameFormat)
         {
-            var metadataProvider = new TestMetadataProvider(new DefaultNameFormatter(), new StepTypeConfiguration().UpdatePredefinedStepTypes("call", "invoke"));
+            var metadataProvider = new TestMetadataProvider(cfg => cfg.StepTypeConfiguration().UpdatePredefinedStepTypes("call", "invoke"));
 
             var descriptor = new StepDescriptor(formattedName, (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance));
             var step = metadataProvider.GetStepName(descriptor, null);

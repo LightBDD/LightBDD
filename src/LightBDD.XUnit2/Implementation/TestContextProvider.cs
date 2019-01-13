@@ -1,5 +1,5 @@
 using System.Reflection;
-using LightBDD.Framework.ExecutionContext;
+using LightBDD.Core.ExecutionContext;
 using Xunit.Abstractions;
 
 namespace LightBDD.XUnit2.Implementation

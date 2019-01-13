@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Framework
@@ -10,7 +9,6 @@ namespace LightBDD.Framework
     /// Multiple labels per item are supported.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = true)]
-    [DebuggerStepThrough]
     public class LabelAttribute : Attribute, ILabelAttribute
     {
         /// <summary>

@@ -1,5 +1,5 @@
 using System.Reflection;
-using LightBDD.Framework.ExecutionContext;
+using LightBDD.Core.ExecutionContext;
 
 namespace LightBDD.NUnit3.Implementation
 {

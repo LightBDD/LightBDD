@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 
@@ -19,11 +18,8 @@ namespace LightBDD.Framework.Extensibility
         IIntegrableStepGroupBuilder AddSteps(IEnumerable<StepDescriptor> steps);
 
         /// <summary>
-        /// Creates enriched runner based on <see cref="IIntegrableStepGroupBuilder"/> and <see cref="LightBddConfiguration"/>.
+        /// Configuration.
         /// </summary>
-        /// <typeparam name="TEnrichedBuilder">Type of enriched builder.</typeparam>
-        /// <param name="builderFactory">Builder factory.</param>
-        /// <returns>Enriched builder instance.</returns>
-        TEnrichedBuilder Enrich<TEnrichedBuilder>(Func<IIntegrableStepGroupBuilder, LightBddConfiguration, TEnrichedBuilder> builderFactory);
+        LightBddConfiguration Configuration { get; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using LightBDD.Core.Configuration;
+using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Notification;
-using LightBDD.Framework.Notification.Configuration;
 
 namespace LightBDD.Fixie2.UnitTests
 {

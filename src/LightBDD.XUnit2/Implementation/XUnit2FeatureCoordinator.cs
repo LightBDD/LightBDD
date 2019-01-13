@@ -1,10 +1,11 @@
-using System;
-using System.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution.Coordination;
-using LightBDD.Core.Reporting;
+using LightBDD.Core.Extensibility;
+using LightBDD.Core.Results;
 using LightBDD.Framework.Execution.Coordination;
-using LightBDD.Framework.Reporting.Configuration;
+using LightBDD.Framework.Extensibility;
+using LightBDD.XUnit2.Implementation.Customization;
+using System;
 
 namespace LightBDD.XUnit2.Implementation
 {
@@ -19,16 +20,26 @@ namespace LightBDD.XUnit2.Implementation
             return Instance;
         }
 
-        private XUnit2FeatureCoordinator(LightBddConfiguration configuration) : base(
-            new XUnit2FeatureRunnerRepository(configuration),
-            new FeatureReportGenerator(configuration.ReportWritersConfiguration().ToArray()),
-            configuration)
+        private XUnit2FeatureCoordinator(LightBddConfiguration configuration)
+            : base(CreateContext(configuration))
         {
+        }
+
+        private static IntegrationContext CreateContext(LightBddConfiguration configuration)
+        {
+            return new DefaultIntegrationContext(configuration, new XUnit2MetadataProvider(configuration), MapExceptionToStatus);
         }
 
         internal static void InstallSelf(LightBddConfiguration configuration)
         {
             Install(new XUnit2FeatureCoordinator(configuration));
+        }
+
+        private static ExecutionStatus MapExceptionToStatus(Exception ex)
+        {
+            return ex is IgnoreException
+                ? ExecutionStatus.Ignored
+                : ExecutionStatus.Failed;
         }
     }
 }

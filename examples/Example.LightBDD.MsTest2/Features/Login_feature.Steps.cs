@@ -1,6 +1,5 @@
 using Example.Domain.Services;
 using LightBDD.Framework;
-using LightBDD.Framework.Commenting;
 using LightBDD.MsTest2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

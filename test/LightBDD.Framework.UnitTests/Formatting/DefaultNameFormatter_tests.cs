@@ -12,7 +12,7 @@ namespace LightBDD.Framework.UnitTests.Formatting
 		[TestCase("It_s_Paul_s_cat", "It's Paul's cat")]
 		public void It_should_format_text(string input, string expectedOutput)
 		{
-			Assert.That(new DefaultNameFormatter().FormatName(input), Is.EqualTo(expectedOutput));
+			Assert.That(DefaultNameFormatter.Instance.FormatName(input), Is.EqualTo(expectedOutput));
 		}
 	}
 }

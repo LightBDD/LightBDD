@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using LightBDD.Framework.ExecutionContext;
+using LightBDD.Core.ExecutionContext;
 using NUnit.Framework;
 
 namespace LightBDD.Framework.UnitTests.ExecutionContext

@@ -1,10 +1,8 @@
-﻿using System.Diagnostics;
-using LightBDD.Core.Metadata;
+﻿using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters;
 
 namespace LightBDD.Framework.Results.Implementation
 {
-    [DebuggerStepThrough]
     internal class InlineParameterDetails : IInlineParameterDetails
     {
         public InlineParameterDetails(string expectation, string value, ParameterVerificationStatus verificationStatus, string message)

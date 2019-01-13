@@ -1,7 +1,6 @@
 using Example.LightBDD.XUnit2.Features.Contexts;
 using LightBDD.Framework;
-using LightBDD.Framework.Scenarios.Contextual;
-using LightBDD.Framework.Scenarios.Extended;
+using LightBDD.Framework.Scenarios;
 using LightBDD.XUnit2;
 
 namespace Example.LightBDD.XUnit2.Features

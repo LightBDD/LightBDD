@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
 using LightBDD.Core.Formatting.Values;
 
 namespace LightBDD.Framework.Expectations.Implementation
 {
-    [DebuggerStepThrough]
     internal class SimpleExpectation<T> : Expectation<T>
     {
         private readonly Func<IValueFormattingService, string> _descriptionFn;

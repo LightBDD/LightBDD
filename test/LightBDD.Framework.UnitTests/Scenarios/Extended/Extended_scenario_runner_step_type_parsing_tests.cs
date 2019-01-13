@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-using LightBDD.Framework.Scenarios.Extended;
-using LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers;
+﻿using LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers;
 using NUnit.Framework;
+using System.Threading.Tasks;
+using LightBDD.Framework.Scenarios;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Extended
 {
@@ -11,7 +11,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
         [Test]
         public void It_should_not_capture_single_character_but_everything_else_for_step_type_in_synchronous_run()
         {
-            ExpectSynchronousScenarioRun();
+            var (stepsCapture, _) = ExpectExtendedScenarioRun();
 
             Runner.RunScenario(
                 _ => Step_one(),
@@ -20,21 +20,20 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
                 xx => Step_two()
                 );
 
-            MockScenarioRunner.Verify();
+            Builder.Verify();
 
-            Assert.That(CapturedSteps, Is.Not.Null);
-            Assert.That(CapturedSteps.Length, Is.EqualTo(4));
+            Assert.That(stepsCapture.Count, Is.EqualTo(4));
 
-            AssertStep(CapturedSteps[0], nameof(Step_one));
-            AssertStep(CapturedSteps[1], nameof(Step_one));
-            AssertStep(CapturedSteps[2], nameof(Step_two), "when");
-            AssertStep(CapturedSteps[3], nameof(Step_two), "xx");
+            AssertStep(stepsCapture[0], nameof(Step_one));
+            AssertStep(stepsCapture[1], nameof(Step_one));
+            AssertStep(stepsCapture[2], nameof(Step_two), "when");
+            AssertStep(stepsCapture[3], nameof(Step_two), "xx");
         }
 
         [Test]
         public async Task It_should_not_capture_single_character_but_everything_else_for_step_type_in_asynchronous_run()
         {
-            ExpectAsynchronousScenarioRun();
+            var (stepsCapture, _) = ExpectExtendedScenarioRun();
 
             await Runner.RunScenarioAsync(
                 _ => Step_one_async(),
@@ -43,15 +42,14 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
                 xx => Step_two_async()
                 );
 
-            MockScenarioRunner.Verify();
+            Builder.Verify();
 
-            Assert.That(CapturedSteps, Is.Not.Null);
-            Assert.That(CapturedSteps.Length, Is.EqualTo(4));
+            Assert.That(stepsCapture.Count, Is.EqualTo(4));
 
-            AssertStep(CapturedSteps[0], nameof(Step_one_async));
-            AssertStep(CapturedSteps[1], nameof(Step_one_async));
-            AssertStep(CapturedSteps[2], nameof(Step_two_async), "when");
-            AssertStep(CapturedSteps[3], nameof(Step_two_async), "xx");
+            AssertStep(stepsCapture[0], nameof(Step_one_async));
+            AssertStep(stepsCapture[1], nameof(Step_one_async));
+            AssertStep(stepsCapture[2], nameof(Step_two_async), "when");
+            AssertStep(stepsCapture[3], nameof(Step_two_async), "xx");
         }
     }
 }

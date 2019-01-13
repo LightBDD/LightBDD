@@ -1,11 +1,8 @@
-using System.Diagnostics;
-
 namespace LightBDD.Core.Extensibility.Results
 {
     /// <summary>
     /// Default step result descriptor, bringing no additional meaning for the step.
     /// </summary>
-    [DebuggerStepThrough]
     public class DefaultStepResultDescriptor : IStepResultDescriptor
     {
         /// <summary>

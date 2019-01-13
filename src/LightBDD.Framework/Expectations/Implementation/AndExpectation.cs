@@ -1,11 +1,9 @@
 ﻿using LightBDD.Core.Formatting.Values;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace LightBDD.Framework.Expectations.Implementation
 {
-    [DebuggerStepThrough]
     internal class AndExpectation<T> : Expectation<T>
     {
         private readonly string _prefix;

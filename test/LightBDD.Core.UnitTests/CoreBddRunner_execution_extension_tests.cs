@@ -150,7 +150,7 @@ namespace LightBDD.Core.UnitTests
 
             ex.AssertStackTraceMatching(@"^\s*at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator.ProcessStatus[^\n]*
 \s*at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator.ExecuteAsync[^\n]*
-\s*at LightBDD.Core.Extensibility.Execution.Implementation.DecoratingExecutor.RecursiveExecutor[^\n]+ExecuteAsync[^\n]*
+\s*at LightBDD.Core.Execution.Implementation.DecoratingExecutor[^\n]+ExecuteAsync[^\n]*
 ([^\n]*
 )?\s*at LightBDD.UnitTests.Helpers.TestableIntegration.TestSyntaxRunner.TestScenario[^\n]*");
         }
@@ -182,7 +182,7 @@ namespace LightBDD.Core.UnitTests
 
             ex.AssertStackTraceMatching(@"^\s*at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator.ProcessStatus[^\n]*
 \s*at LightBDD.Core.UnitTests.CoreBddRunner_execution_extension_tests.MyThrowingDecorator.ExecuteAsync[^\n]*
-\s*at LightBDD.Core.Extensibility.Execution.Implementation.DecoratingExecutor.RecursiveExecutor[^\n]+ExecuteAsync[^\n]*
+\s*at LightBDD.Core.Execution.Implementation.DecoratingExecutor[^\n]+ExecuteAsync[^\n]*
 ([^\n]*
 )?\s*at LightBDD.UnitTests.Helpers.TestableIntegration.TestSyntaxRunner.TestScenario[^\n]*");
         }

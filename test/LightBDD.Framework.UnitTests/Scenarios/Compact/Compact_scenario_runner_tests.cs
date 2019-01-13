@@ -1,11 +1,9 @@
-﻿using LightBDD.Framework.Scenarios.Compact;
-using LightBDD.Framework.Scenarios.Contextual;
-using LightBDD.Framework.UnitTests.Scenarios.Helpers;
+﻿using LightBDD.Framework.UnitTests.Scenarios.Helpers;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LightBDD.Core.Configuration;
+using LightBDD.Framework.Scenarios;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Compact
 {

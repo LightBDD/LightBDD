@@ -1,5 +1,5 @@
 ﻿using System;
-using LightBDD.Framework.Scenarios.Basic;
+using LightBDD.Framework.Scenarios;
 using Xunit;
 using Xunit.Abstractions;
 #pragma warning disable xUnit1026

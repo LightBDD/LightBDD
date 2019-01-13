@@ -1,16 +1,15 @@
-﻿using System.Threading.Tasks;
-
-namespace LightBDD.Framework.Scenarios
+﻿namespace LightBDD.Framework.Scenarios
 {
     /// <summary>
     /// Interface allowing to compose scenario in fluent way.
     /// </summary>
     /// <typeparam name="TContext"></typeparam>
-    public interface IScenarioBuilder<TContext> : IStepGroupBuilder<TContext>
+    public interface IScenarioBuilder<TContext>
     {
         /// <summary>
-        /// Runs test scenario by executing all specified steps.
+        /// This method should not be used by LightBDD users, but code extending LightBDD capabilities.<br/>
+        /// Returns core version of the builder, allowing to configure scenario.<br/>
         /// </summary>
-        Task RunAsync();
+        IIntegratedScenarioBuilder<TContext> Integrate();
     }
 }

@@ -1,6 +1,5 @@
 ﻿using LightBDD.Framework;
-using LightBDD.Framework.Commenting;
-using LightBDD.Framework.Scenarios.Extended;
+using LightBDD.Framework.Scenarios;
 using LightBDD.NUnit3;
 
 namespace Example.LightBDD.NUnit3.Features

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -10,7 +9,6 @@ namespace LightBDD.Core.Formatting.ExceptionFormatting
     /// <summary>
     /// Default implementation of exception formatter.
     /// </summary>
-    [DebuggerStepThrough]
     public class DefaultExceptionFormatter
     {
         private readonly List<Regex> _excludeMembers = new List<Regex>();

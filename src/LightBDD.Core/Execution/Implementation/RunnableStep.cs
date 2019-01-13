@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Dependencies;
+using LightBDD.Core.ExecutionContext;
+using LightBDD.Core.ExecutionContext.Implementation;
+using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
-using LightBDD.Core.Extensibility.Execution.Implementation;
-using LightBDD.Core.Extensibility.Implementation;
+using LightBDD.Core.Extensibility.Results;
 using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
-using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Implementation;
 using LightBDD.Core.Results.Parameters;
@@ -19,156 +19,62 @@ namespace LightBDD.Core.Execution.Implementation
 {
     internal class RunnableStep : IStep
     {
-        private readonly Func<object, object[], Task<CompositeStepContext>> _stepInvocation;
+        private readonly RunnableStepContext _stepContext;
+        private readonly StepFunc _invocation;
         private readonly MethodArgument[] _arguments;
-        private readonly ExceptionProcessor _exceptionProcessor;
-        private readonly IScenarioProgressNotifier _progressNotifier;
-        private readonly DecoratingExecutor _decoratingExecutor;
-        private readonly IEnumerable<IStepDecorator> _stepDecorators;
-        private readonly IDependencyContainer _container;
+        private readonly Func<Task> _decoratedStepMethod;
         private readonly StepResult _result;
-        private Func<Exception, bool> _shouldAbortSubStepExecutionFn = ex => true;
-        private CompositeStepContext _compositeStepContext;
+        private readonly ExceptionCollector _exceptionCollector = new ExceptionCollector();
+        private Func<Exception, bool> _shouldAbortSubStepExecutionFn = _ => true;
+        private IDependencyContainer _subStepScope;
         public IStepResult Result => _result;
         public IStepInfo Info => Result.Info;
-        public IDependencyResolver DependencyResolver => _container;
-        public object Context { get; }
+        public IDependencyResolver DependencyResolver => _stepContext.Container;
+        public object Context => _stepContext.Context;
 
-        [DebuggerStepThrough]
-        public RunnableStep(StepInfo stepInfo, Func<object, object[], Task<CompositeStepContext>> stepInvocation,
-            MethodArgument[] arguments, ExceptionProcessor exceptionProcessor,
-            IScenarioProgressNotifier progressNotifier, DecoratingExecutor decoratingExecutor, object context,
-            IEnumerable<IStepDecorator> stepDecorators, IDependencyContainer container)
+        public RunnableStep(RunnableStepContext stepContext, StepInfo info, StepFunc invocation, MethodArgument[] arguments, IEnumerable<IStepDecorator> stepDecorators)
         {
-            _result = new StepResult(stepInfo);
-            _stepInvocation = stepInvocation;
+            _stepContext = stepContext;
+            _invocation = invocation;
             _arguments = arguments;
-            _exceptionProcessor = exceptionProcessor;
-            _progressNotifier = progressNotifier;
-            _decoratingExecutor = decoratingExecutor;
-            Context = context;
-            _stepDecorators = stepDecorators;
-            _container = container;
+            _decoratedStepMethod = DecoratingExecutor.DecorateStep(this, RunStepAsync, stepDecorators);
+            _result = new StepResult(info);
             UpdateNameDetails();
         }
 
-        [DebuggerStepThrough]
-        private void UpdateNameDetails()
+        public async Task ExecuteAsync()
         {
-            if (!_arguments.Any())
-                return;
-
-            _result.UpdateName(_arguments.Select(FormatStepParameter).ToArray());
-        }
-
-        [DebuggerStepThrough]
-        private INameParameterInfo FormatStepParameter(MethodArgument p)
-        {
-            try
-            {
-                return p.FormatNameParameter();
-            }
-            catch (Exception e)
-            {
-                throw new InvalidOperationException($"Unable to format '{p.RawName}' parameter of step '{_result.Info}': {e.Message}");
-            }
-        }
-
-        [DebuggerStepThrough]
-        public async Task RunAsync()
-        {
-            var exceptionCollector = new ExceptionCollector();
             var stepStartNotified = false;
-            try
-            {
-                EvaluateParameters();
-                _progressNotifier.NotifyStepStart(_result.Info);
-                stepStartNotified = true;
-
-                await TimeMeasuredInvokeAsync();
-                _result.SetStatus(_result.GetSubSteps().GetMostSevereOrNull()?.Status ?? ExecutionStatus.Passed);
-            }
-            catch (StepExecutionException e)
-            {
-                _result.SetStatus(e.StepStatus);
-            }
-            catch (ScenarioExecutionException exception) when (exception.InnerException is StepBypassException)
-            {
-                _result.SetStatus(ExecutionStatus.Bypassed, exception.InnerException.Message);
-            }
-            catch (ScenarioExecutionException exception)
-            {
-                _exceptionProcessor.UpdateResultsWithException(_result.SetStatus, exception.InnerException);
-                exceptionCollector.Capture(exception);
-            }
-            catch (Exception exception)
-            {
-                _exceptionProcessor.UpdateResultsWithException(_result.SetStatus, exception);
-                exceptionCollector.Capture(exception);
-            }
-            finally
-            {
-                DisposeCompositeStep(exceptionCollector);
-                _result.IncludeSubStepDetails();
-                if (stepStartNotified)
-                    _progressNotifier.NotifyStepFinished(_result);
-            }
-            ProcessExceptions(exceptionCollector);
-        }
-
-        [DebuggerStepThrough]
-        private void DisposeCompositeStep(ExceptionCollector exceptionCollector)
-        {
-            try
-            {
-                _compositeStepContext?.Dispose();
-            }
-            catch (Exception exception)
-            {
-                _exceptionProcessor.UpdateResultsWithException(_result.SetStatus, exception);
-                exceptionCollector.Capture(exception);
-            }
-        }
-
-        [DebuggerStepThrough]
-        private void ProcessExceptions(ExceptionCollector exceptionCollector)
-        {
-            var exception = exceptionCollector.CollectFor(_result.Status, _result.GetSubSteps());
-            if (exception == null)
-                return;
-
-            _result.UpdateException(exception);
-
-            throw new StepExecutionException(exception, _result.Status);
-        }
-
-        [DebuggerStepThrough]
-        private async Task TimeMeasuredInvokeAsync()
-        {
             var watch = ExecutionTimeWatch.StartNew();
             try
             {
-                await _decoratingExecutor.ExecuteStepAsync(this, InvokeStepAsync, _stepDecorators);
+                StartStep();
+                stepStartNotified = true;
+                await _decoratedStepMethod.Invoke();
+                UpdateStepStatus();
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
             }
             finally
             {
-                _result.SetExecutionTime(watch.GetTime());
+                StopStep(watch, stepStartNotified);
             }
+            ProcessExceptions();
         }
 
-        private async Task InvokeStepAsync()
+        private async Task InvokeSubStepsAsync(IStepResultDescriptor result)
         {
-            _compositeStepContext = await InvokeStepMethodAsync();
-            if (_compositeStepContext.SubSteps.Any())
-                await InvokeSubStepsAsync(_compositeStepContext.SubSteps);
-        }
+            var subSteps = InitializeComposite(result);
 
-        private async Task InvokeSubStepsAsync(RunnableStep[] subSteps)
-        {
+            if (!subSteps.Any())
+                return;
+
             try
             {
                 foreach (var subStep in subSteps)
-                    await InvokeSubStepAsync(subStep);
+                    await subStep.ExecuteAsync();
             }
             finally
             {
@@ -176,29 +82,46 @@ namespace LightBDD.Core.Execution.Implementation
             }
         }
 
-        [DebuggerStepThrough]
-        private async Task InvokeSubStepAsync(RunnableStep subStep)
+        private RunnableStep[] InitializeComposite(IStepResultDescriptor result)
         {
+            if (!(result is CompositeStepResultDescriptor compositeDescriptor))
+                return Arrays<RunnableStep>.Empty();
+
+            _subStepScope = _stepContext.Container.BeginScope(compositeDescriptor.SubStepsContext.ScopeConfigurator);
+            var subStepsContext = InstantiateSubStepsContext(compositeDescriptor.SubStepsContext, _subStepScope);
             try
             {
-                await subStep.RunAsync();
+                return _stepContext.ProvideSteps(compositeDescriptor.SubSteps, subStepsContext, _subStepScope, $"{Info.GroupPrefix}{Info.Number}.", ShouldAbortSubStepExecution);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                if (_shouldAbortSubStepExecutionFn(ex))
-                    throw;
+                throw new InvalidOperationException($"Sub-steps initialization failed: {e.Message}", e);
             }
         }
 
-        [DebuggerStepThrough]
-        private async Task<CompositeStepContext> InvokeStepMethodAsync()
+        private bool ShouldAbortSubStepExecution(Exception ex) => _shouldAbortSubStepExecutionFn(ex);
+
+        private static object InstantiateSubStepsContext(ExecutionContextDescriptor contextDescriptor, IDependencyContainer container)
         {
-            CompositeStepContext result;
+            try
+            {
+                return contextDescriptor.ContextResolver(container);
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"Sub-steps context initialization failed: {e.Message}", e);
+            }
+        }
+
+        private async Task RunStepAsync()
+        {
+            IStepResultDescriptor result;
             var ctx = AsyncStepSynchronizationContext.InstallNew();
             try
             {
-                result = await _stepInvocation.Invoke(Context, PrepareParameters());
-                VerifyParameters();
+                var args = PrepareArguments();
+                result = await _invocation.Invoke(Context, args);
+                VerifyArguments();
             }
             catch (Exception e)
             {
@@ -212,11 +135,11 @@ namespace LightBDD.Core.Execution.Implementation
                 ctx.RestoreOriginal();
                 await ctx.WaitForTasksAsync();
             }
-            return result;
+
+            await InvokeSubStepsAsync(result);
         }
 
-        [DebuggerStepThrough]
-        private void VerifyParameters()
+        private void VerifyArguments()
         {
             var results = new List<IParameterResult>();
             foreach (var argument in _arguments)
@@ -237,14 +160,84 @@ namespace LightBDD.Core.Execution.Implementation
 
             throw new InvalidOperationException(string.Join(Environment.NewLine, errors));
         }
-
-        [DebuggerStepThrough]
         private static string FormatErrorMessage(IParameterResult result)
         {
             return $"Parameter '{result.Name}' verification failed: {result.Details.VerificationMessage?.Replace(Environment.NewLine, Environment.NewLine + "\t") ?? string.Empty}";
         }
 
-        [DebuggerStepThrough]
+        private object[] PrepareArguments()
+        {
+            return _arguments.Select(p => p.Value).ToArray();
+        }
+
+        private void UpdateStepStatus()
+        {
+            _result.SetStatus(_result.GetSubSteps().GetMostSevereOrNull()?.Status ?? ExecutionStatus.Passed);
+        }
+
+        private void ProcessExceptions()
+        {
+            var exception = _exceptionCollector.CollectFor(_result.Status, _result.GetSubSteps());
+            if (exception == null)
+                return;
+
+            _result.UpdateException(exception);
+            if (_stepContext.ShouldAbortSubStepExecution(exception))
+                throw new StepExecutionException(exception, _result.Status);
+        }
+
+        private void StartStep()
+        {
+            ScenarioExecutionContext.Current.Get<CurrentStepProperty>().Stash(this);
+            EvaluateParameters();
+            _stepContext.ProgressNotifier.NotifyStepStart(_result.Info);
+        }
+
+        private void StopStep(ExecutionTimeWatch watch, bool stepStartNotified)
+        {
+            ScenarioExecutionContext.Current.Get<CurrentStepProperty>().RemoveCurrent(this);
+            DisposeComposite();
+            watch.Stop();
+            _result.SetExecutionTime(watch.GetTime());
+            _result.IncludeSubStepDetails();
+            if (stepStartNotified)
+                _stepContext.ProgressNotifier.NotifyStepFinished(_result);
+        }
+
+        private void DisposeComposite()
+        {
+            try
+            {
+                _subStepScope?.Dispose();
+            }
+            catch (Exception exception)
+            {
+                _stepContext.ExceptionProcessor.UpdateResultsWithException(_result.SetStatus, exception);
+                _exceptionCollector.Capture(exception);
+            }
+        }
+
+        private void HandleException(Exception exception)
+        {
+            switch (exception)
+            {
+                case StepExecutionException e:
+                    _result.SetStatus(e.StepStatus);
+                    break;
+                case ScenarioExecutionException e when e.InnerException is StepBypassException:
+                    _result.SetStatus(ExecutionStatus.Bypassed, exception.InnerException.Message);
+                    break;
+                case ScenarioExecutionException e:
+                    _stepContext.ExceptionProcessor.UpdateResultsWithException(_result.SetStatus, e.InnerException);
+                    _exceptionCollector.Capture(e);
+                    break;
+                default:
+                    _stepContext.ExceptionProcessor.UpdateResultsWithException(_result.SetStatus, exception);
+                    _exceptionCollector.Capture(exception);
+                    break;
+            }
+        }
+
         private void EvaluateParameters()
         {
             foreach (var parameter in _arguments)
@@ -252,26 +245,37 @@ namespace LightBDD.Core.Execution.Implementation
             UpdateNameDetails();
         }
 
-        [DebuggerStepThrough]
-        private object[] PrepareParameters()
+        private void UpdateNameDetails()
         {
-            return _arguments.Select(p => p.Value).ToArray();
+            if (!_arguments.Any())
+                return;
+
+            _result.UpdateName(_arguments.Select(FormatStepParameter).ToArray());
         }
 
-        [DebuggerStepThrough]
-        public void Comment(string comment)
+        private INameParameterInfo FormatStepParameter(MethodArgument p)
         {
-            _result.AddComment(comment);
-            _progressNotifier.NotifyStepComment(_result.Info, comment);
+            try
+            {
+                return p.FormatNameParameter();
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"Unable to format '{p.RawName}' parameter of step '{_result.Info}': {e.Message}");
+            }
         }
 
-        [DebuggerStepThrough]
         public void ConfigureExecutionAbortOnSubStepException(Func<Exception, bool> shouldAbortExecutionFn)
         {
             _shouldAbortSubStepExecutionFn = shouldAbortExecutionFn ?? throw new ArgumentNullException(nameof(shouldAbortExecutionFn));
         }
 
-        [DebuggerStepThrough]
+        public void Comment(string comment)
+        {
+            _result.AddComment(comment);
+            _stepContext.ProgressNotifier.NotifyStepComment(_result.Info, comment);
+        }
+
         public override string ToString()
         {
             return _result.ToString();

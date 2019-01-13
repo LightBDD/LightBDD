@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution.Coordination;
 
@@ -8,7 +7,6 @@ namespace LightBDD.Core.Extensibility
     /// <summary>
     /// A class exposing current <see cref="LightBddConfiguration"/> instance for class deriving from it.
     /// </summary>
-    [DebuggerStepThrough]
     public class LightBddConfigurationAware
     {
         /// <summary>

@@ -1,10 +1,9 @@
-﻿using System.Globalization;
-using LightBDD.Core.Configuration;
+﻿using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.UnitTests.Helpers;
-using LightBDD.Framework.Formatting;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
+using System.Globalization;
 
 namespace LightBDD.Core.UnitTests.Extensibility
 {
@@ -17,25 +16,12 @@ namespace LightBDD.Core.UnitTests.Extensibility
         public void It_should_format_step_parameters_with_specified_formatter(string cultureInfo, double parameter, string expectedFormattedParameter)
         {
             var parameterInfo = ParameterInfoHelper.GetMethodParameter<double>(Step_with_parameter);
-
-            var formatter = new TestMetadataProvider(new DefaultNameFormatter(), new StepTypeConfiguration(), new TestCultureInfoProvider(new CultureInfo(cultureInfo)))
-                .GetValueFormattingServiceFor(parameterInfo);
+            var metadataProvider = new TestMetadataProvider(cfg =>
+                cfg.CultureInfoProviderConfiguration()
+                    .UpdateCultureInfoProvider(new TestCultureInfoProvider(new CultureInfo(cultureInfo))));
+            var formatter = metadataProvider.GetValueFormattingServiceFor(parameterInfo);
 
             Assert.That(formatter.FormatValue(parameter), Is.EqualTo(expectedFormattedParameter));
-        }
-
-        [Test]
-        [TestCase("pl-PL", 3.14, "3,14")]
-        [TestCase("en-US", 3.14, "3.14")]
-        public void It_should_format_step_parameters_with_specified_formatter_using_obsolete_GetParameterFormatter(string cultureInfo, double parameter, string expectedFormattedParameter)
-        {
-            var parameterInfo = ParameterInfoHelper.GetMethodParameter<double>(Step_with_parameter);
-#pragma warning disable 618
-            var formatter = new TestMetadataProvider(new DefaultNameFormatter(), new StepTypeConfiguration(), new TestCultureInfoProvider(new CultureInfo(cultureInfo)))
-                .GetParameterFormatter(parameterInfo);
-#pragma warning restore 618
-
-            Assert.That(formatter.Invoke(parameter), Is.EqualTo(expectedFormattedParameter));
         }
 
         private static void Step_with_parameter(double value) { }

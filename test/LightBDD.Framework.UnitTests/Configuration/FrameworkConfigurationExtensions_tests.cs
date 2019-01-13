@@ -1,9 +1,6 @@
 ﻿using System.Linq;
 using LightBDD.Core.Configuration;
-using LightBDD.Framework.Commenting.Configuration;
 using LightBDD.Framework.Configuration;
-using LightBDD.Framework.ExecutionContext.Configuration;
-using LightBDD.Framework.Formatting.Configuration;
 using LightBDD.Framework.Formatting.Values;
 using NUnit.Framework;
 
@@ -17,17 +14,11 @@ namespace LightBDD.Framework.UnitTests.Configuration
         {
             var configuration = new LightBddConfiguration().WithFrameworkDefaults().ExecutionExtensionsConfiguration();
 
-            var expected = new LightBddConfiguration().ExecutionExtensionsConfiguration()
-                .EnableStepCommenting();
-
             Assert.That(configuration
                     .StepDecorators
                     .Select(x => x.GetType())
                     .ToArray(),
-                Is.EquivalentTo(expected
-                    .StepDecorators
-                    .Select(x => x.GetType())
-                    .ToArray()));
+                Is.Empty);
         }
 
         [Test]
@@ -35,18 +26,11 @@ namespace LightBDD.Framework.UnitTests.Configuration
         {
             var configuration = new LightBddConfiguration().WithFrameworkDefaults().ExecutionExtensionsConfiguration();
 
-            var expected = new LightBddConfiguration().ExecutionExtensionsConfiguration()
-                .EnableScenarioExecutionContext()
-                .EnableCurrentScenarioTracking();
-
             Assert.That(configuration
                     .ScenarioDecorators
                     .Select(x => x.GetType())
                     .ToArray(),
-                Is.EquivalentTo(expected
-                    .ScenarioDecorators
-                    .Select(x => x.GetType())
-                    .ToArray()));
+                Is.Empty);
         }
 
         [Test]
