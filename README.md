@@ -29,6 +29,10 @@ This additional layer becomes the root of most problems when maintaining tests, 
 ## Project description
 **LightBDD** is a behaviour-driven development test framework offering ability to write tests that are easy to read, easy to track during execution and summarize in user friendly report, while allowing developers to use all of the standard development tools to maintain them.
 
+### Migrating LightBDD
+
+LightBDD is now in version 3! To find out how to migrate from previous versions, please visit [Migrating LightBDD Versions](https://github.com/LightBDD/LightBDD/wiki/Migrating-LightBDD-Versions) wiki page.
+
 ### Features
 * Native support for refactoring, code analysis (like finding unused methods), test running and all features that Visual Studio / Intellisense / Resharper offer during code development,
 * Easy to read scenario definitions,
@@ -208,7 +212,7 @@ Please check project [wiki](https://github.com/LightBDD/LightBDD/wiki) for more 
 ## Debugging LightBDD from NuGet packages
 
 LightBDD supports two modes of exposing symbol packages for debugging:
-1. via [SourceLink](https://github.com/dotnet/sourcelink) (since 2.4.2)
+1. via [SourceLink](https://github.com/dotnet/sourcelink)
 
     The LightBDD projects are now integrated with SourceLink, which should make debugging seamless for people using Visual Studio 15.3+ or other tools supporting it.
 
