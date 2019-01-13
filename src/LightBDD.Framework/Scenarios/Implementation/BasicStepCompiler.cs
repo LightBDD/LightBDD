@@ -1,9 +1,12 @@
 using System;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Results;
+using LightBDD.Framework.Implementation;
 
 namespace LightBDD.Framework.Scenarios.Implementation
 {
@@ -11,13 +14,24 @@ namespace LightBDD.Framework.Scenarios.Implementation
     {
         public static StepDescriptor ToAsynchronousStep(Func<Task> step)
         {
-            return new StepDescriptor(step.GetMethodInfo(), new AsyncStepExecutor(step).ExecuteAsync);
+            var methodInfo = step.GetMethodInfo();
+            EnsureNotGenerated(methodInfo);
+            return new StepDescriptor(methodInfo, new AsyncStepExecutor(step).ExecuteAsync);
         }
 
         public static StepDescriptor ToSynchronousStep(Action step)
         {
-            return new StepDescriptor(step.GetMethodInfo(), new StepExecutor(step).Execute);
+            var methodInfo = step.GetMethodInfo();
+            EnsureNotGenerated(methodInfo);
+            return new StepDescriptor(methodInfo, new StepExecutor(step).Execute);
         }
+
+        private static void EnsureNotGenerated(MethodInfo methodInfo)
+        {
+            if(Reflector.IsGenerated(methodInfo))
+                throw new ArgumentException($"The basic step syntax does not support compiler generated methods, such as {methodInfo}, as rendered step name will be unreadable. Please either pass the step method name directly or use other methods for declaring steps.");
+        }
+
         private class AsyncStepExecutor
         {
             private static readonly MethodInfo AsCompositeStepMethod = ((Func<Task, Task<IStepResultDescriptor>>)AsCompositeStep<IStepResultDescriptor>).GetMethodInfo().GetGenericMethodDefinition();
@@ -60,6 +74,7 @@ namespace LightBDD.Framework.Scenarios.Implementation
                 return await (Task<T>)stepTask;
             }
         }
+
         private class StepExecutor
         {
             private readonly Action _invocation;

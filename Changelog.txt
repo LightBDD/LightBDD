@@ -20,6 +20,7 @@ Version 3.0.0
   * Removed `DebuggerStepThrough` attributes
 + #152 (VSIX) Updated templates and snippets
 + #152 (All) Updated logo
++ #165 (Framework) Updated basic syntax compiler to not accept compiler generated methods
 
 Version 2.5.0
 ----------------------------------------

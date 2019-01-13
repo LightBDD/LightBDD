@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using LightBDD.Framework.Expectations;
+using LightBDD.Framework.Implementation;
 
 namespace LightBDD.Framework.Parameters.Implementation
 {
