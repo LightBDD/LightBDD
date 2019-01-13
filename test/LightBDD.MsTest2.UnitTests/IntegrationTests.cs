@@ -87,25 +87,33 @@ namespace LightBDD.MsTest2.UnitTests
         [Scenario]
         public async Task Runner_should_support_async_void_scenarios()
         {
-            var finished = false;
-            Action step1 = async () =>
+            var scenario = new AsyncScenario();
+            await Runner
+                .AddSteps(
+                    scenario.Async_void_step,
+                    scenario.Assert_finished)
+                .RunAsync();
+        }
+
+        class AsyncScenario
+        {
+            private bool _finished;
+
+            public async void Async_void_step()
             {
                 await Task.Delay(200);
-                finished = true;
-            };
-            Action step2 = () => Assert.IsTrue(finished);
-
-            await Runner.AddSteps(step1, step2).RunAsync();
+                _finished = true;
+            }
+            public void Assert_finished() => Assert.IsTrue(_finished);
         }
 
         [Scenario]
         public void Runner_should_not_support_async_void_scenarios_if_executed_in_sync_mode()
         {
-            Action step = async () => await Task.Delay(200);
             Exception ex = null;
             try
             {
-                Runner.RunScenario(step);
+                Runner.RunScenario(Async_void_step);
             }
             catch (InvalidOperationException e)
             {
@@ -172,6 +180,8 @@ namespace LightBDD.MsTest2.UnitTests
         private void Some_step()
         {
         }
+
+        private async void Async_void_step() => await Task.Delay(200);
 
         private IScenarioResult GetScenarioResult(string scenarioId)
         {

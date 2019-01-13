@@ -1,8 +1,10 @@
-﻿using LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers;
+﻿using LightBDD.Framework.Scenarios;
+using LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers;
 using LightBDD.Framework.UnitTests.Scenarios.Helpers;
 using NUnit.Framework;
+using System;
+using System.Reflection;
 using System.Threading.Tasks;
-using LightBDD.Framework.Scenarios;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Basic
 {
@@ -77,6 +79,53 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic
 
             AssertStep(steps[0], nameof(Step_one_async));
             AssertStep(steps[1], nameof(Step_two_async));
+        }
+
+        [Test]
+        public void It_should_not_support_lambdas()
+        {
+            Action lambda = () => { };
+            var builder = new TestableScenarioBuilder<NoContext>();
+            var ex = Assert.Throws<ArgumentException>(() => builder.AddSteps(lambda));
+            AssertGeneratedStepNameException(ex, lambda.GetMethodInfo());
+        }
+
+        [Test]
+        public void It_should_not_support_local_functions()
+        {
+            void LocalFunction() { }
+            Action action = LocalFunction;
+            var builder = new TestableScenarioBuilder<NoContext>();
+            var ex = Assert.Throws<ArgumentException>(() => builder.AddSteps(LocalFunction));
+            AssertGeneratedStepNameException(ex, action.GetMethodInfo());
+        }
+
+        [Test]
+        public void It_should_not_support_async_lambdas()
+        {
+            Func<Task> lambda = async () => await Task.Yield();
+            var builder = new TestableScenarioBuilder<NoContext>();
+            var ex = Assert.Throws<ArgumentException>(() => builder.AddAsyncSteps(lambda));
+            AssertGeneratedStepNameException(ex, lambda.GetMethodInfo());
+        }
+
+        [Test]
+        public void It_should_not_support_async_local_functions()
+        {
+            async Task LocalFunction()
+            {
+                await Task.Yield();
+            }
+            Func<Task> action = LocalFunction;
+            var builder = new TestableScenarioBuilder<NoContext>();
+            var ex = Assert.Throws<ArgumentException>(() => builder.AddAsyncSteps(LocalFunction));
+            AssertGeneratedStepNameException(ex, action.GetMethodInfo());
+        }
+
+        private static void AssertGeneratedStepNameException(ArgumentException ex, MethodInfo methodInfo)
+        {
+            Assert.That(ex.Message,
+                Is.EqualTo($"The basic step syntax does not support compiler generated methods, such as {methodInfo}, as rendered step name will be unreadable. Please either pass the step method name directly or use other methods for declaring steps."));
         }
     }
 }
