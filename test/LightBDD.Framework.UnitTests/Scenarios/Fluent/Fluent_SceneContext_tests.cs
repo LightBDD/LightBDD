@@ -15,24 +15,23 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 		[Test]
 		public void FluentApi_Context_should_generate_array_of_steps()
 		{
-			ExpectSynchronousExecution();
+			var (stepsCapture, runCapture) = ExpectBasicScenarioRun();
 
 			new ActionTestContext(this.Runner)
 				.Given.A
 				.When.B(5)
 				.Then.C
-				.Run();			
+				.Run();
 
-			VerifyAllExpectations();
-
-			Assert.That(CapturedSteps, Is.Not.Null);
-			Assert.That(CapturedSteps.Length, Is.EqualTo(3));
+			Builder.Verify();
+			Assert.That(runCapture.Value, Is.True);
+			Assert.That(stepsCapture.Count, Is.EqualTo(3));
 		}
 
 		[Test]
 		public async Task FluentApi_should_generate_array_of_steps_async()
 		{
-			ExpectAsynchronousExecution();
+			var (stepsCapture, runCapture) = ExpectBasicScenarioRun();
 
 			await new FuncTestContext(this.Runner)
 				.Given.TaskA
@@ -40,10 +39,9 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 				.Then.TaskC
 				.RunAsync();
 
-			VerifyAllExpectations();
-
-			Assert.That(CapturedSteps, Is.Not.Null);
-			Assert.That(CapturedSteps.Length, Is.EqualTo(3));
+			Builder.Verify();
+			Assert.That(runCapture.Value, Is.True);
+			Assert.That(stepsCapture.Count, Is.EqualTo(3));
 		}
 	}
 }

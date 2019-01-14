@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using LightBDD.Framework.Scenarios.Basic;
 
 namespace LightBDD.Framework.Scenarios.Fluent
 {
@@ -45,30 +44,6 @@ namespace LightBDD.Framework.Scenarios.Fluent
 		{
 			var scene = (Scene<Action>)then;
 			scene.Runner.RunScenario(scene.End());
-		}
-
-		/// <summary>
-		/// Run actions async the definition of the SceneContext.
-		/// <see cref="SceneContext{TGiven, TWhen, TThen, TFunc_Given}"/>
-		/// Execute the steps
-		/// </summary>
-		/// <typeparam name="TThen">Type of then-methods class</typeparam>
-		/// <param name="then">ThenResult object</param>
-		public static Task RunActionsAsync<TThen>(this ThenResult<TThen, Action> then)
-		{
-			var scene = (Scene<Action>)then.To();
-			return scene.Runner.RunScenarioActionsAsync(scene.End());
-		}
-
-		/// <summary>
-		/// Run Actions Async the definition of the Scene
-		/// <see cref="Scene{TAction}"/>
-		/// </summary>
-		/// <param name="then">Then-object</param>
-		public static Task RunActionsAsync(this IThen<Action> then)
-		{
-			var scene = (Scene<Action>)then;
-			return scene.Runner.RunScenarioActionsAsync(scene.End());
 		}
 	}
 }

@@ -13,7 +13,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 		[Test]
 		public void FluentApi_should_generate_array_of_steps()
 		{
-			ExpectSynchronousExecution();
+			var (stepsCapture, runCapture) = ExpectBasicScenarioRun();
 
 			Runner
 				.Given(Given_A)
@@ -27,10 +27,9 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
 				.And(Then_B)
 				.Run();
 
-			VerifyAllExpectations();
-
-			Assert.That(CapturedSteps, Is.Not.Null);
-			Assert.That(CapturedSteps.Length, Is.EqualTo(9));
+			Builder.Verify();
+			Assert.That(runCapture.Value, Is.True);
+			Assert.That(stepsCapture.Count, Is.EqualTo(9));
 		}
 	}
 }
