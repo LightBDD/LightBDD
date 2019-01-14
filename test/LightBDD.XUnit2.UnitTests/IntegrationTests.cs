@@ -1,10 +1,9 @@
-﻿using System;
+﻿using LightBDD.Core.Results;
+using LightBDD.Framework;
+using LightBDD.Framework.Scenarios;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LightBDD.Core.Results;
-using LightBDD.Framework;
-using LightBDD.Framework.Scenarios.Basic;
-using LightBDD.Framework.Scenarios.Extended;
 using Xunit;
 using Xunit.Sdk;
 #pragma warning disable xUnit1026
@@ -71,22 +70,31 @@ namespace LightBDD.XUnit2.UnitTests
         [Scenario]
         public async Task Runner_should_support_async_void_scenarios()
         {
-            var finished = false;
-            Action step1 = async () =>
+            var scenario = new AsyncScenario();
+
+            await Runner
+               .AddSteps(
+                   scenario.Async_void_step,
+                   scenario.Assert_finished)
+               .RunAsync();
+        }
+
+        class AsyncScenario
+        {
+            private bool _finished;
+
+            public async void Async_void_step()
             {
                 await Task.Delay(200);
-                finished = true;
-            };
-            Action step2 = () => Assert.True(finished);
-
-            await Runner.RunScenarioActionsAsync(step1, step2);
+                _finished = true;
+            }
+            public void Assert_finished() => Assert.True(_finished);
         }
 
         [Scenario]
         public void Runner_should_not_support_async_void_scenarios_if_executed_in_sync_mode()
         {
-            Action step = async () => await Task.Delay(200);
-            var ex = Assert.Throws<InvalidOperationException>(() => Runner.RunScenario(step));
+            var ex = Assert.Throws<InvalidOperationException>(() => Runner.RunScenario(Async_void_step));
             Assert.Equal(
                     "Only steps being completed upon return can be run synchronously (all steps have to return completed task). Consider using Async scenario methods for async Task or async void steps.",
                     ex.Message);
@@ -168,7 +176,7 @@ namespace LightBDD.XUnit2.UnitTests
         private void Some_step()
         {
         }
-
+        private async void Async_void_step() => await Task.Delay(200);
         private IScenarioResult GetScenarioResult(string scenarioId)
         {
             return FeatureRunnerProvider.GetRunnerFor(GetType())

@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq.Expressions;
 using LightBDD.Framework.Expectations;
+using LightBDD.Framework.Implementation;
 
 namespace LightBDD.Framework.Parameters.Implementation
 {
-    [DebuggerStepThrough]
     internal class TableValidatorBuilder<TRow> : AbstractTableBuilder<TRow, VerifiableTableColumn>, ITableValidatorBuilder<TRow>
     {
         public TableValidator<TRow> Build()
@@ -34,7 +33,7 @@ namespace LightBDD.Framework.Parameters.Implementation
                 columnName,
                 isKey,
                 row => ColumnValue.From(columnExpression((TRow)row)),
-                value => expectationFn(default(TValue)).CastFrom(Expect.Type<object>())));
+                value => expectationFn(default).CastFrom(Expect.Type<object>())));
 
             return this;
         }

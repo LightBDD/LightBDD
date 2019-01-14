@@ -1,6 +1,6 @@
 ﻿using System;
 using LightBDD.Framework.Extensibility;
-using LightBDD.Framework.Scenarios.Basic;
+using LightBDD.Framework.Scenarios;
 using NUnit.Framework;
 
 namespace LightBDD.NUnit3.UnitTests

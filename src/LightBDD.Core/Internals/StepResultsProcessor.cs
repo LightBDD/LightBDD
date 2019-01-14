@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using LightBDD.Core.Results;
 
 namespace LightBDD.Core.Internals
 {
-    [DebuggerStepThrough]
     internal static class StepResultsProcessor
     {
         public static string MergeStatusDetails(this IEnumerable<IStepResult> subSteps, string currentDetails = null)

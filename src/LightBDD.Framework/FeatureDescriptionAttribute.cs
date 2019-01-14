@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Framework
@@ -12,7 +11,6 @@ namespace LightBDD.Framework
     /// If given implementation supports alternative description attributes, and both are applied on class, this one would be used.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    [DebuggerStepThrough]
     public class FeatureDescriptionAttribute : Attribute, IFeatureDescriptionAttribute
     {
         /// <summary>

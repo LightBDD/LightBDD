@@ -2,14 +2,13 @@
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Results;
-using LightBDD.Core.Formatting;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
-using LightBDD.Framework.Formatting;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
@@ -23,13 +22,13 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [SetUp]
         public void SetUp()
         {
-            _metadataProvider = new TestMetadataProvider(new DefaultNameFormatter());
+            _metadataProvider = new TestMetadataProvider();
         }
 
         [Test]
         public void It_should_throw_if_nameFormatter_is_null()
         {
-            Assert.Throws<ArgumentNullException>(() => new TestMetadataProvider((INameFormatter)null));
+            Assert.Throws<ArgumentNullException>(() => new TestMetadataProvider((LightBddConfiguration)null));
         }
 
         [Test]
@@ -40,16 +39,6 @@ namespace LightBDD.Core.UnitTests.Extensibility
             Assert.That(featureInfo.Name.Parameters, Is.Empty);
             Assert.That(featureInfo.Description, Is.EqualTo("description"));
             Assert.That(featureInfo.Labels, Is.EqualTo(new[] { "l1", "l2" }));
-        }
-
-        [Test]
-        public void GetScenarioName_should_capture_scenario_name_from_method()
-        {
-            var method = typeof(Feature_type).GetMethod(nameof(Feature_type.Some_method));
-            var scenarioName = _metadataProvider.GetScenarioName(method);
-
-            Assert.That(scenarioName.ToString(), Is.EqualTo("Some method"));
-            Assert.That(scenarioName.Parameters, Is.Empty);
         }
 
         [Test]

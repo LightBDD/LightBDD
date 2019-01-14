@@ -1,5 +1,4 @@
 using LightBDD.Framework;
-using LightBDD.Framework.Extensibility;
 
 namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
@@ -7,7 +6,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
     {
         public static TestSyntaxRunner Test(this IBddRunner runner)
         {
-            return new TestSyntaxRunner(runner.Integrate());
+            return new TestSyntaxRunner(runner);
         }
     }
 }

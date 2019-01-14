@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\..\Common.props" />
+  <Import Project="..\Common.props" />
   <PropertyGroup>
     <Description>Allows creating acceptance tests in developer friendly environment by offering LightBDD.Framework features on top of MsTest v2 (MSTest.TestFramework) testing framework.
 
@@ -30,7 +30,7 @@ High level features:
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">

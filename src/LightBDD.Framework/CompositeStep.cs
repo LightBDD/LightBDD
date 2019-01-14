@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Results;
 using LightBDD.Framework.Implementation;
@@ -23,7 +22,6 @@ namespace LightBDD.Framework
     /// }
     /// </code>
     /// </summary>
-    [DebuggerStepThrough]
     public class CompositeStep : CompositeStepResultDescriptor
     {
         internal CompositeStep(ExecutionContextDescriptor contextDescriptor, IEnumerable<StepDescriptor> steps)

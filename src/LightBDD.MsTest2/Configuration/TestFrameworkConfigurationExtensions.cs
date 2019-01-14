@@ -1,5 +1,5 @@
 ﻿using LightBDD.Core.Formatting.ExceptionFormatting;
-using LightBDD.Framework.Notification.Configuration;
+using LightBDD.Framework.Configuration;
 using LightBDD.MsTest2.Implementation;
 
 namespace LightBDD.MsTest2.Configuration

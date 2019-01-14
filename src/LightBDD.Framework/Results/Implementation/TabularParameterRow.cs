@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters;
@@ -8,7 +7,6 @@ using LightBDD.Core.Results.Parameters.Tabular;
 
 namespace LightBDD.Framework.Results.Implementation
 {
-    [DebuggerStepThrough]
     internal class TabularParameterRow : ITabularParameterRow
     {
         public TabularParameterRow(int rowId, IEnumerable<string> values)

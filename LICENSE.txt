@@ -2,7 +2,7 @@
   Author:
     Wojciech Kotlarski
 
-  Copyright (c) 2013 - 2018, Wojciech Kotlarski
+  Copyright (c) 2013 - 2019, Wojciech Kotlarski
 
   All rights reserved.
 

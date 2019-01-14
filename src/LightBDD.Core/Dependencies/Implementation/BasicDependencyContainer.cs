@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 
 namespace LightBDD.Core.Dependencies.Implementation
 {
-    [DebuggerStepThrough]
     internal class BasicDependencyContainer : ContainerConfigurator, IDependencyContainer
     {
         private readonly BasicDependencyContainer _parent;

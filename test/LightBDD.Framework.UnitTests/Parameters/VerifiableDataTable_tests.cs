@@ -10,6 +10,7 @@ using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;
 using Newtonsoft.Json;
 using NUnit.Framework;
+
 #pragma warning disable 1998
 
 namespace LightBDD.Framework.UnitTests.Parameters
@@ -659,10 +660,10 @@ namespace LightBDD.Framework.UnitTests.Parameters
         {
             var table = Enumerable.Empty<int>().ToVerifiableDataTable();
             Assert.Throws<ArgumentNullException>(() => table.SetActual((IEnumerable<int>)null));
-            Assert.Throws<ArgumentNullException>(() => table.SetActual((Func<int, int>)null));
+            Assert.Throws<ArgumentNullException>(() => table.SetActual(null));
             Assert.ThrowsAsync<ArgumentNullException>(() => table.SetActualAsync((Func<Task<IEnumerable<int>>>)null));
             Assert.ThrowsAsync<ArgumentNullException>(() => table.SetActualAsync(() => Task.FromResult<IEnumerable<int>>(null)));
-            Assert.ThrowsAsync<ArgumentNullException>(() => table.SetActualAsync((Func<int, Task<int>>)null));
+            Assert.ThrowsAsync<ArgumentNullException>(() => table.SetActualAsync(null));
         }
 
         private void AssertRow(ITabularParameterRow row, TableRowType rowType, ParameterVerificationStatus rowStatus, params string[] expectedValueDetails)

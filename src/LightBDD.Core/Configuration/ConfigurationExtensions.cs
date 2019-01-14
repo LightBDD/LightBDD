@@ -1,11 +1,8 @@
-﻿using System.Diagnostics;
-
-namespace LightBDD.Core.Configuration
+﻿namespace LightBDD.Core.Configuration
 {
     /// <summary>
     /// Extension class allowing to configure core parts of LightBDD.
     /// </summary>
-    [DebuggerStepThrough]
     public static class ConfigurationExtensions
     {
         /// <summary>
@@ -56,6 +53,36 @@ namespace LightBDD.Core.Configuration
         public static DependencyContainerConfiguration DependencyContainerConfiguration(this LightBddConfiguration configuration)
         {
             return configuration.Get<DependencyContainerConfiguration>();
+        }
+
+        /// <summary>
+        /// Retrieves <see cref="ReportWritersConfiguration"/> from <paramref name="configuration"/> for further customizations.
+        /// </summary>
+        /// <param name="configuration">Configuration object.</param>
+        /// <returns>Configuration object.</returns>
+        public static ReportWritersConfiguration ReportWritersConfiguration(this LightBddConfiguration configuration)
+        {
+            return configuration.Get<ReportWritersConfiguration>();
+        }
+
+        /// <summary>
+        /// Retrieves <see cref="NameFormatterConfiguration"/> from <paramref name="configuration"/> for further customizations.
+        /// </summary>
+        /// <param name="configuration">Configuration object.</param>
+        /// <returns>Configuration object.</returns>
+        public static NameFormatterConfiguration NameFormatterConfiguration(this LightBddConfiguration configuration)
+        {
+            return configuration.Get<NameFormatterConfiguration>();
+        }
+
+        /// <summary>
+        /// Retrieves <see cref="ValueFormattingConfiguration"/> from <paramref name="configuration"/> for further customizations.
+        /// </summary>
+        /// <param name="configuration">Configuration object.</param>
+        /// <returns>Configuration object.</returns>
+        public static ValueFormattingConfiguration ValueFormattingConfiguration(this LightBddConfiguration configuration)
+        {
+            return configuration.Get<ValueFormattingConfiguration>();
         }
     }
 }

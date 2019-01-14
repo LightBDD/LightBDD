@@ -15,16 +15,6 @@ namespace LightBDD.Framework.Extensibility
         /// Please note that context can be specified only once and only when there is no steps added yet.
         /// </summary>
         /// <param name="contextProvider">Context provider function.</param>
-        /// <returns>Self.</returns>
-        /// <exception cref="InvalidOperationException">Thrown if context is already specified or if some steps has been already added.</exception>
-        [Obsolete("Use other " + nameof(WithStepContext) + "() method instead", true)]
-        IIntegrableCompositeStepBuilder WithStepContext(Func<object> contextProvider);
-
-        /// <summary>
-        /// Uses <paramref name="contextProvider"/> to instantiate context that will be shared with all sub-steps.
-        /// Please note that context can be specified only once and only when there is no steps added yet.
-        /// </summary>
-        /// <param name="contextProvider">Context provider function.</param>
         /// <param name="takeOwnership">Specifies if scenario runner should take ownership of the context instance. If set to true and context instance implements <see cref="IDisposable"/>, it will be disposed after scenario finish.</param>
         /// <returns>Self.</returns>
         /// <exception cref="InvalidOperationException">Thrown if context is already specified or if some steps has been already added.</exception>

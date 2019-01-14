@@ -1,10 +1,11 @@
 using System;
-using System.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution.Coordination;
-using LightBDD.Core.Reporting;
+using LightBDD.Core.Extensibility;
+using LightBDD.Core.Results;
 using LightBDD.Framework.Execution.Coordination;
-using LightBDD.Framework.Reporting.Configuration;
+using LightBDD.Framework.Extensibility;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.MsTest2.Implementation
 {
@@ -19,16 +20,26 @@ namespace LightBDD.MsTest2.Implementation
             return Instance;
         }
 
-        private MsTest2FeatureCoordinator(LightBddConfiguration configuration) : base(
-            new MsTest2FeatureRunnerRepository(configuration),
-            new FeatureReportGenerator(configuration.ReportWritersConfiguration().ToArray()),
-            configuration)
+        private MsTest2FeatureCoordinator(LightBddConfiguration configuration)
+            : base(CreateContext(configuration))
         {
+        }
+
+        private static IntegrationContext CreateContext(LightBddConfiguration configuration)
+        {
+            return new DefaultIntegrationContext(configuration, new MsTest2MetadataProvider(configuration), MapExceptionToStatus);
         }
 
         internal static void InstallSelf(LightBddConfiguration configuration)
         {
             Install(new MsTest2FeatureCoordinator(configuration));
+        }
+
+        private static ExecutionStatus MapExceptionToStatus(Exception ex)
+        {
+            return ex is AssertInconclusiveException
+                ? ExecutionStatus.Ignored
+                : ExecutionStatus.Failed;
         }
     }
 }

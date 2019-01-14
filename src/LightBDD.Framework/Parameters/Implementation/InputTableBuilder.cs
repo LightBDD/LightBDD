@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using LightBDD.Framework.Implementation;
 
 namespace LightBDD.Framework.Parameters.Implementation
 {
-    [DebuggerStepThrough]
     internal class InputTableBuilder<TRow> : AbstractTableBuilder<TRow, InputTableColumn>, IInputTableBuilder<TRow>
     {
         public InputTable<TRow> Build(IEnumerable<TRow> items)

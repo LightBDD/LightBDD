@@ -1,0 +1,40 @@
+﻿<Project>
+  <PropertyGroup>
+    <Copyright>Copyright © Wojciech Kotlarski 2013-2019</Copyright>
+    <VersionPrefix>3.0.0</VersionPrefix>
+    <Authors>Wojciech Kotlarski</Authors>
+    <Company>https://github.com/LightBDD/LightBDD</Company>
+    <PackageIconUrl>https://raw.githubusercontent.com/LightBDD/LightBDD/master/logo/lightbdd.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/LightBDD/LightBDD</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/LightBDD/LightBDD</RepositoryUrl>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <IncludeSymbols>True</IncludeSymbols>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageOutputPath>$(SolutionDir)\output</PackageOutputPath>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>bdd;tdd;testing;framework;behavior driven development;acceptance criteria</PackageTags>
+    <PackageReleaseNotes>Major LightBDD release; Details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-30</PackageReleaseNotes>
+    <IsPackable>true</IsPackable>
+    <LangVersion>latest</LangVersion>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\lightbdd.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(EnableSourceLink)' != 'no'">
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(EnableSourceLink)' != 'no'">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All"/>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\LICENSE.txt" Pack="true" PackagePath="$(PackageLicenseFile)"/>
+  </ItemGroup>
+</Project>

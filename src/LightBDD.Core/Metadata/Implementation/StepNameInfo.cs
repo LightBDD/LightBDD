@@ -1,11 +1,9 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
 using LightBDD.Core.Formatting.NameDecorators;
 
 namespace LightBDD.Core.Metadata.Implementation
 {
-    [DebuggerStepThrough]
     internal class StepNameInfo : NameInfo, IStepNameInfo
     {
         public StepNameInfo(IStepTypeNameInfo stepTypeName, string nameFormat, INameParameterInfo[] parameters)

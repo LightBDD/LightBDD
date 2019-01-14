@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-[assembly: AssemblyCopyright("Copyright © Wojciech Kotlarski 2013-2018")]
-[assembly: AssemblyVersion("2.5.0")]
-[assembly: AssemblyFileVersion("2.5.0")]
-[assembly: AssemblyInformationalVersion("2.5.0")]
+[assembly: AssemblyCopyright("Copyright © Wojciech Kotlarski 2013-2019")]
+[assembly: AssemblyVersion("3.0.0")]
+[assembly: AssemblyFileVersion("3.0.0")]
+[assembly: AssemblyInformationalVersion("3.0.0")]

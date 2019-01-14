@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\..\Common.props" />
+  <Import Project="..\Common.props" />
   <PropertyGroup>
     <Summary>LightBDD Test Framework Core</Summary>
     <Description>Provides LightBDD core features, including asynchronous scenario execution with execution tracking and time measurement, metadata discovery and formatting, reporting, in-code configuration, progress notification and framework extensibility.</Description>

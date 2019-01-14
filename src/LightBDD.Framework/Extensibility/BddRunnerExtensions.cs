@@ -1,35 +1,14 @@
-using System;
-using System.Diagnostics;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Implementation;
+using System;
 
 namespace LightBDD.Framework.Extensibility
 {
     /// <summary>
     /// <see cref="IBddRunner{TContext}"/> extensions.
     /// </summary>
-    [DebuggerStepThrough]
     public static class BddRunnerExtensions
     {
-        /// <summary>
-        /// Method allowing to retrieve the <see cref="IFeatureFixtureRunner"/> instance allowing to define and execute scenarios.
-        /// This method is dedicated for projects extending LightBDD with user friendly API for running scenarios - it should not be used directly by regular LightBDD users.
-        /// </summary>
-        /// <typeparam name="TContext">Bdd runner context type.</typeparam>
-        /// <param name="runner">Bdd runner.</param>
-        /// <returns>Instance of <see cref="IFeatureFixtureRunner"/>.</returns>
-        /// <exception cref="NotSupportedException">Thrown if <paramref name="runner"/> does not implement <see cref="IFeatureFixtureRunner"/>.</exception>
-        public static IFeatureFixtureRunner Integrate<TContext>(this IBddRunner<TContext> runner)
-        {
-            if (runner == null)
-                throw new ArgumentNullException(nameof(runner));
-
-            if (!(runner is IFeatureFixtureRunner))
-                throw new NotSupportedException($"The type '{runner.GetType().Name}' has to implement '{nameof(IFeatureFixtureRunner)}' interface to support integration.");
-
-            return (IFeatureFixtureRunner)runner;
-        }
-
         /// <summary>
         /// Method allowing to retrieve the <see cref="IBddRunner"/> instance from <see cref="IFeatureRunner"/>.
         /// The <see cref="IBddRunner"/> is a main runner interface that should be used for executing LightBDD scenarios, while the interfaces coming from LightBDD.Core namespace should be used only in integration projects.
@@ -41,7 +20,7 @@ namespace LightBDD.Framework.Extensibility
         {
             if (featureRunner == null)
                 throw new ArgumentNullException(nameof(featureRunner));
-            return new BddRunner(featureRunner.ForFixture(fixture).AsEnrichable());
+            return new BddRunner(featureRunner.ForFixture(fixture));
         }
     }
 }

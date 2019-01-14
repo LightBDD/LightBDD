@@ -1,24 +1,23 @@
-using System;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
-using LightBDD.Core.Dependencies.Implementation;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
+using System;
+using LightBDD.Core.Formatting.Values;
 
 namespace LightBDD.Core.Extensibility
 {
     /// <summary>
     /// A context offering integration objects used to configure runners.
-    /// In comparison to <see cref="IIntegrationContext"/>, this class offers also <see cref="Configuration"/> property to retrieve configuration.
     /// </summary>
-    public abstract class IntegrationContext : IIntegrationContext
+    public abstract class IntegrationContext
     {
         /// <summary>
         /// Returns metadata provider.
         /// </summary>
-        public abstract IMetadataProvider MetadataProvider { get; }
+        public abstract CoreMetadataProvider MetadataProvider { get; }
 
         /// <summary>
         /// Returns name formatter.
@@ -54,6 +53,11 @@ namespace LightBDD.Core.Extensibility
         /// <summary>
         /// Returns configured <see cref="IDependencyContainer"/>, used to resolve dependencies for LightBDD contexts.
         /// </summary>
-        public virtual IDependencyContainer DependencyContainer { get; } = new BasicDependencyContainer();
+        public abstract IDependencyContainer DependencyContainer { get; }
+
+        /// <summary>
+        /// Returns value formatting service.
+        /// </summary>
+        public abstract ValueFormattingService ValueFormattingService { get; }
     }
 }

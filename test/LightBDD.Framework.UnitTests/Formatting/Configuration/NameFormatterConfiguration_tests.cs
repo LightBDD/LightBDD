@@ -1,10 +1,8 @@
-﻿using System;
-using LightBDD.Core.Configuration;
+﻿using LightBDD.Core.Configuration;
 using LightBDD.Core.Formatting;
-using LightBDD.Framework.Formatting;
-using LightBDD.Framework.Formatting.Configuration;
 using Moq;
 using NUnit.Framework;
+using System;
 
 namespace LightBDD.Framework.UnitTests.Formatting.Configuration
 {
@@ -12,9 +10,10 @@ namespace LightBDD.Framework.UnitTests.Formatting.Configuration
     public class NameFormatterConfiguration_tests
     {
         [Test]
-        public void It_should_return_default_name_formatter()
+        public void It_should_throw_if_formatter_was_not_set()
         {
-            Assert.That(new NameFormatterConfiguration().Formatter, Is.InstanceOf<DefaultNameFormatter>());
+            var ex = Assert.Throws<InvalidOperationException>(() => new NameFormatterConfiguration().GetFormatter());
+            Assert.That(ex.Message, Is.EqualTo("INameFormatter was not specified."));
         }
 
         [Test]
@@ -28,7 +27,7 @@ namespace LightBDD.Framework.UnitTests.Formatting.Configuration
         {
             var nameFormatter = Mock.Of<INameFormatter>();
             var config = new NameFormatterConfiguration().UpdateFormatter(nameFormatter);
-            Assert.That(config.Formatter, Is.SameAs(nameFormatter));
+            Assert.That(config.GetFormatter(), Is.SameAs(nameFormatter));
         }
 
         [Test]

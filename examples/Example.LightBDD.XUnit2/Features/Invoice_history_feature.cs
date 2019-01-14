@@ -1,8 +1,6 @@
 ﻿using System.Threading.Tasks;
 using LightBDD.Framework;
-using LightBDD.Framework.Scenarios.Basic;
-using LightBDD.Framework.Scenarios.Extended;
-using LightBDD.Framework.Scenarios.Fluent;
+using LightBDD.Framework.Scenarios;
 using LightBDD.XUnit2;
 
 namespace Example.LightBDD.XUnit2.Features
@@ -28,7 +26,6 @@ Example usage of fluent scenarios")]
         public async Task Browsing_invoices()
         {
             await Runner
-                .NewScenario()
                 .AddAsyncSteps(
                     _ => Given_invoice("Invoice-1"),
                     _ => Given_invoice("Invoice-2"))

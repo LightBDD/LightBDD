@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Formatting;
@@ -8,7 +7,6 @@ using LightBDD.Core.Metadata.Implementation;
 
 namespace LightBDD.Core.Extensibility.Implementation
 {
-    [DebuggerStepThrough]
     internal class StepTypeProcessor
     {
         private readonly INameFormatter _nameFormatter;

@@ -1,7 +1,6 @@
 ﻿using System;
 using LightBDD.Core.Configuration;
 using LightBDD.Framework.Scenarios;
-using LightBDD.Framework.Scenarios.Contextual;
 using LightBDD.Framework.UnitTests.Scenarios.Helpers;
 using NUnit.Framework;
 

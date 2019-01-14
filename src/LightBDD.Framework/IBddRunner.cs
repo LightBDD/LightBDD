@@ -1,11 +1,13 @@
-﻿namespace LightBDD.Framework
+﻿using LightBDD.Framework.Scenarios;
+
+namespace LightBDD.Framework
 {
     /// <summary>
     /// The base runner interface describing runner that can execute scenarios within specified context.
     /// See also: <seealso cref="IBddRunner"/>.
     /// </summary>
     /// <typeparam name="TContext">The context type that would be used in scenario execution.</typeparam>
-    public interface IBddRunner<TContext> { }
+    public interface IBddRunner<TContext> : IScenarioBuilder<TContext> { }
 
     /// <summary>
     /// Main LightBDD runner interface that should be used in all LightBDD tests.

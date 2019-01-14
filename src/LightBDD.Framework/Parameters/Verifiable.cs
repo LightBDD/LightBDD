@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
@@ -29,7 +28,6 @@ namespace LightBDD.Framework.Parameters
     /// </example>
     /// </summary>
     /// <typeparam name="T">Type of the expected parameter</typeparam>
-    [DebuggerStepThrough]
     public sealed class Verifiable<T> : IComplexParameter
     {
         private IValueFormattingService _formattingService = ValueFormattingServices.Current;

@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Framework
@@ -12,7 +11,6 @@ namespace LightBDD.Framework
     /// If given implementation supports alternative category attributes, and both are applied on scenario method, all of them would be used.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = true)]
-    [DebuggerStepThrough]
     public class ScenarioCategoryAttribute : Attribute, IScenarioCategoryAttribute
     {
         /// <summary>

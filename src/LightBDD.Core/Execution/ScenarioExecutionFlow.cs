@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Security;
@@ -10,7 +9,6 @@ namespace LightBDD.Core.Execution
     /// <summary>
     /// Class helping to wrap scenario/step specific exceptions with <see cref="ScenarioExecutionException"/> that allows to propagate original exception with bypassing LightBDD internal stack frames.
     /// </summary>
-    [DebuggerStepThrough]
     public class ScenarioExecutionFlow
     {
         /// <summary>
@@ -32,7 +30,6 @@ namespace LightBDD.Core.Execution
         /// <summary>
         /// Awaitable allowing to wrap task exception with <see cref="ScenarioExecutionException"/> without recording exception capture on exception's stack trace
         /// </summary>
-        [DebuggerStepThrough]
         public struct ScenarioExceptionWrappingAwaitable : ICriticalNotifyCompletion
         {
             private readonly Task _task;
@@ -80,7 +77,6 @@ namespace LightBDD.Core.Execution
         /// <summary>
         /// Awaitable allowing to wrap task exception with <see cref="ScenarioExecutionException"/> without recording exception capture on exception's stack trace
         /// </summary>
-        [DebuggerStepThrough]
         public struct ScenarioExceptionWrappingAwaitable<T> : ICriticalNotifyCompletion
         {
             private readonly Task<T> _task;

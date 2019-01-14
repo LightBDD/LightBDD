@@ -10,6 +10,6 @@ namespace LightBDD.Core.Extensibility
         /// Creates new scenario to execute.
         /// </summary>
         /// <returns>Scenario runner instance.</returns>
-        IScenarioRunner NewScenario();
+        ICoreScenarioBuilder NewScenario();
     }
 }

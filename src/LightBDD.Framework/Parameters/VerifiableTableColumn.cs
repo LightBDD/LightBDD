@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters.Implementation;
 
@@ -8,7 +7,6 @@ namespace LightBDD.Framework.Parameters
     /// <summary>
     /// Type representing <see cref="VerifiableTable{TRow}"/> column.
     /// </summary>
-    [DebuggerStepThrough]
     public class VerifiableTableColumn : InputTableColumn
     {
         /// <summary>

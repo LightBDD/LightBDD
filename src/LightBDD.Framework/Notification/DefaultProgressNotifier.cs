@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Metadata;
@@ -14,7 +13,6 @@ namespace LightBDD.Framework.Notification
     /// <summary>
     /// The default implementation of <see cref="IScenarioProgressNotifier"/> and <see cref="IFeatureProgressNotifier"/> which renders the notification text and delegates to provided notification actions configured in constructor.
     /// </summary>
-    [DebuggerStepThrough]
     public class DefaultProgressNotifier : IScenarioProgressNotifier, IFeatureProgressNotifier
     {
         private readonly Action<string> _onNotify;

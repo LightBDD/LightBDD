@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using LightBDD.Framework.Extensibility;
-using LightBDD.Framework.Scenarios.Extended;
+using LightBDD.Framework.Scenarios;
 using LightBDD.UnitTests.Helpers;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
@@ -29,7 +29,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
 @"^\s*at LightBDD.Framework.UnitTests.Scenarios.Extended.Extended_scenario_exception_stack_trace_integration_tests.Step_throwing_exception[^\n]*
 \s*at [^\n]*lambda_method[^\n]*
 ([^\n]*
-)?\s*at LightBDD.Framework.Scenarios.Extended.ExtendedScenarioExtensions.RunScenario[^\n]*");
+)?\s*at LightBDD.Framework.Scenarios.ExtendedExtensions.RunScenario[^\n]*");
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
@@ -45,7 +45,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
             ex.AssertStackTraceMatching(
                 @"^\s*at LightBDD.Framework.UnitTests.Scenarios.Extended.Extended_scenario_exception_stack_trace_integration_tests[^\n]*Async_step_throwing_exception_immediately[^\n]*
 ([^\n]*
-)?\s*at LightBDD.Framework.Scenarios.Extended.ExtendedScenarioExtensions[^\n]*RunScenarioAsync[^\n]*");
+)?\s*at LightBDD.Framework.Scenarios.ExtendedExtensions[^\n]*RunScenarioAsync[^\n]*");
         }
 
         async Task Async_step_throwing_exception_immediately()
@@ -60,28 +60,10 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
             ex.AssertStackTraceMatching(
                 @"^\s*at LightBDD.Framework.UnitTests.Scenarios.Extended.Extended_scenario_exception_stack_trace_integration_tests[^\n]*Async_step_throwing_exception_after_await[^\n]*
 ([^\n]*
-)?\s*at LightBDD.Framework.Scenarios.Extended.ExtendedScenarioExtensions[^\n]*RunScenarioAsync[^\n]*");
+)?\s*at LightBDD.Framework.Scenarios.ExtendedExtensions[^\n]*RunScenarioAsync[^\n]*");
         }
 
         async Task Async_step_throwing_exception_after_await()
-        {
-            await Task.Yield();
-            throw new InvalidOperationException();
-        }
-
-        [Test]
-        public void RunScenarioActionsAsync_should_expose_exception_with_simple_call_stack_when_async_void_step_throws_after_await()
-        {
-            var ex = Assert.ThrowsAsync<InvalidOperationException>(() => _runner.RunScenarioActionsAsync(_ => Async_void_step_throwing_exception_after_await()));
-            ex.AssertStackTraceMatching(
-                @"^\s*at LightBDD.Framework.UnitTests.Scenarios.Extended.Extended_scenario_exception_stack_trace_integration_tests[^\n]*Async_void_step_throwing_exception_after_await[^\n]*
-([^\n]*
-){0,2}\s*at LightBDD.Core.Execution.Implementation.AsyncStepSynchronizationContext.RunWithSelf[^\n]*
-([^\n]*
-)?\s*at LightBDD.Framework.Scenarios.Extended.ExtendedScenarioExtensions[^\n]*RunScenarioActionsAsync[^\n]*");
-        }
-
-        async void Async_void_step_throwing_exception_after_await()
         {
             await Task.Yield();
             throw new InvalidOperationException();

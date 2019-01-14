@@ -17,7 +17,7 @@ Define-Step -Name 'Update version' -Target 'all,build' -Body {
     Write-ShortStatus "Updating version to $version..."
 
     Replace-InFile 'AssemblyVersion.cs' $version 'Version("%")'
-    Replace-InFile 'Common.props' $version '<VersionPrefix>%</VersionPrefix>'
+    Replace-InFile 'src\Common.props' $version '<VersionPrefix>%</VersionPrefix>'
     Replace-InFile 'QuickStart.txt' $version 'version %!'
     Replace-InFile 'templates\LightBDD.VSIXTemplates\source.extension.vsixmanifest' $version 'Identity Id="fe1ca06b-95ef-41a1-8e09-fe903b2945a4" Version="%"'
     Get-ChildItem '.\templates' 'ProjectTemplate.csproj' -Recurse | %{
@@ -36,8 +36,6 @@ Define-Step -Name 'Tests' -Target 'all,test' -Body {
     . (require 'psmake.mod.testing')
 
     $tests = Define-DotnetTests -TestProject "*.UnitTests.csproj"
-    $tests += Define-NUnitTests -GroupName "NUnit 2 tests (net45)" -TestAssembly "*\bin\Release\net45\*.NUnitTests.dll"
-    $tests += Define-NUnitTests -GroupName "NUnit 2 tests (net46)" -TestAssembly "*\bin\Release\net46\*.NUnitTests.dll"
     $tests += Define-DotnetTests -TestProject "*.AcceptanceTests.csproj"
 
     $tests | Run-Tests

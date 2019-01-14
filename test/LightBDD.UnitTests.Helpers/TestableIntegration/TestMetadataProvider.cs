@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
-using LightBDD.Core.Formatting;
 using LightBDD.Framework.Formatting;
 using NUnit.Framework.Internal;
 
@@ -11,11 +10,6 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
     public class TestMetadataProvider : CoreMetadataProvider
     {
-        public override MethodBase CaptureCurrentScenarioMethod()
-        {
-            return TestExecutionContext.CurrentContext.CurrentTest.Method.MethodInfo;
-        }
-
         protected override IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member)
         {
             return ExtractAttributePropertyValues<CustomCategoryAttribute>(member, a => a.Name);
@@ -27,22 +21,30 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
                 a => a.Description);
         }
 
-        public TestMetadataProvider(ValueFormattingConfiguration formattingConfiguration):
-            base(new DefaultNameFormatter(), new StepTypeConfiguration(), new DefaultCultureInfoProvider(),formattingConfiguration){}
+        public override ScenarioDescriptor CaptureCurrentScenario()
+        {
+            return new ScenarioDescriptor(TestExecutionContext.CurrentContext.CurrentTest.Method.MethodInfo, null);
+        }
 
-        public TestMetadataProvider(INameFormatter nameFormatter)
-            : base(nameFormatter, new StepTypeConfiguration(), new DefaultCultureInfoProvider(), new ValueFormattingConfiguration())
+        public TestMetadataProvider() : base(Configure(_=>{}))
         {
         }
 
-        public TestMetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration)
-            : base(nameFormatter, stepTypeConfiguration, new DefaultCultureInfoProvider(), new ValueFormattingConfiguration())
+        public TestMetadataProvider(LightBddConfiguration configuration):
+            base(configuration){}
+
+
+        public TestMetadataProvider(Action<LightBddConfiguration> onConfigure)
+            :base(Configure(onConfigure))
         {
         }
 
-        public TestMetadataProvider(INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration, ICultureInfoProvider cultureInfoProvider)
-            : base(nameFormatter, stepTypeConfiguration, cultureInfoProvider, new ValueFormattingConfiguration())
+        private static LightBddConfiguration Configure(Action<LightBddConfiguration> onConfigure)
         {
+            var configuration = new LightBddConfiguration();
+            configuration.NameFormatterConfiguration().UpdateFormatter(DefaultNameFormatter.Instance);
+            onConfigure(configuration);
+            return configuration;
         }
     }
 }
