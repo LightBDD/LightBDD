@@ -26,35 +26,43 @@ namespace LightBDD.NUnit3.UnitTests
 				.Run();
 		}
 
-		class ActionTestContext : SceneContext<
-		ActionTestContext
-		, ActionTestContext
-		, ActionTestContext
-		, Action>
+		class ActionTestContext : SceneContext<Givens, Whens, Thens, Action>
 		{
-			public ActionTestContext(IBddRunner runner)
-				: base(null, null, null, a => runner.Given(a))
+			public ActionTestContext(IBddRunner runner)	: base(null, null, null, a => runner.Given(a))
 			{
-				Init(this, this, this);
+				Init(new Givens(), new Whens(), new Thens());
 			}
+		}
 
-			[Given("description test")]
+		class Givens
+		{
+			[Given("ok")]
 			void Given_A()
 			{
 			}
+			public GivenResult<Givens, Whens> A => ActionTestContext.CreateGiven(Given_A);
+		}
+		class Whens
+		{
+			int i;
+
 			void When_B()
 			{
 			}
+			public WhenResult<Whens, Thens> B(int i)
+			{
+				this.i = i;
+				return ActionTestContext.CreateWhen(When_B);
+			}
+		}
+
+		class Thens
+		{
 			void Then_C()
 			{
 			}
 
-			public GivenResult<ActionTestContext, ActionTestContext> A
-				=> CreateGiven(Given_A);
-			public WhenResult<ActionTestContext, ActionTestContext> B(int i)
-				=> CreateWhen(When_B);
-			public ThenResult<ActionTestContext, Action> C
-				=> CreateThen(Then_C);
+			public ThenResult<Thens, Action> C => ActionTestContext.CreateThen(Then_C);
 		}
 	}
 }

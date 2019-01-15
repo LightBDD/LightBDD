@@ -24,3 +24,4 @@ AppPackages
 *.nuget.targets
 .idea
 *.orig
+/.cr/personal/Navigation/QuickNav.xml
