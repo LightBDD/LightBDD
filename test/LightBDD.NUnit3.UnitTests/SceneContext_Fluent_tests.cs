@@ -28,9 +28,9 @@ namespace LightBDD.NUnit3.UnitTests
 
 		class ActionTestContext : SceneContext<Givens, Whens, Thens, Action>
 		{
-			public ActionTestContext(IBddRunner runner)	: base(null, null, null, a => runner.Given(a))
+			public ActionTestContext(IBddRunner runner)	
+				: base(new Givens(), new Whens(), new Thens(), a => runner.Given(a))
 			{
-				Init(new Givens(), new Whens(), new Thens());
 			}
 		}
 
