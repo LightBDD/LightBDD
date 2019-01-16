@@ -1,5 +1,6 @@
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Internals;
@@ -9,7 +10,6 @@ using LightBDD.Core.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using LightBDD.Core.Execution;
 
 namespace LightBDD.Core.Extensibility.Implementation
 {
@@ -35,7 +35,9 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         public ICoreScenarioBuilder AddSteps(IEnumerable<StepDescriptor> steps)
         {
-            _steps = steps ?? throw new ArgumentNullException(nameof(steps));
+            if (steps == null)
+                throw new ArgumentNullException(nameof(steps));
+            _steps = _steps.Concat(steps);
             return this;
         }
 

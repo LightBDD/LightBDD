@@ -1,6 +1,10 @@
 LightBDD
 ===========================================
 
+Version 3.0.1
+----------------------------------------
++ #177 (Framework)(Fix) Scenarios built fluently are not executed properly
+
 Version 3.0.0
 ----------------------------------------
 + #157 (All) Signed all assemblies except LightBDD.Fixie2
