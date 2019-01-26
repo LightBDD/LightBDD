@@ -1,8 +1,8 @@
 Summary:
-	Test execution start time       : 2019-01-13 22:03:16 UTC
-	Test execution end time         : 2019-01-13 22:03:23 UTC
-	Test execution time             : 6s 513ms
-	Test execution time (aggregated): 21s 335ms
+	Test execution start time       : 2019-01-16 23:30:27 UTC
+	Test execution end time         : 2019-01-16 23:30:35 UTC
+	Test execution time             : 7s 593ms
+	Test execution time (aggregated): 25s 619ms
 	Number of features              : 10
 	Number of scenarios             : 22
 	Passed scenarios                : 10
@@ -21,22 +21,22 @@ Feature: Basket feature [Story-4]
 	As a customer
 	I want to add products to basket
 
-	Scenario: No product in stock [Ticket-6] - Passed (1s 844ms)
+	Scenario: No product in stock [Ticket-6] - Passed (1s 455ms)
 		Categories: Sales
 		Step 1: GIVEN product is out of stock - Passed (22ms)
-		Step 2: WHEN customer adds it to the basket - Passed (1s 792ms)
-		Step 3: THEN the product addition should be unsuccessful - Passed (3ms)
+		Step 2: WHEN customer adds it to the basket - Passed (1s 396ms)
+		Step 3: THEN the product addition should be unsuccessful - Passed (2ms)
 		Step 4: AND the basket should not contain the product - Passed (1ms)
 		Comments:
 			Step 2: Transferring 'product' to the basket
 
-	Scenario: Successful addition [Ticket-7] - Ignored (1s 775ms)
+	Scenario: Successful addition [Ticket-7] - Ignored (1s 543ms)
 		Categories: Sales
 		Step 1: GIVEN product is in stock - Passed (<1ms)
-		Step 2: WHEN customer adds it to the basket - Passed (1s 770ms)
+		Step 2: WHEN customer adds it to the basket - Passed (1s 538ms)
 		Step 3: THEN the product addition should be successful - Passed (<1ms)
 		Step 4: AND the basket should contain the product - Passed (<1ms)
-		Step 5: AND the product should be removed from stock - Ignored (2ms)
+		Step 5: AND the product should be removed from stock - Ignored (1ms)
 		Details:
 			Step 5: Product removal from stock is not implemented yet
 		Comments:
@@ -50,10 +50,10 @@ Feature: Calculator feature [Story-8]
 	
 	This example presents usage of MultiAssertAttribute.
 
-	Scenario: Adding numbers [Ticket-13] - Failed (215ms)
-		Step 1: GIVEN a calculator - Passed (<1ms)
-		Step 2: THEN adding "2" to "3" should give "5" - Passed (17ms)
-		Step 3: AND adding "-3" to "2" should give "expected: equals '-1', but got: '1'" - Failed (69ms)
+	Scenario: Adding numbers [Ticket-13] - Failed (227ms)
+		Step 1: GIVEN a calculator - Passed (2ms)
+		Step 2: THEN adding "2" to "3" should give "5" - Passed (7ms)
+		Step 3: AND adding "-3" to "2" should give "expected: equals '-1', but got: '1'" - Failed (79ms)
 		Step 4: AND adding "0" to "1" should give "1" - Passed (<1ms)
 		Step 5: AND adding "-2" to "-1" should give "expected: equals '-3', but got: '3'" - Failed (<1ms)
 		Details:
@@ -64,17 +64,17 @@ Feature: Calculator feature [Story-8]
 				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyArguments() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 161
 				at LightBDD.Core.Execution.Implementation.RunnableStep.<RunStepAsync>d__22.MoveNext() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 124
 
-	Scenario: Composite operations [Ticket-13] - Failed (25ms)
+	Scenario: Composite operations [Ticket-13] - Failed (37ms)
 		Step 1: GIVEN a calculator - Passed (<1ms)
 		Step 2: THEN it should add numbers - Failed (7ms)
 			Step 2.1: THEN adding "2" to "3" should give "5" - Passed (<1ms)
 			Step 2.2: AND adding "2" to "-3" should give "expected: equals '-1', but got: '1'" - Failed (<1ms)
 			Step 2.3: AND adding "0" to "1" should give "expected: equals '0', but got: '1'" - Failed (<1ms)
-		Step 3: AND it should multiply numbers - Ignored (8ms)
+		Step 3: AND it should multiply numbers - Ignored (11ms)
 			Step 3.1: THEN multiplying "2" by "3" should give "6" - Passed (<1ms)
 			Step 3.2: AND multiplying "2" by "-3" should give "expected: equals '-6'" - Ignored (<1ms)
 			Step 3.3: AND multiplying "1" by "1" should give "<?>" - NotRun
-		Step 4: AND it should divide numbers - Failed (4ms)
+		Step 4: AND it should divide numbers - Failed (7ms)
 			Step 4.1: THEN dividing "6" by "3" should give "2" - Passed (<1ms)
 			Step 4.2: AND multiplying "5" by "2" should give "expected: equals '2', but got: '10'" - Failed (<1ms)
 		Details:
@@ -92,7 +92,7 @@ Feature: Calculator feature [Story-8]
 			Step 2: It is possible to add MultiAssertAttribute on composite step
 			Step 3: This step does not have MultiAssertAttribute so will stop on first exception
 
-	Scenario: Dividing numbers [Ticket-13] - Failed (14ms)
+	Scenario: Dividing numbers [Ticket-13] - Failed (7ms)
 		Step 1: GIVEN a calculator - Passed (<1ms)
 		Step 2: THEN dividing "6" by "2" should give "3" - Passed (<1ms)
 		Step 3: AND dividing "2" by "0" should give "expected: equals '0', but got: '<DivideByZeroException>'" - Failed (<1ms)
@@ -106,7 +106,7 @@ Feature: Calculator feature [Story-8]
 				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyArguments() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 161
 				at LightBDD.Core.Execution.Implementation.RunnableStep.<RunStepAsync>d__22.MoveNext() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 124
 
-	Scenario: Multiplying numbers [Ticket-13] - Ignored (8ms)
+	Scenario: Multiplying numbers [Ticket-13] - Ignored (13ms)
 		Step 1: GIVEN a calculator - Passed (<1ms)
 		Step 2: THEN multiplying "6" by "2" should give "12" - Passed (<1ms)
 		Step 3: AND multiplying "-1" by "2" should give "expected: equals '-2'" - Ignored (<1ms)
@@ -122,41 +122,37 @@ Feature: Compact calculator scenarios
 	I want to be able to write compact scenarios,
 	So that I can use LightBDD for more unit-test like tests as well
 
-	Scenario: Adding numbers - Failed (197ms)
-		Step 1: THEN I should get an expected result - Failed (190ms)
-		Details:
-			Step 1: NUnit.Framework.AssertionException :   Expected: 8
-				  But was:  0
-				
-				at Example.LightBDD.NUnit3.Features.Compact_calculator_scenarios.<>c__DisplayClass0_0.<Adding_numbers>b__2(NoContext _) in d:\dev\LightBDD\examples\Example.LightBDD.NUnit3\Features\Compact_calculator_scenarios.cs:line 25
-				at LightBDD.Framework.Scenarios.Implementation.CompactStepCompiler.StepExecutor`1.Execute(Object context, Object[] args) in d:\dev\LightBDD\src\LightBDD.Framework\Scenarios\Implementation\CompactStepCompiler.cs:line 75
+	Scenario: Adding numbers - Passed (80ms)
+		Step 1: GIVEN calculator - Passed (22ms)
+		Step 2: WHEN I add two numbers - Passed (<1ms)
+		Step 3: THEN I should get an expected result - Passed (25ms)
 
 Feature: Contacts management [Story-6]
 	In order to maintain my contact book
 	As an application user
 	I want to add, browse and remove my contacts
 
-	Scenario: Contact book should allow me to add multiple contacts [Ticket-8] - Passed (122ms)
+	Scenario: Contact book should allow me to add multiple contacts [Ticket-8] - Passed (133ms)
 		Step 1: GIVEN my contact book is empty - Passed (<1ms)
 		Step 2: WHEN I add new contacts - Passed (1ms)
-		Step 3: THEN all contacts should be available in the contact book - Passed (11ms)
+		Step 3: THEN all contacts should be available in the contact book - Passed (10ms)
 
-	Scenario: Contact book should allow me to remove all contacts [Ticket-9] - Bypassed (30ms)
-		Step 1: GIVEN my contact book is filled with many contacts - Passed (10ms)
-		Step 2: WHEN I clear it - Bypassed (6ms)
-		Step 3: THEN the contact book should be empty - Passed (2ms)
+	Scenario: Contact book should allow me to remove all contacts [Ticket-9] - Bypassed (13ms)
+		Step 1: GIVEN my contact book is filled with many contacts - Passed (8ms)
+		Step 2: WHEN I clear it - Bypassed (1ms)
+		Step 3: THEN the contact book should be empty - Passed (1ms)
 		Details:
 			Step 2: Contact book clearing is not implemented yet. Contacts are removed one by one.
 
-	Scenario: Contact book should allow me to remove contacts [Ticket-9] - Passed (24ms)
+	Scenario: Contact book should allow me to remove contacts [Ticket-9] - Passed (8ms)
 		Step 1: GIVEN my contact book is filled with contacts - Passed (<1ms)
 		Step 2: WHEN I remove one contact - Passed (<1ms)
 		Step 3: THEN the contact book should not contain removed contact any more - Passed (<1ms)
-		Step 4: AND the contact book should contains all other contacts - Passed (5ms)
+		Step 4: AND the contact book should contains all other contacts - Passed (3ms)
 
-	Scenario: Displaying contacts alphabetically - Passed (72ms)
+	Scenario: Displaying contacts alphabetically - Passed (99ms)
 		Step 1: GIVEN my contact book is empty - Passed (<1ms)
-		Step 2: AND I added contacts "<table>" - Passed (31ms)
+		Step 2: AND I added contacts "<table>" - Passed (43ms)
 		contacts:
 		+-----------------+-----+------------+
 		|Email            |Name |PhoneNumber |
@@ -166,8 +162,8 @@ Feature: Contacts management [Story-6]
 		|emily1@gmail.com |Emily|111-222-5556|
 		|ka321@gmail.com  |Kathy|111-555-330 |
 		+-----------------+-----+------------+
-		Step 3: WHEN I request contacts sorted by name - Passed (1ms)
-		Step 4: THEN I should receive contacts "<table>" - Passed (28ms)
+		Step 3: WHEN I request contacts sorted by name - Passed (<1ms)
+		Step 4: THEN I should receive contacts "<table>" - Passed (40ms)
 		contacts:
 		+-+-----------------+-----+------------+
 		|#|Email            |Name |PhoneNumber |
@@ -178,8 +174,8 @@ Feature: Contacts management [Story-6]
 		|=|ka321@gmail.com  |Kathy|111-555-330 |
 		+-+-----------------+-----+------------+
 
-	Scenario: Normalizing contact details - Failed (45ms)
-		Step 1: GIVEN I added contacts "<table>" - Passed (<1ms)
+	Scenario: Normalizing contact details - Failed (38ms)
+		Step 1: GIVEN I added contacts "<table>" - Passed (2ms)
 		contacts:
 		+-------------------+-----+--------------+
 		|Email              |Name |PhoneNumber   |
@@ -190,7 +186,7 @@ Feature: Contacts management [Story-6]
 		|jos#@mymail.com    |Josh |12111333444   |
 		+-------------------+-----+--------------+
 		Step 2: WHEN I request contacts sorted by name - Passed (<1ms)
-		Step 3: THEN I should receive contacts "<table>" - Failed (27ms)
+		Step 3: THEN I should receive contacts "<table>" - Failed (26ms)
 		contacts:
 		+-+-----+-------------------------------------------------+--------------------------------+
 		|#|Name |Email                                            |PhoneNumber                     |
@@ -206,7 +202,7 @@ Feature: Contacts management [Story-6]
 				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyArguments() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 161
 				at LightBDD.Core.Execution.Implementation.RunnableStep.<RunStepAsync>d__22.MoveNext() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 124
 
-	Scenario: Searching for contacts by phone - Failed (23ms)
+	Scenario: Searching for contacts by phone - Failed (24ms)
 		Step 1: GIVEN my contact book is empty - Passed (<1ms)
 		Step 2: AND I added contacts "<table>" - Passed (<1ms)
 		contacts:
@@ -219,8 +215,8 @@ Feature: Contacts management [Story-6]
 		|emily1@gmail.com |Emily|111-222-5556|
 		|ka321@gmail.com  |Kathy|111-555-330 |
 		+-----------------+-----+------------+
-		Step 3: WHEN I search for contacts by phone starting with "111" - Passed (<1ms)
-		Step 4: THEN I should receive contacts "<table>" - Failed (18ms)
+		Step 3: WHEN I search for contacts by phone starting with "111" - Passed (2ms)
+		Step 4: THEN I should receive contacts "<table>" - Failed (17ms)
 		contacts:
 		+-+-------------+----------------------------------+------------------+
 		|#|Name         |Email                             |PhoneNumber       |
@@ -247,21 +243,21 @@ Feature: Customer journey [Story-7]
 	As an application user
 	I want to go through entire customer journey
 
-	Scenario: Ordering products [Ticket-12] - Ignored (4s 684ms)
-		Step 1: GIVEN customer is logged in - Passed (1s 722ms)
+	Scenario: Ordering products [Ticket-12] - Ignored (4s 086ms)
+		Step 1: GIVEN customer is logged in - Passed (1s 178ms)
 			Step 1.1: GIVEN the user is about to login - Passed (6ms)
 			Step 1.2: AND the user entered valid login - Passed (<1ms)
 			Step 1.3: AND the user entered valid password - Passed (<1ms)
-			Step 1.4: WHEN the user clicks login button - Passed (1s 683ms)
+			Step 1.4: WHEN the user clicks login button - Passed (1s 141ms)
 			Step 1.5: THEN the login operation should be successful - Passed (<1ms)
-		Step 2: WHEN customer adds products to basket - Bypassed (1s 294ms)
+		Step 2: WHEN customer adds products to basket - Bypassed (1s 300ms)
 			Step 2.1: GIVEN product "wooden desk" is in stock - Passed (1ms)
-			Step 2.2: WHEN customer adds product "wooden desk" to the basket - Bypassed (1s 280ms)
-			Step 2.3: THEN the product addition should be successful - Passed (<1ms)
-		Step 3: AND customer pays for products in basket - Passed (1s 641ms)
-			Step 3.1: WHEN customer requests to pay - Passed (1s 639ms)
+			Step 2.2: WHEN customer adds product "wooden desk" to the basket - Bypassed (1s 288ms)
+			Step 2.3: THEN the product addition should be successful - Passed (1ms)
+		Step 3: AND customer pays for products in basket - Passed (1s 574ms)
+			Step 3.1: WHEN customer requests to pay - Passed (1s 572ms)
 			Step 3.2: THEN payment should be successful - Passed (<1ms)
-		Step 4: THEN customer should receive order email - Ignored (16ms)
+		Step 4: THEN customer should receive order email - Ignored (14ms)
 			Step 4.1: THEN customer should receive invoice - Ignored (1ms)
 			Step 4.2: AND customer should receive order confirmation - NotRun
 		Details:
@@ -273,13 +269,13 @@ Feature: Invoice feature [Story-2]
 	As a customer
 	I want to receive invoice for bought items
 
-	Scenario: Receiving invoice for products [Ticket-4] - Ignored (144ms)
+	Scenario: Receiving invoice for products [Ticket-4] - Ignored (149ms)
 		Categories: Sales
 		Step 1: GIVEN product "wooden desk" is available in product storage - Passed (<1ms)
 		Step 2: AND product "wooden shelf" is available in product storage - Passed (<1ms)
 		Step 3: WHEN customer buys product "wooden desk" - Passed (<1ms)
 		Step 4: AND customer buys product "wooden shelf" - Passed (<1ms)
-		Step 5: THEN an invoice should be sent to the customer - Ignored (12ms)
+		Step 5: THEN an invoice should be sent to the customer - Ignored (9ms)
 		Step 6: AND the invoice should contain product "wooden desk" with price of "£62.00" - NotRun
 		Step 7: AND the invoice should contain product "wooden shelf" with price of "£37.00" - NotRun
 		Details:
@@ -292,20 +288,23 @@ Feature: Invoice history feature [STORY-9]
 	
 	Example usage of fluent scenarios
 
-	Scenario: Browsing invoices [Ticket-14] - Passed (103ms)
-		Step 1: THEN I should see invoices "Invoice-1, Invoice-2" - Passed (3ms)
+	Scenario: Browsing invoices [Ticket-14] - Passed (4s 642ms)
+		Step 1: GIVEN invoice "Invoice-1" - Passed (1s 389ms)
+		Step 2: AND invoice "Invoice-2" - Passed (1s 762ms)
+		Step 3: WHEN I request all historical invoices - Passed (1s 371ms)
+		Step 4: THEN I should see invoices "Invoice-1, Invoice-2" - Passed (1ms)
 
 Feature: Login feature [Story-1]
 	In order to access personal data
 	As an user
 	I want to login into system
 
-	Scenario: Anonymous login name should allow to log in [Ticket-3] - Failed (1s 139ms)
+	Scenario: Anonymous login name should allow to log in [Ticket-3] - Failed (1s 937ms)
 		Categories: Security
-		Step 1: GIVEN the user is about to login - Passed (27ms)
-		Step 2: AND the user entered anonymous login - Passed (4ms)
-		Step 3: WHEN the user clicks login button - Passed (1s 058ms)
-		Step 4: THEN the login operation should be successful - Failed (7ms)
+		Step 1: GIVEN the user is about to login - Passed (22ms)
+		Step 2: AND the user entered anonymous login - Passed (2ms)
+		Step 3: WHEN the user clicks login button - Passed (1s 828ms)
+		Step 4: THEN the login operation should be successful - Failed (37ms)
 		Step 5: AND a welcome message containing user name should be returned - NotRun
 		Details:
 			Step 4: NUnit.Framework.AssertionException :   Login should succeeded
@@ -317,30 +316,30 @@ Feature: Login feature [Story-1]
 		Comments:
 			Step 2: Presentation of failed scenario
 
-	Scenario: Successful login [Ticket-1] - Passed (1s 670ms)
+	Scenario: Successful login [Ticket-1] - Passed (1s 178ms)
 		Categories: Security
 		Step 1: GIVEN the user is about to login - Passed (<1ms)
 		Step 2: AND the user entered valid login - Passed (<1ms)
 		Step 3: AND the user entered valid password - Passed (<1ms)
-		Step 4: WHEN the user clicks login button - Passed (1s 668ms)
+		Step 4: WHEN the user clicks login button - Passed (1s 176ms)
 		Step 5: THEN the login operation should be successful - Passed (<1ms)
-		Step 6: AND a welcome message containing user name should be returned - Passed (<1ms)
+		Step 6: AND a welcome message containing user name should be returned - Passed (1ms)
 
-	Scenario: Wrong login provided causes login to fail [Ticket-2] - Passed (1s 310ms)
+	Scenario: Wrong login provided causes login to fail [Ticket-2] - Passed (1s 305ms)
 		Categories: Security
 		Step 1: GIVEN the user is about to login - Passed (<1ms)
 		Step 2: AND the user entered invalid login - Passed (<1ms)
 		Step 3: AND the user entered valid password - Passed (<1ms)
-		Step 4: WHEN the user clicks login button - Passed (1s 308ms)
+		Step 4: WHEN the user clicks login button - Passed (1s 303ms)
 		Step 5: THEN the login operation should be unsuccessful - Passed (<1ms)
 		Step 6: AND an invalid login or password error message should be returned - Passed (<1ms)
 
-	Scenario: Wrong password provided causes login to fail [Ticket-2] - Passed (1s 529ms)
+	Scenario: Wrong password provided causes login to fail [Ticket-2] - Passed (1s 146ms)
 		Categories: Security
 		Step 1: GIVEN the user is about to login - Passed (<1ms)
 		Step 2: AND the user entered valid login - Passed (<1ms)
 		Step 3: AND the user entered invalid password - Passed (<1ms)
-		Step 4: WHEN the user clicks login button - Passed (1s 527ms)
+		Step 4: WHEN the user clicks login button - Passed (1s 144ms)
 		Step 5: THEN the login operation should be unsuccessful - Passed (<1ms)
 		Step 6: AND an invalid login or password error message should be returned - Passed (<1ms)
 
@@ -349,18 +348,18 @@ Feature: Payment feature [Story-5]
 	As a customer
 	I want to pay for products in basket
 
-	Scenario: Successful payment [Ticket-10][Ticket-11] - Passed (6s 343ms)
-		Step 1: GIVEN customer has some products in basket - Passed (1s 654ms)
-		Step 2: AND customer has enough money to pay for products - Passed (1s 028ms)
-		Step 3: WHEN customer requests to pay - Passed (1s 971ms)
-		Step 4: THEN payment should be successful - Passed (1s 684ms)
+	Scenario: Successful payment [Ticket-10][Ticket-11] - Passed (7s 475ms)
+		Step 1: GIVEN customer has some products in basket - Passed (1s 979ms)
+		Step 2: AND customer has enough money to pay for products - Passed (1s 820ms)
+		Step 3: WHEN customer requests to pay - Passed (1s 688ms)
+		Step 4: THEN payment should be successful - Passed (1s 982ms)
 
 Feature: Product spedition feature [Story-3]
 	In order to deliver products to customer effectively
 	As a spedition manager
 	I want to dispatch products to customer as soon as the payment is finalized
 
-	Scenario: Should dispatch product after payment is finalized [Ticket-5] - Passed (8ms)
+	Scenario: Should dispatch product after payment is finalized [Ticket-5] - Passed (15ms)
 		Categories: Delivery, Sales
 		Step 1: GIVEN There is an active customer with id "ABC-123" - Passed (<1ms)
 		Step 2: AND The customer has product "wooden shelf" in basket - Passed (<1ms)

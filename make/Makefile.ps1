@@ -37,12 +37,7 @@ Define-Step -Name 'Tests' -Target 'all,test' -Body {
 
     $tests = Define-DotnetTests -TestProject "*.UnitTests.csproj"
     $tests += Define-DotnetTests -TestProject "*.AcceptanceTests.csproj"
-
     $tests | Run-Tests
-    <# Code coverage does not work with current opencover (it does not support portable pdb (it will have to be full) and would require -old-style flag but then dotnet test won't detect netcore tests)
-    $tests | Run-Tests -EraseReportDirectory -Cover -CodeFilter '+[LightBDD*]* -[*Tests*]*' -TestFilter '*Tests.dll' `
-         | Generate-CoverageSummary | Check-AcceptableCoverage -AcceptableCoverage 90
-    #>
 }
 
 Define-Step -Name 'Prepare templates' -Target 'all,pack' -Body {
@@ -65,4 +60,8 @@ Define-Step -Name 'Prepare templates' -Target 'all,pack' -Body {
 Define-Step -Name 'Build VSIX package' -Target 'all,pack' -Body {
     call "msbuild.exe" templates\LightBDD.VSIXTemplates.sln /tv:15.0 /t:"Clean,Build" /p:Configuration=Release /m /verbosity:m /nologo /p:TreatWarningsAsErrors=true /nr:false
     copy-item 'templates\LightBDD.VSIXTemplates\bin\Release\LightBDD.VSIXTemplates.vsix' -Destination 'output'
+}
+
+Define-Step -Name 'Build Examples' -Target 'all,build' -Body {
+    call dotnet build examples --configuration Release /nologo /p:TreatWarningsAsErrors=true /m /p:GeneratePackageOnBuild=false
 }
