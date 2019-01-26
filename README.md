@@ -1,4 +1,4 @@
-![logo](https://github.com/Suremaker/LightBDD/blob/master/logo/lightbdd.ico) Lightweight Behavior Driven Development test framework (LightBDD)
+![logo](https://github.com/Suremaker/LightBDD/blob/1.x/logo/lightbdd.ico) Lightweight Behavior Driven Development test framework (LightBDD)
 ===========
 
 Have you ever been using the BDD methodology? Yes? - cool.
