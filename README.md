@@ -1,4 +1,4 @@
-![logo](https://github.com/LightBDD/LightBDD/blob/master/logo/lightbdd.ico) Lightweight Behavior Driven Development test framework (LightBDD)
+![logo](https://github.com/LightBDD/LightBDD/blob/2.x/logo/lightbdd.ico) Lightweight Behavior Driven Development test framework (LightBDD)
 ===========
 
 Category|Badge |Platforms
