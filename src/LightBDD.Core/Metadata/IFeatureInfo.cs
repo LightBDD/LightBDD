@@ -8,6 +8,11 @@ namespace LightBDD.Core.Metadata
     public interface IFeatureInfo : IMetadataInfo
     {
         /// <summary>
+        /// Returns feature name.
+        /// </summary>
+        //TODO: remove in 4.x
+        new INameInfo Name { get; }
+        /// <summary>
         /// Returns feature labels or empty collection if none provided.
         /// </summary>
         IEnumerable<string> Labels { get; }

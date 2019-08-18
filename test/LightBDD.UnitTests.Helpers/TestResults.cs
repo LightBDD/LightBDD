@@ -300,6 +300,7 @@ namespace LightBDD.UnitTests.Helpers
         public class TestScenarioInfo : IScenarioInfo
         {
             INameInfo IMetadataInfo.Name => Name;
+            INameInfo IScenarioInfo.Name => Name;
             public Guid RuntimeId { get; } = Guid.Parse("22222222-2222-2222-2222-222222222222");
             public TestNameInfo Name { get; set; }
             public IFeatureInfo Parent { get; set; }
@@ -323,6 +324,7 @@ namespace LightBDD.UnitTests.Helpers
         public class TestFeatureInfo : IFeatureInfo
         {
             INameInfo IMetadataInfo.Name => Name;
+            INameInfo IFeatureInfo.Name => Name;
             public Guid RuntimeId { get; } = Guid.Parse("33333333-3333-3333-3333-333333333333");
             public TestNameInfo Name { get; set; }
             IEnumerable<string> IFeatureInfo.Labels => Labels;

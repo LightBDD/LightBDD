@@ -8,6 +8,11 @@ namespace LightBDD.Core.Metadata
     public interface IScenarioInfo : IMetadataInfo
     {
         /// <summary>
+        /// Returns scenario name.
+        /// </summary>
+        //TODO: remove in 4.x
+        new INameInfo Name { get; }
+        /// <summary>
         /// The scenario parent feature.
         /// </summary>
         IFeatureInfo Parent { get; }
