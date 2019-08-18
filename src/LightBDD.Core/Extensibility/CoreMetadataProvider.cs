@@ -48,7 +48,7 @@ namespace LightBDD.Core.Extensibility
         /// <summary>
         /// Provides <see cref="IFeatureInfo"/> object containing information about feature represented by <paramref name="featureType"/>.
         /// 
-        /// The <see cref="IFeatureInfo.Name"/> is determined from the <paramref name="featureType"/> name.
+        /// The <see cref="IMetadataInfo.Name"/> is determined from the <paramref name="featureType"/> name.
         /// The <see cref="IFeatureInfo.Labels"/> are determined from attributes implementing <see cref="ILabelAttribute"/>, applied on <paramref name="featureType"/>.
         /// The <see cref="IFeatureInfo.Description"/> is determined from attribute implementing <see cref="IFeatureDescriptionAttribute"/> in first instance, then by <see cref="GetImplementationSpecificFeatureDescription"/>() method. The value may be <c>null</c>.
         /// </summary>
