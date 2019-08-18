@@ -103,9 +103,13 @@ namespace LightBDD.UnitTests.Helpers
 
         public static TestScenarioResult CreateScenarioResult(TestNameInfo name, string label, DateTimeOffset executionStart, TimeSpan executionTime, string[] categories, params TestStepResult[] steps)
         {
+            var scenarioInfo = CreateScenarioInfo(name, label, categories);
+            foreach (var step in steps)
+                step.Info.Parent = scenarioInfo;
+
             return new TestScenarioResult
             {
-                Info = CreateScenarioInfo(name, label, categories),
+                Info = scenarioInfo,
                 Steps = steps,
                 ExecutionTime = new TestExecutionTime { Start = executionStart, Duration = executionTime },
                 Status = steps.Max(s => s.Status),
@@ -135,9 +139,13 @@ namespace LightBDD.UnitTests.Helpers
 
         public static TestFeatureResult CreateFeatureResult(string name, string description, string label, params TestScenarioResult[] scenarios)
         {
+            var featureInfo = CreateFeatureInfo(name, description, label);
+            foreach (var scenario in scenarios)
+                scenario.Info.Parent = featureInfo;
+
             return new TestFeatureResult
             {
-                Info = CreateFeatureInfo(name, description, label),
+                Info = featureInfo,
                 Scenarios = scenarios
             };
         }
@@ -263,10 +271,13 @@ namespace LightBDD.UnitTests.Helpers
         public class TestStepInfo : IStepInfo
         {
             IStepNameInfo IStepInfo.Name => Name;
+            public IMetadataInfo Parent { get; set; }
+            public Guid RuntimeId { get; } = Guid.Parse("11111111-1111-1111-1111-111111111111");
             public string GroupPrefix { get; set; }
             public TestStepNameInfo Name { get; set; }
             public int Number { get; set; }
             public int Total { get; set; }
+            INameInfo IMetadataInfo.Name => Name;
         }
 
         public class TestScenarioResult : IScenarioResult
@@ -288,8 +299,10 @@ namespace LightBDD.UnitTests.Helpers
 
         public class TestScenarioInfo : IScenarioInfo
         {
-            INameInfo IScenarioInfo.Name => Name;
+            INameInfo IMetadataInfo.Name => Name;
+            public Guid RuntimeId { get; } = Guid.Parse("22222222-2222-2222-2222-222222222222");
             public TestNameInfo Name { get; set; }
+            public IFeatureInfo Parent { get; set; }
             IEnumerable<string> IScenarioInfo.Labels => Labels;
             public string[] Labels { get; set; }
             IEnumerable<string> IScenarioInfo.Categories => Categories;
@@ -309,7 +322,8 @@ namespace LightBDD.UnitTests.Helpers
 
         public class TestFeatureInfo : IFeatureInfo
         {
-            INameInfo IFeatureInfo.Name => Name;
+            INameInfo IMetadataInfo.Name => Name;
+            public Guid RuntimeId { get; } = Guid.Parse("33333333-3333-3333-3333-333333333333");
             public TestNameInfo Name { get; set; }
             IEnumerable<string> IFeatureInfo.Labels => Labels;
             public string[] Labels { get; set; }

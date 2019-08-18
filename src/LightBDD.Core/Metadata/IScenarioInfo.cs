@@ -5,12 +5,12 @@ namespace LightBDD.Core.Metadata
     /// <summary>
     /// Interface describing scenario metadata.
     /// </summary>
-    public interface IScenarioInfo
+    public interface IScenarioInfo : IMetadataInfo
     {
         /// <summary>
-        /// Returns scenario name.
+        /// The scenario parent feature.
         /// </summary>
-        INameInfo Name { get; }
+        IFeatureInfo Parent { get; }
         /// <summary>
         /// Returns scenario labels or empty collection if none specified.
         /// </summary>

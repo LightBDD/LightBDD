@@ -91,7 +91,7 @@ namespace LightBDD.Core.Execution.Implementation
             var subStepsContext = InstantiateSubStepsContext(compositeDescriptor.SubStepsContext, _subStepScope);
             try
             {
-                return _stepContext.ProvideSteps(compositeDescriptor.SubSteps, subStepsContext, _subStepScope, $"{Info.GroupPrefix}{Info.Number}.", ShouldAbortSubStepExecution);
+                return _stepContext.ProvideSteps(_result.Info, compositeDescriptor.SubSteps, subStepsContext, _subStepScope, $"{Info.GroupPrefix}{Info.Number}.", ShouldAbortSubStepExecution);
             }
             catch (Exception e)
             {

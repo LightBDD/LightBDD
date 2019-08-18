@@ -47,7 +47,7 @@ namespace LightBDD.Framework.Reporting.Formatters
                 objects.Add(new XElement("Description", feature.Info.Description));
 
             objects.AddRange(feature.GetScenarios().Select(ToXElement));
-
+            objects.Add(new XAttribute("RuntimeId", feature.Info.RuntimeId.ToString("D")));
             return new XElement("Feature", objects);
         }
 
@@ -72,7 +72,7 @@ namespace LightBDD.Framework.Reporting.Formatters
 
             if (!string.IsNullOrWhiteSpace(scenario.StatusDetails))
                 objects.Add(new XElement("StatusDetails", scenario.StatusDetails));
-
+            objects.Add(new XAttribute("RuntimeId", scenario.Info.RuntimeId.ToString("D")));
             return new XElement("Scenario", objects);
         }
 
@@ -97,6 +97,7 @@ namespace LightBDD.Framework.Reporting.Formatters
             objects.AddRange(step.Parameters.Select(ToXElement));
             objects.AddRange(step.Comments.Select(c => new XElement("Comment", c)));
             objects.AddRange(step.GetSubSteps().Select(s => ToXElement(s, "SubStep")));
+            objects.Add(new XAttribute("RuntimeId", step.Info.RuntimeId.ToString("D")));
             return new XElement(elementName, objects);
         }
 

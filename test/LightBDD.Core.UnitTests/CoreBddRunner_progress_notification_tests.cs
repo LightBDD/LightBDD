@@ -9,6 +9,7 @@ using LightBDD.Framework;
 using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Notification;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
+using Moq;
 using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests
@@ -170,6 +171,72 @@ namespace LightBDD.Core.UnitTests
             Assert.That(notifiers[0].Notifications.Count(n => n.StartsWith("Scenario Start: scenario1")), Is.EqualTo(1), "scenario1");
             Assert.That(notifiers[1].Notifications.Count(n => n.StartsWith("Scenario Start: scenario2")), Is.EqualTo(1), "scenario2");
             Assert.That(notifiers[2].Notifications.Count(n => n.StartsWith("Scenario Start: scenario3")), Is.EqualTo(1), "scenario3");
+        }
+
+        [Test]
+        public void It_should_wire_steps_scenario_and_feature_infos()
+        {
+            IFeatureInfo featureInfo = null;
+            IFeatureResult featureResult = null;
+            IScenarioInfo scenarioInfo = null;
+            IScenarioResult scenarioResult = null;
+            var stepInfos = new List<IStepInfo>();
+            var stepResults = new List<IStepResult>();
+            var featureNotifier = new Mock<IFeatureProgressNotifier>();
+            var scenarioNotifier = new Mock<IScenarioProgressNotifier>();
+
+            featureNotifier.Setup(x => x.NotifyFeatureStart(It.IsAny<IFeatureInfo>()))
+                .Callback((IFeatureInfo x) => featureInfo = x);
+            featureNotifier.Setup(x => x.NotifyFeatureFinished(It.IsAny<IFeatureResult>()))
+                .Callback((IFeatureResult x) => featureResult = x);
+            scenarioNotifier.Setup(x => x.NotifyScenarioStart(It.IsAny<IScenarioInfo>()))
+                .Callback((IScenarioInfo x) => scenarioInfo = x);
+            scenarioNotifier.Setup(x => x.NotifyScenarioFinished(It.IsAny<IScenarioResult>()))
+                .Callback((IScenarioResult x) => scenarioResult = x);
+            scenarioNotifier.Setup(x => x.NotifyStepStart(It.IsAny<IStepInfo>()))
+                .Callback((IStepInfo x) => stepInfos.Add(x));
+            scenarioNotifier.Setup(x => x.NotifyStepFinished(It.IsAny<IStepResult>()))
+                .Callback((IStepResult x) => stepResults.Add(x));
+
+            var feature = new TestableFeatureRunnerRepository(featureNotifier.Object, fixture => scenarioNotifier.Object)
+                .GetRunnerFor(GetType());
+            var runner = feature.GetBddRunner(this);
+            try
+            {
+                runner.Test().TestGroupScenario(Composite_group);
+            }
+            catch { }
+            feature.Dispose();
+
+            Assert.That(featureInfo, Is.Not.Null);
+            Assert.That(featureInfo.RuntimeId, Is.Not.EqualTo(Guid.Empty), "Feature should have unique RuntimeId");
+            Assert.That(featureResult.Info, Is.SameAs(featureInfo));
+
+            Assert.That(scenarioInfo, Is.Not.Null);
+            Assert.That(scenarioInfo.RuntimeId, Is.Not.EqualTo(Guid.Empty), "Scenario should have unique RuntimeId");
+            Assert.That(scenarioResult.Info, Is.SameAs(scenarioInfo));
+            Assert.That(scenarioInfo.Parent, Is.SameAs(featureInfo));
+
+            Assert.That(stepInfos.Select(x => x.RuntimeId).Distinct().Count(), Is.EqualTo(9), "Each step should have unique RuntimeId");
+            Assert.That(stepInfos[0].Parent, Is.SameAs(scenarioInfo));
+            Assert.That(stepInfos[1].Parent, Is.SameAs(stepInfos[0]));
+            Assert.That(stepInfos[2].Parent, Is.SameAs(stepInfos[1]));
+            Assert.That(stepInfos[3].Parent, Is.SameAs(stepInfos[1]));
+            Assert.That(stepInfos[4].Parent, Is.SameAs(stepInfos[1]));
+            Assert.That(stepInfos[5].Parent, Is.SameAs(stepInfos[0]));
+            Assert.That(stepInfos[6].Parent, Is.SameAs(stepInfos[5]));
+            Assert.That(stepInfos[7].Parent, Is.SameAs(stepInfos[5]));
+            Assert.That(stepInfos[8].Parent, Is.SameAs(stepInfos[5]));
+
+            Assert.That(stepResults[0].Info, Is.SameAs(stepInfos[2]), "1.1.1");
+            Assert.That(stepResults[1].Info, Is.SameAs(stepInfos[3]), "1.1.2");
+            Assert.That(stepResults[2].Info, Is.SameAs(stepInfos[4]), "1.1.3");
+            Assert.That(stepResults[3].Info, Is.SameAs(stepInfos[1]), "1.1");
+            Assert.That(stepResults[4].Info, Is.SameAs(stepInfos[6]), "1.2.1");
+            Assert.That(stepResults[5].Info, Is.SameAs(stepInfos[7]), "1.2.2");
+            Assert.That(stepResults[6].Info, Is.SameAs(stepInfos[8]), "1.2.3");
+            Assert.That(stepResults[7].Info, Is.SameAs(stepInfos[5]), "1.2");
+            Assert.That(stepResults[8].Info, Is.SameAs(stepInfos[0]), "1");
         }
 
         private class CapturingProgressNotifier : IScenarioProgressNotifier, IFeatureProgressNotifier

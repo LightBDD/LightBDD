@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility;
+using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
 
 namespace LightBDD.Core.Execution.Implementation
 {
-    internal delegate RunnableStep[] ProvideStepsFunc(IEnumerable<StepDescriptor> stepDescriptors, object context, IDependencyContainer container, string groupPrefix, Func<Exception, bool> shouldAbortSubStepExecutionFn);
+    internal delegate RunnableStep[] ProvideStepsFunc(IMetadataInfo parent,IEnumerable<StepDescriptor> stepDescriptors, object context, IDependencyContainer container, string groupPrefix, Func<Exception, bool> shouldAbortSubStepExecutionFn);
     internal class RunnableScenarioContext
     {
         public IntegrationContext IntegrationContext { get; }
