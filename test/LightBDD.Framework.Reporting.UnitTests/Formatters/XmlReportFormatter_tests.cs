@@ -43,15 +43,15 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
     <Scenarios Count=""2"" Passed=""0"" Bypassed=""0"" Failed=""1"" Ignored=""1"" />
     <Steps Count=""10"" Passed=""3"" Bypassed=""1"" Failed=""2"" Ignored=""2"" NotRun=""2"" />
   </Summary>
-  <Feature Name=""My feature"">
+  <Feature Name=""My feature"" RuntimeId=""33333333-3333-3333-3333-333333333333"">
     <Label Name=""Label 1"" />
     <Description>My feature
 long description</Description>
-    <Scenario Status=""Ignored"" Name=""name"" ExecutionStart=""2014-09-23T19:21:58.055Z"" ExecutionTime=""PT1M2.1S"">
+    <Scenario Status=""Ignored"" Name=""name"" ExecutionStart=""2014-09-23T19:21:58.055Z"" ExecutionTime=""PT1M2.1S"" RuntimeId=""22222222-2222-2222-2222-222222222222"">
       <Name Format=""name"" />
       <Label Name=""Label 2"" />
       <Category Name=""categoryA"" />
-      <Step Status=""Passed"" Number=""1"" Name=""call step1 &quot;arg1&quot;"" ExecutionStart=""2014-09-23T19:21:59.055Z"" ExecutionTime=""PT1M1S"">
+      <Step Status=""Passed"" Number=""1"" Name=""call step1 &quot;arg1&quot;"" ExecutionStart=""2014-09-23T19:21:59.055Z"" ExecutionTime=""PT1M1S"" RuntimeId=""11111111-1111-1111-1111-111111111111"">
         <StepName StepType=""call"" Format=""step1 &quot;{0}&quot;"">
           <Parameter IsEvaluated=""true"">arg1</Parameter>
         </StepName>
@@ -59,20 +59,20 @@ long description</Description>
 comment</Comment>
         <Comment>comment 2</Comment>
       </Step>
-      <Step Status=""Ignored"" Number=""2"" Name=""step2"" ExecutionStart=""2014-09-23T19:22:00.055Z"" ExecutionTime=""PT1.1S"">
+      <Step Status=""Ignored"" Number=""2"" Name=""step2"" ExecutionStart=""2014-09-23T19:22:00.055Z"" ExecutionTime=""PT1.1S"" RuntimeId=""11111111-1111-1111-1111-111111111111"">
         <StatusDetails>Not implemented yet</StatusDetails>
         <StepName Format=""step2"" />
-        <SubStep Status=""Passed"" Number=""1"" Name=""substep 1"" ExecutionStart=""2014-09-23T19:22:00.055Z"" ExecutionTime=""PT0.1S"" GroupPrefix=""2."">
+        <SubStep Status=""Passed"" Number=""1"" Name=""substep 1"" ExecutionStart=""2014-09-23T19:22:00.055Z"" ExecutionTime=""PT0.1S"" GroupPrefix=""2."" RuntimeId=""11111111-1111-1111-1111-111111111111"">
           <StepName Format=""substep 1"" />
         </SubStep>
-        <SubStep Status=""Passed"" Number=""2"" Name=""substep 2"" ExecutionStart=""2014-09-23T19:22:00.155Z"" ExecutionTime=""PT1S"" GroupPrefix=""2."">
+        <SubStep Status=""Passed"" Number=""2"" Name=""substep 2"" ExecutionStart=""2014-09-23T19:22:00.155Z"" ExecutionTime=""PT1S"" GroupPrefix=""2."" RuntimeId=""11111111-1111-1111-1111-111111111111"">
           <StepName Format=""substep 2"" />
         </SubStep>
-        <SubStep Status=""Ignored"" Number=""3"" Name=""substep 3"" ExecutionStart=""2014-09-23T19:22:01.155Z"" ExecutionTime=""PT0S"" GroupPrefix=""2."">
+        <SubStep Status=""Ignored"" Number=""3"" Name=""substep 3"" ExecutionStart=""2014-09-23T19:22:01.155Z"" ExecutionTime=""PT0S"" GroupPrefix=""2."" RuntimeId=""11111111-1111-1111-1111-111111111111"">
           <StatusDetails>Not implemented yet</StatusDetails>
           <StepName Format=""substep 3"" />
           <Comment>sub-comment</Comment>
-          <SubStep Status=""Failed"" Number=""1"" Name=""sub-substep 1"" GroupPrefix=""2.3."">
+          <SubStep Status=""Failed"" Number=""1"" Name=""sub-substep 1"" GroupPrefix=""2.3."" RuntimeId=""11111111-1111-1111-1111-111111111111"">
             <StepName Format=""sub-substep 1"" />
             <Parameter Name=""table1"">
               <Table Status=""Failure"" Message=""tabular message"">
@@ -129,29 +129,29 @@ comment</Comment>
             <Comment>sub-sub-multiline
 comment</Comment>
           </SubStep>
-          <SubStep Status=""NotRun"" Number=""2"" Name=""sub-substep 2"" GroupPrefix=""2.3."">
+          <SubStep Status=""NotRun"" Number=""2"" Name=""sub-substep 2"" GroupPrefix=""2.3."" RuntimeId=""11111111-1111-1111-1111-111111111111"">
             <StepName Format=""sub-substep 2"" />
           </SubStep>
         </SubStep>
       </Step>
       <StatusDetails>Step 2: Not implemented yet</StatusDetails>
     </Scenario>
-    <Scenario Status=""Failed"" Name=""name2 &quot;arg1&quot;"" ExecutionStart=""2014-09-23T19:22:01.055Z"" ExecutionTime=""PT2.157S"">
+    <Scenario Status=""Failed"" Name=""name2 &quot;arg1&quot;"" ExecutionStart=""2014-09-23T19:22:01.055Z"" ExecutionTime=""PT2.157S"" RuntimeId=""22222222-2222-2222-2222-222222222222"">
       <Name Format=""name2 &quot;{0}&quot;"">
         <Parameter IsEvaluated=""true"">arg1</Parameter>
       </Name>
       <Category Name=""categoryB"" />
       <Category Name=""categoryC"" />
-      <Step Status=""Bypassed"" Number=""1"" Name=""step3"" ExecutionStart=""2014-09-23T19:22:02.055Z"" ExecutionTime=""PT2.107S"">
+      <Step Status=""Bypassed"" Number=""1"" Name=""step3"" ExecutionStart=""2014-09-23T19:22:02.055Z"" ExecutionTime=""PT2.107S"" RuntimeId=""11111111-1111-1111-1111-111111111111"">
         <StatusDetails>bypass reason</StatusDetails>
         <StepName Format=""step3"" />
       </Step>
-      <Step Status=""Failed"" Number=""2"" Name=""step4"" ExecutionStart=""2014-09-23T19:22:03.055Z"" ExecutionTime=""PT0.05S"">
+      <Step Status=""Failed"" Number=""2"" Name=""step4"" ExecutionStart=""2014-09-23T19:22:03.055Z"" ExecutionTime=""PT0.05S"" RuntimeId=""11111111-1111-1111-1111-111111111111"">
         <StatusDetails>  Expected: True
   But was: False</StatusDetails>
         <StepName Format=""step4"" />
       </Step>
-      <Step Status=""NotRun"" Number=""3"" Name=""step5"">
+      <Step Status=""NotRun"" Number=""3"" Name=""step5"" RuntimeId=""11111111-1111-1111-1111-111111111111"">
         <StepName Format=""step5"" />
       </Step>
       <StatusDetails>Step 1: bypass reason
@@ -178,13 +178,13 @@ Step 2: Expected: True
     <Scenarios Count=""1"" Passed=""0"" Bypassed=""0"" Failed=""0"" Ignored=""1"" />
     <Steps Count=""2"" Passed=""1"" Bypassed=""0"" Failed=""0"" Ignored=""1"" NotRun=""0"" />
   </Summary>
-  <Feature Name=""My feature"">
-    <Scenario Status=""Ignored"" Name=""name"" ExecutionStart=""2014-09-23T19:21:58.055Z"" ExecutionTime=""PT0.025S"">
+  <Feature Name=""My feature"" RuntimeId=""33333333-3333-3333-3333-333333333333"">
+    <Scenario Status=""Ignored"" Name=""name"" ExecutionStart=""2014-09-23T19:21:58.055Z"" ExecutionTime=""PT0.025S"" RuntimeId=""22222222-2222-2222-2222-222222222222"">
       <Name Format=""name"" />
-      <Step Status=""Passed"" Number=""1"" Name=""step1"" ExecutionStart=""2014-09-23T19:21:59.055Z"" ExecutionTime=""PT0.02S"">
+      <Step Status=""Passed"" Number=""1"" Name=""step1"" ExecutionStart=""2014-09-23T19:21:59.055Z"" ExecutionTime=""PT0.02S"" RuntimeId=""11111111-1111-1111-1111-111111111111"">
         <StepName Format=""step1"" />
       </Step>
-      <Step Status=""Ignored"" Number=""2"" Name=""step2"" ExecutionStart=""2014-09-23T19:22:00.055Z"" ExecutionTime=""PT0.005S"">
+      <Step Status=""Ignored"" Number=""2"" Name=""step2"" ExecutionStart=""2014-09-23T19:22:00.055Z"" ExecutionTime=""PT0.005S"" RuntimeId=""11111111-1111-1111-1111-111111111111"">
         <StepName Format=""step2"" />
       </Step>
     </Scenario>
@@ -208,20 +208,20 @@ Step 2: Expected: True
     <Scenarios Count=""2"" Passed=""2"" Bypassed=""0"" Failed=""0"" Ignored=""0"" />
     <Steps Count=""2"" Passed=""2"" Bypassed=""0"" Failed=""0"" Ignored=""0"" NotRun=""0"" />
   </Summary>
-  <Feature Name=""My feature"">
-    <Scenario Status=""Passed"" Name=""scenario1"" ExecutionStart=""2014-09-23T19:21:58.055Z"" ExecutionTime=""PT0.02S"">
+  <Feature Name=""My feature"" RuntimeId=""33333333-3333-3333-3333-333333333333"">
+    <Scenario Status=""Passed"" Name=""scenario1"" ExecutionStart=""2014-09-23T19:21:58.055Z"" ExecutionTime=""PT0.02S"" RuntimeId=""22222222-2222-2222-2222-222222222222"">
       <Name Format=""scenario1"" />
       <Category Name=""categoryA"" />
-      <Step Status=""Passed"" Number=""1"" Name=""step1"" ExecutionStart=""2014-09-23T19:21:59.055Z"" ExecutionTime=""PT0.02S"">
+      <Step Status=""Passed"" Number=""1"" Name=""step1"" ExecutionStart=""2014-09-23T19:21:59.055Z"" ExecutionTime=""PT0.02S"" RuntimeId=""11111111-1111-1111-1111-111111111111"">
         <StepName Format=""step1"" />
       </Step>
     </Scenario>
   </Feature>
-  <Feature Name=""My feature2"">
-    <Scenario Status=""Passed"" Name=""scenario1"" ExecutionStart=""2014-09-23T19:22:01.055Z"" ExecutionTime=""PT0.02S"">
+  <Feature Name=""My feature2"" RuntimeId=""33333333-3333-3333-3333-333333333333"">
+    <Scenario Status=""Passed"" Name=""scenario1"" ExecutionStart=""2014-09-23T19:22:01.055Z"" ExecutionTime=""PT0.02S"" RuntimeId=""22222222-2222-2222-2222-222222222222"">
       <Name Format=""scenario1"" />
       <Category Name=""categoryB"" />
-      <Step Status=""Passed"" Number=""1"" Name=""step1"" ExecutionStart=""2014-09-23T19:22:02.055Z"" ExecutionTime=""PT0.02S"">
+      <Step Status=""Passed"" Number=""1"" Name=""step1"" ExecutionStart=""2014-09-23T19:22:02.055Z"" ExecutionTime=""PT0.02S"" RuntimeId=""11111111-1111-1111-1111-111111111111"">
         <StepName Format=""step1"" />
       </Step>
     </Scenario>

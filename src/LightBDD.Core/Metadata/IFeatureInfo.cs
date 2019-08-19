@@ -5,12 +5,13 @@ namespace LightBDD.Core.Metadata
     /// <summary>
     /// Interface describing feature metadata.
     /// </summary>
-    public interface IFeatureInfo
+    public interface IFeatureInfo : IMetadataInfo
     {
         /// <summary>
         /// Returns feature name.
         /// </summary>
-        INameInfo Name { get; }
+        //TODO: remove in 4.x
+        new INameInfo Name { get; }
         /// <summary>
         /// Returns feature labels or empty collection if none provided.
         /// </summary>
