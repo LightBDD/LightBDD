@@ -175,7 +175,7 @@ namespace LightBDD.Core.Execution.Implementation
         {
             try
             {
-                return _scenarioContext.StepsProvider(_stepDescriptors, Context, _scope, string.Empty, ShouldAbortSubStepExecution);
+                return _scenarioContext.StepsProvider(_result.Info,_stepDescriptors, Context, _scope, string.Empty, ShouldAbortSubStepExecution);
             }
             catch (Exception e)
             {

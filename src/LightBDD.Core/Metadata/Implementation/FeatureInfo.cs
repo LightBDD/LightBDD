@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,6 +14,7 @@ namespace LightBDD.Core.Metadata.Implementation
         }
 
         public INameInfo Name { get; }
+        public Guid RuntimeId { get; } = Guid.NewGuid();
         public IEnumerable<string> Labels { get; }
         public string Description { get; }
 

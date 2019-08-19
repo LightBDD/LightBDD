@@ -25,7 +25,9 @@ namespace LightBDD.Framework.Reporting.UnitTests
         public void SetUp()
         {
             _formatter = new Mock<IReportFormatter>();
-            _feature = TestResults.CreateFeatureResult("name", "description", "label", TestResults.CreateScenarioResult("abc", "def", _expectedExecutionStartOffset, TimeSpan.Zero, new string[0], TestResults.CreateStepResult(ExecutionStatus.Passed)));
+            _feature = TestResults.CreateFeatureResult("name", "description", "label",
+                TestResults.CreateScenarioResult("abc", "def", _expectedExecutionStartOffset, TimeSpan.Zero, new string[0],
+                    TestResults.CreateStepResult(ExecutionStatus.Passed).WithStepNameDetails(1, "foo", "foo")));
             _formatter.Setup(f => f.Format(It.IsAny<Stream>(), It.Is<IFeatureResult[]>(l => l.Contains(_feature)))).Callback(
                 (Stream s, IFeatureResult[] results) =>
                 {
@@ -53,7 +55,7 @@ namespace LightBDD.Framework.Reporting.UnitTests
             new ReportFileWriter(_formatter.Object, filePath).Save(_feature);
             var utcNow = DateTime.UtcNow;
 
-            var expectedFileName =$"{_expectedExecutionStartOffset.UtcDateTime:yyyy-MM-dd-HH_mm_ss}_{_expectedExecutionStartOffset.LocalDateTime:yyyy-MM-dd-HH_mm_ss}_{utcNow:yyyy-MM-dd-HH_mm}_{utcNow.ToLocalTime():yyyy-MM-dd-HH_mm}";
+            var expectedFileName = $"{_expectedExecutionStartOffset.UtcDateTime:yyyy-MM-dd-HH_mm_ss}_{_expectedExecutionStartOffset.LocalDateTime:yyyy-MM-dd-HH_mm_ss}_{utcNow:yyyy-MM-dd-HH_mm}_{utcNow.ToLocalTime():yyyy-MM-dd-HH_mm}";
 
 
             var actualPath = GetActualPath();
@@ -69,7 +71,7 @@ namespace LightBDD.Framework.Reporting.UnitTests
             new ReportFileWriter(_formatter.Object, filePath).Save(_feature);
             var utcNow = DateTime.UtcNow;
 
-            var expectedFileName =$"{_expectedExecutionStartOffset.UtcDateTime:yyyy-MM-dd-HH_mm_ss}_{_expectedExecutionStartOffset.LocalDateTime:yyyy-MM-dd-HH_mm_ss}_{utcNow:yyyy-MM-dd-HH_mm}_{utcNow.ToLocalTime():yyyy-MM-dd-HH_mm}";
+            var expectedFileName = $"{_expectedExecutionStartOffset.UtcDateTime:yyyy-MM-dd-HH_mm_ss}_{_expectedExecutionStartOffset.LocalDateTime:yyyy-MM-dd-HH_mm_ss}_{utcNow:yyyy-MM-dd-HH_mm}_{utcNow.ToLocalTime():yyyy-MM-dd-HH_mm}";
 
 
             var actualPath = GetActualPath();

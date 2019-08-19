@@ -1,19 +1,24 @@
+using System;
+
 namespace LightBDD.Core.Metadata.Implementation
 {
     internal class StepInfo : IStepInfo
     {
-        public StepInfo(IStepNameInfo name, int number, int total, string groupPrefix)
+        public StepInfo(IMetadataInfo parent, IStepNameInfo name, int number, int total, string groupPrefix)
         {
+            Parent = parent;
             Name = name;
             Number = number;
             Total = total;
             GroupPrefix = groupPrefix;
         }
 
+        public IMetadataInfo Parent { get; }
         public string GroupPrefix { get; }
         public int Number { get; }
         public int Total { get; }
         public IStepNameInfo Name { get; private set; }
+        public Guid RuntimeId { get; } = Guid.NewGuid();
 
         public void UpdateName(INameParameterInfo[] parameters)
         {
@@ -24,5 +29,7 @@ namespace LightBDD.Core.Metadata.Implementation
         {
             return $"{GroupPrefix}{Number}/{GroupPrefix}{Total} {Name}";
         }
+
+        INameInfo IMetadataInfo.Name => Name;
     }
 }

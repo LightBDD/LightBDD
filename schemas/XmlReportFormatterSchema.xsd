@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="2.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="2.1">
   <xs:element name="TestResults">
     <xs:complexType>
       <xs:sequence>
@@ -83,11 +83,13 @@
                   <xs:attribute name="Label" type="xs:string" use="optional"/>
                   <xs:attribute name="ExecutionStart" type="xs:dateTime" use="required"/>
                   <xs:attribute name="ExecutionTime" type="xs:duration" use="required"/>
+                  <xs:attribute name="RuntimeId" type="xs:string" use="optional"/>
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
             <xs:attribute name="Name" type="xs:string" use="required"/>
             <xs:attribute name="Label" type="xs:string" use="optional"/>
+            <xs:attribute name="RuntimeId" type="xs:string" use="optional"/>
           </xs:complexType>
         </xs:element>
       </xs:sequence>
@@ -188,5 +190,6 @@
     <xs:attribute name="ExecutionStart" type="xs:dateTime" use="optional"/>
     <xs:attribute name="ExecutionTime" type="xs:duration" use="optional"/>
     <xs:attribute name="GroupPrefix" type="xs:string" use="optional"/>
+    <xs:attribute name="RuntimeId" type="xs:string" use="optional"/>
   </xs:complexType>
 </xs:schema>

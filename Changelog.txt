@@ -1,6 +1,12 @@
 LightBDD
 ===========================================
 
+Version 3.1.0
+----------------------------------------
++ #191 (Core)(Change) Expanded IScenarioInfo, IStepInfo with Parent property
++ #191 (Core)(Change) Expanded IFeatureInfo, IScenarioInfo, IStepInfo with RuntimeId property
++ #191 (Framework)(Change) Updated XmlReportFormatter to include RuntimeId
+
 Version 3.0.1
 ----------------------------------------
 + #177 (Framework)(Fix) Scenarios built fluently are not executed properly

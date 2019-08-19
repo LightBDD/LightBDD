@@ -37,7 +37,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         private ICoreScenarioBuilder CreateScenarioRunner(object fixture)
         {
             VerifyDisposed();
-            return new ScenarioBuilder(fixture, _integrationContext, _exceptionProcessor, _featureResult.AddScenario);
+            return new ScenarioBuilder(_featureResult.Info, fixture, _integrationContext, _exceptionProcessor, _featureResult.AddScenario);
         }
 
         private void VerifyDisposed()
