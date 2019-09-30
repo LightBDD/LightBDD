@@ -1,6 +1,11 @@
 LightBDD
 ===========================================
 
+Version 3.2.0
+----------------------------------------
++ #187 (Autofac) Updated UseAutofac() to require specifying takeOwnership flag for passed container
++ #187 (LightBDD.Extensions.DependencyInjection) Updated UseContainer() to require specifying takeOwnership flag for passed provider
+
 Version 3.1.0
 ----------------------------------------
 + #191 (Core)(Change) Expanded IScenarioInfo, IStepInfo with Parent property
