@@ -11,6 +11,7 @@ namespace LightBDD.Extensions.DependencyInjection.Implementation
     {
         private readonly IServiceScope _scope;
         private readonly ContainerOverrides _overrides;
+        private readonly List<IDisposable> _disposables = new List<IDisposable>();
 
         public DiContainer(IServiceScope scope, ContainerOverrides overrides)
         {
@@ -18,6 +19,7 @@ namespace LightBDD.Extensions.DependencyInjection.Implementation
 
             _scope = scope;
             _overrides = overrides;
+            AddDisposable(_scope);
         }
 
         public object Resolve(Type type)
@@ -32,8 +34,11 @@ namespace LightBDD.Extensions.DependencyInjection.Implementation
             try { _overrides.Dispose(); }
             catch (Exception e) { exceptions.Add(e); }
 
-            try { _scope.Dispose(); }
-            catch (Exception e) { exceptions.Add(e); }
+            foreach (var disposable in _disposables)
+            {
+                try { disposable.Dispose(); }
+                catch (Exception e) { exceptions.Add(e); }
+            }
 
             if (!exceptions.Any())
                 return;
@@ -46,10 +51,15 @@ namespace LightBDD.Extensions.DependencyInjection.Implementation
 
         public IDependencyContainer BeginScope(Action<ContainerConfigurator> configuration = null)
         {
-            ContainerOverrides overrides = new ContainerOverrides();
+            var overrides = new ContainerOverrides();
             configuration?.Invoke(overrides);
 
             return new DiContainer(_scope.ServiceProvider.CreateScope(), overrides);
+        }
+
+        public void AddDisposable(IDisposable serviceProvider)
+        {
+            _disposables.Add(serviceProvider);
         }
     }
 }
