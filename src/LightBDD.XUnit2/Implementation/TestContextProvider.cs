@@ -10,12 +10,14 @@ namespace LightBDD.XUnit2.Implementation
         public MethodInfo TestMethod { get; }
         public object[] TestMethodArguments { get; }
         public ITestOutputHelper OutputHelper { get; }
+        public string SkipReason { get; }
 
         public static TestContextProvider Current => Provider.Value;
 
-        public static void Initialize(MethodInfo testMethod, object[] arguments, ITestOutputHelper testOutputHelper)
+        public static void Initialize(MethodInfo testMethod, object[] arguments, ITestOutputHelper testOutputHelper,
+            string skipReason)
         {
-            Provider.Value = new TestContextProvider(testMethod, arguments, testOutputHelper);
+            Provider.Value = new TestContextProvider(testMethod, arguments, testOutputHelper,skipReason);
         }
 
         public static void Clear()
@@ -23,11 +25,13 @@ namespace LightBDD.XUnit2.Implementation
             Provider.Value = null;
         }
 
-        private TestContextProvider(MethodInfo testMethod, object[] arguments, ITestOutputHelper outputHelper)
+        private TestContextProvider(MethodInfo testMethod, object[] arguments, ITestOutputHelper outputHelper,
+            string skipReason)
         {
             TestMethod = testMethod;
             TestMethodArguments = arguments;
             OutputHelper = outputHelper;
+            SkipReason = skipReason;
         }
     }
 }

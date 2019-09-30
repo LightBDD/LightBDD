@@ -22,7 +22,11 @@ namespace LightBDD.XUnit2.Implementation.Customization
             var bddScopeAttribute = GetLightBddScopeAttribute(assembly);
 
             var enableInterClassParallelization = ShallEnableInterClassParallelization(assembly, executionOptions);
-            AssemblySettings.SetSettings(new AssemblySettings { EnableInterClassParallelization = enableInterClassParallelization });
+            AssemblySettings.SetSettings(new AssemblySettings
+            {
+                EnableInterClassParallelization = enableInterClassParallelization,
+                UseXUnitSkipBehavior = ShallUseXUnitSkipBehavior(assembly)
+            });
 
             bddScopeAttribute?.SetUp();
             try
@@ -51,6 +55,11 @@ namespace LightBDD.XUnit2.Implementation.Customization
             if (executionOptions.DisableParallelization() ?? attribute?.DisableTestParallelization ?? false)
                 return false;
             return assembly.GetCustomAttribute<ClassCollectionBehaviorAttribute>()?.AllowTestParallelization ?? false;
+        }
+
+        private bool ShallUseXUnitSkipBehavior(Assembly assembly)
+        {
+            return assembly.GetCustomAttribute<UseXUnitSkipBehaviorAttribute>() != null;
         }
 
         private Assembly GetAssembly()

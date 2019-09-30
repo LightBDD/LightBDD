@@ -10,5 +10,6 @@ namespace LightBDD.XUnit2.Implementation.Customization
         public static void SetSettings(AssemblySettings settings) => AsyncLocal.Value = settings;
 
         public bool EnableInterClassParallelization { get; set; }
+        public bool UseXUnitSkipBehavior { get; set; }
     }
 }

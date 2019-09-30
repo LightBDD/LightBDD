@@ -70,6 +70,9 @@ namespace LightBDD.XUnit2
             configuration.ExceptionHandlingConfiguration()
                 .UpdateExceptionDetailsFormatter(new DefaultExceptionFormatter().WithTestFrameworkDefaults().Format);
 
+            configuration.ExecutionExtensionsConfiguration()
+                .EnableScenarioDecorator<TestSkippedDecorator>();
+
             OnConfigure(configuration);
             return configuration;
         }

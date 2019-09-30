@@ -15,7 +15,7 @@ namespace LightBDD.XUnit2.Implementation.Customization
         {
             // skipped
             if (factAttribute.GetNamedArgument<string>("Skip") != null)
-                return new[] { new XunitTestCase(DiagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(), testMethod) };
+                return new[] { new ScenarioTestCase(DiagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(), testMethod) };
 
             // fact
             if (!testMethod.Method.GetCustomAttributes(typeof(DataAttribute)).Any())
@@ -24,15 +24,27 @@ namespace LightBDD.XUnit2.Implementation.Customization
             return base.Discover(discoveryOptions, testMethod, factAttribute);
         }
 
-        protected override IEnumerable<IXunitTestCase> CreateTestCasesForDataRow(ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod,IAttributeInfo theoryAttribute, object[] dataRow)
+        protected override IEnumerable<IXunitTestCase> CreateTestCasesForSkippedDataRow(ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod,
+            IAttributeInfo theoryAttribute, object[] dataRow, string skipReason)
+        {
+            return new[] { new SkippedDataRowTestCase(DiagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(), testMethod, skipReason, dataRow) };
+        }
+
+        protected override IEnumerable<IXunitTestCase> CreateTestCasesForSkip(ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod,
+            IAttributeInfo theoryAttribute, string skipReason)
+        {
+            return new[] { new ScenarioTestCase(DiagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(), testMethod) };
+        }
+
+        protected override IEnumerable<IXunitTestCase> CreateTestCasesForDataRow(ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod, IAttributeInfo theoryAttribute, object[] dataRow)
         {
             return new XunitTestCase[]
             {
-                new ScenarioTestCase(DiagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(), testMethod,dataRow)
+                new ScenarioTestCase(DiagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(), testMethod, dataRow)
             };
         }
 
-        protected override IEnumerable<IXunitTestCase> CreateTestCasesForTheory(ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod,IAttributeInfo theoryAttribute)
+        protected override IEnumerable<IXunitTestCase> CreateTestCasesForTheory(ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod, IAttributeInfo theoryAttribute)
         {
             return new XunitTestCase[]
             {
