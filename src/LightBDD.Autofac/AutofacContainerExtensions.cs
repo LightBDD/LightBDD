@@ -19,7 +19,7 @@ namespace LightBDD.Autofac
         /// <param name="configuration">Configuration.</param>
         /// <param name="container">Container to use.</param>
 
-        [Obsolete("Use other methods instead", true)]
+        [Obsolete("Use overload with takeOwnership flag instead", true)]
         public static DependencyContainerConfiguration UseAutofac(
             this DependencyContainerConfiguration configuration,
             ILifetimeScope container)

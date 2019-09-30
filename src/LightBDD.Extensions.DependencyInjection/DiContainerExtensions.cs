@@ -18,7 +18,7 @@ namespace LightBDD.Extensions.DependencyInjection
         /// </summary>
         /// <param name="configuration">Configuration.</param>
         /// <param name="serviceProvider">Service provider to use.</param>
-        [Obsolete("Use other methods instead", true)]
+        [Obsolete("Use overload with takeOwnership flag instead", true)]
         public static DependencyContainerConfiguration UseContainer(
             this DependencyContainerConfiguration configuration, IServiceProvider serviceProvider)
         {
