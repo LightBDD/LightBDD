@@ -13,10 +13,6 @@ namespace LightBDD.XUnit2.Implementation.Customization
 
         public override IEnumerable<IXunitTestCase> Discover(ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod, IAttributeInfo factAttribute)
         {
-            // skipped
-            if (factAttribute.GetNamedArgument<string>("Skip") != null)
-                return new[] { new ScenarioTestCase(DiagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(), testMethod) };
-
             // fact
             if (!testMethod.Method.GetCustomAttributes(typeof(DataAttribute)).Any())
                 return new XunitTestCase[] { new ScenarioTestCase(DiagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(), testMethod) };
@@ -33,7 +29,7 @@ namespace LightBDD.XUnit2.Implementation.Customization
         protected override IEnumerable<IXunitTestCase> CreateTestCasesForSkip(ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod,
             IAttributeInfo theoryAttribute, string skipReason)
         {
-            return new[] { new ScenarioTestCase(DiagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(), testMethod) };
+            return CreateTestCasesForTheory(discoveryOptions, testMethod, theoryAttribute);
         }
 
         protected override IEnumerable<IXunitTestCase> CreateTestCasesForDataRow(ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod, IAttributeInfo theoryAttribute, object[] dataRow)
