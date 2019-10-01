@@ -7,6 +7,13 @@ namespace LightBDD.UnitTests.Helpers
 {
     public abstract class ContainerBaseTests
     {
+        protected readonly bool ShouldTakeOwnership;
+
+        protected ContainerBaseTests(bool shouldTakeOwnership = true)
+        {
+            ShouldTakeOwnership = shouldTakeOwnership;
+        }
+
         [Test]
         [TestCase(true)]
         [TestCase(false)]
@@ -39,21 +46,51 @@ namespace LightBDD.UnitTests.Helpers
         }
 
         [Test]
+        public void Container_ownership_should_control_disposal_of_root_level_singletons()
+        {
+            DisposableSingleton instance;
+            using (var container = CreateContainer())
+            {
+                instance = container.Resolve<DisposableSingleton>();
+                Assert.False(instance.Disposed);
+            }
+            Assert.That(instance.Disposed, Is.EqualTo(ShouldTakeOwnership));
+        }
+
+        [Test]
+        public void Container_should_resolve_singleton_instances()
+        {
+            using (var container = CreateContainer())
+            {
+                Assert.That(
+                    container.Resolve<DisposableSingleton>(),
+                    Is.SameAs(container.Resolve<DisposableSingleton>()));
+            }
+        }
+
+        [Test]
         public void BeginScope_should_make_separate_scope()
         {
             Disposable outer;
             Disposable inner;
+            Disposable deepestInner;
             using (var container = CreateContainer())
             {
                 outer = container.Resolve<Disposable>();
                 using (var scope = container.BeginScope())
+                {
                     inner = scope.Resolve<Disposable>();
+                    using (var deepestScope = scope.BeginScope())
+                        deepestInner = deepestScope.Resolve<Disposable>();
+                    Assert.True(deepestInner.Disposed);
+                    Assert.False(inner.Disposed);
+                    Assert.False(outer.Disposed);
+                }
 
                 Assert.True(inner.Disposed);
                 Assert.False(outer.Disposed);
             }
             Assert.True(outer.Disposed);
-            Assert.True(inner.Disposed);
         }
 
         [Test]
@@ -103,6 +140,16 @@ namespace LightBDD.UnitTests.Helpers
         protected abstract IDependencyContainer CreateContainer();
 
         protected class Disposable : IDisposable
+        {
+            public virtual void Dispose()
+            {
+                Disposed = true;
+            }
+
+            public bool Disposed { get; private set; }
+        }
+
+        protected class DisposableSingleton : IDisposable
         {
             public virtual void Dispose()
             {

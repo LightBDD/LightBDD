@@ -165,7 +165,9 @@ namespace LightBDD.Core.UnitTests.Dependencies
 
         protected override IDependencyContainer CreateContainer()
         {
-            return new DependencyContainerConfiguration().UseDefaultContainer().DependencyContainer;
+            return new DependencyContainerConfiguration()
+                .UseDefaultContainer(x => x.RegisterInstance(new DisposableSingleton(), new RegistrationOptions()))
+                .DependencyContainer;
         }
 
         class Holder<T>
