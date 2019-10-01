@@ -110,6 +110,20 @@ namespace LightBDD.XUnit2.UnitTests
         }
 
         [Scenario]
+        [InlineData("1234", Skip = "Let's skip it as it is too long")]
+        [Label(nameof(Runner_should_skip_scenarios_with_skipped_inline_data))]
+        public void Runner_should_skip_scenarios_with_skipped_inline_data(string param)
+        {
+            var ex = Assert.ThrowsAny<Exception>(() => Runner.RunScenario(_ => Step_with_parameter(param)));
+            Assert.Equal("Let's skip it as it is too long", ex.Message);
+            var result = GetScenarioResult(nameof(Runner_should_skip_scenarios_with_skipped_inline_data));
+
+            Assert.Equal(ExecutionStatus.Ignored, result.Status);
+            Assert.Equal("Scenario: Let's skip it as it is too long", result.StatusDetails);
+            Assert.Equal(ExecutionStatus.NotRun, result.GetSteps().Single().Status);
+        }
+
+        [Scenario]
         [IgnoreScenario("scenario reason")]
         [Label(nameof(Runner_should_ignore_scenario_with_IgnoreScenarioAttribute))]
         public void Runner_should_ignore_scenario_with_IgnoreScenarioAttribute()
@@ -117,6 +131,19 @@ namespace LightBDD.XUnit2.UnitTests
             var ex = Assert.ThrowsAny<Exception>(() => Runner.RunScenario(_ => Some_step()));
             Assert.Equal("scenario reason", ex.Message);
             var result = GetScenarioResult(nameof(Runner_should_ignore_scenario_with_IgnoreScenarioAttribute));
+
+            Assert.Equal(ExecutionStatus.Ignored, result.Status);
+            Assert.Equal("Scenario: scenario reason", result.StatusDetails);
+            Assert.Equal(ExecutionStatus.NotRun, result.GetSteps().Single().Status);
+        }
+
+        [Scenario(Skip = "scenario reason")]
+        [Label(nameof(Runner_should_ignore_scenario_with_Skip_parameter))]
+        public void Runner_should_ignore_scenario_with_Skip_parameter()
+        {
+            var ex = Assert.ThrowsAny<Exception>(() => Runner.RunScenario(_ => Some_step()));
+            Assert.Equal("scenario reason", ex.Message);
+            var result = GetScenarioResult(nameof(Runner_should_ignore_scenario_with_Skip_parameter));
 
             Assert.Equal(ExecutionStatus.Ignored, result.Status);
             Assert.Equal("Scenario: scenario reason", result.StatusDetails);

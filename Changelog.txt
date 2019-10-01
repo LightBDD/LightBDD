@@ -3,8 +3,15 @@ LightBDD
 
 Version 3.2.0
 ----------------------------------------
+Summary:
++ #185 (LightBDD.XUnit2)(Fix) Using skip feature with XUnit InlineData attribute throws InvalidOperationException
 + #187 (Autofac) Updated UseAutofac() to require specifying takeOwnership flag for passed container
 + #187 (LightBDD.Extensions.DependencyInjection) Updated UseContainer() to require specifying takeOwnership flag for passed provider
+Details:
++ #185 (LightBDD.XUnit2)(Fix) Updated LightBDD.XUnit2 to allow running scenarios with InlineDataAttribute having specified Skip property value
++ #185 (LightBDD.XUnit2)(New) Updated LightBDD.XUnit2 to recognize Skip property on Scenario and InlineData attributes and include those scenarios in reports
++ #185 (LightBDD.XUnit2)(New) Added UseXUnitSkipBehaviorAttribute to enforce default xunit behavior for skipped scenarios.
+
 
 Version 3.1.0
 ----------------------------------------
