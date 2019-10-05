@@ -56,7 +56,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
                 .AddAsyncSteps(_ => null as Task)
                 .Build());
 
-            Assert.Throws<ArgumentException>(() => group.SubSteps.ToArray());
+            Assert.That(group.SubSteps.Any(s => !s.IsValid), Is.True);
         }
 
 

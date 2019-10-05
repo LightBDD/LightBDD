@@ -81,19 +81,31 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
         [Test]
         public void It_should_not_allow_ref_parameters_in_sync_mode()
         {
-            ExpectExtendedScenarioRun();
+            var (stepCapture, _) = ExpectExtendedScenarioRun();
             var val = 4;
-            var ex = Assert.Throws<ArgumentException>(() => Runner.RunScenario(_ => Step_with_ref_parameters(ref val)));
-            Assert.That(ex.Message, Does.Match($"Steps accepting ref or out parameters are not supported: _ => .*{nameof(Step_with_ref_parameters)}.*"));
+            Runner.RunScenario(_ => Step_with_ref_parameters(ref val));
+            Assert.That(stepCapture.Single().IsValid, Is.False);
+            Assert.That(stepCapture.Single().CreationException.Message, Does.Match($"Steps accepting ref or out parameters are not supported: _ => .*{nameof(Step_with_ref_parameters)}.*"));
         }
 
         [Test]
         public void It_should_not_allow_out_parameters_in_sync_mode()
         {
-            ExpectExtendedScenarioRun();
+            var (stepCapture, _) = ExpectExtendedScenarioRun();
             int val;
-            var ex = Assert.Throws<ArgumentException>(() => Runner.RunScenario(_ => Step_with_out_parameters(out val)));
-            Assert.That(ex.Message, Does.Match($"Steps accepting ref or out parameters are not supported: _ => .*{nameof(Step_with_out_parameters)}.*"));
+            Runner.RunScenario(_ => Step_with_out_parameters(out val));
+            Assert.That(stepCapture.Single().IsValid, Is.False);
+            Assert.That(stepCapture.Single().CreationException.Message, Does.Match($"Steps accepting ref or out parameters are not supported: _ => .*{nameof(Step_with_out_parameters)}.*"));
+        }
+
+        [Test]
+        public void It_should_not_allow_non_method_call_expressions()
+        {
+            var (stepCapture, _) = ExpectExtendedScenarioRun();
+            var someTask = new Task(() => { });
+            Runner.RunScenarioAsync(_ => someTask);
+            Assert.That(stepCapture.Single().IsValid, Is.False);
+            Assert.That(stepCapture.Single().CreationException.Message, Does.Match($"Unsupported step expression. Expected MethodCallExpression, got: _ => value\\(.*\\)\\.{nameof(someTask)}"));
         }
 
         [Test]
