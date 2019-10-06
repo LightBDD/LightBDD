@@ -4,6 +4,7 @@ LightBDD
 Version 3.2.0
 ----------------------------------------
 Summary:
++ #182 (Framework)(Change) Updated basic and extended step parsing to make parsing issues easily discoverable
 + #185 (LightBDD.XUnit2)(Fix) Using skip feature with XUnit InlineData attribute throws InvalidOperationException
 + #187 (Autofac) Updated UseAutofac() to require specifying takeOwnership flag for passed container
 + #187 (LightBDD.Extensions.DependencyInjection) Updated UseContainer() to require specifying takeOwnership flag for passed provider
