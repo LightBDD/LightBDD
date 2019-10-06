@@ -8,6 +8,7 @@ using LightBDD.Framework.Extensibility;
 using LightBDD.UnitTests.Helpers;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
+#pragma warning disable 1998
 
 namespace LightBDD.Core.UnitTests
 {
