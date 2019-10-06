@@ -29,6 +29,8 @@ namespace LightBDD.Core.UnitTests.Extensibility
             Assert.That(descriptor.RawName, Is.EqualTo(rawName));
             Assert.That(descriptor.Parameters, Is.SameAs(parameters));
             Assert.That(descriptor.StepInvocation, Is.SameAs(SomeStepInvocation));
+            Assert.That(descriptor.IsValid, Is.True);
+            Assert.That(descriptor.CreationException, Is.Null);
         }
 
         [Test]
@@ -53,6 +55,20 @@ namespace LightBDD.Core.UnitTests.Extensibility
         {
             var ex = Assert.Throws<ArgumentNullException>(() => new StepDescriptor("abc", null));
             Assert.That(ex.ParamName, Is.EqualTo("stepInvocation"));
+        }
+
+        [Test]
+        public void It_should_create_descriptor_from_exception()
+        {
+            var ex = new Exception("foo");
+            var descriptor = StepDescriptor.CreateInvalid(ex);
+            Assert.That(descriptor.IsValid, Is.False);
+            Assert.That(descriptor.CreationException, Is.SameAs(ex));
+            Assert.That(descriptor.RawName, Is.EqualTo("--INVALID STEP--"));
+            Assert.That(descriptor.Parameters, Is.Empty);
+
+            var actual = Assert.ThrowsAsync<Exception>(() => descriptor.StepInvocation(null, null));
+            Assert.That(actual, Is.SameAs(ex));
         }
     }
 }
