@@ -3,7 +3,7 @@ using System;
 namespace LightBDD.Core.Formatting.Values
 {
     /// <summary>
-    /// Interfce allowing to define a formatting method for objects of types that are accepted by <see cref="CanFormat"/> method.
+    /// Interface allowing to define a formatting method for objects of types that are accepted by <see cref="CanFormat"/> method.
     /// </summary>
     public interface IConditionalValueFormatter : IValueFormatter
     {

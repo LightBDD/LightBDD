@@ -14,21 +14,35 @@ namespace LightBDD.Framework.Scenarios.Implementation
     {
         public static StepDescriptor ToAsynchronousStep(Func<Task> step)
         {
-            var methodInfo = step.GetMethodInfo();
-            EnsureNotGenerated(methodInfo);
-            return new StepDescriptor(methodInfo, new AsyncStepExecutor(step).ExecuteAsync);
+            try
+            {
+                var methodInfo = step.GetMethodInfo();
+                EnsureNotGenerated(methodInfo);
+                return new StepDescriptor(methodInfo, new AsyncStepExecutor(step).ExecuteAsync);
+            }
+            catch (Exception ex)
+            {
+                return StepDescriptor.CreateInvalid(ex);
+            }
         }
 
         public static StepDescriptor ToSynchronousStep(Action step)
         {
-            var methodInfo = step.GetMethodInfo();
-            EnsureNotGenerated(methodInfo);
-            return new StepDescriptor(methodInfo, new StepExecutor(step).Execute);
+            try
+            {
+                var methodInfo = step.GetMethodInfo();
+                EnsureNotGenerated(methodInfo);
+                return new StepDescriptor(methodInfo, new StepExecutor(step).Execute);
+            }
+            catch (Exception ex)
+            {
+                return StepDescriptor.CreateInvalid(ex);
+            }
         }
 
         private static void EnsureNotGenerated(MethodInfo methodInfo)
         {
-            if(Reflector.IsGenerated(methodInfo))
+            if (Reflector.IsGenerated(methodInfo))
                 throw new ArgumentException($"The basic step syntax does not support compiler generated methods, such as {methodInfo}, as rendered step name will be unreadable. Please either pass the step method name directly or use other methods for declaring steps.");
         }
 

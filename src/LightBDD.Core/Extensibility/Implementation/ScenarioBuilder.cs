@@ -144,7 +144,7 @@ namespace LightBDD.Core.Extensibility.Implementation
                 var stepInfo = new StepInfo(parent, metadataProvider.GetStepName(descriptor, previousStepTypeName), stepIndex + 1, totalSteps, groupPrefix);
                 var arguments = descriptor.Parameters.Select(p => new MethodArgument(p, metadataProvider.GetValueFormattingServiceFor(p.ParameterInfo))).ToArray();
 
-                steps[stepIndex] = new RunnableStep(stepContext, stepInfo, descriptor.StepInvocation, arguments, extensions.StepDecorators.Concat(metadataProvider.GetStepDecorators(descriptor)));
+                steps[stepIndex] = new RunnableStep(stepContext, stepInfo, descriptor, arguments, extensions.StepDecorators.Concat(metadataProvider.GetStepDecorators(descriptor)));
                 previousStepTypeName = stepInfo.Name.StepTypeName?.OriginalName;
             }
 

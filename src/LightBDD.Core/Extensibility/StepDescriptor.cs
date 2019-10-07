@@ -1,5 +1,9 @@
 using System;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
+using System.Threading.Tasks;
+using LightBDD.Core.Extensibility.Results;
+using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Extensibility
@@ -23,6 +27,7 @@ namespace LightBDD.Core.Extensibility
             : this(null, rawName, stepInvocation, parameters)
         {
         }
+
         /// <summary>
         /// Constructor allowing to specify predefined step type, methodInfo, step invocation function and step parameters.
         /// </summary>
@@ -32,6 +37,12 @@ namespace LightBDD.Core.Extensibility
         /// <exception cref="ArgumentNullException">Throws when <paramref name="methodInfo"/>, <paramref name="stepInvocation"/> or <paramref name="parameters"/> is null.</exception>
         public StepDescriptor(MethodBase methodInfo, StepFunc stepInvocation, params ParameterDescriptor[] parameters)
             : this(methodInfo ?? throw new ArgumentNullException(nameof(methodInfo)), methodInfo.Name, stepInvocation, parameters) { }
+
+        /// <summary>
+        /// Creates invalid descriptor indicating that original descriptor creation failed due to <paramref name="creationException"/> exception.
+        /// Using this method will allow LightBDD to properly capture the invalid steps in the reports, helping with locating and correcting them properly.
+        /// </summary>
+        public static StepDescriptor CreateInvalid(Exception creationException) => new StepDescriptor(creationException);
 
         private StepDescriptor(MethodBase methodInfo, string rawName, StepFunc stepInvocation, params ParameterDescriptor[] parameters)
         {
@@ -43,10 +54,28 @@ namespace LightBDD.Core.Extensibility
             MethodInfo = methodInfo;
         }
 
+        private StepDescriptor(Exception creationException)
+        {
+            CreationException = creationException ?? throw new ArgumentNullException(nameof(creationException));
+            RawName = "--INVALID STEP--";
+            Parameters = Arrays<ParameterDescriptor>.Empty();
+            StepInvocation = RunInvalidDescriptor;
+        }
+
+#pragma warning disable 1998
+        private async Task<IStepResultDescriptor> RunInvalidDescriptor(object context, object[] args)
+        {
+            //TODO: LightBDD 4x simplify when NET45 dropped (Task.FromException())
+            ExceptionDispatchInfo.Capture(CreationException).Throw();
+            return null;
+        }
+#pragma warning restore 1998
+
         /// <summary>
         /// Returns step raw name.
         /// </summary>
         public string RawName { get; }
+
         /// <summary>
         /// Returns predefined step type.
         /// </summary>
@@ -61,9 +90,21 @@ namespace LightBDD.Core.Extensibility
         /// Returns step invocation function accepting scenario context object configured with <see cref="ICoreScenarioBuilder.WithContext(Func{object},bool)"/>() method and step parameters.
         /// </summary>
         public StepFunc StepInvocation { get; }
+
         /// <summary>
         /// Returns step parameter descriptors.
         /// </summary>
         public ParameterDescriptor[] Parameters { get; }
+
+        /// <summary>
+        /// Returns exception occured during descriptor creation or <c>null</c> if descriptor is valid.
+        /// The value is set by <see cref="CreateInvalid"/> method.
+        /// </summary>
+        public Exception CreationException { get; }
+
+        /// <summary>
+        /// Returns true if descriptor is valid or false if descriptor was created by <see cref="CreateInvalid"/> method.
+        /// </summary>
+        public bool IsValid => CreationException == null;
     }
 }

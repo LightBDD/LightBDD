@@ -22,15 +22,23 @@ namespace LightBDD.Framework.Scenarios.Implementation
 
         public StepDescriptor ToStep<T>(Expression<T> stepExpression)
         {
-            var contextParameter = stepExpression.Parameters[0];
-            var methodExpression = GetMethodExpression(stepExpression);
-
-            var arguments = ProcessArguments(methodExpression, contextParameter);
-
-            return new StepDescriptor(methodExpression.Method, CompileStepAction(methodExpression, contextParameter), arguments)
+            try
             {
-                PredefinedStepType = GetStepTypeName(contextParameter)
-            };
+                var contextParameter = stepExpression.Parameters[0];
+                var methodExpression = GetMethodExpression(stepExpression);
+
+                var arguments = ProcessArguments(methodExpression, contextParameter);
+
+                return new StepDescriptor(methodExpression.Method, CompileStepAction(methodExpression, contextParameter), arguments)
+                {
+                    PredefinedStepType = GetStepTypeName(contextParameter)
+                };
+            }
+            catch (Exception ex)
+            {
+                return StepDescriptor.CreateInvalid(ex);
+                throw;
+            }
         }
 
         private string GetStepTypeName(ParameterExpression contextParameter)
