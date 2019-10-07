@@ -36,7 +36,7 @@ namespace LightBDD.Core.Extensibility
         /// </summary>
         protected CoreMetadataProvider(LightBddConfiguration configuration)
         {
-            if (configuration == null) 
+            if (configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
 
             ValueFormattingService = new ValueFormattingService(configuration);
@@ -96,6 +96,9 @@ namespace LightBDD.Core.Extensibility
         /// The <see cref="IStepNameInfo.StepTypeName"/> is determined from value <see cref="StepDescriptor.PredefinedStepType"/> or parsed from <see cref="StepDescriptor.RawName"/> if former is <c>null</c>.
         /// When determined step type is the same as <paramref name="previousStepTypeName"/>, it is being replaced with <see cref="StepTypeConfiguration.RepeatedStepReplacement"/>.
         /// </para>
+        /// <para>
+        /// For method inferred descriptors (<see cref="StepDescriptor.IsMethodInferred"/>) the step name is formatted with <see cref="NameParser"/>, otherwise the name is used as is from <see cref="StepDescriptor.RawName"/>.
+        /// </para>
         /// See also: <seealso cref="StepTypeConfiguration"/>, <seealso cref="LightBddConfiguration"/>.
         /// </summary>
         /// <param name="stepDescriptor">Step descriptor.</param>
@@ -103,7 +106,9 @@ namespace LightBDD.Core.Extensibility
         /// <returns><see cref="IStepNameInfo"/> object.</returns>
         public IStepNameInfo GetStepName(StepDescriptor stepDescriptor, string previousStepTypeName)
         {
-            var formattedStepName = _nameParser.GetNameFormat(stepDescriptor.MethodInfo, stepDescriptor.RawName, stepDescriptor.Parameters);
+            var formattedStepName = stepDescriptor.IsMethodInferred
+                ? _nameParser.GetNameFormat(stepDescriptor.MethodInfo, stepDescriptor.RawName, stepDescriptor.Parameters)
+                : stepDescriptor.RawName;
             return new StepNameInfo(
                 _stepTypeProcessor.GetStepTypeName(stepDescriptor.PredefinedStepType, ref formattedStepName, previousStepTypeName),
                 formattedStepName,

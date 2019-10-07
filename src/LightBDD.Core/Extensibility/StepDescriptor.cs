@@ -106,5 +106,10 @@ namespace LightBDD.Core.Extensibility
         /// Returns true if descriptor is valid or false if descriptor was created by <see cref="CreateInvalid"/> method.
         /// </summary>
         public bool IsValid => CreationException == null;
+
+        /// <summary>
+        /// Returns true if descriptor is inferred from method or explicitly made without it.
+        /// </summary>
+        public bool IsMethodInferred => MethodInfo != null;
     }
 }

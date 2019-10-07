@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
@@ -11,17 +13,55 @@ namespace LightBDD.Framework.Scenarios.Implementation
     {
         public static StepDescriptor ToAsynchronousStep<TContext>(string name, Func<TContext, Task> step)
         {
-            return new StepDescriptor(name, new AsyncStepExecutor<TContext>(step).ExecuteAsync);
+            try
+            {
+                return new StepDescriptor(ParseName(name), new AsyncStepExecutor<TContext>(step).ExecuteAsync);
+            }
+            catch (Exception ex)
+            {
+                return StepDescriptor.CreateInvalid(ex);
+            }
         }
 
         public static StepDescriptor ToSynchronousStep<TContext>(string name, Action<TContext> step)
         {
-            return new StepDescriptor(name, new StepExecutor<TContext>(step).Execute);
+            try
+            {
+                return new StepDescriptor(ParseName(name), new StepExecutor<TContext>(step).Execute);
+            }
+            catch (Exception ex)
+            {
+                return StepDescriptor.CreateInvalid(ex);
+            }
         }
+
+        private static string ParseName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Step name has to be provided.");
+
+            name = name.Trim();
+            if (!name.Any(char.IsControl))
+                return name;
+
+            var builder = new StringBuilder(name.Length);
+            var newLineChar = Environment.NewLine.Last();
+
+            foreach (var c in name)
+            {
+                if (!char.IsControl(c))
+                    builder.Append(c);
+                else if (c == '\t' || c == newLineChar)
+                    builder.Append(' ');
+            }
+
+            return builder.ToString();
+        }
+
         private class AsyncStepExecutor<TContext>
         {
             private static readonly MethodInfo AsCompositeStepMethod = ((Func<Task, Task<IStepResultDescriptor>>)AsCompositeStep<IStepResultDescriptor>).GetMethodInfo().GetGenericMethodDefinition();
-            private readonly Func<TContext,Task> _invocation;
+            private readonly Func<TContext, Task> _invocation;
 
             public AsyncStepExecutor(Func<TContext, Task> invocation)
             {
@@ -72,7 +112,7 @@ namespace LightBDD.Framework.Scenarios.Implementation
             {
                 try
                 {
-                    _invocation.Invoke((TContext) context);
+                    _invocation.Invoke((TContext)context);
                     return Task.FromResult(DefaultStepResultDescriptor.Instance);
                 }
                 catch (Exception e)
