@@ -94,11 +94,17 @@ namespace LightBDD.Core.UnitTests.Extensibility
         }
 
         [Test]
-        public void GetStepName_should_capture_unmodified_name_for_not_inferred_descriptors()
+        [TestCase(true, "raw_name", "raw name")]
+        [TestCase(false, "raw_name", "raw_name")]
+        public void GetStepName_should_honor_IsNameFormattingRequired_flag(bool flag, string rawName, string expectedName)
         {
-            var descriptor = new StepDescriptor("raw_name", (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance));
+            var descriptor =
+                new StepDescriptor(rawName, (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance))
+                {
+                    IsNameFormattingRequired = flag
+                };
             var stepName = _metadataProvider.GetStepName(descriptor, null);
-            Assert.That(stepName.NameFormat, Is.EqualTo("raw_name"));
+            Assert.That(stepName.NameFormat, Is.EqualTo(expectedName));
         }
 
         [Test]

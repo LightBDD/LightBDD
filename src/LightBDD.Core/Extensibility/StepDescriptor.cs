@@ -1,8 +1,10 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility.Results;
+using LightBDD.Core.Formatting;
 using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 
@@ -21,10 +23,10 @@ namespace LightBDD.Core.Extensibility
         /// <param name="rawName">Step raw name.</param>
         /// <param name="stepInvocation">Step invocation function.</param>
         /// <param name="parameters">Step invocation function parameters.</param>
-        /// <exception cref="ArgumentException">Throws when <paramref name="rawName"/> is null or empty.</exception>
+        /// <exception cref="ArgumentException">Throws when <paramref name="rawName"/> is null or empty or contains control characters.</exception>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="stepInvocation"/> or <paramref name="parameters"/> is null.</exception>
         public StepDescriptor(string rawName, StepFunc stepInvocation, params ParameterDescriptor[] parameters)
-            : this(null, rawName, stepInvocation, parameters)
+             : this(null, VerifyRawName(rawName), stepInvocation, parameters)
         {
         }
 
@@ -46,12 +48,11 @@ namespace LightBDD.Core.Extensibility
 
         private StepDescriptor(MethodBase methodInfo, string rawName, StepFunc stepInvocation, params ParameterDescriptor[] parameters)
         {
-            if (string.IsNullOrWhiteSpace(rawName))
-                throw new ArgumentException("Null or just white space is not allowed", nameof(rawName));
             RawName = rawName;
             StepInvocation = stepInvocation ?? throw new ArgumentNullException(nameof(stepInvocation));
             Parameters = parameters ?? throw new ArgumentNullException(nameof(parameters));
             MethodInfo = methodInfo;
+            IsNameFormattingRequired = methodInfo != null;
         }
 
         private StepDescriptor(Exception creationException)
@@ -60,6 +61,18 @@ namespace LightBDD.Core.Extensibility
             RawName = "--INVALID STEP--";
             Parameters = Arrays<ParameterDescriptor>.Empty();
             StepInvocation = RunInvalidDescriptor;
+        }
+
+        private static string VerifyRawName(string rawName)
+        {
+            if (string.IsNullOrWhiteSpace(rawName))
+                throw new ArgumentException("Step name has to be specified and cannot contain only white characters.", nameof(rawName));
+            for (int i = 0; i < rawName.Length; ++i)
+            {
+                if (char.IsControl(rawName[i]))
+                    throw new ArgumentException($"Step name cannot contain control characters, got one at index {i} in '{rawName}'", nameof(rawName));
+            }
+            return rawName;
         }
 
 #pragma warning disable 1998
@@ -77,7 +90,7 @@ namespace LightBDD.Core.Extensibility
         public string RawName { get; }
 
         /// <summary>
-        /// Returns predefined step type.
+        /// Returns or sets predefined step type. If null, the step type will be inferred from <seealso cref="RawName"/>.
         /// </summary>
         public string PredefinedStepType { get; set; }
 
@@ -108,8 +121,9 @@ namespace LightBDD.Core.Extensibility
         public bool IsValid => CreationException == null;
 
         /// <summary>
-        /// Returns true if descriptor is inferred from method or explicitly made without it.
+        /// Specifies if <see cref="RawName"/> requires formatting with configured <see cref="INameFormatter"/>.
+        /// By default, it is set to true if <see cref="MethodInfo"/> is provided, otherwise the default value is false.
         /// </summary>
-        public bool IsMethodInferred => MethodInfo != null;
+        public bool IsNameFormattingRequired { get; set; }
     }
 }

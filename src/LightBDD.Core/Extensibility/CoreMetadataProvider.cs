@@ -106,7 +106,7 @@ namespace LightBDD.Core.Extensibility
         /// <returns><see cref="IStepNameInfo"/> object.</returns>
         public IStepNameInfo GetStepName(StepDescriptor stepDescriptor, string previousStepTypeName)
         {
-            var formattedStepName = stepDescriptor.IsMethodInferred
+            var formattedStepName = stepDescriptor.IsNameFormattingRequired
                 ? _nameParser.GetNameFormat(stepDescriptor.MethodInfo, stepDescriptor.RawName, stepDescriptor.Parameters)
                 : stepDescriptor.RawName;
             return new StepNameInfo(
