@@ -29,8 +29,8 @@ namespace LightBDD.Core.Metadata.Implementation
         public string Format(IStepNameDecorator decorator)
         {
             return StepTypeName != null
-                ? string.Format("{0} {1}", decorator.DecorateStepTypeName(StepTypeName), base.Format(decorator))
-                : base.ToString();
+                ? $"{decorator.DecorateStepTypeName(StepTypeName)} {base.Format(decorator)}"
+                : base.Format(decorator);
         }
     }
 }
