@@ -64,7 +64,7 @@ My feature
 long description
 Ignored name [Label 2] (1m 02s)[&#8734;link]
 categoryA
-Passed 1. call step1 ""arg1"" (1m 01s)
+Passed 1. call step1 &quot;arg1&quot; (1m 01s)
 Ignored 2. step2 (1s 100ms)
 Passed 2.1. substep 1 (100ms)
 Passed 2.2. substep 2 (1s)
@@ -192,6 +192,56 @@ Generated with LightBDD v{GetExpectedLightBddVersion()}
 initialize();";
             Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
         }
+
+        [Test]
+        public void Should_escape_html_characters_in_step_name()
+        {
+            var date = new DateTimeOffset(2019, 10, 21, 05, 06, 07, TimeSpan.Zero);
+            var feature = TestResults.CreateFeatureResult("My feature", null, null,
+                TestResults.CreateScenarioResult("scenario1", null, date, TimeSpan.FromSeconds(5), new string[0],
+                    TestResults.CreateStepResult(ExecutionStatus.Passed)
+                        .WithStepNameDetails(1, "ste<p>", "ste<p>", "ty<p>e")
+                        .WithGroupPrefix("<gr>")
+                        .WithExecutionTime(date, TimeSpan.FromMilliseconds(20)),
+                    TestResults.CreateStepResult(ExecutionStatus.Passed)
+                        .WithStepNameDetails(2, "ste<p>2", "ste<p>2")
+                        .WithExecutionTime(date.AddMilliseconds(50), TimeSpan.FromMilliseconds(20))));
+
+            var text = FormatAndExtractText(feature);
+            TestContext.WriteLine(text);
+            var expectedText = $@"Execution summary
+Test execution start time: 2019-10-21 05:06:07 UTC
+Test execution end time: 2019-10-21 05:06:12 UTC
+Test execution time: 5s
+Test execution time (aggregated): 5s
+Number of features: 1
+Number of scenarios: 1
+Passed scenarios: 1
+Bypassed scenarios: 0
+Failed scenarios: 0
+Ignored scenarios: 0
+Number of steps: 2
+Passed steps: 2
+Bypassed steps: 0
+Failed steps: 0
+Ignored steps: 0
+Not Run steps: 0
+Feature summary
+Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
+My feature 1 1 0 0 0 2 2 0 0 0 0 5s 50000000 5s 50000000 5s 50000000
+Feature details[&#8734;link]
+Toggle: Features Scenarios
+Filter: Passed Bypassed Failed Ignored Not Run
+[&#8734;filtered link]
+My feature[&#8734;link]
+Passed scenario1 (5s)[&#8734;link]
+Passed &lt;gr&gt;1. ty&lt;p&gt;e ste&lt;p&gt; (20ms)
+Passed 2. ste&lt;p&gt;2 (20ms)
+Generated with LightBDD v{GetExpectedLightBddVersion()}
+initialize();";
+            Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
+        }
+
 
         private string GetExpectedLightBddVersion()
         {

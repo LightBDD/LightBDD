@@ -79,7 +79,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         public void GetStepName_should_capture_name_from_step_descriptor_but_leave_parameters_unknown()
         {
             var descriptor = new StepDescriptor(
-                nameof(Feature_type.Some_step_with_argument),
+                ParameterInfoHelper.GetMethodInfo<int>(new Feature_type().Some_step_with_argument),
                 (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance),
                 ParameterDescriptor.FromConstant(
                     ParameterInfoHelper.GetMethodParameter<int>(new Feature_type().Some_step_with_argument), 5))
@@ -93,6 +93,19 @@ namespace LightBDD.Core.UnitTests.Extensibility
             Assert.That(stepName.ToString(), Is.EqualTo("GIVEN Some step with argument \"<?>\""));
         }
 
+        [Test]
+        [TestCase(true, "raw_name", "raw name")]
+        [TestCase(false, "raw_name", "raw_name")]
+        public void GetStepName_should_honor_IsNameFormattingRequired_flag(bool flag, string rawName, string expectedName)
+        {
+            var descriptor =
+                new StepDescriptor(rawName, (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance))
+                {
+                    IsNameFormattingRequired = flag
+                };
+            var stepName = _metadataProvider.GetStepName(descriptor, null);
+            Assert.That(stepName.NameFormat, Is.EqualTo(expectedName));
+        }
 
         [Test]
         public void GetStepDecorators_should_return_extensions_in_order_if_declaring_type_does_not_have_extensions()

@@ -3,7 +3,11 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.Results;
+using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Scenarios;
+using LightBDD.UnitTests.Helpers;
+using LightBDD.UnitTests.Helpers.TestableIntegration;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Compact
 {
@@ -45,7 +49,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Compact
             var stepTwo = "Step two";
             var stepThree = "Step three";
             var expected = new[] { stepOne, stepTwo, stepThree };
-            
+
             var context = new MyContext();
             var composite = CompositeStep.DefineNew()
                 .WithContext(context)
@@ -65,6 +69,28 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Compact
                 await step.StepInvocation.Invoke(context, null);
 
             Assert.That(context.Executed, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public async Task It_should_parse_composite_names()
+        {
+            var featureRunner = TestableFeatureRunnerRepository.GetRunner(GetType());
+            var runner = featureRunner.GetBddRunner(this);
+
+            var expectedValue = "Some\r\nmultiline\tresponse";
+
+            await runner
+                .AddStep("Given my scenario with value [55]", _ => { })
+                .AddStep(" When I send My_Request<int> for it ", _ => { })
+                .AddAsyncStep($"Only then I should receive \"{expectedValue}\"", _ => Task.FromResult(0))
+                .RunAsync();
+
+            var steps = featureRunner.GetFeatureResult().GetScenarios().Single().GetSteps();
+
+            StepResultExpectation.AssertEqual(steps,
+                new StepResultExpectation(1, 3, "GIVEN my scenario with value [55]", ExecutionStatus.Passed),
+                new StepResultExpectation(2, 3, "WHEN I send My_Request<int> for it", ExecutionStatus.Passed),
+                new StepResultExpectation(3, 3, "Only then I should receive \"Some multiline response\"", ExecutionStatus.Passed));
         }
 
         class MyContext
