@@ -97,7 +97,7 @@ namespace LightBDD.Core.Extensibility
         /// When determined step type is the same as <paramref name="previousStepTypeName"/>, it is being replaced with <see cref="StepTypeConfiguration.RepeatedStepReplacement"/>.
         /// </para>
         /// <para>
-        /// For method inferred descriptors (<see cref="StepDescriptor.IsMethodInferred"/>) the step name is formatted with <see cref="NameParser"/>, otherwise the name is used as is from <see cref="StepDescriptor.RawName"/>.
+        /// For descriptors with <see cref="StepDescriptor.IsNameFormattingRequired"/> set, the step name is formatted with <see cref="NameParser"/>, otherwise the name is used as is from <see cref="StepDescriptor.RawName"/>.
         /// </para>
         /// See also: <seealso cref="StepTypeConfiguration"/>, <seealso cref="LightBddConfiguration"/>.
         /// </summary>

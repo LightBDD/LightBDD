@@ -58,7 +58,7 @@ namespace LightBDD.Core.Extensibility
         private StepDescriptor(Exception creationException)
         {
             CreationException = creationException ?? throw new ArgumentNullException(nameof(creationException));
-            RawName = "--INVALID STEP--";
+            RawName = "<INVALID STEP>";
             Parameters = Arrays<ParameterDescriptor>.Empty();
             StepInvocation = RunInvalidDescriptor;
         }

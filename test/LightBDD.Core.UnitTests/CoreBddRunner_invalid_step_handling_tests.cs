@@ -43,8 +43,8 @@ namespace LightBDD.Core.UnitTests
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
                 new StepResultExpectation(1, 3, "Step that should not run", ExecutionStatus.NotRun),
-                new StepResultExpectation(2, 3, "--INVALID STEP--", ExecutionStatus.Failed, "Step 2: reason1"),
-                new StepResultExpectation(3, 3, "--INVALID STEP--", ExecutionStatus.Failed, "Step 3: reason2"));
+                new StepResultExpectation(2, 3, "<INVALID STEP>", ExecutionStatus.Failed, "Step 2: reason1"),
+                new StepResultExpectation(3, 3, "<INVALID STEP>", ExecutionStatus.Failed, "Step 3: reason2"));
         }
 
         [Test]
@@ -66,8 +66,8 @@ namespace LightBDD.Core.UnitTests
             var mainSteps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps().ToArray();
             StepResultExpectation.AssertEqual(mainSteps[0].GetSubSteps(),
                 new StepResultExpectation("1.",1, 3, "Step that should not run", ExecutionStatus.NotRun),
-                new StepResultExpectation("1.",2, 3, "--INVALID STEP--", ExecutionStatus.Failed, "Step 1.2: reason1"),
-                new StepResultExpectation("1.",3, 3, "--INVALID STEP--", ExecutionStatus.Failed, "Step 1.3: reason2"));
+                new StepResultExpectation("1.",2, 3, "<INVALID STEP>", ExecutionStatus.Failed, "Step 1.2: reason1"),
+                new StepResultExpectation("1.",3, 3, "<INVALID STEP>", ExecutionStatus.Failed, "Step 1.3: reason2"));
             Assert.That(mainSteps[1].Status,Is.EqualTo(ExecutionStatus.NotRun));
         }
 

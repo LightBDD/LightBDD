@@ -106,7 +106,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
             var descriptor = StepDescriptor.CreateInvalid(ex);
             Assert.That(descriptor.IsValid, Is.False);
             Assert.That(descriptor.CreationException, Is.SameAs(ex));
-            Assert.That(descriptor.RawName, Is.EqualTo("--INVALID STEP--"));
+            Assert.That(descriptor.RawName, Is.EqualTo("<INVALID STEP>"));
             Assert.That(descriptor.Parameters, Is.Empty);
 
             var actual = Assert.ThrowsAsync<Exception>(() => descriptor.StepInvocation(null, null));
