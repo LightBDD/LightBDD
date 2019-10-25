@@ -1,4 +1,4 @@
-﻿#if !NETCOREAPP2_0
+﻿#if !NETCOREAPP
 using System.Configuration;
 using System.Diagnostics;
 using LightBDD.Fixie2;

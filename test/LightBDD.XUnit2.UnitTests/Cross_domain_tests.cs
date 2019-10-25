@@ -1,4 +1,4 @@
-﻿#if !NETCOREAPP1_1
+﻿#if !NETCOREAPP
 using System.Configuration;
 using System.Diagnostics;
 using LightBDD.Framework;
