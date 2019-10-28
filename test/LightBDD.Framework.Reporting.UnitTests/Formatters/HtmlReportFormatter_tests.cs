@@ -242,6 +242,47 @@ initialize();";
             Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
         }
 
+        [Test]
+        public void Should_format_scenarios_in_order()
+        {
+            var results = ReportFormatterTestData.GetFeatureWithUnsortedScenarios();
+            var text = FormatAndExtractText(results);
+            TestContext.WriteLine(text);
+            string expectedText = $@"Execution summary
+Test execution start time: 2014-09-23 19:21:57 UTC
+Test execution end time: 2014-09-23 19:22:02 UTC
+Test execution time: 5s
+Test execution time (aggregated): 9s
+Number of features: 1
+Number of scenarios: 3
+Passed scenarios: 3
+Bypassed scenarios: 0
+Failed scenarios: 0
+Ignored scenarios: 0
+Number of steps: 3
+Passed steps: 3
+Bypassed steps: 0
+Failed steps: 0
+Ignored steps: 0
+Not Run steps: 0
+Feature summary
+Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
+My Feature 3 3 0 0 0 3 3 0 0 0 0 5s 50000000 9s 90000000 3s 30000000
+Feature details[&#8734;link]
+Toggle: Features Scenarios
+Filter: Passed Bypassed Failed Ignored Not Run
+[&#8734;filtered link]
+My Feature[&#8734;link]
+Passed scenario A [lab B] (2s)[&#8734;link]
+Passed 1. step
+Passed scenario B [lab C] (5s)[&#8734;link]
+Passed 1. step
+Passed scenario C [lab A] (2s)[&#8734;link]
+Passed 1. step
+Generated with LightBDD v{GetExpectedLightBddVersion()}
+initialize();";
+            Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
+        }
 
         private string GetExpectedLightBddVersion()
         {

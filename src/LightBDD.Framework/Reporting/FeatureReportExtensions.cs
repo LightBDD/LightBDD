@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Results;
@@ -58,6 +59,14 @@ namespace LightBDD.Framework.Reporting
         public static int CountScenarios(this IEnumerable<IFeatureResult> results)
         {
             return results.SelectMany(f => f.GetScenarios()).Count();
+        }
+
+        /// <summary>
+        /// Returns scenarios ordered by name.
+        /// </summary>
+        public static IEnumerable<IScenarioResult> GetScenariosOrderedByName(this IFeatureResult feature)
+        {
+            return feature.GetScenarios().OrderBy(s => s.Info.Name.ToString(), StringComparer.OrdinalIgnoreCase);
         }
 
         /// <summary>

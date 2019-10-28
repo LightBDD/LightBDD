@@ -319,7 +319,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                         GetSmallLink("feature" + index)),
                     Html.Tag(Html5Tag.Div).Class("description").Content(feature.Info.Description)),
                 Html.Tag(Html5Tag.Div).Class("scenarios").Content(
-                    feature.GetScenarios().Select((s, i) => GetScenario(s, index, i))));
+                    feature.GetScenariosOrderedByName().Select((s, i) => GetScenario(s, index, i))));
         }
 
         private static TagBuilder GetSmallLink(string link)

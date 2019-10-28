@@ -231,6 +231,48 @@ Step 2: Expected: True
             ValidateWithSchema(text);
         }
 
+         [Test]
+        public void Should_format_scenarios_in_order()
+        {
+            var results = ReportFormatterTestData.GetFeatureWithUnsortedScenarios();
+
+            var text = FormatResults(results);
+            TestContext.WriteLine(text);
+            const string expectedText = @"<?xml version=""1.0"" encoding=""utf-8""?>
+<TestResults>
+  <Summary TestExecutionStart=""2014-09-23T19:21:57.055Z"" TestExecutionEnd=""2014-09-23T19:22:02.055Z"" TestExecutionTime=""PT5S"">
+    <Features Count=""1"" />
+    <Scenarios Count=""3"" Passed=""3"" Bypassed=""0"" Failed=""0"" Ignored=""0"" />
+    <Steps Count=""3"" Passed=""3"" Bypassed=""0"" Failed=""0"" Ignored=""0"" NotRun=""0"" />
+  </Summary>
+  <Feature Name=""My Feature"" RuntimeId=""33333333-3333-3333-3333-333333333333"">
+    <Scenario Status=""Passed"" Name=""scenario A"" ExecutionStart=""2014-09-23T19:21:57.057Z"" ExecutionTime=""PT2S"" RuntimeId=""22222222-2222-2222-2222-222222222222"">
+      <Name Format=""scenario A"" />
+      <Label Name=""lab B"" />
+      <Step Status=""Passed"" Number=""1"" Name=""step"" RuntimeId=""11111111-1111-1111-1111-111111111111"">
+        <StepName Format=""step"" />
+      </Step>
+    </Scenario>
+    <Scenario Status=""Passed"" Name=""scenario B"" ExecutionStart=""2014-09-23T19:21:57.055Z"" ExecutionTime=""PT5S"" RuntimeId=""22222222-2222-2222-2222-222222222222"">
+      <Name Format=""scenario B"" />
+      <Label Name=""lab C"" />
+      <Step Status=""Passed"" Number=""1"" Name=""step"" RuntimeId=""11111111-1111-1111-1111-111111111111"">
+        <StepName Format=""step"" />
+      </Step>
+    </Scenario>
+    <Scenario Status=""Passed"" Name=""scenario C"" ExecutionStart=""2014-09-23T19:21:57.055Z"" ExecutionTime=""PT2S"" RuntimeId=""22222222-2222-2222-2222-222222222222"">
+      <Name Format=""scenario C"" />
+      <Label Name=""lab A"" />
+      <Step Status=""Passed"" Number=""1"" Name=""step"" RuntimeId=""11111111-1111-1111-1111-111111111111"">
+        <StepName Format=""step"" />
+      </Step>
+    </Scenario>
+  </Feature>
+</TestResults>";
+            Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
+            ValidateWithSchema(text);
+        }
+
         private static void ValidateWithSchema(string xml)
         {
             XDocument.Parse(xml).Validate(_schema, (o, e) => Assert.Fail(e.Message));

@@ -8,6 +8,7 @@ Summary:
 + #182 (Framework)(Change) Made step parsing issues easily discoverable
 + #185 (LightBDD.XUnit2)(Fix) Using skip feature with XUnit InlineData attribute throws InvalidOperationException
 + #187 (Autofac/LightBDD.Extensions.DependencyInjection) Improved disposal behavior of pre-configured DI containers
++ #199 (Framework)(Change) Improved Html/Xml/Text reports to present scenarios orderly manner
 Details:
 + #181 (Framework)(Change) Improved compact steps formatting to exclude control characters, don't perform additional formatting and render properly in HTML reports
 + #181 (Core)(Change) Updated StepDescriptor with configurable IsNameFormattingRequired property, controlling if RawName should be formatted or not
