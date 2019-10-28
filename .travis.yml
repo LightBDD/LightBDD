@@ -1,6 +1,6 @@
 language: csharp
 mono: latest
-dotnet: 2.2
+dotnet: 2.2.402
 dist: trusty
 
 addons:
