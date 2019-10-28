@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Linq;
 using LightBDD.Core.Execution.Coordination;
 using LightBDD.Core.Results;
@@ -41,7 +42,7 @@ namespace LightBDD.Core.Reporting
                 return;
             _disposed = true;
 
-            var results = _results.OrderBy(r => r.Info.Name.ToString()).ToArray();
+            var results = _results.OrderBy(r => r.Info.Name.ToString(), StringComparer.OrdinalIgnoreCase).ToArray();
             foreach (var writer in _writers)
                 writer.Save(results);
         }
