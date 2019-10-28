@@ -53,7 +53,10 @@ namespace LightBDD.Core.UnitTests.Extensibility
         {
             var metadataProvider = new TestMetadataProvider();
 
-            var descriptor = new StepDescriptor(methodName, (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance));
+            var descriptor = new StepDescriptor(methodName, (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance))
+            {
+                IsNameFormattingRequired = true
+            };
             var stepName = metadataProvider.GetStepName(descriptor, lastStepType);
             Assert.That(stepName.StepTypeName?.ToString(), Is.EqualTo(expectedStepType));
             Assert.That(stepName.NameFormat, Is.EqualTo(expectedStepNameFormat));
@@ -93,7 +96,10 @@ namespace LightBDD.Core.UnitTests.Extensibility
         {
             var metadataProvider = new TestMetadataProvider(cfg => cfg.StepTypeConfiguration().UpdatePredefinedStepTypes("call", "invoke"));
 
-            var descriptor = new StepDescriptor(formattedName, (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance));
+            var descriptor = new StepDescriptor(formattedName, (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance))
+            {
+                IsNameFormattingRequired = true
+            };
             var step = metadataProvider.GetStepName(descriptor, null);
             Assert.That(step.StepTypeName?.ToString(), Is.EqualTo(expectedType), "type");
             Assert.That(step.NameFormat, Is.EqualTo(expectedNameFormat), "name");

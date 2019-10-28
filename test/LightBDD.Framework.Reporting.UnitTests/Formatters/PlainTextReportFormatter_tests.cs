@@ -172,6 +172,45 @@ Feature: My feature2
             Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
         }
 
+        [Test]
+        public void Should_format_scenarios_in_order()
+        {
+            var results = ReportFormatterTestData.GetFeatureWithUnsortedScenarios();
+
+            var text = FormatResults(results);
+            TestContext.WriteLine(text);
+            const string expectedText = @"Summary:
+	Test execution start time       : 2014-09-23 19:21:57 UTC
+	Test execution end time         : 2014-09-23 19:22:02 UTC
+	Test execution time             : 5s
+	Test execution time (aggregated): 9s
+	Number of features              : 1
+	Number of scenarios             : 3
+	Passed scenarios                : 3
+	Bypassed scenarios              : 0
+	Failed scenarios                : 0
+	Ignored scenarios               : 0
+	Number of steps                 : 3
+	Passed steps                    : 3
+	Bypassed steps                  : 0
+	Failed steps                    : 0
+	Ignored steps                   : 0
+	Not Run steps                   : 0
+
+Feature: My Feature
+
+	Scenario: scenario A [lab B] - Passed (2s)
+		Step 1: step - Passed
+
+	Scenario: scenario B [lab C] - Passed (5s)
+		Step 1: step - Passed
+
+	Scenario: scenario C [lab A] - Passed (2s)
+		Step 1: step - Passed
+";
+            Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
+        }
+
         private string FormatResults(params IFeatureResult[] results)
         {
             using (var memory = new MemoryStream())

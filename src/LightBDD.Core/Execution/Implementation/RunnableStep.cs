@@ -20,10 +20,10 @@ namespace LightBDD.Core.Execution.Implementation
     internal class RunnableStep : IStep
     {
         private readonly RunnableStepContext _stepContext;
-        private readonly StepFunc _invocation;
         private readonly MethodArgument[] _arguments;
         private readonly Func<Task> _decoratedStepMethod;
         private readonly StepResult _result;
+        private readonly StepFunc _invocation;
         private readonly ExceptionCollector _exceptionCollector = new ExceptionCollector();
         private Func<Exception, bool> _shouldAbortSubStepExecutionFn = _ => true;
         private IDependencyContainer _subStepScope;
@@ -32,14 +32,15 @@ namespace LightBDD.Core.Execution.Implementation
         public IDependencyResolver DependencyResolver => _stepContext.Container;
         public object Context => _stepContext.Context;
 
-        public RunnableStep(RunnableStepContext stepContext, StepInfo info, StepFunc invocation, MethodArgument[] arguments, IEnumerable<IStepDecorator> stepDecorators)
+        public RunnableStep(RunnableStepContext stepContext, StepInfo info, StepDescriptor descriptor, MethodArgument[] arguments, IEnumerable<IStepDecorator> stepDecorators)
         {
             _stepContext = stepContext;
-            _invocation = invocation;
+            _invocation = descriptor.StepInvocation;
             _arguments = arguments;
             _decoratedStepMethod = DecoratingExecutor.DecorateStep(this, RunStepAsync, stepDecorators);
             _result = new StepResult(info);
             UpdateNameDetails();
+            ValidateDescriptor(descriptor);
         }
 
         public async Task ExecuteAsync()
@@ -64,6 +65,14 @@ namespace LightBDD.Core.Execution.Implementation
             ProcessExceptions();
         }
 
+        private void ValidateDescriptor(StepDescriptor descriptor)
+        {
+            if (descriptor.IsValid)
+                return;
+            HandleException(descriptor.CreationException);
+            ProcessExceptions(false);
+        }
+
         private async Task InvokeSubStepsAsync(IStepResultDescriptor result)
         {
             var subSteps = InitializeComposite(result);
@@ -73,6 +82,9 @@ namespace LightBDD.Core.Execution.Implementation
 
             try
             {
+                if (subSteps.Any(s => s.Result.ExecutionException != null))
+                    throw new InvalidOperationException("Sub-steps initialization failed.");
+
                 foreach (var subStep in subSteps)
                     await subStep.ExecuteAsync();
             }
@@ -175,14 +187,14 @@ namespace LightBDD.Core.Execution.Implementation
             _result.SetStatus(_result.GetSubSteps().GetMostSevereOrNull()?.Status ?? ExecutionStatus.Passed);
         }
 
-        private void ProcessExceptions()
+        private void ProcessExceptions(bool rethrowIfNeeded = true)
         {
             var exception = _exceptionCollector.CollectFor(_result.Status, _result.GetSubSteps());
             if (exception == null)
                 return;
 
             _result.UpdateException(exception);
-            if (_stepContext.ShouldAbortSubStepExecution(exception))
+            if (rethrowIfNeeded && _stepContext.ShouldAbortSubStepExecution(exception))
                 throw new StepExecutionException(exception, _result.Status);
         }
 

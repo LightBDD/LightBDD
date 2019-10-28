@@ -39,7 +39,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 .SelectMany(f => f.GetScenarios())
                 .SelectMany(s => s.Info.Categories)
                 .Distinct()
-                .Select((c, i) => new KeyValuePair<string, string>(c, string.Format("_{0}_", i)))
+                .Select((c, i) => new KeyValuePair<string, string>(c, $"_{i}_"))
                 .ToDictionary(kv => kv.Key, kv => kv.Value);
         }
 
@@ -203,7 +203,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         {
             return Html.Tag(Html5Tag.Span)
                 .Class("label")
-                .Content(string.IsNullOrWhiteSpace(label) ? string.Empty : string.Format("[{0}]", label.Trim()))
+                .Content(string.IsNullOrWhiteSpace(label) ? string.Empty : $"[{label.Trim()}]")
                 .SpaceBefore()
                 .SkipEmpty();
         }
@@ -254,7 +254,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         private static IHtmlNode GetCategoryFilterNode(string categoryId, string categoryName, bool selected = false)
         {
             return GetOptionNode(
-                string.Format("category{0}radio", categoryId),
+                $"category{categoryId}radio",
                 Html.Radio().Name("categoryFilter")
                     .Attribute("data-filter-value", categoryId)
                     .Attribute("data-filter-name", WebUtility.UrlEncode(categoryName))
@@ -319,7 +319,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                         GetSmallLink("feature" + index)),
                     Html.Tag(Html5Tag.Div).Class("description").Content(feature.Info.Description)),
                 Html.Tag(Html5Tag.Div).Class("scenarios").Content(
-                    feature.GetScenarios().Select((s, i) => GetScenario(s, index, i))));
+                    feature.GetScenariosOrderedByName().Select((s, i) => GetScenario(s, index, i))));
         }
 
         private static TagBuilder GetSmallLink(string link)
@@ -341,8 +341,8 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
         private IHtmlNode GetScenario(IScenarioResult scenario, int featureIndex, int scenarioIndex)
         {
-            var toggleId = string.Format("toggle{0}_{1}", featureIndex, scenarioIndex);
-            var scenarioId = string.Format("scenario{0}_{1}", featureIndex, scenarioIndex + 1);
+            var toggleId = $"toggle{featureIndex}_{scenarioIndex}";
+            var scenarioId = $"scenario{featureIndex}_{scenarioIndex + 1}";
 
             return Html.Tag(Html5Tag.Div).Class("scenario " + GetStatusClass(scenario.Status)).Attribute("data-categories", GetScenarioCategories(scenario)).Content(
                 Html.Checkbox().Id(toggleId).Class("toggle toggleS").Checked(),
@@ -386,7 +386,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         {
             return Html.Tag(Html5Tag.Span)
                 .Class("duration")
-                .Content(executionTime != null ? string.Format("({0})", executionTime.Duration.FormatPretty()) : string.Empty)
+                .Content(executionTime != null ? $"({executionTime.Duration.FormatPretty()})" : string.Empty)
                 .SkipEmpty()
                 .SpaceBefore();
         }
@@ -403,7 +403,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         {
             return Html.Tag(Html5Tag.Div).Class("step").Content(
                 GetStatus(step.Status),
-                Html.Text(string.Format("{0}{1}. {2}", step.Info.GroupPrefix, step.Info.Number, step.Info.Name.Format(StepNameDecorator))).Trim(),
+                Html.Text($"{WebUtility.HtmlEncode(step.Info.GroupPrefix)}{step.Info.Number}. {step.Info.Name.Format(StepNameDecorator)}").Trim(),
                 GetDuration(step.ExecutionTime),
                 Html.Tag(Html5Tag.Div).Class("step-parameters").Content(step.Parameters.Select(GetStepParameter)).SkipEmpty(),
                 Html.Tag(Html5Tag.Div).Class("sub-steps").Content(step.GetSubSteps().Select(GetStep)).SkipEmpty());

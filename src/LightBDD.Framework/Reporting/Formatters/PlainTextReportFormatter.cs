@@ -61,7 +61,7 @@ namespace LightBDD.Framework.Reporting.Formatters
                 writer.WriteLine();
             }
 
-            foreach (var scenario in feature.GetScenarios())
+            foreach (var scenario in feature.GetScenariosOrderedByName())
                 FormatScenario(writer, scenario);
         }
 

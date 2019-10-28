@@ -6,16 +6,22 @@ using NUnit.Framework;
 
 namespace LightBDD.Extensions.DependencyInjection.UnitTests
 {
-    [TestFixture]
-    public class MicrosoftDiContainer_tests : ContainerBaseTests
+    [TestFixture(true)]
+    [TestFixture(false)]
+    public class MicrosoftDiContainer_with_explicit_container_tests : ContainerBaseTests
     {
+        public MicrosoftDiContainer_with_explicit_container_tests(bool shouldTakeOwnership)
+            : base(shouldTakeOwnership)
+        {
+        }
         protected override IDependencyContainer CreateContainer()
         {
             var serviceCollection = new ServiceCollection()
-                .AddTransient<Disposable>();
+                .AddTransient<Disposable>()
+                .AddSingleton<DisposableSingleton>();
 
             return new DependencyContainerConfiguration()
-                .UseContainer(serviceCollection.BuildServiceProvider())
+                .UseContainer(serviceCollection.BuildServiceProvider(), ShouldTakeOwnership)
                 .DependencyContainer;
         }
     }

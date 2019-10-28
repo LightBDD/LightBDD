@@ -231,15 +231,22 @@ namespace LightBDD.UnitTests.Helpers
             public TestStepTypeNameInfo StepTypeName { get; set; }
             IStepTypeNameInfo IStepNameInfo.StepTypeName => StepTypeName;
 
+            //TODO: rework to make it testing real code
             public string Format(IStepNameDecorator decorator)
             {
-                return FormattedName;
+                return StepTypeName != null
+                    ? $"{decorator.DecorateStepTypeName(StepTypeName)} {Format((INameDecorator)decorator)}"
+                    : Format((INameDecorator)decorator);
             }
 
+            //TODO: rework to make it testing real code
             public string Format(INameDecorator decorator)
             {
-                return FormattedName;
+                return !Parameters.Any()
+                    ? decorator.DecorateNameFormat(NameFormat)
+                    : string.Format(decorator.DecorateNameFormat(NameFormat), Parameters.Select(p => (object)decorator.DecorateParameterValue(p)).ToArray());
             }
+
             public override string ToString()
             {
                 return Format(StepNameDecorators.Default);

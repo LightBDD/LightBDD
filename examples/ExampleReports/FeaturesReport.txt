@@ -1,8 +1,8 @@
 Summary:
-	Test execution start time       : 2019-08-18 21:50:47 UTC
-	Test execution end time         : 2019-08-18 21:50:53 UTC
-	Test execution time             : 6s 140ms
-	Test execution time (aggregated): 24s 042ms
+	Test execution start time       : 2019-10-28 20:56:29 UTC
+	Test execution end time         : 2019-10-28 20:56:35 UTC
+	Test execution time             : 6s 004ms
+	Test execution time (aggregated): 23s 502ms
 	Number of features              : 10
 	Number of scenarios             : 22
 	Passed scenarios                : 11
@@ -21,21 +21,21 @@ Feature: Basket feature [Story-4]
 	As a customer
 	I want to add products to basket
 
-	Scenario: No product in stock [Ticket-6] - Passed (1s 935ms)
+	Scenario: No product in stock [Ticket-6] - Passed (1s 315ms)
 		Categories: Sales
-		Step 1: GIVEN product is out of stock - Passed (26ms)
-		Step 2: WHEN customer adds it to the basket - Passed (1s 893ms)
+		Step 1: GIVEN product is out of stock - Passed (<1ms)
+		Step 2: WHEN customer adds it to the basket - Passed (1s 311ms)
 		Step 3: THEN the product addition should be unsuccessful - Passed (<1ms)
-		Step 4: AND the basket should not contain the product - Passed (<1ms)
+		Step 4: AND the basket should not contain the product - Passed (1ms)
 		Comments:
 			Step 2: Transferring 'product' to the basket
 
-	Scenario: Successful addition [Ticket-7] - Ignored (1s 252ms)
+	Scenario: Successful addition [Ticket-7] - Ignored (1s 327ms)
 		Categories: Sales
 		Step 1: GIVEN product is in stock - Passed (<1ms)
-		Step 2: WHEN customer adds it to the basket - Passed (1s 251ms)
+		Step 2: WHEN customer adds it to the basket - Passed (1s 322ms)
 		Step 3: THEN the product addition should be successful - Passed (<1ms)
-		Step 4: AND the basket should contain the product - Passed (<1ms)
+		Step 4: AND the basket should contain the product - Passed (1ms)
 		Step 5: AND the product should be removed from stock - Ignored (<1ms)
 		Details:
 			Step 5: Product removal from stock is not implemented yet
@@ -50,65 +50,65 @@ Feature: Calculator feature [Story-8]
 	
 	This example presents usage of MultiAssertAttribute.
 
-	Scenario: Adding numbers [Ticket-13] - Failed (229ms)
+	Scenario: Adding numbers [Ticket-13] - Failed (44ms)
 		Step 1: GIVEN a calculator - Passed (<1ms)
-		Step 2: THEN adding "2" to "3" should give "5" - Passed (13ms)
-		Step 3: AND adding "-3" to "2" should give "expected: equals '-1', but got: '1'" - Failed (76ms)
+		Step 2: THEN adding "2" to "3" should give "5" - Passed (<1ms)
+		Step 3: AND adding "-3" to "2" should give "expected: equals '-1', but got: '1'" - Failed (23ms)
 		Step 4: AND adding "0" to "1" should give "1" - Passed (<1ms)
-		Step 5: AND adding "-2" to "-1" should give "expected: equals '-3', but got: '3'" - Failed (<1ms)
+		Step 5: AND adding "-2" to "-1" should give "expected: equals '-3', but got: '3'" - Failed (1ms)
 		Details:
 			Step 3: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '-1', but got: '1'
-				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyArguments() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 161
-				at LightBDD.Core.Execution.Implementation.RunnableStep.<RunStepAsync>d__22.MoveNext() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 124
+				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyArguments() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+				at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 136
 			Step 5: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '-3', but got: '3'
-				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyArguments() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 161
-				at LightBDD.Core.Execution.Implementation.RunnableStep.<RunStepAsync>d__22.MoveNext() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 124
+				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyArguments() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+				at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 136
 
-	Scenario: Composite operations [Ticket-13] - Failed (28ms)
+	Scenario: Composite operations [Ticket-13] - Failed (85ms)
 		Step 1: GIVEN a calculator - Passed (<1ms)
-		Step 2: THEN it should add numbers - Failed (11ms)
+		Step 2: THEN it should add numbers - Failed (58ms)
 			Step 2.1: THEN adding "2" to "3" should give "5" - Passed (<1ms)
-			Step 2.2: AND adding "2" to "-3" should give "expected: equals '-1', but got: '1'" - Failed (<1ms)
-			Step 2.3: AND adding "0" to "1" should give "expected: equals '0', but got: '1'" - Failed (<1ms)
-		Step 3: AND it should multiply numbers - Ignored (5ms)
+			Step 2.2: AND adding "2" to "-3" should give "expected: equals '-1', but got: '1'" - Failed (41ms)
+			Step 2.3: AND adding "0" to "1" should give "expected: equals '0', but got: '1'" - Failed (1ms)
+		Step 3: AND it should multiply numbers - Ignored (10ms)
 			Step 3.1: THEN multiplying "2" by "3" should give "6" - Passed (<1ms)
 			Step 3.2: AND multiplying "2" by "-3" should give "expected: equals '-6'" - Ignored (<1ms)
 			Step 3.3: AND multiplying "1" by "1" should give "<?>" - NotRun
-		Step 4: AND it should divide numbers - Failed (5ms)
+		Step 4: AND it should divide numbers - Failed (7ms)
 			Step 4.1: THEN dividing "6" by "3" should give "2" - Passed (<1ms)
 			Step 4.2: AND multiplying "5" by "2" should give "expected: equals '2', but got: '10'" - Failed (<1ms)
 		Details:
 			Step 2.2: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '-1', but got: '1'
-				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyArguments() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 161
-				at LightBDD.Core.Execution.Implementation.RunnableStep.<RunStepAsync>d__22.MoveNext() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 124
+				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyArguments() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+				at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 136
 			Step 2.3: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '0', but got: '1'
-				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyArguments() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 161
-				at LightBDD.Core.Execution.Implementation.RunnableStep.<RunStepAsync>d__22.MoveNext() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 124
+				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyArguments() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+				at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 136
 			Step 3.2: Negative numbers are not supported yet
 			Step 4.2: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '2', but got: '10'
-				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyArguments() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 161
-				at LightBDD.Core.Execution.Implementation.RunnableStep.<RunStepAsync>d__22.MoveNext() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 124
+				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyArguments() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+				at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 136
 		Comments:
 			Step 2: It is possible to add MultiAssertAttribute on composite step
 			Step 3: This step does not have MultiAssertAttribute so will stop on first exception
 
-	Scenario: Dividing numbers [Ticket-13] - Failed (9ms)
+	Scenario: Dividing numbers [Ticket-13] - Failed (55ms)
 		Step 1: GIVEN a calculator - Passed (<1ms)
-		Step 2: THEN dividing "6" by "2" should give "3" - Passed (<1ms)
-		Step 3: AND dividing "2" by "0" should give "expected: equals '0', but got: '<DivideByZeroException>'" - Failed (<1ms)
+		Step 2: THEN dividing "6" by "2" should give "3" - Passed (1ms)
+		Step 3: AND dividing "2" by "0" should give "expected: equals '0', but got: '<DivideByZeroException>'" - Failed (40ms)
 		Step 4: AND dividing "2" by "3" should give "0" - Passed (<1ms)
 		Step 5: AND dividing "0" by "5" should give "expected: equals '1', but got: '0'" - Failed (<1ms)
 		Details:
 			Step 3: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '0', but got: '<DivideByZeroException>'
-				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyArguments() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 161
-				at LightBDD.Core.Execution.Implementation.RunnableStep.<RunStepAsync>d__22.MoveNext() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 124
+				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyArguments() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+				at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 136
 			Step 5: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '1', but got: '0'
-				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyArguments() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 161
-				at LightBDD.Core.Execution.Implementation.RunnableStep.<RunStepAsync>d__22.MoveNext() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 124
+				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyArguments() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+				at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 136
 
-	Scenario: Multiplying numbers [Ticket-13] - Ignored (13ms)
+	Scenario: Multiplying numbers [Ticket-13] - Ignored (26ms)
 		Step 1: GIVEN a calculator - Passed (<1ms)
-		Step 2: THEN multiplying "6" by "2" should give "12" - Passed (<1ms)
+		Step 2: THEN multiplying "6" by "2" should give "12" - Passed (8ms)
 		Step 3: AND multiplying "-1" by "2" should give "expected: equals '-2'" - Ignored (<1ms)
 		Step 4: AND multiplying "2" by "0" should give "0" - Passed (<1ms)
 		Step 5: AND multiplying "2" by "3" should give "6" - Passed (<1ms)
@@ -122,37 +122,37 @@ Feature: Compact calculator scenarios
 	I want to be able to write compact scenarios,
 	So that I can use LightBDD for more unit-test like tests as well
 
-	Scenario: Adding numbers - Passed (66ms)
-		Step 1: GIVEN calculator - Passed (25ms)
-		Step 2: WHEN I add two numbers - Passed (1ms)
-		Step 3: THEN I should get an expected result - Passed (23ms)
+	Scenario: Adding numbers - Passed (69ms)
+		Step 1: GIVEN calculator - Passed (29ms)
+		Step 2: WHEN I add two numbers - Passed (<1ms)
+		Step 3: THEN I should get an expected result - Passed (4ms)
 
 Feature: Contacts management [Story-6]
 	In order to maintain my contact book
 	As an application user
 	I want to add, browse and remove my contacts
 
-	Scenario: Contact book should allow me to add multiple contacts [Ticket-8] - Passed (136ms)
+	Scenario: Contact book should allow me to add multiple contacts [Ticket-8] - Passed (6ms)
 		Step 1: GIVEN my contact book is empty - Passed (<1ms)
-		Step 2: WHEN I add new contacts - Passed (1ms)
-		Step 3: THEN all contacts should be available in the contact book - Passed (16ms)
+		Step 2: WHEN I add new contacts - Passed (<1ms)
+		Step 3: THEN all contacts should be available in the contact book - Passed (1ms)
 
-	Scenario: Contact book should allow me to remove all contacts [Ticket-9] - Bypassed (15ms)
-		Step 1: GIVEN my contact book is filled with many contacts - Passed (4ms)
-		Step 2: WHEN I clear it - Bypassed (1ms)
+	Scenario: Contact book should allow me to remove all contacts [Ticket-9] - Bypassed (10ms)
+		Step 1: GIVEN my contact book is filled with many contacts - Passed (2ms)
+		Step 2: WHEN I clear it - Bypassed (2ms)
 		Step 3: THEN the contact book should be empty - Passed (<1ms)
 		Details:
 			Step 2: Contact book clearing is not implemented yet. Contacts are removed one by one.
 
-	Scenario: Contact book should allow me to remove contacts [Ticket-9] - Passed (10ms)
-		Step 1: GIVEN my contact book is filled with contacts - Passed (<1ms)
-		Step 2: WHEN I remove one contact - Passed (<1ms)
-		Step 3: THEN the contact book should not contain removed contact any more - Passed (1ms)
-		Step 4: AND the contact book should contains all other contacts - Passed (5ms)
+	Scenario: Contact book should allow me to remove contacts [Ticket-9] - Passed (82ms)
+		Step 1: GIVEN my contact book is filled with contacts - Passed (14ms)
+		Step 2: WHEN I remove one contact - Passed (1ms)
+		Step 3: THEN the contact book should not contain removed contact any more - Passed (15ms)
+		Step 4: AND the contact book should contains all other contacts - Passed (1ms)
 
-	Scenario: Displaying contacts alphabetically - Passed (89ms)
+	Scenario: Displaying contacts alphabetically - Passed (15ms)
 		Step 1: GIVEN my contact book is empty - Passed (<1ms)
-		Step 2: AND I added contacts "<table>" - Passed (37ms)
+		Step 2: AND I added contacts "<table>" - Passed (<1ms)
 		contacts:
 		+-----------------+-----+------------+
 		|Email            |Name |PhoneNumber |
@@ -162,8 +162,8 @@ Feature: Contacts management [Story-6]
 		|emily1@gmail.com |Emily|111-222-5556|
 		|ka321@gmail.com  |Kathy|111-555-330 |
 		+-----------------+-----+------------+
-		Step 3: WHEN I request contacts sorted by name - Passed (1ms)
-		Step 4: THEN I should receive contacts "<table>" - Passed (30ms)
+		Step 3: WHEN I request contacts sorted by name - Passed (<1ms)
+		Step 4: THEN I should receive contacts "<table>" - Passed (7ms)
 		contacts:
 		+-+-----------------+-----+------------+
 		|#|Email            |Name |PhoneNumber |
@@ -174,8 +174,8 @@ Feature: Contacts management [Story-6]
 		|=|ka321@gmail.com  |Kathy|111-555-330 |
 		+-+-----------------+-----+------------+
 
-	Scenario: Normalizing contact details - Failed (39ms)
-		Step 1: GIVEN I added contacts "<table>" - Passed (<1ms)
+	Scenario: Normalizing contact details - Failed (118ms)
+		Step 1: GIVEN I added contacts "<table>" - Passed (55ms)
 		contacts:
 		+-------------------+-----+--------------+
 		|Email              |Name |PhoneNumber   |
@@ -185,8 +185,8 @@ Feature: Contacts management [Story-6]
 		|jerry123@mymail.com|Jerry|1123344556    |
 		|jos#@mymail.com    |Josh |12111333444   |
 		+-------------------+-----+--------------+
-		Step 2: WHEN I request contacts sorted by name - Passed (<1ms)
-		Step 3: THEN I should receive contacts "<table>" - Failed (29ms)
+		Step 2: WHEN I request contacts sorted by name - Passed (1ms)
+		Step 3: THEN I should receive contacts "<table>" - Failed (41ms)
 		contacts:
 		+-+-----+-------------------------------------------------+--------------------------------+
 		|#|Name |Email                                            |PhoneNumber                     |
@@ -199,10 +199,10 @@ Feature: Contacts management [Story-6]
 		Details:
 			Step 3: System.InvalidOperationException : Parameter 'contacts' verification failed: [0].PhoneNumber: expected: matches '[0-9]{10,14}', but got: '112334455'
 					[3].Email: expected: matches '[a-z0-9.-]+@[a-z0-9.-]+', but got: 'jos#@mymail.com'
-				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyArguments() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 161
-				at LightBDD.Core.Execution.Implementation.RunnableStep.<RunStepAsync>d__22.MoveNext() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 124
+				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyArguments() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+				at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 136
 
-	Scenario: Searching for contacts by phone - Failed (31ms)
+	Scenario: Searching for contacts by phone - Failed (55ms)
 		Step 1: GIVEN my contact book is empty - Passed (<1ms)
 		Step 2: AND I added contacts "<table>" - Passed (<1ms)
 		contacts:
@@ -216,7 +216,7 @@ Feature: Contacts management [Story-6]
 		|ka321@gmail.com  |Kathy|111-555-330 |
 		+-----------------+-----+------------+
 		Step 3: WHEN I search for contacts by phone starting with "111" - Passed (<1ms)
-		Step 4: THEN I should receive contacts "<table>" - Failed (23ms)
+		Step 4: THEN I should receive contacts "<table>" - Failed (34ms)
 		contacts:
 		+-+-------------+----------------------------------+------------------+
 		|#|Name         |Email                             |PhoneNumber       |
@@ -235,30 +235,30 @@ Feature: Contacts management [Story-6]
 					[4].Name: unexpected value
 					[4].Email: unexpected value
 					[4].PhoneNumber: unexpected value
-				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyArguments() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 161
-				at LightBDD.Core.Execution.Implementation.RunnableStep.<RunStepAsync>d__22.MoveNext() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 124
+				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyArguments() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+				at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 136
 
-Feature: Customer journey [Story-7]
+Feature: Customer journey [Story-6]
 	In order to receive a product
 	As an application user
 	I want to go through entire customer journey
 
-	Scenario: Ordering products [Ticket-12] - Ignored (4s 248ms)
-		Step 1: GIVEN customer is logged in - Passed (1s 510ms)
-			Step 1.1: GIVEN the user is about to login - Passed (6ms)
+	Scenario: Ordering products [Ticket-12] - Ignored (4s 350ms)
+		Step 1: GIVEN customer is logged in - Passed (1s 355ms)
+			Step 1.1: GIVEN the user is about to login - Passed (3ms)
 			Step 1.2: AND the user entered valid login - Passed (<1ms)
 			Step 1.3: AND the user entered valid password - Passed (<1ms)
-			Step 1.4: WHEN the user clicks login button - Passed (1s 468ms)
+			Step 1.4: WHEN the user clicks login button - Passed (1s 314ms)
 			Step 1.5: THEN the login operation should be successful - Passed (<1ms)
-		Step 2: WHEN customer adds products to basket - Bypassed (1s 293ms)
+		Step 2: WHEN customer adds products to basket - Bypassed (1s 241ms)
 			Step 2.1: GIVEN product "wooden desk" is in stock - Passed (<1ms)
-			Step 2.2: WHEN customer adds product "wooden desk" to the basket - Bypassed (1s 289ms)
+			Step 2.2: WHEN customer adds product "wooden desk" to the basket - Bypassed (1s 233ms)
 			Step 2.3: THEN the product addition should be successful - Passed (<1ms)
-		Step 3: AND customer pays for products in basket - Passed (1s 436ms)
-			Step 3.1: WHEN customer requests to pay - Passed (1s 435ms)
+		Step 3: AND customer pays for products in basket - Passed (1s 720ms)
+			Step 3.1: WHEN customer requests to pay - Passed (1s 718ms)
 			Step 3.2: THEN payment should be successful - Passed (<1ms)
-		Step 4: THEN customer should receive order email - Ignored (5ms)
-			Step 4.1: THEN customer should receive invoice - Ignored (<1ms)
+		Step 4: THEN customer should receive order email - Ignored (7ms)
+			Step 4.1: THEN customer should receive invoice - Ignored (1ms)
 			Step 4.2: AND customer should receive order confirmation - NotRun
 		Details:
 			Step 2.2: Until proper api is implemented, product is added directly to the DB.
@@ -269,13 +269,13 @@ Feature: Invoice feature [Story-2]
 	As a customer
 	I want to receive invoice for bought items
 
-	Scenario: Receiving invoice for products [Ticket-4] - Ignored (155ms)
+	Scenario: Receiving invoice for products [Ticket-4] - Ignored (72ms)
 		Categories: Sales
 		Step 1: GIVEN product "wooden desk" is available in product storage - Passed (<1ms)
 		Step 2: AND product "wooden shelf" is available in product storage - Passed (<1ms)
 		Step 3: WHEN customer buys product "wooden desk" - Passed (<1ms)
 		Step 4: AND customer buys product "wooden shelf" - Passed (<1ms)
-		Step 5: THEN an invoice should be sent to the customer - Ignored (9ms)
+		Step 5: THEN an invoice should be sent to the customer - Ignored (4ms)
 		Step 6: AND the invoice should contain product "wooden desk" with price of "£62.00" - NotRun
 		Step 7: AND the invoice should contain product "wooden shelf" with price of "£37.00" - NotRun
 		Details:
@@ -288,58 +288,57 @@ Feature: Invoice history feature [STORY-9]
 	
 	Example usage of fluent scenarios
 
-	Scenario: Browsing invoices [Ticket-14] - Passed (4s 599ms)
-		Step 1: GIVEN invoice "Invoice-1" - Passed (1s 319ms)
-		Step 2: AND invoice "Invoice-2" - Passed (1s 359ms)
-		Step 3: WHEN I request all historical invoices - Passed (1s 815ms)
-		Step 4: THEN I should see invoices "Invoice-1, Invoice-2" - Passed (1ms)
+	Scenario: Browsing invoices [Ticket-14] - Passed (4s 390ms)
+		Step 1: GIVEN invoice "Invoice-1" - Passed (1s 454ms)
+		Step 2: AND invoice "Invoice-2" - Passed (1s 296ms)
+		Step 3: WHEN I request all historical invoices - Passed (1s 586ms)
+		Step 4: THEN I should see invoices "Invoice-1, Invoice-2" - Passed (<1ms)
 
 Feature: Login feature [Story-1]
 	In order to access personal data
 	As an user
 	I want to login into system
 
-	Scenario: Anonymous login name should allow to log in [Ticket-3] - Failed (1s 645ms)
+	Scenario: Anonymous login name should allow to log in [Ticket-3] - Failed (1s 117ms)
 		Categories: Security
-		Step 1: GIVEN the user is about to login - Passed (28ms)
-		Step 2: AND the user entered anonymous login - Passed (3ms)
-		Step 3: WHEN the user clicks login button - Passed (1s 556ms)
-		Step 4: THEN the login operation should be successful - Failed (20ms)
+		Step 1: GIVEN the user is about to login - Passed (<1ms)
+		Step 2: AND the user entered anonymous login - Passed (<1ms)
+		Step 3: WHEN the user clicks login button - Passed (1s 106ms)
+		Step 4: THEN the login operation should be successful - Failed (9ms)
 		Step 5: AND a welcome message containing user name should be returned - NotRun
 		Details:
-			Step 4: NUnit.Framework.AssertionException :   Login should succeeded
-				  Expected: True
-				  But was:  False
-				
-				at Example.LightBDD.NUnit3.Features.Login_feature.Then_the_login_operation_should_be_successful() in d:\dev\LightBDD\examples\Example.LightBDD.NUnit3\Features\Login_feature.Steps.cs:line 57
-				at LightBDD.Framework.Scenarios.Implementation.BasicStepCompiler.StepExecutor.Execute(Object context, Object[] args) in d:\dev\LightBDD\src\LightBDD.Framework\Scenarios\Implementation\BasicStepCompiler.cs:line 90
+			Step 4: Xunit.Sdk.TrueException : Login should succeeded
+				Expected: True
+				Actual:   False
+				at Example.LightBDD.XUnit2.Features.Login_feature.Then_the_login_operation_should_be_successful() in d:\dev\LightBDD\examples\Example.LightBDD.XUnit2\Features\Login_feature.Steps.cs:line 56
+				at LightBDD.Framework.Scenarios.Implementation.BasicStepCompiler.StepExecutor.Execute(Object context, Object[] args) in d:\dev\LightBDD\src\LightBDD.Framework\Scenarios\Implementation\BasicStepCompiler.cs:line 104
 		Comments:
 			Step 2: Presentation of failed scenario
 
-	Scenario: Successful login [Ticket-1] - Passed (1s 607ms)
+	Scenario: Successful login [Ticket-1] - Passed (1s 381ms)
 		Categories: Security
-		Step 1: GIVEN the user is about to login - Passed (<1ms)
+		Step 1: GIVEN the user is about to login - Passed (29ms)
 		Step 2: AND the user entered valid login - Passed (<1ms)
 		Step 3: AND the user entered valid password - Passed (<1ms)
-		Step 4: WHEN the user clicks login button - Passed (1s 606ms)
+		Step 4: WHEN the user clicks login button - Passed (1s 314ms)
 		Step 5: THEN the login operation should be successful - Passed (<1ms)
-		Step 6: AND a welcome message containing user name should be returned - Passed (<1ms)
+		Step 6: AND a welcome message containing user name should be returned - Passed (1ms)
 
-	Scenario: Wrong login provided causes login to fail [Ticket-2] - Passed (1s 148ms)
+	Scenario: Wrong login provided causes login to fail [Ticket-2] - Passed (1s 486ms)
 		Categories: Security
 		Step 1: GIVEN the user is about to login - Passed (<1ms)
 		Step 2: AND the user entered invalid login - Passed (<1ms)
 		Step 3: AND the user entered valid password - Passed (<1ms)
-		Step 4: WHEN the user clicks login button - Passed (1s 147ms)
+		Step 4: WHEN the user clicks login button - Passed (1s 483ms)
 		Step 5: THEN the login operation should be unsuccessful - Passed (<1ms)
 		Step 6: AND an invalid login or password error message should be returned - Passed (<1ms)
 
-	Scenario: Wrong password provided causes login to fail [Ticket-2] - Passed (1s 732ms)
+	Scenario: Wrong password provided causes login to fail [Ticket-2] - Passed (1s 416ms)
 		Categories: Security
 		Step 1: GIVEN the user is about to login - Passed (<1ms)
 		Step 2: AND the user entered valid login - Passed (<1ms)
 		Step 3: AND the user entered invalid password - Passed (<1ms)
-		Step 4: WHEN the user clicks login button - Passed (1s 732ms)
+		Step 4: WHEN the user clicks login button - Passed (1s 413ms)
 		Step 5: THEN the login operation should be unsuccessful - Passed (<1ms)
 		Step 6: AND an invalid login or password error message should be returned - Passed (<1ms)
 
@@ -348,20 +347,20 @@ Feature: Payment feature [Story-5]
 	As a customer
 	I want to pay for products in basket
 
-	Scenario: Successful payment [Ticket-10][Ticket-11] - Passed (5s 036ms)
-		Step 1: GIVEN customer has some products in basket - Passed (1s 153ms)
-		Step 2: AND customer has enough money to pay for products - Passed (1s 258ms)
-		Step 3: WHEN customer requests to pay - Passed (1s 220ms)
-		Step 4: THEN payment should be successful - Passed (1s 392ms)
+	Scenario: Successful payment [Ticket-10][Ticket-11] - Passed (6s 004ms)
+		Step 1: GIVEN customer has some products in basket - Passed (1s 958ms)
+		Step 2: AND customer has enough money to pay for products - Passed (1s 101ms)
+		Step 3: WHEN customer requests to pay - Passed (1s 044ms)
+		Step 4: THEN payment should be successful - Passed (1s 861ms)
 
 Feature: Product spedition feature [Story-3]
 	In order to deliver products to customer effectively
 	As a spedition manager
 	I want to dispatch products to customer as soon as the payment is finalized
 
-	Scenario: Should dispatch product after payment is finalized [Ticket-5] - Passed (6ms)
+	Scenario: Should dispatch product after payment is finalized [Ticket-5] - Passed (68ms)
 		Categories: Delivery, Sales
-		Step 1: GIVEN There is an active customer with id "ABC-123" - Passed (<1ms)
+		Step 1: GIVEN There is an active customer with id "ABC-123" - Passed (3ms)
 		Step 2: AND The customer has product "wooden shelf" in basket - Passed (<1ms)
 		Step 3: AND The customer has product "wooden desk" in basket - Passed (<1ms)
 		Step 4: WHEN The customer payment finalizes - Passed (<1ms)

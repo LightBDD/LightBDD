@@ -71,5 +71,16 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
                     TestResults.CreateStepResult(1, "step1", ExecutionStatus.Passed, _startDate.AddSeconds(2), TimeSpan.FromMilliseconds(20)),
                     TestResults.CreateStepResult(2, "step2", ExecutionStatus.Ignored, _startDate.AddSeconds(3), TimeSpan.FromMilliseconds(5))));
         }
+
+        public static IFeatureResult GetFeatureWithUnsortedScenarios()
+        {
+            return TestResults.CreateFeatureResult("My Feature", null, null,
+                TestResults.CreateScenarioResult("scenario C", "lab A", _startDate, TimeSpan.FromSeconds(2), null,
+                    TestResults.CreateStepResult(1, "step", ExecutionStatus.Passed)),
+                TestResults.CreateScenarioResult("scenario A", "lab B", _startDate.AddMilliseconds(2), TimeSpan.FromSeconds(2), null,
+                    TestResults.CreateStepResult(1, "step", ExecutionStatus.Passed)),
+                TestResults.CreateScenarioResult("scenario B", "lab C", _startDate, TimeSpan.FromSeconds(5), null,
+                    TestResults.CreateStepResult(1, "step", ExecutionStatus.Passed)));
+        }
     }
 }

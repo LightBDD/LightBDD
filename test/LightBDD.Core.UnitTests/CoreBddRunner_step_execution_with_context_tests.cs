@@ -36,7 +36,7 @@ namespace LightBDD.Core.UnitTests
 
             var scenario = _feature.GetFeatureResult().GetScenarios().Single();
             Assert.That(scenario.Status, Is.EqualTo(ExecutionStatus.Failed));
-            Assert.That(scenario.StatusDetails, Is.EqualTo("Scenario: Context initialization failed: abc"));
+            Assert.That(scenario.StatusDetails, Is.EqualTo("Scenario: Scenario context initialization failed: abc"));
         }
 
         [Test]

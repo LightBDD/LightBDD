@@ -136,8 +136,8 @@ namespace LightBDD.Core.Execution.Implementation
             _scenarioContext.ProgressNotifier.NotifyScenarioStart(Info);
             _scope = CreateContainerScope();
             Context = CreateExecutionContext();
-            _preparedSteps = PrepareSteps();
             ScenarioExecutionContext.Current = CreateCurrentContext();
+            PrepareSteps();
         }
 
         private ScenarioExecutionContext CreateCurrentContext()
@@ -155,7 +155,7 @@ namespace LightBDD.Core.Execution.Implementation
             }
             catch (Exception e)
             {
-                throw new InvalidOperationException($"Container scope initialization failed: {e.Message}", e);
+                throw new InvalidOperationException($"Scenario container scope initialization failed: {e.Message}", e);
             }
         }
 
@@ -167,20 +167,22 @@ namespace LightBDD.Core.Execution.Implementation
             }
             catch (Exception e)
             {
-                throw new InvalidOperationException($"Context initialization failed: {e.Message}", e);
+                throw new InvalidOperationException($"Scenario context initialization failed: {e.Message}", e);
             }
         }
 
-        private RunnableStep[] PrepareSteps()
+        private void PrepareSteps()
         {
             try
             {
-                return _scenarioContext.StepsProvider(_result.Info,_stepDescriptors, Context, _scope, string.Empty, ShouldAbortSubStepExecution);
+                _preparedSteps = _scenarioContext.StepsProvider(_result.Info, _stepDescriptors, Context, _scope, string.Empty, ShouldAbortSubStepExecution);
             }
             catch (Exception e)
             {
-                throw new InvalidOperationException($"Step initialization failed: {e.Message}", e);
+                throw new InvalidOperationException($"Scenario steps initialization failed: {e.Message}", e);
             }
+            if (_preparedSteps.Any(x => x.Result.ExecutionException != null))
+                throw new InvalidOperationException("Scenario steps initialization failed.");
         }
 
         private bool ShouldAbortSubStepExecution(Exception ex) => _shouldAbortSubStepExecutionFn(ex);

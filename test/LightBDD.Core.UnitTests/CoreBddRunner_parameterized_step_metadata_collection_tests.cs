@@ -154,7 +154,7 @@ namespace LightBDD.Core.UnitTests
             Assert.Throws<InvalidOperationException>(() => _runner.Test().TestScenario(GetFailingStepDescriptors("some reason")));
             var result = _feature.GetFeatureResult().GetScenarios().Single();
             Assert.That(result.Status, Is.EqualTo(ExecutionStatus.Failed));
-            Assert.That(result.StatusDetails, Is.EqualTo("Scenario: Step initialization failed: some reason"));
+            Assert.That(result.StatusDetails, Is.EqualTo("Scenario: Scenario steps initialization failed: some reason"));
         }
 
         [Test]

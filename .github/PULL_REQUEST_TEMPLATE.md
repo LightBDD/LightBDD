@@ -1,4 +1,4 @@
-<!-- Add breif description here -->
+<!-- Add brief description here -->
 
 #### Details
 

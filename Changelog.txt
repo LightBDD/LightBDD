@@ -1,6 +1,26 @@
 LightBDD
 ===========================================
 
+Version 3.1.1
+----------------------------------------
+Summary:
++ #181 (Framework)(Change) Improved compact step parsing and rendering
++ #182 (Framework)(Change) Made step parsing issues easily discoverable
++ #185 (LightBDD.XUnit2)(Fix) Using skip feature with XUnit InlineData attribute throws InvalidOperationException
++ #187 (Autofac/LightBDD.Extensions.DependencyInjection) Improved disposal behavior of pre-configured DI containers
++ #199 (Framework)(Change) Improved Html/Xml/Text reports to present scenarios orderly manner
+Details:
++ #181 (Framework)(Change) Improved compact steps formatting to exclude control characters, don't perform additional formatting and render properly in HTML reports
++ #181 (Core)(Change) Updated StepDescriptor with configurable IsNameFormattingRequired property, controlling if RawName should be formatted or not
++ #182 (Core)(New) Implemented StepDescriptor.CreateInvalid(Exception ex) for creating step descriptors that failed to initialize
++ #182 (Core)(Change) Updated scenarios and composite-steps to fail fast if any of step-descriptor is invalid
++ #182 (Framework)(Change) Updated step compilers to create invalid descriptors instead of throwing upon parsing failure
++ #185 (LightBDD.XUnit2)(Fix) Updated LightBDD.XUnit2 to allow running scenarios with InlineDataAttribute having specified Skip property value
++ #185 (LightBDD.XUnit2)(New) Updated LightBDD.XUnit2 to recognize Skip property on Scenario and InlineData attributes and include those scenarios in reports
++ #185 (LightBDD.XUnit2)(New) Added UseXUnitSkipBehaviorAttribute to enforce default xunit behavior for skipped scenarios
++ #187 (Autofac) Updated UseAutofac() to require specifying takeOwnership flag for passed container
++ #187 (LightBDD.Extensions.DependencyInjection) Updated UseContainer() to require specifying takeOwnership flag for passed provider
+
 Version 3.1.0
 ----------------------------------------
 + #191 (Core)(Change) Expanded IScenarioInfo, IStepInfo with Parent property

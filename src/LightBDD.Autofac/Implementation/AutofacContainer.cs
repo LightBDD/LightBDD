@@ -7,6 +7,7 @@ namespace LightBDD.Autofac.Implementation
     internal class AutofacContainer : IDependencyContainer
     {
         public ILifetimeScope AutofacScope { get; set; }
+        public ILifetimeScope ParentScope { get; set; }
 
         public object Resolve(Type type)
         {
@@ -16,6 +17,7 @@ namespace LightBDD.Autofac.Implementation
         public void Dispose()
         {
             AutofacScope.Dispose();
+            ParentScope?.Dispose();
         }
 
         public IDependencyContainer BeginScope(Action<ContainerConfigurator> configuration = null)

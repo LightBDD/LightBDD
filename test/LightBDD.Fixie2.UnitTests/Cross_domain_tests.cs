@@ -1,12 +1,11 @@
-﻿#if !NETCOREAPP2_0
-using System.Configuration;
-using System.Diagnostics;
-using LightBDD.Fixie2;
-using LightBDD.Framework;
+﻿using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
 using Shouldly;
+#if !NETCOREAPP
+using System.Configuration;
+using System.Diagnostics;
 
-namespace LightBDD.Fixie.UnitTests
+namespace LightBDD.Fixie2.UnitTests
 {
     [FeatureDescription(@"As a developer,
 I want runner to support tests requiring cross domain communication,

@@ -23,9 +23,9 @@ namespace LightBDD.Core.Metadata.Implementation
 
         public string Format(INameDecorator decorator)
         {
-            if (!Parameters.Any())
-                return decorator.DecorateNameFormat(NameFormat);
-            return string.Format(NameFormat, Parameters.Select(p => (object)decorator.DecorateParameterValue(p)).ToArray());
+            return !Parameters.Any()
+                ? decorator.DecorateNameFormat(NameFormat)
+                : string.Format(decorator.DecorateNameFormat(NameFormat), Parameters.Select(p => (object)decorator.DecorateParameterValue(p)).ToArray());
         }
     }
 }

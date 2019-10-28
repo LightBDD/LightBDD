@@ -9,7 +9,17 @@ namespace LightBDD.Core.UnitTests.Helpers
         public static readonly ParameterInfo IntParameterInfo = GetMethodParameter<int>(SomeMethod);
         public static ParameterInfo GetMethodParameter<T>(Action<T> lambda)
         {
-            return lambda.GetMethodInfo().GetParameters()[0];
+            return GetMethodInfo(lambda).GetParameters()[0];
+        }
+
+        public static MethodInfo GetMethodInfo<T>(Action<T> lambda)
+        {
+            return lambda.GetMethodInfo();
+        }
+
+        public static MethodInfo GetMethodInfo(Action lambda)
+        {
+            return lambda.GetMethodInfo();
         }
     }
 }

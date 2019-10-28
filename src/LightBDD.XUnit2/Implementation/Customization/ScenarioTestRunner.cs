@@ -31,7 +31,7 @@ namespace LightBDD.XUnit2.Implementation.Customization
             {
                 AfterTestStarting();
 
-                if (!string.IsNullOrEmpty(SkipReason))
+                if (!string.IsNullOrEmpty(SkipReason) && AssemblySettings.Current.UseXUnitSkipBehavior)
                 {
                     runSummary.Skipped++;
 
@@ -95,7 +95,7 @@ namespace LightBDD.XUnit2.Implementation.Customization
             testOutputHelper.Initialize(MessageBus, Test);
             try
             {
-                TestContextProvider.Initialize(TestMethod, TestMethodArguments, testOutputHelper);
+                TestContextProvider.Initialize(TestMethod, TestMethodArguments, testOutputHelper, SkipReason);
                 var totalTime = await InvokeTestMethodAsync(aggregator);
                 return Tuple.Create(totalTime, testOutputHelper.Output);
             }

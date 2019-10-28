@@ -46,7 +46,7 @@ namespace LightBDD.Framework.Reporting.Formatters
             if (!string.IsNullOrWhiteSpace(feature.Info.Description))
                 objects.Add(new XElement("Description", feature.Info.Description));
 
-            objects.AddRange(feature.GetScenarios().Select(ToXElement));
+            objects.AddRange(feature.GetScenariosOrderedByName().Select(ToXElement));
             objects.Add(new XAttribute("RuntimeId", feature.Info.RuntimeId.ToString("D")));
             return new XElement("Feature", objects);
         }
