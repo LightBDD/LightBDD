@@ -1,15 +1,7 @@
 language: csharp
 mono: latest
 dotnet: 2.2.402
-dist: trusty
-
-addons:
-  apt:
-    sources:
-    - sourceline: 'deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-trusty-prod trusty main'
-      key_url: 'https://packages.microsoft.com/keys/microsoft.asc'
-    packages:
-    - dotnet-sharedframework-microsoft.netcore.app-1.1.2
+dist: bionic
 
 script:
  - dotnet restore
@@ -19,4 +11,4 @@ script:
  - dotnet test -c Release --no-build test/LightBDD.Framework.Reporting.UnitTests/LightBDD.Framework.Reporting.UnitTests.csproj
  - dotnet test -c Release --no-build test/LightBDD.MsTest2.UnitTests/LightBDD.MsTest2.UnitTests.csproj
  - dotnet test -c Release --no-build test/LightBDD.NUnit3.UnitTests/LightBDD.NUnit3.UnitTests.csproj
- - dotnet test -c Release -f netcoreapp1.1 --no-build test/LightBDD.XUnit2.UnitTests/LightBDD.XUnit2.UnitTests.csproj
+ - dotnet test -c Release --no-build test/LightBDD.XUnit2.UnitTests/LightBDD.XUnit2.UnitTests.csproj
