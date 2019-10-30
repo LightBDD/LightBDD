@@ -12,6 +12,7 @@ for:
   matrix:
     only:
       - image: Visual Studio 2017
+    fast_finish: true
   build_script:
   - ps: make\make.ps1 -t all
   artifacts:
@@ -19,10 +20,19 @@ for:
       name: packages
     - path: 'reports'
       name: reports
+  deploy:
+    provider: NuGet
+    api_key:
+      secure: wsVSfiTOvjdQgExU1aVzfww+N1ptKt1et5epn7/mx/67+FI/QxR76eR7oGmEDNr+
+    skip_symbols: false
+    on:
+      branch: master
+      appveyor_repo_tag: true
 -
   matrix:
     only:
       - image: Ubuntu
+    fast_finish: true
   build_script:
    - sh: sudo apt-get install -yq libcurl3
    - sh: dotnet restore
@@ -32,12 +42,3 @@ for:
    - sh: dotnet test -c Release -f netcoreapp2.2 test/LightBDD.MsTest2.UnitTests/LightBDD.MsTest2.UnitTests.csproj
    - sh: dotnet test -c Release -f netcoreapp2.2 test/LightBDD.NUnit3.UnitTests/LightBDD.NUnit3.UnitTests.csproj
    - sh: dotnet test -c Release -f netcoreapp2.2 test/LightBDD.XUnit2.UnitTests/LightBDD.XUnit2.UnitTests.csproj
-
-deploy:
-  provider: NuGet
-  api_key:
-    secure: wsVSfiTOvjdQgExU1aVzfww+N1ptKt1et5epn7/mx/67+FI/QxR76eR7oGmEDNr+
-  skip_symbols: false
-  on:
-    branch: master
-    appveyor_repo_tag: true
