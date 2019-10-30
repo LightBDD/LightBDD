@@ -1,17 +1,37 @@
-image: Visual Studio 2017
+image:
+  - Visual Studio 2019
+  - Ubuntu
+
 version: '{build}'
 skip_tags: false
 clone_depth: 1
 test: off
 
-build_script:
-- ps: make\make.ps1 -t all
-
-artifacts:
-  - path: 'output\*.*'
-    name: packages
-  - path: 'reports'
-    name: reports
+for:
+-
+  matrix:
+    only:
+      - image: Visual Studio 2019
+  build_script:
+  - ps: make\make.ps1 -t all
+  artifacts:
+    - path: 'output\*.*'
+      name: packages
+    - path: 'reports'
+      name: reports
+-
+  matrix:
+    only:
+      - image: Ubuntu
+  build_script:
+   - sh: dotnet restore
+   - sh: msbuild /p:Configuration=Release /p:EnableSourceLink=no LightBDD.sln
+   - sh: dotnet test -c Release --no-build test/LightBDD.Core.UnitTests/LightBDD.Core.UnitTests.csproj
+   - sh: dotnet test -c Release --no-build test/LightBDD.Framework.UnitTests/LightBDD.Framework.UnitTests.csproj
+   - sh: dotnet test -c Release --no-build test/LightBDD.Framework.Reporting.UnitTests/LightBDD.Framework.Reporting.UnitTests.csproj
+   - sh: dotnet test -c Release --no-build test/LightBDD.MsTest2.UnitTests/LightBDD.MsTest2.UnitTests.csproj
+   - sh: dotnet test -c Release --no-build test/LightBDD.NUnit3.UnitTests/LightBDD.NUnit3.UnitTests.csproj
+   - sh: dotnet test -c Release --no-build test/LightBDD.XUnit2.UnitTests/LightBDD.XUnit2.UnitTests.csproj
 
 deploy:
   provider: NuGet
