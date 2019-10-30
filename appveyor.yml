@@ -24,9 +24,8 @@ for:
     only:
       - image: Ubuntu
   build_script:
-   - sh: apt-get install libc6 libcurl3
    - sh: dotnet restore
-   - sh: msbuild /p:Configuration=Release /p:EnableSourceLink=no LightBDD.sln
+   - sh: dotnet build /p:Configuration=Release /p:EnableSourceLink=no LightBDD.sln
    - sh: dotnet test -c Release --no-build test/LightBDD.Core.UnitTests/LightBDD.Core.UnitTests.csproj
    - sh: dotnet test -c Release --no-build test/LightBDD.Framework.UnitTests/LightBDD.Framework.UnitTests.csproj
    - sh: dotnet test -c Release --no-build test/LightBDD.Framework.Reporting.UnitTests/LightBDD.Framework.Reporting.UnitTests.csproj
