@@ -24,8 +24,9 @@ for:
     only:
       - image: Ubuntu
   build_script:
+   - sh: sudo apt-get install -yq libc6 libcurl3 libgcc1 libgssapi-krb5-2 libicu52 liblttng-ust0 libssl1.0.0 libstdc++6 libunwind8 libuuid1 zlib1g
    - sh: dotnet restore
-   - sh: dotnet msbuild /p:Configuration=Release /p:EnableSourceLink=no LightBDD.sln
+   - sh: msbuild /p:Configuration=Release /p:EnableSourceLink=no LightBDD.sln
    - sh: dotnet test -c Release --no-build test/LightBDD.Core.UnitTests/LightBDD.Core.UnitTests.csproj
    - sh: dotnet test -c Release --no-build test/LightBDD.Framework.UnitTests/LightBDD.Framework.UnitTests.csproj
    - sh: dotnet test -c Release --no-build test/LightBDD.Framework.Reporting.UnitTests/LightBDD.Framework.Reporting.UnitTests.csproj
