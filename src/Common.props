@@ -11,6 +11,7 @@
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <IncludeSymbols>True</IncludeSymbols>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageOutputPath>$(SolutionDir)\output</PackageOutputPath>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>bdd;tdd;testing;framework;behavior driven development;acceptance criteria</PackageTags>
