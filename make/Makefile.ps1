@@ -60,7 +60,7 @@ Define-Step -Name 'Prepare templates' -Target 'all,pack' -Body {
 }
 
 Define-Step -Name 'Build VSIX package' -Target 'all,pack' -Body {
-    call "msbuild.exe" templates\LightBDD.VSIXTemplates.sln /tv:15.0 /t:"Clean,Build" /p:Configuration=Release /m /verbosity:m /nologo /p:TreatWarningsAsErrors=true /nr:false
+    call "msbuild.exe" templates\LightBDD.VSIXTemplates.sln /tv:current /t:"Clean,Build" /p:Configuration=Release /m /verbosity:m /nologo /p:TreatWarningsAsErrors=true /nr:false
     copy-item 'templates\LightBDD.VSIXTemplates\bin\Release\LightBDD.VSIXTemplates.vsix' -Destination 'output'
 }
 

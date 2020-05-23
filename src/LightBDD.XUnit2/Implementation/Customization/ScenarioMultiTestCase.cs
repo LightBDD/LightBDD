@@ -15,8 +15,9 @@ namespace LightBDD.XUnit2.Implementation.Customization
         {
         }
 
-        public ScenarioMultiTestCase(IMessageSink messageSink, TestMethodDisplay defaultMethodDisplay, ITestMethod testMethod)
-            : base(messageSink, defaultMethodDisplay, testMethod)
+        public ScenarioMultiTestCase(IMessageSink messageSink, TestMethodDisplay defaultMethodDisplay,
+            TestMethodDisplayOptions defaultMethodDisplayOptions, ITestMethod testMethod)
+            : base(messageSink, defaultMethodDisplay, defaultMethodDisplayOptions, testMethod)
         {
         }
 

@@ -14,13 +14,13 @@ namespace LightBDD.XUnit2.Implementation.Customization
         {
         }
 
-        public SkippedDataRowTestCase(
-            IMessageSink diagnosticMessageSink,
+        public SkippedDataRowTestCase(IMessageSink diagnosticMessageSink,
             TestMethodDisplay defaultMethodDisplay,
+            TestMethodDisplayOptions defaultMethodDisplayOptions,
             ITestMethod testMethod,
             string skipReason,
             object[] testMethodArguments = null)
-            : base(diagnosticMessageSink, defaultMethodDisplay, testMethod, testMethodArguments)
+            : base(diagnosticMessageSink, defaultMethodDisplay, defaultMethodDisplayOptions, testMethod, testMethodArguments)
         {
             SkipReason = skipReason;
         }
