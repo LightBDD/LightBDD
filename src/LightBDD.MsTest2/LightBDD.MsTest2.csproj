@@ -15,7 +15,6 @@ High level features:
     <TargetFrameworks>netstandard1.3;net45;net46</TargetFrameworks>
     <PackageTags>$(PackageTags);mstest;mstest2</PackageTags>
     <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.3' ">$(PackageTargetFallback);dotnet</PackageTargetFallback>
-    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.3' ">1.6.0</NetStandardImplicitPackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
