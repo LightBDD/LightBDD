@@ -3,6 +3,7 @@ LightBDD
 
 Version 3.2.0
 ----------------------------------------
++ #206 (all)(New) Added explicit netstandard2.0 support to simplify dependency resolution
 + #210 (LightBDD.Fixie2)(Change) Updated Fixie version to 2.2.1
 + #210 (LightBDD.MsTest2)(Change) Updated MSTest.TestFramework version to 2.1.1
 + #210 (LightBDD.NUnit3)(Change) Updated NUnit version to 3.12.0
