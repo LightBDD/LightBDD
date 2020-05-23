@@ -14,7 +14,6 @@ High level features:
 * DI support;
 * inline and tabular parameters.</Description>
     <TargetFrameworks>netstandard1.3;net46;net45</TargetFrameworks>
-    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.3' ">1.6.0</NetStandardImplicitPackageVersion>
   </PropertyGroup>
 
   <ItemGroup>

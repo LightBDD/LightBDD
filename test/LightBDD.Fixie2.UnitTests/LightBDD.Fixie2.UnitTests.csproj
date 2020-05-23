@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\Common.Tests.props" />
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.2;net452</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.1;netcoreapp3.1;net452</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Shouldly" Version="3.0.2" />
-    <PackageReference Include="Fixie" Version="2.0.3" />
+    <PackageReference Include="Fixie" Version="2.2.1" />
     <DotNetCliToolReference Include="Fixie.Console" Version="2.0.0" />
   </ItemGroup>
 

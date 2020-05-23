@@ -1,6 +1,13 @@
 LightBDD
 ===========================================
 
+Version 3.2.0
+----------------------------------------
++ #210 (LightBDD.Fixie2)(Change) Updated Fixie version to 2.2.1
++ #210 (LightBDD.MsTest2)(Change) Updated MSTest.TestFramework version to 2.1.1
++ #210 (LightBDD.NUnit3)(Change) Updated NUnit version to 3.12.0
++ #210 (LightBDD.XUnit2)(Change) Updated xunit version to 2.4.1
+
 Version 3.1.1
 ----------------------------------------
 Summary:
