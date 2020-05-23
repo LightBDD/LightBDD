@@ -26,9 +26,6 @@ Define-Step -Name 'Update version' -Target 'all,build' -Body {
 }
 
 Define-Step -Name 'Build' -Target 'all,build' -Body {
-    Remove-Item 'output' -Force -Recurse -ErrorAction SilentlyContinue | Out-Null
-    mkdir 'output' | Out-Null
-
     call dotnet build --configuration Release /nologo /p:TreatWarningsAsErrors=true /m
 }
 
@@ -38,6 +35,11 @@ Define-Step -Name 'Tests' -Target 'all,test' -Body {
     $tests = Define-DotnetTests -TestProject "*.UnitTests.csproj"
     $tests += Define-DotnetTests -TestProject "*.AcceptanceTests.csproj"
     $tests | Run-Tests
+}
+
+Define-Step -Name 'Pack' -Target 'all,pack' -Body {
+    Remove-Item 'output' -Force -Recurse -ErrorAction SilentlyContinue | Out-Null
+    call dotnet pack --configuration Release /nologo /p:TreatWarningsAsErrors=true /m
 }
 
 Define-Step -Name 'Prepare templates' -Target 'all,pack' -Body {
