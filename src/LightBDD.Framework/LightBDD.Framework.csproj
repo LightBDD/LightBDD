@@ -13,7 +13,7 @@ High level features:
 * Xml/Html/Plain text report generation;
 * DI support;
 * inline and tabular parameters.</Description>
-    <TargetFrameworks>netstandard1.3;net46;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard1.3;netstandard2.0;net46;net45</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
