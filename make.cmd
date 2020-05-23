@@ -1,1 +1,1 @@
-@ powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "make\make.ps1 -t pack"
+@ powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "make\make.ps1 -t all"
