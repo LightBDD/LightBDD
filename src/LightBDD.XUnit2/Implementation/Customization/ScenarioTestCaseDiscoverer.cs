@@ -15,7 +15,7 @@ namespace LightBDD.XUnit2.Implementation.Customization
         {
             // fact
             if (!testMethod.Method.GetCustomAttributes(typeof(DataAttribute)).Any())
-                return new XunitTestCase[] { new ScenarioTestCase(DiagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(), testMethod) };
+                return new XunitTestCase[] { new ScenarioTestCase(DiagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(), discoveryOptions.MethodDisplayOptionsOrDefault(), testMethod) };
 
             return base.Discover(discoveryOptions, testMethod, factAttribute);
         }
@@ -23,7 +23,7 @@ namespace LightBDD.XUnit2.Implementation.Customization
         protected override IEnumerable<IXunitTestCase> CreateTestCasesForSkippedDataRow(ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod,
             IAttributeInfo theoryAttribute, object[] dataRow, string skipReason)
         {
-            return new[] { new SkippedDataRowTestCase(DiagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(), testMethod, skipReason, dataRow) };
+            return new[] { new SkippedDataRowTestCase(DiagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(), discoveryOptions.MethodDisplayOptionsOrDefault(), testMethod, skipReason, dataRow) };
         }
 
         protected override IEnumerable<IXunitTestCase> CreateTestCasesForSkip(ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod,
@@ -36,7 +36,7 @@ namespace LightBDD.XUnit2.Implementation.Customization
         {
             return new XunitTestCase[]
             {
-                new ScenarioTestCase(DiagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(), testMethod, dataRow)
+                new ScenarioTestCase(DiagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(),discoveryOptions.MethodDisplayOptionsOrDefault(), testMethod,  dataRow)
             };
         }
 
@@ -44,7 +44,7 @@ namespace LightBDD.XUnit2.Implementation.Customization
         {
             return new XunitTestCase[]
             {
-                new ScenarioMultiTestCase(DiagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(), testMethod)
+                new ScenarioMultiTestCase(DiagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(),discoveryOptions.MethodDisplayOptionsOrDefault(), testMethod)
             };
         }
     }
