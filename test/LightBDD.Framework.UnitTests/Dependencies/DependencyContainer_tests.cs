@@ -57,7 +57,7 @@ namespace LightBDD.Framework.UnitTests.Dependencies
                 disposables.Add(disposable);
             }
 
-            for (int i = 0; i < 4; ++i)
+            for (var i = 0; i < 4; ++i)
                 Assert.DoesNotThrow(() => GetFeatureRunner().GetBddRunner(this).Test().TestScenario(StepMethod));
 
             Assert.That(disposables.Count(x => x.IsDisposed), Is.EqualTo(4));

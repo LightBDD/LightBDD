@@ -16,7 +16,7 @@ namespace LightBDD.Framework.Parameters
         /// <summary>
         /// Constructor allowing to create validator instance.
         /// </summary>
-        /// <param name="columns">Columns defintions.</param>
+        /// <param name="columns">Columns definitions.</param>
         protected internal TableValidator(IEnumerable<VerifiableTableColumn> columns)
             : base(columns)
         {

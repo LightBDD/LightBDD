@@ -183,7 +183,7 @@ namespace LightBDD.Framework.Reporting.Formatters
         private static void WritePadded(TextWriter writer, string text, int size)
         {
             writer.Write(text);
-            for (int i = size - text.Length; i > 0; --i)
+            for (var i = size - text.Length; i > 0; --i)
                 writer.Write(' ');
         }
     }
