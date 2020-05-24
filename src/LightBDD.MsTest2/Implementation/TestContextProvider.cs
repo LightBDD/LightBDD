@@ -1,11 +1,11 @@
 using System.Reflection;
-using LightBDD.Core.ExecutionContext;
+using System.Threading;
 
 namespace LightBDD.MsTest2.Implementation
 {
     internal class TestContextProvider
     {
-        private static readonly AsyncLocalContext<TestContextProvider> Provider = new AsyncLocalContext<TestContextProvider>();
+        private static readonly AsyncLocal<TestContextProvider> Provider = new AsyncLocal<TestContextProvider>();
         public MethodInfo TestMethod { get; }
         public object[] TestMethodArguments { get; }
 

@@ -64,12 +64,7 @@ namespace LightBDD.XUnit2.Implementation.Customization
 
         private Assembly GetAssembly()
         {
-            var asmName = TestAssembly.Assembly.Name;
-#if NET45
-            return Assembly.Load(asmName);
-#else
-            return Assembly.Load(new AssemblyName(asmName));
-#endif
+            return Assembly.Load(new AssemblyName(TestAssembly.Assembly.Name));
         }
         private LightBddScopeAttribute GetLightBddScopeAttribute(Assembly assembly)
         {

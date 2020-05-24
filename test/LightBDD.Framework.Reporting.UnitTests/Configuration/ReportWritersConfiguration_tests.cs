@@ -21,7 +21,7 @@ namespace LightBDD.Framework.Reporting.UnitTests.Configuration
 
             var featuresReportHtml = $"~{Path.DirectorySeparatorChar}Reports{Path.DirectorySeparatorChar}FeaturesReport.html";
 
-            AssertWriter(configuration, featuresReportHtml, typeof(HtmlReportFormatter), featuresReportHtml.Replace("~", AppDomainHelper.BaseDirectory));
+            AssertWriter(configuration, featuresReportHtml, typeof(HtmlReportFormatter), featuresReportHtml.Replace("~", AppContext.BaseDirectory));
         }
 
         private void AssertWriter(ReportWritersConfiguration configuration, string expectedRelativePath, Type expectedFormatterType, string expectedFullPath)

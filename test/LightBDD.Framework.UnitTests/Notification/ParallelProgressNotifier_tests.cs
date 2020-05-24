@@ -3,8 +3,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
-using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
@@ -23,7 +23,7 @@ namespace LightBDD.Framework.UnitTests.Notification
     {
         private ConcurrentDictionary<int, ConcurrentQueue<string>> _capturedGroups;
         public IEnumerable<string> CapturedItems => _capturedGroups.SelectMany(g => g.Value);
-        private readonly AsyncLocalContext<int> _currentId = new AsyncLocalContext<int>();
+        private readonly AsyncLocal<int> _currentId = new AsyncLocal<int>();
         private ParallelProgressNotifierProvider _notifierProvider;
 
         private class TestableParallelProgressNotifierProvider : ParallelProgressNotifierProvider { }
