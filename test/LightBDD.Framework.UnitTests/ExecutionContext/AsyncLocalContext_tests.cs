@@ -2,10 +2,11 @@
 using System.Threading.Tasks;
 using LightBDD.Core.ExecutionContext;
 using NUnit.Framework;
-
+#pragma warning disable CS0618 // Type or member is obsolete
 namespace LightBDD.Framework.UnitTests.ExecutionContext
 {
     [TestFixture]
+    [Parallelizable(ParallelScope.All)]
     public class AsyncLocalContext_tests
     {
         [Test]

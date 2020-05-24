@@ -1,6 +1,10 @@
 LightBDD
 ===========================================
 
+Version [next]]
+----------------------------------------
++ #214 (all) Updated all projects to target netstandard2.0 and net461, retiring previous framework support
+
 Version 3.2.0
 ----------------------------------------
 + #206 (all)(New) Added explicit netstandard2.0 support to simplify dependency resolution

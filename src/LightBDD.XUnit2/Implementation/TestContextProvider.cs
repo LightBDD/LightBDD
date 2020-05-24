@@ -1,12 +1,12 @@
 using System.Reflection;
-using LightBDD.Core.ExecutionContext;
+using System.Threading;
 using Xunit.Abstractions;
 
 namespace LightBDD.XUnit2.Implementation
 {
     internal class TestContextProvider
     {
-        private static readonly AsyncLocalContext<TestContextProvider> Provider = new AsyncLocalContext<TestContextProvider>();
+        private static readonly AsyncLocal<TestContextProvider> Provider = new AsyncLocal<TestContextProvider>();
         public MethodInfo TestMethod { get; }
         public object[] TestMethodArguments { get; }
         public ITestOutputHelper OutputHelper { get; }

@@ -3,8 +3,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
-using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
@@ -14,7 +14,6 @@ using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Notification;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
-using RandomTestValues;
 
 namespace LightBDD.Framework.UnitTests.Notification
 {
@@ -23,7 +22,7 @@ namespace LightBDD.Framework.UnitTests.Notification
     {
         private ConcurrentDictionary<int, ConcurrentQueue<string>> _capturedGroups;
         public IEnumerable<string> CapturedItems => _capturedGroups.SelectMany(g => g.Value);
-        private readonly AsyncLocalContext<int> _currentId = new AsyncLocalContext<int>();
+        private readonly AsyncLocal<int> _currentId = new AsyncLocal<int>();
         private ParallelProgressNotifierProvider _notifierProvider;
 
         private class TestableParallelProgressNotifierProvider : ParallelProgressNotifierProvider { }
@@ -53,10 +52,10 @@ namespace LightBDD.Framework.UnitTests.Notification
         [Test]
         public void It_should_capture_meaningful_information()
         {
-            var featureInfo = RandomValue.Object<TestResults.TestFeatureInfo>();
-            var scenarioInfo = RandomValue.Object<TestResults.TestScenarioInfo>();
-            var stepInfo = RandomValue.Object<TestResults.TestStepInfo>();
-            var stepResult = RandomValue.Object<TestResults.TestStepResult>();
+            var featureInfo = Fake.Object<TestResults.TestFeatureInfo>();
+            var scenarioInfo = Fake.Object<TestResults.TestScenarioInfo>();
+            var stepInfo = Fake.Object<TestResults.TestStepInfo>();
+            var stepResult = Fake.Object<TestResults.TestStepResult>();
             stepResult.Parameters = new IParameterResult[]
             {
                 new TestResults.TestParameterResult("table",
@@ -88,11 +87,11 @@ namespace LightBDD.Framework.UnitTests.Notification
                 )
             };
 
-            var scenarioResult = RandomValue.Object<TestResults.TestScenarioResult>();
+            var scenarioResult = Fake.Object<TestResults.TestScenarioResult>();
             scenarioResult.Status = ExecutionStatus.Passed;
 
-            var featureResult = RandomValue.Object<TestResults.TestFeatureResult>();
-            var comment = RandomValue.String();
+            var featureResult = Fake.Object<TestResults.TestFeatureResult>();
+            var comment = Fake.String();
 
             var featureNotifier = GetFeatureNotifier();
             var scenarioNotifier = GetScenarioNotifier();
@@ -137,7 +136,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         [Test]
         public void NotifyFeatureStart_should_omit_description_if_not_provided()
         {
-            var featureInfo = RandomValue.Object<TestResults.TestFeatureInfo>();
+            var featureInfo = Fake.Object<TestResults.TestFeatureInfo>();
             featureInfo.Description = null;
             GetFeatureNotifier().NotifyFeatureStart(featureInfo);
 
@@ -147,7 +146,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         [Test]
         public void NotifyFeatureStart_should_omit_labels_if_not_provided()
         {
-            var featureInfo = RandomValue.Object<TestResults.TestFeatureInfo>();
+            var featureInfo = Fake.Object<TestResults.TestFeatureInfo>();
             featureInfo.Labels = new string[0];
             GetFeatureNotifier().NotifyFeatureStart(featureInfo);
 
@@ -159,7 +158,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         [Test]
         public void NotifyScenarioStart_should_omit_labels_if_not_provided()
         {
-            var scenarioInfo = RandomValue.Object<TestResults.TestScenarioInfo>();
+            var scenarioInfo = Fake.Object<TestResults.TestScenarioInfo>();
             scenarioInfo.Labels = new string[0];
             GetScenarioNotifier().NotifyScenarioStart(scenarioInfo);
 
@@ -170,8 +169,8 @@ namespace LightBDD.Framework.UnitTests.Notification
         [Test]
         public void NotifyScenarioStart_should_increase_pending_counter()
         {
-            var scenarioInfo = RandomValue.Object<TestResults.TestScenarioInfo>();
-            var scenarioInfo2 = RandomValue.Object<TestResults.TestScenarioInfo>();
+            var scenarioInfo = Fake.Object<TestResults.TestScenarioInfo>();
+            var scenarioInfo2 = Fake.Object<TestResults.TestScenarioInfo>();
             scenarioInfo.Labels = new string[0];
             scenarioInfo2.Labels = new string[0];
             var scenarioNotifier = GetScenarioNotifier();
@@ -191,16 +190,16 @@ namespace LightBDD.Framework.UnitTests.Notification
         [Test]
         public void NotifyScenarioFinished_should_decrease_pending_counter_and_increase_finished_and_failed_counters_accordingly()
         {
-            var scenarioInfo = RandomValue.Object<TestResults.TestScenarioInfo>();
-            var scenarioInfo2 = RandomValue.Object<TestResults.TestScenarioInfo>();
+            var scenarioInfo = Fake.Object<TestResults.TestScenarioInfo>();
+            var scenarioInfo2 = Fake.Object<TestResults.TestScenarioInfo>();
             scenarioInfo.Labels = new string[0];
             scenarioInfo2.Labels = new string[0];
 
-            var scenarioResult = RandomValue.Object<TestResults.TestScenarioResult>();
+            var scenarioResult = Fake.Object<TestResults.TestScenarioResult>();
             scenarioResult.Info = scenarioInfo;
             scenarioResult.Status = ExecutionStatus.Passed;
 
-            var scenarioResult2 = RandomValue.Object<TestResults.TestScenarioResult>();
+            var scenarioResult2 = Fake.Object<TestResults.TestScenarioResult>();
             scenarioResult2.Info = scenarioInfo2;
             scenarioResult2.Status = ExecutionStatus.Failed;
 
@@ -226,9 +225,9 @@ namespace LightBDD.Framework.UnitTests.Notification
         [Test]
         public void NotifyScenarioFinished_should_omit_execution_time_if_not_provided()
         {
-            var scenarioInfo = RandomValue.Object<TestResults.TestScenarioInfo>();
+            var scenarioInfo = Fake.Object<TestResults.TestScenarioInfo>();
             scenarioInfo.Labels = new string[0];
-            var scenarioResult = RandomValue.Object<TestResults.TestScenarioResult>();
+            var scenarioResult = Fake.Object<TestResults.TestScenarioResult>();
             scenarioResult.Info = scenarioInfo;
             scenarioResult.Status = ExecutionStatus.Passed;
             scenarioResult.ExecutionTime = null;
@@ -250,9 +249,9 @@ namespace LightBDD.Framework.UnitTests.Notification
         [Test]
         public void NotifyScenarioFinished_should_omit_status_details_if_not_provided()
         {
-            var scenarioInfo = RandomValue.Object<TestResults.TestScenarioInfo>();
+            var scenarioInfo = Fake.Object<TestResults.TestScenarioInfo>();
             scenarioInfo.Labels = new string[0];
-            var scenarioResult = RandomValue.Object<TestResults.TestScenarioResult>();
+            var scenarioResult = Fake.Object<TestResults.TestScenarioResult>();
             scenarioResult.Info = scenarioInfo;
             scenarioResult.Status = ExecutionStatus.Passed;
             scenarioResult.StatusDetails = null;
@@ -300,34 +299,34 @@ namespace LightBDD.Framework.UnitTests.Notification
             await Task.Yield();
             _currentId.Value = i;
 
-            featureNotifier.NotifyFeatureStart(RandomValue.Object<TestResults.TestFeatureInfo>());
+            featureNotifier.NotifyFeatureStart(Fake.Object<TestResults.TestFeatureInfo>());
             await Task.Yield();
-            scenarioNotifier.NotifyScenarioStart(RandomValue.Object<TestResults.TestScenarioInfo>());
+            scenarioNotifier.NotifyScenarioStart(Fake.Object<TestResults.TestScenarioInfo>());
             await Task.Yield();
-            scenarioNotifier.NotifyStepStart(RandomValue.Object<TestResults.TestStepInfo>());
+            scenarioNotifier.NotifyStepStart(Fake.Object<TestResults.TestStepInfo>());
             await Task.Yield();
-            scenarioNotifier.NotifyStepComment(RandomValue.Object<TestResults.TestStepInfo>(), "comment");
+            scenarioNotifier.NotifyStepComment(Fake.Object<TestResults.TestStepInfo>(), "comment");
             await Task.Yield();
-            scenarioNotifier.NotifyStepComment(RandomValue.Object<TestResults.TestStepInfo>(), "comment2");
+            scenarioNotifier.NotifyStepComment(Fake.Object<TestResults.TestStepInfo>(), "comment2");
             await Task.Yield();
-            scenarioNotifier.NotifyStepFinished(RandomValue.Object<TestResults.TestStepResult>());
+            scenarioNotifier.NotifyStepFinished(Fake.Object<TestResults.TestStepResult>());
             await Task.Yield();
-            scenarioNotifier.NotifyStepStart(RandomValue.Object<TestResults.TestStepInfo>());
+            scenarioNotifier.NotifyStepStart(Fake.Object<TestResults.TestStepInfo>());
             await Task.Yield();
-            scenarioNotifier.NotifyStepComment(RandomValue.Object<TestResults.TestStepInfo>(), "comment");
+            scenarioNotifier.NotifyStepComment(Fake.Object<TestResults.TestStepInfo>(), "comment");
             await Task.Yield();
-            scenarioNotifier.NotifyStepComment(RandomValue.Object<TestResults.TestStepInfo>(), "comment2");
+            scenarioNotifier.NotifyStepComment(Fake.Object<TestResults.TestStepInfo>(), "comment2");
             await Task.Yield();
-            scenarioNotifier.NotifyStepFinished(RandomValue.Object<TestResults.TestStepResult>());
+            scenarioNotifier.NotifyStepFinished(Fake.Object<TestResults.TestStepResult>());
             await Task.Yield();
 
-            var scenarioResult = RandomValue.Object<TestResults.TestScenarioResult>();
+            var scenarioResult = Fake.Object<TestResults.TestScenarioResult>();
             scenarioResult.Steps = new TestResults.TestStepResult[0];
 
             scenarioNotifier.NotifyScenarioFinished(scenarioResult);
             await Task.Yield();
 
-            var featureResult = RandomValue.Object<TestResults.TestFeatureResult>();
+            var featureResult = Fake.Object<TestResults.TestFeatureResult>();
             featureResult.Scenarios = new TestResults.TestScenarioResult[0];
             featureNotifier.NotifyFeatureFinished(featureResult);
         }

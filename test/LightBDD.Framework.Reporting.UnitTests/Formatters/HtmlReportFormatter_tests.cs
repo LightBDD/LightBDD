@@ -248,7 +248,7 @@ initialize();";
             var results = ReportFormatterTestData.GetFeatureWithUnsortedScenarios();
             var text = FormatAndExtractText(results);
             TestContext.WriteLine(text);
-            string expectedText = $@"Execution summary
+            var expectedText = $@"Execution summary
 Test execution start time: 2014-09-23 19:21:57 UTC
 Test execution end time: 2014-09-23 19:22:02 UTC
 Test execution time: 5s

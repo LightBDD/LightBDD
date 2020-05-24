@@ -16,10 +16,12 @@ namespace LightBDD.Framework.Implementation
 
         public static bool IsGenerated(MemberInfo methodInfo)
         {
-            if (methodInfo.IsDefined(typeof(CompilerGeneratedAttribute)))
-                return true;
-            if (methodInfo.DeclaringType != null)
-                return IsGenerated(methodInfo.DeclaringType.GetTypeInfo());
+            while (methodInfo != null)
+            {
+                if (methodInfo.IsDefined(typeof(CompilerGeneratedAttribute)))
+                    return true;
+                methodInfo = methodInfo.DeclaringType?.GetTypeInfo();
+            }
             return false;
         }
     }

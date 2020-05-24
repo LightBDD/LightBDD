@@ -8,7 +8,7 @@ namespace LightBDD.Core.Results.Implementation
 {
     internal class ScenarioResult : IScenarioResult
     {
-        private IStepResult[] _steps = Arrays<IStepResult>.Empty();
+        private IStepResult[] _steps = Array.Empty<IStepResult>();
 
         public ScenarioResult(IScenarioInfo info)
         {

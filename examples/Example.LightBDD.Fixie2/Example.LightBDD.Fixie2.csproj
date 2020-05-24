@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.1;net452</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.1;net461</TargetFrameworks>
     <DebugType>full</DebugType>
   </PropertyGroup>
 
@@ -14,11 +14,6 @@
     <PackageReference Include="Shouldly" Version="3.0.2" />
     <PackageReference Include="Fixie" Version="2.2.1" />
     <DotNetCliToolReference Include="Fixie.Console" Version="2.2.1" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
   <ItemGroup>

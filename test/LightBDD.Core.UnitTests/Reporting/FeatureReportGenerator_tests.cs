@@ -5,7 +5,6 @@ using LightBDD.Core.Results;
 using LightBDD.UnitTests.Helpers;
 using Moq;
 using NUnit.Framework;
-using RandomTestValues;
 
 namespace LightBDD.Core.UnitTests.Reporting
 {
@@ -18,7 +17,7 @@ namespace LightBDD.Core.UnitTests.Reporting
             var writer = Mock.Of<IReportWriter>();
             var generator = new FeatureReportGenerator(writer);
 
-            var mocks = Enumerable.Range(0, 50).Select(i => RandomValue.Object<TestResults.TestFeatureResult>()).ToArray();
+            var mocks = Enumerable.Range(0, 50).Select(i => Fake.Object<TestResults.TestFeatureResult>()).ToArray();
             var allMocks = new List<IFeatureResult>();
             for (var i = 0; i < 100; ++i)
                 allMocks.AddRange(mocks);

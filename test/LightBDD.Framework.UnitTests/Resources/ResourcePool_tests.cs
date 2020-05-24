@@ -10,6 +10,7 @@ using NUnit.Framework;
 namespace LightBDD.Framework.UnitTests.Resources
 {
     [TestFixture]
+    [Parallelizable(ParallelScope.All)]
     public class ResourcePool_tests
     {
         [Test]
@@ -75,7 +76,7 @@ namespace LightBDD.Framework.UnitTests.Resources
             }
 
             using (pool = new ResourcePool<IDisposable>(holder.CreateInstance, 5))
-                Assert.DoesNotThrowAsync(() => RunTasks(15, RunTask));
+                Assert.DoesNotThrowAsync(() => RunTasks(5, RunTask));
         }
 
         [Test]

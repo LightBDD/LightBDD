@@ -10,7 +10,7 @@ namespace LightBDD.Framework.Reporting.Implementation
         internal static string ResolveAbsolutePath(string outputPath)
         {
             if (outputPath.StartsWith("~"))
-                return GetBaseDirectory().TrimEnd(Separators) + Path.DirectorySeparatorChar + outputPath.Substring(1).TrimStart(Separators);
+                return AppContext.BaseDirectory.TrimEnd(Separators) + Path.DirectorySeparatorChar + outputPath.Substring(1).TrimStart(Separators);
 
             if (IsUnc(outputPath))
                 return outputPath;
@@ -42,15 +42,6 @@ namespace LightBDD.Framework.Reporting.Implementation
             var directory = Path.GetDirectoryName(outputPath);
             if (directory != null)
                 Directory.CreateDirectory(directory);
-        }
-
-        private static string GetBaseDirectory()
-        {
-#if NET45
-            return AppDomain.CurrentDomain.BaseDirectory;
-#else
-            return AppContext.BaseDirectory;
-#endif
         }
     }
 }

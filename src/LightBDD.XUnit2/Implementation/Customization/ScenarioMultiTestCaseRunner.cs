@@ -156,13 +156,8 @@ namespace LightBDD.XUnit2.Implementation.Customization
         {
             try
             {
-#if NET45
-               var assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName == assemblyName || a.GetName().Name == assemblyName)
-                              ?? Assembly.Load(assemblyName);
-#else
                 var asm = new AssemblyName(assemblyName);
                 var assembly = Assembly.Load(new AssemblyName { Name = asm.Name, Version = asm.Version });
-#endif
                 return assembly.GetType(typeName);
             }
             catch

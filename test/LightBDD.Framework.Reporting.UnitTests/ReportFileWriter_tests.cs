@@ -16,7 +16,7 @@ namespace LightBDD.Framework.Reporting.UnitTests
             var outputPath = "~" + Path.DirectorySeparatorChar + "output.txt";
 
             var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), outputPath);
-            var expected = Path.GetFullPath(BaseDirectory + Path.DirectorySeparatorChar + "output.txt");
+            var expected = Path.GetFullPath(AppContext.BaseDirectory + Path.DirectorySeparatorChar + "output.txt");
             Assert.That(writer.OutputPath, Is.EqualTo(outputPath));
             Assert.That(writer.FullOutputPath, Is.EqualTo(expected));
         }
@@ -69,7 +69,7 @@ namespace LightBDD.Framework.Reporting.UnitTests
         {
             var expectedFileContent = "text";
             var outputPath = "~" + Path.DirectorySeparatorChar + $"{Guid.NewGuid()}" + Path.DirectorySeparatorChar + "output.txt";
-            var expectedPath = outputPath.Replace("~", BaseDirectory);
+            var expectedPath = outputPath.Replace("~", AppContext.BaseDirectory);
 
             var formatter = Mock.Of<IReportFormatter>();
             var results = new[]
@@ -90,18 +90,6 @@ namespace LightBDD.Framework.Reporting.UnitTests
 
             Assert.That(File.Exists(expectedPath), "File does not exists: {0}", expectedPath);
             Assert.That(File.ReadAllText(expectedPath), Is.EqualTo(expectedFileContent));
-        }
-
-        private static string BaseDirectory
-        {
-            get
-            {
-#if NET451
-                return AppDomain.CurrentDomain.BaseDirectory;
-#else 
-                return AppContext.BaseDirectory;
-#endif
-            }
         }
     }
 }
