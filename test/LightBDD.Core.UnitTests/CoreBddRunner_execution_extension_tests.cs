@@ -340,7 +340,7 @@ namespace LightBDD.Core.UnitTests
                 switch (_expected)
                 {
                     case ExecutionStatus.Passed:
-                        return Task.FromResult(0);
+                        return Task.CompletedTask;
                     case ExecutionStatus.Failed:
                         throw new InvalidOperationException("failure");
                     case ExecutionStatus.Bypassed:

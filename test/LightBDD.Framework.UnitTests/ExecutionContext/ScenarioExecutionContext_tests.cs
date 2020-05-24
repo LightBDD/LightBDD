@@ -18,7 +18,7 @@ namespace LightBDD.Framework.UnitTests.ExecutionContext
             public Task Given_implicit_context_initialized()
             {
                 ScenarioExecutionContext.Current.Get<ImplicitContext>().Value = _expectedGuid;
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }
 
             public Task When_time_elapsed_allowing_other_scenario_to_execute_concurrently()
@@ -29,7 +29,7 @@ namespace LightBDD.Framework.UnitTests.ExecutionContext
             public Task Then_implicit_context_should_be_preserved()
             {
                 AssertImplicitContext("Step Assert");
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }
 
             private void AssertImplicitContext(string message)

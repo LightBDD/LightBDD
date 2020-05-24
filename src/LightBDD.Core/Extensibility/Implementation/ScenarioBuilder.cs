@@ -18,8 +18,8 @@ namespace LightBDD.Core.Extensibility.Implementation
         private readonly IFeatureInfo _featureInfo;
         private readonly RunnableScenarioContext _context;
         private INameInfo _name;
-        private string[] _labels = Arrays<string>.Empty();
-        private string[] _categories = Arrays<string>.Empty();
+        private string[] _labels = Array.Empty<string>();
+        private string[] _categories = Array.Empty<string>();
         private IEnumerable<StepDescriptor> _steps = Enumerable.Empty<StepDescriptor>();
         private ExecutionContextDescriptor _contextDescriptor = ExecutionContextDescriptor.NoContext;
         private IEnumerable<IScenarioDecorator> _scenarioDecorators = Enumerable.Empty<IScenarioDecorator>();
@@ -77,7 +77,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Unable to create scenario without name", nameof(name));
-            _name = new NameInfo(name, Arrays<INameParameterInfo>.Empty());
+            _name = new NameInfo(name, Array.Empty<INameParameterInfo>());
             return this;
         }
 

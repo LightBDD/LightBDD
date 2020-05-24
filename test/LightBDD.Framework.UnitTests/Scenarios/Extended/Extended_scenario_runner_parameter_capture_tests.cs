@@ -190,7 +190,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
             this Extended_scenario_runner_parameter_capture_tests ctx,
             int parameter)
         {
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
     }
 }

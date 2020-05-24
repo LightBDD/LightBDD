@@ -246,7 +246,7 @@ namespace LightBDD.Core.Extensibility
         /// <returns>Feature name.</returns>
         protected INameInfo GetFeatureName(Type featureType)
         {
-            return new NameInfo(NameFormatter.FormatName(featureType.Name), Arrays<INameParameterInfo>.Empty());
+            return new NameInfo(NameFormatter.FormatName(featureType.Name), Array.Empty<INameParameterInfo>());
         }
 
         /// <summary>

@@ -82,7 +82,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Compact
             await runner
                 .AddStep("Given my scenario with value [55]", _ => { })
                 .AddStep(" When I send My_Request<int> for it ", _ => { })
-                .AddAsyncStep($"Only then I should receive \"{expectedValue}\"", _ => Task.FromResult(0))
+                .AddAsyncStep($"Only then I should receive \"{expectedValue}\"", _ => Task.CompletedTask)
                 .RunAsync();
 
             var steps = featureRunner.GetFeatureResult().GetScenarios().Single().GetSteps();

@@ -88,7 +88,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
                 .Returns(() =>
                 {
                     capture.Value = true;
-                    return Task.FromResult(0);
+                    return Task.CompletedTask;
                 });
 
             builder

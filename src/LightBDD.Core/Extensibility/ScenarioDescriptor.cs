@@ -36,7 +36,7 @@ namespace LightBDD.Core.Extensibility
         private static ParameterDescriptor[] BuildParameters(MethodBase methodInfo, object[] arguments)
         {
             if (arguments == null)
-                return Arrays<ParameterDescriptor>.Empty();
+                return Array.Empty<ParameterDescriptor>();
 
             var parameters = methodInfo.GetParameters();
 
