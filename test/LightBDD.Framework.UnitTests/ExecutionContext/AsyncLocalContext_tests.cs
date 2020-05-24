@@ -6,6 +6,7 @@ using NUnit.Framework;
 namespace LightBDD.Framework.UnitTests.ExecutionContext
 {
     [TestFixture]
+    [Parallelizable(ParallelScope.All)]
     public class AsyncLocalContext_tests
     {
         [Test]
