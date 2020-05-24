@@ -3,7 +3,6 @@ using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.ExecutionContext.Implementation;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
-using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Results;
@@ -34,7 +33,7 @@ namespace LightBDD.Core.Execution.Implementation
         public IDependencyResolver DependencyResolver => _scope;
         public object Context { get; private set; }
 
-        public RunnableScenario(RunnableScenarioContext scenarioContext, ScenarioInfo scenarioInfo,
+        public RunnableScenario(RunnableScenarioContext scenarioContext, IScenarioInfo scenarioInfo,
             IEnumerable<StepDescriptor> stepDescriptors, ExecutionContextDescriptor contextDescriptor,
             IEnumerable<IScenarioDecorator> scenarioDecorators)
         {

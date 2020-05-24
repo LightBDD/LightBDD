@@ -98,11 +98,11 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
         }
 
         [Test]
-        public void It_should_not_allow_non_method_call_expressions()
+        public async Task It_should_not_allow_non_method_call_expressions()
         {
             var (stepCapture, _) = ExpectExtendedScenarioRun();
             var someTask = new Task(() => { });
-            Runner.RunScenarioAsync(_ => someTask);
+            await Runner.RunScenarioAsync(_ => someTask);
             Assert.That(stepCapture.Single().IsValid, Is.False);
             Assert.That(stepCapture.Single().CreationException.Message, Does.Match($"Unsupported step expression. Expected MethodCallExpression, got: _ => value\\(.*\\)\\.{nameof(someTask)}"));
         }

@@ -11,9 +11,6 @@ namespace LightBDD.Core.Extensibility
         /// Returns CultureInfo.InvariantCulture that should be used for text formatting.
         /// </summary>
         /// <returns>CultureInfo.InvariantCulture.</returns>
-        public CultureInfo GetCultureInfo()
-        {
-            return CultureInfo.InvariantCulture;
-        }
+        public CultureInfo GetCultureInfo() => CultureInfo.InvariantCulture;
     }
 }

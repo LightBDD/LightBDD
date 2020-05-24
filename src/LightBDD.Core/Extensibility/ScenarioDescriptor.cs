@@ -1,4 +1,3 @@
-using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using System;
 using System.Reflection;
@@ -29,7 +28,7 @@ namespace LightBDD.Core.Extensibility
         public MethodBase MethodInfo { get; }
 
         /// <summary>
-        /// Returns scenario method parameter descriptors or empty array if parameters are not known or method is parameterless.
+        /// Returns scenario method parameter descriptors or empty array if parameters are not known or method is parameter-less.
         /// </summary>
         public ParameterDescriptor[] Parameters { get; }
 

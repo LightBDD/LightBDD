@@ -3,7 +3,6 @@ using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Extensibility.Execution;
-using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Results;
