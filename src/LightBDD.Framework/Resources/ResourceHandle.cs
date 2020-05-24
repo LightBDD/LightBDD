@@ -10,11 +10,11 @@ namespace LightBDD.Framework.Resources
     /// <typeparam name="TResource"></typeparam>
     public class ResourceHandle<TResource> : IDisposable
     {
+        private readonly CancellationTokenSource _cancellationSource = new CancellationTokenSource();
         private readonly ResourcePool<TResource> _pool;
         private readonly object _lock = new object();
         private Task<TResource> _instanceTask;
         private bool _disposed;
-        private CancellationTokenSource _cancellationSource = new CancellationTokenSource();
 
         /// <summary>
         /// Constructor creating handle for the <see cref="ResourcePool{TResource}"/> specified by <paramref name="pool"/> parameter.
@@ -57,7 +57,7 @@ namespace LightBDD.Framework.Resources
                 if (_disposed)
                     throw new ObjectDisposedException("ResourceHandle is already disposed");
 
-                return _instanceTask ?? (_instanceTask = _pool.ObtainAsync(_cancellationSource.Token));
+                return _instanceTask ??= _pool.ObtainAsync(_cancellationSource.Token);
             }
         }
 
