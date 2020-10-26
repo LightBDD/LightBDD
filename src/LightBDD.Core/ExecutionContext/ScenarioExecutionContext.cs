@@ -11,7 +11,7 @@ namespace LightBDD.Core.ExecutionContext
     /// </summary>
     public sealed class ScenarioExecutionContext
     {
-        private static readonly AsyncLocal<ScenarioExecutionContext> CurrentContext = new AsyncLocal<ScenarioExecutionContext>();
+        private static readonly AsyncLocal<ScenarioExecutionContext?> CurrentContext = new AsyncLocal<ScenarioExecutionContext?>();
         private readonly ConcurrentDictionary<Type, IContextProperty> _properties = new ConcurrentDictionary<Type, IContextProperty>();
 
         /// <summary>
@@ -38,8 +38,15 @@ namespace LightBDD.Core.ExecutionContext
                     return ctx;
                 throw new InvalidOperationException($"Current task is not executing any scenarios. Ensure that operation accessing {nameof(ScenarioExecutionContext)} is called from task running scenario.");
             }
+            [Obsolete("Use SetCurrent() instead")]
             set => CurrentContext.Value = value;
         }
+
+        /// <summary>
+        /// Sets the current execution context to specific value or null.
+        /// </summary>
+        /// <param name="current">The current context.</param>
+        public static void SetCurrent(ScenarioExecutionContext? current) => CurrentContext.Value = current;
 
         /// <summary>
         /// Returns currently executed step.

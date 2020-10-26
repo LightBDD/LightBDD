@@ -8,7 +8,7 @@ namespace LightBDD.Core.Configuration
     /// </summary>
     public class NameFormatterConfiguration : FeatureConfiguration
     {
-        private INameFormatter _formatter;
+        private INameFormatter? _formatter;
 
         /// <summary>
         /// Returns formatter.

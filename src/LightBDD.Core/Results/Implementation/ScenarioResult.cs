@@ -25,9 +25,9 @@ namespace LightBDD.Core.Results.Implementation
 
         public IScenarioInfo Info { get; }
         public ExecutionStatus Status { get; private set; }
-        public string StatusDetails { get; private set; }
-        public ExecutionTime ExecutionTime { get; private set; }
-        public Exception ExecutionException { get; private set; }
+        public string? StatusDetails { get; private set; }
+        public ExecutionTime? ExecutionTime { get; private set; }
+        public Exception? ExecutionException { get; private set; }
 
         public IEnumerable<IStepResult> GetSteps()
         {
@@ -61,11 +61,11 @@ namespace LightBDD.Core.Results.Implementation
             return sb.ToString();
         }
 
-        public void UpdateScenarioResult(ExecutionStatus status, string details = null)
+        public void UpdateScenarioResult(ExecutionStatus status, string? details = null)
         {
             Status = status;
             if (!string.IsNullOrWhiteSpace(details))
-                StatusDetails = $"Scenario: {details.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t")}";
+                StatusDetails = $"Scenario: {details!.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t")}";
         }
     }
 }

@@ -14,8 +14,12 @@ namespace LightBDD.Core.Results.Implementation
         }
 
         public IFeatureInfo Info { get; }
-        public IEnumerable<IScenarioResult> GetScenarios() { return _scenarios; }
-        public void AddScenario(IScenarioResult scenario) { _scenarios.Enqueue(scenario); }
+        public IEnumerable<IScenarioResult> GetScenarios() => _scenarios;
+
+        public void AddScenario(IScenarioResult scenario)
+        {
+            _scenarios.Enqueue(scenario);
+        }
 
         public override string ToString()
         {

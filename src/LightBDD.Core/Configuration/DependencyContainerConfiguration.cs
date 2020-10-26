@@ -39,7 +39,7 @@ namespace LightBDD.Core.Configuration
         /// </summary>
         /// <param name="configurator">Configuration function.</param>
         /// <returns>Self.</returns>
-        public DependencyContainerConfiguration UseDefaultContainer(Action<ContainerConfigurator> configurator = null)
+        public DependencyContainerConfiguration UseDefaultContainer(Action<ContainerConfigurator>? configurator = null)
         {
             return UseContainer(new BasicDependencyContainer(configurator));
         }

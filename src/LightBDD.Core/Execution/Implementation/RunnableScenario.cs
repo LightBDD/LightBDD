@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using LightBDD.Core.Dependencies.Implementation;
 
 namespace LightBDD.Core.Execution.Implementation
 {
@@ -25,13 +26,13 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly ScenarioResult _result;
         private readonly ExceptionCollector _exceptionCollector = new ExceptionCollector();
         private readonly Func<Task> _decoratedScenarioMethod;
-        private IDependencyContainer _scope;
+        private IDependencyContainer _scope = NoDepencencyContainer.Instance;
         private Func<Exception, bool> _shouldAbortSubStepExecutionFn = ex => true;
         private RunnableStep[] _preparedSteps = Array.Empty<RunnableStep>();
         private int _alreadyRun = NotRunValue;
         public IScenarioInfo Info => _result.Info;
         public IDependencyResolver DependencyResolver => _scope;
-        public object Context { get; private set; }
+        public object? Context { get; private set; }
 
         public RunnableScenario(RunnableScenarioContext scenarioContext, IScenarioInfo scenarioInfo,
             IEnumerable<StepDescriptor> stepDescriptors, ExecutionContextDescriptor contextDescriptor,
@@ -85,7 +86,7 @@ namespace LightBDD.Core.Execution.Implementation
 
         private void StopScenario(ExecutionTimeWatch watch)
         {
-            ScenarioExecutionContext.Current = null;
+            ScenarioExecutionContext.SetCurrent(null);
             DisposeScope();
             watch.Stop();
             _result.UpdateResult(
@@ -135,7 +136,7 @@ namespace LightBDD.Core.Execution.Implementation
             _scenarioContext.ProgressNotifier.NotifyScenarioStart(Info);
             _scope = CreateContainerScope();
             Context = CreateExecutionContext();
-            ScenarioExecutionContext.Current = CreateCurrentContext();
+            ScenarioExecutionContext.SetCurrent(CreateCurrentContext());
             PrepareSteps();
         }
 
@@ -158,7 +159,7 @@ namespace LightBDD.Core.Execution.Implementation
             }
         }
 
-        private object CreateExecutionContext()
+        private object? CreateExecutionContext()
         {
             try
             {

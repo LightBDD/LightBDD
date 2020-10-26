@@ -22,21 +22,21 @@ namespace LightBDD.Core.Results.Implementation
 
         public IStepInfo Info => _info;
         public ExecutionStatus Status { get; private set; }
-        public string StatusDetails { get; private set; }
-        public Exception ExecutionException { get; private set; }
+        public string? StatusDetails { get; private set; }
+        public Exception? ExecutionException { get; private set; }
         public IReadOnlyList<IParameterResult> Parameters { get; private set; } = Array.Empty<IParameterResult>();
-        public ExecutionTime ExecutionTime { get; private set; }
+        public ExecutionTime? ExecutionTime { get; private set; }
         public IEnumerable<string> Comments => _comments;
         public IEnumerable<IStepResult> GetSubSteps()
         {
             return _subSteps;
         }
 
-        public void SetStatus(ExecutionStatus status, string details = null)
+        public void SetStatus(ExecutionStatus status, string? details = null)
         {
             Status = status;
             if (!string.IsNullOrWhiteSpace(details))
-                StatusDetails = $"Step {_info.GroupPrefix}{_info.Number}: {details.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t")}";
+                StatusDetails = $"Step {_info.GroupPrefix}{_info.Number}: {details!.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t")}";
         }
 
         public void UpdateException(Exception exception)

@@ -21,11 +21,11 @@ namespace LightBDD.Core.Results
         /// It will contain details for all bypassed, ignored or failed steps.
         /// It may be null if no additional details are provided.
         /// </summary>
-        string StatusDetails { get;  }
+        string? StatusDetails { get;  }
         /// <summary>
-        /// Returns scenario execution time.
+        /// Returns scenario execution time or null if scenario was not exeucted.
         /// </summary>
-        ExecutionTime ExecutionTime { get; }
+        ExecutionTime? ExecutionTime { get; }
         /// <summary>
         /// Returns results of steps executed within this scenario.
         /// </summary>

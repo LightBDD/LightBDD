@@ -6,8 +6,8 @@ namespace LightBDD.Core.Execution.Implementation
 {
     internal class ExecutionTimeWatch
     {
+        private readonly Stopwatch _watch = new Stopwatch();
         private DateTimeOffset _start;
-        private Stopwatch _watch;
 
         public static ExecutionTimeWatch StartNew()
         {
@@ -17,7 +17,7 @@ namespace LightBDD.Core.Execution.Implementation
         private ExecutionTimeWatch Start()
         {
             _start = DateTimeOffset.UtcNow;
-            _watch = Stopwatch.StartNew();
+            _watch.Restart();
             return this;
         }
 

@@ -7,7 +7,7 @@ namespace LightBDD.Core.Internals
 {
     internal static class StepResultsProcessor
     {
-        public static string MergeStatusDetails(this IEnumerable<IStepResult> subSteps, string currentDetails = null)
+        public static string? MergeStatusDetails(this IEnumerable<IStepResult> subSteps, string? currentDetails = null)
         {
             var details = string.IsNullOrWhiteSpace(currentDetails)
                 ? Enumerable.Empty<string>()
@@ -17,7 +17,7 @@ namespace LightBDD.Core.Internals
             return merged.Length > 0 ? merged : null;
         }
 
-        public static IStepResult GetMostSevereOrNull(this IEnumerable<IStepResult> results)
+        public static IStepResult? GetMostSevereOrNull(this IEnumerable<IStepResult> results)
         {
             return results.Reverse().OrderByDescending(s => s.Status).FirstOrDefault();
         }

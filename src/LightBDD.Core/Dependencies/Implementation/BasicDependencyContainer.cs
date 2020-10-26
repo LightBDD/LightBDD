@@ -9,13 +9,13 @@ namespace LightBDD.Core.Dependencies.Implementation
 {
     internal class BasicDependencyContainer : ContainerConfigurator, IDependencyContainer
     {
-        private readonly BasicDependencyContainer _parent;
+        private readonly BasicDependencyContainer? _parent;
         private readonly ConcurrentQueue<IDisposable> _disposable = new ConcurrentQueue<IDisposable>();
         private readonly ConcurrentDictionary<Type, object> _items = new ConcurrentDictionary<Type, object>();
         private readonly ConcurrentDictionary<Type, Func<object>> _ctorCache = new ConcurrentDictionary<Type, Func<object>>();
 
-        public BasicDependencyContainer(Action<ContainerConfigurator> configuration = null) : this(null, configuration) { }
-        private BasicDependencyContainer(BasicDependencyContainer parent, Action<ContainerConfigurator> configuration = null)
+        public BasicDependencyContainer(Action<ContainerConfigurator>? configuration = null) : this(null, configuration) { }
+        private BasicDependencyContainer(BasicDependencyContainer? parent, Action<ContainerConfigurator>? configuration = null)
         {
             _parent = parent;
             configuration?.Invoke(this);
@@ -34,13 +34,14 @@ namespace LightBDD.Core.Dependencies.Implementation
 
         private static bool ResolveCached(BasicDependencyContainer container, Type type, out object cached)
         {
+            var current = container;
             do
             {
-                if (container._items.TryGetValue(type, out cached))
+                if (current._items.TryGetValue(type, out cached))
                     return true;
 
-                container = container._parent;
-            } while (container != null);
+                current = current._parent;
+            } while (current != null);
 
             return false;
         }
@@ -97,7 +98,7 @@ namespace LightBDD.Core.Dependencies.Implementation
             throw new AggregateException("Failed to dispose dependencies", exceptions);
         }
 
-        public IDependencyContainer BeginScope(Action<ContainerConfigurator> configuration = null)
+        public IDependencyContainer BeginScope(Action<ContainerConfigurator>? configuration = null)
         {
             return new BasicDependencyContainer(this, configuration);
         }

@@ -18,11 +18,11 @@ namespace LightBDD.Core.Extensibility.Implementation
             _configuration = configuration;
         }
 
-        public IStepTypeNameInfo GetStepTypeName(string rawStepTypeName, ref string formattedRawName, string previousStepTypeName)
+        public IStepTypeNameInfo? GetStepTypeName(string? rawStepTypeName, ref string formattedRawName, string previousStepTypeName)
         {
             var stepTypeName = string.IsNullOrWhiteSpace(rawStepTypeName)
                 ? ExtractStepTypeFromFormattedName(ref formattedRawName)
-                : _nameFormatter.FormatName(rawStepTypeName);
+                : _nameFormatter.FormatName(rawStepTypeName!);
 
             return string.IsNullOrWhiteSpace(stepTypeName) 
                 ? null 
@@ -50,7 +50,7 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         private string FormatStepTypeName(string stepTypeName)
         {
-            return string.IsNullOrWhiteSpace(stepTypeName) ? null : stepTypeName.ToUpperInvariant().Trim();
+            return stepTypeName.ToUpperInvariant().Trim();
         }
 
         private string NormalizeStepTypeName(string stepTypeName, string lastStepTypeName)

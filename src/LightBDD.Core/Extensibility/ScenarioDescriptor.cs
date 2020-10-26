@@ -16,7 +16,7 @@ namespace LightBDD.Core.Extensibility
         /// <param name="methodInfo">Scenario method info.</param>
         /// <param name="arguments">Scenario arguments. If scenario arguments are not known (unable to obtain), the value of <paramref name="arguments"/> should be null.</param>
         /// <exception cref="InvalidOperationException">Thrown if number or <paramref name="arguments"/> is not null and does not match number of <paramref name="methodInfo"/> parameters.</exception>
-        public ScenarioDescriptor(MethodBase methodInfo, object[] arguments)
+        public ScenarioDescriptor(MethodBase methodInfo, object[]? arguments)
         {
             MethodInfo = methodInfo ?? throw new ArgumentNullException(nameof(methodInfo));
             Parameters = BuildParameters(methodInfo, arguments);
@@ -32,7 +32,7 @@ namespace LightBDD.Core.Extensibility
         /// </summary>
         public ParameterDescriptor[] Parameters { get; }
 
-        private static ParameterDescriptor[] BuildParameters(MethodBase methodInfo, object[] arguments)
+        private static ParameterDescriptor[] BuildParameters(MethodBase methodInfo, object?[]? arguments)
         {
             if (arguments == null)
                 return Array.Empty<ParameterDescriptor>();
@@ -61,12 +61,12 @@ namespace LightBDD.Core.Extensibility
             return results;
         }
 
-        private static bool IsArgumentTypeNotCompatible(TypeInfo argumentType, TypeInfo parameterType)
+        private static bool IsArgumentTypeNotCompatible(TypeInfo? argumentType, TypeInfo parameterType)
         {
             return argumentType != null && !parameterType.IsAssignableFrom(argumentType);
         }
 
-        private static bool IsNullAssignmentToStruct(object argument, TypeInfo parameterType)
+        private static bool IsNullAssignmentToStruct(object? argument, TypeInfo parameterType)
         {
             return argument == null && parameterType.IsValueType && Nullable.GetUnderlyingType(parameterType.AsType()) == null;
         }

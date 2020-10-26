@@ -44,12 +44,12 @@ namespace LightBDD.Core.Formatting.Values
         /// </summary>
         /// <param name="value">Value to format.</param>
         /// <returns>Formatted string representation of the provided value.</returns>
-        public string FormatValue(object value)
+        public string FormatValue(object? value)
         {
             return FormatValue(value, this);
         }
 
-        private string FormatValue(object value, IValueFormattingService formattingService)
+        private string FormatValue(object? value, IValueFormattingService formattingService)
         {
             if (value == null)
                 return FormatSymbols.Instance.NullValue;
@@ -97,7 +97,7 @@ namespace LightBDD.Core.Formatting.Values
                 _declaredFormatters = declaredFormatters;
             }
 
-            public string FormatValue(object value)
+            public string FormatValue(object? value)
             {
                 if (value == null)
                     return FormatSymbols.Instance.NullValue;

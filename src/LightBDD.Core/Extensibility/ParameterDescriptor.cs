@@ -8,7 +8,7 @@ namespace LightBDD.Core.Extensibility
     /// </summary>
     public class ParameterDescriptor
     {
-        private ParameterDescriptor(bool isConstant, ParameterInfo parameterInfo, Func<object, object> valueEvaluator)
+        private ParameterDescriptor(bool isConstant, ParameterInfo parameterInfo, Func<object?, object?> valueEvaluator)
         {
             if (parameterInfo == null)
                 throw new ArgumentNullException(nameof(parameterInfo));
@@ -24,7 +24,7 @@ namespace LightBDD.Core.Extensibility
         /// <param name="parameterInfo"><see cref="ParameterInfo"/> object describing parameter.</param>
         /// <param name="value">Constant value that would be bound to the parameter.</param>
         /// <returns></returns>
-        public static ParameterDescriptor FromConstant(ParameterInfo parameterInfo, object value)
+        public static ParameterDescriptor FromConstant(ParameterInfo parameterInfo, object? value)
         {
             return new ParameterDescriptor(true, parameterInfo, ctx => value);
         }
@@ -36,7 +36,7 @@ namespace LightBDD.Core.Extensibility
         /// <param name="parameterInfo"><see cref="ParameterInfo"/> object describing parameter.</param>
         /// <param name="valueEvaluator">Value evaluator function that should be used to retrieve parameter value.</param>
         /// <returns></returns>
-        public static ParameterDescriptor FromInvocation(ParameterInfo parameterInfo, Func<object, object> valueEvaluator)
+        public static ParameterDescriptor FromInvocation(ParameterInfo parameterInfo, Func<object?, object?> valueEvaluator)
         {
             return new ParameterDescriptor(false, parameterInfo, valueEvaluator);
         }
@@ -57,6 +57,6 @@ namespace LightBDD.Core.Extensibility
         /// Returns parameter value evaluator that would be used to evaluate parameter value during execution.
         /// The value evaluator function parameter represents scenario context object defined by <see cref="ICoreScenarioBuilder.WithContext(Func{object},bool)"/>() method.
         /// </summary>
-        public Func<object, object> ValueEvaluator { get; }
+        public Func<object?, object?> ValueEvaluator { get; }
     }
 }

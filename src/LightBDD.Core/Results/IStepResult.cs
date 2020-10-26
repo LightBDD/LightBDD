@@ -22,11 +22,11 @@ namespace LightBDD.Core.Results
         /// Returns status details that contains reason for bypassed, ignored or failed steps.
         /// It may be null if no additional details are provided.
         /// </summary>
-        string StatusDetails { get; }
+        string? StatusDetails { get; }
         /// <summary>
-        /// Returns step execution time.
+        /// Returns step execution time or null if step was not executed.
         /// </summary>
-        ExecutionTime ExecutionTime { get; }
+        ExecutionTime? ExecutionTime { get; }
         /// <summary>
         /// Returns step comments or empty collection if no comments were made.
         /// </summary>
@@ -34,7 +34,7 @@ namespace LightBDD.Core.Results
         /// <summary>
         /// Returns exception caught during step execution or null if none occurred.
         /// </summary>
-        Exception ExecutionException { get; }
+        Exception? ExecutionException { get; }
         /// <summary>
         /// Returns the step parameter evaluation results.
         /// </summary>

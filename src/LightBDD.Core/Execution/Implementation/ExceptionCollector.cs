@@ -14,7 +14,7 @@ namespace LightBDD.Core.Execution.Implementation
             _executionExceptions.Add(exception is ScenarioExecutionException ? exception.InnerException : exception);
         }
 
-        public Exception CollectFor(ExecutionStatus executionStatus, IEnumerable<IStepResult> subSteps)
+        public Exception? CollectFor(ExecutionStatus executionStatus, IEnumerable<IStepResult> subSteps)
         {
             if (executionStatus < ExecutionStatus.Ignored)
                 return null;

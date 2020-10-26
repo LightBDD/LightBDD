@@ -6,5 +6,5 @@ namespace LightBDD.Core.Extensibility
     /// <summary>
     /// Step function.
     /// </summary>
-    public delegate Task<IStepResultDescriptor> StepFunc(object context, object[] args);
+    public delegate Task<IStepResultDescriptor> StepFunc(object? context, object?[] args);
 }

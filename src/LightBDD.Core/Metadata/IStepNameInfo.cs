@@ -16,6 +16,6 @@ namespace LightBDD.Core.Metadata
         /// <summary>
         /// Returns step type name (may be null).
         /// </summary>
-        IStepTypeNameInfo StepTypeName { get; }
+        IStepTypeNameInfo? StepTypeName { get; }
     }
 }

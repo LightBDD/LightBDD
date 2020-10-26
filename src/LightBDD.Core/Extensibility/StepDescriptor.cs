@@ -43,7 +43,7 @@ namespace LightBDD.Core.Extensibility
         /// </summary>
         public static StepDescriptor CreateInvalid(Exception creationException) => new StepDescriptor(creationException);
 
-        private StepDescriptor(MethodBase methodInfo, string rawName, StepFunc stepInvocation, params ParameterDescriptor[] parameters)
+        private StepDescriptor(MethodBase? methodInfo, string rawName, StepFunc stepInvocation, params ParameterDescriptor[] parameters)
         {
             RawName = rawName;
             StepInvocation = stepInvocation ?? throw new ArgumentNullException(nameof(stepInvocation));
@@ -72,7 +72,7 @@ namespace LightBDD.Core.Extensibility
             return rawName;
         }
 
-        private Task<IStepResultDescriptor> RunInvalidDescriptor(object context, object[] args) => Task.FromException<IStepResultDescriptor>(CreationException);
+        private Task<IStepResultDescriptor> RunInvalidDescriptor(object? context, object?[] args) => Task.FromException<IStepResultDescriptor>(CreationException!);
 
         /// <summary>
         /// Returns step raw name.
@@ -82,12 +82,12 @@ namespace LightBDD.Core.Extensibility
         /// <summary>
         /// Returns or sets predefined step type. If null, the step type will be inferred from <seealso cref="RawName"/>.
         /// </summary>
-        public string PredefinedStepType { get; set; }
+        public string? PredefinedStepType { get; set; }
 
         /// <summary>
         /// Returns method info describing the step or null if method info is not available.
         /// </summary>
-        public MethodBase MethodInfo { get; }
+        public MethodBase? MethodInfo { get; }
 
         /// <summary>
         /// Returns step invocation function accepting scenario context object configured with <see cref="ICoreScenarioBuilder.WithContext(Func{object},bool)"/>() method and step parameters.
@@ -100,10 +100,10 @@ namespace LightBDD.Core.Extensibility
         public ParameterDescriptor[] Parameters { get; }
 
         /// <summary>
-        /// Returns exception occured during descriptor creation or <c>null</c> if descriptor is valid.
+        /// Returns exception occurred during descriptor creation or <c>null</c> if descriptor is valid.
         /// The value is set by <see cref="CreateInvalid"/> method.
         /// </summary>
-        public Exception CreationException { get; }
+        public Exception? CreationException { get; }
 
         /// <summary>
         /// Returns true if descriptor is valid or false if descriptor was created by <see cref="CreateInvalid"/> method.

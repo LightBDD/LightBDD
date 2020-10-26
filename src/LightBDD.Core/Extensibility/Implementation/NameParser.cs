@@ -16,7 +16,7 @@ namespace LightBDD.Core.Extensibility.Implementation
             _nameFormatter = nameFormatter;
         }
 
-        public string GetNameFormat(MethodBase targetMethod, string stepRawName, ParameterDescriptor[] stepParameters)
+        public string GetNameFormat(MethodBase? targetMethod, string stepRawName, ParameterDescriptor[] stepParameters)
         {
             var shiftByThisArgument = targetMethod != null && targetMethod.IsDefined(typeof(ExtensionAttribute), true) ? 1 : 0;
 

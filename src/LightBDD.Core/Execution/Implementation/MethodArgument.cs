@@ -8,11 +8,11 @@ namespace LightBDD.Core.Execution.Implementation
 {
     internal class MethodArgument
     {
-        private readonly Func<object, object> _valueEvaluator;
+        private readonly Func<object?, object?> _valueEvaluator;
         private readonly IValueFormattingService _formattingService;
         public string RawName { get; }
         public bool IsEvaluated { get; private set; }
-        public object Value { get; private set; }
+        public object? Value { get; private set; }
 
         public MethodArgument(ParameterDescriptor descriptor, IValueFormattingService formattingService)
         {
@@ -23,7 +23,7 @@ namespace LightBDD.Core.Execution.Implementation
                 Evaluate(null);
         }
 
-        public void Evaluate(object context)
+        public void Evaluate(object? context)
         {
             if (IsEvaluated) return;
             Value = _valueEvaluator.Invoke(context);

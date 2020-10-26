@@ -16,7 +16,7 @@ namespace LightBDD.Core.Extensibility.Implementation
     {
         private readonly IFeatureInfo _featureInfo;
         private readonly RunnableScenarioContext _context;
-        private INameInfo _name;
+        private INameInfo? _name;
         private string[] _labels = Array.Empty<string>();
         private string[] _categories = Array.Empty<string>();
         private IEnumerable<StepDescriptor> _steps = Enumerable.Empty<StepDescriptor>();
@@ -92,7 +92,7 @@ namespace LightBDD.Core.Extensibility.Implementation
             return this;
         }
 
-        public ICoreScenarioBuilder WithContext(Func<IDependencyResolver, object> contextProvider, Action<ContainerConfigurator> scopeConfigurator)
+        public ICoreScenarioBuilder WithContext(Func<IDependencyResolver, object> contextProvider, Action<ContainerConfigurator>? scopeConfigurator)
         {
             _contextDescriptor = new ExecutionContextDescriptor(contextProvider, scopeConfigurator);
             return this;
@@ -106,7 +106,8 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         public IRunnableScenario Build()
         {
-            ValidateContext();
+            if (_name == null)
+                throw new InvalidOperationException("Scenario name is not provided.");
             return new RunnableScenario(_context, new ScenarioInfo(_featureInfo, _name, _labels, _categories), _steps, _contextDescriptor, GetScenarioDecorators());
         }
 
@@ -117,13 +118,7 @@ namespace LightBDD.Core.Extensibility.Implementation
             return _context.IntegrationContext.ExecutionExtensions.ScenarioDecorators.Concat(_scenarioDecorators);
         }
 
-        private void ValidateContext()
-        {
-            if (_name == null)
-                throw new InvalidOperationException("Scenario name is not provided.");
-        }
-
-        private RunnableStep[] ProvideSteps(IMetadataInfo parent, IEnumerable<StepDescriptor> stepDescriptors, object context, IDependencyContainer container, string groupPrefix, Func<Exception, bool> shouldAbortSubStepExecutionFn)
+        private RunnableStep[] ProvideSteps(IMetadataInfo parent, IEnumerable<StepDescriptor> stepDescriptors, object? context, IDependencyContainer container, string groupPrefix, Func<Exception, bool> shouldAbortSubStepExecutionFn)
         {
             var descriptors = stepDescriptors.ToArray();
             if (!descriptors.Any())
@@ -133,7 +128,7 @@ namespace LightBDD.Core.Extensibility.Implementation
 
             var totalSteps = descriptors.Length;
             var steps = new RunnableStep[totalSteps];
-            string previousStepTypeName = null;
+            string previousStepTypeName = string.Empty;
 
             var extensions = _context.IntegrationContext.ExecutionExtensions;
             var stepContext = new RunnableStepContext(_context.ExceptionProcessor, _context.ProgressNotifier, container, context, ProvideSteps, shouldAbortSubStepExecutionFn);
@@ -144,7 +139,7 @@ namespace LightBDD.Core.Extensibility.Implementation
                 var arguments = descriptor.Parameters.Select(p => new MethodArgument(p, metadataProvider.GetValueFormattingServiceFor(p.ParameterInfo))).ToArray();
 
                 steps[stepIndex] = new RunnableStep(stepContext, stepInfo, descriptor, arguments, extensions.StepDecorators.Concat(metadataProvider.GetStepDecorators(descriptor)));
-                previousStepTypeName = stepInfo.Name.StepTypeName?.OriginalName;
+                previousStepTypeName = stepInfo.Name.StepTypeName?.OriginalName ?? string.Empty;
             }
 
             return steps;

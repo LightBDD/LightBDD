@@ -26,11 +26,11 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly StepFunc _invocation;
         private readonly ExceptionCollector _exceptionCollector = new ExceptionCollector();
         private Func<Exception, bool> _shouldAbortSubStepExecutionFn = _ => true;
-        private IDependencyContainer _subStepScope;
+        private IDependencyContainer? _subStepScope;
         public IStepResult Result => _result;
         public IStepInfo Info => Result.Info;
         public IDependencyResolver DependencyResolver => _stepContext.Container;
-        public object Context => _stepContext.Context;
+        public object? Context => _stepContext.Context;
 
         public RunnableStep(RunnableStepContext stepContext, StepInfo info, StepDescriptor descriptor, MethodArgument[] arguments, IEnumerable<IStepDecorator> stepDecorators)
         {
@@ -67,7 +67,7 @@ namespace LightBDD.Core.Execution.Implementation
 
         private void ValidateDescriptor(StepDescriptor descriptor)
         {
-            if (descriptor.IsValid)
+            if (descriptor.CreationException == null)
                 return;
             HandleException(descriptor.CreationException);
             ProcessExceptions(false);
@@ -113,7 +113,7 @@ namespace LightBDD.Core.Execution.Implementation
 
         private bool ShouldAbortSubStepExecution(Exception ex) => _shouldAbortSubStepExecutionFn(ex);
 
-        private static object InstantiateSubStepsContext(ExecutionContextDescriptor contextDescriptor, IDependencyContainer container)
+        private static object? InstantiateSubStepsContext(ExecutionContextDescriptor contextDescriptor, IDependencyContainer container)
         {
             try
             {
@@ -177,7 +177,7 @@ namespace LightBDD.Core.Execution.Implementation
             return $"Parameter '{result.Name}' verification failed: {result.Details.VerificationMessage?.Replace(Environment.NewLine, Environment.NewLine + "\t") ?? string.Empty}";
         }
 
-        private object[] PrepareArguments()
+        private object?[] PrepareArguments()
         {
             return _arguments.Select(p => p.Value).ToArray();
         }

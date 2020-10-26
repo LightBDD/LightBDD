@@ -17,7 +17,8 @@ namespace LightBDD.Core.Execution.Coordination
         /// <summary>
         /// Feature coordinator instance.
         /// </summary>
-        protected static FeatureCoordinator Instance { get; private set; }
+        //TODO: check why there are 3 methods to get it?
+        protected static FeatureCoordinator? Instance { get; private set; }
         private readonly IFeatureAggregator _featureAggregator;
         /// <summary>
         /// Runner factory.
@@ -54,7 +55,7 @@ namespace LightBDD.Core.Execution.Coordination
         /// Returns the installed instance of <see cref="FeatureCoordinator"/> or null if instance is not installed (or already disposed).
         /// </summary>
         /// <returns><see cref="FeatureCoordinator"/> or null.</returns>
-        protected internal static FeatureCoordinator TryGetInstance()
+        protected internal static FeatureCoordinator? TryGetInstance()
         {
             var coordinator = Instance;
             if (coordinator == null || coordinator.IsDisposed)

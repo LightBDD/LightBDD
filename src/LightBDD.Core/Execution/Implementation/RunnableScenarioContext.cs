@@ -8,7 +8,7 @@ using LightBDD.Core.Results;
 
 namespace LightBDD.Core.Execution.Implementation
 {
-    internal delegate RunnableStep[] ProvideStepsFunc(IMetadataInfo parent,IEnumerable<StepDescriptor> stepDescriptors, object context, IDependencyContainer container, string groupPrefix, Func<Exception, bool> shouldAbortSubStepExecutionFn);
+    internal delegate RunnableStep[] ProvideStepsFunc(IMetadataInfo parent,IEnumerable<StepDescriptor> stepDescriptors, object? context, IDependencyContainer container, string groupPrefix, Func<Exception, bool> shouldAbortSubStepExecutionFn);
     internal class RunnableScenarioContext
     {
         public IntegrationContext IntegrationContext { get; }

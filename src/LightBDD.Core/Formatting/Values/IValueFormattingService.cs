@@ -12,7 +12,7 @@ namespace LightBDD.Core.Formatting.Values
         /// </summary>
         /// <param name="value">Value to format.</param>
         /// <returns>Formatted string representation of the provided value.</returns>
-        string FormatValue(object value);
+        string FormatValue(object? value);
 
         /// <summary>
         /// Returns current <see cref="CultureInfo"/> that will be used to format values.

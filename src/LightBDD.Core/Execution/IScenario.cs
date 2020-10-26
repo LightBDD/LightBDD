@@ -19,6 +19,6 @@ namespace LightBDD.Core.Execution
         /// <summary>
         /// Returns the context used by this scenario (or null if none were provided).
         /// </summary>
-        object Context { get; }
+        object? Context { get; }
     }
 }

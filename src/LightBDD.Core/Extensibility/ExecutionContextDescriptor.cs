@@ -16,16 +16,16 @@ namespace LightBDD.Core.Extensibility
         /// <summary>
         /// Returns container configurator function used to configure container used in the execution context scope.
         /// </summary>
-        public Action<ContainerConfigurator> ScopeConfigurator { get; }
+        public Action<ContainerConfigurator>? ScopeConfigurator { get; }
         /// <summary>
         /// Returns context resolver function used to create context.
         /// </summary>
-        public Func<IDependencyResolver, object> ContextResolver { get; }
+        public Func<IDependencyResolver, object?> ContextResolver { get; }
 
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public ExecutionContextDescriptor(Func<IDependencyResolver, object> contextResolver, Action<ContainerConfigurator> scopeConfigurator)
+        public ExecutionContextDescriptor(Func<IDependencyResolver, object?> contextResolver, Action<ContainerConfigurator>? scopeConfigurator)
         {
             ScopeConfigurator = scopeConfigurator;
             ContextResolver = contextResolver ?? throw new ArgumentNullException(nameof(contextResolver));
@@ -46,13 +46,13 @@ namespace LightBDD.Core.Extensibility
 
         private static object ResolveContextWrapper(IDependencyResolver resolver) => resolver.Resolve<ContextWrapper>().GetContext();
 
-        private static object ProvideNoContext(IDependencyResolver _) => null;
+        private static object? ProvideNoContext(IDependencyResolver _) => null;
 
         private class ContextWrapper : IDisposable
         {
             private readonly Func<object> _contextProvider;
             private readonly bool _takeOwnership;
-            private object _instance;
+            private object? _instance;
 
             public ContextWrapper(Func<object> contextProvider, bool takeOwnership)
             {
