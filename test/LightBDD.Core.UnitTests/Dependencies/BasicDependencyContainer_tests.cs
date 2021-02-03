@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
 using LightBDD.UnitTests.Helpers;
@@ -97,7 +99,7 @@ namespace LightBDD.Core.UnitTests.Dependencies
         }
 
         [Test]
-        public void It_should_resolve_complex_types_with_parameterized_ctors_honoring_sigletons_registered_across_scopes()
+        public void It_should_resolve_complex_types_with_parameterized_ctors_honoring_singletons_registered_across_scopes()
         {
             var outerDisposable = new Disposable();
             var innerDisposable = new Disposable();
@@ -163,11 +165,116 @@ namespace LightBDD.Core.UnitTests.Dependencies
             }
         }
 
+        [Test]
+        public void Resolve_should_honor_scopes()
+        {
+            using (var container = CreateContainer(x =>
+            {
+                x.RegisterSingleton<Disposable>();
+                x.RegisterScenarioScoped<Disposable1>();
+                x.RegisterLocallyScoped<Disposable2>();
+                x.RegisterTransient<Disposable3>();
+            }))
+            {
+                Assert.AreSame(container.Resolve<Disposable2>(), container.Resolve<Disposable2>());
+                using (var scenario = container.BeginScope(LifetimeScope.Scenario))
+                {
+                    Assert.AreSame(container.Resolve<Disposable>(), scenario.Resolve<Disposable>());
+                    Assert.AreSame(scenario.Resolve<Disposable1>(), scenario.Resolve<Disposable1>());
+                    Assert.AreSame(scenario.Resolve<Disposable2>(), scenario.Resolve<Disposable2>());
+                    Assert.AreNotSame(container.Resolve<Disposable2>(), scenario.Resolve<Disposable2>());
+                    Assert.AreNotSame(scenario.Resolve<Disposable3>(), scenario.Resolve<Disposable3>());
+
+                    using (var stepA = scenario.BeginScope(LifetimeScope.Local))
+                    {
+                        Assert.AreSame(container.Resolve<Disposable>(), stepA.Resolve<Disposable>());
+                        Assert.AreSame(scenario.Resolve<Disposable1>(), stepA.Resolve<Disposable1>());
+                        Assert.AreNotSame(scenario.Resolve<Disposable2>(), stepA.Resolve<Disposable2>());
+                        Assert.AreSame(stepA.Resolve<Disposable2>(), stepA.Resolve<Disposable2>());
+                        Assert.AreNotSame(stepA.Resolve<Disposable3>(), stepA.Resolve<Disposable3>());
+
+                        using (var stepB = stepA.BeginScope(LifetimeScope.Local))
+                        {
+                            Assert.AreSame(container.Resolve<Disposable>(), stepB.Resolve<Disposable>());
+                            Assert.AreSame(scenario.Resolve<Disposable1>(), stepB.Resolve<Disposable1>());
+                            Assert.AreNotSame(stepA.Resolve<Disposable2>(), stepB.Resolve<Disposable2>());
+                            Assert.AreSame(stepB.Resolve<Disposable2>(), stepB.Resolve<Disposable2>());
+                            Assert.AreNotSame(stepB.Resolve<Disposable3>(), stepB.Resolve<Disposable3>());
+                        }
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public async Task Resolve_should_be_thread_safe()
+        {
+            using (var container = CreateContainer(x =>
+            {
+                x.RegisterSingleton<SlowDependency>(opt => opt.As<SlowDependency>().As<object>());
+            }))
+            {
+                using (var scenario = container.BeginScope())
+                {
+                    var all = await Task.WhenAll(Enumerable.Range(0, 10).Select(_ => Task.Run(() => scenario.Resolve<SlowDependency>()))
+                        .Concat(Enumerable.Range(0, 10).Select(_ => Task.Run(() => container.Resolve<SlowDependency>()))));
+                    Assert.AreEqual(20, all.Length);
+                    Assert.AreEqual(1, all.Distinct().Count());
+                    Assert.AreEqual(1, SlowDependency.Instances);
+                }
+            }
+        }
+
         protected override IDependencyContainer CreateContainer()
         {
+            return CreateContainer(x => x.RegisterSingleton(new DisposableSingleton()));
+        }
+
+        private static IDependencyContainer CreateContainer(Action<IDefaultContainerConfigurator> configurator)
+        {
             return new DependencyContainerConfiguration()
-                .UseDefaultContainer(x => x.RegisterInstance(new DisposableSingleton(), new RegistrationOptions()))
+                .UseDefault(configurator)
                 .DependencyContainer;
+        }
+
+        class SlowDependency
+        {
+            public static int Instances = 0;
+            public SlowDependency()
+            {
+                Thread.Sleep(1000);
+                Interlocked.Increment(ref Instances);
+            }
+        }
+
+        protected class Disposable1 : IDisposable
+        {
+            public virtual void Dispose()
+            {
+                Disposed = true;
+            }
+
+            public bool Disposed { get; private set; }
+        }
+
+        protected class Disposable2 : IDisposable
+        {
+            public virtual void Dispose()
+            {
+                Disposed = true;
+            }
+
+            public bool Disposed { get; private set; }
+        }
+
+        protected class Disposable3 : IDisposable
+        {
+            public virtual void Dispose()
+            {
+                Disposed = true;
+            }
+
+            public bool Disposed { get; private set; }
         }
 
         class Holder<T>
