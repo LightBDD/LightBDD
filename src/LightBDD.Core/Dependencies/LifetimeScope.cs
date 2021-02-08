@@ -51,5 +51,8 @@
         {
             return (Id != null ? Id.GetHashCode() : 0);
         }
+
+        /// <inheritdoc />
+        public override string ToString() => Id;
     }
 }

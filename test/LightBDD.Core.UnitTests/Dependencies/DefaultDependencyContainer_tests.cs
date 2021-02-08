@@ -391,36 +391,6 @@ namespace LightBDD.Core.UnitTests.Dependencies
             }
         }
 
-        protected class Disposable1 : IDisposable
-        {
-            public virtual void Dispose()
-            {
-                Disposed = true;
-            }
-
-            public bool Disposed { get; private set; }
-        }
-
-        protected class Disposable2 : IDisposable
-        {
-            public virtual void Dispose()
-            {
-                Disposed = true;
-            }
-
-            public bool Disposed { get; private set; }
-        }
-
-        protected class Disposable3 : IDisposable
-        {
-            public virtual void Dispose()
-            {
-                Disposed = true;
-            }
-
-            public bool Disposed { get; private set; }
-        }
-
         class Holder<T>
         {
             public T Value { get; }
