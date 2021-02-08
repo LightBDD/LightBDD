@@ -22,10 +22,6 @@
         /// </summary>
         public static readonly LifetimeScope Transient = new LifetimeScope("#transient");
         /// <summary>
-        /// Custom lifetime where objects are shared within the scope of the same name and nested scopes.
-        /// </summary>
-        public static LifetimeScope Named(string name) => new LifetimeScope($"@{name}");
-        /// <summary>
         /// Scope identifier
         /// </summary>
         public string Id { get; }

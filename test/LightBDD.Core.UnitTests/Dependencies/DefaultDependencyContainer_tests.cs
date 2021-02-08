@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests.Dependencies
 {
     [TestFixture]
-    public class BasicDependencyContainer_tests : ContainerBaseTests
+    public class DefaultDependencyContainer_tests : ContainerBaseTests
     {
         [Test]
         public void Resolve_should_always_return_new_instance_and_dispose_upon_completion()
@@ -223,6 +223,150 @@ namespace LightBDD.Core.UnitTests.Dependencies
                     Assert.AreEqual(1, SlowDependency.Instances);
                 }
             }
+        }
+
+        [Test]
+        public void RegisterSingleton_should_properly_honor_scopes()
+        {
+            Disposable d;
+            Disposable1 d1;
+            Disposable2 d2;
+            Disposable3 d3;
+
+            using (var container = CreateContainer(x =>
+            {
+                x.RegisterSingleton<Disposable>();
+                x.RegisterSingleton(_ => new Disposable1());
+                x.RegisterSingleton(new Disposable2());
+                x.RegisterSingleton(new Disposable3(), opt => opt.ExternallyOwned());
+            }))
+            {
+                d = container.Resolve<Disposable>();
+                d1 = container.Resolve<Disposable1>();
+                d2 = container.Resolve<Disposable2>();
+                d3 = container.Resolve<Disposable3>();
+
+                using (var scope = container.BeginScope(LifetimeScope.Local))
+                {
+                    Assert.AreSame(d, scope.Resolve<Disposable>());
+                    Assert.AreSame(d1, scope.Resolve<Disposable1>());
+                    Assert.AreSame(d2, scope.Resolve<Disposable2>());
+                    Assert.AreSame(d3, scope.Resolve<Disposable3>());
+                }
+            }
+
+            Assert.True(d.Disposed);
+            Assert.True(d1.Disposed);
+            Assert.True(d2.Disposed);
+            Assert.False(d3.Disposed);
+        }
+
+        [Test]
+        public void RegisterScenario_should_properly_honor_scopes()
+        {
+            Disposable d;
+            Disposable1 d1;
+            Disposable2 d2;
+
+            using (var container = CreateContainer(x =>
+            {
+                x.RegisterScenarioScoped<Disposable>();
+                x.RegisterScenarioScoped(_ => new Disposable1());
+                x.RegisterScenarioScoped(_ => new Disposable2(), opt => opt.ExternallyOwned());
+            }))
+            {
+                using (var scenarioScope = container.BeginScope(LifetimeScope.Scenario))
+                {
+                    d = scenarioScope.Resolve<Disposable>();
+                    d1 = scenarioScope.Resolve<Disposable1>();
+                    d2 = scenarioScope.Resolve<Disposable2>();
+
+                    using (var scope2 = scenarioScope.BeginScope(LifetimeScope.Local))
+                    {
+                        Assert.AreSame(d, scope2.Resolve<Disposable>());
+                        Assert.AreSame(d1, scope2.Resolve<Disposable1>());
+                        Assert.AreSame(d2, scope2.Resolve<Disposable2>());
+                    }
+                }
+            }
+
+            Assert.True(d.Disposed);
+            Assert.True(d1.Disposed);
+            Assert.False(d2.Disposed);
+        }
+
+        [Test]
+        public void RegisterLocal_should_properly_honor_scopes()
+        {
+            Disposable d;
+            Disposable1 d1;
+            Disposable2 d2;
+
+            using (var container = CreateContainer(x =>
+            {
+                x.RegisterLocallyScoped<Disposable>();
+                x.RegisterLocallyScoped(_ => new Disposable1());
+                x.RegisterLocallyScoped(_ => new Disposable2(), opt => opt.ExternallyOwned());
+            }))
+            {
+                d = container.Resolve<Disposable>();
+                d1 = container.Resolve<Disposable1>();
+                d2 = container.Resolve<Disposable2>();
+
+                Assert.AreSame(d, container.Resolve<Disposable>());
+                Assert.AreSame(d1, container.Resolve<Disposable1>());
+                Assert.AreSame(d2, container.Resolve<Disposable2>());
+
+                using (var scope = container.BeginScope(LifetimeScope.Local))
+                {
+                    Assert.AreNotSame(d, scope.Resolve<Disposable>());
+                    Assert.AreNotSame(d1, scope.Resolve<Disposable1>());
+                    Assert.AreNotSame(d2, scope.Resolve<Disposable2>());
+                }
+            }
+
+            Assert.True(d.Disposed);
+            Assert.True(d1.Disposed);
+            Assert.False(d2.Disposed);
+        }
+
+        [Test]
+        public void RegisterTransient_should_properly_honor_scopes()
+        {
+            var resolved = new List<IDisposable>();
+            using (var container = CreateContainer(x =>
+            {
+                x.RegisterTransient<Disposable>();
+                x.RegisterTransient(_ => new Disposable1());
+                x.RegisterTransient(_ => new Disposable2(), opt => opt.ExternallyOwned());
+                x.RegisterTransient<Disposable3>(opt => opt.ExternallyOwned());
+            }))
+            {
+                var d = container.Resolve<Disposable>();
+                var d1 = container.Resolve<Disposable1>();
+                var d2 = container.Resolve<Disposable2>();
+                resolved.Add(d);
+                resolved.Add(d1);
+                resolved.Add(d2);
+
+                Assert.AreNotSame(d, container.Resolve<Disposable>());
+                Assert.AreNotSame(d1, container.Resolve<Disposable1>());
+                Assert.AreNotSame(d2, container.Resolve<Disposable2>());
+
+                using (var scope = container.BeginScope(LifetimeScope.Local))
+                {
+                    var sd = scope.Resolve<Disposable>();
+                    var sd1 = scope.Resolve<Disposable1>();
+                    var sd2 = scope.Resolve<Disposable2>();
+                    Assert.AreNotSame(sd, scope.Resolve<Disposable>());
+                    Assert.AreNotSame(sd1, scope.Resolve<Disposable1>());
+                    Assert.AreNotSame(sd2, scope.Resolve<Disposable2>());
+                }
+            }
+
+            Assert.IsTrue(resolved.OfType<Disposable>().All(d => d.Disposed));
+            Assert.IsTrue(resolved.OfType<Disposable1>().All(d => d.Disposed));
+            Assert.IsTrue(resolved.OfType<Disposable2>().All(d => !d.Disposed));
         }
 
         protected override IDependencyContainer CreateContainer()
