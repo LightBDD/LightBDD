@@ -3,7 +3,7 @@
 namespace LightBDD.Core.Dependencies
 {
     /// <summary>
-    /// Interface describing dependency resolver that is able to resolve dependencies as well as create inner scopes.
+    /// Interface describing dependency container that is able to resolve dependencies as well as create inner scopes.
     /// </summary>
     public interface IDependencyContainerV2 : IDependencyContainer
     {
