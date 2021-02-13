@@ -74,7 +74,7 @@ namespace LightBDD.Core.UnitTests.Execution
         [Test]
         public void Disposal_of_coordinator_should_dispose_DI_container()
         {
-            var container = new Mock<IDependencyContainer>();
+            var container = new Mock<IDependencyContainerV2>();
             var contextBuilder = TestableIntegrationContextBuilder.Default()
                 .WithConfiguration(c => c.DependencyContainerConfiguration().UseContainer(container.Object));
             new TestableFeatureCoordinator(contextBuilder).Dispose();
