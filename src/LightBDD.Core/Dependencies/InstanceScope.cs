@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LightBDD.Core.Dependencies
+﻿namespace LightBDD.Core.Dependencies
 {
     /// <summary>
     /// Instance scope describing how given instance is shared between dependencies resolved within same and nested lifetime scopes.
@@ -10,20 +8,25 @@ namespace LightBDD.Core.Dependencies
         /// <summary>
         /// The same instance is returned for requests within the root and nested scopes.
         /// </summary>
-        public static readonly InstanceScope Single = new InstanceScope(true, true);
+        public static readonly InstanceScope Single = new InstanceScope(nameof(Single), true, true);
         /// <summary>
         /// The same instance is returned for requests within the given scope, however not shared with nested scopes. Each scope will receive one instance upon request.
         /// </summary>
-        public static readonly InstanceScope Local = new InstanceScope(true, false);
+        public static readonly InstanceScope Local = new InstanceScope(nameof(Local), true, false);
         /// <summary>
         /// The new instance is returned upon every request.
         /// </summary>
-        public static readonly InstanceScope Transient = new InstanceScope(false, false);
+        public static readonly InstanceScope Transient = new InstanceScope(nameof(Transient), false, false);
         /// <summary>
         /// The instance is shared within given scenario scope and across all nested scopes, but instantiated independently between scenarios.<br/>
         /// The instance definition will be ignored when resolution request is made outside of the scenario.
         /// </summary>
-        public static readonly InstanceScope Scenario = new InstanceScope(true, true, LifetimeScope.Scenario);
+        public static readonly InstanceScope Scenario = new InstanceScope(nameof(Scenario), true, true, LifetimeScope.Scenario);
+
+        /// <summary>
+        /// Instance scope name
+        /// </summary>
+        public string Name { get; }
 
         /// <summary>
         /// Returns true if the instance should be shared between requests made within the given scope.
@@ -42,8 +45,12 @@ namespace LightBDD.Core.Dependencies
         /// </summary>
         public LifetimeScope LifetimeScopeRestriction { get; }
 
-        private InstanceScope(bool isSharedInstance, bool isSharedWithNestedScopes, LifetimeScope scopeRestriction = null)
+        /// <inheritdoc />
+        public override string ToString() => Name;
+
+        private InstanceScope(string name, bool isSharedInstance, bool isSharedWithNestedScopes, LifetimeScope scopeRestriction = null)
         {
+            Name = name;
             IsSharedInstance = isSharedInstance;
             IsSharedWithNestedScopes = isSharedWithNestedScopes;
             LifetimeScopeRestriction = scopeRestriction;

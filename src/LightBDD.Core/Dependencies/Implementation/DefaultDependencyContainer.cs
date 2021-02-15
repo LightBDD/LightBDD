@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ExceptionServices;
+using System.Text;
 using System.Threading;
 
 namespace LightBDD.Core.Dependencies.Implementation
@@ -11,27 +12,35 @@ namespace LightBDD.Core.Dependencies.Implementation
     {
         class Slot
         {
+            public int Id { get; }
             public readonly SemaphoreSlim Lock = new SemaphoreSlim(1);
             public readonly DependencyDescriptor Descriptor;
             public object Instance;
 
-            public Slot(DependencyDescriptor descriptor)
+            public Slot(int id, DependencyDescriptor descriptor)
             {
+                Id = id;
                 Descriptor = descriptor;
             }
+
+            public override string ToString() => $"#{Id} {Descriptor}";
         }
 
-        private readonly DependencyFactory _dependencyFactory = new DependencyFactory();
+        private static readonly TimeSpan ConcurrentInstantiationLockTimeout = TimeSpan.FromSeconds(10);
+        private int _slotIdRef = 0;
+        private readonly DependencyFactory _dependencyFactory;
         private readonly DefaultDependencyContainer _parent;
         private readonly LifetimeScope _scope;
         private readonly ConcurrentQueue<IDisposable> _disposable = new ConcurrentQueue<IDisposable>();
-        private readonly ConcurrentDictionary<Type, Slot> _items = new ConcurrentDictionary<Type, Slot>();
+        private readonly ConcurrentDictionary<Type, Slot> _slots = new ConcurrentDictionary<Type, Slot>();
 
         public DefaultDependencyContainer(LifetimeScope scope, Action<DependencyFactory> configuration = null) : this(null, scope, configuration) { }
         private DefaultDependencyContainer(DefaultDependencyContainer parent, LifetimeScope scope, Action<DependencyFactory> configuration = null)
         {
             _parent = parent;
             _scope = scope ?? throw new ArgumentNullException(nameof(scope));
+
+            _dependencyFactory = new DependencyFactory(parent?._dependencyFactory.FallbackBehavior ?? FallbackResolveBehavior.ResolveTransient);
             configuration?.Invoke(_dependencyFactory);
 
             foreach (var descriptor in GetTraversableDescriptors())
@@ -58,12 +67,12 @@ namespace LightBDD.Core.Dependencies.Implementation
             if (!IsValidScope(descriptor))
                 return;
 
-            var slot = new Slot(descriptor);
+            var slot = new Slot(Interlocked.Increment(ref _slotIdRef), descriptor);
             foreach (var type in slot.Descriptor.Registration.AsTypes)
             {
                 if (!type.IsAssignableFrom(descriptor.Type))
                     throw new InvalidOperationException($"Type {descriptor.Type} is not assignable to {type}");
-                _items[type] = slot;
+                _slots[type] = slot;
             }
         }
 
@@ -82,12 +91,39 @@ namespace LightBDD.Core.Dependencies.Implementation
                 if (ResolveMapped(this, type, out var cached))
                     return cached;
 
-                return EnlistDisposable(DependencyDescriptor.FindConstructor(type).Invoke(this));
+                return FallbackResolve(type);
             }
             catch (Exception e)
             {
                 throw new InvalidOperationException($"Unable to resolve type {type}:{Environment.NewLine}{e.Message}", e);
             }
+        }
+
+        private object FallbackResolve(Type type)
+        {
+            return _dependencyFactory.FallbackBehavior switch
+            {
+                FallbackResolveBehavior.Throw => throw new InvalidOperationException($"No suitable registration has been found to resolve type {type}.{Environment.NewLine}Available registrations:{Environment.NewLine}{Environment.NewLine}{DumpSlots(this)}"),
+                _ => EnlistDisposable(DependencyDescriptor.FindConstructor(type).Invoke(this))
+            };
+        }
+
+        private static string DumpSlots(DefaultDependencyContainer container)
+        {
+            var sb = new StringBuilder();
+            while (container != null)
+            {
+                sb.Append("Container scope: ").Append(container._scope);
+                foreach (var slot in container._slots.OrderBy(x => x.Key.FullName))
+                    sb.AppendLine().Append(slot.Key).Append(" -> ").Append(slot.Value.ToString());
+                container = container._parent;
+
+                if (container == null)
+                    break;
+
+                sb.AppendLine().AppendLine();
+            }
+            return sb.ToString();
         }
 
         private static bool ResolveMapped(DefaultDependencyContainer container, Type type, out object cached)
@@ -96,7 +132,7 @@ namespace LightBDD.Core.Dependencies.Implementation
 
             do
             {
-                if (container._items.TryGetValue(type, out var slot))
+                if (container._slots.TryGetValue(type, out var slot))
                 {
                     cached = container.ResolveSlotted(slot);
                     return true;
@@ -118,8 +154,8 @@ namespace LightBDD.Core.Dependencies.Implementation
             if (!descriptor.Scope.IsSharedInstance)
                 return InstantiateDependency(descriptor);
 
-            if (!slot.Lock.Wait(TimeSpan.FromSeconds(10)))
-                throw new InvalidOperationException($"Unable to resolve {descriptor.Type} due to potential circular dependency");
+            if (!slot.Lock.Wait(ConcurrentInstantiationLockTimeout))
+                throw new InvalidOperationException($"Unable to resolve {descriptor.Type} due to potential circular dependency or instantiation timeout");
 
             try
             {

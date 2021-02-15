@@ -369,6 +369,69 @@ namespace LightBDD.Core.UnitTests.Dependencies
             Assert.IsTrue(resolved.OfType<Disposable2>().All(d => !d.Disposed));
         }
 
+        [Test]
+        public void Container_should_honor_transient_fallback_resolution_behavior()
+        {
+            using (var container = CreateContainer(opt => opt.ConfigureFallbackBehavior(FallbackResolveBehavior.ResolveTransient)))
+            {
+                Assert.AreNotEqual(container.Resolve<Disposable>(), container.Resolve<Disposable>());
+                using (var inner = container.BeginScope())
+                    Assert.AreNotEqual(container.Resolve<Disposable>(), inner.Resolve<Disposable>());
+            }
+        }
+
+
+        [Test]
+        public void Container_should_honor_throw_fallback_resolution_behavior()
+        {
+            using (var container = CreateContainer(opt => opt.ConfigureFallbackBehavior(FallbackResolveBehavior.Throw)))
+            {
+                Assert.Throws<InvalidOperationException>(() => container.Resolve<Disposable>());
+                using (var inner = container.BeginScope())
+                    Assert.Throws<InvalidOperationException>(() => inner.Resolve<Disposable>());
+            }
+        }
+
+        [Test]
+        public void Container_should_provide_context_for_registered_instances_when_resolution_fails_for_throw_fallback()
+        {
+            using (var container = CreateContainer(x =>
+            {
+                x.ConfigureFallbackBehavior(FallbackResolveBehavior.Throw);
+                x.RegisterInstance(new Disposable(), opt => opt.As<Disposable>().As<object>());
+                x.RegisterType<Disposable1>(InstanceScope.Transient);
+                x.RegisterType<Disposable2>(InstanceScope.Scenario, opt => opt.As<Disposable2>().As<IDisposable>());
+                x.RegisterType<Disposable3>(InstanceScope.Local);
+            }))
+            {
+                using (var scenario = container.BeginScope(LifetimeScope.Scenario))
+                using (var step = scenario.BeginScope(LifetimeScope.Local))
+                {
+                    var ex = Assert.Throws<InvalidOperationException>(() => step.Resolve<Disposable4>());
+                    Console.WriteLine(ex.Message);
+                    Assert.AreEqual($@"Unable to resolve type {typeof(Disposable4)}:
+No suitable registration has been found to resolve type {typeof(Disposable4)}.
+Available registrations:
+
+Container scope: #local
+{typeof(Disposable1)} -> #1 {typeof(Disposable1)} (Transient)
+{typeof(Disposable3)} -> #2 {typeof(Disposable3)} (Local)
+
+Container scope: #scenario
+{typeof(Disposable1)} -> #1 {typeof(Disposable1)} (Transient)
+{typeof(Disposable2)} -> #2 {typeof(Disposable2)} (Scenario)
+{typeof(Disposable3)} -> #3 {typeof(Disposable3)} (Local)
+{typeof(IDisposable)} -> #2 {typeof(Disposable2)} (Scenario)
+
+Container scope: #global
+{typeof(Disposable)} -> #1 {typeof(Disposable)} (Single)
+{typeof(Disposable1)} -> #2 {typeof(Disposable1)} (Transient)
+{typeof(Disposable3)} -> #3 {typeof(Disposable3)} (Local)
+{typeof(object)} -> #1 {typeof(Disposable)} (Single)".NormalizeNewLine(), ex.Message.NormalizeNewLine());
+                }
+            }
+        }
+
         protected override IDependencyContainer CreateContainer()
         {
             return CreateContainer(x => x.RegisterInstance(new DisposableSingleton()));

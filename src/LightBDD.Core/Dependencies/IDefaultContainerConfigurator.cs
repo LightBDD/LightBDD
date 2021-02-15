@@ -20,5 +20,10 @@ namespace LightBDD.Core.Dependencies
         /// Registers the given type using <paramref name="createFn"/> to instantiate it in given instance scope.
         /// </summary>
         void RegisterType<T>(InstanceScope scope, Func<IDependencyResolver, T> createFn, Action<RegistrationOptions> options = null);
+        /// <summary>
+        /// Configures fallback behavior for the types that are not explicitly registered.
+        /// The default option is <value>ResolveTransient</value>.
+        /// </summary>
+        void ConfigureFallbackBehavior(FallbackResolveBehavior fallbackBehavior);
     }
 }

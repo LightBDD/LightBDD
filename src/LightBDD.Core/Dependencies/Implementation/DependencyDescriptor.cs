@@ -8,7 +8,6 @@ namespace LightBDD.Core.Dependencies.Implementation
     class DependencyDescriptor
     {
         private static ConcurrentDictionary<Type, Func<IDependencyResolver, object>> _ctorCache = new ConcurrentDictionary<Type, Func<IDependencyResolver, object>>();
-
         public Type Type { get; }
         public Func<IDependencyResolver, object> ResolveFn { get; }
         public RegistrationOptions Registration { get; }
@@ -25,6 +24,8 @@ namespace LightBDD.Core.Dependencies.Implementation
             Scope = scope;
             InstantResolution = instantResolution;
         }
+
+        public override string ToString() => $"{Type} ({Scope})";
 
         public static Func<IDependencyResolver, object> FindConstructor(Type type)
         {
