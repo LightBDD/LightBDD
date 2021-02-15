@@ -1,58 +1,64 @@
-﻿namespace LightBDD.Core.Dependencies
+﻿using System;
+
+namespace LightBDD.Core.Dependencies
 {
     /// <summary>
-    /// Container and dependency registration lifetime scope.
+    /// Container lifetime scope.
     /// </summary>
-    public class LifetimeScope
+    public sealed class LifetimeScope
     {
         /// <summary>
-        /// Global lifetime used for objects shared across all nested scopes (like singletons).
+        /// Global scope created once and affecting all tests.
+        /// The global scope should be used by container root.
         /// </summary>
         public static readonly LifetimeScope Global = new LifetimeScope("#global");
         /// <summary>
-        /// Scenario lifetime used for objects shared across nested scoped of given scenario, but instantiated independently between scenarios.
+        /// Scenario scope created once per each scenario.
         /// </summary>
         public static readonly LifetimeScope Scenario = new LifetimeScope("#scenario");
         /// <summary>
-        /// Local lifetime used for objects shared within the current scope but not shared across the scopes.
+        /// Local scope created for all nested scopes such as composite steps.
         /// </summary>
         public static readonly LifetimeScope Local = new LifetimeScope("#local");
+        
         /// <summary>
-        /// Transient lifetime used for objects that are always instantiated upon request.
+        /// Scope name.
         /// </summary>
-        public static readonly LifetimeScope Transient = new LifetimeScope("#transient");
-        /// <summary>
-        /// Scope identifier
-        /// </summary>
-        public string Id { get; }
+        public string Name { get; }
 
-        private LifetimeScope(string id)
+        /// <summary>
+        /// Scope constructor.
+        /// </summary>
+        /// <param name="name">Scope name.</param>
+        public LifetimeScope(string name)
         {
-            Id = id;
+            Name = name??throw new ArgumentNullException(nameof(name));
         }
 
-        /// <summary>Determines whether the specified object is equal to the current object.</summary>
-        protected bool Equals(LifetimeScope other)
+        /// <summary>
+        /// Determines if <paramref name="other"/> is equal current scope.
+        /// </summary>
+        public bool Equals(LifetimeScope other)
         {
-            return Id == other.Id;
+            return Name == other?.Name;
         }
-
+        
         /// <inheritdoc />
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((LifetimeScope)obj);
         }
 
         /// <inheritdoc />
         public override int GetHashCode()
         {
-            return (Id != null ? Id.GetHashCode() : 0);
+            return (Name != null ? Name.GetHashCode() : 0);
         }
 
         /// <inheritdoc />
-        public override string ToString() => Id;
+        public override string ToString() => Name;
     }
 }

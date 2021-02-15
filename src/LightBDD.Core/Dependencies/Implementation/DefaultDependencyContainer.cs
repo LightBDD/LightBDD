@@ -23,15 +23,15 @@ namespace LightBDD.Core.Dependencies.Implementation
 
         private readonly DependencyFactory _dependencyFactory = new DependencyFactory();
         private readonly DefaultDependencyContainer _parent;
-        private readonly LifetimeScope _containerScope;
+        private readonly LifetimeScope _scope;
         private readonly ConcurrentQueue<IDisposable> _disposable = new ConcurrentQueue<IDisposable>();
         private readonly ConcurrentDictionary<Type, Slot> _items = new ConcurrentDictionary<Type, Slot>();
 
-        public DefaultDependencyContainer(LifetimeScope containerScope, Action<DependencyFactory> configuration = null) : this(null, containerScope, configuration) { }
-        private DefaultDependencyContainer(DefaultDependencyContainer parent, LifetimeScope containerScope, Action<DependencyFactory> configuration = null)
+        public DefaultDependencyContainer(LifetimeScope scope, Action<DependencyFactory> configuration = null) : this(null, scope, configuration) { }
+        private DefaultDependencyContainer(DefaultDependencyContainer parent, LifetimeScope scope, Action<DependencyFactory> configuration = null)
         {
             _parent = parent;
-            _containerScope = containerScope;
+            _scope = scope ?? throw new ArgumentNullException(nameof(scope));
             configuration?.Invoke(_dependencyFactory);
 
             foreach (var descriptor in GetTraversableDescriptors())
@@ -40,11 +40,17 @@ namespace LightBDD.Core.Dependencies.Implementation
 
         private IEnumerable<DependencyDescriptor> GetTraversableDescriptors()
         {
-            var parent = _parent?.GetTraversableDescriptors().Where(d =>
-                             !d.Lifetime.Equals(LifetimeScope.Global) && (!d.Lifetime.Equals(_parent._containerScope) || d.Lifetime.Equals(LifetimeScope.Local)))
+            var parent = _parent?.GetTraversableDescriptors().Where(_parent.IsInheritable)
                          ?? Enumerable.Empty<DependencyDescriptor>();
 
             return parent.Concat(_dependencyFactory.Descriptors);
+        }
+
+        private bool IsInheritable(DependencyDescriptor descriptor)
+        {
+            if (!descriptor.Scope.LifetimeScopeRestriction?.Equals(_scope) ?? false)
+                return true;
+            return !descriptor.Scope.IsSharedWithNestedScopes;
         }
 
         private void InitializeSlots(DependencyDescriptor descriptor)
@@ -63,10 +69,7 @@ namespace LightBDD.Core.Dependencies.Implementation
 
         private bool IsValidScope(DependencyDescriptor descriptor)
         {
-            return Equals(descriptor.Lifetime, LifetimeScope.Global)
-                   || Equals(descriptor.Lifetime, LifetimeScope.Transient)
-                   || Equals(descriptor.Lifetime, LifetimeScope.Local)
-                   || Equals(descriptor.Lifetime, _containerScope);
+            return descriptor.Scope.LifetimeScopeRestriction?.Equals(_scope) ?? true;
         }
 
         public object Resolve(Type type)
@@ -112,7 +115,7 @@ namespace LightBDD.Core.Dependencies.Implementation
 
             var descriptor = slot.Descriptor;
 
-            if (Equals(descriptor.Lifetime, LifetimeScope.Transient))
+            if (!descriptor.Scope.IsSharedInstance)
                 return InstantiateDependency(descriptor);
 
             if (!slot.Lock.Wait(TimeSpan.FromSeconds(10)))

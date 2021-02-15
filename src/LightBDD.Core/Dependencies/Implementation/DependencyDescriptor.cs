@@ -12,17 +12,17 @@ namespace LightBDD.Core.Dependencies.Implementation
         public Type Type { get; }
         public Func<IDependencyResolver, object> ResolveFn { get; }
         public RegistrationOptions Registration { get; }
-        public LifetimeScope Lifetime { get; }
+        public InstanceScope Scope { get; }
         public bool InstantResolution { get; }
 
-        public DependencyDescriptor(Type type, Func<IDependencyResolver, object> resolveFn, RegistrationOptions registration, LifetimeScope lifetime, bool instantResolution)
+        public DependencyDescriptor(Type type, Func<IDependencyResolver, object> resolveFn, RegistrationOptions registration, InstanceScope scope, bool instantResolution)
         {
             Type = type;
             ResolveFn = resolveFn;
             Registration = registration;
             if (!registration.AsTypes.Any())
                 registration.As(type);
-            Lifetime = lifetime;
+            Scope = scope;
             InstantResolution = instantResolution;
         }
 
