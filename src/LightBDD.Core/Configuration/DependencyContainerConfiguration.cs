@@ -48,6 +48,7 @@ namespace LightBDD.Core.Configuration
         /// </summary>
         /// <param name="configurator">Configuration function.</param>
         /// <returns>Self.</returns>
+        [Obsolete("Please migrate to " + nameof(UseDefault) + "() method instead")]
         public DependencyContainerConfiguration UseDefaultContainer(Action<ContainerConfigurator> configurator = null)
         {
             return UseContainer(new DefaultDependencyContainer(LifetimeScope.Global, configurator));
