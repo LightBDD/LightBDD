@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace LightBDD.Core.Dependencies.Implementation
 {
@@ -10,7 +9,7 @@ namespace LightBDD.Core.Dependencies.Implementation
 
         public IReadOnlyList<DependencyDescriptor> Descriptors => _descriptors;
 
-        public void RegisterSingleton(object instance, Action<RegistrationOptions> options = null)
+        public void RegisterInstance(object instance, Action<RegistrationOptions> options = null)
         {
             if (instance is null) throw new ArgumentNullException(nameof(instance));
             Register(instance.GetType(), _ => instance, options, InstanceScope.Single, true);
@@ -22,44 +21,14 @@ namespace LightBDD.Core.Dependencies.Implementation
             _descriptors.Add(new DependencyDescriptor(instance.GetType(), _ => instance, options, InstanceScope.Single, true));
         }
 
-        public void RegisterSingleton<T>(Action<RegistrationOptions> options = null)
+        public void RegisterType<T>(InstanceScope scope, Action<RegistrationOptions> options = null)
         {
-            Register(typeof(T), DependencyDescriptor.FindConstructor(typeof(T)), options, InstanceScope.Single, false);
+            Register(typeof(T), DependencyDescriptor.FindConstructor(typeof(T)), options, scope, false);
         }
 
-        public void RegisterSingleton<T>(Func<IDependencyResolver, T> createFn, Action<RegistrationOptions> options = null)
+        public void RegisterType<T>(InstanceScope scope, Func<IDependencyResolver, T> createFn, Action<RegistrationOptions> options = null)
         {
-            Register(typeof(T), r => createFn(r), options, InstanceScope.Single, false);
-        }
-
-        public void RegisterTransient<T>(Action<RegistrationOptions> options = null)
-        {
-            Register(typeof(T), DependencyDescriptor.FindConstructor(typeof(T)), options, InstanceScope.Transient, false);
-        }
-
-        public void RegisterTransient<T>(Func<IDependencyResolver, T> createFn, Action<RegistrationOptions> options = null)
-        {
-            Register(typeof(T), r => createFn(r), options, InstanceScope.Transient, false);
-        }
-
-        public void RegisterScenarioScoped<T>(Action<RegistrationOptions> options = null)
-        {
-            Register(typeof(T), DependencyDescriptor.FindConstructor(typeof(T)), options, InstanceScope.Scenario, false);
-        }
-
-        public void RegisterScenarioScoped<T>(Func<IDependencyResolver, T> createFn, Action<RegistrationOptions> options = null)
-        {
-            Register(typeof(T), r => createFn(r), options, InstanceScope.Scenario, false);
-        }
-
-        public void RegisterLocallyScoped<T>(Func<IDependencyResolver, T> createFn, Action<RegistrationOptions> options = null)
-        {
-            Register(typeof(T), r => createFn(r), options, InstanceScope.Local, false);
-        }
-
-        public void RegisterLocallyScoped<T>(Action<RegistrationOptions> options = null)
-        {
-            Register(typeof(T), DependencyDescriptor.FindConstructor(typeof(T)), options, InstanceScope.Local, false);
+            Register(typeof(T), r => createFn(r), options, scope, false);
         }
 
         private void Register(Type type, Func<IDependencyResolver, object> resolveFn, Action<RegistrationOptions> optionsFn, InstanceScope scope, bool instantResolution)

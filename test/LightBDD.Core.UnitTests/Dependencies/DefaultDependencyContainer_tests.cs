@@ -170,10 +170,10 @@ namespace LightBDD.Core.UnitTests.Dependencies
         {
             using (var container = CreateContainer(x =>
             {
-                x.RegisterSingleton<Disposable>();
-                x.RegisterScenarioScoped<Disposable1>();
-                x.RegisterLocallyScoped<Disposable2>();
-                x.RegisterTransient<Disposable3>();
+                x.RegisterType<Disposable>(InstanceScope.Single);
+                x.RegisterType<Disposable1>(InstanceScope.Scenario);
+                x.RegisterType<Disposable2>(InstanceScope.Local);
+                x.RegisterType<Disposable3>(InstanceScope.Transient);
             }))
             {
                 Assert.AreSame(container.Resolve<Disposable2>(), container.Resolve<Disposable2>());
@@ -211,7 +211,7 @@ namespace LightBDD.Core.UnitTests.Dependencies
         {
             using (var container = CreateContainer(x =>
             {
-                x.RegisterSingleton<SlowDependency>(opt => opt.As<SlowDependency>().As<object>());
+                x.RegisterType<SlowDependency>(InstanceScope.Single, opt => opt.As<SlowDependency>().As<object>());
             }))
             {
                 using (var scenario = container.BeginScope())
@@ -226,7 +226,7 @@ namespace LightBDD.Core.UnitTests.Dependencies
         }
 
         [Test]
-        public void RegisterSingleton_should_properly_honor_scopes()
+        public void Register_single_instances_should_properly_honor_scopes()
         {
             Disposable d;
             Disposable1 d1;
@@ -235,10 +235,10 @@ namespace LightBDD.Core.UnitTests.Dependencies
 
             using (var container = CreateContainer(x =>
             {
-                x.RegisterSingleton<Disposable>();
-                x.RegisterSingleton(_ => new Disposable1());
-                x.RegisterSingleton(new Disposable2());
-                x.RegisterSingleton(new Disposable3(), opt => opt.ExternallyOwned());
+                x.RegisterType<Disposable>(InstanceScope.Single);
+                x.RegisterType(InstanceScope.Single, _ => new Disposable1());
+                x.RegisterInstance(new Disposable2());
+                x.RegisterInstance(new Disposable3(), opt => opt.ExternallyOwned());
             }))
             {
                 d = container.Resolve<Disposable>();
@@ -262,7 +262,7 @@ namespace LightBDD.Core.UnitTests.Dependencies
         }
 
         [Test]
-        public void RegisterScenario_should_properly_honor_scopes()
+        public void Register_scenario_instances_should_properly_honor_scopes()
         {
             Disposable d;
             Disposable1 d1;
@@ -270,9 +270,9 @@ namespace LightBDD.Core.UnitTests.Dependencies
 
             using (var container = CreateContainer(x =>
             {
-                x.RegisterScenarioScoped<Disposable>();
-                x.RegisterScenarioScoped(_ => new Disposable1());
-                x.RegisterScenarioScoped(_ => new Disposable2(), opt => opt.ExternallyOwned());
+                x.RegisterType<Disposable>(InstanceScope.Scenario);
+                x.RegisterType(InstanceScope.Scenario, _ => new Disposable1());
+                x.RegisterType(InstanceScope.Scenario, _ => new Disposable2(), opt => opt.ExternallyOwned());
             }))
             {
                 using (var scenarioScope = container.BeginScope(LifetimeScope.Scenario))
@@ -296,7 +296,7 @@ namespace LightBDD.Core.UnitTests.Dependencies
         }
 
         [Test]
-        public void RegisterLocal_should_properly_honor_scopes()
+        public void Register_local_instances_should_properly_honor_scopes()
         {
             Disposable d;
             Disposable1 d1;
@@ -304,9 +304,9 @@ namespace LightBDD.Core.UnitTests.Dependencies
 
             using (var container = CreateContainer(x =>
             {
-                x.RegisterLocallyScoped<Disposable>();
-                x.RegisterLocallyScoped(_ => new Disposable1());
-                x.RegisterLocallyScoped(_ => new Disposable2(), opt => opt.ExternallyOwned());
+                x.RegisterType<Disposable>(InstanceScope.Local);
+                x.RegisterType(InstanceScope.Local, _ => new Disposable1());
+                x.RegisterType(InstanceScope.Local, _ => new Disposable2(), opt => opt.ExternallyOwned());
             }))
             {
                 d = container.Resolve<Disposable>();
@@ -331,15 +331,15 @@ namespace LightBDD.Core.UnitTests.Dependencies
         }
 
         [Test]
-        public void RegisterTransient_should_properly_honor_scopes()
+        public void Register_transient_instances_should_properly_honor_scopes()
         {
             var resolved = new List<IDisposable>();
             using (var container = CreateContainer(x =>
             {
-                x.RegisterTransient<Disposable>();
-                x.RegisterTransient(_ => new Disposable1());
-                x.RegisterTransient(_ => new Disposable2(), opt => opt.ExternallyOwned());
-                x.RegisterTransient<Disposable3>(opt => opt.ExternallyOwned());
+                x.RegisterType<Disposable>(InstanceScope.Transient);
+                x.RegisterType(InstanceScope.Transient, _ => new Disposable1());
+                x.RegisterType(InstanceScope.Transient, _ => new Disposable2(), opt => opt.ExternallyOwned());
+                x.RegisterType<Disposable3>(InstanceScope.Transient, opt => opt.ExternallyOwned());
             }))
             {
                 var d = container.Resolve<Disposable>();
@@ -371,7 +371,7 @@ namespace LightBDD.Core.UnitTests.Dependencies
 
         protected override IDependencyContainer CreateContainer()
         {
-            return CreateContainer(x => x.RegisterSingleton(new DisposableSingleton()));
+            return CreateContainer(x => x.RegisterInstance(new DisposableSingleton()));
         }
 
         private static IDependencyContainer CreateContainer(Action<IDefaultContainerConfigurator> configurator)
