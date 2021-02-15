@@ -103,7 +103,7 @@ namespace LightBDD.Core.Dependencies.Implementation
         {
             return _dependencyFactory.FallbackBehavior switch
             {
-                FallbackResolveBehavior.Throw => throw new InvalidOperationException($"No suitable registration has been found to resolve type {type}.{Environment.NewLine}Available registrations:{Environment.NewLine}{Environment.NewLine}{DumpSlots(this)}"),
+                FallbackResolveBehavior.ThrowException => throw new InvalidOperationException($"No suitable registration has been found to resolve type {type}.{Environment.NewLine}Available registrations:{Environment.NewLine}{Environment.NewLine}{DumpSlots(this)}"),
                 _ => EnlistDisposable(DependencyDescriptor.FindConstructor(type).Invoke(this))
             };
         }

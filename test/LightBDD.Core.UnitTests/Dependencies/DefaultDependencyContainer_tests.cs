@@ -384,7 +384,7 @@ namespace LightBDD.Core.UnitTests.Dependencies
         [Test]
         public void Container_should_honor_throw_fallback_resolution_behavior()
         {
-            using (var container = CreateContainer(opt => opt.ConfigureFallbackBehavior(FallbackResolveBehavior.Throw)))
+            using (var container = CreateContainer(opt => opt.ConfigureFallbackBehavior(FallbackResolveBehavior.ThrowException)))
             {
                 Assert.Throws<InvalidOperationException>(() => container.Resolve<Disposable>());
                 using (var inner = container.BeginScope())
@@ -397,7 +397,7 @@ namespace LightBDD.Core.UnitTests.Dependencies
         {
             using (var container = CreateContainer(x =>
             {
-                x.ConfigureFallbackBehavior(FallbackResolveBehavior.Throw);
+                x.ConfigureFallbackBehavior(FallbackResolveBehavior.ThrowException);
                 x.RegisterInstance(new Disposable(), opt => opt.As<Disposable>().As<object>());
                 x.RegisterType<Disposable1>(InstanceScope.Transient);
                 x.RegisterType<Disposable2>(InstanceScope.Scenario, opt => opt.As<Disposable2>().As<IDisposable>());
