@@ -99,7 +99,7 @@ namespace LightBDD.Core.Execution.Implementation
             if (!(result is CompositeStepResultDescriptor compositeDescriptor))
                 return Array.Empty<RunnableStep>();
 
-            _subStepScope = _stepContext.Container.BeginScope(compositeDescriptor.SubStepsContext.ScopeConfigurator);
+            _subStepScope = _stepContext.Container.BeginScope(LifetimeScope.Local, compositeDescriptor.SubStepsContext.ScopeConfigurator);
             var subStepsContext = InstantiateSubStepsContext(compositeDescriptor.SubStepsContext, _subStepScope);
             try
             {

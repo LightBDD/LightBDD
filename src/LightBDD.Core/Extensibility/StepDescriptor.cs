@@ -100,7 +100,7 @@ namespace LightBDD.Core.Extensibility
         public ParameterDescriptor[] Parameters { get; }
 
         /// <summary>
-        /// Returns exception occured during descriptor creation or <c>null</c> if descriptor is valid.
+        /// Returns exception occurred during descriptor creation or <c>null</c> if descriptor is valid.
         /// The value is set by <see cref="CreateInvalid"/> method.
         /// </summary>
         public Exception CreationException { get; }

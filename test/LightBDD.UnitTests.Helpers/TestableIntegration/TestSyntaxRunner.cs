@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework;
@@ -13,6 +14,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
         private readonly IBddRunner _coreRunner;
         private Func<object> _contextProvider;
         private bool _takeContextOwnership;
+        private Func<IDependencyResolver, object> _contextResolver;
 
         public TestSyntaxRunner(IBddRunner runner)
         {
@@ -43,6 +45,12 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
         {
             _takeContextOwnership = takeOwnership;
             _contextProvider = contextProvider;
+            return this;
+        }
+
+        public TestSyntaxRunner WithContext(Func<IDependencyResolver, object> contextResolver)
+        {
+            _contextResolver = contextResolver;
             return this;
         }
 
@@ -87,9 +95,11 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
         private ICoreScenarioBuilder NewScenario()
         {
             var scenarioRunner = _coreRunner.Integrate().Core;
-            return _contextProvider != null
-                ? scenarioRunner.WithContext(_contextProvider, _takeContextOwnership)
-                : scenarioRunner;
+            if (_contextProvider != null)
+                return scenarioRunner.WithContext(_contextProvider, _takeContextOwnership);
+            if (_contextResolver != null)
+                return scenarioRunner.WithContext(_contextResolver);
+            return scenarioRunner;
         }
 
         public void TestScenarioPurelySync(params StepDescriptor[] steps)

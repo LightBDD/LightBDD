@@ -22,12 +22,12 @@ namespace LightBDD.AcceptanceTests
             configuration.ReportWritersConfiguration()
                 .Add(new ReportFileWriter(new PlainTextReportFormatter(), "~" + Path.DirectorySeparatorChar + "Reports" + Path.DirectorySeparatorChar + "FeaturesReport.txt"));
 
-            configuration.DependencyContainerConfiguration().UseDefaultContainer(ConfigureContainer);
+            configuration.DependencyContainerConfiguration().UseDefault(ConfigureContainer);
         }
 
-        private void ConfigureContainer(ContainerConfigurator config)
+        private void ConfigureContainer(IDefaultContainerConfigurator config)
         {
-            config.RegisterInstance(new ResourcePool<ChromeDriver>(CreateDriver), new RegistrationOptions());
+            config.RegisterType(InstanceScope.Single, _ => new ResourcePool<ChromeDriver>(CreateDriver));
         }
 
         private ChromeDriver CreateDriver()

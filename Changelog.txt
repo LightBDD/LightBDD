@@ -1,8 +1,16 @@
 LightBDD
 ===========================================
 
-Version [next]]
+Version [next]
 ----------------------------------------
++ #219 (Core)(New) Added LifetimeScope and IDependencyContainerV2 with support for scope creation with explicit lifetime Ids such as Global, Scenario, Local
++ #219 (Core)(New) Added InstanceScope and reimplemented DefaultDependencyContainer to support dependency registration with Single, Local, Transient and Scenario scope
++ #219 (Core)(New) Added DependencyContainerConfiguration.UseDefault() allowing configuration of DefaultDependencyContainer
++ #219 (Core)(New) Added ConfigureFallbackBehavior() to DefaultDependencyContainer configuration with FallbackResolveBehavior allowing to resolve unregistered types as transient instances or throw exception forcing explicit instantiation
++ #219 (Core)(Change) Updated core engine to initialize container with LifetimeScope.Global, start scenarios with LifetimeScope.Scenario and composite steps with LifetimeScope.Local scopes
++ #219 (Framework)(New) Added ICompositeStepBuilder.WithContext() overloads allowing to create context using resolver and running additional configuration of the resolved instance with Action<TContext> onConfigure
++ #219 (LightBDD.Autofac)(Change) Updated Autofac integration to implement IDependencyContainerV2 and support InstancePerMatchingLifetimeScope(LifetimeScope.Scenario) registrations
++ #219 (LightBDD.LightBDD.Extensions.DependencyInjection)(Change) Updated DependencyInjection integration to share container scope between scenario and composite steps by default and made it configurable with DiContainerOptions.EnableScopeNestingWithinScenarios()
 + #214 (all) Updated all projects to target netstandard2.0 and net461, retiring previous framework support
 
 Version 3.2.0

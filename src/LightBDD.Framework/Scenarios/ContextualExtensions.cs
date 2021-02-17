@@ -1,5 +1,6 @@
 ﻿using System;
 using LightBDD.Framework.Scenarios.Implementation;
+using LightBDD.Core.Dependencies;
 
 namespace LightBDD.Framework.Scenarios
 {
@@ -55,7 +56,6 @@ namespace LightBDD.Framework.Scenarios
 
         /// <summary>
         /// Specifies that composite step will be executed in dedicated context of <typeparamref name="TContext"/> type, created by <paramref name="contextFactory"/> function.
-        /// The context instance will be created by calling default constructor just before scenario execution.
         /// 
         /// The <paramref name="takeOwnership"/> specifies if created context should be disposed (when implements <see cref="IDisposable"/> interface) by runner. By default is it set to <c>true</c>.
         /// </summary>
@@ -96,6 +96,46 @@ namespace LightBDD.Framework.Scenarios
         public static ICompositeStepBuilder<TContext> WithContext<TContext>(this ICompositeStepBuilder runner)
         {
             return new ContextualCompositeStepBuilder<TContext>(runner, resolver => resolver.Resolve(typeof(TContext)));
+        }
+
+        /// <summary>
+        /// Specifies that composite step will be executed in dedicated context <typeparamref name="TContext"/> type.
+        /// The context instance will be created by calling default constructor just before scenario execution.
+        /// 
+        /// All context instances implementing <see cref="IDisposable"/> interface will be disposed after scenario.
+        /// </summary>
+        /// <param name="runner"><see cref="ICompositeStepBuilder"/> instance.</param>
+        /// <param name="onConfigure">Custom context configuration executed after context creation. Can be null.</param>
+        /// <typeparam name="TContext">Context type.</typeparam>
+        /// <returns>Contextual runner.</returns>
+        public static ICompositeStepBuilder<TContext> WithContext<TContext>(this ICompositeStepBuilder runner, Action<TContext> onConfigure)
+        {
+            return new ContextualCompositeStepBuilder<TContext>(runner, resolver =>
+            {
+                var context = resolver.Resolve<TContext>();
+                onConfigure?.Invoke(context);
+                return context;
+            });
+        }
+
+        /// <summary>
+        /// Specifies that composite step will be executed in dedicated context <typeparamref name="TContext"/> type, created by <paramref name="contextFactory"/> function.
+        /// 
+        /// All context instances implementing <see cref="IDisposable"/> interface will be disposed after scenario.
+        /// </summary>
+        /// <param name="runner"><see cref="ICompositeStepBuilder"/> instance.</param>
+        /// <param name="contextFactory">Context factory function.</param>
+        /// <param name="onConfigure">Custom context configuration executed after context creation. Can be null.</param>
+        /// <typeparam name="TContext">Context type.</typeparam>
+        /// <returns>Contextual runner.</returns>
+        public static ICompositeStepBuilder<TContext> WithContext<TContext>(this ICompositeStepBuilder runner, Func<IDependencyResolver, TContext> contextFactory, Action<TContext> onConfigure = null)
+        {
+            return new ContextualCompositeStepBuilder<TContext>(runner, resolver =>
+            {
+                var context = contextFactory.Invoke(resolver);
+                onConfigure?.Invoke(context);
+                return context;
+            });
         }
     }
 }

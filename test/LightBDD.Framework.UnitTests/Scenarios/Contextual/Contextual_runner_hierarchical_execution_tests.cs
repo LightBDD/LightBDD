@@ -1,5 +1,6 @@
 ﻿using System;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Dependencies;
 using LightBDD.Framework.Scenarios;
 using LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers;
 using LightBDD.Framework.UnitTests.Scenarios.Helpers;
@@ -59,6 +60,31 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
             _builder.AddSteps(() => { });
             var ex = Assert.Throws<InvalidOperationException>(() => _builder.WithContext(ctx));
             Assert.That(ex.Message, Is.EqualTo("Step context can be specified only once, when no steps are specified yet."));
+        }
+
+        [Test]
+        public void It_should_allow_configuring_context_on_instantiation()
+        {
+            var stepGroup = _builder.WithContext<ConfigurableContext>(ctx => ctx.Text = "foo")
+                .Build();
+            var instance = (ConfigurableContext)ResolveInstance(stepGroup);
+            Assert.AreEqual("foo", instance.Text);
+        }
+
+        [Test]
+        public void It_should_allow_configuring_context_on_instantiation_when_using_resolver()
+        {
+            var stepGroup = _builder.WithContext(
+                    r => r.Resolve<ConfigurableContext>(),
+                    ctx => ctx.Text = "foo")
+                .Build();
+            var instance = (ConfigurableContext)ResolveInstance(stepGroup);
+            Assert.AreEqual("foo", instance.Text);
+        }
+
+        class ConfigurableContext
+        {
+            public string Text { get; set; }
         }
 
         private static object ResolveInstance(CompositeStep stepGroup)
