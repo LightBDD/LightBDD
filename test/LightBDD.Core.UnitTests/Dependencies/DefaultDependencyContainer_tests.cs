@@ -44,7 +44,7 @@ namespace LightBDD.Core.UnitTests.Dependencies
             using (var container = CreateContainer())
             {
                 var ex = Assert.Throws<InvalidOperationException>(() => container.Resolve<NoCtorType>());
-                Assert.That(ex.Message, Is.EqualTo($"Unable to resolve type {typeof(NoCtorType)}:{Environment.NewLine}Type '{typeof(NoCtorType)}' has to have have exactly one public constructor (number of public constructors: 0)."));
+                Assert.That(ex.Message, Is.EqualTo($"Unable to resolve type {typeof(NoCtorType)} from scope {LifetimeScope.Global}:{Environment.NewLine}Type '{typeof(NoCtorType)}' has to have have exactly one public constructor (number of public constructors: 0)."));
             }
         }
 
@@ -54,7 +54,7 @@ namespace LightBDD.Core.UnitTests.Dependencies
             using (var container = CreateContainer())
             {
                 var ex = Assert.Throws<InvalidOperationException>(() => container.Resolve<IDisposable>());
-                Assert.That(ex.Message, Is.EqualTo($"Unable to resolve type {typeof(IDisposable)}:{Environment.NewLine}Type '{typeof(IDisposable)}' has to be non-abstract class or value type."));
+                Assert.That(ex.Message, Is.EqualTo($"Unable to resolve type {typeof(IDisposable)} from scope {LifetimeScope.Global}:{Environment.NewLine}Type '{typeof(IDisposable)}' has to be non-abstract class or value type."));
             }
         }
 
@@ -64,7 +64,7 @@ namespace LightBDD.Core.UnitTests.Dependencies
             using (var container = CreateContainer())
             {
                 var ex = Assert.Throws<InvalidOperationException>(() => container.Resolve<Abstract>());
-                Assert.That(ex.Message, Is.EqualTo($"Unable to resolve type {typeof(Abstract)}:{Environment.NewLine}Type '{typeof(Abstract)}' has to be non-abstract class or value type."));
+                Assert.That(ex.Message, Is.EqualTo($"Unable to resolve type {typeof(Abstract)} from scope {LifetimeScope.Global}:{Environment.NewLine}Type '{typeof(Abstract)}' has to be non-abstract class or value type."));
             }
         }
 
@@ -74,7 +74,7 @@ namespace LightBDD.Core.UnitTests.Dependencies
             using (var container = CreateContainer())
             {
                 var ex = Assert.Throws<InvalidOperationException>(() => container.Resolve<MultiCtorType>());
-                Assert.That(ex.Message, Is.EqualTo($"Unable to resolve type {typeof(MultiCtorType)}:{Environment.NewLine}Type '{typeof(MultiCtorType)}' has to have have exactly one public constructor (number of public constructors: 2)."));
+                Assert.That(ex.Message, Is.EqualTo($"Unable to resolve type {typeof(MultiCtorType)} from scope {LifetimeScope.Global}:{Environment.NewLine}Type '{typeof(MultiCtorType)}' has to have have exactly one public constructor (number of public constructors: 2)."));
             }
         }
 
@@ -161,7 +161,13 @@ namespace LightBDD.Core.UnitTests.Dependencies
             using (var container = CreateContainer())
             {
                 var ex = Assert.Throws<InvalidOperationException>(() => container.Resolve<Holder<ProblematicType>>());
-                Assert.That(ex.Message, Is.EqualTo($"Unable to resolve type {typeof(Holder<ProblematicType>)}:{Environment.NewLine}Unable to resolve type {typeof(ProblematicType)}:{Environment.NewLine}Unable to resolve type {typeof(MultiCtorType)}:{Environment.NewLine}Type '{typeof(MultiCtorType)}' has to have have exactly one public constructor (number of public constructors: 2)."));
+                
+                Console.WriteLine(ex.Message);
+                
+                Assert.That(ex.Message.NormalizeNewLine(), Is.EqualTo($@"Unable to resolve type {typeof(Holder<ProblematicType>)} from scope #global:
+Unable to resolve type {typeof(ProblematicType)} from scope #global:
+Unable to resolve type {typeof(MultiCtorType)} from scope #global:
+Type '{typeof(MultiCtorType)}' has to have have exactly one public constructor (number of public constructors: 2).".NormalizeNewLine()));
             }
         }
 
@@ -409,7 +415,7 @@ namespace LightBDD.Core.UnitTests.Dependencies
                 {
                     var ex = Assert.Throws<InvalidOperationException>(() => step.Resolve<Disposable4>());
                     Console.WriteLine(ex.Message);
-                    Assert.AreEqual($@"Unable to resolve type {typeof(Disposable4)}:
+                    Assert.AreEqual($@"Unable to resolve type {typeof(Disposable4)} from scope {LifetimeScope.Local}:
 No suitable registration has been found to resolve type {typeof(Disposable4)}.
 Available registrations:
 
@@ -428,6 +434,37 @@ Container scope: #global
 {typeof(Disposable1)} -> #2 {typeof(Disposable1)} (Transient)
 {typeof(Disposable3)} -> #3 {typeof(Disposable3)} (Local)
 {typeof(object)} -> #1 {typeof(Disposable)} (Single)".NormalizeNewLine(), ex.Message.NormalizeNewLine());
+                }
+            }
+        }
+
+        [Test]
+        public void Resolve_failure_should_provide_details_of_the_issue()
+        {
+            using (var container = CreateContainer(x =>
+            {
+                x.ConfigureFallbackBehavior(FallbackResolveBehavior.ThrowException);
+                x.RegisterType<Struct>(InstanceScope.Single);
+                x.RegisterType<OtherComplex>(InstanceScope.Scenario);
+                x.RegisterType<Disposable>(InstanceScope.Scenario);
+                x.RegisterType<Complex>(InstanceScope.Transient);
+            }))
+            {
+                using (var scenario = container.BeginScope(LifetimeScope.Scenario))
+                using (var step = scenario.BeginScope(LifetimeScope.Local))
+                {
+                    var ex = Assert.Throws<InvalidOperationException>(() => step.Resolve<Complex>());
+                    Assert.That(ex.Message.NormalizeNewLine(), Is.EqualTo($@"Unable to resolve type {typeof(Complex)} from scope #local:
+Unable to instantiate type {typeof(Complex)} in scope #local:
+Unable to resolve type {typeof(Struct)} from scope #local:
+Unable to instantiate type {typeof(Struct)} in scope #global:
+Unable to resolve type {typeof(Disposable)} from scope #global:
+No suitable registration has been found to resolve type {typeof(Disposable)}.
+Available registrations:
+
+Container scope: #global
+{typeof(Complex)} -> #2 {typeof(Complex)} (Transient)
+{typeof(Struct)} -> #1 {typeof(Struct)} (Single)".NormalizeNewLine()));
                 }
             }
         }

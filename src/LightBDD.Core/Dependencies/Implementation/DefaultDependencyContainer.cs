@@ -95,7 +95,7 @@ namespace LightBDD.Core.Dependencies.Implementation
             }
             catch (Exception e)
             {
-                throw new InvalidOperationException($"Unable to resolve type {type}:{Environment.NewLine}{e.Message}", e);
+                throw new InvalidOperationException($"Unable to resolve type {type} from scope {_scope}:{Environment.NewLine}{e.Message}", e);
             }
         }
 
@@ -172,10 +172,17 @@ namespace LightBDD.Core.Dependencies.Implementation
 
         private object InstantiateDependency(DependencyDescriptor descriptor)
         {
-            var instance = descriptor.ResolveFn(this);
-            if (!descriptor.Registration.IsExternallyOwned)
-                return EnlistDisposable(instance);
-            return instance;
+            try
+            {
+                var instance = descriptor.ResolveFn(this);
+                if (!descriptor.Registration.IsExternallyOwned)
+                    return EnlistDisposable(instance);
+                return instance;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Unable to instantiate type {descriptor.Type} in scope {_scope}:{Environment.NewLine}{ex.Message}", ex);
+            }
         }
 
         public void Dispose()
