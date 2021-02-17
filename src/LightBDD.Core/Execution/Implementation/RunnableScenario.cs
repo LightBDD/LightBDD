@@ -151,7 +151,7 @@ namespace LightBDD.Core.Execution.Implementation
         {
             try
             {
-                return _scenarioContext.IntegrationContext.DependencyContainer.BeginScope(_contextDescriptor.ScopeConfigurator);
+                return _scenarioContext.IntegrationContext.DependencyContainer.BeginScope(LifetimeScope.Scenario, _contextDescriptor.ScopeConfigurator);
             }
             catch (Exception e)
             {

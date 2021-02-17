@@ -16,7 +16,7 @@ namespace LightBDD.Extensions.DependencyInjection.UnitTests
 
             var ex = Assert.Throws<ArgumentException>(() => new DependencyContainerConfiguration().UseContainer(serviceProvider, true));
             Assert.That(ex.Message,
-                Does.Contain($"The provided {typeof(FakeNonDisposableProvider).FullName} is not IDisposable and LightBDD cannot take proper ownership of the provider. Please consider specifying takeOwnership parameter to be false and manual disposal of the provider."));
+                Does.Contain($"The provided {typeof(FakeNonDisposableProvider).FullName} is not IDisposable and LightBDD cannot take proper ownership of the provider. Please consider disabling takeOwnership configuration flag and manual disposal of the provider."));
         }
 
         [Test]
