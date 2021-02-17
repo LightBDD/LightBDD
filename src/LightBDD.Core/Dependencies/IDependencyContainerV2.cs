@@ -15,6 +15,6 @@ namespace LightBDD.Core.Dependencies
         /// <param name="scope">Container scope</param>
         /// <param name="configuration">An additional configuration that, if specified, should be applied on the scope.</param>
         /// <returns>New scope.</returns>
-        IDependencyContainerV2 BeginScope(LifetimeScope scope, Action<ContainerConfigurator> configuration = null);
+        IDependencyContainerV2 BeginScope(LifetimeScope scope, Action<ContainerConfigurator>? configuration = null);
     }
 }

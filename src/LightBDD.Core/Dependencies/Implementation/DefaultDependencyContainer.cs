@@ -15,7 +15,7 @@ namespace LightBDD.Core.Dependencies.Implementation
             public int Id { get; }
             public readonly SemaphoreSlim Lock = new SemaphoreSlim(1);
             public readonly DependencyDescriptor Descriptor;
-            public object Instance;
+            public object? Instance;
 
             public Slot(int id, DependencyDescriptor descriptor)
             {
@@ -29,13 +29,13 @@ namespace LightBDD.Core.Dependencies.Implementation
         private static readonly TimeSpan ConcurrentInstantiationLockTimeout = TimeSpan.FromSeconds(10);
         private int _slotIdRef = 0;
         private readonly DependencyFactory _dependencyFactory;
-        private readonly DefaultDependencyContainer _parent;
+        private readonly DefaultDependencyContainer? _parent;
         private readonly LifetimeScope _scope;
         private readonly ConcurrentQueue<IDisposable> _disposable = new ConcurrentQueue<IDisposable>();
         private readonly ConcurrentDictionary<Type, Slot> _slots = new ConcurrentDictionary<Type, Slot>();
 
-        public DefaultDependencyContainer(LifetimeScope scope, Action<DependencyFactory> configuration = null) : this(null, scope, configuration) { }
-        private DefaultDependencyContainer(DefaultDependencyContainer parent, LifetimeScope scope, Action<DependencyFactory> configuration = null)
+        public DefaultDependencyContainer(LifetimeScope scope, Action<DependencyFactory>? configuration = null) : this(null, scope, configuration) { }
+        private DefaultDependencyContainer(DefaultDependencyContainer? parent, LifetimeScope scope, Action<DependencyFactory>? configuration = null)
         {
             _parent = parent;
             _scope = scope ?? throw new ArgumentNullException(nameof(scope));
@@ -81,7 +81,7 @@ namespace LightBDD.Core.Dependencies.Implementation
             return descriptor.Scope.LifetimeScopeRestriction?.Equals(_scope) ?? true;
         }
 
-        public object Resolve(Type type)
+        public object? Resolve(Type type)
         {
             try
             {
@@ -99,7 +99,7 @@ namespace LightBDD.Core.Dependencies.Implementation
             }
         }
 
-        private object FallbackResolve(Type type)
+        private object? FallbackResolve(Type type)
         {
             return _dependencyFactory.FallbackBehavior switch
             {
@@ -108,14 +108,14 @@ namespace LightBDD.Core.Dependencies.Implementation
             };
         }
 
-        private static string DumpSlots(DefaultDependencyContainer container)
+        private static string DumpSlots(DefaultDependencyContainer? container)
         {
             var sb = new StringBuilder();
             while (container != null)
             {
                 sb.Append("Container scope: ").Append(container._scope);
                 foreach (var slot in container._slots.OrderBy(x => x.Key.FullName))
-                    sb.AppendLine().Append(slot.Key).Append(" -> ").Append(slot.Value.ToString());
+                    sb.AppendLine().Append(slot.Key).Append(" -> ").Append(slot.Value);
                 container = container._parent;
 
                 if (container == null)
@@ -126,11 +126,11 @@ namespace LightBDD.Core.Dependencies.Implementation
             return sb.ToString();
         }
 
-        private static bool ResolveMapped(DefaultDependencyContainer container, Type type, out object cached)
+        private static bool ResolveMapped(DefaultDependencyContainer? container, Type type, out object? cached)
         {
             cached = null;
 
-            do
+            while (container != null)
             {
                 if (container._slots.TryGetValue(type, out var slot))
                 {
@@ -139,12 +139,12 @@ namespace LightBDD.Core.Dependencies.Implementation
                 }
 
                 container = container._parent;
-            } while (container != null);
+            } 
 
             return false;
         }
 
-        private object ResolveSlotted(Slot slot)
+        private object? ResolveSlotted(Slot slot)
         {
             if (slot.Instance != null)
                 return slot.Instance;
@@ -170,7 +170,7 @@ namespace LightBDD.Core.Dependencies.Implementation
             }
         }
 
-        private object InstantiateDependency(DependencyDescriptor descriptor)
+        private object? InstantiateDependency(DependencyDescriptor descriptor)
         {
             try
             {
@@ -209,15 +209,15 @@ namespace LightBDD.Core.Dependencies.Implementation
             throw new AggregateException("Failed to dispose dependencies", exceptions);
         }
 
-        public IDependencyContainer BeginScope(Action<ContainerConfigurator> configuration = null) =>
+        public IDependencyContainer BeginScope(Action<ContainerConfigurator>? configuration = null) =>
             BeginScope(LifetimeScope.Local, configuration);
 
-        public IDependencyContainerV2 BeginScope(LifetimeScope scope, Action<ContainerConfigurator> configuration = null)
+        public IDependencyContainerV2 BeginScope(LifetimeScope scope, Action<ContainerConfigurator>? configuration = null)
         {
             return new DefaultDependencyContainer(this, scope, configuration);
         }
 
-        private object EnlistDisposable(object item)
+        private object? EnlistDisposable(object? item)
         {
             if (item is IDisposable disposable)
                 _disposable.Enqueue(disposable);

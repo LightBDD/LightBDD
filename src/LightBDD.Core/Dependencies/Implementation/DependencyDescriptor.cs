@@ -7,14 +7,14 @@ namespace LightBDD.Core.Dependencies.Implementation
 {
     class DependencyDescriptor
     {
-        private static ConcurrentDictionary<Type, Func<IDependencyResolver, object>> _ctorCache = new ConcurrentDictionary<Type, Func<IDependencyResolver, object>>();
+        private static readonly ConcurrentDictionary<Type, Func<IDependencyResolver, object>> _ctorCache = new ConcurrentDictionary<Type, Func<IDependencyResolver, object>>();
         public Type Type { get; }
-        public Func<IDependencyResolver, object> ResolveFn { get; }
+        public Func<IDependencyResolver, object?> ResolveFn { get; }
         public RegistrationOptions Registration { get; }
         public InstanceScope Scope { get; }
         public bool InstantResolution { get; }
 
-        public DependencyDescriptor(Type type, Func<IDependencyResolver, object> resolveFn, RegistrationOptions registration, InstanceScope scope, bool instantResolution)
+        public DependencyDescriptor(Type type, Func<IDependencyResolver, object?> resolveFn, RegistrationOptions registration, InstanceScope scope, bool instantResolution)
         {
             Type = type;
             ResolveFn = resolveFn;

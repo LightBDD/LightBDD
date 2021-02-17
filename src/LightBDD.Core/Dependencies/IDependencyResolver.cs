@@ -12,6 +12,6 @@ namespace LightBDD.Core.Dependencies
         /// </summary>
         /// <param name="type">Dependency type.</param>
         /// <returns>Resolved dependency.</returns>
-        object Resolve(Type type);
+        object? Resolve(Type type);
     }
 }

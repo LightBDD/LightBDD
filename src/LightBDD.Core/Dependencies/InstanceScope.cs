@@ -43,12 +43,12 @@
         /// In most scenarios this value is <value>null</value>, thus the dependency registration is applied on the current container.<br/>
         /// If specified, the dependency registration will become applicable from the first matching container lifetime scope (i.e. current or nested).
         /// </summary>
-        public LifetimeScope LifetimeScopeRestriction { get; }
+        public LifetimeScope? LifetimeScopeRestriction { get; }
 
         /// <inheritdoc />
         public override string ToString() => Name;
 
-        private InstanceScope(string name, bool isSharedInstance, bool isSharedWithNestedScopes, LifetimeScope scopeRestriction = null)
+        private InstanceScope(string name, bool isSharedInstance, bool isSharedWithNestedScopes, LifetimeScope? scopeRestriction = null)
         {
             Name = name;
             IsSharedInstance = isSharedInstance;

@@ -12,7 +12,7 @@ namespace LightBDD.Core.Dependencies
         /// Resolves dependency of the specified type.
         /// </summary>
         /// <returns>Resolved instance.</returns>
-        public static IDependencyContainer BeginScope(this IDependencyContainer container, LifetimeScope scope, Action<ContainerConfigurator> configuration = null)
+        public static IDependencyContainer BeginScope(this IDependencyContainer container, LifetimeScope scope, Action<ContainerConfigurator>? configuration = null)
         {
             var v2 = (container as IDependencyContainerV2)
                      ?? new WrappingDependencyContainer(container);

@@ -14,7 +14,7 @@ namespace LightBDD.Core.Dependencies.Implementation
             FallbackBehavior = fallbackBehavior;
         }
 
-        public void RegisterInstance(object instance, Action<RegistrationOptions> options = null)
+        public void RegisterInstance(object instance, Action<RegistrationOptions>? options = null)
         {
             if (instance is null) throw new ArgumentNullException(nameof(instance));
             Register(instance.GetType(), _ => instance, options, InstanceScope.Single, true);
@@ -26,19 +26,19 @@ namespace LightBDD.Core.Dependencies.Implementation
             _descriptors.Add(new DependencyDescriptor(instance.GetType(), _ => instance, options, InstanceScope.Single, true));
         }
 
-        private void Register(Type type, Func<IDependencyResolver, object> resolveFn, Action<RegistrationOptions> optionsFn, InstanceScope scope, bool instantResolution)
+        private void Register(Type type, Func<IDependencyResolver, object?> resolveFn, Action<RegistrationOptions>? optionsFn, InstanceScope scope, bool instantResolution)
         {
             var registration = new RegistrationOptions();
             optionsFn?.Invoke(registration);
             _descriptors.Add(new DependencyDescriptor(type, resolveFn, registration, scope, instantResolution));
         }
 
-        public void RegisterType<T>(InstanceScope scope, Action<RegistrationOptions> options = null)
+        public void RegisterType<T>(InstanceScope scope, Action<RegistrationOptions>? options = null)
         {
             Register(typeof(T), DependencyDescriptor.FindConstructor(typeof(T)), options, scope, false);
         }
 
-        public void RegisterType<T>(InstanceScope scope, Func<IDependencyResolver, T> createFn, Action<RegistrationOptions> options = null)
+        public void RegisterType<T>(InstanceScope scope, Func<IDependencyResolver, T?> createFn, Action<RegistrationOptions>? options = null)
         {
             Register(typeof(T), r => createFn(r), options, scope, false);
         }
