@@ -25,7 +25,7 @@ High level features:
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Fixie" Version="2.2.1" />
+    <PackageReference Include="Fixie" Version="2.2.2" />
   </ItemGroup>
 
   <ItemGroup>
