@@ -11,9 +11,6 @@ LightBDD.MsTest2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MsTest
 LightBDD.Fixie2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Fixie2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Fixie2/) | .NET Framework >= 4.6.1 <br> .NET Core >= 2.0
 LightBDD.Autofac | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Autofac?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Autofac/) | .NET Standard >= 2.0 <br> .NET Framework >= 4.6.1
 LightBDD.Extensions.DependencyInjection | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Extensions.DependencyInjection?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Extensions.DependencyInjection/) | .NET Standard >= 2.0
-LightBDD.NUnit2 (2.x) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.NUnit2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.NUnit2/) | .NET Framework >= 4.5
-LightBDD.MbUnit (1.x) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MbUnit?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.MbUnit/) | .NET Framework >= 4.0
-LightBDD.MsTest (1.x) | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MsTest?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.MsTest/) | .NET Framework >= 4.0
 
 Have you ever been using the BDD methodology? Yes? - cool.
 Now, have you tried to write stories or acceptance criteria using tools like [SpecFlow](http://www.specflow.org/) or [Fitnesse](http://fitnesse.org/)?
@@ -27,10 +24,6 @@ This additional layer becomes the root of most problems when maintaining tests, 
 
 ## Project description
 **LightBDD** is a behaviour-driven development test framework offering ability to write tests that are easy to read, easy to track during execution and summarize in user friendly report, while allowing developers to use all of the standard development tools to maintain them.
-
-### Migrating LightBDD
-
-LightBDD is now in version 3! To find out how to migrate from previous versions, please visit [Migrating LightBDD Versions](https://github.com/LightBDD/LightBDD/wiki/Migrating-LightBDD-Versions) wiki page.
 
 ### Features
 * Native support for refactoring, code analysis (like finding unused methods), test running and all features that Visual Studio / Intellisense / Resharper offer during code development,
@@ -59,19 +52,19 @@ I want to login into system")] //feature description
 [Label("Story-1")]
 public partial class Login_feature //feature name
 {
-	[Scenario]
-	[Label("Ticket-1")]
-	public void Successful_login() //scenario name
-	{
-		Runner.RunScenario(
+   [Scenario]
+   [Label("Ticket-1")]
+   public void Successful_login() //scenario name
+   {
+      Runner.RunScenario(
 
-			Given_the_user_is_about_to_login, //steps
-			Given_the_user_entered_valid_login,
-			Given_the_user_entered_valid_password,
-			When_the_user_clicks_login_button,
-			Then_the_login_operation_should_be_successful,
-			Then_a_welcome_message_containing_user_name_should_be_returned);
-	}
+         Given_the_user_is_about_to_login, //steps
+         Given_the_user_entered_valid_login,
+         Given_the_user_entered_valid_password,
+         When_the_user_clicks_login_button,
+         Then_the_login_operation_should_be_successful,
+         Then_a_welcome_message_containing_user_name_should_be_returned);
+   }
 }
 
 [FeatureDescription(
@@ -81,20 +74,20 @@ I want to receive invoice for bought items")] //feature description
 [Label("Story-2")]
 public partial class Invoice_feature //feature name
 {
-	[Scenario]
-	[Label("Ticket-2")]
-	public void Receiving_invoice_for_products() //scenario name
-	{
-		Runner.RunScenario(
+   [Scenario]
+   [Label("Ticket-2")]
+   public void Receiving_invoice_for_products() //scenario name
+   {
+      Runner.RunScenario(
 
-			_ => Given_product_is_available_in_product_storage("wooden desk"), //steps
-			_ => Given_product_is_available_in_product_storage("wooden shelf"),
-			_ => When_customer_buys_product("wooden desk"),
-			_ => When_customer_buys_product("wooden shelf"),
-			_ => Then_an_invoice_should_be_sent_to_the_customer(),
-			_ => Then_the_invoice_should_contain_product_with_price_of_AMOUNT("wooden desk", 62),
-			_ => Then_the_invoice_should_contain_product_with_price_of_AMOUNT("wooden shelf", 37));
-	}
+         _ => Given_product_is_available_in_product_storage("wooden desk"), //steps
+         _ => Given_product_is_available_in_product_storage("wooden shelf"),
+         _ => When_customer_buys_product("wooden desk"),
+         _ => When_customer_buys_product("wooden shelf"),
+         _ => Then_an_invoice_should_be_sent_to_the_customer(),
+         _ => Then_the_invoice_should_contain_product_with_price_of_AMOUNT("wooden desk", 62),
+         _ => Then_the_invoice_should_contain_product_with_price_of_AMOUNT("wooden shelf", 37));
+   }
 }
 ```
 The above example shows feature *partial* classes containing only scenario definitions, which makes it easy to read.
@@ -105,35 +98,38 @@ All method implementations are separated and put in other files.
 ```C#
 public partial class Login_feature : FeatureFixture
 {
-	private const string _validUserName = "admin";
-	private const string _validPassword = "password";
+   private const string _validUserName = "admin";
+   private const string _validPassword = "password";
 
-	private LoginRequest _loginRequest;
-	private LoginService _loginService;
-	private LoginResult _loginResult;
+   private LoginRequest _loginRequest;
+   private LoginService _loginService;
+   private LoginResult _loginResult;
 
-	private void Given_user_is_about_to_login()
-	{
-		_loginService = new LoginService();
-		_loginService.AddUser(_validUserName, _validPassword);
-		_loginRequest = new LoginRequest();
-	}
-	/* ... */
+   private void Given_user_is_about_to_login()
+   {
+      _loginService = new LoginService();
+      _loginService.AddUser(_validUserName, _validPassword);
+      _loginRequest = new LoginRequest();
+   }
+
+   /* ... */
 }
 
 public partial class Invoice_feature : FeatureFixture
 {
-	private void Given_product_is_available_in_product_storage(string product) { /* ... */ }
+   private void Given_product_is_available_in_product_storage(string product) { /* ... */ }
 
-	private void When_customer_buys_product(string product) { /* ... */ }
+   private void When_customer_buys_product(string product) { /* ... */ }
 
-	private void Then_an_invoice_should_be_sent_to_the_customer() { /* ... */ }
+   private void Then_an_invoice_should_be_sent_to_the_customer() { /* ... */ }
 
-	private void Then_the_invoice_should_contain_product_with_price_of_AMOUNT(string product, int amount)
-	{ /* ... */ }
-	/* ... */
+   private void Then_the_invoice_should_contain_product_with_price_of_AMOUNT(string product, int amount)
+   { /* ... */ }
+
+   /* ... */
 }
 ```
+
 With partial classes, it is possible to keep all methods describing steps as **private**, which makes scenarios easier to read and allows tools like Resharper to mark them if they are no longer used, making maintenance easier.
 
 ### Example console output during tests execution:
@@ -205,28 +201,14 @@ The LightBDD is available on [NuGet](https://www.nuget.org/packages?q=LightBDD):
 The VSIX extension can be downloaded from: [Visual Studio Gallery](https://marketplace.visualstudio.com/items?itemName=Suremaker.lightbdd) (Visual Studio 2012 and newer versions supported).  
 More information can be found on wiki page: [Visual Studio Extensions](https://github.com/LightBDD/LightBDD/wiki/Visual-Studio-Extensions).
 
+### Migrating LightBDD
+The current series is LightBDD 3.x. To find out how to migrate from previous versions, please visit [Migrating LightBDD Versions](https://github.com/LightBDD/LightBDD/wiki/Migrating-LightBDD-Versions) wiki page.
+
 ## Wiki
 Please check project [wiki](https://github.com/LightBDD/LightBDD/wiki) for more details.
 
 ## Debugging LightBDD from NuGet packages
-
-LightBDD supports two modes of exposing symbol packages for debugging:
-1. via [SourceLink](https://github.com/dotnet/sourcelink)
-
-    The LightBDD projects are now integrated with SourceLink, which should make debugging seamless for people using Visual Studio 15.3+ or other tools supporting it.
-
-2. via [SymbolSource](https://github.com/SymbolSource/SymbolSource)
-
-    The nuget packages for LightBDD are being pushed together with symbol packages.
-    [The easy way to publish NuGet packages with sources](http://blog.davidebbo.com/2011/04/easy-way-to-publish-nuget-packages-with.html) article describes how to enable debugging with symbols downloaded from **SymbolSource.org**. Please check *What the package Consumer needs to do* article section for details.
-
-    In short, it is needed to do two actions in Visual Studio:
-    * go to TOOLS->Options->Debugging->General and uncheck 'Enable Just My Code',
-    * go to TOOLS->Options->Debugging->General and check 'Enable source server support',
-    * go to TOOLS->Options->Debugging->Symbols and add 'https://nuget.smbsrc.net' as a symbol location (please note that former 'http://srv.symbolsource.org/pdb/Public' is deprecated now)
-
-    More information on: [http://www.symbolsource.org/Public/Home/VisualStudio](http://www.symbolsource.org/Public/Home/VisualStudio).
+LightBDD provides debug symbols helping with diagnostics - please check [Debugging LightBDD Scenarios](https://github.com/LightBDD/LightBDD/wiki/Debugging-LightBDD-Scenarios) for details.
 
 ## More information about LightBDD
-
 If you are interested about background of LightBDD creation or getting insight into what is driving it's evolution, please feel free to take a look at my [blog posts](http://woitech.eu/blog/category/lightbdd/).

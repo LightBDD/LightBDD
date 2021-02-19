@@ -3,6 +3,10 @@ LightBDD
 
 Version [next]
 ----------------------------------------
+
+Version 3.3.0
+----------------------------------------
++ #221 (VSIX)(Change) Merged Project templates and updated TargetFramework to net5
 + #219 (Core)(New) Added LifetimeScope and IDependencyContainerV2 with support for scope creation with explicit lifetime Ids such as Global, Scenario, Local
 + #219 (Core)(New) Added InstanceScope and reimplemented DefaultDependencyContainer to support dependency registration with Single, Local, Transient and Scenario scope
 + #219 (Core)(New) Added DependencyContainerConfiguration.UseDefault() allowing configuration of DefaultDependencyContainer
@@ -12,7 +16,7 @@ Version [next]
 + #219 (LightBDD.Autofac)(Change) Updated Autofac integration to implement IDependencyContainerV2 and support InstancePerMatchingLifetimeScope(LifetimeScope.Scenario) registrations
 + #219 (LightBDD.LightBDD.Extensions.DependencyInjection)(Change) Updated DependencyInjection integration to share container scope between scenario and composite steps by default and made it configurable with DiContainerOptions.EnableScopeNestingWithinScenarios()
 + #214 (all) Updated all projects to target netstandard2.0 and net461, retiring previous framework support
-+ #221 (VSIX)(Change) Merged Project templates and updated TargetFramework to net5
++ (LightBDD.Fixie2)(Change) Updated Fixie version to 2.2.2
 
 Version 3.2.0
 ----------------------------------------

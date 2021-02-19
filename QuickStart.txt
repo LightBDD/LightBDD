@@ -11,4 +11,4 @@ Other quick links:
 * project web site: https://github.com/LightBDD/LightBDD
 * project wiki: https://github.com/LightBDD/LightBDD/wiki
 * example projects: https://github.com/LightBDD/LightBDD/tree/master/examples
-* Visual Studio Item Templates: https://marketplace.visualstudio.com/items?itemName=Suremaker.LightBDDforVisualStudio
+* Visual Studio Item Templates: https://marketplace.visualstudio.com/items?itemName=Suremaker.LightBDD
