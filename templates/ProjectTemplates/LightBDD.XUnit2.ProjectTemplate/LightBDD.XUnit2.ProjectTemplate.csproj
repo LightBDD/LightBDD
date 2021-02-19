@@ -9,11 +9,11 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>{3F97164C-BABB-44F7-888B-E595030F9AEE}</ProjectGuid>
+    <ProjectGuid>{1EBDCE2F-215D-4A19-ABC0-0EA09A512975}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LightBDD.Fixie2.NetFramework.ProjectTemplate</RootNamespace>
-    <AssemblyName>LightBDD.Fixie2.NetFramework.ProjectTemplate</AssemblyName>
+    <RootNamespace>LightBDD.XUnit2.NetCore.ProjectTemplate</RootNamespace>
+    <AssemblyName>LightBDD.XUnit2.NetCore.ProjectTemplate</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
@@ -54,15 +54,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="ConfiguredLightBddScope.cs" />
     <None Include="My_feature.cs" />
     <None Include="My_feature.Steps.cs" />
     <None Include="lightbdd.ico" />
     <None Include="ProjectTemplate.csproj" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <VSTemplate Include="LightBDD.Fixie2.NetFramework.ProjectTemplate.vstemplate">
+    <VSTemplate Include="LightBDD.XUnit2.ProjectTemplate.vstemplate">
       <OutputSubPath>LightBDD</OutputSubPath>
     </VSTemplate>
   </ItemGroup>

@@ -9,11 +9,11 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>{2AC3866E-95A0-4DC8-9596-AA663F1E6DA9}</ProjectGuid>
+    <ProjectGuid>{75DB73FE-2995-4EA6-80E0-9A079EE8BAFA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LightBDD.NUnit3.NetCore.ProjectTemplate</RootNamespace>
-    <AssemblyName>LightBDD.NUnit3.NetCore.ProjectTemplate</AssemblyName>
+    <RootNamespace>LightBDD.MsTest2.NetCore.ProjectTemplate</RootNamespace>
+    <AssemblyName>LightBDD.MsTest2.NetCore.ProjectTemplate</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
@@ -64,7 +64,7 @@
     <None Include="ProjectTemplate.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <VSTemplate Include="LightBDD.NUnit3.NetCore.ProjectTemplate.vstemplate">
+    <VSTemplate Include="LightBDD.MsTest2.ProjectTemplate.vstemplate">
       <OutputSubPath>LightBDD</OutputSubPath>
     </VSTemplate>
   </ItemGroup>
