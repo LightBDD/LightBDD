@@ -12,9 +12,9 @@
     <ProjectGuid>{07E95C84-7731-46EB-BC35-E752D4ACD42F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LightBDD.Fixie2.NetCore.ProjectTemplate</RootNamespace>
-    <AssemblyName>LightBDD.Fixie2.NetCore.ProjectTemplate</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>LightBDD.Fixie2.ProjectTemplate</RootNamespace>
+    <AssemblyName>LightBDD.Fixie2.ProjectTemplate</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>

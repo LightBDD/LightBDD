@@ -12,9 +12,9 @@
     <ProjectGuid>{1EBDCE2F-215D-4A19-ABC0-0EA09A512975}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LightBDD.XUnit2.NetCore.ProjectTemplate</RootNamespace>
-    <AssemblyName>LightBDD.XUnit2.NetCore.ProjectTemplate</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>LightBDD.XUnit2.ProjectTemplate</RootNamespace>
+    <AssemblyName>LightBDD.XUnit2.ProjectTemplate</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
