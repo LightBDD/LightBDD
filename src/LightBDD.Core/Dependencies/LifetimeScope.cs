@@ -12,15 +12,17 @@ namespace LightBDD.Core.Dependencies
         /// The global scope should be used by container root.
         /// </summary>
         public static readonly LifetimeScope Global = new LifetimeScope("#global");
+
         /// <summary>
         /// Scenario scope created once per each scenario.
         /// </summary>
         public static readonly LifetimeScope Scenario = new LifetimeScope("#scenario");
+
         /// <summary>
         /// Local scope created for all nested scopes such as composite steps.
         /// </summary>
         public static readonly LifetimeScope Local = new LifetimeScope("#local");
-        
+
         /// <summary>
         /// Scope name.
         /// </summary>
@@ -32,7 +34,7 @@ namespace LightBDD.Core.Dependencies
         /// <param name="name">Scope name.</param>
         public LifetimeScope(string name)
         {
-            Name = name??throw new ArgumentNullException(nameof(name));
+            Name = name ?? throw new ArgumentNullException(nameof(name));
         }
 
         /// <summary>
@@ -42,7 +44,7 @@ namespace LightBDD.Core.Dependencies
         {
             return Name == other?.Name;
         }
-        
+
         /// <inheritdoc />
         public override bool Equals(object obj)
         {
