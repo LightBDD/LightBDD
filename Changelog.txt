@@ -12,6 +12,7 @@ Version [next]
 + #219 (LightBDD.Autofac)(Change) Updated Autofac integration to implement IDependencyContainerV2 and support InstancePerMatchingLifetimeScope(LifetimeScope.Scenario) registrations
 + #219 (LightBDD.LightBDD.Extensions.DependencyInjection)(Change) Updated DependencyInjection integration to share container scope between scenario and composite steps by default and made it configurable with DiContainerOptions.EnableScopeNestingWithinScenarios()
 + #214 (all) Updated all projects to target netstandard2.0 and net461, retiring previous framework support
++ #221 (VSIX)(Change) Merged Project templates and updated TargetFramework to net5
 
 Version 3.2.0
 ----------------------------------------
