@@ -9,12 +9,12 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>{45823098-2947-412A-946B-4E14A7811563}</ProjectGuid>
+    <ProjectGuid>{07E95C84-7731-46EB-BC35-E752D4ACD42F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LightBDD.MsTest2.NetFramework.ProjectTemplate</RootNamespace>
-    <AssemblyName>LightBDD.MsTest2.NetFramework.ProjectTemplate</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>LightBDD.Fixie2.ProjectTemplate</RootNamespace>
+    <AssemblyName>LightBDD.Fixie2.ProjectTemplate</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
@@ -64,7 +64,7 @@
     <None Include="ProjectTemplate.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <VSTemplate Include="LightBDD.MsTest2.NetFramework.ProjectTemplate.vstemplate">
+    <VSTemplate Include="LightBDD.Fixie2.ProjectTemplate.vstemplate">
       <OutputSubPath>LightBDD</OutputSubPath>
     </VSTemplate>
   </ItemGroup>

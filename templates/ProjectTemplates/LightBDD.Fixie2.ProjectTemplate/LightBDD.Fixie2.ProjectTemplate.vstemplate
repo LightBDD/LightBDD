@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
   <TemplateData>
-    <Name>LightBDD.NUnit3 (.NET Framework)</Name>
-    <Description>LightBDD.NUnit3 Project (.NET Framework)</Description>
+    <Name>LightBDD.Fixie2</Name>
+    <Description>LightBDD.Fixie2 Project</Description>
     <Icon>lightbdd.ico</Icon>
     <ProjectType>CSharp</ProjectType>
     <ProjectSubType></ProjectSubType>

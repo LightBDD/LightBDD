@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>net5</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="LightBDD.Fixie2" Version="3.3.0" />
-    <PackageReference Include="Fixie" Version="2.2.1" />
-    <DotNetCliToolReference Include="Fixie.Console" Version="2.2.1" />
+    <PackageReference Include="Fixie" Version="2.2.2" />
+    <DotNetCliToolReference Include="Fixie.Console" Version="2.2.2" />
   </ItemGroup>
 
   <ItemGroup>
