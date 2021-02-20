@@ -9,9 +9,9 @@ namespace LightBDD.Core.Dependencies
     public static class DependencyContainerExtensions
     {
         /// <summary>
-        /// Resolves dependency of the specified type.
+        /// Begins the container scope using <see cref="LifetimeScope"/> specified by <paramref name="scope"/> and optional configuration.
         /// </summary>
-        /// <returns>Resolved instance.</returns>
+        /// <returns>New container scope.</returns>
         public static IDependencyContainer BeginScope(this IDependencyContainer container, LifetimeScope scope, Action<ContainerConfigurator> configuration = null)
         {
             var v2 = (container as IDependencyContainerV2)

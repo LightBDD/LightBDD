@@ -9,7 +9,7 @@ namespace LightBDD.Core.Dependencies
     {
         /// <summary>
         /// Registers the given instance as singleton.
-        /// The instance is shared with nested scopes, unless overridden.
+        /// The instance is shared with nested scopes.
         /// </summary>
         void RegisterInstance(object instance, Action<RegistrationOptions> options = null);
         /// <summary>

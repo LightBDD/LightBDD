@@ -59,11 +59,12 @@ namespace LightBDD.Core.Configuration
         /// If specified, the <paramref name="configurator"/> function is used to configure the container.<br/>
         ///
         /// The default DI container features are:<br/>
-        /// * it allows to resolve types (classes and structures) with 1 public constructor,<br/>
-        /// * it supports constructor dependency injections,<br/>
-        /// * it supports singleton registrations with <see cref="ContainerConfigurator"/>,<br/>
-        /// * it supports disposal of dependencies upon disposal, if dependency implements <see cref="IDisposable"/> interface,<br/>
-        /// * it supports container scopes.
+        /// * automatic resolution of types (classes and structures) with 1 public constructor,<br/>
+        /// * customizable resolution of types using factory method,<br/>
+        /// * constructor dependency injections,<br/>
+        /// * single, scenario, local and transient <see cref="InstanceScope"/> registrations,<br/>
+        /// * disposal of dependencies implementing <see cref="IDisposable"/> interface,<br/>
+        /// * container <see cref="LifetimeScope"/> to manage instances within global, scenario, nested local scopes.
         /// </summary>
         /// <param name="configurator">Configuration function.</param>
         /// <returns>Self.</returns>
