@@ -7,20 +7,10 @@ Build | [![Build status](https://ci.appveyor.com/api/projects/status/xkd7qc950o0
 Chat (gitter) | [![Join the chat at https://gitter.im/LightBDD/LightBDD](https://badges.gitter.im/LightBDD/LightBDD.svg)](https://gitter.im/LightBDD/LightBDD?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) | 
 LightBDD.NUnit3 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.NUnit3?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.NUnit3/) | .NET Standard >= 2.0 <br> .NET Framework >= 4.6.1 <br> .NET Core >= 2.0
 LightBDD.XUnit2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.XUnit2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.XUnit2/) | .NET Standard >= 2.0 <br> .NET Framework >= 4.6.1 <br> .NET Core >= 2.0
-LightBDD.MsTest2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MsTest2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.MsTest2/) | .NET Standard >= 2.0 <br> .NET Framework >= 4.6.1 <br> .NET Core >= 2.0 <br> UWP
+LightBDD.MsTest2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MsTest2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.MsTest2/) | .NET Standard >= 2.0 <br> .NET Framework >= 4.6.1 <br> .NET Core >= 2.0 <br> UWP >= 10.0.16299
 LightBDD.Fixie2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Fixie2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Fixie2/) | .NET Framework >= 4.6.1 <br> .NET Core >= 2.0
 LightBDD.Autofac | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Autofac?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Autofac/) | .NET Standard >= 2.0 <br> .NET Framework >= 4.6.1
 LightBDD.Extensions.DependencyInjection | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Extensions.DependencyInjection?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Extensions.DependencyInjection/) | .NET Standard >= 2.0
-
-Have you ever been using the BDD methodology? Yes? - cool.
-Now, have you tried to write stories or acceptance criteria using tools like [SpecFlow](http://www.specflow.org/) or [Fitnesse](http://fitnesse.org/)?
-If you have (or have used other similar frameworks) perhaps you came to the point where the test projects contained tens of scenarios or you had multiple projects with a lot of acceptance tests.
-You might have also come to the point where you had to modify those tests because the requirements changed, or adjust them to the modified class interfaces after refactoring.
-It is no longer fun, is it?
-
-The difficulty with these frameworks is that they are using a totally different language than the one in which the code is written.
-Because of that, they try to provide translation layers between the text in which the stories are written and code in which the stories are executed.
-This additional layer becomes the root of most problems when maintaining tests, mostly because it lacks integration with development tools, which means that there is no support for refactoring, code analysis (like showing unused methods) etc, or a good integrated environment for running those tests.
 
 ## Project description
 **LightBDD** is a behaviour-driven development test framework offering ability to write tests that are easy to read, easy to track during execution and summarize in user friendly report, while allowing developers to use all of the standard development tools to maintain them.
@@ -33,17 +23,24 @@ This additional layer becomes the root of most problems when maintaining tests, 
 * Support for advanced in-line and tabular verifiable parameters,
 * Support for contextual scenario execution where steps shares dedicated context,
 * Support for DI containers,
-* Feature report generation in XML, HTML or Plain text format,
+* Feature report generation in HTML, XML or Plain text format,
 * In-code LightBDD configuration allowing to customize all LightBDD features,
-* VisualStudio extension with Feature Class Templates, Project Templates and Code Snippets ([see details](#vs-extension)),
-* Integrated with [NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/), [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/) and [Fixie](http://fixie.github.io/) frameworks,
+* Productivity extensions for VisualStudio with Feature Class Templates, Project Templates and **Code Snippets** ([see details](#productivity-extensions-for-visual-studio)),
+* Integration with [NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/), [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/) and [Fixie](http://fixie.github.io/) frameworks,
 * Async scenario and steps execution support,
 * Cross-platform support (.NET Framework / .NET Standard / .NET Core / UWP).
 
 ### Tests structure and conventions
-**LightBDD** is integrated with well known testing frameworks ([NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/), [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/) and [Fixie](http://fixie.github.io/)) which makes it very easy to learn, adapt and use - please see [Tests Structure and Conventions](https://github.com/LightBDD/LightBDD/wiki/Tests-structure-and-conventions) wiki section for details.
+**LightBDD** runs on top of [NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/), [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/) and [Fixie](http://fixie.github.io/), allowing to leverage the well known test frameworks and their features in writing the behavioral style tests, which makes it very easy to learn, adapt and use.
 
-### Example 
+To learn more, please see [Project wiki page](https://github.com/LightBDD/LightBDD/wiki), or jump straight to:
+* [Quick Start](https://github.com/LightBDD/LightBDD/wiki/Quick-Start) and followup documentation pages,
+* [What Is New](https://github.com/LightBDD/LightBDD/wiki/What-Is-New) section with newest features introduced in the library,
+* [Examples](https://github.com/LightBDD/LightBDD/tree/master/examples) demonstrating features and integrations of LightBDD,
+* [Tutorials](https://github.com/LightBDD/LightBDD.Tutorials) providing complete sample projects leveraging LightBDD features.
+
+### Example
+
 ```C#
 [FeatureDescription(
 @"In order to access personal data
@@ -90,49 +87,24 @@ public partial class Invoice_feature //feature name
    }
 }
 ```
-The above example shows feature *partial* classes containing only scenario definitions, which makes it easy to read.
-The `Login_feature` class uses basic scenario format for defining scenario steps.
-The `Invoice_feature` class uses extended scenario format allowing to use parameterized steps.
 
-All method implementations are separated and put in other files.
-```C#
-public partial class Login_feature : FeatureFixture
-{
-   private const string _validUserName = "admin";
-   private const string _validPassword = "password";
+The above example shows feature *partial* classes containing only scenario definitions, which makes it easy to read.  
+The `Login_feature` class uses [basic scenario format](https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#basic-scenarios) for defining scenario steps.  
+The `Invoice_feature` class uses [extended scenario format](https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#extended-scenarios) allowing to use parameterized steps.  
+LightBDD offers multiple scenario formats and flavors suitable for various use cases - for details, please check [Scenario Steps Definition](https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition) page.
 
-   private LoginRequest _loginRequest;
-   private LoginService _loginService;
-   private LoginResult _loginResult;
 
-   private void Given_user_is_about_to_login()
-   {
-      _loginService = new LoginService();
-      _loginService.AddUser(_validUserName, _validPassword);
-      _loginRequest = new LoginRequest();
-   }
-
-   /* ... */
-}
-
-public partial class Invoice_feature : FeatureFixture
-{
-   private void Given_product_is_available_in_product_storage(string product) { /* ... */ }
-
-   private void When_customer_buys_product(string product) { /* ... */ }
-
-   private void Then_an_invoice_should_be_sent_to_the_customer() { /* ... */ }
-
-   private void Then_the_invoice_should_contain_product_with_price_of_AMOUNT(string product, int amount)
-   { /* ... */ }
-
-   /* ... */
-}
-```
-
-With partial classes, it is possible to keep all methods describing steps as **private**, which makes scenarios easier to read and allows tools like Resharper to mark them if they are no longer used, making maintenance easier.
+The implementation of step methods is located in other part of the class, in separate file and leverages standard features of the underlying test framwork (such as assert mechanisms) empowered by LightBDD features such as:
+* [Dependency Injection](https://github.com/LightBDD/LightBDD/wiki/DI-Containers),
+* [Inline and Tabular parameters](https://github.com/LightBDD/LightBDD/wiki/Advanced-Step-Parameters),
+* [Expectation Expressions](https://github.com/LightBDD/LightBDD/wiki/Expectation-Expressions),
+* [Step comments](https://github.com/LightBDD/LightBDD/wiki/Step-Comments),
+* [Scenario and Step Decorators](https://github.com/LightBDD/LightBDD/wiki/Extending-Test-Behavior).
 
 ### Example console output during tests execution:
+What LightBDD offers for free is the scenario output provided in Visual Studio/Resharper test screens and/or Console window.  
+Where possible, the output is provided as the test executes, allowing to track the progress of the scenarios.
+
 ```
 FEATURE: [Story-1] Login feature
   In order to access personal data
@@ -178,7 +150,10 @@ SCENARIO: [Ticket-4] Receiving invoice for products
   SCENARIO RESULT: Passed after 30ms
 ```
 
+More information can be found here: [Test Progress Notification](https://github.com/LightBDD/LightBDD/wiki/Test-Progress-Notification)
+
 ### Example HTML report generated after test execution:
+When all tests are finished, LightBDD generates the HTML report file, providing the summary and the details of the executed scenarios - the fragment of the report is presented below.
 
 ![](https://raw.githubusercontent.com/wiki/LightBDD/LightBDD/images/scenario_report.png)
 
@@ -192,20 +167,16 @@ The LightBDD is available on [NuGet](https://www.nuget.org/packages?q=LightBDD):
 * `PM> Install-Package LightBDD.MsTest2` for package using MsTest.TestFramework
 * `PM> Install-Package LightBDD.Fixie2` for package using Fixie 2x
 
-## VS Extension
-**LightBDD** project offers also a VSIX extension containing:
-* Feature Class Templates for all integrations (nunit/xunit/mstest/fixie),
-* Project Templates for all integrations (nunit/xunit/mstest/fixie),
-* Code Snippets for creating Scenarios and Composite Steps.
+## Productivity Extensions for Visual Studio
+**LightBDD** project offers also a VSIX extension for Visual Studio, containing:
+* [Project Templates](https://github.com/LightBDD/LightBDD/wiki/Visual-Studio-Extensions#project-templates) for all integrations (nunit/xunit/mstest/fixie),
+* [Feature Class Templates](https://github.com/LightBDD/LightBDD/wiki/Visual-Studio-Extensions#item-templates) for all integrations (nunit/xunit/mstest/fixie),
+* [Code Snippets](https://github.com/LightBDD/LightBDD/wiki/Visual-Studio-Extensions#code-snippets) for creating Scenarios and Composite Steps.
 
 The VSIX extension can be downloaded from: [Visual Studio Gallery](https://marketplace.visualstudio.com/items?itemName=Suremaker.lightbdd) (Visual Studio 2012 and newer versions supported).  
-More information can be found on wiki page: [Visual Studio Extensions](https://github.com/LightBDD/LightBDD/wiki/Visual-Studio-Extensions).
 
-### Migrating LightBDD
+## Migrating LightBDD
 The current series is LightBDD 3.x. To find out how to migrate from previous versions, please visit [Migrating LightBDD Versions](https://github.com/LightBDD/LightBDD/wiki/Migrating-LightBDD-Versions) wiki page.
-
-## Wiki
-Please check project [wiki](https://github.com/LightBDD/LightBDD/wiki) for more details.
 
 ## Debugging LightBDD from NuGet packages
 LightBDD provides debug symbols helping with diagnostics - please check [Debugging LightBDD Scenarios](https://github.com/LightBDD/LightBDD/wiki/Debugging-LightBDD-Scenarios) for details.
