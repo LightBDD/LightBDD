@@ -1,4 +1,4 @@
-![logo](https://github.com/LightBDD/LightBDD/blob/master/logo/lightbdd.ico) Lightweight Behavior Driven Development test framework (LightBDD)
+![logo](https://github.com/LightBDD/LightBDD/blob/master/logo/lightbdd.ico) LightBDD <br> The Lightweight Behavior Driven Development test framework
 ===========
 
 Category|Badge |Platforms
@@ -31,7 +31,7 @@ LightBDD.Extensions.DependencyInjection | [![NuGet Badge](https://buildstats.inf
 * Cross-platform support (.NET Framework / .NET Standard / .NET Core / UWP).
 
 ### Tests structure and conventions
-**LightBDD** runs on top of [NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/), [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/) and [Fixie](http://fixie.github.io/), allowing to leverage the well known test frameworks and their features in writing the behavioral style LightBDD scenarios, which makes it very easy to learn, adapt and use.
+**LightBDD** runs on top of [NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/), [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/) and [Fixie](http://fixie.github.io/), allowing to leverage the well known test frameworks and their features in writing the behavioral style scenarios, which makes it very easy to learn, adapt and use.
 
 To learn more, please see [LightBDD wiki page](https://github.com/LightBDD/LightBDD/wiki), or jump straight to:
 * [Quick Start](https://github.com/LightBDD/LightBDD/wiki/Quick-Start) and followup documentation pages,
@@ -88,7 +88,7 @@ public partial class Invoice_feature //feature name
 }
 ```
 
-The above example shows feature *partial* classes containing only scenario definitions, which makes it easy to read.  
+The above example shows feature *partial* classes containing scenario definitions only, which makes it easier to read.  
 The `Login_feature` class uses [basic scenario format](https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#basic-scenarios) for defining scenario steps.  
 The `Invoice_feature` class uses [extended scenario format](https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#extended-scenarios) allowing to use parameterized steps.  
 LightBDD offers multiple scenario formats and flavors suitable for various use cases - for details, please check [Scenario Steps Definition](https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition) page.
@@ -176,7 +176,7 @@ The LightBDD is available on [NuGet](https://www.nuget.org/packages?q=LightBDD):
 The VSIX extension can be downloaded from: [Visual Studio Gallery](https://marketplace.visualstudio.com/items?itemName=Suremaker.lightbdd) (Visual Studio 2012 and newer versions supported).  
 
 ## Migrating LightBDD
-The current series is LightBDD 3.x. To find out how to migrate from previous versions, please visit [Migrating LightBDD Versions](https://github.com/LightBDD/LightBDD/wiki/Migrating-LightBDD-Versions) wiki page.
+The current LightBDD version series is 3.X. To find out how to migrate from previous versions, please visit [Migrating LightBDD Versions](https://github.com/LightBDD/LightBDD/wiki/Migrating-LightBDD-Versions) wiki page.
 
 ## Debugging LightBDD from NuGet packages
 LightBDD provides debug symbols helping with diagnostics - please check [Debugging LightBDD Scenarios](https://github.com/LightBDD/LightBDD/wiki/Debugging-LightBDD-Scenarios) for details.
