@@ -31,13 +31,13 @@ LightBDD.Extensions.DependencyInjection | [![NuGet Badge](https://buildstats.inf
 * Cross-platform support (.NET Framework / .NET Standard / .NET Core / UWP).
 
 ### Tests structure and conventions
-**LightBDD** runs on top of [NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/), [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/) and [Fixie](http://fixie.github.io/), allowing to leverage the well known test frameworks and their features in writing the behavioral style tests, which makes it very easy to learn, adapt and use.
+**LightBDD** runs on top of [NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/), [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/) and [Fixie](http://fixie.github.io/), allowing to leverage the well known test frameworks and their features in writing the behavioral style LightBDD scenarios, which makes it very easy to learn, adapt and use.
 
-To learn more, please see [Project wiki page](https://github.com/LightBDD/LightBDD/wiki), or jump straight to:
+To learn more, please see [LightBDD wiki page](https://github.com/LightBDD/LightBDD/wiki), or jump straight to:
 * [Quick Start](https://github.com/LightBDD/LightBDD/wiki/Quick-Start) and followup documentation pages,
-* [What Is New](https://github.com/LightBDD/LightBDD/wiki/What-Is-New) section with newest features introduced in the library,
+* [What Is New](https://github.com/LightBDD/LightBDD/wiki/What-Is-New) section with the newest features introduced in the library,
 * [Examples](https://github.com/LightBDD/LightBDD/tree/master/examples) demonstrating features and integrations of LightBDD,
-* [Tutorials](https://github.com/LightBDD/LightBDD.Tutorials) providing complete sample projects leveraging LightBDD features.
+* [Tutorials](https://github.com/LightBDD/LightBDD.Tutorials) with complete sample projects using LightBDD features.
 
 ### Example
 
