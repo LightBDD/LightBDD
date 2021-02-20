@@ -1,4 +1,4 @@
-![logo](https://github.com/LightBDD/LightBDD/blob/master/logo/lightbdd.ico) LightBDD <br> The Lightweight Behavior Driven Development test framework
+![logo](https://github.com/LightBDD/LightBDD/blob/master/logo/lightbdd.ico) LightBDD <br><br>The Lightweight Behavior Driven Development test framework
 ===========
 
 Category|Badge |Platforms
@@ -25,7 +25,7 @@ LightBDD.Extensions.DependencyInjection | [![NuGet Badge](https://buildstats.inf
 * Support for DI containers,
 * Feature report generation in HTML, XML or Plain text format,
 * In-code LightBDD configuration allowing to customize all LightBDD features,
-* Productivity extensions for VisualStudio with Feature Class Templates, Project Templates and **Code Snippets** ([see details](#productivity-extensions-for-visual-studio)),
+* Productivity extensions for VisualStudio with Feature Class Templates, Project Templates and Code Snippets,
 * Integration with [NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/), [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/) and [Fixie](http://fixie.github.io/) frameworks,
 * Async scenario and steps execution support,
 * Cross-platform support (.NET Framework / .NET Standard / .NET Core / UWP).
@@ -150,7 +150,7 @@ SCENARIO: [Ticket-4] Receiving invoice for products
   SCENARIO RESULT: Passed after 30ms
 ```
 
-More information can be found here: [Test Progress Notification](https://github.com/LightBDD/LightBDD/wiki/Test-Progress-Notification)
+For more information, please visit [Test Progress Notification](https://github.com/LightBDD/LightBDD/wiki/Test-Progress-Notification) page.
 
 ### Example HTML report generated after test execution:
 When all tests are finished, LightBDD generates the HTML report file, providing the summary and the details of the executed scenarios - the fragment of the report is presented below.
@@ -176,7 +176,7 @@ The LightBDD is available on [NuGet](https://www.nuget.org/packages?q=LightBDD):
 The VSIX extension can be downloaded from: [Visual Studio Gallery](https://marketplace.visualstudio.com/items?itemName=Suremaker.lightbdd) (Visual Studio 2012 and newer versions supported).  
 
 ## Migrating LightBDD
-The current LightBDD version series is 3.X. To find out how to migrate from previous versions, please visit [Migrating LightBDD Versions](https://github.com/LightBDD/LightBDD/wiki/Migrating-LightBDD-Versions) wiki page.
+The current LightBDD version series is **3.X**. To find out how to migrate from previous versions, please visit [Migrating LightBDD Versions](https://github.com/LightBDD/LightBDD/wiki/Migrating-LightBDD-Versions) wiki page.
 
 ## Debugging LightBDD from NuGet packages
 LightBDD provides debug symbols helping with diagnostics - please check [Debugging LightBDD Scenarios](https://github.com/LightBDD/LightBDD/wiki/Debugging-LightBDD-Scenarios) for details.
