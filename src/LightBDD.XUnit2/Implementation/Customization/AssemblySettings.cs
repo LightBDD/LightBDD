@@ -1,10 +1,10 @@
-using LightBDD.Core.ExecutionContext;
+using System.Threading;
 
 namespace LightBDD.XUnit2.Implementation.Customization
 {
     internal class AssemblySettings
     {
-        private static readonly AsyncLocalContext<AssemblySettings> AsyncLocal = new AsyncLocalContext<AssemblySettings>();
+        private static readonly AsyncLocal<AssemblySettings> AsyncLocal = new AsyncLocal<AssemblySettings>();
 
         public static AssemblySettings Current => AsyncLocal.Value ?? new AssemblySettings();
         public static void SetSettings(AssemblySettings settings) => AsyncLocal.Value = settings;

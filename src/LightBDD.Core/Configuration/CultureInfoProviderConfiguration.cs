@@ -29,9 +29,7 @@ namespace LightBDD.Core.Configuration
         public CultureInfoProviderConfiguration UpdateCultureInfoProvider(ICultureInfoProvider provider)
         {
             ThrowIfSealed();
-            if (provider == null)
-                throw new ArgumentNullException(nameof(provider));
-            CultureInfoProvider = provider;
+            CultureInfoProvider = provider ?? throw new ArgumentNullException(nameof(provider));
             return this;
         }
     }

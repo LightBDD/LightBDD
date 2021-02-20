@@ -44,15 +44,10 @@ namespace LightBDD.Core.Extensibility
             ContextResolver = ResolveContextWrapper;
         }
 
-        private static object ResolveContextWrapper(IDependencyResolver resolver)
-        {
-            return resolver.Resolve<ContextWrapper>().GetContext();
-        }
+        private static object ResolveContextWrapper(IDependencyResolver resolver) => resolver.Resolve<ContextWrapper>().GetContext();
 
-        private static object ProvideNoContext(IDependencyResolver _)
-        {
-            return null;
-        }
+        private static object ProvideNoContext(IDependencyResolver _) => null;
+
         private class ContextWrapper : IDisposable
         {
             private readonly Func<object> _contextProvider;
@@ -82,7 +77,7 @@ namespace LightBDD.Core.Extensibility
 
             public object GetContext()
             {
-                return _instance ?? (_instance = _contextProvider());
+                return _instance ??= _contextProvider();
             }
         }
     }

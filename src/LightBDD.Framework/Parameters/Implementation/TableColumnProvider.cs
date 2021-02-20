@@ -60,7 +60,7 @@ namespace LightBDD.Framework.Parameters.Implementation
 
             var totalColumns = rows.Cast<IList>().Aggregate(0, (max, col) => Math.Max(max, col.Count));
 
-            for (int i = 0; i < totalColumns; ++i)
+            for (var i = 0; i < totalColumns; ++i)
             {
                 var index = i;
                 yield return new ColumnInfo($"[{i}]", row =>

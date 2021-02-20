@@ -11,7 +11,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
     [TestFixture]
     public class Fluent_scenario_integration_tests : Steps
     {
-        private ConcurrentQueue<int> _numbers = new ConcurrentQueue<int>();
+        private readonly ConcurrentQueue<int> _numbers = new ConcurrentQueue<int>();
         private IBddRunner _runner;
 
         [SetUp]

@@ -1,11 +1,8 @@
 using System;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility.Results;
 using LightBDD.Core.Formatting;
-using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Extensibility
@@ -59,7 +56,7 @@ namespace LightBDD.Core.Extensibility
         {
             CreationException = creationException ?? throw new ArgumentNullException(nameof(creationException));
             RawName = "<INVALID STEP>";
-            Parameters = Arrays<ParameterDescriptor>.Empty();
+            Parameters = Array.Empty<ParameterDescriptor>();
             StepInvocation = RunInvalidDescriptor;
         }
 
@@ -67,7 +64,7 @@ namespace LightBDD.Core.Extensibility
         {
             if (string.IsNullOrWhiteSpace(rawName))
                 throw new ArgumentException("Step name has to be specified and cannot contain only white characters.", nameof(rawName));
-            for (int i = 0; i < rawName.Length; ++i)
+            for (var i = 0; i < rawName.Length; ++i)
             {
                 if (char.IsControl(rawName[i]))
                     throw new ArgumentException($"Step name cannot contain control characters, got one at index {i} in '{rawName}'", nameof(rawName));
@@ -75,14 +72,7 @@ namespace LightBDD.Core.Extensibility
             return rawName;
         }
 
-#pragma warning disable 1998
-        private async Task<IStepResultDescriptor> RunInvalidDescriptor(object context, object[] args)
-        {
-            //TODO: LightBDD 4x simplify when NET45 dropped (Task.FromException())
-            ExceptionDispatchInfo.Capture(CreationException).Throw();
-            return null;
-        }
-#pragma warning restore 1998
+        private Task<IStepResultDescriptor> RunInvalidDescriptor(object context, object[] args) => Task.FromException<IStepResultDescriptor>(CreationException);
 
         /// <summary>
         /// Returns step raw name.
@@ -110,7 +100,7 @@ namespace LightBDD.Core.Extensibility
         public ParameterDescriptor[] Parameters { get; }
 
         /// <summary>
-        /// Returns exception occured during descriptor creation or <c>null</c> if descriptor is valid.
+        /// Returns exception occurred during descriptor creation or <c>null</c> if descriptor is valid.
         /// The value is set by <see cref="CreateInvalid"/> method.
         /// </summary>
         public Exception CreationException { get; }

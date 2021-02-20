@@ -15,8 +15,8 @@ namespace LightBDD.Framework.Expectations.Implementation
 
         public override ExpectationResult Verify(IEnumerable<TValue> collection, IValueFormattingService formattingService)
         {
-            List<string> errors = new List<string>();
-            int i = 0;
+            var errors = new List<string>();
+            var i = 0;
             foreach (var item in collection ?? Enumerable.Empty<TValue>())
             {
                 var result = _itemExpectation.Verify(item, formattingService);

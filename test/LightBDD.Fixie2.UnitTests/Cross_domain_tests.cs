@@ -1,9 +1,9 @@
-﻿using LightBDD.Framework;
-using LightBDD.Framework.Scenarios;
-using Shouldly;
-#if !NETCOREAPP
+﻿#if !NETCOREAPP
 using System.Configuration;
 using System.Diagnostics;
+using LightBDD.Framework;
+using LightBDD.Framework.Scenarios;
+using Shouldly;
 
 namespace LightBDD.Fixie2.UnitTests
 {

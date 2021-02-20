@@ -149,6 +149,46 @@ namespace LightBDD.UnitTests.Helpers
             public bool Disposed { get; private set; }
         }
 
+        protected class Disposable1 : IDisposable
+        {
+            public virtual void Dispose()
+            {
+                Disposed = true;
+            }
+
+            public bool Disposed { get; private set; }
+        }
+
+        protected class Disposable2 : IDisposable
+        {
+            public virtual void Dispose()
+            {
+                Disposed = true;
+            }
+
+            public bool Disposed { get; private set; }
+        }
+
+        protected class Disposable3 : IDisposable
+        {
+            public virtual void Dispose()
+            {
+                Disposed = true;
+            }
+
+            public bool Disposed { get; private set; }
+        }
+
+        protected class Disposable4 : IDisposable
+        {
+            public virtual void Dispose()
+            {
+                Disposed = true;
+            }
+
+            public bool Disposed { get; private set; }
+        }
+
         protected class DisposableSingleton : IDisposable
         {
             public virtual void Dispose()

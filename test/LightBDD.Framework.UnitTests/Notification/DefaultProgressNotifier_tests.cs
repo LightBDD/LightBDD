@@ -10,7 +10,6 @@ using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Notification;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
-using RandomTestValues;
 
 namespace LightBDD.Framework.UnitTests.Notification
 {
@@ -35,10 +34,10 @@ namespace LightBDD.Framework.UnitTests.Notification
         [Test]
         public void It_should_capture_meaningful_information()
         {
-            var featureInfo = RandomValue.Object<TestResults.TestFeatureInfo>();
-            var scenarioInfo = RandomValue.Object<TestResults.TestScenarioInfo>();
-            var stepInfo = RandomValue.Object<TestResults.TestStepInfo>();
-            var stepResult = RandomValue.Object<TestResults.TestStepResult>();
+            var featureInfo = Fake.Object<TestResults.TestFeatureInfo>();
+            var scenarioInfo = Fake.Object<TestResults.TestScenarioInfo>();
+            var stepInfo = Fake.Object<TestResults.TestStepInfo>();
+            var stepResult = Fake.Object<TestResults.TestStepResult>();
             stepResult.Parameters = new IParameterResult[]
             {
                 new TestResults.TestParameterResult("table",
@@ -69,11 +68,11 @@ namespace LightBDD.Framework.UnitTests.Notification
                                 ParameterVerificationStatus.Failure))
                 )
             };
-            var scenarioResult = RandomValue.Object<TestResults.TestScenarioResult>();
+            var scenarioResult = Fake.Object<TestResults.TestScenarioResult>();
             scenarioResult.Status = ExecutionStatus.Passed;
 
-            var featureResult = RandomValue.Object<TestResults.TestFeatureResult>();
-            var comment = RandomValue.String();
+            var featureResult = Fake.Object<TestResults.TestFeatureResult>();
+            var comment = Fake.String();
 
             var featureNotifier = (IFeatureProgressNotifier)_notifier;
             var scenarioNotifier = (IScenarioProgressNotifier)_notifier;
@@ -115,7 +114,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         [Test]
         public void NotifyFeatureStart_should_omit_description_if_not_provided()
         {
-            var featureInfo = RandomValue.Object<TestResults.TestFeatureInfo>();
+            var featureInfo = Fake.Object<TestResults.TestFeatureInfo>();
             featureInfo.Description = null;
             ((IFeatureProgressNotifier)_notifier).NotifyFeatureStart(featureInfo);
 
@@ -125,7 +124,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         [Test]
         public void NotifyFeatureStart_should_omit_labels_if_not_provided()
         {
-            var featureInfo = RandomValue.Object<TestResults.TestFeatureInfo>();
+            var featureInfo = Fake.Object<TestResults.TestFeatureInfo>();
             featureInfo.Labels = new string[0];
             ((IFeatureProgressNotifier)_notifier).NotifyFeatureStart(featureInfo);
 
@@ -136,7 +135,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         [Test]
         public void NotifyScenarioStart_should_omit_labels_if_not_provided()
         {
-            var scenarioInfo = RandomValue.Object<TestResults.TestScenarioInfo>();
+            var scenarioInfo = Fake.Object<TestResults.TestScenarioInfo>();
             scenarioInfo.Labels = new string[0];
             ((IScenarioProgressNotifier)_notifier).NotifyScenarioStart(scenarioInfo);
 
@@ -147,9 +146,9 @@ namespace LightBDD.Framework.UnitTests.Notification
         [Test]
         public void NotifyScenarioFinished_should_omit_execution_time_if_not_provided()
         {
-            var scenarioInfo = RandomValue.Object<TestResults.TestScenarioInfo>();
+            var scenarioInfo = Fake.Object<TestResults.TestScenarioInfo>();
             scenarioInfo.Labels = new string[0];
-            var scenarioResult = RandomValue.Object<TestResults.TestScenarioResult>();
+            var scenarioResult = Fake.Object<TestResults.TestScenarioResult>();
             scenarioResult.Info = scenarioInfo;
             scenarioResult.Status = ExecutionStatus.Passed;
             scenarioResult.ExecutionTime = null;
@@ -169,9 +168,9 @@ namespace LightBDD.Framework.UnitTests.Notification
         [Test]
         public void NotifyScenarioFinished_should_omit_status_details_if_not_provided()
         {
-            var scenarioInfo = RandomValue.Object<TestResults.TestScenarioInfo>();
+            var scenarioInfo = Fake.Object<TestResults.TestScenarioInfo>();
             scenarioInfo.Labels = new string[0];
-            var scenarioResult = RandomValue.Object<TestResults.TestScenarioResult>();
+            var scenarioResult = Fake.Object<TestResults.TestScenarioResult>();
             scenarioResult.Info = scenarioInfo;
             scenarioResult.Status = ExecutionStatus.Passed;
             scenarioResult.StatusDetails = null;

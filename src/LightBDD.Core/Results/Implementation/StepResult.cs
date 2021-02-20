@@ -13,7 +13,7 @@ namespace LightBDD.Core.Results.Implementation
     {
         private readonly StepInfo _info;
         private readonly ConcurrentQueue<string> _comments = new ConcurrentQueue<string>();
-        private IEnumerable<IStepResult> _subSteps = Arrays<IStepResult>.Empty();
+        private IEnumerable<IStepResult> _subSteps = Array.Empty<IStepResult>();
 
         public StepResult(StepInfo info)
         {
@@ -24,7 +24,7 @@ namespace LightBDD.Core.Results.Implementation
         public ExecutionStatus Status { get; private set; }
         public string StatusDetails { get; private set; }
         public Exception ExecutionException { get; private set; }
-        public IReadOnlyList<IParameterResult> Parameters { get; private set; } = Arrays<IParameterResult>.Empty();
+        public IReadOnlyList<IParameterResult> Parameters { get; private set; } = Array.Empty<IParameterResult>();
         public ExecutionTime ExecutionTime { get; private set; }
         public IEnumerable<string> Comments => _comments;
         public IEnumerable<IStepResult> GetSubSteps()

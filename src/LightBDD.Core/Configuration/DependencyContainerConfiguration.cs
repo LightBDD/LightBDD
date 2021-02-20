@@ -12,14 +12,23 @@ namespace LightBDD.Core.Configuration
         /// <summary>
         /// Returns configured <see cref="IDependencyContainer"/>.
         /// </summary>
-        public IDependencyContainer DependencyContainer { get; private set; } = new BasicDependencyContainer();
+        public IDependencyContainer DependencyContainer { get; private set; } = new DefaultDependencyContainer(LifetimeScope.Global);
 
         /// <summary>
         /// Sets <paramref name="container"/> as a container to be used by LightBDD scenarios and steps.
         /// </summary>
         /// <param name="container">Container to use.</param>
         /// <returns>Self.</returns>
-        public DependencyContainerConfiguration UseContainer(IDependencyContainer container)
+        [Obsolete("Please migrate to " + nameof(IDependencyContainerV2) + " implementations")]
+        public DependencyContainerConfiguration UseContainer(IDependencyContainer container) =>
+            UseContainer(new WrappingDependencyContainer(container));
+
+        /// <summary>
+        /// Sets <paramref name="container"/> as a container to be used by LightBDD scenarios and steps.
+        /// </summary>
+        /// <param name="container">Container to use.</param>
+        /// <returns>Self.</returns>
+        public DependencyContainerConfiguration UseContainer(IDependencyContainerV2 container)
         {
             ThrowIfSealed();
             DependencyContainer = container;
@@ -39,9 +48,29 @@ namespace LightBDD.Core.Configuration
         /// </summary>
         /// <param name="configurator">Configuration function.</param>
         /// <returns>Self.</returns>
+        [Obsolete("Please migrate to " + nameof(UseDefault) + "() method instead")]
         public DependencyContainerConfiguration UseDefaultContainer(Action<ContainerConfigurator> configurator = null)
         {
-            return UseContainer(new BasicDependencyContainer(configurator));
+            return UseContainer(new DefaultDependencyContainer(LifetimeScope.Global, configurator));
+        }
+
+        /// <summary>
+        /// Configures the LightBDD to use it's default implementation of DI container.
+        /// If specified, the <paramref name="configurator"/> function is used to configure the container.<br/>
+        ///
+        /// The default DI container features are:<br/>
+        /// * automatic resolution of types (classes and structures) with 1 public constructor,<br/>
+        /// * customizable resolution of types using factory method,<br/>
+        /// * constructor dependency injections,<br/>
+        /// * single, scenario, local and transient <see cref="InstanceScope"/> registrations,<br/>
+        /// * disposal of dependencies implementing <see cref="IDisposable"/> interface,<br/>
+        /// * container <see cref="LifetimeScope"/> to manage instances within global, scenario, nested local scopes.
+        /// </summary>
+        /// <param name="configurator">Configuration function.</param>
+        /// <returns>Self.</returns>
+        public DependencyContainerConfiguration UseDefault(Action<IDefaultContainerConfigurator> configurator = null)
+        {
+            return UseContainer(new DefaultDependencyContainer(LifetimeScope.Global, configurator));
         }
     }
 }

@@ -37,7 +37,6 @@ namespace LightBDD.Framework.Scenarios.Implementation
             catch (Exception ex)
             {
                 return StepDescriptor.CreateInvalid(ex);
-                throw;
             }
         }
 

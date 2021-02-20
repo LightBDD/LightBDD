@@ -3,7 +3,6 @@ using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.ExecutionContext.Implementation;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
-using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Results;
@@ -28,13 +27,13 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly Func<Task> _decoratedScenarioMethod;
         private IDependencyContainer _scope;
         private Func<Exception, bool> _shouldAbortSubStepExecutionFn = ex => true;
-        private RunnableStep[] _preparedSteps = Arrays<RunnableStep>.Empty();
+        private RunnableStep[] _preparedSteps = Array.Empty<RunnableStep>();
         private int _alreadyRun = NotRunValue;
         public IScenarioInfo Info => _result.Info;
         public IDependencyResolver DependencyResolver => _scope;
         public object Context { get; private set; }
 
-        public RunnableScenario(RunnableScenarioContext scenarioContext, ScenarioInfo scenarioInfo,
+        public RunnableScenario(RunnableScenarioContext scenarioContext, IScenarioInfo scenarioInfo,
             IEnumerable<StepDescriptor> stepDescriptors, ExecutionContextDescriptor contextDescriptor,
             IEnumerable<IScenarioDecorator> scenarioDecorators)
         {
@@ -151,7 +150,7 @@ namespace LightBDD.Core.Execution.Implementation
         {
             try
             {
-                return _scenarioContext.IntegrationContext.DependencyContainer.BeginScope(_contextDescriptor.ScopeConfigurator);
+                return _scenarioContext.IntegrationContext.DependencyContainer.BeginScope(LifetimeScope.Scenario, _contextDescriptor.ScopeConfigurator);
             }
             catch (Exception e)
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Threading;
 using LightBDD.Core.Execution;
 using LightBDD.Core.ExecutionContext.Implementation;
 
@@ -10,7 +11,7 @@ namespace LightBDD.Core.ExecutionContext
     /// </summary>
     public sealed class ScenarioExecutionContext
     {
-        private static readonly AsyncLocalContext<ScenarioExecutionContext> CurrentContext = new AsyncLocalContext<ScenarioExecutionContext>();
+        private static readonly AsyncLocal<ScenarioExecutionContext> CurrentContext = new AsyncLocal<ScenarioExecutionContext>();
         private readonly ConcurrentDictionary<Type, IContextProperty> _properties = new ConcurrentDictionary<Type, IContextProperty>();
 
         /// <summary>

@@ -42,7 +42,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
         public TagBuilder Content(string content, bool trimContent = true, bool escapeContent = true)
         {
-            content = content ?? string.Empty;
+            content ??= string.Empty;
             if (trimContent)
                 content = content.Trim();
 

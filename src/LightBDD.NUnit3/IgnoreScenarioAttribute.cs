@@ -40,7 +40,7 @@ namespace LightBDD.NUnit3
         public Task ExecuteAsync(IScenario scenario, Func<Task> scenarioInvocation)
         {
             Assert.Ignore(Reason);
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace LightBDD.NUnit3
         public Task ExecuteAsync(IStep step, Func<Task> stepInvocation)
         {
             Assert.Ignore(Reason);
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
     }
 }

@@ -34,7 +34,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LightBDD.NUnit3.FeatureTemplate</RootNamespace>
     <AssemblyName>LightBDD.NUnit3.FeatureTemplate</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
