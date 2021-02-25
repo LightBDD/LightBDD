@@ -1,7 +1,9 @@
+using System.IO;
 using Example.LightBDD.XUnit2;
 using LightBDD.Core.Configuration;
 using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Reporting.Formatters;
+using LightBDD.Notification.Json;
 using LightBDD.XUnit2;
 
 /*
@@ -37,6 +39,11 @@ namespace Example.LightBDD.XUnit2
                 .ReportWritersConfiguration()
                 .AddFileWriter<XmlReportFormatter>("~\\Reports\\FeaturesReport.xml")
                 .AddFileWriter<PlainTextReportFormatter>("~\\Reports\\{TestDateTimeUtc:yyyy-MM-dd-HH_mm_ss}_FeaturesReport.txt");
+
+            var notifier=new JsonProgressNotifier(new NotificationWriter(File.Create("output.json")));
+            configuration.FeatureProgressNotifierConfiguration().AppendNotifiers(notifier);
+            configuration.ScenarioProgressNotifierConfiguration().AppendNotifierProviders(() => notifier);
+
         }
     }
 }

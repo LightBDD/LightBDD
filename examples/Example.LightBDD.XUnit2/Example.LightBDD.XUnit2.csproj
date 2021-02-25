@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\LightBDD.Notification.Json\LightBDD.Notification.Json.csproj" />
     <ProjectReference Include="..\..\src\LightBDD.XUnit2\LightBDD.XUnit2.csproj" />
     <ProjectReference Include="..\Example.Domain\Example.Domain.csproj" />
   </ItemGroup>
