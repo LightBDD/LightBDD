@@ -24,6 +24,7 @@ namespace LightBDD.Framework.Notification
         protected ParallelProgressNotifierProvider()
         {
         }
+
         /// <summary>
         /// Creates <see cref="IFeatureProgressNotifier"/> instance which would call <paramref name="onNotify"/> actions with formatted notifications.
         /// The created notifier does nothing with formatted notifications that is why <paramref name="onNotify"/> should contain at least 1 action in order to get notifications working.
@@ -37,6 +38,7 @@ namespace LightBDD.Framework.Notification
                 throw new ArgumentNullException(nameof(onNotify));
             return new ParallelProgressNotifier(_manager, onNotify);
         }
+
         /// <summary>
         /// Creates <see cref="IScenarioProgressNotifier"/> instance which would call <paramref name="onNotify"/> actions with formatted notifications.
         /// The created notifier does nothing with formatted notifications that is why <paramref name="onNotify"/> should contain at least 1 action in order to get notifications working.
@@ -45,6 +47,20 @@ namespace LightBDD.Framework.Notification
         /// <returns><see cref="IScenarioProgressNotifier"/> instance.</returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="onNotify"/> is <c>null</c>.</exception>
         public IScenarioProgressNotifier CreateScenarioProgressNotifier(params Action<string>[] onNotify)
+        {
+            if (onNotify == null)
+                throw new ArgumentNullException(nameof(onNotify));
+            return new ParallelProgressNotifier(_manager, onNotify);
+        }
+
+        /// <summary>
+        /// Creates <see cref="IProgressNotifier"/> instance which would call <paramref name="onNotify"/> actions with formatted notifications.
+        /// The created notifier does nothing with formatted notifications that is why <paramref name="onNotify"/> should contain at least 1 action in order to get notifications working.
+        /// </summary>
+        /// <param name="onNotify">Actions that would be called with formatted notifications.</param>
+        /// <returns><see cref="IProgressNotifier"/> instance.</returns>
+        /// <exception cref="ArgumentNullException">Throws when <paramref name="onNotify"/> is <c>null</c>.</exception>
+        public IProgressNotifier CreateProgressNotifier(params Action<string>[] onNotify)
         {
             if (onNotify == null)
                 throw new ArgumentNullException(nameof(onNotify));

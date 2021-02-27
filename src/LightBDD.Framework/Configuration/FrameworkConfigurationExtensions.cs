@@ -63,6 +63,7 @@ namespace LightBDD.Framework.Configuration
         {
             return configuration.Get<FeatureProgressNotifierConfiguration>();
         }
+
         /// <summary>
         /// Retrieves <see cref="ScenarioProgressNotifierConfiguration"/> from <paramref name="configuration"/> for further customizations.
         /// </summary>
@@ -71,6 +72,16 @@ namespace LightBDD.Framework.Configuration
         public static ScenarioProgressNotifierConfiguration ScenarioProgressNotifierConfiguration(this LightBddConfiguration configuration)
         {
             return configuration.Get<ScenarioProgressNotifierConfiguration>();
+        }
+
+        /// <summary>
+        /// Retrieves <see cref="ProgressNotifierConfiguration"/> from <paramref name="configuration"/> for further customizations.
+        /// </summary>
+        /// <param name="configuration">Configuration object.</param>
+        /// <returns>Configuration object.</returns>
+        public static ProgressNotifierConfiguration ProgressNotifierConfiguration(this LightBddConfiguration configuration)
+        {
+            return configuration.Get<ProgressNotifierConfiguration>();
         }
 
         /// <summary>

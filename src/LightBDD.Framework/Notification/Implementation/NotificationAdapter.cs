@@ -1,9 +1,10 @@
 using System;
 using System.Threading;
 using LightBDD.Core.ExecutionContext;
+using LightBDD.Core.Notification;
 using LightBDD.Core.Notification.Events;
 
-namespace LightBDD.Core.Notification.Implementation
+namespace LightBDD.Framework.Notification.Implementation
 {
     //TODO: remove in LightBDD 4.x
     class NotificationAdapter : IProgressNotifier

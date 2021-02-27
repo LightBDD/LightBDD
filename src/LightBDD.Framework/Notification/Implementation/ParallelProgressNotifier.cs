@@ -2,11 +2,12 @@ using System;
 using System.Linq;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
+using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Results;
 
 namespace LightBDD.Framework.Notification.Implementation
 {
-    internal class ParallelProgressNotifier : IScenarioProgressNotifier, IFeatureProgressNotifier
+    internal class ParallelProgressNotifier : IScenarioProgressNotifier, IFeatureProgressNotifier, IProgressNotifier
     {
         private readonly ProgressManager _manager;
         private int? _currentScenarioNumber;
@@ -66,6 +67,34 @@ namespace LightBDD.Framework.Notification.Implementation
         public void NotifyStepComment(IStepInfo step, string comment)
         {
             _notifier.NotifyStepComment(step, comment);
+        }
+
+        public void Notify(ProgressEvent e)
+        {
+            switch (e)
+            {
+                case FeatureFinished featureFinished:
+                    NotifyFeatureFinished(featureFinished.Result);
+                    break;
+                case FeatureStarting featureStarting:
+                    NotifyFeatureStart(featureStarting.Feature);
+                    break;
+                case ScenarioFinished scenarioFinished:
+                    NotifyScenarioFinished(scenarioFinished.Result);
+                    break;
+                case ScenarioStarting scenarioStarting:
+                    NotifyScenarioStart(scenarioStarting.Scenario);
+                    break;
+                case StepCommented stepCommented:
+                    NotifyStepComment(stepCommented.Step, stepCommented.Comment);
+                    break;
+                case StepFinished stepFinished:
+                    NotifyStepFinished(stepFinished.Result);
+                    break;
+                case StepStarting stepStarting:
+                    NotifyStepStart(stepStarting.Step);
+                    break;
+            }
         }
     }
 }

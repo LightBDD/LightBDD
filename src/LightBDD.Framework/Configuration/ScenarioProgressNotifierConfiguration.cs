@@ -19,6 +19,8 @@ namespace LightBDD.Framework.Configuration
         /// </summary>
         public Func<object, IScenarioProgressNotifier> NotifierProvider => _composer.Clone().Compose;
 
+        internal bool HasAny => _composer.HasAny;
+
         /// <summary>
         /// Replaces the <see cref="NotifierProvider"/> with <paramref name="notifierProvider"/> value.
         /// </summary>

@@ -8,9 +8,12 @@ namespace LightBDD.Framework.Notification.Implementation
     {
         private readonly List<IScenarioProgressNotifierProvider> _providers;
 
+        public bool HasAny => _providers.Count > 0;
+
         public ScenarioProgressNotifierComposer() : this(new List<IScenarioProgressNotifierProvider>())
         {
         }
+
         private ScenarioProgressNotifierComposer(List<IScenarioProgressNotifierProvider> providers)
         {
             _providers = providers;
