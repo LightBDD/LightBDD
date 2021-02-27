@@ -4,7 +4,6 @@ using LightBDD.Core.ExecutionContext.Implementation;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Metadata;
-using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Implementation;
 using System;
@@ -12,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using LightBDD.Core.Notification.Events;
 
 namespace LightBDD.Core.Execution.Implementation
 {
@@ -49,10 +49,10 @@ namespace LightBDD.Core.Execution.Implementation
             if (Interlocked.Exchange(ref _alreadyRun, RunValue) != NotRunValue)
                 throw new InvalidOperationException("Scenario can be run only once");
 
-            var watch = ExecutionTimeWatch.StartNew();
+            var executionStartTime = _scenarioContext.ExecutionTimer.GetTime();
             try
             {
-                StartScenario();
+                StartScenario(executionStartTime);
                 await _decoratedScenarioMethod.Invoke();
             }
             catch (Exception ex)
@@ -61,7 +61,7 @@ namespace LightBDD.Core.Execution.Implementation
             }
             finally
             {
-                StopScenario(watch);
+                StopScenario(executionStartTime);
             }
 
             ProcessExceptions();
@@ -83,16 +83,18 @@ namespace LightBDD.Core.Execution.Implementation
             throw new ScenarioExecutionException(exception);
         }
 
-        private void StopScenario(ExecutionTimeWatch watch)
+        private void StopScenario(EventTime executionStartTime)
         {
             ScenarioExecutionContext.Current = null;
             DisposeScope();
-            watch.Stop();
+
+            var executionStopTime = _scenarioContext.ExecutionTimer.GetTime();
+
             _result.UpdateResult(
                 _preparedSteps.Select(s => s.Result).ToArray(),
-                watch.GetTime());
+                executionStopTime.GetExecutionTime(executionStartTime));
 
-            _scenarioContext.ProgressNotifier.NotifyScenarioFinished(_result);
+            _scenarioContext.ProgressNotifier.Notify(new ScenarioFinished(executionStopTime, _result));
             _scenarioContext.OnScenarioFinished?.Invoke(_result);
         }
 
@@ -130,20 +132,17 @@ namespace LightBDD.Core.Execution.Implementation
             }
         }
 
-        private void StartScenario()
+        private void StartScenario(EventTime executionStartTime)
         {
-            _scenarioContext.ProgressNotifier.NotifyScenarioStart(Info);
+            ScenarioExecutionContext.Current = new ScenarioExecutionContext();
+            ScenarioExecutionContext.Current.Get<CurrentScenarioProperty>().Fixture = _scenarioContext.FixtureObject;
+
+            _scenarioContext.ProgressNotifier.Notify(new ScenarioStarting(executionStartTime, Info));
+
             _scope = CreateContainerScope();
             Context = CreateExecutionContext();
-            ScenarioExecutionContext.Current = CreateCurrentContext();
+            ScenarioExecutionContext.Current.Get<CurrentScenarioProperty>().Scenario = this;
             PrepareSteps();
-        }
-
-        private ScenarioExecutionContext CreateCurrentContext()
-        {
-            var executionContext = new ScenarioExecutionContext();
-            executionContext.Get<CurrentScenarioProperty>().Scenario = this;
-            return executionContext;
         }
 
         private IDependencyContainer CreateContainerScope()

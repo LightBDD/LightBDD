@@ -49,8 +49,14 @@ namespace LightBDD.Core.ExecutionContext
 
         /// <summary>
         /// Returns currently executed scenario.
-        /// <exception cref="InvalidOperationException">Thrown if no scenario is executed by current task.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if no scenario is executed by current task or if scenario initialization is not complete.</exception>
         /// </summary>
         public static IScenario CurrentScenario => Current.Get<CurrentScenarioProperty>().Scenario;
+
+        /// <summary>
+        /// Returns currently executed scenario fixture object.<br/>
+        /// <exception cref="InvalidOperationException">Thrown if no scenario is executed by current task.</exception>
+        /// </summary>
+        public static object CurrentScenarioFixture => Current.Get<CurrentScenarioProperty>().Fixture;
     }
 }

@@ -8,16 +8,7 @@ namespace LightBDD.Core.ExecutionContext.Implementation
     {
         private readonly Stack<IStep> _steps = new Stack<IStep>();
 
-        public IStep Step
-        {
-            get
-            {
-                var step = _steps.Peek();
-                if (step != null)
-                    return step;
-                throw new InvalidOperationException($"Current task is not executing any scenario steps. Ensure that feature is used within task running scenario step.");
-            }
-        }
+        public IStep Step => _steps.Peek() ?? throw new InvalidOperationException("Current task is not executing any scenario steps. Ensure that feature is used within task running scenario step.");
 
         public void Stash(IStep step)
         {

@@ -24,15 +24,15 @@ namespace LightBDD.Core.Extensibility.Implementation
         private IEnumerable<IScenarioDecorator> _scenarioDecorators = Enumerable.Empty<IScenarioDecorator>();
 
         public ScenarioBuilder(IFeatureInfo featureInfo, object fixture, IntegrationContext integrationContext,
-            ExceptionProcessor exceptionProcessor, Action<IScenarioResult> onScenarioFinished)
+            ExceptionProcessor exceptionProcessor, Action<IScenarioResult> onScenarioFinished, IExecutionTimer executionTimer)
         {
             _featureInfo = featureInfo;
             _context = new RunnableScenarioContext(
                 integrationContext,
                 exceptionProcessor,
                 onScenarioFinished,
-                integrationContext.ScenarioProgressNotifierProvider.Invoke(fixture),
-                ProvideSteps);
+                fixture,
+                ProvideSteps, executionTimer);
         }
 
         public ICoreScenarioBuilder AddSteps(IEnumerable<StepDescriptor> steps)
@@ -136,7 +136,7 @@ namespace LightBDD.Core.Extensibility.Implementation
             string previousStepTypeName = null;
 
             var extensions = _context.IntegrationContext.ExecutionExtensions;
-            var stepContext = new RunnableStepContext(_context.ExceptionProcessor, _context.ProgressNotifier, container, context, ProvideSteps, shouldAbortSubStepExecutionFn);
+            var stepContext = new RunnableStepContext(_context.ExceptionProcessor, _context.ProgressNotifier, container, context, ProvideSteps, shouldAbortSubStepExecutionFn, _context.ExecutionTimer);
             for (var stepIndex = 0; stepIndex < totalSteps; ++stepIndex)
             {
                 var descriptor = descriptors[stepIndex];
