@@ -17,21 +17,19 @@ namespace LightBDD.Core.Execution.Implementation
         public object FixtureObject { get; }
         public ProvideStepsFunc StepsProvider { get; }
         public IProgressNotifier ProgressNotifier => IntegrationContext.ProgressNotifier;
-        public IExecutionTimer ExecutionTimer { get; }
+        public IExecutionTimer ExecutionTimer => IntegrationContext.ExecutionTimer;
 
         public RunnableScenarioContext(IntegrationContext integrationContext,
             ExceptionProcessor exceptionProcessor,
             Action<IScenarioResult> onScenarioFinished,
             object fixtureObject,
-            ProvideStepsFunc stepsProvider,
-            IExecutionTimer executionTimer)
+            ProvideStepsFunc stepsProvider)
         {
             IntegrationContext = integrationContext;
             ExceptionProcessor = exceptionProcessor;
             OnScenarioFinished = onScenarioFinished;
             FixtureObject = fixtureObject;
             StepsProvider = stepsProvider;
-            ExecutionTimer = executionTimer;
         }
     }
 }

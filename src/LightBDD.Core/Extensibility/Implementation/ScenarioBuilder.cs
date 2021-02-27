@@ -24,7 +24,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         private IEnumerable<IScenarioDecorator> _scenarioDecorators = Enumerable.Empty<IScenarioDecorator>();
 
         public ScenarioBuilder(IFeatureInfo featureInfo, object fixture, IntegrationContext integrationContext,
-            ExceptionProcessor exceptionProcessor, Action<IScenarioResult> onScenarioFinished, IExecutionTimer executionTimer)
+            ExceptionProcessor exceptionProcessor, Action<IScenarioResult> onScenarioFinished)
         {
             _featureInfo = featureInfo;
             _context = new RunnableScenarioContext(
@@ -32,7 +32,7 @@ namespace LightBDD.Core.Extensibility.Implementation
                 exceptionProcessor,
                 onScenarioFinished,
                 fixture,
-                ProvideSteps, executionTimer);
+                ProvideSteps);
         }
 
         public ICoreScenarioBuilder AddSteps(IEnumerable<StepDescriptor> steps)

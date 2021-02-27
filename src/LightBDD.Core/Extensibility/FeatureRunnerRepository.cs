@@ -3,8 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using LightBDD.Core.Execution;
-using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Extensibility.Implementation;
 
 namespace LightBDD.Core.Extensibility
@@ -17,8 +15,6 @@ namespace LightBDD.Core.Extensibility
     {
         private readonly IntegrationContext _integrationContext;
         private readonly ConcurrentDictionary<Type, Lazy<IFeatureRunner>> _runners = new ConcurrentDictionary<Type, Lazy<IFeatureRunner>>();
-        //TODO: move
-        private readonly IExecutionTimer _executionTimer = DefaultExecutionTimer.StartNew();
 
         /// <summary>
         /// Constructor instantiating factory with specified runner context.
@@ -43,7 +39,7 @@ namespace LightBDD.Core.Extensibility
 
             var lazyRunnerFor = _runners.GetOrAdd(
                 featureType,
-                type => new Lazy<IFeatureRunner>(() => new FeatureRunner(type, _integrationContext, _executionTimer), LazyThreadSafetyMode.ExecutionAndPublication));
+                type => new Lazy<IFeatureRunner>(() => new FeatureRunner(type, _integrationContext), LazyThreadSafetyMode.ExecutionAndPublication));
 
             return lazyRunnerFor.Value;
         }

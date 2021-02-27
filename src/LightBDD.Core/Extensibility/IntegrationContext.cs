@@ -5,6 +5,8 @@ using LightBDD.Core.Formatting;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
 using System;
+using LightBDD.Core.Execution;
+using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Notification.Implementation;
 
@@ -70,6 +72,11 @@ namespace LightBDD.Core.Extensibility
         /// Returns value formatting service.
         /// </summary>
         public abstract ValueFormattingService ValueFormattingService { get; }
+
+        /// <summary>
+        /// Returns execution timer.
+        /// </summary>
+        public IExecutionTimer ExecutionTimer { get; } = DefaultExecutionTimer.StartNew();
 
         /// <summary>
         /// Creates progress notifier.

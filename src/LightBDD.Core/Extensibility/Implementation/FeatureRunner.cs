@@ -11,20 +11,18 @@ namespace LightBDD.Core.Extensibility.Implementation
     {
         private readonly FeatureResult _featureResult;
         private readonly IntegrationContext _integrationContext;
-        private readonly IExecutionTimer _executionTimer;
         private readonly Type _featureType;
         private bool _disposed;
         private readonly ExceptionProcessor _exceptionProcessor;
 
-        public FeatureRunner(Type featureType, IntegrationContext integrationContext, IExecutionTimer executionTimer)
+        public FeatureRunner(Type featureType, IntegrationContext integrationContext)
         {
             _featureType = featureType;
             _integrationContext = integrationContext;
-            _executionTimer = executionTimer;
             _exceptionProcessor = new ExceptionProcessor(_integrationContext);
             _featureResult = new FeatureResult(_integrationContext.MetadataProvider.GetFeatureInfo(featureType));
 
-            integrationContext.ProgressNotifier.Notify(new FeatureStarting(executionTimer.GetTime(), _featureResult.Info));
+            integrationContext.ProgressNotifier.Notify(new FeatureStarting(integrationContext.ExecutionTimer.GetTime(), _featureResult.Info));
         }
 
         public IFeatureFixtureRunner ForFixture(object fixture)
@@ -42,7 +40,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         private ICoreScenarioBuilder CreateScenarioRunner(object fixture)
         {
             VerifyDisposed();
-            return new ScenarioBuilder(_featureResult.Info, fixture, _integrationContext, _exceptionProcessor, _featureResult.AddScenario, _executionTimer);
+            return new ScenarioBuilder(_featureResult.Info, fixture, _integrationContext, _exceptionProcessor, _featureResult.AddScenario);
         }
 
         private void VerifyDisposed()
@@ -55,7 +53,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         {
             if (_disposed) return;
             _disposed = true;
-            _integrationContext.ProgressNotifier.Notify(new FeatureFinished(_executionTimer.GetTime(), _featureResult));
+            _integrationContext.ProgressNotifier.Notify(new FeatureFinished(_integrationContext.ExecutionTimer.GetTime(), _featureResult));
         }
         public IFeatureResult GetFeatureResult()
         {
