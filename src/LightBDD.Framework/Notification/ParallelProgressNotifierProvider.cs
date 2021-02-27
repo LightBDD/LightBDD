@@ -32,6 +32,7 @@ namespace LightBDD.Framework.Notification
         /// <param name="onNotify">Actions that would be called with formatted notifications.</param>
         /// <returns><see cref="IFeatureProgressNotifier"/> instance.</returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="onNotify"/> is <c>null</c>.</exception>
+        [Obsolete]
         public IFeatureProgressNotifier CreateFeatureProgressNotifier(params Action<string>[] onNotify)
         {
             if (onNotify == null)
@@ -46,6 +47,7 @@ namespace LightBDD.Framework.Notification
         /// <param name="onNotify">Actions that would be called with formatted notifications.</param>
         /// <returns><see cref="IScenarioProgressNotifier"/> instance.</returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="onNotify"/> is <c>null</c>.</exception>
+        [Obsolete]
         public IScenarioProgressNotifier CreateScenarioProgressNotifier(params Action<string>[] onNotify)
         {
             if (onNotify == null)

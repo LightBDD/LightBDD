@@ -76,10 +76,7 @@ namespace LightBDD.Fixie2
         {
             var configuration = new LightBddConfiguration().WithFrameworkDefaults();
 
-            configuration.Get<FeatureProgressNotifierConfiguration>()
-                .AppendFrameworkDefaultProgressNotifiers();
-
-            configuration.Get<ScenarioProgressNotifierConfiguration>()
+            configuration.ProgressNotifierConfiguration()
                 .AppendFrameworkDefaultProgressNotifiers();
 
             configuration.ExceptionHandlingConfiguration()

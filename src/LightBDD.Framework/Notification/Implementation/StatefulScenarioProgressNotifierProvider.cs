@@ -3,6 +3,7 @@ using LightBDD.Core.Notification;
 
 namespace LightBDD.Framework.Notification.Implementation
 {
+    [Obsolete]
     internal class StatefulScenarioProgressNotifierProvider<TFixture> : IScenarioProgressNotifierProvider
     {
         private readonly Func<TFixture, IScenarioProgressNotifier> _notifierProvider;

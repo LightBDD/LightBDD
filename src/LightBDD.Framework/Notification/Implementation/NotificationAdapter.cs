@@ -7,6 +7,7 @@ using LightBDD.Core.Notification.Events;
 namespace LightBDD.Framework.Notification.Implementation
 {
     //TODO: remove in LightBDD 4.x
+    [Obsolete]
     class NotificationAdapter : IProgressNotifier
     {
         private readonly IFeatureProgressNotifier _featureProgressNotifier;

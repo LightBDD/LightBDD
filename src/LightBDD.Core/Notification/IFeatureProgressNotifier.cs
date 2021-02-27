@@ -1,4 +1,5 @@
-﻿using LightBDD.Core.Metadata;
+﻿using System;
+using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
 
 namespace LightBDD.Core.Notification
@@ -6,6 +7,7 @@ namespace LightBDD.Core.Notification
     /// <summary>
     /// Feature progress notification interface.
     /// </summary>
+    [Obsolete("Use " + nameof(IProgressNotifier) + " instead")]
     public interface IFeatureProgressNotifier
     {
         /// <summary>

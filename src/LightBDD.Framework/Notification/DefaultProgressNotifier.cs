@@ -8,13 +8,14 @@ using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Reporting.Formatters;
+#pragma warning disable 618
 
 namespace LightBDD.Framework.Notification
 {
     /// <summary>
     /// The default implementation of <see cref="IScenarioProgressNotifier"/> and <see cref="IFeatureProgressNotifier"/> which renders the notification text and delegates to provided notification actions configured in constructor.
     /// </summary>
-    public class DefaultProgressNotifier : IScenarioProgressNotifier, IFeatureProgressNotifier, IProgressNotifier
+    public class DefaultProgressNotifier : IProgressNotifier, IScenarioProgressNotifier, IFeatureProgressNotifier
     {
         private readonly Action<string> _onNotify;
 

@@ -10,6 +10,7 @@ using System;
 using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Notification;
 using LightBDD.Framework.Notification.Implementation;
+#pragma warning disable 612
 
 namespace LightBDD.Framework.Extensibility
 {
@@ -25,9 +26,11 @@ namespace LightBDD.Framework.Extensibility
         public override Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
 
         /// <inheritdoc />
+        [Obsolete]
         public override IFeatureProgressNotifier FeatureProgressNotifier { get; }
 
         /// <inheritdoc />
+        [Obsolete]
         public override Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider { get; }
 
         /// <inheritdoc />

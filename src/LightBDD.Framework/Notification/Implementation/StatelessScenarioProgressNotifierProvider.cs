@@ -3,6 +3,7 @@ using LightBDD.Core.Notification;
 
 namespace LightBDD.Framework.Notification.Implementation
 {
+    [Obsolete]
     internal class StatelessScenarioProgressNotifierProvider : IScenarioProgressNotifierProvider
     {
         private readonly Func<IScenarioProgressNotifier> _notifierProvider;

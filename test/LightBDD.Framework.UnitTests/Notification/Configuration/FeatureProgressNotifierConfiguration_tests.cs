@@ -9,6 +9,7 @@ using NUnit.Framework;
 namespace LightBDD.Framework.UnitTests.Notification.Configuration
 {
     [TestFixture]
+    [Obsolete]
     public class FeatureProgressNotifierConfiguration_tests
     {
         [Test]

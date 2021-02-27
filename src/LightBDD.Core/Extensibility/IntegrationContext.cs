@@ -36,11 +36,13 @@ namespace LightBDD.Core.Extensibility
         /// <summary>
         /// Returns feature progress notifier.
         /// </summary>
+        [Obsolete]
         public abstract IFeatureProgressNotifier FeatureProgressNotifier { get; }
 
         /// <summary>
         /// Returns scenario progress notifier provider method.
         /// </summary>
+        [Obsolete]
         public abstract Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider { get; }
 
         /// <summary>
@@ -72,6 +74,8 @@ namespace LightBDD.Core.Extensibility
         /// <summary>
         /// Creates progress notifier.
         /// </summary>
+#pragma warning disable 612
         protected virtual IProgressNotifier GetProgressNotifier() => new NotificationAdapter(FeatureProgressNotifier, ScenarioProgressNotifierProvider);
+#pragma warning restore 612
     }
 }

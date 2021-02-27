@@ -12,11 +12,8 @@ namespace LightBDD.NUnit3.UnitTests
         public static readonly ConcurrentQueue<string> CapturedNotifications = new ConcurrentQueue<string>();
         protected override void OnConfigure(LightBddConfiguration configuration)
         {
-            var defaultProvider = configuration.ScenarioProgressNotifierConfiguration().NotifierProvider;
-
             configuration
-                .ScenarioProgressNotifierConfiguration()
-                .UpdateNotifierProvider<object>(feature => new DelegatingScenarioProgressNotifier(defaultProvider(feature), new DefaultProgressNotifier(x => CapturedNotifications.Enqueue(x))));
+                .ProgressNotifierConfiguration().Append(new DefaultProgressNotifier(x => CapturedNotifications.Enqueue(x)));
         }
     }
 }

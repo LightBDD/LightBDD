@@ -1,35 +1,21 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
+using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Results;
 
 namespace LightBDD.XUnit2.IntegrationTests.Helpers
 {
-    public class ScenarioProgressCapture : IScenarioProgressNotifier
+    public class ScenarioProgressCapture : IProgressNotifier
     {
         private readonly ConcurrentQueue<IScenarioResult> _results = new ConcurrentQueue<IScenarioResult>();
         public IEnumerable<IScenarioResult> Results => _results;
         public static ScenarioProgressCapture Instance { get; } = new ScenarioProgressCapture();
-        public void NotifyScenarioStart(IScenarioInfo scenario)
-        {
-        }
 
-        public void NotifyScenarioFinished(IScenarioResult scenario)
+        public void Notify(ProgressEvent e)
         {
-            _results.Enqueue(scenario);
-        }
-
-        public void NotifyStepStart(IStepInfo step)
-        {
-        }
-
-        public void NotifyStepFinished(IStepResult step)
-        {
-        }
-
-        public void NotifyStepComment(IStepInfo step, string comment)
-        {
+            if (e is ScenarioFinished sf)
+                _results.Enqueue(sf.Result);
         }
     }
 }

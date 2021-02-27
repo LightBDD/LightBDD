@@ -6,6 +6,7 @@ namespace LightBDD.Framework.Notification.Implementation
     internal class ProgressManager
     {
         private readonly object _sync = new object();
+        private readonly AsyncLocal<int?> _currentScenarioId = new AsyncLocal<int?>();
         private int _totalScenarios;
         private int _finishedScenarios;
         private int _pendingScenarios;
@@ -14,15 +15,14 @@ namespace LightBDD.Framework.Notification.Implementation
         public ProgressState GetProgress()
         {
             lock (_sync)
-                return new ProgressState(_finishedScenarios, _pendingScenarios, _failedScenarios);
+                return new ProgressState(_finishedScenarios, _pendingScenarios, _failedScenarios, _currentScenarioId.Value);
         }
 
-        public int StartNewScenario()
+        public void StartNewScenario()
         {
-            var current = Interlocked.Increment(ref _totalScenarios);
+            _currentScenarioId.Value = Interlocked.Increment(ref _totalScenarios);
             lock (_sync)
                 ++_pendingScenarios;
-            return current;
         }
 
         public void CaptureScenarioResult(ExecutionStatus scenarioStatus)
@@ -38,6 +38,7 @@ namespace LightBDD.Framework.Notification.Implementation
 
         public void FinishScenario()
         {
+            _currentScenarioId.Value = null;
         }
     }
 }

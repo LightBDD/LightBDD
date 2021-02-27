@@ -1,4 +1,5 @@
-﻿using LightBDD.Core.Notification;
+﻿using System;
+using LightBDD.Core.Notification;
 using LightBDD.Framework.Notification;
 using NUnit.Framework;
 
@@ -8,11 +9,13 @@ namespace LightBDD.NUnit3.Implementation
     {
         private static readonly DefaultProgressNotifier SummarizingProgressNotifier = new DefaultProgressNotifier(WriteOutput);
 
+        [Obsolete]
         public static IFeatureProgressNotifier CreateFeatureProgressNotifier()
         {
             return new DelegatingFeatureProgressNotifier(ParallelProgressNotifierProvider.Default.CreateFeatureProgressNotifier(WriteImmediateProgress));
         }
 
+        [Obsolete]
         public static IScenarioProgressNotifier CreateScenarioProgressNotifier()
         {
             return new DelegatingScenarioProgressNotifier(
@@ -28,6 +31,15 @@ namespace LightBDD.NUnit3.Implementation
         private static void WriteImmediateProgress(string text)
         {
             TestContext.Progress.WriteLine(text);
+        }
+
+        public static IProgressNotifier[] CreateProgressNotifiers()
+        {
+            return new[]
+            {
+                ParallelProgressNotifierProvider.Default.CreateProgressNotifier(WriteImmediateProgress),
+                new DefaultProgressNotifier(WriteOutput)
+            };
         }
     }
 }

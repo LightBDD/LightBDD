@@ -1,4 +1,5 @@
-﻿using LightBDD.Core.Formatting.ExceptionFormatting;
+﻿using System;
+using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Framework.Configuration;
 using LightBDD.MsTest2.Implementation;
 
@@ -23,6 +24,7 @@ namespace LightBDD.MsTest2.Configuration
         /// <summary>
         /// Appends LightBDD.MsTest2 default scenario progress notifiers.
         /// </summary>
+        [Obsolete("Use " + nameof(ProgressNotifierConfiguration) + " instead", true)]
         public static ScenarioProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this ScenarioProgressNotifierConfiguration configuration)
         {
             return configuration.AppendNotifierProviders<ITestContextProvider>(MsTest2ProgressNotifier.CreateScenarioProgressNotifier);
@@ -31,9 +33,18 @@ namespace LightBDD.MsTest2.Configuration
         /// <summary>
         /// Appends LightBDD.MsTest2 default feature progress notifiers.
         /// </summary>
+        [Obsolete("Use " + nameof(ProgressNotifierConfiguration) + " instead", true)]
         public static FeatureProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this FeatureProgressNotifierConfiguration configuration)
         {
             return configuration.AppendNotifiers(MsTest2ProgressNotifier.CreateFeatureProgressNotifier());
+        }
+
+        /// <summary>
+        /// Appends LightBDD.MsTest2 default progress notifiers.
+        /// </summary>
+        public static ProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this ProgressNotifierConfiguration configuration)
+        {
+            return configuration.Append(MsTest2ProgressNotifier.CreateProgressNotifier());
         }
     }
 }

@@ -9,11 +9,10 @@ namespace LightBDD.XUnit2.IntegrationTests.Helpers
     {
         protected override void OnConfigure(LightBddConfiguration configuration)
         {
-            configuration.FeatureProgressNotifierConfiguration()
-                .ClearNotifiers();
-            configuration.ScenarioProgressNotifierConfiguration()
-                .ClearNotifierProviders()
-                .UpdateNotifierProvider(() => ScenarioProgressCapture.Instance);
+            configuration.ProgressNotifierConfiguration()
+                .Clear()
+                .Append(ScenarioProgressCapture.Instance);
+
             configuration.ReportWritersConfiguration()
                 .Clear();
         }
