@@ -49,7 +49,7 @@ namespace LightBDD.Core.Notification.Implementation
 
         private void HandleScenarioStarted(ScenarioStarting scenarioStarting)
         {
-            _scenarioNotifier.Value = _scenarioProgressNotifierProvider.Invoke(ScenarioExecutionContext.CurrentScenarioFixture);
+            _scenarioNotifier.Value = _scenarioProgressNotifierProvider.Invoke(ScenarioExecutionContext.GetCurrentScenarioFixtureIfPresent<object>());
             _scenarioNotifier.Value.NotifyScenarioStart(scenarioStarting.Scenario);
         }
 

@@ -28,7 +28,7 @@ namespace LightBDD.MsTest2.Implementation
 
         public static void WriteTestOutput(string message)
         {
-            ScenarioExecutionContext.GetScenarioFixtureIfPresent<ITestContextProvider>()?.TestContext?.WriteLine(message);
+            ScenarioExecutionContext.GetCurrentScenarioFixtureIfPresent<ITestContextProvider>()?.TestContext?.WriteLine(message);
         }
     }
 }

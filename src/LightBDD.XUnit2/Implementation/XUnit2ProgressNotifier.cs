@@ -34,6 +34,6 @@ namespace LightBDD.XUnit2.Implementation
             };
         }
 
-        private static void WriteTestOutput(string message) => ScenarioExecutionContext.GetScenarioFixtureIfPresent<ITestOutputProvider>()?.TestOutput.WriteLine(message);
+        private static void WriteTestOutput(string message) => ScenarioExecutionContext.GetCurrentScenarioFixtureIfPresent<ITestOutputProvider>()?.TestOutput.WriteLine(message);
     }
 }

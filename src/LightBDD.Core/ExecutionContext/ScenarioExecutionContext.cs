@@ -54,16 +54,10 @@ namespace LightBDD.Core.ExecutionContext
         public static IScenario CurrentScenario => Current.Get<CurrentScenarioProperty>().Scenario ?? throw new InvalidOperationException("The current task does not run any initialized scenario. Ensure that feature is used within task running fully initialized scenario.");
 
         /// <summary>
-        /// Returns currently executed scenario fixture object.<br/>
-        /// <exception cref="InvalidOperationException">Thrown if no scenario is executed by current task.</exception>
-        /// </summary>
-        public static object CurrentScenarioFixture => Current.Get<CurrentScenarioProperty>().Fixture ?? throw new InvalidOperationException("The current task does not run any scenario with available fixture object.");
-
-        /// <summary>
         /// Returns currently executed scenario fixture object if present or <c>null</c> if no scenario is currently executed.<br/>
         /// <exception cref="InvalidOperationException">Thrown if fixture object is present but not assignable to <typeparam name="TFixture"></typeparam>.</exception>
         /// </summary>
-        public static TFixture GetScenarioFixtureIfPresent<TFixture>() where TFixture : class
+        public static TFixture GetCurrentScenarioFixtureIfPresent<TFixture>() where TFixture : class
         {
             var fixture = CurrentContext.Value?.Get<CurrentScenarioProperty>().Fixture;
 
