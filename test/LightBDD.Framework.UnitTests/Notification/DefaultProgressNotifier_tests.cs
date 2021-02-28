@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
+using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
@@ -74,16 +76,14 @@ namespace LightBDD.Framework.UnitTests.Notification
             var featureResult = Fake.Object<TestResults.TestFeatureResult>();
             var comment = Fake.String();
 
-            var featureNotifier = (IFeatureProgressNotifier)_notifier;
-            var scenarioNotifier = (IScenarioProgressNotifier)_notifier;
-
-            featureNotifier.NotifyFeatureStart(featureInfo);
-            scenarioNotifier.NotifyScenarioStart(scenarioInfo);
-            scenarioNotifier.NotifyStepStart(stepInfo);
-            scenarioNotifier.NotifyStepComment(stepInfo, comment);
-            scenarioNotifier.NotifyStepFinished(stepResult);
-            scenarioNotifier.NotifyScenarioFinished(scenarioResult);
-            featureNotifier.NotifyFeatureFinished(featureResult);
+            var eventTime = new EventTime();
+            _notifier.Notify(new FeatureStarting(eventTime, featureInfo));
+            _notifier.Notify(new ScenarioStarting(eventTime, scenarioInfo));
+            _notifier.Notify(new StepStarting(eventTime, stepInfo));
+            _notifier.Notify(new StepCommented(eventTime, stepInfo, comment));
+            _notifier.Notify(new StepFinished(eventTime, stepResult));
+            _notifier.Notify(new ScenarioFinished(eventTime, scenarioResult));
+            _notifier.Notify(new FeatureFinished(eventTime, featureResult));
 
             var expectedTable = @"    table:
     +-+---+----------+----------+
@@ -116,7 +116,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         {
             var featureInfo = Fake.Object<TestResults.TestFeatureInfo>();
             featureInfo.Description = null;
-            ((IFeatureProgressNotifier)_notifier).NotifyFeatureStart(featureInfo);
+            _notifier.Notify(new FeatureStarting(new EventTime(), featureInfo));
 
             Assert.That(_captured.Single(), Is.EqualTo($"FEATURE: [{string.Join("][", featureInfo.Labels)}] {featureInfo.Name}"));
         }
@@ -126,7 +126,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         {
             var featureInfo = Fake.Object<TestResults.TestFeatureInfo>();
             featureInfo.Labels = new string[0];
-            ((IFeatureProgressNotifier)_notifier).NotifyFeatureStart(featureInfo);
+            _notifier.Notify(new FeatureStarting(new EventTime(), featureInfo));
 
             var expected = $"FEATURE: {featureInfo.Name}{Environment.NewLine}  {featureInfo.Description}";
             Assert.That(_captured.Single(), Is.EqualTo(expected));
@@ -137,7 +137,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         {
             var scenarioInfo = Fake.Object<TestResults.TestScenarioInfo>();
             scenarioInfo.Labels = new string[0];
-            ((IScenarioProgressNotifier)_notifier).NotifyScenarioStart(scenarioInfo);
+            _notifier.Notify(new ScenarioStarting(new EventTime(), scenarioInfo));
 
             var expected = $"SCENARIO: {scenarioInfo.Name}";
             Assert.That(_captured.Single(), Is.EqualTo(expected));
@@ -153,9 +153,8 @@ namespace LightBDD.Framework.UnitTests.Notification
             scenarioResult.Status = ExecutionStatus.Passed;
             scenarioResult.ExecutionTime = null;
 
-            var scenarioNotifier = (IScenarioProgressNotifier)_notifier;
-            scenarioNotifier.NotifyScenarioStart(scenarioInfo);
-            scenarioNotifier.NotifyScenarioFinished(scenarioResult);
+            _notifier.Notify(new ScenarioStarting(new EventTime(), scenarioInfo));
+            _notifier.Notify(new ScenarioFinished(new EventTime(), scenarioResult));
 
             var expected = new[]
             {
@@ -175,9 +174,8 @@ namespace LightBDD.Framework.UnitTests.Notification
             scenarioResult.Status = ExecutionStatus.Passed;
             scenarioResult.StatusDetails = null;
 
-            var scenarioNotifier = (IScenarioProgressNotifier)_notifier;
-            scenarioNotifier.NotifyScenarioStart(scenarioInfo);
-            scenarioNotifier.NotifyScenarioFinished(scenarioResult);
+            _notifier.Notify(new ScenarioStarting(new EventTime(), scenarioInfo));
+            _notifier.Notify(new ScenarioFinished(new EventTime(), scenarioResult));
 
             var expected = new[]
             {

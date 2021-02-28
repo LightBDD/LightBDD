@@ -11,6 +11,7 @@ using LightBDD.Core.Extensibility.Results;
 using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
+using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Implementation;
 using LightBDD.Core.Results.Parameters;
@@ -46,10 +47,10 @@ namespace LightBDD.Core.Execution.Implementation
         public async Task ExecuteAsync()
         {
             var stepStartNotified = false;
-            var watch = ExecutionTimeWatch.StartNew();
+            var executionStartTime = _stepContext.ExecutionTimer.GetTime();
             try
             {
-                StartStep();
+                StartStep(executionStartTime);
                 stepStartNotified = true;
                 await _decoratedStepMethod.Invoke();
                 UpdateStepStatus();
@@ -60,7 +61,7 @@ namespace LightBDD.Core.Execution.Implementation
             }
             finally
             {
-                StopStep(watch, stepStartNotified);
+                StopStep(executionStartTime, stepStartNotified);
             }
             ProcessExceptions();
         }
@@ -198,22 +199,24 @@ namespace LightBDD.Core.Execution.Implementation
                 throw new StepExecutionException(exception, _result.Status);
         }
 
-        private void StartStep()
+        private void StartStep(EventTime executionStartTime)
         {
             ScenarioExecutionContext.Current.Get<CurrentStepProperty>().Stash(this);
             EvaluateParameters();
-            _stepContext.ProgressNotifier.NotifyStepStart(_result.Info);
+            _stepContext.ProgressNotifier.Notify(new StepStarting(executionStartTime, _result.Info));
         }
 
-        private void StopStep(ExecutionTimeWatch watch, bool stepStartNotified)
+        private void StopStep(EventTime executionStartTime, bool stepStartNotified)
         {
             ScenarioExecutionContext.Current.Get<CurrentStepProperty>().RemoveCurrent(this);
             DisposeComposite();
-            watch.Stop();
-            _result.SetExecutionTime(watch.GetTime());
+
+            var executionStopTime = _stepContext.ExecutionTimer.GetTime();
+
+            _result.SetExecutionTime(executionStopTime.GetExecutionTime(executionStartTime));
             _result.IncludeSubStepDetails();
             if (stepStartNotified)
-                _stepContext.ProgressNotifier.NotifyStepFinished(_result);
+                _stepContext.ProgressNotifier.Notify(new StepFinished(executionStopTime, _result));
         }
 
         private void DisposeComposite()
@@ -285,7 +288,7 @@ namespace LightBDD.Core.Execution.Implementation
         public void Comment(string comment)
         {
             _result.AddComment(comment);
-            _stepContext.ProgressNotifier.NotifyStepComment(_result.Info, comment);
+            _stepContext.ProgressNotifier.Notify(new StepCommented(_stepContext.ExecutionTimer.GetTime(), _result.Info, comment));
         }
 
         public override string ToString()

@@ -9,6 +9,7 @@ namespace LightBDD.Framework.Configuration
     /// <summary>
     /// Configuration class allowing to customize scenario progress notification behavior.
     /// </summary>
+    [Obsolete]
     public class ScenarioProgressNotifierConfiguration : FeatureConfiguration
     {
         private readonly ScenarioProgressNotifierComposer _composer = new ScenarioProgressNotifierComposer();
@@ -19,12 +20,15 @@ namespace LightBDD.Framework.Configuration
         /// </summary>
         public Func<object, IScenarioProgressNotifier> NotifierProvider => _composer.Clone().Compose;
 
+        internal bool HasAny => _composer.HasAny;
+
         /// <summary>
         /// Replaces the <see cref="NotifierProvider"/> with <paramref name="notifierProvider"/> value.
         /// </summary>
         /// <param name="notifierProvider">New provider to set.</param>
         /// <returns>Self.</returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="notifierProvider"/> is null.</exception>
+        [Obsolete("Use " + nameof(ProgressNotifierConfiguration) + "." + nameof(ProgressNotifierConfiguration.Append) + " instead")]
         public ScenarioProgressNotifierConfiguration UpdateNotifierProvider(Func<IScenarioProgressNotifier> notifierProvider)
         {
             ThrowIfSealed();
@@ -41,6 +45,7 @@ namespace LightBDD.Framework.Configuration
         /// <typeparam name="TFixture">Feature fixture type.</typeparam>
         /// <returns>Self.</returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="notifierProvider"/> is null.</exception>
+        [Obsolete("Use " + nameof(ProgressNotifierConfiguration) + "." + nameof(ProgressNotifierConfiguration.Append) + " instead")]
         public ScenarioProgressNotifierConfiguration UpdateNotifierProvider<TFixture>(Func<TFixture, IScenarioProgressNotifier> notifierProvider)
         {
             ThrowIfSealed();
@@ -56,6 +61,7 @@ namespace LightBDD.Framework.Configuration
         /// <param name="notifierProviders">Notifiers to append</param>
         /// <returns>Self</returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="notifierProviders"/> collection or any of it's item is null.</exception>
+        [Obsolete("Use " + nameof(ProgressNotifierConfiguration) + "." + nameof(ProgressNotifierConfiguration.Append) + " instead")]
         public ScenarioProgressNotifierConfiguration AppendNotifierProviders(params Func<IScenarioProgressNotifier>[] notifierProviders)
         {
             ThrowIfSealed();
@@ -73,6 +79,7 @@ namespace LightBDD.Framework.Configuration
         /// <param name="notifierProviders">Notifiers to append</param>
         /// <returns>Self</returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="notifierProviders"/> collection or any of it's item is null.</exception>
+        [Obsolete("Use " + nameof(ProgressNotifierConfiguration) + "." + nameof(ProgressNotifierConfiguration.Append) + " instead")]
         public ScenarioProgressNotifierConfiguration AppendNotifierProviders<TFixture>(params Func<TFixture, IScenarioProgressNotifier>[] notifierProviders)
         {
             ThrowIfSealed();

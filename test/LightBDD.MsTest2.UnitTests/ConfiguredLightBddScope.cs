@@ -22,11 +22,8 @@ namespace LightBDD.MsTest2.UnitTests
 
         private static void OnConfigure(LightBddConfiguration configuration)
         {
-            var defaultProvider = configuration.ScenarioProgressNotifierConfiguration().NotifierProvider;
-
             configuration
-                .ScenarioProgressNotifierConfiguration()
-                .UpdateNotifierProvider<object>(feature => new DelegatingScenarioProgressNotifier(defaultProvider(feature), new DefaultProgressNotifier(x => CapturedNotifications.Enqueue(x))));
+                .ProgressNotifierConfiguration().Append(new DefaultProgressNotifier(x => CapturedNotifications.Enqueue(x)));
         }
     }
 }

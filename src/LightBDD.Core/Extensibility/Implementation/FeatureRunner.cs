@@ -2,6 +2,8 @@ using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Implementation;
 using System;
+using LightBDD.Core.Execution;
+using LightBDD.Core.Notification.Events;
 
 namespace LightBDD.Core.Extensibility.Implementation
 {
@@ -19,7 +21,8 @@ namespace LightBDD.Core.Extensibility.Implementation
             _integrationContext = integrationContext;
             _exceptionProcessor = new ExceptionProcessor(_integrationContext);
             _featureResult = new FeatureResult(_integrationContext.MetadataProvider.GetFeatureInfo(featureType));
-            integrationContext.FeatureProgressNotifier.NotifyFeatureStart(_featureResult.Info);
+
+            integrationContext.ProgressNotifier.Notify(new FeatureStarting(integrationContext.ExecutionTimer.GetTime(), _featureResult.Info));
         }
 
         public IFeatureFixtureRunner ForFixture(object fixture)
@@ -50,7 +53,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         {
             if (_disposed) return;
             _disposed = true;
-            _integrationContext.FeatureProgressNotifier.NotifyFeatureFinished(_featureResult);
+            _integrationContext.ProgressNotifier.Notify(new FeatureFinished(_integrationContext.ExecutionTimer.GetTime(), _featureResult));
         }
         public IFeatureResult GetFeatureResult()
         {

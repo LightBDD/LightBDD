@@ -4,16 +4,18 @@ using System.Linq;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
+using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Reporting.Formatters;
+#pragma warning disable 618
 
 namespace LightBDD.Framework.Notification
 {
     /// <summary>
     /// The default implementation of <see cref="IScenarioProgressNotifier"/> and <see cref="IFeatureProgressNotifier"/> which renders the notification text and delegates to provided notification actions configured in constructor.
     /// </summary>
-    public class DefaultProgressNotifier : IScenarioProgressNotifier, IFeatureProgressNotifier
+    public class DefaultProgressNotifier : IProgressNotifier, IScenarioProgressNotifier, IFeatureProgressNotifier
     {
         private readonly Action<string> _onNotify;
 
@@ -108,6 +110,35 @@ namespace LightBDD.Framework.Notification
         public void NotifyFeatureFinished(IFeatureResult feature)
         {
             _onNotify($"FEATURE FINISHED: {feature.Info.Name}");
+        }
+
+        /// <inheritdoc />
+        public void Notify(ProgressEvent e)
+        {
+            switch (e)
+            {
+                case FeatureFinished featureFinished:
+                    NotifyFeatureFinished(featureFinished.Result);
+                    break;
+                case FeatureStarting featureStarting:
+                    NotifyFeatureStart(featureStarting.Feature);
+                    break;
+                case ScenarioFinished scenarioFinished:
+                    NotifyScenarioFinished(scenarioFinished.Result);
+                    break;
+                case ScenarioStarting scenarioStarting:
+                    NotifyScenarioStart(scenarioStarting.Scenario);
+                    break;
+                case StepCommented stepCommented:
+                    NotifyStepComment(stepCommented.Step, stepCommented.Comment);
+                    break;
+                case StepFinished stepFinished:
+                    NotifyStepFinished(stepFinished.Result);
+                    break;
+                case StepStarting stepStarting:
+                    NotifyStepStart(stepStarting.Step);
+                    break;
+            }
         }
 
         private static string FormatDescription(string description)

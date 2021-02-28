@@ -8,6 +8,7 @@ using NUnit.Framework;
 namespace LightBDD.Framework.UnitTests.Notification
 {
     [TestFixture]
+    [Obsolete]
     public class DelegatingScenarioProgressNotifier_tests
     {
         private DelegatingScenarioProgressNotifier _subject;

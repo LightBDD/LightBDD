@@ -10,13 +10,28 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
         {
         }
 
-        public TestableFeatureRunnerRepository(IFeatureProgressNotifier featureProgressNotifier, Func<object, IScenarioProgressNotifier> scenarioProgressNotifier)
-            : this(TestableIntegrationContextBuilder.Default().WithFeatureProgressNotifier(featureProgressNotifier).WithScenarioProgressNotifierProvider(scenarioProgressNotifier))
+        [Obsolete]
+        public TestableFeatureRunnerRepository(IFeatureProgressNotifier featureProgressNotifier,
+            Func<object, IScenarioProgressNotifier> scenarioProgressNotifier)
+            : this(TestableIntegrationContextBuilder.Default().WithFeatureProgressNotifier(featureProgressNotifier)
+                .WithScenarioProgressNotifierProvider(scenarioProgressNotifier))
+        {
+        }
+
+        public TestableFeatureRunnerRepository(IProgressNotifier progressNotifier)
+            : this(TestableIntegrationContextBuilder.Default().WithProgressNotifier(progressNotifier))
         {
         }
 
         public TestableFeatureRunnerRepository(TestableIntegrationContextBuilder contextBuilder)
-            : base(contextBuilder.Build()) { }
+            : this(contextBuilder.Build()) { }
+
+        private TestableFeatureRunnerRepository(IntegrationContext context) : base(context)
+        {
+            Context = context;
+        }
+
+        public IntegrationContext Context { get; }
 
         public static IFeatureRunner GetRunner(Type featureType)
         {

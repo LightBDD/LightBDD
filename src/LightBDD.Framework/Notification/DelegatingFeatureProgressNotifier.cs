@@ -10,6 +10,7 @@ namespace LightBDD.Framework.Notification
     /// <summary>
     /// Feature progress notifier allowing to delegate notification to zero or more notifiers.
     /// </summary>
+    [Obsolete]
     public class DelegatingFeatureProgressNotifier : IFeatureProgressNotifier
     {
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using LightBDD.Core.Configuration;
 using LightBDD.Framework.Formatting;
 using LightBDD.Framework.Formatting.Values;
@@ -59,18 +60,31 @@ namespace LightBDD.Framework.Configuration
         /// </summary>
         /// <param name="configuration">Configuration object.</param>
         /// <returns>Configuration object.</returns>
+        [Obsolete]
         public static FeatureProgressNotifierConfiguration FeatureProgressNotifierConfiguration(this LightBddConfiguration configuration)
         {
             return configuration.Get<FeatureProgressNotifierConfiguration>();
         }
+
         /// <summary>
         /// Retrieves <see cref="ScenarioProgressNotifierConfiguration"/> from <paramref name="configuration"/> for further customizations.
         /// </summary>
         /// <param name="configuration">Configuration object.</param>
         /// <returns>Configuration object.</returns>
+        [Obsolete]
         public static ScenarioProgressNotifierConfiguration ScenarioProgressNotifierConfiguration(this LightBddConfiguration configuration)
         {
             return configuration.Get<ScenarioProgressNotifierConfiguration>();
+        }
+
+        /// <summary>
+        /// Retrieves <see cref="ProgressNotifierConfiguration"/> from <paramref name="configuration"/> for further customizations.
+        /// </summary>
+        /// <param name="configuration">Configuration object.</param>
+        /// <returns>Configuration object.</returns>
+        public static ProgressNotifierConfiguration ProgressNotifierConfiguration(this LightBddConfiguration configuration)
+        {
+            return configuration.Get<ProgressNotifierConfiguration>();
         }
 
         /// <summary>

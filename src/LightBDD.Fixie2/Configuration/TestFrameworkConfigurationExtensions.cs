@@ -1,4 +1,5 @@
-﻿using LightBDD.Core.Formatting.ExceptionFormatting;
+﻿using System;
+using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Fixie2.Implementation;
 using LightBDD.Framework.Configuration;
 
@@ -22,6 +23,7 @@ namespace LightBDD.Fixie2.Configuration
         /// <summary>
         /// Appends LightBDD.Fixie2 default scenario progress notifiers.
         /// </summary>
+        [Obsolete("Use " + nameof(ProgressNotifierConfiguration) + " instead", true)]
         public static ScenarioProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this ScenarioProgressNotifierConfiguration configuration)
         {
             return configuration
@@ -31,9 +33,18 @@ namespace LightBDD.Fixie2.Configuration
         /// <summary>
         /// Appends LightBDD.Fixie2 default feature progress notifiers.
         /// </summary>
+        [Obsolete("Use " + nameof(ProgressNotifierConfiguration) + " instead", true)]
         public static FeatureProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this FeatureProgressNotifierConfiguration configuration)
         {
             return configuration.AppendNotifiers(FixieProgressNotifier.CreateFeatureProgressNotifier());
+        }
+
+        /// <summary>
+        /// Appends LightBDD.MsTest2 default progress notifiers.
+        /// </summary>
+        public static ProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this ProgressNotifierConfiguration configuration)
+        {
+            return configuration.Append(FixieProgressNotifier.CreateProgressNotifier());
         }
     }
 }

@@ -10,6 +10,7 @@ using NUnit.Framework;
 namespace LightBDD.Framework.UnitTests.Notification.Configuration
 {
     [TestFixture]
+    [Obsolete]
     public class ScenarioProgressNotifierConfiguration_tests
     {
         [Test]

@@ -8,6 +8,9 @@ using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
 using System;
 using LightBDD.Framework.Configuration;
+using LightBDD.Framework.Notification;
+using LightBDD.Framework.Notification.Implementation;
+#pragma warning disable 612
 
 namespace LightBDD.Framework.Extensibility
 {
@@ -23,9 +26,11 @@ namespace LightBDD.Framework.Extensibility
         public override Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
 
         /// <inheritdoc />
+        [Obsolete]
         public override IFeatureProgressNotifier FeatureProgressNotifier { get; }
 
         /// <inheritdoc />
+        [Obsolete]
         public override Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider { get; }
 
         /// <inheritdoc />
@@ -59,6 +64,18 @@ namespace LightBDD.Framework.Extensibility
             ScenarioProgressNotifierProvider = configuration.ScenarioProgressNotifierConfiguration().NotifierProvider;
             ExecutionExtensions = configuration.ExecutionExtensionsConfiguration();
             DependencyContainer = configuration.DependencyContainerConfiguration().DependencyContainer;
+        }
+
+        /// <inheritdoc />
+        protected override IProgressNotifier GetProgressNotifier()
+        {
+            var notifier = Configuration.ProgressNotifierConfiguration().Notifier;
+
+            if (Configuration.ScenarioProgressNotifierConfiguration().HasAny ||
+                FeatureProgressNotifier != NoProgressNotifier.Default)
+                notifier = DelegatingProgressNotifier.Compose(notifier, new NotificationAdapter(FeatureProgressNotifier, ScenarioProgressNotifierProvider));
+
+            return notifier;
         }
     }
 }

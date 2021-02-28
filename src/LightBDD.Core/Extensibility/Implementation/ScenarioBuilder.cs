@@ -31,7 +31,7 @@ namespace LightBDD.Core.Extensibility.Implementation
                 integrationContext,
                 exceptionProcessor,
                 onScenarioFinished,
-                integrationContext.ScenarioProgressNotifierProvider.Invoke(fixture),
+                fixture,
                 ProvideSteps);
         }
 
@@ -136,7 +136,7 @@ namespace LightBDD.Core.Extensibility.Implementation
             string previousStepTypeName = null;
 
             var extensions = _context.IntegrationContext.ExecutionExtensions;
-            var stepContext = new RunnableStepContext(_context.ExceptionProcessor, _context.ProgressNotifier, container, context, ProvideSteps, shouldAbortSubStepExecutionFn);
+            var stepContext = new RunnableStepContext(_context.ExceptionProcessor, _context.ProgressNotifier, container, context, ProvideSteps, shouldAbortSubStepExecutionFn, _context.ExecutionTimer);
             for (var stepIndex = 0; stepIndex < totalSteps; ++stepIndex)
             {
                 var descriptor = descriptors[stepIndex];

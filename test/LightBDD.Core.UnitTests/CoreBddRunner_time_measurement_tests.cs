@@ -1,7 +1,7 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Results;
 using LightBDD.Framework;
@@ -17,13 +17,16 @@ namespace LightBDD.Core.UnitTests
         private IBddRunner _runner;
         private static readonly TimeSpan UtcNowClockPrecision = TimeSpan.FromMilliseconds(30);
         private IFeatureRunner _feature;
+        private IExecutionTimer _timer;
 
         #region Setup/Teardown
 
         [SetUp]
         public void SetUp()
         {
-            _feature = TestableFeatureRunnerRepository.GetRunner(GetType());
+            var repo = new TestableFeatureRunnerRepository();
+            _timer = repo.Context.ExecutionTimer;
+            _feature = repo.GetRunnerFor(GetType());
             _runner = _feature.GetBddRunner(this);
         }
 
@@ -49,23 +52,24 @@ namespace LightBDD.Core.UnitTests
 
         private void AssertScenarioExecutionTime(Action runScenario)
         {
-            var startTime = DateTimeOffset.UtcNow;
-            var watch = Stopwatch.StartNew();
+            var start = _timer.GetTime();
             try { runScenario(); }
             catch { }
-            watch.Stop();
+
+            var stop = _timer.GetTime();
+            var executionTime = stop.GetExecutionTime(start);
 
             var result = _feature.GetFeatureResult().GetScenarios().Single();
 
-            FormatTime("Measure time", new ExecutionTime(startTime, watch.Elapsed));
+            FormatTime("Measure time", executionTime);
             FormatTime("Scenario time", result.ExecutionTime);
 
             Assert.That(result.ExecutionTime, Is.Not.Null);
-            Assert.That(result.ExecutionTime.Duration, Is.LessThanOrEqualTo(watch.Elapsed), "Scenario.ExecutionTime.Duration");
+            Assert.That(result.ExecutionTime.Duration, Is.LessThanOrEqualTo(executionTime.Duration), "Scenario.ExecutionTime.Duration");
             Assert.That(result.ExecutionTime.Start, Is
-                .GreaterThanOrEqualTo(startTime)
+                .GreaterThanOrEqualTo(start.Time)
                 .And
-                .LessThan(startTime.Add(watch.Elapsed).Add(UtcNowClockPrecision)), "Scenario.ExecutionTime.Start");
+                .LessThan(executionTime.End.Add(UtcNowClockPrecision)), "Scenario.ExecutionTime.Start");
 
             AssertStepsExecutionTimesAreDoneInOrder();
         }
