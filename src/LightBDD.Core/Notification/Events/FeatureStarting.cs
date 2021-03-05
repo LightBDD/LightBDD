@@ -3,6 +3,7 @@ using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Notification.Events
 {
+    //TODO: move to Core.Events
     /// <summary>
     /// Event raised when feature execution is about to start.
     /// </summary>

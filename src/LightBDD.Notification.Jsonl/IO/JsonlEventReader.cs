@@ -8,11 +8,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Notification.Jsonl.Events;
 
-namespace LightBDD.Notification.Jsonl
+namespace LightBDD.Notification.Jsonl.IO
 {
-    public class JsonlProgressNotificationReader
+    public class JsonlEventReader
     {
-        private static readonly Dictionary<string, Type> Mapping = typeof(JsonlProgressNotificationReader).Assembly.GetTypes()
+        private static readonly Dictionary<string, Type> Mapping = typeof(JsonlEventReader).Assembly.GetTypes()
             .Where(t => !t.IsAbstract && typeof(Event).IsAssignableFrom(t)).ToDictionary(t => t.Name);
 
         private static readonly JsonSerializerOptions JsonlOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web)
@@ -22,7 +22,7 @@ namespace LightBDD.Notification.Jsonl
 
         private readonly StreamReader _reader;
 
-        public JsonlProgressNotificationReader(Stream uft8Stream)
+        public JsonlEventReader(Stream uft8Stream)
         {
             _reader = new StreamReader(uft8Stream);
         }

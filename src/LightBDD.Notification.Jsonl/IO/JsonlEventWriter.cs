@@ -5,9 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Notification.Jsonl.Events;
 
-namespace LightBDD.Notification.Jsonl
+namespace LightBDD.Notification.Jsonl.IO
 {
-    public class JsonlProgressNotificationWriter
+    public class JsonlEventWriter
     {
         private static readonly byte[] LineSeparator = Encoding.UTF8.GetBytes(",\n");
         private readonly Stream _utf8Stream;
@@ -17,7 +17,7 @@ namespace LightBDD.Notification.Jsonl
             WriteIndented = false
         };
 
-        public JsonlProgressNotificationWriter(Stream utf8Stream)
+        public JsonlEventWriter(Stream utf8Stream)
         {
             _utf8Stream = utf8Stream;
         }

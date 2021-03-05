@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\Common.props" />
+  <PropertyGroup>
+    <Description>Provides LightBDD progressive reporters.</Description>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LightBDD.Core\LightBDD.Core.csproj" />
+    <ProjectReference Include="..\LightBDD.Framework\LightBDD.Framework.csproj" />
+    <ProjectReference Include="..\LightBDD.Notification.Jsonl\LightBDD.Notification.Jsonl.csproj" />
+  </ItemGroup>
+
+</Project>

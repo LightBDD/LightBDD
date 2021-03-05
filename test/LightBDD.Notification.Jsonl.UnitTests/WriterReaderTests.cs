@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LightBDD.Notification.Jsonl.Events;
+using LightBDD.Notification.Jsonl.IO;
 using NUnit.Framework;
 using RandomTestValues;
 using Shouldly;
@@ -21,7 +22,7 @@ namespace LightBDD.Notification.Jsonl.UnitTests
             var e2 = RandomValue.Object<ExecutionFinished>();
             var mem = await WriteEvents(e1, e2);
 
-            var reader = new JsonlProgressNotificationReader(mem);
+            var reader = new JsonlEventReader(mem);
             var actualEvents = await reader.ReadAll().ToArrayAsync();
 
             actualEvents.ShouldBeEquivalentTo(new Event[] { e1, e2 });
@@ -34,7 +35,7 @@ namespace LightBDD.Notification.Jsonl.UnitTests
 {""_c"":""something"",""_t"":97551612000000012},
 {""_c"":""ExecutionFinished"",""_t"":97551612000000012},";
             var mem = new MemoryStream(Encoding.UTF8.GetBytes(input));
-            var reader = new JsonlProgressNotificationReader(mem);
+            var reader = new JsonlEventReader(mem);
 
             var actualEvents = await reader.ReadAll().ToArrayAsync();
 
@@ -55,7 +56,7 @@ namespace LightBDD.Notification.Jsonl.UnitTests
             var e = CreateEvent(eventType);
             var mem = await WriteEvents(e);
 
-            var reader = new JsonlProgressNotificationReader(mem);
+            var reader = new JsonlEventReader(mem);
             var actualEvents = await reader.ReadAll().ToArrayAsync();
             actualEvents.Single().ShouldBeEquivalentTo(e);
         }
@@ -66,7 +67,7 @@ namespace LightBDD.Notification.Jsonl.UnitTests
         private async Task<MemoryStream> WriteEvents(params Event[] events)
         {
             var mem = new MemoryStream();
-            var writer = new JsonlProgressNotificationWriter(mem);
+            var writer = new JsonlEventWriter(mem);
             foreach (var e in events)
                 await writer.Write(e);
 
