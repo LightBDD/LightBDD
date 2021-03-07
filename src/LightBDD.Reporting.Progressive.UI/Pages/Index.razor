@@ -6,19 +6,7 @@
 
 @foreach (var feat in Repository.Features.OrderBy(f => f.Name.Name))
 {
-    <div>
-        <div>@feat.Name.Name</div>
-        @foreach (var sc in feat.Scenarios)
-        {
-            <div>
-                <div>&nbsp;&nbsp;@sc.Name.Name</div>
-                @foreach (var st in sc.Steps)
-                {
-                    <div>&nbsp;&nbsp;&nbsp;&nbsp;@st.GroupPrefix @st.Number @st.Name.TypeName @st.Name.Name</div>
-                }
-            </div>
-        }
-    </div>
+    <FeatureView Model="@feat" />
 }
 
 @code

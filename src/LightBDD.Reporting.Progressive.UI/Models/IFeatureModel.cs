@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using LightBDD.Reporting.Progressive.UI.Utils;
 
 namespace LightBDD.Reporting.Progressive.UI.Models
 {
-    public interface IFeatureModel
+    public interface IFeatureModel : IObservableStateChange
     {
         Guid Id { get; }
         string Description { get; }

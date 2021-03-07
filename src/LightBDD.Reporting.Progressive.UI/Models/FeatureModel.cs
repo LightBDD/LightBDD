@@ -22,6 +22,12 @@ namespace LightBDD.Reporting.Progressive.UI.Models
         public INameInfo Name => _name;
         public IReadOnlyList<IScenarioModel> Scenarios => _scenarios;
 
-        public void AddScenario(IScenarioModel scenario) => _scenarios.Add(scenario);
+        public void AddScenario(IScenarioModel scenario)
+        {
+            _scenarios.Add(scenario);
+            OnChange?.Invoke();
+        }
+
+        public event Action OnChange;
     }
 }

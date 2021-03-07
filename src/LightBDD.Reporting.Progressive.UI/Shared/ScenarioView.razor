@@ -1,0 +1,44 @@
+﻿@using LightBDD.Reporting.Progressive.UI.Models
+@using LightBDD.Reporting.Progressive.UI.Utils
+@implements IDisposable;
+
+<div>
+    <div>
+        <span>@(Model.Name.Name)</span>
+        @if (Model.Labels.Any())
+        {
+            <span>[@(string.Join(", ",Model.Labels))]</span>
+        }
+    </div>
+    @if (Model.Steps.Any())
+    {
+        <div class="sub-group">
+            @foreach (var step in Model.Steps)
+            {
+                <StepView Model="@step" />
+            }
+        </div>
+    }
+</div>
+
+@code {
+
+    private readonly ObservableProperty<IScenarioModel> _model;
+
+    public ScenarioView()
+    {
+        _model = new ObservableProperty<IScenarioModel>(StateHasChanged);
+    }
+
+    [Parameter]
+    public IScenarioModel Model
+    {
+        get => _model.Value;
+        set => _model.Value = value;
+    }
+
+    public void Dispose()
+    {
+        _model?.Dispose();
+    }
+}

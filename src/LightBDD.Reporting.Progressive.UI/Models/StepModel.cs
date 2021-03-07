@@ -22,6 +22,12 @@ namespace LightBDD.Reporting.Progressive.UI.Models
         public int Number => _meta.Number;
         public IStepNameInfo Name => _name;
         public IReadOnlyList<IStepModel> SubSteps => _subSteps;
-        public void Add(StepModel sub) => _subSteps.Add(sub);
+        public void AddSubStep(StepModel sub)
+        {
+            _subSteps.Add(sub);
+            OnChange?.Invoke();
+        }
+
+        public event Action OnChange;
     }
 }

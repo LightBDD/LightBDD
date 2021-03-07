@@ -22,7 +22,7 @@ I want to receive invoice for bought items")]
         [Scenario]
         [Label("Ticket-4")]
         [ScenarioCategory(Categories.Sales)]
-        public void Receiving_invoice_for_products([Range(0, 1000)] int x)
+        public void Receiving_invoice_for_products([Range(0, 50)] int x)
         {
             var woodenDesk = $"wooden desk {x}";
             var woodenShelf = $"wooden shelf {x}";

@@ -29,8 +29,8 @@ namespace LightBDD.Reporting.Progressive.UI.Services
             _steps.Add(sd.Id, model);
 
             if (_scenarios.TryGetValue(model.ParentId, out var scenario))
-                scenario.Add(model);
-            else _steps[model.ParentId].Add(model);
+                scenario.AddStep(model);
+            else _steps[model.ParentId].AddSubStep(model);
         }
 
         private void OnScenarioDiscovered(ScenarioDiscovered sd)
