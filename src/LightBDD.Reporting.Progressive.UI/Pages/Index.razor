@@ -1,9 +1,25 @@
 ﻿@page "/"
 @using LightBDD.Reporting.Progressive.UI.Services
 @inject InteropService Interop;
+@inject EventRepository Repository;
+@implements IDisposable;
 
-<div>@Version</div>
-<div>@Data</div>
+@foreach (var feat in Repository.Features.OrderBy(f => f.Name.Name))
+{
+    <div>
+        <div>@feat.Name.Name</div>
+        @foreach (var sc in feat.Scenarios)
+        {
+            <div>
+                <div>&nbsp;&nbsp;@sc.Name.Name</div>
+                @foreach (var st in sc.Steps)
+                {
+                    <div>&nbsp;&nbsp;&nbsp;&nbsp;@st.GroupPrefix @st.Number @st.Name.TypeName @st.Name.Name</div>
+                }
+            </div>
+        }
+    </div>
+}
 
 @code
 {
@@ -12,6 +28,17 @@
 
     protected override async Task OnInitializedAsync()
     {
+        Repository.OnUpdate += HandleRefresh;
         await Interop.Initialize();
+    }
+
+    private void HandleRefresh()
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        Repository.OnUpdate -= HandleRefresh;
     }
 }

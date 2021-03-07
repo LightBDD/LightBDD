@@ -8,10 +8,13 @@ namespace LightBDD.Reporting.Progressive.UI.Services
     {
         private static InteropService _instance;
         private readonly IJSRuntime _runtime;
+        private readonly JsonlImporter _jsonlImporter;
+        private static InteropService Instance => _instance ?? throw new InvalidOperationException("Interop not initialized");
 
-        public InteropService(IJSRuntime runtime)
+        public InteropService(IJSRuntime runtime, JsonlImporter jsonlImporter)
         {
             _runtime = runtime;
+            _jsonlImporter = jsonlImporter;
         }
 
         public async Task Initialize()
@@ -21,9 +24,17 @@ namespace LightBDD.Reporting.Progressive.UI.Services
         }
 
         [JSInvokable]
-        public static void InteropService_Import(string type, int version, string data)
+        public static async Task InteropService_Import(string type, int version, string[] data)
         {
-            throw new InvalidOperationException($"{type}:{version}:{data}");
+            await Instance.Import(type, version, data);
+        }
+
+        private async Task Import(string type, int version, string[] data)
+        {
+            if (type == "jsonl" && version == 1)
+                await _jsonlImporter.Import(data);
+            else
+                throw new InvalidOperationException($"Unsupported import model: {type}:{version}");
         }
     }
 }

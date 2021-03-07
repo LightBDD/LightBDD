@@ -13,7 +13,7 @@ namespace LightBDD.Reporting.Progressive
     {
         public static LightBddConfiguration EnableProgressiveReporting(this LightBddConfiguration cfg)
         {
-            var reportWriter = new ProgressiveReportWritter();
+            var reportWriter = new ProgressiveReportWriter();
             cfg.ProgressNotifierConfiguration().Append(reportWriter.Notifier);
             cfg.ReportWritersConfiguration().Add(reportWriter);
             return cfg;

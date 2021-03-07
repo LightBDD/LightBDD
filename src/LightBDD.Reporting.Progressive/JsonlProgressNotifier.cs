@@ -5,22 +5,31 @@ using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Notification.Events;
+using LightBDD.Notification.Jsonl.Events;
 using LightBDD.Notification.Jsonl.IO;
 using LightBDD.Reporting.Progressive.Mappers;
+using FeatureFinished = LightBDD.Core.Notification.Events.FeatureFinished;
+using FeatureStarting = LightBDD.Core.Notification.Events.FeatureStarting;
+using ScenarioFinished = LightBDD.Core.Notification.Events.ScenarioFinished;
+using ScenarioStarting = LightBDD.Core.Notification.Events.ScenarioStarting;
+using StepCommented = LightBDD.Core.Notification.Events.StepCommented;
+using StepFinished = LightBDD.Core.Notification.Events.StepFinished;
+using StepStarting = LightBDD.Core.Notification.Events.StepStarting;
 
 namespace LightBDD.Reporting.Progressive
 {
-    public class JsonlProgressNotifier : IProgressNotifier, IDisposable
+    internal class JsonlProgressNotifier : IProgressNotifier, IDisposable
     {
+        private readonly Func<string, Task> _onWrite;
         private readonly ConcurrentQueue<ProgressEvent> _queue = new ConcurrentQueue<ProgressEvent>();
         private readonly SemaphoreSlim _sem = new SemaphoreSlim(0);
         private readonly CancellationTokenSource _cts = new CancellationTokenSource();
-        private JsonlEventWriter _writer;
+        private JsonlEventSerializer _serializer=new JsonlEventSerializer();
         private readonly Task _writingTask;
 
-        public JsonlProgressNotifier(Stream outputUtf8Stream)
+        public JsonlProgressNotifier(Func<string,Task> onWrite)
         {
-            _writer = new JsonlEventWriter(outputUtf8Stream);
+            _onWrite = onWrite;
             _writingTask = Task.Run(WriteLoop);
         }
 
@@ -75,40 +84,42 @@ namespace LightBDD.Reporting.Progressive
 
         private async Task Handle(StepStarting e)
         {
-            await _writer.Write(EventMapper.ToStepDiscovered(e));
-            await _writer.Write(EventMapper.ToStepStarting(e));
+            await Write(EventMapper.ToStepDiscovered(e));
+            await Write(EventMapper.ToStepStarting(e));
         }
+
+        private async Task Write(Event e) => await _onWrite(_serializer.Serialize(e));
 
         private async Task Handle(StepFinished e)
         {
-            await _writer.Write(EventMapper.ToStepFinished(e));
+            await Write(EventMapper.ToStepFinished(e));
         }
 
         private async Task Handle(StepCommented e)
         {
-            await _writer.Write(EventMapper.ToStepCommented(e));
+            await Write(EventMapper.ToStepCommented(e));
         }
 
         private async Task Handle(ScenarioFinished e)
         {
-            await _writer.Write(EventMapper.ToScenarioFinished(e));
+            await Write(EventMapper.ToScenarioFinished(e));
         }
 
         private async Task Handle(ScenarioStarting e)
         {
-            await _writer.Write(EventMapper.ToScenarioDiscovered(e));
-            await _writer.Write(EventMapper.ToScenarioStarting(e));
+            await Write(EventMapper.ToScenarioDiscovered(e));
+            await Write(EventMapper.ToScenarioStarting(e));
         }
 
         private async Task Handle(FeatureFinished e)
         {
-            await _writer.Write(EventMapper.ToFeatureFinished(e));
+            await Write(EventMapper.ToFeatureFinished(e));
         }
 
         private async Task Handle(FeatureStarting e)
         {
-            await _writer.Write(e.ToFeatureDiscovered());
-            await _writer.Write(e.ToFeatureStarting());
+            await Write(e.ToFeatureDiscovered());
+            await Write(e.ToFeatureStarting());
         }
 
         public void Notify(ProgressEvent e)
