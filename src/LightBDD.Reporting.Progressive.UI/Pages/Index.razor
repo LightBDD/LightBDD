@@ -1,0 +1,17 @@
+﻿@page "/"
+@using LightBDD.Reporting.Progressive.UI.Services
+@inject InteropService Interop;
+
+<div>@Version</div>
+<div>@Data</div>
+
+@code
+{
+    public string Version { get; set; }
+    public string Data { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Interop.Initialize();
+    }
+}

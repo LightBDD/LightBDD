@@ -3,6 +3,7 @@ using LightBDD.Core.Configuration;
 using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.NUnit3;
+using LightBDD.Reporting.Progressive;
 using NUnit.Framework;
 
 [assembly:Parallelizable(ParallelScope.Fixtures)]
@@ -33,6 +34,8 @@ namespace Example.LightBDD.NUnit3
                 .ReportWritersConfiguration()
                 .AddFileWriter<XmlReportFormatter>("~\\Reports\\FeaturesReport.xml")
                 .AddFileWriter<PlainTextReportFormatter>("~\\Reports\\{TestDateTimeUtc:yyyy-MM-dd-HH_mm_ss}_FeaturesReport.txt");
+            
+            configuration.EnableProgressiveReporting();
         }
     }
 }

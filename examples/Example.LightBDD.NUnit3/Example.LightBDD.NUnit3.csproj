@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\LightBDD.NUnit3\LightBDD.NUnit3.csproj" />
+    <ProjectReference Include="..\..\src\LightBDD.Reporting.Progressive\LightBDD.Reporting.Progressive.csproj" />
     <ProjectReference Include="..\Example.Domain\Example.Domain.csproj" />
   </ItemGroup>
 
