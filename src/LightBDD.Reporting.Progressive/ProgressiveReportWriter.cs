@@ -14,7 +14,7 @@ namespace LightBDD.Reporting.Progressive
 
         public ProgressiveReportWriter()
         {
-            _writer = new StreamWriter(File.OpenWrite("output.html"), Encoding.UTF8);
+            _writer = new StreamWriter(File.Create("output.html"), Encoding.UTF8);
             WriteHeader();
             Notifier = new JsonlProgressNotifier(OnLineWrite);
         }

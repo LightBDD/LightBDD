@@ -1,9 +1,11 @@
 ﻿@using LightBDD.Reporting.Progressive.UI.Models
 @using LightBDD.Reporting.Progressive.UI.Utils
+@using System.Net
 @implements IDisposable;
+@inherits ModelViewComponent;
 
 <div>
-    <div>@(Model.GroupPrefix)@(Model.Number) @(Model.Name.TypeName) @(Model.Name.Name)</div>
+    <div>@(ChangesCounter) @(Model.GroupPrefix)@(Model.Number) @(Model.Name.TypeName) @(Model.Name.Name)</div>
     @if (Model.SubSteps.Any())
     {
         <div class="sub-group">
@@ -21,7 +23,7 @@
 
     public StepView()
     {
-        _model = new ObservableProperty<IStepModel>(StateHasChanged);
+        _model = new ObservableProperty<IStepModel>(ModelHasChanged);
     }
 
     [Parameter]

@@ -1,10 +1,11 @@
 ﻿@using LightBDD.Reporting.Progressive.UI.Models
 @using LightBDD.Reporting.Progressive.UI.Utils
 @implements IDisposable;
+@inherits ModelViewComponent;
 
 <div>
     <div>
-        <span>@(Model.Name.Name)</span>
+        <span>@(ChangesCounter) @(Model.Name.Name)</span>
         @if (Model.Labels.Any())
         {
             <span>[@(string.Join(", ",Model.Labels))]</span>
@@ -27,7 +28,7 @@
 
     public ScenarioView()
     {
-        _model = new ObservableProperty<IScenarioModel>(StateHasChanged);
+        _model = new ObservableProperty<IScenarioModel>(ModelHasChanged);
     }
 
     [Parameter]
