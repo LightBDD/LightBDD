@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using LightBDD.Notification.Jsonl.Events;
+using LightBDD.Notification.Jsonl.Models;
 using LightBDD.Reporting.Progressive.UI.Utils;
 
 namespace LightBDD.Reporting.Progressive.UI.Models
@@ -12,5 +14,10 @@ namespace LightBDD.Reporting.Progressive.UI.Models
         int Number { get; }
         IStepNameInfo Name { get; }
         IReadOnlyList<IStepModel> SubSteps { get; }
+        ExecutionStatus Status { get; }
+        string StatusDetails { get; }
+        ExceptionModel Exception { get; }
+        TimeSpan? ExecutionTime { get; }
+        IEnumerable<StepCommented> Comments { get; }
     }
 }

@@ -5,10 +5,14 @@
 
 <div>
     <div>
-        <span>@(ChangesCounter) @(Model.Name.Name)</span>
+        <span>@(ChangesCounter) @(Model.Status.ToString()) @(Model.Name.Name)</span>
         @if (Model.Labels.Any())
         {
             <span>[@(string.Join(", ",Model.Labels))]</span>
+        }
+        @if (Model.ExecutionTime.HasValue)
+        {
+            <span> (@((int)Model.ExecutionTime.Value.TotalMilliseconds)ms)</span>
         }
     </div>
     <div>@Model.Description</div>

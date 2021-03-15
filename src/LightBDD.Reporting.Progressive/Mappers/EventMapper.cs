@@ -45,7 +45,8 @@ namespace LightBDD.Reporting.Progressive.Mappers
             return new Notification.Jsonl.Events.FeatureFinished
             {
                 Id = e.Result.Info.RuntimeId,
-                Time = e.Time.Offset
+                Time = e.Time.Offset,
+                Status = (ExecutionStatus)e.Result.GetScenarios().Select(s => s.Status).DefaultIfEmpty().Max()
             };
         }
 
@@ -80,7 +81,7 @@ namespace LightBDD.Reporting.Progressive.Mappers
         }
         private static ExceptionModel ToJsonlModel(this Exception ex)
         {
-            if (ex == null) 
+            if (ex == null)
                 return null;
             return new ExceptionModel
             {

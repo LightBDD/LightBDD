@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.Json.Serialization;
+using LightBDD.Notification.Jsonl.Models;
 
 namespace LightBDD.Notification.Jsonl.Events
 {
@@ -7,5 +8,8 @@ namespace LightBDD.Notification.Jsonl.Events
     {
         [JsonPropertyName("i")]
         public Guid Id { get; set; }
+
+        [JsonPropertyName("s")]
+        public ExecutionStatus Status { get; set; }
     }
 }

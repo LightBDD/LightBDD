@@ -24,6 +24,8 @@
         /// <summary>
         /// Failed
         /// </summary>
-        Failed
+        Failed,
+
+        Running
     }
 }

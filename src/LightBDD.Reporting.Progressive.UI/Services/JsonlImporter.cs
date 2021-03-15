@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using LightBDD.Notification.Jsonl.IO;
@@ -21,8 +22,11 @@ namespace LightBDD.Reporting.Progressive.UI.Services
             {
                 _repository.Add(serializer.Deserialize(line));
                 if (++counter % 100 == 0)
+                {
                     await Task.Delay(1);
+                }
             }
+            await Console.Error.WriteLineAsync("done");
         }
     }
 }

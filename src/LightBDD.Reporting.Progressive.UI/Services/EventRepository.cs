@@ -19,8 +19,50 @@ namespace LightBDD.Reporting.Progressive.UI.Services
         public EventRepository()
         {
             Register<FeatureDiscovered>(OnFeatureDiscovered);
+            Register<FeatureStarting>(OnFeatureStarting);
+            Register<FeatureFinished>(OnFeatureFinished);
             Register<ScenarioDiscovered>(OnScenarioDiscovered);
+            Register<ScenarioStarting>(OnScenarioStarting);
+            Register<ScenarioFinished>(OnScenarioFinished);
             Register<StepDiscovered>(OnStepDiscovered);
+            Register<StepStarting>(OnStepStarting);
+            Register<StepFinished>(OnStepFinished);
+            Register<StepCommented>(OnStepCommented);
+        }
+
+        private void OnFeatureFinished(FeatureFinished ff)
+        {
+            _features[ff.Id].OnFinish(ff);
+        }
+
+        private void OnFeatureStarting(FeatureStarting fs)
+        {
+            _features[fs.Id].OnStart(fs);
+        }
+
+        private void OnScenarioFinished(ScenarioFinished sf)
+        {
+            _scenarios[sf.Id].OnFinish(sf);
+        }
+
+        private void OnScenarioStarting(ScenarioStarting ss)
+        {
+            _scenarios[ss.Id].OnStart(ss);
+        }
+
+        private void OnStepCommented(StepCommented sc)
+        {
+            _steps[sc.StepId].OnComment(sc);
+        }
+
+        private void OnStepFinished(StepFinished sf)
+        {
+            _steps[sf.Id].OnFinish(sf);
+        }
+
+        private void OnStepStarting(StepStarting ss)
+        {
+            _steps[ss.Id].OnStart(ss);
         }
 
         private void OnStepDiscovered(StepDiscovered sd)

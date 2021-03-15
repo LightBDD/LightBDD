@@ -5,7 +5,22 @@
 @inherits ModelViewComponent;
 
 <div>
-    <div>@(ChangesCounter) @(Model.GroupPrefix)@(Model.Number) @(Model.Name.TypeName) @(Model.Name.Name)</div>
+    <div>
+        @(ChangesCounter) @(Model.Status.ToString()) @(Model.GroupPrefix)@(Model.Number) @(Model.Name.TypeName) @(Model.Name.Name)
+        @if (Model.ExecutionTime.HasValue)
+        {
+            <span> (@((int)Model.ExecutionTime.Value.TotalMilliseconds)ms)</span>
+        }
+    </div>
+    @if (Model.Comments.Any())
+    {
+        <div class="sub-group">
+            @foreach (var comment in Model.Comments)
+            {
+                <div><i>@comment.Comment</i></div>
+            }
+        </div>
+    }
     @if (Model.SubSteps.Any())
     {
         <div class="sub-group">

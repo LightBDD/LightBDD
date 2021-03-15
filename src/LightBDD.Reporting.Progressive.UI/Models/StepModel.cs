@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using LightBDD.Notification.Jsonl.Events;
+using LightBDD.Notification.Jsonl.Models;
 
 namespace LightBDD.Reporting.Progressive.UI.Models
 {
     internal class StepModel : IStepModel
     {
         private readonly List<StepModel> _subSteps = new List<StepModel>();
+        private readonly List<StepCommented> _comments = new List<StepCommented>();
         private readonly StepDiscovered _meta;
         private readonly StepNameInfo _name;
+        private StepStarting _start;
+        private StepFinished _finish;
 
         public StepModel(StepDiscovered meta)
         {
@@ -22,12 +27,35 @@ namespace LightBDD.Reporting.Progressive.UI.Models
         public int Number => _meta.Number;
         public IStepNameInfo Name => _name;
         public IReadOnlyList<IStepModel> SubSteps => _subSteps;
+        public ExecutionStatus Status => _finish?.Status ?? (_start != null ? ExecutionStatus.Running : ExecutionStatus.NotRun);
+        public string StatusDetails => _finish?.StatusDetails;
+        public TimeSpan? ExecutionTime => (_start != null && _finish != null) ? _finish.Time - _start.Time : null;
+        public ExceptionModel Exception => _finish?.ExecutionException;
+        public IEnumerable<StepCommented> Comments => _comments.OrderBy(c => c.Time);
+        public event Action OnChange;
+
         public void AddSubStep(StepModel sub)
         {
             _subSteps.Add(sub);
             OnChange?.Invoke();
         }
 
-        public event Action OnChange;
+        public void OnStart(StepStarting start)
+        {
+            _start = start;
+            OnChange?.Invoke();
+        }
+
+        public void OnFinish(StepFinished finish)
+        {
+            _finish = finish; 
+            OnChange?.Invoke();
+        }
+
+        public void OnComment(StepCommented sc)
+        {
+            _comments.Add(sc);
+            OnChange?.Invoke();
+        }
     }
 }

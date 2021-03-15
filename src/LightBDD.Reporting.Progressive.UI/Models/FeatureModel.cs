@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using LightBDD.Notification.Jsonl.Events;
+using LightBDD.Notification.Jsonl.Models;
 
 namespace LightBDD.Reporting.Progressive.UI.Models
 {
@@ -9,6 +10,8 @@ namespace LightBDD.Reporting.Progressive.UI.Models
         private readonly List<IScenarioModel> _scenarios = new List<IScenarioModel>();
         private readonly FeatureDiscovered _meta;
         private readonly NameInfo _name;
+        private FeatureStarting _start;
+        private FeatureFinished _finish;
 
         public FeatureModel(FeatureDiscovered meta)
         {
@@ -22,12 +25,28 @@ namespace LightBDD.Reporting.Progressive.UI.Models
         public INameInfo Name => _name;
         public IReadOnlyList<IScenarioModel> Scenarios => _scenarios;
 
+        public ExecutionStatus Status => _finish?.Status ?? (_start != null ? ExecutionStatus.Running : ExecutionStatus.NotRun);
+        public TimeSpan? ExecutionTime => (_start != null && _finish != null) ? _finish.Time - _start.Time : null;
+
+        public event Action OnChange;
+
         public void AddScenario(IScenarioModel scenario)
         {
             _scenarios.Add(scenario);
             OnChange?.Invoke();
         }
 
-        public event Action OnChange;
+
+        public void OnStart(FeatureStarting start)
+        {
+            _start = start;
+            OnChange?.Invoke();
+        }
+
+        public void OnFinish(FeatureFinished finish)
+        {
+            _finish = finish;
+            OnChange?.Invoke();
+        }
     }
 }

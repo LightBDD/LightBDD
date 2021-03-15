@@ -1,6 +1,12 @@
 ﻿window.comms = (function () {
+    var initialized = false;
     function onInitialized() {
+        if (initialized) {
+            return;
+        }
+        initialized = true;
         if (window.parent !== window) {
+            console.warn("Posting initialized message");
             window.parent.postMessage({ m: "initialized" }, "*");
         }
     }
@@ -13,6 +19,7 @@
         var data = e.data;
 
         if (data.m === 'import') {
+            console.warn("Importing", data.t, data.v);
             DotNet.invokeMethodAsync('LightBDD.Reporting.Progressive.UI', 'InteropService_Import', data.t,data.v,data.d);
         }
         else
