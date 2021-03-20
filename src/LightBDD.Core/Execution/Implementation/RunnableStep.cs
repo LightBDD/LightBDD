@@ -86,6 +86,8 @@ namespace LightBDD.Core.Execution.Implementation
                 if (subSteps.Any(s => s.Result.ExecutionException != null))
                     throw new InvalidOperationException("Sub-steps initialization failed.");
 
+                NotifyStepDiscovery(subSteps);
+
                 foreach (var subStep in subSteps)
                     await subStep.ExecuteAsync();
             }
@@ -93,6 +95,13 @@ namespace LightBDD.Core.Execution.Implementation
             {
                 _result.SetSubSteps(subSteps.Select(s => s.Result).ToArray());
             }
+        }
+
+        private void NotifyStepDiscovery(RunnableStep[] subSteps)
+        {
+            var eventTime = _stepContext.ExecutionTimer.GetTime();
+            foreach (var step in subSteps)
+                _stepContext.ProgressNotifier.Notify(new StepDiscovered(eventTime, step.Info));
         }
 
         private RunnableStep[] InitializeComposite(IStepResultDescriptor result)

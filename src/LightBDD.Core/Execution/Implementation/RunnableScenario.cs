@@ -137,6 +137,7 @@ namespace LightBDD.Core.Execution.Implementation
             ScenarioExecutionContext.Current = new ScenarioExecutionContext();
             ScenarioExecutionContext.Current.Get<CurrentScenarioProperty>().Fixture = _scenarioContext.FixtureObject;
 
+            _scenarioContext.ProgressNotifier.Notify(new ScenarioDiscovered(executionStartTime, Info));
             _scenarioContext.ProgressNotifier.Notify(new ScenarioStarting(executionStartTime, Info));
 
             _scope = CreateContainerScope();
@@ -174,6 +175,7 @@ namespace LightBDD.Core.Execution.Implementation
             try
             {
                 _preparedSteps = _scenarioContext.StepsProvider(_result.Info, _stepDescriptors, Context, _scope, string.Empty, ShouldAbortSubStepExecution);
+                NotifyStepDiscovery();
             }
             catch (Exception e)
             {
@@ -181,6 +183,13 @@ namespace LightBDD.Core.Execution.Implementation
             }
             if (_preparedSteps.Any(x => x.Result.ExecutionException != null))
                 throw new InvalidOperationException("Scenario steps initialization failed.");
+        }
+
+        private void NotifyStepDiscovery()
+        {
+            var eventTime = _scenarioContext.ExecutionTimer.GetTime();
+            foreach (var step in _preparedSteps)
+                _scenarioContext.ProgressNotifier.Notify(new StepDiscovered(eventTime, step.Info));
         }
 
         private bool ShouldAbortSubStepExecution(Exception ex) => _shouldAbortSubStepExecutionFn(ex);
