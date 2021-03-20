@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace LightBDD.Core.Metadata.Implementation
 {
@@ -20,7 +21,7 @@ namespace LightBDD.Core.Metadata.Implementation
         public IStepNameInfo Name { get; private set; }
         public Guid RuntimeId { get; } = Guid.NewGuid();
 
-        public void UpdateName(INameParameterInfo[] parameters)
+        public void UpdateName(IReadOnlyList<INameParameterInfo> parameters)
         {
             Name = StepNameInfo.WithUpdatedParameters(Name, parameters);
         }

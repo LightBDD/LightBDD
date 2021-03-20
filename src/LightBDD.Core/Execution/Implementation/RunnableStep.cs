@@ -39,8 +39,7 @@ namespace LightBDD.Core.Execution.Implementation
             _invocation = descriptor.StepInvocation;
             _arguments = arguments;
             _decoratedStepMethod = DecoratingExecutor.DecorateStep(this, RunStepAsync, stepDecorators);
-            _result = new StepResult(info);
-            UpdateNameDetails();
+            _result = new StepResult(info, arguments);
             ValidateDescriptor(descriptor);
         }
 
@@ -163,16 +162,7 @@ namespace LightBDD.Core.Execution.Implementation
 
         private void VerifyArguments()
         {
-            var results = new List<IParameterResult>();
-            foreach (var argument in _arguments)
-            {
-                if (argument.Value is IComplexParameter complex)
-                    results.Add(new ParameterResult(argument.RawName, complex.Details));
-            }
-
-            _result.SetParameters(results);
-
-            var errors = results
+            var errors = _arguments
                 .Where(x => x.Details.VerificationStatus > ParameterVerificationStatus.Success)
                 .Select(FormatErrorMessage)
                 .ToArray();
@@ -265,28 +255,16 @@ namespace LightBDD.Core.Execution.Implementation
         private void EvaluateArguments()
         {
             foreach (var arg in _arguments)
+            {
                 arg.Evaluate(Context);
-            UpdateNameDetails();
+                _stepContext.ProgressNotifier.Notify(new ParameterEvaluated(_stepContext.ExecutionTimer.GetTime(), Info, arg));
+            }
         }
 
         private void UpdateNameDetails()
         {
-            if (!_arguments.Any())
-                return;
-
-            _result.UpdateName(_arguments.Select(FormatStepParameter).ToArray());
-        }
-
-        private INameParameterInfo FormatStepParameter(MethodArgument p)
-        {
-            try
-            {
-                return p.FormatNameParameter();
-            }
-            catch (Exception e)
-            {
-                throw new InvalidOperationException($"Unable to format '{p.RawName}' parameter of step '{_result.Info}': {e.Message}");
-            }
+            foreach (var arg in _arguments)
+                arg.Reformat();
         }
 
         public void ConfigureExecutionAbortOnSubStepException(Func<Exception, bool> shouldAbortExecutionFn)

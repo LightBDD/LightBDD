@@ -277,9 +277,7 @@ namespace LightBDD.Core.Extensibility
             {
                 var formattedStepName = _nameParser.GetNameFormat(scenarioDescriptor.MethodInfo, scenarioDescriptor.MethodInfo.Name, scenarioDescriptor.Parameters);
                 var arguments = scenarioDescriptor.Parameters.Select(p => new MethodArgument(p, GetValueFormattingServiceFor(p.ParameterInfo))).ToArray();
-                return new NameInfo(
-                    formattedStepName,
-                    arguments.Select(p => p.FormatNameParameter()).ToArray());
+                return new NameInfo(formattedStepName, arguments);
             }
             catch (Exception e)
             {

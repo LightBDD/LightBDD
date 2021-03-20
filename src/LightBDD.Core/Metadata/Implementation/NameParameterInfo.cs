@@ -1,5 +1,6 @@
 namespace LightBDD.Core.Metadata.Implementation
 {
+    //TODO: remove
     internal class NameParameterInfo : INameParameterInfo
     {
         public const string UnknownValue = "<?>";

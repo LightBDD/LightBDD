@@ -3,21 +3,35 @@ using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
+using LightBDD.Core.Results.Implementation;
+using LightBDD.Core.Results.Parameters;
 
 namespace LightBDD.Core.Execution.Implementation
 {
-    internal class MethodArgument
+    internal class MethodArgument : INameParameterInfo, IParameterResult
     {
         private readonly Func<object, object> _valueEvaluator;
         private readonly IValueFormattingService _formattingService;
-        public string RawName { get; }
         public bool IsEvaluated { get; private set; }
+        public ParameterVerificationStatus VerificationStatus => Details.VerificationStatus;
+        public string FormattedValue { get; private set; } = NameParameterInfo.UnknownValue;
+        public string Name { get; }
+        public IParameterDetails Details => GetDetails();
         public object Value { get; private set; }
+
+        private IParameterDetails GetDetails()
+        {
+            if (!IsEvaluated)
+                return ParameterDetails.NotEvaluated;
+            if (Value is IComplexParameter c)
+                return c.Details;
+            return ParameterDetails.NotApplicable;
+        }
 
         public MethodArgument(ParameterDescriptor descriptor, IValueFormattingService formattingService)
         {
             _formattingService = formattingService;
-            RawName = descriptor.RawName;
+            Name = descriptor.RawName;
             _valueEvaluator = descriptor.ValueEvaluator;
             if (descriptor.IsConstant)
                 Evaluate(null);
@@ -25,23 +39,27 @@ namespace LightBDD.Core.Execution.Implementation
 
         public void Evaluate(object context)
         {
-            if (IsEvaluated) return;
+            if (IsEvaluated)
+                return;
+
             Value = _valueEvaluator.Invoke(context);
             if (Value is IComplexParameter complex)
                 complex.SetValueFormattingService(_formattingService);
             IsEvaluated = true;
+            Reformat();
         }
 
-        public INameParameterInfo FormatNameParameter()
+        public void Reformat()
         {
-            if (!IsEvaluated)
-                return NameParameterInfo.Unknown(RawName);
-
-            var status = Value is IComplexParameter p
-                ? p.Details.VerificationStatus
-                : ParameterVerificationStatus.NotApplicable;
-
-            return new NameParameterInfo(RawName, true, _formattingService.FormatValue(Value), status);
+            try
+            {
+                if (IsEvaluated)
+                    FormattedValue = _formattingService.FormatValue(Value);
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"Unable to format '{Name}' parameter: {e.Message}");
+            }
         }
 
         public override string ToString()

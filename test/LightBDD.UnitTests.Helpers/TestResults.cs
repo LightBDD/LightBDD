@@ -150,9 +150,9 @@ namespace LightBDD.UnitTests.Helpers
             };
         }
 
-        public static IParameterResult CreateTestParameter(string parameter, IParameterDetails result)
+        public static IParameterResult CreateTestParameter(string parameter, string formattedValue, IParameterDetails result)
         {
-            return new TestParameterResult(parameter, result);
+            return new TestParameterResult(parameter, formattedValue, result);
         }
 
         public static TestInlineParameterDetails CreateInlineParameterDetails(string value)
@@ -443,12 +443,14 @@ namespace LightBDD.UnitTests.Helpers
         public class TestParameterResult : IParameterResult
         {
             public string Name { get; }
+            public string FormattedValue { get; }
             public IParameterDetails Details { get; }
 
-            public TestParameterResult(string name, IParameterDetails result)
+            public TestParameterResult(string name, string formattedValue, IParameterDetails result)
             {
                 Name = name;
                 Details = result;
+                FormattedValue = formattedValue;
             }
         }
 

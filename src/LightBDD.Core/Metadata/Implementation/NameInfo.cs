@@ -10,7 +10,7 @@ namespace LightBDD.Core.Metadata.Implementation
 
         public IEnumerable<INameParameterInfo> Parameters { get; }
 
-        public NameInfo(string nameFormat, INameParameterInfo[] parameters)
+        public NameInfo(string nameFormat, IReadOnlyList<INameParameterInfo> parameters)
         {
             NameFormat = nameFormat;
             Parameters = parameters;

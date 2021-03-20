@@ -5,6 +5,7 @@ using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Results;
+using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
 using LightBDD.Framework.Extensibility;
@@ -165,6 +166,7 @@ namespace LightBDD.Core.UnitTests
                 "Step Discovery: 1/3 GIVEN step with parameter \"<?>\"",
                 "Step Discovery: 2/3 WHEN step with parameter \"<?>\"",
                 "Step Discovery: 3/3 THEN step with parameter \"<?>\"",
+                "Parameter Evaluated: 'parameter'='abc' NotApplicable:",
                 "Step Start: 1/3 GIVEN step with parameter \"abc\"",
                 "Step Finish: 1/3 GIVEN step with parameter \"abc\" | Status:Passed | ExecutionTimePresent:True | Details:",
                 "Scenario Finish: It should notify execution progress for parameterized steps [lab1, lab2] <category 1, category 2> | Status:Failed | ExecutionTimePresent:True | Steps:3 | Details:Step 2: parameter exception",
@@ -332,6 +334,11 @@ namespace LightBDD.Core.UnitTests
                 return $"{step.GroupPrefix}{step.Number}/{step.GroupPrefix}{step.Total} {step.Name}";
             }
 
+            private string FormatParameter(IParameterResult r)
+            {
+                return $"\'{r.Name}\'=\'{r.FormattedValue}\' {r.Details.VerificationStatus}:{r.Details.VerificationMessage}";
+            }
+
             public void Notify(ProgressEvent e)
             {
                 switch (e)
@@ -365,6 +372,9 @@ namespace LightBDD.Core.UnitTests
                         break;
                     case StepStarting stepStarting:
                         NotifyStepStart(stepStarting.Step);
+                        break;
+                    case ParameterEvaluated parameterEvaluated:
+                        _notifications.Add($"Parameter Evaluated: {FormatParameter(parameterEvaluated.Parameter)}");
                         break;
                 }
             }
