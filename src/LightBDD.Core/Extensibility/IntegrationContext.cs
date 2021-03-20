@@ -5,6 +5,7 @@ using LightBDD.Core.Formatting;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
 using System;
+using System.Reflection;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Formatting.Values;

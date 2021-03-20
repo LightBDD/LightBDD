@@ -2,6 +2,10 @@
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution.Coordination;
+using LightBDD.Core.Notification;
+using LightBDD.Core.Notification.Events;
+using LightBDD.Core.Reporting;
+using LightBDD.Core.Results;
 using LightBDD.Framework.Execution.Coordination;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using Moq;
@@ -80,6 +84,73 @@ namespace LightBDD.Core.UnitTests.Execution
             new TestableFeatureCoordinator(contextBuilder).Dispose();
 
             container.Verify(x => x.Dispose());
+        }
+
+        [Test]
+        public void The_coordinator_should_notify_test_start_upon_installation()
+        {
+            var notifier = new Mock<IProgressNotifier>();
+
+            using (var coord = new TestableFeatureCoordinator(TestableIntegrationContextBuilder.Default()
+                .WithProgressNotifier(notifier.Object)))
+            {
+                notifier.Verify(n => n.Notify(It.IsAny<TestExecutionStarting>()), Times.Never);
+                coord.InstallSelf();
+                notifier.Verify(n => n.Notify(It.IsAny<TestExecutionStarting>()), Times.Once);
+            }
+        }
+
+        [Test]
+        public void The_coordinator_should_notify_test_finish_upon_uninstallation()
+        {
+            var notifier = new Mock<IProgressNotifier>();
+
+            using (var coord = new TestableFeatureCoordinator(TestableIntegrationContextBuilder.Default()
+                .WithProgressNotifier(notifier.Object)))
+            {
+                coord.InstallSelf();
+                notifier.Verify(n => n.Notify(It.IsAny<TestExecutionFinished>()), Times.Never);
+            }
+            notifier.Verify(n => n.Notify(It.IsAny<TestExecutionFinished>()), Times.Once);
+        }
+
+        [Test]
+        public void The_coordinator_should_generate_reports_upon_uninstallation()
+        {
+            var reportWriter = new Mock<IReportWriter>();
+
+            using (var coord = new TestableFeatureCoordinator(TestableIntegrationContextBuilder.Default()
+                .WithConfiguration(c => c.ReportWritersConfiguration().Add(reportWriter.Object))))
+            {
+                coord.InstallSelf();
+                reportWriter.Verify(w => w.Save(It.IsAny<IFeatureResult[]>()), Times.Never);
+            }
+            reportWriter.Verify(w => w.Save(It.IsAny<IFeatureResult[]>()), Times.Once);
+        }
+
+        [Test]
+        public void The_coordinator_should_not_send_notifications_if_not_installed()
+        {
+            var notifier = new Mock<IProgressNotifier>();
+
+            new TestableFeatureCoordinator(TestableIntegrationContextBuilder.Default()
+                .WithProgressNotifier(notifier.Object))
+                .Dispose();
+
+            notifier.Verify(n => n.Notify(It.IsAny<TestExecutionStarting>()), Times.Never);
+            notifier.Verify(n => n.Notify(It.IsAny<TestExecutionFinished>()), Times.Never);
+        }
+
+        [Test]
+        public void The_coordinator_should_not_generate_reports_if_not_installed()
+        {
+            var reportWriter = new Mock<IReportWriter>();
+
+            new TestableFeatureCoordinator(TestableIntegrationContextBuilder.Default()
+                .WithConfiguration(c => c.ReportWritersConfiguration().Add(reportWriter.Object)))
+                .Dispose();
+
+            reportWriter.Verify(w => w.Save(It.IsAny<IFeatureResult[]>()), Times.Never);
         }
     }
 }
