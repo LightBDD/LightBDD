@@ -76,7 +76,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         }
 
         [Test]
-        public void GetStepName_should_capture_name_from_step_descriptor_but_leave_parameters_unknown()
+        public void GetStepName_should_capture_name_from_step_descriptor_but_leave_parameters_unknown_while_preserving_their_names()
         {
             var descriptor = new StepDescriptor(
                 ParameterInfoHelper.GetMethodInfo<int>(new Feature_type().Some_step_with_argument),
@@ -91,6 +91,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
             Assert.That(stepName.StepTypeName.ToString(), Is.EqualTo("GIVEN"));
             Assert.That(stepName.NameFormat, Is.EqualTo("Some step with argument \"{0}\""));
             Assert.That(stepName.ToString(), Is.EqualTo("GIVEN Some step with argument \"<?>\""));
+            Assert.That(stepName.Parameters.Select(p => p.Name).ToArray(), Is.EqualTo(new[] { "argument" }));
         }
 
         [Test]

@@ -211,7 +211,7 @@ namespace LightBDD.Core.Execution.Implementation
         private void StartStep(EventTime executionStartTime)
         {
             ScenarioExecutionContext.Current.Get<CurrentStepProperty>().Stash(this);
-            EvaluateParameters();
+            EvaluateArguments();
             _stepContext.ProgressNotifier.Notify(new StepStarting(executionStartTime, _result.Info));
         }
 
@@ -262,10 +262,10 @@ namespace LightBDD.Core.Execution.Implementation
             }
         }
 
-        private void EvaluateParameters()
+        private void EvaluateArguments()
         {
-            foreach (var parameter in _arguments)
-                parameter.Evaluate(Context);
+            foreach (var arg in _arguments)
+                arg.Evaluate(Context);
             UpdateNameDetails();
         }
 

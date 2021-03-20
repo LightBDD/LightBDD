@@ -3,10 +3,11 @@ namespace LightBDD.Core.Metadata.Implementation
     internal class NameParameterInfo : INameParameterInfo
     {
         public const string UnknownValue = "<?>";
-        public static readonly INameParameterInfo Unknown = new NameParameterInfo(false, UnknownValue, ParameterVerificationStatus.NotApplicable);
+        public static INameParameterInfo Unknown(string name) => new NameParameterInfo(name, false, UnknownValue, ParameterVerificationStatus.NotApplicable);
 
-        public NameParameterInfo(bool isEvaluated, string formattedValue, ParameterVerificationStatus verificationStatus)
+        public NameParameterInfo(string name, bool isEvaluated, string formattedValue, ParameterVerificationStatus verificationStatus)
         {
+            Name = name;
             IsEvaluated = isEvaluated;
             FormattedValue = formattedValue;
             VerificationStatus = verificationStatus;
@@ -15,5 +16,6 @@ namespace LightBDD.Core.Metadata.Implementation
         public bool IsEvaluated { get; }
         public ParameterVerificationStatus VerificationStatus { get; }
         public string FormattedValue { get; }
+        public string Name { get; }
     }
 }

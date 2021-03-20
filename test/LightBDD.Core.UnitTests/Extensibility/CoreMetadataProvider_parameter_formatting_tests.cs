@@ -19,10 +19,10 @@ namespace LightBDD.Core.UnitTests.Extensibility
     {
         private class Feature_type
         {
-            public void Some_method_with_argument_arg1_and_arg2([CustomFormatter]int arg1, string arg2) { }
+            public void Some_method_with_argument_arg1_and_arg2([CustomFormatter] int arg1, string arg2) { }
             public void Some_step_with_argument(int argument) { }
-            public void Some_step_with_formatted_argument([CustomFormatter]int argument) { }
-            public void Some_step_with_multiple_formatters_on_argument([CustomFormatter(Order = 1)][Format("{0}", Order = 2)]int argument) { }
+            public void Some_step_with_formatted_argument([CustomFormatter] int argument) { }
+            public void Some_step_with_multiple_formatters_on_argument([CustomFormatter(Order = 1)][Format("{0}", Order = 2)] int argument) { }
         }
 
         private class CustomFormatterAttribute : ParameterFormatterAttribute
@@ -35,7 +35,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
 
         private static TestMetadataProvider GetMetadataProvider()
         {
-            return new TestMetadataProvider(cfg=>cfg.ValueFormattingConfiguration().RegisterFrameworkDefaultGeneralFormatters());
+            return new TestMetadataProvider(cfg => cfg.ValueFormattingConfiguration().RegisterFrameworkDefaultGeneralFormatters());
         }
 
         [Test]
@@ -49,6 +49,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
             Assert.That(scenarioName.Parameters, Is.Not.Empty);
 
             Assert.That(scenarioName.Parameters.Select(p => p.FormattedValue).ToArray(), Is.EqualTo(new[] { "--5--", "text" }));
+            Assert.That(scenarioName.Parameters.Select(p => p.Name).ToArray(), Is.EqualTo(new[] { "arg1", "arg2" }));
         }
 
         [Test]
@@ -151,8 +152,8 @@ namespace LightBDD.Core.UnitTests.Extensibility
             Assert.That(formatter.FormatValue(new[] { true, false }), Is.EqualTo("On, Off"));
         }
 
-        private void Step_with_custom_formatters([FormatCollection(" | ", "#{0}")][FormatBoolean("On", "Off")][Format("my-custom-format1", SupportedType = typeof(MyFormattable1))]object[] arg) { }
-        private void Step_with_custom_formatter_for_collection_item([FormatBoolean("On", "Off")]bool[] arg) { }
+        private void Step_with_custom_formatters([FormatCollection(" | ", "#{0}")][FormatBoolean("On", "Off")][Format("my-custom-format1", SupportedType = typeof(MyFormattable1))] object[] arg) { }
+        private void Step_with_custom_formatter_for_collection_item([FormatBoolean("On", "Off")] bool[] arg) { }
 
         private class MyStructFormatter : IConditionalValueFormatter
         {

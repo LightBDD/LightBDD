@@ -111,7 +111,7 @@ namespace LightBDD.Core.Extensibility
             return new StepNameInfo(
                 _stepTypeProcessor.GetStepTypeName(stepDescriptor.PredefinedStepType, ref formattedStepName, previousStepTypeName),
                 formattedStepName,
-                stepDescriptor.Parameters.Select(p => NameParameterInfo.Unknown).ToArray());
+                stepDescriptor.Parameters.Select(p => NameParameterInfo.Unknown(p.RawName)).ToArray());
         }
 
         /// <summary>

@@ -34,12 +34,14 @@ namespace LightBDD.Core.Execution.Implementation
 
         public INameParameterInfo FormatNameParameter()
         {
-            if( !IsEvaluated)
-                return NameParameterInfo.Unknown;
+            if (!IsEvaluated)
+                return NameParameterInfo.Unknown(RawName);
 
-            if (Value is IComplexParameter p)
-                return new NameParameterInfo(true, _formattingService.FormatValue(Value), p.Details.VerificationStatus);
-            return new NameParameterInfo(true, _formattingService.FormatValue(Value), ParameterVerificationStatus.NotApplicable);
+            var status = Value is IComplexParameter p
+                ? p.Details.VerificationStatus
+                : ParameterVerificationStatus.NotApplicable;
+
+            return new NameParameterInfo(RawName, true, _formattingService.FormatValue(Value), status);
         }
 
         public override string ToString()

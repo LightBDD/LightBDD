@@ -344,6 +344,7 @@ namespace LightBDD.UnitTests.Helpers
             public bool IsEvaluated { get; set; }
             public ParameterVerificationStatus VerificationStatus { get; set; }
             public string FormattedValue { get; set; }
+            public string Name { get; set; }
         }
 
         public class TestStepTypeNameInfo : IStepTypeNameInfo
