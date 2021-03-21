@@ -95,6 +95,17 @@ namespace LightBDD.Core.UnitTests.Extensibility
         }
 
         [Test]
+        public void GetScenarioName_should_capture_parameterized_scenario_name_from_descriptor_but_leave_parameters_unknown_while_preserving_their_names()
+        {
+            var method = typeof(Feature_type).GetMethod(nameof(Feature_type.Some_method_with_argument_arg1_and_arg2));
+            var scenarioName = _metadataProvider.GetScenarioName(new ScenarioDescriptor(method, new object[] { 5, "text" }));
+
+            Assert.That(scenarioName.NameFormat, Is.EqualTo("Some method with argument arg1 \"{0}\" and arg2 \"{1}\""));
+            Assert.That(scenarioName.ToString(), Is.EqualTo("Some method with argument arg1 \"<?>\" and arg2 \"<?>\""));
+            Assert.That(scenarioName.Parameters.Select(p => p.Name).ToArray(), Is.EqualTo(new[] { "arg1", "arg2" }));
+        }
+
+        [Test]
         [TestCase(true, "raw_name", "raw name")]
         [TestCase(false, "raw_name", "raw_name")]
         public void GetStepName_should_honor_IsNameFormattingRequired_flag(bool flag, string rawName, string expectedName)

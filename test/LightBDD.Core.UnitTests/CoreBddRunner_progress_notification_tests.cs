@@ -374,7 +374,7 @@ namespace LightBDD.Core.UnitTests
                         NotifyStepStart(stepStarting.Step);
                         break;
                     case ParameterEvaluated parameterEvaluated:
-                        _notifications.Add($"Parameter Evaluated: {FormatParameter(parameterEvaluated.Parameter)}");
+                        _notifications.Add($"Parameter Evaluated: {FormatParameter(parameterEvaluated.Result)}");
                         break;
                 }
             }

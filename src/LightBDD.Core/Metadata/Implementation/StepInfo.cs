@@ -5,10 +5,12 @@ namespace LightBDD.Core.Metadata.Implementation
 {
     internal class StepInfo : IStepInfo
     {
-        public StepInfo(IMetadataInfo parent, IStepNameInfo name, int number, int total, string groupPrefix)
+        private readonly StepNameInfo _name;
+
+        public StepInfo(IMetadataInfo parent, StepNameInfo name, int number, int total, string groupPrefix)
         {
             Parent = parent;
-            Name = name;
+            _name = name;
             Number = number;
             Total = total;
             GroupPrefix = groupPrefix;
@@ -18,19 +20,19 @@ namespace LightBDD.Core.Metadata.Implementation
         public string GroupPrefix { get; }
         public int Number { get; }
         public int Total { get; }
-        public IStepNameInfo Name { get; private set; }
+
+        public IStepNameInfo Name => _name;
+        INameInfo IMetadataInfo.Name => Name;
         public Guid RuntimeId { get; } = Guid.NewGuid();
 
         public void UpdateName(IReadOnlyList<INameParameterInfo> parameters)
         {
-            Name = StepNameInfo.WithUpdatedParameters(Name, parameters);
+            _name.UpdateParameters(parameters);
         }
 
         public override string ToString()
         {
             return $"{GroupPrefix}{Number}/{GroupPrefix}{Total} {Name}";
         }
-
-        INameInfo IMetadataInfo.Name => Name;
     }
 }

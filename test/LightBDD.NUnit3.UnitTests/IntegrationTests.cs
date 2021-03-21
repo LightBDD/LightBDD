@@ -5,6 +5,7 @@ using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Framework.Formatting;
 
 namespace LightBDD.NUnit3.UnitTests
 {
@@ -131,10 +132,10 @@ namespace LightBDD.NUnit3.UnitTests
         [Scenario]
         [TestCase("abc")]
         [TestCase("def")]
-        public void Runner_should_support_parameterized_scenarios_with_value(string value)
+        public void Runner_should_support_parameterized_scenarios_with_value([Format("@{0}")]string value)
         {
             Runner.RunScenario(_ => Step_with_parameter(value));
-            Assert.That(ConfiguredLightBddScope.CapturedNotifications, Does.Contain($"SCENARIO: Runner should support parameterized scenarios with value \"{value}\""));
+            Assert.That(ConfiguredLightBddScope.CapturedNotifications, Does.Contain($"SCENARIO: Runner should support parameterized scenarios with value \"@{value}\""));
         }
 
         [Scenario]

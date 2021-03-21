@@ -14,8 +14,9 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly IValueFormattingService _formattingService;
         public bool IsEvaluated { get; private set; }
         public ParameterVerificationStatus VerificationStatus => Details.VerificationStatus;
+        public IParameterInfo Info { get; }
         public string FormattedValue { get; private set; } = NameParameterInfo.UnknownValue;
-        public string Name { get; }
+        public string Name => Info.Name;
         public IParameterDetails Details => GetDetails();
         public object Value { get; private set; }
 
@@ -28,10 +29,10 @@ namespace LightBDD.Core.Execution.Implementation
             return ParameterDetails.NotApplicable;
         }
 
-        public MethodArgument(ParameterDescriptor descriptor, IValueFormattingService formattingService)
+        public MethodArgument(IMetadataInfo owner, ParameterDescriptor descriptor, IValueFormattingService formattingService)
         {
+            Info = new RunnableParameterInfo(owner, descriptor.RawName);
             _formattingService = formattingService;
-            Name = descriptor.RawName;
             _valueEvaluator = descriptor.ValueEvaluator;
             if (descriptor.IsConstant)
                 Evaluate(null);

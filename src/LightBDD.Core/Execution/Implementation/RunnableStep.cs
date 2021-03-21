@@ -257,7 +257,7 @@ namespace LightBDD.Core.Execution.Implementation
             foreach (var arg in _arguments)
             {
                 arg.Evaluate(Context);
-                _stepContext.ProgressNotifier.Notify(new ParameterEvaluated(_stepContext.ExecutionTimer.GetTime(), Info, arg));
+                _stepContext.ProgressNotifier.Notify(new ParameterEvaluated(_stepContext.ExecutionTimer.GetTime(), arg));
             }
         }
 

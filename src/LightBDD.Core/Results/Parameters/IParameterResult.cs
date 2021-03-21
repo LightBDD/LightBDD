@@ -1,3 +1,5 @@
+using LightBDD.Core.Metadata;
+
 namespace LightBDD.Core.Results.Parameters
 {
     /// <summary>
@@ -9,6 +11,10 @@ namespace LightBDD.Core.Results.Parameters
         /// Parameter name.
         /// </summary>
         string Name { get; }
+        /// <summary>
+        /// Parameter info.
+        /// </summary>
+        IParameterInfo Info { get; }
         /// <summary>
         /// Parameter formatted value.
         /// </summary>

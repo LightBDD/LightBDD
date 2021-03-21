@@ -10,22 +10,16 @@ namespace LightBDD.Core.Notification.Events
     public class ParameterEvaluated : ProgressEvent
     {
         /// <summary>
-        /// Parameter owner.
-        /// </summary>
-        public IMetadataInfo Owner { get; }
-
-        /// <summary>
         /// Parameter.
         /// </summary>
-        public IParameterResult Parameter { get; }
+        public IParameterResult Result { get; }
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        public ParameterEvaluated(EventTime time, IMetadataInfo owner, IParameterResult parameter) : base(time)
+        public ParameterEvaluated(EventTime time, IParameterResult result) : base(time)
         {
-            Owner = owner;
-            Parameter = parameter;
+            Result = result;
         }
     }
 }

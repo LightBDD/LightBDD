@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Notification.Events;
 
 namespace LightBDD.Core.Execution.Implementation
@@ -33,7 +34,8 @@ namespace LightBDD.Core.Execution.Implementation
         public IDependencyResolver DependencyResolver => _scope;
         public object Context { get; private set; }
 
-        public RunnableScenario(RunnableScenarioContext scenarioContext, IScenarioInfo scenarioInfo,
+        public RunnableScenario(RunnableScenarioContext scenarioContext, ScenarioInfo scenarioInfo,
+            MethodArgument[] arguments,
             IEnumerable<StepDescriptor> stepDescriptors, ExecutionContextDescriptor contextDescriptor,
             IEnumerable<IScenarioDecorator> scenarioDecorators)
         {
@@ -41,7 +43,7 @@ namespace LightBDD.Core.Execution.Implementation
             _stepDescriptors = stepDescriptors;
             _contextDescriptor = contextDescriptor;
             _decoratedScenarioMethod = DecoratingExecutor.DecorateScenario(this, RunScenarioAsync, scenarioDecorators);
-            _result = new ScenarioResult(scenarioInfo);
+            _result = new ScenarioResult(scenarioInfo, arguments);
         }
 
         public async Task ExecuteAsync()
