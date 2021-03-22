@@ -453,21 +453,16 @@ namespace LightBDD.UnitTests.Helpers
 
             public TestParameterResult(string name, string formattedValue, IMetadataInfo owner, IParameterDetails result)
             {
-                Info = new TestParameterInfo(name) { Owner = owner };
+                Info = new TestParameterInfo { Owner = owner, Name = name };
                 Details = result;
                 FormattedValue = formattedValue;
             }
         }
         public class TestParameterInfo : IParameterInfo
         {
-            public TestParameterInfo(string name)
-            {
-                Name = name;
-            }
-
             public Guid RuntimeId { get; } = Guid.Parse("ffffaaaa-aaaa-ffff-aaaa-fffffffaaaaa");
             public IMetadataInfo Owner { get; set; }
-            public string Name { get; }
+            public string Name { get; set; }
         }
 
         #endregion

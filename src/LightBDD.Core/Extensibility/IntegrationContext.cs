@@ -20,6 +20,7 @@ namespace LightBDD.Core.Extensibility
     public abstract class IntegrationContext
     {
         private IProgressNotifier _progressNotifier;
+        private IProgressPublisher _progressPublisher;
 
         /// <summary>
         /// Returns metadata provider.
@@ -52,6 +53,11 @@ namespace LightBDD.Core.Extensibility
         /// Returns progress notifier.
         /// </summary>
         public IProgressNotifier ProgressNotifier => _progressNotifier ??= GetProgressNotifier();
+
+        /// <summary>
+        /// Returns progress publisher.
+        /// </summary>
+        public IProgressPublisher ProgressPublisher => _progressPublisher ??= new ProgressPublisher(ProgressNotifier, ExecutionTimer);
 
         /// <summary>
         /// Returns LightBDD execution extensions.

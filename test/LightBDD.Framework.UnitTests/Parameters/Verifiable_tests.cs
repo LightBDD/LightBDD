@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Metadata;
+using LightBDD.Framework.Notification.Events;
 using LightBDD.Framework.Parameters;
 using LightBDD.Framework.UnitTests.Formatting;
 using LightBDD.UnitTests.Helpers;
+using Moq;
 using NUnit.Framework;
 
 namespace LightBDD.Framework.UnitTests.Parameters
@@ -112,9 +115,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
             Verifiable<int> expectation = Fake.Int();
             expectation.SetActual(() => Fake.Int());
             var ex = Assert.Throws<InvalidOperationException>(() => expectation.SetActual(() => Fake.Int()));
-            Assert.That(ex.Message, Is.EqualTo("Actual value has been already specified"));
+            Assert.That(ex.Message, Is.EqualTo("Actual value has been already specified or is being provided"));
             ex = Assert.Throws<InvalidOperationException>(() => expectation.SetActual(Fake.Int()));
-            Assert.That(ex.Message, Is.EqualTo("Actual value has been already specified"));
+            Assert.That(ex.Message, Is.EqualTo("Actual value has been already specified or is being provided"));
         }
 
         [Test]
@@ -123,7 +126,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             Verifiable<int> expectation = Fake.Int();
             expectation.SetActual(() => Fake.Int());
             var ex = Assert.ThrowsAsync<InvalidOperationException>(() => expectation.SetActualAsync(() => Task.FromResult(Fake.Int())));
-            Assert.That(ex.Message, Is.EqualTo("Actual value has been already specified"));
+            Assert.That(ex.Message, Is.EqualTo("Actual value has been already specified or is being provided"));
         }
 
         [Test]
@@ -136,6 +139,62 @@ namespace LightBDD.Framework.UnitTests.Parameters
             expectation.SetActual(() => actualValue);
 
             Assert.That(expectation.ToString(), Is.EqualTo($"expected: equals '--{expected}--', but got: '--{actualValue}--'"));
+        }
+
+        [Test]
+        public void SetActual_traces_progress_when_InitializeParameterTrace_used()
+        {
+            Verifiable<int> expectation = Fake.Int();
+            var info = Mock.Of<IParameterInfo>();
+            var publisher = new CapturingProgressPublisher();
+            ((ITraceableParameter)expectation).InitializeParameterTrace(info, publisher);
+
+            expectation.SetActual(Fake.Int());
+
+            VerifyValidationEvents(publisher, info);
+        }
+
+        [Test]
+        public void SetActual_with_function_traces_progress_when_InitializeParameterTrace_used()
+        {
+            Verifiable<int> expectation = Fake.Int();
+            var info = Mock.Of<IParameterInfo>();
+            var publisher = new CapturingProgressPublisher();
+            ((ITraceableParameter)expectation).InitializeParameterTrace(info, publisher);
+
+            expectation.SetActual(() => Fake.Int());
+
+            VerifyValidationEvents(publisher, info);
+        }
+
+        [Test]
+        public async Task SetActualAsync_traces_progress_when_InitializeParameterTrace_used()
+        {
+            Verifiable<int> expectation = Fake.Int();
+            var info = Mock.Of<IParameterInfo>();
+            var publisher = new CapturingProgressPublisher();
+            ((ITraceableParameter)expectation).InitializeParameterTrace(info, publisher);
+
+            await expectation.SetActualAsync(() => Task.FromResult(Fake.Int()));
+
+            VerifyValidationEvents(publisher, info);
+        }
+
+        private static void VerifyValidationEvents(CapturingProgressPublisher publisher, IParameterInfo info)
+        {
+            Assert.That(publisher.GetCaptured().Select(e => e.GetType()).ToArray(),
+                Is.EqualTo(new[]
+                {
+                    typeof(InlineParameterValidationStarting),
+                    typeof(InlineParameterValidationFinished)
+                }));
+
+            var starting = publisher.GetCaptured<InlineParameterValidationStarting>().Single();
+            Assert.That(starting.Parameter, Is.SameAs(info));
+            var finished = publisher.GetCaptured<InlineParameterValidationFinished>().Single();
+            Assert.That(finished.Parameter, Is.SameAs(info));
+            Assert.That(finished.Details, Is.Not.Null);
+            Assert.That(finished.Time.Time, Is.GreaterThan(starting.Time.Time));
         }
     }
 }

@@ -118,7 +118,7 @@ namespace LightBDD.Core.Extensibility.Implementation
             var info = new ScenarioInfo(_featureInfo, _name, _labels, _categories);
             var metadataProvider = _context.IntegrationContext.MetadataProvider;
             var args = _scenarioParameters
-                .Select(p => new MethodArgument(info, p, metadataProvider.GetValueFormattingServiceFor(p.ParameterInfo)))
+                .Select(p => new MethodArgument(info, p, metadataProvider,_context.IntegrationContext.ProgressPublisher))
                 .ToArray();
             return new RunnableScenario(_context, info, args, _steps, _contextDescriptor, GetScenarioDecorators());
         }
@@ -154,7 +154,7 @@ namespace LightBDD.Core.Extensibility.Implementation
             {
                 var descriptor = descriptors[stepIndex];
                 var stepInfo = new StepInfo(parent, (StepNameInfo)metadataProvider.GetStepName(descriptor, previousStepTypeName), stepIndex + 1, totalSteps, groupPrefix);
-                var arguments = descriptor.Parameters.Select(p => new MethodArgument(stepInfo, p, metadataProvider.GetValueFormattingServiceFor(p.ParameterInfo))).ToArray();
+                var arguments = descriptor.Parameters.Select(p => new MethodArgument(stepInfo, p, metadataProvider, _context.IntegrationContext.ProgressPublisher)).ToArray();
 
                 steps[stepIndex] = new RunnableStep(stepContext, stepInfo, descriptor, arguments, extensions.StepDecorators.Concat(metadataProvider.GetStepDecorators(descriptor)));
                 previousStepTypeName = stepInfo.Name.StepTypeName?.OriginalName;
