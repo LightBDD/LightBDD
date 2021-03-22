@@ -1,5 +1,4 @@
 ﻿using LightBDD.Core.Execution;
-using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters;
 
 namespace LightBDD.Core.Notification.Events
