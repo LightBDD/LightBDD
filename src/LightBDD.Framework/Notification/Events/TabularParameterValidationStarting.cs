@@ -1,14 +1,14 @@
 ﻿using LightBDD.Core.Execution;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification.Events;
-using LightBDD.Core.Results.Parameters;
+using LightBDD.Core.Results.Parameters.Tabular;
 
 namespace LightBDD.Framework.Notification.Events
 {
     /// <summary>
-    /// Event raised when inline parameter validation is about to start.
+    /// Event raised when tabular parameter validation is about to start.
     /// </summary>
-    public class InlineParameterValidationStarting : ProgressEvent
+    public class TabularParameterValidationStarting : ProgressEvent
     {
         /// <summary>
         /// Parameter info.
@@ -17,12 +17,12 @@ namespace LightBDD.Framework.Notification.Events
         /// <summary>
         /// Parameter details.
         /// </summary>
-        public IInlineParameterDetails Details { get; }
+        public ITabularParameterDetails Details { get; }
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        public InlineParameterValidationStarting(EventTime time, IParameterInfo parameter, IInlineParameterDetails details) : base(time)
+        public TabularParameterValidationStarting(EventTime time, IParameterInfo parameter, ITabularParameterDetails details) : base(time)
         {
             Parameter = parameter;
             Details = details;

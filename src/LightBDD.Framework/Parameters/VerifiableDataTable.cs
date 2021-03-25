@@ -49,8 +49,7 @@ namespace LightBDD.Framework.Parameters
             if (actualRowLookup == null)
                 throw new ArgumentNullException(nameof(actualRowLookup));
 
-            EnsureActualNotSet();
-            SetRows(ExpectedRows.Select(expected => new RowData(TableRowType.Matching, expected, Evaluate(actualRowLookup, expected))));
+            SetActualRows(() => ExpectedRows.Select(expected => new RowData(TableRowType.Matching, expected, Evaluate(actualRowLookup, expected))));
         }
 
         /// <summary>
@@ -68,9 +67,7 @@ namespace LightBDD.Framework.Parameters
             if (actualRowLookup == null)
                 throw new ArgumentNullException(nameof(actualRowLookup));
 
-            EnsureActualNotSet();
-            var results = await Task.WhenAll(ExpectedRows.Select(expected => EvaluateAsync(actualRowLookup, expected)));
-            SetRows(ExpectedRows.Zip(results, (expected, actual) => new RowData(TableRowType.Matching, expected, actual)));
+            await SetActualRowsAsync(async () => await Task.WhenAll(ExpectedRows.Select(async expected => new RowData(TableRowType.Matching, expected, await EvaluateAsync(actualRowLookup, expected)))));
         }
 
         private static RowDataActualValue Evaluate(Func<TRow, TRow> provideActualFn, TRow row)

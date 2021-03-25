@@ -158,6 +158,8 @@ namespace LightBDD.UnitTests.Helpers
             return new TestParameterResult(parameter, formattedValue, null, result);
         }
 
+        public static TestParameterInfo CreateParameterInfo(string name, IMetadataInfo owner = null) => new TestParameterInfo { Name = name, Owner = owner };
+
         public static TestInlineParameterDetails CreateInlineParameterDetails(string value)
         {
             return new TestInlineParameterDetails(value);

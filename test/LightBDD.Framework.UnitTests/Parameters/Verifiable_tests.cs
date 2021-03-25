@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Metadata;
-using LightBDD.Framework.Notification.Events;
 using LightBDD.Framework.Parameters;
 using LightBDD.Framework.UnitTests.Formatting;
 using LightBDD.UnitTests.Helpers;
-using Moq;
 using NUnit.Framework;
 
 namespace LightBDD.Framework.UnitTests.Parameters
@@ -144,57 +141,58 @@ namespace LightBDD.Framework.UnitTests.Parameters
         [Test]
         public void SetActual_traces_progress_when_InitializeParameterTrace_used()
         {
-            Verifiable<int> expectation = Fake.Int();
-            var info = Mock.Of<IParameterInfo>();
+            var value = 5;
+            Verifiable<int> expectation = value;
             var publisher = new CapturingProgressPublisher();
-            ((ITraceableParameter)expectation).InitializeParameterTrace(info, publisher);
+            ((ITraceableParameter)expectation).InitializeParameterTrace(TestResults.CreateParameterInfo("p"), publisher);
 
-            expectation.SetActual(Fake.Int());
+            expectation.SetActual(value);
 
-            VerifyValidationEvents(publisher, info);
+            publisher.AssertLogs(
+                "InlineParameterDiscovered|Param=p|Status=NotProvided|E=equals '5'|V=",
+                "InlineParameterValidationStarting|Param=p|Status=NotProvided|E=equals '5'|V=",
+                "InlineParameterValidationFinished|Param=p|Status=Success|E=equals '5'|V=5");
         }
 
         [Test]
         public void SetActual_with_function_traces_progress_when_InitializeParameterTrace_used()
         {
-            Verifiable<int> expectation = Fake.Int();
-            var info = Mock.Of<IParameterInfo>();
+            var value = 3;
+            Verifiable<int> expectation = value;
             var publisher = new CapturingProgressPublisher();
-            ((ITraceableParameter)expectation).InitializeParameterTrace(info, publisher);
+            ((ITraceableParameter)expectation).InitializeParameterTrace(TestResults.CreateParameterInfo("c"), publisher);
 
-            expectation.SetActual(() => Fake.Int());
+            expectation.SetActual(() => value);
 
-            VerifyValidationEvents(publisher, info);
+            publisher.AssertLogs(
+                "InlineParameterDiscovered|Param=c|Status=NotProvided|E=equals '3'|V=",
+                "InlineParameterValidationStarting|Param=c|Status=NotProvided|E=equals '3'|V=",
+                "InlineParameterValidationFinished|Param=c|Status=Success|E=equals '3'|V=3");
         }
 
         [Test]
         public async Task SetActualAsync_traces_progress_when_InitializeParameterTrace_used()
         {
-            Verifiable<int> expectation = Fake.Int();
-            var info = Mock.Of<IParameterInfo>();
+            var value = 8;
+            Verifiable<int> expectation = value;
             var publisher = new CapturingProgressPublisher();
-            ((ITraceableParameter)expectation).InitializeParameterTrace(info, publisher);
+            ((ITraceableParameter)expectation).InitializeParameterTrace(TestResults.CreateParameterInfo("i"), publisher);
 
-            await expectation.SetActualAsync(() => Task.FromResult(Fake.Int()));
+            await expectation.SetActualAsync(() => Task.FromResult(value));
 
-            VerifyValidationEvents(publisher, info);
+            publisher.AssertLogs(
+                "InlineParameterDiscovered|Param=i|Status=NotProvided|E=equals '8'|V=",
+                "InlineParameterValidationStarting|Param=i|Status=NotProvided|E=equals '8'|V=",
+                "InlineParameterValidationFinished|Param=i|Status=Success|E=equals '8'|V=8");
         }
 
-        private static void VerifyValidationEvents(CapturingProgressPublisher publisher, IParameterInfo info)
+        [Test]
+        public void InitializeParameterTrace_should_publish_discovery_event()
         {
-            Assert.That(publisher.GetCaptured().Select(e => e.GetType()).ToArray(),
-                Is.EqualTo(new[]
-                {
-                    typeof(InlineParameterValidationStarting),
-                    typeof(InlineParameterValidationFinished)
-                }));
-
-            var starting = publisher.GetCaptured<InlineParameterValidationStarting>().Single();
-            Assert.That(starting.Parameter, Is.SameAs(info));
-            var finished = publisher.GetCaptured<InlineParameterValidationFinished>().Single();
-            Assert.That(finished.Parameter, Is.SameAs(info));
-            Assert.That(finished.Details, Is.Not.Null);
-            Assert.That(finished.Time.Time, Is.GreaterThan(starting.Time.Time));
+            Verifiable<int> expectation = 5;
+            var publisher = new CapturingProgressPublisher();
+            ((ITraceableParameter)expectation).InitializeParameterTrace(TestResults.CreateParameterInfo("p"), publisher);
+            publisher.AssertLogs("InlineParameterDiscovered|Param=p|Status=NotProvided|E=equals '5'|V=");
         }
     }
 }

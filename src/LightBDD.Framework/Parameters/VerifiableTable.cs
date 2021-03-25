@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Metadata;
+using LightBDD.Core.Notification;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Formatting.Values;
+using LightBDD.Framework.Notification.Events;
 using LightBDD.Framework.Results.Implementation;
 
 namespace LightBDD.Framework.Parameters
@@ -20,13 +23,17 @@ namespace LightBDD.Framework.Parameters
     /// This class is an abstract base that can be extended to provide specialized verifiable tables.
     /// </summary>
     /// <typeparam name="TRow">Row type.</typeparam>
-    public abstract class VerifiableTable<TRow> : IComplexParameter, ISelfFormattable
+    public abstract class VerifiableTable<TRow> : IComplexParameter, ISelfFormattable, ITraceableParameter
     {
         private TabularParameterDetails _details;
+        private IParameterInfo _parameterInfo;
+        private IProgressPublisher _progressPublisher;
+        private int _setFlag = 0;
+
         /// <summary>
         /// Returns verification details.
         /// </summary>
-        public ITabularParameterDetails Details => GetResultLazily();
+        public ITabularParameterDetails Details => GetDetailsLazily();
         IParameterDetails IComplexParameter.Details => Details;
         /// <summary>
         /// <see cref="IValueFormattingService"/> instance.
@@ -64,8 +71,7 @@ namespace LightBDD.Framework.Parameters
             if (actualRows == null)
                 throw new ArgumentNullException(nameof(actualRows));
 
-            EnsureActualNotSet();
-            SetRows(MatchRows(actualRows.ToArray()));
+            SetActualRows(() => MatchRows(actualRows));
         }
 
         /// <summary>
@@ -80,25 +86,7 @@ namespace LightBDD.Framework.Parameters
         {
             if (actualRowsProvider == null)
                 throw new ArgumentNullException(nameof(actualRowsProvider));
-
-            EnsureActualNotSet();
-            IEnumerable<TRow> actualCollection;
-
-            try
-            {
-                actualCollection = await actualRowsProvider();
-            }
-            catch (Exception ex)
-            {
-                _details = new TabularParameterDetails(
-                    GetColumnResults(),
-                    GetExpectedRowResults(),
-                    ParameterVerificationStatus.Exception,
-                    new InvalidOperationException($"Failed to retrieve rows: {ex.Message}", ex));
-                ActualRows = new TRow[0];
-                return;
-            }
-            SetActual(actualCollection);
+            await SetActualRowsAsync(async () => MatchRows(await actualRowsProvider()));
         }
 
         /// <summary>
@@ -108,13 +96,14 @@ namespace LightBDD.Framework.Parameters
         protected abstract IEnumerable<ITabularParameterRow> GetExpectedRowResults();
 
         /// <summary>
-        /// Ensures that actual values are not set yet.
+        /// Ensures that actual values are not set yet and if succeeded, it prevents other operations from succeeding.
+        /// This method can be only once.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when actual value is already set.</exception>
         protected void EnsureActualNotSet()
         {
-            if (ActualRows != null)
-                throw new InvalidOperationException("Actual rows have been already specified");
+            if (Interlocked.Exchange(ref _setFlag, 1) == 1)
+                throw new InvalidOperationException("Actual rows have been already specified or are being specified right now");
         }
 
         /// <summary>
@@ -126,10 +115,54 @@ namespace LightBDD.Framework.Parameters
         }
 
         /// <summary>
-        /// Sets specified <paramref name="rows"/> as the actual values and generates the details for it.
+        /// Uses the <paramref name="rowProvider"/> to provide actual rows for the table.<br/>
+        /// The method handles the internal progress notifications as well as exception handling.
         /// </summary>
-        /// <param name="rows">Rows to set.</param>
-        protected void SetRows(IEnumerable<RowData> rows)
+        /// <param name="rowProvider"></param>
+        protected void SetActualRows(Func<IEnumerable<RowData>> rowProvider)
+        {
+            EnsureActualNotSet();
+            try
+            {
+                NotifyVerificationStart();
+                var rows = rowProvider();
+                OnSetActualRows(rows);
+            }
+            catch (Exception ex)
+            {
+                SetActualException(ex);
+            }
+            finally
+            {
+                NotifyVerificationFinished();
+            }
+        }
+
+        /// <summary>
+        /// Uses the <paramref name="rowProvider"/> to provide actual rows for the table.<br/>
+        /// The method handles the internal progress notifications as well as exception handling.
+        /// </summary>
+        /// <param name="rowProvider"></param>
+        protected async Task SetActualRowsAsync(Func<Task<IEnumerable<RowData>>> rowProvider)
+        {
+            EnsureActualNotSet();
+            try
+            {
+                NotifyVerificationStart();
+                var rows = await rowProvider();
+                OnSetActualRows(rows);
+            }
+            catch (Exception ex)
+            {
+                SetActualException(ex);
+            }
+            finally
+            {
+                NotifyVerificationFinished();
+            }
+        }
+
+        private void OnSetActualRows(IEnumerable<RowData> rows)
         {
             var dataRows = rows.ToArray();
             _details = new TabularParameterDetails(GetColumnResults(), dataRows.Select(ToRowResult));
@@ -137,6 +170,36 @@ namespace LightBDD.Framework.Parameters
                 .Where(x => x.Type != TableRowType.Missing)
                 .Select(x => x.Actual.Value)
                 .ToArray();
+        }
+
+        private void SetActualException(Exception ex)
+        {
+            _details = new TabularParameterDetails(
+                GetColumnResults(),
+                GetExpectedRowResults(),
+                ParameterVerificationStatus.Exception,
+                new InvalidOperationException($"Failed to set actual rows: {ex.Message}", ex));
+            ActualRows = new TRow[0];
+        }
+
+        private void NotifyVerificationStart()
+        {
+            _progressPublisher?.Publish(time => new TabularParameterValidationStarting(time, _parameterInfo, GetDetailsLazily()));
+        }
+
+        private void NotifyVerificationFinished()
+        {
+            _progressPublisher?.Publish(time => new TabularParameterValidationFinished(time, _parameterInfo, GetDetailsLazily()));
+        }
+
+        /// <summary>
+        /// Sets specified <paramref name="rows"/> as the actual values and generates the details for it.
+        /// </summary>
+        /// <param name="rows">Rows to set.</param>
+        [Obsolete("Use SetActualRows instead")]
+        protected void SetRows(IEnumerable<RowData> rows)
+        {
+            OnSetActualRows(rows);
         }
 
         /// <summary>
@@ -151,6 +214,11 @@ namespace LightBDD.Framework.Parameters
         /// Created collection of <see cref="RowData"/> for the given <paramref name="actual"/> collection.
         /// </summary>
         protected abstract IEnumerable<RowData> MatchRows(IReadOnlyList<TRow> actual);
+
+        /// <summary>
+        /// Created collection of <see cref="RowData"/> for the given <paramref name="actual"/> collection.
+        /// </summary>
+        protected IEnumerable<RowData> MatchRows(IEnumerable<TRow> actual) => MatchRows(actual.ToArray());
 
         /// <summary>
         /// Row data containing expected value, actual value as well as row type.
@@ -230,7 +298,7 @@ namespace LightBDD.Framework.Parameters
             FormattingService = formattingService;
         }
 
-        private ITabularParameterDetails GetResultLazily()
+        private ITabularParameterDetails GetDetailsLazily()
         {
             if (_details != null)
                 return _details;
@@ -251,6 +319,13 @@ namespace LightBDD.Framework.Parameters
                 return ToColumnValueResult(c, expected, actual);
             });
             return new TabularParameterRow(index, row.Type, values, row.Actual.Exception);
+        }
+
+        void ITraceableParameter.InitializeParameterTrace(IParameterInfo parameterInfo, IProgressPublisher progressPublisher)
+        {
+            _parameterInfo = parameterInfo;
+            _progressPublisher = progressPublisher;
+            _progressPublisher?.Publish(time => new TabularParameterDiscovered(time, _parameterInfo, Details));
         }
     }
 }

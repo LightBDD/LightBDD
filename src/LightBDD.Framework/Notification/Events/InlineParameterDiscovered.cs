@@ -6,9 +6,9 @@ using LightBDD.Core.Results.Parameters;
 namespace LightBDD.Framework.Notification.Events
 {
     /// <summary>
-    /// Event raised when inline parameter validation is about to start.
+    /// Event raised when inline parameter is discovered.
     /// </summary>
-    public class InlineParameterValidationStarting : ProgressEvent
+    public class InlineParameterDiscovered : ProgressEvent
     {
         /// <summary>
         /// Parameter info.
@@ -22,7 +22,7 @@ namespace LightBDD.Framework.Notification.Events
         /// <summary>
         /// Constructor.
         /// </summary>
-        public InlineParameterValidationStarting(EventTime time, IParameterInfo parameter, IInlineParameterDetails details) : base(time)
+        public InlineParameterDiscovered(EventTime time, IParameterInfo parameter, IInlineParameterDetails details) : base(time)
         {
             Parameter = parameter;
             Details = details;

@@ -178,14 +178,21 @@ namespace LightBDD.Framework.Parameters
             return this;
         }
 
-        private void NotifyEnd()
+        void ITraceableParameter.InitializeParameterTrace(IParameterInfo parameterInfo, IProgressPublisher progressPublisher)
         {
-            _progressPublisher?.Publish(time => new InlineParameterValidationFinished(time, _parameterInfo, GetDetails()));
+            _parameterInfo = parameterInfo;
+            _progressPublisher = progressPublisher;
+            _progressPublisher?.Publish(time => new InlineParameterDiscovered(time, _parameterInfo, GetDetails()));
         }
 
         private void NotifyStart()
         {
-            _progressPublisher?.Publish(time => new InlineParameterValidationStarting(time, _parameterInfo));
+            _progressPublisher?.Publish(time => new InlineParameterValidationStarting(time, _parameterInfo, GetDetails()));
+        }
+
+        private void NotifyEnd()
+        {
+            _progressPublisher?.Publish(time => new InlineParameterValidationFinished(time, _parameterInfo, GetDetails()));
         }
 
         private void AcquireSetFlag()
@@ -198,6 +205,8 @@ namespace LightBDD.Framework.Parameters
         {
             _formattingService = formattingService;
         }
+
+        //TODO: optimize
 
         IParameterDetails IComplexParameter.Details => GetDetails();
 
@@ -243,12 +252,6 @@ namespace LightBDD.Framework.Parameters
             if (_result.IsValid)
                 return $"{_actualText}";
             return $"expected: {Expectation.Format(_formattingService)}, but got: '{_actualText}'";
-        }
-
-        void ITraceableParameter.InitializeParameterTrace(IParameterInfo parameterInfo, IProgressPublisher progressPublisher)
-        {
-            _parameterInfo = parameterInfo;
-            _progressPublisher = progressPublisher;
         }
 
         private Verifiable<T> SetActualValue(T value)
