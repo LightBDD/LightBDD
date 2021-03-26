@@ -15,11 +15,12 @@ namespace LightBDD.Framework.Resources
     /// <typeparam name="TResource"></typeparam>
     public class ResourcePool<TResource> : IDisposable
     {
-        private readonly Func<TResource> _resourceFactory;
+        private readonly Func<CancellationToken, Task<TResource>> _resourceFactory;
         private readonly SemaphoreSlim _semaphore;
         private readonly ConcurrentQueue<TResource> _resources = new ConcurrentQueue<TResource>();
         private readonly ConcurrentQueue<TResource> _pool = new ConcurrentQueue<TResource>();
         private readonly bool _controlDisposal;
+        private readonly CancellationTokenSource _disposalCancellationTokenSource = new CancellationTokenSource();
 
         /// <summary>
         /// Creates resource pool with pre-set list of resources, specified by <paramref name="resources"/> parameter.
@@ -31,7 +32,7 @@ namespace LightBDD.Framework.Resources
                 throw new ArgumentException("At least one resource has to be provided", nameof(resources));
 
             _semaphore = new SemaphoreSlim(resources.Length);
-            _resourceFactory = () => throw new NotSupportedException("No new resources can be created in this mode - the ResourcePool has been initiated with pre-set list of resources");
+            _resourceFactory = _ => throw new NotSupportedException("No new resources can be created in this mode - the ResourcePool has been initiated with pre-set list of resources");
             _controlDisposal = takeOwnership;
 
             foreach (var resource in resources)
@@ -48,6 +49,17 @@ namespace LightBDD.Framework.Resources
         /// If resources implement <see cref="IDisposable"/> interface, they will be disposed upon pool disposal.
         /// </summary>
         public ResourcePool(Func<TResource> resourceFactory, int limit = int.MaxValue)
+            : this(ToAsyncFactory(resourceFactory), limit)
+        {
+        }
+
+        /// <summary>
+        /// Creates resource pool of dynamically managed resource number.
+        /// The pool will start with no resources and grow up to the number of resources specified by <paramref name="limit"/> parameter.
+        /// The new resources will be created if needed by calling <paramref name="resourceFactory"/> function.
+        /// If resources implement <see cref="IDisposable"/> interface, they will be disposed upon pool disposal.
+        /// </summary>
+        public ResourcePool(Func<CancellationToken, Task<TResource>> resourceFactory, int limit = int.MaxValue)
         {
             if (limit <= 0)
                 throw new ArgumentException("Value has to be greater than 0", nameof(limit));
@@ -66,17 +78,19 @@ namespace LightBDD.Framework.Resources
 
         internal async Task<TResource> ObtainAsync(CancellationToken token)
         {
-            await _semaphore.WaitAsync(token);
+            using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(token, _disposalCancellationTokenSource.Token);
+
+            await _semaphore.WaitAsync(linkedCts.Token);
             if (_pool.TryDequeue(out var resource))
                 return resource;
-            return CreateNew();
+            return await CreateNew(linkedCts.Token);
         }
 
-        private TResource CreateNew()
+        private async Task<TResource> CreateNew(CancellationToken token)
         {
             try
             {
-                var resource = _resourceFactory();
+                var resource = await _resourceFactory(token);
                 _resources.Enqueue(resource);
                 return resource;
             }
@@ -99,6 +113,8 @@ namespace LightBDD.Framework.Resources
         /// </summary>
         public void Dispose()
         {
+            _disposalCancellationTokenSource.Cancel();
+
             if (!_controlDisposal)
                 return;
 
@@ -110,6 +126,13 @@ namespace LightBDD.Framework.Resources
             }
             if (exceptions.Any())
                 throw new AggregateException("ResourcePool failed to dispose some resources", exceptions);
+        }
+
+        private static Func<CancellationToken, Task<TResource>> ToAsyncFactory(Func<TResource> resourceFactory)
+        {
+            if (resourceFactory == null)
+                throw new ArgumentNullException(nameof(resourceFactory));
+            return _ => Task.FromResult(resourceFactory());
         }
     }
 }
