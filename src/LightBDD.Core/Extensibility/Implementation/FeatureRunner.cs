@@ -22,7 +22,14 @@ namespace LightBDD.Core.Extensibility.Implementation
             _exceptionProcessor = new ExceptionProcessor(_integrationContext);
             _featureResult = new FeatureResult(_integrationContext.MetadataProvider.GetFeatureInfo(featureType));
 
-            integrationContext.ProgressNotifier.Notify(new FeatureStarting(integrationContext.ExecutionTimer.GetTime(), _featureResult.Info));
+            NotifyFeatureStart(integrationContext);
+        }
+
+        private void NotifyFeatureStart(IntegrationContext integrationContext)
+        {
+            var eventTime = integrationContext.ExecutionTimer.GetTime();
+            integrationContext.ProgressNotifier.Notify(new FeatureDiscovered(eventTime, _featureResult.Info));
+            integrationContext.ProgressNotifier.Notify(new FeatureStarting(eventTime, _featureResult.Info));
         }
 
         public IFeatureFixtureRunner ForFixture(object fixture)

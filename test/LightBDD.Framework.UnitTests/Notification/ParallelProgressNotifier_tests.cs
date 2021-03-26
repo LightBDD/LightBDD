@@ -55,7 +55,7 @@ namespace LightBDD.Framework.UnitTests.Notification
             var stepResult = Fake.Object<TestResults.TestStepResult>();
             stepResult.Parameters = new IParameterResult[]
             {
-                new TestResults.TestParameterResult("table",
+                new TestResults.TestParameterResult("table","table",stepInfo,
                     TestResults.CreateTabularParameterDetails(ParameterVerificationStatus.Failure)
                         .WithKeyColumns("Key")
                         .WithValueColumns("Value1", "Value2")
@@ -80,8 +80,7 @@ namespace LightBDD.Framework.UnitTests.Notification
                             TestResults.CreateValueResult("<null>", "XXX",
                                 ParameterVerificationStatus.Failure),
                             TestResults.CreateValueResult("<null>", "YYY",
-                                ParameterVerificationStatus.Failure))
-                )
+                                ParameterVerificationStatus.Failure)))
             };
 
             var scenarioResult = Fake.Object<TestResults.TestScenarioResult>();
@@ -101,7 +100,7 @@ namespace LightBDD.Framework.UnitTests.Notification
             notifier.Notify(new FeatureFinished(eventTime, featureResult));
 
             var headerLength = "Fi=000,Fa=000,Pe=000 #   > ".Length;
-            var padding = new string(' ',headerLength);
+            var padding = new string(' ', headerLength);
 
             var expectedTable = $@"{padding}    table:
 {padding}    +-+---+----------+----------+

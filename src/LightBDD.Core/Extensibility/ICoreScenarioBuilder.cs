@@ -77,6 +77,13 @@ namespace LightBDD.Core.Extensibility
         ICoreScenarioBuilder WithScenarioDecorators(IEnumerable<IScenarioDecorator> scenarioDecorators);
 
         /// <summary>
+        /// Configures scenario to be executed with additional parameters.
+        /// </summary>
+        /// <param name="scenarioParameters">Parameters to use</param>
+        /// <returns>Self.</returns>
+        ICoreScenarioBuilder WithParameters(IEnumerable<ParameterDescriptor> scenarioParameters);
+
+        /// <summary>
         /// Builds scenario.
         /// </summary>
         /// <returns>Scenario.</returns>

@@ -58,9 +58,12 @@ namespace LightBDD.UnitTests.Helpers
             return result;
         }
 
-        public static TestStepResult WithStepParameters(this TestStepResult result, params IParameterResult[] parameters)
+        public static TestStepResult WithStepParameters(this TestStepResult result, params TestParameterResult[] parameters)
         {
             result.Parameters = parameters;
+            foreach (var p in parameters)
+                p.Info.Owner = result.Info;
+
             return result;
         }
 
@@ -150,10 +153,12 @@ namespace LightBDD.UnitTests.Helpers
             };
         }
 
-        public static IParameterResult CreateTestParameter(string parameter, IParameterDetails result)
+        public static TestParameterResult CreateTestParameter(string parameter, string formattedValue, IParameterDetails result)
         {
-            return new TestParameterResult(parameter, result);
+            return new TestParameterResult(parameter, formattedValue, null, result);
         }
+
+        public static TestParameterInfo CreateParameterInfo(string name, IMetadataInfo owner = null) => new TestParameterInfo { Name = name, Owner = owner };
 
         public static TestInlineParameterDetails CreateInlineParameterDetails(string value)
         {
@@ -344,6 +349,7 @@ namespace LightBDD.UnitTests.Helpers
             public bool IsEvaluated { get; set; }
             public ParameterVerificationStatus VerificationStatus { get; set; }
             public string FormattedValue { get; set; }
+            public string Name { get; set; }
         }
 
         public class TestStepTypeNameInfo : IStepTypeNameInfo
@@ -441,14 +447,24 @@ namespace LightBDD.UnitTests.Helpers
 
         public class TestParameterResult : IParameterResult
         {
-            public string Name { get; }
+            public string Name => Info.Name;
+            public TestParameterInfo Info { get; }
+            IParameterInfo IParameterResult.Info => Info;
+            public string FormattedValue { get; }
             public IParameterDetails Details { get; }
 
-            public TestParameterResult(string name, IParameterDetails result)
+            public TestParameterResult(string name, string formattedValue, IMetadataInfo owner, IParameterDetails result)
             {
-                Name = name;
+                Info = new TestParameterInfo { Owner = owner, Name = name };
                 Details = result;
+                FormattedValue = formattedValue;
             }
+        }
+        public class TestParameterInfo : IParameterInfo
+        {
+            public Guid RuntimeId { get; } = Guid.Parse("ffffaaaa-aaaa-ffff-aaaa-fffffffaaaaa");
+            public IMetadataInfo Owner { get; set; }
+            public string Name { get; set; }
         }
 
         #endregion

@@ -9,6 +9,19 @@ Version [next]
 + #225 (LightBDD.XUnit2/LightBDD.NUnit3/LightBDD.MsTest2/LightBDD.Fixie2)(Change) Updated projects to use IProgressNotifier configuration
 + #225 (Core/Framework)(Change) Obsoleted IScenarioProgressNotifier, IFeatureProgressNotifier, DelegatingScenarioProgressNotifier, DelegatingFeatureProgressNotifier and all methods using them
 + #231 (Framework)(New) Updated ResourcePool with constructor accepting async resource factory method
++ #230 (Core)(New) Added TestExecutionStarting, TestExecutionFinished, FeatureDiscovered, ScenarioDiscovered, StepDiscovered, ParameterEvaluated events and wired them in the engine
++ #230 (Framework)(New) Added InlineParameterDiscovered, InlineParameterValidationStarting, InlineParameterValidationFinished events and made Verifiable type using it
++ #230 (Framework)(New) Added TabularParameterDiscovered, TabularParameterValidationStarting, TabularParameterValidationFinished events and made VerifiableTable and descendants using it 
++ #230 (Framework)(New) Updated InputTable to emit TabularParameterDiscovered event
++ #230 (Core)(New) Added ITraceableParameter interface to support parameter execution events
++ #230 (Core)(New) Added ICoreScenarioBuilder.WithParameters()
++ #230 (Core)(Change) Changed CoreMetadataProvider.GetScenarioName() to return name with unresolved parameters
++ #230 (Core)(New) Added IProgressPublisher to simplify progress events publishing
++ #230 (Core)(New) Added INameParameterInfo.Name property to associate it with method arguments
++ #230 (Core)(New) Added IParameterInfo interface and added IParameterResult.Info property to provide more insights on parameters
++ #230 (Framework)(Change) Changed Verifiable, VerifiableTable and descendats to allow setting actual values only once even if run in parallel
++ #230 (Core)(New) Added ITestExecutionResult with details on execution time and all covered features
+
 
 Version 3.3.0
 ----------------------------------------

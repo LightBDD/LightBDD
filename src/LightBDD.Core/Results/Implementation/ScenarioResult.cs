@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
+using LightBDD.Core.Metadata.Implementation;
 
 namespace LightBDD.Core.Results.Implementation
 {
@@ -10,9 +12,10 @@ namespace LightBDD.Core.Results.Implementation
     {
         private IStepResult[] _steps = Array.Empty<IStepResult>();
 
-        public ScenarioResult(IScenarioInfo info)
+        public ScenarioResult(ScenarioInfo info, MethodArgument[] arguments)
         {
             Info = info;
+            info.UpdateName(arguments);
             Status = ExecutionStatus.NotRun;
         }
 

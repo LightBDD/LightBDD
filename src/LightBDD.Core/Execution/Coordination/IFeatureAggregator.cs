@@ -6,6 +6,7 @@ namespace LightBDD.Core.Execution.Coordination
     /// <summary>
     /// Feature aggregator interface for collecting feature results.
     /// </summary>
+    //TODO: remove IFeatureAggregator interface in LightBDD 4.x as it is not configurable
     public interface IFeatureAggregator : IDisposable
     {
         /// <summary>

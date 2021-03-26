@@ -112,9 +112,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
             Verifiable<int> expectation = Fake.Int();
             expectation.SetActual(() => Fake.Int());
             var ex = Assert.Throws<InvalidOperationException>(() => expectation.SetActual(() => Fake.Int()));
-            Assert.That(ex.Message, Is.EqualTo("Actual value has been already specified"));
+            Assert.That(ex.Message, Is.EqualTo("Actual value has been already specified or is being provided"));
             ex = Assert.Throws<InvalidOperationException>(() => expectation.SetActual(Fake.Int()));
-            Assert.That(ex.Message, Is.EqualTo("Actual value has been already specified"));
+            Assert.That(ex.Message, Is.EqualTo("Actual value has been already specified or is being provided"));
         }
 
         [Test]
@@ -123,7 +123,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             Verifiable<int> expectation = Fake.Int();
             expectation.SetActual(() => Fake.Int());
             var ex = Assert.ThrowsAsync<InvalidOperationException>(() => expectation.SetActualAsync(() => Task.FromResult(Fake.Int())));
-            Assert.That(ex.Message, Is.EqualTo("Actual value has been already specified"));
+            Assert.That(ex.Message, Is.EqualTo("Actual value has been already specified or is being provided"));
         }
 
         [Test]
@@ -136,6 +136,79 @@ namespace LightBDD.Framework.UnitTests.Parameters
             expectation.SetActual(() => actualValue);
 
             Assert.That(expectation.ToString(), Is.EqualTo($"expected: equals '--{expected}--', but got: '--{actualValue}--'"));
+        }
+
+        [Test]
+        public void SetActual_traces_progress_when_InitializeParameterTrace_used()
+        {
+            var value = 5;
+            Verifiable<int> expectation = value;
+            var publisher = new CapturingProgressPublisher();
+            ((ITraceableParameter)expectation).InitializeParameterTrace(TestResults.CreateParameterInfo("p"), publisher);
+
+            expectation.SetActual(value);
+
+            publisher.AssertLogs(
+                "InlineParameterDiscovered|Param=p|Status=NotProvided|E=equals '5'|V=",
+                "InlineParameterValidationStarting|Param=p|Status=NotProvided|E=equals '5'|V=",
+                "InlineParameterValidationFinished|Param=p|Status=Success|E=equals '5'|V=5");
+        }
+
+        [Test]
+        public void SetActual_with_function_traces_progress_when_InitializeParameterTrace_used()
+        {
+            var value = 3;
+            Verifiable<int> expectation = value;
+            var publisher = new CapturingProgressPublisher();
+            ((ITraceableParameter)expectation).InitializeParameterTrace(TestResults.CreateParameterInfo("c"), publisher);
+
+            expectation.SetActual(() => value);
+
+            publisher.AssertLogs(
+                "InlineParameterDiscovered|Param=c|Status=NotProvided|E=equals '3'|V=",
+                "InlineParameterValidationStarting|Param=c|Status=NotProvided|E=equals '3'|V=",
+                "InlineParameterValidationFinished|Param=c|Status=Success|E=equals '3'|V=3");
+        }
+
+        [Test]
+        public async Task SetActualAsync_traces_progress_when_InitializeParameterTrace_used()
+        {
+            var value = 8;
+            Verifiable<int> expectation = value;
+            var publisher = new CapturingProgressPublisher();
+            ((ITraceableParameter)expectation).InitializeParameterTrace(TestResults.CreateParameterInfo("i"), publisher);
+
+            await expectation.SetActualAsync(() => Task.FromResult(value));
+
+            publisher.AssertLogs(
+                "InlineParameterDiscovered|Param=i|Status=NotProvided|E=equals '8'|V=",
+                "InlineParameterValidationStarting|Param=i|Status=NotProvided|E=equals '8'|V=",
+                "InlineParameterValidationFinished|Param=i|Status=Success|E=equals '8'|V=8");
+        }
+
+        [Test]
+        public async Task SetActualAsync_traces_progress_for_exceptions()
+        {
+            var value = 8;
+            Verifiable<int> expectation = value;
+            var publisher = new CapturingProgressPublisher();
+            ((ITraceableParameter)expectation).InitializeParameterTrace(TestResults.CreateParameterInfo("i"), publisher);
+
+            await expectation.SetActualAsync(() => throw new InvalidOperationException("test"));
+
+            publisher.AssertLogs(
+                "InlineParameterDiscovered|Param=i|Status=NotProvided|E=equals '8'|V=",
+                "InlineParameterValidationStarting|Param=i|Status=NotProvided|E=equals '8'|V=",
+                "InlineParameterValidationFinished|Param=i|Status=Exception|E=equals '8'|V=<InvalidOperationException>");
+        }
+
+        [Test]
+        public void InitializeParameterTrace_should_publish_discovery_event()
+        {
+            Verifiable<int> expectation = 5;
+            var publisher = new CapturingProgressPublisher();
+            ((ITraceableParameter)expectation).InitializeParameterTrace(TestResults.CreateParameterInfo("p"), publisher);
+            publisher.AssertLogs("InlineParameterDiscovered|Param=p|Status=NotProvided|E=equals '5'|V=");
         }
     }
 }

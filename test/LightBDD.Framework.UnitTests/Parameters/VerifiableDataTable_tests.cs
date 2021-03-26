@@ -4,10 +4,12 @@ using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;
+using LightBDD.UnitTests.Helpers;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
@@ -629,7 +631,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             table.SetActual(e => e);
 
             var ex = Assert.Throws<InvalidOperationException>(() => table.SetActual(e => e));
-            Assert.That(ex.Message, Is.EqualTo("Actual rows have been already specified"));
+            Assert.That(ex.Message, Is.EqualTo("Actual rows have been already specified or are being specified right now"));
             Assert.Throws<InvalidOperationException>(() => table.SetActual(new[] { 0 }));
             Assert.ThrowsAsync<InvalidOperationException>(() => table.SetActualAsync(() => Task.FromResult(Enumerable.Empty<int>())));
             Assert.ThrowsAsync<InvalidOperationException>(() => table.SetActualAsync(Task.FromResult));
@@ -641,7 +643,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             var table = Enumerable.Empty<int>().ToVerifiableDataTable();
             await table.SetActualAsync(() => throw new Exception("foo"));
             Assert.That(table.Details.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Exception));
-            Assert.That(table.Details.VerificationMessage, Is.EqualTo("Failed to retrieve rows: foo"));
+            Assert.That(table.Details.VerificationMessage, Is.EqualTo("Failed to set actual rows: foo"));
             Assert.That(table.ActualRows, Is.Empty);
         }
 
@@ -652,7 +654,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             await table.SetActualAsync(() => throw new Exception("foo"));
 
             var ex = Assert.Throws<InvalidOperationException>(() => table.SetActual(e => e));
-            Assert.That(ex.Message, Is.EqualTo("Actual rows have been already specified"));
+            Assert.That(ex.Message, Is.EqualTo("Actual rows have been already specified or are being specified right now"));
         }
 
         [Test]
@@ -662,8 +664,104 @@ namespace LightBDD.Framework.UnitTests.Parameters
             Assert.Throws<ArgumentNullException>(() => table.SetActual((IEnumerable<int>)null));
             Assert.Throws<ArgumentNullException>(() => table.SetActual(null));
             Assert.ThrowsAsync<ArgumentNullException>(() => table.SetActualAsync((Func<Task<IEnumerable<int>>>)null));
-            Assert.ThrowsAsync<ArgumentNullException>(() => table.SetActualAsync(() => Task.FromResult<IEnumerable<int>>(null)));
             Assert.ThrowsAsync<ArgumentNullException>(() => table.SetActualAsync(null));
+        }
+
+        [Test]
+        public void InitializeParameterTrace_should_publish_discovery_event()
+        {
+            var table = new[] { new { Name = "abc", Value = 2 } }.ToVerifiableDataTable();
+            var publisher = new CapturingProgressPublisher();
+            ((ITraceableParameter)table).InitializeParameterTrace(TestResults.CreateParameterInfo("p1"), publisher);
+            publisher.AssertLogs("TabularParameterDiscovered|Param=p1|Status=NotProvided|Columns=[Name,Value]|Rows=[{Missing|Failure|[abc/<none>,2/<none>]}]");
+        }
+
+        [Test]
+        public async Task SetActualAsync_should_trace_execution_progress()
+        {
+            var table = new[]
+            {
+                new { Name = "abc", Value = 2 },
+                new { Name = "def", Value = 3 }
+            }.ToVerifiableDataTable();
+
+            var publisher = new CapturingProgressPublisher();
+            ((ITraceableParameter)table).InitializeParameterTrace(TestResults.CreateParameterInfo("p1"), publisher);
+
+            await table.SetActualAsync(async () => new[]
+            {
+                new { Name = "abc", Value = 2 },
+                new { Name = "def", Value = 3 }
+            });
+
+            publisher.AssertLogs(
+                "TabularParameterDiscovered|Param=p1|Status=NotProvided|Columns=[Name,Value]|Rows=[{Missing|Failure|[abc/<none>,2/<none>]},{Missing|Failure|[def/<none>,3/<none>]}]",
+                "TabularParameterValidationStarting|Param=p1|Status=NotProvided|Columns=[Name,Value]|Rows=[{Missing|Failure|[abc/<none>,2/<none>]},{Missing|Failure|[def/<none>,3/<none>]}]",
+                "TabularParameterValidationFinished|Param=p1|Status=Success|Columns=[Name,Value]|Rows=[{Matching|Success|[abc/abc,2/2]},{Matching|Success|[def/def,3/3]}]");
+        }
+
+        [Test]
+        public async Task SetActualAsync_with_lookup_should_trace_execution_progress()
+        {
+            var table = new[]
+            {
+                new { Name = "abc", Value = 2 },
+                new { Name = "def", Value = 3 }
+            }.ToVerifiableDataTable();
+
+            var publisher = new CapturingProgressPublisher();
+            ((ITraceableParameter)table).InitializeParameterTrace(TestResults.CreateParameterInfo("p1"), publisher);
+
+            await table.SetActualAsync(async expected=>expected);
+
+            publisher.AssertLogs(
+                "TabularParameterDiscovered|Param=p1|Status=NotProvided|Columns=[Name,Value]|Rows=[{Missing|Failure|[abc/<none>,2/<none>]},{Missing|Failure|[def/<none>,3/<none>]}]",
+                "TabularParameterValidationStarting|Param=p1|Status=NotProvided|Columns=[Name,Value]|Rows=[{Missing|Failure|[abc/<none>,2/<none>]},{Missing|Failure|[def/<none>,3/<none>]}]",
+                "TabularParameterValidationFinished|Param=p1|Status=Success|Columns=[Name,Value]|Rows=[{Matching|Success|[abc/abc,2/2]},{Matching|Success|[def/def,3/3]}]");
+        }
+
+        [Test]
+        public void SetActual_should_trace_execution_progress()
+        {
+            var table = new[]
+            {
+                new { Name = "abc", Value = 2 },
+                new { Name = "def", Value = 3 }
+            }.ToVerifiableDataTable();
+
+            var publisher = new CapturingProgressPublisher();
+            ((ITraceableParameter)table).InitializeParameterTrace(TestResults.CreateParameterInfo("p1"), publisher);
+
+            table.SetActual(new[]
+            {
+                new { Name = "abc", Value = 2 },
+                new { Name = "def", Value = 3 }
+            });
+
+            publisher.AssertLogs(
+                "TabularParameterDiscovered|Param=p1|Status=NotProvided|Columns=[Name,Value]|Rows=[{Missing|Failure|[abc/<none>,2/<none>]},{Missing|Failure|[def/<none>,3/<none>]}]",
+                "TabularParameterValidationStarting|Param=p1|Status=NotProvided|Columns=[Name,Value]|Rows=[{Missing|Failure|[abc/<none>,2/<none>]},{Missing|Failure|[def/<none>,3/<none>]}]",
+                "TabularParameterValidationFinished|Param=p1|Status=Success|Columns=[Name,Value]|Rows=[{Matching|Success|[abc/abc,2/2]},{Matching|Success|[def/def,3/3]}]");
+        }
+
+        [Test]
+        public void SetActual_with_lookup_should_trace_execution_progress()
+        {
+            var table = new[]
+            {
+                new { Name = "abc", Value = 2 },
+                new { Name = "def", Value = 3 }
+            }.ToVerifiableDataTable();
+
+            var publisher = new CapturingProgressPublisher();
+            ((ITraceableParameter)table).InitializeParameterTrace(TestResults.CreateParameterInfo("p1"), publisher);
+
+            table.SetActual(expected=>expected);
+
+            publisher.AssertLogs(
+                "TabularParameterDiscovered|Param=p1|Status=NotProvided|Columns=[Name,Value]|Rows=[{Missing|Failure|[abc/<none>,2/<none>]},{Missing|Failure|[def/<none>,3/<none>]}]",
+                "TabularParameterValidationStarting|Param=p1|Status=NotProvided|Columns=[Name,Value]|Rows=[{Missing|Failure|[abc/<none>,2/<none>]},{Missing|Failure|[def/<none>,3/<none>]}]",
+                "TabularParameterValidationFinished|Param=p1|Status=Success|Columns=[Name,Value]|Rows=[{Matching|Success|[abc/abc,2/2]},{Matching|Success|[def/def,3/3]}]");
         }
 
         private void AssertRow(ITabularParameterRow row, TableRowType rowType, ParameterVerificationStatus rowStatus, params string[] expectedValueDetails)
