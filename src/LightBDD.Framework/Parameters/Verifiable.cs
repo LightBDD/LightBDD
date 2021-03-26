@@ -41,6 +41,7 @@ namespace LightBDD.Framework.Parameters
         private IParameterInfo _parameterInfo;
         private IProgressPublisher _progressPublisher;
         private int _setFlag = 0;
+        private InlineParameterDetails _details;
 
         /// <summary>
         /// Specified expectation.
@@ -105,8 +106,7 @@ namespace LightBDD.Framework.Parameters
             }
             catch (Exception e)
             {
-                _exception = e;
-                _actualText = $"<{e.GetType().Name}>";
+                SetActualException(e);
             }
             finally
             {
@@ -136,8 +136,7 @@ namespace LightBDD.Framework.Parameters
             }
             catch (Exception e)
             {
-                _exception = e;
-                _actualText = $"<{e.GetType().Name}>";
+                SetActualException(e);
             }
             finally
             {
@@ -167,8 +166,7 @@ namespace LightBDD.Framework.Parameters
             }
             catch (Exception e)
             {
-                _exception = e;
-                _actualText = $"<{e.GetType().Name}>";
+                SetActualException(e);
             }
             finally
             {
@@ -206,8 +204,6 @@ namespace LightBDD.Framework.Parameters
             _formattingService = formattingService;
         }
 
-        //TODO: optimize
-
         IParameterDetails IComplexParameter.Details => GetDetails();
 
         private string GetValidationMessage()
@@ -220,7 +216,7 @@ namespace LightBDD.Framework.Parameters
 
         private InlineParameterDetails GetDetails()
         {
-            return new InlineParameterDetails(Expectation.Format(_formattingService), _actualText, Status, GetValidationMessage());
+            return _details ??= new InlineParameterDetails(Expectation.Format(_formattingService), _actualText, Status, GetValidationMessage());
         }
 
         /// <summary>
@@ -260,7 +256,15 @@ namespace LightBDD.Framework.Parameters
             _actual = value;
             _actualText = _formattingService.FormatValue(value);
             _result = Expectation.Verify(value, _formattingService);
+            _details = null;
             return this;
+        }
+
+        private void SetActualException(Exception e)
+        {
+            _exception = e;
+            _actualText = $"<{e.GetType().Name}>";
+            _details = null;
         }
     }
 }

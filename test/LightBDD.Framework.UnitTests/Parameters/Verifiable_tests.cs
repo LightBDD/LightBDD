@@ -187,6 +187,22 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
+        public async Task SetActualAsync_traces_progress_for_exceptions()
+        {
+            var value = 8;
+            Verifiable<int> expectation = value;
+            var publisher = new CapturingProgressPublisher();
+            ((ITraceableParameter)expectation).InitializeParameterTrace(TestResults.CreateParameterInfo("i"), publisher);
+
+            await expectation.SetActualAsync(async () => throw new InvalidOperationException("test"));
+
+            publisher.AssertLogs(
+                "InlineParameterDiscovered|Param=i|Status=NotProvided|E=equals '8'|V=",
+                "InlineParameterValidationStarting|Param=i|Status=NotProvided|E=equals '8'|V=",
+                "InlineParameterValidationFinished|Param=i|Status=Exception|E=equals '8'|V=<InvalidOperationException>");
+        }
+
+        [Test]
         public void InitializeParameterTrace_should_publish_discovery_event()
         {
             Verifiable<int> expectation = 5;

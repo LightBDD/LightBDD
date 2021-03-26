@@ -27,6 +27,7 @@ namespace LightBDD.Framework.Parameters
         private readonly IReadOnlyList<TRow> _rows;
         private readonly InputTableColumn[] _columns;
         private IValueFormattingService _formattingService = ValueFormattingServices.Current;
+        private TabularParameterDetails _details;
 
         /// <summary>
         /// Constructor creating table with specified <paramref name="columns"/> and <paramref name="rows"/>
@@ -44,9 +45,8 @@ namespace LightBDD.Framework.Parameters
             _formattingService = formattingService;
         }
 
-        //TODO: optimize
         IParameterDetails IComplexParameter.Details => GetDetails();
-        private TabularParameterDetails GetDetails() => new TabularParameterDetails(GetColumns(), GetRows());
+        private TabularParameterDetails GetDetails() => _details ??= new TabularParameterDetails(GetColumns(), GetRows());
 
         private IEnumerable<ITabularParameterRow> GetRows()
         {
