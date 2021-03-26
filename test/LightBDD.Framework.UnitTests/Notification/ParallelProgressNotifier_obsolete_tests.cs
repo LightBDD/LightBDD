@@ -59,7 +59,7 @@ namespace LightBDD.Framework.UnitTests.Notification
             var stepResult = Fake.Object<TestResults.TestStepResult>();
             stepResult.Parameters = new IParameterResult[]
             {
-                new TestResults.TestParameterResult("table",
+                new TestResults.TestParameterResult("table","table",stepInfo,
                     TestResults.CreateTabularParameterDetails(ParameterVerificationStatus.Failure)
                         .WithKeyColumns("Key")
                         .WithValueColumns("Value1", "Value2")
@@ -84,8 +84,7 @@ namespace LightBDD.Framework.UnitTests.Notification
                             TestResults.CreateValueResult("<null>", "XXX",
                                 ParameterVerificationStatus.Failure),
                             TestResults.CreateValueResult("<null>", "YYY",
-                                ParameterVerificationStatus.Failure))
-                )
+                                ParameterVerificationStatus.Failure)))
             };
 
             var scenarioResult = Fake.Object<TestResults.TestScenarioResult>();

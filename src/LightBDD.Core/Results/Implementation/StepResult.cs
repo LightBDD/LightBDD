@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
@@ -15,16 +16,18 @@ namespace LightBDD.Core.Results.Implementation
         private readonly ConcurrentQueue<string> _comments = new ConcurrentQueue<string>();
         private IEnumerable<IStepResult> _subSteps = Array.Empty<IStepResult>();
 
-        public StepResult(StepInfo info)
+        public StepResult(StepInfo info, MethodArgument[] parameters)
         {
             _info = info;
+            Parameters = parameters;
+            _info.UpdateName(parameters);
         }
 
         public IStepInfo Info => _info;
         public ExecutionStatus Status { get; private set; }
         public string StatusDetails { get; private set; }
         public Exception ExecutionException { get; private set; }
-        public IReadOnlyList<IParameterResult> Parameters { get; private set; } = Array.Empty<IParameterResult>();
+        public IReadOnlyList<IParameterResult> Parameters { get; }
         public ExecutionTime ExecutionTime { get; private set; }
         public IEnumerable<string> Comments => _comments;
         public IEnumerable<IStepResult> GetSubSteps()
@@ -42,11 +45,6 @@ namespace LightBDD.Core.Results.Implementation
         public void UpdateException(Exception exception)
         {
             ExecutionException = exception;
-        }
-
-        public void UpdateName(INameParameterInfo[] parameters)
-        {
-            _info.UpdateName(parameters);
         }
 
         public void SetExecutionTime(ExecutionTime executionTime)
@@ -76,11 +74,6 @@ namespace LightBDD.Core.Results.Implementation
         public void IncludeSubStepDetails()
         {
             StatusDetails = GetSubSteps().MergeStatusDetails(StatusDetails);
-        }
-
-        public void SetParameters(IEnumerable<IParameterResult> parameters)
-        {
-            Parameters = parameters.ToArray();
         }
     }
 }

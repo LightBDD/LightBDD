@@ -160,7 +160,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_collect_results_for_scenarios_causing_formatting_failures()
         {
-            var expectedErrorMessage = "Unable to format 'param' parameter of step '1/1 Method with wrong formatter param \"<?>\"': Input string was not in a correct format.";
+            var expectedErrorMessage = "Unable to format 'param' parameter: Input string was not in a correct format.";
 
             var ex = Assert.Throws<InvalidOperationException>(() => _runner.Test().TestScenario(TestStep.CreateAsync(Method_with_wrong_formatter_param, () => "abc")));
             Assert.That(ex.Message, Is.EqualTo(expectedErrorMessage));

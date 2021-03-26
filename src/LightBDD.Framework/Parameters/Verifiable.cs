@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Runtime.ExceptionServices;
+using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Metadata;
+using LightBDD.Core.Notification;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Formatting.Values;
+using LightBDD.Framework.Notification.Events;
 using LightBDD.Framework.Results.Implementation;
 
 namespace LightBDD.Framework.Parameters
@@ -28,13 +31,17 @@ namespace LightBDD.Framework.Parameters
     /// </example>
     /// </summary>
     /// <typeparam name="T">Type of the expected parameter</typeparam>
-    public sealed class Verifiable<T> : IComplexParameter
+    public sealed class Verifiable<T> : IComplexParameter, ITraceableParameter
     {
         private IValueFormattingService _formattingService = ValueFormattingServices.Current;
         private string _actualText;
         private T _actual;
         private ExpectationResult _result;
         private Exception _exception;
+        private IParameterInfo _parameterInfo;
+        private IProgressPublisher _progressPublisher;
+        private int _setFlag = 0;
+        private InlineParameterDetails _details;
 
         /// <summary>
         /// Specified expectation.
@@ -91,12 +98,21 @@ namespace LightBDD.Framework.Parameters
         /// <exception cref="InvalidOperationException">Thrown when actual value is already set.</exception>
         public Verifiable<T> SetActual(T value)
         {
-            if (Status != ParameterVerificationStatus.NotProvided)
-                throw new InvalidOperationException("Actual value has been already specified");
-            _exception = null;
-            _actual = value;
-            _actualText = _formattingService.FormatValue(value);
-            _result = Expectation.Verify(value, _formattingService);
+            AcquireSetFlag();
+            try
+            {
+                NotifyStart();
+                return SetActualValue(value);
+            }
+            catch (Exception e)
+            {
+                SetActualException(e);
+            }
+            finally
+            {
+                NotifyEnd();
+            }
+
             return this;
         }
 
@@ -112,16 +128,19 @@ namespace LightBDD.Framework.Parameters
         /// <exception cref="InvalidOperationException">Thrown when actual value is already set.</exception>
         public Verifiable<T> SetActual(Func<T> valueFn)
         {
-            if (Status != ParameterVerificationStatus.NotProvided)
-                throw new InvalidOperationException("Actual value has been already specified");
+            AcquireSetFlag();
             try
             {
-                return SetActual(valueFn());
+                NotifyStart();
+                return SetActualValue(valueFn());
             }
             catch (Exception e)
             {
-                _exception = e;
-                _actualText = $"<{e.GetType().Name}>";
+                SetActualException(e);
+            }
+            finally
+            {
+                NotifyEnd();
             }
 
             return this;
@@ -139,19 +158,45 @@ namespace LightBDD.Framework.Parameters
         /// <exception cref="InvalidOperationException">Thrown when actual value is already set.</exception>
         public async Task<Verifiable<T>> SetActualAsync(Func<Task<T>> valueFn)
         {
-            if (Status != ParameterVerificationStatus.NotProvided)
-                throw new InvalidOperationException("Actual value has been already specified");
+            AcquireSetFlag();
             try
             {
-                return SetActual(await valueFn());
+                NotifyStart();
+                return SetActualValue(await valueFn());
             }
             catch (Exception e)
             {
-                _exception = e;
-                _actualText = $"<{e.GetType().Name}>";
+                SetActualException(e);
+            }
+            finally
+            {
+                NotifyEnd();
             }
 
             return this;
+        }
+
+        void ITraceableParameter.InitializeParameterTrace(IParameterInfo parameterInfo, IProgressPublisher progressPublisher)
+        {
+            _parameterInfo = parameterInfo;
+            _progressPublisher = progressPublisher;
+            _progressPublisher?.Publish(time => new InlineParameterDiscovered(time, _parameterInfo, GetDetails()));
+        }
+
+        private void NotifyStart()
+        {
+            _progressPublisher?.Publish(time => new InlineParameterValidationStarting(time, _parameterInfo, GetDetails()));
+        }
+
+        private void NotifyEnd()
+        {
+            _progressPublisher?.Publish(time => new InlineParameterValidationFinished(time, _parameterInfo, GetDetails()));
+        }
+
+        private void AcquireSetFlag()
+        {
+            if (Interlocked.Exchange(ref _setFlag, 1) == 1)
+                throw new InvalidOperationException("Actual value has been already specified or is being provided");
         }
 
         void IComplexParameter.SetValueFormattingService(IValueFormattingService formattingService)
@@ -159,7 +204,7 @@ namespace LightBDD.Framework.Parameters
             _formattingService = formattingService;
         }
 
-        IParameterDetails IComplexParameter.Details => new InlineParameterDetails(Expectation.Format(_formattingService), _actualText, Status, GetValidationMessage());
+        IParameterDetails IComplexParameter.Details => GetDetails();
 
         private string GetValidationMessage()
         {
@@ -167,6 +212,11 @@ namespace LightBDD.Framework.Parameters
                 return ToString() + ", but did not received anything";
             var message = _result.IsValid ? null : _result.Message;
             return message ?? ToString();
+        }
+
+        private InlineParameterDetails GetDetails()
+        {
+            return _details ??= new InlineParameterDetails(Expectation.Format(_formattingService), _actualText, Status, GetValidationMessage());
         }
 
         /// <summary>
@@ -198,6 +248,23 @@ namespace LightBDD.Framework.Parameters
             if (_result.IsValid)
                 return $"{_actualText}";
             return $"expected: {Expectation.Format(_formattingService)}, but got: '{_actualText}'";
+        }
+
+        private Verifiable<T> SetActualValue(T value)
+        {
+            _exception = null;
+            _actual = value;
+            _actualText = _formattingService.FormatValue(value);
+            _result = Expectation.Verify(value, _formattingService);
+            _details = null;
+            return this;
+        }
+
+        private void SetActualException(Exception e)
+        {
+            _exception = e;
+            _actualText = $"<{e.GetType().Name}>";
+            _details = null;
         }
     }
 }

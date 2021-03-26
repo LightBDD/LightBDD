@@ -5,6 +5,7 @@ using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Results;
+using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
 using LightBDD.Framework.Extensibility;
@@ -44,8 +45,13 @@ namespace LightBDD.Core.UnitTests
 
             string[] expected =
             {
+                "Feature Discovery: CoreBddRunner progress notification tests [label1, label2]: feature description",
                 "Feature Start: CoreBddRunner progress notification tests [label1, label2]: feature description",
+                "Scenario Discovery: It should notify execution progress [lab1, lab2] <category 1, category 2>",
                 "Scenario Start: It should notify execution progress [lab1, lab2] <category 1, category 2>",
+                "Step Discovery: 1/3 GIVEN step one",
+                "Step Discovery: 2/3 WHEN step two with comment",
+                "Step Discovery: 3/3 THEN step three should throw exception",
                 "Step Start: 1/3 GIVEN step one",
                 "Step Finish: 1/3 GIVEN step one | Status:Passed | ExecutionTimePresent:True | Details:",
                 "Step Start: 2/3 WHEN step two with comment",
@@ -78,11 +84,21 @@ namespace LightBDD.Core.UnitTests
 
             string[] expected =
             {
+                "Feature Discovery: CoreBddRunner progress notification tests [label1, label2]: feature description",
                 "Feature Start: CoreBddRunner progress notification tests [label1, label2]: feature description",
+                "Scenario Discovery: It should notify execution progress of composite steps [lab1, lab2] <category 1, category 2>",
                 "Scenario Start: It should notify execution progress of composite steps [lab1, lab2] <category 1, category 2>",
+
+                "Step Discovery: 1/1 Composite group",
                 "Step Start: 1/1 Composite group",
+
+                "Step Discovery: 1.1/1.2 Passing step group with comment",
+                "Step Discovery: 1.2/1.2 Bypassed step group",
                 "Step Start: 1.1/1.2 Passing step group with comment",
 
+                "Step Discovery: 1.1.1/1.1.3 GIVEN step one",
+                "Step Discovery: 1.1.2/1.1.3 WHEN step two with comment",
+                "Step Discovery: 1.1.3/1.1.3 THEN step three",
                 "Step Start: 1.1.1/1.1.3 GIVEN step one",
                 "Step Finish: 1.1.1/1.1.3 GIVEN step one | Status:Passed | ExecutionTimePresent:True | Details:",
 
@@ -96,6 +112,9 @@ namespace LightBDD.Core.UnitTests
                 "Step Finish: 1.1/1.2 Passing step group with comment | Status:Passed | ExecutionTimePresent:True | Details:",
 
                 "Step Start: 1.2/1.2 Bypassed step group",
+                "Step Discovery: 1.2.1/1.2.3 GIVEN step one",
+                "Step Discovery: 1.2.2/1.2.3 WHEN step two is bypassed",
+                "Step Discovery: 1.2.3/1.2.3 THEN step three",
 
                 "Step Start: 1.2.1/1.2.3 GIVEN step one",
                 "Step Finish: 1.2.1/1.2.3 GIVEN step one | Status:Passed | ExecutionTimePresent:True | Details:",
@@ -140,8 +159,14 @@ namespace LightBDD.Core.UnitTests
 
             string[] expected =
             {
+                "Feature Discovery: CoreBddRunner progress notification tests [label1, label2]: feature description",
                 "Feature Start: CoreBddRunner progress notification tests [label1, label2]: feature description",
+                "Scenario Discovery: It should notify execution progress for parameterized steps [lab1, lab2] <category 1, category 2>",
                 "Scenario Start: It should notify execution progress for parameterized steps [lab1, lab2] <category 1, category 2>",
+                "Step Discovery: 1/3 GIVEN step with parameter \"<?>\"",
+                "Step Discovery: 2/3 WHEN step with parameter \"<?>\"",
+                "Step Discovery: 3/3 THEN step with parameter \"<?>\"",
+                "Parameter Evaluated: 'parameter'='abc' NotApplicable:",
                 "Step Start: 1/3 GIVEN step with parameter \"abc\"",
                 "Step Finish: 1/3 GIVEN step with parameter \"abc\" | Status:Passed | ExecutionTimePresent:True | Details:",
                 "Scenario Finish: It should notify execution progress for parameterized steps [lab1, lab2] <category 1, category 2> | Status:Failed | ExecutionTimePresent:True | Steps:3 | Details:Step 2: parameter exception",
@@ -185,17 +210,23 @@ namespace LightBDD.Core.UnitTests
         public void It_should_wire_steps_scenario_and_feature_infos()
         {
             IFeatureInfo featureInfo = null;
+            IFeatureInfo featureInfoDiscovered = null;
             IFeatureResult featureResult = null;
             IScenarioInfo scenarioInfo = null;
+            IScenarioInfo scenarioInfoDiscovered = null;
             IScenarioResult scenarioResult = null;
             var stepInfos = new List<IStepInfo>();
+            var discoveredStepInfos = new Dictionary<Guid, IStepInfo>();
             var stepResults = new List<IStepResult>();
             var progressNotifier = new Mock<IProgressNotifier>();
 
+            CaptureEvent(progressNotifier, (FeatureDiscovered x) => featureInfoDiscovered = x.Feature);
             CaptureEvent(progressNotifier, (FeatureStarting x) => featureInfo = x.Feature);
             CaptureEvent(progressNotifier, (FeatureFinished x) => featureResult = x.Result);
+            CaptureEvent(progressNotifier, (ScenarioDiscovered x) => scenarioInfoDiscovered = x.Scenario);
             CaptureEvent(progressNotifier, (ScenarioStarting x) => scenarioInfo = x.Scenario);
             CaptureEvent(progressNotifier, (ScenarioFinished x) => scenarioResult = x.Result);
+            CaptureEvent(progressNotifier, (StepDiscovered x) => discoveredStepInfos.Add(x.Step.RuntimeId, x.Step));
             CaptureEvent(progressNotifier, (StepStarting x) => stepInfos.Add(x.Step));
             CaptureEvent(progressNotifier, (StepFinished x) => stepResults.Add(x.Result));
 
@@ -212,11 +243,13 @@ namespace LightBDD.Core.UnitTests
             Assert.That(featureInfo, Is.Not.Null);
             Assert.That(featureInfo.RuntimeId, Is.Not.EqualTo(Guid.Empty), "Feature should have unique RuntimeId");
             Assert.That(featureResult.Info, Is.SameAs(featureInfo));
+            Assert.That(featureInfoDiscovered, Is.SameAs(featureInfo));
 
             Assert.That(scenarioInfo, Is.Not.Null);
             Assert.That(scenarioInfo.RuntimeId, Is.Not.EqualTo(Guid.Empty), "Scenario should have unique RuntimeId");
             Assert.That(scenarioResult.Info, Is.SameAs(scenarioInfo));
             Assert.That(scenarioInfo.Parent, Is.SameAs(featureInfo));
+            Assert.That(scenarioInfoDiscovered, Is.SameAs(scenarioInfo));
 
             Assert.That(stepInfos.Select(x => x.RuntimeId).Distinct().Count(), Is.EqualTo(9), "Each step should have unique RuntimeId");
             Assert.That(stepInfos[0].Parent, Is.SameAs(scenarioInfo));
@@ -238,6 +271,9 @@ namespace LightBDD.Core.UnitTests
             Assert.That(stepResults[6].Info, Is.SameAs(stepInfos[8]), "1.2.3");
             Assert.That(stepResults[7].Info, Is.SameAs(stepInfos[5]), "1.2");
             Assert.That(stepResults[8].Info, Is.SameAs(stepInfos[0]), "1");
+
+            foreach (var stepInfo in stepInfos)
+                Assert.That(stepInfo, Is.SameAs(discoveredStepInfos[stepInfo.RuntimeId]));
         }
 
 #pragma warning disable 618
@@ -298,15 +334,26 @@ namespace LightBDD.Core.UnitTests
                 return $"{step.GroupPrefix}{step.Number}/{step.GroupPrefix}{step.Total} {step.Name}";
             }
 
+            private string FormatParameter(IParameterResult r)
+            {
+                return $"\'{r.Name}\'=\'{r.FormattedValue}\' {r.Details.VerificationStatus}:{r.Details.VerificationMessage}";
+            }
+
             public void Notify(ProgressEvent e)
             {
                 switch (e)
                 {
+                    case FeatureDiscovered featureDiscovered:
+                        _notifications.Add($"Feature Discovery: {FormatFeature(featureDiscovered.Feature)}");
+                        break;
                     case FeatureFinished featureFinished:
                         NotifyFeatureFinished(featureFinished.Result);
                         break;
                     case FeatureStarting featureStarting:
                         NotifyFeatureStart(featureStarting.Feature);
+                        break;
+                    case ScenarioDiscovered scenarioDiscovered:
+                        _notifications.Add($"Scenario Discovery: {FormatScenario(scenarioDiscovered.Scenario)}");
                         break;
                     case ScenarioFinished scenarioFinished:
                         NotifyScenarioFinished(scenarioFinished.Result);
@@ -317,11 +364,17 @@ namespace LightBDD.Core.UnitTests
                     case StepCommented stepCommented:
                         NotifyStepComment(stepCommented.Step, stepCommented.Comment);
                         break;
+                    case StepDiscovered stepDiscovered:
+                        _notifications.Add($"Step Discovery: {FormatStep(stepDiscovered.Step)}");
+                        break;
                     case StepFinished stepFinished:
                         NotifyStepFinished(stepFinished.Result);
                         break;
                     case StepStarting stepStarting:
                         NotifyStepStart(stepStarting.Step);
+                        break;
+                    case ParameterEvaluated parameterEvaluated:
+                        _notifications.Add($"Parameter Evaluated: {FormatParameter(parameterEvaluated.Result)}");
                         break;
                 }
             }

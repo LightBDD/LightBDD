@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting.Values;
+using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Reporting;
+using LightBDD.Core.Results;
+using LightBDD.Core.Results.Implementation;
 
 namespace LightBDD.Core.Execution.Coordination
 {
@@ -18,7 +22,10 @@ namespace LightBDD.Core.Execution.Coordination
         /// Feature coordinator instance.
         /// </summary>
         protected static FeatureCoordinator Instance { get; private set; }
-        private readonly IFeatureAggregator _featureAggregator;
+        private readonly FeatureReportGenerator _reportGenerator;
+        private readonly IntegrationContext _context;
+        private EventTime _startTime;
+
         /// <summary>
         /// Runner factory.
         /// </summary>
@@ -27,15 +34,16 @@ namespace LightBDD.Core.Execution.Coordination
         /// Returns <c>true</c> if already disposed, otherwise <c>false</c>.
         /// </summary>
         public bool IsDisposed { get; private set; }
+
         /// <summary>
         /// Returns <see cref="LightBddConfiguration"/> configuration used for instantiating <see cref="FeatureCoordinator"/>.
         /// </summary>
-        public LightBddConfiguration Configuration { get; }
+        public LightBddConfiguration Configuration => _context.Configuration;
 
         /// <summary>
         /// Returns <see cref="IValueFormattingService"/> configured in this coordinator.
         /// </summary>
-        public IValueFormattingService ValueFormattingService { get; }
+        public IValueFormattingService ValueFormattingService => _context.ValueFormattingService;
 
         /// <summary>
         /// Returns instance of installed <see cref="FeatureCoordinator"/>.
@@ -76,17 +84,34 @@ namespace LightBDD.Core.Execution.Coordination
                 if (Instance != null)
                     throw new InvalidOperationException($"FeatureCoordinator of {Instance.GetType()} type is already installed");
                 Instance = coordinator;
+                Instance.NotifyStart();
             }
         }
 
-        private void UninstallSelf()
+        private void NotifyStart()
+        {
+            _startTime = _context.ExecutionTimer.GetTime();
+            _context.ProgressNotifier.Notify(new TestExecutionStarting(_startTime));
+        }
+
+        private void NotifyStop(IReadOnlyList<IFeatureResult> features)
+        {
+            var endTime = _context.ExecutionTimer.GetTime();
+            var executionTime = endTime.GetExecutionTime(_startTime);
+            _context.ProgressNotifier.Notify(new TestExecutionFinished(endTime, new TestExecutionResult(executionTime, features)));
+        }
+
+        private bool UninstallSelf()
         {
             if (Instance != this)
-                return;
+                return false;
             lock (Sync)
             {
-                if (Instance == this)
-                    Instance = null;
+                if (Instance != this)
+                    return false;
+
+                Instance = null;
+                return true;
             }
         }
 
@@ -96,10 +121,9 @@ namespace LightBDD.Core.Execution.Coordination
         /// <param name="context">Integration context.</param>
         protected FeatureCoordinator(IntegrationContext context)
         {
-            Configuration = context.Configuration;
-            _featureAggregator = new FeatureReportGenerator(Configuration.ReportWritersConfiguration().ToArray());
-            RunnerRepository = new FeatureRunnerRepository(context);
-            ValueFormattingService = context.ValueFormattingService;
+            _context = context;
+            _reportGenerator = new FeatureReportGenerator(Configuration.ReportWritersConfiguration().ToArray());
+            RunnerRepository = new FeatureRunnerRepository(_context);
         }
 
         /// <summary>
@@ -116,19 +140,30 @@ namespace LightBDD.Core.Execution.Coordination
                 return;
 
             IsDisposed = true;
-            UninstallSelf();
-            CollectFeatureResults();
-            _featureAggregator.Dispose();
+
+            if (UninstallSelf())
+            {
+                var features = CollectFeatureResults();
+                NotifyStop(features);
+                _reportGenerator.Dispose();
+            }
+
             RunnerRepository.Dispose();
         }
 
-        private void CollectFeatureResults()
+        private IReadOnlyList<IFeatureResult> CollectFeatureResults()
         {
+            var results = new List<IFeatureResult>();
             foreach (var runner in RunnerRepository.AllRunners)
             {
                 runner.Dispose();
-                _featureAggregator.Aggregate(runner.GetFeatureResult());
+                //TODO: refactor aggregator
+                var featureResult = runner.GetFeatureResult();
+                _reportGenerator.Aggregate(featureResult);
+                results.Add(featureResult);
             }
+
+            return results;
         }
     }
 }
