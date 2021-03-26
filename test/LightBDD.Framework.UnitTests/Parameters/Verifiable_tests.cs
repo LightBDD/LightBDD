@@ -194,7 +194,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             var publisher = new CapturingProgressPublisher();
             ((ITraceableParameter)expectation).InitializeParameterTrace(TestResults.CreateParameterInfo("i"), publisher);
 
-            await expectation.SetActualAsync(async () => throw new InvalidOperationException("test"));
+            await expectation.SetActualAsync(() => throw new InvalidOperationException("test"));
 
             publisher.AssertLogs(
                 "InlineParameterDiscovered|Param=i|Status=NotProvided|E=equals '8'|V=",
