@@ -8,6 +8,7 @@ Version [next]
 + #225 (Framework)(New) Introduced ProgressNotifierConfiguration to configure IProgressNotifier instances and updated DefaultProgressNotifier, NoProgressNotifier to implement IProgressNotifier and added ParallelProgressNotifierProvider.CreateProgressNotifier() method
 + #225 (LightBDD.XUnit2/LightBDD.NUnit3/LightBDD.MsTest2/LightBDD.Fixie2)(Change) Updated projects to use IProgressNotifier configuration
 + #225 (Core/Framework)(Change) Obsoleted IScenarioProgressNotifier, IFeatureProgressNotifier, DelegatingScenarioProgressNotifier, DelegatingFeatureProgressNotifier and all methods using them
++ #231 (Framework)(New) Updated ResourcePool with constructor accepting async resource factory method
 
 Version 3.3.0
 ----------------------------------------
