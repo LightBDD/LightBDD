@@ -1,5 +1,8 @@
 ﻿namespace LightBDD.Notification.Jsonl.Models
 {
+    /// <summary>
+    /// Parameter verification status.
+    /// </summary>
     public enum ParameterVerificationStatus
     {
         /// <summary>

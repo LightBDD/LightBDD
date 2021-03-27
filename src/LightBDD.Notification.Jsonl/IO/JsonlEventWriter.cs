@@ -7,6 +7,9 @@ using LightBDD.Notification.Jsonl.Events;
 
 namespace LightBDD.Notification.Jsonl.IO
 {
+    /// <summary>
+    /// Jsonl event writer.
+    /// </summary>
     public class JsonlEventWriter
     {
         private static readonly byte[] LineSeparator = Encoding.UTF8.GetBytes(",\n");
@@ -17,12 +20,18 @@ namespace LightBDD.Notification.Jsonl.IO
             WriteIndented = false
         };
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public JsonlEventWriter(Stream utf8Stream)
         {
             _utf8Stream = utf8Stream;
         }
 
-        public async Task Write(Event e, CancellationToken cancellationToken = default)
+        /// <summary>
+        /// Writes event to the stream.
+        /// </summary>
+        public async Task Write(ProgressEvent e, CancellationToken cancellationToken = default)
         {
             await JsonSerializer.SerializeAsync(_utf8Stream, e, e.GetType(), JsonlOptions, cancellationToken);
             await _utf8Stream.WriteAsync(LineSeparator, 0, LineSeparator.Length, cancellationToken);

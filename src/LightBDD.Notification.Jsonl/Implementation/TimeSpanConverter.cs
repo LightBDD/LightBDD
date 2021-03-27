@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace LightBDD.Notification.Jsonl.Converters
+namespace LightBDD.Notification.Jsonl.Implementation
 {
     internal class TimeSpanConverter : JsonConverter<TimeSpan>
     {

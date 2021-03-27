@@ -4,11 +4,11 @@ using LightBDD.Core.Results;
 
 namespace LightBDD.Reporting.Progressive
 {
-    public class ProgressiveReportWritter : IReportWriter
+    internal class ProgressiveReportWriter : IReportWriter
     {
         public JsonlProgressNotifier Notifier { get; }
 
-        public ProgressiveReportWritter()
+        public ProgressiveReportWriter()
         {
             Notifier = new JsonlProgressNotifier(File.OpenWrite("output.jsonl"));
         }

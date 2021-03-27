@@ -10,6 +10,9 @@ using LightBDD.Reporting.Progressive.Mappers;
 
 namespace LightBDD.Reporting.Progressive
 {
+    /// <summary>
+    /// Jsonl progress notifier.
+    /// </summary>
     public class JsonlProgressNotifier : IProgressNotifier, IDisposable
     {
         private readonly ConcurrentQueue<ProgressEvent> _queue = new ConcurrentQueue<ProgressEvent>();
@@ -18,6 +21,9 @@ namespace LightBDD.Reporting.Progressive
         private JsonlEventWriter _writer;
         private readonly Task _writingTask;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public JsonlProgressNotifier(Stream outputUtf8Stream)
         {
             _writer = new JsonlEventWriter(outputUtf8Stream);
@@ -111,12 +117,14 @@ namespace LightBDD.Reporting.Progressive
             await _writer.Write(e.ToFeatureStarting());
         }
 
+        /// <inheritdoc />
         public void Notify(ProgressEvent e)
         {
             _queue.Enqueue(e);
             _sem.Release();
         }
 
+        /// <inheritdoc />
         public void Dispose()
         {
             _cts.Cancel();

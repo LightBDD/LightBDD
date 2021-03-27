@@ -1,50 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification.Events;
-using LightBDD.Notification.Jsonl.Events;
 using LightBDD.Notification.Jsonl.Models;
-using FeatureFinished = LightBDD.Core.Notification.Events.FeatureFinished;
-using FeatureStarting = LightBDD.Core.Notification.Events.FeatureStarting;
+using LightBDD.Notification.Jsonl.Events;
 using ParameterVerificationStatus = LightBDD.Notification.Jsonl.Models.ParameterVerificationStatus;
-using ScenarioFinished = LightBDD.Core.Notification.Events.ScenarioFinished;
-using ScenarioStarting = LightBDD.Core.Notification.Events.ScenarioStarting;
-using StepCommented = LightBDD.Core.Notification.Events.StepCommented;
-using StepFinished = LightBDD.Core.Notification.Events.StepFinished;
-using StepStarting = LightBDD.Core.Notification.Events.StepStarting;
 
 namespace LightBDD.Reporting.Progressive.Mappers
 {
     internal static class EventMapper
     {
-        public static FeatureDiscovered ToFeatureDiscovered(this FeatureStarting src)
+        public static FeatureDiscoveredEvent ToFeatureDiscovered(this FeatureStarting src)
         {
-            return new FeatureDiscovered
+            return new FeatureDiscoveredEvent
             {
                 Description = src.Feature.Description,
                 Time = src.Time.Offset,
                 Name = src.Feature.Name.ToJsonlModel(),
-                Id = src.Feature.RuntimeId,
+                FeatureId = src.Feature.RuntimeId,
                 Labels = src.Feature.Labels.ToArray()
             };
         }
 
-        public static Notification.Jsonl.Events.FeatureStarting ToFeatureStarting(this FeatureStarting src)
+        public static FeatureStartingEvent ToFeatureStarting(this FeatureStarting src)
         {
-            return new Notification.Jsonl.Events.FeatureStarting
+            return new FeatureStartingEvent
             {
                 Time = src.Time.Offset,
-                Id = src.Feature.RuntimeId
+                FeatureId = src.Feature.RuntimeId
             };
         }
 
-        public static Notification.Jsonl.Events.FeatureFinished ToFeatureFinished(FeatureFinished e)
+        public static FeatureFinishedEvent ToFeatureFinished(FeatureFinished e)
         {
-            return new Notification.Jsonl.Events.FeatureFinished
+            return new FeatureFinishedEvent
             {
-                Id = e.Result.Info.RuntimeId,
+                FeatureId = e.Result.Info.RuntimeId,
                 Time = e.Time.Offset
             };
         }
@@ -91,21 +82,21 @@ namespace LightBDD.Reporting.Progressive.Mappers
             };
         }
 
-        public static Notification.Jsonl.Events.ScenarioStarting ToScenarioStarting(ScenarioStarting e)
+        public static ScenarioStartingEvent ToScenarioStarting(ScenarioStarting e)
         {
-            return new Notification.Jsonl.Events.ScenarioStarting
+            return new ScenarioStartingEvent
             {
-                Id = e.Scenario.RuntimeId,
+                ScenarioId = e.Scenario.RuntimeId,
                 Time = e.Time.Offset
             };
         }
 
-        public static ScenarioDiscovered ToScenarioDiscovered(ScenarioStarting e)
+        public static ScenarioDiscoveredEvent ToScenarioDiscovered(ScenarioStarting e)
         {
-            return new ScenarioDiscovered
+            return new ScenarioDiscoveredEvent
             {
                 Time = e.Time.Offset,
-                Id = e.Scenario.RuntimeId,
+                ScenarioId = e.Scenario.RuntimeId,
                 Categories = e.Scenario.Categories.ToArray(),
                 Labels = e.Scenario.Labels.ToArray(),
                 Name = e.Scenario.Name.ToJsonlModel(),
@@ -113,20 +104,20 @@ namespace LightBDD.Reporting.Progressive.Mappers
             };
         }
 
-        public static Notification.Jsonl.Events.ScenarioFinished ToScenarioFinished(ScenarioFinished e)
+        public static ScenarioFinishedEvent ToScenarioFinished(ScenarioFinished e)
         {
-            return new Notification.Jsonl.Events.ScenarioFinished
+            return new ScenarioFinishedEvent
             {
                 Time = e.Time.Offset,
-                Id = e.Result.Info.RuntimeId,
+                ScenarioId = e.Result.Info.RuntimeId,
                 Status = (ExecutionStatus)e.Result.Status,
                 StatusDetails = e.Result.StatusDetails
             };
         }
 
-        public static Notification.Jsonl.Events.StepCommented ToStepCommented(StepCommented e)
+        public static StepCommentedEvent ToStepCommented(StepCommented e)
         {
-            return new Notification.Jsonl.Events.StepCommented
+            return new StepCommentedEvent
             {
                 Comment = e.Comment,
                 Time = e.Time.Offset,
@@ -134,24 +125,24 @@ namespace LightBDD.Reporting.Progressive.Mappers
             };
         }
 
-        public static Notification.Jsonl.Events.StepFinished ToStepFinished(StepFinished e)
+        public static StepFinishedEvent ToStepFinished(StepFinished e)
         {
-            return new Notification.Jsonl.Events.StepFinished
+            return new StepFinishedEvent
             {
                 Time = e.Time.Offset,
-                Id = e.Result.Info.RuntimeId,
+                StepId = e.Result.Info.RuntimeId,
                 Status = (ExecutionStatus)e.Result.Status,
                 StatusDetails = e.Result.StatusDetails,
-                ExecutionException = e.Result.ExecutionException.ToJsonlModel()
+                Exception = e.Result.ExecutionException.ToJsonlModel()
             };
         }
 
-        public static StepDiscovered ToStepDiscovered(StepStarting e)
+        public static StepDiscoveredEvent ToStepDiscovered(StepStarting e)
         {
-            return new StepDiscovered
+            return new StepDiscoveredEvent
             {
                 Time = e.Time.Offset,
-                Id = e.Step.RuntimeId,
+                StepId = e.Step.RuntimeId,
                 GroupPrefix = e.Step.GroupPrefix,
                 Name = e.Step.Name.ToJsonlModel(),
                 ParentId = e.Step.Parent.RuntimeId,
@@ -159,11 +150,11 @@ namespace LightBDD.Reporting.Progressive.Mappers
             };
         }
 
-        public static Notification.Jsonl.Events.StepStarting ToStepStarting(StepStarting e)
+        public static StepStartingEvent ToStepStarting(StepStarting e)
         {
-            return new Notification.Jsonl.Events.StepStarting
+            return new StepStartingEvent
             {
-                Id = e.Step.RuntimeId,
+                StepId = e.Step.RuntimeId,
                 Time = e.Time.Offset
             };
         }

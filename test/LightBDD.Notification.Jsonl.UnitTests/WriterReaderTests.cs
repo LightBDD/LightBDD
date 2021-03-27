@@ -18,14 +18,14 @@ namespace LightBDD.Notification.Jsonl.UnitTests
         [Test]
         public async Task Reader_should_reconstruct_the_event_stream()
         {
-            var e1 = RandomValue.Object<ExecutionStarting>();
-            var e2 = RandomValue.Object<ExecutionFinished>();
+            var e1 = RandomValue.Object<ExecutionStartingEvent>();
+            var e2 = RandomValue.Object<ExecutionFinishedEvent>();
             var mem = await WriteEvents(e1, e2);
 
             var reader = new JsonlEventReader(mem);
             var actualEvents = await reader.ReadAll().ToArrayAsync();
 
-            actualEvents.ShouldBeEquivalentTo(new Event[] { e1, e2 });
+            actualEvents.ShouldBeEquivalentTo(new ProgressEvent[] { e1, e2 });
         }
 
         [Test]
@@ -42,9 +42,9 @@ namespace LightBDD.Notification.Jsonl.UnitTests
             actualEvents.Select(e => e.GetType()).ToArray()
                 .ShouldBeEquivalentTo(new[]
                 {
-                    typeof(ExecutionStarting),
-                    typeof(Unknown),
-                    typeof(ExecutionFinished)
+                    typeof(ExecutionStartingEvent),
+                    typeof(UnknownEvent),
+                    typeof(ExecutionFinishedEvent)
                 });
             actualEvents[1].TypeCode.ShouldBe("something");
         }
@@ -61,10 +61,10 @@ namespace LightBDD.Notification.Jsonl.UnitTests
             actualEvents.Single().ShouldBeEquivalentTo(e);
         }
 
-        private static IEnumerable<Type> GetAllEventTypes() => typeof(Event).Assembly.GetTypes().Where(t =>
-            typeof(Event).IsAssignableFrom(t) && t != typeof(Event) && t != typeof(Unknown));
+        private static IEnumerable<Type> GetAllEventTypes() => typeof(ProgressEvent).Assembly.GetTypes().Where(t =>
+            typeof(ProgressEvent).IsAssignableFrom(t) && t != typeof(ProgressEvent) && t != typeof(UnknownEvent));
 
-        private async Task<MemoryStream> WriteEvents(params Event[] events)
+        private async Task<MemoryStream> WriteEvents(params ProgressEvent[] events)
         {
             var mem = new MemoryStream();
             var writer = new JsonlEventWriter(mem);
@@ -78,11 +78,11 @@ namespace LightBDD.Notification.Jsonl.UnitTests
             return mem;
         }
 
-        private static Event CreateEvent(Type eventType)
+        private static ProgressEvent CreateEvent(Type eventType)
         {
             Func<RandomValueSettings, object> fn = RandomValue.Object<object>;
             var genericMethod = fn.Method.GetGenericMethodDefinition().MakeGenericMethod(eventType);
-            var e = (Event)genericMethod.Invoke(null, new object[] { new RandomValueSettings(2) });
+            var e = (ProgressEvent)genericMethod.Invoke(null, new object[] { new RandomValueSettings(2) });
             return e;
         }
     }

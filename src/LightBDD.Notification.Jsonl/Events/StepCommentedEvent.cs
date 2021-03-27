@@ -3,10 +3,20 @@ using System.Text.Json.Serialization;
 
 namespace LightBDD.Notification.Jsonl.Events
 {
-    public sealed class StepCommented : Event
+    /// <summary>
+    /// Step commented event.
+    /// </summary>
+    public sealed class StepCommentedEvent : ProgressEvent
     {
+        /// <summary>
+        /// Step Id.
+        /// </summary>
         [JsonPropertyName("i")]
         public Guid StepId { get; set; }
+
+        /// <summary>
+        /// Comment.
+        /// </summary>
         [JsonPropertyName("c")]
         public string Comment { get; set; }
     }
