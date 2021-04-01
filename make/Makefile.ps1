@@ -30,11 +30,7 @@ Define-Step -Name 'Build' -Target 'all,build' -Body {
 }
 
 Define-Step -Name 'Tests' -Target 'all,test' -Body {
-    . (require 'psmake.mod.testing')
-
-    $tests = Define-DotnetTests -TestProject "*.UnitTests.csproj"
-    $tests += Define-DotnetTests -TestProject "*.AcceptanceTests.csproj"
-    $tests | Run-Tests
+    call dotnet test --nologo --no-build --configuration Release
 }
 
 Define-Step -Name 'Pack' -Target 'all,pack' -Body {
