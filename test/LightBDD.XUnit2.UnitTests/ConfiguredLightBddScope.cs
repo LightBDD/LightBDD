@@ -12,7 +12,12 @@ namespace LightBDD.XUnit2.UnitTests
         public static readonly ConcurrentQueue<string> CapturedNotifications = new ConcurrentQueue<string>();
         protected override void OnConfigure(LightBddConfiguration configuration)
         {
-            configuration.ProgressNotifierConfiguration().Append(new DefaultProgressNotifier(x => CapturedNotifications.Enqueue(x)));
+            configuration.ReportWritersConfiguration()
+                .Clear();
+
+            configuration.ProgressNotifierConfiguration()
+                .Clear()
+                .Append(new DefaultProgressNotifier(x => CapturedNotifications.Enqueue(x)));
         }
     }
 }

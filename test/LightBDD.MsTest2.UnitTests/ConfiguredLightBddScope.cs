@@ -22,8 +22,12 @@ namespace LightBDD.MsTest2.UnitTests
 
         private static void OnConfigure(LightBddConfiguration configuration)
         {
-            configuration
-                .ProgressNotifierConfiguration().Append(new DefaultProgressNotifier(x => CapturedNotifications.Enqueue(x)));
+            configuration.ReportWritersConfiguration()
+                .Clear();
+
+            configuration.ProgressNotifierConfiguration()
+                .Clear()
+                .Append(new DefaultProgressNotifier(x => CapturedNotifications.Enqueue(x)));
         }
     }
 }
