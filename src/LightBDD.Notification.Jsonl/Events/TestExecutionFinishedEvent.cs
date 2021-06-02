@@ -3,7 +3,7 @@
     /// <summary>
     /// Test execution finished event.
     /// </summary>
-    public sealed class ExecutionFinishedEvent : ProgressEvent
+    public sealed class TestExecutionFinishedEvent : NotificationEvent
     {
     }
 }

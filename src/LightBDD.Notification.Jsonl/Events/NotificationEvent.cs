@@ -5,14 +5,14 @@ using LightBDD.Notification.Jsonl.Implementation;
 namespace LightBDD.Notification.Jsonl.Events
 {
     /// <summary>
-    /// Progress event.
+    /// Notification event.
     /// </summary>
-    public abstract class ProgressEvent
+    public abstract class NotificationEvent
     {
         /// <summary>
         /// Constructor.
         /// </summary>
-        protected ProgressEvent(string typeCode = null)
+        protected NotificationEvent(string typeCode = null)
         {
             TypeCode = typeCode ?? EventMapper.GetCode(GetType());
         }

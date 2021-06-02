@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification.Events;
@@ -10,7 +11,56 @@ namespace LightBDD.Reporting.Progressive.Mappers
 {
     internal static class EventMapper
     {
-        public static FeatureDiscoveredEvent ToFeatureDiscovered(this FeatureStarting src)
+        private static readonly Dictionary<Type, List<Func<ProgressEvent, NotificationEvent>>> Mappers = new Dictionary<Type, List<Func<ProgressEvent, NotificationEvent>>>();
+
+        private static void Register<TEvent>(Func<TEvent, NotificationEvent> mapFn) where TEvent : ProgressEvent
+        {
+            if (!Mappers.TryGetValue(typeof(TEvent), out var list))
+                Mappers.Add(typeof(TEvent), list = new List<Func<ProgressEvent, NotificationEvent>>());
+            list.Add(e => mapFn.Invoke((TEvent)e));
+        }
+
+        static EventMapper()
+        {
+            Register<FeatureDiscovered>(ToFeatureDiscovered);
+            Register<FeatureStarting>(ToFeatureStarting);
+            Register<FeatureFinished>(ToFeatureFinished);
+            Register<ScenarioStarting>(ToScenarioStarting);
+            Register<ScenarioDiscovered>(ToScenarioDiscovered);
+            Register<ScenarioFinished>(ToScenarioFinished);
+            Register<StepCommented>(ToStepCommented);
+            Register<StepDiscovered>(ToStepDiscovered);
+            Register<StepStarting>(ToStepStarting);
+            Register<StepFinished>(ToStepFinished);
+            Register<TestExecutionStarting>(ToTestExecutionStarting);
+            Register<TestExecutionFinished>(ToTestExecutionFinished);
+        }
+
+        private static TestExecutionFinishedEvent ToTestExecutionFinished(TestExecutionFinished src)
+        {
+            return new TestExecutionFinishedEvent
+            {
+                Time = src.Time.Offset
+            };
+        }
+
+        public static IEnumerable<NotificationEvent> Map(ProgressEvent e)
+        {
+            return Mappers.TryGetValue(e.GetType(), out var fns)
+                ? fns.Select(f => f.Invoke(e))
+                : Enumerable.Empty<NotificationEvent>();
+        }
+
+        private static TestExecutionStartingEvent ToTestExecutionStarting(TestExecutionStarting src)
+        {
+            return new TestExecutionStartingEvent
+            {
+                Start = src.Time.Start,
+                Time = src.Time.Offset
+            };
+        }
+
+        private static FeatureDiscoveredEvent ToFeatureDiscovered(this FeatureDiscovered src)
         {
             return new FeatureDiscoveredEvent
             {
@@ -22,7 +72,7 @@ namespace LightBDD.Reporting.Progressive.Mappers
             };
         }
 
-        public static FeatureStartingEvent ToFeatureStarting(this FeatureStarting src)
+        private static FeatureStartingEvent ToFeatureStarting(this FeatureStarting src)
         {
             return new FeatureStartingEvent
             {
@@ -31,7 +81,7 @@ namespace LightBDD.Reporting.Progressive.Mappers
             };
         }
 
-        public static FeatureFinishedEvent ToFeatureFinished(FeatureFinished e)
+        private static FeatureFinishedEvent ToFeatureFinished(FeatureFinished e)
         {
             return new FeatureFinishedEvent
             {
@@ -40,7 +90,7 @@ namespace LightBDD.Reporting.Progressive.Mappers
             };
         }
 
-        public static NameModel ToJsonlModel(this INameInfo info)
+        private static NameModel ToJsonlModel(this INameInfo info)
         {
             return new NameModel
             {
@@ -49,7 +99,7 @@ namespace LightBDD.Reporting.Progressive.Mappers
             };
         }
 
-        public static StepNameModel ToJsonlModel(this IStepNameInfo info)
+        private static StepNameModel ToJsonlModel(this IStepNameInfo info)
         {
             return new StepNameModel
             {
@@ -71,7 +121,7 @@ namespace LightBDD.Reporting.Progressive.Mappers
         }
         private static ExceptionModel ToJsonlModel(this Exception ex)
         {
-            if (ex == null) 
+            if (ex == null)
                 return null;
             return new ExceptionModel
             {
@@ -82,7 +132,7 @@ namespace LightBDD.Reporting.Progressive.Mappers
             };
         }
 
-        public static ScenarioStartingEvent ToScenarioStarting(ScenarioStarting e)
+        private static ScenarioStartingEvent ToScenarioStarting(ScenarioStarting e)
         {
             return new ScenarioStartingEvent
             {
@@ -91,7 +141,7 @@ namespace LightBDD.Reporting.Progressive.Mappers
             };
         }
 
-        public static ScenarioDiscoveredEvent ToScenarioDiscovered(ScenarioStarting e)
+        private static ScenarioDiscoveredEvent ToScenarioDiscovered(ScenarioDiscovered e)
         {
             return new ScenarioDiscoveredEvent
             {
@@ -104,7 +154,7 @@ namespace LightBDD.Reporting.Progressive.Mappers
             };
         }
 
-        public static ScenarioFinishedEvent ToScenarioFinished(ScenarioFinished e)
+        private static ScenarioFinishedEvent ToScenarioFinished(ScenarioFinished e)
         {
             return new ScenarioFinishedEvent
             {
@@ -115,7 +165,7 @@ namespace LightBDD.Reporting.Progressive.Mappers
             };
         }
 
-        public static StepCommentedEvent ToStepCommented(StepCommented e)
+        private static StepCommentedEvent ToStepCommented(StepCommented e)
         {
             return new StepCommentedEvent
             {
@@ -125,7 +175,7 @@ namespace LightBDD.Reporting.Progressive.Mappers
             };
         }
 
-        public static StepFinishedEvent ToStepFinished(StepFinished e)
+        private static StepFinishedEvent ToStepFinished(StepFinished e)
         {
             return new StepFinishedEvent
             {
@@ -137,7 +187,7 @@ namespace LightBDD.Reporting.Progressive.Mappers
             };
         }
 
-        public static StepDiscoveredEvent ToStepDiscovered(StepStarting e)
+        private static StepDiscoveredEvent ToStepDiscovered(StepDiscovered e)
         {
             return new StepDiscoveredEvent
             {
@@ -150,7 +200,7 @@ namespace LightBDD.Reporting.Progressive.Mappers
             };
         }
 
-        public static StepStartingEvent ToStepStarting(StepStarting e)
+        private static StepStartingEvent ToStepStarting(StepStarting e)
         {
             return new StepStartingEvent
             {

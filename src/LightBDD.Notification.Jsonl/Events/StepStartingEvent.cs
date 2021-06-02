@@ -6,7 +6,7 @@ namespace LightBDD.Notification.Jsonl.Events
     /// <summary>
     /// Step starting event.
     /// </summary>
-    public sealed class StepStartingEvent : ProgressEvent
+    public sealed class StepStartingEvent : NotificationEvent
     {
         /// <summary>
         /// Step Id.

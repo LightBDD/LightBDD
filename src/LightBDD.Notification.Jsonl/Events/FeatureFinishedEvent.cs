@@ -6,7 +6,7 @@ namespace LightBDD.Notification.Jsonl.Events
     /// <summary>
     /// Feature finished event.
     /// </summary>
-    public sealed class FeatureFinishedEvent : ProgressEvent
+    public sealed class FeatureFinishedEvent : NotificationEvent
     {
         /// <summary>
         /// Feature Id.

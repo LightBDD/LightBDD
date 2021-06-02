@@ -267,7 +267,7 @@ namespace LightBDD.UnitTests.Helpers
             public TestExecutionTime ExecutionTime { get; set; }
             ExecutionTime IStepResult.ExecutionTime => ExecutionTime?.ToMockedType();
             IEnumerable<string> IStepResult.Comments => Comments;
-            public Exception ExecutionException { get; }
+            public Exception ExecutionException { get; set; }
             IReadOnlyList<IParameterResult> IStepResult.Parameters => Parameters;
 
             public IEnumerable<IStepResult> GetSubSteps()
@@ -283,7 +283,8 @@ namespace LightBDD.UnitTests.Helpers
         public class TestStepInfo : IStepInfo
         {
             IStepNameInfo IStepInfo.Name => Name;
-            public IMetadataInfo Parent { get; set; }
+            public TestScenarioInfo Parent { get; set; }
+            IMetadataInfo IStepInfo.Parent => Parent;
             public Guid RuntimeId { get; } = Guid.Parse("11111111-1111-1111-1111-111111111111");
             public string GroupPrefix { get; set; }
             public TestStepNameInfo Name { get; set; }
@@ -315,7 +316,8 @@ namespace LightBDD.UnitTests.Helpers
             INameInfo IScenarioInfo.Name => Name;
             public Guid RuntimeId { get; } = Guid.Parse("22222222-2222-2222-2222-222222222222");
             public TestNameInfo Name { get; set; }
-            public IFeatureInfo Parent { get; set; }
+            public TestFeatureInfo Parent { get; set; }
+            IFeatureInfo IScenarioInfo.Parent => Parent;
             IEnumerable<string> IScenarioInfo.Labels => Labels;
             public string[] Labels { get; set; }
             IEnumerable<string> IScenarioInfo.Categories => Categories;
@@ -342,6 +344,14 @@ namespace LightBDD.UnitTests.Helpers
             IEnumerable<string> IFeatureInfo.Labels => Labels;
             public string[] Labels { get; set; }
             public string Description { get; set; }
+        }
+
+        public class TestExecutionResult : ITestExecutionResult
+        {
+            private TestFeatureResult[] Features { get; set; }
+
+            public ExecutionTime ExecutionTime { get; set; }
+            public IEnumerable<IFeatureResult> GetFeatures() => Features;
         }
 
         public class TestNameParameterInfo : INameParameterInfo

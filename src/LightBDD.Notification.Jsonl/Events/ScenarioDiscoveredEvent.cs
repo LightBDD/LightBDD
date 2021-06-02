@@ -7,7 +7,7 @@ namespace LightBDD.Notification.Jsonl.Events
     /// <summary>
     /// Scenario discovered event.
     /// </summary>
-    public sealed class ScenarioDiscoveredEvent : ProgressEvent
+    public sealed class ScenarioDiscoveredEvent : NotificationEvent
     {
         /// <summary>
         /// Scenario Id

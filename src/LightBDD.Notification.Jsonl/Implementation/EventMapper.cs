@@ -13,7 +13,7 @@ namespace LightBDD.Notification.Jsonl.Implementation
         static EventMapper()
         {
             CodeTypeMapping = typeof(EventMapper).Assembly.GetTypes()
-                .Where(t => !t.IsAbstract && typeof(ProgressEvent).IsAssignableFrom(t))
+                .Where(t => !t.IsAbstract && typeof(NotificationEvent).IsAssignableFrom(t))
                 .ToDictionary(ToCodeName);
             TypeCodeMapping = CodeTypeMapping.ToDictionary(p => p.Value, p => p.Key);
         }

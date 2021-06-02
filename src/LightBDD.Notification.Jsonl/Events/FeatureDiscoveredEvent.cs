@@ -7,7 +7,7 @@ namespace LightBDD.Notification.Jsonl.Events
     /// <summary>
     /// Feature discovered event.
     /// </summary>
-    public sealed class FeatureDiscoveredEvent : ProgressEvent
+    public sealed class FeatureDiscoveredEvent : NotificationEvent
     {
         /// <summary>
         /// Feature labels.

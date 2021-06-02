@@ -6,7 +6,7 @@ namespace LightBDD.Notification.Jsonl.Events
     /// <summary>
     /// Test Execution starting event.
     /// </summary>
-    public sealed class ExecutionStartingEvent : ProgressEvent
+    public sealed class TestExecutionStartingEvent : NotificationEvent
     {
         /// <summary>
         /// Start time.
