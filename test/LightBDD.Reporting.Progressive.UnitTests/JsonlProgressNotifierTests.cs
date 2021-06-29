@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Notification.Events;
+using LightBDD.Framework.Notification.Events;
 using LightBDD.Notification.Jsonl.Events;
 using LightBDD.Notification.Jsonl.IO;
 using LightBDD.Notification.Jsonl.Models;
@@ -154,6 +155,46 @@ namespace LightBDD.Reporting.Progressive.UnitTests
             e.Time.ShouldBe(Time.Offset);
             e.StepId.ShouldBe(info.RuntimeId);
             e.Comment.ShouldBe("comment");
+        }
+
+        [Test]
+        public void InlineParameterDiscovered_mapping()
+        {
+            var info = Fake.Object<TestResults.TestParameterInfo>();
+            var details = Fake.Object<TestResults.TestInlineParameterDetails>();
+            var e = ProcessEvent<InlineParameterDiscoveredEvent>(new InlineParameterDiscovered(Time, info, details));
+
+            e.Time.ShouldBe(Time.Offset);
+            e.ParameterId.ShouldBe(info.RuntimeId);
+            e.Expectation.ShouldBe(details.Expectation);
+            e.Name.ShouldBe(info.Name);
+            e.ParentId.ShouldBe(info.Owner.RuntimeId);
+        }
+
+        [Test]
+        public void InlineParameterValidationStarting_mapping()
+        {
+            var info = Fake.Object<TestResults.TestParameterInfo>();
+            var details = Fake.Object<TestResults.TestInlineParameterDetails>();
+            var e = ProcessEvent<InlineParameterValidationStartingEvent>(new InlineParameterValidationStarting(Time, info, details));
+
+            e.Time.ShouldBe(Time.Offset);
+            e.ParameterId.ShouldBe(info.RuntimeId);
+        }
+
+        [Test]
+        public void InlineParameterValidationFinished_mapping()
+        {
+            var info = Fake.Object<TestResults.TestParameterInfo>();
+            var details = Fake.Object<TestResults.TestInlineParameterDetails>();
+            var e = ProcessEvent<InlineParameterValidationFinishedEvent>(new InlineParameterValidationFinished(Time, info, details));
+
+            e.Time.ShouldBe(Time.Offset);
+            e.ParameterId.ShouldBe(info.RuntimeId);
+            e.Expectation.ShouldBe(details.Expectation);
+            e.Value.ShouldBe(details.Value);
+            e.VerificationStatus.ShouldBe((ParameterVerificationStatus)details.VerificationStatus);
+            e.VerificationMessage.ShouldBe(details.VerificationMessage);
         }
 
         private void AssertException(ExceptionModel actual, Exception expected)

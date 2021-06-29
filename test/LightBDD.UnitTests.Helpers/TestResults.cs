@@ -158,7 +158,7 @@ namespace LightBDD.UnitTests.Helpers
             return new TestParameterResult(parameter, formattedValue, null, result);
         }
 
-        public static TestParameterInfo CreateParameterInfo(string name, IMetadataInfo owner = null) => new TestParameterInfo { Name = name, Owner = owner };
+        public static TestParameterInfo CreateParameterInfo(string name, TestStepInfo owner = null) => new TestParameterInfo { Name = name, Owner = owner };
 
         public static TestInlineParameterDetails CreateInlineParameterDetails(string value)
         {
@@ -374,6 +374,10 @@ namespace LightBDD.UnitTests.Helpers
 
         public class TestInlineParameterDetails : IInlineParameterDetails
         {
+            public TestInlineParameterDetails()
+            {
+            }
+
             public TestInlineParameterDetails(string value)
             {
                 Value = value;
@@ -387,10 +391,10 @@ namespace LightBDD.UnitTests.Helpers
                 VerificationMessage = message;
             }
 
-            public string VerificationMessage { get; } = "inline message";
-            public ParameterVerificationStatus VerificationStatus { get; } = ParameterVerificationStatus.NotApplicable;
-            public string Value { get; }
-            public string Expectation { get; }
+            public string VerificationMessage { get; set; } = "inline message";
+            public ParameterVerificationStatus VerificationStatus { get; set; } = ParameterVerificationStatus.NotApplicable;
+            public string Value { get; set; }
+            public string Expectation { get; set; }
         }
 
         public class TestTabularParameterDetails : ITabularParameterDetails
@@ -463,7 +467,7 @@ namespace LightBDD.UnitTests.Helpers
             public string FormattedValue { get; }
             public IParameterDetails Details { get; }
 
-            public TestParameterResult(string name, string formattedValue, IMetadataInfo owner, IParameterDetails result)
+            public TestParameterResult(string name, string formattedValue, TestStepInfo owner, IParameterDetails result)
             {
                 Info = new TestParameterInfo { Owner = owner, Name = name };
                 Details = result;
@@ -473,7 +477,8 @@ namespace LightBDD.UnitTests.Helpers
         public class TestParameterInfo : IParameterInfo
         {
             public Guid RuntimeId { get; } = Guid.Parse("ffffaaaa-aaaa-ffff-aaaa-fffffffaaaaa");
-            public IMetadataInfo Owner { get; set; }
+            public TestStepInfo Owner { get; set; }
+            IMetadataInfo IParameterInfo.Owner => Owner;
             public string Name { get; set; }
         }
 

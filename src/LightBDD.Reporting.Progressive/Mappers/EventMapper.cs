@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification.Events;
+using LightBDD.Framework.Notification.Events;
 using LightBDD.Notification.Jsonl.Models;
 using LightBDD.Notification.Jsonl.Events;
 using ParameterVerificationStatus = LightBDD.Notification.Jsonl.Models.ParameterVerificationStatus;
@@ -34,6 +35,43 @@ namespace LightBDD.Reporting.Progressive.Mappers
             Register<StepFinished>(ToStepFinished);
             Register<TestExecutionStarting>(ToTestExecutionStarting);
             Register<TestExecutionFinished>(ToTestExecutionFinished);
+            Register<InlineParameterDiscovered>(ToInlineParameterDiscovered);
+            Register<InlineParameterValidationStarting>(ToInlineParameterValidationStarting);
+            Register<InlineParameterValidationFinished>(ToInlineParameterValidationFinished);
+        }
+
+        private static InlineParameterValidationFinishedEvent ToInlineParameterValidationFinished(InlineParameterValidationFinished src)
+        {
+            return new InlineParameterValidationFinishedEvent
+            {
+                Time = src.Time.Offset,
+                ParameterId = src.Parameter.RuntimeId,
+                Expectation = src.Details.Expectation,
+                VerificationStatus = (ParameterVerificationStatus)src.Details.VerificationStatus,
+                Value = src.Details.Value,
+                VerificationMessage = src.Details.VerificationMessage
+            };
+        }
+
+        private static InlineParameterValidationStartingEvent ToInlineParameterValidationStarting(InlineParameterValidationStarting src)
+        {
+            return new InlineParameterValidationStartingEvent
+            {
+                Time = src.Time.Offset,
+                ParameterId = src.Parameter.RuntimeId
+            };
+        }
+
+        private static InlineParameterDiscoveredEvent ToInlineParameterDiscovered(InlineParameterDiscovered src)
+        {
+            return new InlineParameterDiscoveredEvent
+            {
+                Time = src.Time.Offset,
+                ParentId = src.Parameter.Owner.RuntimeId,
+                ParameterId = src.Parameter.RuntimeId,
+                Name = src.Parameter.Name,
+                Expectation = src.Details.Expectation
+            };
         }
 
         private static TestExecutionFinishedEvent ToTestExecutionFinished(TestExecutionFinished src)
