@@ -132,8 +132,16 @@ namespace LightBDD.Core.Execution.Implementation
             try
             {
                 var args = PrepareArguments();
-                result = await _invocation.Invoke(Context, args);
-                VerifyArguments();
+                try
+                {
+                    result = await _invocation.Invoke(Context, args);
+                }
+                finally
+                {
+                    CaptureParameterResults();
+                }
+
+                VerifyParameterResults();
             }
             catch (Exception e)
             {
@@ -151,18 +159,9 @@ namespace LightBDD.Core.Execution.Implementation
             await InvokeSubStepsAsync(result);
         }
 
-        private void VerifyArguments()
+        private void VerifyParameterResults()
         {
-            var results = new List<IParameterResult>();
-            foreach (var argument in _arguments)
-            {
-                if (argument.Value is IComplexParameter complex)
-                    results.Add(new ParameterResult(argument.RawName, complex.Details));
-            }
-
-            _result.SetParameters(results);
-
-            var errors = results
+            var errors = _result.Parameters
                 .Where(x => x.Details.VerificationStatus > ParameterVerificationStatus.Success)
                 .Select(FormatErrorMessage)
                 .ToArray();
@@ -172,6 +171,19 @@ namespace LightBDD.Core.Execution.Implementation
 
             throw new InvalidOperationException(string.Join(Environment.NewLine, errors));
         }
+
+        private void CaptureParameterResults()
+        {
+            var results = new List<IParameterResult>();
+            foreach (var argument in _arguments)
+            {
+                if (argument.Value is IComplexParameter complex)
+                    results.Add(new ParameterResult(argument.RawName, complex.Details));
+            }
+
+            _result.SetParameters(results);
+        }
+
         private static string FormatErrorMessage(IParameterResult result)
         {
             return $"Parameter '{result.Name}' verification failed: {result.Details.VerificationMessage?.Replace(Environment.NewLine, Environment.NewLine + "\t") ?? string.Empty}";
