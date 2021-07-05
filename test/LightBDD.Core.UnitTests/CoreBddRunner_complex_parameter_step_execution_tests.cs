@@ -105,6 +105,20 @@ namespace LightBDD.Core.UnitTests
             Assert.That(result.StatusDetails, Is.EqualTo("Step 1: exception reason"));
         }
 
+        [Test]
+        public void Runner_should_include_complex_parameters_for_failed_steps()
+        {
+            Assert.Throws<Exception>(() => _runner.Test().TestScenario(
+                TestStep.CreateAsync(Failed_step_with_parameter,
+                    new Complex(null, null, ParameterVerificationStatus.Failure, "msg")
+                )));
+            var result = GetStepResults().Single();
+            var parameter = result.Parameters.SingleOrDefault();
+            Assert.That(parameter, Is.Not.Null);
+            Assert.That(parameter.Details.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Failure));
+            Assert.That(parameter.Details.VerificationMessage, Is.EqualTo("msg"));
+        }
+
         private void AssertParameter(IParameterResult parameter, string name, ParameterVerificationStatus status, string message)
         {
             Assert.That(parameter.Name, Is.EqualTo(name));

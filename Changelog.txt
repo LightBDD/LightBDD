@@ -23,6 +23,11 @@ Version [next]
 + #230 (Core)(New) Added ITestExecutionResult with details on execution time and all covered features
 
 
+Version 3.3.1
+----------------------------------------
++ #238 (Core)(Fix) Included parameter results in failed steps
++ #231 (Framework)(New) Updated ResourcePool with constructor accepting async resource factory method
+
 Version 3.3.0
 ----------------------------------------
 + #221 (VSIX)(Change) Merged Project templates and updated TargetFramework to net5

@@ -4,7 +4,7 @@
     <TargetFramework>net5</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="LightBDD.XUnit2" Version="3.3.0" />
+    <PackageReference Include="LightBDD.XUnit2" Version="3.3.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" >
       <PrivateAssets>all</PrivateAssets>
