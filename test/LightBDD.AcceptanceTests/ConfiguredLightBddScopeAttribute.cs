@@ -1,6 +1,9 @@
 using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using LightBDD.AcceptanceTests;
+using LightBDD.AcceptanceTests.Helpers;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
 using LightBDD.Framework.Reporting;
@@ -30,11 +33,21 @@ namespace LightBDD.AcceptanceTests
             config.RegisterType(InstanceScope.Single, _ => new ResourcePool<ChromeDriver>(CreateDriver));
         }
 
-        private ChromeDriver CreateDriver()
+        private async Task<ChromeDriver> CreateDriver(CancellationToken token)
         {
-            var driver = new ChromeDriver();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(0);
-            return driver;
+            await ChromeDriverInstaller.Instance.InstallOnce(token);
+            var service = ChromeDriverService.CreateDefaultService();
+            try
+            {
+                var driver = new ChromeDriver(service);
+                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(0);
+                return driver;
+            }
+            catch
+            {
+                service.Dispose();
+                throw;
+            }
         }
     }
 }

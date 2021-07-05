@@ -44,6 +44,36 @@ namespace LightBDD.Framework.UnitTests.Resources
         }
 
         [Test]
+        public async Task Pool_should_dynamically_create_new_instances_when_required_and_dispose_upon_completion_async_version()
+        {
+            var holder = new InstanceHolder();
+            var taskCount = 100;
+
+            using (var pool = new ResourcePool<IDisposable>(holder.CreateInstanceAsync))
+                await RunTasks(pool, taskCount);
+
+            Assert.That(holder.Instances.Count, Is.EqualTo(taskCount));
+
+            foreach (var instance in holder.Instances)
+                instance.Verify(x => x.Dispose());
+        }
+
+        [Test]
+        public async Task Pool_should_dynamically_create_new_instances_up_to_the_specified_limit_async_version()
+        {
+            var holder = new InstanceHolder();
+            var expectedLimit = 5;
+
+            using (var pool = new ResourcePool<IDisposable>(holder.CreateInstanceAsync, expectedLimit))
+                await RunTasks(pool, expectedLimit * 3);
+
+            Assert.That(holder.Instances.Count, Is.EqualTo(expectedLimit));
+
+            foreach (var instance in holder.Instances)
+                instance.Verify(x => x.Dispose());
+        }
+
+        [Test]
         [TestCase(true)]
         [TestCase(false)]
         public async Task Pool_should_accept_preset_instances_and_allow_controlling_their_disposal(bool shouldDispose)
@@ -158,6 +188,44 @@ namespace LightBDD.Framework.UnitTests.Resources
         }
 
         [Test]
+        public void ResourceHandle_should_cancel_instance_creation_upon_disposal()
+        {
+            async Task<IDisposable> FactoryMethod(CancellationToken token)
+            {
+                await Task.Delay(2000, token);
+                Assert.Fail("Factory method not get cancelled before reaching here");
+                return null;
+            }
+
+            using (var pool = new ResourcePool<IDisposable>(FactoryMethod, 1))
+            {
+                var handle = pool.CreateHandle();
+                var task = handle.ObtainAsync();
+                handle.Dispose();
+                Assert.ThrowsAsync<TaskCanceledException>(async () => await task);
+            }
+        }
+
+        [Test]
+        public void ResourceHandle_should_cancel_instance_creation_upon_pool_disposal()
+        {
+            async Task<IDisposable> FactoryMethod(CancellationToken token)
+            {
+                await Task.Delay(2000, token);
+                Assert.Fail("Factory method not get cancelled before reaching here");
+                return null;
+            }
+
+            using (var pool = new ResourcePool<IDisposable>(FactoryMethod, 1))
+            {
+                var handle = pool.CreateHandle();
+                var task = handle.ObtainAsync();
+                pool.Dispose();
+                Assert.ThrowsAsync<TaskCanceledException>(async () => await task);
+            }
+        }
+
+        [Test]
         public async Task ResourceHandle_should_always_return_the_same_resource_even_if_task_did_not_finish()
         {
             using (var pool = new ResourcePool<IDisposable>(new InstanceHolder().CreateInstance, 1))
@@ -179,7 +247,7 @@ namespace LightBDD.Framework.UnitTests.Resources
 
         private Task RunTasks(int count, Func<Task> task)
         {
-            return Task.WhenAll(Enumerable.Range(0, count).Select(x => task()));
+            return Task.WhenAll(Enumerable.Range(0, count).Select(_ => task()));
         }
 
         private Task RunTasks(ResourcePool<IDisposable> pool, int count)
@@ -203,6 +271,14 @@ namespace LightBDD.Framework.UnitTests.Resources
 
             public IDisposable CreateInstance()
             {
+                var instance = new Mock<IDisposable>();
+                Instances.Enqueue(instance);
+                return instance.Object;
+            }
+
+            public async Task<IDisposable> CreateInstanceAsync(CancellationToken cancellationToken)
+            {
+                await Task.Delay(1, cancellationToken);
                 var instance = new Mock<IDisposable>();
                 Instances.Enqueue(instance);
                 return instance.Object;
