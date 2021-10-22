@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Framework.Messaging;
 using LightBDD.Framework.UnitTests.Messaging.Helpers;
@@ -86,6 +86,30 @@ namespace LightBDD.Framework.UnitTests.Messaging
             var ex = Assert.ThrowsAsync<MessagePredicateEvaluationException>(() => listener.EnsureReceived<TestMessage>(m => m.Text.Length > 0));
             Assert.That(ex.Message, Is.EqualTo($"Unable to evaluate predicate on message {nameof(TestMessage)}: Object reference not set to an instance of an object."));
             Assert.That(ex.MessageObject, Is.SameAs(msg));
+        }
+
+        [Test]
+        public void EnsureReceived_throws_OperationCanceledException_when_cancellation_token_is_cancelled()
+        {
+            using var listener = MessageListener.Start(_source);
+
+            Assert.ThrowsAsync<OperationCanceledException>(() =>
+                listener.EnsureReceived<TestMessage>(m => m.Id != null,
+                    cancellationToken: new CancellationTokenSource(100).Token));
+
+            var ex = Assert.ThrowsAsync<OperationCanceledException>(() =>
+                  listener.EnsureReceived<TestMessage>(m => m.Id != null, "Error message",
+                      cancellationToken: new CancellationTokenSource(100).Token));
+        }
+
+        [Test]
+        public void EnsureReceived_throws_OperationCanceledException_when_listener_is_disposed()
+        {
+            var listener = MessageListener.Start(_source);
+
+            var receiveTask = listener.EnsureReceived<TestMessage>(m => m.Id != null, "Error message");
+            listener.Dispose();
+            Assert.ThrowsAsync<OperationCanceledException>(() => receiveTask);
         }
     }
 }

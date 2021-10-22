@@ -81,5 +81,14 @@ namespace LightBDD.Framework.UnitTests.Messaging
                 listener.Dispose();
             }
         }
+
+        [Test]
+        public void Dispose_of_listener_clears_the_received_message_collection()
+        {
+            var listener = MessageListener.Start(_source);
+            _source.Publish(new TestMessage("0"));
+            listener.Dispose();
+            Assert.That(listener.GetMessages<TestMessage>(), Is.Empty);
+        }
     }
 }
