@@ -7,6 +7,7 @@
             Id = id;
         }
         public string Id { get; }
+        public string Text { get; set; }
         public override string ToString() => Id;
     }
 }

@@ -36,11 +36,11 @@ namespace LightBDD.Framework.UnitTests.Messaging
                 new TestMessage("789")
             };
 
-            _source.Handle(new TestMessage("000"));
+            _source.Publish(new TestMessage("000"));
             using var listener = MessageListener.Start(_source);
 
             foreach (var msg in messages)
-                _source.Handle(msg);
+                _source.Publish(msg);
 
             Assert.That(listener.GetMessages<TestMessage>(), Is.EquivalentTo(messages));
         }
@@ -54,7 +54,7 @@ namespace LightBDD.Framework.UnitTests.Messaging
                 .ToArray();
 
             var msg = new TestMessage("abc");
-            _source.Handle(msg);
+            _source.Publish(msg);
 
             for (var index = 0; index < listeners.Length; index++)
             {
@@ -74,7 +74,7 @@ namespace LightBDD.Framework.UnitTests.Messaging
             int count = 0;
             foreach (var listener in listeners)
             {
-                _source.Handle(new TestMessage("id"));
+                _source.Publish(new TestMessage("id"));
                 count++;
 
                 Assert.That(listener.GetMessages<TestMessage>().Count(), Is.EqualTo(count));

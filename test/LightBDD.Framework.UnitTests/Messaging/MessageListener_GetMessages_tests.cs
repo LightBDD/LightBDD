@@ -18,9 +18,9 @@ namespace LightBDD.Framework.UnitTests.Messaging
             var msg2 = "string";
             var msg3 = new TestMessage("000");
             using var listener = MessageListener.Start(_source);
-            _source.Handle(msg1);
-            _source.Handle(msg2);
-            _source.Handle(msg3);
+            _source.Publish(msg1);
+            _source.Publish(msg2);
+            _source.Publish(msg3);
             Assert.That(listener.GetMessages<object>(), Is.EquivalentTo(new object[] { msg1, msg2, msg3 }));
         }
 
@@ -33,11 +33,11 @@ namespace LightBDD.Framework.UnitTests.Messaging
             var msg4 = new TestMessage("001");
             var msg5 = new DerivedTestMessage("002");
             using var listener = MessageListener.Start(_source);
-            _source.Handle(msg1);
-            _source.Handle(msg2);
-            _source.Handle(msg3);
-            _source.Handle(msg4);
-            _source.Handle(msg5);
+            _source.Publish(msg1);
+            _source.Publish(msg2);
+            _source.Publish(msg3);
+            _source.Publish(msg4);
+            _source.Publish(msg5);
             Assert.That(listener.GetMessages<TestMessage>(), Is.EquivalentTo(new object[] { msg3, msg4, msg5 }));
         }
 
@@ -48,9 +48,9 @@ namespace LightBDD.Framework.UnitTests.Messaging
             var msg2 = new TestMessage("002");
             var msg3 = new TestMessage("003");
             using var listener = MessageListener.Start(_source);
-            _source.Handle(msg1);
-            _source.Handle(msg2);
-            _source.Handle(msg3);
+            _source.Publish(msg1);
+            _source.Publish(msg2);
+            _source.Publish(msg3);
             Assert.That(listener.GetMessages<TestMessage>().ToArray(),
                 Is.EqualTo(new[] { msg3, msg2, msg1 }));
         }
