@@ -40,10 +40,52 @@ namespace LightBDD.Framework.UnitTests.Messaging
         public void EnsureReceived_throws_TimeoutException_if_message_did_not_arrive_on_time()
         {
             using var listener = MessageListener.Start(_source);
-            var timeout = TimeSpan.FromSeconds(1);
+            var timeout = TimeSpan.FromMilliseconds(100);
+            Assert.ThrowsAsync<TimeoutException>(() => listener.EnsureReceived<TestMessage>(x => x.Id == "001", timeout));
+        }
+
+        [Test]
+        public void EnsureReceived_provides_expression_details_on_timeout()
+        {
+            using var listener = MessageListener.Start(_source);
+            var timeout = TimeSpan.FromMilliseconds(100);
             var ex = Assert.ThrowsAsync<TimeoutException>(
                 () => listener.EnsureReceived<TestMessage>(x => x.Id == "001", timeout));
-            Assert.That(ex.Message, Is.EqualTo($"Failed to receive {nameof(TestMessage)} with criteria x => (x.Id == \"001\") within {timeout} timeout"));
+            Assert.That(ex.Message, Is.EqualTo($"Failed to receive {nameof(TestMessage)} within 100ms: No message received matching criteria: x => (x.Id == \"001\")"));
+        }
+
+        [Test]
+        public void EnsureReceived_provides_custom_error_details_on_timeout()
+        {
+            using var listener = MessageListener.Start(_source);
+            var timeout = TimeSpan.FromMilliseconds(100);
+            var ex = Assert.ThrowsAsync<TimeoutException>(
+                () => listener.EnsureReceived<TestMessage>(x => x.Id == "001", "Test Message 001 not received", timeout));
+            Assert.That(ex.Message, Is.EqualTo($"Failed to receive {nameof(TestMessage)} within 100ms: Test Message 001 not received"));
+        }
+
+        [Test]
+        public void EnsureReceived_provides_message_details_on_predicate_failure_when_awaiting_new_message()
+        {
+            using var listener = MessageListener.Start(_source);
+            var receiveTask = listener.EnsureReceived<TestMessage>(m => m.Text.Length > 0);
+            var msg = new TestMessage("000") { Text = null };
+            _source.Publish(msg);
+            var ex = Assert.ThrowsAsync<MessagePredicateEvaluationException>(() => receiveTask);
+            Assert.That(ex.Message, Is.EqualTo($"Unable to evaluate predicate on message {nameof(TestMessage)}: Object reference not set to an instance of an object."));
+            Assert.That(ex.MessageObject, Is.SameAs(msg));
+        }
+
+        [Test]
+        public void EnsureReceived_provides_message_details_on_predicate_failure_when_awaiting_already_received_message()
+        {
+            using var listener = MessageListener.Start(_source);
+            var msg = new TestMessage("000") { Text = null };
+            _source.Publish(msg);
+
+            var ex = Assert.ThrowsAsync<MessagePredicateEvaluationException>(() => listener.EnsureReceived<TestMessage>(m => m.Text.Length > 0));
+            Assert.That(ex.Message, Is.EqualTo($"Unable to evaluate predicate on message {nameof(TestMessage)}: Object reference not set to an instance of an object."));
+            Assert.That(ex.MessageObject, Is.SameAs(msg));
         }
     }
 }
