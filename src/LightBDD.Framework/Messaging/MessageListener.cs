@@ -17,8 +17,8 @@ namespace LightBDD.Framework.Messaging
         private readonly IMessageSource _source;
         private readonly ConcurrentStack<object> _messages = new ConcurrentStack<object>();
         private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(10);
-        private event Action<object> OnMessage;
         private readonly CancellationTokenSource _listenerDisposedTokenSource = new CancellationTokenSource();
+        internal event Action<object> OnMessage;
 
         private MessageListener(IMessageSource source)
         {
@@ -59,7 +59,7 @@ namespace LightBDD.Framework.Messaging
         }
 
         /// <summary>
-        /// Ensures the message of type <typeparamref name="TMessage"/> and matching predicate <paramref name="predicate"/> is received and returns it.<br/>
+        /// Ensures the message of type <typeparamref name="TMessage"/> and matching predicate <paramref name="predicate"/> is received.<br/>
         /// If one or more matching messages were already received by listener, the latest matching message is returned immediately.<br/>
         /// If no matching messages were received yet, the method listens for upcoming messages and returns when matching one arrives, timeout occurs or <paramref name="cancellationToken"/> is cancelled.<br/>
         /// </summary>
@@ -74,7 +74,7 @@ namespace LightBDD.Framework.Messaging
             => EnsureReceived(predicate.Compile(), $"No message received matching criteria: {predicate}", timeout, cancellationToken);
 
         /// <summary>
-        /// Ensures the message of type <typeparamref name="TMessage"/> and matching predicate <paramref name="predicate"/> is received and returns it.<br/>
+        /// Ensures the message of type <typeparamref name="TMessage"/> and matching predicate <paramref name="predicate"/> is received.<br/>
         /// If one or more matching messages were already received by listener, the latest matching message is returned immediately.<br/>
         /// If no matching messages were received yet, the method listens for upcoming messages and returns when matching one arrives, timeout occurs or <paramref name="cancellationToken"/> is cancelled.<br/>
         /// </summary>
@@ -91,9 +91,30 @@ namespace LightBDD.Framework.Messaging
             bool PredicateFn(TMessage m) => IsValidMessage(m, predicate);
 
             using var waiter = new MessageWaiter<TMessage>(this, PredicateFn, errorMessage);
-            var msg = _messages.OfType<TMessage>().FirstOrDefault(PredicateFn);
             using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _listenerDisposedTokenSource.Token);
-            return msg != null ? msg : await waiter.WaitAsync(timeout ?? DefaultTimeout, cts.Token);
+            waiter.ProcessAlreadyCaptured(_messages);
+            return await waiter.WaitAsync(timeout ?? DefaultTimeout, cts.Token);
+        }
+
+        /// <summary>
+        /// Ensures the <paramref name="count"/> number of messages of type <typeparamref name="TMessage"/> and matching predicate <paramref name="predicate"/> are received.<br/>
+        /// If all required messages are already received by listener, the method returns immediately.<br/>
+        /// If none or not all messages are received yet, the method listens for upcoming messages and returns when all are received, timeout occurs or <paramref name="cancellationToken"/> is cancelled.<br/>
+        /// If more than <paramref name="count"/> messages matches the criteria, the latest <paramref name="count"/> messages will be returned.
+        /// </summary>
+        /// <typeparam name="TMessage">Type of message to receive.</typeparam>
+        /// <param name="count">Number of messages that should be received</param>
+        /// <param name="predicate">Predicate that message have to match to be returned.</param>
+        /// <param name="errorMessageFn">Function accepting list of received messages and returning an error message to include in <seealso cref="TimeoutException"/> when timeout occurs.</param>
+        /// <param name="timeout">Timeout for how long the method should await for matching messages to arrive. If <c>null</c>, a default value of 10s will be used.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>List of <paramref name="count"/> requested messages, ordered from latest to oldest.</returns>
+        public async Task<IReadOnlyList<TMessage>> EnsureReceivedMany<TMessage>(int count, Func<TMessage, bool> predicate, Func<IReadOnlyList<TMessage>, string> errorMessageFn, TimeSpan? timeout = null, CancellationToken cancellationToken = default)
+        {
+            bool PredicateFn(TMessage m) => IsValidMessage(m, predicate);
+            using var counter = new MessageCounter<TMessage>(this, count, PredicateFn, errorMessageFn);
+            using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _listenerDisposedTokenSource.Token);
+            return await counter.WaitAsync(timeout ?? DefaultTimeout, cts.Token);
         }
 
         private static bool IsValidMessage<T>(T msg, Func<T, bool> predicate)
@@ -108,7 +129,7 @@ namespace LightBDD.Framework.Messaging
             }
         }
 
-        class MessageWaiter<T> : IDisposable
+        private class MessageWaiter<T> : IDisposable
         {
             private readonly MessageListener _listener;
             private readonly Func<T, bool> _predicate;
@@ -123,13 +144,23 @@ namespace LightBDD.Framework.Messaging
                 _listener.OnMessage += OnMessage;
             }
 
+            public void ProcessAlreadyCaptured(IEnumerable<object> messages)
+            {
+                foreach (var msg in messages)
+                {
+                    if (_tcs.Task.IsCompleted)
+                        return;
+                    OnMessage(msg);
+                }
+            }
+
             public void Dispose()
             {
                 _tcs.TrySetCanceled();
                 StopListening();
             }
 
-            void OnMessage(object msg)
+            private void OnMessage(object msg)
             {
                 try
                 {
@@ -151,6 +182,75 @@ namespace LightBDD.Framework.Messaging
                     return await _tcs.Task;
                 cancellationToken.ThrowIfCancellationRequested();
                 throw new TimeoutException($"Failed to receive {typeof(T).Name} within {timeout.FormatPretty()}: {_errorMessage}");
+            }
+        }
+
+        private class MessageCounter<TMessage> : IDisposable
+        {
+            private readonly MessageListener _listener;
+            private readonly int _expectedCount;
+            private readonly Func<TMessage, bool> _predicate;
+            private readonly Func<IReadOnlyList<TMessage>, string> _errorMessageFn;
+            private volatile int _current = 0;
+            private readonly HashSet<TMessage> _messageHash = new HashSet<TMessage>();
+            private readonly TaskCompletionSource<bool> _tcs = new TaskCompletionSource<bool>();
+
+            private bool IsFinished => _tcs.Task.IsCompleted;
+
+            public MessageCounter(MessageListener listener, int expectedCount, Func<TMessage, bool> predicate, Func<IReadOnlyList<TMessage>,string> errorMessageFn)
+            {
+                _listener = listener;
+                _expectedCount = expectedCount;
+                _predicate = predicate;
+                _errorMessageFn = errorMessageFn;
+                _listener.OnMessage += HandleMessage;
+            }
+
+            private void HandleMessage(object msg)
+            {
+                try
+                {
+                    if (msg is TMessage message
+                        && _predicate.Invoke(message)
+                        && _messageHash.Add(message)
+                        && Interlocked.Increment(ref _current) >= _expectedCount)
+                        _tcs.TrySetResult(true);
+                }
+                catch (Exception ex)
+                {
+                    _tcs.TrySetException(ex);
+                }
+            }
+
+            public void Dispose()
+            {
+                StopListening();
+                _tcs.TrySetCanceled();
+            }
+
+            private void StopListening()
+            {
+                _listener.OnMessage -= HandleMessage;
+            }
+
+            public async Task<TMessage[]> WaitAsync(TimeSpan timeout, CancellationToken cancellationToken)
+            {
+                foreach (var message in _listener.GetMessages<TMessage>())
+                {
+                    HandleMessage(message);
+                    if (IsFinished)
+                        break;
+                }
+
+                await Task.WhenAny(_tcs.Task, Task.Delay(timeout, cancellationToken));
+                StopListening();
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var messages = _listener.GetMessages<TMessage>().Where(_predicate).Take(_expectedCount).ToArray();
+                if (messages.Length >= _expectedCount)
+                    return messages;
+
+                throw new TimeoutException($"Received {messages.Length} out of {_expectedCount} {typeof(TMessage).Name} message(s) within {timeout.FormatPretty()}: {_errorMessageFn(messages)}");
             }
         }
     }
