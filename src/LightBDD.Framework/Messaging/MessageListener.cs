@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using LightBDD.Core.Formatting;
+using LightBDD.Framework.Messaging.Implementation;
 
 namespace LightBDD.Framework.Messaging
 {
@@ -89,10 +89,8 @@ namespace LightBDD.Framework.Messaging
         public async Task<TMessage> EnsureReceived<TMessage>(Func<TMessage, bool> predicate, string errorMessage, TimeSpan? timeout = null, CancellationToken cancellationToken = default)
         {
             bool PredicateFn(TMessage m) => IsValidMessage(m, predicate);
-
             using var waiter = new MessageWaiter<TMessage>(this, PredicateFn, errorMessage);
             using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _listenerDisposedTokenSource.Token);
-            waiter.ProcessAlreadyCaptured(_messages);
             return await waiter.WaitAsync(timeout ?? DefaultTimeout, cts.Token);
         }
 
@@ -125,129 +123,6 @@ namespace LightBDD.Framework.Messaging
             catch (Exception ex)
             {
                 throw new MessagePredicateEvaluationException(ex, msg);
-            }
-        }
-
-        private class MessageWaiter<T> : IDisposable
-        {
-            private readonly MessageListener _listener;
-            private readonly Func<T, bool> _predicate;
-            private readonly string _errorMessage;
-            private readonly TaskCompletionSource<T> _tcs = new TaskCompletionSource<T>();
-
-            public MessageWaiter(MessageListener listener, Func<T, bool> predicate, string errorMessage)
-            {
-                _listener = listener;
-                _predicate = predicate;
-                _errorMessage = errorMessage;
-                _listener.OnMessage += OnMessage;
-            }
-
-            public void ProcessAlreadyCaptured(IEnumerable<object> messages)
-            {
-                foreach (var msg in messages)
-                {
-                    if (_tcs.Task.IsCompleted)
-                        return;
-                    OnMessage(msg);
-                }
-            }
-
-            public void Dispose()
-            {
-                _tcs.TrySetCanceled();
-                StopListening();
-            }
-
-            private void OnMessage(object msg)
-            {
-                try
-                {
-                    if (msg is T message && _predicate(message) && _tcs.TrySetResult(message))
-                        StopListening();
-                }
-                catch (Exception ex)
-                {
-                    if (_tcs.TrySetException(ex))
-                        StopListening();
-                }
-            }
-
-            private void StopListening() => _listener.OnMessage -= OnMessage;
-
-            public async Task<T> WaitAsync(TimeSpan timeout, CancellationToken cancellationToken)
-            {
-                if (await Task.WhenAny(_tcs.Task, Task.Delay(timeout, cancellationToken)) == _tcs.Task)
-                    return await _tcs.Task;
-                cancellationToken.ThrowIfCancellationRequested();
-                throw new TimeoutException($"Failed to receive {typeof(T).Name} within {timeout.FormatPretty()}: {_errorMessage}");
-            }
-        }
-
-        private class MessageCounter<TMessage> : IDisposable
-        {
-            private readonly MessageListener _listener;
-            private readonly int _expectedCount;
-            private readonly Func<TMessage, bool> _predicate;
-            private volatile int _current = 0;
-            private readonly HashSet<TMessage> _messageHash = new HashSet<TMessage>();
-            private readonly TaskCompletionSource<bool> _tcs = new TaskCompletionSource<bool>();
-
-            private bool IsFinished => _tcs.Task.IsCompleted;
-
-            public MessageCounter(MessageListener listener, int expectedCount, Func<TMessage, bool> predicate)
-            {
-                _listener = listener;
-                _expectedCount = expectedCount;
-                _predicate = predicate;
-                _listener.OnMessage += HandleMessage;
-            }
-
-            private void HandleMessage(object msg)
-            {
-                try
-                {
-                    if (msg is TMessage message
-                        && _predicate.Invoke(message)
-                        && _messageHash.Add(message)
-                        && Interlocked.Increment(ref _current) >= _expectedCount)
-                        _tcs.TrySetResult(true);
-                }
-                catch (Exception ex)
-                {
-                    _tcs.TrySetException(ex);
-                }
-            }
-
-            public void Dispose()
-            {
-                StopListening();
-                _tcs.TrySetCanceled();
-            }
-
-            private void StopListening()
-            {
-                _listener.OnMessage -= HandleMessage;
-            }
-
-            public async Task<TMessage[]> WaitAsync(TimeSpan timeout, CancellationToken cancellationToken)
-            {
-                foreach (var message in _listener.GetMessages<TMessage>())
-                {
-                    HandleMessage(message);
-                    if (IsFinished)
-                        break;
-                }
-
-                await Task.WhenAny(_tcs.Task, Task.Delay(timeout, cancellationToken));
-                StopListening();
-                cancellationToken.ThrowIfCancellationRequested();
-
-                var messages = _listener.GetMessages<TMessage>().Where(_predicate).Take(_expectedCount).ToArray();
-                if (messages.Length >= _expectedCount)
-                    return messages;
-
-                throw new TimeoutException($"Received {messages.Length} out of {_expectedCount} {typeof(TMessage).Name} message(s) within {timeout.FormatPretty()}");
             }
         }
     }
