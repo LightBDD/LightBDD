@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Formatting;
+using LightBDD.Core.Formatting.Diagnostics;
+using LightBDD.Framework.Implementation;
 
 namespace LightBDD.Framework.Messaging.Implementation
 {
@@ -70,7 +72,7 @@ namespace LightBDD.Framework.Messaging.Implementation
             if (messages.Length >= _expectedCount)
                 return messages;
 
-            throw new TimeoutException($"Received {messages.Length} out of {_expectedCount} {typeof(TMessage).Name} message(s) within {timeout.FormatPretty()}");
+            throw new TimeoutException($"Failed to receive matching {_expectedCount} {typeof(TMessage).Name} message(s) within {timeout.FormatPretty()}:\n\nReceived {messages.Length} messages matching criteria:\n{ObjectFormatter.DumpMany(messages)}\n\nLast recorded {typeof(TMessage).Name} messages:\n{ObjectFormatter.DumpMany(_listener.GetMessages<TMessage>().Take(10))}");
         }
     }
 }

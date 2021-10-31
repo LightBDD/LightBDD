@@ -70,26 +70,10 @@ namespace LightBDD.Framework.Messaging
         /// <returns>Latest matching message</returns>
         /// <exception cref="TimeoutException">Thrown when timeout occurs and no matching message was received.</exception>
         /// <exception cref="MessagePredicateEvaluationException">Thrown when provided predicate failed evaluation on received message.</exception>
-        public Task<TMessage> EnsureReceived<TMessage>(Expression<Func<TMessage, bool>> predicate, TimeSpan? timeout = null, CancellationToken cancellationToken = default)
-            => EnsureReceived(predicate.Compile(), $"No message received matching criteria: {predicate}", timeout, cancellationToken);
-
-        /// <summary>
-        /// Ensures the message of type <typeparamref name="TMessage"/> and matching predicate <paramref name="predicate"/> is received.<br/>
-        /// If one or more matching messages were already received by listener, the latest matching message is returned immediately.<br/>
-        /// If no matching messages were received yet, the method listens for upcoming messages and returns when matching one arrives, timeout occurs or <paramref name="cancellationToken"/> is cancelled.<br/>
-        /// </summary>
-        /// <typeparam name="TMessage">Type of message to receive.</typeparam>
-        /// <param name="predicate">Predicate that message have to match to be returned.</param>
-        /// <param name="errorMessage">An error message to include in <seealso cref="TimeoutException"/> when timeout occurs.</param>
-        /// <param name="timeout">Timeout for how long the method should await for matching message to arrive. If <c>null</c>, a default value of 10s will be used.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>Latest matching message</returns>
-        /// <exception cref="TimeoutException">Thrown when timeout occurs and no matching message was received.</exception>
-        /// <exception cref="MessagePredicateEvaluationException">Thrown when provided predicate failed evaluation on received message.</exception>
-        public async Task<TMessage> EnsureReceived<TMessage>(Func<TMessage, bool> predicate, string errorMessage, TimeSpan? timeout = null, CancellationToken cancellationToken = default)
+        public async Task<TMessage> EnsureReceived<TMessage>(Func<TMessage, bool> predicate, TimeSpan? timeout = null, CancellationToken cancellationToken = default)
         {
             bool PredicateFn(TMessage m) => IsValidMessage(m, predicate);
-            using var waiter = new MessageWaiter<TMessage>(this, PredicateFn, errorMessage);
+            using var waiter = new MessageWaiter<TMessage>(this, PredicateFn);
             using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _listenerDisposedTokenSource.Token);
             return await waiter.WaitAsync(timeout ?? DefaultTimeout, cts.Token);
         }

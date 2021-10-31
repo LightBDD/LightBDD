@@ -39,7 +39,7 @@ namespace LightBDD.Framework.UnitTests.Messaging
             var msg = new TestMessage("000") { Text = null };
             _source.Publish(msg);
             var ex = Assert.ThrowsAsync<MessagePredicateEvaluationException>(() => receiveTask);
-            Assert.That(ex.Message, Is.EqualTo($"Unable to evaluate predicate on message {nameof(TestMessage)}: Object reference not set to an instance of an object."));
+            Assert.That(ex.Message.Replace("\r", ""), Is.EqualTo($"Unable to evaluate predicate on message {nameof(TestMessage)}: Object reference not set to an instance of an object.\nFaulty message:\nTestMessage: {{ Id=\"000\" Text=null }}"));
             Assert.That(ex.MessageObject, Is.SameAs(msg));
         }
 
@@ -51,7 +51,7 @@ namespace LightBDD.Framework.UnitTests.Messaging
             _source.Publish(msg);
 
             var ex = Assert.ThrowsAsync<MessagePredicateEvaluationException>(() => listener.EnsureReceivedMany<TestMessage>(2, m => m.Text.Length > 0));
-            Assert.That(ex.Message, Is.EqualTo($"Unable to evaluate predicate on message {nameof(TestMessage)}: Object reference not set to an instance of an object."));
+            Assert.That(ex.Message.Replace("\r", ""), Is.EqualTo($"Unable to evaluate predicate on message {nameof(TestMessage)}: Object reference not set to an instance of an object.\nFaulty message:\nTestMessage: {{ Id=\"000\" Text=null }}"));
             Assert.That(ex.MessageObject, Is.SameAs(msg));
         }
 
@@ -81,8 +81,18 @@ namespace LightBDD.Framework.UnitTests.Messaging
             var timeout = TimeSpan.FromMilliseconds(100);
             _source.Publish(new TestMessage("01") { Text = "Abc" });
             _source.Publish(new TestMessage("02") { Text = "Abc" });
+            _source.Publish(new TestMessage("03") { Text = "Abd" });
             var ex = Assert.ThrowsAsync<TimeoutException>(() => listener.EnsureReceivedMany<TestMessage>(3, x => x.Text == "Abc", timeout));
-            Assert.That(ex.Message, Is.EqualTo($"Received 2 out of 3 {nameof(TestMessage)} message(s) within 100ms"));
+            Assert.That(ex.Message.Replace("\r", ""), Is.EqualTo(@"Failed to receive matching 3 TestMessage message(s) within 100ms:
+
+Received 2 messages matching criteria:
+TestMessage: { Id=""02"" Text=""Abc"" }
+TestMessage: { Id=""01"" Text=""Abc"" }
+
+Last recorded TestMessage messages:
+TestMessage: { Id=""03"" Text=""Abd"" }
+TestMessage: { Id=""02"" Text=""Abc"" }
+TestMessage: { Id=""01"" Text=""Abc"" }".Replace("\r", "")));
         }
     }
 }

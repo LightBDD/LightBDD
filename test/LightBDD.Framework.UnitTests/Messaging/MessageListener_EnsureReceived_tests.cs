@@ -45,23 +45,18 @@ namespace LightBDD.Framework.UnitTests.Messaging
         }
 
         [Test]
-        public void EnsureReceived_provides_expression_details_on_timeout()
-        {
-            using var listener = MessageListener.Start(_source);
-            var timeout = TimeSpan.FromMilliseconds(100);
-            var ex = Assert.ThrowsAsync<TimeoutException>(
-                () => listener.EnsureReceived<TestMessage>(x => x.Id == "001", timeout));
-            Assert.That(ex.Message, Is.EqualTo($"Failed to receive {nameof(TestMessage)} within 100ms: No message received matching criteria: x => (x.Id == \"001\")"));
-        }
-
-        [Test]
         public void EnsureReceived_provides_custom_error_details_on_timeout()
         {
             using var listener = MessageListener.Start(_source);
+            _source.Publish(new TestMessage("01"));
             var timeout = TimeSpan.FromMilliseconds(100);
             var ex = Assert.ThrowsAsync<TimeoutException>(
-                () => listener.EnsureReceived<TestMessage>(x => x.Id == "001", "Test Message 001 not received", timeout));
-            Assert.That(ex.Message, Is.EqualTo($"Failed to receive {nameof(TestMessage)} within 100ms: Test Message 001 not received"));
+                () => listener.EnsureReceived<TestMessage>(x => x.Id == "001", timeout));
+
+            Assert.That(ex.Message.Replace("\r", ""), Is.EqualTo(@"Failed to receive matching TestMessage within 100ms.
+
+Last recorded TestMessage messages:
+TestMessage: { Id=""01"" Text=null }".Replace("\r", "")));
         }
 
         [Test]
@@ -72,7 +67,7 @@ namespace LightBDD.Framework.UnitTests.Messaging
             var msg = new TestMessage("000") { Text = null };
             _source.Publish(msg);
             var ex = Assert.ThrowsAsync<MessagePredicateEvaluationException>(() => receiveTask);
-            Assert.That(ex.Message, Is.EqualTo($"Unable to evaluate predicate on message {nameof(TestMessage)}: Object reference not set to an instance of an object."));
+            Assert.That(ex.Message.Replace("\r", ""), Is.EqualTo($"Unable to evaluate predicate on message {nameof(TestMessage)}: Object reference not set to an instance of an object.\nFaulty message:\nTestMessage: {{ Id=\"000\" Text=null }}"));
             Assert.That(ex.MessageObject, Is.SameAs(msg));
         }
 
@@ -84,7 +79,7 @@ namespace LightBDD.Framework.UnitTests.Messaging
             _source.Publish(msg);
 
             var ex = Assert.ThrowsAsync<MessagePredicateEvaluationException>(() => listener.EnsureReceived<TestMessage>(m => m.Text.Length > 0));
-            Assert.That(ex.Message, Is.EqualTo($"Unable to evaluate predicate on message {nameof(TestMessage)}: Object reference not set to an instance of an object."));
+            Assert.That(ex.Message.Replace("\r", ""), Is.EqualTo($"Unable to evaluate predicate on message {nameof(TestMessage)}: Object reference not set to an instance of an object.\nFaulty message:\nTestMessage: {{ Id=\"000\" Text=null }}"));
             Assert.That(ex.MessageObject, Is.SameAs(msg));
         }
 
@@ -98,7 +93,7 @@ namespace LightBDD.Framework.UnitTests.Messaging
                     cancellationToken: new CancellationTokenSource(100).Token));
 
             Assert.ThrowsAsync<OperationCanceledException>(() =>
-                  listener.EnsureReceived<TestMessage>(m => m.Id != null, "Error message",
+                  listener.EnsureReceived<TestMessage>(m => m.Id != null,
                       cancellationToken: new CancellationTokenSource(100).Token));
         }
 
@@ -107,7 +102,7 @@ namespace LightBDD.Framework.UnitTests.Messaging
         {
             var listener = MessageListener.Start(_source);
 
-            var receiveTask = listener.EnsureReceived<TestMessage>(m => m.Id != null, "Error message");
+            var receiveTask = listener.EnsureReceived<TestMessage>(m => m.Id != null);
             listener.Dispose();
             Assert.ThrowsAsync<OperationCanceledException>(() => receiveTask);
         }

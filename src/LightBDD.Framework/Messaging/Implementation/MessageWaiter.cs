@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Formatting;
+using LightBDD.Core.Formatting.Diagnostics;
+using LightBDD.Framework.Implementation;
 
 namespace LightBDD.Framework.Messaging.Implementation
 {
@@ -10,14 +13,12 @@ namespace LightBDD.Framework.Messaging.Implementation
     {
         private readonly MessageListener _listener;
         private readonly Func<TMessage, bool> _predicate;
-        private readonly string _errorMessage;
         private readonly TaskCompletionSource<TMessage> _tcs = new TaskCompletionSource<TMessage>();
 
-        public MessageWaiter(MessageListener listener, Func<TMessage, bool> predicate, string errorMessage)
+        public MessageWaiter(MessageListener listener, Func<TMessage, bool> predicate)
         {
             _listener = listener;
             _predicate = predicate;
-            _errorMessage = errorMessage;
             _listener.OnMessage += HandleMessage;
         }
 
@@ -55,7 +56,7 @@ namespace LightBDD.Framework.Messaging.Implementation
             if (await Task.WhenAny(_tcs.Task, Task.Delay(timeout, cancellationToken)) == _tcs.Task)
                 return await _tcs.Task;
             cancellationToken.ThrowIfCancellationRequested();
-            throw new TimeoutException($"Failed to receive {typeof(TMessage).Name} within {timeout.FormatPretty()}: {_errorMessage}");
+            throw new TimeoutException($"Failed to receive matching {typeof(TMessage).Name} within {timeout.FormatPretty()}.\n\nLast recorded {typeof(TMessage).Name} messages:\n{ObjectFormatter.DumpMany(_listener.GetMessages<TMessage>().Take(10))}");
         }
     }
 }
