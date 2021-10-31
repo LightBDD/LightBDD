@@ -97,7 +97,7 @@ namespace LightBDD.Framework.UnitTests.Messaging
                 listener.EnsureReceived<TestMessage>(m => m.Id != null,
                     cancellationToken: new CancellationTokenSource(100).Token));
 
-            var ex = Assert.ThrowsAsync<OperationCanceledException>(() =>
+            Assert.ThrowsAsync<OperationCanceledException>(() =>
                   listener.EnsureReceived<TestMessage>(m => m.Id != null, "Error message",
                       cancellationToken: new CancellationTokenSource(100).Token));
         }

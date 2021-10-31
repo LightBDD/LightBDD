@@ -105,14 +105,13 @@ namespace LightBDD.Framework.Messaging
         /// <typeparam name="TMessage">Type of message to receive.</typeparam>
         /// <param name="count">Number of messages that should be received</param>
         /// <param name="predicate">Predicate that message have to match to be returned.</param>
-        /// <param name="errorMessageFn">Function accepting list of received messages and returning an error message to include in <seealso cref="TimeoutException"/> when timeout occurs.</param>
         /// <param name="timeout">Timeout for how long the method should await for matching messages to arrive. If <c>null</c>, a default value of 10s will be used.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>List of <paramref name="count"/> requested messages, ordered from latest to oldest.</returns>
-        public async Task<IReadOnlyList<TMessage>> EnsureReceivedMany<TMessage>(int count, Func<TMessage, bool> predicate, Func<IReadOnlyList<TMessage>, string> errorMessageFn, TimeSpan? timeout = null, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<TMessage>> EnsureReceivedMany<TMessage>(int count, Func<TMessage, bool> predicate, TimeSpan? timeout = null, CancellationToken cancellationToken = default)
         {
             bool PredicateFn(TMessage m) => IsValidMessage(m, predicate);
-            using var counter = new MessageCounter<TMessage>(this, count, PredicateFn, errorMessageFn);
+            using var counter = new MessageCounter<TMessage>(this, count, PredicateFn);
             using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _listenerDisposedTokenSource.Token);
             return await counter.WaitAsync(timeout ?? DefaultTimeout, cts.Token);
         }
@@ -190,19 +189,17 @@ namespace LightBDD.Framework.Messaging
             private readonly MessageListener _listener;
             private readonly int _expectedCount;
             private readonly Func<TMessage, bool> _predicate;
-            private readonly Func<IReadOnlyList<TMessage>, string> _errorMessageFn;
             private volatile int _current = 0;
             private readonly HashSet<TMessage> _messageHash = new HashSet<TMessage>();
             private readonly TaskCompletionSource<bool> _tcs = new TaskCompletionSource<bool>();
 
             private bool IsFinished => _tcs.Task.IsCompleted;
 
-            public MessageCounter(MessageListener listener, int expectedCount, Func<TMessage, bool> predicate, Func<IReadOnlyList<TMessage>,string> errorMessageFn)
+            public MessageCounter(MessageListener listener, int expectedCount, Func<TMessage, bool> predicate)
             {
                 _listener = listener;
                 _expectedCount = expectedCount;
                 _predicate = predicate;
-                _errorMessageFn = errorMessageFn;
                 _listener.OnMessage += HandleMessage;
             }
 
@@ -250,7 +247,7 @@ namespace LightBDD.Framework.Messaging
                 if (messages.Length >= _expectedCount)
                     return messages;
 
-                throw new TimeoutException($"Received {messages.Length} out of {_expectedCount} {typeof(TMessage).Name} message(s) within {timeout.FormatPretty()}: {_errorMessageFn(messages)}");
+                throw new TimeoutException($"Received {messages.Length} out of {_expectedCount} {typeof(TMessage).Name} message(s) within {timeout.FormatPretty()}");
             }
         }
     }
