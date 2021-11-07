@@ -16,6 +16,7 @@
     <PackageTags>bdd;tdd;testing;framework;behavior driven development;acceptance criteria</PackageTags>
     <PackageReleaseNotes>Release details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-340</PackageReleaseNotes>
     <IsPackable>true</IsPackable>
+    <IsTestProject>false</IsTestProject>
     <LangVersion>latest</LangVersion>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <SignAssembly>true</SignAssembly>
