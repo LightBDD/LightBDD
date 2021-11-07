@@ -4,6 +4,7 @@ using LightBDD.Framework.Scenarios;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace LightBDD.MsTest2.UnitTests
@@ -140,11 +141,11 @@ namespace LightBDD.MsTest2.UnitTests
         public void Runner_should_ignore_scenario_with_IgnoreScenarioAttribute()
         {
             var ex = Assert.ThrowsException<AssertInconclusiveException>(() => Runner.RunScenario(_ => Some_step()));
-            Assert.AreEqual("Assert.Inconclusive failed. scenario reason", ex.Message);
+            StringAssert.Matches(ex.Message, new Regex("Assert.Inconclusive .*. scenario reason"));
             var result = GetScenarioResult(nameof(Runner_should_ignore_scenario_with_IgnoreScenarioAttribute));
 
             Assert.AreEqual(ExecutionStatus.Ignored, result.Status);
-            Assert.AreEqual("Scenario: Assert.Inconclusive failed. scenario reason", result.StatusDetails);
+            StringAssert.Matches(result.StatusDetails, new Regex("Scenario: Assert.Inconclusive .*. scenario reason"));
             Assert.AreEqual(ExecutionStatus.NotRun, result.GetSteps().Single().Status);
         }
 
@@ -153,12 +154,12 @@ namespace LightBDD.MsTest2.UnitTests
         public void Runner_should_ignore_step_with_IgnoreScenarioAttribute()
         {
             var ex = Assert.ThrowsException<AssertInconclusiveException>(() => Runner.RunScenario(_ => Declaratively_ignored_step()));
-            Assert.AreEqual("Assert.Inconclusive failed. step reason", ex.Message);
+            StringAssert.Matches(ex.Message, new Regex("Assert.Inconclusive .*. step reason"));
             var result = GetScenarioResult(nameof(Runner_should_ignore_step_with_IgnoreScenarioAttribute));
 
             Assert.AreEqual(ExecutionStatus.Ignored, result.Status);
             Assert.AreEqual(ExecutionStatus.Ignored, result.GetSteps().Single().Status);
-            Assert.AreEqual("Step 1: Assert.Inconclusive failed. step reason", result.StatusDetails);
+            StringAssert.Matches(result.StatusDetails, new Regex("Step 1: Assert.Inconclusive .*. step reason"));
         }
 
         [IgnoreScenario("step reason")]
