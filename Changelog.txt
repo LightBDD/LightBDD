@@ -4,6 +4,10 @@ LightBDD
 Version [next]
 ----------------------------------------
 
+Version 3.4.0 (VSIX)
+----------------------------------------
++ #250 (VSIX) Updated LightBDD Visual Studio Extension to support VS2022
+
 Version 3.4.0
 ----------------------------------------
 + #245 (Framework)(New) Implemented MessageListener to help testing message based services
