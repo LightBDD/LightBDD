@@ -1,6 +1,6 @@
 image:
   - Ubuntu
-  - Visual Studio 2019
+  - Visual Studio 2022
 
 version: '{build}'
 skip_tags: false
@@ -11,7 +11,7 @@ for:
 -
   matrix:
     only:
-      - image: Visual Studio 2019
+      - image: Visual Studio 2022
     fast_finish: true
   build_script:
   - ps: make\make.ps1 -t all
