@@ -68,6 +68,9 @@ namespace LightBDD.Core.Formatting.Diagnostics
                 return builder.AppendFormat(CultureInfo.InvariantCulture, "{0}", obj);
             if (type.IsEnum)
                 return builder.Append(Enum.GetName(type, obj));
+            var basic = TryFormatBasic(obj);
+            if (basic != null)
+                return builder.Append('\"').Append(basic).Append('\"');
 
             if (level == 0)
                 return builder.Append("{...}");
@@ -88,6 +91,17 @@ namespace LightBDD.Core.Formatting.Diagnostics
                 builder.Append(member.Name).Append("=").DumpProperty(member, obj, level).Append(" ");
 
             return builder.Append("}");
+        }
+
+        private static string TryFormatBasic(object value)
+        {
+            return value switch
+            {
+                DateTimeOffset dateTimeOffset => dateTimeOffset.ToString("O", CultureInfo.InvariantCulture),
+                DateTime dateTime => dateTime.ToString("O", CultureInfo.InvariantCulture),
+                IFormattable formattable => formattable.ToString(null, CultureInfo.InvariantCulture),
+                _ => null
+            };
         }
 
         private static StringBuilder DumpProperty(this StringBuilder builder, PropertyInfo member, object obj, int level)

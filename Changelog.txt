@@ -3,6 +3,7 @@ LightBDD
 
 Version [next]
 ----------------------------------------
++ #248 (Framework)(Change) Improved MessageListener.EnsureReceived() to return friendly message dumps for common types
 
 Version 3.4.0 (VSIX)
 ----------------------------------------
