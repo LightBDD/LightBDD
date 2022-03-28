@@ -3,6 +3,9 @@ LightBDD
 
 Version [next]
 ----------------------------------------
+
+Version 3.4.1
+----------------------------------------
 + #248 (Framework)(Change) Improved MessageListener.EnsureReceived() to return friendly message dumps for common types
 + #252 (LightBdd.XUnit2)(Change) Added LightBddScopeAttribute.DiagnosticMessageSink property
 
