@@ -28,6 +28,16 @@ namespace LightBDD.Core.UnitTests.Formatting.Diagnostics
             public string Prop => throw new InvalidOperationException("foo");
         }
 
+        class BasicTypes
+        {
+            public TimeSpan? Span { get; set; }
+            public DateTime? DateTime { get; set; }
+            public DateTimeOffset? DateTimeOffset { get; set; }
+            public Guid? Guid { get; set; }
+            public decimal Decimal { get; set; }
+            public long? NullableLong { get; set; }
+        }
+
         [Test]
         public void It_should_format_object()
         {
@@ -41,7 +51,7 @@ namespace LightBDD.Core.UnitTests.Formatting.Diagnostics
             };
 
             var actual = ObjectFormatter.Dump(obj);
-            Assert.That(actual, Is.EqualTo("ComplexType: { StringField=\"test!\" Int=5 Flag=True ReadonlyFloat=3.14 Array=[ Local Unspecified Utc ] Dictionary=[ { Key=\"abc\" Value={ StringField=null Int=0 Flag=False ReadonlyFloat=3.14 Array={...} Dictionary={...} Span=null } } ] Span={ Ticks=864000000000 Days=1 Hours=0 Milliseconds=0 Minutes=0 Seconds=0 TotalDays=1 TotalHours=24 TotalMilliseconds=86400000 TotalMinutes=1440 TotalSeconds=86400 } }"));
+            Assert.That(actual, Is.EqualTo("ComplexType: { StringField=\"test!\" Int=5 Flag=True ReadonlyFloat=3.14 Array=[ Local Unspecified Utc ] Dictionary=[ { Key=\"abc\" Value={ StringField=null Int=0 Flag=False ReadonlyFloat=3.14 Array={...} Dictionary={...} Span=null } } ] Span=\"1.00:00:00\" }"));
         }
 
         [Test]
@@ -63,7 +73,7 @@ namespace LightBDD.Core.UnitTests.Formatting.Diagnostics
             };
 
             var actual = ObjectFormatter.DumpMany(items);
-            Assert.That(actual.Replace("\r", ""), Is.EqualTo(@"ComplexType: { StringField=""test!"" Int=5 Flag=True ReadonlyFloat=3.14 Array=[ Local Unspecified Utc ] Dictionary=[ {...} ] Span={ Ticks=432000000000 Days=0 Hours=12 Milliseconds=0 Minutes=0 Seconds=0 TotalDays=0.5 TotalHours=12 TotalMilliseconds=43200000 TotalMinutes=720 TotalSeconds=43200 } }
+            Assert.That(actual.Replace("\r", ""), Is.EqualTo(@"ComplexType: { StringField=""test!"" Int=5 Flag=True ReadonlyFloat=3.14 Array=[ Local Unspecified Utc ] Dictionary=[ {...} ] Span=""12:00:00"" }
 BaseType: { StringField=""123"" }
 Double: 3.14
 Boolean: False".Replace("\r", "")));
@@ -74,6 +84,22 @@ Boolean: False".Replace("\r", "")));
         {
             var actual = ObjectFormatter.Dump(new Problematic());
             Assert.That(actual, Is.EqualTo("Problematic: { Prop=!InvalidOperationException:\"foo\" }"));
+        }
+
+        [Test]
+        public void It_should_format_basic_types_properly()
+        {
+            var obj = new BasicTypes
+            {
+                DateTimeOffset = new DateTimeOffset(2022,01,02,03,04,05,TimeSpan.FromHours(3)),
+                DateTime = new DateTime(2022,01,02,03,04,05,DateTimeKind.Utc),
+                Decimal = (decimal)3.14,
+                Guid = Guid.Parse("8bdcb730-6d08-409d-8170-12da52cb71e1"),
+                NullableLong = 34,
+                Span = TimeSpan.FromTicks(101427461000),
+            };
+            var actual = ObjectFormatter.Dump(obj);
+            Assert.That(actual.Replace("\r", ""), Is.EqualTo("BasicTypes: { Span=\"02:49:02.7461000\" DateTime=\"2022-01-02T03:04:05.0000000Z\" DateTimeOffset=\"2022-01-02T03:04:05.0000000+03:00\" Guid=\"8bdcb730-6d08-409d-8170-12da52cb71e1\" Decimal=\"3.14\" NullableLong=34 }".Replace("\r", "")));
         }
     }
 }
