@@ -4,6 +4,7 @@ using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Framework.Configuration;
 using LightBDD.XUnit2.Configuration;
 using LightBDD.XUnit2.Implementation;
+using Xunit.Abstractions;
 using Xunit.Sdk;
 
 namespace LightBDD.XUnit2
@@ -19,11 +20,20 @@ namespace LightBDD.XUnit2
     [AttributeUsage(AttributeTargets.Assembly)]
     public class LightBddScopeAttribute : Attribute, ITestFrameworkAttribute
     {
-        internal void SetUp()
+        private static readonly NullMessageSink NullDiagnosticMessageSink = new NullMessageSink();
+        internal void SetUp(IMessageSink diagnosticMessageSink)
         {
+            DiagnosticMessageSink = diagnosticMessageSink;
             XUnit2FeatureCoordinator.InstallSelf(Configure());
             OnSetUp();
         }
+
+        /// <summary>
+        /// Returns XUnit diagnostic MessageSink.<br/>
+        /// When accessed within <seealso cref="OnSetUp"/>, <seealso cref="OnConfigure"/>, <seealso cref="OnTearDown"/> or during test execution, the current XUnit diagnostic message sink is returned.<br/>
+        /// When accessed outside of mentioned scopes, the instance of <seealso cref="NullMessageSink"/> is returned.
+        /// </summary>
+        protected IMessageSink DiagnosticMessageSink { get; private set; } = NullDiagnosticMessageSink;
 
         /// <summary>
         /// Allows to execute additional actions after LightBDD scope initialization
@@ -35,6 +45,7 @@ namespace LightBDD.XUnit2
             try
             {
                 OnTearDown();
+                DiagnosticMessageSink = NullDiagnosticMessageSink;
             }
             finally
             {
