@@ -3,6 +3,7 @@ LightBDD
 
 Version [next]
 ----------------------------------------
++ #252 (LightBdd.XUnit2)(Change) Added LightBddScopeAttribute.DiagnosticMessageSink property
 
 Version 3.4.0 (VSIX)
 ----------------------------------------
