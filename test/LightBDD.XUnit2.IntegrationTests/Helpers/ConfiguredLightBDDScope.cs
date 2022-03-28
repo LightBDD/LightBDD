@@ -1,6 +1,7 @@
 ﻿using LightBDD.Core.Configuration;
 using LightBDD.Framework.Configuration;
 using LightBDD.XUnit2.IntegrationTests.Helpers;
+using Xunit.Sdk;
 
 [assembly: ConfiguredLightBDDScope]
 namespace LightBDD.XUnit2.IntegrationTests.Helpers
@@ -16,6 +17,16 @@ namespace LightBDD.XUnit2.IntegrationTests.Helpers
                 .UpdateNotifierProvider(() => ScenarioProgressCapture.Instance);
             configuration.ReportWritersConfiguration()
                 .Clear();
+        }
+
+        protected override void OnSetUp()
+        {
+            DiagnosticMessageSink.OnMessage(new DiagnosticMessage("OnSetUp"));
+        }
+
+        protected override void OnTearDown()
+        {
+            DiagnosticMessageSink.OnMessage(new DiagnosticMessage("OnTearDown"));
         }
     }
 }
