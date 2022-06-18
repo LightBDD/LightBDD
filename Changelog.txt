@@ -4,6 +4,10 @@ LightBDD
 Version [next]
 ----------------------------------------
 
+Version 3.4.2
+----------------------------------------
++ #257 (Core)(Bug) Added reset of step and scenario results upon retry in decorator
+
 Version 3.4.1
 ----------------------------------------
 + #248 (Framework)(Change) Improved MessageListener.EnsureReceived() to return friendly message dumps for common types
