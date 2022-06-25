@@ -28,7 +28,7 @@ LightBDD.Extensions.DependencyInjection | [![NuGet Badge](https://buildstats.inf
 * Productivity extensions for VisualStudio with Feature Class Templates, Project Templates and Code Snippets,
 * Integration with [NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/), [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/) and [Fixie](http://fixie.github.io/) frameworks,
 * Async scenario and steps execution support,
-* Cross-platform support (.NET Framework / .NET Standard / .NET Core / UWP).
+* Cross-platform support (.NET Framework / .NET Standard / .NET Core / [UWP](https://github.com/LightBDD/LightBDD/tree/3.4.2/examples/Example.LightBDD.MsTest2.UWP)).
 
 ### Tests structure and conventions
 **LightBDD** runs on top of [NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/), [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/) and [Fixie](http://fixie.github.io/), allowing to leverage the well known test frameworks and their features in writing the behavioral style scenarios, which makes it very easy to learn, adapt and use.
