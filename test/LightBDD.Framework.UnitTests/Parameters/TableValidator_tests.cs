@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LightBDD.Core.Execution;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;
-using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 #pragma warning disable 1998
 
@@ -87,7 +85,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             table.SetActual(new Testable[0]);
 
             var ex = Assert.Throws<InvalidOperationException>(() => table.SetActual(new Testable[0]));
-            Assert.That(ex.Message, Is.EqualTo("Actual rows have been already specified or are being specified right now"));
+            Assert.That(ex.Message, Is.EqualTo("Actual rows have been already specified"));
             Assert.ThrowsAsync<InvalidOperationException>(() => table.SetActualAsync(() => Task.FromResult(Enumerable.Empty<Testable>())));
         }
 
@@ -97,7 +95,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             var table = CreateNotNullValidator();
             await table.SetActualAsync(() => throw new Exception("foo"));
             Assert.That(table.Details.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Exception));
-            Assert.That(table.Details.VerificationMessage, Is.EqualTo("Failed to set actual rows: foo"));
+            Assert.That(table.Details.VerificationMessage, Is.EqualTo("Failed to retrieve rows: foo"));
             Assert.That(table.ActualRows, Is.Empty);
         }
 
@@ -108,7 +106,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             await table.SetActualAsync(() => throw new Exception("foo"));
 
             var ex = Assert.Throws<InvalidOperationException>(() => table.SetActual(Enumerable.Empty<Testable>()));
-            Assert.That(ex.Message, Is.EqualTo("Actual rows have been already specified or are being specified right now"));
+            Assert.That(ex.Message, Is.EqualTo("Actual rows have been already specified"));
         }
 
         [Test]
@@ -167,53 +165,6 @@ namespace LightBDD.Framework.UnitTests.Parameters
             AssertVerificationMessage(result.Rows[2].VerificationMessage, "[2].Name: expected: not null, but it was");
             AssertVerificationMessage(result.Rows[3].VerificationMessage, "[3].Value: expected: not null, but it was");
             AssertVerificationMessage(result.VerificationMessage, "[1].Name: expected: not null, but it was\n[1].Value: expected: not null, but it was\n[2].Name: expected: not null, but it was\n[3].Value: expected: not null, but it was");
-        }
-
-        [Test]
-        public void InitializeParameterTrace_should_publish_discovery_event()
-        {
-            var table = CreateNotNullValidator();
-            var publisher = new CapturingProgressPublisher();
-            ((ITraceableParameter)table).InitializeParameterTrace(TestResults.CreateParameterInfo("par"), publisher);
-            publisher.AssertLogs("TabularParameterDiscovered|Param=par|Status=NotProvided|Columns=[Name,Value]|Rows=[{Missing|Failure|[not null/<none>,not null/<none>]}]");
-        }
-
-        [Test]
-        public async Task SetActualAsync_should_trace_execution_progress()
-        {
-            var table = CreateNotNullValidator();
-            var publisher = new CapturingProgressPublisher();
-            ((ITraceableParameter)table).InitializeParameterTrace(TestResults.CreateParameterInfo("p1"), publisher);
-
-            await table.SetActualAsync(async () => new[]
-            {
-                new Testable("A", "1"),
-                new Testable("B", "2")
-            });
-
-            publisher.AssertLogs(
-                "TabularParameterDiscovered|Param=p1|Status=NotProvided|Columns=[Name,Value]|Rows=[{Missing|Failure|[not null/<none>,not null/<none>]}]",
-                "TabularParameterValidationStarting|Param=p1|Status=NotProvided|Columns=[Name,Value]|Rows=[{Missing|Failure|[not null/<none>,not null/<none>]}]",
-                "TabularParameterValidationFinished|Param=p1|Status=Success|Columns=[Name,Value]|Rows=[{Matching|Success|[not null/A,not null/1]},{Matching|Success|[not null/B,not null/2]}]");
-        }
-
-        [Test]
-        public void SetActual_should_trace_execution_progress()
-        {
-            var table = CreateNotNullValidator();
-            var publisher = new CapturingProgressPublisher();
-            ((ITraceableParameter)table).InitializeParameterTrace(TestResults.CreateParameterInfo("p1"), publisher);
-
-            table.SetActual(new[]
-            {
-                new Testable("A", "1"),
-                new Testable("B", "2")
-            });
-
-            publisher.AssertLogs(
-                "TabularParameterDiscovered|Param=p1|Status=NotProvided|Columns=[Name,Value]|Rows=[{Missing|Failure|[not null/<none>,not null/<none>]}]",
-                "TabularParameterValidationStarting|Param=p1|Status=NotProvided|Columns=[Name,Value]|Rows=[{Missing|Failure|[not null/<none>,not null/<none>]}]",
-                "TabularParameterValidationFinished|Param=p1|Status=Success|Columns=[Name,Value]|Rows=[{Matching|Success|[not null/A,not null/1]},{Matching|Success|[not null/B,not null/2]}]");
         }
 
         private void AssertRow(ITabularParameterRow row, TableRowType rowType, ParameterVerificationStatus rowStatus, params string[] expectedValueDetails)

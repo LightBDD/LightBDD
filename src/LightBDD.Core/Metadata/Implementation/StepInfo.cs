@@ -1,16 +1,13 @@
 using System;
-using System.Collections.Generic;
 
 namespace LightBDD.Core.Metadata.Implementation
 {
     internal class StepInfo : IStepInfo
     {
-        private readonly StepNameInfo _name;
-
-        public StepInfo(IMetadataInfo parent, StepNameInfo name, int number, int total, string groupPrefix)
+        public StepInfo(IMetadataInfo parent, IStepNameInfo name, int number, int total, string groupPrefix)
         {
             Parent = parent;
-            _name = name;
+            Name = name;
             Number = number;
             Total = total;
             GroupPrefix = groupPrefix;
@@ -20,19 +17,19 @@ namespace LightBDD.Core.Metadata.Implementation
         public string GroupPrefix { get; }
         public int Number { get; }
         public int Total { get; }
-
-        public IStepNameInfo Name => _name;
-        INameInfo IMetadataInfo.Name => Name;
+        public IStepNameInfo Name { get; private set; }
         public Guid RuntimeId { get; } = Guid.NewGuid();
 
-        public void UpdateName(IReadOnlyList<INameParameterInfo> parameters)
+        public void UpdateName(INameParameterInfo[] parameters)
         {
-            _name.UpdateParameters(parameters);
+            Name = StepNameInfo.WithUpdatedParameters(Name, parameters);
         }
 
         public override string ToString()
         {
             return $"{GroupPrefix}{Number}/{GroupPrefix}{Total} {Name}";
         }
+
+        INameInfo IMetadataInfo.Name => Name;
     }
 }

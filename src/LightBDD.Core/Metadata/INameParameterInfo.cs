@@ -17,9 +17,5 @@ namespace LightBDD.Core.Metadata
         /// Returns formatted parameter value.
         /// </summary>
         string FormattedValue { get; }
-        /// <summary>
-        /// Returns parameter name.
-        /// </summary>
-        string Name { get; }
     }
 }

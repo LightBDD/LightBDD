@@ -7,7 +7,7 @@ namespace LightBDD.Core.Notification.Implementation
 {
     //TODO: remove in LightBDD 4.x
     [Obsolete]
-    internal class NotificationAdapter : IProgressNotifier
+    class NotificationAdapter : IProgressNotifier
     {
         private readonly IFeatureProgressNotifier _featureProgressNotifier;
         private readonly Func<object, IScenarioProgressNotifier> _scenarioProgressNotifierProvider;

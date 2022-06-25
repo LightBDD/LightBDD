@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Results;
 using LightBDD.Framework;
-using LightBDD.Framework.Formatting;
 using LightBDD.Framework.Scenarios;
 using Shouldly;
 
@@ -102,10 +101,10 @@ namespace LightBDD.Fixie2.UnitTests
         [Scenario]
         [InlineCase("abc")]
         [InlineCase("def")]
-        public void Runner_should_support_parameterized_scenarios_with_value([Format("@{0}")] string value)
+        public void Runner_should_support_parameterized_scenarios_with_value(string value)
         {
             Runner.RunScenario(_ => Step_with_parameter(value));
-            ConfiguredLightBddScope.CapturedNotifications.ShouldContain($"SCENARIO: Runner should support parameterized scenarios with value \"@{value}\"");
+            ConfiguredLightBddScope.CapturedNotifications.ShouldContain($"SCENARIO: Runner should support parameterized scenarios with value \"{value}\"");
         }
 
         [Scenario]

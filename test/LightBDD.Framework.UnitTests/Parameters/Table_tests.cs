@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
-using LightBDD.Core.Execution;
 using LightBDD.Framework.Parameters;
-using LightBDD.UnitTests.Helpers;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
@@ -258,22 +256,6 @@ namespace LightBDD.Framework.UnitTests.Parameters
             var table = input.ToTable();
             Assert.That(table[0], Is.EqualTo(input[0]));
             Assert.That(table[1], Is.EqualTo(input[1]));
-        }
-
-        [Test]
-        public void InitializeParameterTrace_should_publish_discovery_event()
-        {
-            var publisher = new CapturingProgressPublisher();
-
-            var input = new[]
-            {
-                new {Id = 6, X = 2, Y = 5},
-                new {Id = 7, X = 3, Y = 7}
-            }
-            .ToTable();
-
-            ((ITraceableParameter)input).InitializeParameterTrace(TestResults.CreateParameterInfo("p1"), publisher);
-            publisher.AssertLogs("TabularParameterDiscovered|Param=p1|Status=NotApplicable|Columns=[Id,X,Y]|Rows=[{Matching|NotApplicable|[6/6,2/2,5/5]},{Matching|NotApplicable|[7/7,3/3,7/7]}]");
         }
 
         private static void TestCollectionToTable<T>(T[] input, string[] expectedColumns, int index, ColumnValue[] expectedValues)

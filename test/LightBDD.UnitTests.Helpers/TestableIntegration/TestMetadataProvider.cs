@@ -23,7 +23,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
 
         public override ScenarioDescriptor CaptureCurrentScenario()
         {
-            return new ScenarioDescriptor(TestExecutionContext.CurrentContext.CurrentTest.Method.MethodInfo, TestExecutionContext.CurrentContext.CurrentTest.Arguments);
+            return new ScenarioDescriptor(TestExecutionContext.CurrentContext.CurrentTest.Method.MethodInfo, null);
         }
 
         public TestMetadataProvider() : base(Configure(_=>{}))

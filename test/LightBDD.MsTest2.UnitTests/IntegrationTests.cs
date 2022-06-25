@@ -6,7 +6,6 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using LightBDD.Framework.Formatting;
 
 namespace LightBDD.MsTest2.UnitTests
 {
@@ -130,10 +129,10 @@ namespace LightBDD.MsTest2.UnitTests
         [Scenario]
         [DataRow("abc")]
         [DataRow("def")]
-        public void Runner_should_support_parameterized_scenarios_with_value([Format("@{0}")] string value)
+        public void Runner_should_support_parameterized_scenarios_with_value(string value)
         {
             Runner.RunScenario(_ => Step_with_parameter(value));
-            Assert.IsTrue(ConfiguredLightBddScope.CapturedNotifications.Contains($"SCENARIO: Runner should support parameterized scenarios with value \"@{value}\""));
+            Assert.IsTrue(ConfiguredLightBddScope.CapturedNotifications.Contains($"SCENARIO: Runner should support parameterized scenarios with value \"{value}\""));
         }
 
         [Scenario]

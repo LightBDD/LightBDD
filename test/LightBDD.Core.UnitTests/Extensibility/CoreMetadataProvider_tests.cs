@@ -76,7 +76,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         }
 
         [Test]
-        public void GetStepName_should_capture_name_from_step_descriptor_but_leave_parameters_unknown_while_preserving_their_names()
+        public void GetStepName_should_capture_name_from_step_descriptor_but_leave_parameters_unknown()
         {
             var descriptor = new StepDescriptor(
                 ParameterInfoHelper.GetMethodInfo<int>(new Feature_type().Some_step_with_argument),
@@ -91,18 +91,6 @@ namespace LightBDD.Core.UnitTests.Extensibility
             Assert.That(stepName.StepTypeName.ToString(), Is.EqualTo("GIVEN"));
             Assert.That(stepName.NameFormat, Is.EqualTo("Some step with argument \"{0}\""));
             Assert.That(stepName.ToString(), Is.EqualTo("GIVEN Some step with argument \"<?>\""));
-            Assert.That(stepName.Parameters.Select(p => p.Name).ToArray(), Is.EqualTo(new[] { "argument" }));
-        }
-
-        [Test]
-        public void GetScenarioName_should_capture_parameterized_scenario_name_from_descriptor_but_leave_parameters_unknown_while_preserving_their_names()
-        {
-            var method = typeof(Feature_type).GetMethod(nameof(Feature_type.Some_method_with_argument_arg1_and_arg2));
-            var scenarioName = _metadataProvider.GetScenarioName(new ScenarioDescriptor(method, new object[] { 5, "text" }));
-
-            Assert.That(scenarioName.NameFormat, Is.EqualTo("Some method with argument arg1 \"{0}\" and arg2 \"{1}\""));
-            Assert.That(scenarioName.ToString(), Is.EqualTo("Some method with argument arg1 \"<?>\" and arg2 \"<?>\""));
-            Assert.That(scenarioName.Parameters.Select(p => p.Name).ToArray(), Is.EqualTo(new[] { "arg1", "arg2" }));
         }
 
         [Test]

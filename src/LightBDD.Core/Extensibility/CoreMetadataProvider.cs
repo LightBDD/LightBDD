@@ -111,7 +111,7 @@ namespace LightBDD.Core.Extensibility
             return new StepNameInfo(
                 _stepTypeProcessor.GetStepTypeName(stepDescriptor.PredefinedStepType, ref formattedStepName, previousStepTypeName),
                 formattedStepName,
-                stepDescriptor.Parameters.Select(p => NameParameterInfo.Unknown(p.RawName)).ToArray());
+                stepDescriptor.Parameters.Select(p => NameParameterInfo.Unknown).ToArray());
         }
 
         /// <summary>
@@ -276,8 +276,10 @@ namespace LightBDD.Core.Extensibility
             try
             {
                 var formattedStepName = _nameParser.GetNameFormat(scenarioDescriptor.MethodInfo, scenarioDescriptor.MethodInfo.Name, scenarioDescriptor.Parameters);
-                var arguments = scenarioDescriptor.Parameters.Select(p => NameParameterInfo.Unknown(p.RawName)).ToArray();
-                return new NameInfo(formattedStepName, arguments);
+                var arguments = scenarioDescriptor.Parameters.Select(p => new MethodArgument(p, GetValueFormattingServiceFor(p.ParameterInfo))).ToArray();
+                return new NameInfo(
+                    formattedStepName,
+                    arguments.Select(p => p.FormatNameParameter()).ToArray());
             }
             catch (Exception e)
             {

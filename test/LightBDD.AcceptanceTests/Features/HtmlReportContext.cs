@@ -78,19 +78,19 @@ namespace LightBDD.AcceptanceTests.Features
             Driver.EnsurePageIsLoaded();
         }
 
-        public async Task Then_all_features_should_be_VISIBLE([VisibleFormat] bool visible)
+        public async Task Then_all_features_should_be_VISIBLE([VisibleFormat]bool visible)
         {
             var actual = Driver.FindFeatures().Count(e => e.Displayed == visible);
             Assert.That(actual, Is.EqualTo(Features.Count()));
         }
 
-        public async Task Then_all_scenarios_should_be_VISIBLE([VisibleFormat] bool visible)
+        public async Task Then_all_scenarios_should_be_VISIBLE([VisibleFormat]bool visible)
         {
             var actual = Driver.FindAllScenarios().Count(e => e.Displayed == visible);
             Assert.That(actual, Is.EqualTo(Features.SelectMany(f => f.GetScenarios()).Count()));
         }
 
-        public async Task Then_all_steps_should_be_VISIBLE([VisibleFormat] bool visible)
+        public async Task Then_all_steps_should_be_VISIBLE([VisibleFormat]bool visible)
         {
             var actual = Driver.FindAllSteps().Count(e => e.Displayed == visible);
             Assert.That(actual, Is.EqualTo(Features.SelectMany(f => f.GetScenarios()).SelectMany(s => s.GetSteps()).Count()));
@@ -124,7 +124,7 @@ namespace LightBDD.AcceptanceTests.Features
             return $"toggle{feature}";
         }
 
-        public async Task Then_the_feature_scenarios_should_be_VISIBLE(int feature, [VisibleFormat] bool visible)
+        public async Task Then_the_feature_scenarios_should_be_VISIBLE(int feature, [VisibleFormat]bool visible)
         {
             var actual = Driver.FindFeature(feature).FindScenarios().Count(e => e.Displayed == visible);
             Assert.That(actual, Is.EqualTo(Features[feature - 1].GetScenarios().Count()));
@@ -140,7 +140,7 @@ namespace LightBDD.AcceptanceTests.Features
             return $"toggle{feature}_{scenario - 1}";
         }
 
-        public async Task Then_the_feature_scenario_steps_should_be_VISIBLE(int feature, int scenario, [VisibleFormat] bool visible)
+        public async Task Then_the_feature_scenario_steps_should_be_VISIBLE(int feature, int scenario, [VisibleFormat]bool visible)
         {
             var actual = Driver.FindFeature(feature).FindScenario(scenario).FindSteps().Count(e => e.Displayed == visible);
             Assert.That(actual, Is.EqualTo(Features[feature - 1].GetScenarios().ElementAt(scenario - 1).GetSteps().Count()));
@@ -156,12 +156,12 @@ namespace LightBDD.AcceptanceTests.Features
             ClickLabeledButtonSync("toggleScenarios");
         }
 
-        public async Task Then_the_scenario_filter_button_should_be_SELECTED([SelectedFormat] bool selected)
+        public async Task Then_the_scenario_filter_button_should_be_SELECTED([SelectedFormat]bool selected)
         {
             Assert.That(Driver.FindElementById("toggleScenarios").Selected, Is.EqualTo(selected));
         }
 
-        public async Task Then_the_feature_filter_button_should_be_SELECTED([SelectedFormat] bool selected)
+        public async Task Then_the_feature_filter_button_should_be_SELECTED([SelectedFormat]bool selected)
         {
             Assert.That(Driver.FindElementById("toggleFeatures").Selected, Is.EqualTo(selected));
         }
@@ -171,26 +171,26 @@ namespace LightBDD.AcceptanceTests.Features
             ClickLabeledButton($"show{status}");
         }
 
-        public async Task Then_the_filter_status_button_should_be_SELECTED(ExecutionStatus status, [SelectedFormat] bool selected)
+        public async Task Then_the_filter_status_button_should_be_SELECTED(ExecutionStatus status, [SelectedFormat]bool selected)
         {
             Assert.That(Driver.FindElementById($"show{status}").Selected, Is.EqualTo(selected));
         }
 
-        public async Task Then_all_scenarios_with_status_should_be_VISIBLE(ExecutionStatus status, [VisibleFormat] bool visible)
+        public async Task Then_all_scenarios_with_status_should_be_VISIBLE(ExecutionStatus status, [VisibleFormat]bool visible)
         {
             var elements = Driver.FindAllScenarios().Where(s => s.HasClassName(status.ToString().ToLower())).ToArray();
             Assert.That(elements, Is.Not.Empty);
             Assert.That(elements.All(s => s.Displayed == visible));
         }
 
-        public async Task Then_all_scenarios_with_status_other_than_STATUS_should_be_VISIBLE(ExecutionStatus status, [VisibleFormat] bool visible)
+        public async Task Then_all_scenarios_with_status_other_than_STATUS_should_be_VISIBLE(ExecutionStatus status, [VisibleFormat]bool visible)
         {
             var elements = Driver.FindAllScenarios().Where(s => !s.HasClassName(status.ToString().ToLower())).ToArray();
             Assert.That(elements, Is.Not.Empty);
             Assert.That(elements.All(s => s.Displayed == visible));
         }
 
-        public async Task Then_all_features_having_all_scenarios_of_status_should_be_VISIBLE(ExecutionStatus status, [VisibleFormat] bool visible)
+        public async Task Then_all_features_having_all_scenarios_of_status_should_be_VISIBLE(ExecutionStatus status, [VisibleFormat]bool visible)
         {
             var expected = new[] { "feature", status.ToString().ToLower() };
             var elements = Driver.FindFeatures().Where(f => f.GetClassNames().SequenceEqual(expected)).ToArray();
@@ -213,18 +213,18 @@ namespace LightBDD.AcceptanceTests.Features
                 .Click();
         }
 
-        public async Task Then_the_category_filter_button_should_be_SELECTED(string category, [SelectedFormat] bool selected)
+        public async Task Then_the_category_filter_button_should_be_SELECTED(string category, [SelectedFormat]bool selected)
         {
             var label = Driver.FindLabelByText(category);
             Assert.That(Driver.FindLabelTarget(label).Selected, Is.EqualTo(selected));
         }
 
-        public async Task Then_the_feature_scenario_should_be_VISIBLE(int feature, int scenario, [VisibleFormat] bool visible)
+        public async Task Then_the_feature_scenario_should_be_VISIBLE(int feature, int scenario, [VisibleFormat]bool visible)
         {
             Assert.That(Driver.FindFeature(feature).FindScenario(scenario).Displayed, Is.EqualTo(visible));
         }
 
-        public async Task Then_the_feature_should_be_VISIBLE(int feature, [VisibleFormat] bool visible)
+        public async Task Then_the_feature_should_be_VISIBLE(int feature, [VisibleFormat]bool visible)
         {
             Assert.That(Driver.FindFeature(feature).Displayed, Is.EqualTo(visible));
         }
@@ -268,10 +268,10 @@ namespace LightBDD.AcceptanceTests.Features
                 .ForFeature(feature)
                 .ForScenario(scenario)
                 .AddStep(step, status)
-               .WithStepParameters(TestResults.CreateTestParameter(parameter, parameter, tabular));
+               .WithStepParameters(TestResults.CreateTestParameter(parameter, tabular));
         }
 
-        public async Task Then_the_options_link_should_be_VISIBLE([VisibleFormat] bool visible)
+        public async Task Then_the_options_link_should_be_VISIBLE([VisibleFormat]bool visible)
         {
             Assert.That(Driver.FindElementById("optionsLink").Displayed, Is.EqualTo(visible));
         }
@@ -291,7 +291,7 @@ namespace LightBDD.AcceptanceTests.Features
             Driver.EnsurePageIsLoaded();
         }
 
-        public async Task Then_the_Feature_Summary_table_should_be_sorted_ASCENDING_by_column([OrderFormat] bool ascending, FeatureSummaryColumn column)
+        public async Task Then_the_Feature_Summary_table_should_be_sorted_ASCENDING_by_column([OrderFormat]bool ascending, FeatureSummaryColumn column)
         {
             var values = Driver
                 .FindElementById("featuresSummary")

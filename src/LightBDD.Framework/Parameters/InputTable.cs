@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Formatting.Values;
-using LightBDD.Core.Metadata;
-using LightBDD.Core.Notification;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Formatting.Values;
-using LightBDD.Framework.Notification.Events;
 using LightBDD.Framework.Results.Implementation;
 
 namespace LightBDD.Framework.Parameters
@@ -22,12 +19,11 @@ namespace LightBDD.Framework.Parameters
     /// Please see <see cref="Parameters.Table"/> type to learn how to create tables effectively.
     /// </summary>
     /// <typeparam name="TRow">Row type.</typeparam>
-    public class InputTable<TRow> : IComplexParameter, ISelfFormattable, IReadOnlyList<TRow>, ITraceableParameter
+    public class InputTable<TRow> : IComplexParameter, ISelfFormattable, IReadOnlyList<TRow>
     {
         private readonly IReadOnlyList<TRow> _rows;
         private readonly InputTableColumn[] _columns;
         private IValueFormattingService _formattingService = ValueFormattingServices.Current;
-        private TabularParameterDetails _details;
 
         /// <summary>
         /// Constructor creating table with specified <paramref name="columns"/> and <paramref name="rows"/>
@@ -45,8 +41,7 @@ namespace LightBDD.Framework.Parameters
             _formattingService = formattingService;
         }
 
-        IParameterDetails IComplexParameter.Details => GetDetails();
-        private TabularParameterDetails GetDetails() => _details ??= new TabularParameterDetails(GetColumns(), GetRows());
+        IParameterDetails IComplexParameter.Details => new TabularParameterDetails(GetColumns(), GetRows());
 
         private IEnumerable<ITabularParameterRow> GetRows()
         {
@@ -98,11 +93,6 @@ namespace LightBDD.Framework.Parameters
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
-        }
-
-        void ITraceableParameter.InitializeParameterTrace(IParameterInfo parameterInfo, IProgressPublisher progressPublisher)
-        {
-            progressPublisher?.Publish(time => new TabularParameterDiscovered(time, parameterInfo, GetDetails()));
         }
     }
 }

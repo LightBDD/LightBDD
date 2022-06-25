@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting.Parameters;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.UnitTests.Helpers;
@@ -17,9 +19,10 @@ namespace LightBDD.Core.UnitTests.Extensibility
     {
         private class Feature_type
         {
+            public void Some_method_with_argument_arg1_and_arg2([CustomFormatter]int arg1, string arg2) { }
             public void Some_step_with_argument(int argument) { }
-            public void Some_step_with_formatted_argument([CustomFormatter] int argument) { }
-            public void Some_step_with_multiple_formatters_on_argument([CustomFormatter(Order = 1)][Format("{0}", Order = 2)] int argument) { }
+            public void Some_step_with_formatted_argument([CustomFormatter]int argument) { }
+            public void Some_step_with_multiple_formatters_on_argument([CustomFormatter(Order = 1)][Format("{0}", Order = 2)]int argument) { }
         }
 
         private class CustomFormatterAttribute : ParameterFormatterAttribute
@@ -32,7 +35,28 @@ namespace LightBDD.Core.UnitTests.Extensibility
 
         private static TestMetadataProvider GetMetadataProvider()
         {
-            return new TestMetadataProvider(cfg => cfg.ValueFormattingConfiguration().RegisterFrameworkDefaultGeneralFormatters());
+            return new TestMetadataProvider(cfg=>cfg.ValueFormattingConfiguration().RegisterFrameworkDefaultGeneralFormatters());
+        }
+
+        [Test]
+        public void GetScenarioName_should_capture_parameterized_scenario_name_from_descriptor_honoring_parameter_formatters()
+        {
+            var method = typeof(Feature_type).GetMethod(nameof(Feature_type.Some_method_with_argument_arg1_and_arg2));
+            var scenarioName = GetMetadataProvider().GetScenarioName(new ScenarioDescriptor(method, new object[] { 5, "text" }));
+
+            Assert.That(scenarioName.NameFormat, Is.EqualTo("Some method with argument arg1 \"{0}\" and arg2 \"{1}\""));
+            Assert.That(scenarioName.ToString(), Is.EqualTo("Some method with argument arg1 \"--5--\" and arg2 \"text\""));
+            Assert.That(scenarioName.Parameters, Is.Not.Empty);
+
+            Assert.That(scenarioName.Parameters.Select(p => p.FormattedValue).ToArray(), Is.EqualTo(new[] { "--5--", "text" }));
+        }
+
+        [Test]
+        public void GetScenarioName_should_capture_parameterized_scenario_name_from_descriptor_with_multiple_parameter_formatters()
+        {
+            var method = typeof(Feature_type).GetMethod(nameof(Feature_type.Some_step_with_multiple_formatters_on_argument));
+            var scenarioName = GetMetadataProvider().GetScenarioName(new ScenarioDescriptor(method, new object[] { 5 }));
+            Assert.That(scenarioName.ToString(), Is.EqualTo("Some step with multiple formatters on argument \"--5--\""));
         }
 
         [Test]
@@ -127,8 +151,8 @@ namespace LightBDD.Core.UnitTests.Extensibility
             Assert.That(formatter.FormatValue(new[] { true, false }), Is.EqualTo("On, Off"));
         }
 
-        private void Step_with_custom_formatters([FormatCollection(" | ", "#{0}")][FormatBoolean("On", "Off")][Format("my-custom-format1", SupportedType = typeof(MyFormattable1))] object[] arg) { }
-        private void Step_with_custom_formatter_for_collection_item([FormatBoolean("On", "Off")] bool[] arg) { }
+        private void Step_with_custom_formatters([FormatCollection(" | ", "#{0}")][FormatBoolean("On", "Off")][Format("my-custom-format1", SupportedType = typeof(MyFormattable1))]object[] arg) { }
+        private void Step_with_custom_formatter_for_collection_item([FormatBoolean("On", "Off")]bool[] arg) { }
 
         private class MyStructFormatter : IConditionalValueFormatter
         {

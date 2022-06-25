@@ -5,7 +5,6 @@ using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
 using LightBDD.Framework.Extensibility;
-using LightBDD.Framework.Formatting;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
@@ -135,15 +134,6 @@ namespace LightBDD.Core.UnitTests
                            "Step 3: " + ExceptionReason;
 
             Assert.That(scenario.StatusDetails, Is.EqualTo(expected));
-        }
-
-        [Test]
-        [TestCase(5, "abc")]
-        public void It_should_capture_scenario_parameters([Format("--{0}--")] int x, string c)
-        {
-            _runner.Test().TestScenario(Given_step_one);
-            var scenario = _feature.GetFeatureResult().GetScenarios().Single();
-            Assert.That(scenario.Info.Name.ToString(), Is.EqualTo($"It should capture scenario parameters [x: \"--{x}--\"] [c: \"{c}\"]"));
         }
     }
 }

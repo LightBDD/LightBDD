@@ -39,7 +39,8 @@ namespace LightBDD.Core.Execution.Implementation
             _invocation = descriptor.StepInvocation;
             _arguments = arguments;
             _decoratedStepMethod = DecoratingExecutor.DecorateStep(this, RunStepAsync, stepDecorators);
-            _result = new StepResult(info, arguments);
+            _result = new StepResult(info);
+            UpdateNameDetails();
             ValidateDescriptor(descriptor);
         }
 
@@ -85,8 +86,6 @@ namespace LightBDD.Core.Execution.Implementation
                 if (subSteps.Any(s => s.Result.ExecutionException != null))
                     throw new InvalidOperationException("Sub-steps initialization failed.");
 
-                NotifyStepDiscovery(subSteps);
-
                 foreach (var subStep in subSteps)
                     await subStep.ExecuteAsync();
             }
@@ -94,13 +93,6 @@ namespace LightBDD.Core.Execution.Implementation
             {
                 _result.SetSubSteps(subSteps.Select(s => s.Result).ToArray());
             }
-        }
-
-        private void NotifyStepDiscovery(RunnableStep[] subSteps)
-        {
-            var eventTime = _stepContext.ExecutionTimer.GetTime();
-            foreach (var step in subSteps)
-                _stepContext.ProgressNotifier.Notify(new StepDiscovered(eventTime, step.Info));
         }
 
         private RunnableStep[] InitializeComposite(IStepResultDescriptor result)
@@ -141,8 +133,16 @@ namespace LightBDD.Core.Execution.Implementation
             try
             {
                 var args = PrepareArguments();
-                result = await _invocation.Invoke(Context, args);
-                VerifyArguments();
+                try
+                {
+                    result = await _invocation.Invoke(Context, args);
+                }
+                finally
+                {
+                    CaptureParameterResults();
+                }
+
+                VerifyParameterResults();
             }
             catch (Exception e)
             {
@@ -160,9 +160,9 @@ namespace LightBDD.Core.Execution.Implementation
             await InvokeSubStepsAsync(result);
         }
 
-        private void VerifyArguments()
+        private void VerifyParameterResults()
         {
-            var errors = _arguments
+            var errors = _result.Parameters
                 .Where(x => x.Details.VerificationStatus > ParameterVerificationStatus.Success)
                 .Select(FormatErrorMessage)
                 .ToArray();
@@ -172,6 +172,19 @@ namespace LightBDD.Core.Execution.Implementation
 
             throw new InvalidOperationException(string.Join(Environment.NewLine, errors));
         }
+
+        private void CaptureParameterResults()
+        {
+            var results = new List<IParameterResult>();
+            foreach (var argument in _arguments)
+            {
+                if (argument.Value is IComplexParameter complex)
+                    results.Add(new ParameterResult(argument.RawName, complex.Details));
+            }
+
+            _result.SetParameters(results);
+        }
+
         private static string FormatErrorMessage(IParameterResult result)
         {
             return $"Parameter '{result.Name}' verification failed: {result.Details.VerificationMessage?.Replace(Environment.NewLine, Environment.NewLine + "\t") ?? string.Empty}";
@@ -202,7 +215,7 @@ namespace LightBDD.Core.Execution.Implementation
         private void StartStep(EventTime executionStartTime)
         {
             ScenarioExecutionContext.Current.Get<CurrentStepProperty>().Stash(this);
-            EvaluateArguments();
+            EvaluateParameters();
             _stepContext.ProgressNotifier.Notify(new StepStarting(executionStartTime, _result.Info));
         }
 
@@ -253,19 +266,31 @@ namespace LightBDD.Core.Execution.Implementation
             }
         }
 
-        private void EvaluateArguments()
+        private void EvaluateParameters()
         {
-            foreach (var arg in _arguments)
-            {
-                arg.Evaluate(Context);
-                _stepContext.ProgressNotifier.Notify(new ParameterEvaluated(_stepContext.ExecutionTimer.GetTime(), arg));
-            }
+            foreach (var parameter in _arguments)
+                parameter.Evaluate(Context);
+            UpdateNameDetails();
         }
 
         private void UpdateNameDetails()
         {
-            foreach (var arg in _arguments)
-                arg.Reformat();
+            if (!_arguments.Any())
+                return;
+
+            _result.UpdateName(_arguments.Select(FormatStepParameter).ToArray());
+        }
+
+        private INameParameterInfo FormatStepParameter(MethodArgument p)
+        {
+            try
+            {
+                return p.FormatNameParameter();
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"Unable to format '{p.RawName}' parameter of step '{_result.Info}': {e.Message}");
+            }
         }
 
         public void ConfigureExecutionAbortOnSubStepException(Func<Exception, bool> shouldAbortExecutionFn)

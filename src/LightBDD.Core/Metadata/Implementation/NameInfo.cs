@@ -6,30 +6,14 @@ namespace LightBDD.Core.Metadata.Implementation
 {
     internal class NameInfo : INameInfo
     {
-        private readonly INameParameterInfo[] _parameters;
         public string NameFormat { get; }
 
-        public IEnumerable<INameParameterInfo> Parameters => _parameters;
+        public IEnumerable<INameParameterInfo> Parameters { get; }
 
-        public NameInfo(string nameFormat, IEnumerable<INameParameterInfo> parameters)
+        public NameInfo(string nameFormat, INameParameterInfo[] parameters)
         {
             NameFormat = nameFormat;
-            _parameters = parameters.ToArray();
-        }
-
-        public void UpdateParameters(IEnumerable<INameParameterInfo> parameters)
-        {
-            foreach (var p in parameters)
-            {
-                for (var i = 0; i < _parameters.Length; i++)
-                {
-                    if (_parameters[i].Name == p.Name)
-                    {
-                        _parameters[i] = p;
-                        break;
-                    }
-                }
-            }
+            Parameters = parameters;
         }
 
         public override string ToString()

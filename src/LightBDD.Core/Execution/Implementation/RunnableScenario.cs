@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Notification.Events;
 
 namespace LightBDD.Core.Execution.Implementation
@@ -34,8 +33,7 @@ namespace LightBDD.Core.Execution.Implementation
         public IDependencyResolver DependencyResolver => _scope;
         public object Context { get; private set; }
 
-        public RunnableScenario(RunnableScenarioContext scenarioContext, ScenarioInfo scenarioInfo,
-            MethodArgument[] arguments,
+        public RunnableScenario(RunnableScenarioContext scenarioContext, IScenarioInfo scenarioInfo,
             IEnumerable<StepDescriptor> stepDescriptors, ExecutionContextDescriptor contextDescriptor,
             IEnumerable<IScenarioDecorator> scenarioDecorators)
         {
@@ -43,7 +41,7 @@ namespace LightBDD.Core.Execution.Implementation
             _stepDescriptors = stepDescriptors;
             _contextDescriptor = contextDescriptor;
             _decoratedScenarioMethod = DecoratingExecutor.DecorateScenario(this, RunScenarioAsync, scenarioDecorators);
-            _result = new ScenarioResult(scenarioInfo, arguments);
+            _result = new ScenarioResult(scenarioInfo);
         }
 
         public async Task ExecuteAsync()
@@ -139,7 +137,6 @@ namespace LightBDD.Core.Execution.Implementation
             ScenarioExecutionContext.Current = new ScenarioExecutionContext();
             ScenarioExecutionContext.Current.Get<CurrentScenarioProperty>().Fixture = _scenarioContext.FixtureObject;
 
-            _scenarioContext.ProgressNotifier.Notify(new ScenarioDiscovered(executionStartTime, Info));
             _scenarioContext.ProgressNotifier.Notify(new ScenarioStarting(executionStartTime, Info));
 
             _scope = CreateContainerScope();
@@ -177,7 +174,6 @@ namespace LightBDD.Core.Execution.Implementation
             try
             {
                 _preparedSteps = _scenarioContext.StepsProvider(_result.Info, _stepDescriptors, Context, _scope, string.Empty, ShouldAbortSubStepExecution);
-                NotifyStepDiscovery();
             }
             catch (Exception e)
             {
@@ -185,13 +181,6 @@ namespace LightBDD.Core.Execution.Implementation
             }
             if (_preparedSteps.Any(x => x.Result.ExecutionException != null))
                 throw new InvalidOperationException("Scenario steps initialization failed.");
-        }
-
-        private void NotifyStepDiscovery()
-        {
-            var eventTime = _scenarioContext.ExecutionTimer.GetTime();
-            foreach (var step in _preparedSteps)
-                _scenarioContext.ProgressNotifier.Notify(new StepDiscovered(eventTime, step.Info));
         }
 
         private bool ShouldAbortSubStepExecution(Exception ex) => _shouldAbortSubStepExecutionFn(ex);
