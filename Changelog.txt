@@ -3,6 +3,10 @@ LightBDD
 
 Version [next]
 ----------------------------------------
++ #260 (LightBDD.MsTest2)(Change) Updated MSTest.TestFramework to 2.2.10
++ #260 (LightBDD.NUnit3)(Change) Updated NUnit dependency to 3.13.3
++ #260 (LightBDD.Fixie2)(Change) Dropped netcoreapp2.0 support
++ #260 (Examples) Removed Example.LightBDD.MsTest2.UWP project as UWP is deprecated
 + #225 (Core)(New) Introduced IProgressNotifier and processing events: FeatureStarting, FeatureFinished, ScenarioStarting, ScenarioFinished, StepStarting, StepFinished, StepCommented
 + #225 (Core)(New) Extended ScenarioExecutionContext with GetCurrentScenarioFixtureIfPresent to return fixture object executing given scenario
 + #225 (Framework)(New) Introduced ProgressNotifierConfiguration to configure IProgressNotifier instances and updated DefaultProgressNotifier, NoProgressNotifier to implement IProgressNotifier and added ParallelProgressNotifierProvider.CreateProgressNotifier() method

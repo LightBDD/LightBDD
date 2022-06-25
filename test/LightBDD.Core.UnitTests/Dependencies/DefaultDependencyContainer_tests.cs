@@ -161,9 +161,7 @@ namespace LightBDD.Core.UnitTests.Dependencies
             using (var container = CreateContainer())
             {
                 var ex = Assert.Throws<InvalidOperationException>(() => container.Resolve<Holder<ProblematicType>>());
-                
-                Console.WriteLine(ex.Message);
-                
+
                 Assert.That(ex.Message.NormalizeNewLine(), Is.EqualTo($@"Unable to resolve type {typeof(Holder<ProblematicType>)} from scope #global:
 Unable to resolve type {typeof(ProblematicType)} from scope #global:
 Unable to resolve type {typeof(MultiCtorType)} from scope #global:
@@ -414,7 +412,7 @@ Type '{typeof(MultiCtorType)}' has to have have exactly one public constructor (
                 using (var step = scenario.BeginScope(LifetimeScope.Local))
                 {
                     var ex = Assert.Throws<InvalidOperationException>(() => step.Resolve<Disposable4>());
-                    Console.WriteLine(ex.Message);
+
                     Assert.AreEqual($@"Unable to resolve type {typeof(Disposable4)} from scope {LifetimeScope.Local}:
 No suitable registration has been found to resolve type {typeof(Disposable4)}.
 Available registrations:

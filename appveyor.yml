@@ -36,9 +36,9 @@ for:
   build_script:
    - sh: sudo apt-get install -yq libcurl3
    - sh: dotnet restore
-   - sh: dotnet test -c Release -f netcoreapp3.1 test/LightBDD.Core.UnitTests/LightBDD.Core.UnitTests.csproj
-   - sh: dotnet test -c Release -f netcoreapp3.1 test/LightBDD.Framework.UnitTests/LightBDD.Framework.UnitTests.csproj
-   - sh: dotnet test -c Release -f netcoreapp3.1 test/LightBDD.Framework.Reporting.UnitTests/LightBDD.Framework.Reporting.UnitTests.csproj
-   - sh: dotnet test -c Release -f netcoreapp3.1 test/LightBDD.MsTest2.UnitTests/LightBDD.MsTest2.UnitTests.csproj
-   - sh: dotnet test -c Release -f netcoreapp3.1 test/LightBDD.NUnit3.UnitTests/LightBDD.NUnit3.UnitTests.csproj
-   - sh: dotnet test -c Release -f netcoreapp3.1 test/LightBDD.XUnit2.UnitTests/LightBDD.XUnit2.UnitTests.csproj
+   - sh: dotnet test -c Release -f net6 test/LightBDD.Core.UnitTests/LightBDD.Core.UnitTests.csproj
+   - sh: dotnet test -c Release -f net6 test/LightBDD.Framework.UnitTests/LightBDD.Framework.UnitTests.csproj
+   - sh: dotnet test -c Release -f net6 test/LightBDD.Framework.Reporting.UnitTests/LightBDD.Framework.Reporting.UnitTests.csproj
+   - sh: dotnet test -c Release -f net6 test/LightBDD.MsTest2.UnitTests/LightBDD.MsTest2.UnitTests.csproj
+   - sh: dotnet test -c Release -f net6 test/LightBDD.NUnit3.UnitTests/LightBDD.NUnit3.UnitTests.csproj
+   - sh: dotnet test -c Release -f net6 test/LightBDD.XUnit2.UnitTests/LightBDD.XUnit2.UnitTests.csproj
