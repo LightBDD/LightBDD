@@ -243,6 +243,42 @@ namespace LightBDD.Core.UnitTests
             Assert.That(scenario.GetSteps().Single().Status, Is.EqualTo(ExecutionStatus.Bypassed));
         }
 
+        [Test]
+        [MyRetryDecorator]
+        public void It_should_clear_step_exceptions_on_retry()
+        {
+            int attempt = 0;
+            var featureRunner = CreateRunner(cfg => { });
+
+            void Some_Step()
+            {
+                if (attempt++ == 0)
+                    throw new InvalidOperationException("error");
+            }
+
+            void Other_Step()
+            {
+            }
+
+            try
+            {
+                featureRunner
+                    .GetBddRunner(this)
+                    .Test()
+                    .TestScenario(
+                        Some_Step,
+                        Other_Step);
+            }
+            catch { }
+
+            var scenario = featureRunner.GetFeatureResult().GetScenarios().Single();
+
+            Assert.That(scenario.Status, Is.EqualTo(ExecutionStatus.Passed));
+            Assert.That(scenario.StatusDetails, Is.Null);
+            Assert.That(scenario.GetSteps().Select(s => s.Status), Is.All.EqualTo(ExecutionStatus.Passed));
+            Assert.That(scenario.GetSteps().Select(s => s.ExecutionException), Is.All.Null);
+        }
+
         [MyThrowingDecorator(ExecutionStatus.Failed)]
         private void My_failed_step() { }
 
@@ -316,7 +352,7 @@ namespace LightBDD.Core.UnitTests
                 _expected = expected;
                 _async = async;
             }
-            
+
             [MethodImpl(MethodImplOptions.NoInlining)]
             public Task ExecuteAsync(IScenario scenario, Func<Task> scenarioInvocation)
             {
@@ -353,6 +389,23 @@ namespace LightBDD.Core.UnitTests
             }
 
             public int Order { get; set; }
+        }
+
+        private class MyRetryDecorator : Attribute, IScenarioDecoratorAttribute
+        {
+            public async Task ExecuteAsync(IScenario scenario, Func<Task> scenarioInvocation)
+            {
+                try
+                {
+                    await scenarioInvocation();
+                }
+                catch
+                {
+                    await scenarioInvocation();
+                }
+            }
+
+            public int Order { get; }
         }
     }
 }

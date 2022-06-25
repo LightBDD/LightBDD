@@ -182,4 +182,7 @@ The current LightBDD version series is **3.X**. To find out how to migrate from 
 LightBDD provides debug symbols helping with diagnostics - please check [Debugging LightBDD Scenarios](https://github.com/LightBDD/LightBDD/wiki/Debugging-LightBDD-Scenarios) for details.
 
 ## More information about LightBDD
-If you are interested about background of LightBDD creation or getting insight into what is driving it's evolution, please feel free to take a look at my [blog posts](http://woitech.eu/blog/category/lightbdd/).
+If you are interested about background of LightBDD creation or getting insight into what is driving it's evolution, please feel free to take a look at my [blog posts](https://woitech.eu/blog/category/lightbdd/).
+
+## Community Projects
+* [LightBdd.TabularAttributes](https://github.com/lemonlion/LightBdd.TabularAttributes) - Designed to be used with LightBdd Tabular Parameters to allow for specifying input and output data for tests via attributes, in a truth table format.

@@ -28,7 +28,7 @@ namespace LightBDD.XUnit2.Implementation.Customization
                 UseXUnitSkipBehavior = ShallUseXUnitSkipBehavior(assembly)
             });
 
-            bddScopeAttribute?.SetUp();
+            bddScopeAttribute?.SetUp(DiagnosticMessageSink);
             try
             {
                 using (var assemblyRunner = CreateAssemblyRunner(testCases, executionMessageSink, executionOptions, enableInterClassParallelization))

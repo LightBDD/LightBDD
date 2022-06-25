@@ -184,6 +184,7 @@ namespace LightBDD.Core.Execution.Implementation
 
         private void UpdateStepStatus()
         {
+            _result.UpdateException(null);
             _result.SetStatus(_result.GetSubSteps().GetMostSevereOrNull()?.Status ?? ExecutionStatus.Passed);
         }
 

@@ -8,7 +8,6 @@ Version [next]
 + #225 (Framework)(New) Introduced ProgressNotifierConfiguration to configure IProgressNotifier instances and updated DefaultProgressNotifier, NoProgressNotifier to implement IProgressNotifier and added ParallelProgressNotifierProvider.CreateProgressNotifier() method
 + #225 (LightBDD.XUnit2/LightBDD.NUnit3/LightBDD.MsTest2/LightBDD.Fixie2)(Change) Updated projects to use IProgressNotifier configuration
 + #225 (Core/Framework)(Change) Obsoleted IScenarioProgressNotifier, IFeatureProgressNotifier, DelegatingScenarioProgressNotifier, DelegatingFeatureProgressNotifier and all methods using them
-+ #231 (Framework)(New) Updated ResourcePool with constructor accepting async resource factory method
 + #230 (Core)(New) Added TestExecutionStarting, TestExecutionFinished, FeatureDiscovered, ScenarioDiscovered, StepDiscovered, ParameterEvaluated events and wired them in the engine
 + #230 (Framework)(New) Added InlineParameterDiscovered, InlineParameterValidationStarting, InlineParameterValidationFinished events and made Verifiable type using it
 + #230 (Framework)(New) Added TabularParameterDiscovered, TabularParameterValidationStarting, TabularParameterValidationFinished events and made VerifiableTable and descendants using it 
@@ -22,6 +21,23 @@ Version [next]
 + #230 (Framework)(Change) Changed Verifiable, VerifiableTable and descendats to allow setting actual values only once even if run in parallel
 + #230 (Core)(New) Added ITestExecutionResult with details on execution time and all covered features
 
+
+Version 3.4.2
+----------------------------------------
++ #257 (Core)(Bug) Added reset of step and scenario results upon retry in decorator
+
+Version 3.4.1
+----------------------------------------
++ #248 (Framework)(Change) Improved MessageListener.EnsureReceived() to return friendly message dumps for common types
++ #252 (LightBdd.XUnit2)(Change) Added LightBddScopeAttribute.DiagnosticMessageSink property
+
+Version 3.4.0 (VSIX)
+----------------------------------------
++ #250 (VSIX) Updated LightBDD Visual Studio Extension to support VS2022
+
+Version 3.4.0
+----------------------------------------
++ #245 (Framework)(New) Implemented MessageListener to help testing message based services
 
 Version 3.3.1
 ----------------------------------------
