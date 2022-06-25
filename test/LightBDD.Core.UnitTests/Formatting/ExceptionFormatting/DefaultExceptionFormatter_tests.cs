@@ -25,7 +25,7 @@ namespace LightBDD.Core.UnitTests.Formatting.ExceptionFormatting
             var exception = await MakeSampleException();
 
             var formattedDetails = new DefaultExceptionFormatter().Format(exception);
-            Console.WriteLine(formattedDetails);
+
             var stackTraceLinesNumber = formattedDetails
                 .Split('\n')
                 .AsEnumerable()
@@ -87,7 +87,7 @@ at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormat
 at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests[^\n]+ThrowSampleExceptionAsync[^\n]+
 at LightBDD.Core.UnitTests.Formatting.ExceptionFormatting.DefaultExceptionFormatter_tests[^\n]+MakeSampleException[^\n]+$";
             var formattedDetails = new DefaultExceptionFormatter()
-                .WithMembersExcludedFromStackTrace("System.Runtime.*",".*RecurrentCall.*")
+                .WithMembersExcludedFromStackTrace("System.Runtime.*", ".*RecurrentCall.*")
                 .Format(exception);
             Assert.That(formattedDetails.Replace("\r", ""), Does.Match(expectedExceptionDetails.Replace("\r", "")));
         }
