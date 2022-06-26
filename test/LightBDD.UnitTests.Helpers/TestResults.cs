@@ -270,9 +270,12 @@ namespace LightBDD.UnitTests.Helpers
                 return SubSteps;
             }
 
+            IEnumerable<FileAttachment> IStepResult.FileAttachments => FileAttachments;
+
             public IParameterResult[] Parameters { get; set; } = new IParameterResult[0];
             public TestStepResult[] SubSteps { get; set; } = new TestStepResult[0];
             public string[] Comments { get; set; } = new string[0];
+            public FileAttachment[] FileAttachments { get; set; } = new FileAttachment[0];
         }
 
         public class TestStepInfo : IStepInfo

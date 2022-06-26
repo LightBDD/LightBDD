@@ -60,6 +60,40 @@ namespace LightBDD.Core.UnitTests
         }
 
         [Test]
+        public void It_should_notify_attachments()
+        {
+            var progressNotifier = new CapturingProgressNotifier();
+
+            var feature = new TestableFeatureRunnerRepository(progressNotifier).GetRunnerFor(GetType());
+            var runner = feature.GetBddRunner(this);
+            try
+            {
+                runner.Test().TestScenario(
+                    Given_step_one,
+                    When_step_two_with_attachment,
+                    Then_step_three);
+            }
+            catch { }
+            feature.Dispose();
+
+            string[] expected =
+            {
+                "Feature Start: CoreBddRunner progress notification tests [label1, label2]: feature description",
+                "Scenario Start: It should notify attachments [] <category 1>",
+                "Step Start: 1/3 GIVEN step one",
+                "Step Finish: 1/3 GIVEN step one | Status:Passed | ExecutionTimePresent:True | Details:",
+                "Step Start: 2/3 WHEN step two with attachment",
+                "Step 2/3 File Attachment - attachment1: attachment1.txt",
+                "Step Finish: 2/3 WHEN step two with attachment | Status:Passed | ExecutionTimePresent:True | Details:",
+                "Step Start: 3/3 THEN step three",
+                "Step Finish: 3/3 THEN step three | Status:Passed | ExecutionTimePresent:True | Details:",
+                "Scenario Finish: It should notify attachments [] <category 1> | Status:Passed | ExecutionTimePresent:True | Steps:3 | Details:",
+                "Feature Finish: CoreBddRunner progress notification tests [label1, label2]: feature description | Scenarios:1"
+            };
+            Assert.That(progressNotifier.Notifications, Is.EqualTo(expected), "Expected:\r\n{0}\r\n\r\nGot:\r\n{1}\r\n\r\n", string.Join("\r\n", expected), string.Join("\r\n", progressNotifier.Notifications));
+        }
+
+        [Test]
         [ScenarioCategory("category 2")]
         [Label("lab1")]
         [Label("lab2")]
@@ -322,6 +356,9 @@ namespace LightBDD.Core.UnitTests
                         break;
                     case StepStarting stepStarting:
                         NotifyStepStart(stepStarting.Step);
+                        break;
+                    case StepFileAttached stepFileAttached:
+                        _notifications.Add($"Step {stepFileAttached.Step.GroupPrefix}{stepFileAttached.Step.Number}/{stepFileAttached.Step.GroupPrefix}{stepFileAttached.Step.Total} File Attachment - {stepFileAttached.Attachment.Name}: {stepFileAttached.Attachment.FilePath}");
                         break;
                 }
             }

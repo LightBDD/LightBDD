@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility.Execution;
+using LightBDD.Core.Results;
 
 namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
@@ -13,6 +14,11 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
         public static void Comment(string commentReason)
         {
             CurrentStep.Value.Comment(commentReason);
+        }
+
+        public static void AttachFile(string name, string file)
+        {
+            CurrentStep.Value.AttachFile(_ => Task.FromResult(new FileAttachment(name, file)));
         }
 
         public async Task ExecuteAsync(IStep step, Func<Task> stepInvocation)

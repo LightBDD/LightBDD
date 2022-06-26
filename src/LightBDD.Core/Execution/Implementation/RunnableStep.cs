@@ -12,6 +12,7 @@ using LightBDD.Core.Internals;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Notification.Events;
+using LightBDD.Core.Reporting;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Implementation;
 using LightBDD.Core.Results.Parameters;
@@ -25,7 +26,7 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly Func<Task> _decoratedStepMethod;
         private readonly StepResult _result;
         private readonly StepFunc _invocation;
-        private readonly ExceptionCollector _exceptionCollector = new ExceptionCollector();
+        private readonly ExceptionCollector _exceptionCollector = new();
         private Func<Exception, bool> _shouldAbortSubStepExecutionFn = _ => true;
         private IDependencyContainer _subStepScope;
         public IStepResult Result => _result;
@@ -97,7 +98,7 @@ namespace LightBDD.Core.Execution.Implementation
 
         private RunnableStep[] InitializeComposite(IStepResultDescriptor result)
         {
-            if (!(result is CompositeStepResultDescriptor compositeDescriptor))
+            if (result is not CompositeStepResultDescriptor compositeDescriptor)
                 return Array.Empty<RunnableStep>();
 
             _subStepScope = _stepContext.Container.BeginScope(LifetimeScope.Local, compositeDescriptor.SubStepsContext.ScopeConfigurator);
@@ -252,7 +253,7 @@ namespace LightBDD.Core.Execution.Implementation
                 case StepExecutionException e:
                     _result.SetStatus(e.StepStatus);
                     break;
-                case ScenarioExecutionException e when e.InnerException is StepBypassException:
+                case ScenarioExecutionException { InnerException: StepBypassException }:
                     _result.SetStatus(ExecutionStatus.Bypassed, exception.InnerException.Message);
                     break;
                 case ScenarioExecutionException e:
@@ -307,6 +308,13 @@ namespace LightBDD.Core.Execution.Implementation
         public override string ToString()
         {
             return _result.ToString();
+        }
+
+        public async Task AttachFile(Func<IFileAttachmentsManager, Task<FileAttachment>> createAttachmentFn)
+        {
+            var attachment = await createAttachmentFn(_stepContext.FileAttachmentsManager);
+            _result.AddAttachment(attachment);
+            _stepContext.ProgressNotifier.Notify(new StepFileAttached(_stepContext.ExecutionTimer.GetTime(), _result.Info, attachment));
         }
     }
 }
