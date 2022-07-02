@@ -74,7 +74,7 @@ namespace LightBDD.Framework.UnitTests.Notification
 
             var featureResult = Fake.Object<TestResults.TestFeatureResult>();
             var comment = Fake.String();
-            var attachment = new FileAttachment(Fake.String(),Fake.String());
+            var attachment = new FileAttachment(Fake.String(), Fake.String(), Fake.String());
 
             var eventTime = new EventTime();
             _notifier.Notify(new FeatureStarting(eventTime, featureInfo));

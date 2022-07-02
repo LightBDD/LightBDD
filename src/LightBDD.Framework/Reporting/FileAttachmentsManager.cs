@@ -31,38 +31,41 @@ public class FileAttachmentsManager : IFileAttachmentsManager
     public Task<FileAttachment> CreateFromFile(string name, string filePath, bool removeOriginalFile = true)
     {
         var fileExtension = SanitizeExtension(Path.GetExtension(filePath));
-        var destinationFilePath = GetAttachmentPath(fileExtension);
+        var destinationFile = GetAttachmentFile(fileExtension);
+        var destinationFilePath = Path.Combine(AttachmentsDirectory, destinationFile);
 
         if (removeOriginalFile)
             File.Move(filePath, destinationFilePath);
         else
             File.Copy(filePath, destinationFilePath);
 
-        return Task.FromResult(new FileAttachment(name, destinationFilePath));
+        return Task.FromResult(new FileAttachment(name, destinationFilePath, destinationFile));
     }
 
     /// <inheritdoc />
     public async Task<FileAttachment> CreateFromStream(string name, string fileExtension, Func<Stream, Task> writeStreamFn)
     {
         fileExtension = SanitizeExtension(fileExtension);
-        var destinationFilePath = GetAttachmentPath(fileExtension);
+        var destinationFile = GetAttachmentFile(fileExtension);
+        var destinationFilePath = Path.Combine(AttachmentsDirectory, destinationFile);
 
         using var stream = File.OpenWrite(destinationFilePath);
         await writeStreamFn(stream);
 
-        return new(name, destinationFilePath);
+        return new(name, destinationFilePath, destinationFile);
     }
 
     /// <inheritdoc />
     public async Task<FileAttachment> CreateFromData(string name, string fileExtension, byte[] content)
     {
         fileExtension = SanitizeExtension(fileExtension);
-        var destinationFilePath = GetAttachmentPath(fileExtension);
+        var destinationFile = GetAttachmentFile(fileExtension);
+        var destinationFilePath = Path.Combine(AttachmentsDirectory, destinationFile);
 
         using var stream = File.OpenWrite(destinationFilePath);
         await stream.WriteAsync(content, 0, content.Length);
 
-        return new(name, destinationFilePath);
+        return new(name, destinationFilePath, destinationFile);
     }
 
     private string SanitizeExtension(string fileExtension)
@@ -77,5 +80,5 @@ public class FileAttachmentsManager : IFileAttachmentsManager
             : $".{fileExtension}";
     }
 
-    private string GetAttachmentPath(string extension) => Path.Combine(AttachmentsDirectory, $"{Guid.NewGuid()}{extension}");
+    private string GetAttachmentFile(string extension) => $"{Guid.NewGuid()}{extension}";
 }

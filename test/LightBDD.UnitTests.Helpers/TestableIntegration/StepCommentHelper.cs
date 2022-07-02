@@ -18,7 +18,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
 
         public static void AttachFile(string name, string file)
         {
-            CurrentStep.Value.AttachFile(_ => Task.FromResult(new FileAttachment(name, file)));
+            CurrentStep.Value.AttachFile(_ => Task.FromResult(new FileAttachment(name, file, $"base/{file}")));
         }
 
         public async Task ExecuteAsync(IStep step, Func<Task> stepInvocation)

@@ -32,19 +32,19 @@ namespace LightBDD.Core.UnitTests.Reporting
             await _runner.Test().TestScenarioAsync(Step1_with_attachment, Step2_with_attachment);
             var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps().ToArray();
 
-            Assert.That(steps[0].FileAttachments.Select(a => $"{a.Name}|{a.FilePath}"), Is.EqualTo(new[] { "step1|path1" }));
-            Assert.That(steps[1].FileAttachments.Select(a => $"{a.Name}|{a.FilePath}"), Is.EqualTo(new[] { "step2_1|path2", "step2_2|path3" }));
+            Assert.That(steps[0].FileAttachments.Select(a => $"{a.Name}|{a.FilePath}|{a.RelativePath}"), Is.EqualTo(new[] { "step1|path1|file1" }));
+            Assert.That(steps[1].FileAttachments.Select(a => $"{a.Name}|{a.FilePath}|{a.RelativePath}"), Is.EqualTo(new[] { "step2_1|path2|file2", "step2_2|path3|file3" }));
         }
 
         private async Task Step1_with_attachment()
         {
-            await StepExecution.Current.AttachFile(_ => Task.FromResult(new FileAttachment("step1", "path1")));
+            await StepExecution.Current.AttachFile(_ => Task.FromResult(new FileAttachment("step1", "path1","file1")));
         }
 
         private async Task Step2_with_attachment()
         {
-            await StepExecution.Current.AttachFile(_ => Task.FromResult(new FileAttachment("step2_1", "path2")));
-            await StepExecution.Current.AttachFile(_ => Task.FromResult(new FileAttachment("step2_2", "path3")));
+            await StepExecution.Current.AttachFile(_ => Task.FromResult(new FileAttachment("step2_1", "path2", "file2")));
+            await StepExecution.Current.AttachFile(_ => Task.FromResult(new FileAttachment("step2_2", "path3", "file3")));
         }
     }
 }
