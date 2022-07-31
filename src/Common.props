@@ -1,7 +1,7 @@
 ﻿<Project>
   <PropertyGroup>
     <Copyright>Copyright © Wojciech Kotlarski 2013-2021</Copyright>
-    <VersionPrefix>3.4.2</VersionPrefix>
+    <VersionPrefix>3.5.0</VersionPrefix>
     <Authors>Wojciech Kotlarski</Authors>
     <Company>https://github.com/LightBDD/LightBDD</Company>
     <PackageIcon>lightbdd.png</PackageIcon>

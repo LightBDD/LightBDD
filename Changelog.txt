@@ -1,7 +1,7 @@
 LightBDD
 ===========================================
 
-Version [next]
+Version 3.5.0
 ----------------------------------------
 + #260 (LightBDD.MsTest2)(Change) Updated MSTest.TestFramework to 2.2.10
 + #260 (LightBDD.NUnit3)(Change) Updated NUnit dependency to 3.13.3
