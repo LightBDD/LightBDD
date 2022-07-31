@@ -128,6 +128,7 @@ comment</Comment>
             </Parameter>
             <Comment>sub-sub-multiline
 comment</Comment>
+            <FileAttachment Name=""attachment1"" Path=""file1.png"" />
           </SubStep>
           <SubStep Status=""NotRun"" Number=""2"" Name=""sub-substep 2"" GroupPrefix=""2.3."" RuntimeId=""11111111-1111-1111-1111-111111111111"">
             <StepName Format=""sub-substep 2"" />

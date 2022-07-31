@@ -95,6 +95,7 @@ comment
 // Step 2.3: sub-comment
 // Step 2.3.1: sub-sub-multiline
 comment
+Step 2.3.1: &#128279;attachment1 (png)
 Failed name2 ""arg1"" (2s 157ms)[&#8734;link]
 categoryB, categoryC
 Bypassed 1. step3 (2s 107ms)

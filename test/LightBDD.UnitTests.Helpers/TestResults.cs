@@ -36,6 +36,12 @@ namespace LightBDD.UnitTests.Helpers
             return result;
         }
 
+        public static TestStepResult WithAttachment(this TestStepResult result, params FileAttachment[] fileAttachments)
+        {
+            result.FileAttachments = fileAttachments;
+            return result;
+        }
+
         public static TestStepResult WithStepNameDetails(this TestStepResult result, int stepNumber, string stepName, string nameFormat, string stepTypeName = null, params string[] parameters)
         {
             result.Info = new TestStepInfo

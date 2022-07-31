@@ -96,9 +96,15 @@ namespace LightBDD.Framework.Reporting.Formatters
             objects.Add(ToXElement(step.Info.Name));
             objects.AddRange(step.Parameters.Select(ToXElement));
             objects.AddRange(step.Comments.Select(c => new XElement("Comment", c)));
+            objects.AddRange(step.FileAttachments.Select(ToXElement));
             objects.AddRange(step.GetSubSteps().Select(s => ToXElement(s, "SubStep")));
             objects.Add(new XAttribute("RuntimeId", step.Info.RuntimeId.ToString("D")));
             return new XElement(elementName, objects);
+        }
+
+        private static XElement ToXElement(FileAttachment attachment)
+        {
+            return new XElement("FileAttachment", new XAttribute("Name", attachment.Name), new XAttribute("Path", attachment.RelativePath));
         }
 
         private static XElement ToXElement(IParameterResult parameterResult)

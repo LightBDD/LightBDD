@@ -85,6 +85,8 @@ Feature: My feature [Label 1]
 			Step 2.3: sub-comment
 			Step 2.3.1: sub-sub-multiline
 				comment
+		Attachments:
+			Step 2.3.1: attachment1 - file1.png
 
 	Scenario: name2 ""arg1"" - Failed (2s 157ms)
 		Categories: categoryB, categoryC
