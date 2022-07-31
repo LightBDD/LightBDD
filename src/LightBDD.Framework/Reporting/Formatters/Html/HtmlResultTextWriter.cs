@@ -372,11 +372,10 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                     from a in s.FileAttachments
                     select
                         Html.Tag(Html5Tag.Div).Content(
-                            Html.Text($"Step {s.Info.GroupPrefix}{s.Info.Number}: "),
                             Html.Tag(Html5Tag.A)
                                 .Href(ResolveLink(a))
                                 .Attribute("target", "_blank")
-                                .Content($"🔗{a.Name} ({Path.GetExtension(a.FilePath).TrimStart('.')})")));
+                                .Content($"🔗Step {s.Info.GroupPrefix}{s.Info.Number}: {a.Name} ({Path.GetExtension(a.FilePath).TrimStart('.')})")));
         }
 
         private string ResolveLink(FileAttachment fileAttachment)
