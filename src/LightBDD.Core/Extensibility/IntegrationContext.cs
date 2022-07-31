@@ -9,6 +9,7 @@ using LightBDD.Core.Execution;
 using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Notification.Implementation;
+using LightBDD.Core.Reporting;
 
 namespace LightBDD.Core.Extensibility
 {
@@ -77,6 +78,11 @@ namespace LightBDD.Core.Extensibility
         /// Returns execution timer.
         /// </summary>
         public IExecutionTimer ExecutionTimer { get; } = DefaultExecutionTimer.StartNew();
+
+        /// <summary>
+        /// Returns File Attachments Manager
+        /// </summary>
+        public virtual IFileAttachmentsManager FileAttachmentsManager => Configuration.ReportWritersConfiguration().GetFileAttachmentsManager();
 
         /// <summary>
         /// Creates progress notifier.

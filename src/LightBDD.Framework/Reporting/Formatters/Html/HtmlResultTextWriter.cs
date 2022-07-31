@@ -1,10 +1,12 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using LightBDD.Core.Configuration;
+using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Formatting.NameDecorators;
 using LightBDD.Core.Metadata;
@@ -358,7 +360,27 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 Html.Tag(Html5Tag.Div).Content(scenario.GetSteps().Select(GetStep)),
                 GetStatusDetails(scenario.StatusDetails),
                 GetComments(scenario.GetAllSteps()),
+                GetAttachments(scenario.GetAllSteps()),
                 Html.Br());
+        }
+
+        private IHtmlNode GetAttachments(IEnumerable<IStepResult> steps)
+        {
+            return Html.Tag(Html5Tag.Div).Class("attachments")
+                .SkipEmpty()
+                .Content(from s in steps
+                    from a in s.FileAttachments
+                    select
+                        Html.Tag(Html5Tag.Div).Content(
+                            Html.Tag(Html5Tag.A)
+                                .Href(ResolveLink(a))
+                                .Attribute("target", "_blank")
+                                .Content($"🔗Step {s.Info.GroupPrefix}{s.Info.Number}: {a.Name} ({Path.GetExtension(a.FilePath).TrimStart('.')})")));
+        }
+
+        private string ResolveLink(FileAttachment fileAttachment)
+        {
+            return fileAttachment.RelativePath.Replace(Path.DirectorySeparatorChar, '/');
         }
 
         private IHtmlNode GetComments(IEnumerable<IStepResult> steps)

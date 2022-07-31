@@ -12,7 +12,8 @@ namespace LightBDD.Core.Results.Implementation
     internal class StepResult : IStepResult
     {
         private readonly StepInfo _info;
-        private readonly ConcurrentQueue<string> _comments = new ConcurrentQueue<string>();
+        private readonly ConcurrentQueue<string> _comments = new();
+        private readonly ConcurrentQueue<FileAttachment> _attachments = new();
         private IEnumerable<IStepResult> _subSteps = Array.Empty<IStepResult>();
 
         public StepResult(StepInfo info)
@@ -27,10 +28,8 @@ namespace LightBDD.Core.Results.Implementation
         public IReadOnlyList<IParameterResult> Parameters { get; private set; } = Array.Empty<IParameterResult>();
         public ExecutionTime ExecutionTime { get; private set; }
         public IEnumerable<string> Comments => _comments;
-        public IEnumerable<IStepResult> GetSubSteps()
-        {
-            return _subSteps;
-        }
+        public IEnumerable<IStepResult> GetSubSteps() => _subSteps;
+        public IEnumerable<FileAttachment> FileAttachments => _attachments;
 
         public void SetStatus(ExecutionStatus status, string details = null)
         {
@@ -82,6 +81,11 @@ namespace LightBDD.Core.Results.Implementation
         public void SetParameters(IEnumerable<IParameterResult> parameters)
         {
             Parameters = parameters.ToArray();
+        }
+
+        public void AddAttachment(FileAttachment attachment)
+        {
+            _attachments.Enqueue(attachment);
         }
     }
 }

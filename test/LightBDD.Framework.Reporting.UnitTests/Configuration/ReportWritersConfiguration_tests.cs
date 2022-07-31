@@ -34,7 +34,7 @@ namespace LightBDD.Framework.Reporting.UnitTests.Configuration
         }
 
         [Test]
-        public void It_should_allow_clear_add_and_remove_items()
+        public void It_should_allow_clear_add_and_remove_writrs()
         {
             var writer = Mock.Of<IReportWriter>();
             var writer2 = Mock.Of<IReportWriter>();
@@ -45,7 +45,7 @@ namespace LightBDD.Framework.Reporting.UnitTests.Configuration
         }
 
         [Test]
-        public void It_should_not_allow_null_items()
+        public void It_should_not_allow_null_writers()
         {
             var configuration = new ReportWritersConfiguration();
             Assert.Throws<ArgumentNullException>(() => configuration.Add(null));
@@ -76,7 +76,41 @@ namespace LightBDD.Framework.Reporting.UnitTests.Configuration
             Assert.Throws<InvalidOperationException>(() => cfg.Add(Mock.Of<IReportWriter>()));
             Assert.Throws<InvalidOperationException>(() => cfg.Clear());
             Assert.Throws<InvalidOperationException>(() => cfg.Remove(writer));
+            Assert.Throws<InvalidOperationException>(() => cfg.UpdateFileAttachmentsManager(Mock.Of<IFileAttachmentsManager>()));
             Assert.That(cfg.ToArray(), Is.Not.Empty);
+        }
+
+        [Test]
+        public void It_should_return_default_file_attachment_manager()
+        {
+            var configuration = new ReportWritersConfiguration().RegisterDefaultFileAttachmentManager();
+            var fileAttachmentsManager = configuration.GetFileAttachmentsManager();
+            Assert.That(fileAttachmentsManager, Is.TypeOf<FileAttachmentsManager>());
+
+            var expectedPath = Path.Combine(AppContext.BaseDirectory, "Reports");
+            Assert.That(((FileAttachmentsManager)fileAttachmentsManager).AttachmentsDirectory, Is.EqualTo(expectedPath));
+        }
+
+        [Test]
+        public void It_should_allow_updating_FileAttachmentManager()
+        {
+            var manager = Mock.Of<IFileAttachmentsManager>();
+            var actual = new ReportWritersConfiguration().UpdateFileAttachmentsManager(manager)
+                .GetFileAttachmentsManager();
+            Assert.That(actual, Is.EqualTo(manager));
+        }
+
+        [Test]
+        public void It_should_not_allow_updating_FileAttachmentManager_with_null()
+        {
+            var ex = Assert.Throws<ArgumentNullException>(() => new ReportWritersConfiguration().UpdateFileAttachmentsManager(null));
+            Assert.That(ex.ParamName, Is.EqualTo("manager"));
+        }
+
+        [Test]
+        public void GetFileAttachmentsManager_should_return_NoFileAttachmentsManager_by_default()
+        {
+            Assert.That(new ReportWritersConfiguration().GetFileAttachmentsManager(), Is.TypeOf<NoFileAttachmentsManager>());
         }
     }
 }

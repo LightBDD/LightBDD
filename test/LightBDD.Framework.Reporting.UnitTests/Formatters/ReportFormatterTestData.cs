@@ -26,6 +26,7 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
                             .WithSubSteps(TestResults.CreateStepResult(1, "sub-substep 1", ExecutionStatus.Failed)
                                     .WithGroupPrefix("2.3.")
                                     .WithComments($"sub-sub-multiline{Environment.NewLine}comment")
+                                    .WithAttachment(new FileAttachment("attachment1","/tmp/file1.png","file1.png"))
                                     .WithStepParameters(
                                         TestResults.CreateTestParameter("table1", TestResults.CreateTabularParameterDetails(ParameterVerificationStatus.Failure)
                                             .WithKeyColumns("Key")

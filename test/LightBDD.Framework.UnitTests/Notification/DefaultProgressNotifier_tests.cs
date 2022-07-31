@@ -4,7 +4,6 @@ using System.Linq;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Metadata;
-using LightBDD.Core.Notification;
 using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters;
@@ -75,12 +74,14 @@ namespace LightBDD.Framework.UnitTests.Notification
 
             var featureResult = Fake.Object<TestResults.TestFeatureResult>();
             var comment = Fake.String();
+            var attachment = new FileAttachment(Fake.String(), Fake.String(), Fake.String());
 
             var eventTime = new EventTime();
             _notifier.Notify(new FeatureStarting(eventTime, featureInfo));
             _notifier.Notify(new ScenarioStarting(eventTime, scenarioInfo));
             _notifier.Notify(new StepStarting(eventTime, stepInfo));
             _notifier.Notify(new StepCommented(eventTime, stepInfo, comment));
+            _notifier.Notify(new StepFileAttached(eventTime, stepInfo, attachment));
             _notifier.Notify(new StepFinished(eventTime, stepResult));
             _notifier.Notify(new ScenarioFinished(eventTime, scenarioResult));
             _notifier.Notify(new FeatureFinished(eventTime, featureResult));
@@ -103,6 +104,7 @@ namespace LightBDD.Framework.UnitTests.Notification
                 $"SCENARIO: [{string.Join("][", scenarioInfo.Labels)}] {scenarioInfo.Name}",
                 $"  STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: {stepInfo.Name}...",
                 $"  STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: /* {comment} */",
+                $"  STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: File Attached - {attachment.Name}: {attachment.FilePath}",
                 $"  STEP {stepResult.Info.GroupPrefix}{stepResult.Info.Number}/{stepResult.Info.GroupPrefix}{stepResult.Info.Total}: {stepResult.Info.Name} ({stepResult.Status} after {stepResult.ExecutionTime.Duration.FormatPretty()}){Environment.NewLine}{expectedTable}",
                 $"  SCENARIO RESULT: {scenarioResult.Status} after {scenarioResult.ExecutionTime.Duration.FormatPretty()}{Environment.NewLine}    {scenarioResult.StatusDetails}",
                 $"FEATURE FINISHED: {featureResult.Info.Name}"

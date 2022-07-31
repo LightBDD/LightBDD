@@ -4,6 +4,7 @@ using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
+using LightBDD.Core.Reporting;
 using LightBDD.Core.Results;
 
 namespace LightBDD.Core.Execution.Implementation
@@ -18,6 +19,7 @@ namespace LightBDD.Core.Execution.Implementation
         public ProvideStepsFunc StepsProvider { get; }
         public IProgressNotifier ProgressNotifier => IntegrationContext.ProgressNotifier;
         public IExecutionTimer ExecutionTimer => IntegrationContext.ExecutionTimer;
+        public IFileAttachmentsManager FileAttachmentsManager => IntegrationContext.FileAttachmentsManager;
 
         public RunnableScenarioContext(IntegrationContext integrationContext,
             ExceptionProcessor exceptionProcessor,

@@ -10,7 +10,13 @@ namespace LightBDD.Core.Configuration
     /// </summary>
     public class ReportWritersConfiguration : FeatureConfiguration, IEnumerable<IReportWriter>
     {
-        private readonly List<IReportWriter> _writers = new List<IReportWriter>();
+        private readonly List<IReportWriter> _writers = new();
+        private IFileAttachmentsManager _fileAttachmentsManager = NoFileAttachmentsManager.Instance;
+
+        /// <summary>
+        /// File Attachments Manager
+        /// </summary>
+        public IFileAttachmentsManager GetFileAttachmentsManager() => _fileAttachmentsManager;
 
         /// <summary>
         /// Adds <paramref name="writer"/> to report writers collection.
@@ -47,6 +53,20 @@ namespace LightBDD.Core.Configuration
         {
             ThrowIfSealed();
             _writers.Clear();
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <paramref name="manager"/> as a default file attachments manager to be used by LightBDD. The manager can be retrieved by <see cref="GetFileAttachmentsManager"/> method call.
+        /// </summary>
+        /// <param name="manager">Manager to set</param>
+        /// <returns></returns>
+        public ReportWritersConfiguration UpdateFileAttachmentsManager(IFileAttachmentsManager manager)
+        {
+            ThrowIfSealed();
+
+            _fileAttachmentsManager = manager ?? throw new ArgumentNullException(nameof(manager));
+
             return this;
         }
 

@@ -26,6 +26,7 @@ namespace LightBDD.AcceptanceTests
                 .Add(new ReportFileWriter(new PlainTextReportFormatter(), "~" + Path.DirectorySeparatorChar + "Reports" + Path.DirectorySeparatorChar + "FeaturesReport.txt"));
 
             configuration.DependencyContainerConfiguration().UseDefault(ConfigureContainer);
+            configuration.ExecutionExtensionsConfiguration().EnableStepDecorator<ScreenshotCaptureOnFailure>();
         }
 
         private void ConfigureContainer(IDefaultContainerConfigurator config)

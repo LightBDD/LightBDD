@@ -138,7 +138,15 @@ namespace LightBDD.Framework.Notification
                 case StepStarting stepStarting:
                     NotifyStepStart(stepStarting.Step);
                     break;
+                case StepFileAttached stepFileAttached:
+                    NotifyStepAttached(stepFileAttached.Step, stepFileAttached.Attachment);
+                    break;
             }
+        }
+
+        private void NotifyStepAttached(IStepInfo step, FileAttachment attachment)
+        {
+            _onNotify($"  STEP {step.GroupPrefix}{step.Number}/{step.GroupPrefix}{step.Total}: File Attached - {attachment.Name}: {attachment.FilePath}");
         }
 
         private static string FormatDescription(string description)

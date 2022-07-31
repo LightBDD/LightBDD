@@ -7,6 +7,7 @@ using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Results;
 using System;
+using LightBDD.Core.Reporting;
 using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Notification;
 using LightBDD.Framework.Notification.Implementation;
@@ -48,6 +49,9 @@ namespace LightBDD.Framework.Extensibility
         /// <inheritdoc />
         public override ValueFormattingService ValueFormattingService => MetadataProvider.ValueFormattingService;
 
+        /// <inheritdoc />
+        public override IFileAttachmentsManager FileAttachmentsManager { get; }
+
         /// <summary>
         /// Default constructor sealing provided <paramref name="configuration"/> and initializing all properties.
         /// </summary>
@@ -64,6 +68,7 @@ namespace LightBDD.Framework.Extensibility
             ScenarioProgressNotifierProvider = configuration.ScenarioProgressNotifierConfiguration().NotifierProvider;
             ExecutionExtensions = configuration.ExecutionExtensionsConfiguration();
             DependencyContainer = configuration.DependencyContainerConfiguration().DependencyContainer;
+            FileAttachmentsManager = configuration.ReportWritersConfiguration().GetFileAttachmentsManager();
         }
 
         /// <inheritdoc />

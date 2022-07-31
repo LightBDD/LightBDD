@@ -1,5 +1,9 @@
+using System;
+using System.Threading.Tasks;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Metadata;
+using LightBDD.Core.Reporting;
+using LightBDD.Core.Results;
 
 namespace LightBDD.Core.Execution
 {
@@ -26,5 +30,12 @@ namespace LightBDD.Core.Execution
         /// Returns the context used by this step (or null if none were provided).
         /// </summary>
         object Context { get; }
+
+        /// <summary>
+        /// Adds the file attachment to the step.
+        /// </summary>
+        /// <param name="createAttachmentFn">Function creating file attachment by using provided attachments manager.</param>
+        /// <returns></returns>
+        Task AttachFile(Func<IFileAttachmentsManager, Task<FileAttachment>> createAttachmentFn);
     }
 }

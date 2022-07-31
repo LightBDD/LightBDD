@@ -1,6 +1,9 @@
+using System;
+using System.Threading.Tasks;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution;
 using LightBDD.Core.ExecutionContext;
+using LightBDD.Core.Reporting;
 using LightBDD.Core.Results;
 
 namespace LightBDD.Framework
@@ -14,7 +17,7 @@ namespace LightBDD.Framework
         /// Returns current step execution instance.
         /// Reference by <see cref="Current"/> property enables LightBDD extension packages to add functionality to <see cref="StepExecution"/> with extension methods.
         /// </summary>
-        public static StepExecution Current { get; } = new StepExecution();
+        public static StepExecution Current { get; } = new();
 
         private StepExecution() { }
 
@@ -38,10 +41,7 @@ namespace LightBDD.Framework
         /// </summary>
         /// <param name="reason">Bypass reason.</param>
         /// <exception cref="StepBypassException">Bypass exception used to control scenario execution.</exception>
-        public void Bypass(string reason)
-        {
-            throw new StepBypassException(reason);
-        }
+        public void Bypass(string reason) => throw new StepBypassException(reason);
 
         /// <summary>
         /// Comments currently executed step with a <paramref name="comment"/> text.
@@ -58,9 +58,14 @@ namespace LightBDD.Framework
         /// Retrieves <see cref="IDependencyResolver"/> for currently executed scenario.
         /// Please note that for contextual scenarios or composite steps, it is better to specify <see cref="IDependencyResolver"/> in context constructor.
         /// </summary>
-        public IDependencyResolver GetScenarioDependencyResolver()
-        {
-            return ScenarioExecutionContext.CurrentScenario.DependencyResolver;
-        }
+        public IDependencyResolver GetScenarioDependencyResolver() => ScenarioExecutionContext.CurrentScenario.DependencyResolver;
+
+        /// <summary>
+        /// Adds the file attachment to the step.
+        /// </summary>
+        /// <param name="createAttachmentFn">Function creating file attachment by using provided attachments manager.</param>
+        /// <returns></returns>
+        public Task AttachFile(Func<IFileAttachmentsManager, Task<FileAttachment>> createAttachmentFn)
+            => ScenarioExecutionContext.CurrentStep.AttachFile(createAttachmentFn);
     }
 }

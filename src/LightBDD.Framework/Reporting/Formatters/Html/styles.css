@@ -29,6 +29,9 @@ h3{ font-size: 1.00em;}
 .status.notrun{background-color: #aaaaaa;}
 .details{margin-top: 0.5em;font-style: italic;color: #ff5555;white-space: pre-wrap;font-size: x-small;}
 .comments{margin-top: 0.5em;font-style: italic;white-space: pre-wrap;font-size: x-small;}
+.attachments{margin-top: 0.5em;font-size: x-small;}
+.attachments::before{content:"Attachments:"}
+.attachments div{ display: inline-block; margin-right: 0.5em;}
 .comments div{color: #0000cd;}
 .step, .categories{margin: 0.2em;margin-left: 2.5em;}
 .smallLink,.duration{color: #0000cd;font-size: 0.8em;font-family: monospace;}
@@ -53,7 +56,7 @@ article{ margin-left: 1em;}
 .feature[data-filtered="false"],.scenario[data-filtered="false"] { display: none;}
 a{ text-decoration: none;}
 a:hover{ text-decoration: underline;}
-#optionsLink, .smallLink, a:hover,label:hover,.sortable:hover{ color: #662266;}
+#optionsLink, .smallLink, a:hover,label:hover,.sortable:hover, .attachments a{ color: #662266;}
 .smallLink{ display: none;}
 *:hover > .smallLink { display: inline;}
 input[type="checkbox"],input[type="radio"]{ display: none;}
