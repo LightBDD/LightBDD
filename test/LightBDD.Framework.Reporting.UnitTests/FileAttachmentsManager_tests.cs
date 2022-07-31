@@ -39,6 +39,16 @@ namespace LightBDD.Framework.Reporting.UnitTests
         }
 
         [Test]
+        public async Task Manager_should_create_attachments_from_text_content()
+        {
+            var manager = new FileAttachmentsManager(_fullDirectoryPath);
+            var name = Fake.String();
+            var content = Fake.String();
+            var result = await manager.CreateFromText(name, "TXT", content, Encoding.UTF8);
+            AssertAttachment(result, name, content, ".txt");
+        }
+
+        [Test]
         public async Task Manager_should_create_attachments_from_stream()
         {
             var manager = new FileAttachmentsManager(_fullDirectoryPath);

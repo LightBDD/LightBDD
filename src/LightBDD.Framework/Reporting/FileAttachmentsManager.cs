@@ -55,19 +55,6 @@ public class FileAttachmentsManager : IFileAttachmentsManager
         return new(name, destinationFilePath, destinationFile);
     }
 
-    /// <inheritdoc />
-    public async Task<FileAttachment> CreateFromData(string name, string fileExtension, byte[] content)
-    {
-        fileExtension = SanitizeExtension(fileExtension);
-        var destinationFile = GetAttachmentFile(fileExtension);
-        var destinationFilePath = Path.Combine(AttachmentsDirectory, destinationFile);
-
-        using var stream = File.OpenWrite(destinationFilePath);
-        await stream.WriteAsync(content, 0, content.Length);
-
-        return new(name, destinationFilePath, destinationFile);
-    }
-
     private string SanitizeExtension(string fileExtension)
     {
         if (string.IsNullOrWhiteSpace(fileExtension))

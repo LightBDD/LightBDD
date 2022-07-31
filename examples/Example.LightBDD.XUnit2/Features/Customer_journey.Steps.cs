@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Text;
+using System.Threading.Tasks;
 using Example.Domain.Helpers;
 using LightBDD.Framework;
+using LightBDD.Framework.Reporting;
 using LightBDD.XUnit2;
 
 #pragma warning disable 1998
@@ -14,6 +16,7 @@ namespace Example.LightBDD.XUnit2.Features
         {
             public async Task Then_customer_should_receive_invoice()
             {
+                await StepExecution.Current.AttachFile(m => m.CreateFromText("invoice-content", "txt", "Example invoice content", Encoding.UTF8));
                 StepExecution.Current.IgnoreScenario("Not implemented yet");
             }
 

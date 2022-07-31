@@ -30,14 +30,4 @@ public interface IFileAttachmentsManager
     /// <param name="writeStreamFn">Function providing write stream to the attachment</param>
     /// <returns>File attachment</returns>
     Task<FileAttachment> CreateFromStream(string name, string fileExtension, Func<Stream, Task> writeStreamFn);
-
-    /// <summary>
-    /// Creates attachment from in memory content.<br/>
-    /// The attachment is stored in the pre-configured location.<br/>
-    /// </summary>
-    /// <param name="name">Attachment name</param>
-    /// <param name="fileExtension">File extension</param>
-    /// <param name="content">Attachment content</param>
-    /// <returns>File attachment</returns>
-    Task<FileAttachment> CreateFromData(string name, string fileExtension, byte[] content);
 }

@@ -19,7 +19,7 @@ using OpenQA.Selenium.Chrome;
 
 namespace LightBDD.AcceptanceTests.Features
 {
-    public class HtmlReportContext
+    public class HtmlReportContext : IChromeDriverContext
     {
         private readonly ResourceHandle<ChromeDriver> _driverHandle;
         private static string BaseDirectory => AppContext.BaseDirectory;
@@ -27,7 +27,7 @@ namespace LightBDD.AcceptanceTests.Features
         private State<IFeatureResult[]> _features;
 
         private string HtmlFileName { get; }
-        private ChromeDriver Driver => _driver.GetValue(nameof(Driver));
+        public ChromeDriver Driver => _driver.GetValue(nameof(Driver));
         private ResultBuilder ResultBuilder { get; }
         private IFeatureResult[] Features => _features.GetValue(nameof(Features));
 
@@ -76,7 +76,6 @@ namespace LightBDD.AcceptanceTests.Features
             _driver = await _driverHandle.ObtainAsync();
             Driver.Navigate().GoToUrl(HtmlFileName);
             Driver.EnsurePageIsLoaded();
-            await StepExecution.Current.AttachFile(mgr => mgr.CreateFromData("message", "txt", Encoding.UTF8.GetBytes("some text")));
         }
 
         public async Task Then_all_features_should_be_VISIBLE([VisibleFormat] bool visible)
@@ -335,11 +334,6 @@ namespace LightBDD.AcceptanceTests.Features
             var actual = tableRows.Select(row => row.FindElements(By.TagName("td")).Skip(1).Select(x => x.Text).ToArray()).ToArray();
 
             Assert.That(actual, Is.EqualTo(rows.Select(r => new[] { r.id, r.name, r.value }).ToArray()));
-
-            var screenShotPath = $"{Guid.NewGuid()}.PNG";
-            Driver.GetScreenshot().SaveAsFile(screenShotPath, ScreenshotImageFormat.Png);
-            await StepExecution.Current.AttachFile(mgr => mgr.CreateFromFile("screenshot", screenShotPath));
-            await StepExecution.Current.AttachFile(mgr => mgr.CreateFromData("message", "txt", Encoding.UTF8.GetBytes("some text")));
         }
 
         private string FormatResults(params IFeatureResult[] results)
