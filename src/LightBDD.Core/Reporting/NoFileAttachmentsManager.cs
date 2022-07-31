@@ -28,10 +28,4 @@ public class NoFileAttachmentsManager : IFileAttachmentsManager
     {
         throw new NotSupportedException(FileAttachmentsAreDisabled);
     }
-
-    /// <inheritdoc />
-    public Task<FileAttachment> CreateFromData(string name, string fileExtension, byte[] content)
-    {
-        throw new NotSupportedException(FileAttachmentsAreDisabled);
-    }
 }
