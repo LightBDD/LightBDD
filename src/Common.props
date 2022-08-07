@@ -14,7 +14,7 @@
     <PackageOutputPath>$(SolutionDir)\output</PackageOutputPath>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>bdd;tdd;testing;framework;behavior driven development;acceptance criteria</PackageTags>
-    <PackageReleaseNotes>Release details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-341</PackageReleaseNotes>
+    <PackageReleaseNotes>Release details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-350</PackageReleaseNotes>
     <IsPackable>true</IsPackable>
     <IsTestProject>false</IsTestProject>
     <LangVersion>latest</LangVersion>
