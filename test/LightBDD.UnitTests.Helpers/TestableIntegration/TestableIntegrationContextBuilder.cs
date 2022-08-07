@@ -28,17 +28,26 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             return this;
         }
 
+        [Obsolete]
         public TestableIntegrationContextBuilder WithFeatureProgressNotifier(IFeatureProgressNotifier notifier)
         {
             _configuration.FeatureProgressNotifierConfiguration().UpdateNotifier(notifier);
             return this;
         }
 
+        [Obsolete]
         public TestableIntegrationContextBuilder WithScenarioProgressNotifierProvider(Func<object, IScenarioProgressNotifier> provider)
         {
             _configuration.ScenarioProgressNotifierConfiguration().UpdateNotifierProvider(provider);
             return this;
         }
+
+        public TestableIntegrationContextBuilder WithProgressNotifier(IProgressNotifier progressNotifier)
+        {
+            _configuration.ProgressNotifierConfiguration().Clear().Append(progressNotifier);
+            return this;
+        }
+
         public TestableIntegrationContextBuilder WithConfiguration(Action<LightBddConfiguration> configurator)
         {
             configurator.Invoke(_configuration);
@@ -50,8 +59,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             return new TestableIntegrationContextBuilder()
                 .WithNameFormatter(DefaultNameFormatter.Instance)
                 .WithExceptionToStatusMapper(ex => ex is CustomIgnoreException ? ExecutionStatus.Ignored : ExecutionStatus.Failed)
-                .WithFeatureProgressNotifier(NoProgressNotifier.Default)
-                .WithScenarioProgressNotifierProvider(feature => NoProgressNotifier.Default)
+                .WithProgressNotifier(NoProgressNotifier.Default)
                 .WithConfiguration(cfg =>
                 {
                     cfg.ExecutionExtensionsConfiguration().EnableStepDecorator<StepCommentHelper>();

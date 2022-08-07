@@ -1,8 +1,23 @@
 LightBDD
 ===========================================
 
-Version [next]
+Version 3.5.0
 ----------------------------------------
++ #260 (LightBDD.MsTest2)(Change) Updated MSTest.TestFramework to 2.2.10
++ #260 (LightBDD.NUnit3)(Change) Updated NUnit dependency to 3.13.3
++ #260 (LightBDD.Fixie2)(Change) Dropped netcoreapp2.0 support
++ #260 (Examples) Removed Example.LightBDD.MsTest2.UWP project as UWP is deprecated
++ #255 (LightBDD.Core) Added IStep.AttachFile() method allowing to add file attachments to steps and fired StepFileAttached progress notification event when attachment is made
++ #255 (LightBDD.Core) Added ReportWritersConfiguration.UpdateFileAttachmentsManager() to allow re-configuring file attachments storage
++ #255 (LightBDD.Framework) Added support to attach files to steps with StepExecution.Current.AttachFile()
++ #255 (LightBDD.Framework) Added FileAttachmentManager implementation and registered it with ReportWritersConfiguration.RegisterDefaultFileAttachmentManager() extension method to create attachments in ~/Reports folder
++ #255 (LightBDD.Framework) Updated DefaultProgressNotifier to notify on StepFileAttached event
++ #255 (LightBDD.Framework) Updated HtmlResultTextWriter / PlainTextReportFormatter / XmlReportFormatter to include file attachments
++ #225 (Core)(New) Introduced IProgressNotifier and processing events: FeatureStarting, FeatureFinished, ScenarioStarting, ScenarioFinished, StepStarting, StepFinished, StepCommented
++ #225 (Core)(New) Extended ScenarioExecutionContext with GetCurrentScenarioFixtureIfPresent to return fixture object executing given scenario
++ #225 (Framework)(New) Introduced ProgressNotifierConfiguration to configure IProgressNotifier instances and updated DefaultProgressNotifier, NoProgressNotifier to implement IProgressNotifier and added ParallelProgressNotifierProvider.CreateProgressNotifier() method
++ #225 (LightBDD.XUnit2/LightBDD.NUnit3/LightBDD.MsTest2/LightBDD.Fixie2)(Change) Updated projects to use IProgressNotifier configuration
++ #225 (Core/Framework)(Change) Obsoleted IScenarioProgressNotifier, IFeatureProgressNotifier, DelegatingScenarioProgressNotifier, DelegatingFeatureProgressNotifier and all methods using them
 
 Version 3.4.2
 ----------------------------------------

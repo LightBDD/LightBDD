@@ -36,6 +36,12 @@ namespace LightBDD.UnitTests.Helpers
             return result;
         }
 
+        public static TestStepResult WithAttachment(this TestStepResult result, params FileAttachment[] fileAttachments)
+        {
+            result.FileAttachments = fileAttachments;
+            return result;
+        }
+
         public static TestStepResult WithStepNameDetails(this TestStepResult result, int stepNumber, string stepName, string nameFormat, string stepTypeName = null, params string[] parameters)
         {
             result.Info = new TestStepInfo
@@ -270,9 +276,12 @@ namespace LightBDD.UnitTests.Helpers
                 return SubSteps;
             }
 
+            IEnumerable<FileAttachment> IStepResult.FileAttachments => FileAttachments;
+
             public IParameterResult[] Parameters { get; set; } = new IParameterResult[0];
             public TestStepResult[] SubSteps { get; set; } = new TestStepResult[0];
             public string[] Comments { get; set; } = new string[0];
+            public FileAttachment[] FileAttachments { get; set; } = new FileAttachment[0];
         }
 
         public class TestStepInfo : IStepInfo

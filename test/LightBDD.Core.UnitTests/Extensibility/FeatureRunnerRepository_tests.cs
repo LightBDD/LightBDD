@@ -4,6 +4,7 @@ using System.Threading;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
+using LightBDD.Core.Notification.Events;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using Moq;
 using NUnit.Framework;
@@ -17,9 +18,9 @@ namespace LightBDD.Core.UnitTests.Extensibility
         public void Only_one_repository_should_be_created_per_type()
         {
             var taskCount = 20;
-            var mockNotifier = new Mock<IFeatureProgressNotifier>();
-            mockNotifier.Setup(x => x.NotifyFeatureStart(It.IsAny<IFeatureInfo>())).Callback(() => Thread.Sleep(100));
-            var testableIntegrationContextBuilder = TestableIntegrationContextBuilder.Default().WithFeatureProgressNotifier(mockNotifier.Object);
+            var mockNotifier = new Mock<IProgressNotifier>();
+            mockNotifier.Setup(x => x.Notify(It.IsAny<FeatureStarting>())).Callback(() => Thread.Sleep(100));
+            var testableIntegrationContextBuilder = TestableIntegrationContextBuilder.Default().WithProgressNotifier(mockNotifier.Object);
 
             var runners = new ConcurrentQueue<IFeatureRunner>();
             var repository = new TestableFeatureRunnerRepository(testableIntegrationContextBuilder);
@@ -44,7 +45,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
             }
 
             Assert.That(runners.Distinct().Count(), Is.EqualTo(1));
-            mockNotifier.Verify(x => x.NotifyFeatureStart(It.IsAny<IFeatureInfo>()), Times.Once);
+            mockNotifier.Verify(x => x.Notify(It.IsAny<FeatureStarting>()), Times.Once);
         }
     }
 }

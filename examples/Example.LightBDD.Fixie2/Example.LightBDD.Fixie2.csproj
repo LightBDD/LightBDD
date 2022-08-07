@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net5;net461</TargetFrameworks>
+    <TargetFrameworks>net6;net48</TargetFrameworks>
     <DebugType>full</DebugType>
   </PropertyGroup>
 

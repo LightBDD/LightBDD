@@ -49,8 +49,23 @@ namespace LightBDD.Core.ExecutionContext
 
         /// <summary>
         /// Returns currently executed scenario.
-        /// <exception cref="InvalidOperationException">Thrown if no scenario is executed by current task.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if no scenario is executed by current task or if scenario initialization is not complete.</exception>
         /// </summary>
-        public static IScenario CurrentScenario => Current.Get<CurrentScenarioProperty>().Scenario;
+        public static IScenario CurrentScenario => Current.Get<CurrentScenarioProperty>().Scenario ?? throw new InvalidOperationException("The current task does not run any initialized scenario. Ensure that feature is used within task running fully initialized scenario.");
+
+        /// <summary>
+        /// Returns currently executed scenario fixture object if present or <c>null</c> if no scenario is currently executed.<br/>
+        /// <exception cref="InvalidOperationException">Thrown if fixture object is present but not assignable to <typeparam name="TFixture"></typeparam>.</exception>
+        /// </summary>
+        public static TFixture GetCurrentScenarioFixtureIfPresent<TFixture>() where TFixture : class
+        {
+            var fixture = CurrentContext.Value?.Get<CurrentScenarioProperty>().Fixture;
+
+            if (fixture == null)
+                return null;
+
+            return fixture as TFixture
+                   ?? throw new InvalidOperationException($"Expected fixture of type '{typeof(TFixture)}' while got '{fixture.GetType()}'.");
+        }
     }
 }

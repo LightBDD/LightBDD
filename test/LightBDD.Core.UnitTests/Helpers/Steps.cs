@@ -11,6 +11,8 @@ namespace LightBDD.Core.UnitTests.Helpers
         public const string IgnoreReason = "ignore reason";
         public const string ParameterExceptionReason = "parameter exception";
         public const string CommentReason = "some comment";
+        public const string AttachmentName = "attachment1";
+        public const string AttachmentFile = "attachment1.txt";
 
         public void Some_step() { }
         public void Given_step_one() { }
@@ -18,6 +20,7 @@ namespace LightBDD.Core.UnitTests.Helpers
         public void When_step_two() { }
 
         public void When_step_two_with_comment() { StepCommentHelper.Comment(CommentReason); }
+        public void When_step_two_with_attachment() { StepCommentHelper.AttachFile(AttachmentName, AttachmentFile); }
         public void When_step_two_is_bypassed() { StepExecution.Current.Bypass(BypassReason); }
         public void When_step_two_throwing_exception() { throw new InvalidOperationException(ExceptionReason); }
         public void Then_step_three() { }

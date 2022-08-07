@@ -182,6 +182,12 @@
         </xs:complexType>
       </xs:element>
       <xs:element name="Comment" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="FileAttachment" minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+                <xs:attribute name="Name" type="xs:string" use="required"/>
+                <xs:attribute name="Path" type="xs:string" use="required"/>
+            </xs:complexType>
+        </xs:element>
       <xs:element name="SubStep" type="Step" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
     <xs:attribute name="Status" type="ResultStatus" use="required"/>

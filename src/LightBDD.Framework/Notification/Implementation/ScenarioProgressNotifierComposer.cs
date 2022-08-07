@@ -1,16 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Notification;
 
 namespace LightBDD.Framework.Notification.Implementation
 {
+    [Obsolete]
     internal class ScenarioProgressNotifierComposer
     {
         private readonly List<IScenarioProgressNotifierProvider> _providers;
 
+        public bool HasAny => _providers.Count > 0;
+
         public ScenarioProgressNotifierComposer() : this(new List<IScenarioProgressNotifierProvider>())
         {
         }
+
         private ScenarioProgressNotifierComposer(List<IScenarioProgressNotifierProvider> providers)
         {
             _providers = providers;

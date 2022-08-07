@@ -1,13 +1,15 @@
 ﻿using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
+using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Results;
+#pragma warning disable 618
 
 namespace LightBDD.Framework.Notification
 {
     /// <summary>
     /// Progress notifier implementation that does nothing when called.
     /// </summary>
-    public class NoProgressNotifier : IFeatureProgressNotifier, IScenarioProgressNotifier
+    public class NoProgressNotifier : IProgressNotifier, IFeatureProgressNotifier, IScenarioProgressNotifier
     {
         private NoProgressNotifier() { }
         /// <summary>
@@ -42,5 +44,9 @@ namespace LightBDD.Framework.Notification
         /// Does nothing.
         /// </summary>
         public void NotifyStepComment(IStepInfo step, string comment) { }
+        /// <summary>
+        /// Does nothing.
+        /// </summary>
+        public void Notify(ProgressEvent e) { }
     }
 }

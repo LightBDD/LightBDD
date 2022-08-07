@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
+using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
@@ -29,7 +30,7 @@ namespace LightBDD.Core.UnitTests
         {
             var progressNotifier = new CapturingProgressNotifier();
 
-            var feature = new TestableFeatureRunnerRepository(progressNotifier, fixture => progressNotifier).GetRunnerFor(GetType());
+            var feature = new TestableFeatureRunnerRepository(progressNotifier).GetRunnerFor(GetType());
             var runner = feature.GetBddRunner(this);
             try
             {
@@ -59,6 +60,40 @@ namespace LightBDD.Core.UnitTests
         }
 
         [Test]
+        public void It_should_notify_attachments()
+        {
+            var progressNotifier = new CapturingProgressNotifier();
+
+            var feature = new TestableFeatureRunnerRepository(progressNotifier).GetRunnerFor(GetType());
+            var runner = feature.GetBddRunner(this);
+            try
+            {
+                runner.Test().TestScenario(
+                    Given_step_one,
+                    When_step_two_with_attachment,
+                    Then_step_three);
+            }
+            catch { }
+            feature.Dispose();
+
+            string[] expected =
+            {
+                "Feature Start: CoreBddRunner progress notification tests [label1, label2]: feature description",
+                "Scenario Start: It should notify attachments [] <category 1>",
+                "Step Start: 1/3 GIVEN step one",
+                "Step Finish: 1/3 GIVEN step one | Status:Passed | ExecutionTimePresent:True | Details:",
+                "Step Start: 2/3 WHEN step two with attachment",
+                "Step 2/3 File Attachment - attachment1: attachment1.txt",
+                "Step Finish: 2/3 WHEN step two with attachment | Status:Passed | ExecutionTimePresent:True | Details:",
+                "Step Start: 3/3 THEN step three",
+                "Step Finish: 3/3 THEN step three | Status:Passed | ExecutionTimePresent:True | Details:",
+                "Scenario Finish: It should notify attachments [] <category 1> | Status:Passed | ExecutionTimePresent:True | Steps:3 | Details:",
+                "Feature Finish: CoreBddRunner progress notification tests [label1, label2]: feature description | Scenarios:1"
+            };
+            Assert.That(progressNotifier.Notifications, Is.EqualTo(expected), "Expected:\r\n{0}\r\n\r\nGot:\r\n{1}\r\n\r\n", string.Join("\r\n", expected), string.Join("\r\n", progressNotifier.Notifications));
+        }
+
+        [Test]
         [ScenarioCategory("category 2")]
         [Label("lab1")]
         [Label("lab2")]
@@ -66,7 +101,7 @@ namespace LightBDD.Core.UnitTests
         {
             var progressNotifier = new CapturingProgressNotifier();
 
-            var feature = new TestableFeatureRunnerRepository(progressNotifier, fixture => progressNotifier).GetRunnerFor(GetType());
+            var feature = new TestableFeatureRunnerRepository(progressNotifier).GetRunnerFor(GetType());
             var runner = feature.GetBddRunner(this);
             try
             {
@@ -123,7 +158,7 @@ namespace LightBDD.Core.UnitTests
         {
             var progressNotifier = new CapturingProgressNotifier();
 
-            var feature = new TestableFeatureRunnerRepository(progressNotifier, fixture => progressNotifier).GetRunnerFor(GetType());
+            var feature = new TestableFeatureRunnerRepository(progressNotifier).GetRunnerFor(GetType());
             var runner = feature.GetBddRunner(this);
             try
             {
@@ -150,6 +185,7 @@ namespace LightBDD.Core.UnitTests
         }
 
         [Test]
+        [Obsolete]
         public void It_should_instantiate_new_scenario_progress_notifier_for_each_scenario()
         {
             var notifiers = new List<CapturingProgressNotifier>();
@@ -173,6 +209,12 @@ namespace LightBDD.Core.UnitTests
             Assert.That(notifiers[2].Notifications.Count(n => n.StartsWith("Scenario Start: scenario3")), Is.EqualTo(1), "scenario3");
         }
 
+        void CaptureEvent<TEvent>(Mock<IProgressNotifier> notifier, Action<TEvent> callback) where TEvent : ProgressEvent
+        {
+            notifier.Setup(x => x.Notify(It.IsAny<TEvent>()))
+                .Callback((ProgressEvent x) => callback.Invoke((TEvent)x));
+        }
+
         [Test]
         public void It_should_wire_steps_scenario_and_feature_infos()
         {
@@ -182,23 +224,16 @@ namespace LightBDD.Core.UnitTests
             IScenarioResult scenarioResult = null;
             var stepInfos = new List<IStepInfo>();
             var stepResults = new List<IStepResult>();
-            var featureNotifier = new Mock<IFeatureProgressNotifier>();
-            var scenarioNotifier = new Mock<IScenarioProgressNotifier>();
+            var progressNotifier = new Mock<IProgressNotifier>();
 
-            featureNotifier.Setup(x => x.NotifyFeatureStart(It.IsAny<IFeatureInfo>()))
-                .Callback((IFeatureInfo x) => featureInfo = x);
-            featureNotifier.Setup(x => x.NotifyFeatureFinished(It.IsAny<IFeatureResult>()))
-                .Callback((IFeatureResult x) => featureResult = x);
-            scenarioNotifier.Setup(x => x.NotifyScenarioStart(It.IsAny<IScenarioInfo>()))
-                .Callback((IScenarioInfo x) => scenarioInfo = x);
-            scenarioNotifier.Setup(x => x.NotifyScenarioFinished(It.IsAny<IScenarioResult>()))
-                .Callback((IScenarioResult x) => scenarioResult = x);
-            scenarioNotifier.Setup(x => x.NotifyStepStart(It.IsAny<IStepInfo>()))
-                .Callback((IStepInfo x) => stepInfos.Add(x));
-            scenarioNotifier.Setup(x => x.NotifyStepFinished(It.IsAny<IStepResult>()))
-                .Callback((IStepResult x) => stepResults.Add(x));
+            CaptureEvent(progressNotifier, (FeatureStarting x) => featureInfo = x.Feature);
+            CaptureEvent(progressNotifier, (FeatureFinished x) => featureResult = x.Result);
+            CaptureEvent(progressNotifier, (ScenarioStarting x) => scenarioInfo = x.Scenario);
+            CaptureEvent(progressNotifier, (ScenarioFinished x) => scenarioResult = x.Result);
+            CaptureEvent(progressNotifier, (StepStarting x) => stepInfos.Add(x.Step));
+            CaptureEvent(progressNotifier, (StepFinished x) => stepResults.Add(x.Result));
 
-            var feature = new TestableFeatureRunnerRepository(featureNotifier.Object, fixture => scenarioNotifier.Object)
+            var feature = new TestableFeatureRunnerRepository(progressNotifier.Object)
                 .GetRunnerFor(GetType());
             var runner = feature.GetBddRunner(this);
             try
@@ -239,7 +274,9 @@ namespace LightBDD.Core.UnitTests
             Assert.That(stepResults[8].Info, Is.SameAs(stepInfos[0]), "1");
         }
 
-        private class CapturingProgressNotifier : IScenarioProgressNotifier, IFeatureProgressNotifier
+#pragma warning disable 618
+        private class CapturingProgressNotifier : IProgressNotifier, IScenarioProgressNotifier, IFeatureProgressNotifier
+#pragma warning restore 618
         {
             private readonly List<string> _notifications = new List<string>();
 
@@ -293,6 +330,37 @@ namespace LightBDD.Core.UnitTests
             private string FormatStep(IStepInfo step)
             {
                 return $"{step.GroupPrefix}{step.Number}/{step.GroupPrefix}{step.Total} {step.Name}";
+            }
+
+            public void Notify(ProgressEvent e)
+            {
+                switch (e)
+                {
+                    case FeatureFinished featureFinished:
+                        NotifyFeatureFinished(featureFinished.Result);
+                        break;
+                    case FeatureStarting featureStarting:
+                        NotifyFeatureStart(featureStarting.Feature);
+                        break;
+                    case ScenarioFinished scenarioFinished:
+                        NotifyScenarioFinished(scenarioFinished.Result);
+                        break;
+                    case ScenarioStarting scenarioStarting:
+                        NotifyScenarioStart(scenarioStarting.Scenario);
+                        break;
+                    case StepCommented stepCommented:
+                        NotifyStepComment(stepCommented.Step, stepCommented.Comment);
+                        break;
+                    case StepFinished stepFinished:
+                        NotifyStepFinished(stepFinished.Result);
+                        break;
+                    case StepStarting stepStarting:
+                        NotifyStepStart(stepStarting.Step);
+                        break;
+                    case StepFileAttached stepFileAttached:
+                        _notifications.Add($"Step {stepFileAttached.Step.GroupPrefix}{stepFileAttached.Step.Number}/{stepFileAttached.Step.GroupPrefix}{stepFileAttached.Step.Total} File Attachment - {stepFileAttached.Attachment.Name}: {stepFileAttached.Attachment.FilePath}");
+                        break;
+                }
             }
         }
     }

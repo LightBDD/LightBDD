@@ -1,4 +1,5 @@
-﻿using LightBDD.Core.Formatting.ExceptionFormatting;
+﻿using System;
+using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Framework.Configuration;
 using LightBDD.XUnit2.Implementation;
 
@@ -23,6 +24,7 @@ namespace LightBDD.XUnit2.Configuration
         /// <summary>
         /// Appends LightBDD.XUnit2 default scenario progress notifiers.
         /// </summary>
+        [Obsolete("Use " + nameof(ProgressNotifierConfiguration) + " instead", true)]
         public static ScenarioProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this ScenarioProgressNotifierConfiguration configuration)
         {
             return configuration
@@ -33,9 +35,18 @@ namespace LightBDD.XUnit2.Configuration
         /// <summary>
         /// Appends LightBDD.XUnit2 default feature progress notifiers.
         /// </summary>
+        [Obsolete("Use " + nameof(ProgressNotifierConfiguration) + " instead", true)]
         public static FeatureProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this FeatureProgressNotifierConfiguration configuration)
         {
             return configuration.AppendNotifiers(XUnit2ProgressNotifier.CreateFeatureProgressNotifier());
+        }
+
+        /// <summary>
+        /// Appends LightBDD.XUnit2 default feature progress notifiers.
+        /// </summary>
+        public static ProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this ProgressNotifierConfiguration configuration)
+        {
+            return configuration.Append(XUnit2ProgressNotifier.CreateProgressNotifiers());
         }
     }
 }

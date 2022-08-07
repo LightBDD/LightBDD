@@ -15,12 +15,9 @@ namespace LightBDD.Fixie2.UnitTests
             configuration.ReportWritersConfiguration()
                 .Clear();
 
-            configuration.FeatureProgressNotifierConfiguration()
-                .ClearNotifiers();
-
-            configuration.ScenarioProgressNotifierConfiguration()
-                .ClearNotifierProviders()
-                .AppendNotifierProviders(() => new DefaultProgressNotifier(x => CapturedNotifications.Enqueue(x)));
+            configuration.ProgressNotifierConfiguration()
+                .Clear()
+                .Append(new DefaultProgressNotifier(x => CapturedNotifications.Enqueue(x)));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using LightBDD.Core.Configuration;
 using LightBDD.Framework.Formatting;
 using LightBDD.Framework.Formatting.Values;
@@ -25,7 +26,8 @@ namespace LightBDD.Framework.Configuration
 
             configuration
                 .ReportWritersConfiguration()
-                .RegisterFrameworkDefaultReportWriters();
+                .RegisterFrameworkDefaultReportWriters()
+                .RegisterDefaultFileAttachmentManager();
 
             configuration
                 .NameFormatterConfiguration()
@@ -51,7 +53,17 @@ namespace LightBDD.Framework.Configuration
         /// </summary>
         public static ReportWritersConfiguration RegisterFrameworkDefaultReportWriters(this ReportWritersConfiguration configuration)
         {
-            return configuration.Add(new ReportFileWriter(new HtmlReportFormatter(), "~" + Path.DirectorySeparatorChar + "Reports" + Path.DirectorySeparatorChar + "FeaturesReport.html"));
+            return configuration
+                .Add(new ReportFileWriter(new HtmlReportFormatter(), $"~{Path.DirectorySeparatorChar}Reports{Path.DirectorySeparatorChar}FeaturesReport.html"));
+        }
+
+        /// <summary>
+        /// Applies default file attachment manager configuration to generate attachments in <c>~\\Reports\</c>(Win) <c>~/Reports/</c>(Unix) directory.
+        /// </summary>
+        public static ReportWritersConfiguration RegisterDefaultFileAttachmentManager(this ReportWritersConfiguration configuration)
+        {
+            return configuration
+                .UpdateFileAttachmentsManager(new FileAttachmentsManager($"~{Path.DirectorySeparatorChar}Reports"));
         }
 
         /// <summary>
@@ -59,18 +71,31 @@ namespace LightBDD.Framework.Configuration
         /// </summary>
         /// <param name="configuration">Configuration object.</param>
         /// <returns>Configuration object.</returns>
+        [Obsolete]
         public static FeatureProgressNotifierConfiguration FeatureProgressNotifierConfiguration(this LightBddConfiguration configuration)
         {
             return configuration.Get<FeatureProgressNotifierConfiguration>();
         }
+
         /// <summary>
         /// Retrieves <see cref="ScenarioProgressNotifierConfiguration"/> from <paramref name="configuration"/> for further customizations.
         /// </summary>
         /// <param name="configuration">Configuration object.</param>
         /// <returns>Configuration object.</returns>
+        [Obsolete]
         public static ScenarioProgressNotifierConfiguration ScenarioProgressNotifierConfiguration(this LightBddConfiguration configuration)
         {
             return configuration.Get<ScenarioProgressNotifierConfiguration>();
+        }
+
+        /// <summary>
+        /// Retrieves <see cref="ProgressNotifierConfiguration"/> from <paramref name="configuration"/> for further customizations.
+        /// </summary>
+        /// <param name="configuration">Configuration object.</param>
+        /// <returns>Configuration object.</returns>
+        public static ProgressNotifierConfiguration ProgressNotifierConfiguration(this LightBddConfiguration configuration)
+        {
+            return configuration.Get<ProgressNotifierConfiguration>();
         }
 
         /// <summary>

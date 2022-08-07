@@ -5,9 +5,11 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
+using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
@@ -32,14 +34,9 @@ namespace LightBDD.Framework.UnitTests.Notification
             _capturedGroups.GetOrAdd(_currentId.Value, i => new ConcurrentQueue<string>()).Enqueue(message);
         }
 
-        public IFeatureProgressNotifier GetFeatureNotifier()
+        public IProgressNotifier GetProgressNotifier()
         {
-            return _notifierProvider.CreateFeatureProgressNotifier(Notify);
-        }
-
-        public IScenarioProgressNotifier GetScenarioNotifier()
-        {
-            return _notifierProvider.CreateScenarioProgressNotifier(Notify);
+            return _notifierProvider.CreateProgressNotifier(Notify);
         }
 
         [SetUp]
@@ -93,16 +90,15 @@ namespace LightBDD.Framework.UnitTests.Notification
             var featureResult = Fake.Object<TestResults.TestFeatureResult>();
             var comment = Fake.String();
 
-            var featureNotifier = GetFeatureNotifier();
-            var scenarioNotifier = GetScenarioNotifier();
-
-            featureNotifier.NotifyFeatureStart(featureInfo);
-            scenarioNotifier.NotifyScenarioStart(scenarioInfo);
-            scenarioNotifier.NotifyStepStart(stepInfo);
-            scenarioNotifier.NotifyStepComment(stepInfo, comment);
-            scenarioNotifier.NotifyStepFinished(stepResult);
-            scenarioNotifier.NotifyScenarioFinished(scenarioResult);
-            featureNotifier.NotifyFeatureFinished(featureResult);
+            var notifier = GetProgressNotifier();
+            var eventTime = new EventTime();
+            notifier.Notify(new FeatureStarting(eventTime, featureInfo));
+            notifier.Notify(new ScenarioStarting(eventTime, scenarioInfo));
+            notifier.Notify(new StepStarting(eventTime, stepInfo));
+            notifier.Notify(new StepCommented(eventTime, stepInfo, comment));
+            notifier.Notify(new StepFinished(eventTime, stepResult));
+            notifier.Notify(new ScenarioFinished(eventTime, scenarioResult));
+            notifier.Notify(new FeatureFinished(eventTime, featureResult));
 
             var headerLength = "Fi=000,Fa=000,Pe=000 #   > ".Length;
             var padding = new string(' ',headerLength);
@@ -138,7 +134,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         {
             var featureInfo = Fake.Object<TestResults.TestFeatureInfo>();
             featureInfo.Description = null;
-            GetFeatureNotifier().NotifyFeatureStart(featureInfo);
+            GetProgressNotifier().Notify(new FeatureStarting(new EventTime(), featureInfo));
 
             Assert.That(CapturedItems.Single(), Is.EqualTo($"Fi=000,Fa=000,Pe=000 #   > FEATURE: [{string.Join("][", featureInfo.Labels)}] {featureInfo.Name}"));
         }
@@ -148,7 +144,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         {
             var featureInfo = Fake.Object<TestResults.TestFeatureInfo>();
             featureInfo.Labels = new string[0];
-            GetFeatureNotifier().NotifyFeatureStart(featureInfo);
+            GetProgressNotifier().Notify(new FeatureStarting(new EventTime(), featureInfo));
 
             var header = "Fi=000,Fa=000,Pe=000 #   > ";
             var expected = $"{header}FEATURE: {featureInfo.Name}{Environment.NewLine}{new string(' ', header.Length)}  {featureInfo.Description}";
@@ -160,7 +156,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         {
             var scenarioInfo = Fake.Object<TestResults.TestScenarioInfo>();
             scenarioInfo.Labels = new string[0];
-            GetScenarioNotifier().NotifyScenarioStart(scenarioInfo);
+            GetProgressNotifier().Notify(new ScenarioStarting(new EventTime(), scenarioInfo));
 
             var expected = $"Fi=000,Fa=000,Pe=001 #  1> SCENARIO: {scenarioInfo.Name}";
             Assert.That(CapturedItems.Single(), Is.EqualTo(expected));
@@ -173,10 +169,10 @@ namespace LightBDD.Framework.UnitTests.Notification
             var scenarioInfo2 = Fake.Object<TestResults.TestScenarioInfo>();
             scenarioInfo.Labels = new string[0];
             scenarioInfo2.Labels = new string[0];
-            var scenarioNotifier = GetScenarioNotifier();
 
-            scenarioNotifier.NotifyScenarioStart(scenarioInfo);
-            scenarioNotifier.NotifyScenarioStart(scenarioInfo2);
+            var progressNotifier = GetProgressNotifier();
+            progressNotifier.Notify(new ScenarioStarting(new EventTime(), scenarioInfo));
+            progressNotifier.Notify(new ScenarioStarting(new EventTime(), scenarioInfo2));
 
             var expected = new[]
             {
@@ -203,11 +199,12 @@ namespace LightBDD.Framework.UnitTests.Notification
             scenarioResult2.Info = scenarioInfo2;
             scenarioResult2.Status = ExecutionStatus.Failed;
 
-            var scenarioNotifier = GetScenarioNotifier();
-            scenarioNotifier.NotifyScenarioStart(scenarioInfo);
-            scenarioNotifier.NotifyScenarioFinished(scenarioResult);
-            scenarioNotifier.NotifyScenarioStart(scenarioInfo2);
-            scenarioNotifier.NotifyScenarioFinished(scenarioResult2);
+            var progressNotifier = GetProgressNotifier();
+            var eventTime = new EventTime();
+            progressNotifier.Notify(new ScenarioStarting(eventTime, scenarioInfo));
+            progressNotifier.Notify(new ScenarioFinished(eventTime, scenarioResult));
+            progressNotifier.Notify(new ScenarioStarting(eventTime, scenarioInfo2));
+            progressNotifier.Notify(new ScenarioFinished(eventTime, scenarioResult2));
 
             var headerLength = "Fi=000,Fa=000,Pe=001 #  1> ".Length;
 
@@ -232,9 +229,10 @@ namespace LightBDD.Framework.UnitTests.Notification
             scenarioResult.Status = ExecutionStatus.Passed;
             scenarioResult.ExecutionTime = null;
 
-            var scenarioNotifier = GetScenarioNotifier();
-            scenarioNotifier.NotifyScenarioStart(scenarioInfo);
-            scenarioNotifier.NotifyScenarioFinished(scenarioResult);
+            var progressNotifier = GetProgressNotifier();
+            var eventTime = new EventTime();
+            progressNotifier.Notify(new ScenarioStarting(eventTime, scenarioInfo));
+            progressNotifier.Notify(new ScenarioFinished(eventTime, scenarioResult));
 
             var headerLength = "Fi=000,Fa=000,Pe=001 #  1> ".Length;
 
@@ -256,9 +254,10 @@ namespace LightBDD.Framework.UnitTests.Notification
             scenarioResult.Status = ExecutionStatus.Passed;
             scenarioResult.StatusDetails = null;
 
-            var scenarioNotifier = GetScenarioNotifier();
-            scenarioNotifier.NotifyScenarioStart(scenarioInfo);
-            scenarioNotifier.NotifyScenarioFinished(scenarioResult);
+            var progressNotifier = GetProgressNotifier();
+            var eventTime = new EventTime();
+            progressNotifier.Notify(new ScenarioStarting(eventTime, scenarioInfo));
+            progressNotifier.Notify(new ScenarioFinished(eventTime, scenarioResult));
 
             var expected = new[]
             {
@@ -272,9 +271,9 @@ namespace LightBDD.Framework.UnitTests.Notification
         public async Task It_should_capture_progress_properly()
         {
             var count = 100;
-            var featureNotifier = GetFeatureNotifier();
+            var progressNotifier = GetProgressNotifier();
 
-            await Task.WhenAll(Enumerable.Range(0, count).Select(i => BeginNotification(i, featureNotifier)).ToArray());
+            await Task.WhenAll(Enumerable.Range(0, count).Select(i => BeginNotification(i, progressNotifier)).ToArray());
 
             Assert.That(_capturedGroups.Keys.Count, Is.EqualTo(count), "Not all groups has been captured");
 
@@ -292,43 +291,41 @@ namespace LightBDD.Framework.UnitTests.Notification
             Assert.That(finished, Does.Contain(count), $"Expected at least one status with Fi={count}");
         }
 
-        private async Task BeginNotification(int i, IFeatureProgressNotifier featureNotifier)
+        private async Task BeginNotification(int i, IProgressNotifier notifier)
         {
-            var scenarioNotifier = GetScenarioNotifier();
-
             await Task.Yield();
             _currentId.Value = i;
-
-            featureNotifier.NotifyFeatureStart(Fake.Object<TestResults.TestFeatureInfo>());
+            var eventTime = new EventTime();
+            notifier.Notify(new FeatureStarting(eventTime, Fake.Object<TestResults.TestFeatureInfo>()));
             await Task.Yield();
-            scenarioNotifier.NotifyScenarioStart(Fake.Object<TestResults.TestScenarioInfo>());
+            notifier.Notify(new ScenarioStarting(eventTime, Fake.Object<TestResults.TestScenarioInfo>()));
             await Task.Yield();
-            scenarioNotifier.NotifyStepStart(Fake.Object<TestResults.TestStepInfo>());
+            notifier.Notify(new StepStarting(eventTime, Fake.Object<TestResults.TestStepInfo>()));
             await Task.Yield();
-            scenarioNotifier.NotifyStepComment(Fake.Object<TestResults.TestStepInfo>(), "comment");
+            notifier.Notify(new StepCommented(eventTime, Fake.Object<TestResults.TestStepInfo>(), "comment"));
             await Task.Yield();
-            scenarioNotifier.NotifyStepComment(Fake.Object<TestResults.TestStepInfo>(), "comment2");
+            notifier.Notify(new StepCommented(eventTime, Fake.Object<TestResults.TestStepInfo>(), "comment2"));
             await Task.Yield();
-            scenarioNotifier.NotifyStepFinished(Fake.Object<TestResults.TestStepResult>());
+            notifier.Notify(new StepFinished(eventTime, Fake.Object<TestResults.TestStepResult>()));
             await Task.Yield();
-            scenarioNotifier.NotifyStepStart(Fake.Object<TestResults.TestStepInfo>());
+            notifier.Notify(new StepStarting(eventTime, Fake.Object<TestResults.TestStepInfo>()));
             await Task.Yield();
-            scenarioNotifier.NotifyStepComment(Fake.Object<TestResults.TestStepInfo>(), "comment");
+            notifier.Notify(new StepCommented(eventTime, Fake.Object<TestResults.TestStepInfo>(), "comment"));
             await Task.Yield();
-            scenarioNotifier.NotifyStepComment(Fake.Object<TestResults.TestStepInfo>(), "comment2");
+            notifier.Notify(new StepCommented(eventTime, Fake.Object<TestResults.TestStepInfo>(), "comment2"));
             await Task.Yield();
-            scenarioNotifier.NotifyStepFinished(Fake.Object<TestResults.TestStepResult>());
+            notifier.Notify(new StepFinished(eventTime, Fake.Object<TestResults.TestStepResult>()));
             await Task.Yield();
 
             var scenarioResult = Fake.Object<TestResults.TestScenarioResult>();
             scenarioResult.Steps = new TestResults.TestStepResult[0];
 
-            scenarioNotifier.NotifyScenarioFinished(scenarioResult);
+            notifier.Notify(new ScenarioFinished(eventTime, scenarioResult));
             await Task.Yield();
 
             var featureResult = Fake.Object<TestResults.TestFeatureResult>();
             featureResult.Scenarios = new TestResults.TestScenarioResult[0];
-            featureNotifier.NotifyFeatureFinished(featureResult);
+            notifier.Notify(new FeatureFinished(eventTime, featureResult));
         }
 
     }

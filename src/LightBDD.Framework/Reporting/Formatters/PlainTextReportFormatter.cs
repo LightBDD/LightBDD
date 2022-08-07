@@ -106,10 +106,12 @@ namespace LightBDD.Framework.Reporting.Formatters
             }
 
             var commentBuilder = new StringBuilder();
+            var attachmentBuilder = new StringBuilder();
             foreach (var step in scenario.GetSteps())
-                FormatStep(writer, step, commentBuilder);
+                FormatStep(writer, step, commentBuilder, attachmentBuilder);
             FormatDetails(writer, scenario);
             FormatComments(writer, commentBuilder);
+            FormatAttachments(writer, attachmentBuilder);
         }
 
         private static void CollectComments(IStepResult step, StringBuilder commentBuilder)
@@ -122,6 +124,18 @@ namespace LightBDD.Framework.Reporting.Formatters
             }
         }
 
+        private static void CollectAttachments(IStepResult step, StringBuilder attachmentBuilder)
+        {
+            foreach (var attachment in step.FileAttachments)
+            {
+                attachmentBuilder.Append("\t\t\tStep ").Append(step.Info.GroupPrefix).Append(step.Info.Number)
+                    .Append(": ")
+                    .Append(attachment.Name)
+                    .Append(" - ")
+                    .AppendLine(attachment.RelativePath);
+            }
+        }
+
         private static void FormatComments(TextWriter writer, StringBuilder commentBuilder)
         {
             if (commentBuilder.Length == 0)
@@ -130,7 +144,15 @@ namespace LightBDD.Framework.Reporting.Formatters
             writer.Write(commentBuilder);
         }
 
-        private static void FormatStep(TextWriter writer, IStepResult step, StringBuilder commentBuilder, int indent = 0)
+        private static void FormatAttachments(TextWriter writer, StringBuilder attachmentBuilder)
+        {
+            if (attachmentBuilder.Length == 0)
+                return;
+            writer.WriteLine("\t\tAttachments:");
+            writer.Write(attachmentBuilder);
+        }
+
+        private static void FormatStep(TextWriter writer, IStepResult step, StringBuilder commentBuilder, StringBuilder attachmentBuilder, int indent = 0)
         {
             var stepIndent = new string('\t', indent + 2);
             writer.Write(stepIndent);
@@ -151,8 +173,9 @@ namespace LightBDD.Framework.Reporting.Formatters
             foreach (var parameterResult in step.Parameters)
                 FormatParameter(writer, parameterResult, stepIndent);
             CollectComments(step, commentBuilder);
+            CollectAttachments(step, attachmentBuilder);
             foreach (var subStep in step.GetSubSteps())
-                FormatStep(writer, subStep, commentBuilder, indent + 1);
+                FormatStep(writer, subStep, commentBuilder, attachmentBuilder, indent + 1);
         }
 
         private static void FormatParameter(TextWriter writer, IParameterResult parameterResult, string stepIndent)
