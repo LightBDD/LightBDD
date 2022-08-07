@@ -21,9 +21,18 @@ namespace LightBDD.Framework.Reporting.UnitTests
         }
 
         [Test]
-        public void Constructor_should_support_tilde_and_create_output_directory()
+        public void Constructor_should_not_create_output_directory()
+        {
+            var manager = new FileAttachmentsManager(_fullDirectoryPath);
+            Assert.That(manager.AttachmentsDirectory, Is.EqualTo(_fullDirectoryPath));
+            Assert.That(!Directory.Exists(_fullDirectoryPath), Is.True);
+        }
+
+        [Test]
+        public async Task Manager_should_support_tilde_and_create_output_directory()
         {
             var manager = new FileAttachmentsManager(Path.Combine("~", _directory));
+            await manager.CreateFromText("foo", ".txt", "content", Encoding.UTF8);
             Assert.That(manager.AttachmentsDirectory, Is.EqualTo(_fullDirectoryPath));
             Assert.That(Directory.Exists(_fullDirectoryPath), Is.True);
         }

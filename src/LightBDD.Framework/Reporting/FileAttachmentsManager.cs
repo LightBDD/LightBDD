@@ -12,6 +12,8 @@ namespace LightBDD.Framework.Reporting;
 /// </summary>
 public class FileAttachmentsManager : IFileAttachmentsManager
 {
+    private bool _directoryCreated;
+
     /// <summary>
     /// Directory where attachments are stored
     /// </summary>
@@ -24,7 +26,6 @@ public class FileAttachmentsManager : IFileAttachmentsManager
     public FileAttachmentsManager(string attachmentsDirectory)
     {
         AttachmentsDirectory = FilePathHelper.ResolveAbsolutePath(attachmentsDirectory);
-        Directory.CreateDirectory(AttachmentsDirectory);
     }
 
     /// <inheritdoc />
@@ -32,7 +33,7 @@ public class FileAttachmentsManager : IFileAttachmentsManager
     {
         var fileExtension = SanitizeExtension(Path.GetExtension(filePath));
         var destinationFile = GetAttachmentFile(fileExtension);
-        var destinationFilePath = Path.Combine(AttachmentsDirectory, destinationFile);
+        var destinationFilePath = CreateDestinationFilePath(destinationFile);
 
         if (removeOriginalFile)
             File.Move(filePath, destinationFilePath);
@@ -47,7 +48,7 @@ public class FileAttachmentsManager : IFileAttachmentsManager
     {
         fileExtension = SanitizeExtension(fileExtension);
         var destinationFile = GetAttachmentFile(fileExtension);
-        var destinationFilePath = Path.Combine(AttachmentsDirectory, destinationFile);
+        var destinationFilePath = CreateDestinationFilePath(destinationFile);
 
         using var stream = File.OpenWrite(destinationFilePath);
         await writeStreamFn(stream);
@@ -68,4 +69,22 @@ public class FileAttachmentsManager : IFileAttachmentsManager
     }
 
     private string GetAttachmentFile(string extension) => $"{Guid.NewGuid()}{extension}";
+
+    private string CreateDestinationFilePath(string destinationFile)
+    {
+        if (!_directoryCreated)
+            EnsureDirectoryCreated();
+        return Path.Combine(AttachmentsDirectory, destinationFile);
+    }
+
+    private void EnsureDirectoryCreated()
+    {
+        lock (AttachmentsDirectory)
+        {
+            if (_directoryCreated)
+                return;
+            Directory.CreateDirectory(AttachmentsDirectory);
+            _directoryCreated = true;
+        }
+    }
 }
