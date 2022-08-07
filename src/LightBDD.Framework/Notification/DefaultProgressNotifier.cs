@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Formatting;
@@ -139,14 +139,14 @@ namespace LightBDD.Framework.Notification
                     NotifyStepStart(stepStarting.Step);
                     break;
                 case StepFileAttached stepFileAttached:
-                    NotifyStepAttached(stepFileAttached.Step, stepFileAttached.Attachment);
+                    NotifyStepFileAttached(stepFileAttached.Step, stepFileAttached.Attachment);
                     break;
             }
         }
 
-        private void NotifyStepAttached(IStepInfo step, FileAttachment attachment)
+        private void NotifyStepFileAttached(IStepInfo step, FileAttachment attachment)
         {
-            _onNotify($"  STEP {step.GroupPrefix}{step.Number}/{step.GroupPrefix}{step.Total}: File Attached - {attachment.Name}: {attachment.FilePath}");
+            _onNotify($"  STEP {step.GroupPrefix}{step.Number}/{step.GroupPrefix}{step.Total}: 🔗{attachment.Name}: {attachment.FilePath}");
         }
 
         private static string FormatDescription(string description)
