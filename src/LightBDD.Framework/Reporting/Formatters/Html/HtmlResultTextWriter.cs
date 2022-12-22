@@ -222,7 +222,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
         private IHtmlNode WriteFeatureDetails()
         {
-            return Html.Tag(Html5Tag.Section).Content(
+            return Html.Tag(Html5Tag.Section).Class("features").Content(
                 GetFeatureDetailsContent());
         }
 

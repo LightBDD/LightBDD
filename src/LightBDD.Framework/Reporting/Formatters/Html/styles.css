@@ -8,7 +8,8 @@ label * { line-height: 1em;}
 h1{ font-size: 1.40em;}
 h2{ font-size: 1.20em;}
 h3{ font-size: 1.00em;}
-.feature{margin-bottom: 1em;padding: 0.2em;}
+section.features{display: flex;flex-direction: column;}
+.feature{margin-bottom: 1em;padding: 0.2em;display: table;}
 .title{font-weight: bold;margin: 0;}
 .title,.description,.step{ word-wrap: break-word;}
 .steps,.categories{margin-top: 0.5em;}
