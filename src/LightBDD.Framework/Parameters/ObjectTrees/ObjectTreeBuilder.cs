@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using LightBDD.Framework.Configuration;
+using LightBDD.Framework.Execution.Coordination;
 using LightBDD.Framework.Parameters.ObjectTrees.Providers;
 
 namespace LightBDD.Framework.Parameters.ObjectTrees;
@@ -9,6 +11,10 @@ namespace LightBDD.Framework.Parameters.ObjectTrees;
 public class ObjectTreeBuilder
 {
     private readonly ObjectTreeBuilderOptions _options;
+
+    public static ObjectTreeBuilder Default { get; } = new(new());
+    public static ObjectTreeBuilder Current => FrameworkFeatureCoordinator.TryGetInstance()?.Configuration.Get<ObjectTreeConfiguration>().Builder ?? Default;
+
 
     public ObjectTreeBuilder(ObjectTreeBuilderOptions options)
     {

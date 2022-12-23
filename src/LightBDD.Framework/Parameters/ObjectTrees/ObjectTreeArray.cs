@@ -11,5 +11,15 @@ public class ObjectTreeArray : ObjectTreeNode
     }
 
     public override ObjectTreeNodeKind Kind => ObjectTreeNodeKind.Array;
+
     public IReadOnlyList<ObjectTreeNode> Items { get; }
+
+    public override IEnumerable<ObjectTreeNode> EnumerateAll()
+    {
+        yield return this;
+        foreach (var item in Items.SelectMany(i => i.EnumerateAll()))
+            yield return item;
+    }
+
+    public override string ToString() => $"<array:{Items.Count}>";
 }
