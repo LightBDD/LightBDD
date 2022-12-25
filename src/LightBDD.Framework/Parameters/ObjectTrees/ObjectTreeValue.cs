@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿#nullable enable
+using System.Collections.Generic;
 using LightBDD.Core.Formatting.Values;
 
 namespace LightBDD.Framework.Parameters.ObjectTrees;
 
-public class ObjectTreeValue : ObjectTreeNode,ISelfFormattable
+public class ObjectTreeValue : ObjectTreeNode, ISelfFormattable
 {
-    public ObjectTreeValue(string path, object? value) : base(path)
+    public ObjectTreeValue(ObjectTreeNode? parent, string node, object? value) : base(parent, node)
     {
         Value = value;
     }

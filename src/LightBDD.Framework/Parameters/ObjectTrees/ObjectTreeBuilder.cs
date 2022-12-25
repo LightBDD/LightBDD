@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,50 +22,44 @@ public class ObjectTreeBuilder
         _options = options;
     }
 
-    public ObjectTreeNode Build(object? o) => Build(o, CombinePath(null));
+    public ObjectTreeNode Build(object? o) => Build(o, "$", null);
 
-    private ObjectTreeNode Build(object? o, string path)
+    private ObjectTreeNode Build(object? o, string node, ObjectTreeNode? parent)
     {
         if (o is null)
-            return new ObjectTreeValue(path, o);
+            return new ObjectTreeValue(parent, node, o);
 
         var type = o.GetType();
         if (type.IsPrimitive || _options.ValueTypes.Any(t => t.IsAssignableFrom(type)))
-            return new ObjectTreeValue(path, o);
+            return new ObjectTreeValue(parent, node, o);
 
         var collection = _options.ArrayProviders
             .Select(p => p.TryProvide(o))
             .FirstOrDefault(r => r != null);
 
         if (collection != null)
-            return CreateArray(collection, path);
+            return CreateArray(collection, node, parent);
 
         var properties = _options.ObjectProviders
             .Select(p => p.TryProvide(o))
             .FirstOrDefault(r => r != null);
 
         if (properties != null)
-            return CreateObject(properties, path);
-        return CreateObject(PocoObjectProvider.Instance.Provide(o), path);
+            return CreateObject(properties, node, parent);
+        return CreateObject(PocoObjectProvider.Instance.Provide(o), node, parent);
     }
 
-    private ObjectTreeNode CreateObject(IEnumerable<KeyValuePair<string, object>> properties, string path)
+    private ObjectTreeNode CreateObject(IEnumerable<KeyValuePair<string, object>> properties, string node, ObjectTreeNode? parent)
     {
-        var props = properties.ToDictionary(x => x.Key, x => Build(x.Value, CombinePath(path, $".{x.Key}")));
-        return new ObjectTreeObject(path, props);
+        var result = new ObjectTreeObject(parent, node);
+        result.Properties = properties.ToDictionary(x => x.Key, x => Build(x.Value, x.Key, result));
+        return result;
     }
 
-    private ObjectTreeArray CreateArray(IEnumerable collection, string path)
+    private ObjectTreeArray CreateArray(IEnumerable collection, string node, ObjectTreeNode? parent)
     {
-        var items = collection.Cast<object>().Select((o, i) => Build(o, CombinePath(path, $"[{i}]")));
-        return new ObjectTreeArray(path, items);
-    }
-
-    private static string CombinePath(string? parent, string? node = null)
-    {
-        parent ??= "$";
-        return string.IsNullOrWhiteSpace(node)
-            ? parent
-            : $"{parent}{node}";
+        var result = new ObjectTreeArray(parent, node);
+        result.Items = collection.Cast<object>().Select((o, i) => Build(o, $"[{i}]", result)).ToArray();
+        return result;
     }
 }

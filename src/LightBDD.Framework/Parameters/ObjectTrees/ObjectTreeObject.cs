@@ -1,19 +1,18 @@
-﻿using System.Collections.Generic;
+﻿#nullable enable
+using System.Collections.Generic;
 using System.Linq;
-using LightBDD.Core.Formatting.Values;
 
 namespace LightBDD.Framework.Parameters.ObjectTrees;
 
 public class ObjectTreeObject : ObjectTreeNode
 {
-    public ObjectTreeObject(string path, IReadOnlyDictionary<string, ObjectTreeNode> properties) : base(path)
+    internal ObjectTreeObject(ObjectTreeNode? parent, string node) : base(parent, node)
     {
-        Properties = properties;
     }
 
     public override ObjectTreeNodeKind Kind => ObjectTreeNodeKind.Object;
 
-    public IReadOnlyDictionary<string, ObjectTreeNode> Properties { get; }
+    public IReadOnlyDictionary<string, ObjectTreeNode> Properties { get; internal set; }
 
     public override IEnumerable<ObjectTreeNode> EnumerateAll()
     {

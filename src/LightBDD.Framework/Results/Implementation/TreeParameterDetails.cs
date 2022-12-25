@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters.Trees;
 
@@ -8,14 +9,22 @@ namespace LightBDD.Framework.Results.Implementation;
 
 internal class TreeParameterDetails : ITreeParameterDetails
 {
-    public TreeParameterDetails(IEnumerable<TreeParameterNodeResult> nodes, bool wasActualValueSet)
+    public TreeParameterDetails(TreeParameterNodeResult root, bool wasActualValueSet)
     {
-        Nodes = nodes.OrderBy(x => x.Path).ToArray();
+        Root = root;
         if (wasActualValueSet)
         {
-            VerificationStatus = Nodes.Select(n => n.VerificationStatus)
-                .DefaultIfEmpty(ParameterVerificationStatus.NotProvided).Max();
-            VerificationMessage = CollectMessages();
+            var messages = new StringBuilder();
+            foreach (var n in root.EnumerateAll())
+            {
+                if (!string.IsNullOrWhiteSpace(n.VerificationMessage))
+                    messages.AppendLine($"{n.Path}: {n.VerificationMessage}");
+                VerificationStatus = (ParameterVerificationStatus)Math.Max((int)VerificationStatus, (int)n.VerificationStatus);
+            }
+
+            VerificationMessage = messages.ToString().TrimEnd();
+            if (string.IsNullOrWhiteSpace(VerificationMessage))
+                VerificationMessage = null;
         }
         else
         {
@@ -24,18 +33,7 @@ internal class TreeParameterDetails : ITreeParameterDetails
         }
     }
 
-    private string CollectMessages()
-    {
-        var messages = Nodes.Where(n => !string.IsNullOrWhiteSpace(n.VerificationMessage))
-            .Select(n => $"{n.Path}: {n.VerificationMessage}");
-
-        var message = string.Join(Environment.NewLine, messages);
-        return string.IsNullOrWhiteSpace(message)
-            ? null
-            : message;
-    }
-
     public string VerificationMessage { get; }
     public ParameterVerificationStatus VerificationStatus { get; }
-    public IReadOnlyList<ITreeParameterNodeResult> Nodes { get; }
+    public ITreeParameterNodeResult Root { get; }
 }

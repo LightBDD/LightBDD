@@ -19,7 +19,7 @@ public class VerifiableTree_tests
 
         tree.Details.VerificationStatus.ShouldBe(ParameterVerificationStatus.NotProvided);
         tree.Details.VerificationMessage.ShouldBe("Actual value was not provided");
-        AssertNodes(tree.Details.Nodes,
+        AssertNodes(tree.Details.Root.EnumerateAll(),
             "$|<object>|<none>|Failure|Missing value",
             "$.Name|Bob|<none>|Failure|Missing value",
             "$.Surname|Johnson|<none>|Failure|Missing value"
@@ -47,7 +47,7 @@ public class VerifiableTree_tests
         var tree = new VerifiableTree(expected, new VerifiableTreeOptions());
         tree.SetActual(actual);
 
-        AssertNodes(tree.Details.Nodes,
+        AssertNodes(tree.Details.Root.EnumerateAll(),
             "$|<object>|<object>|Success|",
             "$.Inner|<object>|<object>|Success|",
             "$.Inner.Key|5|5|Success|",
@@ -82,7 +82,7 @@ public class VerifiableTree_tests
         var tree = new VerifiableTree(expected, new VerifiableTreeOptions());
         tree.SetActual(actual);
 
-        AssertNodes(tree.Details.Nodes,
+        AssertNodes(tree.Details.Root.EnumerateAll(),
             "$|<object>|<object>|Success|", 
             "$.Inner|<object>|c|Failure|Different node types",
             "$.Inner.Key|5|<none>|Failure|Missing value", 
@@ -94,6 +94,7 @@ public class VerifiableTree_tests
             "$.Name|Bob|<none>|Failure|Missing value",
             "$.Surname|Johnson|John|Failure|expected: equals 'Johnson', but got: 'John'"
         );
+        
         tree.Details.VerificationStatus.ShouldBe(ParameterVerificationStatus.Failure);
         tree.Details.VerificationMessage.ShouldBe(@"$.Inner: Different node types
 $.Inner.Key: Missing value
@@ -104,7 +105,7 @@ $.Name: Missing value
 $.Surname: expected: equals 'Johnson', but got: 'John'");
     }
 
-    private void AssertNodes(IReadOnlyList<ITreeParameterNodeResult> nodes, params string[] expected)
+    private void AssertNodes(IEnumerable<ITreeParameterNodeResult> nodes, params string[] expected)
     {
         var actual = nodes.Select(n => $"{n.Path}|{n.Expectation}|{n.Value}|{n.VerificationStatus}|{n.VerificationMessage}").ToArray();
         actual.ShouldBe(expected);

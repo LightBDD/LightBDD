@@ -8,7 +8,7 @@ namespace LightBDD.Core.Results.Parameters.Trees;
 public interface ITreeParameterDetails : IParameterDetails
 {
     /// <summary>
-    /// Returns list of tree nodes.
+    /// Returns tree root node.
     /// </summary>
-    IReadOnlyList<ITreeParameterNodeResult> Nodes { get; }
+    ITreeParameterNodeResult Root { get; }
 }

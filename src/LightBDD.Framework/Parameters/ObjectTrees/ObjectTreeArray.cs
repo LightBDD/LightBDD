@@ -1,18 +1,18 @@
-﻿using System.Collections.Generic;
+﻿#nullable enable
+using System.Collections.Generic;
 using System.Linq;
 
 namespace LightBDD.Framework.Parameters.ObjectTrees;
 
 public class ObjectTreeArray : ObjectTreeNode
 {
-    public ObjectTreeArray(string path, IEnumerable<ObjectTreeNode> items) : base(path)
+    public ObjectTreeArray(ObjectTreeNode? parent, string node) : base(parent, node)
     {
-        Items = items.ToArray();
     }
 
     public override ObjectTreeNodeKind Kind => ObjectTreeNodeKind.Array;
 
-    public IReadOnlyList<ObjectTreeNode> Items { get; }
+    public IReadOnlyList<ObjectTreeNode> Items { get; internal set; }
 
     public override IEnumerable<ObjectTreeNode> EnumerateAll()
     {
