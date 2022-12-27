@@ -72,25 +72,35 @@ public class VerifiableTree : IComplexParameter, ISelfFormattable
         if (expected.Kind != actual.Kind)
             ToNode(results, expected, actual, ParameterVerificationStatus.Failure, "Different node types");
         else switch (expected.Kind)
+        {
+            case ObjectTreeNodeKind.Array when expected.AsArray().Items.Count != actual.AsArray().Items.Count:
+                ToNode(results, expected, actual, ParameterVerificationStatus.Failure, "Different collection size");
+                break;
+            case ObjectTreeNodeKind.Array:
+                ToNode(results, expected, actual, ParameterVerificationStatus.Success, string.Empty);
+                break;
+            case ObjectTreeNodeKind.Value:
             {
-                case ObjectTreeNodeKind.Array when expected.AsArray().Items.Count != actual.AsArray().Items.Count:
-                    ToNode(results, expected, actual, ParameterVerificationStatus.Failure, "Different collection size");
-                    break;
-                case ObjectTreeNodeKind.Array:
-                    ToNode(results, expected, actual, ParameterVerificationStatus.Success, string.Empty);
-                    break;
-                case ObjectTreeNodeKind.Value:
-                    {
-                        var result = Expect.To.Equal(expected.AsValue().Value).Verify(actual.AsValue().Value, _formattingService);
-                        ToNode(results, expected, actual,
-                            result.IsValid ? ParameterVerificationStatus.Success : ParameterVerificationStatus.Failure,
-                            result.Message);
-                        break;
-                    }
-                default:
-                    ToNode(results, expected, actual, ParameterVerificationStatus.Success, string.Empty);
-                    break;
+                var result = Expect.To.Equal(expected.AsValue().Value)
+                    .Verify(actual.AsValue().Value, _formattingService);
+                ToNode(results, expected, actual,
+                    result.IsValid ? ParameterVerificationStatus.Success : ParameterVerificationStatus.Failure,
+                    result.Message);
+                break;
             }
+            case ObjectTreeNodeKind.Reference:
+            {
+                var result = Expect.To.Equal(expected.AsReference().Target.Path)
+                    .Verify(actual.AsReference().Target.Path, _formattingService);
+                ToNode(results, expected, actual,
+                    result.IsValid ? ParameterVerificationStatus.Success : ParameterVerificationStatus.Failure,
+                    result.Message);
+                break;
+            }
+            default:
+                ToNode(results, expected, actual, ParameterVerificationStatus.Success, string.Empty);
+                break;
+        }
     }
 
     private void ToNode(Dictionary<string, TreeParameterNodeResult> results, ObjectTreeNode? expected, ObjectTreeNode? actual, ParameterVerificationStatus status, string verificationMessage)

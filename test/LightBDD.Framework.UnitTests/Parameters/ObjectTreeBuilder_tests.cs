@@ -110,6 +110,21 @@ namespace LightBDD.Framework.UnitTests.Parameters
             AssertValueNode(properties["Last Name"], "$['Last Name']", "Johnson");
         }
 
+        [Test]
+        public void It_should_detect_and_map_circular_references()
+        {
+            var p1 = new Parent { Name = "P1" };
+            p1.Children.Add(new Child { Name = "C1", Parent = p1 });
+            var p2 = new Parent { Name = "P2" };
+            p2.Children.Add(new Child { Name = "C2", Parent = p2 });
+            var input = new[] { p1, p1 };
+
+            var root = new ObjectTreeBuilder(new()).Build(input);
+            var nodes = root.EnumerateAll().ToDictionary(x => x.Path);
+            nodes["$[0].Children[0].Parent"].ToString().ShouldBe("<ref: $[0]>");
+            nodes["$[1].Children[0].Parent"].ToString().ShouldBe("<ref: $[1]>");
+        }
+
         private void AssertValueNode(ObjectTreeNode node, string path, object? value)
         {
             node.Kind.ShouldBe(ObjectTreeNodeKind.Value);
@@ -181,5 +196,17 @@ namespace LightBDD.Framework.UnitTests.Parameters
 
         public string Field = "field";
         public string Property { get; set; } = "prop";
+    }
+
+    class Parent
+    {
+        public string Name { get; set; }
+        public List<Child> Children { get; } = new();
+    }
+
+    class Child
+    {
+        public string Name { get; set; }
+        public Parent Parent { get; set; }
     }
 }

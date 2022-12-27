@@ -27,35 +27,51 @@ public class ObjectTreeBuilder
     private ObjectTreeNode Build(object? o, string node, ObjectTreeNode? parent)
     {
         if (o is null)
-            return new ObjectTreeValue(parent, node, o);
+            return new ObjectTreeValue(parent, node, o, o);
+
+        var recursionTarget = FindRecursion(o, parent);
+        if (recursionTarget != null)
+            return new ObjectTreeReference(parent, node, recursionTarget, o);
 
         var type = o.GetType();
         if (type.IsPrimitive || _options.ValueTypes.Any(t => t.IsAssignableFrom(type)))
-            return new ObjectTreeValue(parent, node, o);
+            return new ObjectTreeValue(parent, node, o, o);
 
         var mapper = _options.Mappers.FirstOrDefault(m => m.CanMap(o));
         switch (mapper?.Kind)
         {
             case ObjectTreeNodeKind.Value:
-                return new ObjectTreeValue(parent, node, mapper.AsValueMapper().GetValue(o));
+                return new ObjectTreeValue(parent, node, mapper.AsValueMapper().GetValue(o), o);
             case ObjectTreeNodeKind.Array:
-                return CreateArray(mapper.AsArrayMapper().GetItems(o), node, parent);
+                return CreateArray(mapper.AsArrayMapper().GetItems(o), node, parent, o);
             case ObjectTreeNodeKind.Object:
-                return CreateObject(mapper.AsObjectMapper().GetProperties(o), node, parent);
+                return CreateObject(mapper.AsObjectMapper().GetProperties(o), node, parent, o);
         }
-        return CreateObject(PocoMapper.Instance.GetProperties(o), node, parent);
+        return CreateObject(PocoMapper.Instance.GetProperties(o), node, parent, o);
     }
 
-    private ObjectTreeNode CreateObject(IEnumerable<KeyValuePair<string, object?>> properties, string node, ObjectTreeNode? parent)
+    private static ObjectTreeNode? FindRecursion(object o, ObjectTreeNode? node)
     {
-        var result = new ObjectTreeObject(parent, node);
+        while (node != null)
+        {
+            if (ReferenceEquals(node.RawObject, o))
+                return node;
+            node = node.Parent;
+        }
+
+        return null;
+    }
+
+    private ObjectTreeNode CreateObject(IEnumerable<KeyValuePair<string, object?>> properties, string node, ObjectTreeNode? parent, object o)
+    {
+        var result = new ObjectTreeObject(parent, node, o);
         result.Properties = properties.ToDictionary(x => x.Key, x => Build(x.Value, GetNodePath(x.Key), result));
         return result;
     }
 
-    private ObjectTreeArray CreateArray(IEnumerable collection, string node, ObjectTreeNode? parent)
+    private ObjectTreeArray CreateArray(IEnumerable collection, string node, ObjectTreeNode? parent, object o)
     {
-        var result = new ObjectTreeArray(parent, node);
+        var result = new ObjectTreeArray(parent, node, o);
         result.Items = collection.Cast<object>().Select((o, i) => Build(o, GetNodePath(i), result)).ToArray();
         return result;
     }

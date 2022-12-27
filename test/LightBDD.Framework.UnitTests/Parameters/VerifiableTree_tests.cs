@@ -173,9 +173,64 @@ $.Surname: expected: equals 'Johnson', but got: 'John'");
         );
     }
 
+    [Test]
+    public void It_should_compare_reference_nodes()
+    {
+        var expected = new[]
+        {
+            new Node{Name = "P1",Children = { new (){Name = "C1"} }},
+            new Node{Name = "P2",Children = { new (){Name = "C2", Children = { new(){Name = "CC1"} }} }}
+        };
+        expected[0].Children[0].Parent = expected[0];
+        expected[1].Children[0].Parent = expected[1];
+        expected[1].Children[0].Children[0].Parent = expected[1].Children[0];
+
+        var actual = new[]
+        {
+            new Node{Name = "P3",Children = { new (){Name = "C1"} }},
+            new Node{Name = "P2",Children = { new (){Name = "C2", Children = { new(){Name = "CC1"} }} }}
+        };
+        actual[0].Children[0].Parent = actual[0];
+        actual[1].Children[0].Parent = actual[1];
+        actual[1].Children[0].Children[0].Parent = actual[1];
+
+        var tree = new VerifiableTree(expected, new());
+        tree.SetActual(actual);
+        AssertNodes(tree.Details.Root.EnumerateAll(),
+            "$|<array:2>|<array:2>|Success|", 
+            "$[0]|<object>|<object>|Success|",
+            "$[0].Children|<array:1>|<array:1>|Success|", 
+            "$[0].Children[0]|<object>|<object>|Success|",
+            "$[0].Children[0].Children|<array:0>|<array:0>|Success|", 
+            "$[0].Children[0].Name|C1|C1|Success|",
+            "$[0].Children[0].Parent|<ref: $[0]>|<ref: $[0]>|Success|",
+            "$[0].Name|P1|P3|Failure|expected: equals 'P1', but got: 'P3'", 
+            "$[0].Parent|<null>|<null>|Success|",
+            "$[1]|<object>|<object>|Success|", 
+            "$[1].Children|<array:1>|<array:1>|Success|",
+            "$[1].Children[0]|<object>|<object>|Success|", 
+            "$[1].Children[0].Children|<array:1>|<array:1>|Success|",
+            "$[1].Children[0].Children[0]|<object>|<object>|Success|",
+            "$[1].Children[0].Children[0].Children|<array:0>|<array:0>|Success|",
+            "$[1].Children[0].Children[0].Name|CC1|CC1|Success|",
+            "$[1].Children[0].Children[0].Parent|<ref: $[1].Children[0]>|<ref: $[1]>|Failure|expected: equals '$[1].Children[0]', but got: '$[1]'",
+            "$[1].Children[0].Name|C2|C2|Success|", 
+            "$[1].Children[0].Parent|<ref: $[1]>|<ref: $[1]>|Success|",
+            "$[1].Name|P2|P2|Success|", 
+            "$[1].Parent|<null>|<null>|Success|"
+        );
+    }
+
     private void AssertNodes(IEnumerable<ITreeParameterNodeResult> nodes, params string[] expected)
     {
         var actual = nodes.Select(n => $"{n.Path}|{n.Expectation}|{n.Value}|{n.VerificationStatus}|{n.VerificationMessage}").ToArray();
         actual.ShouldBe(expected);
+    }
+
+    class Node
+    {
+        public Node? Parent { get; set; }
+        public string Name { get; set; }
+        public List<Node> Children { get; } = new();
     }
 }

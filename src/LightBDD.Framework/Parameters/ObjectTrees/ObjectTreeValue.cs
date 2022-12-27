@@ -6,7 +6,7 @@ namespace LightBDD.Framework.Parameters.ObjectTrees;
 
 public class ObjectTreeValue : ObjectTreeNode, ISelfFormattable
 {
-    public ObjectTreeValue(ObjectTreeNode? parent, string node, object? value) : base(parent, node)
+    public ObjectTreeValue(ObjectTreeNode? parent, string node, object? value, object? rawObject) : base(parent, node, rawObject)
     {
         Value = value;
     }

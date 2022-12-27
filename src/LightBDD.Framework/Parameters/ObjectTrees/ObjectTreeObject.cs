@@ -6,7 +6,7 @@ namespace LightBDD.Framework.Parameters.ObjectTrees;
 
 public class ObjectTreeObject : ObjectTreeNode
 {
-    internal ObjectTreeObject(ObjectTreeNode? parent, string node) : base(parent, node)
+    internal ObjectTreeObject(ObjectTreeNode? parent, string node, object rawObject) : base(parent, node, rawObject)
     {
     }
 

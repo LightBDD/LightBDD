@@ -6,7 +6,7 @@ namespace LightBDD.Framework.Parameters.ObjectTrees;
 
 public class ObjectTreeArray : ObjectTreeNode
 {
-    public ObjectTreeArray(ObjectTreeNode? parent, string node) : base(parent, node)
+    public ObjectTreeArray(ObjectTreeNode? parent, string node, object rawObject) : base(parent, node, rawObject)
     {
     }
 
