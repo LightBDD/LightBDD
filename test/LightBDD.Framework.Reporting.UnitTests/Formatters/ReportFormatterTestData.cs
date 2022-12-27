@@ -3,6 +3,7 @@ using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
+using LightBDD.Core.Results.Parameters.Trees;
 using LightBDD.Framework.Parameters;
 using LightBDD.UnitTests.Helpers;
 
@@ -86,34 +87,12 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
                     TestResults.CreateStepResult(1, "step", ExecutionStatus.Passed)));
         }
 
-        public static IFeatureResult GetFeatureWithVerifiableTree()
+        public static IFeatureResult GetFeatureWithVerifiableTree(ITreeParameterDetails tree)
         {
             return TestResults.CreateFeatureResult("My Feature", null, null,
                 TestResults.CreateScenarioResult("scenario A", "lab B", _startDate.AddMilliseconds(2), TimeSpan.FromSeconds(2), null,
                     TestResults.CreateStepResult(1, "step", ExecutionStatus.Failed)
-                        .WithStepParameters(TestResults.CreateTestParameter("tree", GetTreeResult()))));
-        }
-
-        private static IParameterDetails GetTreeResult()
-        {
-            var expected = new
-            {
-                Name = "John",
-                Surname = "Johnson",
-                Address = new { Street = "High Street", PostCode = "AB1 7BA", City = "London", Country = "UK" },
-                Records = new[] { "AB-1", "AB-2", "AB-3" }
-            };
-            var actual = new
-            {
-                Name = "Johnny",
-                Surname = "Johnson",
-                Address = new { Street = "High Street", PostCode = "AB1 7BC", City = "London", Country = "UK" },
-                Records = new[] { "AB-1", "AB-2", "AB-3", "AB-4" }
-            };
-
-            var tree = new VerifiableTree(expected, new());
-            tree.SetActual(actual);
-            return tree.Details;
+                        .WithStepParameters(TestResults.CreateTestParameter("tree", tree))));
         }
     }
 }
