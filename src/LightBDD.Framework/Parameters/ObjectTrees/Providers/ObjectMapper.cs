@@ -3,10 +3,12 @@ using System.Collections.Generic;
 
 namespace LightBDD.Framework.Parameters.ObjectTrees.Providers;
 
-public interface IObjectProvider
+public abstract class ObjectMapper : NodeMapper
 {
+    protected ObjectMapper() : base(ObjectTreeNodeKind.Object) { }
+
     /// <summary>
     /// Tries to interpret provided object <paramref name="o"/> as complex object and returns its properties or <c>null</c> if given object is not supported.
     /// </summary>
-    IEnumerable<KeyValuePair<string, object?>>? TryProvide(object o);
+    public abstract IEnumerable<KeyValuePair<string, object?>> GetProperties(object o);
 }

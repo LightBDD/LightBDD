@@ -7,15 +7,17 @@ using System.Reflection;
 
 namespace LightBDD.Framework.Parameters.ObjectTrees.Providers;
 
-public class PocoObjectProvider : IObjectProvider
+public class PocoMapper : ObjectMapper
 {
-    public static readonly PocoObjectProvider Instance = new();
+    public static readonly PocoMapper Instance = new();
     private readonly ConcurrentDictionary<Type, IReadOnlyList<KeyValuePair<string, Func<object, object>>>> _typeMap = new();
     private static readonly BindingFlags _bindingFlags = BindingFlags.Instance | BindingFlags.Public;
 
-    private PocoObjectProvider() { }
+    private PocoMapper() { }
 
-    public IEnumerable<KeyValuePair<string, object?>> Provide(object o)
+    public override bool CanMap(object obj) => true;
+
+    public override IEnumerable<KeyValuePair<string, object?>> GetProperties(object o)
     {
         var type = o.GetType();
         var map = _typeMap.GetOrAdd(type, MapType);
@@ -44,17 +46,15 @@ public class PocoObjectProvider : IObjectProvider
         return map;
     }
 
-    private TMemberInfo GetNewest<TMemberInfo>(IEnumerable<TMemberInfo> members)where TMemberInfo : MemberInfo
+    private TMemberInfo GetNewest<TMemberInfo>(IEnumerable<TMemberInfo> members) where TMemberInfo : MemberInfo
     {
-        TMemberInfo? result=null;
+        TMemberInfo? result = null;
         foreach (var m in members)
         {
-            if (result == null || result.DeclaringType!.IsAssignableFrom(m.DeclaringType)) 
+            if (result == null || result.DeclaringType!.IsAssignableFrom(m.DeclaringType))
                 result = m;
         }
 
         return result!;
     }
-
-    IEnumerable<KeyValuePair<string, object?>>? IObjectProvider.TryProvide(object o) => Provide(o);
 }

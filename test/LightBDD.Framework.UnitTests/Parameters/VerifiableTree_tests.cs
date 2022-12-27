@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters.Trees;
@@ -84,18 +85,18 @@ public class VerifiableTree_tests
         tree.SetActual(actual);
 
         AssertNodes(tree.Details.Root.EnumerateAll(),
-            "$|<object>|<object>|Success|", 
+            "$|<object>|<object>|Success|",
             "$.Inner|<object>|c|Failure|Different node types",
-            "$.Inner.Key|5|<none>|Failure|Missing value", 
+            "$.Inner.Key|5|<none>|Failure|Missing value",
             "$.Inner.Value|c|<none>|Failure|Missing value",
-            "$.Items|<array:2>|<array:3>|Failure|Different collection size", 
+            "$.Items|<array:2>|<array:3>|Failure|Different collection size",
             "$.Items[0]|3.14|3.14|Success|",
-            "$.Items[1]|False|False|Success|", 
+            "$.Items[1]|False|False|Success|",
             "$.Items[2]|<none>|5|Failure|Unexpected value",
             "$.Name|Bob|<none>|Failure|Missing value",
             "$.Surname|Johnson|John|Failure|expected: equals 'Johnson', but got: 'John'"
         );
-        
+
         tree.Details.VerificationStatus.ShouldBe(ParameterVerificationStatus.Failure);
         tree.Details.VerificationMessage.ShouldBe(@"$.Inner: Different node types
 $.Inner.Key: Missing value
@@ -109,20 +110,20 @@ $.Surname: expected: equals 'Johnson', but got: 'John'");
     [Test]
     public void Tree_should_order_details_using_names_for_properties_and_indexes_for_array_items_and_add_surplus_items_at_the_end()
     {
-        var expected= new
+        var expected = new
         {
             Name = "Bob",
             Surname = "Johnson",
-            Items = Enumerable.Range(0,15)
+            Items = Enumerable.Range(0, 15)
         };
         var actual = new
         {
-            Id="X-11",
+            Id = "X-11",
             Name = "Bob",
             Surname = "Johnson",
             Items = Enumerable.Range(0, 16)
         };
-        var tree = new VerifiableTree(expected,new());
+        var tree = new VerifiableTree(expected, new());
         tree.SetActual(actual);
         AssertNodes(tree.Details.Root.EnumerateAll(),
             "$|<object>|<object>|Success|",
@@ -146,6 +147,29 @@ $.Surname: expected: equals 'Johnson', but got: 'John'");
             "$.Name|Bob|Bob|Success|",
             "$.Surname|Johnson|Johnson|Success|",
             "$.Id|<none>|X-11|Failure|Unexpected value"
+        );
+    }
+
+    [Test]
+    public void It_should_compare_class_with_expando()
+    {
+        var expected = new { Name = "Bob", Surname = "Johnson", Items = new[] { 0, 1, 2 } };
+
+        dynamic actual = new ExpandoObject();
+        actual.Name = "Bob";
+        actual.Surname = "Johnson";
+        actual.Items = new[] { 0, 1, 2 };
+
+        var tree = new VerifiableTree(expected, new());
+        tree.SetActual(actual);
+        AssertNodes(tree.Details.Root.EnumerateAll(),
+            "$|<object>|<object>|Success|",
+            "$.Items|<array:3>|<array:3>|Success|",
+            "$.Items[0]|0|0|Success|",
+            "$.Items[1]|1|1|Success|",
+            "$.Items[2]|2|2|Success|",
+            "$.Name|Bob|Bob|Success|",
+            "$.Surname|Johnson|Johnson|Success|"
         );
     }
 

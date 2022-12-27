@@ -33,33 +33,38 @@ public class ObjectTreeBuilder
         if (type.IsPrimitive || _options.ValueTypes.Any(t => t.IsAssignableFrom(type)))
             return new ObjectTreeValue(parent, node, o);
 
-        var collection = _options.ArrayProviders
-            .Select(p => p.TryProvide(o))
-            .FirstOrDefault(r => r != null);
-
-        if (collection != null)
-            return CreateArray(collection, node, parent);
-
-        var properties = _options.ObjectProviders
-            .Select(p => p.TryProvide(o))
-            .FirstOrDefault(r => r != null);
-
-        if (properties != null)
-            return CreateObject(properties, node, parent);
-        return CreateObject(PocoObjectProvider.Instance.Provide(o), node, parent);
+        var mapper = _options.Mappers.FirstOrDefault(m => m.CanMap(o));
+        switch (mapper?.Kind)
+        {
+            case ObjectTreeNodeKind.Value:
+                return new ObjectTreeValue(parent, node, mapper.AsValueMapper().GetValue(o));
+            case ObjectTreeNodeKind.Array:
+                return CreateArray(mapper.AsArrayMapper().GetItems(o), node, parent);
+            case ObjectTreeNodeKind.Object:
+                return CreateObject(mapper.AsObjectMapper().GetProperties(o), node, parent);
+        }
+        return CreateObject(PocoMapper.Instance.GetProperties(o), node, parent);
     }
 
-    private ObjectTreeNode CreateObject(IEnumerable<KeyValuePair<string, object>> properties, string node, ObjectTreeNode? parent)
+    private ObjectTreeNode CreateObject(IEnumerable<KeyValuePair<string, object?>> properties, string node, ObjectTreeNode? parent)
     {
         var result = new ObjectTreeObject(parent, node);
-        result.Properties = properties.ToDictionary(x => x.Key, x => Build(x.Value, x.Key, result));
+        result.Properties = properties.ToDictionary(x => x.Key, x => Build(x.Value, GetNodePath(x.Key), result));
         return result;
     }
 
     private ObjectTreeArray CreateArray(IEnumerable collection, string node, ObjectTreeNode? parent)
     {
         var result = new ObjectTreeArray(parent, node);
-        result.Items = collection.Cast<object>().Select((o, i) => Build(o, $"[{i}]", result)).ToArray();
+        result.Items = collection.Cast<object>().Select((o, i) => Build(o, GetNodePath(i), result)).ToArray();
         return result;
+    }
+
+    private static string GetNodePath(int i) => $"[{i}]";
+    private static string GetNodePath(string node)
+    {
+        if (node.All(c => c is '_' or >= 'a' and <= 'z' or >= 'A' and <= 'Z' or >= '0' and <= '9'))
+            return node;
+        return $"['{node.Replace("\\", "\\\\").Replace("'", "\\'")}']";
     }
 }

@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using LightBDD.Framework.Parameters.ObjectTrees.Providers;
 
 namespace LightBDD.Framework.Parameters.ObjectTrees;
@@ -13,6 +14,10 @@ public class ObjectTreeBuilderOptions
         typeof(IFormattable)
     };
 
-    public Stack<IArrayProvider> ArrayProviders { get; } = new(new[] { EnumerableArrayProvider.Instance });
-    public Stack<IObjectProvider> ObjectProviders { get; } = new(new[] { PocoObjectProvider.Instance });
+    public Stack<NodeMapper> Mappers { get; } = new(new NodeMapper[]
+    {
+        PocoMapper.Instance,
+        EnumerableMapper.Instance,
+        ExpandoMapper.Instance
+    });
 }

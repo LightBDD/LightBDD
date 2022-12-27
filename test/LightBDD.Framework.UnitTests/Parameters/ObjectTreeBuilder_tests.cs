@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using LightBDD.Framework.Parameters.ObjectTrees;
 using NUnit.Framework;
@@ -77,6 +78,36 @@ namespace LightBDD.Framework.UnitTests.Parameters
             AssertValueNode(properties["Field"], "$.Field", "field");
             AssertValueNode(properties["Property"], "$.Property", "prop");
             AssertValueNode(properties["Base"], "$.Base", 'B');
+        }
+
+        [Test]
+        public void It_should_map_expando_objects_as_object()
+        {
+            dynamic expando = new ExpandoObject();
+            expando.Name = "Bob";
+            expando.Surname = "Johnson";
+
+            var root = new ObjectTreeBuilder(new()).Build((object)expando);
+            root.Kind.ShouldBe(ObjectTreeNodeKind.Object);
+            var properties = root.AsObject().Properties;
+            properties.Count.ShouldBe(2);
+            AssertValueNode(properties["Name"], "$.Name", "Bob");
+            AssertValueNode(properties["Surname"], "$.Surname", "Johnson");
+        }
+
+        [Test]
+        public void It_should_map_nonstandard_property_names_to_nodes_with_bracket_notation()
+        {
+            IDictionary<string, object?> expando = new ExpandoObject();
+            expando["Name"] = "Bob";
+            expando["Last Name"] = "Johnson";
+
+            var root = new ObjectTreeBuilder(new()).Build(expando);
+            root.Kind.ShouldBe(ObjectTreeNodeKind.Object);
+            var properties = root.AsObject().Properties;
+            properties.Count.ShouldBe(2);
+            AssertValueNode(properties["Name"], "$.Name", "Bob");
+            AssertValueNode(properties["Last Name"], "$['Last Name']", "Johnson");
         }
 
         private void AssertValueNode(ObjectTreeNode node, string path, object? value)
