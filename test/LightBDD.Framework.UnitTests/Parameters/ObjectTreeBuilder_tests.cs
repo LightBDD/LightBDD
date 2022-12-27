@@ -68,6 +68,17 @@ namespace LightBDD.Framework.UnitTests.Parameters
             AssertValueNode(properties["Value"], "$.Value", null);
         }
 
+        [Test]
+        public void It_should_only_map_nonhidden_readable_public_instance_members_of_poco_type()
+        {
+            var root = new ObjectTreeBuilder(new()).Build(new Poco());
+            var properties = root.AsObject().Properties;
+            properties.Count.ShouldBe(3);
+            AssertValueNode(properties["Field"], "$.Field", "field");
+            AssertValueNode(properties["Property"], "$.Property", "prop");
+            AssertValueNode(properties["Base"], "$.Base", 'B');
+        }
+
         private void AssertValueNode(ObjectTreeNode node, string path, object? value)
         {
             node.Kind.ShouldBe(ObjectTreeNodeKind.Value);
@@ -116,5 +127,28 @@ namespace LightBDD.Framework.UnitTests.Parameters
 
         public string ToString(string? format, IFormatProvider? formatProvider) => string.Format(formatProvider, format ?? "G", _value);
         public override string ToString() => ToString(null, null);
+    }
+
+    class PocoBase
+    {
+        public int Field = 1;
+        public int Property { get; set; } = 2;
+        public char Base => 'B';
+    }
+    class Poco : PocoBase
+    {
+        public static string StaticField;
+        public static string StaticProperty { get; set; }
+        private string _privateField;
+        private string _setterOnlyProperty;
+        private string PrivateProperty { get; set; }
+
+        public string SetterOnlyProperty
+        {
+            set => _setterOnlyProperty = value;
+        }
+
+        public string Field = "field";
+        public string Property { get; set; } = "prop";
     }
 }
