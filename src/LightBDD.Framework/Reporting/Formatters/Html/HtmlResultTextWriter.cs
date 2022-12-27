@@ -445,7 +445,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         {
             return Html.Tag(Html5Tag.Div).Class("param").Content(
                 Html.Tag(Html5Tag.Div).Content($"{parameterName}:"),
-                Html.Tag(Html5Tag.Table).Class("param tree").Content(GetParameterTree(tree)));
+                Html.Tag(Html5Tag.Table).Class("param tree").Content(GetTreeRows(tree)));
         }
 
         private static IHtmlNode GetTabularParameter(string parameterName, ITabularParameterDetails table)
@@ -456,12 +456,25 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                     .Content(Html.Tag(Html5Tag.Tbody).Content(GetParameterTable(table))));
         }
 
-        private static IEnumerable<IHtmlNode> GetParameterTree(ITreeParameterDetails tree)
+        private static IEnumerable<IHtmlNode> GetTreeRows(ITreeParameterDetails tree)
         {
-            return BuildRows(tree).Select(row => Html.Tag(Html5Tag.Tr).Content(row.SelectMany(GetTreeNodeValue)));
+            return BuildTreeRows(tree).Select(row => Html.Tag(Html5Tag.Tr).Content(GetTreeRowCells(row)));
         }
 
-        private static IEnumerable<IReadOnlyList<ITreeParameterNodeResult>> BuildRows(ITreeParameterDetails tree)
+        private static IEnumerable<IHtmlNode> GetTreeRowCells(IReadOnlyList<ITreeParameterNodeResult> row)
+        {
+            var status = row.Select(r => r?.VerificationStatus)
+                .Where(x => x != null)
+                .DefaultIfEmpty(ParameterVerificationStatus.NotProvided)
+                .Max();
+
+            var statusClass = status <= ParameterVerificationStatus.Success ? "success" : "failure";
+            var statusValue = status <= ParameterVerificationStatus.Success ? "=" : "!";
+            var td = Html.Tag(Html5Tag.Td).Class($"param type value {statusClass}").Content(statusValue);
+            return Enumerable.Repeat(td, 1).Concat(row.SelectMany(GetTreeNodeValue));
+        }
+
+        private static IEnumerable<IReadOnlyList<ITreeParameterNodeResult>> BuildTreeRows(ITreeParameterDetails tree)
         {
             var stack = new Stack<Tuple<int, ITreeParameterNodeResult>>();
 
@@ -469,7 +482,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             while (stack.Any())
             {
                 var n = stack.Pop();
-                
+
                 var result = new List<ITreeParameterNodeResult>();
                 result.AddRange(Enumerable.Repeat<ITreeParameterNodeResult>(null, n.Item1));
                 result.Add(n.Item2);

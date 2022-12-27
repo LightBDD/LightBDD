@@ -311,9 +311,9 @@ initialize();";
             var text = FormatAndExtractTableText("//table[@class=\"param tree\"]", results);
             TestContext.WriteLine(text);
 
-            var expectedText = @"$ | &lt;object&gt; | Name | Johnny / John | Surname | Johnson |
-Address | &lt;object&gt; | City | London | Country | UK | PostCode | AB1 7BC / AB1 7BA | Street | High Street |
-Records | &lt;array:4&gt; / &lt;array:3&gt; | [0] | AB-1 | [1] | AB-2 | [2] | AB-3 | [3] | AB-4 / &lt;none&gt; |";
+            var expectedText = @"! | $ | &lt;object&gt; | Name | Johnny / John | Surname | Johnson |
+! | Address | &lt;object&gt; | City | London | Country | UK | PostCode | AB1 7BC / AB1 7BA | Street | High Street |
+! | Records | &lt;array:4&gt; / &lt;array:3&gt; | [0] | AB-1 | [1] | AB-2 | [2] | AB-3 | [3] | AB-4 / &lt;none&gt; |";
             Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
         }
 
@@ -334,10 +334,10 @@ Records | &lt;array:4&gt; / &lt;array:3&gt; | [0] | AB-1 | [1] | AB-2 | [2] | AB
             var text = FormatAndExtractTableText("//table[@class=\"param tree\"]", results);
             TestContext.WriteLine(text);
 
-            var expectedText = @"$ | &lt;array:3&gt; |
-[0] | &lt;array:5&gt; | [0] | 0 | [1] | 1 | [2] | 2 | [3] | 3 | [4] | 4 |
-[1] | &lt;array:6&gt; | [0] | 0 | [1] | 1 | [2] | 2 | [3] | 3 | [4] | 4 | [5] | 5 |
-[2] | &lt;array:4&gt; | [0] | 0 | [1] | 1 | [2] | 2 | [3] | 3 |";
+            var expectedText = @"= | $ | &lt;array:3&gt; |
+= | [0] | &lt;array:5&gt; | [0] | 0 | [1] | 1 | [2] | 2 | [3] | 3 | [4] | 4 |
+= | [1] | &lt;array:6&gt; | [0] | 0 | [1] | 1 | [2] | 2 | [3] | 3 | [4] | 4 | [5] | 5 |
+= | [2] | &lt;array:4&gt; | [0] | 0 | [1] | 1 | [2] | 2 | [3] | 3 |";
             Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
         }
 
@@ -358,10 +358,10 @@ Records | &lt;array:4&gt; / &lt;array:3&gt; | [0] | AB-1 | [1] | AB-2 | [2] | AB
             var text = FormatAndExtractTableText("//table[@class=\"param tree\"]", results);
             TestContext.WriteLine(text);
 
-            var expectedText = @"$ | &lt;array:3&gt; |
-[0] | &lt;object&gt; | Name | Bob | Surname | Kennedy |
-[1] | &lt;object&gt; | Name | Ron | Surname | Kowalski |
-[2] | &lt;object&gt; | Name | Ted | Surname | Smith |";
+            var expectedText = @"= | $ | &lt;array:3&gt; |
+= | [0] | &lt;object&gt; | Name | Bob | Surname | Kennedy |
+= | [1] | &lt;object&gt; | Name | Ron | Surname | Kowalski |
+= | [2] | &lt;object&gt; | Name | Ted | Surname | Smith |";
             Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
         }
 
