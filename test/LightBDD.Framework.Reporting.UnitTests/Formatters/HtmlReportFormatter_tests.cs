@@ -285,6 +285,55 @@ initialize();";
             Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
         }
 
+        [Test]
+        public void Should_format_verifiable_trees()
+        {
+            var results = ReportFormatterTestData.GetFeatureWithVerifiableTree();
+            var text = FormatAndExtractText(results);
+            TestContext.WriteLine(text);
+            var expectedText = @"Execution summary
+Test execution start time: 2014-09-23 19:21:57 UTC
+Test execution end time: 2014-09-23 19:21:59 UTC
+Test execution time: 2s
+Test execution time (aggregated): 2s
+Number of features: 1
+Number of scenarios: 1
+Passed scenarios: 0
+Bypassed scenarios: 0
+Failed scenarios: 1 (see details)
+Ignored scenarios: 0
+Number of steps: 1
+Passed steps: 0
+Bypassed steps: 0
+Failed steps: 1
+Ignored steps: 0
+Not Run steps: 0
+Feature summary
+Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
+My Feature 1 0 0 1 0 1 0 0 1 0 0 2s 20000000 2s 20000000 2s 20000000
+Feature details[&#8734;link]
+Toggle: Features Scenarios
+Filter: Passed Bypassed Failed Ignored Not Run
+[&#8734;filtered link]
+My Feature[&#8734;link]
+Failed scenario A [lab B] (2s)[&#8734;link]
+Failed 1. step
+tree:
+$ &lt;object&gt; Name
+JohnnyJohn
+Surname Johnson
+Address &lt;object&gt; City London Country UK PostCode
+AB1 7BCAB1 7BA
+Street High Street
+Records
+&lt;array:4&gt;&lt;array:3&gt;
+[0] AB-1 [1] AB-2 [2] AB-3 [3]
+AB-4&lt;none&gt;
+Generated with LightBDD v3.5.0.0
+initialize();";
+            Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
+        }
+
         private string GetExpectedLightBddVersion()
         {
             return typeof(IBddRunner).GetTypeInfo().Assembly.GetName().Version.ToString(4);

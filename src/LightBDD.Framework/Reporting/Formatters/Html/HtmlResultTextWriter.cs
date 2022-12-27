@@ -13,6 +13,7 @@ using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
+using LightBDD.Core.Results.Parameters.Trees;
 
 namespace LightBDD.Framework.Reporting.Formatters.Html
 {
@@ -369,13 +370,13 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             return Html.Tag(Html5Tag.Div).Class("attachments")
                 .SkipEmpty()
                 .Content(from s in steps
-                    from a in s.FileAttachments
-                    select
-                        Html.Tag(Html5Tag.Div).Content(
-                            Html.Tag(Html5Tag.A)
-                                .Href(ResolveLink(a))
-                                .Attribute("target", "_blank")
-                                .Content($"🔗Step {s.Info.GroupPrefix}{s.Info.Number}: {a.Name} ({Path.GetExtension(a.FilePath).TrimStart('.')})")));
+                         from a in s.FileAttachments
+                         select
+                             Html.Tag(Html5Tag.Div).Content(
+                                 Html.Tag(Html5Tag.A)
+                                     .Href(ResolveLink(a))
+                                     .Attribute("target", "_blank")
+                                     .Content($"🔗Step {s.Info.GroupPrefix}{s.Info.Number}: {a.Name} ({Path.GetExtension(a.FilePath).TrimStart('.')})")));
         }
 
         private string ResolveLink(FileAttachment fileAttachment)
@@ -435,14 +436,63 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         {
             if (parameter.Details is ITabularParameterDetails table)
                 return GetTabularParameter(parameter.Name, table);
+            if (parameter.Details is ITreeParameterDetails tree)
+                return GetTreeParameter(parameter.Name, tree);
             return Html.Nothing();
+        }
+
+        private static IHtmlNode GetTreeParameter(string parameterName, ITreeParameterDetails tree)
+        {
+            return Html.Tag(Html5Tag.Div).Class("param").Content(
+                Html.Tag(Html5Tag.Div).Content($"{parameterName}:"),
+                Html.Tag(Html5Tag.Table).Class("param tree").Content(GetParameterTree(tree)));
         }
 
         private static IHtmlNode GetTabularParameter(string parameterName, ITabularParameterDetails table)
         {
             return Html.Tag(Html5Tag.Div).Class("param").Content(
                 Html.Tag(Html5Tag.Div).Content($"{parameterName}:"),
-                Html.Tag(Html5Tag.Table).Class("param").Content(GetParameterTable(table)));
+                Html.Tag(Html5Tag.Table).Class("param table")
+                    .Content(Html.Tag(Html5Tag.Tbody).Content(GetParameterTable(table))));
+        }
+
+        private static IEnumerable<IHtmlNode> GetParameterTree(ITreeParameterDetails tree)
+        {
+            return BuildRows(tree).Select(row => Html.Tag(Html5Tag.Tr).Content(row.SelectMany(GetTreeNodeValue)));
+        }
+
+        private static IEnumerable<IReadOnlyList<ITreeParameterNodeResult>> BuildRows(ITreeParameterDetails tree)
+        {
+            var stack = new Stack<Tuple<int, ITreeParameterNodeResult>>();
+
+            stack.Push(Tuple.Create(0, tree.Root));
+            while (stack.Any())
+            {
+                var n = stack.Pop();
+                
+                var result = new List<ITreeParameterNodeResult>();
+                result.AddRange(Enumerable.Repeat<ITreeParameterNodeResult>(null, n.Item1));
+                result.Add(n.Item2);
+                result.AddRange(n.Item2.Children.Where(c => !c.Children.Any()));
+                yield return result;
+
+                foreach (var c in n.Item2.Children.Reverse().Where(c => c.Children.Any()))
+                    stack.Push(Tuple.Create(n.Item1 + 1, c));
+            }
+        }
+
+        private static IEnumerable<IHtmlNode> GetTreeNodeValue(ITreeParameterNodeResult node)
+        {
+            if (node == null)
+            {
+                yield return Html.Tag(Html5Tag.Td);
+                yield return Html.Tag(Html5Tag.Td);
+            }
+            else
+            {
+                yield return Html.Tag(Html5Tag.Td).Class("param node").Content(node.Node);
+                yield return GetRowValue(node);
+            }
         }
 
         private static IEnumerable<IHtmlNode> GetParameterTable(ITabularParameterDetails table)

@@ -78,8 +78,11 @@ label{ display: inline-block;}
 .optionsPanel:hover #optionsLink{ visibility: visible;}
 .footer{ font-size: x-small;text-align: center;}
 .footer a{ font-weight: bold;}
-table.param{ border-collapse: collapse; margin-top:0.1em;}
-table.param,th.param, td.param{ border: 1px solid #777777;}
+table.param.table{ border-collapse: collapse; margin-top:0.1em;}
+table.param.table th.param,table.param.table td.param{ border: 1px solid #777777;}
+table.param.tree { border-spacing: 0;border: 0; }
+table.param.tree td{border-bottom: 5px solid transparent; background-clip: padding-box;}
+table.param.tree td.param.value { border-right: 5px solid transparent; background-clip: padding-box;}
 div.param{padding-top:0.3em;}
 td.param, th.param { text-align: left; padding-left: 0.3em; padding-right: 0.3em;}
 th.param.column{ background: #f0f0f0; text-align: left;font-weight: normal;}
@@ -89,6 +92,7 @@ td.param.value.success {background: #aaffaa}
 td.param.value.failure {background: #ffaaaa;}
 td.param.value.exception {background: #ffaaaa;}
 td.param.value.notprovided {background: #ffaaaa;}
+td.param.node{ text-align: right;background: #f0f0f0;}
 hr {border-top: 1px dashed #777777;border-bottom: 0px; margin: 2px; padding: 0;}
 span.expected{font-size: 0.8em;}
 span.expected:before{font-size:0.8em; content: "expected: "; color: #444444;}
