@@ -17,7 +17,7 @@ public class ObjectTreeObject : ObjectTreeNode
     public override IEnumerable<ObjectTreeNode> EnumerateAll()
     {
         yield return this;
-        foreach (var node in Properties.Values.SelectMany(v => v.EnumerateAll()))
+        foreach (var node in Properties.Values.OrderBy(p => p.Node).SelectMany(v => v.EnumerateAll()))
             yield return node;
     }
 

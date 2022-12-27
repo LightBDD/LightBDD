@@ -34,6 +34,7 @@ public class VerifiableTree : IComplexParameter, ISelfFormattable
         if (_actual != null)
             throw new InvalidOperationException("Actual value is already set");
         _actual = _treeBuilder.Build(actual);
+        _details = null;
     }
 
     void IComplexParameter.SetValueFormattingService(IValueFormattingService formattingService)
@@ -49,20 +50,19 @@ public class VerifiableTree : IComplexParameter, ISelfFormattable
     private ITreeParameterDetails CalculateResults()
     {
         var results = new Dictionary<string, TreeParameterNodeResult>();
-        var expected = _expected.EnumerateAll().ToDictionary(e => e.Path);
-        foreach (var actual in _actual?.EnumerateAll() ?? Enumerable.Empty<ObjectTreeNode>())
+        var actual = (_actual?.EnumerateAll() ?? Array.Empty<ObjectTreeNode>()).Select((n, i) => Tuple.Create(n, i)).ToDictionary(n => n.Item1.Path);
+        foreach (var e in _expected.EnumerateAll())
         {
-            if (expected.TryGetValue(actual.Path, out var ex))
+            if (actual.TryGetValue(e.Path, out var a))
             {
-
-                VerifyNodes(results, ex, actual);
-                expected.Remove(actual.Path);
+                VerifyNodes(results, e, a.Item1);
+                actual.Remove(e.Path);
             }
-            else ToNode(results, null, actual, ParameterVerificationStatus.Failure, "Unexpected value");
+            else ToNode(results, e, null, ParameterVerificationStatus.Failure, "Missing value");
         }
 
-        foreach (var ex in expected.Values)
-            ToNode(results, ex, null, ParameterVerificationStatus.Failure, "Missing value");
+        foreach (var a in actual.Values.OrderBy(v => v.Item2))
+            ToNode(results, null, a.Item1, ParameterVerificationStatus.Failure, "Unexpected value");
         return new TreeParameterDetails(results["$"], _actual != null);
     }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters.Trees;
@@ -103,6 +104,49 @@ $.Items: Different collection size
 $.Items[2]: Unexpected value
 $.Name: Missing value
 $.Surname: expected: equals 'Johnson', but got: 'John'");
+    }
+
+    [Test]
+    public void Tree_should_order_details_using_names_for_properties_and_indexes_for_array_items_and_add_surplus_items_at_the_end()
+    {
+        var expected= new
+        {
+            Name = "Bob",
+            Surname = "Johnson",
+            Items = Enumerable.Range(0,15)
+        };
+        var actual = new
+        {
+            Id="X-11",
+            Name = "Bob",
+            Surname = "Johnson",
+            Items = Enumerable.Range(0, 16)
+        };
+        var tree = new VerifiableTree(expected,new());
+        tree.SetActual(actual);
+        AssertNodes(tree.Details.Root.EnumerateAll(),
+            "$|<object>|<object>|Success|",
+            "$.Items|<array:15>|<array:16>|Failure|Different collection size",
+            "$.Items[0]|0|0|Success|",
+            "$.Items[1]|1|1|Success|",
+            "$.Items[2]|2|2|Success|",
+            "$.Items[3]|3|3|Success|",
+            "$.Items[4]|4|4|Success|",
+            "$.Items[5]|5|5|Success|",
+            "$.Items[6]|6|6|Success|",
+            "$.Items[7]|7|7|Success|",
+            "$.Items[8]|8|8|Success|",
+            "$.Items[9]|9|9|Success|",
+            "$.Items[10]|10|10|Success|",
+            "$.Items[11]|11|11|Success|",
+            "$.Items[12]|12|12|Success|",
+            "$.Items[13]|13|13|Success|",
+            "$.Items[14]|14|14|Success|",
+            "$.Items[15]|<none>|15|Failure|Unexpected value",
+            "$.Name|Bob|Bob|Success|",
+            "$.Surname|Johnson|Johnson|Success|",
+            "$.Id|<none>|X-11|Failure|Unexpected value"
+        );
     }
 
     private void AssertNodes(IEnumerable<ITreeParameterNodeResult> nodes, params string[] expected)
