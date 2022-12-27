@@ -117,7 +117,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             p1.Children.Add(new Child { Name = "C1", Parent = p1 });
             var p2 = new Parent { Name = "P2" };
             p2.Children.Add(new Child { Name = "C2", Parent = p2 });
-            var input = new[] { p1, p1 };
+            var input = new[] { p1, p2 };
 
             var root = new ObjectTreeBuilder(new()).Build(input);
             var nodes = root.EnumerateAll().ToDictionary(x => x.Path);
