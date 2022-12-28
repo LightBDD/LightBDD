@@ -25,6 +25,8 @@ public class InputTree<TData> : IComplexParameter, ISelfFormattable
 
     public ITreeParameterDetails Details => _details ??= GetDetails();
 
+    public static implicit operator InputTree<TData>(TData input) => new(input);
+
     IParameterDetails IComplexParameter.Details => Details;
 
     string ISelfFormattable.Format(IValueFormattingService formattingService) => "<tree>";
