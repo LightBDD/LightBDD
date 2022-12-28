@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Xml.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting;
@@ -463,10 +464,26 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
         private static IEnumerable<IHtmlNode> GetTreeRowCells(IReadOnlyList<ITreeParameterNodeResult> row, bool addStatusCell)
         {
-            var cells = row.SelectMany(GetTreeNodeValue);
-            return addStatusCell
-                ? Enumerable.Repeat(GetTreeRowStatusCell(row), 1).Concat(cells)
-                : cells;
+            if (addStatusCell)
+                yield return GetTreeRowStatusCell(row);
+
+            for (var i = 0; i < row.Count; ++i)
+            {
+                var node = row[i];
+                if (node != null)
+                {
+                    yield return Html.Tag(Html5Tag.Td).Class("param node").Content(node.Node);
+                    yield return GetRowValue(node);
+                }
+                else
+                {
+                    yield return Html.Tag(Html5Tag.Td);
+                    if (i + 1 < row.Count && row[i + 1] != null)
+                        yield return Html.Tag(Html5Tag.Td).Class("indent").Content("↳");
+                    else
+                        yield return Html.Tag(Html5Tag.Td);
+                }
+            }
         }
 
         private static TagBuilder GetTreeRowStatusCell(IReadOnlyList<ITreeParameterNodeResult> row)
@@ -508,20 +525,6 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
                 foreach (var c in n.Item2.Children.Reverse().Where(c => c.Children.Any()))
                     stack.Push(Tuple.Create(n.Item1 + 1, c));
-            }
-        }
-
-        private static IEnumerable<IHtmlNode> GetTreeNodeValue(ITreeParameterNodeResult node)
-        {
-            if (node == null)
-            {
-                yield return Html.Tag(Html5Tag.Td);
-                yield return Html.Tag(Html5Tag.Td);
-            }
-            else
-            {
-                yield return Html.Tag(Html5Tag.Td).Class("param node").Content(node.Node);
-                yield return GetRowValue(node);
             }
         }
 

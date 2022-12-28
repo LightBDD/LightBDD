@@ -83,6 +83,7 @@ table.param.table th.param,table.param.table td.param{ border: 1px solid #777777
 table.param.tree { border-spacing: 0;border: 0; }
 table.param.tree td{border-bottom: 5px solid transparent; background-clip: padding-box;}
 table.param.tree td.param.value { border-right: 5px solid transparent; background-clip: padding-box;}
+table.param.tree td.indent {text-align: right;color: #444444;}
 div.param{padding-top:0.3em;}
 td.param, th.param { text-align: left; padding-left: 0.3em; padding-right: 0.3em;}
 th.param.column{ background: #f0f0f0; text-align: left;font-weight: normal;}
