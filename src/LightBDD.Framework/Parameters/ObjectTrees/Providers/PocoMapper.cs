@@ -36,7 +36,7 @@ public class PocoMapper : ObjectMapper
             map.Add(new KeyValuePair<string, Func<object, object>>(field.Name, field.GetValue));
 
         var props = type.GetProperties(_bindingFlags)
-            .Where(x => x.CanRead)
+            .Where(x => x.CanRead && !x.GetIndexParameters().Any())
             .GroupBy(f => f.Name)
             .Select(GetNewest);
 

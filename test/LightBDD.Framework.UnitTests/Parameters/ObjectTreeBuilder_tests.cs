@@ -247,6 +247,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
 
         public string Field = "field";
         public string Property { get; set; } = "prop";
+        public string this[int index] => string.Empty;
     }
 
     class Parent
