@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Text.Json;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters.Trees;
 using LightBDD.Framework.Parameters;
+using LightBDD.Framework.Parameters.ObjectTrees;
 using NUnit.Framework;
 using Shouldly;
 
@@ -254,6 +256,54 @@ $.Surname: expected: equals 'Johnson', but got: 'John'");
             "$.Items[6]|<null>|<null>|Success|",
             "$.Name|John|John|Success|",
             "$.Surname|Smith|Smith|Success|"
+        );
+    }
+
+    [Test]
+    public void It_should_compare_JsonElement_to_Newtonsoft_expando()
+    {
+        var json = @"{
+    ""Name"":""John"",
+    ""Surname"":""Smith"",
+    ""Items"":[1,2,3,3.14,true,false,null],
+    ""Inner"":{""Label"":""some text""}
+}";
+        var expected = JsonDocument.Parse(json).RootElement;
+        var actual = Newtonsoft.Json.JsonConvert.DeserializeObject<ExpandoObject>(json);
+        var tree = new VerifiableTree(expected, new());
+        tree.SetActual(actual);
+
+        AssertNodes(tree.Details.Root.EnumerateAll(),
+            "$|<object>|<object>|Success|",
+            "$.Inner|<object>|<object>|Success|",
+            "$.Inner.Label|some text|some text|Success|",
+            "$.Items|<array:7>|<array:7>|Success|",
+            "$.Items[0]|1|1|Success|",
+            "$.Items[1]|2|2|Success|",
+            "$.Items[2]|3|3|Success|",
+            "$.Items[3]|3.14|3.14|Success|",
+            "$.Items[4]|True|True|Success|",
+            "$.Items[5]|False|False|Success|",
+            "$.Items[6]|<null>|<null>|Success|",
+            "$.Name|John|John|Success|",
+            "$.Surname|Smith|Smith|Success|"
+        );
+    }
+
+    [Test]
+    public void It_should_compare_objects_with_compatible_number_types()
+    {
+        var expected = new object[] { (byte)1, (short)2, 3.2m };
+        var actual = new object[] { 1u, 2ul, 3.2f };
+
+        var tree = new VerifiableTree(expected, new());
+        tree.SetActual(actual);
+
+        AssertNodes(tree.Details.Root.EnumerateAll(),
+            "$|<array:3>|<array:3>|Success|",
+            "$[0]|1|1|Success|",
+            "$[1]|2|2|Success|",
+            "$[2]|3.2|3.2|Success|"
         );
     }
 
