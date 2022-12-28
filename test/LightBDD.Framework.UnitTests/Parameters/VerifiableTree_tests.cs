@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Text.Json;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters.Trees;
 using LightBDD.Framework.Parameters;
@@ -197,27 +197,63 @@ $.Surname: expected: equals 'Johnson', but got: 'John'");
         var tree = new VerifiableTree(expected, new());
         tree.SetActual(actual);
         AssertNodes(tree.Details.Root.EnumerateAll(),
-            "$|<array:2>|<array:2>|Success|", 
+            "$|<array:2>|<array:2>|Success|",
             "$[0]|<object>|<object>|Success|",
-            "$[0].Children|<array:1>|<array:1>|Success|", 
+            "$[0].Children|<array:1>|<array:1>|Success|",
             "$[0].Children[0]|<object>|<object>|Success|",
-            "$[0].Children[0].Children|<array:0>|<array:0>|Success|", 
+            "$[0].Children[0].Children|<array:0>|<array:0>|Success|",
             "$[0].Children[0].Name|C1|C1|Success|",
             "$[0].Children[0].Parent|<ref: $[0]>|<ref: $[0]>|Success|",
-            "$[0].Name|P1|P3|Failure|expected: equals 'P1', but got: 'P3'", 
+            "$[0].Name|P1|P3|Failure|expected: equals 'P1', but got: 'P3'",
             "$[0].Parent|<null>|<null>|Success|",
-            "$[1]|<object>|<object>|Success|", 
+            "$[1]|<object>|<object>|Success|",
             "$[1].Children|<array:1>|<array:1>|Success|",
-            "$[1].Children[0]|<object>|<object>|Success|", 
+            "$[1].Children[0]|<object>|<object>|Success|",
             "$[1].Children[0].Children|<array:1>|<array:1>|Success|",
             "$[1].Children[0].Children[0]|<object>|<object>|Success|",
             "$[1].Children[0].Children[0].Children|<array:0>|<array:0>|Success|",
             "$[1].Children[0].Children[0].Name|CC1|CC1|Success|",
             "$[1].Children[0].Children[0].Parent|<ref: $[1].Children[0]>|<ref: $[1]>|Failure|expected: equals '$[1].Children[0]', but got: '$[1]'",
-            "$[1].Children[0].Name|C2|C2|Success|", 
+            "$[1].Children[0].Name|C2|C2|Success|",
             "$[1].Children[0].Parent|<ref: $[1]>|<ref: $[1]>|Success|",
-            "$[1].Name|P2|P2|Success|", 
+            "$[1].Name|P2|P2|Success|",
             "$[1].Parent|<null>|<null>|Success|"
+        );
+    }
+
+    [Test]
+    public void It_should_compare_JsonElement_to_model()
+    {
+        var json = @"{
+    ""Name"":""John"",
+    ""Surname"":""Smith"",
+    ""Items"":[1,2,3,3.14,true,false,null],
+    ""Inner"":{""Label"":""some text""}
+}";
+        var expected = new
+        {
+            Name = "John",
+            Surname = "Smith",
+            Items = new object[] { 1, 2, 3, 3.14, true, false, null },
+            Inner = new { Label = "some text" }
+        };
+        var tree = new VerifiableTree(expected, new());
+        tree.SetActual(JsonDocument.Parse(json).RootElement);
+
+        AssertNodes(tree.Details.Root.EnumerateAll(),
+            "$|<object>|<object>|Success|",
+            "$.Inner|<object>|<object>|Success|",
+            "$.Inner.Label|some text|some text|Success|",
+            "$.Items|<array:7>|<array:7>|Success|",
+            "$.Items[0]|1|1|Success|",
+            "$.Items[1]|2|2|Success|",
+            "$.Items[2]|3|3|Success|",
+            "$.Items[3]|3.14|3.14|Success|",
+            "$.Items[4]|True|True|Success|",
+            "$.Items[5]|False|False|Success|",
+            "$.Items[6]|<null>|<null>|Success|",
+            "$.Name|John|John|Success|",
+            "$.Surname|Smith|Smith|Success|"
         );
     }
 

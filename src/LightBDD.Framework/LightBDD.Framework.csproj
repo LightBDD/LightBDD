@@ -13,7 +13,7 @@ High level features:
 * Xml/Html/Plain text report generation;
 * DI support;
 * inline and tabular parameters.</Description>
-    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net461;net6</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,6 +25,10 @@ High level features:
 
   <ItemGroup>
     <ProjectReference Include="..\LightBDD.Core\LightBDD.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <PackageReference Include="System.Text.Json" Version="4.6.0" Condition="'$(TargetFramework)' != 'net6'"/>
   </ItemGroup>
 
 </Project>

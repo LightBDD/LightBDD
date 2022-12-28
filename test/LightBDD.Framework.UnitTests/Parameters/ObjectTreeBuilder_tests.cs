@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Text.Json;
 using LightBDD.Framework.Parameters.ObjectTrees;
 using NUnit.Framework;
 using Shouldly;
@@ -123,6 +124,56 @@ namespace LightBDD.Framework.UnitTests.Parameters
             var nodes = root.EnumerateAll().ToDictionary(x => x.Path);
             nodes["$[0].Children[0].Parent"].ToString().ShouldBe("<ref: $[0]>");
             nodes["$[1].Children[0].Parent"].ToString().ShouldBe("<ref: $[1]>");
+        }
+
+        [Test]
+        public void It_should_map_json_structure_from_JsonDocument()
+        {
+            var json = @"{
+    ""name"":""John"",
+    ""surname"":""Smith"",
+    ""items"":[1,2,3],
+    ""inner"":{""label"":""some text""}
+}";
+            var doc = JsonDocument.Parse(json);
+            var root = new ObjectTreeBuilder(new()).Build(doc);
+            var nodes = root.EnumerateAll().ToDictionary(x => x.Path);
+
+            nodes["$.RootElement"].ShouldBeOfType<ObjectTreeObject>();
+            nodes["$.RootElement.name"].ShouldBeOfType<ObjectTreeValue>().Value.ShouldBe("John");
+            nodes["$.RootElement.surname"].ShouldBeOfType<ObjectTreeValue>().Value.ShouldBe("Smith");
+            nodes["$.RootElement.items"].ShouldBeOfType<ObjectTreeArray>();
+            nodes["$.RootElement.items[0]"].ShouldBeOfType<ObjectTreeValue>().Value.ShouldBe(1);
+            nodes["$.RootElement.items[1]"].ShouldBeOfType<ObjectTreeValue>().Value.ShouldBe(2);
+            nodes["$.RootElement.items[2]"].ShouldBeOfType<ObjectTreeValue>().Value.ShouldBe(3);
+            nodes["$.RootElement.inner"].ShouldBeOfType<ObjectTreeObject>();
+            nodes["$.RootElement.inner.label"].ShouldBeOfType<ObjectTreeValue>().Value.ShouldBe("some text");
+        }
+
+        [Test]
+        public void It_should_map_json_numbers_to_suitable_types()
+        {
+            var input = new
+            {
+                i32 = int.MaxValue,
+                ni32 = int.MinValue,
+                i64 = long.MaxValue,
+                ni64 = long.MinValue,
+                Double = double.MaxValue,
+                nDouble = double.MinValue
+            };
+            var json = JsonSerializer.Serialize(input);
+            TestContext.WriteLine(json);
+            var doc = JsonDocument.Parse(json);
+            var root = new ObjectTreeBuilder(new()).Build(doc.RootElement);
+            var nodes = root.EnumerateAll().ToDictionary(x => x.Path);
+
+            nodes["$.i32"].ShouldBeOfType<ObjectTreeValue>().Value.ShouldBeOfType<int>().ShouldBe(int.MaxValue);
+            nodes["$.ni32"].ShouldBeOfType<ObjectTreeValue>().Value.ShouldBeOfType<int>().ShouldBe(int.MinValue);
+            nodes["$.i64"].ShouldBeOfType<ObjectTreeValue>().Value.ShouldBeOfType<long>().ShouldBe(long.MaxValue);
+            nodes["$.ni64"].ShouldBeOfType<ObjectTreeValue>().Value.ShouldBeOfType<long>().ShouldBe(long.MinValue);
+            nodes["$.Double"].ShouldBeOfType<ObjectTreeValue>().Value.ShouldBeOfType<double>().ShouldBe(double.MaxValue);
+            nodes["$.nDouble"].ShouldBeOfType<ObjectTreeValue>().Value.ShouldBeOfType<double>().ShouldBe(double.MinValue);
         }
 
         private void AssertValueNode(ObjectTreeNode node, string path, object? value)

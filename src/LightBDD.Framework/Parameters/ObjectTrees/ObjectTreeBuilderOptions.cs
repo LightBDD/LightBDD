@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text.Json;
 using LightBDD.Framework.Parameters.ObjectTrees.Providers;
 
 namespace LightBDD.Framework.Parameters.ObjectTrees;
@@ -18,6 +19,9 @@ public class ObjectTreeBuilderOptions
     {
         PocoMapper.Instance,
         EnumerableMapper.Instance,
-        ExpandoMapper.Instance
+        ExpandoMapper.Instance,
+        JsonElementObjectMapper.Instance,
+        JsonElementArrayMapper.Instance,
+        JsonElementValueMapper.Instance
     });
 }
