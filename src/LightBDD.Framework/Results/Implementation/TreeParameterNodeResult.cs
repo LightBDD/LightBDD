@@ -8,7 +8,7 @@ internal class TreeParameterNodeResult : ITreeParameterNodeResult
 {
     private readonly List<ITreeParameterNodeResult> _children = new();
 
-    public TreeParameterNodeResult(string path, string node,string expectation, string value, ParameterVerificationStatus verificationStatus, string verificationMessage)
+    public TreeParameterNodeResult(string path, string node, string expectation, string value, ParameterVerificationStatus verificationStatus, string verificationMessage)
     {
         Path = path;
         Node = node;

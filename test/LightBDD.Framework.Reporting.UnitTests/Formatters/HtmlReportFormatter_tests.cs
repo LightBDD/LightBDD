@@ -318,7 +318,30 @@ initialize();";
         }
 
         [Test]
-        public void Should_format_jagged_arrays()
+        public void Should_format_input_trees()
+        {
+            var input = new
+            {
+                Name = "John",
+                Surname = "Johnson",
+                Address = new { Street = "High Street", PostCode = "AB1 7BA", City = "London", Country = "UK" },
+                Records = new[] { "AB-1", "AB-2", "AB-3" }
+            };
+
+            var tree = Tree.For(input);
+
+            var results = ReportFormatterTestData.GetFeatureWithVerifiableTree(tree.Details);
+            var text = FormatAndExtractTableText("//table[@class=\"param tree\"]", results);
+            TestContext.WriteLine(text);
+
+            var expectedText = @"$ | &lt;object&gt; | Name | John | Surname | Johnson |
+Address | &lt;object&gt; | City | London | Country | UK | PostCode | AB1 7BA | Street | High Street |
+Records | &lt;array:3&gt; | [0] | AB-1 | [1] | AB-2 | [2] | AB-3 |";
+            Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
+        }
+
+        [Test]
+        public void Should_format_verifiable_tree_jagged_arrays()
         {
             var input = new[]
             {
@@ -342,7 +365,7 @@ initialize();";
         }
 
         [Test]
-        public void Should_format_array_with_sub_objects()
+        public void Should_format_verifiable_tree_array_with_sub_objects()
         {
             var input = new[]
             {

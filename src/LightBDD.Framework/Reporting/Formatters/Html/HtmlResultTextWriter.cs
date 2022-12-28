@@ -458,20 +458,37 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
         private static IEnumerable<IHtmlNode> GetTreeRows(ITreeParameterDetails tree)
         {
-            return BuildTreeRows(tree).Select(row => Html.Tag(Html5Tag.Tr).Content(GetTreeRowCells(row)));
+            return BuildTreeRows(tree).Select(row => Html.Tag(Html5Tag.Tr).Content(GetTreeRowCells(row, tree.VerificationStatus != ParameterVerificationStatus.NotApplicable)));
         }
 
-        private static IEnumerable<IHtmlNode> GetTreeRowCells(IReadOnlyList<ITreeParameterNodeResult> row)
+        private static IEnumerable<IHtmlNode> GetTreeRowCells(IReadOnlyList<ITreeParameterNodeResult> row, bool addStatusCell)
+        {
+            var cells = row.SelectMany(GetTreeNodeValue);
+            return addStatusCell
+                ? Enumerable.Repeat(GetTreeRowStatusCell(row), 1).Concat(cells)
+                : cells;
+        }
+
+        private static TagBuilder GetTreeRowStatusCell(IReadOnlyList<ITreeParameterNodeResult> row)
         {
             var status = row.Select(r => r?.VerificationStatus)
                 .Where(x => x != null)
                 .DefaultIfEmpty(ParameterVerificationStatus.NotProvided)
                 .Max();
 
-            var statusClass = status <= ParameterVerificationStatus.Success ? "success" : "failure";
-            var statusValue = status <= ParameterVerificationStatus.Success ? "=" : "!";
-            var td = Html.Tag(Html5Tag.Td).Class($"param type value {statusClass}").Content(statusValue);
-            return Enumerable.Repeat(td, 1).Concat(row.SelectMany(GetTreeNodeValue));
+            var statusClass = status switch
+            {
+                ParameterVerificationStatus.NotApplicable => "notapplicable",
+                ParameterVerificationStatus.Success => "success",
+                _ => "failure"
+            };
+            var statusValue = status switch
+            {
+                ParameterVerificationStatus.NotApplicable => " ",
+                ParameterVerificationStatus.Success => "=",
+                _ => "!"
+            };
+            return Html.Tag(Html5Tag.Td).Class($"param type value {statusClass}").Content(statusValue);
         }
 
         private static IEnumerable<IReadOnlyList<ITreeParameterNodeResult>> BuildTreeRows(ITreeParameterDetails tree)
