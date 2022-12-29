@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,6 +8,8 @@ using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
+using LightBDD.Core.Results.Parameters.Trees;
+using LightBDD.Framework.Results.Implementation;
 
 namespace LightBDD.Framework.Reporting.Formatters
 {
@@ -127,6 +130,8 @@ namespace LightBDD.Framework.Reporting.Formatters
                     return ToXElement((IValueResult)inline);
                 case ITabularParameterDetails tabular:
                     return ToXElement(tabular);
+                case ITreeParameterDetails tree:
+                    return ToXElement(tree);
             }
 
             return null;
@@ -144,6 +149,35 @@ namespace LightBDD.Framework.Reporting.Formatters
             objects.AddRange(tabularDetails.Columns.Select(ToXElement));
             objects.AddRange(tabularDetails.Rows.Select(ToXElement));
             return new XElement("Table", objects);
+        }
+
+        private static XElement ToXElement(ITreeParameterDetails treeDetails)
+        {
+            var objects = new List<object>
+            {
+                ToXAttribute(treeDetails.VerificationStatus)
+            };
+
+            if (!string.IsNullOrWhiteSpace(treeDetails.VerificationMessage))
+                objects.Add(new XAttribute("Message", treeDetails.VerificationMessage));
+            objects.AddRange(treeDetails.Root.EnumerateAll().Select(ToXElement));
+            return new XElement("Tree", objects);
+        }
+
+        private static XElement ToXElement(ITreeParameterNodeResult nodeResult, int _)
+        {
+            var objects = new List<object>
+            {
+                new XAttribute("Path", nodeResult.Path),
+                ToXAttribute(nodeResult.VerificationStatus)
+            };
+            if (nodeResult.Value != null)
+                objects.Add(new XAttribute("Value", nodeResult.Value));
+            if (nodeResult.Expectation != null)
+                objects.Add(new XAttribute("Expectation", nodeResult.Expectation));
+            if (!string.IsNullOrWhiteSpace(nodeResult.VerificationMessage))
+                objects.Add(new XAttribute("Message", nodeResult.VerificationMessage));
+            return new XElement("Node", objects);
         }
 
         private static XElement ToXElement(ITabularParameterRow row)

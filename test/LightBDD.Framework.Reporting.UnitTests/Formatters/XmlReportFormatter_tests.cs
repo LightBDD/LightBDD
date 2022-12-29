@@ -4,6 +4,7 @@ using System.Text;
 using System.Xml.Linq;
 using System.Xml.Schema;
 using LightBDD.Core.Results;
+using LightBDD.Framework.Parameters;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
@@ -266,6 +267,68 @@ Step 2: Expected: True
       <Label Name=""lab A"" />
       <Step Status=""Passed"" Number=""1"" Name=""step"" RuntimeId=""11111111-1111-1111-1111-111111111111"">
         <StepName Format=""step"" />
+      </Step>
+    </Scenario>
+  </Feature>
+</TestResults>";
+            Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
+            ValidateWithSchema(text);
+        }
+
+        [Test]
+        public void Should_format_verifiable_trees()
+        {
+            var expected = new
+            {
+                Name = "John",
+                Surname = "Johnson",
+                Address = new { Street = "High Street", PostCode = "AB1 7BA", City = "London", Country = "UK" },
+                Records = new[] { "AB-1", "AB-2", "AB-3" }
+            };
+            var actual = new
+            {
+                Name = "Johnny",
+                Surname = "Johnson",
+                Address = new { Street = "High Street", PostCode = "AB1 7BC", City = "London", Country = "UK" },
+                Records = new[] { "AB-1", "AB-2", "AB-3", "AB-4" }
+            };
+
+            var tree = new VerifiableTree(expected);
+            tree.SetActual(actual);
+
+            var results = ReportFormatterTestData.GetFeatureWithVerifiableTree(tree.Details);
+            var text = FormatResults(results);
+            TestContext.WriteLine(text);
+            const string expectedText = @"<?xml version=""1.0"" encoding=""utf-8""?>
+<TestResults>
+  <Summary TestExecutionStart=""2014-09-23T19:21:57.057Z"" TestExecutionEnd=""2014-09-23T19:21:59.057Z"" TestExecutionTime=""PT2S"">
+    <Features Count=""1"" />
+    <Scenarios Count=""1"" Passed=""0"" Bypassed=""0"" Failed=""1"" Ignored=""0"" />
+    <Steps Count=""1"" Passed=""0"" Bypassed=""0"" Failed=""1"" Ignored=""0"" NotRun=""0"" />
+  </Summary>
+  <Feature Name=""My Feature"" RuntimeId=""33333333-3333-3333-3333-333333333333"">
+    <Scenario Status=""Failed"" Name=""scenario A"" ExecutionStart=""2014-09-23T19:21:57.057Z"" ExecutionTime=""PT2S"" RuntimeId=""22222222-2222-2222-2222-222222222222"">
+      <Name Format=""scenario A"" />
+      <Label Name=""lab B"" />
+      <Step Status=""Failed"" Number=""1"" Name=""step"" RuntimeId=""11111111-1111-1111-1111-111111111111"">
+        <StepName Format=""step"" />
+        <Parameter Name=""tree"">
+          <Tree Status=""Failure"" Message=""$.Address.PostCode: expected: equals 'AB1 7BA', but got: 'AB1 7BC'&#xD;&#xA;$.Name: expected: equals 'John', but got: 'Johnny'&#xD;&#xA;$.Records: Expected exactly 3 items&#xD;&#xA;$.Records[3]: Unexpected value"">
+            <Node Path=""$"" Status=""Success"" Value=""&lt;object&gt;"" Expectation=""&lt;object&gt;"" />
+            <Node Path=""$.Address"" Status=""Success"" Value=""&lt;object&gt;"" Expectation=""&lt;object&gt;"" />
+            <Node Path=""$.Address.City"" Status=""Success"" Value=""London"" Expectation=""London"" />
+            <Node Path=""$.Address.Country"" Status=""Success"" Value=""UK"" Expectation=""UK"" />
+            <Node Path=""$.Address.PostCode"" Status=""Failure"" Value=""AB1 7BC"" Expectation=""AB1 7BA"" Message=""expected: equals 'AB1 7BA', but got: 'AB1 7BC'"" />
+            <Node Path=""$.Address.Street"" Status=""Success"" Value=""High Street"" Expectation=""High Street"" />
+            <Node Path=""$.Name"" Status=""Failure"" Value=""Johnny"" Expectation=""John"" Message=""expected: equals 'John', but got: 'Johnny'"" />
+            <Node Path=""$.Records"" Status=""Failure"" Value=""&lt;array:4&gt;"" Expectation=""&lt;array:3&gt;"" Message=""Expected exactly 3 items"" />
+            <Node Path=""$.Records[0]"" Status=""Success"" Value=""AB-1"" Expectation=""AB-1"" />
+            <Node Path=""$.Records[1]"" Status=""Success"" Value=""AB-2"" Expectation=""AB-2"" />
+            <Node Path=""$.Records[2]"" Status=""Success"" Value=""AB-3"" Expectation=""AB-3"" />
+            <Node Path=""$.Records[3]"" Status=""Failure"" Value=""AB-4"" Expectation=""&lt;none&gt;"" Message=""Unexpected value"" />
+            <Node Path=""$.Surname"" Status=""Success"" Value=""Johnson"" Expectation=""Johnson"" />
+          </Tree>
+        </Parameter>
       </Step>
     </Scenario>
   </Feature>

@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Text;
 using LightBDD.Core.Results;
+using LightBDD.Framework.Parameters;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
@@ -209,6 +210,70 @@ Feature: My Feature
 
 	Scenario: scenario C [lab A] - Passed (2s)
 		Step 1: step - Passed
+";
+            Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
+        }
+
+        [Test]
+        public void Should_format_verifiable_trees()
+        {
+            var expected = new
+            {
+                Name = "John",
+                Surname = "Johnson",
+                Address = new { Street = "High Street", PostCode = "AB1 7BA", City = "London", Country = "UK" },
+                Records = new[] { "AB-1", "AB-2", "AB-3" }
+            };
+            var actual = new
+            {
+                Name = "Johnny",
+                Surname = "Johnson",
+                Address = new { Street = "High Street", PostCode = "AB1 7BC", City = "London", Country = "UK" },
+                Records = new[] { "AB-1", "AB-2", "AB-3", "AB-4" }
+            };
+
+            var tree = new VerifiableTree(expected);
+            tree.SetActual(actual);
+
+            var results = ReportFormatterTestData.GetFeatureWithVerifiableTree(tree.Details);
+             var text = FormatResults(results);
+            TestContext.WriteLine(text);
+            const string expectedText = @"Summary:
+	Test execution start time       : 2014-09-23 19:21:57 UTC
+	Test execution end time         : 2014-09-23 19:21:59 UTC
+	Test execution time             : 2s
+	Test execution time (aggregated): 2s
+	Number of features              : 1
+	Number of scenarios             : 1
+	Passed scenarios                : 0
+	Bypassed scenarios              : 0
+	Failed scenarios                : 1
+	Ignored scenarios               : 0
+	Number of steps                 : 1
+	Passed steps                    : 0
+	Bypassed steps                  : 0
+	Failed steps                    : 1
+	Ignored steps                   : 0
+	Not Run steps                   : 0
+
+Feature: My Feature
+
+	Scenario: scenario A [lab B] - Failed (2s)
+		Step 1: step - Failed
+		tree:
+		= $: <object>
+		= $.Address: <object>
+		= $.Address.City: London
+		= $.Address.Country: UK
+		! $.Address.PostCode: AB1 7BA/AB1 7BC
+		= $.Address.Street: High Street
+		! $.Name: John/Johnny
+		! $.Records: <array:3>/<array:4>
+		= $.Records[0]: AB-1
+		= $.Records[1]: AB-2
+		= $.Records[2]: AB-3
+		! $.Records[3]: <none>/AB-4
+		= $.Surname: Johnson
 ";
             Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
         }

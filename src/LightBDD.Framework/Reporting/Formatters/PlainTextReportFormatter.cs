@@ -7,6 +7,7 @@ using LightBDD.Core.Formatting;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
+using LightBDD.Core.Results.Parameters.Trees;
 
 namespace LightBDD.Framework.Reporting.Formatters
 {
@@ -180,13 +181,22 @@ namespace LightBDD.Framework.Reporting.Formatters
 
         private static void FormatParameter(TextWriter writer, IParameterResult parameterResult, string stepIndent)
         {
-            if (parameterResult.Details is ITabularParameterDetails table)
+            switch (parameterResult.Details)
             {
-                writer.Write(stepIndent);
-                writer.Write(parameterResult.Name);
-                writer.WriteLine(":");
-                new TextTableRenderer(table).Render(writer, stepIndent);
-                writer.WriteLine();
+                case ITabularParameterDetails table:
+                    writer.Write(stepIndent);
+                    writer.Write(parameterResult.Name);
+                    writer.WriteLine(":");
+                    new TextTableRenderer(table).Render(writer, stepIndent);
+                    writer.WriteLine();
+                    break;
+                case ITreeParameterDetails tree:
+                    writer.Write(stepIndent);
+                    writer.Write(parameterResult.Name);
+                    writer.WriteLine(":");
+                    TextTreeRenderer.Render(writer, stepIndent, tree);
+                    writer.WriteLine();
+                    break;
             }
         }
 
