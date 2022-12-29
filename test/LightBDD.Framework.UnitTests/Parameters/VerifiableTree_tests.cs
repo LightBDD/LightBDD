@@ -18,7 +18,7 @@ public class VerifiableTree_tests
     public void Tree_should_return_NotProvided_result_when_SetActual_is_not_called()
     {
         var input = new { Name = "Bob", Surname = "Johnson" };
-        var tree = new VerifiableTree(input, new());
+        var tree = new VerifiableTree(input);
 
         tree.Details.VerificationStatus.ShouldBe(ParameterVerificationStatus.NotProvided);
         tree.Details.VerificationMessage.ShouldBe("Actual value was not provided");
@@ -47,7 +47,7 @@ public class VerifiableTree_tests
             Inner = new KeyValuePair<int, char>(5, 'c')
         };
 
-        var tree = new VerifiableTree(expected, new VerifiableTreeOptions());
+        var tree = new VerifiableTree(expected);
         tree.SetActual(actual);
 
         AssertNodes(tree.Details.Root.EnumerateAll(),
@@ -82,7 +82,7 @@ public class VerifiableTree_tests
             Inner = 'c'
         };
 
-        var tree = new VerifiableTree(expected, new VerifiableTreeOptions());
+        var tree = new VerifiableTree(expected);
         tree.SetActual(actual);
 
         AssertNodes(tree.Details.Root.EnumerateAll(),
@@ -90,7 +90,7 @@ public class VerifiableTree_tests
             "$.Inner|<object>|c|Failure|Different node types",
             "$.Inner.Key|5|<none>|Failure|Missing value",
             "$.Inner.Value|c|<none>|Failure|Missing value",
-            "$.Items|<array:2>|<array:3>|Failure|Different collection size",
+            "$.Items|<array:2>|<array:3>|Failure|Expected exactly 2 items",
             "$.Items[0]|3.14|3.14|Success|",
             "$.Items[1]|False|False|Success|",
             "$.Items[2]|<none>|5|Failure|Unexpected value",
@@ -102,7 +102,7 @@ public class VerifiableTree_tests
         tree.Details.VerificationMessage.ShouldBe(@"$.Inner: Different node types
 $.Inner.Key: Missing value
 $.Inner.Value: Missing value
-$.Items: Different collection size
+$.Items: Expected exactly 2 items
 $.Items[2]: Unexpected value
 $.Name: Missing value
 $.Surname: expected: equals 'Johnson', but got: 'John'");
@@ -124,11 +124,11 @@ $.Surname: expected: equals 'Johnson', but got: 'John'");
             Surname = "Johnson",
             Items = Enumerable.Range(0, 16)
         };
-        var tree = new VerifiableTree(expected, new());
+        var tree = new VerifiableTree(expected);
         tree.SetActual(actual);
         AssertNodes(tree.Details.Root.EnumerateAll(),
             "$|<object>|<object>|Success|",
-            "$.Items|<array:15>|<array:16>|Failure|Different collection size",
+            "$.Items|<array:15>|<array:16>|Failure|Expected exactly 15 items",
             "$.Items[0]|0|0|Success|",
             "$.Items[1]|1|1|Success|",
             "$.Items[2]|2|2|Success|",
@@ -161,7 +161,7 @@ $.Surname: expected: equals 'Johnson', but got: 'John'");
         actual.Surname = "Johnson";
         actual.Items = new[] { 0, 1, 2 };
 
-        var tree = new VerifiableTree(expected, new());
+        var tree = new VerifiableTree(expected);
         tree.SetActual(actual);
         AssertNodes(tree.Details.Root.EnumerateAll(),
             "$|<object>|<object>|Success|",
@@ -195,7 +195,7 @@ $.Surname: expected: equals 'Johnson', but got: 'John'");
         actual[1].Children[0].Parent = actual[1];
         actual[1].Children[0].Children[0].Parent = actual[1];
 
-        var tree = new VerifiableTree(expected, new());
+        var tree = new VerifiableTree(expected);
         tree.SetActual(actual);
         AssertNodes(tree.Details.Root.EnumerateAll(),
             "$|<array:2>|<array:2>|Success|",
@@ -238,7 +238,7 @@ $.Surname: expected: equals 'Johnson', but got: 'John'");
             Items = new object[] { 1, 2, 3, 3.14, true, false, null },
             Inner = new { Label = "some text" }
         };
-        var tree = new VerifiableTree(expected, new());
+        var tree = new VerifiableTree(expected);
         tree.SetActual(JsonDocument.Parse(json).RootElement);
 
         AssertNodes(tree.Details.Root.EnumerateAll(),
@@ -269,7 +269,7 @@ $.Surname: expected: equals 'Johnson', but got: 'John'");
 }";
         var expected = JsonDocument.Parse(json).RootElement;
         var actual = Newtonsoft.Json.JsonConvert.DeserializeObject<ExpandoObject>(json);
-        var tree = new VerifiableTree(expected, new());
+        var tree = new VerifiableTree(expected);
         tree.SetActual(actual);
 
         AssertNodes(tree.Details.Root.EnumerateAll(),
@@ -295,7 +295,7 @@ $.Surname: expected: equals 'Johnson', but got: 'John'");
         var expected = new object[] { (byte)1, (short)2, 3.2m };
         var actual = new object[] { 1u, 2ul, 3.2f };
 
-        var tree = new VerifiableTree(expected, new());
+        var tree = new VerifiableTree(expected);
         tree.SetActual(actual);
 
         AssertNodes(tree.Details.Root.EnumerateAll(),
@@ -317,7 +317,7 @@ $.Surname: expected: equals 'Johnson', but got: 'John'");
         };
 
         var actual = new { Name = "Bob", Surname = "Smith", Age = 23L };
-        var tree = new VerifiableTree(expected, new());
+        var tree = new VerifiableTree(expected);
         tree.SetActual(actual);
         AssertNodes(tree.Details.Root.EnumerateAll(),
             "$|<object>|<object>|Success|",
@@ -327,10 +327,279 @@ $.Surname: expected: equals 'Johnson', but got: 'John'");
         );
     }
 
+    [Test]
+    public void ExpectContaining_should_successfully_match_objects()
+    {
+        var expected = new
+        {
+            Name = "Bob",
+            Items = new[] { 1, 2, 3 }
+        };
+        var actual = new
+        {
+            Name = "Bob",
+            Surname = "Johnson",
+            Items = new[] { 1, 2, 3, 4 }
+        };
+
+        var tree = Tree.ExpectContaining(expected);
+        tree.SetActual(actual);
+        AssertNodes(tree.Details.Root.EnumerateAll(),
+            "$|<object>|<object>|Success|",
+            "$.Items|<array:3>|<array:4>|Success|",
+            "$.Items[0]|1|1|Success|",
+            "$.Items[1]|2|2|Success|",
+            "$.Items[2]|3|3|Success|",
+            "$.Name|Bob|Bob|Success|");
+        tree.Details.VerificationStatus.ShouldBe(ParameterVerificationStatus.Success);
+    }
+
+    [Test]
+    public void ExpectContaining_should_fail_if_actual_object_does_not_have_all_expected_values()
+    {
+        var expected = new
+        {
+            Name = "Bob",
+            Items = new[] { 1, 2, 3 }
+        };
+        var actual = new
+        {
+            Surname = "Johnson",
+            Items = new[] { 1, 2, }
+        };
+
+        var tree = Tree.ExpectContaining(expected);
+        tree.SetActual(actual);
+        AssertNodes(tree.Details.Root.EnumerateAll(),
+            "$|<object>|<object>|Success|",
+            "$.Items|<array:3>|<array:2>|Failure|Expected at least 3 items",
+            "$.Items[0]|1|1|Success|",
+            "$.Items[1]|2|2|Success|",
+            "$.Items[2]|3|<none>|Failure|Missing value",
+            "$.Name|Bob|<none>|Failure|Missing value");
+        tree.Details.VerificationStatus.ShouldBe(ParameterVerificationStatus.Failure);
+    }
+
+    [Test]
+    public void ExpectAtLeastContaining_should_successfully_match_objects_and_include_surplus_values()
+    {
+        var expected = new
+        {
+            Name = "Bob",
+            Items = new[] { 1, 2, 3 }
+        };
+        var actual = new
+        {
+            Name = "Bob",
+            Surname = "Johnson",
+            Items = new[] { 1, 2, 3, 4 }
+        };
+
+        var tree = Tree.ExpectAtLeastContaining(expected);
+        tree.SetActual(actual);
+        AssertNodes(tree.Details.Root.EnumerateAll(),
+            "$|<object>|<object>|Success|",
+            "$.Items|<array:3>|<array:4>|Success|",
+            "$.Items[0]|1|1|Success|",
+            "$.Items[1]|2|2|Success|",
+            "$.Items[2]|3|3|Success|",
+            "$.Items[3]|<none>|4|NotApplicable|Surplus value",
+            "$.Name|Bob|Bob|Success|",
+            "$.Surname|<none>|Johnson|NotApplicable|Surplus value");
+        tree.Details.VerificationStatus.ShouldBe(ParameterVerificationStatus.Success);
+    }
+
+    [Test]
+    public void ExpectEquivalent_should_match_two_structurally_equal_objects()
+    {
+        var expected = new
+        {
+            Items = new object[] { 3.14, false },
+            Inner = new { Key = 5, Value = 'c' }
+        };
+        var actual = new
+        {
+            Items = new List<object> { 3.14, false },
+            Inner = new KeyValuePair<int, char>(5, 'c')
+        };
+
+        var tree = Tree.ExpectEquivalent(expected);
+        tree.SetActual(actual);
+
+        AssertNodes(tree.Details.Root.EnumerateAll(),
+            "$|<object>|<object>|Success|",
+            "$.Inner|<object>|<object>|Success|",
+            "$.Inner.Key|5|5|Success|",
+            "$.Inner.Value|c|c|Success|",
+            "$.Items|<array:2>|<array:2>|Success|",
+            "$.Items[0]|3.14|3.14|Success|",
+            "$.Items[1]|False|False|Success|"
+        );
+        tree.Details.VerificationStatus.ShouldBe(ParameterVerificationStatus.Success);
+        tree.Details.VerificationMessage.ShouldBeNull();
+    }
+
+    [Test]
+    public void ExpectStrictMatch_should_match_two_objects_with_same_type_structure_and_equal_values()
+    {
+        var expected = new
+        {
+            Items = new object[] { 3.14, false },
+            Inner = new { Key = 5, Value = 'c' }
+        };
+        var actual = new
+        {
+            Items = new object[] { 3.14, false },
+            Inner = new { Key = 5, Value = 'c' }
+        };
+
+        var tree = Tree.ExpectStrictMatch(expected);
+        tree.SetActual(actual);
+
+        AssertNodes(tree.Details.Root.EnumerateAll(),
+            "$|<object>|<object>|Success|",
+            "$.Inner|<object>|<object>|Success|",
+            "$.Inner.Key|5|5|Success|",
+            "$.Inner.Value|c|c|Success|",
+            "$.Items|<array:2>|<array:2>|Success|",
+            "$.Items[0]|3.14|3.14|Success|",
+            "$.Items[1]|False|False|Success|"
+        );
+        tree.Details.VerificationStatus.ShouldBe(ParameterVerificationStatus.Success);
+        tree.Details.VerificationMessage.ShouldBeNull();
+    }
+
+    [Test]
+    public void ExpectStrictMatch_should_fail_objects_with_different_type_structure()
+    {
+        var expected = new
+        {
+            Items = (IEnumerable<object>)new List<object> { 3.14, false },
+            Inner = (object)new KeyValuePair<int, char>(5, 'c')
+        };
+        var actual = new
+        {
+            Items = (IEnumerable<object>)new object[] { 3.14f, false },
+            Inner = (object)new KeyValuePair<long, char>(5L, 'c')
+        };
+
+        var tree = Tree.ExpectStrictMatch(expected);
+        tree.SetActual(actual);
+
+        AssertNodes(tree.Details.Root.EnumerateAll(),
+            "$|<object>|<object>|Success|",
+            "$.Inner|<object>|<object>|Failure|expected 'System.Collections.Generic.KeyValuePair`2[System.Int32,System.Char]' type, but got 'System.Collections.Generic.KeyValuePair`2[System.Int64,System.Char]'",
+            "$.Inner.Key|5|5|Failure|expected 'System.Int32' type, but got 'System.Int64'",
+            "$.Inner.Value|c|c|Success|",
+            "$.Items|<array:2>|<array:2>|Failure|expected 'System.Collections.Generic.List`1[System.Object]' type, but got 'System.Object[]'",
+            "$.Items[0]|3.14|3.14|Failure|expected 'System.Double' type, but got 'System.Single'",
+            "$.Items[1]|False|False|Success|"
+        );
+        tree.Details.VerificationStatus.ShouldBe(ParameterVerificationStatus.Failure);
+    }
+
+    [Test]
+    [TestCase(true)]
+    [TestCase(false)]
+    public void Expect_should_support_type_check_for_object_nodes(bool checkObjectNodeTypes)
+    {
+        var expected = new
+        {
+            Items = (IEnumerable<object>)new object[] { 5L },
+            Inner = (object)new KeyValuePair<int, char>(5, 'c')
+        };
+        var actual = new
+        {
+            Items = (IEnumerable<object>)new List<object> { 5 },
+            Inner = (object)new KeyValuePair<object, char>(5, 'c')
+        };
+
+        var tree = Tree.Expect(expected, new VerifiableTreeOptions() { CheckObjectNodeTypes = checkObjectNodeTypes });
+        tree.SetActual(actual);
+
+        var nodes = DumpNodes(tree.Details.Root.EnumerateAll());
+        nodes.ShouldContain("$|<object>|<object>|Success|");
+        if (checkObjectNodeTypes)
+            nodes.ShouldContain("$.Inner|<object>|<object>|Failure|expected 'System.Collections.Generic.KeyValuePair`2[System.Int32,System.Char]' type, but got 'System.Collections.Generic.KeyValuePair`2[System.Object,System.Char]'");
+        else
+            nodes.ShouldContain("$.Inner|<object>|<object>|Success|");
+        nodes.ShouldContain("$.Inner.Key|5|5|Success|");
+        nodes.ShouldContain("$.Inner.Value|c|c|Success|");
+        nodes.ShouldContain("$.Items|<array:1>|<array:1>|Success|");
+        nodes.ShouldContain("$.Items[0]|5|5|Success|");
+    }
+
+    [Test]
+    [TestCase(true)]
+    [TestCase(false)]
+    public void Expect_should_support_type_check_for_array_nodes(bool checkArrayNodeTypes)
+    {
+        var expected = new
+        {
+            Items = new object[] { 5L },
+            Inner = new KeyValuePair<int, char>(5, 'c')
+        };
+        var actual = new
+        {
+            Items = new List<object> { 5 },
+            Inner = new KeyValuePair<object, char>(5, 'c')
+        };
+
+        var tree = Tree.Expect(expected, new VerifiableTreeOptions() { CheckArrayNodeTypes = checkArrayNodeTypes });
+        tree.SetActual(actual);
+
+        var nodes = DumpNodes(tree.Details.Root.EnumerateAll());
+        nodes.ShouldContain("$|<object>|<object>|Success|");
+        nodes.ShouldContain("$.Inner|<object>|<object>|Success|");
+        nodes.ShouldContain("$.Inner.Key|5|5|Success|");
+        nodes.ShouldContain("$.Inner.Value|c|c|Success|");
+        if (checkArrayNodeTypes)
+            nodes.ShouldContain("$.Items|<array:1>|<array:1>|Failure|expected 'System.Object[]' type, but got 'System.Collections.Generic.List`1[System.Object]'");
+        else
+            nodes.ShouldContain("$.Items|<array:1>|<array:1>|Success|");
+        nodes.ShouldContain("$.Items[0]|5|5|Success|");
+    }
+
+    [Test]
+    [TestCase(true)]
+    [TestCase(false)]
+    public void Expect_should_support_type_check_for_value_nodes(bool checkValueNodeTypes)
+    {
+        var expected = new
+        {
+            Items = new object[] { 5L },
+            Inner = new KeyValuePair<int, char>(5, 'c')
+        };
+        var actual = new
+        {
+            Items = new List<object> { 5 },
+            Inner = new KeyValuePair<object, char>(5, 'c')
+        };
+
+        var tree = Tree.Expect(expected, new VerifiableTreeOptions() { CheckValueNodeTypes = checkValueNodeTypes });
+        tree.SetActual(actual);
+
+        var nodes = DumpNodes(tree.Details.Root.EnumerateAll());
+        nodes.ShouldContain("$|<object>|<object>|Success|");
+        nodes.ShouldContain("$.Inner|<object>|<object>|Success|");
+        nodes.ShouldContain("$.Inner.Key|5|5|Success|");
+        nodes.ShouldContain("$.Inner.Value|c|c|Success|");
+        nodes.ShouldContain("$.Items|<array:1>|<array:1>|Success|");
+        if (checkValueNodeTypes)
+            nodes.ShouldContain("$.Items[0]|5|5|Failure|expected 'System.Int64' type, but got 'System.Int32'");
+        else
+            nodes.ShouldContain("$.Items[0]|5|5|Success|");
+    }
+
     private void AssertNodes(IEnumerable<ITreeParameterNodeResult> nodes, params string[] expected)
     {
-        var actual = nodes.Select(n => $"{n.Path}|{n.Expectation}|{n.Value}|{n.VerificationStatus}|{n.VerificationMessage}").ToArray();
+        var actual = DumpNodes(nodes);
         actual.ShouldBe(expected);
+    }
+
+    private static string[] DumpNodes(IEnumerable<ITreeParameterNodeResult> nodes)
+    {
+        return nodes.Select(n => $"{n.Path}|{n.Expectation}|{n.Value}|{n.VerificationStatus}|{n.VerificationMessage}").ToArray();
     }
 
     class Node

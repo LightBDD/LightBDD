@@ -16,12 +16,17 @@ namespace LightBDD.Framework.Parameters;
 
 public class VerifiableTree : IComplexParameter, ISelfFormattable
 {
+    private static readonly VerifiableTreeOptions DefaultOptions = new();
     private readonly VerifiableTreeOptions _options;
     private readonly ObjectTreeBuilder _treeBuilder = ObjectTreeBuilder.Current;
     private readonly ObjectTreeNode _expected;
     private ObjectTreeNode? _actual;
     private IValueFormattingService _formattingService = ValueFormattingServices.Current;
     private ITreeParameterDetails? _details;
+
+    public VerifiableTree(object? expected) : this(expected, DefaultOptions)
+    {
+    }
 
     public VerifiableTree(object? expected, VerifiableTreeOptions options)
     {
@@ -61,8 +66,16 @@ public class VerifiableTree : IComplexParameter, ISelfFormattable
             else ToNode(results, e, null, ParameterVerificationStatus.Failure, "Missing value");
         }
 
-        foreach (var a in actual.Values.OrderBy(v => v.Item2))
-            ToNode(results, null, a.Item1, ParameterVerificationStatus.Failure, "Unexpected value");
+        if (_options.UnexpectedNodeAction != UnexpectedValueVerificationAction.Exclude)
+        {
+            foreach (var a in actual.Values.OrderBy(v => v.Item2))
+            {
+                if (_options.UnexpectedNodeAction == UnexpectedValueVerificationAction.Fail)
+                    ToNode(results, null, a.Item1, ParameterVerificationStatus.Failure, "Unexpected value");
+                else
+                    ToNode(results, null, a.Item1, ParameterVerificationStatus.NotApplicable, "Surplus value");
+            }
+        }
         return new TreeParameterDetails(results["$"], _actual != null);
     }
 
@@ -73,42 +86,74 @@ public class VerifiableTree : IComplexParameter, ISelfFormattable
             ToNode(results, expected, actual, ParameterVerificationStatus.Failure, "Different node types");
         else
         {
-            switch (expected.Kind)
+            var result = expected.Kind switch
             {
-                case ObjectTreeNodeKind.Array when expected.AsArray().Items.Count != actual.AsArray().Items.Count:
-                    ToNode(results, expected, actual, ParameterVerificationStatus.Failure, "Different collection size");
-                    break;
-                case ObjectTreeNodeKind.Array:
-                    ToNode(results, expected, actual, ParameterVerificationStatus.Success, string.Empty);
-                    break;
-                case ObjectTreeNodeKind.Value:
-                {
-                    var result = GetExpectation(expected).Verify(actual.AsValue().Value, _formattingService);
-
-                    ToNode(results, expected, actual,
-                        result.IsValid ? ParameterVerificationStatus.Success : ParameterVerificationStatus.Failure,
-                        result.Message);
-                    break;
-                }
-                case ObjectTreeNodeKind.Reference:
-                {
-                    var result = Expect.To.Equal(expected.AsReference().Target.Path)
-                        .Verify(actual.AsReference().Target.Path, _formattingService);
-                    ToNode(results, expected, actual,
-                        result.IsValid ? ParameterVerificationStatus.Success : ParameterVerificationStatus.Failure,
-                        result.Message);
-                    break;
-                }
-                default:
-                    ToNode(results, expected, actual, ParameterVerificationStatus.Success, string.Empty);
-                    break;
-            }
+                ObjectTreeNodeKind.Array => VerifyArrays(expected.AsArray(), actual.AsArray()),
+                ObjectTreeNodeKind.Value => VerifyValues(expected.AsValue(), actual.AsValue()),
+                ObjectTreeNodeKind.Reference => VerifyReferences(expected.AsReference(), actual.AsReference()),
+                ObjectTreeNodeKind.Object => VerifyObjects(expected.AsObject(), actual.AsObject()),
+                _ => throw new NotSupportedException($"{expected.Kind} is not supported")
+            };
+            ToNode(results, expected, actual,
+                result.IsValid ? ParameterVerificationStatus.Success : ParameterVerificationStatus.Failure,
+                result.Message);
         }
     }
 
-    private static IExpectation<object?> GetExpectation(ObjectTreeNode expected)
+    private ExpectationResult VerifyReferences(ObjectTreeReference expected, ObjectTreeReference actual)
     {
-        var expectedValue = expected.AsValue().Value;
+        return Expect.To.Equal(expected.Target.Path)
+            .Verify(actual.Target.Path, _formattingService);
+    }
+
+    private ExpectationResult VerifyObjects(ObjectTreeObject expected, ObjectTreeObject actual)
+    {
+        if (_options.CheckObjectNodeTypes)
+            return VerifyTypes(expected, actual);
+        return ExpectationResult.Success;
+    }
+
+    private ExpectationResult VerifyValues(ObjectTreeValue expected, ObjectTreeValue actual)
+    {
+        if (_options.CheckValueNodeTypes)
+        {
+            var result = VerifyTypes(expected, actual);
+            if (!result.IsValid)
+                return result;
+        }
+        return GetValueExpectation(expected).Verify(actual.Value, _formattingService);
+    }
+
+    private ExpectationResult VerifyArrays(ObjectTreeArray expected, ObjectTreeArray actual)
+    {
+        if (_options.CheckArrayNodeTypes)
+        {
+            var result = VerifyTypes(expected, actual);
+            if (!result.IsValid) return result;
+        }
+
+        if (_options.UnexpectedNodeAction == UnexpectedValueVerificationAction.Fail)
+            return expected.Items.Count == actual.Items.Count
+                ? ExpectationResult.Success
+                : ExpectationResult.Failure($"Expected exactly {expected.Items.Count} items");
+
+        return expected.Items.Count <= actual.Items.Count
+            ? ExpectationResult.Success
+            : ExpectationResult.Failure($"Expected at least {expected.Items.Count} items");
+    }
+
+    private ExpectationResult VerifyTypes(ObjectTreeNode expected, ObjectTreeNode actual)
+    {
+        var expectedType = expected.RawObject?.GetType();
+        var actualType = actual.RawObject?.GetType();
+        return expectedType == actualType
+            ? ExpectationResult.Success
+            : ExpectationResult.Failure($"expected '{_formattingService.FormatValue(expectedType)}' type, but got '{_formattingService.FormatValue(actualType)}'");
+    }
+
+    private static IExpectation<object?> GetValueExpectation(ObjectTreeValue expected)
+    {
+        var expectedValue = expected.Value;
         if (expectedValue is IExpectation<object?> expectation)
             return expectation;
         return Expect.To.Equal(expectedValue);
