@@ -34,7 +34,7 @@ public class ObjectTreeBuilder
             return new ObjectTreeReference(parent, node, recursionTarget, o);
 
         var type = o.GetType();
-        if (type.IsPrimitive || _options.ValueTypes.Any(t => t.IsAssignableFrom(type)))
+        if (type.IsPrimitive || _options.ValueTypes.Any(t => IsImplementingType(type, t)))
             return new ObjectTreeValue(parent, node, o, o);
 
         var mapper = _options.Mappers.FirstOrDefault(m => m.CanMap(o));
@@ -48,6 +48,25 @@ public class ObjectTreeBuilder
                 return CreateObject(mapper.AsObjectMapper().GetProperties(o), node, parent, o);
         }
         return CreateObject(PocoMapper.Instance.GetProperties(o), node, parent, o);
+    }
+
+    private static bool IsImplementingType(Type type, Type target)
+    {
+        if (!target.IsGenericTypeDefinition)
+            return target.IsAssignableFrom(type);
+
+        if (target.IsInterface)
+            return type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == target);
+
+        var t = type;
+        while (t != null)
+        {
+            if (t.IsGenericType && t.GetGenericTypeDefinition() == target)
+                return true;
+            t = t.BaseType;
+        }
+
+        return false;
     }
 
     private static ObjectTreeNode? FindRecursion(object o, ObjectTreeNode? node)

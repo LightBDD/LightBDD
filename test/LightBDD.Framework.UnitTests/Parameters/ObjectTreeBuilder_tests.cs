@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Text.Json;
+using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters.ObjectTrees;
+using Moq;
 using NUnit.Framework;
 using Shouldly;
 
@@ -176,6 +178,38 @@ namespace LightBDD.Framework.UnitTests.Parameters
             nodes["$.nDouble"].ShouldBeOfType<ObjectTreeValue>().Value.ShouldBeOfType<double>().ShouldBe(double.MinValue);
         }
 
+        [Test]
+        public void It_should_map_Expect_expressions_as_values()
+        {
+            var input = new
+            {
+                Name = Expect.To.Not.BeEmpty<string>(),
+                Surname = Expect.To.Not.BeEmpty<string>(),
+                Items = new[] { Expect.To.BeGreaterOrEqual(0).And(x => x.BeLessOrEqual(5)) }
+            };
+            var root = new ObjectTreeBuilder(new()).Build(input);
+            var nodes = root.EnumerateAll().ToDictionary(x => x.Path);
+            nodes["$.Name"].AsValue().Value?.ToString().ShouldBe("not empty");
+            nodes["$.Surname"].AsValue().Value?.ToString().ShouldBe("not empty");
+            nodes["$.Items[0]"].AsValue().Value?.ToString().ShouldBe("(greater or equal '0' and less or equal '5')");
+        }
+
+        [Test]
+        public void It_should_allow_registration_of_open_generics_as_value_nodes()
+        {
+            var input = new
+            {
+                A = Mock.Of<ISomething<string>>(),
+                B = new Something<DateTime>()
+            };
+
+            var options = new ObjectTreeBuilderOptions { ValueTypes = { typeof(ISomething<>), typeof(Something<>) } };
+            var root = new ObjectTreeBuilder(options).Build(input);
+            var nodes = root.EnumerateAll().ToDictionary(x => x.Path);
+            nodes["$.A"].ShouldBeOfType<ObjectTreeValue>();
+            nodes["$.B"].ShouldBeOfType<ObjectTreeValue>();
+        }
+
         private void AssertValueNode(ObjectTreeNode node, string path, object? value)
         {
             node.Kind.ShouldBe(ObjectTreeNodeKind.Value);
@@ -261,4 +295,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         public string Name { get; set; }
         public Parent Parent { get; set; }
     }
+
+    public interface ISomething<T> { }
+    public class Something<T> { }
 }
