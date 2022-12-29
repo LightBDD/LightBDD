@@ -11,8 +11,7 @@ public class ObjectTreeBuilderOptions
     public HashSet<Type> ValueTypes { get; } = new()
     {
         typeof(string),
-        typeof(IFormattable),
-        typeof(IExpectation<>)
+        typeof(IFormattable)
     };
 
     public Stack<NodeMapper> Mappers { get; } = new(new NodeMapper[]
@@ -22,6 +21,7 @@ public class ObjectTreeBuilderOptions
         ExpandoMapper.Instance,
         JsonElementObjectMapper.Instance,
         JsonElementArrayMapper.Instance,
-        JsonElementValueMapper.Instance
+        JsonElementValueMapper.Instance,
+        ExpectationValueMapper.Instance,
     });
 }

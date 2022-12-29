@@ -11,14 +11,9 @@ namespace LightBDD.Framework.Expectations.Implementation
             if (a is null || b is null || a.GetType() == b.GetType())
                 return Equals(a, b);
 
-            if (IsNumeric(a) && IsNumeric(b))
+            if (NumericTypeHelper.IsNumeric(a) && NumericTypeHelper.IsNumeric(b))
                 return AreNumericsEqual(a, b);
             return Equals(a, b);
-        }
-
-        private static bool IsNumeric(object o)
-        {
-            return o is double or float or decimal or byte or sbyte or int or uint or long or ulong or short or ushort;
         }
 
         private static bool AreNumericsEqual(object a, object b)

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Text.Json;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters.Trees;
+using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;
-using LightBDD.Framework.Parameters.ObjectTrees;
 using NUnit.Framework;
 using Shouldly;
 
@@ -304,6 +303,27 @@ $.Surname: expected: equals 'Johnson', but got: 'John'");
             "$[0]|1|1|Success|",
             "$[1]|2|2|Success|",
             "$[2]|3.2|3.2|Success|"
+        );
+    }
+
+    [Test]
+    public void It_should_successfully_match_object_against_specified_expectations()
+    {
+        var expected = new
+        {
+            Name = Expect.To.Not.BeEmpty<string>(),
+            Surname = Expect.To.Not.BeEmpty<string>(),
+            Age = Expect.To.BeGreaterOrEqual(0).And(x => x.BeLessOrEqual(120))
+        };
+
+        var actual = new { Name = "Bob", Surname = "Smith", Age = 23L };
+        var tree = new VerifiableTree(expected, new());
+        tree.SetActual(actual);
+        AssertNodes(tree.Details.Root.EnumerateAll(),
+            "$|<object>|<object>|Success|",
+            "$.Age|(greater or equal '0' and less or equal '120')|23|Success|",
+            "$.Name|not empty|Bob|Success|",
+            "$.Surname|not empty|Smith|Success|"
         );
     }
 
