@@ -210,6 +210,54 @@ namespace LightBDD.Framework.UnitTests.Parameters
             nodes["$.B"].ShouldBeOfType<ObjectTreeValue>();
         }
 
+        [Test]
+        public void It_should_sort_unordered_collections_if_underlying_type_is_sortable()
+        {
+            var set = Enumerable.Range(0, 10).Select(_ => Guid.NewGuid()).ToHashSet();
+            var root = new ObjectTreeBuilder(new ObjectTreeBuilderOptions()).Build(set);
+            var actualItems = root.AsArray().Items.Select(x => x.RawObject).Cast<Guid>().ToArray();
+            actualItems.ShouldBe(set.OrderBy(x => x).ToArray());
+        }
+
+        [Test]
+        public void It_should_return_items_in_enumeration_order_for_unordered_collections_if_underlying_type_is_not_sortable()
+        {
+            var set = Enumerable.Range(0, 10).Select(_ => new object()).ToHashSet();
+            var root = new ObjectTreeBuilder(new ObjectTreeBuilderOptions()).Build(set);
+            var actualItems = root.AsArray().Items.Select(x => x.RawObject).ToArray();
+            actualItems.ShouldBe(set.ToArray());
+        }
+
+        [Test]
+        public void It_should_return_items_in_enumeration_order_for_ordered_collections_and_enumerables()
+        {
+            var input = new
+            {
+                Enumerable = Enumerable.Range(0, 5).OrderByDescending(x => x),
+                Array = new[] { 1, 5, 3 }
+            };
+            var root = new ObjectTreeBuilder(new ObjectTreeBuilderOptions()).Build(input).AsObject();
+            var actualEnumerable = root.Properties["Enumerable"].AsArray().Items.Select(x => x.RawObject).ToArray();
+            actualEnumerable.ShouldBe(new object[] { 4, 3, 2, 1, 0 });
+            var actualArray = root.Properties["Array"].AsArray().Items.Select(x => x.RawObject).ToArray();
+            actualArray.ShouldBe(new object[] { 1, 5, 3 });
+        }
+
+        [Test]
+        public void It_should_return_items_in_enumeration_order_for_non_generic_collections()
+        {
+            var input = new
+            {
+                List = new ArrayList { 5, 1, 3 },
+                Array = new object[] { 1, 5, 1 }
+            };
+            var root = new ObjectTreeBuilder(new ObjectTreeBuilderOptions()).Build(input).AsObject();
+            var actualEnumerable = root.Properties["List"].AsArray().Items.Select(x => x.RawObject).ToArray();
+            actualEnumerable.ShouldBe(new object[] { 5, 1, 3 });
+            var actualArray = root.Properties["Array"].AsArray().Items.Select(x => x.RawObject).ToArray();
+            actualArray.ShouldBe(new object[] { 1, 5, 1 });
+        }
+
         private void AssertValueNode(ObjectTreeNode node, string path, object? value)
         {
             node.Kind.ShouldBe(ObjectTreeNodeKind.Value);
