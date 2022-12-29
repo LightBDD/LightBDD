@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters.Trees;
@@ -39,6 +38,25 @@ public class InputTree_tests
 
         tree.Details.VerificationStatus.ShouldBe(ParameterVerificationStatus.NotApplicable);
         tree.Details.VerificationMessage.ShouldBe(null);
+    }
+
+    [Test]
+    [TestCase(true)]
+    [TestCase(false)]
+    public void It_should_exclude_null_properties_when_specified(bool excludeNullProperties)
+    {
+        var input = new
+        {
+            Name = "Bob",
+            Value = (string)null
+        };
+        var tree = Tree.For(input, new() { ExcludeNullProperties = excludeNullProperties });
+        tree.Input.ShouldBeSameAs(input);
+
+        var nodes = tree.Details.Root.EnumerateAll().ToDictionary(x => x.Path);
+        nodes.ShouldContainKey("$");
+        nodes.ShouldContainKey("$.Name");
+        nodes.ContainsKey("$.Value").ShouldBe(!excludeNullProperties);
     }
 
     private void AssertNodes(IEnumerable<ITreeParameterNodeResult> nodes, params string[] expected)
