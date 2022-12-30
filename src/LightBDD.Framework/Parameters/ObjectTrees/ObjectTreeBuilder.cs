@@ -37,17 +37,25 @@ public class ObjectTreeBuilder
         if (type.IsPrimitive || _options.ValueTypes.Any(t => IsImplementingType(type, t)))
             return new ObjectTreeValue(parent, node, o, o);
 
-        var mapper = _options.Mappers.FirstOrDefault(m => m.CanMap(o));
-        switch (mapper?.Kind)
+        try
         {
-            case ObjectTreeNodeKind.Value:
-                return new ObjectTreeValue(parent, node, mapper.AsValueMapper().GetValue(o), o);
-            case ObjectTreeNodeKind.Array:
-                return CreateArray(mapper.AsArrayMapper().GetItems(o), node, parent, o);
-            case ObjectTreeNodeKind.Object:
-                return CreateObject(mapper.AsObjectMapper().GetProperties(o), node, parent, o);
+            var mapper = _options.Mappers.FirstOrDefault(m => m.CanMap(o));
+            switch (mapper?.Kind)
+            {
+                case ObjectTreeNodeKind.Value:
+                    return new ObjectTreeValue(parent, node, mapper.AsValueMapper().GetValue(o), o);
+                case ObjectTreeNodeKind.Array:
+                    return CreateArray(mapper.AsArrayMapper().GetItems(o), node, parent, o);
+                case ObjectTreeNodeKind.Object:
+                    return CreateObject(mapper.AsObjectMapper().GetProperties(o), node, parent, o);
+            }
+
+            return CreateObject(PocoMapper.Instance.GetProperties(o), node, parent, o);
         }
-        return CreateObject(PocoMapper.Instance.GetProperties(o), node, parent, o);
+        catch (Exception ex)
+        {
+            return new ObjectTreeValue(parent, node, new ExceptionCapture(ex), o);
+        }
     }
 
     private static bool IsImplementingType(Type type, Type target)

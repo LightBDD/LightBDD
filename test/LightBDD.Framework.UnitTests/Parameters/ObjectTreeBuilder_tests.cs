@@ -8,6 +8,7 @@ using System.Text.Json;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;
 using LightBDD.Framework.Parameters.ObjectTrees;
+using LightBDD.Framework.Parameters.ObjectTrees.Providers;
 using Moq;
 using NUnit.Framework;
 using Shouldly;
@@ -269,10 +270,30 @@ namespace LightBDD.Framework.UnitTests.Parameters
         public void It_should_capture_exceptions_thrown_during_object_mapping()
         {
             var input = new ExceptionalObject();
-            var root = new ObjectTreeBuilder(new ObjectTreeBuilderOptions()).Build(input).AsObject();
+            var root = new ObjectTreeBuilder(new ObjectTreeBuilderOptions()).Build(input);
             var nodes = root.EnumerateAll().ToDictionary(x => x.Path);
             nodes["$.Name"].AsValue().Value.ShouldBe("name");
             nodes["$.Exceptional"].AsValue().Value.ShouldBeOfType<ExceptionCapture>().ToString().ShouldBe("InvalidOperationException: exceptional");
+        }
+
+        [Test]
+        public void It_should_capture_exceptions_caused_by_mappers()
+        {
+            var mapper = new Mock<ObjectMapper>();
+            mapper.Setup(x => x.CanMap(It.Is((object o) => o is Parent))).Returns(true);
+            mapper.Setup(x => x.GetProperties(It.IsAny<object>())).Throws(new IndexOutOfRangeException("foo"));
+
+            var options = new ObjectTreeBuilderOptions();
+            options.Mappers.Push(mapper.Object);
+            var builder = new ObjectTreeBuilder(options);
+
+            var input = new { Name = "Bob", Value = new Parent(), Value2 = 5 };
+
+            var root = builder.Build(input);
+            var nodes = root.EnumerateAll().ToDictionary(x => x.Path);
+            nodes["$.Name"].AsValue().Value.ShouldBe("Bob");
+            nodes["$.Value2"].AsValue().Value.ShouldBe(5);
+            nodes["$.Value"].AsValue().Value.ShouldBeOfType<ExceptionCapture>().ToString().ShouldBe("IndexOutOfRangeException: foo");
         }
 
         private void AssertValueNode(ObjectTreeNode node, string path, object? value)
