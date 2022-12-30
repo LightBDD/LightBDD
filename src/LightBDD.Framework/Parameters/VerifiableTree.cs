@@ -9,7 +9,6 @@ using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Trees;
-using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Execution.Coordination;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Formatting.Values;
@@ -18,6 +17,9 @@ using LightBDD.Framework.Results.Implementation;
 
 namespace LightBDD.Framework.Parameters;
 
+/// <summary>
+/// Type representing object tree step parameter which allows detailed structural verification of actual versus expected object trees.
+/// </summary>
 public class VerifiableTree : IComplexParameter, ISelfFormattable
 {
     private static readonly VerifiableTreeOptions DefaultOptions = new();
@@ -28,16 +30,27 @@ public class VerifiableTree : IComplexParameter, ISelfFormattable
     private IValueFormattingService _formattingService = ValueFormattingServices.Current;
     private ITreeParameterDetails? _details;
 
+    /// <summary>
+    /// Creates verifiable tree for provided <paramref name="expected"/> object, using default <seealso cref="VerifiableTreeOptions"/> options.
+    /// </summary>
     public VerifiableTree(object? expected) : this(expected, DefaultOptions)
     {
     }
 
+    /// <summary>
+    /// Creates verifiable tree for provided <paramref name="expected"/> object, using <seealso cref="VerifiableTreeOptions"/> options specified by <paramref name="options"/> parameter.
+    /// </summary>
     public VerifiableTree(object? expected, VerifiableTreeOptions options)
     {
         _options = options;
         _expected = _treeBuilder.Build(expected);
     }
 
+    /// <summary>
+    /// Verifies <paramref name="actual"/> parameter value against the expectations and updates <seealso cref="Details"/> with verification results.
+    /// </summary>
+    /// <param name="actual">Object to verify against expectations.</param>
+    /// <exception cref="InvalidOperationException">Thrown if actual value was already specified.</exception>
     public void SetActual(object? actual)
     {
         if (_actual != null)
@@ -52,6 +65,9 @@ public class VerifiableTree : IComplexParameter, ISelfFormattable
     }
 
     IParameterDetails IComplexParameter.Details => Details;
+    /// <summary>
+    /// Returns verification details.
+    /// </summary>
     public ITreeParameterDetails Details => _details ??= CalculateResults();
 
     string ISelfFormattable.Format(IValueFormattingService formattingService) => "<tree>";

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Linq;
 using LightBDD.Core.Configuration;
-using LightBDD.Core.Notification;
-using LightBDD.Framework.Notification;
-using LightBDD.Framework.Notification.Implementation;
 using LightBDD.Framework.Parameters.ObjectTrees;
 
 namespace LightBDD.Framework.Configuration;
@@ -14,13 +10,19 @@ namespace LightBDD.Framework.Configuration;
 public class ObjectTreeConfiguration : FeatureConfiguration
 {
     private ObjectTreeBuilderOptions _options = new();
-    private readonly ObjectTreeBuilder _builder;
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
     public ObjectTreeConfiguration()
     {
-        _builder = new ObjectTreeBuilder(_options);
+        Builder = new ObjectTreeBuilder(_options);
     }
 
+    /// <summary>
+    /// Configures options for <seealso cref="ObjectTreeBuilder"/>.
+    /// </summary>
+    /// <param name="configure">Configuration method</param>
     public ObjectTreeConfiguration ConfigureOptions(Action<ObjectTreeBuilderOptions> configure)
     {
         ThrowIfSealed();
@@ -28,6 +30,9 @@ public class ObjectTreeConfiguration : FeatureConfiguration
         return this;
     }
 
+    /// <summary>
+    /// Resets options to default value.
+    /// </summary>
     public ObjectTreeConfiguration ResetOptions()
     {
         ThrowIfSealed();
@@ -35,5 +40,8 @@ public class ObjectTreeConfiguration : FeatureConfiguration
         return this;
     }
 
-    public ObjectTreeBuilder Builder => _builder;
+    /// <summary>
+    /// Returns configured builder.
+    /// </summary>
+    public ObjectTreeBuilder Builder { get; }
 }

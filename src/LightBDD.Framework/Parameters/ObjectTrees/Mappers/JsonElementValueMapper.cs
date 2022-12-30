@@ -2,14 +2,30 @@
 using System;
 using System.Text.Json;
 
-namespace LightBDD.Framework.Parameters.ObjectTrees.Providers;
+namespace LightBDD.Framework.Parameters.ObjectTrees.Mappers;
 
+/// <summary>
+/// Value mapper for <seealso cref="JsonElement"/> containing value element.
+/// </summary>
 public class JsonElementValueMapper : ValueMapper
 {
+    /// <summary>
+    /// Default instance
+    /// </summary>
     public static readonly JsonElementValueMapper Instance = new();
+
     private JsonElementValueMapper() { }
 
+    /// <summary>
+    /// Returns true if <paramref name="obj"/> is <seealso cref="JsonElement"/> containing value element.
+    /// </summary>
     public override bool CanMap(object obj) => obj is JsonElement e && e.ValueKind != JsonValueKind.Object && e.ValueKind != JsonValueKind.Array;
+
+    /// <summary>
+    /// Returns value of JsonElement, where method supports <seealso cref="JsonValueKind.String"/>, <seealso cref="JsonValueKind.Number"/>, <seealso cref="JsonValueKind.True"/>, <seealso cref="JsonValueKind.False"/>, <seealso cref="JsonValueKind.Null"/> value kinds.<br/>
+    /// For <seealso cref="JsonValueKind.Number"/>, it returns <seealso cref="int"/>,<seealso cref="long"/> or <seealso cref="double"/> types, depending on number type and size.
+    /// </summary>
+    /// <exception cref="NotSupportedException">Thrown for unsupported kinds.</exception>
     public override object? GetValue(object o)
     {
         var j = (JsonElement)o;

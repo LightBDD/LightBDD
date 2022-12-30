@@ -1,5 +1,5 @@
 ﻿#nullable enable
-namespace LightBDD.Framework.Parameters.ObjectTrees.Providers;
+namespace LightBDD.Framework.Parameters.ObjectTrees.Mappers;
 
 /// <summary>
 /// Structure representing object property with associated value

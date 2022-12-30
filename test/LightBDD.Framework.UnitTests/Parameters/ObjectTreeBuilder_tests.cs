@@ -8,7 +8,7 @@ using System.Text.Json;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;
 using LightBDD.Framework.Parameters.ObjectTrees;
-using LightBDD.Framework.Parameters.ObjectTrees.Providers;
+using LightBDD.Framework.Parameters.ObjectTrees.Mappers;
 using Moq;
 using NUnit.Framework;
 using Shouldly;
@@ -354,32 +354,34 @@ namespace LightBDD.Framework.UnitTests.Parameters
     }
     class Poco : PocoBase
     {
-        public static string StaticField;
-        public static string StaticProperty { get; set; }
-        private string _privateField;
-        private string _setterOnlyProperty;
-        private string PrivateProperty { get; set; }
+        public static string? StaticField = null;
+        public static string? StaticProperty { get; set; }
+#pragma warning disable CS0414
+        private string? _privateField = null;
+#pragma warning restore CS0414
+        private string? _setterOnlyProperty;
+        private string? PrivateProperty { get; set; }
 
         public string SetterOnlyProperty
         {
             set => _setterOnlyProperty = value;
         }
 
-        public string Field = "field";
-        public string Property { get; set; } = "prop";
+        public new string Field = "field";
+        public new string Property { get; set; } = "prop";
         public string this[int index] => string.Empty;
     }
 
     class Parent
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public List<Child> Children { get; } = new();
     }
 
     class Child
     {
-        public string Name { get; set; }
-        public Parent Parent { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public Parent? Parent { get; set; }
     }
 
     public interface ISomething<T> { }

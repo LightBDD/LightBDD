@@ -1,7 +1,7 @@
 ﻿#nullable enable
 using System;
 
-namespace LightBDD.Framework.Parameters.ObjectTrees.Providers;
+namespace LightBDD.Framework.Parameters.ObjectTrees.Mappers;
 
 /// <summary>
 /// Node mapper allowing to map input objects into tree nodes

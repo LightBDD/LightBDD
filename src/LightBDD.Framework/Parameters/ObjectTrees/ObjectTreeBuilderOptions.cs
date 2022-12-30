@@ -1,10 +1,13 @@
 ﻿#nullable enable
 using System;
 using System.Collections.Generic;
-using LightBDD.Framework.Parameters.ObjectTrees.Providers;
+using LightBDD.Framework.Parameters.ObjectTrees.Mappers;
 
 namespace LightBDD.Framework.Parameters.ObjectTrees;
 
+/// <summary>
+/// Represents <seealso cref="ObjectTreeBuilder"/> options.
+/// </summary>
 public class ObjectTreeBuilderOptions
 {
     /// <summary>

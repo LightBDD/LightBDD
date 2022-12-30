@@ -5,23 +5,39 @@ using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Execution.Coordination;
-using LightBDD.Framework.Parameters.ObjectTrees.Providers;
+using LightBDD.Framework.Parameters.ObjectTrees.Mappers;
 
 namespace LightBDD.Framework.Parameters.ObjectTrees;
 
+/// <summary>
+/// Class allowing to build object tree representation of input object.
+/// </summary>
 public class ObjectTreeBuilder
 {
     private readonly ObjectTreeBuilderOptions _options;
 
+    /// <summary>
+    /// Default instance.
+    /// </summary>
     public static ObjectTreeBuilder Default { get; } = new(new());
+
+    /// <summary>
+    /// Currently configured instance.
+    /// </summary>
     public static ObjectTreeBuilder Current => FrameworkFeatureCoordinator.TryGetInstance()?.Configuration.Get<ObjectTreeConfiguration>().Builder ?? Default;
 
-
+    /// <summary>
+    /// Default constructor
+    /// </summary>
+    /// <param name="options">Options</param>
     public ObjectTreeBuilder(ObjectTreeBuilderOptions options)
     {
         _options = options;
     }
 
+    /// <summary>
+    /// Builds object tree representation of provided <paramref name="o"/> object and returns root node.
+    /// </summary>
     public ObjectTreeNode Build(object? o) => Build(o, "$", null);
 
     private ObjectTreeNode Build(object? o, string node, ObjectTreeNode? parent)

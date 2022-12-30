@@ -12,6 +12,10 @@ using LightBDD.Framework.Results.Implementation;
 
 namespace LightBDD.Framework.Parameters;
 
+/// <summary>
+/// Type representing object tree step parameter which provides detailed insights to the object structure upon progress and results rendering.
+/// </summary>
+/// <typeparam name="TData"></typeparam>
 public class InputTree<TData> : IComplexParameter, ISelfFormattable
 {
     private static readonly InputTreeOptions DefaultOptions = new();
@@ -19,21 +23,37 @@ public class InputTree<TData> : IComplexParameter, ISelfFormattable
     private readonly ObjectTreeBuilder _treeBuilder = ObjectTreeBuilder.Current;
     private IValueFormattingService _formattingService = ValueFormattingServices.Current;
     private ITreeParameterDetails? _details;
+
+    /// <summary>
+    /// Input value
+    /// </summary>
     public TData Input { get; }
 
+    /// <summary>
+    /// Creates input tree for <paramref name="input"/> object using default options.
+    /// </summary>
     public InputTree(TData input) : this(input, DefaultOptions)
     {
     }
 
+    /// <summary>
+    /// Creates input tree for <paramref name="input"/> object using options represented by <paramref name="options"/> parameter.
+    /// </summary>
     public InputTree(TData input, InputTreeOptions options)
     {
         _options = options;
         Input = input;
     }
 
-    public ITreeParameterDetails Details => _details ??= GetDetails();
-
+    /// <summary>
+    /// Implicit operator allowing to conversion of <paramref name="input"/> into <seealso cref="InputTree{TData}"/>
+    /// </summary>
     public static implicit operator InputTree<TData>(TData input) => new(input);
+
+    /// <summary>
+    /// Tree parameter details.
+    /// </summary>
+    public ITreeParameterDetails Details => _details ??= GetDetails();
 
     IParameterDetails IComplexParameter.Details => Details;
 

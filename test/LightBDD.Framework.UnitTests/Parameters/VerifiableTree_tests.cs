@@ -652,7 +652,7 @@ $.Surname: expected: equals 'Johnson', but got: 'John'");
 
     class Node
     {
-        public Node? Parent { get; set; }
+        public Node Parent { get; set; }
         public string Name { get; set; }
         public List<Node> Children { get; } = new();
     }

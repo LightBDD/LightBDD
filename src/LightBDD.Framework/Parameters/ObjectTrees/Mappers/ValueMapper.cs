@@ -1,5 +1,5 @@
 ﻿#nullable enable
-namespace LightBDD.Framework.Parameters.ObjectTrees.Providers;
+namespace LightBDD.Framework.Parameters.ObjectTrees.Mappers;
 
 /// <summary>
 /// Base class for array mappers which maps provided objects as simple value.
