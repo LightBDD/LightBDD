@@ -55,12 +55,15 @@ public class VerifiableTree : IComplexParameter, ISelfFormattable
     private ITreeParameterDetails CalculateResults()
     {
         var results = new Dictionary<string, TreeParameterNodeResult>();
-        var actual = (_actual?.EnumerateAll() ?? Array.Empty<ObjectTreeNode>()).Select((n, i) => Tuple.Create(n, i)).ToDictionary(n => n.Item1.Path);
+        var actual = (_actual?.EnumerateAll() ?? Array.Empty<ObjectTreeNode>())
+            .Select((n, i) => new NodeState(n, i))
+            .ToDictionary(n => n.Node.Path);
+
         foreach (var e in _expected.EnumerateAll())
         {
             if (actual.TryGetValue(e.Path, out var a))
             {
-                VerifyNodes(results, e, a.Item1);
+                VerifyNodes(results, e, a.Node);
                 actual.Remove(e.Path);
             }
             else ToNode(results, e, null, ParameterVerificationStatus.Failure, "Missing value");
@@ -68,36 +71,36 @@ public class VerifiableTree : IComplexParameter, ISelfFormattable
 
         if (_options.UnexpectedNodeAction != UnexpectedValueVerificationAction.Exclude)
         {
-            foreach (var a in actual.Values.OrderBy(v => v.Item2))
+            foreach (var a in actual.Values.OrderBy(v => v.Index))
             {
                 if (_options.UnexpectedNodeAction == UnexpectedValueVerificationAction.Fail)
-                    ToNode(results, null, a.Item1, ParameterVerificationStatus.Failure, "Unexpected value");
+                    ToNode(results, null, a.Node, ParameterVerificationStatus.Failure, "Unexpected value");
                 else
-                    ToNode(results, null, a.Item1, ParameterVerificationStatus.NotApplicable, "Surplus value");
+                    ToNode(results, null, a.Node, ParameterVerificationStatus.NotApplicable, "Surplus value");
             }
         }
         return new TreeParameterDetails(results["$"], _actual != null);
     }
 
-
-    private void VerifyNodes(Dictionary<string, TreeParameterNodeResult> results, ObjectTreeNode expected, ObjectTreeNode actual)
+    private ExpectationResult MatchNodes(ObjectTreeNode expected, ObjectTreeNode actual)
     {
         if (expected.Kind != actual.Kind)
-            ToNode(results, expected, actual, ParameterVerificationStatus.Failure, "Different node types");
-        else
+            return ExpectationResult.Failure("Different node types");
+        return expected.Kind switch
         {
-            var result = expected.Kind switch
-            {
-                ObjectTreeNodeKind.Array => VerifyArrays(expected.AsArray(), actual.AsArray()),
-                ObjectTreeNodeKind.Value => VerifyValues(expected.AsValue(), actual.AsValue()),
-                ObjectTreeNodeKind.Reference => VerifyReferences(expected.AsReference(), actual.AsReference()),
-                ObjectTreeNodeKind.Object => VerifyObjects(expected.AsObject(), actual.AsObject()),
-                _ => throw new NotSupportedException($"{expected.Kind} is not supported")
-            };
-            ToNode(results, expected, actual,
-                result.IsValid ? ParameterVerificationStatus.Success : ParameterVerificationStatus.Failure,
-                result.Message);
-        }
+            ObjectTreeNodeKind.Array => VerifyArrays(expected.AsArray(), actual.AsArray()),
+            ObjectTreeNodeKind.Value => VerifyValues(expected.AsValue(), actual.AsValue()),
+            ObjectTreeNodeKind.Reference => VerifyReferences(expected.AsReference(), actual.AsReference()),
+            ObjectTreeNodeKind.Object => VerifyObjects(expected.AsObject(), actual.AsObject()),
+            _ => throw new NotSupportedException($"{expected.Kind} is not supported")
+        };
+    }
+    private void VerifyNodes(Dictionary<string, TreeParameterNodeResult> results, ObjectTreeNode expected, ObjectTreeNode actual)
+    {
+        var result = MatchNodes(expected, actual);
+        ToNode(results, expected, actual,
+            result.IsValid ? ParameterVerificationStatus.Success : ParameterVerificationStatus.Failure,
+            result.Message);
     }
 
     private ExpectationResult VerifyReferences(ObjectTreeReference expected, ObjectTreeReference actual)
@@ -166,8 +169,20 @@ public class VerifiableTree : IComplexParameter, ISelfFormattable
         var node = expected ?? actual ?? throw new InvalidOperationException("Neither expected or actual node is provided");
 
         var r = new TreeParameterNodeResult(node.Path, node.Node, expectedValue, actualValue, status, verificationMessage);
-        results.Add(r.Path, r);
+        if (!results.ContainsKey(r.Path))//TODO:remove
+            results.Add(r.Path, r);
         if (node.Parent != null)
             results[node.Parent.Path].AddChild(r);
+    }
+
+    class NodeState
+    {
+        public NodeState(ObjectTreeNode node, int index)
+        {
+            Node = node;
+            Index = index;
+        }
+        public ObjectTreeNode Node { get; }
+        public int Index { get; }
     }
 }
