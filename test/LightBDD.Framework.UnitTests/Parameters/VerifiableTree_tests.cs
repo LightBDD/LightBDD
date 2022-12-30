@@ -1,12 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Dynamic;
 using System.Linq;
+using System.Reflection;
+using System.Security.Cryptography;
+using System.Security.Policy;
 using System.Text.Json;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters.Trees;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 using Shouldly;
 
 namespace LightBDD.Framework.UnitTests.Parameters;
@@ -589,6 +597,46 @@ $.Surname: expected: equals 'Johnson', but got: 'John'");
             nodes.ShouldContain("$.Items[0]|5|5|Failure|expected 'System.Int64' type, but got 'System.Int32'");
         else
             nodes.ShouldContain("$.Items[0]|5|5|Success|");
+    }
+
+    class Faulty
+    {
+        private readonly bool _fail;
+
+        public Faulty(bool fail)
+        {
+            _fail = fail;
+        }
+
+        public string Value => _fail ? throw new InvalidOperationException("failure") : "text";
+    }
+
+    [Test]
+    public void It_should_capture_exceptions()
+    {
+        var expected = new { A = new Faulty(false), B = new Faulty(true), C = new Faulty(true) };
+        var actual = new { A = new Faulty(true), B = new Faulty(false), C = new Faulty(true) };
+
+        var tree = Tree.ExpectEquivalent(expected);
+        tree.SetActual(actual);
+        var nodes = tree.Details.Root.EnumerateAll()
+            .Select(n => $"{n.Path}|{n.Expectation}|{n.Value}|{n.VerificationStatus}")
+            .ToArray();
+
+        nodes.ShouldBe(new[]
+        {
+            "$|<object>|<object>|Success", "$.A|<object>|<object>|Success",
+            "$.A.Value|text|InvalidOperationException: failure|Exception",
+            "$.B|<object>|<object>|Success",
+            "$.B.Value|InvalidOperationException: failure|text|Exception",
+            "$.C|<object>|<object>|Success",
+            "$.C.Value|InvalidOperationException: failure|InvalidOperationException: failure|Exception"
+        });
+
+        tree.Details.VerificationStatus.ShouldBe(ParameterVerificationStatus.Exception);
+        tree.Details.VerificationMessage.ShouldContain("$.A.Value: System.InvalidOperationException : failure");
+        tree.Details.VerificationMessage.ShouldContain("$.B.Value: System.InvalidOperationException : failure");
+        tree.Details.VerificationMessage.ShouldContain("$.C.Value: System.InvalidOperationException : failure");
     }
 
     private void AssertNodes(IEnumerable<ITreeParameterNodeResult> nodes, params string[] expected)

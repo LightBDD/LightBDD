@@ -25,5 +25,14 @@ public abstract class ObjectTreeNode
     public ObjectTreeObject AsObject() => this as ObjectTreeObject ?? throw new InvalidOperationException($"{GetType().Name} node at {Path} path is not {nameof(ObjectTreeObject)}");
     public ObjectTreeReference AsReference() => this as ObjectTreeReference ?? throw new InvalidOperationException($"{GetType().Name} node at {Path} path is not {nameof(ObjectTreeReference)}");
 
+    public bool HasExceptionCaptured(out Exception? exception)
+    {
+        exception = null;
+        if (Kind != ObjectTreeNodeKind.Value || AsValue().Value is not ExceptionCapture c)
+            return false;
+        exception = c.Exception;
+        return true;
+    }
+
     public abstract IEnumerable<ObjectTreeNode> EnumerateAll();
 }

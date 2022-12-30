@@ -2,11 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution;
+using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Trees;
+using LightBDD.Framework.Configuration;
+using LightBDD.Framework.Execution.Coordination;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Formatting.Values;
 using LightBDD.Framework.Parameters.ObjectTrees;
@@ -84,6 +88,7 @@ public class VerifiableTree : IComplexParameter, ISelfFormattable
 
     private ExpectationResult MatchNodes(ObjectTreeNode expected, ObjectTreeNode actual)
     {
+
         if (expected.Kind != actual.Kind)
             return ExpectationResult.Failure("Different node types");
         return expected.Kind switch
@@ -97,10 +102,25 @@ public class VerifiableTree : IComplexParameter, ISelfFormattable
     }
     private void VerifyNodes(Dictionary<string, TreeParameterNodeResult> results, ObjectTreeNode expected, ObjectTreeNode actual)
     {
-        var result = MatchNodes(expected, actual);
-        ToNode(results, expected, actual,
-            result.IsValid ? ParameterVerificationStatus.Success : ParameterVerificationStatus.Failure,
-            result.Message);
+        if (expected.HasExceptionCaptured(out var ex) || actual.HasExceptionCaptured(out ex))
+        {
+            ToNode(results, expected, actual, ParameterVerificationStatus.Exception, FormatException(ex));
+        }
+        else
+        {
+            var result = MatchNodes(expected, actual);
+            ToNode(results, expected, actual,
+                result.IsValid ? ParameterVerificationStatus.Success : ParameterVerificationStatus.Failure,
+                result.Message);
+        }
+    }
+
+    private static string FormatException(Exception? ex)
+    {
+        //TODO: refactor
+        var formatter = FrameworkFeatureCoordinator.TryGetInstance()?.Configuration.Get<ExceptionHandlingConfiguration>()
+            .ExceptionDetailsFormatter ?? new DefaultExceptionFormatter().Format;
+        return formatter.Invoke(ex);
     }
 
     private ExpectationResult VerifyReferences(ObjectTreeReference expected, ObjectTreeReference actual)
@@ -169,8 +189,7 @@ public class VerifiableTree : IComplexParameter, ISelfFormattable
         var node = expected ?? actual ?? throw new InvalidOperationException("Neither expected or actual node is provided");
 
         var r = new TreeParameterNodeResult(node.Path, node.Node, expectedValue, actualValue, status, verificationMessage);
-        if (!results.ContainsKey(r.Path))//TODO:remove
-            results.Add(r.Path, r);
+        results.Add(r.Path, r);
         if (node.Parent != null)
             results[node.Parent.Path].AddChild(r);
     }
