@@ -81,10 +81,10 @@ public class ObjectTreeBuilder
         return null;
     }
 
-    private ObjectTreeNode CreateObject(IEnumerable<KeyValuePair<string, object?>> properties, string node, ObjectTreeNode? parent, object o)
+    private ObjectTreeNode CreateObject(IEnumerable<ObjectProperty> properties, string node, ObjectTreeNode? parent, object o)
     {
         var result = new ObjectTreeObject(parent, node, o);
-        result.Properties = properties.ToDictionary(x => x.Key, x => Build(x.Value, GetNodePath(x.Key), result));
+        result.Properties = properties.ToDictionary(x => x.Name, x => Build(x.Value, GetNodePath(x.Name), result));
         return result;
     }
 

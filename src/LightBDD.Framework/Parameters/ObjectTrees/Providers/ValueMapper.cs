@@ -1,14 +1,18 @@
 ﻿#nullable enable
-using System.Collections.Generic;
-
 namespace LightBDD.Framework.Parameters.ObjectTrees.Providers;
 
+/// <summary>
+/// Base class for array mappers which maps provided objects as simple value.
+/// </summary>
 public abstract class ValueMapper : NodeMapper
 {
+    /// <summary>
+    /// Constructor
+    /// </summary>
     protected ValueMapper() : base(ObjectTreeNodeKind.Value) { }
 
     /// <summary>
-    /// Tries to interpret provided object <paramref name="o"/> as value object and return.
+    /// Interprets provided object <paramref name="o"/> as simple value and returns it.
     /// </summary>
     public abstract object? GetValue(object o);
 }

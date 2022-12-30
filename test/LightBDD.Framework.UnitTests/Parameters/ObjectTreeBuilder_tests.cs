@@ -6,6 +6,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Text.Json;
 using LightBDD.Framework.Expectations;
+using LightBDD.Framework.Parameters;
 using LightBDD.Framework.Parameters.ObjectTrees;
 using Moq;
 using NUnit.Framework;
@@ -256,6 +257,22 @@ namespace LightBDD.Framework.UnitTests.Parameters
             actualEnumerable.ShouldBe(new object[] { 5, 1, 3 });
             var actualArray = root.Properties["Array"].AsArray().Items.Select(x => x.RawObject).ToArray();
             actualArray.ShouldBe(new object[] { 1, 5, 1 });
+        }
+
+        class ExceptionalObject
+        {
+            public string Name => "name";
+            public string Exceptional => throw new InvalidOperationException("exceptional");
+        }
+
+        [Test]
+        public void It_should_capture_exceptions_thrown_during_object_mapping()
+        {
+            var input = new ExceptionalObject();
+            var root = new ObjectTreeBuilder(new ObjectTreeBuilderOptions()).Build(input).AsObject();
+            var nodes = root.EnumerateAll().ToDictionary(x => x.Path);
+            nodes["$.Name"].AsValue().Value.ShouldBe("name");
+            nodes["$.Exceptional"].AsValue().Value.ShouldBeOfType<ExceptionCapture>().ToString().ShouldBe("InvalidOperationException: exceptional");
         }
 
         private void AssertValueNode(ObjectTreeNode node, string path, object? value)

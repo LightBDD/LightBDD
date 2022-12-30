@@ -17,11 +17,23 @@ public class PocoMapper : ObjectMapper
 
     public override bool CanMap(object obj) => true;
 
-    public override IEnumerable<KeyValuePair<string, object?>> GetProperties(object o)
+    public override IEnumerable<ObjectProperty> GetProperties(object o)
     {
         var type = o.GetType();
         var map = _typeMap.GetOrAdd(type, MapType);
-        return map.Select(p => new KeyValuePair<string, object?>(p.Key, p.Value(o)));
+        return map.Select(p => new ObjectProperty(p.Key, GetValue(o, p)));
+    }
+
+    private static object GetValue(object o, KeyValuePair<string, Func<object, object>> p)
+    {
+        try
+        {
+            return p.Value(o);
+        }
+        catch (TargetInvocationException ex)
+        {
+            return new ExceptionCapture(ex.InnerException ?? ex);
+        }
     }
 
     private IReadOnlyList<KeyValuePair<string, Func<object, object>>> MapType(Type type)
