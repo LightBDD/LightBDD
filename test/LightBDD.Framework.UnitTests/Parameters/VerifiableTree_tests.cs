@@ -12,6 +12,7 @@ using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters.Trees;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;
+using LightBDD.UnitTests.Helpers;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
@@ -107,13 +108,13 @@ public class VerifiableTree_tests
         );
 
         tree.Details.VerificationStatus.ShouldBe(ParameterVerificationStatus.Failure);
-        tree.Details.VerificationMessage.ShouldBe(@"$.Inner: Different node types
+        tree.Details.VerificationMessage.NormalizeNewLine().ShouldBe(@"$.Inner: Different node types
 $.Inner.Key: Missing value
 $.Inner.Value: Missing value
 $.Items: Expected exactly 2 items
 $.Items[2]: Unexpected value
 $.Name: Missing value
-$.Surname: expected: equals 'Johnson', but got: 'John'");
+$.Surname: expected: equals 'Johnson', but got: 'John'".NormalizeNewLine());
     }
 
     [Test]
