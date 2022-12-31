@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using LightBDD.Framework.Parameters.ObjectTrees.Mappers;
 
 namespace LightBDD.Framework.Parameters.ObjectTrees;
@@ -15,7 +16,8 @@ public class ObjectTreeBuilderOptions
     /// </summary>
     public HashSet<Type> ValueTypes { get; } = new()
     {
-        typeof(string)
+        typeof(string),
+        typeof(MemberInfo) //when traversing through exceptions
     };
 
     /// <summary>
@@ -32,4 +34,9 @@ public class ObjectTreeBuilderOptions
         JsonElementValueMapper.Instance,
         ExpectationValueMapper.Instance,
     });
+
+    /// <summary>
+    /// Maximum depth of nodes. Default value: 32
+    /// </summary>
+    public int MaxDepth { get; set; } = 32;
 }

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Reflection;
 using System.Text.Json;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;
@@ -296,6 +297,64 @@ namespace LightBDD.Framework.UnitTests.Parameters
             nodes["$.Value"].AsValue().Value.ShouldBeOfType<ExceptionCapture>().ToString().ShouldBe("IndexOutOfRangeException: foo");
         }
 
+        [Test]
+        public void It_should_map_exception_without_entering_long_recursion_on_TargetSite()
+        {
+            Exception GetThrownException()
+            {
+                try
+                {
+                    throw new InvalidOperationException("exception");
+                }
+                catch (Exception ex)
+                {
+                    return ex;
+                }
+            }
+
+            var input = new { Exception = GetThrownException() };
+
+            var root = new ObjectTreeBuilder(new(){MaxDepth = 4}).Build(input);
+            var nodes = root.EnumerateAll().Select(x => x.Path).ToArray();
+            nodes.ShouldBe(new[]
+            {
+                "$", 
+                "$.Exception", 
+                "$.Exception.Data", 
+                "$.Exception.HelpLink", 
+                "$.Exception.HResult",
+                "$.Exception.InnerException", 
+                "$.Exception.Message", 
+                "$.Exception.Source", 
+                "$.Exception.StackTrace",
+                "$.Exception.TargetSite"
+            });
+        }
+
+        [Test]
+        public void It_should_support_recursion_limits()
+        {
+            var input = new Node();
+            var node = input;
+            for (int i = 0; i < 5; ++i)
+            {
+                node.Sub = new Node();
+                node = node.Sub;
+            }
+
+            var options = new ObjectTreeBuilderOptions { MaxDepth = 4 };
+            var root = new ObjectTreeBuilder(options).Build(input);
+            var nodes = root.EnumerateAll().Select(x => $"{x.Path}: {x}").ToArray();
+            nodes.ShouldBe(new[]
+            {
+                "$: <object>", 
+                "$.Sub: <object>", 
+                "$.Sub.Sub: <object>", 
+                "$.Sub.Sub.Sub: <object>", 
+                "$.Sub.Sub.Sub.Sub: InvalidOperationException: Maximum node depth reached"
+            });
+        }
+
         private void AssertValueNode(ObjectTreeNode node, string path, object? value)
         {
             node.Kind.ShouldBe(ObjectTreeNodeKind.Value);
@@ -383,6 +442,8 @@ namespace LightBDD.Framework.UnitTests.Parameters
         public string Name { get; set; } = string.Empty;
         public Parent? Parent { get; set; }
     }
+
+    class Node { public Node? Sub { get; set; } }
 
     public interface ISomething<T> { }
     public class Something<T> { }

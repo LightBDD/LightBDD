@@ -29,6 +29,10 @@ public abstract class ObjectTreeNode
     /// Specifies kind of the node.
     /// </summary>
     public abstract ObjectTreeNodeKind Kind { get; }
+    /// <summary>
+    /// Node depth in the object tree
+    /// </summary>
+    public int Depth { get; }
 
     /// <summary>
     /// Constructor
@@ -40,6 +44,7 @@ public abstract class ObjectTreeNode
     {
         Parent = parent;
         Node = node;
+        Depth = (parent?.Depth ?? 0) + 1;
         RawObject = rawObject;
         Path = parent != null ? node.StartsWith("[") ? $"{parent.Path}{node}" : $"{parent.Path}.{node}" : node;
     }

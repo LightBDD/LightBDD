@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System.Collections.Generic;
 using LightBDD.Core.Formatting.Values;
+using LightBDD.Framework.Formatting.Values;
 
 namespace LightBDD.Framework.Parameters.ObjectTrees;
 
@@ -30,5 +31,9 @@ public class ObjectTreeValue : ObjectTreeNode, ISelfFormattable
         yield return this;
     }
 
-    string ISelfFormattable.Format(IValueFormattingService formattingService) => formattingService.FormatValue(Value);
+    /// <inheritdoc />
+    public string Format(IValueFormattingService formattingService) => formattingService.FormatValue(Value);
+
+    /// <inheritdoc />
+    public override string ToString() => Format(ValueFormattingServices.Current);
 }

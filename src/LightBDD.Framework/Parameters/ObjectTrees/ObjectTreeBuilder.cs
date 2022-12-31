@@ -42,19 +42,23 @@ public class ObjectTreeBuilder
 
     private ObjectTreeNode Build(object? o, string node, ObjectTreeNode? parent)
     {
-        if (o is null)
-            return new ObjectTreeValue(parent, node, o, o);
-
-        var recursionTarget = FindRecursion(o, parent);
-        if (recursionTarget != null)
-            return new ObjectTreeReference(parent, node, recursionTarget, o);
-
-        var type = o.GetType();
-        if (type.IsPrimitive || _options.ValueTypes.Any(t => IsImplementingType(type, t)))
-            return new ObjectTreeValue(parent, node, o, o);
-
         try
         {
+            if (parent?.Depth >= _options.MaxDepth)
+                throw new InvalidOperationException("Maximum node depth reached");
+
+            if (o is null)
+                return new ObjectTreeValue(parent, node, o, o);
+
+            var recursionTarget = FindRecursion(o, parent);
+            if (recursionTarget != null)
+                return new ObjectTreeReference(parent, node, recursionTarget, o);
+
+            var type = o.GetType();
+            if (type.IsPrimitive || _options.ValueTypes.Any(t => IsImplementingType(type, t)))
+                return new ObjectTreeValue(parent, node, o, o);
+
+
             var mapper = _options.Mappers.FirstOrDefault(m => m.CanMap(o));
             switch (mapper?.Kind)
             {

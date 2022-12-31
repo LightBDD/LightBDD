@@ -454,7 +454,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             return Html.Tag(Html5Tag.Div).Class("param").Content(
                 Html.Tag(Html5Tag.Div).Content($"{parameterName}:"),
                 Html.Tag(Html5Tag.Table).Class("param table")
-                    .Content(Html.Tag(Html5Tag.Tbody).Content(GetParameterTable(table))));
+                    .Content(GetParameterTable(table)));
         }
 
         private static IEnumerable<IHtmlNode> GetTreeRows(ITreeParameterDetails tree)
