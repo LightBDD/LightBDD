@@ -333,7 +333,7 @@ Step 2: Expected: True
     </Scenario>
   </Feature>
 </TestResults>";
-            Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
+            Assert.That(text.NormalizeNewLine().Replace("&#xD;",""), Is.EqualTo(expectedText.NormalizeNewLine().Replace("&#xD;", "")));
             ValidateWithSchema(text);
         }
 
