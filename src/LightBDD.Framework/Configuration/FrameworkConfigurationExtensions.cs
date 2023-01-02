@@ -109,5 +109,15 @@ namespace LightBDD.Framework.Configuration
         {
             return configuration.Add(new ReportFileWriter(new TFormatter(), outputPath));
         }
+
+        /// <summary>
+        /// Retrieves <see cref="ObjectTreeConfiguration"/> from <paramref name="configuration"/> for further customizations.
+        /// </summary>
+        /// <param name="configuration">Configuration object.</param>
+        /// <returns>Configuration object.</returns>
+        public static ObjectTreeConfiguration ObjectTreeConfiguration(this LightBddConfiguration configuration)
+        {
+            return configuration.Get<ObjectTreeConfiguration>();
+        }
     }
 }

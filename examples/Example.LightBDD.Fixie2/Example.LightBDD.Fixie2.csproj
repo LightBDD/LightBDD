@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="Shouldly" Version="4.0.3" />
     <PackageReference Include="Fixie" Version="2.2.2" />
     <DotNetCliToolReference Include="Fixie.Console" Version="2.2.1" />

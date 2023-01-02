@@ -14,6 +14,7 @@ using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Notification;
+using LightBDD.Framework.Parameters;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 
@@ -81,7 +82,8 @@ namespace LightBDD.Framework.UnitTests.Notification
                                 ParameterVerificationStatus.Failure),
                             TestResults.CreateValueResult("<null>", "YYY",
                                 ParameterVerificationStatus.Failure))
-                )
+                ),
+                new TestResults.TestParameterResult("tree",CreateTreeParameterResult())
             };
 
             var scenarioResult = Fake.Object<TestResults.TestScenarioResult>();
@@ -115,18 +117,46 @@ namespace LightBDD.Framework.UnitTests.Notification
                 .Replace("\r", "")
                 .Replace("\n", Environment.NewLine);
 
+            var expectedTree = $@"{padding}    tree:
+{padding}    = $: <object>
+{padding}    = $.Items: <array:1>
+{padding}    ! $.Items[0]: False/True
+{padding}    = $.Name: Bob
+{padding}    ! $.Surname: Johnson/<none>
+{padding}    ! $.LastName: <none>/Johnson"
+                .Replace("\r", "")
+                .Replace("\n", Environment.NewLine);
+
             var expected = new[]
             {
                 $"Fi=000,Fa=000,Pe=000 #   > FEATURE: [{string.Join("][", featureInfo.Labels)}] {featureInfo.Name}{Environment.NewLine}{padding}  {featureInfo.Description}",
                 $"Fi=000,Fa=000,Pe=001 #  1> SCENARIO: [{string.Join("][", scenarioInfo.Labels)}] {scenarioInfo.Name}",
                 $"Fi=000,Fa=000,Pe=001 #  1>   STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: {stepInfo.Name}...",
                 $"Fi=000,Fa=000,Pe=001 #  1>   STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: /* {comment} */",
-                $"Fi=000,Fa=000,Pe=001 #  1>   STEP {stepResult.Info.GroupPrefix}{stepResult.Info.Number}/{stepResult.Info.GroupPrefix}{stepResult.Info.Total}: {stepResult.Info.Name} ({stepResult.Status} after {stepResult.ExecutionTime.Duration.FormatPretty()}){Environment.NewLine}{expectedTable}",
+                $"Fi=000,Fa=000,Pe=001 #  1>   STEP {stepResult.Info.GroupPrefix}{stepResult.Info.Number}/{stepResult.Info.GroupPrefix}{stepResult.Info.Total}: {stepResult.Info.Name} ({stepResult.Status} after {stepResult.ExecutionTime.Duration.FormatPretty()}){Environment.NewLine}{expectedTable}{Environment.NewLine}{expectedTree}",
                 $"Fi=001,Fa=000,Pe=000 #  1>   SCENARIO RESULT: {scenarioResult.Status} after {scenarioResult.ExecutionTime.Duration.FormatPretty()}{Environment.NewLine}{padding}    {scenarioResult.StatusDetails}",
                 $"Fi=001,Fa=000,Pe=000 #   > FEATURE FINISHED: {featureResult.Info.Name}"
             };
 
             Assert.That(CapturedItems.ToArray(), Is.EqualTo(expected));
+        }
+        private IParameterDetails CreateTreeParameterResult()
+        {
+            var expected = new
+            {
+                Name = "Bob",
+                Surname = "Johnson",
+                Items = new[] { false }
+            };
+            var actual = new
+            {
+                Name = "Bob",
+                LastName = "Johnson",
+                Items = new[] { true }
+            };
+            var tree = Tree.ExpectEquivalent(expected);
+            tree.SetActual(actual);
+            return tree.Details;
         }
 
         [Test]
