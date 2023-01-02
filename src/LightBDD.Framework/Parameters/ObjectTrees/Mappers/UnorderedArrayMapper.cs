@@ -22,12 +22,9 @@ public class UnorderedArrayMapper : ArrayMapper
     /// </summary>
     public override bool CanMap(object obj, ObjectTreeBuilderOptions options)
     {
-        var b = obj is IEnumerable;
-        var contains = IsUnorderedCollection(obj, options);
-        var isSortable = IsSortable(obj.GetType());
-        return b
-               && contains
-               && isSortable;
+        return obj is IEnumerable
+               && IsUnorderedCollection(obj, options)
+               && IsSortable(obj.GetType());
     }
 
     /// <summary>

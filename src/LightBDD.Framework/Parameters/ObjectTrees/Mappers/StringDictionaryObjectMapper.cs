@@ -24,11 +24,8 @@ public class StringDictionaryObjectMapper : ObjectMapper
     /// </summary>
     public override bool CanMap(object obj, ObjectTreeBuilderOptions options) => obj is IEnumerable && _map.GetOrAdd(obj.GetType(), GetPropertyEnumerator) != null;
 
-    private Func<object, IEnumerable<ObjectProperty>>? GetPropertyEnumerator(Type type)
+    private static Func<object, IEnumerable<ObjectProperty>>? GetPropertyEnumerator(Type type)
     {
-        if (type == typeof(IEnumerable<KeyValuePair<string, object?>>))
-            return EnumerateDictionary;
-
         return (type.GetInterfaces()
             .Where(i => i.IsGenericType)
             .Where(IsDictionaryInterface)
@@ -43,11 +40,6 @@ public class StringDictionaryObjectMapper : ObjectMapper
     {
         var getPropertiesFn = _map[o.GetType()] ?? throw new InvalidOperationException($"{o.GetType()} does not represent string dictionary");
         return new ObjectMap(getPropertiesFn.Invoke(o));
-    }
-
-    private static IEnumerable<ObjectProperty> EnumerateDictionary(object o)
-    {
-        return ((IEnumerable<KeyValuePair<string, object?>>)o).Select(p => new ObjectProperty(p.Key, p.Value));
     }
 
     private static IEnumerable<ObjectProperty> EnumerateDictionary<TValue>(object o)
