@@ -7,7 +7,7 @@ using LightBDD.Framework.Parameters.Implementation;
 namespace LightBDD.Framework.Parameters
 {
     /// <summary>
-    /// Static class allowing to create various type of table parameters.
+    /// Static class allowing to create various types of table parameters.
     /// </summary>
     public static class Table
     {

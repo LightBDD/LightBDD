@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Xml.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting;
@@ -13,6 +14,7 @@ using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
+using LightBDD.Core.Results.Parameters.Trees;
 
 namespace LightBDD.Framework.Reporting.Formatters.Html
 {
@@ -369,13 +371,13 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             return Html.Tag(Html5Tag.Div).Class("attachments")
                 .SkipEmpty()
                 .Content(from s in steps
-                    from a in s.FileAttachments
-                    select
-                        Html.Tag(Html5Tag.Div).Content(
-                            Html.Tag(Html5Tag.A)
-                                .Href(ResolveLink(a))
-                                .Attribute("target", "_blank")
-                                .Content($"🔗Step {s.Info.GroupPrefix}{s.Info.Number}: {a.Name} ({Path.GetExtension(a.FilePath).TrimStart('.')})")));
+                         from a in s.FileAttachments
+                         select
+                             Html.Tag(Html5Tag.Div).Content(
+                                 Html.Tag(Html5Tag.A)
+                                     .Href(ResolveLink(a))
+                                     .Attribute("target", "_blank")
+                                     .Content($"🔗Step {s.Info.GroupPrefix}{s.Info.Number}: {a.Name} ({Path.GetExtension(a.FilePath).TrimStart('.')})")));
         }
 
         private string ResolveLink(FileAttachment fileAttachment)
@@ -435,14 +437,95 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         {
             if (parameter.Details is ITabularParameterDetails table)
                 return GetTabularParameter(parameter.Name, table);
+            if (parameter.Details is ITreeParameterDetails tree)
+                return GetTreeParameter(parameter.Name, tree);
             return Html.Nothing();
+        }
+
+        private static IHtmlNode GetTreeParameter(string parameterName, ITreeParameterDetails tree)
+        {
+            return Html.Tag(Html5Tag.Div).Class("param").Content(
+                Html.Tag(Html5Tag.Div).Content($"{parameterName}:"),
+                Html.Tag(Html5Tag.Table).Class("param tree").Content(GetTreeRows(tree)));
         }
 
         private static IHtmlNode GetTabularParameter(string parameterName, ITabularParameterDetails table)
         {
             return Html.Tag(Html5Tag.Div).Class("param").Content(
                 Html.Tag(Html5Tag.Div).Content($"{parameterName}:"),
-                Html.Tag(Html5Tag.Table).Class("param").Content(GetParameterTable(table)));
+                Html.Tag(Html5Tag.Table).Class("param table")
+                    .Content(GetParameterTable(table)));
+        }
+
+        private static IEnumerable<IHtmlNode> GetTreeRows(ITreeParameterDetails tree)
+        {
+            return BuildTreeRows(tree).Select(row => Html.Tag(Html5Tag.Tr).Content(GetTreeRowCells(row, tree.VerificationStatus != ParameterVerificationStatus.NotApplicable)));
+        }
+
+        private static IEnumerable<IHtmlNode> GetTreeRowCells(IReadOnlyList<ITreeParameterNodeResult> row, bool addStatusCell)
+        {
+            if (addStatusCell)
+                yield return GetTreeRowStatusCell(row);
+
+            for (var i = 0; i < row.Count; ++i)
+            {
+                var node = row[i];
+                if (node != null)
+                {
+                    yield return Html.Tag(Html5Tag.Td).Class("param node").Content(node.Node);
+                    yield return GetRowValue(node);
+                }
+                else
+                {
+                    yield return Html.Tag(Html5Tag.Td);
+                    if (i + 1 < row.Count && row[i + 1] != null)
+                        yield return Html.Tag(Html5Tag.Td).Class("indent").Content("↳");
+                    else
+                        yield return Html.Tag(Html5Tag.Td);
+                }
+            }
+        }
+
+        private static TagBuilder GetTreeRowStatusCell(IReadOnlyList<ITreeParameterNodeResult> row)
+        {
+            var status = row.Select(r => r?.VerificationStatus)
+                .Where(x => x != null)
+                .DefaultIfEmpty(ParameterVerificationStatus.NotProvided)
+                .Max();
+
+            var statusClass = status switch
+            {
+                ParameterVerificationStatus.NotApplicable => "notapplicable",
+                ParameterVerificationStatus.Success => "success",
+                _ => "failure"
+            };
+            var statusValue = status switch
+            {
+                ParameterVerificationStatus.NotApplicable => " ",
+                ParameterVerificationStatus.Success => "=",
+                _ => "!"
+            };
+            return Html.Tag(Html5Tag.Td).Class($"param type value {statusClass}").Content(statusValue);
+        }
+
+        private static IEnumerable<IReadOnlyList<ITreeParameterNodeResult>> BuildTreeRows(ITreeParameterDetails tree)
+        {
+            var stack = new Stack<Tuple<int, ITreeParameterNodeResult>>();
+
+            stack.Push(Tuple.Create(0, tree.Root));
+            while (stack.Any())
+            {
+                var n = stack.Pop();
+
+                var result = new List<ITreeParameterNodeResult>();
+                result.AddRange(Enumerable.Repeat<ITreeParameterNodeResult>(null, n.Item1));
+                result.Add(n.Item2);
+                result.AddRange(n.Item2.Children.Where(c => !c.Children.Any()));
+                yield return result;
+
+                foreach (var c in n.Item2.Children.Reverse().Where(c => c.Children.Any()))
+                    stack.Push(Tuple.Create(n.Item1 + 1, c));
+            }
         }
 
         private static IEnumerable<IHtmlNode> GetParameterTable(ITabularParameterDetails table)
