@@ -1,6 +1,4 @@
 ﻿#nullable enable
-using System.Collections.Generic;
-
 namespace LightBDD.Framework.Parameters.ObjectTrees.Mappers;
 
 /// <summary>
@@ -17,5 +15,5 @@ public abstract class ObjectMapper : NodeMapper
     /// Interpret provided object <paramref name="o"/> as complex object and returns its properties in form of property name and associated value pairs.
     /// If given property access causes an exception to be thrown, it is captured as <seealso cref="ExceptionCapture"/> instance which is returned instead of the value.
     /// </summary>
-    public abstract IEnumerable<ObjectProperty> GetProperties(object o);
+    public abstract ObjectMap MapObject(object o);
 }

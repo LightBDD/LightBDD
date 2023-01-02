@@ -282,7 +282,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         {
             var mapper = new Mock<ObjectMapper>();
             mapper.Setup(x => x.CanMap(It.Is((object o) => o is Parent))).Returns(true);
-            mapper.Setup(x => x.GetProperties(It.IsAny<object>())).Throws(new IndexOutOfRangeException("foo"));
+            mapper.Setup(x => x.MapObject(It.IsAny<object>())).Throws(new IndexOutOfRangeException("foo"));
 
             var options = new ObjectTreeBuilderOptions();
             options.Mappers.Push(mapper.Object);

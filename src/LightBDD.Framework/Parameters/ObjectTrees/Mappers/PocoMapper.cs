@@ -27,9 +27,14 @@ public class PocoMapper : ObjectMapper
     public override bool CanMap(object obj) => true;
 
     /// <summary>
-    /// Returns public instance fields and properties of the <paramref name="o"/>.
+    /// Maps POCO to object where it returns public instance fields and properties of the <paramref name="o"/>.
     /// </summary>
-    public override IEnumerable<ObjectProperty> GetProperties(object o)
+    public override ObjectMap MapObject(object o)
+    {
+        return new ObjectMap(GetProperties(o));
+    }
+
+    private IEnumerable<ObjectProperty> GetProperties(object o)
     {
         var type = o.GetType();
         var map = _typeMap.GetOrAdd(type, MapType);

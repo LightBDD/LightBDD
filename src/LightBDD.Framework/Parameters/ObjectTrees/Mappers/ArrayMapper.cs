@@ -1,6 +1,4 @@
 ﻿#nullable enable
-using System.Collections.Generic;
-
 namespace LightBDD.Framework.Parameters.ObjectTrees.Mappers;
 
 /// <summary>
@@ -16,5 +14,5 @@ public abstract class ArrayMapper : NodeMapper
     /// <summary>
     /// Interprets the <paramref name="o"/> as array and returns all it's items.
     /// </summary>
-    public abstract IEnumerable<object?> GetItems(object o);
+    public abstract ArrayMap MapArray(object o);
 }

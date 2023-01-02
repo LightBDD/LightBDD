@@ -14,5 +14,5 @@ public abstract class ValueMapper : NodeMapper
     /// <summary>
     /// Interprets provided object <paramref name="o"/> as simple value and returns it.
     /// </summary>
-    public abstract object? GetValue(object o);
+    public abstract object? MapValue(object o);
 }

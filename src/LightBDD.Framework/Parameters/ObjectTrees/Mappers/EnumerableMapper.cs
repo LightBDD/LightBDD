@@ -26,12 +26,12 @@ public class EnumerableMapper : ArrayMapper
     /// If collection is un-ordered and items are sortable, the returned items will be sorted.<br/>
     /// In all other cases, items will be returned in enumeration order.
     /// </summary>
-    public override IEnumerable<object> GetItems(object o)
+    public override ArrayMap MapArray(object o)
     {
         var type = o.GetType();
         if (IsOrdered(type) || !IsSortable(type))
-            return ((IEnumerable)o).Cast<object>();
-        return ((IEnumerable)o).Cast<object>().OrderBy(x => x);
+            return new ArrayMap(((IEnumerable)o).Cast<object>());
+        return new ArrayMap(((IEnumerable)o).Cast<object>().OrderBy(x => x));
     }
 
     private static bool IsOrdered(Type t)

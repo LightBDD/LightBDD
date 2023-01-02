@@ -22,5 +22,5 @@ public class ExpectationValueMapper : ValueMapper
     /// <summary>
     /// Returns object converted to general expectation representation.
     /// </summary>
-    public override object GetValue(object o) => ((IGeneralExpectationConverter)o).ToGeneralExpectation();
+    public override object MapValue(object o) => ((IGeneralExpectationConverter)o).ToGeneralExpectation();
 }

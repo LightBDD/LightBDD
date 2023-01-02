@@ -22,5 +22,5 @@ public class FormattableValueMapper : ValueMapper
     /// <summary>
     /// Returns <paramref name="o"/> as is.
     /// </summary>
-    public override object GetValue(object o) => o;
+    public override object MapValue(object o) => o;
 }

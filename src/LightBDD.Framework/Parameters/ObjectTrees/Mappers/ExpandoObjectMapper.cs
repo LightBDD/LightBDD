@@ -23,8 +23,8 @@ public class ExpandoObjectMapper : ObjectMapper
     /// <summary>
     /// Returns properties of expando object.
     /// </summary>
-    public override IEnumerable<ObjectProperty> GetProperties(object o)
+    public override ObjectMap MapObject(object o)
     {
-        return ((IDictionary<string, object?>)o).Select(p => new ObjectProperty(p.Key, p.Value));
+        return new ObjectMap(((IDictionary<string, object?>)o).Select(p => new ObjectProperty(p.Key, p.Value)));
     }
 }

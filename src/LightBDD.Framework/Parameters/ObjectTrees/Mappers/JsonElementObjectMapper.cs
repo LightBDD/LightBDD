@@ -22,9 +22,14 @@ public class JsonElementObjectMapper : ObjectMapper
     public override bool CanMap(object obj) => obj is JsonElement { ValueKind: JsonValueKind.Object };
 
     /// <summary>
-    /// Returns properties of JsonElement object.
+    /// Maps JsonElement to object
     /// </summary>
-    public override IEnumerable<ObjectProperty> GetProperties(object o)
+    public override ObjectMap MapObject(object o)
+    {
+        return new ObjectMap(GetProperties(o));
+    }
+
+    private static IEnumerable<ObjectProperty> GetProperties(object o)
     {
         var j = (JsonElement)o;
         foreach (var jsonProperty in j.EnumerateObject())

@@ -63,14 +63,14 @@ public class ObjectTreeBuilder
             switch (mapper?.Kind)
             {
                 case ObjectTreeNodeKind.Value:
-                    return new ObjectTreeValue(parent, node, mapper.AsValueMapper().GetValue(o), o);
+                    return new ObjectTreeValue(parent, node, mapper.AsValueMapper().MapValue(o), o);
                 case ObjectTreeNodeKind.Array:
-                    return CreateArray(mapper.AsArrayMapper().GetItems(o), node, parent, o);
+                    return CreateArray(mapper.AsArrayMapper().MapArray(o), node, parent, o);
                 case ObjectTreeNodeKind.Object:
-                    return CreateObject(mapper.AsObjectMapper().GetProperties(o), node, parent, o);
+                    return CreateObject(mapper.AsObjectMapper().MapObject(o), node, parent, o);
             }
 
-            return CreateObject(PocoMapper.Instance.GetProperties(o), node, parent, o);
+            return CreateObject(PocoMapper.Instance.MapObject(o), node, parent, o);
         }
         catch (Exception ex)
         {
@@ -109,17 +109,17 @@ public class ObjectTreeBuilder
         return null;
     }
 
-    private ObjectTreeNode CreateObject(IEnumerable<ObjectProperty> properties, string node, ObjectTreeNode? parent, object o)
+    private ObjectTreeNode CreateObject(ObjectMap map, string node, ObjectTreeNode? parent, object o)
     {
         var result = new ObjectTreeObject(parent, node, o);
-        result.Properties = properties.ToDictionary(x => x.Name, x => Build(x.Value, GetNodePath(x.Name), result));
+        result.Properties = map.Properties.ToDictionary(x => x.Name, x => Build(x.Value, GetNodePath(x.Name), result));
         return result;
     }
 
-    private ObjectTreeArray CreateArray(IEnumerable collection, string node, ObjectTreeNode? parent, object o)
+    private ObjectTreeArray CreateArray(ArrayMap map, string node, ObjectTreeNode? parent, object o)
     {
         var result = new ObjectTreeArray(parent, node, o);
-        result.Items = collection.Cast<object>().Select((o, i) => Build(o, GetNodePath(i), result)).ToArray();
+        result.Items = map.Items.Cast<object>().Select((o, i) => Build(o, GetNodePath(i), result)).ToArray();
         return result;
     }
 

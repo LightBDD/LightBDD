@@ -23,9 +23,13 @@ public class JsonElementArrayMapper : ArrayMapper
     public override bool CanMap(object obj) => obj is JsonElement { ValueKind: JsonValueKind.Array };
 
     /// <summary>
-    /// Returns items of JsonElement array
+    /// Maps JsonElement to array
     /// </summary>
-    public override IEnumerable<object?> GetItems(object o)
+    public override ArrayMap MapArray(object o)
+    {
+        return new ArrayMap(GetItems(o));
+    }
+    private static IEnumerable<object?> GetItems(object o)
     {
         return ((JsonElement)o).EnumerateArray().Cast<object>();
     }

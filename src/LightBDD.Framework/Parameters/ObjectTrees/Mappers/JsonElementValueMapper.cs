@@ -26,7 +26,7 @@ public class JsonElementValueMapper : ValueMapper
     /// For <seealso cref="JsonValueKind.Number"/>, it returns <seealso cref="int"/>,<seealso cref="long"/> or <seealso cref="double"/> types, depending on number type and size.
     /// </summary>
     /// <exception cref="NotSupportedException">Thrown for unsupported kinds.</exception>
-    public override object? GetValue(object o)
+    public override object? MapValue(object o)
     {
         var j = (JsonElement)o;
         switch (j.ValueKind)
