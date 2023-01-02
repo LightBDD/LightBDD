@@ -29,6 +29,9 @@ public class VerifiableTree_tests
             "$.Name|Bob|<none>|Failure|Missing value",
             "$.Surname|Johnson|<none>|Failure|Missing value"
         );
+        tree.Expected.ShouldBeSameAs(input);
+        var treeBase = (VerifiableTree)tree;
+        treeBase.Expected.ShouldBeSameAs(input);
     }
 
     [Test]

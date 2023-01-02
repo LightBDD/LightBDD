@@ -20,7 +20,7 @@ namespace LightBDD.Framework.Parameters;
 /// <summary>
 /// Type representing object tree step parameter which allows detailed structural verification of actual versus expected object trees.
 /// </summary>
-public class VerifiableTree<T> : IComplexParameter, ISelfFormattable
+public class VerifiableTree : IComplexParameter, ISelfFormattable
 {
     private readonly VerifiableTreeOptions _options;
     private readonly ObjectTreeBuilder _treeBuilder = ObjectTreeBuilder.Current;
@@ -32,7 +32,7 @@ public class VerifiableTree<T> : IComplexParameter, ISelfFormattable
     /// <summary>
     /// Creates verifiable tree for provided <paramref name="expected"/> object, using <seealso cref="VerifiableTreeOptions"/> options specified by <paramref name="options"/> parameter.
     /// </summary>
-    public VerifiableTree(T? expected, VerifiableTreeOptions options)
+    public VerifiableTree(object? expected, VerifiableTreeOptions options)
     {
         _options = options;
         _expectedTree = _treeBuilder.Build(expected);
@@ -42,7 +42,7 @@ public class VerifiableTree<T> : IComplexParameter, ISelfFormattable
     /// <summary>
     /// Returns expected value
     /// </summary>
-    public T? Expected { get; }
+    public object? Expected { get; }
 
     /// <summary>
     /// Verifies <paramref name="actual"/> parameter value against the expectations and updates <seealso cref="Details"/> with verification results.
@@ -218,4 +218,23 @@ public class VerifiableTree<T> : IComplexParameter, ISelfFormattable
         public ObjectTreeNode Node { get; }
         public int Index { get; }
     }
+}
+
+/// <summary>
+/// Type representing object tree step parameter which allows detailed structural verification of actual versus expected object trees.
+/// </summary>
+/// <typeparam name="TData">Expected value type</typeparam>
+public class VerifiableTree<TData> : VerifiableTree
+{
+    /// <summary>
+    /// Default constructor
+    /// </summary>
+    public VerifiableTree(TData? expected, VerifiableTreeOptions options) : base(expected, options)
+    {
+    }
+
+    /// <summary>
+    /// Returns expected value
+    /// </summary>
+    public new TData? Expected => (TData?)base.Expected;
 }
