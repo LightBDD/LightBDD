@@ -6,7 +6,7 @@ namespace LightBDD.Framework.Parameters.ObjectTrees.Mappers;
 /// <summary>
 /// Array map produced by <seealso cref="ArrayMapper"/>
 /// </summary>
-public class ArrayMap
+public sealed class ArrayMap
 {
     /// <summary>
     /// Array items

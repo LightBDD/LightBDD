@@ -1,7 +1,5 @@
 ﻿#nullable enable
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Execution.Coordination;
@@ -14,12 +12,10 @@ namespace LightBDD.Framework.Parameters.ObjectTrees;
 /// </summary>
 public class ObjectTreeBuilder
 {
-    private readonly ObjectTreeBuilderOptions _options;
-
     /// <summary>
     /// Default instance.
     /// </summary>
-    public static ObjectTreeBuilder Default { get; } = new(new());
+    public static readonly ObjectTreeBuilder Default = new(ObjectTreeBuilderOptions.Default);
 
     /// <summary>
     /// Currently configured instance.
@@ -27,12 +23,17 @@ public class ObjectTreeBuilder
     public static ObjectTreeBuilder Current => FrameworkFeatureCoordinator.TryGetInstance()?.Configuration.Get<ObjectTreeConfiguration>().Builder ?? Default;
 
     /// <summary>
+    /// Builder options.
+    /// </summary>
+    public ObjectTreeBuilderOptions Options { get; }
+
+    /// <summary>
     /// Default constructor
     /// </summary>
     /// <param name="options">Options</param>
     public ObjectTreeBuilder(ObjectTreeBuilderOptions options)
     {
-        _options = options;
+        Options = options;
     }
 
     /// <summary>
@@ -44,7 +45,7 @@ public class ObjectTreeBuilder
     {
         try
         {
-            if (parent?.Depth >= _options.MaxDepth)
+            if (parent?.Depth >= Options.MaxDepth)
                 throw new InvalidOperationException("Maximum node depth reached");
 
             if (o is null)
@@ -55,11 +56,11 @@ public class ObjectTreeBuilder
                 return new ObjectTreeReference(parent, node, recursionTarget, o);
 
             var type = o.GetType();
-            if (type.IsPrimitive || _options.ValueTypes.Any(t => IsImplementingType(type, t)))
+            if (type.IsPrimitive || Options.ValueTypes.Any(t => IsImplementingType(type, t)))
                 return new ObjectTreeValue(parent, node, o, o);
 
 
-            var mapper = _options.Mappers.FirstOrDefault(m => m.CanMap(o));
+            var mapper = Options.Mappers.FirstOrDefault(m => m.CanMap(o));
             switch (mapper?.Kind)
             {
                 case ObjectTreeNodeKind.Value:

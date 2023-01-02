@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
-using System.Reflection;
 using System.Text.Json;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;
@@ -22,7 +21,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         [Test]
         public void It_should_create_root_node()
         {
-            var builder = new ObjectTreeBuilder(new());
+            var builder = new ObjectTreeBuilder(ObjectTreeBuilderOptions.Default);
             var root = builder.Build(null);
 
             AssertValueNode(root, "$", null);
@@ -32,7 +31,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         [TestCaseSource(nameof(GetValueInstances))]
         public void It_should_create_value_nodes_for_nulls_primitives_and_registered_types(object input)
         {
-            var builder = new ObjectTreeBuilder(new());
+            var builder = new ObjectTreeBuilder(ObjectTreeBuilderOptions.Default);
             var root = builder.Build(input);
 
             AssertValueNode(root, "$", input);
@@ -42,7 +41,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         [TestCaseSource(nameof(GetFlatCollectionInstances))]
         public void It_should_create_array_node_for_collections(IEnumerable input)
         {
-            var builder = new ObjectTreeBuilder(new());
+            var builder = new ObjectTreeBuilder(ObjectTreeBuilderOptions.Default);
             var root = builder.Build(input);
             var expectations = input.Cast<object>().ToArray();
 
@@ -57,7 +56,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         [Test]
         public void It_should_create_object_node_for_poco_type()
         {
-            var builder = new ObjectTreeBuilder(new());
+            var builder = new ObjectTreeBuilder(ObjectTreeBuilderOptions.Default);
             var input = new
             {
                 Name = "text",
@@ -78,7 +77,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         [Test]
         public void It_should_only_map_nonhidden_readable_public_instance_members_of_poco_type()
         {
-            var root = new ObjectTreeBuilder(new()).Build(new Poco());
+            var root = new ObjectTreeBuilder(ObjectTreeBuilderOptions.Default).Build(new Poco());
             var properties = root.AsObject().Properties;
             properties.Count.ShouldBe(3);
             AssertValueNode(properties["Field"], "$.Field", "field");
@@ -93,7 +92,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             expando.Name = "Bob";
             expando.Surname = "Johnson";
 
-            var root = new ObjectTreeBuilder(new()).Build((object)expando);
+            var root = new ObjectTreeBuilder(ObjectTreeBuilderOptions.Default).Build((object)expando);
             root.Kind.ShouldBe(ObjectTreeNodeKind.Object);
             var properties = root.AsObject().Properties;
             properties.Count.ShouldBe(2);
@@ -108,7 +107,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             expando["Name"] = "Bob";
             expando["Last Name"] = "Johnson";
 
-            var root = new ObjectTreeBuilder(new()).Build(expando);
+            var root = new ObjectTreeBuilder(ObjectTreeBuilderOptions.Default).Build(expando);
             root.Kind.ShouldBe(ObjectTreeNodeKind.Object);
             var properties = root.AsObject().Properties;
             properties.Count.ShouldBe(2);
@@ -125,7 +124,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             p2.Children.Add(new Child { Name = "C2", Parent = p2 });
             var input = new[] { p1, p2 };
 
-            var root = new ObjectTreeBuilder(new()).Build(input);
+            var root = new ObjectTreeBuilder(ObjectTreeBuilderOptions.Default).Build(input);
             var nodes = root.EnumerateAll().ToDictionary(x => x.Path);
             nodes["$[0].Children[0].Parent"].ToString().ShouldBe("<ref: $[0]>");
             nodes["$[1].Children[0].Parent"].ToString().ShouldBe("<ref: $[1]>");
@@ -141,7 +140,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
     ""inner"":{""label"":""some text""}
 }";
             var doc = JsonDocument.Parse(json);
-            var root = new ObjectTreeBuilder(new()).Build(doc);
+            var root = new ObjectTreeBuilder(ObjectTreeBuilderOptions.Default).Build(doc);
             var nodes = root.EnumerateAll().ToDictionary(x => x.Path);
 
             nodes["$.RootElement"].ShouldBeOfType<ObjectTreeObject>();
@@ -170,7 +169,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             var json = JsonSerializer.Serialize(input);
             TestContext.WriteLine(json);
             var doc = JsonDocument.Parse(json);
-            var root = new ObjectTreeBuilder(new()).Build(doc.RootElement);
+            var root = new ObjectTreeBuilder(ObjectTreeBuilderOptions.Default).Build(doc.RootElement);
             var nodes = root.EnumerateAll().ToDictionary(x => x.Path);
 
             nodes["$.i32"].ShouldBeOfType<ObjectTreeValue>().Value.ShouldBeOfType<int>().ShouldBe(int.MaxValue);
@@ -190,7 +189,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
                 Surname = Expect.To.Not.BeEmpty<string>(),
                 Items = new[] { Expect.To.BeGreaterOrEqual(0).And(x => x.BeLessOrEqual(5)) }
             };
-            var root = new ObjectTreeBuilder(new()).Build(input);
+            var root = new ObjectTreeBuilder(ObjectTreeBuilderOptions.Default).Build(input);
             var nodes = root.EnumerateAll().ToDictionary(x => x.Path);
             nodes["$.Name"].AsValue().Value?.ToString().ShouldBe("not empty");
             nodes["$.Surname"].AsValue().Value?.ToString().ShouldBe("not empty");
@@ -206,7 +205,10 @@ namespace LightBDD.Framework.UnitTests.Parameters
                 B = new Something<DateTime>()
             };
 
-            var options = new ObjectTreeBuilderOptions { ValueTypes = { typeof(ISomething<>), typeof(Something<>) } };
+            var options = ObjectTreeBuilderOptions.Default
+                .AddValueType(typeof(ISomething<>))
+                .AddValueType(typeof(Something<>));
+
             var root = new ObjectTreeBuilder(options).Build(input);
             var nodes = root.EnumerateAll().ToDictionary(x => x.Path);
             nodes["$.A"].ShouldBeOfType<ObjectTreeValue>();
@@ -217,7 +219,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         public void It_should_sort_unordered_collections_if_underlying_type_is_sortable()
         {
             var set = Enumerable.Range(0, 10).Select(_ => Guid.NewGuid()).ToHashSet();
-            var root = new ObjectTreeBuilder(new ObjectTreeBuilderOptions()).Build(set);
+            var root = new ObjectTreeBuilder(ObjectTreeBuilderOptions.Default).Build(set);
             var actualItems = root.AsArray().Items.Select(x => x.RawObject).Cast<Guid>().ToArray();
             actualItems.ShouldBe(set.OrderBy(x => x).ToArray());
         }
@@ -226,7 +228,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         public void It_should_return_items_in_enumeration_order_for_unordered_collections_if_underlying_type_is_not_sortable()
         {
             var set = Enumerable.Range(0, 10).Select(_ => new object()).ToHashSet();
-            var root = new ObjectTreeBuilder(new ObjectTreeBuilderOptions()).Build(set);
+            var root = new ObjectTreeBuilder(ObjectTreeBuilderOptions.Default).Build(set);
             var actualItems = root.AsArray().Items.Select(x => x.RawObject).ToArray();
             actualItems.ShouldBe(set.ToArray());
         }
@@ -239,7 +241,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
                 Enumerable = Enumerable.Range(0, 5).OrderByDescending(x => x),
                 Array = new[] { 1, 5, 3 }
             };
-            var root = new ObjectTreeBuilder(new ObjectTreeBuilderOptions()).Build(input).AsObject();
+            var root = new ObjectTreeBuilder(ObjectTreeBuilderOptions.Default).Build(input).AsObject();
             var actualEnumerable = root.Properties["Enumerable"].AsArray().Items.Select(x => x.RawObject).ToArray();
             actualEnumerable.ShouldBe(new object[] { 4, 3, 2, 1, 0 });
             var actualArray = root.Properties["Array"].AsArray().Items.Select(x => x.RawObject).ToArray();
@@ -254,7 +256,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
                 List = new ArrayList { 5, 1, 3 },
                 Array = new object[] { 1, 5, 1 }
             };
-            var root = new ObjectTreeBuilder(new ObjectTreeBuilderOptions()).Build(input).AsObject();
+            var root = new ObjectTreeBuilder(ObjectTreeBuilderOptions.Default).Build(input).AsObject();
             var actualEnumerable = root.Properties["List"].AsArray().Items.Select(x => x.RawObject).ToArray();
             actualEnumerable.ShouldBe(new object[] { 5, 1, 3 });
             var actualArray = root.Properties["Array"].AsArray().Items.Select(x => x.RawObject).ToArray();
@@ -271,7 +273,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         public void It_should_capture_exceptions_thrown_during_object_mapping()
         {
             var input = new ExceptionalObject();
-            var root = new ObjectTreeBuilder(new ObjectTreeBuilderOptions()).Build(input);
+            var root = new ObjectTreeBuilder(ObjectTreeBuilderOptions.Default).Build(input);
             var nodes = root.EnumerateAll().ToDictionary(x => x.Path);
             nodes["$.Name"].AsValue().Value.ShouldBe("name");
             nodes["$.Exceptional"].AsValue().Value.ShouldBeOfType<ExceptionCapture>().ToString().ShouldBe("InvalidOperationException: exceptional");
@@ -284,8 +286,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
             mapper.Setup(x => x.CanMap(It.Is((object o) => o is Parent))).Returns(true);
             mapper.Setup(x => x.MapObject(It.IsAny<object>())).Throws(new IndexOutOfRangeException("foo"));
 
-            var options = new ObjectTreeBuilderOptions();
-            options.Mappers.Push(mapper.Object);
+            var options = ObjectTreeBuilderOptions.Default.AppendMapper(mapper.Object);
             var builder = new ObjectTreeBuilder(options);
 
             var input = new { Name = "Bob", Value = new Parent(), Value2 = 5 };
@@ -314,7 +315,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
 
             var input = new { Exception = GetThrownException() };
 
-            var root = new ObjectTreeBuilder(new(){MaxDepth = 4}).Build(input);
+            var root = new ObjectTreeBuilder(ObjectTreeBuilderOptions.Default).Build(input);
             var nodes = root.EnumerateAll().Select(x => x.Path).ToArray();
             nodes.ShouldBe(new[]
             {
@@ -342,8 +343,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
                 node = node.Sub;
             }
 
-            var options = new ObjectTreeBuilderOptions { MaxDepth = 4 };
-            var root = new ObjectTreeBuilder(options).Build(input);
+            var root = new ObjectTreeBuilder(ObjectTreeBuilderOptions.Default.WithMaxDepth(4)).Build(input);
             var nodes = root.EnumerateAll().Select(x => $"{x.Path}: {x}").ToArray();
             nodes.ShouldBe(new[]
             {

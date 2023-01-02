@@ -6,7 +6,7 @@ namespace LightBDD.Framework.Parameters.ObjectTrees.Mappers;
 /// <summary>
 /// Object map produced by <seealso cref="ObjectMapper"/>
 /// </summary>
-public class ObjectMap
+public sealed class ObjectMap
 {
     /// <summary>
     /// Object properties

@@ -1,5 +1,4 @@
-﻿using System;
-using LightBDD.Core.Configuration;
+﻿using LightBDD.Core.Configuration;
 using LightBDD.Framework.Parameters.ObjectTrees;
 
 namespace LightBDD.Framework.Configuration;
@@ -9,39 +8,20 @@ namespace LightBDD.Framework.Configuration;
 /// </summary>
 public class ObjectTreeConfiguration : FeatureConfiguration
 {
-    private ObjectTreeBuilderOptions _options = new();
-
     /// <summary>
-    /// Constructor
+    /// Configures new instance of <seealso cref="ObjectTreeBuilder"/> with provided options.
     /// </summary>
-    public ObjectTreeConfiguration()
-    {
-        Builder = new ObjectTreeBuilder(_options);
-    }
-
-    /// <summary>
-    /// Configures options for <seealso cref="ObjectTreeBuilder"/>.
-    /// </summary>
-    /// <param name="configure">Configuration method</param>
-    public ObjectTreeConfiguration ConfigureOptions(Action<ObjectTreeBuilderOptions> configure)
+    /// <param name="options">Builder options</param>
+    /// <returns>Self</returns>
+    public ObjectTreeConfiguration ConfigureBuilder(ObjectTreeBuilderOptions options)
     {
         ThrowIfSealed();
-        configure?.Invoke(_options);
-        return this;
-    }
-
-    /// <summary>
-    /// Resets options to default value.
-    /// </summary>
-    public ObjectTreeConfiguration ResetOptions()
-    {
-        ThrowIfSealed();
-        _options = new();
+        Builder = new ObjectTreeBuilder(options);
         return this;
     }
 
     /// <summary>
     /// Returns configured builder.
     /// </summary>
-    public ObjectTreeBuilder Builder { get; }
+    public ObjectTreeBuilder Builder { get; private set; } = ObjectTreeBuilder.Default;
 }
