@@ -3,6 +3,7 @@ LightBDD
 
 Version [next]
 ----------------------------------------
++ #264 (LightBDD.Framework)(Fix) Corrected Html Report to expand feature background with the content
 + #268 (LightBDD.Framework)(New) Added InputTree<T> to provide detailed insights into the object structure upon progress and results rendering.
 + #268 (LightBDD.Framework)(New) Added VerifiableTree<T> to provide detailed structural verification of actual versus expected object hierarchies
 + #268 (LightBDD.Framework)(New) Added Tree class with a set of methods to create InputTree<T> and VerifiableTree<T> parameters
