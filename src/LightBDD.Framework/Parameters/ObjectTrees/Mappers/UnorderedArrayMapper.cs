@@ -2,44 +2,46 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using LightBDD.Framework.Implementation;
 
 namespace LightBDD.Framework.Parameters.ObjectTrees.Mappers;
 
 /// <summary>
 /// Mapper for collections implementing <seealso cref="IEnumerable"/> interface.
 /// </summary>
-public class EnumerableMapper : ArrayMapper
+public class UnorderedArrayMapper : ArrayMapper
 {
     /// <summary>
     /// Default instance
     /// </summary>
-    public static readonly EnumerableMapper Instance = new();
-    private EnumerableMapper() { }
+    public static readonly UnorderedArrayMapper Instance = new();
+    private UnorderedArrayMapper() { }
 
     /// <summary>
     /// Returns true if <paramref name="obj"/> is <seealso cref="IEnumerable"/>
     /// </summary>
-    public override bool CanMap(object obj) => obj is IEnumerable;
+    public override bool CanMap(object obj, ObjectTreeBuilderOptions options)
+    {
+        var b = obj is IEnumerable;
+        var contains = IsUnorderedCollection(obj, options);
+        var isSortable = IsSortable(obj.GetType());
+        return b
+               && contains
+               && isSortable;
+    }
 
     /// <summary>
-    /// Enumerates collection items.<br/>
-    /// If collection is un-ordered and items are sortable, the returned items will be sorted.<br/>
-    /// In all other cases, items will be returned in enumeration order.
+    /// Maps provided instance to array and returns all it's items sorted in ascending order.
     /// </summary>
-    public override ArrayMap MapArray(object o)
+    public override ArrayMap MapArray(object o, ObjectTreeBuilderOptions options)
     {
-        var type = o.GetType();
-        if (IsOrdered(type) || !IsSortable(type))
-            return new ArrayMap(((IEnumerable)o).Cast<object>());
         return new ArrayMap(((IEnumerable)o).Cast<object>().OrderBy(x => x));
     }
 
-    private static bool IsOrdered(Type t)
+    private static bool IsUnorderedCollection(object obj, ObjectTreeBuilderOptions options)
     {
-        return GetGenericInterfaceDefinitions(t)
-            .Any(genericInterface => genericInterface == typeof(IList<>)
-                                     || genericInterface == typeof(IReadOnlyList<>)
-                                     || genericInterface == typeof(IOrderedEnumerable<>));
+        var type = obj.GetType();
+        return options.UnorderedCollectionTypes.Any(t => Reflector.IsImplementingType(type, t));
     }
 
     private static bool IsSortable(Type collection)

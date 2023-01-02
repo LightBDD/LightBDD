@@ -17,10 +17,10 @@ public class ExpectationValueMapper : ValueMapper
     /// <summary>
     /// Returns true if <paramref name="obj"/> implements <seealso cref="IGeneralExpectationConverter"/>.
     /// </summary>
-    public override bool CanMap(object obj) => obj is IGeneralExpectationConverter;
+    public override bool CanMap(object obj, ObjectTreeBuilderOptions options) => obj is IGeneralExpectationConverter;
 
     /// <summary>
     /// Returns object converted to general expectation representation.
     /// </summary>
-    public override object MapValue(object o) => ((IGeneralExpectationConverter)o).ToGeneralExpectation();
+    public override object MapValue(object o, ObjectTreeBuilderOptions options) => ((IGeneralExpectationConverter)o).ToGeneralExpectation();
 }

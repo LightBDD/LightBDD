@@ -18,9 +18,9 @@ public class FormattableValueMapper : ValueMapper
     /// <summary>
     /// Returns true if <paramref name="obj"/> implements <seealso cref="IFormattable"/> or <seealso cref="ISelfFormattable"/> interface.
     /// </summary>
-    public override bool CanMap(object obj) => obj is IFormattable or ISelfFormattable;
+    public override bool CanMap(object obj, ObjectTreeBuilderOptions options) => obj is IFormattable or ISelfFormattable;
     /// <summary>
     /// Returns <paramref name="o"/> as is.
     /// </summary>
-    public override object MapValue(object o) => o;
+    public override object MapValue(object o, ObjectTreeBuilderOptions options) => o;
 }

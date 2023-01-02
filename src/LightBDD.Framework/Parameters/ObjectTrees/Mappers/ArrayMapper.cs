@@ -14,5 +14,5 @@ public abstract class ArrayMapper : NodeMapper
     /// <summary>
     /// Interprets the <paramref name="o"/> as array and returns all it's items.
     /// </summary>
-    public abstract ArrayMap MapArray(object o);
+    public abstract ArrayMap MapArray(object o, ObjectTreeBuilderOptions options);
 }

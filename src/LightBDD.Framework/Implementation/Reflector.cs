@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -22,6 +23,25 @@ namespace LightBDD.Framework.Implementation
                     return true;
                 methodInfo = methodInfo.DeclaringType?.GetTypeInfo();
             }
+            return false;
+        }
+
+        public static bool IsImplementingType(Type type, Type target)
+        {
+            if (!target.IsGenericTypeDefinition)
+                return target.IsAssignableFrom(type);
+
+            if (target.IsInterface)
+                return type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == target);
+
+            var t = type;
+            while (t != null)
+            {
+                if (t.IsGenericType && t.GetGenericTypeDefinition() == target)
+                    return true;
+                t = t.BaseType;
+            }
+
             return false;
         }
     }

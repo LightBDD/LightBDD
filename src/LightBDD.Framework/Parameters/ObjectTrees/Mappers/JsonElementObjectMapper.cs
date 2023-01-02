@@ -19,12 +19,12 @@ public class JsonElementObjectMapper : ObjectMapper
     /// <summary>
     /// Returns true if <paramref name="obj"/> is <seealso cref="JsonElement"/> of <seealso cref="JsonValueKind.Object"/> kind.
     /// </summary>
-    public override bool CanMap(object obj) => obj is JsonElement { ValueKind: JsonValueKind.Object };
+    public override bool CanMap(object obj, ObjectTreeBuilderOptions options) => obj is JsonElement { ValueKind: JsonValueKind.Object };
 
     /// <summary>
     /// Maps JsonElement to object
     /// </summary>
-    public override ObjectMap MapObject(object o)
+    public override ObjectMap MapObject(object o, ObjectTreeBuilderOptions options)
     {
         return new ObjectMap(GetProperties(o));
     }

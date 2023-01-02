@@ -1,7 +1,10 @@
 ﻿#nullable enable
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using System.Dynamic;
 using System.Linq;
 using System.Text.Json;
@@ -216,12 +219,36 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void It_should_sort_unordered_collections_if_underlying_type_is_sortable()
+        [TestCaseSource(nameof(GetSortableUnorderedCollections))]
+        public void It_should_sort_unordered_collections_if_underlying_type_is_sortable(IEnumerable<string> collection)
         {
-            var set = Enumerable.Range(0, 10).Select(_ => Guid.NewGuid()).ToHashSet();
-            var root = new ObjectTreeBuilder(ObjectTreeBuilderOptions.Default).Build(set);
-            var actualItems = root.AsArray().Items.Select(x => x.RawObject).Cast<Guid>().ToArray();
-            actualItems.ShouldBe(set.OrderBy(x => x).ToArray());
+            var root = new ObjectTreeBuilder(ObjectTreeBuilderOptions.Default).Build(collection);
+            var actualItems = root.AsArray().Items.Select(x => x.RawObject).ToArray();
+            var expectedItems = collection.Cast<object>().OrderBy(x => x).ToArray();
+            actualItems.ShouldBe(expectedItems);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(GetNonSortableUnorderedCollections))]
+        public void It_should_enumerate_unordered_collections_as_is_if_underlying_type_is_not_sortable(IEnumerable<object> collection)
+        {
+            var root = new ObjectTreeBuilder(ObjectTreeBuilderOptions.Default).Build(collection);
+            var actualItems = root.AsArray().Items.Select(x => x.RawObject).ToArray();
+            var expectedItems = collection.ToArray();
+            actualItems.ShouldBe(expectedItems);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(GetStringKeyedDictionaries))]
+        public void It_should_map_string_keyed_dictionaries_to_objects(IReadOnlyDictionary<string, object?> collection)
+        {
+            var root = new ObjectTreeBuilder(ObjectTreeBuilderOptions.Default).Build(collection);
+            root.Kind.ShouldBe(ObjectTreeNodeKind.Object);
+            var properties = root.AsObject().Properties;
+            properties.Count.ShouldBe(3);
+            AssertValueNode(properties["A"], "$.A", 1);
+            AssertValueNode(properties["B"], "$.B", "B");
+            AssertValueNode(properties["C"], "$.C", null);
         }
 
         [Test]
@@ -283,8 +310,8 @@ namespace LightBDD.Framework.UnitTests.Parameters
         public void It_should_capture_exceptions_caused_by_mappers()
         {
             var mapper = new Mock<ObjectMapper>();
-            mapper.Setup(x => x.CanMap(It.Is((object o) => o is Parent))).Returns(true);
-            mapper.Setup(x => x.MapObject(It.IsAny<object>())).Throws(new IndexOutOfRangeException("foo"));
+            mapper.Setup(x => x.CanMap(It.Is((object o) => o is Parent), It.IsAny<ObjectTreeBuilderOptions>())).Returns(true);
+            mapper.Setup(x => x.MapObject(It.IsAny<object>(), It.IsAny<ObjectTreeBuilderOptions>())).Throws(new IndexOutOfRangeException("foo"));
 
             var options = ObjectTreeBuilderOptions.Default.AppendMapper(mapper.Object);
             var builder = new ObjectTreeBuilder(options);
@@ -319,14 +346,14 @@ namespace LightBDD.Framework.UnitTests.Parameters
             var nodes = root.EnumerateAll().Select(x => x.Path).ToArray();
             nodes.ShouldBe(new[]
             {
-                "$", 
-                "$.Exception", 
-                "$.Exception.Data", 
-                "$.Exception.HelpLink", 
+                "$",
+                "$.Exception",
+                "$.Exception.Data",
+                "$.Exception.HelpLink",
                 "$.Exception.HResult",
-                "$.Exception.InnerException", 
-                "$.Exception.Message", 
-                "$.Exception.Source", 
+                "$.Exception.InnerException",
+                "$.Exception.Message",
+                "$.Exception.Source",
                 "$.Exception.StackTrace",
                 "$.Exception.TargetSite"
             });
@@ -347,10 +374,10 @@ namespace LightBDD.Framework.UnitTests.Parameters
             var nodes = root.EnumerateAll().Select(x => $"{x.Path}: {x}").ToArray();
             nodes.ShouldBe(new[]
             {
-                "$: <object>", 
-                "$.Sub: <object>", 
-                "$.Sub.Sub: <object>", 
-                "$.Sub.Sub.Sub: <object>", 
+                "$: <object>",
+                "$.Sub: <object>",
+                "$.Sub.Sub: <object>",
+                "$.Sub.Sub.Sub: <object>",
                 "$.Sub.Sub.Sub.Sub: InvalidOperationException: Maximum node depth reached"
             });
         }
@@ -389,6 +416,31 @@ namespace LightBDD.Framework.UnitTests.Parameters
             yield return new[] { "a", "ab", "abc" };
             yield return new List<TimeSpan> { TimeSpan.FromSeconds(1), TimeSpan.FromHours(2) };
             yield return Enumerable.Range(3, 7);
+        }
+
+        public static IEnumerable<IEnumerable<string>> GetSortableUnorderedCollections()
+        {
+            var items = new[] { "A", "C", "B" };
+            yield return new HashSet<string>(items);
+            yield return ImmutableHashSet.Create(items);
+            yield return new ConcurrentBag<string>(items);
+        }
+
+        public static IEnumerable<IEnumerable<object>> GetNonSortableUnorderedCollections()
+        {
+            var items = new[] { new object(), new object(), new object() };
+            yield return new HashSet<object>(items);
+            yield return ImmutableHashSet.Create(items);
+            yield return new ConcurrentBag<object>(items);
+        }
+
+        public static IEnumerable<IReadOnlyDictionary<string, object?>> GetStringKeyedDictionaries()
+        {
+            var dict = new Dictionary<string, object?> { { "A", 1 }, { "C", null }, { "B", "B" } };
+            yield return dict;
+            yield return dict.ToImmutableDictionary();
+            yield return new ConcurrentDictionary<string, object?>(dict);
+            yield return new ReadOnlyDictionary<string, object?>(dict);
         }
     }
 

@@ -20,12 +20,12 @@ public class JsonElementArrayMapper : ArrayMapper
     /// <summary>
     /// Returns true if <paramref name="obj"/> is <seealso cref="JsonElement"/> of <seealso cref="JsonValueKind.Array"/> kind.
     /// </summary>
-    public override bool CanMap(object obj) => obj is JsonElement { ValueKind: JsonValueKind.Array };
+    public override bool CanMap(object obj, ObjectTreeBuilderOptions options) => obj is JsonElement { ValueKind: JsonValueKind.Array };
 
     /// <summary>
     /// Maps JsonElement to array
     /// </summary>
-    public override ArrayMap MapArray(object o)
+    public override ArrayMap MapArray(object o, ObjectTreeBuilderOptions options)
     {
         return new ArrayMap(GetItems(o));
     }

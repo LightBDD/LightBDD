@@ -9,27 +9,27 @@ namespace LightBDD.Framework.Parameters.ObjectTrees.Mappers;
 /// <summary>
 /// Object mapper for POCO types.
 /// </summary>
-public class PocoMapper : ObjectMapper
+public class PlainObjectMapper : ObjectMapper
 {
     /// <summary>
     /// Default instance
     /// </summary>
-    public static readonly PocoMapper Instance = new();
+    public static readonly PlainObjectMapper Instance = new();
 
     private readonly ConcurrentDictionary<Type, IReadOnlyList<KeyValuePair<string, Func<object, object?>>>> _typeMap = new();
     private static readonly BindingFlags BindingFlags = BindingFlags.Instance | BindingFlags.Public;
 
-    private PocoMapper() { }
+    private PlainObjectMapper() { }
 
     /// <summary>
     /// Always returns <c>true</c>
     /// </summary>
-    public override bool CanMap(object obj) => true;
+    public override bool CanMap(object obj, ObjectTreeBuilderOptions options) => true;
 
     /// <summary>
     /// Maps POCO to object where it returns public instance fields and properties of the <paramref name="o"/>.
     /// </summary>
-    public override ObjectMap MapObject(object o)
+    public override ObjectMap MapObject(object o, ObjectTreeBuilderOptions options)
     {
         return new ObjectMap(GetProperties(o));
     }

@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Execution.Coordination;
+using LightBDD.Framework.Implementation;
 using LightBDD.Framework.Parameters.ObjectTrees.Mappers;
 
 namespace LightBDD.Framework.Parameters.ObjectTrees;
@@ -56,46 +57,27 @@ public class ObjectTreeBuilder
                 return new ObjectTreeReference(parent, node, recursionTarget, o);
 
             var type = o.GetType();
-            if (type.IsPrimitive || Options.ValueTypes.Any(t => IsImplementingType(type, t)))
+            if (type.IsPrimitive || Options.ValueTypes.Any(t => Reflector.IsImplementingType(type, t)))
                 return new ObjectTreeValue(parent, node, o, o);
 
 
-            var mapper = Options.Mappers.FirstOrDefault(m => m.CanMap(o));
+            var mapper = Options.Mappers.FirstOrDefault(m => m.CanMap(o, Options));
             switch (mapper?.Kind)
             {
                 case ObjectTreeNodeKind.Value:
-                    return new ObjectTreeValue(parent, node, mapper.AsValueMapper().MapValue(o), o);
+                    return new ObjectTreeValue(parent, node, mapper.AsValueMapper().MapValue(o, Options), o);
                 case ObjectTreeNodeKind.Array:
-                    return CreateArray(mapper.AsArrayMapper().MapArray(o), node, parent, o);
+                    return CreateArray(mapper.AsArrayMapper().MapArray(o, Options), node, parent, o);
                 case ObjectTreeNodeKind.Object:
-                    return CreateObject(mapper.AsObjectMapper().MapObject(o), node, parent, o);
+                    return CreateObject(mapper.AsObjectMapper().MapObject(o, Options), node, parent, o);
             }
 
-            return CreateObject(PocoMapper.Instance.MapObject(o), node, parent, o);
+            return CreateObject(PlainObjectMapper.Instance.MapObject(o, Options), node, parent, o);
         }
         catch (Exception ex)
         {
             return new ObjectTreeValue(parent, node, new ExceptionCapture(ex), o);
         }
-    }
-
-    private static bool IsImplementingType(Type type, Type target)
-    {
-        if (!target.IsGenericTypeDefinition)
-            return target.IsAssignableFrom(type);
-
-        if (target.IsInterface)
-            return type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == target);
-
-        var t = type;
-        while (t != null)
-        {
-            if (t.IsGenericType && t.GetGenericTypeDefinition() == target)
-                return true;
-            t = t.BaseType;
-        }
-
-        return false;
     }
 
     private static ObjectTreeNode? FindRecursion(object o, ObjectTreeNode? node)

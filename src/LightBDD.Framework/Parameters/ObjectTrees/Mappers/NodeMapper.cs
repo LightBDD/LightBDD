@@ -23,9 +23,9 @@ public abstract class NodeMapper
     public ObjectTreeNodeKind Kind { get; }
 
     /// <summary>
-    /// Returns true if the object can be mapped
+    /// Returns true if the object <paramref name="obj"/> can be mapped
     /// </summary>
-    public abstract bool CanMap(object obj);
+    public abstract bool CanMap(object obj, ObjectTreeBuilderOptions options);
 
     /// <summary>
     /// Returns <seealso cref="ArrayMapper"/> representation of this mapper if mapper is of this type.
