@@ -34,7 +34,7 @@ public class StringDictionaryObjectMapper : ObjectMapper
     }
 
     /// <summary>
-    /// Returns properties of expando object.
+    /// Maps provided dictionary as object node.
     /// </summary>
     public override ObjectMap MapObject(object o, ObjectTreeBuilderOptions options)
     {

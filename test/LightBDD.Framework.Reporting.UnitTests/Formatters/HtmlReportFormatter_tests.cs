@@ -304,7 +304,7 @@ initialize();";
                 Records = new[] { "AB-1", "AB-2", "AB-3", "AB-4" }
             };
 
-            var tree = new VerifiableTree(expected);
+            var tree = Tree.ExpectEquivalent(expected);
             tree.SetActual(actual);
 
             var results = ReportFormatterTestData.GetFeatureWithVerifiableTree(tree.Details);
@@ -350,7 +350,7 @@ initialize();";
                 Enumerable.Range(0,4)
             };
 
-            var tree = new VerifiableTree(input);
+            var tree = Tree.ExpectEquivalent(input);
             tree.SetActual(input);
 
             var results = ReportFormatterTestData.GetFeatureWithVerifiableTree(tree.Details);
@@ -374,7 +374,7 @@ initialize();";
                 new{Name="Ted",Surname="Smith"},
             };
 
-            var tree = new VerifiableTree(input);
+            var tree = Tree.ExpectEquivalent(input);
             tree.SetActual(input);
 
             var results = ReportFormatterTestData.GetFeatureWithVerifiableTree(tree.Details);

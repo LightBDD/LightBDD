@@ -1,21 +1,14 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Dynamic;
 using System.Linq;
-using System.Reflection;
-using System.Security.Cryptography;
-using System.Security.Policy;
 using System.Text.Json;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters.Trees;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;
 using LightBDD.UnitTests.Helpers;
-using Newtonsoft.Json.Linq;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using Shouldly;
 
 namespace LightBDD.Framework.UnitTests.Parameters;
@@ -27,7 +20,7 @@ public class VerifiableTree_tests
     public void Tree_should_return_NotProvided_result_when_SetActual_is_not_called()
     {
         var input = new { Name = "Bob", Surname = "Johnson" };
-        var tree = new VerifiableTree(input);
+        var tree = Tree.ExpectEquivalent(input);
 
         tree.Details.VerificationStatus.ShouldBe(ParameterVerificationStatus.NotProvided);
         tree.Details.VerificationMessage.ShouldBe("Actual value was not provided");
@@ -56,7 +49,7 @@ public class VerifiableTree_tests
             Inner = new KeyValuePair<int, char>(5, 'c')
         };
 
-        var tree = new VerifiableTree(expected);
+        var tree = Tree.ExpectEquivalent(expected);
         tree.SetActual(actual);
 
         AssertNodes(tree.Details.Root.EnumerateAll(),
@@ -91,7 +84,7 @@ public class VerifiableTree_tests
             Inner = 'c'
         };
 
-        var tree = new VerifiableTree(expected);
+        var tree = Tree.ExpectEquivalent(expected);
         tree.SetActual(actual);
 
         AssertNodes(tree.Details.Root.EnumerateAll(),
@@ -133,7 +126,7 @@ $.Surname: expected: equals 'Johnson', but got: 'John'".NormalizeNewLine());
             Surname = "Johnson",
             Items = Enumerable.Range(0, 16)
         };
-        var tree = new VerifiableTree(expected);
+        var tree = Tree.ExpectEquivalent(expected);
         tree.SetActual(actual);
         AssertNodes(tree.Details.Root.EnumerateAll(),
             "$|<object>|<object>|Success|",
@@ -170,7 +163,7 @@ $.Surname: expected: equals 'Johnson', but got: 'John'".NormalizeNewLine());
         actual.Surname = "Johnson";
         actual.Items = new[] { 0, 1, 2 };
 
-        var tree = new VerifiableTree(expected);
+        var tree = Tree.ExpectEquivalent(expected);
         tree.SetActual(actual);
         AssertNodes(tree.Details.Root.EnumerateAll(),
             "$|<object>|<object>|Success|",
@@ -204,7 +197,7 @@ $.Surname: expected: equals 'Johnson', but got: 'John'".NormalizeNewLine());
         actual[1].Children[0].Parent = actual[1];
         actual[1].Children[0].Children[0].Parent = actual[1];
 
-        var tree = new VerifiableTree(expected);
+        var tree = Tree.ExpectEquivalent(expected);
         tree.SetActual(actual);
         AssertNodes(tree.Details.Root.EnumerateAll(),
             "$|<array:2>|<array:2>|Success|",
@@ -247,7 +240,7 @@ $.Surname: expected: equals 'Johnson', but got: 'John'".NormalizeNewLine());
             Items = new object[] { 1, 2, 3, 3.14, true, false, null },
             Inner = new { Label = "some text" }
         };
-        var tree = new VerifiableTree(expected);
+        var tree = Tree.ExpectEquivalent(expected);
         tree.SetActual(JsonDocument.Parse(json).RootElement);
 
         AssertNodes(tree.Details.Root.EnumerateAll(),
@@ -278,7 +271,7 @@ $.Surname: expected: equals 'Johnson', but got: 'John'".NormalizeNewLine());
 }";
         var expected = JsonDocument.Parse(json).RootElement;
         var actual = Newtonsoft.Json.JsonConvert.DeserializeObject<ExpandoObject>(json);
-        var tree = new VerifiableTree(expected);
+        var tree = Tree.ExpectEquivalent(expected);
         tree.SetActual(actual);
 
         AssertNodes(tree.Details.Root.EnumerateAll(),
@@ -304,7 +297,7 @@ $.Surname: expected: equals 'Johnson', but got: 'John'".NormalizeNewLine());
         var expected = new object[] { (byte)1, (short)2, 3.2m };
         var actual = new object[] { 1u, 2ul, 3.2f };
 
-        var tree = new VerifiableTree(expected);
+        var tree = Tree.ExpectEquivalent(expected);
         tree.SetActual(actual);
 
         AssertNodes(tree.Details.Root.EnumerateAll(),
@@ -326,7 +319,7 @@ $.Surname: expected: equals 'Johnson', but got: 'John'".NormalizeNewLine());
         };
 
         var actual = new { Name = "Bob", Surname = "Smith", Age = 23L };
-        var tree = new VerifiableTree(expected);
+        var tree = Tree.ExpectEquivalent(expected);
         tree.SetActual(actual);
         AssertNodes(tree.Details.Root.EnumerateAll(),
             "$|<object>|<object>|Success|",
@@ -523,7 +516,7 @@ $.Surname: expected: equals 'Johnson', but got: 'John'".NormalizeNewLine());
             Inner = (object)new KeyValuePair<object, char>(5, 'c')
         };
 
-        var tree = Tree.Expect(expected, new VerifiableTreeOptions() { CheckObjectNodeTypes = checkObjectNodeTypes });
+        var tree = Tree.Expect(expected, VerifiableTreeOptions.EquivalentMatch.WithCheckObjectNodeTypes(checkObjectNodeTypes));
         tree.SetActual(actual);
 
         var nodes = DumpNodes(tree.Details.Root.EnumerateAll());
@@ -554,7 +547,7 @@ $.Surname: expected: equals 'Johnson', but got: 'John'".NormalizeNewLine());
             Inner = new KeyValuePair<object, char>(5, 'c')
         };
 
-        var tree = Tree.Expect(expected, new VerifiableTreeOptions() { CheckArrayNodeTypes = checkArrayNodeTypes });
+        var tree = Tree.Expect(expected, VerifiableTreeOptions.EquivalentMatch.WithCheckArrayNodeTypes(checkArrayNodeTypes));
         tree.SetActual(actual);
 
         var nodes = DumpNodes(tree.Details.Root.EnumerateAll());
@@ -585,7 +578,7 @@ $.Surname: expected: equals 'Johnson', but got: 'John'".NormalizeNewLine());
             Inner = new KeyValuePair<object, char>(5, 'c')
         };
 
-        var tree = Tree.Expect(expected, new VerifiableTreeOptions() { CheckValueNodeTypes = checkValueNodeTypes });
+        var tree = Tree.Expect(expected, VerifiableTreeOptions.EquivalentMatch.WithCheckValueNodeTypes(checkValueNodeTypes));
         tree.SetActual(actual);
 
         var nodes = DumpNodes(tree.Details.Root.EnumerateAll());

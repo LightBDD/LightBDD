@@ -23,7 +23,7 @@ public static class Tree
     public static InputTree<TData> For<TData>(TData data, InputTreeOptions options) => new(data, options);
 
     /// <summary>
-    /// Creates <seealso cref="VerifiableTree"/> for provided <paramref name="expected"/> parameter which allows detailed structural verification of actual versus expected object trees.<br/>
+    /// Creates <seealso cref="VerifiableTree{T}"/> for provided <paramref name="expected"/> parameter which allows detailed structural verification of actual versus expected object trees.<br/>
     ///
     /// The object trees will get verified successfully if both trees are structurally equivalent, i.e. underlying object types can be different, as long as:
     /// <list type="bullet">
@@ -35,10 +35,10 @@ public static class Tree
     /// With this method it is possible to compare objects represented by specific models, <seealso cref="ExpandoObject"/>, <seealso cref="JsonElement"/> or anonymous types.
     /// </summary>
     /// <param name="expected">Expected object structure</param>
-    public static VerifiableTree ExpectEquivalent(object? expected) => new(expected);
-    
+    public static VerifiableTree<T> ExpectEquivalent<T>(T? expected) => new(expected, VerifiableTreeOptions.EquivalentMatch);
+
     /// <summary>
-    /// Creates <seealso cref="VerifiableTree"/> for provided <paramref name="expected"/> parameter which allows detailed structural verification of actual versus expected object trees.<br/>
+    /// Creates <seealso cref="VerifiableTree{T}"/> for provided <paramref name="expected"/> parameter which allows detailed structural verification of actual versus expected object trees.<br/>
     ///
     /// The object trees will get verified successfully if both trees uses the same models and have equal nodes:
     /// <list type="bullet">
@@ -49,10 +49,10 @@ public static class Tree
     /// </list>
     /// </summary>
     /// <param name="expected">Expected object structure</param>
-    public static VerifiableTree ExpectStrictMatch(object? expected) => Expect(expected, new() { CheckArrayNodeTypes = true, CheckObjectNodeTypes = true, CheckValueNodeTypes = true, UnexpectedNodeAction = UnexpectedValueVerificationAction.Fail });
-    
+    public static VerifiableTree<T> ExpectStrictMatch<T>(T? expected) => Expect(expected, VerifiableTreeOptions.StrictMatch);
+
     /// <summary>
-    /// Creates <seealso cref="VerifiableTree"/> for provided <paramref name="expected"/> parameter which allows detailed structural verification of actual versus expected object trees.<br/>
+    /// Creates <seealso cref="VerifiableTree{T}"/> for provided <paramref name="expected"/> parameter which allows detailed structural verification of actual versus expected object trees.<br/>
     ///
     /// The object trees will get verified successfully if provided actual tree contains all equivalent nodes to expected tree, i.e.:
     /// <list type="bullet">
@@ -62,13 +62,13 @@ public static class Tree
     ///  <item>reference nodes points to the same paths</item>
     /// </list>
     /// Any additional nodes that are present on actual tree but weren't on expected tree are be excluded from verification and the results. <br/>
-    /// Similarly to <seealso cref="ExpectEquivalent"/> method, this method allows comparison of different types of the models.
+    /// Similarly to <seealso cref="ExpectEquivalent{T}"/> method, this method allows comparison of different types of the models.
     /// </summary>
     /// <param name="expected">Expected object structure</param>
-    public static VerifiableTree ExpectContaining(object? expected) => Expect(expected, new() { UnexpectedNodeAction = UnexpectedValueVerificationAction.Exclude });
+    public static VerifiableTree<T> ExpectContaining<T>(T? expected) => Expect(expected, VerifiableTreeOptions.EquivalentMatch.WithUnexpectedNodeAction(UnexpectedValueVerificationAction.Exclude));
 
     /// <summary>
-    /// Creates <seealso cref="VerifiableTree"/> for provided <paramref name="expected"/> parameter which allows detailed structural verification of actual versus expected object trees.<br/>
+    /// Creates <seealso cref="VerifiableTree{T}"/> for provided <paramref name="expected"/> parameter which allows detailed structural verification of actual versus expected object trees.<br/>
     ///
     /// The object trees will get verified successfully if provided actual tree contains all equivalent nodes to expected tree, i.e.:
     /// <list type="bullet">
@@ -78,16 +78,16 @@ public static class Tree
     ///  <item>reference nodes points to the same paths</item>
     /// </list>
     /// Any additional nodes that are present on actual tree but weren't on expected tree are not verified but are included in the results with <seealso cref="ParameterVerificationStatus.NotApplicable"/>. <br/>
-    /// Similarly to <seealso cref="ExpectEquivalent"/> method, this method allows comparison of different types of the models.
+    /// Similarly to <seealso cref="ExpectEquivalent{T}"/> method, this method allows comparison of different types of the models.
     /// </summary>
     /// <param name="expected">Expected object structure</param>
-    public static VerifiableTree ExpectAtLeastContaining(object? expected) => Expect(expected, new() { UnexpectedNodeAction = UnexpectedValueVerificationAction.Ignore });
+    public static VerifiableTree<T> ExpectAtLeastContaining<T>(T? expected) => Expect(expected, VerifiableTreeOptions.EquivalentMatch.WithUnexpectedNodeAction(UnexpectedValueVerificationAction.Ignore));
 
     /// <summary>
-    /// Creates <seealso cref="VerifiableTree"/> for provided <paramref name="expected"/> parameter which allows detailed structural verification of actual versus expected object trees.<br/>
+    /// Creates <seealso cref="VerifiableTree{T}"/> for provided <paramref name="expected"/> parameter which allows detailed structural verification of actual versus expected object trees.<br/>
     /// The object trees verification behavior is configured with <paramref name="options"/> parameter.
     /// </summary>
     /// <param name="expected">Expected object structure</param>
     /// <param name="options">Additional options</param>
-    public static VerifiableTree Expect(object? expected, VerifiableTreeOptions options) => new(expected, options);
+    public static VerifiableTree<T> Expect<T>(T? expected, VerifiableTreeOptions options) => new(expected, options);
 }

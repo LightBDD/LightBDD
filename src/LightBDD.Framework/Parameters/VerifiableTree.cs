@@ -20,31 +20,29 @@ namespace LightBDD.Framework.Parameters;
 /// <summary>
 /// Type representing object tree step parameter which allows detailed structural verification of actual versus expected object trees.
 /// </summary>
-public class VerifiableTree : IComplexParameter, ISelfFormattable
+public class VerifiableTree<T> : IComplexParameter, ISelfFormattable
 {
-    private static readonly VerifiableTreeOptions DefaultOptions = new();
     private readonly VerifiableTreeOptions _options;
     private readonly ObjectTreeBuilder _treeBuilder = ObjectTreeBuilder.Current;
-    private readonly ObjectTreeNode _expected;
-    private ObjectTreeNode? _actual;
+    private readonly ObjectTreeNode _expectedTree;
+    private ObjectTreeNode? _actualTree;
     private IValueFormattingService _formattingService = ValueFormattingServices.Current;
     private ITreeParameterDetails? _details;
 
     /// <summary>
-    /// Creates verifiable tree for provided <paramref name="expected"/> object, using default <seealso cref="VerifiableTreeOptions"/> options.
+    /// Creates verifiable tree for provided <paramref name="expected"/> object, using <seealso cref="VerifiableTreeOptions"/> options specified by <paramref name="options"/> parameter.
     /// </summary>
-    public VerifiableTree(object? expected) : this(expected, DefaultOptions)
+    public VerifiableTree(T? expected, VerifiableTreeOptions options)
     {
+        _options = options;
+        _expectedTree = _treeBuilder.Build(expected);
+        Expected = expected;
     }
 
     /// <summary>
-    /// Creates verifiable tree for provided <paramref name="expected"/> object, using <seealso cref="VerifiableTreeOptions"/> options specified by <paramref name="options"/> parameter.
+    /// Returns expected value
     /// </summary>
-    public VerifiableTree(object? expected, VerifiableTreeOptions options)
-    {
-        _options = options;
-        _expected = _treeBuilder.Build(expected);
-    }
+    public T? Expected { get; }
 
     /// <summary>
     /// Verifies <paramref name="actual"/> parameter value against the expectations and updates <seealso cref="Details"/> with verification results.
@@ -53,9 +51,9 @@ public class VerifiableTree : IComplexParameter, ISelfFormattable
     /// <exception cref="InvalidOperationException">Thrown if actual value was already specified.</exception>
     public void SetActual(object? actual)
     {
-        if (_actual != null)
+        if (_actualTree != null)
             throw new InvalidOperationException("Actual value is already set");
-        _actual = _treeBuilder.Build(actual);
+        _actualTree = _treeBuilder.Build(actual);
         _details = null;
     }
 
@@ -75,11 +73,11 @@ public class VerifiableTree : IComplexParameter, ISelfFormattable
     private ITreeParameterDetails CalculateResults()
     {
         var results = new Dictionary<string, TreeParameterNodeResult>();
-        var actual = (_actual?.EnumerateAll() ?? Array.Empty<ObjectTreeNode>())
+        var actual = (_actualTree?.EnumerateAll() ?? Array.Empty<ObjectTreeNode>())
             .Select((n, i) => new NodeState(n, i))
             .ToDictionary(n => n.Node.Path);
 
-        foreach (var e in _expected.EnumerateAll())
+        foreach (var e in _expectedTree.EnumerateAll())
         {
             if (actual.TryGetValue(e.Path, out var a))
             {
@@ -99,7 +97,7 @@ public class VerifiableTree : IComplexParameter, ISelfFormattable
                     ToNode(results, null, a.Node, ParameterVerificationStatus.NotApplicable, "Surplus value");
             }
         }
-        return new TreeParameterDetails(results["$"], _actual != null);
+        return new TreeParameterDetails(results["$"], _actualTree != null);
     }
 
     private ExpectationResult MatchNodes(ObjectTreeNode expected, ObjectTreeNode actual)
