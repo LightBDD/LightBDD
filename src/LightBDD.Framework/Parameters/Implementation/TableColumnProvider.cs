@@ -8,6 +8,8 @@ namespace LightBDD.Framework.Parameters.Implementation
 {
     internal static class TableColumnProvider
     {
+        public static readonly ColumnInfo ItemColumn = new("Item", ColumnValue.From);
+
         public static IEnumerable<ColumnInfo> InferColumns<TRow>(TRow[] rows, bool addLengthToCollections = false, InferredColumnsOrder inferredColumnsOrder = InferredColumnsOrder.Name)
         {
             var typeInfo = typeof(TRow).GetTypeInfo();
@@ -89,7 +91,7 @@ namespace LightBDD.Framework.Parameters.Implementation
 
         private static IEnumerable<ColumnInfo> AsSimpleColumn()
         {
-            return new[] { new ColumnInfo("Item", ColumnValue.From) };
+            return new[] { ItemColumn };
         }
 
         private static bool IsExpando(TypeInfo typeInfo)

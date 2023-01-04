@@ -16,7 +16,7 @@ namespace LightBDD.Framework.UnitTests.Expectations
                     x => x.Contain("banana"))
                 .WithMatchingValues(new[] { "apple", "banana" })
                 .WithNotMatchingValue(null, "expected: contains 'banana', but got: '<null>'")
-                .WithNotMatchingValue(Enumerable.Empty<string>(), "expected: contains 'banana', but got: ''")
+                .WithNotMatchingValue(Enumerable.Empty<string>(), "expected: contains 'banana', but got: '<empty>'")
                 .WithNotMatchingValue(new[] { "apple", "orange" }, "expected: contains 'banana', but got: 'apple, orange'");
 
             yield return new ExpectationScenario<string>(

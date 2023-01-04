@@ -7,7 +7,9 @@ using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
+using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Formatting.Values;
+using LightBDD.Framework.Parameters.Implementation;
 using LightBDD.Framework.Results.Implementation;
 
 namespace LightBDD.Framework.Parameters
@@ -49,7 +51,9 @@ namespace LightBDD.Framework.Parameters
         /// <param name="columns">Table columns.</param>
         protected VerifiableTable(IEnumerable<VerifiableTableColumn> columns)
         {
-            Columns = columns.OrderByDescending(x => x.IsKey).ToArray();
+            Columns = columns.OrderByDescending(x => x.IsKey)
+                .DefaultIfEmpty(VerifiableTableColumn.FromColumnInfo(TableColumnProvider.ItemColumn))
+                .ToArray();
         }
 
         /// <summary>
