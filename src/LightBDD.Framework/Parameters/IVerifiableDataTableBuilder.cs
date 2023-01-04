@@ -170,5 +170,14 @@ namespace LightBDD.Framework.Parameters
         /// </summary>
         /// <returns>Self.</returns>
         IVerifiableDataTableBuilder<TRow> WithInferredColumns();
+
+        /// <summary>
+        /// Instructs <see cref="IInputTableBuilder{TRow}"/> to infer columns basing on the <typeparamref name="TRow"/> type.
+        /// It is possible to use this methods together with <c>WithColumn() / WithKey()</c> methods, where manually specified columns will override inferred columns of the same name.
+        /// The inferred columns will always use <c>Expect.To.Equal(value)</c> expression for verifying column values.
+        /// </summary>
+        /// <param name="columnsOrder">Order of the columns</param>
+        /// <returns>Self.</returns>
+        IVerifiableDataTableBuilder<TRow> WithInferredColumns(InferredColumnsOrder columnsOrder);
     }
 }

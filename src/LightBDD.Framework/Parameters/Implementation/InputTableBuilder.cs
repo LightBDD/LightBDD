@@ -24,9 +24,12 @@ namespace LightBDD.Framework.Parameters.Implementation
             return Add(columnName, columnExpression);
         }
 
-        public IInputTableBuilder<TRow> WithInferredColumns()
+        public IInputTableBuilder<TRow> WithInferredColumns() => WithInferredColumns(InferredColumnsOrder.Name);
+
+        public IInputTableBuilder<TRow> WithInferredColumns(InferredColumnsOrder columnsOrder)
         {
             InferColumns = true;
+            InferredColumnsOrder = columnsOrder;
             return this;
         }
 

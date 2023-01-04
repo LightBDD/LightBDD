@@ -8,7 +8,7 @@ namespace LightBDD.Framework.Parameters.Implementation
 {
     internal static class TableColumnProvider
     {
-        public static IEnumerable<ColumnInfo> InferColumns<TRow>(TRow[] rows, bool addLengthToCollections = false)
+        public static IEnumerable<ColumnInfo> InferColumns<TRow>(TRow[] rows, bool addLengthToCollections = false, InferredColumnsOrder inferredColumnsOrder = InferredColumnsOrder.Name)
         {
             var typeInfo = typeof(TRow).GetTypeInfo();
 
@@ -22,7 +22,7 @@ namespace LightBDD.Framework.Parameters.Implementation
             if (IsCollection(typeInfo))
                 return AsCollection(rows, addLengthToCollections);
 
-            return AsPoco(typeInfo.AsType());
+            return AsPoco(typeInfo.AsType(), inferredColumnsOrder);
         }
 
         private static TypeInfo TrySpecifyType<TRow>(TRow[] rows)
@@ -44,13 +44,15 @@ namespace LightBDD.Framework.Parameters.Implementation
             return typeInfo.AsType() == typeof(object);
         }
 
-        private static IEnumerable<ColumnInfo> AsPoco(Type type)
+        private static IEnumerable<ColumnInfo> AsPoco(Type type, InferredColumnsOrder inferredColumnsOrder)
         {
-            return GetProperties(type)
-                .Select(property => new ColumnInfo(property.Name, r => r != null ? ColumnValue.From(property.GetValue(r)) : ColumnValue.None))
-                .Concat(GetFields(type)
-                    .Select(field => new ColumnInfo(field.Name, r => r != null ? ColumnValue.From(field.GetValue(r)) : ColumnValue.None)))
-                .OrderBy(x => x.Name);
+            var columns = GetFields(type)
+                .Select(field => new ColumnInfo(field.Name, r => r != null ? ColumnValue.From(field.GetValue(r)) : ColumnValue.None))
+                .Concat(GetProperties(type)
+                    .Select(property => new ColumnInfo(property.Name, r => r != null ? ColumnValue.From(property.GetValue(r)) : ColumnValue.None)));
+            if (inferredColumnsOrder == InferredColumnsOrder.Name)
+                return columns.OrderBy(x => x.Name);
+            return columns;
         }
 
         private static IEnumerable<ColumnInfo> AsCollection<TRow>(TRow[] rows, bool addLengthToCollections)

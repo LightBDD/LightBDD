@@ -7,6 +7,7 @@ namespace LightBDD.Framework.Parameters.Implementation
     {
         private readonly List<TColumn> _customColumns = new List<TColumn>();
         protected bool InferColumns { get; set; }
+        protected InferredColumnsOrder InferredColumnsOrder { get; set; } = InferredColumnsOrder.Name;
 
         protected IEnumerable<TColumn> BuildColumns(TRow[] rows)
         {
@@ -25,7 +26,7 @@ namespace LightBDD.Framework.Parameters.Implementation
                 return column;
             }
 
-            var results = TableColumnProvider.InferColumns(rows, true)
+            var results = TableColumnProvider.InferColumns(rows, true, InferredColumnsOrder)
                 .Select(CreateColumn)
                 .Select(column => FindCustom(column.Name) ?? column)
                 .ToList();

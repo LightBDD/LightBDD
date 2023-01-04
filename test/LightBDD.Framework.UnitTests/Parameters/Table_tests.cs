@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using LightBDD.Core.Execution;
+using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Parameters;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -168,7 +170,31 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void AsVerifiableTable_should_infer_columns_from_dynamic_collection_of_unified_item_types()
+        public void ToTable_should_maintain_declaration_order_of_inferred_columns_for_complex_types_with_fields_being_first()
+        {
+            var data = new[]
+            {
+                new Derived()
+            };
+
+            var inputTable = data.ToTable(x => x.WithInferredColumns(InferredColumnsOrder.Declaration));
+            AssertColumnNames(inputTable, "Field", "Value", "Text", "Virtual", "Name");
+        }
+
+        [Test]
+        public void ToTable_should_maintain_declaration_order_of_inferred_columns_for_poco_types_with_fields_being_first()
+        {
+            var data = new[]
+            {
+                new Base()
+            };
+
+            var inputTable = data.ToTable(x => x.WithInferredColumns(InferredColumnsOrder.Declaration));
+            AssertColumnNames(inputTable, "Field", "Name", "Value", "Virtual");
+        }
+
+        [Test]
+        public void It_should_infer_columns_from_dynamic_collection_of_unified_item_types()
         {
             var values = new[]
                 {
@@ -273,6 +299,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
         private static void AssertColumnNames<T>(InputTable<T> table, params string[] expectedColumns)
         {
             Assert.That(table.Columns.Select(c => c.Name).ToArray(), Is.EqualTo(expectedColumns));
+
+            var details = (ITabularParameterDetails)((IComplexParameter)table).Details;
+            Assert.That(details.Columns.Select(x => x.Name).ToArray(), Is.EqualTo(expectedColumns));
         }
     }
 }

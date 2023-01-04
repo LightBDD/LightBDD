@@ -3,6 +3,7 @@ LightBDD
 
 Version [next]
 ----------------------------------------
++ #241 (LightBDD.Framework)(New) Added WithInferredColumns(InferredColumnsOrder columnsOrder) method to IInputTableBuilder and IVerifiableDataTableBuilder with option to add inferred columns in name or declaration order
 + #264 (LightBDD.Framework)(Fix) Corrected Html Report to expand feature background with the content
 + #268 (LightBDD.Framework)(New) Added InputTree<T> to provide detailed insights into the object structure upon progress and results rendering.
 + #268 (LightBDD.Framework)(New) Added VerifiableTree<T> to provide detailed structural verification of actual versus expected object hierarchies
