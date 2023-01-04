@@ -666,6 +666,30 @@ namespace LightBDD.Framework.UnitTests.Parameters
             Assert.ThrowsAsync<ArgumentNullException>(() => table.SetActualAsync(null));
         }
 
+        [Test]
+        public void ToVerifiableDataTable_should_maintain_declaration_order_of_inferred_columns_for_complex_types_with_fields_being_first()
+        {
+            var data = new[]
+            {
+                new Derived()
+            };
+
+            var inputTable = data.ToVerifiableDataTable(x => x.WithInferredColumns(InferredColumnsOrder.Declaration));
+            AssertColumnNames(inputTable, "Field", "Value", "Text", "Virtual", "Name");
+        }
+
+        [Test]
+        public void ToVerifiableDataTable_should_maintain_declaration_order_of_inferred_columns_for_poco_types_with_fields_being_first()
+        {
+            var data = new[]
+            {
+                new Base()
+            };
+
+            var inputTable = data.ToVerifiableDataTable(x => x.WithInferredColumns(InferredColumnsOrder.Declaration));
+            AssertColumnNames(inputTable, "Field", "Name", "Value", "Virtual");
+        }
+
         private void AssertRow(ITabularParameterRow row, TableRowType rowType, ParameterVerificationStatus rowStatus, params string[] expectedValueDetails)
         {
             Assert.That(row.Type, Is.EqualTo(rowType));
@@ -705,6 +729,8 @@ namespace LightBDD.Framework.UnitTests.Parameters
         private static void AssertColumnNames<T>(VerifiableTable<T> table, params string[] expectedColumns)
         {
             Assert.That(table.Columns.Select(c => c.Name).ToArray(), Is.EqualTo(expectedColumns));
+
+            Assert.That(table.Details.Columns.Select(x => x.Name).ToArray(), Is.EqualTo(expectedColumns));
         }
 
         private static void AssertResultColumnsMatchingTable<T>(VerifiableTable<T> table)
