@@ -290,7 +290,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         [Test]
         [TestCase(0)]
         [TestCase(2)]
-        public void Table_should_has_item_for_collection_of_empty_expando_objects(int count)
+        public void Table_should_have_item_for_collection_of_empty_expando_objects(int count)
         {
             var input = Enumerable.Range(0, count).Select(_ => new ExpandoObject()).ToArray();
             var table = input.ToTable();
@@ -303,7 +303,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         [Test]
         [TestCase(0)]
         [TestCase(2)]
-        public void Table_should_has_item_column_for_collection_of_empty_objects(int count)
+        public void Table_should_have_item_column_for_collection_of_empty_objects(int count)
         {
             var input = Enumerable.Range(0, count).Select(_ => new EmptyObject()).ToArray();
             var table = input.ToTable();
@@ -316,7 +316,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         [Test]
         [TestCase(0)]
         [TestCase(2)]
-        public void Table_should_has_item_column_for_collection_of_empty_collections(int count)
+        public void Table_should_have_item_column_for_collection_of_empty_collections(int count)
         {
             var input = Enumerable.Range(0, count).Select(_ => Array.Empty<int>()).ToArray();
             var table = input.ToTable();

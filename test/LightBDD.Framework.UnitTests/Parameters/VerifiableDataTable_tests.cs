@@ -701,7 +701,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         [Test]
         [TestCase(0)]
         [TestCase(2)]
-        public void It_should_has_item_column_for_collection_of_empty_expando_objects_and_verify_them(int count)
+        public void It_should_have_item_column_for_collection_of_empty_expando_objects_and_verify_them(int count)
         {
             var input = Enumerable.Range(0, count).Select(_ => new ExpandoObject()).ToArray();
             var table = input.ToVerifiableDataTable();
@@ -718,7 +718,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         [Test]
         [TestCase(0)]
         [TestCase(2)]
-        public void It_should_has_item_column_for_collection_of_empty_objects_and_verify_them(int count)
+        public void It_should_have_item_column_for_collection_of_empty_objects_and_verify_them(int count)
         {
             var input = Enumerable.Range(0, count).Select(_ => new EmptyObject()).ToArray();
             var table = input.ToVerifiableDataTable();
