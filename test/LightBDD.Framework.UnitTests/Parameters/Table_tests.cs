@@ -7,6 +7,7 @@ using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Parameters;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using Shouldly;
 
 namespace LightBDD.Framework.UnitTests.Parameters
 {
@@ -39,6 +40,8 @@ namespace LightBDD.Framework.UnitTests.Parameters
             public int X { get; }
             public int Y { get; }
         }
+
+        class EmptyObject{}
 
         [Test]
         public void ToTable_should_infer_columns_from_class_collection()
@@ -282,6 +285,45 @@ namespace LightBDD.Framework.UnitTests.Parameters
             var table = input.ToTable();
             Assert.That(table[0], Is.EqualTo(input[0]));
             Assert.That(table[1], Is.EqualTo(input[1]));
+        }
+
+        [Test]
+        [TestCase(0)]
+        [TestCase(2)]
+        public void Table_should_have_item_for_collection_of_empty_expando_objects(int count)
+        {
+            var input = Enumerable.Range(0, count).Select(_ => new ExpandoObject()).ToArray();
+            var table = input.ToTable();
+            AssertColumnNames(table, "Item");
+            table.Count.ShouldBe(count);
+            for (int i = 0; i < count; ++i)
+                AssertValues(table, input[i], ColumnValue.From(input[i]));
+        }
+
+        [Test]
+        [TestCase(0)]
+        [TestCase(2)]
+        public void Table_should_have_item_column_for_collection_of_empty_objects(int count)
+        {
+            var input = Enumerable.Range(0, count).Select(_ => new EmptyObject()).ToArray();
+            var table = input.ToTable();
+            AssertColumnNames(table, "Item");
+            table.Count.ShouldBe(count);
+            for (int i = 0; i < count; ++i)
+                AssertValues(table, input[i], ColumnValue.From(input[i]));
+        }
+
+        [Test]
+        [TestCase(0)]
+        [TestCase(2)]
+        public void Table_should_have_item_column_for_collection_of_empty_collections(int count)
+        {
+            var input = Enumerable.Range(0, count).Select(_ => Array.Empty<int>()).ToArray();
+            var table = input.ToTable();
+            AssertColumnNames(table, "Item");
+            table.Count.ShouldBe(count);
+            for (int i = 0; i < count; ++i)
+                AssertValues(table, input[i], ColumnValue.From(input[i]));
         }
 
         private static void TestCollectionToTable<T>(T[] input, string[] expectedColumns, int index, ColumnValue[] expectedValues)

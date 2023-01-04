@@ -30,7 +30,11 @@ namespace LightBDD.Framework.Formatting.Values
         /// </summary>
         public string FormatValue(object value, IValueFormattingService formattingService)
         {
-            return string.Format(_containerFormat, string.Join(_separator, ((IEnumerable)value).Cast<object>().Select(formattingService.FormatValue)));
+            var items = ((IEnumerable)value)
+                .Cast<object>()
+                .Select(formattingService.FormatValue)
+                .DefaultIfEmpty(formattingService.Symbols.EmptyValue);
+            return string.Format(_containerFormat, string.Join(_separator, items));
         }
 
         /// <summary>

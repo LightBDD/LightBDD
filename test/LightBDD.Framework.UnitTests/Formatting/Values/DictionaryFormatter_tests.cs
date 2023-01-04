@@ -30,6 +30,18 @@ namespace LightBDD.Framework.UnitTests.Formatting.Values
         }
 
         [Test]
+        public void FormatValue_should_format_empty_dictionaries()
+        {
+            var stub = new ValueFormattingServiceStub(CultureInfo.InvariantCulture);
+            var formatter = new DictionaryFormatter();
+
+            var dictionary = new Dictionary<float, string>();
+
+            var actual = formatter.FormatValue(dictionary, stub);
+            Assert.That(actual, Is.EqualTo("<empty>"));
+        }
+
+        [Test]
         public void DictionaryFormatter_should_use_service_to_format_items()
         {
             var stub = new ValueFormattingServiceStub(CultureInfo.InvariantCulture, ">{0}");

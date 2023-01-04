@@ -41,7 +41,8 @@ namespace LightBDD.Framework.Formatting.Values
                 .Select(key => string.Format(
                     _pairFormat,
                     formattingService.FormatValue(key),
-                    formattingService.FormatValue(dictionary[key])));
+                    formattingService.FormatValue(dictionary[key])))
+                .DefaultIfEmpty(formattingService.Symbols.EmptyValue);
 
             return string.Format(_containerFormat, string.Join(_separator, keyValues));
         }

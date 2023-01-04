@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
+using LightBDD.Core.Formatting.Parameters;
 using LightBDD.Core.Formatting.Parameters.Implementation;
 using LightBDD.Core.Formatting.Values.Implementation;
 
@@ -23,7 +24,7 @@ namespace LightBDD.Core.Formatting.Values
         /// </summary>
         /// <param name="configuration">Configuration.</param>
         public ValueFormattingService(LightBddConfiguration configuration) : this(
-            configuration.Get<ValueFormattingConfiguration>(), 
+            configuration.Get<ValueFormattingConfiguration>(),
             configuration.CultureInfoProviderConfiguration().CultureInfoProvider)
         { }
 
@@ -66,6 +67,9 @@ namespace LightBDD.Core.Formatting.Values
         {
             return _cultureInfoProvider.GetCultureInfo();
         }
+
+        /// <inheritdoc />
+        public IFormatSymbols Symbols => FormatSymbols.Instance;
 
         private IValueFormatter LookupFormatter(Type type)
         {
@@ -110,10 +114,9 @@ namespace LightBDD.Core.Formatting.Values
                     : _parent.FormatValue(value, this);
             }
 
-            public CultureInfo GetCultureInfo()
-            {
-                return _parent.GetCultureInfo();
-            }
+            public CultureInfo GetCultureInfo() => _parent.GetCultureInfo();
+
+            public IFormatSymbols Symbols => _parent.Symbols;
         }
     }
 }

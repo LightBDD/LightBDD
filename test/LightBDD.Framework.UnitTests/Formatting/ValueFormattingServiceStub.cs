@@ -1,4 +1,5 @@
 using System.Globalization;
+using LightBDD.Core.Formatting.Parameters;
 using LightBDD.Core.Formatting.Values;
 
 namespace LightBDD.Framework.UnitTests.Formatting
@@ -16,6 +17,8 @@ namespace LightBDD.Framework.UnitTests.Formatting
 
         public string FormatValue(object value)
         {
+            if (value is ISelfFormattable f)
+                return f.Format(this);
             return string.Format(GetCultureInfo(), _itemFormat, value);
         }
 
@@ -23,5 +26,7 @@ namespace LightBDD.Framework.UnitTests.Formatting
         {
             return _cultureInfo;
         }
+
+        public IFormatSymbols Symbols { get; } = new FormatSymbolsStub();
     }
 }

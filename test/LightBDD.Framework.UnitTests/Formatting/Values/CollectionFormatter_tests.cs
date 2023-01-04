@@ -30,6 +30,15 @@ namespace LightBDD.Framework.UnitTests.Formatting.Values
         }
 
         [Test]
+        public void CollectionFormatter_should_format_empty_collections()
+        {
+            var stub = new ValueFormattingServiceStub(CultureInfo.InvariantCulture);
+            var formatter = new CollectionFormatter();
+            var actual = formatter.FormatValue(Enumerable.Empty<int>(), stub);
+            Assert.That(actual, Is.EqualTo("<empty>"));
+        }
+
+        [Test]
         public void CanFormat_should_accept_any_type_implementing_IEnumerable()
         {
             var formatter = new CollectionFormatter();

@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Dynamic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;
+using LightBDD.Framework.UnitTests.Formatting;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using Shouldly;
 
 #pragma warning disable 1998
 
@@ -18,6 +22,8 @@ namespace LightBDD.Framework.UnitTests.Parameters
     [TestFixture]
     public class VerifiableDataTable_tests
     {
+        private static readonly ValueFormattingServiceStub _formatter = new(CultureInfo.InvariantCulture);
+
         class Base
         {
             public string Name { get; set; }
@@ -44,6 +50,8 @@ namespace LightBDD.Framework.UnitTests.Parameters
             public int X { get; }
             public int Y { get; }
         }
+
+        class EmptyObject { }
 
         [Test]
         public void ToVerifiableDataTable_should_infer_columns_from_class_collection()
@@ -690,6 +698,58 @@ namespace LightBDD.Framework.UnitTests.Parameters
             AssertColumnNames(inputTable, "Field", "Name", "Value", "Virtual");
         }
 
+        [Test]
+        [TestCase(0)]
+        [TestCase(2)]
+        public void It_should_have_item_column_for_collection_of_empty_expando_objects_and_verify_them(int count)
+        {
+            var input = Enumerable.Range(0, count).Select(_ => new ExpandoObject()).ToArray();
+            var table = input.ToVerifiableDataTable();
+            SetFormatter(table);
+            table.SetActual(input);
+
+            AssertColumnNames(table, "Item");
+            table.ActualRows.Count.ShouldBe(count);
+            for (int i = 0; i < count; ++i)
+                AssertRowValues(table.Details.Rows[i], TableRowType.Matching, ParameterVerificationStatus.Success, $"{_formatter.FormatValue(input[i])}|{_formatter.FormatValue(input[i])}");
+            Assert.That(table.Details.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Success));
+        }
+
+        [Test]
+        [TestCase(0)]
+        [TestCase(2)]
+        public void It_should_have_item_column_for_collection_of_empty_objects_and_verify_them(int count)
+        {
+            var input = Enumerable.Range(0, count).Select(_ => new EmptyObject()).ToArray();
+            var table = input.ToVerifiableDataTable();
+            SetFormatter(table);
+            table.SetActual(input);
+
+            AssertColumnNames(table, "Item");
+            table.ActualRows.Count.ShouldBe(count);
+            for (int i = 0; i < count; ++i)
+                AssertRowValues(table.Details.Rows[i], TableRowType.Matching, ParameterVerificationStatus.Success, $"{_formatter.FormatValue(input[i])}|{_formatter.FormatValue(input[i])}");
+            Assert.That(table.Details.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Success));
+        }
+
+        [Test]
+        public void It_should_fail_if_non_empty_collection_is_provided_when_expected_empty()
+        {
+            var input = Array.Empty<object>();
+            var table = input.ToVerifiableDataTable();
+            SetFormatter(table);
+
+            var actuals = new[] { new object(), new ExpandoObject(), new EmptyObject() };
+            table.SetActual(actuals);
+
+            AssertColumnNames(table, "Item");
+            table.ActualRows.Count.ShouldBe(3);
+            AssertRowValues(table.Details.Rows[0], TableRowType.Surplus, ParameterVerificationStatus.Failure, $"{_formatter.FormatValue(actuals[0])}|<none>");
+            AssertRowValues(table.Details.Rows[1], TableRowType.Surplus, ParameterVerificationStatus.Failure, $"{_formatter.FormatValue(actuals[1])}|<none>");
+            AssertRowValues(table.Details.Rows[2], TableRowType.Surplus, ParameterVerificationStatus.Failure, $"{_formatter.FormatValue(actuals[2])}|<none>");
+            Assert.That(table.Details.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Failure));
+        }
+
         private void AssertRow(ITabularParameterRow row, TableRowType rowType, ParameterVerificationStatus rowStatus, params string[] expectedValueDetails)
         {
             Assert.That(row.Type, Is.EqualTo(rowType));
@@ -742,6 +802,11 @@ namespace LightBDD.Framework.UnitTests.Parameters
         private static void AssertVerificationMessage(string actual, string expected)
         {
             Assert.That(actual, Is.EqualTo(expected.Replace("\n", Environment.NewLine)));
+        }
+
+        private void SetFormatter<T>(VerifiableTable<T> t)
+        {
+            (t as IComplexParameter).SetValueFormattingService(_formatter);
         }
     }
 }
