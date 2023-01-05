@@ -1,7 +1,7 @@
 LightBDD
 ===========================================
 
-Version [next]
+Version 3.6.0
 ----------------------------------------
 + #241 (LightBDD.Framework)(New) Added WithInferredColumns(InferredColumnsOrder columnsOrder) method to IInputTableBuilder and IVerifiableDataTableBuilder with option to add inferred columns in name or declaration order
 + #264 (LightBDD.Framework)(Fix) Corrected Html Report to expand feature background with the content
