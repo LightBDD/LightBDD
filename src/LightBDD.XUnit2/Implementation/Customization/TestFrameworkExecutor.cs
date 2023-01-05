@@ -22,13 +22,22 @@ namespace LightBDD.XUnit2.Implementation.Customization
             var bddScopeAttribute = GetLightBddScopeAttribute(assembly);
 
             var enableInterClassParallelization = ShallEnableInterClassParallelization(assembly, executionOptions);
-            AssemblySettings.SetSettings(new AssemblySettings
+            var settings = new AssemblySettings
             {
                 EnableInterClassParallelization = enableInterClassParallelization,
                 UseXUnitSkipBehavior = ShallUseXUnitSkipBehavior(assembly)
-            });
+            };
+            AssemblySettings.SetSettings(settings);
 
-            bddScopeAttribute?.SetUp(DiagnosticMessageSink);
+            try
+            {
+                bddScopeAttribute?.SetUp(DiagnosticMessageSink);
+            }
+            catch (Exception ex)
+            {
+                settings.SetUpException = ex;
+            }
+
             try
             {
                 using (var assemblyRunner = CreateAssemblyRunner(testCases, executionMessageSink, executionOptions, enableInterClassParallelization))
