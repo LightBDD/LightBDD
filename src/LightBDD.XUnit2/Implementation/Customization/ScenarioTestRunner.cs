@@ -30,8 +30,13 @@ namespace LightBDD.XUnit2.Implementation.Customization
             else
             {
                 AfterTestStarting();
-
-                if (!string.IsNullOrEmpty(SkipReason) && AssemblySettings.Current.UseXUnitSkipBehavior)
+                if (AssemblySettings.Current.SetUpException != null)
+                {
+                    runSummary.Failed++;
+                    if (!MessageBus.QueueMessage(new TestFailed(Test, 0,"LightBddScope SetUp failed", AssemblySettings.Current.SetUpException)))
+                        CancellationTokenSource.Cancel();
+                }
+                else if (!string.IsNullOrEmpty(SkipReason) && AssemblySettings.Current.UseXUnitSkipBehavior)
                 {
                     runSummary.Skipped++;
 
