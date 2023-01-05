@@ -14,6 +14,7 @@ Version [next]
 + #268 (LightBDD.Framework)(New) Added Tree class with a set of methods to create InputTree<T> and VerifiableTree<T> parameters
 + #268 (LightBDD.Framework)(Change) Equal() expectation supports now comparison of numeric types that have equivalent values, i.e. 5.0 (double) to 5 (int)
 + #268 (LightBDD.Framework)(Change) CastFrom() expectation support now conversions of numeric types that have equivalent values, i.e. 5.0 (double) to 5 (int)
++ #273 (LightBDD.XUnit2)(Change) Updated integration to detect exceptions thrown in SetUp() and fail scenarios instead of breaking test pipeline
 
 Version 3.5.0
 ----------------------------------------
