@@ -16,9 +16,9 @@ namespace Example.LightBDD.Fixie2.Features
             _book = new AddressBook();
         }
 
-        private void When_I_associate_contact_with_address(InputTree<Contact> contact, InputTree<PostalAddress> address)
+        private void When_I_associate_contact_with_address_as_alias(InputTree<Contact> contact, InputTree<PostalAddress> address, string alias)
         {
-            _book.AddContactAddress(new ContactAddress(contact.Input, address.Input));
+            _book.AddContactAddress(new ContactAddress(alias, contact.Input, address.Input));
         }
 
         private void Then_address_by_email_should_match(VerifiableTree match)
@@ -42,6 +42,16 @@ namespace Example.LightBDD.Fixie2.Features
         {
             StepExecution.Current.Comment($"Underlying type: {json.Expected?.GetType().Name}");
             json.SetActual(_book);
+        }
+
+        private void Then_address_book_should_contain_contacts(VerifiableTree<Contact[]> contacts)
+        {
+            contacts.SetActual(_book.GetContacts());
+        }
+
+        private void Then_address_book_should_contain_postal_addresses(VerifiableTree addresses)
+        {
+            addresses.SetActual(_book.GetAddresses());
         }
     }
 }

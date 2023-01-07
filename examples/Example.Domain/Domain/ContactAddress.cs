@@ -2,11 +2,13 @@
 {
     public class ContactAddress
     {
+        public string Alias { get; set; }
         public Contact Contact { get; }
-        public PostalAddress Address { get; }
+        public PostalAddress Address { get; set; }
 
-        public ContactAddress(Contact contact, PostalAddress address)
+        public ContactAddress(string alias,Contact contact, PostalAddress address)
         {
+            Alias = alias;
             Contact = contact;
             Address = address;
         }
