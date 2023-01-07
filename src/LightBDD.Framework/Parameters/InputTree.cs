@@ -18,7 +18,6 @@ namespace LightBDD.Framework.Parameters;
 /// <typeparam name="TData"></typeparam>
 public class InputTree<TData> : IComplexParameter, ISelfFormattable
 {
-    private static readonly InputTreeOptions DefaultOptions = new();
     private readonly InputTreeOptions _options;
     private readonly ObjectTreeBuilder _treeBuilder = ObjectTreeBuilder.Current;
     private IValueFormattingService _formattingService = ValueFormattingServices.Current;
@@ -32,7 +31,7 @@ public class InputTree<TData> : IComplexParameter, ISelfFormattable
     /// <summary>
     /// Creates input tree for <paramref name="input"/> object using default options.
     /// </summary>
-    public InputTree(TData input) : this(input, DefaultOptions)
+    public InputTree(TData input) : this(input, InputTreeOptions.Default)
     {
     }
 

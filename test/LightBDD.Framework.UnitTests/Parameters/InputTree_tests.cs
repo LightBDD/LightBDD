@@ -50,7 +50,7 @@ public class InputTree_tests
             Name = "Bob",
             Value = (string)null
         };
-        var tree = Tree.For(input, new() { ExcludeNullProperties = excludeNullProperties });
+        var tree = Tree.For(input, InputTreeOptions.Default.WithExcludeNullProperties(excludeNullProperties));
         tree.Input.ShouldBeSameAs(input);
 
         var nodes = tree.Details.Root.EnumerateAll().ToDictionary(x => x.Path);
