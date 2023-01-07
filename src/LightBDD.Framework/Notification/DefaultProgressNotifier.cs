@@ -7,6 +7,7 @@ using LightBDD.Core.Notification;
 using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters.Tabular;
+using LightBDD.Core.Results.Parameters.Trees;
 using LightBDD.Framework.Reporting.Formatters;
 #pragma warning disable 618
 
@@ -75,10 +76,16 @@ namespace LightBDD.Framework.Notification
             };
             foreach (var parameter in step.Parameters)
             {
-                if (parameter.Details is ITabularParameterDetails table)
+                switch (parameter.Details)
                 {
-                    report.Add($"    {parameter.Name}:");
-                    report.Add(new TextTableRenderer(table).Render("    "));
+                    case ITabularParameterDetails table:
+                        report.Add($"    {parameter.Name}:");
+                        report.Add(new TextTableRenderer(table).Render("    "));
+                        break;
+                    case ITreeParameterDetails tree:
+                        report.Add($"    {parameter.Name}:");
+                        report.Add(TextTreeRenderer.Render("    ", tree));
+                        break;
                 }
             }
             _onNotify(string.Join(Environment.NewLine, report));

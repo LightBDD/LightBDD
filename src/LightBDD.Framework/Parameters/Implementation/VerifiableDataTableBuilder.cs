@@ -50,9 +50,12 @@ namespace LightBDD.Framework.Parameters.Implementation
             return Add(columnName, true, columnExpression, x => Expect.To.Equal(x));
         }
 
-        public IVerifiableDataTableBuilder<TRow> WithInferredColumns()
+        public IVerifiableDataTableBuilder<TRow> WithInferredColumns() => WithInferredColumns(InferredColumnsOrder.Name);
+
+        public IVerifiableDataTableBuilder<TRow> WithInferredColumns(InferredColumnsOrder columnsOrder)
         {
             InferColumns = true;
+            InferredColumnsOrder = columnsOrder;
             return this;
         }
 

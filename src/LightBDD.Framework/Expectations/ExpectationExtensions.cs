@@ -36,7 +36,7 @@ namespace LightBDD.Framework.Expectations
         {
             return composer.ComposeSimple<T>(
                 formatter => $"equals '{formatter.FormatValue(expected)}'",
-                x => Equals(x, expected));
+                x => EqualityHelper.AreEqual(x, expected));
         }
 
         /// <summary>

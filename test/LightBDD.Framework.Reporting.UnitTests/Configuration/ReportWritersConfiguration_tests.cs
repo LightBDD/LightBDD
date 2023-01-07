@@ -34,7 +34,7 @@ namespace LightBDD.Framework.Reporting.UnitTests.Configuration
         }
 
         [Test]
-        public void It_should_allow_clear_add_and_remove_writrs()
+        public void It_should_allow_clear_add_and_remove_writers()
         {
             var writer = Mock.Of<IReportWriter>();
             var writer2 = Mock.Of<IReportWriter>();
@@ -69,9 +69,9 @@ namespace LightBDD.Framework.Reporting.UnitTests.Configuration
         public void Configuration_should_be_sealable()
         {
             var writer = Mock.Of<IReportWriter>();
-            var lighbddConfig = new LightBddConfiguration();
-            var cfg = lighbddConfig.Get<ReportWritersConfiguration>().Add(writer);
-            lighbddConfig.Seal();
+            var lightBddConfig = new LightBddConfiguration();
+            var cfg = lightBddConfig.Get<ReportWritersConfiguration>().Add(writer);
+            lightBddConfig.Seal();
 
             Assert.Throws<InvalidOperationException>(() => cfg.Add(Mock.Of<IReportWriter>()));
             Assert.Throws<InvalidOperationException>(() => cfg.Clear());

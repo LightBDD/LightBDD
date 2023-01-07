@@ -1,3 +1,5 @@
+#nullable enable
+using System;
 using System.Threading;
 
 namespace LightBDD.XUnit2.Implementation.Customization
@@ -11,5 +13,6 @@ namespace LightBDD.XUnit2.Implementation.Customization
 
         public bool EnableInterClassParallelization { get; set; }
         public bool UseXUnitSkipBehavior { get; set; }
+        public Exception? SetUpException { get; set; }
     }
 }

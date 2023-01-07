@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using LightBDD.Core.Execution;
+using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Parameters;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using Shouldly;
 
 namespace LightBDD.Framework.UnitTests.Parameters
 {
@@ -37,6 +40,8 @@ namespace LightBDD.Framework.UnitTests.Parameters
             public int X { get; }
             public int Y { get; }
         }
+
+        class EmptyObject{}
 
         [Test]
         public void ToTable_should_infer_columns_from_class_collection()
@@ -168,7 +173,31 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
-        public void AsVerifiableTable_should_infer_columns_from_dynamic_collection_of_unified_item_types()
+        public void ToTable_should_maintain_declaration_order_of_inferred_columns_for_complex_types_with_fields_being_first()
+        {
+            var data = new[]
+            {
+                new Derived()
+            };
+
+            var inputTable = data.ToTable(x => x.WithInferredColumns(InferredColumnsOrder.Declaration));
+            AssertColumnNames(inputTable, "Field", "Value", "Text", "Virtual", "Name");
+        }
+
+        [Test]
+        public void ToTable_should_maintain_declaration_order_of_inferred_columns_for_poco_types_with_fields_being_first()
+        {
+            var data = new[]
+            {
+                new Base()
+            };
+
+            var inputTable = data.ToTable(x => x.WithInferredColumns(InferredColumnsOrder.Declaration));
+            AssertColumnNames(inputTable, "Field", "Name", "Value", "Virtual");
+        }
+
+        [Test]
+        public void It_should_infer_columns_from_dynamic_collection_of_unified_item_types()
         {
             var values = new[]
                 {
@@ -258,6 +287,45 @@ namespace LightBDD.Framework.UnitTests.Parameters
             Assert.That(table[1], Is.EqualTo(input[1]));
         }
 
+        [Test]
+        [TestCase(0)]
+        [TestCase(2)]
+        public void Table_should_have_item_for_collection_of_empty_expando_objects(int count)
+        {
+            var input = Enumerable.Range(0, count).Select(_ => new ExpandoObject()).ToArray();
+            var table = input.ToTable();
+            AssertColumnNames(table, "Item");
+            table.Count.ShouldBe(count);
+            for (int i = 0; i < count; ++i)
+                AssertValues(table, input[i], ColumnValue.From(input[i]));
+        }
+
+        [Test]
+        [TestCase(0)]
+        [TestCase(2)]
+        public void Table_should_have_item_column_for_collection_of_empty_objects(int count)
+        {
+            var input = Enumerable.Range(0, count).Select(_ => new EmptyObject()).ToArray();
+            var table = input.ToTable();
+            AssertColumnNames(table, "Item");
+            table.Count.ShouldBe(count);
+            for (int i = 0; i < count; ++i)
+                AssertValues(table, input[i], ColumnValue.From(input[i]));
+        }
+
+        [Test]
+        [TestCase(0)]
+        [TestCase(2)]
+        public void Table_should_have_item_column_for_collection_of_empty_collections(int count)
+        {
+            var input = Enumerable.Range(0, count).Select(_ => Array.Empty<int>()).ToArray();
+            var table = input.ToTable();
+            AssertColumnNames(table, "Item");
+            table.Count.ShouldBe(count);
+            for (int i = 0; i < count; ++i)
+                AssertValues(table, input[i], ColumnValue.From(input[i]));
+        }
+
         private static void TestCollectionToTable<T>(T[] input, string[] expectedColumns, int index, ColumnValue[] expectedValues)
         {
             var table = input.ToTable();
@@ -273,6 +341,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
         private static void AssertColumnNames<T>(InputTable<T> table, params string[] expectedColumns)
         {
             Assert.That(table.Columns.Select(c => c.Name).ToArray(), Is.EqualTo(expectedColumns));
+
+            var details = (ITabularParameterDetails)((IComplexParameter)table).Details;
+            Assert.That(details.Columns.Select(x => x.Name).ToArray(), Is.EqualTo(expectedColumns));
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.Globalization;
+using LightBDD.Core.Formatting.Parameters;
 
 namespace LightBDD.Core.Formatting.Values
 {
@@ -19,5 +20,10 @@ namespace LightBDD.Core.Formatting.Values
         /// </summary>
         /// <returns>Current <see cref="CultureInfo"/> instance.</returns>
         CultureInfo GetCultureInfo();
+
+        /// <summary>
+        /// Returns associated <seealso cref="IFormatSymbols"/> instance.
+        /// </summary>
+        IFormatSymbols Symbols { get; }
     }
 }

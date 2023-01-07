@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -7,7 +6,9 @@ using System.Reflection;
 using System.Text;
 using HtmlAgilityPack;
 using LightBDD.Core.Results;
+using LightBDD.Framework.Parameters;
 using LightBDD.Framework.Reporting.Formatters;
+using LightBDD.Framework.Reporting.UnitTests.Formatters.Helpers;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 
@@ -285,6 +286,108 @@ initialize();";
             Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
         }
 
+        [Test]
+        public void Should_format_verifiable_trees()
+        {
+            var expected = new
+            {
+                Name = "John",
+                Surname = "Johnson",
+                Address = new { Street = "High Street", PostCode = "AB1 7BA", City = "London", Country = "UK" },
+                Records = new[] { "AB-1", "AB-2", "AB-3" }
+            };
+            var actual = new
+            {
+                Name = "Johnny",
+                Surname = "Johnson",
+                Address = new { Street = "High Street", PostCode = "AB1 7BC", City = "London", Country = "UK" },
+                Records = new[] { "AB-1", "AB-2", "AB-3", "AB-4" }
+            };
+
+            var tree = Tree.ExpectEquivalent(expected);
+            tree.SetActual(actual);
+
+            var results = ReportFormatterTestData.GetFeatureWithVerifiableTree(tree.Details);
+            var text = FormatAndExtractTableText("//table[@class=\"param tree\"]", results);
+            TestContext.WriteLine(text);
+
+            var expectedText = @"! | $ | &lt;object&gt; | Name | Johnny / John | Surname | Johnson |
+! | ↳ | Address | &lt;object&gt; | City | London | Country | UK | PostCode | AB1 7BC / AB1 7BA | Street | High Street |
+! | ↳ | Records | &lt;array:4&gt; / &lt;array:3&gt; | [0] | AB-1 | [1] | AB-2 | [2] | AB-3 | [3] | AB-4 / &lt;none&gt; |";
+            Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
+        }
+
+        [Test]
+        public void Should_format_input_trees()
+        {
+            var input = new
+            {
+                Name = "John",
+                Surname = "Johnson",
+                Address = new { Street = "High Street", PostCode = "AB1 7BA", City = "London", Country = "UK" },
+                Records = new[] { "AB-1", "AB-2", "AB-3" }
+            };
+
+            var tree = Tree.For(input);
+
+            var results = ReportFormatterTestData.GetFeatureWithVerifiableTree(tree.Details);
+            var text = FormatAndExtractTableText("//table[@class=\"param tree\"]", results);
+            TestContext.WriteLine(text);
+
+            var expectedText = @"$ | &lt;object&gt; | Name | John | Surname | Johnson |
+↳ | Address | &lt;object&gt; | City | London | Country | UK | PostCode | AB1 7BA | Street | High Street |
+↳ | Records | &lt;array:3&gt; | [0] | AB-1 | [1] | AB-2 | [2] | AB-3 |";
+            Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
+        }
+
+        [Test]
+        public void Should_format_verifiable_tree_jagged_arrays()
+        {
+            var input = new[]
+            {
+                Enumerable.Range(0,5),
+                Enumerable.Range(0,6),
+                Enumerable.Range(0,4)
+            };
+
+            var tree = Tree.ExpectEquivalent(input);
+            tree.SetActual(input);
+
+            var results = ReportFormatterTestData.GetFeatureWithVerifiableTree(tree.Details);
+            var text = FormatAndExtractTableText("//table[@class=\"param tree\"]", results);
+            TestContext.WriteLine(text);
+
+            var expectedText = @"= | $ | &lt;array:3&gt; |
+= | ↳ | [0] | &lt;array:5&gt; | [0] | 0 | [1] | 1 | [2] | 2 | [3] | 3 | [4] | 4 |
+= | ↳ | [1] | &lt;array:6&gt; | [0] | 0 | [1] | 1 | [2] | 2 | [3] | 3 | [4] | 4 | [5] | 5 |
+= | ↳ | [2] | &lt;array:4&gt; | [0] | 0 | [1] | 1 | [2] | 2 | [3] | 3 |";
+            Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
+        }
+
+        [Test]
+        public void Should_format_verifiable_tree_array_with_sub_objects()
+        {
+            var input = new[]
+            {
+                new{Name="Bob",Surname="Kennedy"},
+                new{Name="Ron",Surname="Kowalski"},
+                new{Name="Ted",Surname="Smith"},
+            };
+
+            var tree = Tree.ExpectEquivalent(input);
+            tree.SetActual(input);
+
+            var results = ReportFormatterTestData.GetFeatureWithVerifiableTree(tree.Details);
+            var text = FormatAndExtractTableText("//table[@class=\"param tree\"]", results);
+            TestContext.WriteLine(text);
+
+            var expectedText = @"= | $ | &lt;array:3&gt; |
+= | ↳ | [0] | &lt;object&gt; | Name | Bob | Surname | Kennedy |
+= | ↳ | [1] | &lt;object&gt; | Name | Ron | Surname | Kowalski |
+= | ↳ | [2] | &lt;object&gt; | Name | Ted | Surname | Smith |";
+            Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
+        }
+
         private string GetExpectedLightBddVersion()
         {
             return typeof(IBddRunner).GetTypeInfo().Assembly.GetName().Version.ToString(4);
@@ -295,23 +398,21 @@ initialize();";
             var formatted = FormatResults(results);
             var doc = new HtmlDocument();
             doc.LoadHtml(formatted);
-            var body = doc.DocumentNode.SelectSingleNode("//body");
-            var builder = FormatAllNodes(new HtmlToPlainTextFormatter(), body);
+            var builder = new HtmlToPlainTextFormatter();
+            builder.FormatNode(doc.DocumentNode.SelectSingleNode("//body"));
             Debug.WriteLine(builder.ToString());
             return builder.ToString();
         }
 
-        private static HtmlToPlainTextFormatter FormatAllNodes(HtmlToPlainTextFormatter builder, HtmlNode node)
+        private string FormatAndExtractTableText(string xpath, params IFeatureResult[] results)
         {
-            builder.EnsureSeparatorFor(node);
-
-            if (node.Name == "#text")
-                builder.Append(node.InnerText);
-
-            foreach (var childNode in node.ChildNodes)
-                FormatAllNodes(builder, childNode);
-
-            return builder.EnsureSeparatorFor(node);
+            var formatted = FormatResults(results);
+            var doc = new HtmlDocument();
+            doc.LoadHtml(formatted);
+            var builder = new HtmlTableToPlainTextFormatter();
+            builder.FormatNode(doc.DocumentNode.SelectSingleNode(xpath));
+            Debug.WriteLine(builder.ToString());
+            return builder.ToString();
         }
 
         private string FormatResults(params IFeatureResult[] results)
@@ -321,53 +422,6 @@ initialize();";
                 _subject.Format(memory, results);
                 return Encoding.UTF8.GetString(memory.ToArray());
             }
-        }
-    }
-
-    internal class HtmlToPlainTextFormatter
-    {
-        private readonly IEnumerable<string> _blockElements = new[] { "div", "tr", "table", "section", "article", "h1", "h2", "h3", "br" };
-        private readonly IEnumerable<string> _inlineElements = new[] { "td", "th" };//browsers are treating td/th in special way while for span they put no spaces when copied to clipboard
-        private readonly List<string> _lines = new List<string>();
-        private readonly StringBuilder _current = new StringBuilder();
-
-        public HtmlToPlainTextFormatter EnsureNewLine()
-        {
-            if (_current.Length > 0)
-            {
-                _lines.Add(_current.ToString().TrimEnd());
-                _current.Clear();
-            }
-            return this;
-        }
-
-        public HtmlToPlainTextFormatter EnsureSpace()
-        {
-            if (_current.Length > 0 && !char.IsWhiteSpace(_current[_current.Length - 1]))
-                _current.Append(' ');
-            return this;
-        }
-
-        public HtmlToPlainTextFormatter EnsureSeparatorFor(HtmlNode node)
-        {
-            var name = node.Name.ToLowerInvariant();
-            if (_blockElements.Contains(name))
-                return EnsureNewLine();
-            if (_inlineElements.Contains(name))
-                return EnsureSpace();
-            return this;
-        }
-
-        public HtmlToPlainTextFormatter Append(string text)
-        {
-            _current.Append(text);
-            return this;
-        }
-
-        public override string ToString()
-        {
-            EnsureNewLine();//to flush current
-            return string.Join(Environment.NewLine, _lines);
         }
     }
 }

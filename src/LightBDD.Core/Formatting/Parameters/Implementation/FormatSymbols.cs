@@ -9,5 +9,6 @@
         }
 
         public string NullValue => "<null>";
+        public string EmptyValue => "<empty>";
     }
 }

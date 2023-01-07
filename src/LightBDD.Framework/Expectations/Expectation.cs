@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace LightBDD.Framework.Expectations
     /// Base class that should be used for all <see cref="IExpectation{T}"/> implementations.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class Expectation<T> : IExpectation<T>
+    public abstract class Expectation<T> : IExpectation<T>, IGeneralExpectationConverter
     {
         /// <inheritdoc />
         public abstract ExpectationResult Verify(T value, IValueFormattingService formattingService);
@@ -53,6 +54,14 @@ namespace LightBDD.Framework.Expectations
             foreach (var line in details)
                 builder.AppendLine().Append('\t').Append(line.Replace(Environment.NewLine, Environment.NewLine + "\t"));
             return ExpectationResult.Failure(builder.ToString());
+        }
+
+        /// <inheritdoc />
+        public Expectation<object?> ToGeneralExpectation()
+        {
+            if (this is Expectation<object?> self)
+                return self;
+            return this.CastFrom(Expect.Type<object?>());
         }
     }
 }

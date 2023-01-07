@@ -8,7 +8,9 @@ using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
+using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Notification;
+using LightBDD.Framework.Parameters;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 
@@ -67,7 +69,8 @@ namespace LightBDD.Framework.UnitTests.Notification
                                 ParameterVerificationStatus.Failure),
                             TestResults.CreateValueResult("<null>", "YYY",
                                 ParameterVerificationStatus.Failure))
-                )
+                ),
+                new TestResults.TestParameterResult("tree",CreateTreeParameterResult())
             };
             var scenarioResult = Fake.Object<TestResults.TestScenarioResult>();
             scenarioResult.Status = ExecutionStatus.Passed;
@@ -98,6 +101,16 @@ namespace LightBDD.Framework.UnitTests.Notification
                 .Replace("\r", "")
                 .Replace("\n", Environment.NewLine);
 
+            var expectedTree = @"    tree:
+    = $: <object>
+    = $.Items: <array:1>
+    ! $.Items[0]: False/True
+    = $.Name: Bob
+    ! $.Surname: Johnson/<none>
+    ! $.LastName: <none>/Johnson"
+                .Replace("\r", "")
+                .Replace("\n", Environment.NewLine);
+
             var expected = new[]
             {
                 $"FEATURE: [{string.Join("][", featureInfo.Labels)}] {featureInfo.Name}{Environment.NewLine}  {featureInfo.Description}",
@@ -105,12 +118,31 @@ namespace LightBDD.Framework.UnitTests.Notification
                 $"  STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: {stepInfo.Name}...",
                 $"  STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: /* {comment} */",
                 $"  STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: 🔗{attachment.Name}: {attachment.FilePath}",
-                $"  STEP {stepResult.Info.GroupPrefix}{stepResult.Info.Number}/{stepResult.Info.GroupPrefix}{stepResult.Info.Total}: {stepResult.Info.Name} ({stepResult.Status} after {stepResult.ExecutionTime.Duration.FormatPretty()}){Environment.NewLine}{expectedTable}",
+                $"  STEP {stepResult.Info.GroupPrefix}{stepResult.Info.Number}/{stepResult.Info.GroupPrefix}{stepResult.Info.Total}: {stepResult.Info.Name} ({stepResult.Status} after {stepResult.ExecutionTime.Duration.FormatPretty()}){Environment.NewLine}{expectedTable}{Environment.NewLine}{expectedTree}",
                 $"  SCENARIO RESULT: {scenarioResult.Status} after {scenarioResult.ExecutionTime.Duration.FormatPretty()}{Environment.NewLine}    {scenarioResult.StatusDetails}",
                 $"FEATURE FINISHED: {featureResult.Info.Name}"
             };
 
             Assert.That(_captured.ToArray(), Is.EqualTo(expected));
+        }
+
+        private IParameterDetails CreateTreeParameterResult()
+        {
+            var expected = new
+            {
+                Name = "Bob",
+                Surname = "Johnson",
+                Items = new[] { false }
+            };
+            var actual = new
+            {
+                Name = "Bob",
+                LastName = "Johnson",
+                Items = new[] { true }
+            };
+            var tree = Tree.ExpectEquivalent(expected);
+            tree.SetActual(actual);
+            return tree.Details;
         }
 
         [Test]

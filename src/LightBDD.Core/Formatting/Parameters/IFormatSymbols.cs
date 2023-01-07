@@ -9,5 +9,10 @@ namespace LightBDD.Core.Formatting.Parameters
         /// Null value text representation.
         /// </summary>
         string NullValue { get; }
+
+        /// <summary>
+        /// Empty value text representation.
+        /// </summary>
+        string EmptyValue { get; }
     }
 }

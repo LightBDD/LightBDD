@@ -37,5 +37,13 @@ namespace LightBDD.Framework.Parameters
         /// </summary>
         /// <returns>Self.</returns>
         IInputTableBuilder<TRow> WithInferredColumns();
+
+        /// <summary>
+        /// Instructs <see cref="IInputTableBuilder{TRow}"/> to infer columns basing on the <typeparamref name="TRow"/> type.
+        /// It is possible to use this methods together with <c>WithColumn()</c> methods, where manually specified columns will override inferred columns of the same name.
+        /// </summary>
+        /// <param name="columnsOrder">Order of the columns</param>
+        /// <returns>Self.</returns>
+        IInputTableBuilder<TRow> WithInferredColumns(InferredColumnsOrder columnsOrder);
     }
 }

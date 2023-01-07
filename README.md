@@ -96,7 +96,7 @@ LightBDD offers multiple scenario formats and flavors suitable for various use c
 
 The implementation of step methods is located in other part of the class, in separate file and leverages standard features of the underlying test framwork (such as assert mechanisms) empowered by LightBDD features such as:
 * [Dependency Injection](https://github.com/LightBDD/LightBDD/wiki/DI-Containers),
-* [Inline and Tabular parameters](https://github.com/LightBDD/LightBDD/wiki/Advanced-Step-Parameters),
+* [Inline, Tabular, Tree-hierarchy parameters](https://github.com/LightBDD/LightBDD/wiki/Advanced-Step-Parameters),
 * [Expectation Expressions](https://github.com/LightBDD/LightBDD/wiki/Expectation-Expressions),
 * [Step comments](https://github.com/LightBDD/LightBDD/wiki/Step-Comments),
 * [Scenario and Step Decorators](https://github.com/LightBDD/LightBDD/wiki/Extending-Test-Behavior).

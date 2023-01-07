@@ -18,7 +18,7 @@ namespace LightBDD.Framework.Results.Implementation
         {
             Columns = columns.ToArray();
             Rows = rows.ToArray();
-            VerificationStatus = Rows.Any() ? Rows.Max(x => x.VerificationStatus) : ParameterVerificationStatus.NotApplicable;
+            VerificationStatus = Rows.Any() ? Rows.Max(x => x.VerificationStatus) : ParameterVerificationStatus.Success;
             VerificationMessage = CollectMessages(tableException);
         }
 

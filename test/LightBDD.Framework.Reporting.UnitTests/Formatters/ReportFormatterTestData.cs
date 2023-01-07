@@ -1,7 +1,10 @@
 ﻿using System;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
+using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
+using LightBDD.Core.Results.Parameters.Trees;
+using LightBDD.Framework.Parameters;
 using LightBDD.UnitTests.Helpers;
 
 namespace LightBDD.Framework.Reporting.UnitTests.Formatters
@@ -26,7 +29,7 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
                             .WithSubSteps(TestResults.CreateStepResult(1, "sub-substep 1", ExecutionStatus.Failed)
                                     .WithGroupPrefix("2.3.")
                                     .WithComments($"sub-sub-multiline{Environment.NewLine}comment")
-                                    .WithAttachment(new FileAttachment("attachment1","/tmp/file1.png","file1.png"))
+                                    .WithAttachment(new FileAttachment("attachment1", "/tmp/file1.png", "file1.png"))
                                     .WithStepParameters(
                                         TestResults.CreateTestParameter("table1", TestResults.CreateTabularParameterDetails(ParameterVerificationStatus.Failure)
                                             .WithKeyColumns("Key")
@@ -82,6 +85,14 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
                     TestResults.CreateStepResult(1, "step", ExecutionStatus.Passed)),
                 TestResults.CreateScenarioResult("scenario B", "lab C", _startDate, TimeSpan.FromSeconds(5), null,
                     TestResults.CreateStepResult(1, "step", ExecutionStatus.Passed)));
+        }
+
+        public static IFeatureResult GetFeatureWithVerifiableTree(ITreeParameterDetails tree)
+        {
+            return TestResults.CreateFeatureResult("My Feature", null, null,
+                TestResults.CreateScenarioResult("scenario A", "lab B", _startDate.AddMilliseconds(2), TimeSpan.FromSeconds(2), null,
+                    TestResults.CreateStepResult(1, "step", ExecutionStatus.Failed)
+                        .WithStepParameters(TestResults.CreateTestParameter("tree", tree))));
         }
     }
 }
