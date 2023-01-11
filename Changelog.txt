@@ -3,7 +3,7 @@ LightBDD
 
 Version 3.6.1
 ----------------------------------------
-+ #241 (LightBDD.Framework)(Fix) Fixed casting null to Nullable for CastExpectation
++ #276 (LightBDD.Framework)(Fix) Fixed casting null to Nullable for CastExpectation
 
 Version 3.6.0
 ----------------------------------------
