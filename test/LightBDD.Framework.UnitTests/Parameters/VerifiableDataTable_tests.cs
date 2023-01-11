@@ -750,6 +750,23 @@ namespace LightBDD.Framework.UnitTests.Parameters
             Assert.That(table.Details.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Failure));
         }
 
+        class WithNullable
+        {
+            public decimal? Value { get; set; }
+        }
+
+        [Test]
+        public void It_should_match_null_against_nullables()
+        {
+            var input = new WithNullable[] { new() { Value = null } };
+
+            var table = input.ToVerifiableDataTable(x => x.WithColumn(v => v.Value));
+            table.SetActual(input);
+
+            table.Details.VerificationMessage.ShouldBeNullOrEmpty();
+            table.Details.VerificationStatus.ShouldBe(ParameterVerificationStatus.Success);
+        }
+
         private void AssertRow(ITabularParameterRow row, TableRowType rowType, ParameterVerificationStatus rowStatus, params string[] expectedValueDetails)
         {
             Assert.That(row.Type, Is.EqualTo(rowType));
