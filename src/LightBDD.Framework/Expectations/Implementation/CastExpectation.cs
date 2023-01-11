@@ -14,7 +14,7 @@ namespace LightBDD.Framework.Expectations.Implementation
 
         public override ExpectationResult Verify(TBase value, IValueFormattingService formattingService)
         {
-            if (value is TDerived || value is null && !typeof(TDerived).IsValueType)
+            if (value is TDerived || value is null && CanCastFromNull())
                 return _expectation.Verify((TDerived)value, formattingService);
 
             if (NumericTypeHelper.IsNumeric(typeof(TDerived)) && NumericTypeHelper.IsNumeric(value))
@@ -32,6 +32,12 @@ namespace LightBDD.Framework.Expectations.Implementation
             }
 
             return ExpectationResult.Failure($"value '{formattingService.FormatValue(value)}' of type '{value?.GetType().Name ?? "<null>"}' cannot be cast to '{typeof(TDerived).Name}'");
+        }
+
+        private static bool CanCastFromNull()
+        {
+            return !typeof(TDerived).IsValueType
+                || (typeof(TDerived).IsGenericType && typeof(TDerived).GetGenericTypeDefinition() == typeof(Nullable<>));
         }
 
         private static bool TryConvert(TBase value, out TDerived o)
