@@ -1,6 +1,10 @@
 LightBDD
 ===========================================
 
+Version 3.6.1
+----------------------------------------
++ #276 (LightBDD.Framework)(Fix) Fixed casting null to Nullable for CastExpectation
+
 Version 3.6.0
 ----------------------------------------
 + #241 (LightBDD.Framework)(New) Added WithInferredColumns(InferredColumnsOrder columnsOrder) method to IInputTableBuilder and IVerifiableDataTableBuilder with option to add inferred columns in name or declaration order

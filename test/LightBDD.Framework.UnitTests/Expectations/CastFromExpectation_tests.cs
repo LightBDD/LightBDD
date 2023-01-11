@@ -57,5 +57,12 @@ namespace LightBDD.Framework.UnitTests.Expectations
             Assert.False(result);
             result.Message.ShouldBe("value '5.14' of type 'Double' cannot be cast to 'Int32' without precision loss");
         }
+
+        [Test]
+        public void Casting_null_to_Nullable()
+        {
+            var result = Expect.To.Equal<int?>(null).CastFrom(Expect.Type<object>()).Verify(null, ValueFormattingServices.Current);
+            Assert.True(result);
+        }
     }
 }
