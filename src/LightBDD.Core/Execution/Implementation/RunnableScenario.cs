@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using LightBDD.Core.Dependencies.Implementation;
 using LightBDD.Core.Notification.Events;
 
 namespace LightBDD.Core.Execution.Implementation
@@ -143,6 +144,7 @@ namespace LightBDD.Core.Execution.Implementation
             Context = CreateExecutionContext();
             ScenarioExecutionContext.Current.Get<CurrentScenarioProperty>().Scenario = this;
             PrepareSteps();
+            DependencyInjector.Instance.Inject(_scenarioContext.FixtureObject, _scope);
         }
 
         private IDependencyContainer CreateContainerScope()
