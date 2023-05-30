@@ -1,6 +1,5 @@
 ﻿using System;
 using LightBDD.Core.Configuration;
-using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
 using LightBDD.Framework.Extensibility;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
@@ -9,7 +8,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests;
 
 [TestFixture]
-public class CoreBddRunner_dependencies_injection_tests : Steps
+public class CoreBddRunner_dependencies_injection_tests
 {
     private TestableDependencyContainer _container;
     private TestableFeatureRunnerRepository _runners;
