@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
@@ -35,7 +36,7 @@ public class CoreBddRunner_execution_extension_setup_and_teardown_tests
         {
             TearDownCalled = true;
             if (ThrowOnTearDown)
-                throw new InvalidOperationException("TearDown");
+                throw new InvalidOperationException("OnTearDown");
             return Task.CompletedTask;
         }
 
@@ -89,7 +90,8 @@ public class CoreBddRunner_execution_extension_setup_and_teardown_tests
     {
         _fixture.ThrowOnTearDown = true;
         var ex = Assert.Throws<AggregateException>(() => _feature.GetBddRunner(_fixture).Test().TestScenario(_fixture.Fail));
-        Assert.That(ex.Message, Is.EqualTo("One or more errors occurred. (TearDown) (IO)"));
+        Assert.That(ex.Message, Does.Contain("One or more errors occurred."));
+        Assert.That(ex.InnerExceptions.Select(e => e.Message).ToArray(), Is.EquivalentTo(new[] { "IO", "OnTearDown" }));
         Assert.That(_fixture.SetUpCalled, Is.True);
         Assert.That(_fixture.TearDownCalled, Is.True);
     }

@@ -33,6 +33,7 @@ namespace LightBDD.Core.Execution.Implementation
         public IScenarioInfo Info => _result.Info;
         public IDependencyResolver DependencyResolver => _scope;
         public object Context { get; private set; }
+        public object Fixture => _scenarioContext.FixtureObject;
 
         public RunnableScenario(RunnableScenarioContext scenarioContext, IScenarioInfo scenarioInfo,
             IEnumerable<StepDescriptor> stepDescriptors, ExecutionContextDescriptor contextDescriptor,

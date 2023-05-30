@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Execution;
+using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Framework;
 using LightBDD.Framework.Extensibility;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
@@ -11,9 +14,9 @@ namespace LightBDD.Core.UnitTests;
 public class CoreBddRunner_dependencies_injection_tests
 {
     private TestableDependencyContainer _container;
-    private TestableFeatureRunnerRepository _runners;
 
     class Dependency { }
+
     class SomeFeatureFixture
     {
         [FixtureDependency]
@@ -47,13 +50,35 @@ public class CoreBddRunner_dependencies_injection_tests
         public Dependency OtherPrivateSetter { get; }
     }
 
+    class FixtureWithSetUp : IScenarioSetUp
+    {
+        [FixtureDependency]
+        public Dependency Dependency { get; set; }
+
+        public bool DependencySetOnSetUp { get; private set; }
+
+        public Task OnScenarioSetUp()
+        {
+            DependencySetOnSetUp = Dependency != null;
+            return Task.CompletedTask;
+        }
+        public void Foo() { }
+    }
+
     [SetUp]
     public void SetUp()
     {
         _container = new TestableDependencyContainer();
-        _runners = new TestableFeatureRunnerRepository(TestableIntegrationContextBuilder.Default()
-            .WithConfiguration(c => c.DependencyContainerConfiguration().UseContainer(_container)));
+    }
 
+    private TestableFeatureRunnerRepository SetupRepository(Action<LightBddConfiguration> cfg = null)
+    {
+        return new TestableFeatureRunnerRepository(TestableIntegrationContextBuilder.Default()
+            .WithConfiguration(c =>
+            {
+                c.DependencyContainerConfiguration().UseContainer(_container);
+                cfg?.Invoke(c);
+            }));
     }
 
     [Test]
@@ -62,7 +87,7 @@ public class CoreBddRunner_dependencies_injection_tests
         _container.Register(typeof(Dependency), new Dependency());
         var fixture = new SomeFeatureFixture();
 
-        var runner = _runners.GetRunnerFor(typeof(SomeFeatureFixture)).GetBddRunner(fixture);
+        var runner = SetupRepository().GetRunnerFor(typeof(SomeFeatureFixture)).GetBddRunner(fixture);
         runner.Test().TestScenario(fixture.CheckDependenciesSet);
 
         Assert.That(fixture.WasDependencySet, Is.True);
@@ -73,7 +98,7 @@ public class CoreBddRunner_dependencies_injection_tests
     public void Runner_should_fail_if_FixtureDependency_is_incorrectly_used()
     {
         var fixture = new InvalidDerived();
-        var runner = _runners.GetRunnerFor(typeof(InvalidDerived)).GetBddRunner(fixture);
+        var runner = SetupRepository().GetRunnerFor(typeof(InvalidDerived)).GetBddRunner(fixture);
 
         var ex = Assert.Throws<InvalidOperationException>(() => runner.Test().TestScenario(fixture.Foo));
         Assert.That(ex.Message, Does.Contain("Unable to inject dependencies on 'InvalidDerived':"));
@@ -86,9 +111,53 @@ public class CoreBddRunner_dependencies_injection_tests
     public void Runner_should_fail_if_FixtureDependency_fails_resolution()
     {
         var fixture = new SomeFeatureFixture();
-        var runner = _runners.GetRunnerFor(typeof(SomeFeatureFixture)).GetBddRunner(fixture);
+        var runner = SetupRepository().GetRunnerFor(typeof(SomeFeatureFixture)).GetBddRunner(fixture);
 
         var ex = Assert.Throws<InvalidOperationException>(() => runner.Test().TestScenario(fixture.CheckDependenciesSet));
         Assert.That(ex.Message, Does.Contain($"Unable to inject dependency of type '{nameof(Dependency)}' to 'SomeFeatureFixture.Dependency' property: "));
+    }
+
+    [Test]
+    public void Runner_should_call_decorators_on_already_configured_fixtures()
+    {
+        var dependency = new Dependency();
+        _container.Register(typeof(Dependency), dependency);
+        var decorator = new CapturingDecorator();
+        var fixture = new SomeFeatureFixture();
+
+        SetupRepository(cfg => cfg.ExecutionExtensionsConfiguration().EnableScenarioDecorator(() => decorator))
+            .GetRunnerFor(typeof(SomeFeatureFixture))
+            .GetBddRunner(fixture)
+            .Test()
+            .TestScenario(fixture.CheckDependenciesSet);
+
+        Assert.That(decorator.Captured, Is.SameAs(dependency));
+    }
+
+    [Test]
+    public void Runner_should_call_OnScenarioSetUp_on_already_configured_fixtures()
+    {
+        var dependency = new Dependency();
+        _container.Register(typeof(Dependency), dependency);
+        var fixture = new FixtureWithSetUp();
+
+        SetupRepository()
+            .GetRunnerFor(typeof(FixtureWithSetUp))
+            .GetBddRunner(fixture)
+            .Test()
+            .TestScenario(fixture.Foo);
+
+        Assert.That(fixture.DependencySetOnSetUp, Is.True);
+    }
+
+    class CapturingDecorator : IScenarioDecorator
+    {
+        public Dependency Captured { private set; get; }
+
+        public Task ExecuteAsync(IScenario scenario, Func<Task> scenarioInvocation)
+        {
+            Captured = (scenario.Fixture as SomeFeatureFixture)?.Dependency;
+            return Task.CompletedTask;
+        }
     }
 }
