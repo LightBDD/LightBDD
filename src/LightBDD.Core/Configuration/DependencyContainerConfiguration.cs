@@ -12,7 +12,15 @@ namespace LightBDD.Core.Configuration
         /// <summary>
         /// Returns configured <see cref="IDependencyContainer"/>.
         /// </summary>
-        public IDependencyContainer DependencyContainer { get; private set; } = new DefaultDependencyContainer(LifetimeScope.Global);
+        public IDependencyContainer DependencyContainer { get; private set; }
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public DependencyContainerConfiguration()
+        {
+            UseDefault();
+        }
 
         /// <summary>
         /// Sets <paramref name="container"/> as a container to be used by LightBDD scenarios and steps.
@@ -21,7 +29,7 @@ namespace LightBDD.Core.Configuration
         /// <returns>Self.</returns>
         [Obsolete("Please migrate to " + nameof(IDependencyContainerV2) + " implementations")]
         public DependencyContainerConfiguration UseContainer(IDependencyContainer container) =>
-            UseContainer(new WrappingDependencyContainer(container));
+            UseContainer(new WrappingContainerAdapter(container));
 
         /// <summary>
         /// Sets <paramref name="container"/> as a container to be used by LightBDD scenarios and steps.
