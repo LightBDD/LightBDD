@@ -133,6 +133,8 @@ namespace LightBDD.Core.Configuration
         public ExecutionExtensionsConfiguration RegisterGlobalSetUp(string activityName, Action setUp, Action cleanUp = null)
         {
             ThrowIfSealed();
+            if(setUp==null)
+                throw new ArgumentNullException(nameof(setUp));
             GlobalSetUp.RegisterActivity(activityName,
                 () =>
                 {
@@ -157,7 +159,9 @@ namespace LightBDD.Core.Configuration
         public ExecutionExtensionsConfiguration RegisterGlobalCleanUp(string activityName, Func<Task> cleanUp)
         {
             ThrowIfSealed();
-            GlobalSetUp.RegisterActivity(activityName, () => Task.CompletedTask, cleanUp);
+            if (cleanUp == null)
+                throw new ArgumentNullException(nameof(cleanUp));
+            GlobalSetUp.RegisterActivity(activityName, null, cleanUp);
             return this;
         }
 
@@ -171,6 +175,8 @@ namespace LightBDD.Core.Configuration
         public ExecutionExtensionsConfiguration RegisterGlobalCleanUp(string activityName, Action cleanUp)
         {
             ThrowIfSealed();
+            if (cleanUp == null)
+                throw new ArgumentNullException(nameof(cleanUp));
             GlobalSetUp.RegisterActivity(activityName,
                 () => Task.CompletedTask,
                 () =>

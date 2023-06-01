@@ -9,21 +9,25 @@ internal class GlobalActivitySetUp : IGlobalSetUp
     private readonly string _name;
     private readonly Func<Task> _setUp;
     private readonly Func<Task> _cleanUp;
-    private bool _executed;
+    private bool _runCleanup;
 
     public GlobalActivitySetUp(string name, Func<Task> setUp, Func<Task> cleanUp)
     {
         _setUp = setUp;
         _cleanUp = cleanUp;
         _name = name;
+        _runCleanup = setUp == null;
     }
 
     public async Task SetUpAsync(IDependencyResolver _)
     {
+        if (_setUp == null)
+            return;
+
         try
         {
             await _setUp();
-            _executed = true;
+            _runCleanup = true;
         }
         catch (Exception ex)
         {
@@ -35,7 +39,7 @@ internal class GlobalActivitySetUp : IGlobalSetUp
     {
         try
         {
-            if (_executed)
+            if (_runCleanup && _cleanUp != null)
                 await _cleanUp();
         }
         catch (Exception ex)
