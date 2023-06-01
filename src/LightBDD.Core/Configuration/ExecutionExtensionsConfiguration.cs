@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LightBDD.Core.Execution.Implementation;
+using LightBDD.Core.Execution;
+using LightBDD.Core.Execution.Implementation.GlobalInitialization;
 using LightBDD.Core.Extensibility.Execution;
 
 namespace LightBDD.Core.Configuration
@@ -12,7 +13,7 @@ namespace LightBDD.Core.Configuration
     /// </summary>
     public class ExecutionExtensionsConfiguration : FeatureConfiguration, IExecutionExtensions
     {
-        internal GlobalInitializer GlobalInitializer { get; } = new();
+        internal GlobalSetUp GlobalSetUp { get; } = new();
 
         private readonly List<IScenarioDecorator> _scenarioExtensions = new List<IScenarioDecorator>();
         private readonly List<IStepDecorator> _stepExtensions = new List<IStepDecorator>();
@@ -91,62 +92,92 @@ namespace LightBDD.Core.Configuration
         }
 
         /// <summary>
-        /// Registers global set up and optional global cleanup methods for given dependency type configured on the DI.<br/>
-        /// The <paramref name="setUp"/> method will be executed once, before any tests are run. If multiple set up methods are registered, they will be executed in the registration order.<br/>
-        /// If <paramref name="cleanUp"/> method is specified, it will be executed once after all tests are run. The clean up methods are executed in reverse registration order, i.e. last registered one will be executed as first.
+        /// Registers <typeparam name="TDependency"/> to for global set up before any tests are run and clean up after all tests execution.<br/>
+        /// The <seealso cref="IGlobalResourceSetUp.SetUpAsync"/> method will be executed once, before any tests are run. If multiple set up functions are registered, they will be executed in the registration order.<br/>
+        /// The <seealso cref="IGlobalResourceSetUp.CleanUpAsync"/> it will be executed once after all tests are run, but only if <seealso cref="IGlobalResourceSetUp.SetUpAsync"/> has been successfully run. The clean up methods are executed in reverse registration order, i.e. last registered one will be executed as first.<br/>
+        /// Please note that the <typeparam name="TDependency" /> is resolved independently by set up and clean up methods, thus needs to be registered as singleton or scoped if the same instance is expected.
         /// </summary>
         /// <typeparam name="TDependency">Dependency type, that is registered in the DI container.</typeparam>
-        /// <param name="setUp">Set up method</param>
-        /// <param name="cleanUp">Clean up method</param>
-        /// <returns></returns>
-        public ExecutionExtensionsConfiguration RegisterGlobalSetUp<TDependency>(Func<TDependency, Task> setUp, Func<TDependency, Task> cleanUp = null)
+        public ExecutionExtensionsConfiguration RegisterGlobalSetUp<TDependency>() where TDependency : IGlobalResourceSetUp
         {
             ThrowIfSealed();
-            GlobalInitializer.RegisterSetUp(setUp);
-            if (cleanUp != null)
-                GlobalInitializer.RegisterCleanUp(cleanUp);
-            return this;
-        }
-
-        /// <summary>
-        /// Registers global cleanup method for given dependency type configured on the DI.<br/>
-        /// The <paramref name="cleanUp"/> method will be executed once after all tests are run. The clean up methods are executed in reverse registration order, i.e. last registered one will be executed as first.
-        /// </summary>
-        /// <typeparam name="TDependency">Dependency type, that is registered in the DI container.</typeparam>
-        /// <param name="cleanUp">Clean up method</param>
-        /// <returns></returns>
-        public ExecutionExtensionsConfiguration RegisterGlobalCleanUp<TDependency>(Func<TDependency, Task> cleanUp)
-        {
-            ThrowIfSealed();
-            GlobalInitializer.RegisterCleanUp(cleanUp);
+            GlobalSetUp.RegisterResource<TDependency>();
             return this;
         }
 
         /// <summary>
         /// Registers global set up and optional global cleanup methods.<br/>
-        /// The <paramref name="setUp"/> method will be executed once, before any tests are run. If multiple set up methods are registered, they will be executed in the registration order.<br/>
-        /// If <paramref name="cleanUp"/> method is specified, it will be executed once after all tests are run. The clean up methods are executed in reverse registration order.
+        /// The <paramref name="setUp"/> delegate will be executed once, before any tests are run. If multiple set up methods are registered, they will be executed in the registration order.<br/>
+        /// If <paramref name="cleanUp"/> delegate is specified, it will be executed once after all tests are run, but only if <paramref cref="setUp"/> has been successfully run. The clean up methods are executed in reverse registration order.
         /// </summary>
+        /// <param name="activityName">Name of the set up activity</param>
         /// <param name="setUp">Set up method</param>
         /// <param name="cleanUp">Clean up method</param>
         /// <returns></returns>
-        public ExecutionExtensionsConfiguration RegisterGlobalSetUp(Func<Task> setUp, Func<Task> cleanUp = null)
+        public ExecutionExtensionsConfiguration RegisterGlobalSetUp(string activityName, Func<Task> setUp, Func<Task> cleanUp = null)
         {
             ThrowIfSealed();
-            GlobalInitializer.RegisterSetUp(setUp);
+            GlobalSetUp.RegisterActivity(activityName, setUp, cleanUp);
+            return this;
+        }
+
+        /// <summary>
+        /// Registers global set up and optional global cleanup methods.<br/>
+        /// The <paramref name="setUp"/> delegate will be executed once, before any tests are run. If multiple set up methods are registered, they will be executed in the registration order.<br/>
+        /// If <paramref name="cleanUp"/> delegate is specified, it will be executed once after all tests are run, but only if <paramref cref="setUp"/> has been successfully run. The clean up methods are executed in reverse registration order.
+        /// </summary>
+        /// <param name="activityName">Name of the set up activity</param>
+        /// <param name="setUp">Set up method</param>
+        /// <param name="cleanUp">Clean up method</param>
+        /// <returns></returns>
+        public ExecutionExtensionsConfiguration RegisterGlobalSetUp(string activityName, Action setUp, Action cleanUp = null)
+        {
+            ThrowIfSealed();
+            GlobalSetUp.RegisterActivity(activityName,
+                () =>
+                {
+                    setUp();
+                    return Task.CompletedTask;
+                },
+                () =>
+                {
+                    cleanUp?.Invoke();
+                    return Task.CompletedTask;
+                });
             return this;
         }
 
         /// <summary>
         /// Registers global cleanup method.<br/>
-        /// The <paramref name="cleanUp"/> method will be executed once after all tests are run. The clean up methods are executed in reverse registration order, i.e. last registered one will be executed as first.
+        /// The <paramref name="cleanUp"/> delegate will be executed once after all tests are run. The clean up methods are executed in reverse registration order, i.e. last registered one will be executed as first.
         /// </summary>
+        /// <param name="activityName">Name of the clean up activity</param>
         /// <param name="cleanUp">Clean up method</param>
         /// <returns></returns>
-        public ExecutionExtensionsConfiguration RegisterGlobalCleanUp(Func<Task> cleanUp)
+        public ExecutionExtensionsConfiguration RegisterGlobalCleanUp(string activityName, Func<Task> cleanUp)
         {
             ThrowIfSealed();
-            GlobalInitializer.RegisterCleanUp(cleanUp);
+            GlobalSetUp.RegisterActivity(activityName, () => Task.CompletedTask, cleanUp);
+            return this;
+        }
+
+        /// <summary>
+        /// Registers global cleanup method.<br/>
+        /// The <paramref name="cleanUp"/> delegate will be executed once after all tests are run. The clean up methods are executed in reverse registration order, i.e. last registered one will be executed as first.
+        /// </summary>
+        /// <param name="activityName">Name of the clean up activity</param>
+        /// <param name="cleanUp">Clean up method</param>
+        /// <returns></returns>
+        public ExecutionExtensionsConfiguration RegisterGlobalCleanUp(string activityName, Action cleanUp)
+        {
+            ThrowIfSealed();
+            GlobalSetUp.RegisterActivity(activityName,
+                () => Task.CompletedTask,
+                () =>
+                {
+                    cleanUp.Invoke();
+                    return Task.CompletedTask;
+                });
             return this;
         }
     }

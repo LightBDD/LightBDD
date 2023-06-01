@@ -60,8 +60,8 @@ namespace LightBDD.Core.Extensibility
             try
             {
                 // ReSharper disable AccessToDisposedClosure
-                var globalInitializer = _integrationContext.Configuration.Get<ExecutionExtensionsConfiguration>().GlobalInitializer;
-                Task.Run(() => globalInitializer.CleanUpAsync(container)).GetAwaiter().GetResult();
+                var globalSetUp = _integrationContext.Configuration.Get<ExecutionExtensionsConfiguration>().GlobalSetUp;
+                Task.Run(() => globalSetUp.CleanUpAsync(container)).GetAwaiter().GetResult();
                 // ReSharper restore AccessToDisposedClosure
             }
             finally
@@ -73,8 +73,8 @@ namespace LightBDD.Core.Extensibility
         internal void Initialize()
         {
             var container = _integrationContext.DependencyContainer;
-            var globalInitializer = _integrationContext.Configuration.Get<ExecutionExtensionsConfiguration>().GlobalInitializer;
-            Task.Run(() => globalInitializer.SetUpAsync(container)).GetAwaiter().GetResult();
+            var globalSetUp = _integrationContext.Configuration.Get<ExecutionExtensionsConfiguration>().GlobalSetUp;
+            Task.Run(() => globalSetUp.SetUpAsync(container)).GetAwaiter().GetResult();
         }
     }
 }
