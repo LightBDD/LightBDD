@@ -15,7 +15,7 @@ namespace LightBDD.Core.Dependencies
         public static IDependencyContainer BeginScope(this IDependencyContainer container, LifetimeScope scope, Action<ContainerConfigurator> configuration = null)
         {
             var v2 = (container as IDependencyContainerV2)
-                     ?? new WrappingContainerAdapter(container);
+                     ?? new WrappingDependencyContainer(container);
             return v2.BeginScope(scope, configuration);
         }
     }

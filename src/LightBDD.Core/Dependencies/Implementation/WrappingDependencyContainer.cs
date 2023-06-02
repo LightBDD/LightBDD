@@ -2,11 +2,11 @@
 
 namespace LightBDD.Core.Dependencies.Implementation
 {
-    internal class WrappingContainerAdapter : IDependencyContainerV2
+    internal class WrappingDependencyContainer : IDependencyContainerV2
     {
         private readonly IDependencyContainer _v1;
 
-        public WrappingContainerAdapter(IDependencyContainer v1)
+        public WrappingDependencyContainer(IDependencyContainer v1)
         {
             _v1 = v1;
         }
@@ -25,7 +25,7 @@ namespace LightBDD.Core.Dependencies.Implementation
 
         public IDependencyContainerV2 BeginScope(LifetimeScope scope, Action<ContainerConfigurator> configuration = null)
         {
-            return new WrappingContainerAdapter(_v1.BeginScope(configuration));
+            return new WrappingDependencyContainer(_v1.BeginScope(configuration));
         }
     }
 }
