@@ -13,7 +13,7 @@ namespace LightBDD.Core.Configuration
     /// </summary>
     public class ExecutionExtensionsConfiguration : FeatureConfiguration, IExecutionExtensions
     {
-        internal GlobalSetUp GlobalSetUp { get; } = new();
+        internal GlobalSetUpRegistry GlobalSetUpRegistry { get; } = new();
 
         private readonly List<IScenarioDecorator> _scenarioExtensions = new List<IScenarioDecorator>();
         private readonly List<IStepDecorator> _stepExtensions = new List<IStepDecorator>();
@@ -101,7 +101,7 @@ namespace LightBDD.Core.Configuration
         public ExecutionExtensionsConfiguration RegisterGlobalSetUp<TDependency>() where TDependency : IGlobalResourceSetUp
         {
             ThrowIfSealed();
-            GlobalSetUp.RegisterResource<TDependency>();
+            GlobalSetUpRegistry.RegisterResource<TDependency>();
             return this;
         }
 
@@ -117,7 +117,7 @@ namespace LightBDD.Core.Configuration
         public ExecutionExtensionsConfiguration RegisterGlobalSetUp(string activityName, Func<Task> setUp, Func<Task> cleanUp = null)
         {
             ThrowIfSealed();
-            GlobalSetUp.RegisterActivity(activityName, setUp, cleanUp);
+            GlobalSetUpRegistry.RegisterActivity(activityName, setUp, cleanUp);
             return this;
         }
 
@@ -135,7 +135,7 @@ namespace LightBDD.Core.Configuration
             ThrowIfSealed();
             if (setUp == null)
                 throw new ArgumentNullException(nameof(setUp));
-            GlobalSetUp.RegisterActivity(activityName,
+            GlobalSetUpRegistry.RegisterActivity(activityName,
                 () =>
                 {
                     setUp();
@@ -161,7 +161,7 @@ namespace LightBDD.Core.Configuration
             ThrowIfSealed();
             if (cleanUp == null)
                 throw new ArgumentNullException(nameof(cleanUp));
-            GlobalSetUp.RegisterActivity(activityName, null, cleanUp);
+            GlobalSetUpRegistry.RegisterActivity(activityName, null, cleanUp);
             return this;
         }
 
@@ -177,7 +177,7 @@ namespace LightBDD.Core.Configuration
             ThrowIfSealed();
             if (cleanUp == null)
                 throw new ArgumentNullException(nameof(cleanUp));
-            GlobalSetUp.RegisterActivity(activityName,
+            GlobalSetUpRegistry.RegisterActivity(activityName,
                 null,
                 () =>
                 {

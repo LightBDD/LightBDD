@@ -6,7 +6,7 @@ using LightBDD.Core.Dependencies;
 
 namespace LightBDD.Core.Execution.Implementation.GlobalInitialization
 {
-    internal class GlobalSetUp
+    internal class GlobalSetUpRegistry
     {
         private readonly List<IGlobalSetUp> _global = new();
 
