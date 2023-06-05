@@ -169,11 +169,13 @@ public class FeatureCoordinator_global_initialization_and_teardown_tests
         int setUpSeq2 = -1;
         int cleanUpSeq2 = -1;
         int cleanUpSeq3 = -1;
+        int cleanUpSeq4 = -1;
         async Task GlobalSetUp() => setUpSeq = counter.Next();
         async Task GlobalCleanUp() => cleanUpSeq = counter.Next();
         async Task GlobalSetUp2() => setUpSeq2 = counter.Next();
         async Task GlobalCleanUp2() => cleanUpSeq2 = counter.Next();
         async Task GlobalCleanUp3() => cleanUpSeq3 = counter.Next();
+        void GlobalCleanUp4() => cleanUpSeq4 = counter.Next();
 
         void Configure(LightBddConfiguration cfg)
         {
@@ -191,7 +193,8 @@ public class FeatureCoordinator_global_initialization_and_teardown_tests
                 .RegisterGlobalSetUp("failing", () => throw new IOException("BOOM"))
                 .RegisterGlobalSetUp<InitializableDependency2>()
                 .RegisterGlobalSetUp("global2", GlobalSetUp2, GlobalCleanUp2)
-                .RegisterGlobalTearDown("global3", GlobalCleanUp3);
+                .RegisterGlobalTearDown("global3", GlobalCleanUp3)
+                .RegisterGlobalTearDown("global4", GlobalCleanUp4);
         }
 
         using (var coordinator = SetupCoordinator(Configure))
@@ -204,10 +207,11 @@ public class FeatureCoordinator_global_initialization_and_teardown_tests
         Assert.That(setUpSeq, Is.EqualTo(2));
         Assert.That(dep2.InitializeSeq, Is.EqualTo(-1));
         Assert.That(setUpSeq2, Is.EqualTo(-1));
-        Assert.That(cleanUpSeq3, Is.EqualTo(3));
+        Assert.That(cleanUpSeq4, Is.EqualTo(3));
+        Assert.That(cleanUpSeq3, Is.EqualTo(4));
         Assert.That(cleanUpSeq2, Is.EqualTo(-1));
         Assert.That(dep2.CleanUpSeq, Is.EqualTo(-1));
-        Assert.That(cleanUpSeq, Is.EqualTo(4));
-        Assert.That(dep1.CleanUpSeq, Is.EqualTo(5));
+        Assert.That(cleanUpSeq, Is.EqualTo(5));
+        Assert.That(dep1.CleanUpSeq, Is.EqualTo(6));
     }
 }

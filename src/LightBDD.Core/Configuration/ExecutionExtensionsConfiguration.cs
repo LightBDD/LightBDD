@@ -13,7 +13,7 @@ namespace LightBDD.Core.Configuration
     /// </summary>
     public class ExecutionExtensionsConfiguration : FeatureConfiguration, IExecutionExtensions
     {
-        internal GlobalSetUp GlobalSetUp { get; } = new();
+        internal GlobalSetUpRegistry GlobalSetUpRegistry { get; } = new();
 
         private readonly List<IScenarioDecorator> _scenarioExtensions = new List<IScenarioDecorator>();
         private readonly List<IStepDecorator> _stepExtensions = new List<IStepDecorator>();
@@ -101,7 +101,7 @@ namespace LightBDD.Core.Configuration
         public ExecutionExtensionsConfiguration RegisterGlobalSetUp<TDependency>() where TDependency : IGlobalResourceSetUp
         {
             ThrowIfSealed();
-            GlobalSetUp.RegisterResource<TDependency>();
+            GlobalSetUpRegistry.RegisterResource<TDependency>();
             return this;
         }
 
@@ -117,7 +117,7 @@ namespace LightBDD.Core.Configuration
         public ExecutionExtensionsConfiguration RegisterGlobalSetUp(string activityName, Func<Task> setUp, Func<Task> tearDown = null)
         {
             ThrowIfSealed();
-            GlobalSetUp.RegisterActivity(activityName, setUp, tearDown);
+            GlobalSetUpRegistry.RegisterActivity(activityName, setUp, tearDown);
             return this;
         }
 
@@ -133,9 +133,9 @@ namespace LightBDD.Core.Configuration
         public ExecutionExtensionsConfiguration RegisterGlobalSetUp(string activityName, Action setUp, Action tearDown = null)
         {
             ThrowIfSealed();
-            if(setUp==null)
+            if (setUp == null)
                 throw new ArgumentNullException(nameof(setUp));
-            GlobalSetUp.RegisterActivity(activityName,
+            GlobalSetUpRegistry.RegisterActivity(activityName,
                 () =>
                 {
                     setUp();
@@ -161,7 +161,7 @@ namespace LightBDD.Core.Configuration
             ThrowIfSealed();
             if (tearDown == null)
                 throw new ArgumentNullException(nameof(tearDown));
-            GlobalSetUp.RegisterActivity(activityName, null, tearDown);
+            GlobalSetUpRegistry.RegisterActivity(activityName, null, tearDown);
             return this;
         }
 
@@ -177,8 +177,8 @@ namespace LightBDD.Core.Configuration
             ThrowIfSealed();
             if (tearDown == null)
                 throw new ArgumentNullException(nameof(tearDown));
-            GlobalSetUp.RegisterActivity(activityName,
-                () => Task.CompletedTask,
+            GlobalSetUpRegistry.RegisterActivity(activityName,
+                null,
                 () =>
                 {
                     tearDown.Invoke();
