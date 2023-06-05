@@ -21,16 +21,16 @@ internal class GlobalResourceSetUp<TDependency> : IGlobalSetUp where TDependency
         }
     }
 
-    public async Task CleanUpAsync(IDependencyResolver resolver)
+    public async Task TearDownAsync(IDependencyResolver resolver)
     {
         try
         {
             if (_executed)
-                await resolver.Resolve<TDependency>().CleanUpAsync();
+                await resolver.Resolve<TDependency>().TearDownAsync();
         }
         catch (Exception ex)
         {
-            throw new InvalidOperationException($"Clean up of resource '{typeof(TDependency).Name}' failed: {ex.Message}", ex);
+            throw new InvalidOperationException($"Tear down of resource '{typeof(TDependency).Name}' failed: {ex.Message}", ex);
         }
     }
 }

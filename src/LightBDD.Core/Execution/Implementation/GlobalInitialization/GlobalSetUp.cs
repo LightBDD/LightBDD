@@ -30,7 +30,7 @@ namespace LightBDD.Core.Execution.Implementation.GlobalInitialization
             {
                 try
                 {
-                    await runner.CleanUpAsync(resolver);
+                    await runner.TearDownAsync(resolver);
                 }
                 catch (Exception e)
                 {
@@ -47,9 +47,9 @@ namespace LightBDD.Core.Execution.Implementation.GlobalInitialization
             _global.Add(new GlobalResourceSetUp<TDependency>());
         }
 
-        public void RegisterActivity(string name, Func<Task> setUp, Func<Task> cleanUp)
+        public void RegisterActivity(string name, Func<Task> setUp, Func<Task> tearDown)
         {
-            _global.Add(new GlobalActivitySetUp(name, setUp, cleanUp));
+            _global.Add(new GlobalActivitySetUp(name, setUp, tearDown));
         }
     }
 }

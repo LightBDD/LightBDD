@@ -3,7 +3,7 @@
 namespace LightBDD.Core.Execution;
 
 /// <summary>
-/// Interface describing global resource requiring initialization and/or cleanup
+/// Interface describing global resource requiring initialization and/or tear down.
 /// </summary>
 public interface IGlobalResourceSetUp
 {
@@ -12,7 +12,7 @@ public interface IGlobalResourceSetUp
     /// </summary>
     Task SetUpAsync();
     /// <summary>
-    /// Action cleaning up the resource state, executed after all tests run, but only if <seealso cref="SetUpAsync"/> action was executed. 
+    /// Action tearing down the resource state, executed after all tests run, but only if <seealso cref="SetUpAsync"/> action was executed. 
     /// </summary>
-    Task CleanUpAsync();
+    Task TearDownAsync();
 }

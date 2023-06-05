@@ -6,5 +6,5 @@ namespace LightBDD.Core.Execution.Implementation.GlobalInitialization;
 internal interface IGlobalSetUp
 {
     Task SetUpAsync(IDependencyResolver resolver);
-    Task CleanUpAsync(IDependencyResolver resolver);
+    Task TearDownAsync(IDependencyResolver resolver);
 }

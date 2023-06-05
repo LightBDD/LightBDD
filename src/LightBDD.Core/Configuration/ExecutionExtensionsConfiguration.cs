@@ -92,10 +92,10 @@ namespace LightBDD.Core.Configuration
         }
 
         /// <summary>
-        /// Registers <typeparam name="TDependency"/> to for global set up before any tests are run and clean up after all tests execution.<br/>
+        /// Registers <typeparam name="TDependency"/> to for global set up before any tests are run and tear down after all tests execution.<br/>
         /// The <seealso cref="IGlobalResourceSetUp.SetUpAsync"/> method will be executed once, before any tests are run. If multiple set up functions are registered, they will be executed in the registration order.<br/>
-        /// The <seealso cref="IGlobalResourceSetUp.CleanUpAsync"/> it will be executed once after all tests are run, but only if <seealso cref="IGlobalResourceSetUp.SetUpAsync"/> has been successfully run. The clean up methods are executed in reverse registration order, i.e. last registered one will be executed as first.<br/>
-        /// Please note that the <typeparam name="TDependency" /> is resolved independently by set up and clean up methods, thus needs to be registered as singleton or scoped if the same instance is expected.
+        /// The <seealso cref="IGlobalResourceSetUp.TearDownAsync"/> it will be executed once after all tests are run, but only if <seealso cref="IGlobalResourceSetUp.SetUpAsync"/> has been successfully run. The tear down methods are executed in reverse registration order, i.e. last registered one will be executed as first.<br/>
+        /// Please note that the <typeparam name="TDependency" /> is resolved independently by set up and tear down methods, thus needs to be registered as singleton or scoped if the same instance is expected.
         /// </summary>
         /// <typeparam name="TDependency">Dependency type, that is registered in the DI container.</typeparam>
         public ExecutionExtensionsConfiguration RegisterGlobalSetUp<TDependency>() where TDependency : IGlobalResourceSetUp
@@ -106,31 +106,31 @@ namespace LightBDD.Core.Configuration
         }
 
         /// <summary>
-        /// Registers global set up and optional global cleanup methods.<br/>
+        /// Registers global set up and optional global tear down methods.<br/>
         /// The <paramref name="setUp"/> delegate will be executed once, before any tests are run. If multiple set up methods are registered, they will be executed in the registration order.<br/>
-        /// If <paramref name="cleanUp"/> delegate is specified, it will be executed once after all tests are run, but only if <paramref cref="setUp"/> has been successfully run. The clean up methods are executed in reverse registration order.
+        /// If <paramref name="tearDown"/> delegate is specified, it will be executed once after all tests are run, but only if <paramref cref="setUp"/> has been successfully run. The tear down methods are executed in reverse registration order.
         /// </summary>
         /// <param name="activityName">Name of the set up activity</param>
         /// <param name="setUp">Set up method</param>
-        /// <param name="cleanUp">Clean up method</param>
+        /// <param name="tearDown">Tear down method</param>
         /// <returns></returns>
-        public ExecutionExtensionsConfiguration RegisterGlobalSetUp(string activityName, Func<Task> setUp, Func<Task> cleanUp = null)
+        public ExecutionExtensionsConfiguration RegisterGlobalSetUp(string activityName, Func<Task> setUp, Func<Task> tearDown = null)
         {
             ThrowIfSealed();
-            GlobalSetUp.RegisterActivity(activityName, setUp, cleanUp);
+            GlobalSetUp.RegisterActivity(activityName, setUp, tearDown);
             return this;
         }
 
         /// <summary>
-        /// Registers global set up and optional global cleanup methods.<br/>
+        /// Registers global set up and optional global tear down methods.<br/>
         /// The <paramref name="setUp"/> delegate will be executed once, before any tests are run. If multiple set up methods are registered, they will be executed in the registration order.<br/>
-        /// If <paramref name="cleanUp"/> delegate is specified, it will be executed once after all tests are run, but only if <paramref cref="setUp"/> has been successfully run. The clean up methods are executed in reverse registration order.
+        /// If <paramref name="tearDown"/> delegate is specified, it will be executed once after all tests are run, but only if <paramref cref="setUp"/> has been successfully run. The tear down methods are executed in reverse registration order.
         /// </summary>
         /// <param name="activityName">Name of the set up activity</param>
         /// <param name="setUp">Set up method</param>
-        /// <param name="cleanUp">Clean up method</param>
+        /// <param name="tearDown">Tear down method</param>
         /// <returns></returns>
-        public ExecutionExtensionsConfiguration RegisterGlobalSetUp(string activityName, Action setUp, Action cleanUp = null)
+        public ExecutionExtensionsConfiguration RegisterGlobalSetUp(string activityName, Action setUp, Action tearDown = null)
         {
             ThrowIfSealed();
             if(setUp==null)
@@ -143,45 +143,45 @@ namespace LightBDD.Core.Configuration
                 },
                 () =>
                 {
-                    cleanUp?.Invoke();
+                    tearDown?.Invoke();
                     return Task.CompletedTask;
                 });
             return this;
         }
 
         /// <summary>
-        /// Registers global cleanup method.<br/>
-        /// The <paramref name="cleanUp"/> delegate will be executed once after all tests are run. The clean up methods are executed in reverse registration order, i.e. last registered one will be executed as first.
+        /// Registers global tear down method.<br/>
+        /// The <paramref name="tearDown"/> delegate will be executed once after all tests are run. The tear down methods are executed in reverse registration order, i.e. last registered one will be executed as first.
         /// </summary>
-        /// <param name="activityName">Name of the clean up activity</param>
-        /// <param name="cleanUp">Clean up method</param>
+        /// <param name="activityName">Name of the tear down activity</param>
+        /// <param name="tearDown">Tear down method</param>
         /// <returns></returns>
-        public ExecutionExtensionsConfiguration RegisterGlobalCleanUp(string activityName, Func<Task> cleanUp)
+        public ExecutionExtensionsConfiguration RegisterGlobalTearDown(string activityName, Func<Task> tearDown)
         {
             ThrowIfSealed();
-            if (cleanUp == null)
-                throw new ArgumentNullException(nameof(cleanUp));
-            GlobalSetUp.RegisterActivity(activityName, null, cleanUp);
+            if (tearDown == null)
+                throw new ArgumentNullException(nameof(tearDown));
+            GlobalSetUp.RegisterActivity(activityName, null, tearDown);
             return this;
         }
 
         /// <summary>
-        /// Registers global cleanup method.<br/>
-        /// The <paramref name="cleanUp"/> delegate will be executed once after all tests are run. The clean up methods are executed in reverse registration order, i.e. last registered one will be executed as first.
+        /// Registers global tear down method.<br/>
+        /// The <paramref name="tearDown"/> delegate will be executed once after all tests are run. The tear down methods are executed in reverse registration order, i.e. last registered one will be executed as first.
         /// </summary>
-        /// <param name="activityName">Name of the clean up activity</param>
-        /// <param name="cleanUp">Clean up method</param>
+        /// <param name="activityName">Name of the tear down activity</param>
+        /// <param name="tearDown">Tear down method</param>
         /// <returns></returns>
-        public ExecutionExtensionsConfiguration RegisterGlobalCleanUp(string activityName, Action cleanUp)
+        public ExecutionExtensionsConfiguration RegisterGlobalTearDown(string activityName, Action tearDown)
         {
             ThrowIfSealed();
-            if (cleanUp == null)
-                throw new ArgumentNullException(nameof(cleanUp));
+            if (tearDown == null)
+                throw new ArgumentNullException(nameof(tearDown));
             GlobalSetUp.RegisterActivity(activityName,
                 () => Task.CompletedTask,
                 () =>
                 {
-                    cleanUp.Invoke();
+                    tearDown.Invoke();
                     return Task.CompletedTask;
                 });
             return this;

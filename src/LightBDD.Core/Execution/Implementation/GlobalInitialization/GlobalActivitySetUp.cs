@@ -8,15 +8,15 @@ internal class GlobalActivitySetUp : IGlobalSetUp
 {
     private readonly string _name;
     private readonly Func<Task> _setUp;
-    private readonly Func<Task> _cleanUp;
-    private bool _runCleanup;
+    private readonly Func<Task> _tearDown;
+    private bool _runTearDown;
 
-    public GlobalActivitySetUp(string name, Func<Task> setUp, Func<Task> cleanUp)
+    public GlobalActivitySetUp(string name, Func<Task> setUp, Func<Task> tearDown)
     {
         _setUp = setUp;
-        _cleanUp = cleanUp;
+        _tearDown = tearDown;
         _name = name;
-        _runCleanup = setUp == null;
+        _runTearDown = setUp == null;
     }
 
     public async Task SetUpAsync(IDependencyResolver _)
@@ -27,7 +27,7 @@ internal class GlobalActivitySetUp : IGlobalSetUp
         try
         {
             await _setUp();
-            _runCleanup = true;
+            _runTearDown = true;
         }
         catch (Exception ex)
         {
@@ -35,16 +35,16 @@ internal class GlobalActivitySetUp : IGlobalSetUp
         }
     }
 
-    public async Task CleanUpAsync(IDependencyResolver _)
+    public async Task TearDownAsync(IDependencyResolver _)
     {
         try
         {
-            if (_runCleanup && _cleanUp != null)
-                await _cleanUp();
+            if (_runTearDown && _tearDown != null)
+                await _tearDown();
         }
         catch (Exception ex)
         {
-            throw new InvalidOperationException($"Clean up of activity '{_name}' failed: {ex.Message}", ex);
+            throw new InvalidOperationException($"Tear down activity '{_name}' failed: {ex.Message}", ex);
         }
     }
 }

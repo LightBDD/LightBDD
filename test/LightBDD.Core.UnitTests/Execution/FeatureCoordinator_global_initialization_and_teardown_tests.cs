@@ -12,7 +12,7 @@ namespace LightBDD.Core.UnitTests.Execution;
 
 [TestFixture]
 [NonParallelizable]
-public class FeatureCoordinator_global_initialization_and_cleanup_tests
+public class FeatureCoordinator_global_initialization_and_teardown_tests
 {
     class TestableFeatureCoordinator : FrameworkFeatureCoordinator
     {
@@ -54,7 +54,7 @@ public class FeatureCoordinator_global_initialization_and_cleanup_tests
             InitializeSeq = _counter.Next();
         }
 
-        public async Task CleanUpAsync()
+        public async Task TearDownAsync()
         {
             await Task.Yield();
             CleanUpSeq = _counter.Next();
@@ -78,7 +78,7 @@ public class FeatureCoordinator_global_initialization_and_cleanup_tests
             InitializeSeq = _counter.Next();
         }
 
-        public async Task CleanUpAsync()
+        public async Task TearDownAsync()
         {
             await Task.Yield();
             CleanUpSeq = _counter.Next();
@@ -91,7 +91,7 @@ public class FeatureCoordinator_global_initialization_and_cleanup_tests
     }
 
     [Test]
-    public void Coordinator_should_run_global_SetUps_on_installation_and_CleanUps_on_disposal()
+    public void Coordinator_should_run_global_SetUps_on_installation_and_TearDowns_on_disposal()
     {
         var counter = new Counter();
         var dep1 = new InitializableDependency(counter);
@@ -126,9 +126,9 @@ public class FeatureCoordinator_global_initialization_and_cleanup_tests
                 .RegisterGlobalSetUp<InitializableDependency>()
                 .RegisterGlobalSetUp<InitializableDependency2>()
                 .RegisterGlobalSetUp("global1", GlobalSetUp, GlobalCleanUp)
-                .RegisterGlobalCleanUp("global2", GlobalCleanUp2)
+                .RegisterGlobalTearDown("global2", GlobalCleanUp2)
                 .RegisterGlobalSetUp("sync1", SyncSetUp, SyncCleanUp)
-                .RegisterGlobalCleanUp("sync2", SyncCleanUp2)
+                .RegisterGlobalTearDown("sync2", SyncCleanUp2)
                 .RegisterGlobalSetUp("sync3", SyncSetUp3);
         }
 
@@ -159,7 +159,7 @@ public class FeatureCoordinator_global_initialization_and_cleanup_tests
     }
 
     [Test]
-    public void Only_CleanUps_for_successful_SetUps_should_run()
+    public void Only_TearDowns_for_successful_SetUps_should_run()
     {
         var counter = new Counter();
         var dep1 = new InitializableDependency(counter);
@@ -191,7 +191,7 @@ public class FeatureCoordinator_global_initialization_and_cleanup_tests
                 .RegisterGlobalSetUp("failing", () => throw new IOException("BOOM"))
                 .RegisterGlobalSetUp<InitializableDependency2>()
                 .RegisterGlobalSetUp("global2", GlobalSetUp2, GlobalCleanUp2)
-                .RegisterGlobalCleanUp("global3", GlobalCleanUp3);
+                .RegisterGlobalTearDown("global3", GlobalCleanUp3);
         }
 
         using (var coordinator = SetupCoordinator(Configure))
