@@ -92,10 +92,10 @@ namespace LightBDD.Core.Configuration
         }
 
         /// <summary>
-        /// Registers <typeparam name="TDependency"/> to for global set up before any tests are run and tear down after all tests execution.<br/>
+        /// Registers <typeparamref name="TDependency"/> type to be used for global set up before any tests are run and tear down after all tests execution.<br/>
         /// The <seealso cref="IGlobalResourceSetUp.SetUpAsync"/> method will be executed once, before any tests are run. If multiple set up functions are registered, they will be executed in the registration order.<br/>
-        /// The <seealso cref="IGlobalResourceSetUp.TearDownAsync"/> it will be executed once after all tests are run, but only if <seealso cref="IGlobalResourceSetUp.SetUpAsync"/> has been successfully run. The tear down methods are executed in reverse registration order, i.e. last registered one will be executed as first.<br/>
-        /// Please note that the <typeparam name="TDependency" /> is resolved independently by set up and tear down methods, thus needs to be registered as singleton or scoped if the same instance is expected.
+        /// The <seealso cref="IGlobalResourceSetUp.TearDownAsync"/> method will be executed once after all tests are run, but only if <seealso cref="IGlobalResourceSetUp.SetUpAsync"/> has been successfully run. The tear down methods are executed in reverse registration order, i.e. last registered one will be executed first.<br/>
+        /// The <typeparamref name="TDependency" /> instance is resolved from DI container. Please note that it is resolved independently for set up and tear down methods, thus needs to be registered as singleton or scoped if the same instance is expected by both methods.
         /// </summary>
         /// <typeparam name="TDependency">Dependency type, that is registered in the DI container.</typeparam>
         public ExecutionExtensionsConfiguration RegisterGlobalSetUp<TDependency>() where TDependency : IGlobalResourceSetUp
@@ -108,7 +108,7 @@ namespace LightBDD.Core.Configuration
         /// <summary>
         /// Registers global set up and optional global tear down methods.<br/>
         /// The <paramref name="setUp"/> delegate will be executed once, before any tests are run. If multiple set up methods are registered, they will be executed in the registration order.<br/>
-        /// If <paramref name="tearDown"/> delegate is specified, it will be executed once after all tests are run, but only if <paramref cref="setUp"/> has been successfully run. The tear down methods are executed in reverse registration order.
+        /// If <paramref name="tearDown"/> delegate is specified, it will be executed once after all tests are run, but only if <paramref name="setUp"/> has been successfully run. The tear down methods are executed in reverse registration order.
         /// </summary>
         /// <param name="activityName">Name of the set up activity</param>
         /// <param name="setUp">Set up method</param>
@@ -124,7 +124,7 @@ namespace LightBDD.Core.Configuration
         /// <summary>
         /// Registers global set up and optional global tear down methods.<br/>
         /// The <paramref name="setUp"/> delegate will be executed once, before any tests are run. If multiple set up methods are registered, they will be executed in the registration order.<br/>
-        /// If <paramref name="tearDown"/> delegate is specified, it will be executed once after all tests are run, but only if <paramref cref="setUp"/> has been successfully run. The tear down methods are executed in reverse registration order.
+        /// If <paramref name="tearDown"/> delegate is specified, it will be executed once after all tests are run, but only if <paramref name="setUp"/> has been successfully run. The tear down methods are executed in reverse registration order.
         /// </summary>
         /// <param name="activityName">Name of the set up activity</param>
         /// <param name="setUp">Set up method</param>
