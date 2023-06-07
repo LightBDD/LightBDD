@@ -174,7 +174,6 @@ namespace LightBDD.Core.Execution.Implementation
             Context = CreateExecutionContext();
             ScenarioExecutionContext.Current.Get<CurrentScenarioProperty>().Scenario = this;
             PrepareSteps();
-            DependencyInjector.Instance.Inject(_scenarioContext.FixtureObject, _scope);
         }
 
         private IDependencyContainer CreateContainerScope()
