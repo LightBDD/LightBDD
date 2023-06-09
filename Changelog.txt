@@ -6,6 +6,7 @@ Version vNext
 + #281 (LightBDD.Core)(New) Added IScenarioSetUp and IScenarioTearDown execution extension interfaces allowing to run scenario set up / tear down when implemented on fixture class
 + #281 (LightBDD.Core)(Change) Exposed IScenario.Fixture property allowing scenario decorators accessing the fixture object
 + #281 (LightBDD.Core)(New) Added ability to register global set up and tear down for resources and activities by using `ExecutionExtensionsConfiguration`
++ #282 (LightBDD.Framework)(Change) Updated Html Report to have collapsible sub-steps being collapsed by default
 
 Version 3.6.1
 ----------------------------------------
