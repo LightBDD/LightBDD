@@ -25,7 +25,12 @@ namespace LightBDD.AcceptanceTests.Helpers
 
         public static IEnumerable<IWebElement> FindAllSteps(this ChromeDriver driver)
         {
-            return driver.FindElementsByClassName("step");
+            return driver.FindElementsByCssSelector(".scenario > div > .step");
+        }
+
+        public static IEnumerable<IWebElement> FindAllSubSteps(this ChromeDriver driver)
+        {
+            return driver.FindElementsByClassName("sub-steps");
         }
 
         public static IWebElement FindScenario(this IWebElement element, int scenarioNo)
@@ -39,6 +44,16 @@ namespace LightBDD.AcceptanceTests.Helpers
         }
 
         public static IEnumerable<IWebElement> FindSteps(this IWebElement element)
+        {
+            return element.FindElements(By.CssSelector(".scenario > div > .step"));
+        }
+        
+        public static IWebElement FindStep(this IWebElement element, int stepNo)
+        {
+            return FindSteps(element).ElementAt(stepNo - 1);
+        }
+
+        public static IEnumerable<IWebElement> FindSubSteps(this IWebElement element)
         {
             return element.FindElements(By.ClassName("step"));
         }

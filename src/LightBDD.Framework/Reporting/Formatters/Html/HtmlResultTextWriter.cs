@@ -290,15 +290,18 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             return Html.Tag(Html5Tag.Div).Class("options").Content(
                 Html.Tag(Html5Tag.Span).Content("Toggle:"),
                 Html.Tag(Html5Tag.Span).Content(
-                GetOptionNode(
-                    "toggleFeatures",
-                    Html.Checkbox().Checked().SpaceBefore().OnClick("checkAll('toggleF',toggleFeatures.checked)"),
-                    "Features"),
-
-                GetOptionNode(
-                    "toggleScenarios",
-                    Html.Checkbox().Checked().SpaceBefore().OnClick("checkAll('toggleS',toggleScenarios.checked)"),
-                    "Scenarios")));
+                    GetOptionNode(
+                        "toggleFeatures",
+                        Html.Checkbox().Checked().SpaceBefore().OnClick("checkAll('toggleF',toggleFeatures.checked)"),
+                        "Features"),
+                    GetOptionNode(
+                        "toggleScenarios",
+                        Html.Checkbox().Checked().SpaceBefore().OnClick("checkAll('toggleS',toggleScenarios.checked)"),
+                        "Scenarios"),
+                    GetOptionNode(
+                        "toggleSubSteps",
+                        Html.Checkbox().Checked().SpaceBefore().OnClick("checkAll('toggleSS',toggleSubSteps.checked)"),
+                        "Sub Steps")));
         }
 
         private static IHtmlNode GetOptionNode(string elementId, TagBuilder element, string labelContent)
@@ -307,9 +310,10 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 Html.Tag(Html5Tag.Label).Content(GetCheckBoxTag(), Html.Text(labelContent)).For(elementId));
         }
 
-        private static IHtmlNode GetCheckBoxTag()
+        private static IHtmlNode GetCheckBoxTag(bool isEmpty = false)
         {
-            return Html.Tag(Html5Tag.Span).Class("chbox");
+            var className = isEmpty ? "chbox empty" : "chbox";
+            return Html.Tag(Html5Tag.Span).Class(className);
         }
 
         private IHtmlNode GetFeatureDetails(IFeatureResult feature, int index)
@@ -425,11 +429,16 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
         private static IHtmlNode GetStep(IStepResult step)
         {
+            var toggleId = step.Info.RuntimeId.ToString();
             return Html.Tag(Html5Tag.Div).Class("step").Content(
-                GetStatus(step.Status),
-                Html.Text($"{WebUtility.HtmlEncode(step.Info.GroupPrefix)}{step.Info.Number}. {step.Info.Name.Format(StepNameDecorator)}").Trim(),
+                Html.Checkbox().Id(toggleId).Class("toggle toggleSS").Checked(),
+                Html.Tag(Html5Tag.Label).For(toggleId).Content(
+                    GetCheckBoxTag(!step.GetSubSteps().Any()),
+                    GetStatus(step.Status),
+                    Html.Text($"{WebUtility.HtmlEncode(step.Info.GroupPrefix)}{step.Info.Number}. {step.Info.Name.Format(StepNameDecorator)}").Trim()),
                 GetDuration(step.ExecutionTime),
-                Html.Tag(Html5Tag.Div).Class("step-parameters").Content(step.Parameters.Select(GetStepParameter)).SkipEmpty(),
+                Html.Tag(Html5Tag.Div).Class("step-parameters").Content(step.Parameters.Select(GetStepParameter))
+                    .SkipEmpty(),
                 Html.Tag(Html5Tag.Div).Class("sub-steps").Content(step.GetSubSteps().Select(GetStep)).SkipEmpty());
         }
 
