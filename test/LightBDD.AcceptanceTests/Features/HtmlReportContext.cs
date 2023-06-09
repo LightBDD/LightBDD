@@ -96,6 +96,12 @@ namespace LightBDD.AcceptanceTests.Features
             Assert.That(actual, Is.EqualTo(Features.SelectMany(f => f.GetScenarios()).SelectMany(s => s.GetSteps()).Count()));
         }
 
+        public async Task Then_all_sub_steps_should_be_VISIBLE(bool visible)
+        {
+            var actual = Driver.FindAllSubSteps().Count(e => e.Displayed == visible);
+            Assert.That(actual, Is.EqualTo(Features.SelectMany(f => f.GetScenarios()).SelectMany(s => s.GetSteps()).Count(s => s.GetSubSteps().Any())));
+        }
+
         public async Task When_a_feature_collapse_button_is_clicked(int feature)
         {
             ClickLabeledButton(ToFeatureToggle(feature));
@@ -135,6 +141,17 @@ namespace LightBDD.AcceptanceTests.Features
             ClickLabeledButton(ToScenarioToggle(feature, scenario));
         }
 
+        public async Task When_a_feature_scenario_step_collapse_button_is_clicked(int feature, int scenario, int step)
+        {
+           ClickLabeledButton(Features[feature - 1].GetScenarios().ElementAt(scenario - 1).GetSteps().ElementAt(step - 1).Info.RuntimeId.ToString());
+        }
+
+        public async Task Then_the_feature_scenario_step_sub_steps_should_be_VISIBLE(int feature, int scenario, int step, bool visible)
+        {
+            var actual = Driver.FindFeature(feature).FindScenario(scenario).FindStep(step).FindSubSteps().Count(e => e.Displayed == visible);
+            Assert.That(actual, Is.EqualTo(Features[feature - 1].GetScenarios().ElementAt(scenario-1).GetSteps().ElementAt(step-1).GetSubSteps().Count()));
+        }
+
         private static string ToScenarioToggle(int feature, int scenario)
         {
             return $"toggle{feature}_{scenario - 1}";
@@ -154,6 +171,11 @@ namespace LightBDD.AcceptanceTests.Features
         public async Task When_a_scenario_filter_button_is_clicked()
         {
             ClickLabeledButtonSync("toggleScenarios");
+        }
+
+        public async Task When_a_sub_step_filter_button_is_clicked()
+        {
+            ClickLabeledButtonSync("toggleSubSteps");
         }
 
         public async Task Then_the_scenario_filter_button_should_be_SELECTED([SelectedFormat] bool selected)

@@ -76,6 +76,12 @@ namespace LightBDD.UnitTests.Helpers
             return result;
         }
 
+        public static TestStepResult WithRuntimeId(this TestStepResult result, Guid id)
+        {
+            result.Info.RuntimeId = id;
+            return result;
+        }
+
         public static TestStepResult WithGroupPrefix(this TestStepResult result, string groupPrefix)
         {
             result.Info.GroupPrefix = groupPrefix;
@@ -288,7 +294,7 @@ namespace LightBDD.UnitTests.Helpers
         {
             IStepNameInfo IStepInfo.Name => Name;
             public IMetadataInfo Parent { get; set; }
-            public Guid RuntimeId { get; } = Guid.Parse("11111111-1111-1111-1111-111111111111");
+            public Guid RuntimeId { get; set; } = Guid.Parse("11111111-1111-1111-1111-111111111111");
             public string GroupPrefix { get; set; }
             public TestStepNameInfo Name { get; set; }
             public int Number { get; set; }

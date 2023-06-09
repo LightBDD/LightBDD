@@ -56,7 +56,7 @@ Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
 My feature [Label 1] 2 0 0 1 1 10 3 1 2 2 2 1m 02s 621000000 1m 04s 642570000 32s 128ms 321285000
 Feature details[&#8734;link]
-Toggle: Features Scenarios
+Toggle: Features Scenarios Sub Steps
 Filter: Passed Bypassed Failed Ignored Not Run
 Categories: -all- categoryA categoryB categoryC -without category-
 [&#8734;filtered link]
@@ -138,7 +138,7 @@ Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
 My feature 1 0 0 0 1 2 1 0 0 1 0 25ms 250000 25ms 250000 25ms 250000
 Feature details[&#8734;link]
-Toggle: Features Scenarios
+Toggle: Features Scenarios Sub Steps
 Filter: Passed Bypassed Failed Ignored Not Run
 [&#8734;filtered link]
 My feature[&#8734;link]
@@ -178,7 +178,7 @@ Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ig
 My feature 1 1 0 0 0 1 1 0 0 0 0 20ms 200000 20ms 200000 20ms 200000
 My feature2 1 1 0 0 0 1 1 0 0 0 0 20ms 200000 20ms 200000 20ms 200000
 Feature details[&#8734;link]
-Toggle: Features Scenarios
+Toggle: Features Scenarios Sub Steps
 Filter: Passed Bypassed Failed Ignored Not Run
 Categories: -all- categoryA categoryB -without category-
 [&#8734;filtered link]
@@ -232,7 +232,7 @@ Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
 My feature 1 1 0 0 0 2 2 0 0 0 0 5s 50000000 5s 50000000 5s 50000000
 Feature details[&#8734;link]
-Toggle: Features Scenarios
+Toggle: Features Scenarios Sub Steps
 Filter: Passed Bypassed Failed Ignored Not Run
 [&#8734;filtered link]
 My feature[&#8734;link]
@@ -271,7 +271,7 @@ Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
 My Feature 3 3 0 0 0 3 3 0 0 0 0 5s 50000000 9s 90000000 3s 30000000
 Feature details[&#8734;link]
-Toggle: Features Scenarios
+Toggle: Features Scenarios Sub Steps
 Filter: Passed Bypassed Failed Ignored Not Run
 [&#8734;filtered link]
 My Feature[&#8734;link]

@@ -20,6 +20,7 @@ section.features{display: flex;flex-direction: column;}
 .scenario{ margin-bottom: 1px;}
 .toggleF:not(:checked) ~ .scenarios { display: none;}
 .toggleS:not(:checked) + h3 ~ * { display: none;}
+.toggleSS:not(:checked) ~ .sub-steps { display: none;}
 .description{font-style: italic;color: #222222;white-space: pre-wrap;margin-top: 0.5em;}
 .label{color: #222277;}
 .status{font-weight: bold;border: 1px solid #777777;padding: 0.2em;margin-right: 0.2em;width: 5em; display: inline-block;text-align: center;}
@@ -34,7 +35,7 @@ section.features{display: flex;flex-direction: column;}
 .attachments::before{content:"Attachments:"}
 .attachments div{ display: inline-block; margin-right: 0.5em;}
 .comments div{color: #0000cd;}
-.step, .categories{margin: 0.2em;margin-left: 2.5em;}
+.step,.categories,.step-parameters{margin: 0.2em;margin-left: 1.5em;}
 .smallLink,.duration{color: #0000cd;font-size: 0.8em;font-family: monospace;}
 th,td{ white-space: nowrap;}
 th{ text-align: right;}
@@ -62,6 +63,7 @@ a:hover{ text-decoration: underline;}
 *:hover > .smallLink { display: inline;}
 input[type="checkbox"],input[type="radio"]{ display: none;}
 .chbox:before{display: inline-block; border: 1px solid #777777;margin-right: 0.5em;font-weight: bold;text-align: center;width: 1.2em;height: 1.2em;line-height: 1.2em;vertical-align: middle;}
+.chbox.empty:before {visibility: hidden;}
 input[type="checkbox"]:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "\2715";}
 input[type="checkbox"]:checked + * .chbox:before{ background-color: #eeeeee;content: "\2713";}
 input[type="checkbox"].toggle:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "v";}

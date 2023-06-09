@@ -48,26 +48,26 @@ function sortTable(tableId, columnIdx, numeric, toggle) {
     var parseMethod;
     var checkMethod;
     if (numeric) {
-        sortMethod = direction ? function(x, y) { return x[0] - y[0]; } : function(x, y) { return y[0] - x[0]; };
-        parseMethod = function(x) { return parseFloat(x); };
-        checkMethod = function(x) { return !isNaN(x); };
+        sortMethod = direction ? function (x, y) { return x[0] - y[0]; } : function (x, y) { return y[0] - x[0]; };
+        parseMethod = function (x) { return parseFloat(x); };
+        checkMethod = function (x) { return !isNaN(x); };
     } else {
         sortMethod = direction
-            ? function(x, y) { return (x[0] > y[0]) ? 1 : ((x[0] < y[0]) ? -1 : 0); }
-            : function(x, y) { return (x[0] < y[0]) ? 1 : ((x[0] > y[0]) ? -1 : 0); };
-        parseMethod = function(x) { return x; };
-        checkMethod = function(x) { return true; };
+            ? function (x, y) { return (x[0] > y[0]) ? 1 : ((x[0] < y[0]) ? -1 : 0); }
+            : function (x, y) { return (x[0] < y[0]) ? 1 : ((x[0] > y[0]) ? -1 : 0); };
+        parseMethod = function (x) { return x; };
+        checkMethod = function (x) { return true; };
     }
 
     var tbl = document.getElementById(tableId).tBodies[0];
     var store = [];
     tbl.rows.asQueryable()
-        .do(function(row) {
+        .do(function (row) {
             var sortnr = parseMethod(row.cells[columnIdx].textContent || row.cells[columnIdx].innerText);
             if (checkMethod(sortnr)) store.push([sortnr, row]);
         });
     store.sort(sortMethod);
-    store.asQueryable().do(function(row) { tbl.appendChild(row[1]); });
+    store.asQueryable().do(function (row) { tbl.appendChild(row[1]); });
     ++synchronizationCounter;
 }
 
@@ -138,13 +138,17 @@ function updateOptionsLink() {
 
     var options = [];
 
-    var check = function (element, option) {
-        if (!document.getElementById(element).checked)
+    var check = function (element, option, invert = true) {
+        var value = document.getElementById(element).checked;
+        if (invert && !value)
             options.push(option + '=0');
+        if (!invert && value)
+            options.push(option + '=1');
     };
 
     check('toggleFeatures', 'tf');
     check('toggleScenarios', 'ts');
+    check('toggleSubSteps', 'tss', false);
 
     check('showPassed', 'fp');
     check('showBypassed', 'fb');
@@ -178,14 +182,16 @@ function applyOptionsFromLink() {
         return results === null ? null : decodeURIComponent(results[1]);
     };
 
-    var applyToCheckbox = function (elementId, param) {
+    var applyToCheckbox = function (elementId, param, invert = true) {
         var element = document.getElementById(elementId);
-        element.checked = (getParam(param) === '0'); //set opposite value
+        var value = getParam(param);
+        element.checked = value === null ? !invert : (value==='0'); //set opposite value
         element.click(); //toggle it
     };
 
     applyToCheckbox('toggleFeatures', 'tf');
     applyToCheckbox('toggleScenarios', 'ts');
+    applyToCheckbox('toggleSubSteps', 'tss', false);
     applyToCheckbox('showPassed', 'fp');
     applyToCheckbox('showBypassed', 'fb');
     applyToCheckbox('showFailed', 'ff');
@@ -196,9 +202,9 @@ function applyOptionsFromLink() {
 
     if (cat !== null) {
         document.getElementsByName('categoryFilter')
-        .asQueryable()
-        .where(function (c) { return c.dataset.filterName === cat; })
-        .do(function (c) { c.click(); });
+            .asQueryable()
+            .where(function (c) { return c.dataset.filterName === cat; })
+            .do(function (c) { c.click(); });
     }
 
 }
