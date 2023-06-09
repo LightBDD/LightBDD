@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
-using LightBDD.Core.Execution.Implementation.GlobalInitialization;
+using LightBDD.Core.Execution.Implementation.GlobalSetUp;
 using LightBDD.Core.Extensibility.Execution;
 
 namespace LightBDD.Core.Configuration
@@ -135,6 +135,7 @@ namespace LightBDD.Core.Configuration
             ThrowIfSealed();
             if (setUp == null)
                 throw new ArgumentNullException(nameof(setUp));
+
             GlobalSetUpRegistry.RegisterActivity(activityName,
                 () =>
                 {
@@ -146,6 +147,7 @@ namespace LightBDD.Core.Configuration
                     tearDown?.Invoke();
                     return Task.CompletedTask;
                 });
+
             return this;
         }
 
@@ -177,6 +179,7 @@ namespace LightBDD.Core.Configuration
             ThrowIfSealed();
             if (tearDown == null)
                 throw new ArgumentNullException(nameof(tearDown));
+
             GlobalSetUpRegistry.RegisterActivity(activityName,
                 null,
                 () =>
@@ -184,6 +187,7 @@ namespace LightBDD.Core.Configuration
                     tearDown.Invoke();
                     return Task.CompletedTask;
                 });
+
             return this;
         }
     }

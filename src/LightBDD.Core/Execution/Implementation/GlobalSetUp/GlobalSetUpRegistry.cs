@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Dependencies;
 
-namespace LightBDD.Core.Execution.Implementation.GlobalInitialization
+namespace LightBDD.Core.Execution.Implementation.GlobalSetUp
 {
     internal class GlobalSetUpRegistry
     {
@@ -23,7 +23,7 @@ namespace LightBDD.Core.Execution.Implementation.GlobalInitialization
             }
         }
 
-        public async Task CleanUpAsync(IDependencyResolver resolver)
+        public async Task TearDownAsync(IDependencyResolver resolver)
         {
             var exceptions = new List<Exception>();
             foreach (var runner in _global.AsEnumerable().Reverse())

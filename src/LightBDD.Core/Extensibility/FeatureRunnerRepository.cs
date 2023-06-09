@@ -61,7 +61,7 @@ namespace LightBDD.Core.Extensibility
             {
                 // ReSharper disable AccessToDisposedClosure
                 var globalSetUp = _integrationContext.Configuration.Get<ExecutionExtensionsConfiguration>().GlobalSetUpRegistry;
-                Task.Run(() => globalSetUp.CleanUpAsync(container)).GetAwaiter().GetResult();
+                Task.Run(() => globalSetUp.TearDownAsync(container)).GetAwaiter().GetResult();
                 // ReSharper restore AccessToDisposedClosure
             }
             finally
