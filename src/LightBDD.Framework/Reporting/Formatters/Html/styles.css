@@ -10,15 +10,15 @@ h1{ font-size: 1.40em;}
 h2{ font-size: 1.20em;}
 h3{ font-size: 1.00em;}
 section.features{display: flex;flex-direction: column;}
-.feature{margin-bottom: 1em;padding: 0.2em;display: table;}
+.feature{margin-bottom: 0.5em;padding: 0.5em;display: table;border-radius: 0.5em;}
 .title{font-weight: bold;margin: 0;}
 .title,.description,.step{ word-wrap: break-word;}
 .steps,.categories{margin-top: 0.5em;}
 .categories { font-style: italic;color: #0000cd}
-.feature .scenarios{margin: 1em 0 1em 2em;}
-.feature:nth-child(even) { background: #cccccc; }
-.feature:nth-child(odd) { background: #dddddd; }
-.scenario{ margin-bottom: 1px;}
+.feature .scenarios{ margin-top: 0.5em;}
+.feature:nth-child(even) { background: #e9e9e9; }
+.feature:nth-child(odd) { background: #e0e0e0; }
+.scenario{ margin-bottom: 0.2em;border-radius: 0.5em;background-color: #ffffff;padding: 0.2em;}
 .toggleF:not(:checked) ~ .scenarios { display: none;}
 .toggleS:not(:checked) + h3 ~ * { display: none;}
 .toggleSS:not(:checked) ~ .sub-steps { display: none;}
@@ -51,7 +51,7 @@ table.features td:first-of-type{white-space: normal;word-wrap:break-word;}
 .failedAlert{ color: #ff5555;font-weight: bold;}
 .ignoredAlert{ color: #ffaa55;font-weight: bold;}
 .bypassedAlert{ color: #5555ff;font-weight: bold;}
-article{ margin-left: 1em;}
+article{ margin-left: 0.5em;}
 .options{ margin-bottom: 0.2em;}
 .options > span{ display: table-cell;}
 .options > span:first-child{ font-weight: bold;font-style: italic; min-width: 6em;text-align: right;padding-right: 0.5em;}
@@ -63,14 +63,16 @@ a:hover{ text-decoration: underline;}
 .smallLink{ display: none;}
 *:hover > .smallLink { display: inline;}
 input[type="checkbox"],input[type="radio"]{ display: none;}
-.chbox:before{display: inline-block; border: 1px solid #777777;margin-right: 0.5em;font-weight: bold;text-align: center;width: 1.2em;height: 1.2em;line-height: 1.2em;vertical-align: middle;}
+.chbox:before{display: inline-block; border: 1px solid #777777;margin-right: 0.5em;font-weight: bold;text-align: center;width: 1.2em;height: 1.2em;line-height: 1.2em;vertical-align: middle;font-family: monospace;}
 .chbox.empty:before {visibility: hidden;}
 input[type="checkbox"]:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "\2715";}
 input[type="checkbox"]:checked + * .chbox:before{ background-color: #eeeeee;content: "\2713";}
-input[type="checkbox"].toggle:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "v";}
-input[type="checkbox"].toggle:checked + * .chbox:before{ background-color: #eeeeee;content: "^";}
-input[type="radio"]:not(:checked) + * .chbox:before{border-radius: 50%; background-color: #eeeeee;content: " ";}
-input[type="radio"]:checked + * .chbox:before{border-radius: 50%; background-color: #eeeeee;content: "\2713";}
+input[type="checkbox"].toggle + * .chbox:before{ border-radius: 50%;}
+input[type="checkbox"].toggle:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "+";}
+input[type="checkbox"].toggle:checked + * .chbox:before{ background-color: #eeeeee;content: "-";}
+input[type="radio"] + * .chbox:before{border-radius: 50%; background-color: #eeeeee;}
+input[type="radio"]:not(:checked) + * .chbox:before{content: " ";}
+input[type="radio"]:checked + * .chbox:before{content: "\2713";}
 .stepType{ font-style: italic;}
 .stepParam{ color: #aa00aa;}
 .stepParamSuccess{ color: #007700;}
