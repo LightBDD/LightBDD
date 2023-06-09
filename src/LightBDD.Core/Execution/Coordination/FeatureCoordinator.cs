@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting.Values;
@@ -77,6 +79,7 @@ namespace LightBDD.Core.Execution.Coordination
                     throw new InvalidOperationException($"FeatureCoordinator of {Instance.GetType()} type is already installed");
                 Instance = coordinator;
             }
+            coordinator.Initialize();
         }
 
         private void UninstallSelf()
@@ -129,6 +132,11 @@ namespace LightBDD.Core.Execution.Coordination
                 runner.Dispose();
                 _featureAggregator.Aggregate(runner.GetFeatureResult());
             }
+        }
+
+        private void Initialize()
+        {
+            RunnerRepository.Initialize();
         }
     }
 }
