@@ -7,6 +7,7 @@ using LightBDD.Core.Execution;
 using LightBDD.Framework.Execution.Coordination;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
+#pragma warning disable CS1998
 
 namespace LightBDD.Core.UnitTests.Execution;
 
