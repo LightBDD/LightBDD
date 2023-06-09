@@ -67,9 +67,10 @@ input[type="checkbox"],input[type="radio"]{ display: none;}
 .chbox.empty:before {visibility: hidden;}
 input[type="checkbox"]:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "\2715";}
 input[type="checkbox"]:checked + * .chbox:before{ background-color: #eeeeee;content: "\2713";}
-input[type="checkbox"].toggle + * .chbox:before{ border-radius: 50%;}
-input[type="checkbox"].toggle:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "+";}
-input[type="checkbox"].toggle:checked + * .chbox:before{ background-color: #eeeeee;content: "-";}
+input[type="checkbox"].toggle + * .chbox:before{ border-radius: 50%;background-color: #eeeeee;}
+input[type="checkbox"].toggle:not(:checked) + * .chbox:before{ content: "+";}
+input[type="checkbox"].toggle:checked + * .chbox:before{ content: "-";}
+input:hover + * .chbox:before{ background-color: #ffffaa !important;}
 input[type="radio"] + * .chbox:before{border-radius: 50%; background-color: #eeeeee;}
 input[type="radio"]:not(:checked) + * .chbox:before{content: " ";}
 input[type="radio"]:checked + * .chbox:before{content: "\2713";}
