@@ -3,6 +3,10 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
+using LightBDD.Core.Configuration;
+using LightBDD.Core.Dependencies;
+using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Extensibility.Implementation;
 
 namespace LightBDD.Core.Extensibility
@@ -52,7 +56,25 @@ namespace LightBDD.Core.Extensibility
         /// <inheritdoc />
         public void Dispose()
         {
-            _integrationContext.DependencyContainer.Dispose();
+            var container = _integrationContext.DependencyContainer;
+            try
+            {
+                // ReSharper disable AccessToDisposedClosure
+                var globalSetUp = _integrationContext.Configuration.Get<ExecutionExtensionsConfiguration>().GlobalSetUpRegistry;
+                Task.Run(() => globalSetUp.TearDownAsync(container)).GetAwaiter().GetResult();
+                // ReSharper restore AccessToDisposedClosure
+            }
+            finally
+            {
+                container.Dispose();
+            }
+        }
+
+        internal void Initialize()
+        {
+            var container = _integrationContext.DependencyContainer;
+            var globalSetUp = _integrationContext.Configuration.Get<ExecutionExtensionsConfiguration>().GlobalSetUpRegistry;
+            Task.Run(() => globalSetUp.SetUpAsync(container)).GetAwaiter().GetResult();
         }
     }
 }

@@ -1,6 +1,12 @@
 LightBDD
 ===========================================
 
+Version vNext
+----------------------------------------
++ #281 (LightBDD.Core)(New) Added IScenarioSetUp and IScenarioTearDown execution extension interfaces allowing to run scenario set up / tear down when implemented on fixture class
++ #281 (LightBDD.Core)(Change) Exposed IScenario.Fixture property allowing scenario decorators accessing the fixture object
++ #281 (LightBDD.Core)(New) Added ability to register global set up and tear down for resources and activities by using `ExecutionExtensionsConfiguration`
+
 Version 3.6.1
 ----------------------------------------
 + #276 (LightBDD.Framework)(Fix) Fixed casting null to Nullable for CastExpectation

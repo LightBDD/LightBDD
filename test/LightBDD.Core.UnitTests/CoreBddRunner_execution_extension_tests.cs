@@ -279,6 +279,23 @@ namespace LightBDD.Core.UnitTests
             Assert.That(scenario.GetSteps().Select(s => s.ExecutionException), Is.All.Null);
         }
 
+        [Test]
+        public void ScenarioDecorator_should_have_access_to_fixture_object()
+        {
+            object scenarioFixture = null;
+            var featureRunner = CreateRunner(cfg =>
+            {
+                cfg.ExecutionExtensionsConfiguration().EnableScenarioDecorator(() => new DelegatingDecorator(scenario => scenarioFixture = scenario.Fixture));
+            });
+            var runner = featureRunner.GetBddRunner(this);
+
+            runner
+                .Test()
+                .TestScenario(Some_step1);
+
+            Assert.AreSame(this, scenarioFixture);
+        }
+
         [MyThrowingDecorator(ExecutionStatus.Failed)]
         private void My_failed_step() { }
 
@@ -406,6 +423,22 @@ namespace LightBDD.Core.UnitTests
             }
 
             public int Order { get; }
+        }
+
+        private class DelegatingDecorator : IScenarioDecorator
+        {
+            private readonly Action<IScenario> _onCall;
+
+            public DelegatingDecorator(Action<IScenario> onCall)
+            {
+                _onCall = onCall;
+            }
+
+            public Task ExecuteAsync(IScenario scenario, Func<Task> scenarioInvocation)
+            {
+                _onCall(scenario);
+                return scenarioInvocation();
+            }
         }
     }
 }

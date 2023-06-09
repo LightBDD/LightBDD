@@ -10,6 +10,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests.Execution
 {
     [TestFixture]
+    [NonParallelizable]
     public class FeatureCoordinatorTests
     {
         class TestableFeatureCoordinator : FrameworkFeatureCoordinator
