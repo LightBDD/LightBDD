@@ -1,4 +1,5 @@
-﻿*{color: #222222;font-family: Arial, sans-serif;-webkit-print-color-adjust:exact;}
+﻿@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+*{color: #222222;font-family: 'Lato', sans-serif;-webkit-print-color-adjust:exact;}
 html{font-size: 11pt;}
 .title *{ line-height: 1em;}
 label * { line-height: 1em;}
