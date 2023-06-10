@@ -36,22 +36,18 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
             var text = FormatAndExtractText(result);
             TestContext.WriteLine(text);
             var expectedText = $@"Execution summary
-Test execution start time: 2014-09-23 19:21:58 UTC
-Test execution end time: 2014-09-23 19:23:00 UTC
-Test execution time: 1m 02s
-Test execution time (aggregated): 1m 04s
-Number of features: 1
-Number of scenarios: 2
+Execution
+Start date: 2014-09-23 (UTC)
+Start time: 19:21:58
+End time: 19:23:00
+Duration: 1m 02s
+Overall status: Failed
+Content
+Features: 1
+Scenarios: 2
 Passed scenarios: 0
-Bypassed scenarios: 0
 Failed scenarios: 1 (see details)
 Ignored scenarios: 1 (see details)
-Number of steps: 10
-Passed steps: 3
-Bypassed steps: 1
-Failed steps: 2
-Ignored steps: 2
-Not Run steps: 2
 Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
 My feature [Label 1] 2 0 0 1 1 10 3 1 2 2 2 1m 02s 621000000 1m 04s 642570000 32s 128ms 321285000
@@ -119,22 +115,17 @@ initialize();";
             var text = FormatAndExtractText(result);
             TestContext.WriteLine(text);
             var expectedText = $@"Execution summary
-Test execution start time: 2014-09-23 19:21:58 UTC
-Test execution end time: 2014-09-23 19:21:58 UTC
-Test execution time: 25ms
-Test execution time (aggregated): 25ms
-Number of features: 1
-Number of scenarios: 1
+Execution
+Start date: 2014-09-23 (UTC)
+Start time: 19:21:58
+End time: 19:21:58
+Duration: 25ms
+Overall status: Passed
+Content
+Features: 1
+Scenarios: 1
 Passed scenarios: 0
-Bypassed scenarios: 0
-Failed scenarios: 0
 Ignored scenarios: 1 (see details)
-Number of steps: 2
-Passed steps: 1
-Bypassed steps: 0
-Failed steps: 0
-Ignored steps: 1
-Not Run steps: 0
 Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
 My feature 1 0 0 0 1 2 1 0 0 1 0 25ms 250000 25ms 250000 25ms 250000
@@ -159,22 +150,16 @@ initialize();";
             var text = FormatAndExtractText(results);
             TestContext.WriteLine(text);
             var expectedText = $@"Execution summary
-Test execution start time: 2014-09-23 19:21:58 UTC
-Test execution end time: 2014-09-23 19:22:01 UTC
-Test execution time: 3s 020ms
-Test execution time (aggregated): 40ms
-Number of features: 2
-Number of scenarios: 2
+Execution
+Start date: 2014-09-23 (UTC)
+Start time: 19:21:58
+End time: 19:22:01
+Duration: 3s 020ms
+Overall status: Passed
+Content
+Features: 2
+Scenarios: 2
 Passed scenarios: 2
-Bypassed scenarios: 0
-Failed scenarios: 0
-Ignored scenarios: 0
-Number of steps: 2
-Passed steps: 2
-Bypassed steps: 0
-Failed steps: 0
-Ignored steps: 0
-Not Run steps: 0
 Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
 My feature 1 1 0 0 0 1 1 0 0 0 0 20ms 200000 20ms 200000 20ms 200000
@@ -215,22 +200,16 @@ initialize();";
             var text = FormatAndExtractText(feature);
             TestContext.WriteLine(text);
             var expectedText = $@"Execution summary
-Test execution start time: 2019-10-21 05:06:07 UTC
-Test execution end time: 2019-10-21 05:06:12 UTC
-Test execution time: 5s
-Test execution time (aggregated): 5s
-Number of features: 1
-Number of scenarios: 1
+Execution
+Start date: 2019-10-21 (UTC)
+Start time: 05:06:07
+End time: 05:06:12
+Duration: 5s
+Overall status: Passed
+Content
+Features: 1
+Scenarios: 1
 Passed scenarios: 1
-Bypassed scenarios: 0
-Failed scenarios: 0
-Ignored scenarios: 0
-Number of steps: 2
-Passed steps: 2
-Bypassed steps: 0
-Failed steps: 0
-Ignored steps: 0
-Not Run steps: 0
 Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
 My feature 1 1 0 0 0 2 2 0 0 0 0 5s 50000000 5s 50000000 5s 50000000
@@ -255,22 +234,16 @@ initialize();";
             var text = FormatAndExtractText(results);
             TestContext.WriteLine(text);
             var expectedText = $@"Execution summary
-Test execution start time: 2014-09-23 19:21:57 UTC
-Test execution end time: 2014-09-23 19:22:02 UTC
-Test execution time: 5s
-Test execution time (aggregated): 9s
-Number of features: 1
-Number of scenarios: 3
+Execution
+Start date: 2014-09-23 (UTC)
+Start time: 19:21:57
+End time: 19:22:02
+Duration: 5s
+Overall status: Passed
+Content
+Features: 1
+Scenarios: 3
 Passed scenarios: 3
-Bypassed scenarios: 0
-Failed scenarios: 0
-Ignored scenarios: 0
-Number of steps: 3
-Passed steps: 3
-Bypassed steps: 0
-Failed steps: 0
-Ignored steps: 0
-Not Run steps: 0
 Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
 My Feature 3 3 0 0 0 3 3 0 0 0 0 5s 50000000 9s 90000000 3s 30000000

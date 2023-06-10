@@ -372,6 +372,29 @@ I want to have HTML report")]
         }
 
         [Scenario]
+        [TestCase(ExecutionStatus.Bypassed, ExecutionStatus.Passed)]
+        [TestCase(ExecutionStatus.Passed, ExecutionStatus.Passed)]
+        [TestCase(ExecutionStatus.Failed, ExecutionStatus.Failed)]
+        [TestCase(ExecutionStatus.Ignored, ExecutionStatus.Passed)]
+        [TestCase(ExecutionStatus.NotRun, ExecutionStatus.Passed)]
+        public async Task Should_determine_overall_status_to_EXPECTED_if_all_scenarios_have_status_STATUS(ExecutionStatus status, ExecutionStatus expected)
+        {
+            await Runner
+                .WithContext<HtmlReportContext>()
+                .RunScenarioAsync(
+                    x => x.Given_a_feature_result("a"),
+                    x => x.Given_the_feature_has_scenario_result_of_status("a", ExecutionStatus.Passed),
+                    x => x.Given_a_feature_result("b"),
+                    x => x.Given_the_feature_has_scenario_result_of_status("b", status),
+                    x => x.Given_a_html_report_is_created(),
+
+                    x => x.When_a_html_report_is_opened(),
+
+                    x => x.Then_overall_status_should_be_STATUS(expected)
+                );
+        }
+
+        [Scenario]
         public async Task Should_sort_feature_summary_rows()
         {
             await Runner

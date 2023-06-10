@@ -78,24 +78,31 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
             return Html.Tag(Html5Tag.Section).Content(
                 Html.Tag(Html5Tag.H1).Content("Execution summary"),
-                Html.Tag(Html5Tag.Article).Content(
-                    Html.Tag(Html5Tag.Table).Class("summary").Content(
-                        GetKeyValueTableRow("Test execution start time:", timeSummary.Start.ToString("yyyy-MM-dd HH:mm:ss UTC")),
-                        GetKeyValueTableRow("Test execution end time:", timeSummary.End.ToString("yyyy-MM-dd HH:mm:ss UTC")),
-                        GetKeyValueTableRow("Test execution time:", timeSummary.Duration.FormatPretty()),
-                        GetKeyValueTableRow("Test execution time (aggregated):", timeSummary.Aggregated.FormatPretty()),
-                        GetKeyValueTableRow("Number of features:", _features.Length.ToString()),
-                        GetKeyValueTableRow("Number of scenarios:", _features.CountScenarios()),
+                Html.Tag(Html5Tag.Article).Class("execution-summary").Content(
+                    Html.Tag(Html5Tag.Table).Class("executionSummary").Content(
+                        GetKeyValueHeaderTableRow("Execution"),
+                        GetKeyValueTableRow("Start date:", timeSummary.Start.ToString("yyyy-MM-dd (UTC)")),
+                        GetKeyValueTableRow("Start time:", timeSummary.Start.ToString("HH:mm:ss")),
+                        GetKeyValueTableRow("End time:", timeSummary.End.ToString("HH:mm:ss")),
+                        GetKeyValueTableRow("Duration:", timeSummary.Duration.FormatPretty()),
+                        GetOverallStatus(),
+                        GetKeyValueHeaderTableRow("Content"),
+                        GetKeyValueTableRow("Features:", _features.Length.ToString()),
+                        GetKeyValueTableRow("Scenarios:", _features.CountScenarios()),
                         GetKeyValueTableRow("Passed scenarios:", _features.CountScenariosWithStatus(ExecutionStatus.Passed)),
-                        GetKeyValueTableRow("Bypassed scenarios:", bypassedScenarios, "bypassedAlert", "bypassedDetails"),
-                        GetKeyValueTableRow("Failed scenarios:", failedScenarios, "failedAlert", "failedDetails"),
-                        GetKeyValueTableRow("Ignored scenarios:", ignoredScenarios, "ignoredAlert", "ignoredDetails"),
-                        GetKeyValueTableRow("Number of steps:", _features.CountSteps()),
-                        GetKeyValueTableRow("Passed steps:", _features.CountStepsWithStatus(ExecutionStatus.Passed)),
-                        GetKeyValueTableRow("Bypassed steps:", _features.CountStepsWithStatus(ExecutionStatus.Bypassed), "bypassedAlert"),
-                        GetKeyValueTableRow("Failed steps:", _features.CountStepsWithStatus(ExecutionStatus.Failed), "failedAlert"),
-                        GetKeyValueTableRow("Ignored steps:", _features.CountStepsWithStatus(ExecutionStatus.Ignored), "ignoredAlert"),
-                        GetKeyValueTableRow("Not Run steps:", _features.CountStepsWithStatus(ExecutionStatus.NotRun)))));
+                        GetKeyValueTableRow("Bypassed scenarios:", bypassedScenarios, "bypassedAlert", "bypassedDetails", true),
+                        GetKeyValueTableRow("Failed scenarios:", failedScenarios, "failedAlert", "failedDetails", true),
+                        GetKeyValueTableRow("Ignored scenarios:", ignoredScenarios, "ignoredAlert", "ignoredDetails", true))));
+        }
+
+        private TagBuilder GetOverallStatus()
+        {
+            var executionStatus = _features.SelectMany(f => f.GetScenarios()).Select(s => s.Status).OrderByDescending(x => x).DefaultIfEmpty(ExecutionStatus.NotRun).First();
+            if (executionStatus != ExecutionStatus.Failed)
+                executionStatus = ExecutionStatus.Passed;
+            return Html.Tag(Html5Tag.Tr).Content(
+                Html.Tag(Html5Tag.Th).Content("Overall status:"),
+                Html.Tag(Html5Tag.Td).Class($"overall-status {GetStatusClass(executionStatus)}").Content(executionStatus.ToString()));
         }
 
         private static IHtmlNode GetKeyValueTableRow(string key, string value)
@@ -105,8 +112,17 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 Html.Tag(Html5Tag.Td).Content(value));
         }
 
-        private static IHtmlNode GetKeyValueTableRow(string key, int value, string classNameIfNotZero = null, string detailsId = null)
+        private static IHtmlNode GetKeyValueHeaderTableRow(string key)
         {
+            return Html.Tag(Html5Tag.Tr).Content(
+                Html.Tag(Html5Tag.Th).Content(key).Class("subHeader").Attribute(Html5Attribute.Colspan, "2"));
+        }
+
+        private static IHtmlNode GetKeyValueTableRow(string key, int value, string classNameIfNotZero = null, string detailsId = null, bool ignoreIfZero = false)
+        {
+            if (ignoreIfZero && value == 0)
+                return Html.Nothing();
+
             var valueTag = Html.Tag(Html5Tag.Span).Content(value.ToString());
 
             if (classNameIfNotZero != null && value != 0)
@@ -148,14 +164,14 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 Tuple.Create("Bypassed", sortableMinor, "sortTable('featuresSummary',3,true,this)"),
                 Tuple.Create("Failed", sortableMinor, "sortTable('featuresSummary',4,true,this)"),
                 Tuple.Create("Ignored", sortableMinor, "sortTable('featuresSummary',5,true,this)"),
-                
+
                 Tuple.Create("Steps", sortable, "sortTable('featuresSummary',6,true,this)"),
                 Tuple.Create("Passed", sortableMinor, "sortTable('featuresSummary',7,true,this)"),
                 Tuple.Create("Bypassed", sortableMinor, "sortTable('featuresSummary',8,true,this)"),
                 Tuple.Create("Failed", sortableMinor, "sortTable('featuresSummary',9,true,this)"),
                 Tuple.Create("Ignored", sortableMinor, "sortTable('featuresSummary',10,true,this)"),
                 Tuple.Create("Not Run", sortableMinor, "sortTable('featuresSummary',11,true,this)"),
-                
+
                 Tuple.Create("Duration", sortable, "sortTable('featuresSummary',13,true,this)"),
                 Tuple.Create("", hidden, ""),
                 Tuple.Create("Aggregated", sortableMinor, "sortTable('featuresSummary',15,true,this)"),

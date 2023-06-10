@@ -143,13 +143,13 @@ namespace LightBDD.AcceptanceTests.Features
 
         public async Task When_a_feature_scenario_step_collapse_button_is_clicked(int feature, int scenario, int step)
         {
-           ClickLabeledButton(Features[feature - 1].GetScenarios().ElementAt(scenario - 1).GetSteps().ElementAt(step - 1).Info.RuntimeId.ToString());
+            ClickLabeledButton(Features[feature - 1].GetScenarios().ElementAt(scenario - 1).GetSteps().ElementAt(step - 1).Info.RuntimeId.ToString());
         }
 
         public async Task Then_the_feature_scenario_step_sub_steps_should_be_VISIBLE(int feature, int scenario, int step, bool visible)
         {
             var actual = Driver.FindFeature(feature).FindScenario(scenario).FindStep(step).FindSubSteps().Count(e => e.Displayed == visible);
-            Assert.That(actual, Is.EqualTo(Features[feature - 1].GetScenarios().ElementAt(scenario-1).GetSteps().ElementAt(step-1).GetSubSteps().Count()));
+            Assert.That(actual, Is.EqualTo(Features[feature - 1].GetScenarios().ElementAt(scenario - 1).GetSteps().ElementAt(step - 1).GetSubSteps().Count()));
         }
 
         private static string ToScenarioToggle(int feature, int scenario)
@@ -228,7 +228,7 @@ namespace LightBDD.AcceptanceTests.Features
 
         public async Task When_the_link_to_details_of_STATUS_scenarios_is_clicked(ExecutionStatus status)
         {
-            Driver.FindElementsByTagName("table").First(t => t.HasClassName("summary"))
+            Driver.FindElementsByTagName("table").First(t => t.HasClassName("executionSummary"))
                 .FindElements(By.TagName("td"))
                 .First(td => td.FindElements(By.TagName("span")).Any(span => span.HasClassName(status.ToString().ToLower() + "Alert")))
                 .FindElements(By.TagName("a")).First()
@@ -366,6 +366,12 @@ namespace LightBDD.AcceptanceTests.Features
                 new HtmlReportFormatter().Format(memory, results);
                 return Encoding.UTF8.GetString(memory.ToArray());
             }
+        }
+
+        public async Task Then_overall_status_should_be_STATUS(ExecutionStatus failed)
+        {
+            var element = Driver.FindElementByCssSelector(".executionSummary td.overall-status");
+            Assert.That(element.GetClassNames(), Does.Contain(failed.ToString().ToLowerInvariant()));
         }
     }
 
