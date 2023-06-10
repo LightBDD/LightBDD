@@ -55,6 +55,7 @@ Not Run steps: 2
 Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
 My feature [Label 1] 2 0 0 1 1 10 3 1 2 2 2 1m 02s 621000000 1m 04s 642570000 32s 128ms 321285000
+Totals 2 0 0 1 1 10 3 1 2 2 2 1m 02s 621000000 1m 04s 642570000 32s 128ms 321285000
 Feature details[&#8734;link]
 Toggle: Features Scenarios Sub Steps
 Filter: Passed Bypassed Failed Ignored Not Run
@@ -137,6 +138,7 @@ Not Run steps: 0
 Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
 My feature 1 0 0 0 1 2 1 0 0 1 0 25ms 250000 25ms 250000 25ms 250000
+Totals 1 0 0 0 1 2 1 0 0 1 0 25ms 250000 25ms 250000 25ms 250000
 Feature details[&#8734;link]
 Toggle: Features Scenarios Sub Steps
 Filter: Passed Bypassed Failed Ignored Not Run
@@ -177,6 +179,7 @@ Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
 My feature 1 1 0 0 0 1 1 0 0 0 0 20ms 200000 20ms 200000 20ms 200000
 My feature2 1 1 0 0 0 1 1 0 0 0 0 20ms 200000 20ms 200000 20ms 200000
+Totals 2 2 0 0 0 2 2 0 0 0 0 3s 020ms 30200000 40ms 400000 20ms 200000
 Feature details[&#8734;link]
 Toggle: Features Scenarios Sub Steps
 Filter: Passed Bypassed Failed Ignored Not Run
@@ -231,6 +234,7 @@ Not Run steps: 0
 Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
 My feature 1 1 0 0 0 2 2 0 0 0 0 5s 50000000 5s 50000000 5s 50000000
+Totals 1 1 0 0 0 2 2 0 0 0 0 5s 50000000 5s 50000000 5s 50000000
 Feature details[&#8734;link]
 Toggle: Features Scenarios Sub Steps
 Filter: Passed Bypassed Failed Ignored Not Run
@@ -270,6 +274,7 @@ Not Run steps: 0
 Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
 My Feature 3 3 0 0 0 3 3 0 0 0 0 5s 50000000 9s 90000000 3s 30000000
+Totals 3 3 0 0 0 3 3 0 0 0 0 5s 50000000 9s 90000000 3s 30000000
 Feature details[&#8734;link]
 Toggle: Features Scenarios Sub Steps
 Filter: Passed Bypassed Failed Ignored Not Run

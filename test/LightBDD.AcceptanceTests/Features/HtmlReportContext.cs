@@ -319,6 +319,7 @@ namespace LightBDD.AcceptanceTests.Features
                 .FindElementById("featuresSummary")
                 .FindElements(By.TagName("tr"))
                 .Skip(1)
+                .SkipLast(1)
                 .Select(tr => tr.FindElements(By.TagName("td")).Where(td => td.Displayed).ElementAt((int)column - 1).Text)
                 .ToArray();
 

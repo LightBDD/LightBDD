@@ -142,17 +142,20 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
             yield return GetSummaryTableHeaders(
                 Tuple.Create("Feature", sortable, "sortTable('featuresSummary',0,false,this)"),
+
                 Tuple.Create("Scenarios", sortable, "sortTable('featuresSummary',1,true,this)"),
                 Tuple.Create("Passed", sortableMinor, "sortTable('featuresSummary',2,true,this)"),
                 Tuple.Create("Bypassed", sortableMinor, "sortTable('featuresSummary',3,true,this)"),
                 Tuple.Create("Failed", sortableMinor, "sortTable('featuresSummary',4,true,this)"),
                 Tuple.Create("Ignored", sortableMinor, "sortTable('featuresSummary',5,true,this)"),
+                
                 Tuple.Create("Steps", sortable, "sortTable('featuresSummary',6,true,this)"),
                 Tuple.Create("Passed", sortableMinor, "sortTable('featuresSummary',7,true,this)"),
                 Tuple.Create("Bypassed", sortableMinor, "sortTable('featuresSummary',8,true,this)"),
                 Tuple.Create("Failed", sortableMinor, "sortTable('featuresSummary',9,true,this)"),
                 Tuple.Create("Ignored", sortableMinor, "sortTable('featuresSummary',10,true,this)"),
                 Tuple.Create("Not Run", sortableMinor, "sortTable('featuresSummary',11,true,this)"),
+                
                 Tuple.Create("Duration", sortable, "sortTable('featuresSummary',13,true,this)"),
                 Tuple.Create("", hidden, ""),
                 Tuple.Create("Aggregated", sortableMinor, "sortTable('featuresSummary',15,true,this)"),
@@ -162,6 +165,35 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 );
             yield return Html.Tag(Html5Tag.Tbody).Content(_features.Select((t, index) => GetFeatureSummary(t, index + 1)));
 
+            yield return GetFeaturesSummaryFooter();
+        }
+
+        private IHtmlNode GetFeaturesSummaryFooter()
+        {
+            var timeSummary = _features.GetTestExecutionTimeSummary();
+            return Html.Tag(Html5Tag.Tfoot).Content(Html.Tag(Html5Tag.Tr).Content(
+                Html.Tag(Html5Tag.Td).Content("Totals"),
+
+                Html.Tag(Html5Tag.Td).Content(_features.CountScenarios().ToString()),
+                Html.Tag(Html5Tag.Td).Content(_features.CountScenariosWithStatus(ExecutionStatus.Passed).ToString()),
+                GetNumericTagWithOptionalClass(Html5Tag.Td, "bypassedAlert", _features.CountScenariosWithStatus(ExecutionStatus.Bypassed)),
+                GetNumericTagWithOptionalClass(Html5Tag.Td, "failedAlert", _features.CountScenariosWithStatus(ExecutionStatus.Failed)),
+                GetNumericTagWithOptionalClass(Html5Tag.Td, "ignoredAlert", _features.CountScenariosWithStatus(ExecutionStatus.Ignored)),
+
+                Html.Tag(Html5Tag.Td).Content(_features.CountSteps().ToString()),
+                Html.Tag(Html5Tag.Td).Content(_features.CountStepsWithStatus(ExecutionStatus.Passed).ToString()),
+                GetNumericTagWithOptionalClass(Html5Tag.Td, "bypassedAlert", _features.CountStepsWithStatus(ExecutionStatus.Bypassed)),
+                GetNumericTagWithOptionalClass(Html5Tag.Td, "failedAlert", _features.CountStepsWithStatus(ExecutionStatus.Failed)),
+                GetNumericTagWithOptionalClass(Html5Tag.Td, "ignoredAlert", _features.CountStepsWithStatus(ExecutionStatus.Ignored)),
+                Html.Tag(Html5Tag.Td).Content(_features.CountStepsWithStatus(ExecutionStatus.NotRun).ToString()),
+
+                Html.Tag(Html5Tag.Td).Content(timeSummary.Duration.FormatPretty()),
+                Html.Tag(Html5Tag.Td).Class("hidden").Content(timeSummary.Duration.Ticks.ToString()),
+                Html.Tag(Html5Tag.Td).Content(timeSummary.Aggregated.FormatPretty()),
+                Html.Tag(Html5Tag.Td).Class("hidden").Content(timeSummary.Aggregated.Ticks.ToString()),
+                Html.Tag(Html5Tag.Td).Content(timeSummary.Average.FormatPretty()),
+                Html.Tag(Html5Tag.Td).Class("hidden").Content(timeSummary.Average.Ticks.ToString())
+            ));
         }
 
         private static IHtmlNode GetFeatureSummary(IFeatureResult feature, int index)
