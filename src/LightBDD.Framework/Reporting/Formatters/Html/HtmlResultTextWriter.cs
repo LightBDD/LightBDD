@@ -129,7 +129,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         {
             return Html.Tag(Html5Tag.Section).Content(
                 Html.Tag(Html5Tag.H1).Content("Feature summary"),
-                Html.Tag(Html5Tag.Article).Content(
+                Html.Tag(Html5Tag.Article).Class("features-summary").Content(
                     Html.Tag(Html5Tag.Table).Id("featuresSummary").Class("features").Content(
                         GetSummaryTable())));
         }
