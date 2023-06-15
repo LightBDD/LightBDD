@@ -22,9 +22,9 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
     {
         private static readonly IStepNameDecorator StepNameDecorator = new HtmlStepNameDecorator();
         private readonly HtmlTextWriter _writer;
-        private readonly string _styles = ReadResource("LightBDD.Framework.Reporting.Formatters.Html.styles.css");
-        private readonly string _scripts = ReadResource("LightBDD.Framework.Reporting.Formatters.Html.scripts.js");
-        private readonly string _favico = ReadBase64Resource("LightBDD.Framework.Reporting.Formatters.Html.lightbdd_small.ico");
+        private readonly string _styles = ReadResource("LightBDD.Framework.Reporting.Formatters.Html.Resources.styles.css");
+        private readonly string _scripts = ReadResource("LightBDD.Framework.Reporting.Formatters.Html.Resources.scripts.js");
+        private readonly string _favico = ReadBase64Resource("LightBDD.Framework.Reporting.Formatters.Html.Resources.lightbdd_small.ico");
 
         private readonly IFeatureResult[] _features;
 
@@ -471,7 +471,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         {
             return Html.Tag(Html5Tag.Span)
                 .Class("status " + GetStatusClass(status))
-                .Content(status.ToString())
+                .Content($"<!--{status}-->", false, false)
                 .SpaceAfter();
         }
 
@@ -651,6 +651,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                             .Attribute(Html5Attribute.Type, "image/x-icon")
                             .Attribute(Html5Attribute.Href, "data:image/ico;base64," + _favico),
                         Html.Tag(Html5Tag.Title).Content("Summary"),
+                        Html.Tag(Html5Tag.Style).Content(WriteCssStatusVars(), false, false),
                         Html.Tag(Html5Tag.Style).Content(_styles, false, false),
                         Html.Tag(Html5Tag.Script).Content(_scripts, false, false)),
                     Html.Tag(Html5Tag.Body).Content(
@@ -660,6 +661,21 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                         Html.Tag(Html5Tag.Div).Class("footer").Content(Html.Text("Generated with "), Html.Tag(Html5Tag.A).Content("LightBDD v" + GetLightBddVersion()).Href("https://github.com/LightBDD/LightBDD")),
                         Html.Tag(Html5Tag.Script).Content("initialize();", false, false)
                         )));
+        }
+
+        private string WriteCssStatusVars()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("html {");
+            var prefix = "LightBDD.Framework.Reporting.Formatters.Html.Resources.Status.";
+            foreach (var name in typeof(HtmlResultTextWriter).GetTypeInfo().Assembly.GetManifestResourceNames().Where(name => name.StartsWith(prefix)))
+            {
+                var status = name.Substring(prefix.Length).Split('.')[0];
+                sb.AppendLine($"--status-{status}-ico: url('data:image/svg+xml;base64,{ReadBase64Resource(name)}');");
+            }
+
+            sb.Append("}");
+            return sb.ToString();
         }
 
         private static string GetLightBddVersion()

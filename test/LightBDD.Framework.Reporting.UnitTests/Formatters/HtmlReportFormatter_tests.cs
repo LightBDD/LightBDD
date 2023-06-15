@@ -60,14 +60,14 @@ Categories: -all- categoryA categoryB categoryC -without category-
 My feature [Label 1][&#8734;link]
 My feature
 long description
-Ignored name [Label 2] (1m 02s)[&#8734;link]
+<!--Ignored--> name [Label 2] (1m 02s)[&#8734;link]
 categoryA
-Passed 1. call step1 &quot;arg1&quot; (1m 01s)
-Ignored 2. step2 (1s 100ms)
-Passed 2.1. substep 1 (100ms)
-Passed 2.2. substep 2 (1s)
-Ignored 2.3. substep 3 (0ms)
-Failed 2.3.1. sub-substep 1
+<!--Passed--> 1. call step1 &quot;arg1&quot; (1m 01s)
+<!--Ignored--> 2. step2 (1s 100ms)
+<!--Passed--> 2.1. substep 1 (100ms)
+<!--Passed--> 2.2. substep 2 (1s)
+<!--Ignored--> 2.3. substep 3 (0ms)
+<!--Failed--> 2.3.1. sub-substep 1
 table1:
 # Key X Y
 = Key1 1 2
@@ -85,7 +85,7 @@ Key X Y
 Key1 1 2
 Key2 2 4
 Key3 3 6
-NotRun 2.3.2. sub-substep 2
+<!--NotRun--> 2.3.2. sub-substep 2
 Step 2: Not implemented yet
 // Step 1: multiline
 comment
@@ -94,11 +94,11 @@ comment
 // Step 2.3.1: sub-sub-multiline
 comment
 &#128279;Step 2.3.1: attachment1 (png)
-Failed name2 ""arg1"" (2s 157ms)[&#8734;link]
+<!--Failed--> name2 ""arg1"" (2s 157ms)[&#8734;link]
 categoryB, categoryC
-Bypassed 1. step3 (2s 107ms)
-Failed 2. step4 (50ms)
-NotRun 3. step5
+<!--Bypassed--> 1. step3 (2s 107ms)
+<!--Failed--> 2. step4 (50ms)
+<!--NotRun--> 3. step5
 Step 1: bypass reason
 Step 2: Expected: True
 	  But was: False
@@ -135,9 +135,9 @@ Toggle: Features Scenarios Sub Steps
 Filter: Passed Bypassed Failed Ignored Not Run
 [&#8734;filtered link]
 My feature[&#8734;link]
-Ignored name (25ms)[&#8734;link]
-Passed 1. step1 (20ms)
-Ignored 2. step2 (5ms)
+<!--Ignored--> name (25ms)[&#8734;link]
+<!--Passed--> 1. step1 (20ms)
+<!--Ignored--> 2. step2 (5ms)
 Generated with LightBDD v{GetExpectedLightBddVersion()}
 initialize();";
             Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
@@ -171,13 +171,13 @@ Filter: Passed Bypassed Failed Ignored Not Run
 Categories: -all- categoryA categoryB -without category-
 [&#8734;filtered link]
 My feature[&#8734;link]
-Passed scenario1 (20ms)[&#8734;link]
+<!--Passed--> scenario1 (20ms)[&#8734;link]
 categoryA
-Passed 1. step1 (20ms)
+<!--Passed--> 1. step1 (20ms)
 My feature2[&#8734;link]
-Passed scenario1 (20ms)[&#8734;link]
+<!--Passed--> scenario1 (20ms)[&#8734;link]
 categoryB
-Passed 1. step1 (20ms)
+<!--Passed--> 1. step1 (20ms)
 Generated with LightBDD v{GetExpectedLightBddVersion()}
 initialize();";
             Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
@@ -219,9 +219,9 @@ Toggle: Features Scenarios Sub Steps
 Filter: Passed Bypassed Failed Ignored Not Run
 [&#8734;filtered link]
 My feature[&#8734;link]
-Passed scenario1 (5s)[&#8734;link]
-Passed &lt;gr&gt;1. ty&lt;p&gt;e ste&lt;p&gt; (20ms)
-Passed 2. ste&lt;p&gt;2 (20ms)
+<!--Passed--> scenario1 (5s)[&#8734;link]
+<!--Passed--> &lt;gr&gt;1. ty&lt;p&gt;e ste&lt;p&gt; (20ms)
+<!--Passed--> 2. ste&lt;p&gt;2 (20ms)
 Generated with LightBDD v{GetExpectedLightBddVersion()}
 initialize();";
             Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
@@ -253,12 +253,12 @@ Toggle: Features Scenarios Sub Steps
 Filter: Passed Bypassed Failed Ignored Not Run
 [&#8734;filtered link]
 My Feature[&#8734;link]
-Passed scenario A [lab B] (2s)[&#8734;link]
-Passed 1. step
-Passed scenario B [lab C] (5s)[&#8734;link]
-Passed 1. step
-Passed scenario C [lab A] (2s)[&#8734;link]
-Passed 1. step
+<!--Passed--> scenario A [lab B] (2s)[&#8734;link]
+<!--Passed--> 1. step
+<!--Passed--> scenario B [lab C] (5s)[&#8734;link]
+<!--Passed--> 1. step
+<!--Passed--> scenario C [lab A] (2s)[&#8734;link]
+<!--Passed--> 1. step
 Generated with LightBDD v{GetExpectedLightBddVersion()}
 initialize();";
             Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));

@@ -17,7 +17,7 @@ internal class HtmlToPlainTextFormatter
     {
         EnsureSeparatorFor(node);
 
-        if (node.Name == "#text")
+        if (node.Name is "#text" or "#comment")
             Append(node.InnerText);
 
         foreach (var childNode in node.ChildNodes)

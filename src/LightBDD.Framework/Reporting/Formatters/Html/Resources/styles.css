@@ -3,9 +3,8 @@
 html{font-size: 14pt;}
 .title *{ line-height: 1em;}
 label * { line-height: 1em;}
-.chbox:before{font-size:0.8em;}
-.status{ font-size: x-small;height: 1.2em;line-height: 1.2em;vertical-align: middle;}
-.step .status{font-size: xx-small;}
+.chbox{display: inline-block;line-height: normal;}
+.chbox:before{font-size:0.8em;vertical-align: baseline;}
 h1{ font-size: 1.40em;}
 h2{ font-size: 1.20em;}
 h3{ font-size: 1.00em;}
@@ -24,16 +23,16 @@ section.features{display: flex;flex-direction: column;}
 .toggleSS:not(:checked) ~ .sub-steps { display: none;}
 .description{font-style: italic;color: #222222;white-space: pre-wrap;margin-top: 0.5em;}
 .label{color: #222277;}
-.status{font-weight: bold;border: 1px solid #777777;padding: 0.2em;margin-right: 0.2em;width: 5em; display: inline-block;text-align: center;}
-.status.passed{background-color: #aaffaa;}
-.status.failed{background-color: #ffaaaa;}
-.status.ignored{background-color: #ffffaa;}
-.status.bypassed{background-color: #aaaaff;}
-.status.notrun{background-color: #aaaaaa;}
+.status{width:1.2em;height:1.2em;margin-right: 0.2em;background-size: contain;background-repeat: no-repeat;display: inline-block;vertical-align: middle;}
+.status.passed{background-image: var(--status-passed-ico);}
+.status.failed{background-image: var(--status-failed-ico);}
+.status.ignored{background-image: var(--status-ignored-ico);}
+.status.bypassed{background-image: var(--status-bypassed-ico);}
+.status.notrun{background-image: var(--status-notrun-ico);}
 .details{margin-top: 0.5em;font-style: italic;color: #ff5555;white-space: pre-wrap;font-size: x-small;}
 .comments{margin-top: 0.5em;font-style: italic;white-space: pre-wrap;font-size: x-small;}
 .attachments{margin-top: 0.5em;font-size: x-small;}
-.attachments::before{content:"Attachments:"}
+.attachments:before{content:"Attachments:"}
 .attachments div{ display: inline-block; margin-right: 0.5em;}
 .comments div{color: #0000cd;}
 .step,.categories,.step-parameters{margin: 0.2em;margin-left: 1.5em;}
@@ -81,7 +80,7 @@ input[type="checkbox"],input[type="radio"]{ display: none;}
 .chbox.empty:before {visibility: hidden;}
 input[type="checkbox"]:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "\2715";}
 input[type="checkbox"]:checked + * .chbox:before{ background-color: #eeeeee;content: "\2713";}
-input[type="checkbox"].toggle + * .chbox:before{ border-radius: 50%;background-color: #eeeeee;}
+input[type="checkbox"].toggle + * .chbox:before{ font-size:smaller;border-radius: 20%;background-color: #eeeeee;}
 input[type="checkbox"].toggle:not(:checked) + * .chbox:before{ content: "+";}
 input[type="checkbox"].toggle:checked + * .chbox:before{ content: "-";}
 input:hover + * .chbox:before{ background-color: #ffffaa !important;}
