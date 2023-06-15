@@ -3,8 +3,6 @@
 html{font-size: 14pt;}
 .title *{ line-height: 1em;}
 label * { line-height: 1em;}
-.chbox{display: inline-block;line-height: normal;}
-.chbox:before{font-size:0.8em;vertical-align: baseline;}
 h1{ font-size: 1.40em;}
 h2{ font-size: 1.20em;}
 h3{ font-size: 1.00em;}
@@ -23,7 +21,7 @@ section.features{display: flex;flex-direction: column;}
 .toggleSS:not(:checked) ~ .sub-steps { display: none;}
 .description{font-style: italic;color: #222222;white-space: pre-wrap;margin-top: 0.5em;}
 .label{color: #222277;}
-.status{width:1.2em;height:1.2em;margin-right: 0.2em;background-size: contain;background-repeat: no-repeat;display: inline-block;vertical-align: middle;}
+.status{width:1.2em;height:1.2em;margin-top: -0.1em;margin-right: 0.2em;background-size: 1.15em;background-repeat: no-repeat;display: inline-block;vertical-align: middle;}
 .status.passed{background-image: var(--status-passed-ico);}
 .status.failed{background-image: var(--status-failed-ico);}
 .status.ignored{background-image: var(--status-ignored-ico);}
@@ -75,12 +73,13 @@ a:hover{ text-decoration: underline;}
 #optionsLink, .smallLink, a:hover,label:hover,.sortable:hover, .attachments a{ color: #662266;}
 .smallLink{ display: none;}
 *:hover > .smallLink { display: inline;}
+.chbox{display: inline-block;}
 input[type="checkbox"],input[type="radio"]{ display: none;}
-.chbox:before{display: inline-block; border: 1px solid #777777;margin-right: 0.5em;font-weight: bold;text-align: center;width: 1.2em;height: 1.2em;line-height: 1.2em;vertical-align: middle;font-family: monospace;}
+.chbox:before{display: inline-block; border: 1px solid #777777;margin-right: 0.5em;font-weight: bold;text-align: center;width: 1.2em;height: 1.2em;line-height: 1.2em;vertical-align: middle;font-family: monospace;margin-top: -0.1em;font-size:smaller;}
 .chbox.empty:before {visibility: hidden;}
 input[type="checkbox"]:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "\2715";}
 input[type="checkbox"]:checked + * .chbox:before{ background-color: #eeeeee;content: "\2713";}
-input[type="checkbox"].toggle + * .chbox:before{ font-size:smaller;border-radius: 20%;background-color: #eeeeee;}
+input[type="checkbox"].toggle + * .chbox:before{ border-radius: 20%;background-color: #eeeeee;}
 input[type="checkbox"].toggle:not(:checked) + * .chbox:before{ content: "+";}
 input[type="checkbox"].toggle:checked + * .chbox:before{ content: "-";}
 input:hover + * .chbox:before{ background-color: #ffffaa !important;}
