@@ -27,12 +27,12 @@ span.category{background-color: hsl(24, 100%, 90%); color: hsl(24, 100%, 40%); p
 .status.ignored{background-image: var(--status-ignored-ico);}
 .status.bypassed{background-image: var(--status-bypassed-ico);}
 .status.notrun{background-image: var(--status-notrun-ico);}
-.details{margin-top: 0.5em;font-style: italic;color: #ff5555;white-space: pre-wrap;font-size: x-small;}
-.comments{margin-top: 0.5em;font-style: italic;white-space: pre-wrap;font-size: x-small;}
-.attachments{margin-top: 0.5em;font-size: x-small;}
-.attachments:before{content:"Attachments:"}
+.attachments,.comments,.details{margin: 0.5em;margin-top: 1em;color: #222222;white-space: pre-wrap;font-size: small;font-family: monospace;}
+.details:before {content: "Details:";display: block;font-size: larger;font-weight: bold;margin-bottom: 0.5em;border-bottom:0.2em solid hsl(34, 100%, 80%);}
+.comments:before {content: "Comments:";display: block;font-size: larger;font-weight: bold;margin-bottom: 0.5em;border-bottom:0.2em solid hsl(204, 100%, 80%);}
+.attachments:before{content:"Attachments:";display: block;font-size: larger;font-weight: bold;margin-bottom: 0.5em;border-bottom:0.2em solid hsl(276, 100%, 80%);}
 .attachments div{ display: inline-block; margin-right: 0.5em;}
-.comments div{color: #0000cd;}
+.comments div{color: inherit;font-family: inherit;}
 .step,.categories,.step-parameters{margin: 0.2em;margin-left: 1.5em;}
 .smallLink,.duration{color: #0000cd;font-size: 0.8em;font-family: monospace;}
 th,td{ white-space: nowrap;}

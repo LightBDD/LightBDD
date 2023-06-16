@@ -420,8 +420,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 Html.Tag(Html5Tag.Div).Content(scenario.GetSteps().Select(GetStep)),
                 GetStatusDetails(scenario.StatusDetails),
                 GetComments(scenario.GetAllSteps()),
-                GetAttachments(scenario.GetAllSteps()),
-                Html.Br());
+                GetAttachments(scenario.GetAllSteps()));
         }
 
         private IHtmlNode GetAttachments(IEnumerable<IStepResult> steps)
@@ -446,6 +445,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         private IHtmlNode GetComments(IEnumerable<IStepResult> steps)
         {
             return Html.Tag(Html5Tag.Div).Class("comments")
+                .SkipEmpty()
                 .Content(from s in steps from c in s.Comments select Html.Tag(Html5Tag.Div).Content($"// Step {s.Info.GroupPrefix}{s.Info.Number}: {c}"));
         }
 
