@@ -5,9 +5,6 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
-using System.Xml.Linq;
-using LightBDD.Core.Configuration;
-using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Formatting.NameDecorators;
 using LightBDD.Core.Metadata;
@@ -141,7 +138,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 Html.Tag(Html5Tag.Td).Content(valueTag, detailsTag));
         }
 
-        private IHtmlNode WriteFeatureList()
+        private IHtmlNode WriteFeatureSummary()
         {
             return Html.Tag(Html5Tag.Section).Content(
                 Html.Tag(Html5Tag.H1).Content("Feature summary"),
@@ -656,7 +653,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                         Html.Tag(Html5Tag.Script).Content(_scripts, false, false)),
                     Html.Tag(Html5Tag.Body).Content(
                         WriteExecutionSummary(),
-                        WriteFeatureList(),
+                        WriteFeatureSummary(),
                         WriteFeatureDetails(),
                         Html.Tag(Html5Tag.Div).Class("footer").Content(Html.Text("Generated with "), Html.Tag(Html5Tag.A).Content("LightBDD v" + GetLightBddVersion()).Href("https://github.com/LightBDD/LightBDD")),
                         Html.Tag(Html5Tag.Script).Content("initialize();", false, false)
