@@ -252,7 +252,16 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         {
             return Html.Tag(Html5Tag.Span)
                 .Class("label")
-                .Content(string.IsNullOrWhiteSpace(label) ? string.Empty : $"[{label.Trim()}]")
+                .Content(string.IsNullOrWhiteSpace(label) ? string.Empty : label.Trim())
+                .SpaceBefore()
+                .SkipEmpty();
+        }
+
+        private static IHtmlNode GetCategory(string category)
+        {
+            return Html.Tag(Html5Tag.Span)
+                .Class("category")
+                .Content(string.IsNullOrWhiteSpace(category) ? string.Empty : category.Trim())
                 .SpaceBefore()
                 .SkipEmpty();
         }
@@ -407,7 +416,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                     Html.Tag(Html5Tag.Span).Content(scenario.Info.Labels.Select(GetLabel)).SkipEmpty(),
                     GetDuration(scenario.ExecutionTime),
                     GetSmallLink(scenarioId)),
-                Html.Tag(Html5Tag.Div).Class("categories").Content(string.Join(", ", scenario.Info.Categories)).SkipEmpty(),
+                Html.Tag(Html5Tag.Div).Class("categories").Content(scenario.Info.Categories.Select(GetCategory)).SkipEmpty(),
                 Html.Tag(Html5Tag.Div).Content(scenario.GetSteps().Select(GetStep)),
                 GetStatusDetails(scenario.StatusDetails),
                 GetComments(scenario.GetAllSteps()),

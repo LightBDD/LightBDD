@@ -50,18 +50,18 @@ Failed scenarios: 1 (see details)
 Ignored scenarios: 1 (see details)
 Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
-My feature [Label 1] 2 0 0 1 1 10 3 1 2 2 2 1m 02s 621000000 1m 04s 642570000 32s 128ms 321285000
+My feature Label 1 2 0 0 1 1 10 3 1 2 2 2 1m 02s 621000000 1m 04s 642570000 32s 128ms 321285000
 Totals 2 0 0 1 1 10 3 1 2 2 2 1m 02s 621000000 1m 04s 642570000 32s 128ms 321285000
 Feature details[&#8734;link]
 Toggle: Features Scenarios Sub Steps
 Filter: Passed Bypassed Failed Ignored Not Run
 Categories: -all- categoryA categoryB categoryC -without category-
 [&#8734;filtered link]
-My feature [Label 1][&#8734;link]
+My feature Label 1[&#8734;link]
 My feature
 long description
-<!--Ignored--> name [Label 2] (1m 02s)[&#8734;link]
-categoryA
+<!--Ignored--> name Label 2 (1m 02s)[&#8734;link]
+ categoryA
 <!--Passed--> 1. call step1 &quot;arg1&quot; (1m 01s)
 <!--Ignored--> 2. step2 (1s 100ms)
 <!--Passed--> 2.1. substep 1 (100ms)
@@ -95,7 +95,7 @@ comment
 comment
 &#128279;Step 2.3.1: attachment1 (png)
 <!--Failed--> name2 ""arg1"" (2s 157ms)[&#8734;link]
-categoryB, categoryC
+ categoryB categoryC
 <!--Bypassed--> 1. step3 (2s 107ms)
 <!--Failed--> 2. step4 (50ms)
 <!--NotRun--> 3. step5
@@ -172,11 +172,11 @@ Categories: -all- categoryA categoryB -without category-
 [&#8734;filtered link]
 My feature[&#8734;link]
 <!--Passed--> scenario1 (20ms)[&#8734;link]
-categoryA
+ categoryA
 <!--Passed--> 1. step1 (20ms)
 My feature2[&#8734;link]
 <!--Passed--> scenario1 (20ms)[&#8734;link]
-categoryB
+ categoryB
 <!--Passed--> 1. step1 (20ms)
 Generated with LightBDD v{GetExpectedLightBddVersion()}
 initialize();";
@@ -253,11 +253,11 @@ Toggle: Features Scenarios Sub Steps
 Filter: Passed Bypassed Failed Ignored Not Run
 [&#8734;filtered link]
 My Feature[&#8734;link]
-<!--Passed--> scenario A [lab B] (2s)[&#8734;link]
+<!--Passed--> scenario A lab B (2s)[&#8734;link]
 <!--Passed--> 1. step
-<!--Passed--> scenario B [lab C] (5s)[&#8734;link]
+<!--Passed--> scenario B lab C (5s)[&#8734;link]
 <!--Passed--> 1. step
-<!--Passed--> scenario C [lab A] (2s)[&#8734;link]
+<!--Passed--> scenario C lab A (2s)[&#8734;link]
 <!--Passed--> 1. step
 Generated with LightBDD v{GetExpectedLightBddVersion()}
 initialize();";
