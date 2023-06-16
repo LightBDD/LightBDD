@@ -33,7 +33,8 @@ span.category{background-color: hsl(24, 100%, 90%); color: hsl(24, 100%, 40%); p
 .attachments:before{content:"Attachments:";display: block;font-size: larger;font-weight: bold;margin-bottom: 0.5em;border-bottom:0.2em solid hsl(276, 100%, 80%);}
 .attachments div{ display: inline-block; margin-right: 0.5em;}
 .comments div{color: inherit;font-family: inherit;}
-.step,.categories,.step-parameters{margin: 0.2em;margin-left: 1.5em;}
+.step,.categories,.step-parameters{margin: 0.2em;margin-left: 3em;}
+.step{ margin-left: 1.5em;}
 .smallLink,.duration{color: #0000cd;font-size: 0.8em;font-family: monospace;}
 th,td{ white-space: nowrap;}
 th{ text-align: right;}
