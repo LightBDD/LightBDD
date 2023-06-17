@@ -617,13 +617,15 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         private static string GetRowTypeContent(ITabularParameterRow row)
         {
             if (row.Type == TableRowType.Surplus)
-                return "(surplus)";
+                return "+";
             if (row.Type == TableRowType.Missing)
-                return "(missing)";
+                return "-";
             if (row.VerificationStatus == ParameterVerificationStatus.Success)
                 return "=";
             if (row.VerificationStatus == ParameterVerificationStatus.NotApplicable)
                 return " ";
+            if (row.VerificationStatus == ParameterVerificationStatus.Failure)
+                return "≠";
             return "!";
         }
 
