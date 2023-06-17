@@ -624,8 +624,6 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 return "=";
             if (row.VerificationStatus == ParameterVerificationStatus.NotApplicable)
                 return " ";
-            if (row.VerificationStatus == ParameterVerificationStatus.Failure)
-                return "≠";
             return "!";
         }
 

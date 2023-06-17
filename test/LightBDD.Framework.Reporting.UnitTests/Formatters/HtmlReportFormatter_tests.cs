@@ -74,10 +74,10 @@ table1:
 ! Key2
 12
 4
-(missing) Key3
+- Key3
 &lt;none&gt;3
 &lt;none&gt;6
-(surplus) Key4
++ Key4
 3&lt;none&gt;
 6&lt;none&gt;
 table2:
