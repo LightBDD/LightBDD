@@ -43,13 +43,17 @@ th.minor{ font-weight: normal;}
 .sortable{ cursor: default;}
 td{ text-align: left;}
 table,th,td{ font-size: 1em;}
-article.execution-summary,article.features-summary{background-color: #e0e0e0;border-radius: 0.5em;padding: 0.5em;display:inline-block;}
-table.executionSummary{ border-spacing: 1.5em 0.5em;}
-table.executionSummary th{ font-weight: normal;text-align: left;}
-table.executionSummary th.subHeader{ text-align: center;font-weight: bold;font-size: larger;}
-table.executionSummary td.overall-status{ text-align: center;}
-table.executionSummary td.overall-status.passed{ background-color: hsl(120, 100%, 83%);}
-table.executionSummary td.overall-status.failed{ background-color: hsl(0, 100%, 83%);}
+article.features-summary{background-color: #e0e0e0;border-radius: 0.5em;padding: 0.5em;display:inline-block;}
+section.execution-summary{background-color: #e0e0e0;border-radius: 0.5em;padding: 0.5em;display:inline-block;}
+.execution-summary h1{margin:0;}
+.execution-summary h1:before {content: " ";display: inline-block;background-color: #ffffff;width: 3em;height: 3em;vertical-align: middle;margin-right: 1em;border-radius: 0.5em;background-image: var(--logo-ico);background-repeat: no-repeat;background-size: 80%;background-position: center;}
+section.execution-summary > article{ display: flex;align-items: flex-start;}
+section.execution-summary table{ border-spacing: 1.5em 0.5em;}
+section.execution-summary table th{ font-weight: normal;text-align: left;}
+section.execution-summary table th.subHeader{ text-align: center;font-weight: bold;font-size: larger;}
+section.execution-summary table td.overall-status{ text-align: center;}
+section.execution-summary table td.overall-status.passed{ background-color: hsl(120, 100%, 83%);}
+section.execution-summary table td.overall-status.failed{ background-color: hsl(0, 100%, 83%);}
 table.features {border-collapse:collapse;}
 table.features tbody{background-color:#ffffff;}
 table.features tfoot td:first-of-type{font-weight: bold;}

@@ -35,13 +35,13 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
 
             var text = FormatAndExtractText(result);
             TestContext.WriteLine(text);
-            var expectedText = $@"Execution summary
+            var expectedText = $@"Test execution summary
 Execution
+Overall status: Failed
 Start date: 2014-09-23 (UTC)
 Start time: 19:21:58
 End time: 19:23:00
 Duration: 1m 02s
-Overall status: Failed
 Content
 Features: 1
 Scenarios: 2
@@ -114,13 +114,13 @@ initialize();";
 
             var text = FormatAndExtractText(result);
             TestContext.WriteLine(text);
-            var expectedText = $@"Execution summary
+            var expectedText = $@"Test execution summary
 Execution
+Overall status: Passed
 Start date: 2014-09-23 (UTC)
 Start time: 19:21:58
 End time: 19:21:58
 Duration: 25ms
-Overall status: Passed
 Content
 Features: 1
 Scenarios: 1
@@ -149,13 +149,13 @@ initialize();";
             var results = ReportFormatterTestData.GetMultipleFeatureResults();
             var text = FormatAndExtractText(results);
             TestContext.WriteLine(text);
-            var expectedText = $@"Execution summary
+            var expectedText = $@"Test execution summary
 Execution
+Overall status: Passed
 Start date: 2014-09-23 (UTC)
 Start time: 19:21:58
 End time: 19:22:01
 Duration: 3s 020ms
-Overall status: Passed
 Content
 Features: 2
 Scenarios: 2
@@ -199,13 +199,13 @@ initialize();";
 
             var text = FormatAndExtractText(feature);
             TestContext.WriteLine(text);
-            var expectedText = $@"Execution summary
+            var expectedText = $@"Test execution summary
 Execution
+Overall status: Passed
 Start date: 2019-10-21 (UTC)
 Start time: 05:06:07
 End time: 05:06:12
 Duration: 5s
-Overall status: Passed
 Content
 Features: 1
 Scenarios: 1
@@ -233,13 +233,13 @@ initialize();";
             var results = ReportFormatterTestData.GetFeatureWithUnsortedScenarios();
             var text = FormatAndExtractText(results);
             TestContext.WriteLine(text);
-            var expectedText = $@"Execution summary
+            var expectedText = $@"Test execution summary
 Execution
+Overall status: Passed
 Start date: 2014-09-23 (UTC)
 Start time: 19:21:57
 End time: 19:22:02
 Duration: 5s
-Overall status: Passed
 Content
 Features: 1
 Scenarios: 3

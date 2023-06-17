@@ -73,16 +73,17 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             var ignoredScenarios = _features.CountScenariosWithStatus(ExecutionStatus.Ignored);
             var timeSummary = _features.GetTestExecutionTimeSummary();
 
-            return Html.Tag(Html5Tag.Section).Content(
-                Html.Tag(Html5Tag.H1).Content("Execution summary"),
-                Html.Tag(Html5Tag.Article).Class("execution-summary").Content(
-                    Html.Tag(Html5Tag.Table).Class("executionSummary").Content(
+            return Html.Tag(Html5Tag.Section).Class("execution-summary").Content(
+                Html.Tag(Html5Tag.H1).Content("Test execution summary"),
+                Html.Tag(Html5Tag.Article).Content(
+                    Html.Tag(Html5Tag.Table).Content(
                         GetKeyValueHeaderTableRow("Execution"),
+                        GetOverallStatus(),
                         GetKeyValueTableRow("Start date:", timeSummary.Start.ToString("yyyy-MM-dd (UTC)")),
                         GetKeyValueTableRow("Start time:", timeSummary.Start.ToString("HH:mm:ss")),
                         GetKeyValueTableRow("End time:", timeSummary.End.ToString("HH:mm:ss")),
-                        GetKeyValueTableRow("Duration:", timeSummary.Duration.FormatPretty()),
-                        GetOverallStatus(),
+                        GetKeyValueTableRow("Duration:", timeSummary.Duration.FormatPretty())),
+                    Html.Tag(Html5Tag.Table).Content(
                         GetKeyValueHeaderTableRow("Content"),
                         GetKeyValueTableRow("Features:", _features.Length.ToString()),
                         GetKeyValueTableRow("Scenarios:", _features.CountScenarios()),
@@ -657,7 +658,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                             .Attribute(Html5Attribute.Type, "image/x-icon")
                             .Attribute(Html5Attribute.Href, "data:image/ico;base64," + _favico),
                         Html.Tag(Html5Tag.Title).Content("Summary"),
-                        Html.Tag(Html5Tag.Style).Content(WriteCssStatusVars(), false, false),
+                        Html.Tag(Html5Tag.Style).Content(EmbedCssImages(), false, false),
                         Html.Tag(Html5Tag.Style).Content(_styles, false, false),
                         Html.Tag(Html5Tag.Script).Content(_scripts, false, false)),
                     Html.Tag(Html5Tag.Body).Content(
@@ -669,16 +670,24 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                         )));
         }
 
-        private string WriteCssStatusVars()
+        private string EmbedCssImages()
         {
             var sb = new StringBuilder();
+
+            void EmbedSvg(string varName, string resourcePath)
+            {
+                sb.AppendLine($"{varName}: url('data:image/svg+xml;base64,{ReadBase64Resource(resourcePath)}');");
+            }
+
             sb.AppendLine("html {");
             var prefix = "LightBDD.Framework.Reporting.Formatters.Html.Resources.Status.";
             foreach (var name in typeof(HtmlResultTextWriter).GetTypeInfo().Assembly.GetManifestResourceNames().Where(name => name.StartsWith(prefix)))
             {
                 var status = name.Substring(prefix.Length).Split('.')[0];
-                sb.AppendLine($"--status-{status}-ico: url('data:image/svg+xml;base64,{ReadBase64Resource(name)}');");
+                EmbedSvg($"--status-{status}-ico", name);
             }
+
+            EmbedSvg("--logo-ico", "LightBDD.Framework.Reporting.Formatters.Html.Resources.lightbdd_opt.svg");
 
             sb.Append("}");
             return sb.ToString();

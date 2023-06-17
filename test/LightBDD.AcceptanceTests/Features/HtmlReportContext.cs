@@ -228,7 +228,7 @@ namespace LightBDD.AcceptanceTests.Features
 
         public async Task When_the_link_to_details_of_STATUS_scenarios_is_clicked(ExecutionStatus status)
         {
-            Driver.FindElementsByTagName("table").First(t => t.HasClassName("executionSummary"))
+            Driver.FindElementsByTagName("section").First(t => t.HasClassName("execution-summary"))
                 .FindElements(By.TagName("td"))
                 .First(td => td.FindElements(By.TagName("span")).Any(span => span.HasClassName(status.ToString().ToLower() + "Alert")))
                 .FindElements(By.TagName("a")).First()
@@ -368,10 +368,10 @@ namespace LightBDD.AcceptanceTests.Features
             }
         }
 
-        public async Task Then_overall_status_should_be_STATUS(ExecutionStatus failed)
+        public async Task Then_overall_status_should_be_STATUS(ExecutionStatus status)
         {
-            var element = Driver.FindElementByCssSelector(".executionSummary td.overall-status");
-            Assert.That(element.GetClassNames(), Does.Contain(failed.ToString().ToLowerInvariant()));
+            var element = Driver.FindElementByCssSelector(".execution-summary td.overall-status");
+            Assert.That(element.GetClassNames(), Does.Contain(status.ToString().ToLowerInvariant()));
         }
     }
 

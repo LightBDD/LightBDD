@@ -20,6 +20,9 @@ High level features:
     <EmbeddedResource Include="..\..\logo\lightbdd_small.ico">
       <Link>Reporting\Formatters\Html\Resources\lightbdd_small.ico</Link>
     </EmbeddedResource>
+    <EmbeddedResource Include="..\..\logo\lightbdd_opt.svg">
+      <Link>Reporting\Formatters\Html\Resources\lightbdd_opt.svg</Link>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reporting\Formatters\Html\Resources\**\*" />
   </ItemGroup>
 
