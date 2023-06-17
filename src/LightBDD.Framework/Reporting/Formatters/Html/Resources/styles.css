@@ -54,7 +54,7 @@ section.execution-summary table th.subHeader{ text-align: center;font-weight: bo
 section.execution-summary table td.overall-status{ text-align: center;}
 section.execution-summary table td.overall-status.passed{ background-color: hsl(120, 100%, 83%);}
 section.execution-summary table td.overall-status.failed{ background-color: hsl(0, 100%, 83%);}
-table.features {border-collapse:collapse;}
+table.features {border-collapse:collapse;font-size: smaller;}
 table.features tbody{background-color:#ffffff;}
 table.features tfoot td:first-of-type{font-weight: bold;}
 table.features td,table.features th{padding:0.2em 0.4em;}
