@@ -1,8 +1,8 @@
 Summary:
-	Test execution start time       : 2023-01-11 21:10:44 UTC
-	Test execution end time         : 2023-01-11 21:10:51 UTC
-	Test execution time             : 6s 808ms
-	Test execution time (aggregated): 27s 134ms
+	Test execution start time       : 2023-06-17 18:37:13 UTC
+	Test execution end time         : 2023-06-17 18:37:20 UTC
+	Test execution time             : 6s 599ms
+	Test execution time (aggregated): 27s 647ms
 	Number of features              : 12
 	Number of scenarios             : 27
 	Passed scenarios                : 14
@@ -21,9 +21,9 @@ Feature: Address book feature
 	As an application user
 	I want to add and browse my client postal addresses by client emails
 
-	Scenario: Adding contacts - Failed (38ms)
-		Step 1: GIVEN an empty address book - Passed (<1ms)
-		Step 2: WHEN I associate contact "<tree>" with address "<tree>" as alias "Joey" - Passed (24ms)
+	Scenario: Adding contacts - Failed (51ms)
+		Step 1: GIVEN an empty address book - Passed (1ms)
+		Step 2: WHEN I associate contact "<tree>" with address "<tree>" as alias "Joey" - Passed (25ms)
 		contact:
 		  $: <object>
 		  $.Email: joe67@email.com
@@ -47,7 +47,7 @@ Feature: Address book feature
 		  $.City: Kraków
 		  $.Country: Poland
 		  $.PostCode: 31-042
-		Step 4: THEN address book should contain contacts "<tree>" - Failed (6ms)
+		Step 4: THEN address book should contain contacts "<tree>" - Failed (7ms)
 		contacts:
 		= $: <array:2>
 		= $[0]: <object>
@@ -103,7 +103,7 @@ Feature: Address book feature
 		= $['nowak33@email.com'].Address.City: Kraków
 		= $['nowak33@email.com'].Address.PostCode: 31-042
 
-	Scenario: Persisting address book - Passed (31ms)
+	Scenario: Persisting address book - Passed (26ms)
 		Step 1: GIVEN an address book with contacts "<tree>" - Passed (<1ms)
 		contacts:
 		  $: <array:2>
@@ -129,8 +129,8 @@ Feature: Address book feature
 		  $[1].Contact.Email: nowak33@email.com
 		  $[1].Contact.Name: Jan Nowak
 		  $[1].Contact.PhoneNumber: 123654789
-		Step 2: WHEN I persist book as json - Passed (20ms)
-		Step 3: THEN address book should match persisted json "<tree>" - Passed (3ms)
+		Step 2: WHEN I persist book as json - Passed (14ms)
+		Step 3: THEN address book should match persisted json "<tree>" - Passed (6ms)
 		json:
 		= $: <object>
 		= $.ContactsByEmail: <object>
@@ -156,7 +156,7 @@ Feature: Address book feature
 		= $.ContactsByEmail['nowak33@email.com'].Contact.Email: nowak33@email.com
 		= $.ContactsByEmail['nowak33@email.com'].Contact.Name: Jan Nowak
 		= $.ContactsByEmail['nowak33@email.com'].Contact.PhoneNumber: 123654789
-		Step 4: AND address book should match persisted json "<tree>" - Passed (1ms)
+		Step 4: AND address book should match persisted json "<tree>" - Passed (2ms)
 		json:
 		= $: <object>
 		= $.ContactsByEmail: <object>
@@ -186,7 +186,7 @@ Feature: Address book feature
 			Step 3: Underlying type: JsonElement
 			Step 4: Underlying type: ExpandoObject
 
-	Scenario: Retrieving postal addresses - Passed (5ms)
+	Scenario: Retrieving postal addresses - Passed (4ms)
 		Step 1: GIVEN an empty address book - Passed (<1ms)
 		Step 2: WHEN I associate contact "<tree>" with address "<tree>" as alias "Joey" - Passed (<1ms)
 		contact:
@@ -231,19 +231,19 @@ Feature: Basket feature [Story-4]
 	As a customer
 	I want to add products to basket
 
-	Scenario: No product in stock [Ticket-6] - Passed (1s 794ms)
+	Scenario: No product in stock [Ticket-6] - Passed (1s 158ms)
 		Categories: Sales
-		Step 1: GIVEN product is out of stock - Passed (3ms)
-		Step 2: WHEN customer adds it to the basket - Passed (1s 787ms)
+		Step 1: GIVEN product is out of stock - Passed (6ms)
+		Step 2: WHEN customer adds it to the basket - Passed (1s 140ms)
 		Step 3: THEN the product addition should be unsuccessful - Passed (<1ms)
 		Step 4: AND the basket should not contain the product - Passed (<1ms)
 		Comments:
 			Step 2: Transferring 'product' to the basket
 
-	Scenario: Successful addition [Ticket-7] - Ignored (1s 358ms)
+	Scenario: Successful addition [Ticket-7] - Ignored (1s 484ms)
 		Categories: Sales
 		Step 1: GIVEN product is in stock - Passed (<1ms)
-		Step 2: WHEN customer adds it to the basket - Passed (1s 357ms)
+		Step 2: WHEN customer adds it to the basket - Passed (1s 482ms)
 		Step 3: THEN the product addition should be successful - Passed (<1ms)
 		Step 4: AND the basket should contain the product - Passed (<1ms)
 		Step 5: AND the product should be removed from stock - Ignored (<1ms)
@@ -260,10 +260,10 @@ Feature: Calculator feature [Story-8]
 	
 	This example presents usage of MultiAssertAttribute.
 
-	Scenario: Adding numbers [Ticket-13] - Failed (48ms)
+	Scenario: Adding numbers [Ticket-13] - Failed (51ms)
 		Step 1: GIVEN a calculator - Passed (<1ms)
-		Step 2: THEN adding "2" to "3" should give "5" - Passed (3ms)
-		Step 3: AND adding "-3" to "2" should give "expected: equals '-1', but got: '1'" - Failed (26ms)
+		Step 2: THEN adding "2" to "3" should give "5" - Passed (10ms)
+		Step 3: AND adding "-3" to "2" should give "expected: equals '-1', but got: '1'" - Failed (22ms)
 		Step 4: AND adding "0" to "1" should give "1" - Passed (<1ms)
 		Step 5: AND adding "-2" to "-1" should give "expected: equals '-3', but got: '3'" - Failed (<1ms)
 		Details:
@@ -332,8 +332,8 @@ Feature: Compact calculator scenarios
 	I want to be able to write compact scenarios,
 	So that I can use LightBDD for more unit-test like tests as well
 
-	Scenario: Adding numbers - Passed (18ms)
-		Step 1: GIVEN calculator - Passed (2ms)
+	Scenario: Adding numbers - Passed (31ms)
+		Step 1: GIVEN calculator - Passed (6ms)
 		Step 2: WHEN I add two numbers - Passed (<1ms)
 		Step 3: THEN I should get an expected result - Passed (13ms)
 
@@ -342,10 +342,10 @@ Feature: Contacts management [Story-6]
 	As an application user
 	I want to add, browse and remove my contacts
 
-	Scenario: Contact book should allow me to add multiple contacts [Ticket-8] - Passed (34ms)
-		Step 1: GIVEN my contact book is empty - Passed (1ms)
+	Scenario: Contact book should allow me to add multiple contacts [Ticket-8] - Passed (36ms)
+		Step 1: GIVEN my contact book is empty - Passed (4ms)
 		Step 2: WHEN I add new contacts - Passed (<1ms)
-		Step 3: THEN all contacts should be available in the contact book - Passed (15ms)
+		Step 3: THEN all contacts should be available in the contact book - Passed (17ms)
 
 	Scenario: Contact book should allow me to remove all contacts [Ticket-9] - Bypassed (4ms)
 		Step 1: GIVEN my contact book is filled with many contacts - Passed (1ms)
@@ -354,15 +354,15 @@ Feature: Contacts management [Story-6]
 		Details:
 			Step 2: Contact book clearing is not implemented yet. Contacts are removed one by one.
 
-	Scenario: Contact book should allow me to remove contacts [Ticket-9] - Passed (3ms)
+	Scenario: Contact book should allow me to remove contacts [Ticket-9] - Passed (2ms)
 		Step 1: GIVEN my contact book is filled with contacts - Passed (<1ms)
 		Step 2: WHEN I remove one contact - Passed (<1ms)
 		Step 3: THEN the contact book should not contain removed contact any more - Passed (<1ms)
 		Step 4: AND the contact book should contains all other contacts - Passed (<1ms)
 
-	Scenario: Displaying contacts alphabetically - Passed (33ms)
+	Scenario: Displaying contacts alphabetically - Passed (31ms)
 		Step 1: GIVEN my contact book is empty - Passed (<1ms)
-		Step 2: AND I added contacts "<table>" - Passed (19ms)
+		Step 2: AND I added contacts "<table>" - Passed (18ms)
 		contacts:
 		+-----------------+-----+------------+
 		|Email            |Name |PhoneNumber |
@@ -373,7 +373,7 @@ Feature: Contacts management [Story-6]
 		|ka321@gmail.com  |Kathy|111-555-330 |
 		+-----------------+-----+------------+
 		Step 3: WHEN I request contacts sorted by name - Passed (<1ms)
-		Step 4: THEN I should receive contacts "<table>" - Passed (8ms)
+		Step 4: THEN I should receive contacts "<table>" - Passed (7ms)
 		contacts:
 		+-+-----------------+-----+------------+
 		|#|Email            |Name |PhoneNumber |
@@ -384,7 +384,7 @@ Feature: Contacts management [Story-6]
 		|=|ka321@gmail.com  |Kathy|111-555-330 |
 		+-+-----------------+-----+------------+
 
-	Scenario: Normalizing contact details - Failed (13ms)
+	Scenario: Normalizing contact details - Failed (12ms)
 		Step 1: GIVEN I added contacts "<table>" - Passed (<1ms)
 		contacts:
 		+-------------------+-----+--------------+
@@ -396,7 +396,7 @@ Feature: Contacts management [Story-6]
 		|jos#@mymail.com    |Josh |12111333444   |
 		+-------------------+-----+--------------+
 		Step 2: WHEN I request contacts sorted by name - Passed (<1ms)
-		Step 3: THEN I should receive contacts "<table>" - Failed (7ms)
+		Step 3: THEN I should receive contacts "<table>" - Failed (10ms)
 		contacts:
 		+-+-----+-------------------------------------------------+--------------------------------+
 		|#|Name |Email                                            |PhoneNumber                     |
@@ -426,7 +426,7 @@ Feature: Contacts management [Story-6]
 		|ka321@gmail.com  |Kathy|111-555-330 |
 		+-----------------+-----+------------+
 		Step 3: WHEN I search for contacts by phone starting with "111" - Passed (<1ms)
-		Step 4: THEN I should receive contacts "<table>" - Failed (6ms)
+		Step 4: THEN I should receive contacts "<table>" - Failed (7ms)
 		contacts:
 		+-+-------------+----------------------------------+------------------+
 		|#|Name         |Email                             |PhoneNumber       |
@@ -453,19 +453,19 @@ Feature: Customer journey [Story-7]
 	As an application user
 	I want to go through entire customer journey
 
-	Scenario: Ordering products [Ticket-12] - Ignored (4s 718ms)
-		Step 1: GIVEN customer is logged in - Passed (1s 860ms)
-			Step 1.1: GIVEN the user is about to login - Passed (1ms)
+	Scenario: Ordering products [Ticket-12] - Ignored (4s 174ms)
+		Step 1: GIVEN customer is logged in - Passed (1s 071ms)
+			Step 1.1: GIVEN the user is about to login - Passed (<1ms)
 			Step 1.2: AND the user entered valid login - Passed (<1ms)
 			Step 1.3: AND the user entered valid password - Passed (<1ms)
-			Step 1.4: WHEN the user clicks login button - Passed (1s 850ms)
+			Step 1.4: WHEN the user clicks login button - Passed (1s 061ms)
 			Step 1.5: THEN the login operation should be successful - Passed (<1ms)
-		Step 2: WHEN customer adds products to basket - Bypassed (1s 767ms)
+		Step 2: WHEN customer adds products to basket - Bypassed (1s 501ms)
 			Step 2.1: GIVEN product "wooden desk" is in stock - Passed (<1ms)
-			Step 2.2: WHEN customer adds product "wooden desk" to the basket - Bypassed (1s 763ms)
+			Step 2.2: WHEN customer adds product "wooden desk" to the basket - Bypassed (1s 498ms)
 			Step 2.3: THEN the product addition should be successful - Passed (<1ms)
-		Step 3: AND customer pays for products in basket - Passed (1s 075ms)
-			Step 3.1: WHEN customer requests to pay - Passed (1s 074ms)
+		Step 3: AND customer pays for products in basket - Passed (1s 588ms)
+			Step 3.1: WHEN customer requests to pay - Passed (1s 587ms)
 			Step 3.2: THEN payment should be successful - Passed (<1ms)
 		Step 4: THEN customer should receive order email - Ignored (5ms)
 			Step 4.1: THEN customer should receive invoice - Ignored (3ms)
@@ -474,20 +474,20 @@ Feature: Customer journey [Story-7]
 			Step 2.2: Until proper api is implemented, product is added directly to the DB.
 			Step 4.1: Not implemented yet
 		Attachments:
-			Step 4.1: invoice-content - f934d70b-1149-43c7-9e17-0578df32447e.txt
+			Step 4.1: invoice-content - 2ca5d3b7-5540-4962-bf0d-310f8f989f14.txt
 
 Feature: Invoice feature [Story-2]
 	In order to pay for products
 	As a customer
 	I want to receive invoice for bought items
 
-	Scenario: Receiving invoice for products [Ticket-4] - Ignored (20ms)
+	Scenario: Receiving invoice for products [Ticket-4] - Ignored (27ms)
 		Categories: Sales
 		Step 1: GIVEN product "wooden desk" is available in product storage - Passed (<1ms)
 		Step 2: AND product "wooden shelf" is available in product storage - Passed (<1ms)
 		Step 3: WHEN customer buys product "wooden desk" - Passed (<1ms)
 		Step 4: AND customer buys product "wooden shelf" - Passed (<1ms)
-		Step 5: THEN an invoice should be sent to the customer - Ignored (1ms)
+		Step 5: THEN an invoice should be sent to the customer - Ignored (8ms)
 		Step 6: AND the invoice should contain product "wooden desk" with price of "£62.00" - NotRun
 		Step 7: AND the invoice should contain product "wooden shelf" with price of "£37.00" - NotRun
 		Details:
@@ -500,23 +500,23 @@ Feature: Invoice history feature [STORY-9]
 	
 	Example usage of fluent scenarios
 
-	Scenario: Browsing invoices [Ticket-14] - Passed (3s 479ms)
-		Step 1: GIVEN invoice "Invoice-1" - Passed (1s 012ms)
-		Step 2: AND invoice "Invoice-2" - Passed (1s 217ms)
-		Step 3: WHEN I request all historical invoices - Passed (1s 234ms)
-		Step 4: THEN I should see invoices "Invoice-1, Invoice-2" - Passed (1ms)
+	Scenario: Browsing invoices [Ticket-14] - Passed (5s 450ms)
+		Step 1: GIVEN invoice "Invoice-1" - Passed (1s 895ms)
+		Step 2: AND invoice "Invoice-2" - Passed (1s 714ms)
+		Step 3: WHEN I request all historical invoices - Passed (1s 827ms)
+		Step 4: THEN I should see invoices "Invoice-1, Invoice-2" - Passed (<1ms)
 
 Feature: Login feature [Story-1]
 	In order to access personal data
 	As an user
 	I want to login into system
 
-	Scenario: Anonymous login name should allow to log in [Ticket-3] - Failed (1s 516ms)
+	Scenario: Anonymous login name should allow to log in [Ticket-3] - Failed (1s 590ms)
 		Categories: Security
-		Step 1: GIVEN the user is about to login - Passed (7ms)
+		Step 1: GIVEN the user is about to login - Passed (6ms)
 		Step 2: AND the user entered anonymous login - Passed (<1ms)
-		Step 3: WHEN the user clicks login button - Passed (1s 475ms)
-		Step 4: THEN the login operation should be successful - Failed (20ms)
+		Step 3: WHEN the user clicks login button - Passed (1s 562ms)
+		Step 4: THEN the login operation should be successful - Failed (9ms)
 		Step 5: AND a welcome message containing user name should be returned - NotRun
 		Details:
 			Step 4: NUnit.Framework.AssertionException :   Login should succeeded
@@ -528,30 +528,30 @@ Feature: Login feature [Story-1]
 		Comments:
 			Step 2: Presentation of failed scenario
 
-	Scenario: Successful login [Ticket-1] - Passed (1s 444ms)
+	Scenario: Successful login [Ticket-1] - Passed (1s 456ms)
 		Categories: Security
 		Step 1: GIVEN the user is about to login - Passed (<1ms)
 		Step 2: AND the user entered valid login - Passed (<1ms)
 		Step 3: AND the user entered valid password - Passed (<1ms)
-		Step 4: WHEN the user clicks login button - Passed (1s 443ms)
+		Step 4: WHEN the user clicks login button - Passed (1s 456ms)
 		Step 5: THEN the login operation should be successful - Passed (<1ms)
 		Step 6: AND a welcome message containing user name should be returned - Passed (<1ms)
 
-	Scenario: Wrong login provided causes login to fail [Ticket-2] - Passed (1s 921ms)
+	Scenario: Wrong login provided causes login to fail [Ticket-2] - Passed (1s 728ms)
 		Categories: Security
 		Step 1: GIVEN the user is about to login - Passed (<1ms)
-		Step 2: AND the user entered invalid login - Passed (6ms)
+		Step 2: AND the user entered invalid login - Passed (<1ms)
 		Step 3: AND the user entered valid password - Passed (<1ms)
-		Step 4: WHEN the user clicks login button - Passed (1s 914ms)
+		Step 4: WHEN the user clicks login button - Passed (1s 727ms)
 		Step 5: THEN the login operation should be unsuccessful - Passed (<1ms)
 		Step 6: AND an invalid login or password error message should be returned - Passed (<1ms)
 
-	Scenario: Wrong password provided causes login to fail [Ticket-2] - Passed (1s 923ms)
+	Scenario: Wrong password provided causes login to fail [Ticket-2] - Passed (1s 590ms)
 		Categories: Security
 		Step 1: GIVEN the user is about to login - Passed (<1ms)
 		Step 2: AND the user entered valid login - Passed (<1ms)
 		Step 3: AND the user entered invalid password - Passed (<1ms)
-		Step 4: WHEN the user clicks login button - Passed (1s 923ms)
+		Step 4: WHEN the user clicks login button - Passed (1s 590ms)
 		Step 5: THEN the login operation should be unsuccessful - Passed (<1ms)
 		Step 6: AND an invalid login or password error message should be returned - Passed (<1ms)
 
@@ -560,18 +560,18 @@ Feature: Payment feature [Story-5]
 	As a customer
 	I want to pay for products in basket
 
-	Scenario: Successful payment [Ticket-10][Ticket-11] - Passed (6s 589ms)
-		Step 1: GIVEN customer has some products in basket - Passed (1s 375ms)
-		Step 2: AND customer has enough money to pay for products - Passed (1s 717ms)
-		Step 3: WHEN customer requests to pay - Passed (2s 010ms)
-		Step 4: THEN payment should be successful - Passed (1s 475ms)
+	Scenario: Successful payment [Ticket-10][Ticket-11] - Passed (6s 599ms)
+		Step 1: GIVEN customer has some products in basket - Passed (1s 867ms)
+		Step 2: AND customer has enough money to pay for products - Passed (1s 698ms)
+		Step 3: WHEN customer requests to pay - Passed (1s 464ms)
+		Step 4: THEN payment should be successful - Passed (1s 557ms)
 
 Feature: Product spedition feature [Story-3]
 	In order to deliver products to customer effectively
 	As a spedition manager
 	I want to dispatch products to customer as soon as the payment is finalized
 
-	Scenario: Should dispatch product after payment is finalized [Ticket-5] - Passed (19ms)
+	Scenario: Should dispatch product after payment is finalized [Ticket-5] - Passed (26ms)
 		Categories: Delivery, Sales
 		Step 1: GIVEN There is an active customer with id "ABC-123" - Passed (1ms)
 		Step 2: AND The customer has product "wooden shelf" in basket - Passed (<1ms)
@@ -582,9 +582,9 @@ Feature: Product spedition feature [Story-3]
 
 Feature: Record persistence feature
 
-	Scenario: Saving data - Failed (2s 077ms)
-		Step 1: GIVEN no saved records - Passed (2ms)
-		Step 2: WHEN I save records "<tree>" - Passed (2s 053ms)
+	Scenario: Saving data - Failed (2s 068ms)
+		Step 1: GIVEN no saved records - Passed (1ms)
+		Step 2: WHEN I save records "<tree>" - Passed (2s 045ms)
 		records:
 		  $: <array:2>
 		  $[0]: Record 1
@@ -593,16 +593,16 @@ Feature: Record persistence feature
 		expectation:
 		= $: <array:2>
 		= $[0]: <object>
-		= $[0].Id: c253c8ac-5593-4bfa-9932-3ef9f6114981
-		= $[0].ModifiedDate: 01/11/2023 21:10:44 +00:00
+		= $[0].Id: 7d01e487-f563-46d4-8619-71067305c579
+		= $[0].ModifiedDate: 06/17/2023 18:37:13 +00:00
 		! $[0].Name: like 'Recr*'/Record 1
 		= $[1]: <object>
-		! $[1].Id: equals '00000000-0000-0000-0000-000000000000'/142e74b1-1410-4c62-aa42-f2e172879286
-		! $[1].ModifiedDate: less than '01/11/2023 21:10:44 +00:00'/01/11/2023 21:10:45 +00:00
+		! $[1].Id: equals '00000000-0000-0000-0000-000000000000'/fe9d907a-11e5-49b7-bd3e-4ae202b88c59
+		! $[1].ModifiedDate: less than '06/17/2023 18:37:13 +00:00'/06/17/2023 18:37:14 +00:00
 		= $[1].Name: Record 2
 		Details:
 			Step 3: System.InvalidOperationException : Parameter 'expectation' verification failed: $[0].Name: expected: like 'Recr*', but got: 'Record 1'
-					$[1].Id: expected: equals '00000000-0000-0000-0000-000000000000', but got: '142e74b1-1410-4c62-aa42-f2e172879286'
-					$[1].ModifiedDate: expected: less than '01/11/2023 21:10:44 +00:00', but got: '01/11/2023 21:10:45 +00:00'
+					$[1].Id: expected: equals '00000000-0000-0000-0000-000000000000', but got: 'fe9d907a-11e5-49b7-bd3e-4ae202b88c59'
+					$[1].ModifiedDate: expected: less than '06/17/2023 18:37:13 +00:00', but got: '06/17/2023 18:37:14 +00:00'
 				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
 				at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
