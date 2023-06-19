@@ -290,7 +290,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 GetToggleNodes(),
                 GetStatusFilterNodes(),
                 GetCategoryFilterNodes(),
-                Html.Tag(Html5Tag.A).Class("shareable").Href("").Content("[&#8734;filtered link]", false, false).Id("optionsLink"));
+                Html.Tag(Html5Tag.A).Class("shareable").Href("").Content("filtered link", false, false).Id("optionsLink").SpaceBefore());
 
             for (var i = 0; i < _features.Length; ++i)
                 yield return GetFeatureDetails(_features[i], i + 1);
@@ -387,7 +387,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
         private static TagBuilder GetSmallLink(string link)
         {
-            return Html.Tag(Html5Tag.A).Class("smallLink shareable").Href("#" + link).Content("[&#8734;link]", false, false);
+            return Html.Tag(Html5Tag.A).Class("smallLink shareable").Href("#" + link).Content("link", false, false).SpaceBefore();
         }
 
         private static string GetFeatureClasses(IFeatureResult feature)
@@ -485,15 +485,24 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         private static IHtmlNode GetStep(IStepResult step)
         {
             var toggleId = step.Info.RuntimeId.ToString();
+            var hasSubSteps = step.GetSubSteps().Any();
+
+            var checkbox = hasSubSteps
+                ? Html.Checkbox().Id(toggleId).Class("toggle toggleSS").Checked()
+                : Html.Nothing();
+
+            var container = hasSubSteps
+                ? Html.Tag(Html5Tag.Label).For(toggleId)
+                : Html.Tag(Html5Tag.Span);
+
             return Html.Tag(Html5Tag.Div).Class("step").Content(
-                Html.Checkbox().Id(toggleId).Class("toggle toggleSS").Checked(),
-                Html.Tag(Html5Tag.Label).For(toggleId).Content(
-                    GetCheckBoxTag(!step.GetSubSteps().Any()),
+                checkbox,
+                container.Content(
+                    GetCheckBoxTag(!hasSubSteps),
                     GetStatus(step.Status),
                     Html.Text($"{WebUtility.HtmlEncode(step.Info.GroupPrefix)}{step.Info.Number}. {step.Info.Name.Format(StepNameDecorator)}").Trim()),
                 GetDuration(step.ExecutionTime),
-                Html.Tag(Html5Tag.Div).Class("step-parameters").Content(step.Parameters.Select(GetStepParameter))
-                    .SkipEmpty(),
+                Html.Tag(Html5Tag.Div).Class("step-parameters").Content(step.Parameters.Select(GetStepParameter)).SkipEmpty(),
                 Html.Tag(Html5Tag.Div).Class("sub-steps").Content(step.GetSubSteps().Select(GetStep)).SkipEmpty());
         }
 

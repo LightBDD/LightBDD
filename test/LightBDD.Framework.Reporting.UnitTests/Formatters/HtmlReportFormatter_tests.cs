@@ -52,15 +52,15 @@ Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
 My feature Label 1 2 0 0 1 1 10 3 1 2 2 2 1m 02s 621000000 1m 04s 642570000 32s 128ms 321285000
 Totals 2 0 0 1 1 10 3 1 2 2 2 1m 02s 621000000 1m 04s 642570000 32s 128ms 321285000
-Feature details[&#8734;link]
+Feature details link
 Toggle: Features Scenarios Sub Steps
 Filter: Passed Bypassed Failed Ignored Not Run
 Categories: -all- categoryA categoryB categoryC -without category-
-[&#8734;filtered link]
-My feature Label 1[&#8734;link]
+ filtered link
+My feature Label 1 link
 My feature
 long description
-<!--Ignored--> name Label 2 (1m 02s)[&#8734;link]
+<!--Ignored--> name Label 2 (1m 02s) link
  categoryA
 <!--Passed--> 1. call step1 &quot;arg1&quot; (1m 01s)
 <!--Ignored--> 2. step2 (1s 100ms)
@@ -94,7 +94,7 @@ comment
 // Step 2.3.1: sub-sub-multiline
 comment
 &#128279;Step 2.3.1: attachment1 (png)
-<!--Failed--> name2 ""arg1"" (2s 157ms)[&#8734;link]
+<!--Failed--> name2 ""arg1"" (2s 157ms) link
  categoryB categoryC
 <!--Bypassed--> 1. step3 (2s 107ms)
 <!--Failed--> 2. step4 (50ms)
@@ -130,12 +130,12 @@ Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
 My feature 1 0 0 0 1 2 1 0 0 1 0 25ms 250000 25ms 250000 25ms 250000
 Totals 1 0 0 0 1 2 1 0 0 1 0 25ms 250000 25ms 250000 25ms 250000
-Feature details[&#8734;link]
+Feature details link
 Toggle: Features Scenarios Sub Steps
 Filter: Passed Bypassed Failed Ignored Not Run
-[&#8734;filtered link]
-My feature[&#8734;link]
-<!--Ignored--> name (25ms)[&#8734;link]
+ filtered link
+My feature link
+<!--Ignored--> name (25ms) link
 <!--Passed--> 1. step1 (20ms)
 <!--Ignored--> 2. step2 (5ms)
 Generated with LightBDD v{GetExpectedLightBddVersion()}
@@ -165,17 +165,17 @@ Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ig
 My feature 1 1 0 0 0 1 1 0 0 0 0 20ms 200000 20ms 200000 20ms 200000
 My feature2 1 1 0 0 0 1 1 0 0 0 0 20ms 200000 20ms 200000 20ms 200000
 Totals 2 2 0 0 0 2 2 0 0 0 0 3s 020ms 30200000 40ms 400000 20ms 200000
-Feature details[&#8734;link]
+Feature details link
 Toggle: Features Scenarios Sub Steps
 Filter: Passed Bypassed Failed Ignored Not Run
 Categories: -all- categoryA categoryB -without category-
-[&#8734;filtered link]
-My feature[&#8734;link]
-<!--Passed--> scenario1 (20ms)[&#8734;link]
+ filtered link
+My feature link
+<!--Passed--> scenario1 (20ms) link
  categoryA
 <!--Passed--> 1. step1 (20ms)
-My feature2[&#8734;link]
-<!--Passed--> scenario1 (20ms)[&#8734;link]
+My feature2 link
+<!--Passed--> scenario1 (20ms) link
  categoryB
 <!--Passed--> 1. step1 (20ms)
 Generated with LightBDD v{GetExpectedLightBddVersion()}
@@ -214,12 +214,12 @@ Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
 My feature 1 1 0 0 0 2 2 0 0 0 0 5s 50000000 5s 50000000 5s 50000000
 Totals 1 1 0 0 0 2 2 0 0 0 0 5s 50000000 5s 50000000 5s 50000000
-Feature details[&#8734;link]
+Feature details link
 Toggle: Features Scenarios Sub Steps
 Filter: Passed Bypassed Failed Ignored Not Run
-[&#8734;filtered link]
-My feature[&#8734;link]
-<!--Passed--> scenario1 (5s)[&#8734;link]
+ filtered link
+My feature link
+<!--Passed--> scenario1 (5s) link
 <!--Passed--> &lt;gr&gt;1. ty&lt;p&gt;e ste&lt;p&gt; (20ms)
 <!--Passed--> 2. ste&lt;p&gt;2 (20ms)
 Generated with LightBDD v{GetExpectedLightBddVersion()}
@@ -248,16 +248,16 @@ Feature summary
 Feature Scenarios Passed Bypassed Failed Ignored Steps Passed Bypassed Failed Ignored Not Run Duration Aggregated Average
 My Feature 3 3 0 0 0 3 3 0 0 0 0 5s 50000000 9s 90000000 3s 30000000
 Totals 3 3 0 0 0 3 3 0 0 0 0 5s 50000000 9s 90000000 3s 30000000
-Feature details[&#8734;link]
+Feature details link
 Toggle: Features Scenarios Sub Steps
 Filter: Passed Bypassed Failed Ignored Not Run
-[&#8734;filtered link]
-My Feature[&#8734;link]
-<!--Passed--> scenario A lab B (2s)[&#8734;link]
+ filtered link
+My Feature link
+<!--Passed--> scenario A lab B (2s) link
 <!--Passed--> 1. step
-<!--Passed--> scenario B lab C (5s)[&#8734;link]
+<!--Passed--> scenario B lab C (5s) link
 <!--Passed--> 1. step
-<!--Passed--> scenario C lab A (2s)[&#8734;link]
+<!--Passed--> scenario C lab A (2s) link
 <!--Passed--> 1. step
 Generated with LightBDD v{GetExpectedLightBddVersion()}
 initialize();";

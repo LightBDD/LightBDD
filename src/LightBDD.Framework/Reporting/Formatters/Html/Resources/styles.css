@@ -93,7 +93,7 @@ input[type="radio"]:not(:checked) + * .chbox:before{content: " ";}
 input[type="radio"]:checked + * .chbox:before{content: "\2713";}
 .stepType{ font-style: italic;}
 label{ display: inline-block;}
-.optionsPanel #optionsLink {display: block; visibility: hidden;margin: 0.1em 0 0.5em 6em;font-weight: bold;}
+.optionsPanel #optionsLink {display: inline-block; visibility: hidden;margin: 0.1em 0 0.5em 6em;font-weight: bold; font-family: monospace;}
 .optionsPanel:hover #optionsLink{ visibility: visible;}
 .footer{ font-size: x-small;text-align: center;}
 .footer a{ font-weight: bold;}
@@ -125,3 +125,6 @@ th.sortable:before{border-top-color: #777777;bottom:-0.14em;}
 th.sortable:after{border-bottom-color: #777777;top:-0.14em;}
 th.sortable[data-dir="false"]:after{border-bottom-color: #222222;}
 th.sortable[data-dir="true"]:before{border-top-color: #222222;}
+.shareable:before{ content: "[∞";}
+.shareable:after{ content: "]";}
+.shareable{ margin-left: 0.5em;}
