@@ -7,8 +7,10 @@ using LightBDD.Core.Extensibility.Results;
 using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
+using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Formatting;
+using LightBDD.Framework.Parameters;
 using LightBDD.UnitTests.Helpers;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
@@ -173,6 +175,30 @@ namespace LightBDD.Core.UnitTests
                 new StepResultExpectation(1, 1, "Method with wrong formatter param \"<?>\"", ExecutionStatus.Failed, $"Step 1: {expectedErrorMessage}"));
         }
 
+        [Test]
+        [MultiAssert]
+        public void It_should_capture_inline_complex_parameters_by_value_and_all_others_by_parameter_reference()
+        {
+            Assert.Throws<AggregateException>(() => _runner.Test().TestScenario(
+                TestStep.CreateAsync(Method_with_inserted_parameter_param_in_name, () => Table.For(1, 2, 3)),
+                TestStep.CreateAsync(Method_with_inserted_parameter_param_in_name, () => Table.ExpectData(1, 2, 3)),
+                TestStep.CreateAsync(Method_with_inserted_parameter_param_in_name, () => Tree.For("abc")),
+                TestStep.CreateAsync(Method_with_inserted_parameter_param_in_name, () => Tree.ExpectStrictMatch("abc")),
+                TestStep.CreateAsync(Method_with_inserted_parameter_param_in_name, () => new Verifiable<string>(Expect.To.Equal("abc")))
+            ));
+
+            var stepNames = _feature.GetFeatureResult().GetScenarios().Single().GetSteps().Select(s => s.Info.Name.ToString()).ToArray();
+
+            Assert.That(stepNames, Is.EqualTo(new[]
+            {
+                "Method with inserted parameter param \"<$param>\" in name",
+                "Method with inserted parameter param \"<$param>\" in name",
+                "Method with inserted parameter param \"<$param>\" in name",
+                "Method with inserted parameter param \"<$param>\" in name",
+                "Method with inserted parameter param \"expected: equals 'abc'\" in name"
+            }));
+        }
+
         public IEnumerable<StepDescriptor> GetFailingStepDescriptors(string reason)
         {
             yield return new StepDescriptor("test", (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance));
@@ -182,7 +208,7 @@ namespace LightBDD.Core.UnitTests
         private void Method_with_appended_parameter_at_the_end_of_name(object param) { }
         private void Method_with_inserted_parameter_param_in_name(object param) { }
         private void Method_with_replaced_parameter_PARAM_in_name(object param) { }
-        private void Method_with_wrong_formatter_param([Format("{0")]object param) { }
+        private void Method_with_wrong_formatter_param([Format("{0")] object param) { }
         private void Method_with_appended_and_normal_param(object appended1, object param, object appended2) { }
         private void Method_with_param1_param2_param3(object param3, object param1, object param2) { }
     }
