@@ -3,6 +3,7 @@ using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
+using LightBDD.Core.Results.Parameters;
 
 namespace LightBDD.Core.Execution.Implementation
 {
@@ -25,7 +26,9 @@ namespace LightBDD.Core.Execution.Implementation
 
         public void Evaluate(object context)
         {
-            if (IsEvaluated) return;
+            if (IsEvaluated)
+                return;
+
             Value = _valueEvaluator.Invoke(context);
             if (Value is IComplexParameter complex)
                 complex.SetValueFormattingService(_formattingService);
@@ -34,12 +37,18 @@ namespace LightBDD.Core.Execution.Implementation
 
         public INameParameterInfo FormatNameParameter()
         {
-            if( !IsEvaluated)
+            if (!IsEvaluated)
                 return NameParameterInfo.Unknown;
 
-            if (Value is IComplexParameter p)
-                return new NameParameterInfo(true, _formattingService.FormatValue(Value), p.Details.VerificationStatus);
-            return new NameParameterInfo(true, _formattingService.FormatValue(Value), ParameterVerificationStatus.NotApplicable);
+            var value = Value is IComplexParameter { Details: not IInlineParameterDetails }
+                ? $"<${RawName}>"
+                : _formattingService.FormatValue(Value);
+
+            var status = Value is IComplexParameter cx
+                ? cx.Details.VerificationStatus
+                : ParameterVerificationStatus.NotApplicable;
+
+            return new NameParameterInfo(true, value, status);
         }
 
         public override string ToString()
