@@ -34,20 +34,18 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             _categories = GroupCategories(features);
         }
 
-        public void Write()
+        public void Write(HtmlReportFormatterOptions options)
         {
             _writer
                 .WriteTag(Html.Text("<!DOCTYPE HTML>"))
                 .WriteTag(Html.Tag(Html5Tag.Html).Content(
                     Html.Tag(Html5Tag.Head).Content(
                         Html.Tag(Html5Tag.Meta).Attribute(Html5Attribute.Charset, "UTF-8"),
-                        Html.Tag(Html5Tag.Link)
-                            .Attribute(Html5Attribute.Rel, "icon")
-                            .Attribute(Html5Attribute.Type, "image/x-icon")
-                            .Attribute(Html5Attribute.Href, "data:image/x-icon;base64," + _favico),
+                        GetFavicon(options.CustomFavicon),
                         Html.Tag(Html5Tag.Title).Content("Summary"),
-                        Html.Tag(Html5Tag.Style).Content(EmbedCssImages(), false, false),
+                        Html.Tag(Html5Tag.Style).Content(EmbedCssImages(options), false, false),
                         Html.Tag(Html5Tag.Style).Content(_styles, false, false),
+                        Html.Tag(Html5Tag.Style).Content(options.CssContent, false, false).SkipEmpty(),
                         Html.Tag(Html5Tag.Script).Content(_scripts, false, false)),
                     Html.Tag(Html5Tag.Body).Content(
                         WriteExecutionSummary(),
@@ -56,6 +54,22 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                         Html.Tag(Html5Tag.Div).Class("footer").Content(Html.Text("Generated with "), Html.Tag(Html5Tag.A).Content("LightBDD v" + GetLightBddVersion()).Href("https://github.com/LightBDD/LightBDD")),
                         Html.Tag(Html5Tag.Script).Content("initialize();", false, false)
                     )));
+        }
+
+        private TagBuilder GetFavicon(Tuple<string, byte[]> custom)
+        {
+            var type = "image/x-icon";
+            var favicon = _favico;
+            if (custom != null)
+            {
+                type = custom.Item1;
+                favicon = Convert.ToBase64String(custom.Item2);
+            }
+
+            return Html.Tag(Html5Tag.Link)
+                .Attribute(Html5Attribute.Rel, "icon")
+                .Attribute(Html5Attribute.Type, type)
+                .Attribute(Html5Attribute.Href, $"data:{type};base64,{favicon}");
         }
 
         private static Dictionary<string, string> GroupCategories(IEnumerable<IFeatureResult> features)
@@ -679,13 +693,17 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             return status.ToString().ToLowerInvariant();
         }
 
-        private string EmbedCssImages()
+        private string EmbedCssImages(HtmlReportFormatterOptions options)
         {
             var sb = new StringBuilder();
 
+            void EmbedImage(string varName, string mimeType, string base64Body)
+            {
+                sb.AppendLine($"{varName}: url('data:{mimeType};base64,{base64Body}');");
+            }
             void EmbedSvg(string varName, string resourcePath)
             {
-                sb.AppendLine($"{varName}: url('data:image/svg+xml;base64,{ReadBase64Resource(resourcePath)}');");
+                EmbedImage(varName, "image/svg+xml", ReadBase64Resource(resourcePath));
             }
 
             sb.AppendLine("html {");
@@ -696,7 +714,11 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 EmbedSvg($"--status-{status}-ico", name);
             }
 
-            EmbedSvg("--logo-ico", "LightBDD.Framework.Reporting.Formatters.Html.Resources.lightbdd_opt.svg");
+            var customLogo = options.CustomLogo;
+            if (customLogo != null)
+                EmbedImage("--logo-ico", customLogo.Item1, Convert.ToBase64String(customLogo.Item2));
+            else
+                EmbedSvg("--logo-ico", "LightBDD.Framework.Reporting.Formatters.Html.Resources.lightbdd_opt.svg");
 
             sb.Append("}");
             return sb.ToString();

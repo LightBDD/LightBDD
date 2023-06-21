@@ -107,7 +107,22 @@ namespace LightBDD.Framework.Configuration
         /// <returns>Configuration.</returns>
         public static ReportWritersConfiguration AddFileWriter<TFormatter>(this ReportWritersConfiguration configuration, string outputPath) where TFormatter : IReportFormatter, new()
         {
-            return configuration.Add(new ReportFileWriter(new TFormatter(), outputPath));
+            return AddFileWriter<TFormatter>(configuration, outputPath, null);
+        }
+
+        /// <summary>
+        /// Adds <see cref="ReportFileWriter"/> instance configured to format report with <typeparamref name="TFormatter"/> and write it to <paramref name="outputPath"/>.
+        /// </summary>
+        /// <typeparam name="TFormatter">Type of report formatter.</typeparam>
+        /// <param name="configuration">Configuration.</param>
+        /// <param name="outputPath">Output path for the report.</param>
+        /// <param name="onConfigure">Action to configure the <typeparamref name="TFormatter"/> instance.</param>
+        /// <returns>Configuration.</returns>
+        public static ReportWritersConfiguration AddFileWriter<TFormatter>(this ReportWritersConfiguration configuration, string outputPath, Action<TFormatter> onConfigure) where TFormatter : IReportFormatter, new()
+        {
+            var formatter = new TFormatter();
+            onConfigure?.Invoke(formatter);
+            return configuration.Add(new ReportFileWriter(formatter, outputPath));
         }
 
         /// <summary>
