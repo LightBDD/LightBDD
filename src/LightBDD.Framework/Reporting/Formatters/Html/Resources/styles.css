@@ -110,10 +110,10 @@ td.param, th.param { text-align: left; padding-left: 0.3em; padding-right: 0.3em
 th.param.column{ background-color: #ffffff; text-align: left;font-weight: normal;}
 th.param.column.key { font-weight: bold;}
 td.param.type { font-size:smaller;color: #444444; text-align: center; font-family: monospace;}
-.inline-param.success, td.param.value.success {background: hsl(120, 100%, 83%)}
-.inline-param.failure, .inline-param.exception, td.param.value.failure,td.param.value.exception {background: hsl(0, 100%, 83%);}
-.inline-param.notprovided, td.param.value.notprovided {background: hsl(54, 100%, 83%);}
-.inline-param.notapplicable, td.param.value.notapplicable {background: hsl(184, 100%, 90%);}
+.inline-param.success, .param.value.success {background: hsl(120, 100%, 83%)}
+.inline-param.failure, .inline-param.exception, .param.value.failure,.param.value.exception {background: hsl(0, 100%, 83%);}
+.inline-param.notprovided, .param.value.notprovided {background: hsl(54, 100%, 83%);}
+.inline-param.notapplicable, .param.value.notapplicable {background: hsl(184, 100%, 90%);}
 .inline-param.unknown { text-align: right;background: hsl(300, 53%, 90%);}
 td.param.node{ text-align: right;background: #ffffff;}
 hr {border-top: 1px dashed #777777;border-bottom: 0px; margin: 2px; padding: 0;}
@@ -128,3 +128,16 @@ th.sortable[data-dir="true"]:before{border-top-color: #222222;}
 .shareable:before{ content: "[∞";}
 .shareable:after{ content: "]";}
 .shareable{ margin-left: 0.5em;}
+
+
+.tree.node{/*position:relative;*/}
+.tree.node.branch{display:flex;align-items: flex-start;}
+.tree.node.leaf{display:inline-block;}
+.tree.node > .detail{display: flex;margin:0.2em;/*position:relative;*/}
+.tree.node .param{font-weight:normal;}
+.tree.node .param.node{background-color:#ffffff;border:1px solid #777777;border-radius: 0; padding: 0.1em 0.3em;}
+.tree.node .param.value{border:1px solid #777777;border-radius: 0; padding: 0.1em 0.3em;border-left:0;}
+.tree.node.leaf .param.value{border-radius: 0 0.5em 0.5em 0;padding-right:0.5em;}
+
+.tree.node .detail:hover .param,.tree.node .detail:hover ~ * .param{border-color: hsl(184, 100%, 40%);outline: 1px solid hsl(184, 100%, 40%);}
+

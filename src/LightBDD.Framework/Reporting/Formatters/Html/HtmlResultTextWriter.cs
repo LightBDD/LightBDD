@@ -557,7 +557,22 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         {
             return Html.Tag(Html5Tag.Div).Class("param").Content(
                 Html.Tag(Html5Tag.Div).Content($"{parameterName}:"),
-                Html.Tag(Html5Tag.Table).Class("param tree").Content(GetTreeRows(tree)));
+                Html.Tag(Html5Tag.Div).Class("param tree").Content(GetTreeNode(tree.Root)));
+        }
+
+        private static IHtmlNode GetTreeNode(ITreeParameterNodeResult node)
+        {
+            var type = node.Children.Any() ? "branch" : "leaf";
+            return Html.Tag(Html5Tag.Div).Class($"tree node {type}").Content(
+                Html.Tag(Html5Tag.Div).Class("detail").Content(
+                    Html.Tag(Html5Tag.Span).Class("param node").Content(node.Node),
+                    GetRowValue2(node)),
+                Html.Tag(Html5Tag.Div).Class("branches").Content(
+                    node.Children.Where(ch => !ch.Children.Any())
+                        .Concat(node.Children.Where(ch => ch.Children.Any()))
+                        .Select(GetTreeNode)
+                    ).SkipEmpty()
+            );
         }
 
         private static IHtmlNode GetTabularParameter(string parameterName, ITabularParameterDetails table)
@@ -678,6 +693,19 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         private static IHtmlNode GetRowValue(IValueResult value)
         {
             var tag = Html.Tag(Html5Tag.Td).Class("param value " + value.VerificationStatus.ToString().ToLowerInvariant());
+            if (value.VerificationStatus == ParameterVerificationStatus.NotApplicable ||
+                value.VerificationStatus == ParameterVerificationStatus.Success)
+                return tag.Content(value.Value);
+
+            return tag.Content(Html.Tag(Html5Tag.Div).Content(
+                Html.Text(value.Value).Escape(),
+                Html.Tag(Html5Tag.Hr),
+                Html.Tag(Html5Tag.Span).Class("expected").Content(value.Expectation)));
+        }
+
+        private static IHtmlNode GetRowValue2(IValueResult value)
+        {
+            var tag = Html.Tag(Html5Tag.Span).Class("param value " + value.VerificationStatus.ToString().ToLowerInvariant());
             if (value.VerificationStatus == ParameterVerificationStatus.NotApplicable ||
                 value.VerificationStatus == ParameterVerificationStatus.Success)
                 return tag.Content(value.Value);
