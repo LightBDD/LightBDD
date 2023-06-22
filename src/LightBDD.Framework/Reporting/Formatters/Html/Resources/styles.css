@@ -21,12 +21,13 @@ section.features{display: flex;flex-direction: column;}
 .description{font-style: italic;color: #222222;white-space: pre-wrap;margin-top: 0.5em;}
 span.label{background-color: hsl(202, 92%, 90%); color: hsl(202, 92%, 34%); padding: 0 0.3em; border-radius: 0.3em; font-size:smaller;white-space: nowrap;font-weight: normal;}
 span.category{background-color: hsl(24, 100%, 90%); color: hsl(24, 100%, 40%); padding: 0 0.3em; margin-right: 0.25em;white-space: nowrap;font-weight: normal;font-style: italic;}
-.status{width:1.2em;height:1.2em;margin-top: -0.1em;margin-right: 0.2em;background-size: 1.15em;background-repeat: no-repeat;display: inline-block;vertical-align: middle;}
-.status.passed{background-image: var(--status-passed-ico);}
-.status.failed{background-image: var(--status-failed-ico);}
-.status.ignored{background-image: var(--status-ignored-ico);}
-.status.bypassed{background-image: var(--status-bypassed-ico);}
-.status.notrun{background-image: var(--status-notrun-ico);}
+.status{width:1.6em;height:1.6em;margin-top: -0.125em;margin-right: 0.5em;display: inline-block;vertical-align: middle;text-align: center;font-family: monospace !important;font-size: 0.7em;padding:0.3em;font-weight: bold;line-height: 1em;}
+.status{border:0;box-sizing: border-box;border-radius: 50%;color:#ffffff;}
+.status.passed{background-color:#1daf26;}
+.status.failed{background-color:#cc0000;}
+.status.ignored{background-color:#fbc800;color: black;}
+.status.bypassed{background-color:#2e7bff;}
+.status.notrun{background-color:#949494;}
 .attachments,.comments,.details{margin: 0.5em;margin-top: 1em;color: #222222;white-space: pre-wrap;font-size: small;font-family: monospace;}
 .details:before {content: "Details:";display: block;font-size: larger;font-weight: bold;margin-bottom: 0.5em;border-bottom:0.2em solid hsl(34, 100%, 80%);}
 .comments:before {content: "Comments:";display: block;font-size: larger;font-weight: bold;margin-bottom: 0.5em;border-bottom:0.2em solid hsl(204, 100%, 80%);}
@@ -35,6 +36,7 @@ span.category{background-color: hsl(24, 100%, 90%); color: hsl(24, 100%, 40%); p
 .comments div{color: inherit;font-family: inherit;}
 .step,.categories,.step-parameters{margin: 0.2em;margin-left: 3em;}
 .step{ margin-left: 1.5em;}
+span.chbox.empty {margin-left: 1.7em;}
 .smallLink,.duration{color: #0000cd;font-size: 0.8em;font-family: monospace;}
 th,td{ white-space: nowrap;}
 th{ text-align: right;}

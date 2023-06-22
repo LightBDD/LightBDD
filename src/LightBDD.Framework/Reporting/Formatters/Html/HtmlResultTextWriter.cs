@@ -516,7 +516,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         {
             return Html.Tag(Html5Tag.Span)
                 .Class("status " + GetStatusClass(status))
-                .Content($"<!--{status}-->", false, false)
+                .Content(GetStatusValue(status))
                 .SpaceAfter();
         }
 
@@ -637,6 +637,19 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             return status.ToString().ToLowerInvariant();
         }
 
+        private static string GetStatusValue(ExecutionStatus status)
+        {
+            return status switch
+            {
+                ExecutionStatus.NotRun => " ",
+                ExecutionStatus.Passed => "✓",
+                ExecutionStatus.Bypassed => "~",
+                ExecutionStatus.Ignored => "!",
+                ExecutionStatus.Failed => "✕",
+                _ => throw new ArgumentOutOfRangeException(nameof(status), status, null)
+            };
+        }
+
         private string EmbedCssImages(HtmlReportFormatterOptions options)
         {
             var sb = new StringBuilder();
@@ -651,12 +664,6 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             }
 
             sb.AppendLine("html {");
-            var prefix = "LightBDD.Framework.Reporting.Formatters.Html.Resources.Status.";
-            foreach (var name in typeof(HtmlResultTextWriter).GetTypeInfo().Assembly.GetManifestResourceNames().Where(name => name.StartsWith(prefix)))
-            {
-                var status = name.Substring(prefix.Length).Split('.')[0];
-                EmbedSvg($"--status-{status}-ico", name);
-            }
 
             var customLogo = options.CustomLogo;
             if (customLogo != null)
