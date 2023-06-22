@@ -286,12 +286,22 @@ initialize();";
             tree.SetActual(actual);
 
             var results = ReportFormatterTestData.GetFeatureWithVerifiableTree(tree.Details);
-            var text = FormatAndExtractTableText("//table[@class=\"param tree\"]", results);
+            var text = FormatAndExtractTreeText("//div[@class=\"param tree\"]", results);
             TestContext.WriteLine(text);
 
-            var expectedText = @"! | $ | &lt;object&gt; | Name | Johnny / John | Surname | Johnson |
-! | ↳ | Address | &lt;object&gt; | City | London | Country | UK | PostCode | AB1 7BC / AB1 7BA | Street | High Street |
-! | ↳ | Records | &lt;array:4&gt; / &lt;array:3&gt; | [0] | AB-1 | [1] | AB-2 | [2] | AB-3 | [3] | AB-4 / &lt;none&gt; |";
+            var expectedText = @"$=&lt;object&gt;
+$.Name=JohnnyJohn
+$.Surname=Johnson
+$.Address=&lt;object&gt;
+$.Address.City=London
+$.Address.Country=UK
+$.Address.PostCode=AB1 7BCAB1 7BA
+$.Address.Street=High Street
+$.Records=&lt;array:4&gt;&lt;array:3&gt;
+$.Records.[0]=AB-1
+$.Records.[1]=AB-2
+$.Records.[2]=AB-3
+$.Records.[3]=AB-4&lt;none&gt;";
             Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
         }
 
@@ -309,12 +319,21 @@ initialize();";
             var tree = Tree.For(input);
 
             var results = ReportFormatterTestData.GetFeatureWithVerifiableTree(tree.Details);
-            var text = FormatAndExtractTableText("//table[@class=\"param tree\"]", results);
+            var text = FormatAndExtractTreeText("//div[@class=\"param tree\"]", results);
             TestContext.WriteLine(text);
 
-            var expectedText = @"$ | &lt;object&gt; | Name | John | Surname | Johnson |
-↳ | Address | &lt;object&gt; | City | London | Country | UK | PostCode | AB1 7BA | Street | High Street |
-↳ | Records | &lt;array:3&gt; | [0] | AB-1 | [1] | AB-2 | [2] | AB-3 |";
+            var expectedText = @"$=&lt;object&gt;
+$.Name=John
+$.Surname=Johnson
+$.Address=&lt;object&gt;
+$.Address.City=London
+$.Address.Country=UK
+$.Address.PostCode=AB1 7BA
+$.Address.Street=High Street
+$.Records=&lt;array:3&gt;
+$.Records.[0]=AB-1
+$.Records.[1]=AB-2
+$.Records.[2]=AB-3";
             Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
         }
 
@@ -332,13 +351,28 @@ initialize();";
             tree.SetActual(input);
 
             var results = ReportFormatterTestData.GetFeatureWithVerifiableTree(tree.Details);
-            var text = FormatAndExtractTableText("//table[@class=\"param tree\"]", results);
+            var text = FormatAndExtractTreeText("//div[@class=\"param tree\"]", results);
             TestContext.WriteLine(text);
 
-            var expectedText = @"= | $ | &lt;array:3&gt; |
-= | ↳ | [0] | &lt;array:5&gt; | [0] | 0 | [1] | 1 | [2] | 2 | [3] | 3 | [4] | 4 |
-= | ↳ | [1] | &lt;array:6&gt; | [0] | 0 | [1] | 1 | [2] | 2 | [3] | 3 | [4] | 4 | [5] | 5 |
-= | ↳ | [2] | &lt;array:4&gt; | [0] | 0 | [1] | 1 | [2] | 2 | [3] | 3 |";
+            var expectedText = @"$=&lt;array:3&gt;
+$.[0]=&lt;array:5&gt;
+$.[0].[0]=0
+$.[0].[1]=1
+$.[0].[2]=2
+$.[0].[3]=3
+$.[0].[4]=4
+$.[1]=&lt;array:6&gt;
+$.[1].[0]=0
+$.[1].[1]=1
+$.[1].[2]=2
+$.[1].[3]=3
+$.[1].[4]=4
+$.[1].[5]=5
+$.[2]=&lt;array:4&gt;
+$.[2].[0]=0
+$.[2].[1]=1
+$.[2].[2]=2
+$.[2].[3]=3";
             Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
         }
 
@@ -356,13 +390,19 @@ initialize();";
             tree.SetActual(input);
 
             var results = ReportFormatterTestData.GetFeatureWithVerifiableTree(tree.Details);
-            var text = FormatAndExtractTableText("//table[@class=\"param tree\"]", results);
+            var text = FormatAndExtractTreeText("//div[@class=\"param tree\"]", results);
             TestContext.WriteLine(text);
 
-            var expectedText = @"= | $ | &lt;array:3&gt; |
-= | ↳ | [0] | &lt;object&gt; | Name | Bob | Surname | Kennedy |
-= | ↳ | [1] | &lt;object&gt; | Name | Ron | Surname | Kowalski |
-= | ↳ | [2] | &lt;object&gt; | Name | Ted | Surname | Smith |";
+            var expectedText = @"$=&lt;array:3&gt;
+$.[0]=&lt;object&gt;
+$.[0].Name=Bob
+$.[0].Surname=Kennedy
+$.[1]=&lt;object&gt;
+$.[1].Name=Ron
+$.[1].Surname=Kowalski
+$.[2]=&lt;object&gt;
+$.[2].Name=Ted
+$.[2].Surname=Smith";
             Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
         }
 
@@ -389,6 +429,17 @@ initialize();";
             doc.LoadHtml(formatted);
             var builder = new HtmlTableToPlainTextFormatter();
             builder.FormatNode(doc.DocumentNode.SelectSingleNode(xpath));
+            Debug.WriteLine(builder.ToString());
+            return builder.ToString();
+        }
+
+        private string FormatAndExtractTreeText(string xpath, params IFeatureResult[] results)
+        {
+            var formatted = FormatResults(results);
+            var doc = new HtmlDocument();
+            doc.LoadHtml(formatted);
+            var builder = new HtmlTreeToPlainTextFormatter();
+            builder.FormatTree(doc.DocumentNode.SelectSingleNode(xpath));
             Debug.WriteLine(builder.ToString());
             return builder.ToString();
         }

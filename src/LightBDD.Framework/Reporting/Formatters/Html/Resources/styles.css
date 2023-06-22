@@ -99,10 +99,6 @@ label{ display: inline-block;}
 .footer a{ font-weight: bold;}
 table.param.table{ border-collapse: collapse; margin-top:0.1em;}
 table.param.table th.param,table.param.table td.param{ border: 1px solid #777777;}
-table.param.tree { border-spacing: 0;border: 0; }
-table.param.tree td{border-bottom: 0.2em solid transparent; background-clip: padding-box;}
-table.param.tree td.param.value { border-right: 1em solid transparent; background-clip: padding-box;}
-table.param.tree td.indent {text-align: right;color: #444444;}
 .inline-param{border: 1px solid #777777; padding: 0 0.3em; border-radius: 0.3em; font-size:smaller;}
 .step-parameters > .param { background-color: #f0f0f0; border: 1px solid #777777; padding: 0.3em; display: inline-block; border-radius: 0.3em; margin: 0.2em; font-size:smaller;}
 .step-parameters > .param > div {font-weight: bold;margin-bottom: 0.5em;}
@@ -128,16 +124,11 @@ th.sortable[data-dir="true"]:before{border-top-color: #222222;}
 .shareable:before{ content: "[∞";}
 .shareable:after{ content: "]";}
 .shareable{ margin-left: 0.5em;}
-
-
-.tree.node{/*position:relative;*/}
 .tree.node.branch{display:flex;align-items: flex-start;}
 .tree.node.leaf{display:inline-block;}
-.tree.node > .detail{display: flex;margin:0.2em;/*position:relative;*/}
+.tree.node > .detail{display: flex;margin:0.2em;}
 .tree.node .param{font-weight:normal;}
 .tree.node .param.node{background-color:#ffffff;border:1px solid #777777;border-radius: 0; padding: 0.1em 0.3em;}
 .tree.node .param.value{border:1px solid #777777;border-radius: 0; padding: 0.1em 0.3em;border-left:0;}
 .tree.node.leaf .param.value{border-radius: 0 0.5em 0.5em 0;padding-right:0.5em;}
-
-.tree.node .detail:hover .param,.tree.node .detail:hover ~ * .param{border-color: hsl(184, 100%, 40%);outline: 1px solid hsl(184, 100%, 40%);}
-
+.tree.node .detail:hover .param,.tree.node .detail:hover ~ * .param{border-color: #662266;outline: 1px solid #662266;}

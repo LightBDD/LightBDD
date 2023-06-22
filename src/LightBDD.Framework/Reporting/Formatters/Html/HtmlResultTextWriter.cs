@@ -566,7 +566,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             return Html.Tag(Html5Tag.Div).Class($"tree node {type}").Content(
                 Html.Tag(Html5Tag.Div).Class("detail").Content(
                     Html.Tag(Html5Tag.Span).Class("param node").Content(node.Node),
-                    GetRowValue2(node)),
+                    GetRowValue(node, Html5Tag.Span)),
                 Html.Tag(Html5Tag.Div).Class("branches").Content(
                     node.Children.Where(ch => !ch.Children.Any())
                         .Concat(node.Children.Where(ch => ch.Children.Any()))
@@ -581,77 +581,6 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 Html.Tag(Html5Tag.Div).Content($"{parameterName}:"),
                 Html.Tag(Html5Tag.Table).Class("param table")
                     .Content(GetParameterTable(table)));
-        }
-
-        private static IEnumerable<IHtmlNode> GetTreeRows(ITreeParameterDetails tree)
-        {
-            return BuildTreeRows(tree).Select(row => Html.Tag(Html5Tag.Tr).Content(GetTreeRowCells(row, tree.VerificationStatus != ParameterVerificationStatus.NotApplicable)));
-        }
-
-        private static IEnumerable<IHtmlNode> GetTreeRowCells(IReadOnlyList<ITreeParameterNodeResult> row, bool addStatusCell)
-        {
-            if (addStatusCell)
-                yield return GetTreeRowStatusCell(row);
-
-            for (var i = 0; i < row.Count; ++i)
-            {
-                var node = row[i];
-                if (node != null)
-                {
-                    yield return Html.Tag(Html5Tag.Td).Class("param node").Content(node.Node);
-                    yield return GetRowValue(node);
-                }
-                else
-                {
-                    yield return Html.Tag(Html5Tag.Td);
-                    if (i + 1 < row.Count && row[i + 1] != null)
-                        yield return Html.Tag(Html5Tag.Td).Class("indent").Content("↳");
-                    else
-                        yield return Html.Tag(Html5Tag.Td);
-                }
-            }
-        }
-
-        private static TagBuilder GetTreeRowStatusCell(IReadOnlyList<ITreeParameterNodeResult> row)
-        {
-            var status = row.Select(r => r?.VerificationStatus)
-                .Where(x => x != null)
-                .DefaultIfEmpty(ParameterVerificationStatus.NotProvided)
-                .Max();
-
-            var statusClass = status switch
-            {
-                ParameterVerificationStatus.NotApplicable => "notapplicable",
-                ParameterVerificationStatus.Success => "success",
-                _ => "failure"
-            };
-            var statusValue = status switch
-            {
-                ParameterVerificationStatus.NotApplicable => " ",
-                ParameterVerificationStatus.Success => "=",
-                _ => "!"
-            };
-            return Html.Tag(Html5Tag.Td).Class($"param type value {statusClass}").Content(statusValue);
-        }
-
-        private static IEnumerable<IReadOnlyList<ITreeParameterNodeResult>> BuildTreeRows(ITreeParameterDetails tree)
-        {
-            var stack = new Stack<Tuple<int, ITreeParameterNodeResult>>();
-
-            stack.Push(Tuple.Create(0, tree.Root));
-            while (stack.Any())
-            {
-                var n = stack.Pop();
-
-                var result = new List<ITreeParameterNodeResult>();
-                result.AddRange(Enumerable.Repeat<ITreeParameterNodeResult>(null, n.Item1));
-                result.Add(n.Item2);
-                result.AddRange(n.Item2.Children.Where(c => !c.Children.Any()));
-                yield return result;
-
-                foreach (var c in n.Item2.Children.Reverse().Where(c => c.Children.Any()))
-                    stack.Push(Tuple.Create(n.Item1 + 1, c));
-            }
         }
 
         private static IEnumerable<IHtmlNode> GetParameterTable(ITabularParameterDetails table)
@@ -671,7 +600,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
         private static IHtmlNode GetParameterTableRow(ITabularParameterRow row, bool renderRowStatus)
         {
-            var values = row.Values.Select(GetRowValue).ToList();
+            var values = row.Values.Select(v => GetRowValue(v, Html5Tag.Td)).ToList();
             if (renderRowStatus)
                 values.Insert(0, Html.Tag(Html5Tag.Td).Class("param type").Content(GetRowTypeContent(row)));
             return Html.Tag(Html5Tag.Tr).Content(values);
@@ -690,27 +619,14 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             return "!";
         }
 
-        private static IHtmlNode GetRowValue(IValueResult value)
+        private static IHtmlNode GetRowValue(IValueResult value, Html5Tag tag)
         {
-            var tag = Html.Tag(Html5Tag.Td).Class("param value " + value.VerificationStatus.ToString().ToLowerInvariant());
+            var element = Html.Tag(tag).Class("param value " + value.VerificationStatus.ToString().ToLowerInvariant());
             if (value.VerificationStatus == ParameterVerificationStatus.NotApplicable ||
                 value.VerificationStatus == ParameterVerificationStatus.Success)
-                return tag.Content(value.Value);
+                return element.Content(value.Value);
 
-            return tag.Content(Html.Tag(Html5Tag.Div).Content(
-                Html.Text(value.Value).Escape(),
-                Html.Tag(Html5Tag.Hr),
-                Html.Tag(Html5Tag.Span).Class("expected").Content(value.Expectation)));
-        }
-
-        private static IHtmlNode GetRowValue2(IValueResult value)
-        {
-            var tag = Html.Tag(Html5Tag.Span).Class("param value " + value.VerificationStatus.ToString().ToLowerInvariant());
-            if (value.VerificationStatus == ParameterVerificationStatus.NotApplicable ||
-                value.VerificationStatus == ParameterVerificationStatus.Success)
-                return tag.Content(value.Value);
-
-            return tag.Content(Html.Tag(Html5Tag.Div).Content(
+            return element.Content(Html.Tag(Html5Tag.Div).Content(
                 Html.Text(value.Value).Escape(),
                 Html.Tag(Html5Tag.Hr),
                 Html.Tag(Html5Tag.Span).Class("expected").Content(value.Expectation)));
