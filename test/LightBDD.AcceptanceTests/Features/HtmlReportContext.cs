@@ -120,9 +120,11 @@ namespace LightBDD.AcceptanceTests.Features
 
         private IWebElement FindLabeledButton(string buttonId)
         {
-            return Driver
+            var label = Driver
                 .FindElementsByTagName("label")
                 .Single(l => l.GetAttribute("for") == buttonId);
+
+            return label.FindElement(By.ClassName("chbox"));
         }
 
         private static string ToFeatureToggle(int feature)

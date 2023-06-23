@@ -472,7 +472,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         private static IHtmlNode GetScenarioDetailsSection(string className, string description, IEnumerable<IHtmlNode> content)
         {
             var nodes = content.ToArray();
-            if (!nodes.Any())
+            if (nodes.All(n => n.IsEmpty()))
                 return Html.Nothing();
             return Html.Tag(Html5Tag.Div).Class(className).Content(Enumerable.Repeat(Html.Tag(Html5Tag.H3).Content(description), 1).Concat(nodes));
         }
@@ -515,9 +515,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
         private static IHtmlNode GetStatusDetails(string statusDetails)
         {
-            if (string.IsNullOrWhiteSpace(statusDetails))
-                return Html.Nothing();
-            return GetScenarioDetailsSection("status-details", "Details:", new[] { Html.Text(statusDetails).Escape().Trim() });
+            return GetScenarioDetailsSection("status-details", "Details:", new[] { Html.Text(statusDetails).Escape().Trim().SkipEmpty() });
         }
 
         private static IHtmlNode GetDuration(ExecutionTime executionTime)
