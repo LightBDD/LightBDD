@@ -414,10 +414,13 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             return Html.Tag(Html5Tag.Article).Class(GetFeatureClasses(feature)).Content(
                 Html.Checkbox().Class("toggle toggleF").Id("toggle" + index).Checked(),
                 Html.Tag(Html5Tag.Div).Class("header").Content(
-                    Html.Tag(Html5Tag.H2).Id("feature" + index).Class("title").Content(
-                        Html.Tag(Html5Tag.Label).For("toggle" + index).Content(GetCheckBoxTag(), Html.Text(feature.Info.Name.Format(StepNameDecorator))),
-                        Html.Tag(Html5Tag.Span).Content(feature.Info.Labels.Select(GetLabel)).SkipEmpty(),
-                        GetSmallLink("feature" + index)),
+                    Html.Tag(Html5Tag.H2).Id("feature" + index).Class("title controllable").Content(
+                        Html.Tag(Html5Tag.Label).For("toggle" + index).Class("controls").Content(
+                            GetCheckBoxTag()),
+                        Html.Tag(Html5Tag.Div).Class("text").Content(
+                            Html.Text(feature.Info.Name.Format(StepNameDecorator)),
+                            Html.Tag(Html5Tag.Span).Content(feature.Info.Labels.Select(GetLabel)).SkipEmpty(),
+                            GetSmallLink("feature" + index))),
                     Html.Tag(Html5Tag.Div).Class("description").Content(feature.Info.Description)),
                 Html.Tag(Html5Tag.Div).Class("scenarios").Content(
                     feature.GetScenariosOrderedByName().Select((s, i) => GetScenario(s, index, i))));
@@ -449,7 +452,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 .Attribute("data-categories", GetScenarioCategories(scenario))
                 .Content(
                     Html.Checkbox().Id(toggleId).Class("toggle toggleS").Checked(),
-                    Html.Tag(Html5Tag.H3).Id(scenarioId).Class("title scenario").Content(
+                    Html.Tag(Html5Tag.H3).Id(scenarioId).Class("title controllable").Content(
                         Html.Tag(Html5Tag.Label).For(toggleId).Class("controls").Content(
                             GetCheckBoxTag(),
                             GetStatus(scenario.Status)),
