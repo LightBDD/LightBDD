@@ -31,5 +31,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 writer.Write(_text);
             return writer;
         }
+
+        public bool IsEmpty() => false;
     }
 }

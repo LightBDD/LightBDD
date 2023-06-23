@@ -107,9 +107,11 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             return this;
         }
 
+        public bool IsEmpty() => _skipEmpty && _nodes.All(n => n.IsEmpty());
+
         public HtmlTextWriter Write(HtmlTextWriter writer)
         {
-            if (_skipEmpty && _nodes.Length == 0)
+            if (IsEmpty())
                 return writer;
 
             if (_spaceBefore)

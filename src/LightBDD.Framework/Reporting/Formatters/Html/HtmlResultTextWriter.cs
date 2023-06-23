@@ -413,15 +413,13 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         {
             return Html.Tag(Html5Tag.Article).Class(GetFeatureClasses(feature)).Content(
                 Html.Checkbox().Class("toggle toggleF").Id("toggle" + index).Checked(),
-                Html.Tag(Html5Tag.Div).Class("header").Content(
-                    Html.Tag(Html5Tag.H2).Id("feature" + index).Class("title controllable").Content(
-                        Html.Tag(Html5Tag.Label).For("toggle" + index).Class("controls").Content(
-                            GetCheckBoxTag()),
-                        Html.Tag(Html5Tag.Div).Class("text").Content(
-                            Html.Text(feature.Info.Name.Format(StepNameDecorator)),
-                            Html.Tag(Html5Tag.Span).Content(feature.Info.Labels.Select(GetLabel)).SkipEmpty(),
-                            GetSmallLink("feature" + index))),
-                    Html.Tag(Html5Tag.Div).Class("description").Content(feature.Info.Description)),
+                Html.Tag(Html5Tag.H2).Id("feature" + index).Class("title").Content(
+                    Html.Tag(Html5Tag.Label).For("toggle" + index).Class("controls").Content(GetCheckBoxTag()),
+                    Html.Tag(Html5Tag.Div).Class("content").Content(
+                        Html.Text(feature.Info.Name.Format(StepNameDecorator)),
+                        Html.Tag(Html5Tag.Span).Content(feature.Info.Labels.Select(GetLabel)).SkipEmpty(),
+                        GetSmallLink("feature" + index))),
+                Html.Tag(Html5Tag.Div).Class("description").Content(feature.Info.Description),
                 Html.Tag(Html5Tag.Div).Class("scenarios").Content(
                     feature.GetScenariosOrderedByName().Select((s, i) => GetScenario(s, index, i))));
         }
@@ -452,21 +450,23 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 .Attribute("data-categories", GetScenarioCategories(scenario))
                 .Content(
                     Html.Checkbox().Id(toggleId).Class("toggle toggleS").Checked(),
-                    Html.Tag(Html5Tag.H3).Id(scenarioId).Class("title controllable").Content(
-                        Html.Tag(Html5Tag.Label).For(toggleId).Class("controls").Content(
-                            GetCheckBoxTag(),
-                            GetStatus(scenario.Status)),
-                        Html.Tag(Html5Tag.Div).Class("text").Content(
-                            Html.Text(scenario.Info.Name.Format(StepNameDecorator)),
-                            Html.Tag(Html5Tag.Span).Content(scenario.Info.Labels.Select(GetLabel)).SkipEmpty(),
-                            GetDuration(scenario.ExecutionTime),
-                            GetSmallLink(scenarioId))),
-                    Html.Tag(Html5Tag.Div).Class("categories").Content(scenario.Info.Categories.Select(GetCategory))
-                        .SkipEmpty(),
-                    Html.Tag(Html5Tag.Div).Content(scenario.GetSteps().Select(GetStep)),
-                    GetStatusDetails(scenario.StatusDetails),
-                    GetComments(scenario.GetAllSteps()),
-                    GetAttachments(scenario.GetAllSteps()));
+                    Html.Tag(Html5Tag.Label).For(toggleId).Class("controls").Content(
+                        GetCheckBoxTag(),
+                        GetStatus(scenario.Status)),
+                    Html.Tag(Html5Tag.H3).Id(scenarioId).Class("title").Content(
+                        Html.Text(scenario.Info.Name.Format(StepNameDecorator)),
+                        Html.Tag(Html5Tag.Span).Content(scenario.Info.Labels.Select(GetLabel)).SkipEmpty(),
+                        GetDuration(scenario.ExecutionTime),
+                        GetSmallLink(scenarioId)),
+                    Html.Tag(Html5Tag.Div).Class("content").Content(
+                        Html.Tag(Html5Tag.Div).Class("categories")
+                            .Content(scenario.Info.Categories.Select(GetCategory))
+                            .SkipEmpty(),
+                        Html.Tag(Html5Tag.Div).Class("scenario-steps").Content(scenario.GetSteps().Select(GetStep))),
+                    Html.Tag(Html5Tag.Div).Class("details").Content(
+                        GetStatusDetails(scenario.StatusDetails),
+                        GetComments(scenario.GetAllSteps()),
+                        GetAttachments(scenario.GetAllSteps())).SkipEmpty());
         }
 
         private IHtmlNode GetAttachments(IEnumerable<IStepResult> steps)
@@ -507,7 +507,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
         private static TagBuilder GetStatusDetails(string statusDetails)
         {
-            return Html.Tag(Html5Tag.Div).Class("details").Content(statusDetails).SkipEmpty();
+            return Html.Tag(Html5Tag.Div).Class("status-details").Content(statusDetails).SkipEmpty();
         }
 
         private static IHtmlNode GetDuration(ExecutionTime executionTime)
@@ -538,17 +538,21 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
             var container = hasSubSteps
                 ? Html.Tag(Html5Tag.Label).For(toggleId)
-                : Html.Tag(Html5Tag.Span);
+                : Html.Tag(Html5Tag.Div);
 
             return Html.Tag(Html5Tag.Div).Class("step").Content(
                 checkbox,
-                container.Content(
+                container.Class("controls").Content(
                     GetCheckBoxTag(!hasSubSteps),
-                    GetStatus(step.Status),
-                    Html.Text($"{WebUtility.HtmlEncode(step.Info.GroupPrefix)}{step.Info.Number}. {step.Info.Name.Format(StepNameDecorator)}").Trim()),
-                GetDuration(step.ExecutionTime),
-                Html.Tag(Html5Tag.Div).Class("step-parameters").Content(step.Parameters.Select(GetStepParameter)).SkipEmpty(),
-                Html.Tag(Html5Tag.Div).Class("sub-steps").Content(step.GetSubSteps().Select(GetStep)).SkipEmpty());
+                    GetStatus(step.Status)),
+                Html.Tag(Html5Tag.Div).Content(
+                    Html.Text($"{WebUtility.HtmlEncode(step.Info.GroupPrefix)}{step.Info.Number}. {step.Info.Name.Format(StepNameDecorator)}").Trim(),
+                    GetDuration(step.ExecutionTime)),
+                Html.Tag(Html5Tag.Div).Class("step-parameters")
+                    .Content(step.Parameters.Select(GetStepParameter))
+                    .SkipEmpty(),
+                Html.Tag(Html5Tag.Div).Class("sub-steps").Content(step.GetSubSteps().Select(GetStep))
+                    .SkipEmpty());
         }
 
         private static IHtmlNode GetStepParameter(IParameterResult parameter)
