@@ -21,7 +21,7 @@ section.features{display: flex;flex-direction: column;}
 .description{font-style: italic;color: #222222;white-space: pre-wrap;margin-top: 0.5em;}
 span.label{background-color: hsl(202, 92%, 90%); color: hsl(202, 92%, 34%); padding: 0 0.3em; border-radius: 0.3em; font-size:smaller;white-space: nowrap;font-weight: normal;}
 span.category{background-color: hsl(24, 100%, 90%); color: hsl(24, 100%, 40%); padding: 0 0.3em; margin-right: 0.25em;white-space: nowrap;font-weight: normal;font-style: italic;}
-.status{width:1.6em;height:1.6em;margin-top: -0.125em;margin-right: 0.5em;display: inline-block;vertical-align: middle;text-align: center;font-family: monospace !important;font-size: 0.7em;padding:0.3em;font-weight: bold;line-height: 1em;}
+.status{width:1.6em;height:1.6em;margin-right: 0.5em;display: inline-flex;vertical-align: middle;text-align: center;font-family: monospace !important;font-size: 0.7em;font-weight: bold;line-height: 1em;align-items: center;justify-content: center}
 .status{border:0;box-sizing: border-box;border-radius: 50%;color:#ffffff;}
 .status.passed{background-color:#1daf26;}
 .status.failed{background-color:#cc0000;}
@@ -77,12 +77,12 @@ article{ margin-left: 0.5em;}
 .feature[data-filtered="false"],.scenario[data-filtered="false"] { display: none;}
 a{ text-decoration: none;}
 a:hover{ text-decoration: underline;}
-#optionsLink, .smallLink, a:hover,label:hover,.sortable:hover, .attachments a{ color: #662266;}
+#optionsLink, .smallLink, a:hover,label:hover,label:hover .text,.sortable:hover, .attachments a{ color: #662266;}
 .smallLink{ display: none;}
 *:hover > .smallLink { display: inline;}
 .chbox{display: inline-block;}
 input[type="checkbox"],input[type="radio"]{ display: none;}
-.chbox:before{display: inline-block; border: 1px solid #777777;margin-right: 0.5em;font-weight: bold;text-align: center;width: 1.2em;height: 1.2em;line-height: 1.2em;vertical-align: middle;font-family: monospace;margin-top: -0.1em;font-size:smaller;}
+.chbox:before{display: inline-flex; border: 1px solid #777777;margin-right: 0.5em;font-weight: bold;text-align: center;width: 1.2em;height: 1.2em;font-family: monospace;font-size:smaller;justify-content: center;align-items: center;}
 .chbox.empty:before {visibility: hidden;}
 input[type="checkbox"]:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "\2715";}
 input[type="checkbox"]:checked + * .chbox:before{ background-color: #eeeeee;content: "\2713";}
@@ -134,3 +134,6 @@ th.sortable[data-dir="true"]:before{border-top-color: #222222;}
 .tree.node .param.value{border:1px solid #777777;border-radius: 0; padding: 0.1em 0.3em;border-left:0;}
 .tree.node.leaf .param.value{border-radius: 0 0.5em 0.5em 0;padding-right:0.5em;}
 .tree.node .detail:hover .param,.tree.node .detail:hover ~ * .param{border-color: #662266;outline: 1px solid #662266;}
+.scenario-title {display: flex;align-items: flex-start;}
+.scenario-title > .text{ flex-grow: 1;}
+.scenario-title > .controls{ display: flex;align-items: center;}
