@@ -469,18 +469,25 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                         GetAttachments(scenario.GetAllSteps())).SkipEmpty());
         }
 
+        private static IHtmlNode GetScenarioDetailsSection(string className, string description, IEnumerable<IHtmlNode> content)
+        {
+            var nodes = content.ToArray();
+            if (!nodes.Any())
+                return Html.Nothing();
+            return Html.Tag(Html5Tag.Div).Class(className).Content(Enumerable.Repeat(Html.Tag(Html5Tag.H3).Content(description), 1).Concat(nodes));
+        }
         private IHtmlNode GetAttachments(IEnumerable<IStepResult> steps)
         {
-            return Html.Tag(Html5Tag.Div).Class("attachments")
-                .SkipEmpty()
-                .Content(from s in steps
-                         from a in s.FileAttachments
-                         select
-                             Html.Tag(Html5Tag.Div).Content(
-                                 Html.Tag(Html5Tag.A)
-                                     .Href(ResolveLink(a))
-                                     .Attribute("target", "_blank")
-                                     .Content($"🔗Step {s.Info.GroupPrefix}{s.Info.Number}: {a.Name} ({Path.GetExtension(a.FilePath).TrimStart('.')})")));
+            return GetScenarioDetailsSection("attachments", "Attachments:",
+                from s in steps
+                from a in s.FileAttachments
+                select
+                    Html.Tag(Html5Tag.Div).Content(
+                        Html.Tag(Html5Tag.A)
+                            .Href(ResolveLink(a))
+                            .Attribute("target", "_blank")
+                            .Content(
+                                $"🔗Step {s.Info.GroupPrefix}{s.Info.Number}: {a.Name} ({Path.GetExtension(a.FilePath).TrimStart('.')})")));
         }
 
         private string ResolveLink(FileAttachment fileAttachment)
@@ -490,9 +497,10 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
         private IHtmlNode GetComments(IEnumerable<IStepResult> steps)
         {
-            return Html.Tag(Html5Tag.Div).Class("comments")
-                .SkipEmpty()
-                .Content(from s in steps from c in s.Comments select Html.Tag(Html5Tag.Div).Content($"// Step {s.Info.GroupPrefix}{s.Info.Number}: {c}"));
+            return GetScenarioDetailsSection("comments", "Comments:",
+                from s in steps
+                from c in s.Comments
+                select Html.Tag(Html5Tag.Div).Content($"// Step {s.Info.GroupPrefix}{s.Info.Number}: {c}"));
         }
 
         private string GetScenarioCategories(IScenarioResult scenario)
@@ -505,9 +513,11 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             return string.Join(" ", categories.Select(cat => _categories[cat]));
         }
 
-        private static TagBuilder GetStatusDetails(string statusDetails)
+        private static IHtmlNode GetStatusDetails(string statusDetails)
         {
-            return Html.Tag(Html5Tag.Div).Class("status-details").Content(statusDetails).SkipEmpty();
+            if (string.IsNullOrWhiteSpace(statusDetails))
+                return Html.Nothing();
+            return GetScenarioDetailsSection("status-details", "Details:", new[] { Html.Text(statusDetails).Escape().Trim() });
         }
 
         private static IHtmlNode GetDuration(ExecutionTime executionTime)

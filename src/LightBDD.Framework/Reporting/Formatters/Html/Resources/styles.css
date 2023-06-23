@@ -1,6 +1,6 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
-*{color: #222222;font-family: 'Lato', sans-serif;-webkit-print-color-adjust:exact;}
-html{font-size: 14pt;}
+*{color: #222222;-webkit-print-color-adjust:exact;}
+html{font-size: 14pt;font-family: 'Lato', sans-serif;}
 .title *{ line-height: 1em;}
 label * { line-height: 1em;}
 h1{ font-size: 1.40em;}
@@ -29,9 +29,9 @@ span.category{background-color: hsl(24, 100%, 90%); color: hsl(24, 100%, 40%); p
 .status.bypassed{background-color:#2e7bff;}
 .status.notrun{background-color:#949494;}
 .attachments,.comments,.status-details{margin: 0.5em;margin-top: 1em;color: #222222;white-space: pre-wrap;font-size: small;font-family: monospace;}
-.status-details:before {content: "Details:";display: block;font-size: larger;font-weight: bold;margin-bottom: 0.5em;border-bottom:0.2em solid hsl(34, 100%, 80%);}
-.comments:before {content: "Comments:";display: block;font-size: larger;font-weight: bold;margin-bottom: 0.5em;border-bottom:0.2em solid hsl(204, 100%, 80%);}
-.attachments:before{content:"Attachments:";display: block;font-size: larger;font-weight: bold;margin-bottom: 0.5em;border-bottom:0.2em solid hsl(276, 100%, 80%);}
+.status-details > h3 {font-size: larger;font-weight: bold;margin-bottom: 0.5em;border-bottom:0.2em solid hsl(34, 100%, 80%);}
+.comments > h3 {font-size: larger;font-weight: bold;margin-bottom: 0.5em;border-bottom:0.2em solid hsl(204, 100%, 80%);}
+.attachments > h3 {font-size: larger;font-weight: bold;margin-bottom: 0.5em;border-bottom:0.2em solid hsl(276, 100%, 80%);}
 .attachments div{ display: inline-block; margin-right: 0.5em;}
 .comments div{color: inherit;font-family: inherit;}
 .step,.categories,.step-parameters{margin: 0.2em;}
