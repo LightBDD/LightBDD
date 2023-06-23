@@ -449,16 +449,15 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 .Attribute("data-categories", GetScenarioCategories(scenario))
                 .Content(
                     Html.Checkbox().Id(toggleId).Class("toggle toggleS").Checked(),
-                    Html.Tag(Html5Tag.H3).Id(scenarioId).Class("title").Content(
-                        Html.Tag(Html5Tag.Label).For(toggleId).Class("scenario-title").Content(
-                            Html.Tag(Html5Tag.Div).Class("controls").Content(
-                                GetCheckBoxTag(),
-                                GetStatus(scenario.Status)),
-                            Html.Tag(Html5Tag.Div).Class("text").Content(
-                                Html.Text(scenario.Info.Name.Format(StepNameDecorator)),
-                                Html.Tag(Html5Tag.Span).Content(scenario.Info.Labels.Select(GetLabel)).SkipEmpty(),
-                                GetDuration(scenario.ExecutionTime),
-                                GetSmallLink(scenarioId)))),
+                    Html.Tag(Html5Tag.H3).Id(scenarioId).Class("title scenario").Content(
+                        Html.Tag(Html5Tag.Label).For(toggleId).Class("controls").Content(
+                            GetCheckBoxTag(),
+                            GetStatus(scenario.Status)),
+                        Html.Tag(Html5Tag.Div).Class("text").Content(
+                            Html.Text(scenario.Info.Name.Format(StepNameDecorator)),
+                            Html.Tag(Html5Tag.Span).Content(scenario.Info.Labels.Select(GetLabel)).SkipEmpty(),
+                            GetDuration(scenario.ExecutionTime),
+                            GetSmallLink(scenarioId))),
                     Html.Tag(Html5Tag.Div).Class("categories").Content(scenario.Info.Categories.Select(GetCategory))
                         .SkipEmpty(),
                     Html.Tag(Html5Tag.Div).Content(scenario.GetSteps().Select(GetStep)),
