@@ -92,7 +92,6 @@ input:hover + * .chbox:before{ background-color: #ffffaa !important;}
 input[type="radio"] + * .chbox:before{border-radius: 50%; background-color: #eeeeee;}
 input[type="radio"]:not(:checked) + * .chbox:before{content: "\00a0";}
 input[type="radio"]:checked + * .chbox:before{content: "\2713";}
-.stepType{ font-style: italic;}
 label{ display: inline-block;}
 .optionsPanel #optionsLink {display: inline-block; visibility: hidden;margin: 0.1em 0 0.5em 6em;font-weight: bold; font-family: monospace;}
 .optionsPanel:hover #optionsLink{ visibility: visible;}
