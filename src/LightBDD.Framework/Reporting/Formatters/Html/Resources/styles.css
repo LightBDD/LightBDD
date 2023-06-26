@@ -16,7 +16,7 @@ section.features{display: flex;flex-direction: column;}
 .feature:nth-child(odd) { background: #e0e0e0; }
 .scenario{ margin-bottom: 0.2em;border-radius: 0.5em;background-color: #ffffff;padding: 0.2em;}
 .toggleF:not(:checked) ~ .scenarios { display: none;}
-.toggleS:not(:checked) ~ h3 ~ * { display: none;}
+.toggleS:not(:checked) ~ .header ~ * { display: none;}
 .toggleSS:not(:checked) ~ .sub-steps { display: none;}
 .description{font-style: italic;color: #222222;white-space: pre-wrap;margin-top: 0.5em;}
 span.label{background-color: hsl(202, 92%, 90%); color: hsl(202, 92%, 34%); padding: 0 0.3em; border-radius: 0.3em; font-size:smaller;white-space: nowrap;font-weight: normal;}
@@ -133,8 +133,7 @@ th.sortable[data-dir="true"]:before{border-top-color: #222222;}
 .tree.node .param.value{border:1px solid #777777;border-radius: 0; padding: 0.1em 0.3em;border-left:0;}
 .tree.node.leaf .param.value{border-radius: 0 0.5em 0.5em 0;padding-right:0.5em;}
 .tree.node .detail:hover .param,.tree.node .detail:hover ~ * .param{border-color: #662266;outline: 1px solid #662266;}
-.scenario,.step,.feature > .title {display: grid;grid-template-columns: min-content minmax(min-content,1fr);}
-.feature > .title > .content{grid-column:2}
-.scenario > .controls{grid-column: 1;grid-row: 1/span 2; display: flex;}
-.scenario > .details{grid-column: 1/span 2;}
-.step > .controls{grid-column: 1;grid-row: 1/span 3; display: flex;}
+.feature > .header,.scenario > .header, .step > .header{display:flex;}
+.header > .controls{display:flex;}
+.scenario > .content { margin-left: 3em;}
+.step > .step-parameters, .step > .sub-steps { margin-left: 3em; }
