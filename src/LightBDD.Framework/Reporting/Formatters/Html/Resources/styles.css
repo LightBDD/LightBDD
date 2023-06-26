@@ -21,7 +21,7 @@ section.features{display: flex;flex-direction: column;}
 .description{font-style: italic;color: #222222;white-space: pre-wrap;margin-top: 0.5em;}
 span.label{background-color: hsl(202, 92%, 90%); color: hsl(202, 92%, 34%); padding: 0 0.3em; border-radius: 0.3em; font-size:smaller;white-space: nowrap;font-weight: normal;}
 span.category{background-color: hsl(24, 100%, 90%); color: hsl(24, 100%, 40%); padding: 0 0.3em; margin-right: 0.25em;white-space: nowrap;font-weight: normal;font-style: italic;}
-.status{width:1.6em;height:1.6em;margin-right: 0.5em;display: flex;vertical-align: middle;text-align: center;font-family: monospace !important;font-size: 0.7em;font-weight: bold;line-height: 1em;align-items: center;justify-content: center}
+.status{width:1.6em;height:1.6em;margin-right: 0.5em;display: flex;vertical-align: middle;text-align: center;font-family: monospace !important;font-size: 0.7em;font-weight: bold;line-height: 1em;align-items: center;justify-content: center;padding: 0.3em;}
 .status{border:0;box-sizing: border-box;border-radius: 50%;color:#ffffff;}
 .status.passed{background-color:#1daf26;}
 .status.failed{background-color:#cc0000;}

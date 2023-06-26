@@ -450,11 +450,11 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 .Attribute("data-categories", GetScenarioCategories(scenario))
                 .Content(
                     Html.Checkbox().Id(toggleId).Class("toggle toggleS").Checked(),
-                    Html.Tag(Html5Tag.Div).Class("header").Content(
+                    Html.Tag(Html5Tag.H3).Id(scenarioId).Class("header title").Content(
                         Html.Tag(Html5Tag.Label).For(toggleId).Class("controls").Content(
                             GetCheckBoxTag(),
                             GetStatus(scenario.Status)),
-                        Html.Tag(Html5Tag.H3).Id(scenarioId).Class("title").Content(
+                        Html.Tag(Html5Tag.Span).Content(
                             Html.Text(scenario.Info.Name.Format(StepNameDecorator)),
                             Html.Tag(Html5Tag.Span).Content(scenario.Info.Labels.Select(GetLabel)).SkipEmpty(),
                             GetDuration(scenario.ExecutionTime),
@@ -547,7 +547,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
             var container = hasSubSteps
                 ? Html.Tag(Html5Tag.Label).For(toggleId)
-                : Html.Tag(Html5Tag.Div);
+                : Html.Tag(Html5Tag.Span);
 
             return Html.Tag(Html5Tag.Div).Class("step").Content(
                 checkbox,
@@ -555,7 +555,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                     container.Class("controls").Content(
                         GetCheckBoxTag(!hasSubSteps),
                         GetStatus(step.Status)),
-                    Html.Tag(Html5Tag.Div).Content(
+                    Html.Tag(Html5Tag.Span).Content(
                         Html.Text($"{WebUtility.HtmlEncode(step.Info.GroupPrefix)}{step.Info.Number}. {step.Info.Name.Format(StepNameDecorator)}").Trim(),
                         GetDuration(step.ExecutionTime))),
                 Html.Tag(Html5Tag.Div).Class("step-parameters")
@@ -662,7 +662,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         {
             return status switch
             {
-                ExecutionStatus.NotRun => " ",
+                ExecutionStatus.NotRun => "?",
                 ExecutionStatus.Passed => "✓",
                 ExecutionStatus.Bypassed => "~",
                 ExecutionStatus.Ignored => "!",

@@ -60,21 +60,14 @@ Categories: -all- categoryA categoryB categoryC -without category-
 My feature Label 1 link
 My feature
 long description
-!
-name Label 2 (1m 02s) link
+! name Label 2 (1m 02s) link
  categoryA
-✓
-1. call step1 &quot;arg1&quot; (1m 01s)
-!
-2. step2 (1s 100ms)
-✓
-2.1. substep 1 (100ms)
-✓
-2.2. substep 2 (1s)
-!
-2.3. substep 3 (0ms)
-✕
-2.3.1. sub-substep 1
+✓ 1. call step1 &quot;arg1&quot; (1m 01s)
+! 2. step2 (1s 100ms)
+✓ 2.1. substep 1 (100ms)
+✓ 2.2. substep 2 (1s)
+! 2.3. substep 3 (0ms)
+✕ 2.3.1. sub-substep 1
 table1:
 # Key X Y
 = Key1 1 2
@@ -92,8 +85,7 @@ Key X Y
 Key1 1 2
 Key2 2 4
 Key3 3 6
-
-2.3.2. sub-substep 2
+? 2.3.2. sub-substep 2
 Details:
 Step 2: Not implemented yet
 Comments:
@@ -105,15 +97,11 @@ comment
 comment
 Attachments:
 &#128279;Step 2.3.1: attachment1 (png)
-✕
-name2 ""arg1"" (2s 157ms) link
+✕ name2 ""arg1"" (2s 157ms) link
  categoryB categoryC
-~
-1. step3 (2s 107ms)
-✕
-2. step4 (50ms)
-
-3. step5
+~ 1. step3 (2s 107ms)
+✕ 2. step4 (50ms)
+? 3. step5
 Details:
 Step 1: bypass reason
 Step 2: Expected: True
@@ -151,12 +139,9 @@ Toggle: Features Scenarios Sub Steps
 Filter: Passed Bypassed Failed Ignored Not Run
  filtered link
 My feature link
-!
-name (25ms) link
-✓
-1. step1 (20ms)
-!
-2. step2 (5ms)
+! name (25ms) link
+✓ 1. step1 (20ms)
+! 2. step2 (5ms)
 Generated with LightBDD v{GetExpectedLightBddVersion()}
 initialize();";
             Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
@@ -190,17 +175,13 @@ Filter: Passed Bypassed Failed Ignored Not Run
 Categories: -all- categoryA categoryB -without category-
  filtered link
 My feature link
-✓
-scenario1 (20ms) link
+✓ scenario1 (20ms) link
  categoryA
-✓
-1. step1 (20ms)
+✓ 1. step1 (20ms)
 My feature2 link
-✓
-scenario1 (20ms) link
+✓ scenario1 (20ms) link
  categoryB
-✓
-1. step1 (20ms)
+✓ 1. step1 (20ms)
 Generated with LightBDD v{GetExpectedLightBddVersion()}
 initialize();";
             Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
@@ -242,12 +223,9 @@ Toggle: Features Scenarios Sub Steps
 Filter: Passed Bypassed Failed Ignored Not Run
  filtered link
 My feature link
-✓
-scenario1 (5s) link
-✓
-&lt;gr&gt;1. ty&lt;p&gt;e ste&lt;p&gt; (20ms)
-✓
-2. ste&lt;p&gt;2 (20ms)
+✓ scenario1 (5s) link
+✓ &lt;gr&gt;1. ty&lt;p&gt;e ste&lt;p&gt; (20ms)
+✓ 2. ste&lt;p&gt;2 (20ms)
 Generated with LightBDD v{GetExpectedLightBddVersion()}
 initialize();";
             Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
@@ -279,18 +257,12 @@ Toggle: Features Scenarios Sub Steps
 Filter: Passed Bypassed Failed Ignored Not Run
  filtered link
 My Feature link
-✓
-scenario A lab B (2s) link
-✓
-1. step
-✓
-scenario B lab C (5s) link
-✓
-1. step
-✓
-scenario C lab A (2s) link
-✓
-1. step
+✓ scenario A lab B (2s) link
+✓ 1. step
+✓ scenario B lab C (5s) link
+✓ 1. step
+✓ scenario C lab A (2s) link
+✓ 1. step
 Generated with LightBDD v{GetExpectedLightBddVersion()}
 initialize();";
             Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
