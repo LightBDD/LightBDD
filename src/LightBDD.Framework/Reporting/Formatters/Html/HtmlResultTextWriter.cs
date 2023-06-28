@@ -38,9 +38,10 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         {
             _writer
                 .WriteTag(Html.Text("<!DOCTYPE HTML>"))
-                .WriteTag(Html.Tag(Html5Tag.Html).Content(
+                .WriteTag(Html.Tag(Html5Tag.Html).Attribute("lang","en").Content(
                     Html.Tag(Html5Tag.Head).Content(
                         Html.Tag(Html5Tag.Meta).Attribute(Html5Attribute.Charset, "UTF-8"),
+                        Html.Tag(Html5Tag.Meta).Attribute(Html5Attribute.Name,"viewport").Attribute(Html5Attribute.Content, "width=device-width, initial-scale=1"),
                         GetFavicon(options.CustomFavicon),
                         Html.Tag(Html5Tag.Title).Content("Summary"),
                         Html.Tag(Html5Tag.Style).Content(EmbedCssImages(options), false, false),
@@ -113,7 +114,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
             return Html.Tag(Html5Tag.Section).Class("execution-summary").Content(
                 Html.Tag(Html5Tag.H1).Content("Test execution summary"),
-                Html.Tag(Html5Tag.Article).Content(
+                Html.Tag(Html5Tag.Div).Class("content").Content(
                     Html.Tag(Html5Tag.Table).Content(
                         GetKeyValueHeaderTableRow("Execution"),
                         GetOverallStatus(),
@@ -179,9 +180,9 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
         private IHtmlNode WriteFeatureSummary()
         {
-            return Html.Tag(Html5Tag.Section).Content(
+            return Html.Tag(Html5Tag.Section).Class("features-summary").Content(
                 Html.Tag(Html5Tag.H1).Content("Feature summary"),
-                Html.Tag(Html5Tag.Article).Class("features-summary").Content(
+                Html.Tag(Html5Tag.Div).Class("content").Content(
                     Html.Tag(Html5Tag.Table).Id("featuresSummary").Class("features").Content(
                         GetSummaryTable())));
         }
@@ -415,7 +416,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 Html.Checkbox().Class("toggle toggleF").Id("toggle" + index).Checked(),
                 Html.Tag(Html5Tag.H2).Id("feature" + index).Class("title header").Content(
                     Html.Tag(Html5Tag.Label).For("toggle" + index).Class("controls").Content(GetCheckBoxTag()),
-                    Html.Tag(Html5Tag.Div).Class("content").Content(
+                    Html.Tag(Html5Tag.Span).Class("content").Content(
                         Html.Text(feature.Info.Name.Format(StepNameDecorator)),
                         Html.Tag(Html5Tag.Span).Content(feature.Info.Labels.Select(GetLabel)).SkipEmpty(),
                         GetSmallLink("feature" + index))),
@@ -587,7 +588,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             return Html.Tag(Html5Tag.Div).Class($"tree node {type}").Content(
                 Html.Tag(Html5Tag.Div).Class("detail").Content(
                     Html.Tag(Html5Tag.Span).Class("param node").Content(node.Node),
-                    GetRowValue(node, Html5Tag.Span)),
+                    GetParamValue(node, Html5Tag.Div)),
                 Html.Tag(Html5Tag.Div).Class("branches").Content(
                     node.Children.Where(ch => !ch.Children.Any())
                         .Concat(node.Children.Where(ch => ch.Children.Any()))
@@ -621,7 +622,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
         private static IHtmlNode GetParameterTableRow(ITabularParameterRow row, bool renderRowStatus)
         {
-            var values = row.Values.Select(v => GetRowValue(v, Html5Tag.Td)).ToList();
+            var values = row.Values.Select(v => GetParamValue(v, Html5Tag.Td)).ToList();
             if (renderRowStatus)
                 values.Insert(0, Html.Tag(Html5Tag.Td).Class("param type").Content(GetRowTypeContent(row)));
             return Html.Tag(Html5Tag.Tr).Content(values);
@@ -640,17 +641,17 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             return "!";
         }
 
-        private static IHtmlNode GetRowValue(IValueResult value, Html5Tag tag)
+        private static IHtmlNode GetParamValue(IValueResult value, Html5Tag tag)
         {
             var element = Html.Tag(tag).Class("param value " + value.VerificationStatus.ToString().ToLowerInvariant());
             if (value.VerificationStatus == ParameterVerificationStatus.NotApplicable ||
                 value.VerificationStatus == ParameterVerificationStatus.Success)
                 return element.Content(value.Value);
 
-            return element.Content(Html.Tag(Html5Tag.Div).Content(
+            return element.Content(
                 Html.Text(value.Value).Escape(),
                 Html.Tag(Html5Tag.Hr),
-                Html.Tag(Html5Tag.Span).Class("expected").Content(value.Expectation)));
+                Html.Tag(Html5Tag.Span).Class("expected").Content(value.Expectation));
         }
 
         private static string GetStatusClass(ExecutionStatus status)

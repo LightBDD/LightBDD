@@ -12,6 +12,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         Name,
         Charset,
         Rel,
-        Colspan
+        Colspan,
+        Content
     }
 }
