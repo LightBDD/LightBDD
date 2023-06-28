@@ -22,7 +22,7 @@ section.features{display: flex;flex-direction: column;}
 .description{font-style: italic;color: #222222;white-space: pre-wrap;margin-top: var(--sp);}
 span.label{background-color: hsl(202, 92%, 90%); color: hsl(202, 92%, 34%); padding: 0 0.3em; border-radius: 0.3em; font-size:smaller;white-space: nowrap;font-weight: normal;}
 span.category{background-color: hsl(24, 100%, 90%); color: hsl(24, 100%, 40%); padding: 0 0.3em; margin-right: 0.25em;white-space: nowrap;font-weight: normal;font-style: italic;}
-.status{width:1.6em;height:1.6em;margin-right: 0.5em;display: flex;vertical-align: middle;text-align: center;font-family: monospace !important;font-size: smaller;font-weight: bold;line-height: 1em;align-items: center;justify-content: center;padding: 0.3em;}
+.status{width:21px;height:21px;display: flex;vertical-align: middle;text-align: center;font-family: monospace !important;font-size: 13px;font-weight: bold;line-height: 13px;align-items: center;justify-content: center;padding: 4px;margin-right: 5px;}
 .status{border:0;box-sizing: border-box;border-radius: 50%;color:#ffffff;}
 .status.passed{background-color:#1daf26;}
 .status.failed{background-color:#cc0000;}
@@ -36,7 +36,6 @@ span.category{background-color: hsl(24, 100%, 90%); color: hsl(24, 100%, 40%); p
 .attachments div{ display: inline-block; margin-right: var(--sp);}
 .comments div{color: inherit;font-family: inherit;}
 .step,.categories,.step-parameters{margin: 0.2em;}
-.step{ margin-left: -1.5em;}
 .smallLink,.duration{color: #0000cd;font-size: 0.8em;font-family: monospace;}
 th,td{ white-space: nowrap;}
 th{ text-align: right;}
@@ -81,7 +80,7 @@ a:hover{ text-decoration: underline;}
 *:hover > .smallLink { display: inline;}
 .chbox{display: inline-block;}
 input[type="checkbox"],input[type="radio"]{ display: none;}
-.chbox:before{display: flex; border: 1px solid var(--c-bd);margin-right: 0.5em;font-weight: bold;text-align: center;width: 1.2em;height: 1.2em;font-family: monospace;font-size:smaller;justify-content: center;align-items: center;content: "\00a0";}
+.chbox:before{display: flex; border: 1px solid var(--c-bd);margin:1px;margin-right: 5px;font-weight: bold;text-align: center;width: 18px;height: 18px;font-family: monospace;font-size:15px;line-height: 15px;justify-content: center;align-items: center;content: "\00a0";}
 .chbox.empty:before {visibility: hidden;}
 input[type="checkbox"]:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "\2715";}
 input[type="checkbox"]:checked + * .chbox:before{ background-color: #eeeeee;content: "\2713";}
@@ -135,5 +134,6 @@ th.sortable[data-dir="true"]:before{border-top-color: #222222;}
 .feature > .header,.scenario > .header, .step > .header{display:flex;align-items: flex-start;}
 .header > .controls{display:flex;align-items: center;}
 .scenario > .header > span {align-self: center;}
-.scenario > .content { margin-left: 3em;}
-.step > .step-parameters, .step > .sub-steps { margin-left: 3em; }
+.scenario > .content { margin-left: 50px;}
+.step > .step-parameters, .step > .sub-steps { margin-left: 50px; }
+.step{ margin-left: -25px;}
