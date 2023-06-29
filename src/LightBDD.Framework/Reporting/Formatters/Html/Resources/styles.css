@@ -1,4 +1,4 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Lato&family=Roboto+Mono&display=swap');
 *{color: #222222;-webkit-print-color-adjust:exact;}
 html{font-size: 16px;font-family: 'Lato', sans-serif;}
 .title *{ line-height: 1em;}
@@ -22,21 +22,21 @@ section.features{display: flex;flex-direction: column;}
 .description{font-style: italic;color: #222222;white-space: pre-wrap;margin-top: 0.5rem;}
 span.label{background-color: hsl(202, 92%, 90%); color: hsl(202, 92%, 34%); padding: 0 0.3em; border-radius: 0.3em; font-size:smaller;white-space: nowrap;font-weight: normal;}
 span.category{background-color: hsl(24, 100%, 90%); color: hsl(24, 100%, 40%); padding: 0 0.3em; margin-right: 0.25em;white-space: nowrap;font-weight: normal;font-style: italic;}
-.status{width:21px;height:21px;display: flex;vertical-align: middle;text-align: center;font-family: monospace !important;font-size: 13px;font-weight: bold;line-height: 13px;align-items: center;justify-content: center;padding: 4px;margin-right: 5px;}
+.status{width:21px;height:21px;display: flex;vertical-align: middle;text-align: center;font-family: 'Roboto Mono', monospace;font-size: 13px;font-weight: bold;line-height: 13px;align-items: center;justify-content: center;padding: 4px;margin-right: 5px;}
 .status{border:0;box-sizing: border-box;border-radius: 50%;color:#ffffff;}
 .status.passed{background-color:#1daf26;}
 .status.failed{background-color:#cc0000;}
 .status.ignored{background-color:#fbc800;color: black;}
 .status.bypassed{background-color:#2e7bff;}
 .status.notrun{background-color:#949494;}
-.attachments,.comments,.status-details{color: #222222;white-space: pre-wrap;font-size: small;font-family: monospace;}
-.status-details > h3 {font-size: larger;font-weight: bold;margin-bottom: 0.5rem;border-bottom:0.2em solid hsl(34, 100%, 80%);}
-.comments > h3 {font-size: larger;font-weight: bold;margin-bottom: 0.5rem;border-bottom:0.2em solid hsl(204, 100%, 80%);}
-.attachments > h3 {font-size: larger;font-weight: bold;margin-bottom: 0.5rem;border-bottom:0.2em solid hsl(276, 100%, 80%);}
+.attachments code,.comments code,.status-details code{white-space: pre-wrap;font-size: 12px;font-family: 'Roboto Mono', monospace;line-height: 1em;}
+.status-details > h3 {font-weight: bold;margin-bottom: 0.5rem;border-bottom:0.2em solid hsl(34, 100%, 80%);}
+.comments > h3 {font-weight: bold;margin-bottom: 0.5rem;border-bottom:0.2em solid hsl(204, 100%, 80%);}
+.attachments > h3 {font-weight: bold;margin-bottom: 0.5rem;border-bottom:0.2em solid hsl(276, 100%, 80%);}
 .attachments div{ display: inline-block; margin-right: 0.5rem;}
 .comments div{color: inherit;font-family: inherit;}
 .step,.categories,.step-parameters{margin: 0.2em;}
-.smallLink,.duration{color: #0000cd;font-size: 0.8em;font-family: monospace;}
+.smallLink,.duration{color: #0000cd;font-size: 0.8em;font-family: 'Roboto Mono', monospace;font-weight: normal;}
 th,td{ white-space: nowrap;}
 th{ text-align: right;}
 th.minor{ font-weight: normal;}
@@ -80,7 +80,7 @@ a:hover{ text-decoration: underline;}
 *:hover > .smallLink { display: inline;}
 .chbox{display: inline-block;}
 input[type="checkbox"],input[type="radio"]{ display: none;}
-.chbox:before{display: flex; border: 1px solid #777777;margin:1px;margin-right: 5px;font-weight: bold;text-align: center;width: 18px;height: 18px;font-family: monospace;font-size:15px;line-height: 15px;justify-content: center;align-items: center;content: "\00a0";}
+.chbox:before{display: flex; border: 1px solid #777777;margin:1px;margin-right: 5px;font-weight: bold;text-align: center;width: 18px;height: 18px;font-family: 'Roboto Mono', monospace;font-size:15px;line-height: 15px;justify-content: center;align-items: center;content: "\00a0";}
 .chbox.empty:before {visibility: hidden;}
 input[type="checkbox"]:not(:checked) + * .chbox:before{ background-color: #ffeeee;content: "\2715";}
 input[type="checkbox"]:checked + * .chbox:before{ background-color: #eeeeee;content: "\2713";}
@@ -92,7 +92,7 @@ input[type="radio"] + * .chbox:before{border-radius: 50%; background-color: #eee
 input[type="radio"]:not(:checked) + * .chbox:before{content: "\00a0";}
 input[type="radio"]:checked + * .chbox:before{content: "\2713";}
 label{ display: inline-block;}
-.optionsPanel #optionsLink {display: inline-block; visibility: hidden;margin: 0.1em 0 0.5em 6em;font-weight: bold; font-family: monospace;}
+.optionsPanel #optionsLink {display: inline-block; visibility: hidden;margin: 0.1em 0 0.5em 6em;font-weight: bold; font-family: 'Roboto Mono', monospace;}
 .optionsPanel:hover #optionsLink{ visibility: visible;}
 .footer{ font-size: x-small;text-align: center;}
 .footer a{ font-weight: bold;}
@@ -104,7 +104,7 @@ table.param.table th.param,table.param.table td.param{ border: 1px solid #777777
 td.param, th.param { text-align: left; padding-left: 0.3em; padding-right: 0.3em;}
 th.param.column{ background-color: #ffffff; text-align: left;font-weight: normal;}
 th.param.column.key { font-weight: bold;}
-td.param.type { font-size:smaller;color: #444444; text-align: center; font-family: monospace;}
+td.param.type { font-size:smaller;color: #444444; text-align: center; font-family: 'Roboto Mono', monospace;}
 .inline-param.success, .param.value.success {background: hsl(120, 100%, 83%)}
 .inline-param.failure, .inline-param.exception, .param.value.failure,.param.value.exception {background: hsl(0, 100%, 83%);}
 .inline-param.notprovided, .param.value.notprovided {background: hsl(54, 100%, 83%);}
