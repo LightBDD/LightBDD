@@ -71,15 +71,9 @@ long description
 table1:
 # Key X Y
 = Key1 1 2
-! Key2
-12
-4
-- Key3
-&lt;none&gt;3
-&lt;none&gt;6
-+ Key4
-3&lt;none&gt;
-6&lt;none&gt;
+! Key2 1/2 4
+- Key3 &lt;none&gt;/3 &lt;none&gt;/6
++ Key4 3/&lt;none&gt; 6/&lt;none&gt;
 table2:
 Key X Y
 Key1 1 2
@@ -422,17 +416,6 @@ $.[2].Surname=Smith";
             doc.LoadHtml(formatted);
             var builder = new HtmlToPlainTextFormatter();
             builder.FormatNode(doc.DocumentNode.SelectSingleNode("//body"));
-            Debug.WriteLine(builder.ToString());
-            return builder.ToString();
-        }
-
-        private string FormatAndExtractTableText(string xpath, params IFeatureResult[] results)
-        {
-            var formatted = FormatResults(results);
-            var doc = new HtmlDocument();
-            doc.LoadHtml(formatted);
-            var builder = new HtmlTableToPlainTextFormatter();
-            builder.FormatNode(doc.DocumentNode.SelectSingleNode(xpath));
             Debug.WriteLine(builder.ToString());
             return builder.ToString();
         }
