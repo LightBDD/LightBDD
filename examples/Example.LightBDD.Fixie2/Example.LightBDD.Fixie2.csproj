@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6;net48</TargetFrameworks>
+    <TargetFrameworks>net6;net5</TargetFrameworks>
     <DebugType>full</DebugType>
   </PropertyGroup>
 
@@ -13,8 +13,9 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="Shouldly" Version="4.1.0" />
-    <PackageReference Include="Fixie" Version="2.2.2" />
-    <DotNetCliToolReference Include="Fixie.Console" Version="2.2.1" />
+    <PackageReference Include="Fixie.TestAdapter" Version="3.3.0" />
+    <PackageReference Include="Fixie" Version="3.3.0" />
+    <DotNetCliToolReference Include="Fixie.Console" Version="3.3.0" />
   </ItemGroup>
 
   <ItemGroup>

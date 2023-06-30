@@ -11,20 +11,6 @@ using LightBDD.Framework.Reporting.Formatters;
 namespace Example.LightBDD.Fixie2
 {
     /// <summary>
-    /// This class is necessary to configure Fixie to recognize LightBDD tests
-    /// </summary>
-    internal class WithLightBddConventions : LightBddDiscoveryConvention
-    {
-        /// <summary>
-        /// This constructor allows to specify category filters.
-        /// </summary>
-        public WithLightBddConventions(string[] category)
-        {
-            IncludeCategories(category);
-        }
-    }
-
-    /// <summary>
     /// This class extends LightBddScope and allows to customize the default configuration of LightBDD.
     /// It is also possible here to override OnSetUp() and OnTearDown() methods to execute code that has to be run once, before or after all tests.
     /// </summary>

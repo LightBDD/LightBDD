@@ -1,0 +1,50 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using Fixie;
+
+namespace LightBDD.Fixie2.Implementation;
+
+internal class LightBddExecutionConvention : IExecution
+{
+    public async Task Run(TestSuite testSuite)
+    {
+        foreach (var testClass in testSuite.TestClasses)
+            foreach (var test in testClass.Tests)
+                await RunTest(testClass, test);
+    }
+
+    private async Task RunTest(TestClass testClass, Test test)
+    {
+        foreach (var parameters in GetParameters(test))
+            await RunCase(testClass, test, parameters);
+    }
+
+    private async Task RunCase(TestClass testClass, Test test, object[] parameters)
+    {
+        var instance = testClass.Construct();
+        try
+        {
+            TestContextProvider.Initialize(test.Method, parameters);
+            var result = await test.Run(instance, parameters);
+            //TODO: this skip does not work
+            if (result is Failed { Reason: IgnoreException } failure)
+                await test.Skip(parameters, failure.Reason.Message);
+        }
+        finally
+        {
+            TestContextProvider.Clear();
+            (instance as IDisposable)?.Dispose();
+        }
+    }
+
+    private IEnumerable<object[]> GetParameters(Test test)
+    {
+        if (!test.HasParameters)
+            return Enumerable.Repeat(Array.Empty<object>(), 1);
+
+        return test.Method.GetCustomAttributes().OfType<IScenarioCaseSourceAttribute>().SelectMany(s => s.GetCases());
+    }
+}

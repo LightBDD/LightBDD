@@ -5,8 +5,6 @@ using LightBDD.Framework.Notification;
 
 namespace LightBDD.Fixie2.UnitTests
 {
-    public class WithLightBddConventions : LightBddDiscoveryConvention { }
-
     public class ConfiguredLightBddScope : LightBddScope
     {
         public static readonly ConcurrentQueue<string> CapturedNotifications = new ConcurrentQueue<string>();

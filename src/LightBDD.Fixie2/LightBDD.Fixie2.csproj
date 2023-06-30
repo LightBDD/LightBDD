@@ -12,7 +12,7 @@ High level features:
 * in-code LightBDD configuration;
 * DI support;
 * inline and tabular parameters support.</Description>
-    <TargetFrameworks>net461;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;net6</TargetFrameworks>
     <PackageTags>$(PackageTags);fixie</PackageTags>
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
@@ -25,7 +25,7 @@ High level features:
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Fixie" Version="2.2.2" />
+    <PackageReference Include="Fixie" Version="3.3.0" />
   </ItemGroup>
 
   <ItemGroup>
