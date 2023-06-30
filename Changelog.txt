@@ -12,6 +12,7 @@ Version vNext
 + #288 (LightBDD.Core)(Change) Format of non-inline step parameters with <$name> parameter reference
 + #293 (LightBDD.MsTest3)(New) Created LightBDD.MsTest3 project with dependency on MSTest.TestFramework 3.x
 + #293 (LightBDD.MsTest2)(Change) Deprecated LightBDD.MsTest2 project in favor of LightBDD.MsTest3
++ #296 (all)(Change) Added net6 target framework to all LightBDD packages
 
 Version 3.6.1
 ----------------------------------------

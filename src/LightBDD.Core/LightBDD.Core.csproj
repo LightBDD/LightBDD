@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Summary>LightBDD Test Framework Core</Summary>
     <Description>Provides LightBDD core features, including asynchronous scenario execution with execution tracking and time measurement, metadata discovery and formatting, reporting, in-code configuration, progress notification and framework extensibility.</Description>
-    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net461;net6</TargetFrameworks>
   </PropertyGroup>
 
 </Project>
