@@ -12,7 +12,7 @@ High level features:
 * in-code LightBDD configuration;
 * DI support;
 * inline and tabular parameters support.</Description>
-    <TargetFrameworks>net461;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net461;netcoreapp3.1;net6</TargetFrameworks>
     <PackageTags>$(PackageTags);fixie</PackageTags>
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
