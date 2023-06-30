@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\Common.props" />
+  <PropertyGroup>
+    <Description>Allows creating acceptance tests in developer friendly environment by offering LightBDD.Framework features on top of MsTest v3 (MSTest.TestFramework) testing framework.
+
+High level features:
+* user friendly bdd scenario definitions;
+* test execution tracing and time measurement, helpful during longer test execution;
+* Xml/Html/Plain text reports generation;
+* cross-platform support (.NET Standard / .NET Framework);
+* asynchronous execution support;
+* in-code LightBDD configuration;
+* DI support;
+* inline and tabular parameters support.</Description>
+    <TargetFrameworks>netstandard2.0;net462;net6</TargetFrameworks>
+    <PackageTags>$(PackageTags);mstest;mstest2</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\QuickStart.txt">
+      <PackagePath>readme.txt</PackagePath>
+      <Pack>true</Pack>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LightBDD.Framework\LightBDD.Framework.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MSTest.TestFramework" Version="3.0.4" />
+  </ItemGroup>
+
+</Project>

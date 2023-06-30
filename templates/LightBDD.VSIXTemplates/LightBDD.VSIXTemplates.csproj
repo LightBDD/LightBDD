@@ -123,9 +123,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ItemTemplates\LightBDD.MsTest2.FeatureTemplate\LightBDD.MsTest2.FeatureTemplate.csproj">
+    <ProjectReference Include="..\ItemTemplates\LightBDD.MsTest3.FeatureTemplate\LightBDD.MsTest3.FeatureTemplate.csproj">
       <Project>{918C60A8-D2FE-4849-8951-01F3B1A830C9}</Project>
-      <Name>LightBDD.MsTest2.FeatureTemplate</Name>
+      <Name>LightBDD.MsTest3.FeatureTemplate</Name>
       <VSIXSubPath>ItemTemplates</VSIXSubPath>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
@@ -158,9 +158,9 @@
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
     </ProjectReference>
-    <ProjectReference Include="..\ProjectTemplates\LightBDD.MsTest2.ProjectTemplate\LightBDD.MsTest2.ProjectTemplate.csproj">
+    <ProjectReference Include="..\ProjectTemplates\LightBDD.MsTest3.ProjectTemplate\LightBDD.MsTest3.ProjectTemplate.csproj">
       <Project>{75DB73FE-2995-4EA6-80E0-9A079EE8BAFA}</Project>
-      <Name>LightBDD.MsTest2.ProjectTemplate</Name>
+      <Name>LightBDD.MsTest3.ProjectTemplate</Name>
       <VSIXSubPath>ProjectTemplates</VSIXSubPath>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
