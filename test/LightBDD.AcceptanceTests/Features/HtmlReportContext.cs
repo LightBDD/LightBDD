@@ -120,8 +120,7 @@ namespace LightBDD.AcceptanceTests.Features
 
         private IWebElement FindLabeledButton(string buttonId)
         {
-            var label = Driver
-                .FindElementsByTagName("label")
+            var label = Driver.FindElements(By.TagName("label"))
                 .Single(l => l.GetAttribute("for") == buttonId);
 
             return label.FindElement(By.ClassName("chbox"));
@@ -182,12 +181,12 @@ namespace LightBDD.AcceptanceTests.Features
 
         public async Task Then_the_scenario_filter_button_should_be_SELECTED([SelectedFormat] bool selected)
         {
-            Assert.That(Driver.FindElementById("toggleScenarios").Selected, Is.EqualTo(selected));
+            Assert.That(Driver.FindElement(By.Id("toggleScenarios")).Selected, Is.EqualTo(selected));
         }
 
         public async Task Then_the_feature_filter_button_should_be_SELECTED([SelectedFormat] bool selected)
         {
-            Assert.That(Driver.FindElementById("toggleFeatures").Selected, Is.EqualTo(selected));
+            Assert.That(Driver.FindElement(By.Id("toggleFeatures")).Selected, Is.EqualTo(selected));
         }
 
         public async Task When_a_filter_status_button_is_clicked(ExecutionStatus status)
@@ -197,7 +196,7 @@ namespace LightBDD.AcceptanceTests.Features
 
         public async Task Then_the_filter_status_button_should_be_SELECTED(ExecutionStatus status, [SelectedFormat] bool selected)
         {
-            Assert.That(Driver.FindElementById($"show{status}").Selected, Is.EqualTo(selected));
+            Assert.That(Driver.FindElement(By.Id($"show{status}")).Selected, Is.EqualTo(selected));
         }
 
         public async Task Then_all_scenarios_with_status_should_be_VISIBLE(ExecutionStatus status, [VisibleFormat] bool visible)
@@ -230,7 +229,7 @@ namespace LightBDD.AcceptanceTests.Features
 
         public async Task When_the_link_to_details_of_STATUS_scenarios_is_clicked(ExecutionStatus status)
         {
-            Driver.FindElementsByTagName("section").First(t => t.HasClassName("execution-summary"))
+            Driver.FindElements(By.TagName("section")).First(t => t.HasClassName("execution-summary"))
                 .FindElements(By.TagName("td"))
                 .First(td => td.FindElements(By.TagName("span")).Any(span => span.HasClassName(status.ToString().ToLower() + "Alert")))
                 .FindElements(By.TagName("a")).First()
@@ -297,13 +296,12 @@ namespace LightBDD.AcceptanceTests.Features
 
         public async Task Then_the_options_link_should_be_VISIBLE([VisibleFormat] bool visible)
         {
-            Assert.That(Driver.FindElementById("optionsLink").Displayed, Is.EqualTo(visible));
+            Assert.That(Driver.FindElement(By.Id("optionsLink")).Displayed, Is.EqualTo(visible));
         }
 
         public async Task When_the_options_link_is_clicked()
         {
-            Driver
-                .FindElementById("optionsLink")
+            Driver.FindElement(By.Id("optionsLink"))
                 .Click();
         }
 
@@ -317,8 +315,7 @@ namespace LightBDD.AcceptanceTests.Features
 
         public async Task Then_the_Feature_Summary_table_should_be_sorted_ASCENDING_by_column([OrderFormat] bool ascending, FeatureSummaryColumn column)
         {
-            var values = Driver
-                .FindElementById("featuresSummary")
+            var values = Driver.FindElement(By.Id("featuresSummary"))
                 .FindElements(By.TagName("tr"))
                 .Skip(1)
                 .SkipLast(1)
@@ -333,8 +330,7 @@ namespace LightBDD.AcceptanceTests.Features
 
         public async Task When_the_Feature_Summary_table_column_is_clicked(FeatureSummaryColumn column)
         {
-            var webElement = Driver
-                .FindElementById("featuresSummary")
+            var webElement = Driver.FindElement(By.Id("featuresSummary"))
                 .FindElements(By.TagName("tr"))
                 .First()
                 .FindElements(By.TagName("th"))
@@ -372,7 +368,7 @@ namespace LightBDD.AcceptanceTests.Features
 
         public async Task Then_overall_status_should_be_STATUS(ExecutionStatus status)
         {
-            var element = Driver.FindElementByCssSelector(".execution-summary td.overall-status");
+            var element = Driver.FindElement(By.CssSelector(".execution-summary td.overall-status"));
             Assert.That(element.GetClassNames(), Does.Contain(status.ToString().ToLowerInvariant()));
         }
     }

@@ -45,7 +45,7 @@ namespace LightBDD.AcceptanceTests.Helpers
                 var targetPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                     driverName);
 
-                await using (var zipFileStream = await _httpClient.GetStreamAsync($"{chromeDriverVersion}/{zipName}"))
+                await using (var zipFileStream = await _httpClient.GetStreamAsync($"{chromeDriverVersion}/{zipName}", cancellationToken))
                 using (var zipArchive = new ZipArchive(zipFileStream, ZipArchiveMode.Read))
                 await using (var chromeDriverWriter = new FileStream(targetPath, FileMode.Create))
                 {
