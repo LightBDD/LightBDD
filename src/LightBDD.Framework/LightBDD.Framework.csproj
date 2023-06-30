@@ -31,8 +31,8 @@ High level features:
   </ItemGroup>
 
   <ItemGroup>
-	  <PackageReference Include="System.Text.Json" Version="4.6.0" Condition="'$(TargetFramework)' != 'net6'" />
-	  <PackageReference Include="System.Collections.Immutable" Version="6.0.0" Condition="'$(TargetFramework)' != 'net6'" />
+	  <PackageReference Include="System.Text.Json" Version="7.0.3" Condition="'$(TargetFramework)' != 'net6'" />
+	  <PackageReference Include="System.Collections.Immutable" Version="7.0.0" Condition="'$(TargetFramework)' != 'net6'" />
   </ItemGroup>
 
 </Project>
