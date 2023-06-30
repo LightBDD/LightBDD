@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading;
 using LightBDD.Framework.Parameters;
-using LightBDD.MsTest2;
+using LightBDD.MsTest3;
 
-namespace Example.LightBDD.MsTest2.Features
+namespace Example.LightBDD.MsTest3.Features
 {
     public partial class Record_persistence_feature : FeatureFixture
     {

@@ -1,11 +1,12 @@
 using LightBDD.Core.Configuration;
 using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Reporting.Formatters;
-using LightBDD.MsTest2;
+using LightBDD.MsTest3;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 [assembly: Parallelize(Scope = ExecutionScope.MethodLevel)]
 
-namespace Example.LightBDD.MsTest2
+namespace Example.LightBDD.MsTest3
 {
     /// <summary>
     /// This is a way to enable LightBDD - MsTest integration.

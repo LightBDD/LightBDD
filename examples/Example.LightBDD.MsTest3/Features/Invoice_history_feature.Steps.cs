@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Example.Domain.Helpers;
-using LightBDD.MsTest2;
+using LightBDD.MsTest3;
 
-namespace Example.LightBDD.MsTest2.Features
+namespace Example.LightBDD.MsTest3.Features
 {
     public partial class Invoice_history_feature : FeatureFixture
     {

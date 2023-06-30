@@ -6,7 +6,7 @@ using LightBDD.Framework;
 using LightBDD.Framework.Parameters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Example.LightBDD.MsTest2.Features.Contexts
+namespace Example.LightBDD.MsTest3.Features.Contexts
 {
     public class ContactsManagementContext
     {

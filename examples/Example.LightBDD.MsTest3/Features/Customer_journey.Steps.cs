@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 #pragma warning disable 1998
 
-namespace Example.LightBDD.MsTest2.Features
+namespace Example.LightBDD.MsTest3.Features
 {
     public partial class Customer_journey
     {

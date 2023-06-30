@@ -1,13 +1,13 @@
 using Example.Domain.Domain;
-using Example.LightBDD.MsTest2.Features.Contexts;
+using Example.LightBDD.MsTest3.Features.Contexts;
 using LightBDD.Framework;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;
 using LightBDD.Framework.Scenarios;
-using LightBDD.MsTest2;
+using LightBDD.MsTest3;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Example.LightBDD.MsTest2.Features
+namespace Example.LightBDD.MsTest3.Features
 {
     /// <summary>
     /// This feature class presents the usage of contextual scenarios that are used in conjunction with extended step format.

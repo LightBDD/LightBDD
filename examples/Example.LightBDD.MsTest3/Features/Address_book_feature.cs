@@ -5,11 +5,11 @@ using Example.Domain.Domain;
 using LightBDD.Framework;
 using LightBDD.Framework.Parameters;
 using LightBDD.Framework.Scenarios;
-using LightBDD.MsTest2;
+using LightBDD.MsTest3;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
-namespace Example.LightBDD.MsTest2.Features
+namespace Example.LightBDD.MsTest3.Features
 {
     /// <summary>
     /// This feature class presents the usage of <see cref="InputTree{TData}"/> and <see cref="VerifiableTree{TData}"/> parameter types to structurally verify and visualize hierarchical object structure.

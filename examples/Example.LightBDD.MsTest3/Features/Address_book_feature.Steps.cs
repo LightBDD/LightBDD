@@ -2,9 +2,9 @@
 using Example.Domain.Domain;
 using LightBDD.Framework;
 using LightBDD.Framework.Parameters;
-using LightBDD.MsTest2;
+using LightBDD.MsTest3;
 
-namespace Example.LightBDD.MsTest2.Features
+namespace Example.LightBDD.MsTest3.Features
 {
     public partial class Address_book_feature : FeatureFixture
     {

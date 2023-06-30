@@ -1,12 +1,12 @@
 ﻿using System.Threading.Tasks;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
-using LightBDD.MsTest2;
+using LightBDD.MsTest3;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 #pragma warning disable 1998
 
-namespace Example.LightBDD.MsTest2.Features
+namespace Example.LightBDD.MsTest3.Features
 {
     /// <summary>
     /// This feature class shows how to create asynchronous scenario from composite steps using basic syntax.
