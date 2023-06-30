@@ -20,7 +20,7 @@ namespace LightBDD.Fixie2
     /// </summary>
     public abstract class LightBddDiscoveryConvention : Discovery
     {
-        private string[] _categoriesToInclude = new string[0];
+        private string[] _categoriesToInclude = Array.Empty<string>();
         /// <summary>
         /// Constructor describing the LightBDD discovery conventions.
         /// </summary>

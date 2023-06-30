@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,7 +8,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
     {
         private readonly List<KeyValuePair<string, string>> _attributes = new();
         private bool _skipEmpty;
-        private IHtmlNode[] _nodes = new IHtmlNode[0];
+        private IHtmlNode[] _nodes = Array.Empty<IHtmlNode>();
         private bool _spaceBefore;
         private bool _spaceAfter;
         private readonly string _tag;

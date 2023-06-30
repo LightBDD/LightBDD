@@ -115,7 +115,7 @@ namespace LightBDD.Core.Dependencies.Implementation
             {
                 sb.Append("Container scope: ").Append(container._scope);
                 foreach (var slot in container._slots.OrderBy(x => x.Key.FullName))
-                    sb.AppendLine().Append(slot.Key).Append(" -> ").Append(slot.Value.ToString());
+                    sb.AppendLine().Append(slot.Key).Append(" -> ").Append(slot.Value);
                 container = container._parent;
 
                 if (container == null)

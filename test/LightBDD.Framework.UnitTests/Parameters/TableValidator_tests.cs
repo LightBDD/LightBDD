@@ -82,9 +82,9 @@ namespace LightBDD.Framework.UnitTests.Parameters
         public void SetActual_should_be_callable_once()
         {
             var table = CreateNotNullValidator();
-            table.SetActual(new Testable[0]);
+            table.SetActual(Array.Empty<Testable>());
 
-            var ex = Assert.Throws<InvalidOperationException>(() => table.SetActual(new Testable[0]));
+            var ex = Assert.Throws<InvalidOperationException>(() => table.SetActual(Array.Empty<Testable>()));
             Assert.That(ex.Message, Is.EqualTo("Actual rows have been already specified"));
             Assert.ThrowsAsync<InvalidOperationException>(() => table.SetActualAsync(() => Task.FromResult(Enumerable.Empty<Testable>())));
         }

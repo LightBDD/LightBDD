@@ -68,7 +68,7 @@ namespace LightBDD.Core.UnitTests
             {
                 _runner.Test().TestScenario(
                     TestStep.CreateAsync(Given_step_one, () => "def"),
-                    TestStep.CreateAsync<int>(When_step_two, () => { throw new Exception("reason"); }),
+                    TestStep.CreateAsync<int>(When_step_two, () => throw new Exception("reason")),
                     TestStep.CreateAsync(Then_step_three, () => 3.14));
             });
 

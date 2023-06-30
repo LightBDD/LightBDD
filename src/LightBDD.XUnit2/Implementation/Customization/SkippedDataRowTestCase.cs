@@ -46,7 +46,7 @@ namespace LightBDD.XUnit2.Implementation.Customization
         public override void Serialize(IXunitSerializationInfo data)
         {
             base.Serialize(data);
-            data.AddValue("SkipReason", (object)SkipReason, (Type)null);
+            data.AddValue("SkipReason", SkipReason);
         }
     }
 }

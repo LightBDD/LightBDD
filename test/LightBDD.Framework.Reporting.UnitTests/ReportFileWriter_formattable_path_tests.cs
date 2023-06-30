@@ -26,7 +26,7 @@ namespace LightBDD.Framework.Reporting.UnitTests
         {
             _formatter = new Mock<IReportFormatter>();
             _feature = TestResults.CreateFeatureResult("name", "description", "label",
-                TestResults.CreateScenarioResult("abc", "def", _expectedExecutionStartOffset, TimeSpan.Zero, new string[0],
+                TestResults.CreateScenarioResult("abc", "def", _expectedExecutionStartOffset, TimeSpan.Zero, Array.Empty<string>(),
                     TestResults.CreateStepResult(ExecutionStatus.Passed).WithStepNameDetails(1, "foo", "foo")));
             _formatter.Setup(f => f.Format(It.IsAny<Stream>(), It.Is<IFeatureResult[]>(l => l.Contains(_feature)))).Callback(
                 (Stream s, IFeatureResult[] results) =>

@@ -134,8 +134,8 @@ namespace LightBDD.UnitTests.Helpers
             return new TestScenarioInfo
             {
                 Name = name,
-                Labels = label != null ? new[] { label } : new string[0],
-                Categories = categories ?? new string[0]
+                Labels = label != null ? new[] { label } : Array.Empty<string>(),
+                Categories = categories ?? Array.Empty<string>()
             };
         }
 
@@ -211,7 +211,7 @@ namespace LightBDD.UnitTests.Helpers
             {
                 Name = CreateNameInfo(name),
                 Description = description,
-                Labels = label != null ? new[] { label } : new string[0]
+                Labels = label != null ? new[] { label } : Array.Empty<string>()
             };
         }
 
@@ -284,10 +284,10 @@ namespace LightBDD.UnitTests.Helpers
 
             IEnumerable<FileAttachment> IStepResult.FileAttachments => FileAttachments;
 
-            public IParameterResult[] Parameters { get; set; } = new IParameterResult[0];
-            public TestStepResult[] SubSteps { get; set; } = new TestStepResult[0];
-            public string[] Comments { get; set; } = new string[0];
-            public FileAttachment[] FileAttachments { get; set; } = new FileAttachment[0];
+            public IParameterResult[] Parameters { get; set; } = Array.Empty<IParameterResult>();
+            public TestStepResult[] SubSteps { get; set; } = Array.Empty<TestStepResult>();
+            public string[] Comments { get; set; } = Array.Empty<string>();
+            public FileAttachment[] FileAttachments { get; set; } = Array.Empty<FileAttachment>();
         }
 
         public class TestStepInfo : IStepInfo

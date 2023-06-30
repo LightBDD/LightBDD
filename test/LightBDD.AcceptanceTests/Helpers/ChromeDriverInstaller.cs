@@ -73,21 +73,20 @@ namespace LightBDD.AcceptanceTests.Helpers
         {
             var chromeDriverVersionResponse = await _httpClient.GetAsync($"LATEST_RELEASE_{chromeVersion}", cancellationToken);
             if (chromeDriverVersionResponse.IsSuccessStatusCode)
-                return await chromeDriverVersionResponse.Content.ReadAsStringAsync();
+                return await chromeDriverVersionResponse.Content.ReadAsStringAsync(cancellationToken);
 
             if (chromeDriverVersionResponse.StatusCode == HttpStatusCode.NotFound)
                 throw new Exception($"ChromeDriver version not found for Chrome version {chromeVersion}");
             throw new Exception($"ChromeDriver version request failed with status code: {chromeDriverVersionResponse.StatusCode}, reason phrase: {chromeDriverVersionResponse.ReasonPhrase}");
         }
 
-        public string GetChromeVersion()
+        private static string GetChromeVersion()
         {
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 throw new PlatformNotSupportedException("Your operating system is not supported.");
 
-            var chromePath = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\chrome.exe", null, null);
-            if (chromePath == null)
-                throw new Exception("Google Chrome not found in registry");
+            var chromePath = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\chrome.exe", null, null)
+                ?? throw new Exception("Google Chrome not found in registry");
 
             var chromeVersion = FileVersionInfo.GetVersionInfo(chromePath).FileVersion;
             return chromeVersion.Substring(0, chromeVersion.LastIndexOf('.'));

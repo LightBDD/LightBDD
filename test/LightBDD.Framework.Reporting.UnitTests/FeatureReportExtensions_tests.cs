@@ -204,7 +204,7 @@ namespace LightBDD.Framework.Reporting.UnitTests
                 },
                 new TestResults.TestFeatureResult
                 {
-                    Scenarios = new TestResults.TestScenarioResult[0]
+                    Scenarios = Array.Empty<TestResults.TestScenarioResult>()
                 }
             };
             AssertExecutionSummary(features.GetTestExecutionTimeSummary(), baseTime, baseTime.AddSeconds(7), TimeSpan.FromSeconds(7), TimeSpan.FromSeconds(20), TimeSpan.FromSeconds(5));

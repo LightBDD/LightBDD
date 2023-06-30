@@ -98,7 +98,7 @@ namespace LightBDD.Framework.Parameters
                     GetExpectedRowResults(),
                     ParameterVerificationStatus.Exception,
                     new InvalidOperationException($"Failed to retrieve rows: {ex.Message}", ex));
-                ActualRows = new TRow[0];
+                ActualRows = Array.Empty<TRow>();
                 return;
             }
             SetActual(actualCollection);

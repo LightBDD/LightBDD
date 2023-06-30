@@ -32,7 +32,7 @@ namespace LightBDD.Core.UnitTests
             var stepThreadIds = new List<int>();
 
             var steps = Enumerable
-                .Repeat<Action>(() => stepThreadIds.Add(Thread.CurrentThread.ManagedThreadId), 500)
+                .Repeat(() => stepThreadIds.Add(Thread.CurrentThread.ManagedThreadId), 500)
                 .ToArray();
 
             _runner.Test().TestScenarioPurelySync(steps);
@@ -46,7 +46,7 @@ namespace LightBDD.Core.UnitTests
         {
             var readSharedData = new List<Guid>();
             var steps = Enumerable
-                .Repeat<Action>(() => readSharedData.Add(_threadLocal.Value), 500)
+                .Repeat(() => readSharedData.Add(_threadLocal.Value), 500)
                 .ToArray();
 
             _runner.Test().TestScenarioPurelySync(steps);

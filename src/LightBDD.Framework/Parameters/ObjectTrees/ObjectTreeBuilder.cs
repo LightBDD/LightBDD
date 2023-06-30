@@ -102,7 +102,7 @@ public class ObjectTreeBuilder
     private ObjectTreeArray CreateArray(ArrayMap map, string node, ObjectTreeNode? parent, object o)
     {
         var result = new ObjectTreeArray(parent, node, o);
-        result.Items = map.Items.Cast<object>().Select((o, i) => Build(o, GetNodePath(i), result)).ToArray();
+        result.Items = map.Items.Cast<object>().Select((n, i) => Build(n, GetNodePath(i), result)).ToArray();
         return result;
     }
 

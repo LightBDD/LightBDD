@@ -81,7 +81,7 @@ namespace LightBDD.AcceptanceTests.Features
         public async Task Then_all_features_should_be_VISIBLE([VisibleFormat] bool visible)
         {
             var actual = Driver.FindFeatures().Count(e => e.Displayed == visible);
-            Assert.That(actual, Is.EqualTo(Features.Count()));
+            Assert.That(actual, Is.EqualTo(Features.Length));
         }
 
         public async Task Then_all_scenarios_should_be_VISIBLE([VisibleFormat] bool visible)
@@ -308,7 +308,7 @@ namespace LightBDD.AcceptanceTests.Features
         public async Task Then_the_page_should_be_redirected_to_url_with_query_part()
         {
             Repeat.Until(
-                () => Driver.Url.Contains("?"),
+                () => Driver.Url.Contains('?'),
                 () => $"Page was not redirected, actual value: {Driver.Url}");
             Driver.EnsurePageIsLoaded();
         }
@@ -359,11 +359,9 @@ namespace LightBDD.AcceptanceTests.Features
 
         private string FormatResults(params IFeatureResult[] results)
         {
-            using (var memory = new MemoryStream())
-            {
-                new HtmlReportFormatter().Format(memory, results);
-                return Encoding.UTF8.GetString(memory.ToArray());
-            }
+            using var memory = new MemoryStream();
+            new HtmlReportFormatter().Format(memory, results);
+            return Encoding.UTF8.GetString(memory.ToArray());
         }
 
         public async Task Then_overall_status_should_be_STATUS(ExecutionStatus status)

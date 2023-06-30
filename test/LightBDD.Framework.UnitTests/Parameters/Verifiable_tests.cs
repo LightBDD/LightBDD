@@ -110,8 +110,8 @@ namespace LightBDD.Framework.UnitTests.Parameters
         public void SetActual_should_be_allowed_once()
         {
             Verifiable<int> expectation = Fake.Int();
-            expectation.SetActual(() => Fake.Int());
-            var ex = Assert.Throws<InvalidOperationException>(() => expectation.SetActual(() => Fake.Int()));
+            expectation.SetActual(Fake.Int);
+            var ex = Assert.Throws<InvalidOperationException>(() => expectation.SetActual(Fake.Int));
             Assert.That(ex.Message, Is.EqualTo("Actual value has been already specified"));
             ex = Assert.Throws<InvalidOperationException>(() => expectation.SetActual(Fake.Int()));
             Assert.That(ex.Message, Is.EqualTo("Actual value has been already specified"));
@@ -121,7 +121,7 @@ namespace LightBDD.Framework.UnitTests.Parameters
         public void SetActualAsync_should_be_allowed_once()
         {
             Verifiable<int> expectation = Fake.Int();
-            expectation.SetActual(() => Fake.Int());
+            expectation.SetActual(Fake.Int);
             var ex = Assert.ThrowsAsync<InvalidOperationException>(() => expectation.SetActualAsync(() => Task.FromResult(Fake.Int())));
             Assert.That(ex.Message, Is.EqualTo("Actual value has been already specified"));
         }

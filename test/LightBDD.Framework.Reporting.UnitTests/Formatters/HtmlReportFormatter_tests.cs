@@ -186,7 +186,7 @@ initialize();";
         {
             var date = new DateTimeOffset(2019, 10, 21, 05, 06, 07, TimeSpan.Zero);
             var feature = TestResults.CreateFeatureResult("My feature", null, null,
-                TestResults.CreateScenarioResult("scenario1", null, date, TimeSpan.FromSeconds(5), new string[0],
+                TestResults.CreateScenarioResult("scenario1", null, date, TimeSpan.FromSeconds(5), Array.Empty<string>(),
                     TestResults.CreateStepResult(ExecutionStatus.Passed)
                         .WithStepNameDetails(1, "ste<p>", "ste<p>", "ty<p>e")
                         .WithGroupPrefix("<gr>")
