@@ -10,6 +10,8 @@ Version vNext
 + #281 (LightBDD.Core)(New) Added ability to register global set up and tear down for resources and activities by using `ExecutionExtensionsConfiguration`
 + #282 (LightBDD.Framework)(Change) Updated Html Report to have collapsible sub-steps being collapsed by default
 + #288 (LightBDD.Core)(Change) Format of non-inline step parameters with <$name> parameter reference
++ #293 (LightBDD.MsTest3)(New) Created LightBDD.MsTest3 project with dependency on MSTest.TestFramework 3.x
++ #293 (LightBDD.MsTest2)(Change) Deprecated LightBDD.MsTest2 project in favor of LightBDD.MsTest3
 
 Version 3.6.1
 ----------------------------------------
