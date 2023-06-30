@@ -1,6 +1,6 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Lato&family=Roboto+Mono&display=swap');
 *{color: #222222;-webkit-print-color-adjust:exact;}
-html{font-size: 16px;font-family: 'Lato', sans-serif;}
+html{font-size: 12pt;font-family: 'Lato', sans-serif;}
 .title *{ line-height: 1em;}
 label * { line-height: 1em;}
 h1{ font-size: 1.40em;}
@@ -29,7 +29,7 @@ span.category{background-color: hsl(24, 100%, 90%); color: hsl(24, 100%, 40%); p
 .status.ignored{background-color:#fbc800;color: black;}
 .status.bypassed{background-color:#2e7bff;}
 .status.notrun{background-color:#949494;}
-.attachments code,.comments code,.status-details code{white-space: pre-wrap;font-size: 12px;font-family: 'Roboto Mono', monospace;line-height: 1em;}
+.attachments code,.comments code,.status-details code{white-space: pre-wrap;font-size: 0.75rem;font-family: 'Roboto Mono', monospace;line-height: 1em;}
 .status-details > h3 {font-weight: bold;margin-bottom: 0.5rem;border-bottom:0.2em solid hsl(34, 100%, 80%);}
 .comments > h3 {font-weight: bold;margin-bottom: 0.5rem;border-bottom:0.2em solid hsl(204, 100%, 80%);}
 .attachments > h3 {font-weight: bold;margin-bottom: 0.5rem;border-bottom:0.2em solid hsl(276, 100%, 80%);}
