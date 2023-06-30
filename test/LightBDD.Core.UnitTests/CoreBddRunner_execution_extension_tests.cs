@@ -19,7 +19,7 @@ namespace LightBDD.Core.UnitTests
     [Parallelizable(ParallelScope.None)]
     public class CoreBddRunner_execution_extension_tests
     {
-        private static readonly List<string> CapturedMessages = new List<string>();
+        private static readonly List<string> CapturedMessages = new();
 
         [SetUp]
         public void SetUp() { CapturedMessages.Clear(); }

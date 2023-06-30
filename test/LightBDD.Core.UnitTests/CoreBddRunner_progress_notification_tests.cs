@@ -278,7 +278,7 @@ namespace LightBDD.Core.UnitTests
         private class CapturingProgressNotifier : IProgressNotifier, IScenarioProgressNotifier, IFeatureProgressNotifier
 #pragma warning restore 618
         {
-            private readonly List<string> _notifications = new List<string>();
+            private readonly List<string> _notifications = new();
 
             public IEnumerable<string> Notifications => _notifications;
 

@@ -1,5 +1,4 @@
-﻿using System;
-using LightBDD.Core.Execution;
+﻿using LightBDD.Core.Execution;
 
 namespace LightBDD.Core.ExecutionContext.Implementation
 {

@@ -28,7 +28,7 @@ namespace LightBDD.Framework.Parameters
         /// <summary>
         /// Represents no value, which means that for given row, this column value does not exists.
         /// </summary>
-        public static readonly ColumnValue None = new ColumnValue();
+        public static readonly ColumnValue None = new();
 
         /// <summary>
         /// Creates column value object with <see cref="HasValue"/> equal true and <see cref="Value"/> equal <paramref name="value"/>.

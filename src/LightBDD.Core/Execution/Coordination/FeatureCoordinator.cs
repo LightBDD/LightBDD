@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting.Values;
@@ -15,7 +13,7 @@ namespace LightBDD.Core.Execution.Coordination
     /// </summary>
     public abstract class FeatureCoordinator : IDisposable
     {
-        private static readonly object Sync = new object();
+        private static readonly object Sync = new();
         /// <summary>
         /// Feature coordinator instance.
         /// </summary>

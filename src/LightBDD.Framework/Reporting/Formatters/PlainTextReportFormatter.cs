@@ -226,7 +226,7 @@ namespace LightBDD.Framework.Reporting.Formatters
             };
 
             var maxLength = summary.Keys.Max(k => k.Length);
-            var format = string.Format("\t{{0,-{0}}}: {{1}}", maxLength);
+            var format = $"\t{{0,-{maxLength}}}: {{1}}";
             foreach (var row in summary)
             {
                 writer.Write(format, row.Key, row.Value);

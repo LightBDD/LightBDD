@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Formatting.Diagnostics;
-using LightBDD.Framework.Implementation;
 
 namespace LightBDD.Framework.Messaging.Implementation
 {
@@ -15,8 +14,8 @@ namespace LightBDD.Framework.Messaging.Implementation
         private readonly int _expectedCount;
         private readonly Func<TMessage, bool> _predicate;
         private volatile int _current = 0;
-        private readonly HashSet<TMessage> _messageHash = new HashSet<TMessage>();
-        private readonly TaskCompletionSource<bool> _tcs = new TaskCompletionSource<bool>();
+        private readonly HashSet<TMessage> _messageHash = new();
+        private readonly TaskCompletionSource<bool> _tcs = new();
 
         private bool IsFinished => _tcs.Task.IsCompleted;
 

@@ -45,7 +45,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         public void GetScenarioName_should_capture_parameterless_scenario_name_from_descriptor()
         {
             var method = typeof(Feature_type).GetMethod(nameof(Feature_type.Some_method_without_arguments));
-            var scenarioName = _metadataProvider.GetScenarioName(new ScenarioDescriptor(method, new object[0]));
+            var scenarioName = _metadataProvider.GetScenarioName(new ScenarioDescriptor(method, Array.Empty<object>()));
 
             Assert.That(scenarioName.ToString(), Is.EqualTo("Some method without arguments"));
             Assert.That(scenarioName.Parameters, Is.Empty);

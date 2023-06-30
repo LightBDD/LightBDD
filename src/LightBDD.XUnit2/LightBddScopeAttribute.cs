@@ -20,7 +20,7 @@ namespace LightBDD.XUnit2
     [AttributeUsage(AttributeTargets.Assembly)]
     public class LightBddScopeAttribute : Attribute, ITestFrameworkAttribute
     {
-        private static readonly NullMessageSink NullDiagnosticMessageSink = new NullMessageSink();
+        private static readonly NullMessageSink NullDiagnosticMessageSink = new();
         internal void SetUp(IMessageSink diagnosticMessageSink)
         {
             DiagnosticMessageSink = diagnosticMessageSink;

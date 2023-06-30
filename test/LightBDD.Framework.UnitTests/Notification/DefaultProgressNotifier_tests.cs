@@ -8,7 +8,6 @@ using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
-using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Notification;
 using LightBDD.Framework.Parameters;
 using LightBDD.UnitTests.Helpers;
@@ -159,7 +158,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         public void NotifyFeatureStart_should_omit_labels_if_not_provided()
         {
             var featureInfo = Fake.Object<TestResults.TestFeatureInfo>();
-            featureInfo.Labels = new string[0];
+            featureInfo.Labels = Array.Empty<string>();
             _notifier.Notify(new FeatureStarting(new EventTime(), featureInfo));
 
             var expected = $"FEATURE: {featureInfo.Name}{Environment.NewLine}  {featureInfo.Description}";
@@ -170,7 +169,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         public void NotifyScenarioStart_should_omit_labels_if_not_provided()
         {
             var scenarioInfo = Fake.Object<TestResults.TestScenarioInfo>();
-            scenarioInfo.Labels = new string[0];
+            scenarioInfo.Labels = Array.Empty<string>();
             _notifier.Notify(new ScenarioStarting(new EventTime(), scenarioInfo));
 
             var expected = $"SCENARIO: {scenarioInfo.Name}";
@@ -181,7 +180,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         public void NotifyScenarioFinished_should_omit_execution_time_if_not_provided()
         {
             var scenarioInfo = Fake.Object<TestResults.TestScenarioInfo>();
-            scenarioInfo.Labels = new string[0];
+            scenarioInfo.Labels = Array.Empty<string>();
             var scenarioResult = Fake.Object<TestResults.TestScenarioResult>();
             scenarioResult.Info = scenarioInfo;
             scenarioResult.Status = ExecutionStatus.Passed;
@@ -202,7 +201,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         public void NotifyScenarioFinished_should_omit_status_details_if_not_provided()
         {
             var scenarioInfo = Fake.Object<TestResults.TestScenarioInfo>();
-            scenarioInfo.Labels = new string[0];
+            scenarioInfo.Labels = Array.Empty<string>();
             var scenarioResult = Fake.Object<TestResults.TestScenarioResult>();
             scenarioResult.Info = scenarioInfo;
             scenarioResult.Status = ExecutionStatus.Passed;

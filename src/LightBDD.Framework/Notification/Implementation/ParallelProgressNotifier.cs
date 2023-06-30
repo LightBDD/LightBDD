@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Threading;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Notification.Events;

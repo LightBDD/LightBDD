@@ -11,17 +11,17 @@ namespace LightBDD.Core.Dependencies
         /// Global scope created once and affecting all tests.
         /// The global scope should be used by container root.
         /// </summary>
-        public static readonly LifetimeScope Global = new LifetimeScope("#global");
+        public static readonly LifetimeScope Global = new("#global");
 
         /// <summary>
         /// Scenario scope created once per each scenario.
         /// </summary>
-        public static readonly LifetimeScope Scenario = new LifetimeScope("#scenario");
+        public static readonly LifetimeScope Scenario = new("#scenario");
 
         /// <summary>
         /// Local scope created for all nested scopes such as composite steps.
         /// </summary>
-        public static readonly LifetimeScope Local = new LifetimeScope("#local");
+        public static readonly LifetimeScope Local = new("#local");
 
         /// <summary>
         /// Scope name.

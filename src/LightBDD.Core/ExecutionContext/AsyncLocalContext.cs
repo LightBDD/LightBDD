@@ -10,7 +10,7 @@ namespace LightBDD.Core.ExecutionContext
     [Obsolete("Use System.Threading.AsyncLocal<T> instead.")]
     public class AsyncLocalContext<T>
     {
-        private readonly AsyncLocal<T> _context = new AsyncLocal<T>();
+        private readonly AsyncLocal<T> _context = new();
         /// <summary>
         /// Allows to get and set value to store.
         /// </summary>

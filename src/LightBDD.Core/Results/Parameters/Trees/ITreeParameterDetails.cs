@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace LightBDD.Core.Results.Parameters.Trees;
 
 /// <summary>

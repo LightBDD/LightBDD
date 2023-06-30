@@ -9,7 +9,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
     public class StepCommentHelper : IStepDecorator
     {
-        public static readonly AsyncLocal<IStep> CurrentStep = new AsyncLocal<IStep>();
+        public static readonly AsyncLocal<IStep> CurrentStep = new();
 
         public static void Comment(string commentReason)
         {

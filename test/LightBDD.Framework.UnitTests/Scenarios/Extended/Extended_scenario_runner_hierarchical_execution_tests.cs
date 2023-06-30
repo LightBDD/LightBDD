@@ -52,7 +52,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended
         {
             CompositeStep group = null;
             Assert.DoesNotThrow(() => group = new TestableCompositeStepBuilder()
-                .AddAsyncSteps(_ => null as Task)
+                .AddAsyncSteps(_ => null)
                 .Build());
 
             Assert.That(group.SubSteps.Any(s => !s.IsValid), Is.True);

@@ -2,7 +2,6 @@ using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Implementation;
 using System;
-using LightBDD.Core.Execution;
 using LightBDD.Core.Notification.Events;
 
 namespace LightBDD.Core.Extensibility.Implementation

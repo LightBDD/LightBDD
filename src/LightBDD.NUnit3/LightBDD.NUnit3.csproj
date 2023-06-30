@@ -12,7 +12,7 @@ High level features:
 * in-code LightBDD configuration;
 * DI support;
 * inline and tabular parameters support.</Description>
-    <TargetFrameworks>netstandard2.0;net461;net6</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net462;net6</TargetFrameworks>
     <PackageTags>$(PackageTags);nunit;nunit3</PackageTags>
   </PropertyGroup>
 

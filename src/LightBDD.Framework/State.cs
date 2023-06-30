@@ -57,7 +57,7 @@ namespace LightBDD.Framework
         /// <summary>
         /// Implicit cast, converting <paramref name="value"/> to initialized state instance.
         /// </summary>
-        public static implicit operator State<T>(T value) => new State<T>(value);
+        public static implicit operator State<T>(T value) => new(value);
         /// <summary>
         /// Implicit cast, retrieving value of <paramref name="state"/> or throwing <see cref="InvalidOperationException"/> if state is not initialized.
         /// </summary>

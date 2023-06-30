@@ -19,7 +19,7 @@ namespace LightBDD.Core.UnitTests.Formatting.Diagnostics
             public bool Flag { get; set; }
             public float ReadonlyFloat => 3.14f;
             public DateTimeKind[] Array => new[] { DateTimeKind.Local, DateTimeKind.Unspecified, DateTimeKind.Utc };
-            public Dictionary<string, ComplexType> Dictionary { get; } = new Dictionary<string, ComplexType>();
+            public Dictionary<string, ComplexType> Dictionary { get; } = new();
             public TimeSpan? Span { get; set; }
         }
 

@@ -9,7 +9,7 @@ namespace LightBDD.Framework.Parameters.Implementation
     {
         public TableValidator<TRow> Build()
         {
-            return new TableValidator<TRow>(BuildColumns(new TRow[0]));
+            return new TableValidator<TRow>(BuildColumns(Array.Empty<TRow>()));
         }
 
         protected override VerifiableTableColumn CreateColumn(ColumnInfo columnInfo)

@@ -5,7 +5,7 @@ namespace LightBDD.Core.Formatting.Values.Implementation
 {
     internal class SelfFormattable : IConditionalValueFormatter
     {
-        public static SelfFormattable Instance { get; } = new SelfFormattable();
+        public static SelfFormattable Instance { get; } = new();
         public string FormatValue(object value, IValueFormattingService formattingService)
         {
             return ((ISelfFormattable)value).Format(formattingService);

@@ -124,7 +124,7 @@ namespace LightBDD.Framework.UnitTests.Resources
             argumentException = Assert.Throws<ArgumentException>(() => new ResourcePool<string>(null, true));
             Assert.That(argumentException.Message, Does.StartWith("At least one resource has to be provided"));
 
-            argumentException = Assert.Throws<ArgumentException>(() => new ResourcePool<string>(new string[0]));
+            argumentException = Assert.Throws<ArgumentException>(() => new ResourcePool<string>(Array.Empty<string>()));
             Assert.That(argumentException.Message, Does.StartWith("At least one resource has to be provided"));
         }
 
@@ -267,7 +267,7 @@ namespace LightBDD.Framework.UnitTests.Resources
 
         class InstanceHolder
         {
-            public ConcurrentQueue<Mock<IDisposable>> Instances { get; } = new ConcurrentQueue<Mock<IDisposable>>();
+            public ConcurrentQueue<Mock<IDisposable>> Instances { get; } = new();
 
             public IDisposable CreateInstance()
             {

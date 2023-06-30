@@ -6,7 +6,7 @@ namespace LightBDD.Core.Results.Implementation
 {
     internal class FeatureResult : IFeatureResult
     {
-        private readonly ConcurrentQueue<IScenarioResult> _scenarios = new ConcurrentQueue<IScenarioResult>();
+        private readonly ConcurrentQueue<IScenarioResult> _scenarios = new();
 
         public FeatureResult(IFeatureInfo info)
         {

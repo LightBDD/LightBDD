@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using LightBDD.Framework.Messaging;
 using LightBDD.Framework.UnitTests.Messaging.Helpers;
 using NUnit.Framework;
@@ -10,7 +9,7 @@ namespace LightBDD.Framework.UnitTests.Messaging
     [FixtureLifeCycle(LifeCycle.InstancePerTestCase)]
     public class MessageListener_Source_tests
     {
-        private readonly MessageSource _source = new MessageSource();
+        private readonly MessageSource _source = new();
 
         [Test]
         public void Dispose_should_deregister_the_listener_from_OnMessage_event()

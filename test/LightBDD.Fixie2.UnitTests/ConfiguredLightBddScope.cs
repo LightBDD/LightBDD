@@ -9,7 +9,7 @@ namespace LightBDD.Fixie2.UnitTests
 
     public class ConfiguredLightBddScope : LightBddScope
     {
-        public static readonly ConcurrentQueue<string> CapturedNotifications = new ConcurrentQueue<string>();
+        public static readonly ConcurrentQueue<string> CapturedNotifications = new();
         protected override void OnConfigure(LightBddConfiguration configuration)
         {
             configuration.ReportWritersConfiguration()

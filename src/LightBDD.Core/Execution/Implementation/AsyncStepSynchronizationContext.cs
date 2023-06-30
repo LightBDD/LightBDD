@@ -11,8 +11,8 @@ namespace LightBDD.Core.Execution.Implementation
     {
         private readonly SynchronizationContext _inner;
         private int _counter = 1;
-        private readonly TaskCompletionSource<bool> _resetEvent = new TaskCompletionSource<bool>();
-        private readonly ConcurrentQueue<Exception> _exceptions = new ConcurrentQueue<Exception>();
+        private readonly TaskCompletionSource<bool> _resetEvent = new();
+        private readonly ConcurrentQueue<Exception> _exceptions = new();
 
         private AsyncStepSynchronizationContext(SynchronizationContext inner)
         {

@@ -50,7 +50,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void Invalid_step_descriptors_should_make_composite_failing_immediately_without_execution()
         {
-            TestCompositeStep Composite_step() => new TestCompositeStep(
+            TestCompositeStep Composite_step() => new(
                 TestStep.Create(Step_that_should_not_run),
                 StepDescriptor.CreateInvalid(new Exception("reason1")),
                 StepDescriptor.CreateInvalid(new Exception("reason2")));

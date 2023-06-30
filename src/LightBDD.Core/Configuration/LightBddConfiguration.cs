@@ -8,7 +8,7 @@ namespace LightBDD.Core.Configuration
     /// </summary>
     public class LightBddConfiguration
     {
-        private readonly ConcurrentDictionary<Type, IFeatureConfiguration> _configuration = new ConcurrentDictionary<Type, IFeatureConfiguration>();
+        private readonly ConcurrentDictionary<Type, IFeatureConfiguration> _configuration = new();
 
         /// <summary>
         /// Returns current feature configuration of requested type.

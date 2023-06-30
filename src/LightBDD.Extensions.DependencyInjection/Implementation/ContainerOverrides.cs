@@ -9,8 +9,8 @@ namespace LightBDD.Extensions.DependencyInjection.Implementation
 {
     internal class ContainerOverrides : ContainerConfigurator, IDisposable
     {
-        private readonly ConcurrentStack<IDisposable> _disposables = new ConcurrentStack<IDisposable>();
-        private readonly ConcurrentDictionary<Type, object> _singletons = new ConcurrentDictionary<Type, object>();
+        private readonly ConcurrentStack<IDisposable> _disposables = new();
+        private readonly ConcurrentDictionary<Type, object> _singletons = new();
 
         public override void RegisterInstance(object instance, RegistrationOptions options)
         {

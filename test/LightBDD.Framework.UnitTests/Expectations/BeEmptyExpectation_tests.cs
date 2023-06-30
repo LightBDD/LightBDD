@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.UnitTests.Expectations.Helpers;
@@ -28,7 +29,7 @@ namespace LightBDD.Framework.UnitTests.Expectations
             yield return new ExpectationScenario<IEnumerable<int>>(
                     "empty",
                     x => x.BeEmpty())
-                .WithMatchingValues(new int[0], Enumerable.Empty<int>(), new List<int>())
+                .WithMatchingValues(Array.Empty<int>(), Enumerable.Empty<int>(), new List<int>())
                 .WithNotMatchingValue(null, "expected: empty, but got: '<null>'")
                 .WithNotMatchingValue(new[] { 5 }, "expected: empty, but got: '5'");
         }
