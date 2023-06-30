@@ -1,7 +1,7 @@
 LightBDD
 ===========================================
 
-Version vNext
+Version 3.7.0
 ----------------------------------------
 + #207 (LightBDD.Framework)(Change) Modernised Html Report
 + #207 (LightBDD.Framework)(New) Added ability to overrride CSS styles, Logo and Favicon with cfg.ReportWritersConfiguration().AddFileWriter<HtmlReportFormatter>() method
