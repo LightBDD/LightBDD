@@ -14,7 +14,7 @@ namespace LightBDD.Core.Formatting.Values
         /// <summary>
         /// Default instance.
         /// </summary>
-        public static DefaultValueFormatter Instance { get; } = new DefaultValueFormatter();
+        public static DefaultValueFormatter Instance { get; } = new();
 
         /// <summary>
         /// Formats value provided with <paramref name="value"/> parameter using <see cref="string.Format(System.IFormatProvider,string,object[])"/> and current <see cref="CultureInfo"/> provided by <paramref name="formattingService"/>.

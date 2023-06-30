@@ -9,7 +9,7 @@ namespace LightBDD.Core.Dependencies
     /// </summary>
     public class RegistrationOptions
     {
-        private readonly HashSet<Type> _asTypes = new HashSet<Type>();
+        private readonly HashSet<Type> _asTypes = new();
         /// <summary>
         /// Returns true if configured dependency is externally owned or false if container controls it's lifetime.
         /// </summary>

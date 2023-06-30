@@ -2,7 +2,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Framework.Messaging.Implementation;
@@ -15,9 +14,9 @@ namespace LightBDD.Framework.Messaging
     public class MessageListener : IDisposable
     {
         private readonly IMessageSource _source;
-        private readonly ConcurrentStack<object> _messages = new ConcurrentStack<object>();
+        private readonly ConcurrentStack<object> _messages = new();
         private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(10);
-        private readonly CancellationTokenSource _listenerDisposedTokenSource = new CancellationTokenSource();
+        private readonly CancellationTokenSource _listenerDisposedTokenSource = new();
         internal event Action<object> OnMessage;
 
         private MessageListener(IMessageSource source)
@@ -38,7 +37,7 @@ namespace LightBDD.Framework.Messaging
         /// Please note, the listener should be disposed after usage, in order to stop listening.
         /// </summary>
         /// <param name="source">Message source.</param>
-        public static MessageListener Start(IMessageSource source) => new MessageListener(source);
+        public static MessageListener Start(IMessageSource source) => new(source);
 
         /// <summary>
         /// Returns all received messages of specified type, in order from latest to oldest.

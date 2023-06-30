@@ -7,7 +7,7 @@ namespace LightBDD.AcceptanceTests.Helpers.Builders
 {
     internal class ScenarioBuilder
     {
-        private readonly List<TestResults.TestStepResult> _steps = new List<TestResults.TestStepResult>();
+        private readonly List<TestResults.TestStepResult> _steps = new();
         public ExecutionStatus Status { get; }
         public string[] Categories { get; private set; }
         public string Name { get; private set; } = "scenario";

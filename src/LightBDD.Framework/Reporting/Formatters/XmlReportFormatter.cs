@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,7 +8,6 @@ using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Core.Results.Parameters.Trees;
-using LightBDD.Framework.Results.Implementation;
 
 namespace LightBDD.Framework.Reporting.Formatters
 {

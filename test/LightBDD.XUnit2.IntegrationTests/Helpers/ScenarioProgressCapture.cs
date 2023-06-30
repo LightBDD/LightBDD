@@ -8,9 +8,9 @@ namespace LightBDD.XUnit2.IntegrationTests.Helpers
 {
     public class ScenarioProgressCapture : IProgressNotifier
     {
-        private readonly ConcurrentQueue<IScenarioResult> _results = new ConcurrentQueue<IScenarioResult>();
+        private readonly ConcurrentQueue<IScenarioResult> _results = new();
         public IEnumerable<IScenarioResult> Results => _results;
-        public static ScenarioProgressCapture Instance { get; } = new ScenarioProgressCapture();
+        public static ScenarioProgressCapture Instance { get; } = new();
 
         public void Notify(ProgressEvent e)
         {

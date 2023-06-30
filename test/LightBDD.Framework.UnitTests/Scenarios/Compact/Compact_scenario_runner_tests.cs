@@ -95,7 +95,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Compact
 
         class MyContext
         {
-            public readonly List<string> Executed = new List<string>();
+            public readonly List<string> Executed = new();
         }
     }
 }

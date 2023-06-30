@@ -10,7 +10,7 @@ namespace LightBDD.Extensions.DependencyInjection.Implementation
     {
         private readonly IContainerScope _scope;
         private readonly ContainerOverrides _overrides;
-        private readonly List<IDisposable> _disposables = new List<IDisposable>();
+        private readonly List<IDisposable> _disposables = new();
 
         public DiContainer(IContainerScope scope, ContainerOverrides overrides)
         {

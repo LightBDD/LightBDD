@@ -16,6 +16,6 @@ namespace LightBDD.Core.Execution.Implementation
 
         public static IExecutionTimer StartNew() => new DefaultExecutionTimer();
 
-        public EventTime GetTime() => new EventTime(_start, _watch.Elapsed);
+        public EventTime GetTime() => new(_start, _watch.Elapsed);
     }
 }

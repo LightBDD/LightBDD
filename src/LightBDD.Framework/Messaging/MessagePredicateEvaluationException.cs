@@ -1,7 +1,5 @@
 ﻿using System;
-using LightBDD.Core.Formatting;
 using LightBDD.Core.Formatting.Diagnostics;
-using LightBDD.Framework.Implementation;
 
 namespace LightBDD.Framework.Messaging
 {

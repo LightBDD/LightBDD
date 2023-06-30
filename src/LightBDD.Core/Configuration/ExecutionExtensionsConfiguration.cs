@@ -15,8 +15,8 @@ namespace LightBDD.Core.Configuration
     {
         internal GlobalSetUpRegistry GlobalSetUpRegistry { get; } = new();
 
-        private readonly List<IScenarioDecorator> _scenarioExtensions = new List<IScenarioDecorator>();
-        private readonly List<IStepDecorator> _stepExtensions = new List<IStepDecorator>();
+        private readonly List<IScenarioDecorator> _scenarioExtensions = new();
+        private readonly List<IStepDecorator> _stepExtensions = new();
 
         /// <summary>
         /// Collection of scenario execution extensions.

@@ -9,7 +9,7 @@ namespace LightBDD.MsTest3.UnitTests
     [TestClass]
     public class ConfiguredLightBddScope
     {
-        public static readonly ConcurrentQueue<string> CapturedNotifications = new ConcurrentQueue<string>();
+        public static readonly ConcurrentQueue<string> CapturedNotifications = new();
 
         [AssemblyInitialize]
         public static void Setup(TestContext testContext)

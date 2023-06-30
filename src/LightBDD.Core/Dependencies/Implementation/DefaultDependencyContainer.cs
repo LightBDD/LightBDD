@@ -13,7 +13,7 @@ namespace LightBDD.Core.Dependencies.Implementation
         class Slot
         {
             public int Id { get; }
-            public readonly SemaphoreSlim Lock = new SemaphoreSlim(1);
+            public readonly SemaphoreSlim Lock = new(1);
             public readonly DependencyDescriptor Descriptor;
             public object Instance;
 
@@ -31,8 +31,8 @@ namespace LightBDD.Core.Dependencies.Implementation
         private readonly DependencyFactory _dependencyFactory;
         private readonly DefaultDependencyContainer _parent;
         private readonly LifetimeScope _scope;
-        private readonly ConcurrentQueue<IDisposable> _disposable = new ConcurrentQueue<IDisposable>();
-        private readonly ConcurrentDictionary<Type, Slot> _slots = new ConcurrentDictionary<Type, Slot>();
+        private readonly ConcurrentQueue<IDisposable> _disposable = new();
+        private readonly ConcurrentDictionary<Type, Slot> _slots = new();
 
         public DefaultDependencyContainer(LifetimeScope scope, Action<DependencyFactory> configuration = null) : this(null, scope, configuration) { }
         private DefaultDependencyContainer(DefaultDependencyContainer parent, LifetimeScope scope, Action<DependencyFactory> configuration = null)

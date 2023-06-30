@@ -8,7 +8,6 @@ using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
-using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Notification;
 using LightBDD.Framework.Parameters;
 using LightBDD.UnitTests.Helpers;

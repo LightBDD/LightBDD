@@ -267,7 +267,7 @@ namespace LightBDD.Framework.UnitTests.Resources
 
         class InstanceHolder
         {
-            public ConcurrentQueue<Mock<IDisposable>> Instances { get; } = new ConcurrentQueue<Mock<IDisposable>>();
+            public ConcurrentQueue<Mock<IDisposable>> Instances { get; } = new();
 
             public IDisposable CreateInstance()
             {

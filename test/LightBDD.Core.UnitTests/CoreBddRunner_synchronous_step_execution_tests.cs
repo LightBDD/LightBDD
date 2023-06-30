@@ -13,7 +13,7 @@ namespace LightBDD.Core.UnitTests
     public class CoreBddRunner_synchronous_step_execution_tests
     {
         private IBddRunner _runner;
-        private readonly ThreadLocal<Guid> _threadLocal = new ThreadLocal<Guid>(Guid.NewGuid);
+        private readonly ThreadLocal<Guid> _threadLocal = new(Guid.NewGuid);
 
         #region Setup/Teardown
 

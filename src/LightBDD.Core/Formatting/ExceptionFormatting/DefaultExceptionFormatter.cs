@@ -11,7 +11,7 @@ namespace LightBDD.Core.Formatting.ExceptionFormatting
     /// </summary>
     public class DefaultExceptionFormatter
     {
-        private readonly List<Regex> _excludeMembers = new List<Regex>();
+        private readonly List<Regex> _excludeMembers = new();
         private int _stackTraceLinesLimit = 8;
 
         /// <summary>

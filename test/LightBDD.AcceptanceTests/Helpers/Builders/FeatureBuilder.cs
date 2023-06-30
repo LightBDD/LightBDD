@@ -7,7 +7,7 @@ namespace LightBDD.AcceptanceTests.Helpers.Builders
 {
     internal class FeatureBuilder
     {
-        private readonly List<ScenarioBuilder> _scenarios = new List<ScenarioBuilder>();
+        private readonly List<ScenarioBuilder> _scenarios = new();
 
         public FeatureBuilder(string feature)
         {

@@ -17,14 +17,14 @@ namespace LightBDD.AcceptanceTests.Helpers
     /// </summary>
     public class ChromeDriverInstaller : IDisposable
     {
-        private readonly SemaphoreSlim _sem = new SemaphoreSlim(1);
+        private readonly SemaphoreSlim _sem = new(1);
         private bool _installed;
-        private readonly HttpClient _httpClient = new HttpClient
+        private readonly HttpClient _httpClient = new()
         {
             BaseAddress = new Uri("https://chromedriver.storage.googleapis.com/")
         };
 
-        public static ChromeDriverInstaller Instance { get; } = new ChromeDriverInstaller();
+        public static ChromeDriverInstaller Instance { get; } = new();
 
         private ChromeDriverInstaller() { }
 

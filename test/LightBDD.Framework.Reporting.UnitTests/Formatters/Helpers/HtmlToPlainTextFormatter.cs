@@ -10,8 +10,8 @@ internal class HtmlToPlainTextFormatter
 {
     private readonly IEnumerable<string> _blockElements = new[] { "div", "tr", "table", "section", "article", "h1", "h2", "h3", "br" };
     private readonly IEnumerable<string> _inlineElements = new[] { "td", "th" };//browsers are treating td/th in special way while for span they put no spaces when copied to clipboard
-    private readonly List<string> _lines = new List<string>();
-    private readonly StringBuilder _current = new StringBuilder();
+    private readonly List<string> _lines = new();
+    private readonly StringBuilder _current = new();
 
     public void FormatNode(HtmlNode node)
     {

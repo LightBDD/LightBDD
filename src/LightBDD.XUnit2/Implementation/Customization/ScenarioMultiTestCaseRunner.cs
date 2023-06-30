@@ -16,10 +16,10 @@ namespace LightBDD.XUnit2.Implementation.Customization
     internal class ScenarioMultiTestCaseRunner : XunitTestCaseRunner
     {
         private static readonly object[] NoArguments = new object[0];
-        private readonly ExceptionAggregator _cleanupAggregator = new ExceptionAggregator();
+        private readonly ExceptionAggregator _cleanupAggregator = new();
         private Exception _dataDiscoveryException;
-        private readonly List<ScenarioTestRunner> _testRunners = new List<ScenarioTestRunner>();
-        private readonly List<IDisposable> _toDispose = new List<IDisposable>();
+        private readonly List<ScenarioTestRunner> _testRunners = new();
+        private readonly List<IDisposable> _toDispose = new();
         private readonly IMessageSink _diagnosticMessageSink;
 
         public ScenarioMultiTestCaseRunner(IXunitTestCase testCase, string displayName, string skipReason, object[] constructorArguments, IMessageSink diagnosticMessageSink, IMessageBus messageBus, ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)

@@ -10,11 +10,11 @@ namespace LightBDD.Core.Formatting
     public static class TimeFormatter
     {
         private static readonly Tuple<string, int, Func<TimeSpan, int>>[] Formatters = {
-            new Tuple<string, int, Func<TimeSpan, int>>("d", 1, GetDays),
-            new Tuple<string, int, Func<TimeSpan, int>>("h", 2, GetHours),
-            new Tuple<string, int, Func<TimeSpan, int>>("m", 2, GetMinutes),
-            new Tuple<string, int, Func<TimeSpan, int>>("s", 2, GetSeconds),
-            new Tuple<string, int, Func<TimeSpan, int>>("ms", 3, GetMilliseconds)
+            new("d", 1, GetDays),
+            new("h", 2, GetHours),
+            new("m", 2, GetMinutes),
+            new("s", 2, GetSeconds),
+            new("ms", 3, GetMilliseconds)
         };
 
         /// <summary>

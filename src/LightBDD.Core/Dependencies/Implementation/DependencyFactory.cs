@@ -5,7 +5,7 @@ namespace LightBDD.Core.Dependencies.Implementation
 {
     class DependencyFactory : ContainerConfigurator, IDefaultContainerConfigurator
     {
-        private readonly List<DependencyDescriptor> _descriptors = new List<DependencyDescriptor>();
+        private readonly List<DependencyDescriptor> _descriptors = new();
         public IReadOnlyList<DependencyDescriptor> Descriptors => _descriptors;
         public FallbackResolveBehavior FallbackBehavior { get; private set; }
 

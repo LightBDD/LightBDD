@@ -23,7 +23,7 @@ namespace LightBDD.Framework.UnitTests.Notification
     {
         private ConcurrentDictionary<int, ConcurrentQueue<string>> _capturedGroups;
         public IEnumerable<string> CapturedItems => _capturedGroups.SelectMany(g => g.Value);
-        private readonly AsyncLocal<int> _currentId = new AsyncLocal<int>();
+        private readonly AsyncLocal<int> _currentId = new();
         private ParallelProgressNotifierProvider _notifierProvider;
 
         private class TestableParallelProgressNotifierProvider : ParallelProgressNotifierProvider { }

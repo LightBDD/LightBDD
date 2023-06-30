@@ -8,20 +8,20 @@
         /// <summary>
         /// The same instance is returned for requests within the root and nested scopes.
         /// </summary>
-        public static readonly InstanceScope Single = new InstanceScope(nameof(Single), true, true);
+        public static readonly InstanceScope Single = new(nameof(Single), true, true);
         /// <summary>
         /// The same instance is returned for requests within the given scope, however not shared with nested scopes. Each scope will receive one instance upon request.
         /// </summary>
-        public static readonly InstanceScope Local = new InstanceScope(nameof(Local), true, false);
+        public static readonly InstanceScope Local = new(nameof(Local), true, false);
         /// <summary>
         /// The new instance is returned upon every request.
         /// </summary>
-        public static readonly InstanceScope Transient = new InstanceScope(nameof(Transient), false, false);
+        public static readonly InstanceScope Transient = new(nameof(Transient), false, false);
         /// <summary>
         /// The instance is shared within given scenario scope and across all nested scopes, but instantiated independently between scenarios.<br/>
         /// The instance definition will be ignored when resolution request is made outside of the scenario.
         /// </summary>
-        public static readonly InstanceScope Scenario = new InstanceScope(nameof(Scenario), true, true, LifetimeScope.Scenario);
+        public static readonly InstanceScope Scenario = new(nameof(Scenario), true, true, LifetimeScope.Scenario);
 
         /// <summary>
         /// Instance scope name

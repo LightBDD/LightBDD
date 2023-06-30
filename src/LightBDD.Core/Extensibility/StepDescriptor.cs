@@ -41,7 +41,7 @@ namespace LightBDD.Core.Extensibility
         /// Creates invalid descriptor indicating that original descriptor creation failed due to <paramref name="creationException"/> exception.
         /// Using this method will allow LightBDD to properly capture the invalid steps in the reports, helping with locating and correcting them properly.
         /// </summary>
-        public static StepDescriptor CreateInvalid(Exception creationException) => new StepDescriptor(creationException);
+        public static StepDescriptor CreateInvalid(Exception creationException) => new(creationException);
 
         private StepDescriptor(MethodBase methodInfo, string rawName, StepFunc stepInvocation, params ParameterDescriptor[] parameters)
         {

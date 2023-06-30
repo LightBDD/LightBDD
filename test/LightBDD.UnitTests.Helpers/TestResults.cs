@@ -404,8 +404,8 @@ namespace LightBDD.UnitTests.Helpers
             IReadOnlyList<ITabularParameterColumn> ITabularParameterDetails.Columns => Columns;
             IReadOnlyList<ITabularParameterRow> ITabularParameterDetails.Rows => Rows;
 
-            public List<TestTabularParameterColumn> Columns { get; } = new List<TestTabularParameterColumn>();
-            public List<TestTabularParameterRow> Rows { get; } = new List<TestTabularParameterRow>();
+            public List<TestTabularParameterColumn> Columns { get; } = new();
+            public List<TestTabularParameterRow> Rows { get; } = new();
         }
 
         public class TestTabularParameterRow : ITabularParameterRow

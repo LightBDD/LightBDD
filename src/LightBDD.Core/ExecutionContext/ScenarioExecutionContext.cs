@@ -11,8 +11,8 @@ namespace LightBDD.Core.ExecutionContext
     /// </summary>
     public sealed class ScenarioExecutionContext
     {
-        private static readonly AsyncLocal<ScenarioExecutionContext> CurrentContext = new AsyncLocal<ScenarioExecutionContext>();
-        private readonly ConcurrentDictionary<Type, IContextProperty> _properties = new ConcurrentDictionary<Type, IContextProperty>();
+        private static readonly AsyncLocal<ScenarioExecutionContext> CurrentContext = new();
+        private readonly ConcurrentDictionary<Type, IContextProperty> _properties = new();
 
         /// <summary>
         /// Provides property value of <typeparamref name="TProperty"/> type that is stored in scenario context.

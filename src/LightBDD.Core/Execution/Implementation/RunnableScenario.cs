@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using LightBDD.Core.Dependencies.Implementation;
 using LightBDD.Core.Notification.Events;
 
 namespace LightBDD.Core.Execution.Implementation
@@ -24,7 +23,7 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly IEnumerable<StepDescriptor> _stepDescriptors;
         private readonly ExecutionContextDescriptor _contextDescriptor;
         private readonly ScenarioResult _result;
-        private readonly ExceptionCollector _exceptionCollector = new ExceptionCollector();
+        private readonly ExceptionCollector _exceptionCollector = new();
         private readonly Func<Task> _decoratedScenarioMethod;
         private IDependencyContainer _scope;
         private Func<Exception, bool> _shouldAbortSubStepExecutionFn = ex => true;

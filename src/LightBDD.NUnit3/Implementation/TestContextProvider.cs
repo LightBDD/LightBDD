@@ -5,7 +5,7 @@ namespace LightBDD.NUnit3.Implementation
 {
     internal class TestContextProvider
     {
-        private static readonly AsyncLocal<TestContextProvider> Provider = new AsyncLocal<TestContextProvider>();
+        private static readonly AsyncLocal<TestContextProvider> Provider = new();
         public  MethodInfo TestMethod { get; }
         public  object[] TestMethodArguments { get; }
 
