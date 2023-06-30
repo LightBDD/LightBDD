@@ -42,7 +42,6 @@ function checkAll(checkBoxClass, checked) {
 
 function sortTable(tableId, columnIdx, numeric, toggle) {
     var direction = toggle.dataset.dir === 'true';
-    toggle.dataset.dir = !direction;
 
     var sortMethod;
     var parseMethod;
@@ -59,15 +58,18 @@ function sortTable(tableId, columnIdx, numeric, toggle) {
         checkMethod = function (x) { return true; };
     }
 
-    var tbl = document.getElementById(tableId).tBodies[0];
+    var table = document.getElementById(tableId);
+    table.tHead.rows[0].cells.asQueryable().do(function (column) { delete column.dataset.dir; });
+    toggle.dataset.dir = !direction;
+    var tbody = table.tBodies[0];
     var store = [];
-    tbl.rows.asQueryable()
+    tbody.rows.asQueryable()
         .do(function (row) {
             var sortnr = parseMethod(row.cells[columnIdx].textContent || row.cells[columnIdx].innerText);
             if (checkMethod(sortnr)) store.push([sortnr, row]);
         });
     store.sort(sortMethod);
-    store.asQueryable().do(function (row) { tbl.appendChild(row[1]); });
+    store.asQueryable().do(function (row) { tbody.appendChild(row[1]); });
     ++synchronizationCounter;
 }
 

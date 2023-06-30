@@ -3,6 +3,8 @@ LightBDD
 
 Version vNext
 ----------------------------------------
++ #207 (LightBDD.Framework)(Change) Modernised Html Report
++ #207 (LightBDD.Framework)(New) Added ability to overrride CSS styles, Logo and Favicon with cfg.ReportWritersConfiguration().AddFileWriter<HtmlReportFormatter>() method
 + #281 (LightBDD.Core)(New) Added IScenarioSetUp and IScenarioTearDown execution extension interfaces allowing to run scenario set up / tear down when implemented on fixture class
 + #281 (LightBDD.Core)(Change) Exposed IScenario.Fixture property allowing scenario decorators accessing the fixture object
 + #281 (LightBDD.Core)(New) Added ability to register global set up and tear down for resources and activities by using `ExecutionExtensionsConfiguration`
