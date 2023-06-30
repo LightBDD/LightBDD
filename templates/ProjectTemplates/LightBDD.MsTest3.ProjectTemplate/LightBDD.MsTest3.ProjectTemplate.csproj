@@ -12,8 +12,8 @@
     <ProjectGuid>{75DB73FE-2995-4EA6-80E0-9A079EE8BAFA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LightBDD.MsTest2.ProjectTemplate</RootNamespace>
-    <AssemblyName>LightBDD.MsTest2.ProjectTemplate</AssemblyName>
+    <RootNamespace>LightBDD.MsTest3.ProjectTemplate</RootNamespace>
+    <AssemblyName>LightBDD.MsTest3.ProjectTemplate</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
@@ -64,7 +64,7 @@
     <None Include="ProjectTemplate.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <VSTemplate Include="LightBDD.MsTest2.ProjectTemplate.vstemplate">
+    <VSTemplate Include="LightBDD.MsTest3.ProjectTemplate.vstemplate">
       <OutputSubPath>LightBDD</OutputSubPath>
     </VSTemplate>
   </ItemGroup>

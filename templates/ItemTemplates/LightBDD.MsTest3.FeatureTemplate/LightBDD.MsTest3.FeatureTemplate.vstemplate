@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
   <TemplateData>
-    <Name>LightBDD.MsTest2: Feature Test Class</Name>
-    <Description>LightBDD feature tests class representing set of acceptance tests for given feature (MsTest2 integration).</Description>
+    <Name>LightBDD.MsTest3: Feature Test Class</Name>
+    <Description>LightBDD feature tests class representing set of acceptance tests for given feature (MsTest3 integration).</Description>
     <Icon>lightbdd.ico</Icon>
     <TemplateID>566611cc-70be-415e-bf5a-923ecabf33fd</TemplateID>
     <ProjectType>CSharp</ProjectType>

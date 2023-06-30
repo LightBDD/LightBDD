@@ -1,5 +1,5 @@
 ﻿using LightBDD.Core.Configuration;
-using LightBDD.MsTest2;
+using LightBDD.MsTest3;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 [assembly: Parallelize(Scope = ExecutionScope.MethodLevel)]
 
