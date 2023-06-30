@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Threading;
 
-namespace LightBDD.MsTest2.Implementation
+namespace LightBDD.MsTest3.Implementation
 {
     internal class TestContextProvider
     {

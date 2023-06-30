@@ -2,10 +2,10 @@
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Framework.Configuration;
-using LightBDD.MsTest2.Configuration;
-using LightBDD.MsTest2.Implementation;
+using LightBDD.MsTest3.Configuration;
+using LightBDD.MsTest3.Implementation;
 
-namespace LightBDD.MsTest2
+namespace LightBDD.MsTest3
 {
     /// <summary>
     /// LightBddScope class allowing to initialize and finalize LightBDD in MsTest framework.

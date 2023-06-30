@@ -2,7 +2,7 @@
 using LightBDD.Framework.Extensibility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD.MsTest2
+namespace LightBDD.MsTest3
 {
     /// <summary>
     /// Base class for feature tests with MSTest framework.

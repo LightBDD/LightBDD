@@ -1,9 +1,9 @@
 ﻿using System;
 using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Framework.Configuration;
-using LightBDD.MsTest2.Implementation;
+using LightBDD.MsTest3.Implementation;
 
-namespace LightBDD.MsTest2.Configuration
+namespace LightBDD.MsTest3.Configuration
 {
     /// <summary>
     /// Extensions allowing to apply test framework default configuration.

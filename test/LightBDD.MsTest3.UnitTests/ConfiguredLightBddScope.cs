@@ -4,7 +4,7 @@ using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Notification;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD.MsTest2.UnitTests
+namespace LightBDD.MsTest3.UnitTests
 {
     [TestClass]
     public class ConfiguredLightBddScope

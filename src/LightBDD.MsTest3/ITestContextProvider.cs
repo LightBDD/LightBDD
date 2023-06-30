@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD.MsTest2
+namespace LightBDD.MsTest3
 {
     /// <summary>
     /// An interface allowing to retrieve <see cref="Microsoft.VisualStudio.TestTools.UnitTesting.TestContext"/> associated to the test class instance.

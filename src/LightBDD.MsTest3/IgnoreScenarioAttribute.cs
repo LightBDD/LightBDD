@@ -1,10 +1,10 @@
+using System;
+using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility.Execution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Threading.Tasks;
 
-namespace LightBDD.MsTest2
+namespace LightBDD.MsTest3
 {
     /// <summary>
     /// Attribute allowing to ignore scenario in declarative way. It can be applied on scenario method or step method as well as feature class.

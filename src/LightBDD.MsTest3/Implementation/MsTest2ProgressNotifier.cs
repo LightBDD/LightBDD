@@ -3,7 +3,7 @@ using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.Notification;
 using LightBDD.Framework.Notification;
 
-namespace LightBDD.MsTest2.Implementation
+namespace LightBDD.MsTest3.Implementation
 {
     internal class MsTest2ProgressNotifier
     {

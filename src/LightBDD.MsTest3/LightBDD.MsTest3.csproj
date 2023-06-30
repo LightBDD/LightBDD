@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\Common.props" />
   <PropertyGroup>
-    <Description>Allows creating acceptance tests in developer friendly environment by offering LightBDD.Framework features on top of MsTest v2 (MSTest.TestFramework) testing framework.
+    <Description>Allows creating acceptance tests in developer friendly environment by offering LightBDD.Framework features on top of MsTest v3 (MSTest.TestFramework) testing framework.
 
 High level features:
 * user friendly bdd scenario definitions;
@@ -12,7 +12,7 @@ High level features:
 * in-code LightBDD configuration;
 * DI support;
 * inline and tabular parameters support.</Description>
-    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net462;net6</TargetFrameworks>
     <PackageTags>$(PackageTags);mstest;mstest2</PackageTags>
   </PropertyGroup>
 
@@ -28,7 +28,7 @@ High level features:
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.0.4" />
   </ItemGroup>
 
 </Project>

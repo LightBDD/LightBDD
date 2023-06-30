@@ -6,7 +6,7 @@ using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD.MsTest2.Implementation
+namespace LightBDD.MsTest3.Implementation
 {
     internal class MsTest2MetadataProvider : CoreMetadataProvider
     {

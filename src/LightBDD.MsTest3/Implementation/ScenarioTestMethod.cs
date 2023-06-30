@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD.MsTest2.Implementation
+namespace LightBDD.MsTest3.Implementation
 {
     internal class ScenarioTestMethod : ITestMethod
     {

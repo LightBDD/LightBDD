@@ -1,13 +1,13 @@
-﻿using LightBDD.Core.Results;
-using LightBDD.Framework;
-using LightBDD.Framework.Scenarios;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using LightBDD.Core.Results;
+using LightBDD.Framework;
+using LightBDD.Framework.Scenarios;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD.MsTest2.UnitTests
+namespace LightBDD.MsTest3.UnitTests
 {
     [TestClass]
     [ScenarioCategory("Category E")]

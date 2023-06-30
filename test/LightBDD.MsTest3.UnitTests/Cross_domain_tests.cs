@@ -5,7 +5,7 @@ using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD.MsTest2.UnitTests
+namespace LightBDD.MsTest3.UnitTests
 {
     [FeatureDescription(@"As a developer,
 I want runner to support tests requiring cross domain communication,

@@ -7,7 +7,7 @@ using LightBDD.Framework.Execution.Coordination;
 using LightBDD.Framework.Extensibility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD.MsTest2.Implementation
+namespace LightBDD.MsTest3.Implementation
 {
     internal class MsTest2FeatureCoordinator : FrameworkFeatureCoordinator
     {

@@ -1,7 +1,7 @@
 ﻿using LightBDD.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD.MsTest2.UnitTests
+namespace LightBDD.MsTest3.UnitTests
 {
     [TestClass]
     public class FeatureFixtureTests

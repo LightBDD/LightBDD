@@ -4,7 +4,7 @@ using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LightBDD.MsTest2.UnitTests
+namespace LightBDD.MsTest3.UnitTests
 {
     [TestClass]
     [IgnoreScenario("all ignored")]
