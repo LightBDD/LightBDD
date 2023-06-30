@@ -5,7 +5,7 @@ VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Core", "..\src\LightBDD.Core\LightBDD.Core.csproj", "{1404165C-13B2-43E2-A78D-6B271EB62FC8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.MsTest2", "..\src\LightBDD.MsTest2\LightBDD.MsTest2.csproj", "{CBD1B3D9-4B77-4B21-9C3A-7E3A9FB3D780}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.MsTest3", "..\src\LightBDD.MsTest3\LightBDD.MsTest3.csproj", "{CBD1B3D9-4B77-4B21-9C3A-7E3A9FB3D780}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.NUnit3", "..\src\LightBDD.NUnit3\LightBDD.NUnit3.csproj", "{EE206E44-4393-45E5-8C8F-331348128E09}"
 EndProject
@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.XUnit2", "..\src\L
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Domain", "Example.Domain\Example.Domain.csproj", "{F69FD39E-F710-4C37-A1E0-84B02B5C64CB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.LightBDD.MsTest2", "Example.LightBDD.MsTest2\Example.LightBDD.MsTest2.csproj", "{0617D510-15E8-4665-B4FF-A07CD38E5F25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.LightBDD.MsTest3", "Example.LightBDD.MsTest3\Example.LightBDD.MsTest3.csproj", "{0617D510-15E8-4665-B4FF-A07CD38E5F25}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.LightBDD.NUnit3", "Example.LightBDD.NUnit3\Example.LightBDD.NUnit3.csproj", "{1EADD5AD-ECC1-4755-8DAF-C3B747B7F385}"
 EndProject
