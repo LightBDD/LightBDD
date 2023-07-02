@@ -7,5 +7,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: AssemblyTitle("LightBDD.Fixie2.NetCore.ProjectTemplate")]
-[assembly: AssemblyProduct("LightBDD.Fixie2.NetCore.ProjectTemplate")]
+[assembly: AssemblyTitle("LightBDD.Fixie3.NetCore.ProjectTemplate")]
+[assembly: AssemblyProduct("LightBDD.Fixie3.NetCore.ProjectTemplate")]

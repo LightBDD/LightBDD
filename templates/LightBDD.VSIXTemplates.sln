@@ -15,11 +15,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.MsTest3.FeatureTem
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.VSIXTemplates", "LightBDD.VSIXTemplates\LightBDD.VSIXTemplates.csproj", "{D184742A-32EB-4B71-9546-811D5757A6F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.Fixie2.FeatureTemplate", "ItemTemplates\LightBDD.Fixie2.FeatureTemplate\LightBDD.Fixie2.FeatureTemplate.csproj", "{8B8652D8-A72D-4D29-900D-9783BB753164}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.Fixie3.FeatureTemplate", "ItemTemplates\LightBDD.Fixie3.FeatureTemplate\LightBDD.Fixie3.FeatureTemplate.csproj", "{8B8652D8-A72D-4D29-900D-9783BB753164}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProjectTemplates", "ProjectTemplates", "{9A20E430-60FA-4339-9E3B-A15A178D6F4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.Fixie2.ProjectTemplate", "ProjectTemplates\LightBDD.Fixie2.ProjectTemplate\LightBDD.Fixie2.ProjectTemplate.csproj", "{07E95C84-7731-46EB-BC35-E752D4ACD42F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.Fixie3.ProjectTemplate", "ProjectTemplates\LightBDD.Fixie3.ProjectTemplate\LightBDD.Fixie3.ProjectTemplate.csproj", "{07E95C84-7731-46EB-BC35-E752D4ACD42F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.XUnit2.ProjectTemplate", "ProjectTemplates\LightBDD.XUnit2.ProjectTemplate\LightBDD.XUnit2.ProjectTemplate.csproj", "{1EBDCE2F-215D-4A19-ABC0-0EA09A512975}"
 EndProject

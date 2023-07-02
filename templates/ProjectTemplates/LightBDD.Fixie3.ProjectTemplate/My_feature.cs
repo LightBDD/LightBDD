@@ -1,6 +1,6 @@
 ﻿using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
-using LightBDD.Fixie2;
+using LightBDD.Fixie3;
 
 namespace $safeprojectname$
 {

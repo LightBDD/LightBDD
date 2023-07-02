@@ -1,5 +1,5 @@
 ﻿using LightBDD.Core.Configuration;
-using LightBDD.Fixie2;
+using LightBDD.Fixie3;
 
 namespace $safeprojectname$
 {

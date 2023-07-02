@@ -1,5 +1,5 @@
 ## About project
-This is a sample project presenting how to create and run LightBDD scenarios with **LightBDD.Fixie2** integration.
+This is a sample project presenting how to create and run LightBDD scenarios with **LightBDD.Fixie3** integration.
 
 The scenarios created within this project are written in different styles to show various features of LightBDD.
 Also, for better clarity how LightBDD behaves, some of the scenarios are failing or finishing with ignored status.

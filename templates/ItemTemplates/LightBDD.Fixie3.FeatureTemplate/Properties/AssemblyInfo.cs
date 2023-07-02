@@ -1,11 +1,11 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("LightBDD.Fixie2.FeatureTemplate")]
+[assembly: AssemblyTitle("LightBDD.Fixie3.FeatureTemplate")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("LightBDD.Fixie2.FeatureTemplate")]
+[assembly: AssemblyProduct("LightBDD.Fixie3.FeatureTemplate")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]

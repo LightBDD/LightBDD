@@ -21,7 +21,7 @@ namespace LightBDD.Fixie3.Configuration
         }
 
         /// <summary>
-        /// Appends LightBDD.Fixie2 default scenario progress notifiers.
+        /// Appends LightBDD.Fixie3 default scenario progress notifiers.
         /// </summary>
         [Obsolete("Use " + nameof(ProgressNotifierConfiguration) + " instead", true)]
         public static ScenarioProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this ScenarioProgressNotifierConfiguration configuration)
@@ -31,7 +31,7 @@ namespace LightBDD.Fixie3.Configuration
         }
 
         /// <summary>
-        /// Appends LightBDD.Fixie2 default feature progress notifiers.
+        /// Appends LightBDD.Fixie3 default feature progress notifiers.
         /// </summary>
         [Obsolete("Use " + nameof(ProgressNotifierConfiguration) + " instead", true)]
         public static FeatureProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this FeatureProgressNotifierConfiguration configuration)
@@ -40,7 +40,7 @@ namespace LightBDD.Fixie3.Configuration
         }
 
         /// <summary>
-        /// Appends LightBDD.MsTest2 default progress notifiers.
+        /// Appends LightBDD.Fixie3 default progress notifiers.
         /// </summary>
         public static ProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this ProgressNotifierConfiguration configuration)
         {

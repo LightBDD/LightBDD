@@ -43,9 +43,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Framework.UnitTest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Framework.Reporting.UnitTests", "test\LightBDD.Framework.Reporting.UnitTests\LightBDD.Framework.Reporting.UnitTests.csproj", "{BBD59A28-DF7C-455A-BEDD-7EAE6D9CDC6D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Fixie3", "src\LightBDD.Fixie2\LightBDD.Fixie3.csproj", "{45E7A430-2F62-4C9A-9CDC-A4D1A2264123}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Fixie3", "src\LightBDD.Fixie3\LightBDD.Fixie3.csproj", "{45E7A430-2F62-4C9A-9CDC-A4D1A2264123}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Fixie3.UnitTests", "test\LightBDD.Fixie2.UnitTests\LightBDD.Fixie3.UnitTests.csproj", "{E747F4F0-60F4-413B-8C69-89184A4F2218}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Fixie3.UnitTests", "test\LightBDD.Fixie3.UnitTests\LightBDD.Fixie3.UnitTests.csproj", "{E747F4F0-60F4-413B-8C69-89184A4F2218}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Autofac", "src\LightBDD.Autofac\LightBDD.Autofac.csproj", "{BA30A12E-C25B-47DF-9761-C3D752C59D3A}"
 EndProject
