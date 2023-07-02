@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6</TargetFrameworks>
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\LightBDD.Fixie3\LightBDD.Fixie3.csproj" />
+    <ProjectReference Include="..\Example.Domain\Example.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Shouldly" Version="4.2.1" />
+    <PackageReference Include="Fixie.TestAdapter" Version="3.3.0" />
+    <PackageReference Include="Fixie" Version="3.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+  </ItemGroup>
+
+</Project>

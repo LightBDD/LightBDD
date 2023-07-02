@@ -10,6 +10,8 @@ Version 3.7.0
 + #281 (LightBDD.Core)(New) Added ability to register global set up and tear down for resources and activities by using `ExecutionExtensionsConfiguration`
 + #282 (LightBDD.Framework)(Change) Updated Html Report to have collapsible sub-steps being collapsed by default
 + #288 (LightBDD.Core)(Change) Format of non-inline step parameters with <$name> parameter reference
++ #292 (LightBDD.Fixie3)(New) Created LightBDD.Fixie3 project with dependency on fixie 3.x
++ #292 (LightBDD.Fixie2)(Change) Deprecated LightBDD.Fixie2 project in favor of LightBDD.Fixie3
 + #293 (LightBDD.MsTest3)(New) Created LightBDD.MsTest3 project with dependency on MSTest.TestFramework 3.x
 + #293 (LightBDD.MsTest2)(Change) Deprecated LightBDD.MsTest2 project in favor of LightBDD.MsTest3
 + #294 (all)(Change) Updated net461 target framework to net462 (while leaving net461 coverage via .netstandard2.0 target framework)

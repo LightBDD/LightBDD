@@ -8,7 +8,7 @@ Chat (gitter) | [![Join the chat at https://gitter.im/LightBDD/LightBDD](https:/
 LightBDD.NUnit3 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.NUnit3?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.NUnit3/)
 LightBDD.XUnit2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.XUnit2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.XUnit2/)
 LightBDD.MsTest2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MsTest2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.MsTest2/)
-LightBDD.Fixie2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Fixie2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Fixie2/)
+LightBDD.Fixie3 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Fixie3?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Fixie3/)
 LightBDD.Autofac | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Autofac?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Autofac/)
 LightBDD.Extensions.DependencyInjection | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Extensions.DependencyInjection?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Extensions.DependencyInjection/)
 
@@ -165,7 +165,7 @@ The LightBDD is available on [NuGet](https://www.nuget.org/packages?q=LightBDD):
 * `PM> Install-Package LightBDD.NUnit3` for package using NUnit 3x
 * `PM> Install-Package LightBDD.XUnit2` for package using xUnit 2x
 * `PM> Install-Package LightBDD.MsTest2` for package using MsTest.TestFramework
-* `PM> Install-Package LightBDD.Fixie2` for package using Fixie 2x
+* `PM> Install-Package LightBDD.Fixie3` for package using Fixie 3x
 
 ## Productivity Extensions for Visual Studio
 **LightBDD** project offers also a VSIX extension for Visual Studio, containing:
