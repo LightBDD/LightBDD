@@ -5,7 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="LightBDD.Fixie3" Version="3.7.0" />
-    <PackageReference Include="Fixie" Version="3.3.0" />
+    <PackageReference Include="Fixie.TestAdapter" Version="3.3.0" />
   </ItemGroup>
 
   <ItemGroup>
