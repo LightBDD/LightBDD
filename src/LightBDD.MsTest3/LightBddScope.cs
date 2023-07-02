@@ -35,7 +35,7 @@ namespace LightBDD.MsTest3
         /// <param name="onConfigure">Action allowing to customize LightBDD configuration.</param>
         public static void Initialize(Action<LightBddConfiguration> onConfigure)
         {
-            MsTest2FeatureCoordinator.InstallSelf(Configure(onConfigure));
+            MsTest3FeatureCoordinator.InstallSelf(Configure(onConfigure));
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace LightBDD.MsTest3
         /// </summary>
         public static void Cleanup()
         {
-            MsTest2FeatureCoordinator.GetInstance().Dispose();
+            MsTest3FeatureCoordinator.GetInstance().Dispose();
         }
 
         private static LightBddConfiguration Configure(Action<LightBddConfiguration> onConfigure)

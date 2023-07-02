@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.MsTest3.Implementation
 {
-    internal class MsTest2FeatureCoordinator : FrameworkFeatureCoordinator
+    internal class MsTest3FeatureCoordinator : FrameworkFeatureCoordinator
     {
         public new static FeatureCoordinator GetInstance()
         {
@@ -20,19 +20,19 @@ namespace LightBDD.MsTest3.Implementation
             return Instance;
         }
 
-        private MsTest2FeatureCoordinator(LightBddConfiguration configuration)
+        private MsTest3FeatureCoordinator(LightBddConfiguration configuration)
             : base(CreateContext(configuration))
         {
         }
 
         private static IntegrationContext CreateContext(LightBddConfiguration configuration)
         {
-            return new DefaultIntegrationContext(configuration, new MsTest2MetadataProvider(configuration), MapExceptionToStatus);
+            return new DefaultIntegrationContext(configuration, new MsTest3MetadataProvider(configuration), MapExceptionToStatus);
         }
 
         internal static void InstallSelf(LightBddConfiguration configuration)
         {
-            Install(new MsTest2FeatureCoordinator(configuration));
+            Install(new MsTest3FeatureCoordinator(configuration));
         }
 
         private static ExecutionStatus MapExceptionToStatus(Exception ex)

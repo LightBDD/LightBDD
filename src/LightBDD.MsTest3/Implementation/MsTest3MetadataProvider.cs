@@ -8,9 +8,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.MsTest3.Implementation
 {
-    internal class MsTest2MetadataProvider : CoreMetadataProvider
+    internal class MsTest3MetadataProvider : CoreMetadataProvider
     {
-        public MsTest2MetadataProvider(LightBddConfiguration configuration)
+        public MsTest3MetadataProvider(LightBddConfiguration configuration)
             : base(configuration) { }
 
         public override ScenarioDescriptor CaptureCurrentScenario()
