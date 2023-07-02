@@ -16,7 +16,7 @@ namespace LightBDD.MsTest3
         /// <returns><see cref="IFeatureRunner"/> object.</returns>
         public static IFeatureRunner GetRunnerFor(Type featureType)
         {
-            return MsTest2FeatureCoordinator.GetInstance().RunnerRepository.GetRunnerFor(featureType);
+            return MsTest3FeatureCoordinator.GetInstance().RunnerRepository.GetRunnerFor(featureType);
         }
     }
 }

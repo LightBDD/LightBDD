@@ -22,29 +22,29 @@ namespace LightBDD.MsTest3.Configuration
         }
 
         /// <summary>
-        /// Appends LightBDD.MsTest2 default scenario progress notifiers.
+        /// Appends LightBDD.MsTest3 default scenario progress notifiers.
         /// </summary>
         [Obsolete("Use " + nameof(ProgressNotifierConfiguration) + " instead", true)]
         public static ScenarioProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this ScenarioProgressNotifierConfiguration configuration)
         {
-            return configuration.AppendNotifierProviders<ITestContextProvider>(MsTest2ProgressNotifier.CreateScenarioProgressNotifier);
+            return configuration.AppendNotifierProviders<ITestContextProvider>(MsTest3ProgressNotifier.CreateScenarioProgressNotifier);
         }
 
         /// <summary>
-        /// Appends LightBDD.MsTest2 default feature progress notifiers.
+        /// Appends LightBDD.MsTest3 default feature progress notifiers.
         /// </summary>
         [Obsolete("Use " + nameof(ProgressNotifierConfiguration) + " instead", true)]
         public static FeatureProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this FeatureProgressNotifierConfiguration configuration)
         {
-            return configuration.AppendNotifiers(MsTest2ProgressNotifier.CreateFeatureProgressNotifier());
+            return configuration.AppendNotifiers(MsTest3ProgressNotifier.CreateFeatureProgressNotifier());
         }
 
         /// <summary>
-        /// Appends LightBDD.MsTest2 default progress notifiers.
+        /// Appends LightBDD.MsTest3 default progress notifiers.
         /// </summary>
         public static ProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this ProgressNotifierConfiguration configuration)
         {
-            return configuration.Append(MsTest2ProgressNotifier.CreateProgressNotifier());
+            return configuration.Append(MsTest3ProgressNotifier.CreateProgressNotifier());
         }
     }
 }
