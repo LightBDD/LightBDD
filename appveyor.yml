@@ -42,3 +42,4 @@ for:
    - sh: dotnet test -c Release -f net6 test/LightBDD.MsTest3.UnitTests/LightBDD.MsTest3.UnitTests.csproj
    - sh: dotnet test -c Release -f net6 test/LightBDD.NUnit3.UnitTests/LightBDD.NUnit3.UnitTests.csproj
    - sh: dotnet test -c Release -f net6 test/LightBDD.XUnit2.UnitTests/LightBDD.XUnit2.UnitTests.csproj
+   - sh: dotnet test -c Release -f net6 test/LightBDD.Fixie3.UnitTests/LightBDD.Fixie3.UnitTests.csproj
