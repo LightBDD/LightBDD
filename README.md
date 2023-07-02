@@ -155,7 +155,7 @@ For more information, please visit [Test Progress Notification](https://github.c
 ### Example HTML report generated after test execution:
 When all tests are finished, LightBDD generates the HTML report file, providing the summary and the details of the executed scenarios - the fragment of the report is presented below.
 
-![](https://raw.githubusercontent.com/wiki/LightBDD/LightBDD/images/scenario_report.png)
+![](https://raw.githubusercontent.com/wiki/LightBDD/LightBDD/images/scenario_report_v370.png)
 
 To read more, please see [Generating Reports](https://github.com/LightBDD/LightBDD/wiki/Generating-Reports) wiki page.
 
