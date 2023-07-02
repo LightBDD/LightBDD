@@ -9,18 +9,11 @@ namespace LightBDD.Fixie2.Implementation
 {
     internal class LightBddDiscoveryConvention : IDiscovery
     {
-        private string[] _categoriesToInclude = new string[0];
+        private readonly string[] _categoriesToInclude;
 
-        /// <summary>
-        /// Runs only tests annotated with one of category specified by <paramref name="categoriesToInclude"/>.
-        ///
-        /// If <paramref name="categoriesToInclude"/> is empty, all tests will be executed.
-        /// </summary>
-        public void IncludeCategories(IEnumerable<string> categoriesToInclude)
+        public LightBddDiscoveryConvention(string[] category)
         {
-            if (categoriesToInclude == null)
-                throw new ArgumentNullException(nameof(categoriesToInclude));
-            _categoriesToInclude = categoriesToInclude.ToArray();
+            _categoriesToInclude = category ?? throw new ArgumentNullException(nameof(category));
         }
 
         private bool HasAnyCategory(MethodInfo method)

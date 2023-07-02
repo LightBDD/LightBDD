@@ -9,11 +9,26 @@ namespace LightBDD.Fixie2.Implementation;
 
 internal class LightBddExecutionConvention : IExecution
 {
+    private readonly LightBddScope _scope;
+
+    public LightBddExecutionConvention(LightBddScope scope)
+    {
+        _scope = scope;
+    }
+
     public async Task Run(TestSuite testSuite)
     {
-        foreach (var testClass in testSuite.TestClasses)
-            foreach (var test in testClass.Tests)
-                await RunTest(testClass, test);
+        _scope.SetUp();
+        try
+        {
+            foreach (var testClass in testSuite.TestClasses)
+                foreach (var test in testClass.Tests)
+                    await RunTest(testClass, test);
+        }
+        finally
+        {
+            _scope.TearDown();
+        }
     }
 
     private async Task RunTest(TestClass testClass, Test test)

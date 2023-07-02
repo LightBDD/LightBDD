@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Fixie;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Formatting.ExceptionFormatting;
@@ -20,17 +21,8 @@ namespace LightBDD.Fixie2
     /// It is possible to customize the LightBDD configuration by overriding the <see cref="OnConfigure"/>() method,
     /// as well as execute code before any test and after all tests by overriding the <see cref="OnSetUp"/>() / <see cref="OnTearDown"/>() methods.
     /// </summary>
-    public class LightBddScope : ITestProject, IDisposable
+    public class LightBddScope : ITestProject
     {
-        /// <summary>
-        /// Constructor initializing LightBDD scope.
-        /// </summary>
-        protected LightBddScope()
-        {
-            FixieFeatureCoordinator.InstallSelf(Configure());
-            OnSetUp();
-        }
-
         /// <summary>
         /// Allows to execute additional actions after LightBDD scope initialization
         /// </summary>
@@ -51,6 +43,24 @@ namespace LightBDD.Fixie2
         {
         }
 
+        internal void SetUp()
+        {
+            FixieFeatureCoordinator.InstallSelf(Configure());
+            OnSetUp();
+        }
+
+        internal void TearDown()
+        {
+            try
+            {
+                OnTearDown();
+            }
+            finally
+            {
+                FixieFeatureCoordinator.GetInstance().Dispose();
+            }
+        }
+
         private LightBddConfiguration Configure()
         {
             var configuration = new LightBddConfiguration().WithFrameworkDefaults();
@@ -65,21 +75,10 @@ namespace LightBDD.Fixie2
             return configuration;
         }
 
-        void IDisposable.Dispose()
-        {
-            try
-            {
-                OnTearDown();
-            }
-            finally
-            {
-                FixieFeatureCoordinator.GetInstance().Dispose();
-            }
-        }
-
         void ITestProject.Configure(TestConfiguration configuration, TestEnvironment environment)
         {
-            configuration.Conventions.Add(new LightBddDiscoveryConvention(), new LightBddExecutionConvention());
+            var categories = ArgsParser.ParseCategories(environment).ToArray();
+            configuration.Conventions.Add(new LightBddDiscoveryConvention(categories), new LightBddExecutionConvention(this));
         }
     }
 }
