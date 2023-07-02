@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-    <PackageReference Include="Shouldly" Version="4.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Shouldly" Version="4.2.1" />
     <PackageReference Include="Fixie.TestAdapter" Version="3.3.0" />
     <PackageReference Include="Fixie" Version="3.3.0" />
   </ItemGroup>

@@ -7,7 +7,7 @@ namespace LightBDD.Core.Execution.Implementation
 {
     internal class ExceptionCollector
     {
-        private readonly List<Exception> _executionExceptions = new List<Exception>();
+        private readonly List<Exception> _executionExceptions = new();
 
         public void Capture(Exception exception)
         {

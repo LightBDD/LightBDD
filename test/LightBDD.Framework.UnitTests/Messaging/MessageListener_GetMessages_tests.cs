@@ -9,7 +9,7 @@ namespace LightBDD.Framework.UnitTests.Messaging
     [FixtureLifeCycle(LifeCycle.InstancePerTestCase)]
     public class MessageListener_GetMessages_tests
     {
-        private readonly MessageSource _source = new MessageSource();
+        private readonly MessageSource _source = new();
 
         [Test]
         public void GetMessages_Of_Object_should_return_all_received_messages()

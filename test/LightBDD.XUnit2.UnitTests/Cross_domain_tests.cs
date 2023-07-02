@@ -4,7 +4,6 @@ using System.Diagnostics;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace LightBDD.XUnit2.UnitTests
 {

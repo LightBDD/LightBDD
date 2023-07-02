@@ -17,10 +17,10 @@ namespace LightBDD.Framework.Resources
     {
         private readonly Func<CancellationToken, Task<TResource>> _resourceFactory;
         private readonly SemaphoreSlim _semaphore;
-        private readonly ConcurrentQueue<TResource> _resources = new ConcurrentQueue<TResource>();
-        private readonly ConcurrentQueue<TResource> _pool = new ConcurrentQueue<TResource>();
+        private readonly ConcurrentQueue<TResource> _resources = new();
+        private readonly ConcurrentQueue<TResource> _pool = new();
         private readonly bool _controlDisposal;
-        private readonly CancellationTokenSource _disposalCancellationTokenSource = new CancellationTokenSource();
+        private readonly CancellationTokenSource _disposalCancellationTokenSource = new();
 
         /// <summary>
         /// Creates resource pool with pre-set list of resources, specified by <paramref name="resources"/> parameter.

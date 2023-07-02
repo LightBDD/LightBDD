@@ -6,7 +6,7 @@ namespace LightBDD.Core.ExecutionContext.Implementation
 {
     internal class CurrentStepProperty : IContextProperty
     {
-        private readonly Stack<IStep> _steps = new Stack<IStep>();
+        private readonly Stack<IStep> _steps = new();
 
         public IStep Step => _steps.Peek() ?? throw new InvalidOperationException("Current task is not executing any scenario steps. Ensure that feature is used within task running scenario step.");
 

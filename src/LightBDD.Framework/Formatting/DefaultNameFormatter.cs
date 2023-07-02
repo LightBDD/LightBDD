@@ -14,7 +14,7 @@ namespace LightBDD.Framework.Formatting
         /// <summary>
         /// Returns instance of the <see cref="DefaultNameFormatter"/>.
         /// </summary>
-        public static DefaultNameFormatter Instance { get; } = new DefaultNameFormatter();
+        public static DefaultNameFormatter Instance { get; } = new();
 
         /// <summary>
         /// Formats name into readable text.

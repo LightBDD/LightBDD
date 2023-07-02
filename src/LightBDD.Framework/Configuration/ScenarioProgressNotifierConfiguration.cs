@@ -12,7 +12,7 @@ namespace LightBDD.Framework.Configuration
     [Obsolete]
     public class ScenarioProgressNotifierConfiguration : FeatureConfiguration
     {
-        private readonly ScenarioProgressNotifierComposer _composer = new ScenarioProgressNotifierComposer();
+        private readonly ScenarioProgressNotifierComposer _composer = new();
 
         /// <summary>
         /// Returns function providing scenario progress notifier, where function parameter is feature fixture class instance.

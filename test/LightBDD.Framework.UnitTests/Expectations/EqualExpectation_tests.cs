@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.UnitTests.Expectations.Helpers;
 using NUnit.Framework;

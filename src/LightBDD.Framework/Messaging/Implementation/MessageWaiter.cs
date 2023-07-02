@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Formatting.Diagnostics;
-using LightBDD.Framework.Implementation;
 
 namespace LightBDD.Framework.Messaging.Implementation
 {
@@ -13,7 +11,7 @@ namespace LightBDD.Framework.Messaging.Implementation
     {
         private readonly MessageListener _listener;
         private readonly Func<TMessage, bool> _predicate;
-        private readonly TaskCompletionSource<TMessage> _tcs = new TaskCompletionSource<TMessage>();
+        private readonly TaskCompletionSource<TMessage> _tcs = new();
 
         public MessageWaiter(MessageListener listener, Func<TMessage, bool> predicate)
         {

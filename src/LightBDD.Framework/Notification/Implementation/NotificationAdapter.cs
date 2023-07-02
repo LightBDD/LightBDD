@@ -12,7 +12,7 @@ namespace LightBDD.Framework.Notification.Implementation
     {
         private readonly IFeatureProgressNotifier _featureProgressNotifier;
         private readonly Func<object, IScenarioProgressNotifier> _scenarioProgressNotifierProvider;
-        private readonly AsyncLocal<IScenarioProgressNotifier> _scenarioNotifier = new AsyncLocal<IScenarioProgressNotifier>();
+        private readonly AsyncLocal<IScenarioProgressNotifier> _scenarioNotifier = new();
 
         public NotificationAdapter(IFeatureProgressNotifier featureProgressNotifier, Func<object, IScenarioProgressNotifier> scenarioProgressNotifierProvider)
         {

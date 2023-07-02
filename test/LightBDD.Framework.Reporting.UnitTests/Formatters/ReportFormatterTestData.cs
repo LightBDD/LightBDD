@@ -1,17 +1,15 @@
 ﻿using System;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
-using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Core.Results.Parameters.Trees;
-using LightBDD.Framework.Parameters;
 using LightBDD.UnitTests.Helpers;
 
 namespace LightBDD.Framework.Reporting.UnitTests.Formatters
 {
     internal static class ReportFormatterTestData
     {
-        private static DateTimeOffset _startDate = new DateTimeOffset(2014, 09, 23, 19, 21, 57, 55, TimeSpan.Zero);
+        private static DateTimeOffset _startDate = new(2014, 09, 23, 19, 21, 57, 55, TimeSpan.Zero);
 
         public static IFeatureResult GetFeatureResultWithDescription()
         {

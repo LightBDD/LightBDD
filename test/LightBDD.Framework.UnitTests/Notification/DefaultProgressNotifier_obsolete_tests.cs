@@ -126,7 +126,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         public void NotifyFeatureStart_should_omit_labels_if_not_provided()
         {
             var featureInfo = Fake.Object<TestResults.TestFeatureInfo>();
-            featureInfo.Labels = new string[0];
+            featureInfo.Labels = Array.Empty<string>();
             ((IFeatureProgressNotifier)_notifier).NotifyFeatureStart(featureInfo);
 
             var expected = $"FEATURE: {featureInfo.Name}{Environment.NewLine}  {featureInfo.Description}";
@@ -137,7 +137,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         public void NotifyScenarioStart_should_omit_labels_if_not_provided()
         {
             var scenarioInfo = Fake.Object<TestResults.TestScenarioInfo>();
-            scenarioInfo.Labels = new string[0];
+            scenarioInfo.Labels = Array.Empty<string>();
             ((IScenarioProgressNotifier)_notifier).NotifyScenarioStart(scenarioInfo);
 
             var expected = $"SCENARIO: {scenarioInfo.Name}";
@@ -148,7 +148,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         public void NotifyScenarioFinished_should_omit_execution_time_if_not_provided()
         {
             var scenarioInfo = Fake.Object<TestResults.TestScenarioInfo>();
-            scenarioInfo.Labels = new string[0];
+            scenarioInfo.Labels = Array.Empty<string>();
             var scenarioResult = Fake.Object<TestResults.TestScenarioResult>();
             scenarioResult.Info = scenarioInfo;
             scenarioResult.Status = ExecutionStatus.Passed;
@@ -170,7 +170,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         public void NotifyScenarioFinished_should_omit_status_details_if_not_provided()
         {
             var scenarioInfo = Fake.Object<TestResults.TestScenarioInfo>();
-            scenarioInfo.Labels = new string[0];
+            scenarioInfo.Labels = Array.Empty<string>();
             var scenarioResult = Fake.Object<TestResults.TestScenarioResult>();
             scenarioResult.Info = scenarioInfo;
             scenarioResult.Status = ExecutionStatus.Passed;

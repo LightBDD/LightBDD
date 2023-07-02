@@ -28,7 +28,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
             return runner.Object;
         }
 
-        public static Mock<ICoreScenarioBuilder> CreateScenarioBuilder() => new Mock<ICoreScenarioBuilder>();
+        public static Mock<ICoreScenarioBuilder> CreateScenarioBuilder() => new();
 
         public static List<StepDescriptor> ExpectAddSteps(this Mock<ICoreScenarioBuilder> builder)
         {

@@ -8,7 +8,7 @@ namespace LightBDD.Framework.UnitTests.Formatting
     [TestFixture]
     public class FormatBooleanAttribute_tests
     {
-        private readonly ValueFormattingServiceStub _formattingService = new ValueFormattingServiceStub(CultureInfo.InvariantCulture);
+        private readonly ValueFormattingServiceStub _formattingService = new(CultureInfo.InvariantCulture);
 
         [Test]
         public void FormatValue_should_format_boolean()

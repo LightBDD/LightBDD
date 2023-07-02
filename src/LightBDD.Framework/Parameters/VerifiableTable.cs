@@ -7,7 +7,6 @@ using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
-using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Formatting.Values;
 using LightBDD.Framework.Parameters.Implementation;
 using LightBDD.Framework.Results.Implementation;
@@ -99,7 +98,7 @@ namespace LightBDD.Framework.Parameters
                     GetExpectedRowResults(),
                     ParameterVerificationStatus.Exception,
                     new InvalidOperationException($"Failed to retrieve rows: {ex.Message}", ex));
-                ActualRows = new TRow[0];
+                ActualRows = Array.Empty<TRow>();
                 return;
             }
             SetActual(actualCollection);
@@ -193,7 +192,7 @@ namespace LightBDD.Framework.Parameters
             /// <summary>
             /// Value representing no actual value.
             /// </summary>
-            public static readonly RowDataActualValue None = new RowDataActualValue(default(TRow));
+            public static readonly RowDataActualValue None = new(default(TRow));
 
             /// <summary>
             /// Constructor setting row value.
@@ -226,7 +225,7 @@ namespace LightBDD.Framework.Parameters
             /// Implicit operator converting row to actual row value.
             /// </summary>
             /// <param name="row"></param>
-            public static implicit operator RowDataActualValue(TRow row) => new RowDataActualValue(row);
+            public static implicit operator RowDataActualValue(TRow row) => new(row);
         }
 
         void IComplexParameter.SetValueFormattingService(IValueFormattingService formattingService)

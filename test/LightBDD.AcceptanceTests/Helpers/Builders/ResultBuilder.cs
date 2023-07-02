@@ -6,7 +6,7 @@ namespace LightBDD.AcceptanceTests.Helpers.Builders
 {
     internal class ResultBuilder
     {
-        private readonly List<FeatureBuilder> _features = new List<FeatureBuilder>();
+        private readonly List<FeatureBuilder> _features = new();
 
         public FeatureBuilder NewFeature(string feature)
         {

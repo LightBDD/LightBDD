@@ -1,7 +1,7 @@
 LightBDD
 ===========================================
 
-Version vNext
+Version 3.7.0
 ----------------------------------------
 + #207 (LightBDD.Framework)(Change) Modernised Html Report
 + #207 (LightBDD.Framework)(New) Added ability to overrride CSS styles, Logo and Favicon with cfg.ReportWritersConfiguration().AddFileWriter<HtmlReportFormatter>() method
@@ -12,6 +12,11 @@ Version vNext
 + #288 (LightBDD.Core)(Change) Format of non-inline step parameters with <$name> parameter reference
 + #293 (LightBDD.MsTest3)(New) Created LightBDD.MsTest3 project with dependency on MSTest.TestFramework 3.x
 + #293 (LightBDD.MsTest2)(Change) Deprecated LightBDD.MsTest2 project in favor of LightBDD.MsTest3
++ #294 (all)(Change) Updated net461 target framework to net462 (while leaving net461 coverage via .netstandard2.0 target framework)
++ #294 (LightBDD.XUnit2)(Change) Updated xunit package dependency version from 2.4.1 to 2.4.2
++ #294 (LightBDD.Framework)(Change) Updated dependency versions of System.Text.Json to 6.0.8 and System.Collections.Immutable to 6.0.0
++ #294 (VSIX)(Change) Updated package versions to latest
++ #296 (all)(Change) Added net6 target framework to all LightBDD packages
 
 Version 3.6.1
 ----------------------------------------

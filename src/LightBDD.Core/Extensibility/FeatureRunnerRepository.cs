@@ -5,8 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
-using LightBDD.Core.Dependencies;
-using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Extensibility.Implementation;
 
 namespace LightBDD.Core.Extensibility
@@ -18,7 +16,7 @@ namespace LightBDD.Core.Extensibility
     public class FeatureRunnerRepository : IDisposable
     {
         private readonly IntegrationContext _integrationContext;
-        private readonly ConcurrentDictionary<Type, Lazy<IFeatureRunner>> _runners = new ConcurrentDictionary<Type, Lazy<IFeatureRunner>>();
+        private readonly ConcurrentDictionary<Type, Lazy<IFeatureRunner>> _runners = new();
 
         /// <summary>
         /// Constructor instantiating factory with specified runner context.

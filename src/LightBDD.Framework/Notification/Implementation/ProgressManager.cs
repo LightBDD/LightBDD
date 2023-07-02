@@ -5,8 +5,8 @@ namespace LightBDD.Framework.Notification.Implementation
 {
     internal class ProgressManager
     {
-        private readonly object _sync = new object();
-        private readonly AsyncLocal<int?> _currentScenarioId = new AsyncLocal<int?>();
+        private readonly object _sync = new();
+        private readonly AsyncLocal<int?> _currentScenarioId = new();
         private int _totalScenarios;
         private int _finishedScenarios;
         private int _pendingScenarios;

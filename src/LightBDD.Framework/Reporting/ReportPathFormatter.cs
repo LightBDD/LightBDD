@@ -12,7 +12,7 @@ namespace LightBDD.Framework.Reporting
     /// </summary>
     public class ReportPathFormatter
     {
-        private readonly List<KeyValuePair<string, Func<IFeatureResult[], object>>> _parameters = new List<KeyValuePair<string, Func<IFeatureResult[], object>>>();
+        private readonly List<KeyValuePair<string, Func<IFeatureResult[], object>>> _parameters = new();
 
         /// <summary>
         /// Creates default <see cref="ReportPathFormatter"/> that supports following format parameters:
