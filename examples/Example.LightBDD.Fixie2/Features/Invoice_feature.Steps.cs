@@ -1,8 +1,8 @@
-﻿using LightBDD.Fixie2;
+﻿using LightBDD.Fixie3;
 using LightBDD.Framework;
 using LightBDD.Framework.Formatting;
 
-namespace Example.LightBDD.Fixie2.Features
+namespace Example.LightBDD.Fixie3.Features
 {
     public partial class Invoice_feature : FeatureFixture
     {

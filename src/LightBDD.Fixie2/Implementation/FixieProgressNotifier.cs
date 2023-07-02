@@ -2,7 +2,7 @@
 using LightBDD.Core.Notification;
 using LightBDD.Framework.Notification;
 
-namespace LightBDD.Fixie2.Implementation
+namespace LightBDD.Fixie3.Implementation
 {
     internal class FixieProgressNotifier
     {

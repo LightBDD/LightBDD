@@ -1,9 +1,9 @@
 ﻿using System;
 using LightBDD.Core.Formatting.ExceptionFormatting;
-using LightBDD.Fixie2.Implementation;
+using LightBDD.Fixie3.Implementation;
 using LightBDD.Framework.Configuration;
 
-namespace LightBDD.Fixie2.Configuration
+namespace LightBDD.Fixie3.Configuration
 {
     /// <summary>
     /// Extensions allowing to apply test framework default configuration.

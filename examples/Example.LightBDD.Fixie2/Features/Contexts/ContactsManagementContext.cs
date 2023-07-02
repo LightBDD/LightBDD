@@ -6,7 +6,7 @@ using LightBDD.Framework;
 using LightBDD.Framework.Parameters;
 using Shouldly;
 
-namespace Example.LightBDD.Fixie2.Features.Contexts
+namespace Example.LightBDD.Fixie3.Features.Contexts
 {
     public class ContactsManagementContext
     {

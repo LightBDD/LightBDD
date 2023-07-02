@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Fixie;
 
-namespace LightBDD.Fixie2.Implementation;
+namespace LightBDD.Fixie3.Implementation;
 
 internal static class ArgsParser
 {

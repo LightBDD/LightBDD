@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Fixie;
 
-namespace LightBDD.Fixie2.Implementation;
+namespace LightBDD.Fixie3.Implementation;
 
 internal class LightBddExecutionConvention : IExecution
 {

@@ -1,9 +1,9 @@
-using Example.LightBDD.Fixie2.Features.Contexts;
-using LightBDD.Fixie2;
+using Example.LightBDD.Fixie3.Features.Contexts;
+using LightBDD.Fixie3;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
 
-namespace Example.LightBDD.Fixie2.Features
+namespace Example.LightBDD.Fixie3.Features
 {
     /// <summary>
     /// This feature class describes usage of contextual scenarios and extended syntax.

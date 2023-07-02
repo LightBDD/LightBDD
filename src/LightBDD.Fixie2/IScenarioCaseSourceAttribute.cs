@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace LightBDD.Fixie2
+namespace LightBDD.Fixie3
 {
     /// <summary>
     /// An interface that should be implemented by attributes providing scenario cases for parameterized scenario methods.

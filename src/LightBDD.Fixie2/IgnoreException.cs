@@ -1,6 +1,6 @@
 using System;
 
-namespace LightBDD.Fixie2
+namespace LightBDD.Fixie3
 {
     /// <summary>
     /// Exception describing intention to skip currently executed scenario.

@@ -1,12 +1,12 @@
+using System;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution.Coordination;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Results;
 using LightBDD.Framework.Execution.Coordination;
 using LightBDD.Framework.Extensibility;
-using System;
 
-namespace LightBDD.Fixie2.Implementation
+namespace LightBDD.Fixie3.Implementation
 {
     internal class FixieFeatureCoordinator : FrameworkFeatureCoordinator
     {

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility.Execution;
 
-namespace LightBDD.Fixie2
+namespace LightBDD.Fixie3
 {
     /// <summary>
     /// Attribute allowing to ignore scenario in declarative way. It can be applied on scenario method or step method as well as feature class.

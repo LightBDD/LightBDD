@@ -1,7 +1,7 @@
 ﻿using LightBDD.Framework;
 using LightBDD.Framework.Extensibility;
 
-namespace LightBDD.Fixie2
+namespace LightBDD.Fixie3
 {
     /// <summary>
     /// Base class for feature tests with Fixie framework.

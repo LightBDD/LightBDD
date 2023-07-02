@@ -1,6 +1,6 @@
 using System;
 
-namespace LightBDD.Fixie2
+namespace LightBDD.Fixie3
 {
     /// <summary>
     /// Scenario attribute that has to be used for all Scenario methods.

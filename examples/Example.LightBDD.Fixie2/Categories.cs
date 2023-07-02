@@ -1,4 +1,4 @@
-namespace Example.LightBDD.Fixie2
+namespace Example.LightBDD.Fixie3
 {
     public static class Categories
     {

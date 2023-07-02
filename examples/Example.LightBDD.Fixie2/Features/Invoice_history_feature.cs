@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
-using LightBDD.Fixie2;
+using LightBDD.Fixie3;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
 
-namespace Example.LightBDD.Fixie2.Features
+namespace Example.LightBDD.Fixie3.Features
 {
     /// <summary>
     /// This feature class presents usage of fluent scenario syntax, that is enabled by NewScenario() method.

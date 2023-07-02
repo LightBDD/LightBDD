@@ -21,9 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.LightBDD.XUnit2", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Framework", "..\src\LightBDD.Framework\LightBDD.Framework.csproj", "{76150B64-C200-4893-8375-479E377389CC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Fixie2", "..\src\LightBDD.Fixie2\LightBDD.Fixie2.csproj", "{45E7A430-2F62-4C9A-9CDC-A4D1A2264123}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Fixie3", "..\src\LightBDD.Fixie2\LightBDD.Fixie3.csproj", "{45E7A430-2F62-4C9A-9CDC-A4D1A2264123}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.LightBDD.Fixie2", "Example.LightBDD.Fixie2\Example.LightBDD.Fixie2.csproj", "{2CC0F148-2994-412B-B730-81016E339702}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.LightBDD.Fixie3", "Example.LightBDD.Fixie2\Example.LightBDD.Fixie3.csproj", "{2CC0F148-2994-412B-B730-81016E339702}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Autofac", "..\src\LightBDD.Autofac\LightBDD.Autofac.csproj", "{BA30A12E-C25B-47DF-9761-C3D752C59D3A}"
 EndProject

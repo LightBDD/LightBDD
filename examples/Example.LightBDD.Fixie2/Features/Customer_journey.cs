@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
-using LightBDD.Fixie2;
+using LightBDD.Fixie3;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
 
 #pragma warning disable 1998
 
-namespace Example.LightBDD.Fixie2.Features
+namespace Example.LightBDD.Fixie3.Features
 {
     /// <summary>
     /// This feature class shows how to create asynchronous scenario from composite steps using basic syntax.

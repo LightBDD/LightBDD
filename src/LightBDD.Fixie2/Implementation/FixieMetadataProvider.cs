@@ -5,7 +5,7 @@ using System.Reflection;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 
-namespace LightBDD.Fixie2.Implementation
+namespace LightBDD.Fixie3.Implementation
 {
     internal class FixieMetadataProvider : CoreMetadataProvider
     {

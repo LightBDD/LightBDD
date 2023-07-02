@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29324.140
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B3AFFD69-36B4-43D6-A6AA-72914D15055C}"
 	ProjectSection(SolutionItems) = preProject
@@ -43,9 +43,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Framework.UnitTest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Framework.Reporting.UnitTests", "test\LightBDD.Framework.Reporting.UnitTests\LightBDD.Framework.Reporting.UnitTests.csproj", "{BBD59A28-DF7C-455A-BEDD-7EAE6D9CDC6D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Fixie2", "src\LightBDD.Fixie2\LightBDD.Fixie2.csproj", "{45E7A430-2F62-4C9A-9CDC-A4D1A2264123}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Fixie3", "src\LightBDD.Fixie2\LightBDD.Fixie3.csproj", "{45E7A430-2F62-4C9A-9CDC-A4D1A2264123}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Fixie2.UnitTests", "test\LightBDD.Fixie2.UnitTests\LightBDD.Fixie2.UnitTests.csproj", "{E747F4F0-60F4-413B-8C69-89184A4F2218}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Fixie3.UnitTests", "test\LightBDD.Fixie2.UnitTests\LightBDD.Fixie3.UnitTests.csproj", "{E747F4F0-60F4-413B-8C69-89184A4F2218}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Autofac", "src\LightBDD.Autofac\LightBDD.Autofac.csproj", "{BA30A12E-C25B-47DF-9761-C3D752C59D3A}"
 EndProject
@@ -64,7 +64,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{795CD637-D3F
 		src\Common.props = src\Common.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.XUnit2.IntegrationTests", "test\LightBDD.XUnit2.IntegrationTests\LightBDD.XUnit2.IntegrationTests.csproj", "{B958A138-9556-4AB4-9B63-D113F0309454}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.XUnit2.IntegrationTests", "test\LightBDD.XUnit2.IntegrationTests\LightBDD.XUnit2.IntegrationTests.csproj", "{B958A138-9556-4AB4-9B63-D113F0309454}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

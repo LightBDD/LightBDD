@@ -1,4 +1,4 @@
-namespace Example.LightBDD.Fixie2.Features.Contexts
+namespace Example.LightBDD.Fixie3.Features.Contexts
 {
     public class SpeditionContext
     {

@@ -3,7 +3,7 @@ using LightBDD.Core.Configuration;
 using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Notification;
 
-namespace LightBDD.Fixie2.UnitTests
+namespace LightBDD.Fixie3.UnitTests
 {
     public class ConfiguredLightBddScope : LightBddScope
     {

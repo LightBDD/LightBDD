@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace LightBDD.Fixie2
+namespace LightBDD.Fixie3
 {
     /// <summary>
     /// Attribute allowing to declare parameters for parameterized scenarios.

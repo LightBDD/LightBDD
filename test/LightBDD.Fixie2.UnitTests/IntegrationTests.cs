@@ -6,7 +6,7 @@ using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
 using Shouldly;
 
-namespace LightBDD.Fixie2.UnitTests
+namespace LightBDD.Fixie3.UnitTests
 {
     [FeatureDescription("desc")]
     [ScenarioCategory("Category C")]

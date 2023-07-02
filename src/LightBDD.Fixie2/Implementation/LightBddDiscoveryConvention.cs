@@ -5,7 +5,7 @@ using System.Reflection;
 using Fixie;
 using LightBDD.Core.Extensibility;
 
-namespace LightBDD.Fixie2.Implementation
+namespace LightBDD.Fixie3.Implementation
 {
     internal class LightBddDiscoveryConvention : IDiscovery
     {

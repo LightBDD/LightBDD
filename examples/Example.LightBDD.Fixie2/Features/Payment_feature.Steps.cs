@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using Example.Domain.Helpers;
-using LightBDD.Fixie2;
+using LightBDD.Fixie3;
 
-namespace Example.LightBDD.Fixie2.Features
+namespace Example.LightBDD.Fixie3.Features
 {
     public partial class Payment_feature : FeatureFixture
     {

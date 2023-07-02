@@ -1,13 +1,13 @@
 ﻿using System.Text;
 using System.Threading.Tasks;
 using Example.Domain.Helpers;
-using LightBDD.Fixie2;
+using LightBDD.Fixie3;
 using LightBDD.Framework;
 using LightBDD.Framework.Reporting;
 
 #pragma warning disable 1998
 
-namespace Example.LightBDD.Fixie2.Features
+namespace Example.LightBDD.Fixie3.Features
 {
     public partial class Customer_journey
     {

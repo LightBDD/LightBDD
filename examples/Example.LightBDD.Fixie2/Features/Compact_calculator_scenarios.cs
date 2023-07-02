@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Example.Domain.Domain;
-using LightBDD.Fixie2;
+using LightBDD.Fixie3;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
 using Shouldly;
 
-namespace Example.LightBDD.Fixie2.Features
+namespace Example.LightBDD.Fixie3.Features
 {
     [FeatureDescription(
 @"As LightBDD user,

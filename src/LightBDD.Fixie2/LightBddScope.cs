@@ -1,13 +1,12 @@
-using System;
 using System.Linq;
 using Fixie;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Formatting.ExceptionFormatting;
-using LightBDD.Fixie2.Configuration;
-using LightBDD.Fixie2.Implementation;
+using LightBDD.Fixie3.Configuration;
+using LightBDD.Fixie3.Implementation;
 using LightBDD.Framework.Configuration;
 
-namespace LightBDD.Fixie2
+namespace LightBDD.Fixie3
 {
     /// <summary>
     /// LightBddScope class allowing to initialize and finalize LightBDD in Fixie framework.

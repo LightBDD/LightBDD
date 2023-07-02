@@ -1,8 +1,8 @@
 ﻿using System;
 using LightBDD.Core.Extensibility;
-using LightBDD.Fixie2.Implementation;
+using LightBDD.Fixie3.Implementation;
 
-namespace LightBDD.Fixie2
+namespace LightBDD.Fixie3
 {
     /// <summary>
     /// Class allowing to instantiate <see cref="IFeatureRunner"/> that is being configured to work with Fixie framework.

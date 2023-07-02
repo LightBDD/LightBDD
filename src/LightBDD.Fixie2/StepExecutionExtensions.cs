@@ -1,7 +1,7 @@
 using LightBDD.Core.Results;
 using LightBDD.Framework;
 
-namespace LightBDD.Fixie2
+namespace LightBDD.Fixie3
 {
     /// <summary>
     /// Extension class for <see cref="StepExecution"/> allowing to ignore currently running steps.

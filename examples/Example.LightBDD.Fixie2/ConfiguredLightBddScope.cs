@@ -1,5 +1,5 @@
 using LightBDD.Core.Configuration;
-using LightBDD.Fixie2;
+using LightBDD.Fixie3;
 using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Reporting.Formatters;
 
@@ -8,7 +8,7 @@ using LightBDD.Framework.Reporting.Formatters;
  * It is required to do it in all assemblies with LightBDD scenarios.
  */
 
-namespace Example.LightBDD.Fixie2
+namespace Example.LightBDD.Fixie3
 {
     /// <summary>
     /// This class extends LightBddScope and allows to customize the default configuration of LightBDD.

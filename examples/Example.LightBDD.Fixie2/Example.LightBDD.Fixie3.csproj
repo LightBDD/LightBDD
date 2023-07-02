@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\LightBDD.Fixie2\LightBDD.Fixie2.csproj" />
+    <ProjectReference Include="..\..\src\LightBDD.Fixie2\LightBDD.Fixie3.csproj" />
     <ProjectReference Include="..\Example.Domain\Example.Domain.csproj" />
   </ItemGroup>
 

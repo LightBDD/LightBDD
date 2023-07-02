@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Threading;
 
-namespace LightBDD.Fixie2.Implementation
+namespace LightBDD.Fixie3.Implementation
 {
     internal class TestContextProvider
     {

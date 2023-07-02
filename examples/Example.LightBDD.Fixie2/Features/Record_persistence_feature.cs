@@ -1,10 +1,10 @@
 ﻿using System;
-using LightBDD.Fixie2;
+using LightBDD.Fixie3;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;
 using LightBDD.Framework.Scenarios;
 
-namespace Example.LightBDD.Fixie2.Features
+namespace Example.LightBDD.Fixie3.Features
 {
     /// <summary>
     /// This feature class presents the usage of <see cref="InputTree{TData}"/> and <see cref="VerifiableTree{TData}"/> parameter types to structurally verify and visualize hierarchical object structure.

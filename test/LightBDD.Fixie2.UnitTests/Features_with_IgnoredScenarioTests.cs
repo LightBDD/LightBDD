@@ -3,7 +3,7 @@ using LightBDD.Framework.Scenarios;
 using Shouldly;
 using System;
 
-namespace LightBDD.Fixie2.UnitTests
+namespace LightBDD.Fixie3.UnitTests
 {
     [IgnoreScenario("all ignored")]
     public class Features_with_IgnoredScenarioTests : FeatureFixture

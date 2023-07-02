@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LightBDD.Fixie2
+namespace LightBDD.Fixie3
 {
     /// <summary>
     /// Attribute that should be applied to all test classes representing feature tests.
