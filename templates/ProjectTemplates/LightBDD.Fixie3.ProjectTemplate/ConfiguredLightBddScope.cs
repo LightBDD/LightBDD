@@ -3,10 +3,6 @@ using LightBDD.Fixie3;
 
 namespace $safeprojectname$
 {
-    internal class WithLightBddConventions : LightBddDiscoveryConvention
-    {
-    }
-
     internal class ConfiguredLightBddScope : LightBddScope
     {
         protected override void OnConfigure(LightBddConfiguration configuration)

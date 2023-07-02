@@ -13,7 +13,6 @@ namespace LightBDD.Fixie3
     ///
     /// Example showing how to initialize LightBDD in Fixie framework:
     /// <example>
-    /// class WithLightBddDiscovery: LightBddDiscoveryConvention { }
     /// class ConfiguredLightBddScope: LightBddScope { }
     /// </example>
     ///
