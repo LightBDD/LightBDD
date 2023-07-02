@@ -19,7 +19,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         public void It_should_accept_parameterless_methods()
         {
             var methodInfo = GetMethod(nameof(Parameterless_method));
-            var descriptor = new ScenarioDescriptor(methodInfo, new object[0]);
+            var descriptor = new ScenarioDescriptor(methodInfo, Array.Empty<object>());
             Assert.That(descriptor.MethodInfo, Is.SameAs(methodInfo));
             Assert.That(descriptor.Parameters, Is.Empty);
         }

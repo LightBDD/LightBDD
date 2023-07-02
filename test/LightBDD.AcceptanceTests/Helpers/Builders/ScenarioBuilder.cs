@@ -7,7 +7,7 @@ namespace LightBDD.AcceptanceTests.Helpers.Builders
 {
     internal class ScenarioBuilder
     {
-        private readonly List<TestResults.TestStepResult> _steps = new List<TestResults.TestStepResult>();
+        private readonly List<TestResults.TestStepResult> _steps = new();
         public ExecutionStatus Status { get; }
         public string[] Categories { get; private set; }
         public string Name { get; private set; } = "scenario";
@@ -31,8 +31,9 @@ namespace LightBDD.AcceptanceTests.Helpers.Builders
 
         public ScenarioBuilder WithSampleSteps()
         {
-            _steps.Add(TestResults.CreateStepResult(1, "step1", ExecutionStatus.Passed, DateTimeOffset.Now, TimeSpan.FromSeconds(1)));
-            _steps.Add(TestResults.CreateStepResult(2, "step2", Status, DateTimeOffset.Now, TimeSpan.FromSeconds(1)));
+            _steps.Add(TestResults.CreateStepResult(1, "step1", ExecutionStatus.Passed, DateTimeOffset.Now, TimeSpan.FromSeconds(1)).WithRuntimeId(Guid.NewGuid()).WithSubSteps(
+                TestResults.CreateStepResult(1, "sub-step1", ExecutionStatus.Passed, DateTimeOffset.Now, TimeSpan.FromMilliseconds(500))).WithRuntimeId(Guid.NewGuid()));
+            _steps.Add(TestResults.CreateStepResult(2, "step2", Status, DateTimeOffset.Now, TimeSpan.FromSeconds(1)).WithRuntimeId(Guid.NewGuid()));
 
             return this;
         }

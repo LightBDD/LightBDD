@@ -13,7 +13,7 @@ namespace LightBDD.Core.Execution.Coordination
     /// </summary>
     public abstract class FeatureCoordinator : IDisposable
     {
-        private static readonly object Sync = new object();
+        private static readonly object Sync = new();
         /// <summary>
         /// Feature coordinator instance.
         /// </summary>
@@ -77,6 +77,7 @@ namespace LightBDD.Core.Execution.Coordination
                     throw new InvalidOperationException($"FeatureCoordinator of {Instance.GetType()} type is already installed");
                 Instance = coordinator;
             }
+            coordinator.Initialize();
         }
 
         private void UninstallSelf()
@@ -129,6 +130,11 @@ namespace LightBDD.Core.Execution.Coordination
                 runner.Dispose();
                 _featureAggregator.Aggregate(runner.GetFeatureResult());
             }
+        }
+
+        private void Initialize()
+        {
+            RunnerRepository.Initialize();
         }
     }
 }

@@ -5,9 +5,6 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
-using System.Xml.Linq;
-using LightBDD.Core.Configuration;
-using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Formatting.NameDecorators;
 using LightBDD.Core.Metadata;
@@ -22,9 +19,9 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
     {
         private static readonly IStepNameDecorator StepNameDecorator = new HtmlStepNameDecorator();
         private readonly HtmlTextWriter _writer;
-        private readonly string _styles = ReadResource("LightBDD.Framework.Reporting.Formatters.Html.styles.css");
-        private readonly string _scripts = ReadResource("LightBDD.Framework.Reporting.Formatters.Html.scripts.js");
-        private readonly string _favico = ReadBase64Resource("LightBDD.Framework.Reporting.Formatters.Html.lightbdd_small.ico");
+        private readonly string _styles = ReadResource("LightBDD.Framework.Reporting.Formatters.Html.Resources.styles.css");
+        private readonly string _scripts = ReadResource("LightBDD.Framework.Reporting.Formatters.Html.Resources.scripts.js");
+        private readonly string _favico = ReadBase64Resource("LightBDD.Framework.Reporting.Formatters.Html.Resources.lightbdd_small.ico");
 
         private readonly IFeatureResult[] _features;
 
@@ -35,6 +32,45 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             _writer = new HtmlTextWriter(new StreamWriter(outputStream));
             _features = features;
             _categories = GroupCategories(features);
+        }
+
+        public void Write(HtmlReportFormatterOptions options)
+        {
+            _writer
+                .WriteTag(Html.Text("<!DOCTYPE HTML>"))
+                .WriteTag(Html.Tag(Html5Tag.Html).Attribute("lang","en").Content(
+                    Html.Tag(Html5Tag.Head).Content(
+                        Html.Tag(Html5Tag.Meta).Attribute(Html5Attribute.Charset, "UTF-8"),
+                        Html.Tag(Html5Tag.Meta).Attribute(Html5Attribute.Name,"viewport").Attribute(Html5Attribute.Content, "width=device-width, initial-scale=1"),
+                        GetFavicon(options.CustomFavicon),
+                        Html.Tag(Html5Tag.Title).Content("Summary"),
+                        Html.Tag(Html5Tag.Style).Content(EmbedCssImages(options), false, false),
+                        Html.Tag(Html5Tag.Style).Content(_styles, false, false),
+                        Html.Tag(Html5Tag.Style).Content(options.CssContent, false, false).SkipEmpty(),
+                        Html.Tag(Html5Tag.Script).Content(_scripts, false, false)),
+                    Html.Tag(Html5Tag.Body).Content(
+                        WriteExecutionSummary(),
+                        WriteFeatureSummary(),
+                        WriteFeatureDetails(),
+                        Html.Tag(Html5Tag.Div).Class("footer").Content(Html.Text("Generated with "), Html.Tag(Html5Tag.A).Content("LightBDD v" + GetLightBddVersion()).Href("https://github.com/LightBDD/LightBDD")),
+                        Html.Tag(Html5Tag.Script).Content("initialize();", false, false)
+                    )));
+        }
+
+        private TagBuilder GetFavicon(Tuple<string, byte[]> custom)
+        {
+            var type = "image/x-icon";
+            var favicon = _favico;
+            if (custom != null)
+            {
+                type = custom.Item1;
+                favicon = Convert.ToBase64String(custom.Item2);
+            }
+
+            return Html.Tag(Html5Tag.Link)
+                .Attribute(Html5Attribute.Rel, "icon")
+                .Attribute(Html5Attribute.Type, type)
+                .Attribute(Html5Attribute.Href, $"data:{type};base64,{favicon}");
         }
 
         private static Dictionary<string, string> GroupCategories(IEnumerable<IFeatureResult> features)
@@ -76,26 +112,34 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             var ignoredScenarios = _features.CountScenariosWithStatus(ExecutionStatus.Ignored);
             var timeSummary = _features.GetTestExecutionTimeSummary();
 
-            return Html.Tag(Html5Tag.Section).Content(
-                Html.Tag(Html5Tag.H1).Content("Execution summary"),
-                Html.Tag(Html5Tag.Article).Content(
-                    Html.Tag(Html5Tag.Table).Class("summary").Content(
-                        GetKeyValueTableRow("Test execution start time:", timeSummary.Start.ToString("yyyy-MM-dd HH:mm:ss UTC")),
-                        GetKeyValueTableRow("Test execution end time:", timeSummary.End.ToString("yyyy-MM-dd HH:mm:ss UTC")),
-                        GetKeyValueTableRow("Test execution time:", timeSummary.Duration.FormatPretty()),
-                        GetKeyValueTableRow("Test execution time (aggregated):", timeSummary.Aggregated.FormatPretty()),
-                        GetKeyValueTableRow("Number of features:", _features.Length.ToString()),
-                        GetKeyValueTableRow("Number of scenarios:", _features.CountScenarios()),
+            return Html.Tag(Html5Tag.Section).Class("execution-summary").Content(
+                Html.Tag(Html5Tag.H1).Content("Test execution summary"),
+                Html.Tag(Html5Tag.Div).Class("content").Content(
+                    Html.Tag(Html5Tag.Table).Content(
+                        GetKeyValueHeaderTableRow("Execution"),
+                        GetOverallStatus(),
+                        GetKeyValueTableRow("Start date:", timeSummary.Start.ToString("yyyy-MM-dd (UTC)")),
+                        GetKeyValueTableRow("Start time:", timeSummary.Start.ToString("HH:mm:ss")),
+                        GetKeyValueTableRow("End time:", timeSummary.End.ToString("HH:mm:ss")),
+                        GetKeyValueTableRow("Duration:", timeSummary.Duration.FormatPretty())),
+                    Html.Tag(Html5Tag.Table).Content(
+                        GetKeyValueHeaderTableRow("Content"),
+                        GetKeyValueTableRow("Features:", _features.Length.ToString()),
+                        GetKeyValueTableRow("Scenarios:", _features.CountScenarios()),
                         GetKeyValueTableRow("Passed scenarios:", _features.CountScenariosWithStatus(ExecutionStatus.Passed)),
-                        GetKeyValueTableRow("Bypassed scenarios:", bypassedScenarios, "bypassedAlert", "bypassedDetails"),
-                        GetKeyValueTableRow("Failed scenarios:", failedScenarios, "failedAlert", "failedDetails"),
-                        GetKeyValueTableRow("Ignored scenarios:", ignoredScenarios, "ignoredAlert", "ignoredDetails"),
-                        GetKeyValueTableRow("Number of steps:", _features.CountSteps()),
-                        GetKeyValueTableRow("Passed steps:", _features.CountStepsWithStatus(ExecutionStatus.Passed)),
-                        GetKeyValueTableRow("Bypassed steps:", _features.CountStepsWithStatus(ExecutionStatus.Bypassed), "bypassedAlert"),
-                        GetKeyValueTableRow("Failed steps:", _features.CountStepsWithStatus(ExecutionStatus.Failed), "failedAlert"),
-                        GetKeyValueTableRow("Ignored steps:", _features.CountStepsWithStatus(ExecutionStatus.Ignored), "ignoredAlert"),
-                        GetKeyValueTableRow("Not Run steps:", _features.CountStepsWithStatus(ExecutionStatus.NotRun)))));
+                        GetKeyValueTableRow("Bypassed scenarios:", bypassedScenarios, "bypassedAlert", "bypassedDetails", true),
+                        GetKeyValueTableRow("Failed scenarios:", failedScenarios, "failedAlert", "failedDetails", true),
+                        GetKeyValueTableRow("Ignored scenarios:", ignoredScenarios, "ignoredAlert", "ignoredDetails", true))));
+        }
+
+        private TagBuilder GetOverallStatus()
+        {
+            var executionStatus = _features.SelectMany(f => f.GetScenarios()).Select(s => s.Status).OrderByDescending(x => x).DefaultIfEmpty(ExecutionStatus.NotRun).First();
+            if (executionStatus != ExecutionStatus.Failed)
+                executionStatus = ExecutionStatus.Passed;
+            return Html.Tag(Html5Tag.Tr).Content(
+                Html.Tag(Html5Tag.Th).Content("Overall status:"),
+                Html.Tag(Html5Tag.Td).Class($"overall-status {GetStatusClass(executionStatus)}").Content(executionStatus.ToString()));
         }
 
         private static IHtmlNode GetKeyValueTableRow(string key, string value)
@@ -105,8 +149,17 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 Html.Tag(Html5Tag.Td).Content(value));
         }
 
-        private static IHtmlNode GetKeyValueTableRow(string key, int value, string classNameIfNotZero = null, string detailsId = null)
+        private static IHtmlNode GetKeyValueHeaderTableRow(string key)
         {
+            return Html.Tag(Html5Tag.Tr).Content(
+                Html.Tag(Html5Tag.Th).Content(key).Class("subHeader").Attribute(Html5Attribute.Colspan, "2"));
+        }
+
+        private static IHtmlNode GetKeyValueTableRow(string key, int value, string classNameIfNotZero = null, string detailsId = null, bool ignoreIfZero = false)
+        {
+            if (ignoreIfZero && value == 0)
+                return Html.Nothing();
+
             var valueTag = Html.Tag(Html5Tag.Span).Content(value.ToString());
 
             if (classNameIfNotZero != null && value != 0)
@@ -125,11 +178,11 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 Html.Tag(Html5Tag.Td).Content(valueTag, detailsTag));
         }
 
-        private IHtmlNode WriteFeatureList()
+        private IHtmlNode WriteFeatureSummary()
         {
-            return Html.Tag(Html5Tag.Section).Content(
+            return Html.Tag(Html5Tag.Section).Class("features-summary").Content(
                 Html.Tag(Html5Tag.H1).Content("Feature summary"),
-                Html.Tag(Html5Tag.Article).Content(
+                Html.Tag(Html5Tag.Div).Class("content").Content(
                     Html.Tag(Html5Tag.Table).Id("featuresSummary").Class("features").Content(
                         GetSummaryTable())));
         }
@@ -142,17 +195,20 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
             yield return GetSummaryTableHeaders(
                 Tuple.Create("Feature", sortable, "sortTable('featuresSummary',0,false,this)"),
+
                 Tuple.Create("Scenarios", sortable, "sortTable('featuresSummary',1,true,this)"),
                 Tuple.Create("Passed", sortableMinor, "sortTable('featuresSummary',2,true,this)"),
                 Tuple.Create("Bypassed", sortableMinor, "sortTable('featuresSummary',3,true,this)"),
                 Tuple.Create("Failed", sortableMinor, "sortTable('featuresSummary',4,true,this)"),
                 Tuple.Create("Ignored", sortableMinor, "sortTable('featuresSummary',5,true,this)"),
+
                 Tuple.Create("Steps", sortable, "sortTable('featuresSummary',6,true,this)"),
                 Tuple.Create("Passed", sortableMinor, "sortTable('featuresSummary',7,true,this)"),
                 Tuple.Create("Bypassed", sortableMinor, "sortTable('featuresSummary',8,true,this)"),
                 Tuple.Create("Failed", sortableMinor, "sortTable('featuresSummary',9,true,this)"),
                 Tuple.Create("Ignored", sortableMinor, "sortTable('featuresSummary',10,true,this)"),
                 Tuple.Create("Not Run", sortableMinor, "sortTable('featuresSummary',11,true,this)"),
+
                 Tuple.Create("Duration", sortable, "sortTable('featuresSummary',13,true,this)"),
                 Tuple.Create("", hidden, ""),
                 Tuple.Create("Aggregated", sortableMinor, "sortTable('featuresSummary',15,true,this)"),
@@ -162,6 +218,35 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 );
             yield return Html.Tag(Html5Tag.Tbody).Content(_features.Select((t, index) => GetFeatureSummary(t, index + 1)));
 
+            yield return GetFeaturesSummaryFooter();
+        }
+
+        private IHtmlNode GetFeaturesSummaryFooter()
+        {
+            var timeSummary = _features.GetTestExecutionTimeSummary();
+            return Html.Tag(Html5Tag.Tfoot).Content(Html.Tag(Html5Tag.Tr).Content(
+                Html.Tag(Html5Tag.Td).Content("Totals"),
+
+                Html.Tag(Html5Tag.Td).Content(_features.CountScenarios().ToString()),
+                Html.Tag(Html5Tag.Td).Content(_features.CountScenariosWithStatus(ExecutionStatus.Passed).ToString()),
+                GetNumericTagWithOptionalClass(Html5Tag.Td, "bypassedAlert", _features.CountScenariosWithStatus(ExecutionStatus.Bypassed)),
+                GetNumericTagWithOptionalClass(Html5Tag.Td, "failedAlert", _features.CountScenariosWithStatus(ExecutionStatus.Failed)),
+                GetNumericTagWithOptionalClass(Html5Tag.Td, "ignoredAlert", _features.CountScenariosWithStatus(ExecutionStatus.Ignored)),
+
+                Html.Tag(Html5Tag.Td).Content(_features.CountSteps().ToString()),
+                Html.Tag(Html5Tag.Td).Content(_features.CountStepsWithStatus(ExecutionStatus.Passed).ToString()),
+                GetNumericTagWithOptionalClass(Html5Tag.Td, "bypassedAlert", _features.CountStepsWithStatus(ExecutionStatus.Bypassed)),
+                GetNumericTagWithOptionalClass(Html5Tag.Td, "failedAlert", _features.CountStepsWithStatus(ExecutionStatus.Failed)),
+                GetNumericTagWithOptionalClass(Html5Tag.Td, "ignoredAlert", _features.CountStepsWithStatus(ExecutionStatus.Ignored)),
+                Html.Tag(Html5Tag.Td).Content(_features.CountStepsWithStatus(ExecutionStatus.NotRun).ToString()),
+
+                Html.Tag(Html5Tag.Td).Content(timeSummary.Duration.FormatPretty()),
+                Html.Tag(Html5Tag.Td).Class("hidden").Content(timeSummary.Duration.Ticks.ToString()),
+                Html.Tag(Html5Tag.Td).Content(timeSummary.Aggregated.FormatPretty()),
+                Html.Tag(Html5Tag.Td).Class("hidden").Content(timeSummary.Aggregated.Ticks.ToString()),
+                Html.Tag(Html5Tag.Td).Content(timeSummary.Average.FormatPretty()),
+                Html.Tag(Html5Tag.Td).Class("hidden").Content(timeSummary.Average.Ticks.ToString())
+            ));
         }
 
         private static IHtmlNode GetFeatureSummary(IFeatureResult feature, int index)
@@ -207,7 +292,16 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         {
             return Html.Tag(Html5Tag.Span)
                 .Class("label")
-                .Content(string.IsNullOrWhiteSpace(label) ? string.Empty : $"[{label.Trim()}]")
+                .Content(string.IsNullOrWhiteSpace(label) ? string.Empty : label.Trim())
+                .SpaceBefore()
+                .SkipEmpty();
+        }
+
+        private static IHtmlNode GetCategory(string category)
+        {
+            return Html.Tag(Html5Tag.Span)
+                .Class("category")
+                .Content(string.IsNullOrWhiteSpace(category) ? string.Empty : category.Trim())
                 .SpaceBefore()
                 .SkipEmpty();
         }
@@ -235,7 +329,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 GetToggleNodes(),
                 GetStatusFilterNodes(),
                 GetCategoryFilterNodes(),
-                Html.Tag(Html5Tag.A).Class("shareable").Href("").Content("[&#8734;filtered link]", false, false).Id("optionsLink"));
+                Html.Tag(Html5Tag.A).Class("shareable").Href("").Content("filtered link", false, false).Id("optionsLink").SpaceBefore());
 
             for (var i = 0; i < _features.Length; ++i)
                 yield return GetFeatureDetails(_features[i], i + 1);
@@ -290,15 +384,18 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             return Html.Tag(Html5Tag.Div).Class("options").Content(
                 Html.Tag(Html5Tag.Span).Content("Toggle:"),
                 Html.Tag(Html5Tag.Span).Content(
-                GetOptionNode(
-                    "toggleFeatures",
-                    Html.Checkbox().Checked().SpaceBefore().OnClick("checkAll('toggleF',toggleFeatures.checked)"),
-                    "Features"),
-
-                GetOptionNode(
-                    "toggleScenarios",
-                    Html.Checkbox().Checked().SpaceBefore().OnClick("checkAll('toggleS',toggleScenarios.checked)"),
-                    "Scenarios")));
+                    GetOptionNode(
+                        "toggleFeatures",
+                        Html.Checkbox().Checked().SpaceBefore().OnClick("checkAll('toggleF',toggleFeatures.checked)"),
+                        "Features"),
+                    GetOptionNode(
+                        "toggleScenarios",
+                        Html.Checkbox().Checked().SpaceBefore().OnClick("checkAll('toggleS',toggleScenarios.checked)"),
+                        "Scenarios"),
+                    GetOptionNode(
+                        "toggleSubSteps",
+                        Html.Checkbox().Checked().SpaceBefore().OnClick("checkAll('toggleSS',toggleSubSteps.checked)"),
+                        "Sub Steps")));
         }
 
         private static IHtmlNode GetOptionNode(string elementId, TagBuilder element, string labelContent)
@@ -307,28 +404,30 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 Html.Tag(Html5Tag.Label).Content(GetCheckBoxTag(), Html.Text(labelContent)).For(elementId));
         }
 
-        private static IHtmlNode GetCheckBoxTag()
+        private static IHtmlNode GetCheckBoxTag(bool isEmpty = false)
         {
-            return Html.Tag(Html5Tag.Span).Class("chbox");
+            var className = isEmpty ? "chbox empty" : "chbox";
+            return Html.Tag(Html5Tag.Span).Class(className);
         }
 
         private IHtmlNode GetFeatureDetails(IFeatureResult feature, int index)
         {
             return Html.Tag(Html5Tag.Article).Class(GetFeatureClasses(feature)).Content(
                 Html.Checkbox().Class("toggle toggleF").Id("toggle" + index).Checked(),
-                Html.Tag(Html5Tag.Div).Class("header").Content(
-                    Html.Tag(Html5Tag.H2).Id("feature" + index).Class("title").Content(
-                        Html.Tag(Html5Tag.Label).For("toggle" + index).Content(GetCheckBoxTag(), Html.Text(feature.Info.Name.Format(StepNameDecorator))),
+                Html.Tag(Html5Tag.H2).Id("feature" + index).Class("title header").Content(
+                    Html.Tag(Html5Tag.Label).For("toggle" + index).Class("controls").Content(GetCheckBoxTag()),
+                    Html.Tag(Html5Tag.Span).Class("content").Content(
+                        Html.Text(feature.Info.Name.Format(StepNameDecorator)),
                         Html.Tag(Html5Tag.Span).Content(feature.Info.Labels.Select(GetLabel)).SkipEmpty(),
-                        GetSmallLink("feature" + index)),
-                    Html.Tag(Html5Tag.Div).Class("description").Content(feature.Info.Description)),
+                        GetSmallLink("feature" + index))),
+                Html.Tag(Html5Tag.Div).Class("description").Content(feature.Info.Description),
                 Html.Tag(Html5Tag.Div).Class("scenarios").Content(
                     feature.GetScenariosOrderedByName().Select((s, i) => GetScenario(s, index, i))));
         }
 
         private static TagBuilder GetSmallLink(string link)
         {
-            return Html.Tag(Html5Tag.A).Class("smallLink shareable").Href("#" + link).Content("[&#8734;link]", false, false);
+            return Html.Tag(Html5Tag.A).Class("smallLink shareable").Href("#" + link).Content("link", false, false).SpaceBefore();
         }
 
         private static string GetFeatureClasses(IFeatureResult feature)
@@ -348,36 +447,49 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             var toggleId = $"toggle{featureIndex}_{scenarioIndex}";
             var scenarioId = $"scenario{featureIndex}_{scenarioIndex + 1}";
 
-            return Html.Tag(Html5Tag.Div).Class("scenario " + GetStatusClass(scenario.Status)).Attribute("data-categories", GetScenarioCategories(scenario)).Content(
-                Html.Checkbox().Id(toggleId).Class("toggle toggleS").Checked(),
-                Html.Tag(Html5Tag.H3).Id(scenarioId).Class("title").Content(
-                    Html.Tag(Html5Tag.Label).For(toggleId).Content(
-                        GetCheckBoxTag(),
-                        GetStatus(scenario.Status),
-                        Html.Text(scenario.Info.Name.Format(StepNameDecorator))),
-                    Html.Tag(Html5Tag.Span).Content(scenario.Info.Labels.Select(GetLabel)).SkipEmpty(),
-                    GetDuration(scenario.ExecutionTime),
-                    GetSmallLink(scenarioId)),
-                Html.Tag(Html5Tag.Div).Class("categories").Content(string.Join(", ", scenario.Info.Categories)).SkipEmpty(),
-                Html.Tag(Html5Tag.Div).Content(scenario.GetSteps().Select(GetStep)),
-                GetStatusDetails(scenario.StatusDetails),
-                GetComments(scenario.GetAllSteps()),
-                GetAttachments(scenario.GetAllSteps()),
-                Html.Br());
+            return Html.Tag(Html5Tag.Div).Class("scenario " + GetStatusClass(scenario.Status))
+                .Attribute("data-categories", GetScenarioCategories(scenario))
+                .Content(
+                    Html.Checkbox().Id(toggleId).Class("toggle toggleS").Checked(),
+                    Html.Tag(Html5Tag.H3).Id(scenarioId).Class("header title").Content(
+                        Html.Tag(Html5Tag.Label).For(toggleId).Class("controls").Content(
+                            GetCheckBoxTag(),
+                            GetStatus(scenario.Status)),
+                        Html.Tag(Html5Tag.Span).Content(
+                            Html.Text(scenario.Info.Name.Format(StepNameDecorator)),
+                            Html.Tag(Html5Tag.Span).Content(scenario.Info.Labels.Select(GetLabel)).SkipEmpty(),
+                            GetDuration(scenario.ExecutionTime),
+                            GetSmallLink(scenarioId))),
+                    Html.Tag(Html5Tag.Div).Class("content").Content(
+                        Html.Tag(Html5Tag.Div).Class("categories")
+                            .Content(scenario.Info.Categories.Select(GetCategory))
+                            .SkipEmpty(),
+                        Html.Tag(Html5Tag.Div).Class("scenario-steps").Content(scenario.GetSteps().Select(GetStep))),
+                    Html.Tag(Html5Tag.Div).Class("details").Content(
+                        GetStatusDetails(scenario.StatusDetails),
+                        GetComments(scenario.GetAllSteps()),
+                        GetAttachments(scenario.GetAllSteps())).SkipEmpty());
         }
 
+        private static IHtmlNode GetScenarioDetailsSection(string className, string description, IEnumerable<IHtmlNode> content)
+        {
+            var nodes = content.ToArray();
+            if (nodes.All(n => n.IsEmpty()))
+                return Html.Nothing();
+            return Html.Tag(Html5Tag.Div).Class(className).Content(Enumerable.Repeat(Html.Tag(Html5Tag.H3).Content(description), 1).Concat(nodes));
+        }
         private IHtmlNode GetAttachments(IEnumerable<IStepResult> steps)
         {
-            return Html.Tag(Html5Tag.Div).Class("attachments")
-                .SkipEmpty()
-                .Content(from s in steps
-                         from a in s.FileAttachments
-                         select
-                             Html.Tag(Html5Tag.Div).Content(
-                                 Html.Tag(Html5Tag.A)
-                                     .Href(ResolveLink(a))
-                                     .Attribute("target", "_blank")
-                                     .Content($"🔗Step {s.Info.GroupPrefix}{s.Info.Number}: {a.Name} ({Path.GetExtension(a.FilePath).TrimStart('.')})")));
+            return GetScenarioDetailsSection("attachments", "Attachments:",
+                from s in steps
+                from a in s.FileAttachments
+                select
+                    Html.Tag(Html5Tag.Div).Content(
+                        Html.Tag(Html5Tag.A)
+                            .Href(ResolveLink(a))
+                            .Attribute("target", "_blank")
+                            .Content(Html.Tag(Html5Tag.Code).Content(
+                                $"🔗Step {s.Info.GroupPrefix}{s.Info.Number}: {a.Name} ({Path.GetExtension(a.FilePath).TrimStart('.')})"))));
         }
 
         private string ResolveLink(FileAttachment fileAttachment)
@@ -387,8 +499,10 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
         private IHtmlNode GetComments(IEnumerable<IStepResult> steps)
         {
-            return Html.Tag(Html5Tag.Div).Class("comments")
-                .Content(from s in steps from c in s.Comments select Html.Tag(Html5Tag.Div).Content($"// Step {s.Info.GroupPrefix}{s.Info.Number}: {c}"));
+            return GetScenarioDetailsSection("comments", "Comments:",
+                from s in steps
+                from c in s.Comments
+                select Html.Tag(Html5Tag.Div).Content(Html.Tag(Html5Tag.Code).Content($"// Step {s.Info.GroupPrefix}{s.Info.Number}: {c}")));
         }
 
         private string GetScenarioCategories(IScenarioResult scenario)
@@ -401,9 +515,9 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             return string.Join(" ", categories.Select(cat => _categories[cat]));
         }
 
-        private static TagBuilder GetStatusDetails(string statusDetails)
+        private static IHtmlNode GetStatusDetails(string statusDetails)
         {
-            return Html.Tag(Html5Tag.Div).Class("details").Content(statusDetails).SkipEmpty();
+            return GetScenarioDetailsSection("status-details", "Details:", new[] { Html.Tag(Html5Tag.Code).Content(statusDetails).SkipEmpty() });
         }
 
         private static IHtmlNode GetDuration(ExecutionTime executionTime)
@@ -419,18 +533,37 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         {
             return Html.Tag(Html5Tag.Span)
                 .Class("status " + GetStatusClass(status))
-                .Content(status.ToString())
+                .Content(GetStatusValue(status))
                 .SpaceAfter();
         }
 
         private static IHtmlNode GetStep(IStepResult step)
         {
+            var toggleId = step.Info.RuntimeId.ToString();
+            var hasSubSteps = step.GetSubSteps().Any();
+
+            var checkbox = hasSubSteps
+                ? Html.Checkbox().Id(toggleId).Class("toggle toggleSS").Checked()
+                : Html.Nothing();
+
+            var container = hasSubSteps
+                ? Html.Tag(Html5Tag.Label).For(toggleId)
+                : Html.Tag(Html5Tag.Span);
+
             return Html.Tag(Html5Tag.Div).Class("step").Content(
-                GetStatus(step.Status),
-                Html.Text($"{WebUtility.HtmlEncode(step.Info.GroupPrefix)}{step.Info.Number}. {step.Info.Name.Format(StepNameDecorator)}").Trim(),
-                GetDuration(step.ExecutionTime),
-                Html.Tag(Html5Tag.Div).Class("step-parameters").Content(step.Parameters.Select(GetStepParameter)).SkipEmpty(),
-                Html.Tag(Html5Tag.Div).Class("sub-steps").Content(step.GetSubSteps().Select(GetStep)).SkipEmpty());
+                checkbox,
+                Html.Tag(Html5Tag.Div).Class("header").Content(
+                    container.Class("controls").Content(
+                        GetCheckBoxTag(!hasSubSteps),
+                        GetStatus(step.Status)),
+                    Html.Tag(Html5Tag.Span).Content(
+                        Html.Text($"{WebUtility.HtmlEncode(step.Info.GroupPrefix)}{step.Info.Number}. {step.Info.Name.Format(StepNameDecorator)}").Trim(),
+                        GetDuration(step.ExecutionTime))),
+                Html.Tag(Html5Tag.Div).Class("step-parameters")
+                    .Content(step.Parameters.Select(GetStepParameter))
+                    .SkipEmpty(),
+                Html.Tag(Html5Tag.Div).Class("sub-steps").Content(step.GetSubSteps().Select(GetStep))
+                    .SkipEmpty());
         }
 
         private static IHtmlNode GetStepParameter(IParameterResult parameter)
@@ -446,7 +579,22 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         {
             return Html.Tag(Html5Tag.Div).Class("param").Content(
                 Html.Tag(Html5Tag.Div).Content($"{parameterName}:"),
-                Html.Tag(Html5Tag.Table).Class("param tree").Content(GetTreeRows(tree)));
+                Html.Tag(Html5Tag.Div).Class("param tree").Content(GetTreeNode(tree.Root)));
+        }
+
+        private static IHtmlNode GetTreeNode(ITreeParameterNodeResult node)
+        {
+            var type = node.Children.Any() ? "branch" : "leaf";
+            return Html.Tag(Html5Tag.Div).Class($"tree node {type}").Content(
+                Html.Tag(Html5Tag.Div).Class("detail").Content(
+                    Html.Tag(Html5Tag.Span).Class("param node").Content(node.Node),
+                    GetParamValue(node, Html5Tag.Div)),
+                Html.Tag(Html5Tag.Div).Class("branches").Content(
+                    node.Children.Where(ch => !ch.Children.Any())
+                        .Concat(node.Children.Where(ch => ch.Children.Any()))
+                        .Select(GetTreeNode)
+                    ).SkipEmpty()
+            );
         }
 
         private static IHtmlNode GetTabularParameter(string parameterName, ITabularParameterDetails table)
@@ -455,77 +603,6 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 Html.Tag(Html5Tag.Div).Content($"{parameterName}:"),
                 Html.Tag(Html5Tag.Table).Class("param table")
                     .Content(GetParameterTable(table)));
-        }
-
-        private static IEnumerable<IHtmlNode> GetTreeRows(ITreeParameterDetails tree)
-        {
-            return BuildTreeRows(tree).Select(row => Html.Tag(Html5Tag.Tr).Content(GetTreeRowCells(row, tree.VerificationStatus != ParameterVerificationStatus.NotApplicable)));
-        }
-
-        private static IEnumerable<IHtmlNode> GetTreeRowCells(IReadOnlyList<ITreeParameterNodeResult> row, bool addStatusCell)
-        {
-            if (addStatusCell)
-                yield return GetTreeRowStatusCell(row);
-
-            for (var i = 0; i < row.Count; ++i)
-            {
-                var node = row[i];
-                if (node != null)
-                {
-                    yield return Html.Tag(Html5Tag.Td).Class("param node").Content(node.Node);
-                    yield return GetRowValue(node);
-                }
-                else
-                {
-                    yield return Html.Tag(Html5Tag.Td);
-                    if (i + 1 < row.Count && row[i + 1] != null)
-                        yield return Html.Tag(Html5Tag.Td).Class("indent").Content("↳");
-                    else
-                        yield return Html.Tag(Html5Tag.Td);
-                }
-            }
-        }
-
-        private static TagBuilder GetTreeRowStatusCell(IReadOnlyList<ITreeParameterNodeResult> row)
-        {
-            var status = row.Select(r => r?.VerificationStatus)
-                .Where(x => x != null)
-                .DefaultIfEmpty(ParameterVerificationStatus.NotProvided)
-                .Max();
-
-            var statusClass = status switch
-            {
-                ParameterVerificationStatus.NotApplicable => "notapplicable",
-                ParameterVerificationStatus.Success => "success",
-                _ => "failure"
-            };
-            var statusValue = status switch
-            {
-                ParameterVerificationStatus.NotApplicable => " ",
-                ParameterVerificationStatus.Success => "=",
-                _ => "!"
-            };
-            return Html.Tag(Html5Tag.Td).Class($"param type value {statusClass}").Content(statusValue);
-        }
-
-        private static IEnumerable<IReadOnlyList<ITreeParameterNodeResult>> BuildTreeRows(ITreeParameterDetails tree)
-        {
-            var stack = new Stack<Tuple<int, ITreeParameterNodeResult>>();
-
-            stack.Push(Tuple.Create(0, tree.Root));
-            while (stack.Any())
-            {
-                var n = stack.Pop();
-
-                var result = new List<ITreeParameterNodeResult>();
-                result.AddRange(Enumerable.Repeat<ITreeParameterNodeResult>(null, n.Item1));
-                result.Add(n.Item2);
-                result.AddRange(n.Item2.Children.Where(c => !c.Children.Any()));
-                yield return result;
-
-                foreach (var c in n.Item2.Children.Reverse().Where(c => c.Children.Any()))
-                    stack.Push(Tuple.Create(n.Item1 + 1, c));
-            }
         }
 
         private static IEnumerable<IHtmlNode> GetParameterTable(ITabularParameterDetails table)
@@ -545,7 +622,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
         private static IHtmlNode GetParameterTableRow(ITabularParameterRow row, bool renderRowStatus)
         {
-            var values = row.Values.Select(GetRowValue).ToList();
+            var values = row.Values.Select(v => GetParamValue(v, Html5Tag.Td)).ToList();
             if (renderRowStatus)
                 values.Insert(0, Html.Tag(Html5Tag.Td).Class("param type").Content(GetRowTypeContent(row)));
             return Html.Tag(Html5Tag.Tr).Content(values);
@@ -554,9 +631,9 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         private static string GetRowTypeContent(ITabularParameterRow row)
         {
             if (row.Type == TableRowType.Surplus)
-                return "(surplus)";
+                return "+";
             if (row.Type == TableRowType.Missing)
-                return "(missing)";
+                return "-";
             if (row.VerificationStatus == ParameterVerificationStatus.Success)
                 return "=";
             if (row.VerificationStatus == ParameterVerificationStatus.NotApplicable)
@@ -564,17 +641,17 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             return "!";
         }
 
-        private static IHtmlNode GetRowValue(IValueResult value)
+        private static IHtmlNode GetParamValue(IValueResult value, Html5Tag tag)
         {
-            var tag = Html.Tag(Html5Tag.Td).Class("param value " + value.VerificationStatus.ToString().ToLowerInvariant());
+            var element = Html.Tag(tag).Class("param value " + value.VerificationStatus.ToString().ToLowerInvariant());
             if (value.VerificationStatus == ParameterVerificationStatus.NotApplicable ||
                 value.VerificationStatus == ParameterVerificationStatus.Success)
-                return tag.Content(value.Value);
+                return element.Content(value.Value);
 
-            return tag.Content(Html.Tag(Html5Tag.Div).Content(
+            return element.Content(
                 Html.Text(value.Value).Escape(),
                 Html.Tag(Html5Tag.Hr),
-                Html.Tag(Html5Tag.Span).Class("expected").Content(value.Expectation)));
+                Html.Tag(Html5Tag.Span).Class("expected").Content(value.Expectation));
         }
 
         private static string GetStatusClass(ExecutionStatus status)
@@ -582,27 +659,42 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             return status.ToString().ToLowerInvariant();
         }
 
-        public void Write()
+        private static string GetStatusValue(ExecutionStatus status)
         {
-            _writer
-                .WriteTag(Html.Text("<!DOCTYPE HTML>"))
-                .WriteTag(Html.Tag(Html5Tag.Html).Content(
-                    Html.Tag(Html5Tag.Head).Content(
-                        Html.Tag(Html5Tag.Meta).Attribute(Html5Attribute.Charset, "UTF-8"),
-                        Html.Tag(Html5Tag.Link)
-                            .Attribute(Html5Attribute.Rel, "shortcut icon")
-                            .Attribute(Html5Attribute.Type, "image/x-icon")
-                            .Attribute(Html5Attribute.Href, "data:image/ico;base64," + _favico),
-                        Html.Tag(Html5Tag.Title).Content("Summary"),
-                        Html.Tag(Html5Tag.Style).Content(_styles, false, false),
-                        Html.Tag(Html5Tag.Script).Content(_scripts, false, false)),
-                    Html.Tag(Html5Tag.Body).Content(
-                        WriteExecutionSummary(),
-                        WriteFeatureList(),
-                        WriteFeatureDetails(),
-                        Html.Tag(Html5Tag.Div).Class("footer").Content(Html.Text("Generated with "), Html.Tag(Html5Tag.A).Content("LightBDD v" + GetLightBddVersion()).Href("https://github.com/LightBDD/LightBDD")),
-                        Html.Tag(Html5Tag.Script).Content("initialize();", false, false)
-                        )));
+            return status switch
+            {
+                ExecutionStatus.NotRun => "?",
+                ExecutionStatus.Passed => "✓",
+                ExecutionStatus.Bypassed => "~",
+                ExecutionStatus.Ignored => "!",
+                ExecutionStatus.Failed => "✕",
+                _ => throw new ArgumentOutOfRangeException(nameof(status), status, null)
+            };
+        }
+
+        private string EmbedCssImages(HtmlReportFormatterOptions options)
+        {
+            var sb = new StringBuilder();
+
+            void EmbedImage(string varName, string mimeType, string base64Body)
+            {
+                sb.AppendLine($"{varName}: url('data:{mimeType};base64,{base64Body}');");
+            }
+            void EmbedSvg(string varName, string resourcePath)
+            {
+                EmbedImage(varName, "image/svg+xml", ReadBase64Resource(resourcePath));
+            }
+
+            sb.AppendLine("html {");
+
+            var customLogo = options.CustomLogo;
+            if (customLogo != null)
+                EmbedImage("--logo-ico", customLogo.Item1, Convert.ToBase64String(customLogo.Item2));
+            else
+                EmbedSvg("--logo-ico", "LightBDD.Framework.Reporting.Formatters.Html.Resources.lightbdd_opt.svg");
+
+            sb.Append("}");
+            return sb.ToString();
         }
 
         private static string GetLightBddVersion()

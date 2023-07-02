@@ -15,17 +15,22 @@ namespace LightBDD.AcceptanceTests.Helpers
 
         public static IEnumerable<IWebElement> FindFeatures(this ChromeDriver driver)
         {
-            return driver.FindElementsByClassName("feature");
+            return driver.FindElements(By.ClassName("feature"));
         }
 
         public static IEnumerable<IWebElement> FindAllScenarios(this ChromeDriver driver)
         {
-            return driver.FindElementsByClassName("scenario");
+            return driver.FindElements(By.ClassName("scenario"));
         }
 
         public static IEnumerable<IWebElement> FindAllSteps(this ChromeDriver driver)
         {
-            return driver.FindElementsByClassName("step");
+            return driver.FindElements(By.CssSelector(".scenario > .content > .scenario-steps > .step"));
+        }
+
+        public static IEnumerable<IWebElement> FindAllSubSteps(this ChromeDriver driver)
+        {
+            return driver.FindElements(By.ClassName("sub-steps"));
         }
 
         public static IWebElement FindScenario(this IWebElement element, int scenarioNo)
@@ -39,6 +44,16 @@ namespace LightBDD.AcceptanceTests.Helpers
         }
 
         public static IEnumerable<IWebElement> FindSteps(this IWebElement element)
+        {
+            return element.FindElements(By.CssSelector(".scenario > .content > .scenario-steps > .step"));
+        }
+        
+        public static IWebElement FindStep(this IWebElement element, int stepNo)
+        {
+            return FindSteps(element).ElementAt(stepNo - 1);
+        }
+
+        public static IEnumerable<IWebElement> FindSubSteps(this IWebElement element)
         {
             return element.FindElements(By.ClassName("step"));
         }
@@ -55,12 +70,12 @@ namespace LightBDD.AcceptanceTests.Helpers
 
         public static IWebElement FindLabelByText(this ChromeDriver driver, string text)
         {
-            return driver.FindElementsByTagName("label").Single(l => l.Text == text);
+            return driver.FindElements(By.TagName("label")).Single(l => l.Text == text);
         }
 
         public static IWebElement FindLabelTarget(this ChromeDriver driver, IWebElement label)
         {
-            return driver.FindElementById(label.GetAttribute("for"));
+            return driver.FindElement(By.Id(label.GetAttribute("for")));
         }
 
         public static void ClickSync(this IWebElement element, ChromeDriver driver)

@@ -12,9 +12,9 @@ namespace LightBDD.Core.Configuration
     /// </summary>
     public class ValueFormattingConfiguration : FeatureConfiguration
     {
-        private readonly ConcurrentDictionary<Type, IValueFormatter> _explicitFormatters = new ConcurrentDictionary<Type, IValueFormatter>();
+        private readonly ConcurrentDictionary<Type, IValueFormatter> _explicitFormatters = new();
 
-        private readonly List<IConditionalValueFormatter> _generalFormatters = new List<IConditionalValueFormatter>();
+        private readonly List<IConditionalValueFormatter> _generalFormatters = new();
 
         /// <summary>
         /// Default constructor.

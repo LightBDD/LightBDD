@@ -23,7 +23,7 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly IEnumerable<StepDescriptor> _stepDescriptors;
         private readonly ExecutionContextDescriptor _contextDescriptor;
         private readonly ScenarioResult _result;
-        private readonly ExceptionCollector _exceptionCollector = new ExceptionCollector();
+        private readonly ExceptionCollector _exceptionCollector = new();
         private readonly Func<Task> _decoratedScenarioMethod;
         private IDependencyContainer _scope;
         private Func<Exception, bool> _shouldAbortSubStepExecutionFn = ex => true;
@@ -32,6 +32,7 @@ namespace LightBDD.Core.Execution.Implementation
         public IScenarioInfo Info => _result.Info;
         public IDependencyResolver DependencyResolver => _scope;
         public object Context { get; private set; }
+        public object Fixture => _scenarioContext.FixtureObject;
 
         public RunnableScenario(RunnableScenarioContext scenarioContext, IScenarioInfo scenarioInfo,
             IEnumerable<StepDescriptor> stepDescriptors, ExecutionContextDescriptor contextDescriptor,
@@ -69,8 +70,37 @@ namespace LightBDD.Core.Execution.Implementation
 
         private async Task RunScenarioAsync()
         {
-            foreach (var step in _preparedSteps)
-                await step.ExecuteAsync();
+            try
+            {
+                await OnScenarioSetUp();
+                foreach (var step in _preparedSteps)
+                    await step.ExecuteAsync();
+            }
+            catch
+            {
+                try
+                {
+                    await OnScenarioTearDown();
+                }
+                catch (Exception tearDownException)
+                {
+                    _exceptionCollector.Capture(tearDownException);
+                }
+                throw;
+            }
+            await OnScenarioTearDown();
+        }
+
+        private async Task OnScenarioSetUp()
+        {
+            if (_scenarioContext.FixtureObject is IScenarioSetUp setup)
+                await setup.OnScenarioSetUp();
+        }
+
+        private async Task OnScenarioTearDown()
+        {
+            if (_scenarioContext.FixtureObject is IScenarioTearDown tearDown)
+                await tearDown.OnScenarioTearDown();
         }
 
         private void ProcessExceptions()

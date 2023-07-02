@@ -8,7 +8,7 @@
         /// <summary>
         /// Default result representing success.
         /// </summary>
-        public static ExpectationResult Success { get; } = new ExpectationResult(true, string.Empty);
+        public static ExpectationResult Success { get; } = new(true, string.Empty);
 
         /// <summary>
         /// Returns <c>true</c> if verification passed.

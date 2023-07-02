@@ -10,9 +10,9 @@ namespace LightBDD.Framework.Resources
     /// <typeparam name="TResource"></typeparam>
     public class ResourceHandle<TResource> : IDisposable
     {
-        private readonly CancellationTokenSource _cancellationSource = new CancellationTokenSource();
+        private readonly CancellationTokenSource _cancellationSource = new();
         private readonly ResourcePool<TResource> _pool;
-        private readonly object _lock = new object();
+        private readonly object _lock = new();
         private Task<TResource> _instanceTask;
         private bool _disposed;
 

@@ -1,16 +1,16 @@
 ![logo](https://github.com/LightBDD/LightBDD/blob/master/logo/lightbdd.ico) LightBDD <br><br>The Lightweight Behavior Driven Development test framework
 ===========
 
-Category|Badge |Platforms
---------|------|--------
-Build | [![Build status](https://ci.appveyor.com/api/projects/status/xkd7qc950o07o3x8/branch/master?svg=true)](https://ci.appveyor.com/project/Suremaker/lightbdd/branch/master) |
-Chat (gitter) | [![Join the chat at https://gitter.im/LightBDD/LightBDD](https://badges.gitter.im/LightBDD/LightBDD.svg)](https://gitter.im/LightBDD/LightBDD?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) | 
-LightBDD.NUnit3 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.NUnit3?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.NUnit3/) | .NET Standard >= 2.0 <br> .NET Framework >= 4.6.1 <br> .NET Core >= 2.0
-LightBDD.XUnit2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.XUnit2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.XUnit2/) | .NET Standard >= 2.0 <br> .NET Framework >= 4.6.1 <br> .NET Core >= 2.0
-LightBDD.MsTest2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MsTest2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.MsTest2/) | .NET Standard >= 2.0 <br> .NET Framework >= 4.6.1 <br> .NET Core >= 2.0 <br> UWP >= 10.0.16299
-LightBDD.Fixie2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Fixie2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Fixie2/) | .NET Framework >= 4.6.1 <br> .NET Core >= 3.1
-LightBDD.Autofac | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Autofac?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Autofac/) | .NET Standard >= 2.0 <br> .NET Framework >= 4.6.1
-LightBDD.Extensions.DependencyInjection | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Extensions.DependencyInjection?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Extensions.DependencyInjection/) | .NET Standard >= 2.0
+Category|Badge
+--------|------
+Build | [![Build status](https://ci.appveyor.com/api/projects/status/xkd7qc950o07o3x8/branch/master?svg=true)](https://ci.appveyor.com/project/Suremaker/lightbdd/branch/master)
+Chat (gitter) | [![Join the chat at https://gitter.im/LightBDD/LightBDD](https://badges.gitter.im/LightBDD/LightBDD.svg)](https://gitter.im/LightBDD/LightBDD?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+LightBDD.NUnit3 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.NUnit3?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.NUnit3/)
+LightBDD.XUnit2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.XUnit2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.XUnit2/)
+LightBDD.MsTest3 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MsTest3?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.MsTest3/)
+LightBDD.Fixie3 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Fixie3?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Fixie3/)
+LightBDD.Autofac | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Autofac?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Autofac/)
+LightBDD.Extensions.DependencyInjection | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Extensions.DependencyInjection?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Extensions.DependencyInjection/)
 
 ## Project description
 **LightBDD** is a behaviour-driven development test framework offering ability to write tests that are easy to read, easy to track during execution and summarize in user friendly report, while allowing developers to use all of the standard development tools to maintain them.
@@ -28,7 +28,7 @@ LightBDD.Extensions.DependencyInjection | [![NuGet Badge](https://buildstats.inf
 * Productivity extensions for VisualStudio with Feature Class Templates, Project Templates and Code Snippets,
 * Integration with [NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/), [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/) and [Fixie](http://fixie.github.io/) frameworks,
 * Async scenario and steps execution support,
-* Cross-platform support (.NET Framework / .NET Standard / .NET Core / [UWP](https://github.com/LightBDD/LightBDD/tree/3.4.2/examples/Example.LightBDD.MsTest2.UWP)).
+* Cross-platform support (.NET 5+ / .NET Framework / .NET Standard / .NET Core / [UWP](https://github.com/LightBDD/LightBDD/tree/3.4.2/examples/Example.LightBDD.MsTest2.UWP)).
 
 ### Tests structure and conventions
 **LightBDD** runs on top of [NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/), [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/) and [Fixie](http://fixie.github.io/), allowing to leverage the well known test frameworks and their features in writing the behavioral style scenarios, which makes it very easy to learn, adapt and use.
@@ -164,8 +164,8 @@ The LightBDD is available on [NuGet](https://www.nuget.org/packages?q=LightBDD):
 
 * `PM> Install-Package LightBDD.NUnit3` for package using NUnit 3x
 * `PM> Install-Package LightBDD.XUnit2` for package using xUnit 2x
-* `PM> Install-Package LightBDD.MsTest2` for package using MsTest.TestFramework
-* `PM> Install-Package LightBDD.Fixie2` for package using Fixie 2x
+* `PM> Install-Package LightBDD.MsTest3` for package using MsTest.TestFramework
+* `PM> Install-Package LightBDD.Fixie3` for package using Fixie 3x
 
 ## Productivity Extensions for Visual Studio
 **LightBDD** project offers also a VSIX extension for Visual Studio, containing:

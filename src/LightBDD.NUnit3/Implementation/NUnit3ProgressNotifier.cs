@@ -7,7 +7,7 @@ namespace LightBDD.NUnit3.Implementation
 {
     internal class NUnit3ProgressNotifier
     {
-        private static readonly DefaultProgressNotifier SummarizingProgressNotifier = new DefaultProgressNotifier(WriteOutput);
+        private static readonly DefaultProgressNotifier SummarizingProgressNotifier = new(WriteOutput);
 
         [Obsolete]
         public static IFeatureProgressNotifier CreateFeatureProgressNotifier()

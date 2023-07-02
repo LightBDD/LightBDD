@@ -13,7 +13,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
     public class TestableIntegrationContextBuilder
     {
-        private readonly LightBddConfiguration _configuration = new LightBddConfiguration();
+        private readonly LightBddConfiguration _configuration = new();
         private Func<Exception, ExecutionStatus> _exceptionToStatusMapper;
 
         public TestableIntegrationContextBuilder WithNameFormatter(INameFormatter formatter)

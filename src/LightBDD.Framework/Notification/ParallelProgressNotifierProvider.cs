@@ -11,11 +11,11 @@ namespace LightBDD.Framework.Notification
     /// </summary>
     public class ParallelProgressNotifierProvider
     {
-        private readonly ProgressManager _manager = new ProgressManager();
+        private readonly ProgressManager _manager = new();
         /// <summary>
         /// Returns default instance of provider.
         /// </summary>
-        public static ParallelProgressNotifierProvider Default { get; } = new ParallelProgressNotifierProvider();
+        public static ParallelProgressNotifierProvider Default { get; } = new();
 
         /// <summary>
         /// Default constructor.

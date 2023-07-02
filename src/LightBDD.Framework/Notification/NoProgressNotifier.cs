@@ -15,7 +15,7 @@ namespace LightBDD.Framework.Notification
         /// <summary>
         /// Returns default instance.
         /// </summary>
-        public static NoProgressNotifier Default { get; } = new NoProgressNotifier();
+        public static NoProgressNotifier Default { get; } = new();
         /// <summary>
         /// Does nothing.
         /// </summary>

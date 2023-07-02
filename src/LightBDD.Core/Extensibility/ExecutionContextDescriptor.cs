@@ -11,7 +11,7 @@ namespace LightBDD.Core.Extensibility
         /// <summary>
         /// No context descriptor.
         /// </summary>
-        public static readonly ExecutionContextDescriptor NoContext = new ExecutionContextDescriptor(ProvideNoContext, null);
+        public static readonly ExecutionContextDescriptor NoContext = new(ProvideNoContext, null);
 
         /// <summary>
         /// Returns container configurator function used to configure container used in the execution context scope.

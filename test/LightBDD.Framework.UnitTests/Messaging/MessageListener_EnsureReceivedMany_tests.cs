@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Framework.Messaging;
@@ -12,7 +11,7 @@ namespace LightBDD.Framework.UnitTests.Messaging
     [FixtureLifeCycle(LifeCycle.InstancePerTestCase)]
     public class MessageListener_EnsureReceivedMany_tests
     {
-        private readonly MessageSource _source = new MessageSource();
+        private readonly MessageSource _source = new();
 
         [Test]
         public async Task EnsureReceivedMany_returns_specified_amount_of_messages_matching_criteria_in_order_from_latest_to_oldest()

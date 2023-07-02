@@ -11,7 +11,7 @@ namespace LightBDD.Framework.UnitTests.Messaging
     [FixtureLifeCycle(LifeCycle.InstancePerTestCase)]
     public class MessageListener_EnsureReceived_tests
     {
-        private readonly MessageSource _source = new MessageSource();
+        private readonly MessageSource _source = new();
 
         [Test]
         public async Task EnsureReceived_returns_latest_message_matching_criteria_if_it_has_been_already_received()

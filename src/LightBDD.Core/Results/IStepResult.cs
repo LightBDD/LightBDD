@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using LightBDD.Core.Metadata;
-using LightBDD.Core.Results.Implementation;
 using LightBDD.Core.Results.Parameters;
 
 namespace LightBDD.Core.Results

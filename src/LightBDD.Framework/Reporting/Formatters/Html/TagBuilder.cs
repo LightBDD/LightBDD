@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -5,9 +6,9 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 {
     internal class TagBuilder : IHtmlNode
     {
-        private readonly List<KeyValuePair<string, string>> _attributes = new List<KeyValuePair<string, string>>();
+        private readonly List<KeyValuePair<string, string>> _attributes = new();
         private bool _skipEmpty;
-        private IHtmlNode[] _nodes = new IHtmlNode[0];
+        private IHtmlNode[] _nodes = Array.Empty<IHtmlNode>();
         private bool _spaceBefore;
         private bool _spaceAfter;
         private readonly string _tag;
@@ -107,9 +108,11 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             return this;
         }
 
+        public bool IsEmpty() => _skipEmpty && _nodes.All(n => n.IsEmpty());
+
         public HtmlTextWriter Write(HtmlTextWriter writer)
         {
-            if (_skipEmpty && _nodes.Length == 0)
+            if (IsEmpty())
                 return writer;
 
             if (_spaceBefore)

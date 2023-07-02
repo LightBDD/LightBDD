@@ -13,7 +13,7 @@ namespace LightBDD.Core.Reporting
     public class FeatureReportGenerator : IFeatureAggregator
     {
         private readonly IReportWriter[] _writers;
-        private readonly ConcurrentQueue<IFeatureResult> _results = new ConcurrentQueue<IFeatureResult>();
+        private readonly ConcurrentQueue<IFeatureResult> _results = new();
         private bool _disposed;
         /// <summary>
         /// Constructor configuring report generator with <paramref name="writers"/> that would be used to write reports on generator disposal.

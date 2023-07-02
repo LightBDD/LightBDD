@@ -5,7 +5,7 @@ namespace LightBDD.Framework.Parameters.Implementation
 {
     internal abstract class AbstractTableBuilder<TRow, TColumn> where TColumn : InputTableColumn
     {
-        private readonly List<TColumn> _customColumns = new List<TColumn>();
+        private readonly List<TColumn> _customColumns = new();
         protected bool InferColumns { get; set; }
         protected InferredColumnsOrder InferredColumnsOrder { get; set; } = InferredColumnsOrder.Name;
 

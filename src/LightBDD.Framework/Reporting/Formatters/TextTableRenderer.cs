@@ -12,7 +12,7 @@ namespace LightBDD.Framework.Reporting.Formatters
     internal class TextTableRenderer
     {
         private readonly TextColumn[] _columns;
-        private readonly List<TextRow> _rows = new List<TextRow>();
+        private readonly List<TextRow> _rows = new();
         private readonly bool _renderRowStatus;
 
         public TextTableRenderer(ITabularParameterDetails table)
@@ -104,7 +104,7 @@ namespace LightBDD.Framework.Reporting.Formatters
 
         class TextRow
         {
-            private readonly List<TextCell> _cells = new List<TextCell>();
+            private readonly List<TextCell> _cells = new();
             private readonly char _status;
 
             public TextRow(TableRowType rowType, ParameterVerificationStatus rowVerificationStatus)

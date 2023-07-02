@@ -60,6 +60,29 @@ I want to have HTML report")]
         }
 
         [Scenario]
+        public async Task Should_expand_scenario_step_sub_steps()
+        {
+            await Runner
+                .WithContext<HtmlReportContext>()
+                .RunScenarioAsync(
+                    x => x.Given_a_various_features_with_scenarios_and_categories(),
+                    x => x.Given_a_html_report_is_created(),
+
+                    x => x.When_a_html_report_is_opened(),
+                    x => x.Then_all_features_should_be_VISIBLE(true),
+                    x => x.Then_all_scenarios_should_be_VISIBLE(true),
+                    x => x.Then_all_steps_should_be_VISIBLE(true),
+                    x => x.Then_all_sub_steps_should_be_VISIBLE(false),
+
+                    x => x.When_a_feature_scenario_step_collapse_button_is_clicked(1, 1, 1),
+                    x => x.Then_the_feature_scenario_step_sub_steps_should_be_VISIBLE(1, 1, 1, true),
+
+                    x => x.When_a_feature_scenario_step_collapse_button_is_clicked(1, 1, 1),
+                    x => x.Then_the_feature_scenario_step_sub_steps_should_be_VISIBLE(1, 1, 1, false));
+
+        }
+
+        [Scenario]
         public async Task Should_collapse_all_features()
         {
             await Runner
@@ -104,6 +127,32 @@ I want to have HTML report")]
                 x => x.When_a_scenario_filter_button_is_clicked(),
                 x => x.Then_all_scenarios_should_be_VISIBLE(true),
                 x => x.Then_all_steps_should_be_VISIBLE(true));
+        }
+
+        [Scenario]
+        public async Task Should_expand_all_sub_steps()
+        {
+            await Runner
+                .WithContext<HtmlReportContext>()
+                .RunScenarioAsync(
+                    x => x.Given_a_various_features_with_scenarios_and_categories(),
+                    x => x.Given_a_html_report_is_created(),
+
+                    x => x.When_a_html_report_is_opened(),
+                    x => x.Then_all_features_should_be_VISIBLE(true),
+                    x => x.Then_all_scenarios_should_be_VISIBLE(true),
+                    x => x.Then_all_steps_should_be_VISIBLE(true),
+                    x => x.Then_all_sub_steps_should_be_VISIBLE(false),
+
+                    x => x.When_a_sub_step_filter_button_is_clicked(),
+                    x => x.Then_all_scenarios_should_be_VISIBLE(true),
+                    x => x.Then_all_steps_should_be_VISIBLE(true),
+                    x => x.Then_all_sub_steps_should_be_VISIBLE(true),
+
+                    x => x.When_a_sub_step_filter_button_is_clicked(),
+                    x => x.Then_all_scenarios_should_be_VISIBLE(true),
+                    x => x.Then_all_steps_should_be_VISIBLE(true),
+                    x => x.Then_all_sub_steps_should_be_VISIBLE(false));
         }
 
         [Scenario]
@@ -320,6 +369,29 @@ I want to have HTML report")]
                 x => x.Then_the_feature_should_be_VISIBLE(2, false),
                 x => x.Then_the_feature_should_be_VISIBLE(3, false)
             );
+        }
+
+        [Scenario]
+        [TestCase(ExecutionStatus.Bypassed, ExecutionStatus.Passed)]
+        [TestCase(ExecutionStatus.Passed, ExecutionStatus.Passed)]
+        [TestCase(ExecutionStatus.Failed, ExecutionStatus.Failed)]
+        [TestCase(ExecutionStatus.Ignored, ExecutionStatus.Passed)]
+        [TestCase(ExecutionStatus.NotRun, ExecutionStatus.Passed)]
+        public async Task Should_determine_overall_status_to_EXPECTED_if_all_scenarios_have_status_STATUS(ExecutionStatus status, ExecutionStatus expected)
+        {
+            await Runner
+                .WithContext<HtmlReportContext>()
+                .RunScenarioAsync(
+                    x => x.Given_a_feature_result("a"),
+                    x => x.Given_the_feature_has_scenario_result_of_status("a", ExecutionStatus.Passed),
+                    x => x.Given_a_feature_result("b"),
+                    x => x.Given_the_feature_has_scenario_result_of_status("b", status),
+                    x => x.Given_a_html_report_is_created(),
+
+                    x => x.When_a_html_report_is_opened(),
+
+                    x => x.Then_overall_status_should_be_STATUS(expected)
+                );
         }
 
         [Scenario]
