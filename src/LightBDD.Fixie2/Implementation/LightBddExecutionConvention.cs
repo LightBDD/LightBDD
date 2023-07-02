@@ -28,10 +28,16 @@ internal class LightBddExecutionConvention : IExecution
         try
         {
             TestContextProvider.Initialize(test.Method, parameters);
-            var result = await test.Run(instance, parameters);
-            //TODO: this skip does not work
-            if (result is Failed { Reason: IgnoreException } failure)
-                await test.Skip(parameters, failure.Reason.Message);
+            await test.Method.Call(instance, parameters);
+            await test.Pass(parameters);
+        }
+        catch (IgnoreException ex)
+        {
+            await test.Skip(parameters, ex.Message);
+        }
+        catch (Exception ex)
+        {
+            await test.Fail(parameters, ex);
         }
         finally
         {

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6;net5</TargetFrameworks>
+    <TargetFrameworks>net6</TargetFrameworks>
     <DebugType>full</DebugType>
   </PropertyGroup>
 
@@ -15,7 +15,6 @@
     <PackageReference Include="Shouldly" Version="4.1.0" />
     <PackageReference Include="Fixie.TestAdapter" Version="3.3.0" />
     <PackageReference Include="Fixie" Version="3.3.0" />
-    <DotNetCliToolReference Include="Fixie.Console" Version="3.3.0" />
   </ItemGroup>
 
   <ItemGroup>
