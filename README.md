@@ -12,6 +12,8 @@ LightBDD.Fixie3 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Fixie3?
 LightBDD.Autofac | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Autofac?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Autofac/)
 LightBDD.Extensions.DependencyInjection | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Extensions.DependencyInjection?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Extensions.DependencyInjection/)
 
+See latest release details on [What Is New](https://github.com/LightBDD/LightBDD/wiki/What-Is-New) wiki page!
+
 ## Project description
 **LightBDD** is a behaviour-driven development test framework offering ability to write tests that are easy to read, easy to track during execution and summarize in user friendly report, while allowing developers to use all of the standard development tools to maintain them.
 
