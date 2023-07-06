@@ -94,6 +94,9 @@ namespace LightBDD.Framework.Notification.Implementation
                 case StepStarting stepStarting:
                     NotifyStepStart(stepStarting.Step);
                     break;
+                default:
+                    _notifier.Notify(e);
+                    break;
             }
         }
     }

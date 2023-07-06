@@ -15,11 +15,12 @@ internal class FeatureReportGeneratorV2
         _writers = configuration.ReportWritersConfiguration().ToArray();
     }
 
-    public async Task GenerateReports(ITestRunResult results)
+    public Task GenerateReports(ITestRunResult results)
     {
         //Unnecessary ordering
         var features = results.GetFeatures().OrderBy(r => r.Info.Name.ToString(), StringComparer.OrdinalIgnoreCase).ToArray();
         foreach (var writer in _writers)
             writer.Save(features);
+        return Task.CompletedTask;
     }
 }
