@@ -130,14 +130,20 @@ namespace LightBDD.Fixie3.UnitTests
                 .Message.ShouldBe("step reason");
             var result = GetScenarioResult(nameof(Runner_should_ignore_step_with_IgnoreScenarioAttribute));
 
-            result.Status.ShouldBe( ExecutionStatus.Ignored);
-            result.GetSteps().Single().Status.ShouldBe( ExecutionStatus.Ignored);
-            result.StatusDetails.ShouldBe( "Step 1: step reason");
+            result.Status.ShouldBe(ExecutionStatus.Ignored);
+            result.GetSteps().Single().Status.ShouldBe(ExecutionStatus.Ignored);
+            result.StatusDetails.ShouldBe("Step 1: step reason");
         }
 
         [IgnoreScenario("step reason")]
         private void Declaratively_ignored_step()
         {
+        }
+
+        [Scenario]
+        public void TestRun_should_be_started()
+        {
+            ConfiguredLightBddScope.CapturedNotifications.ShouldContain("TEST RUN STARTING: LightBDD.Fixie3.UnitTests");
         }
 
         private void Step_with_parameter(string value)
@@ -154,7 +160,7 @@ namespace LightBDD.Fixie3.UnitTests
         private void Some_step()
         {
         }
-        
+
         private async void Async_void_step() => await Task.Delay(200);
 
         private IScenarioResult GetScenarioResult(string scenarioId)

@@ -1,24 +1,30 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Reporting;
+using LightBDD.Core.Reporting.Implementation;
 
 namespace LightBDD.Core.Execution.Coordination
 {
     /// <summary>
     /// Feature coordinator class holding <see cref="FeatureRunnerRepository"/> allowing to instantiate runners as well as <see cref="IFeatureAggregator"/> used for aggregate execution results on coordinator disposal.
-    /// The <see cref="Install"/> method allows to install instance that will be used in test execution cycle.
+    /// The <see cref="Install"/> method allows to install instance that will be used in test execution cycle and begins the cycle.
+    /// Calling <see cref="Dispose"/> method terminates the test execution cycle, triggering reports generation and disposal of the DI container.
     /// </summary>
     public abstract class FeatureCoordinator : IDisposable
     {
         private static readonly object Sync = new();
+        private readonly FeatureReportGeneratorV2 _reportGenerator;
+        private readonly TestRunCycle _testRunCycle;
+
         /// <summary>
         /// Feature coordinator instance.
         /// </summary>
         protected static FeatureCoordinator Instance { get; private set; }
-        private readonly IFeatureAggregator _featureAggregator;
         /// <summary>
         /// Runner factory.
         /// </summary>
@@ -98,9 +104,10 @@ namespace LightBDD.Core.Execution.Coordination
         protected FeatureCoordinator(IntegrationContext context)
         {
             Configuration = context.Configuration;
-            _featureAggregator = new FeatureReportGenerator(Configuration.ReportWritersConfiguration().ToArray());
+            _reportGenerator = new FeatureReportGeneratorV2(Configuration);
             RunnerRepository = new FeatureRunnerRepository(context);
             ValueFormattingService = context.ValueFormattingService;
+            _testRunCycle = new TestRunCycle(context, RunnerRepository);
         }
 
         /// <summary>
@@ -109,7 +116,7 @@ namespace LightBDD.Core.Execution.Coordination
         /// After aggregation of all results, the feature aggregator is disposed as well.
         /// 
         /// If coordinator is installed as LightBDD main coordinator, it is uninstalled as well, allowing a new one to be installed in future.
-        /// If coordinator is already disposed, methods does nothing.
+        /// If coordinator is already disposed, method does nothing.
         /// </summary>
         public void Dispose()
         {
@@ -118,23 +125,14 @@ namespace LightBDD.Core.Execution.Coordination
 
             IsDisposed = true;
             UninstallSelf();
-            CollectFeatureResults();
-            _featureAggregator.Dispose();
+            var results = _testRunCycle.Finish();
+            Task.Run(() => _reportGenerator.GenerateReports(results)).GetAwaiter().GetResult();
             RunnerRepository.Dispose();
-        }
-
-        private void CollectFeatureResults()
-        {
-            foreach (var runner in RunnerRepository.AllRunners)
-            {
-                runner.Dispose();
-                _featureAggregator.Aggregate(runner.GetFeatureResult());
-            }
         }
 
         private void Initialize()
         {
-            RunnerRepository.Initialize();
+            _testRunCycle.Start();
         }
     }
 }

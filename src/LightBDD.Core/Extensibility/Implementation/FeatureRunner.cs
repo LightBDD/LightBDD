@@ -50,10 +50,12 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         public void Dispose()
         {
-            if (_disposed) return;
+            if (_disposed)
+                return;
             _disposed = true;
             _integrationContext.ProgressNotifier.Notify(new FeatureFinished(_integrationContext.ExecutionTimer.GetTime(), _featureResult));
         }
+
         public IFeatureResult GetFeatureResult()
         {
             return _featureResult;

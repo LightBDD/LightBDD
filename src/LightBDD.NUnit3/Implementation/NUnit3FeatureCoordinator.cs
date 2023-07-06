@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution.Coordination;
 using LightBDD.Core.Extensibility;
@@ -20,19 +21,19 @@ namespace LightBDD.NUnit3.Implementation
             return Instance;
         }
 
-        private NUnit3FeatureCoordinator(LightBddConfiguration configuration)
-            : base(CreateContext(configuration))
+        private NUnit3FeatureCoordinator(LightBddConfiguration configuration, Assembly testAssembly)
+            : base(CreateContext(configuration, testAssembly))
         {
         }
 
-        private static IntegrationContext CreateContext(LightBddConfiguration configuration)
+        private static IntegrationContext CreateContext(LightBddConfiguration configuration, Assembly testAssembly)
         {
-            return new DefaultIntegrationContext(configuration, new NUnit3MetadataProvider(configuration), MapExceptionToStatus);
+            return new DefaultIntegrationContext(configuration, new NUnit3MetadataProvider(configuration, testAssembly), MapExceptionToStatus);
         }
 
-        internal static void InstallSelf(LightBddConfiguration configuration)
+        internal static void InstallSelf(LightBddConfiguration configuration, Assembly testAssembly)
         {
-            Install(new NUnit3FeatureCoordinator(configuration));
+            Install(new NUnit3FeatureCoordinator(configuration, testAssembly));
         }
 
         private static ExecutionStatus MapExceptionToStatus(Exception ex)

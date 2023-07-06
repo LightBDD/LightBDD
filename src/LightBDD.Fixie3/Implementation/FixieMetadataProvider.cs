@@ -4,13 +4,19 @@ using System.Linq;
 using System.Reflection;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
+using LightBDD.Core.Metadata;
 
 namespace LightBDD.Fixie3.Implementation
 {
     internal class FixieMetadataProvider : CoreMetadataProvider
     {
-        public FixieMetadataProvider(LightBddConfiguration configuration)
-            : base(configuration) { }
+        private readonly TestSuite _testSuite;
+
+        public FixieMetadataProvider(LightBddConfiguration configuration, Assembly testAssembly)
+            : base(configuration)
+        {
+            _testSuite = TestSuite.Create(testAssembly);
+        }
 
         public override ScenarioDescriptor CaptureCurrentScenario()
         {
@@ -20,14 +26,10 @@ namespace LightBDD.Fixie3.Implementation
             return new ScenarioDescriptor(context.TestMethod, context.TestMethodArguments);
         }
 
-        protected override IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member)
-        {
-            return Enumerable.Empty<string>();
-        }
+        protected override IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member) => Enumerable.Empty<string>();
 
-        protected override string GetImplementationSpecificFeatureDescription(Type featureType)
-        {
-            return null;
-        }
+        protected override string GetImplementationSpecificFeatureDescription(Type featureType) => null;
+
+        protected override TestSuite GetTestSuite() => _testSuite;
     }
 }

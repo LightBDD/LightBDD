@@ -5,6 +5,7 @@ using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Formatting;
 using NUnit.Framework.Internal;
+using TestSuite = LightBDD.Core.Metadata.TestSuite;
 
 namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
@@ -24,6 +25,11 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
         public override ScenarioDescriptor CaptureCurrentScenario()
         {
             return new ScenarioDescriptor(TestExecutionContext.CurrentContext.CurrentTest.Method.MethodInfo, null);
+        }
+
+        protected override TestSuite GetTestSuite()
+        {
+            return TestSuite.Create(TestExecutionContext.CurrentContext.CurrentTest.TypeInfo.Assembly);
         }
 
         public TestMetadataProvider() : base(Configure(_=>{}))

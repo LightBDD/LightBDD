@@ -1,4 +1,5 @@
 ﻿using LightBDD.Framework;
+using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -22,6 +23,12 @@ namespace LightBDD.XUnit2.UnitTests
         public void Runner_should_be_initialized()
         {
             Assert.NotNull(new TestableFeatureFixture(null).GetRunner());
+        }
+
+        [Fact]
+        public void TestRun_should_be_started()
+        {
+            Assert.Contains("TEST RUN STARTING: LightBDD.XUnit2.UnitTests", ConfiguredLightBddScope.CapturedNotifications);
         }
     }
 }

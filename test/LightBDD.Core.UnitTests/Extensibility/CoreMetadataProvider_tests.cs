@@ -7,10 +7,12 @@ using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Results;
+using LightBDD.Core.Metadata;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
+using Shouldly;
 
 namespace LightBDD.Core.UnitTests.Extensibility
 {
@@ -173,6 +175,16 @@ namespace LightBDD.Core.UnitTests.Extensibility
             Action step = new Feature_type().Some_method_without_arguments;
             var extensions = _metadataProvider.GetScenarioDecorators(new ScenarioDescriptor(step.GetMethodInfo(), null));
             Assert.That(extensions, Is.Empty);
+        }
+
+        [Test]
+        public void GetTestRunInfo_should_provide_information_about_test_run()
+        {
+            var info = _metadataProvider.GetTestRunInfo();
+            info.TestSuite.ShouldBeEquivalentTo(TestSuite.Create(GetType().Assembly));
+            info.Name.ToString().ShouldBe("LightBDD.Core.UnitTests");
+
+            info.LightBddAssemblies.ShouldBe(new[] { typeof(TestMetadataProvider).Assembly, typeof(CoreMetadataProvider).Assembly });
         }
 
         [FeatureDescription("description")]

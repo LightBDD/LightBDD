@@ -54,25 +54,7 @@ namespace LightBDD.Core.Extensibility
         /// <inheritdoc />
         public void Dispose()
         {
-            var container = _integrationContext.DependencyContainer;
-            try
-            {
-                // ReSharper disable AccessToDisposedClosure
-                var globalSetUp = _integrationContext.Configuration.Get<ExecutionExtensionsConfiguration>().GlobalSetUpRegistry;
-                Task.Run(() => globalSetUp.TearDownAsync(container)).GetAwaiter().GetResult();
-                // ReSharper restore AccessToDisposedClosure
-            }
-            finally
-            {
-                container.Dispose();
-            }
-        }
-
-        internal void Initialize()
-        {
-            var container = _integrationContext.DependencyContainer;
-            var globalSetUp = _integrationContext.Configuration.Get<ExecutionExtensionsConfiguration>().GlobalSetUpRegistry;
-            Task.Run(() => globalSetUp.SetUpAsync(container)).GetAwaiter().GetResult();
+            //No longer needed.
         }
     }
 }

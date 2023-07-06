@@ -6,6 +6,7 @@ using LightBDD.NUnit3.Configuration;
 using LightBDD.NUnit3.Implementation;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
+using NUnit.Framework.Internal;
 
 namespace LightBDD.NUnit3
 {
@@ -23,7 +24,7 @@ namespace LightBDD.NUnit3
         /// <param name="test">The test that is going to be run.</param>
         public void BeforeTest(ITest test)
         {
-            NUnit3FeatureCoordinator.InstallSelf(Configure());
+            NUnit3FeatureCoordinator.InstallSelf(Configure(), (test as TestAssembly)?.Assembly);
             OnSetUp();
         }
 

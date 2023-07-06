@@ -10,6 +10,7 @@ namespace LightBDD.Core.Reporting
     /// Class allowing to generate and save reports for executed features.
     /// It supports multiple <see cref="IReportWriter"/> instances that can be specified in constructor.
     /// </summary>
+    [Obsolete("This class is no longer used by LightBDD")]
     public class FeatureReportGenerator : IFeatureAggregator
     {
         private readonly IReportWriter[] _writers;

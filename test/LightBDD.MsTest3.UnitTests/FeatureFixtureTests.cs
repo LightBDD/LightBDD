@@ -1,5 +1,6 @@
 ﻿using LightBDD.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 
 namespace LightBDD.MsTest3.UnitTests
 {
@@ -18,6 +19,12 @@ namespace LightBDD.MsTest3.UnitTests
         public void Runner_should_be_initialized()
         {
             Assert.IsNotNull(new TestableFeatureFixture().GetRunner());
+        }
+
+        [TestMethod]
+        public void TestRun_should_be_started()
+        {
+            Assert.IsTrue(ConfiguredLightBddScope.CapturedNotifications.Contains("TEST RUN STARTING: LightBDD.MsTest3.UnitTests"));
         }
     }
 }

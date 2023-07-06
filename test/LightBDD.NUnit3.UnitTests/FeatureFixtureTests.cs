@@ -19,5 +19,11 @@ namespace LightBDD.NUnit3.UnitTests
         {
             Assert.IsNotNull(new TestableFeatureFixture().GetRunner());
         }
+
+        [Test]
+        public void TestRun_should_be_started()
+        {
+            Assert.That(ConfiguredLightBddScope.CapturedNotifications, Does.Contain("TEST RUN STARTING: LightBDD.NUnit3.UnitTests"));
+        }
     }
 }

@@ -267,6 +267,22 @@ namespace LightBDD.Core.Extensibility
         public abstract ScenarioDescriptor CaptureCurrentScenario();
 
         /// <summary>
+        /// Provides currently performed test run info.
+        /// </summary>
+        /// <returns></returns>
+        public ITestRunInfo GetTestRunInfo()
+        {
+            return new TestRunInfo(GetTestSuite(), GetLightBDDAssemblies().ToArray());
+        }
+
+        /// <summary>
+        /// Provides test suite containing currently executed tests.<br/>
+        /// The method needs to be overridden by integrations to provide proper details. Default implementation returns <seealso cref="TestSuite.NotProvided"/>.
+        /// </summary>
+        /// <returns></returns>
+        protected virtual TestSuite GetTestSuite() => TestSuite.NotProvided;
+
+        /// <summary>
         /// Provides <see cref="INameInfo"/> object containing information about scenario name represented by <paramref name="scenarioDescriptor"/>.
         /// </summary>
         /// <param name="scenarioDescriptor">Scenario descriptor.</param>
@@ -290,6 +306,18 @@ namespace LightBDD.Core.Extensibility
         private IEnumerable<T> ConcatAndOrderAttributes<T>(params IEnumerable<T>[] sequences) where T : IOrderedAttribute
         {
             return sequences.SelectMany(sequence => sequence.OrderBy(orderable => orderable.Order));
+        }
+
+        private IEnumerable<Assembly> GetLightBDDAssemblies()
+        {
+            var type = GetType();
+            while (type != null)
+            {
+                var assembly = type.Assembly;
+                if (assembly.FullName.StartsWith("LightBDD", StringComparison.OrdinalIgnoreCase))
+                    yield return assembly;
+                type = type.BaseType;
+            }
         }
     }
 }

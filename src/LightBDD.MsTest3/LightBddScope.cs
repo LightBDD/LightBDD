@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Reflection;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Framework.Configuration;
 using LightBDD.MsTest3.Configuration;
 using LightBDD.MsTest3.Implementation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.MsTest3
 {
@@ -26,7 +28,7 @@ namespace LightBDD.MsTest3
         /// </summary>
         public static void Initialize()
         {
-            Initialize(cfg => { });
+            Initialize(Assembly.GetCallingAssembly());
         }
 
         /// <summary>
@@ -35,7 +37,17 @@ namespace LightBDD.MsTest3
         /// <param name="onConfigure">Action allowing to customize LightBDD configuration.</param>
         public static void Initialize(Action<LightBddConfiguration> onConfigure)
         {
-            MsTest3FeatureCoordinator.InstallSelf(Configure(onConfigure));
+            Initialize(Assembly.GetCallingAssembly(), onConfigure);
+        }
+
+        /// <summary>
+        /// Initializes LightBddScope for provided test assembly.
+        /// </summary>
+        /// <param name="testAssembly">Assembly for which the tests are executed</param>
+        /// <param name="onConfigure">Optional configuration.</param>
+        public static void Initialize(Assembly testAssembly, Action<LightBddConfiguration> onConfigure = null)
+        {
+            MsTest3FeatureCoordinator.InstallSelf(Configure(onConfigure), testAssembly);
         }
 
         /// <summary>
@@ -56,7 +68,7 @@ namespace LightBDD.MsTest3
             configuration.ExceptionHandlingConfiguration()
                 .UpdateExceptionDetailsFormatter(new DefaultExceptionFormatter().WithTestFrameworkDefaults().Format);
 
-            onConfigure(configuration);
+            onConfigure?.Invoke(configuration);
             return configuration;
         }
     }

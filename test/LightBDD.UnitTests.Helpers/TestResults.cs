@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using LightBDD.Core.Formatting.NameDecorators;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
+using LightBDD.Framework;
 
 namespace LightBDD.UnitTests.Helpers
 {
@@ -343,6 +345,28 @@ namespace LightBDD.UnitTests.Helpers
             }
         }
 
+        public class TestTestRunResult : ITestRunResult
+        {
+            ITestRunInfo ITestRunResult.Info => Info;
+            public ExecutionStatus OverallStatus { get; set; }
+            public TestExecutionTime ExecutionTime { get; set; }
+            ExecutionTime ITestRunResult.ExecutionTime => ExecutionTime?.ToMockedType();
+            public TestTestRunInfo Info { get; set; }
+            public TestFeatureResult[] Features { get; set; }
+            public IEnumerable<IFeatureResult> GetFeatures()
+            {
+                return Features;
+            }
+        }
+
+        public class TestTestRunInfo : ITestRunInfo
+        {
+            public TestNameInfo Name { get; set; }
+            INameInfo IMetadataInfo.Name => Name;
+            public Guid RuntimeId { get; } = Guid.Parse("33333333-5555-3333-3333-333333333333");
+            public TestSuite TestSuite { get; set; } = TestSuite.Create("Random.Tests", new Version(1, 2, 3), "Foo bar");
+            public IReadOnlyList<Assembly> LightBddAssemblies { get; } = new[] { typeof(IBddRunner).Assembly, typeof(ITestRunInfo).Assembly };
+        }
         public class TestFeatureInfo : IFeatureInfo
         {
             INameInfo IMetadataInfo.Name => Name;

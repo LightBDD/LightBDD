@@ -4,14 +4,20 @@ using System.Linq;
 using System.Reflection;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
+using LightBDD.Core.Metadata;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.MsTest3.Implementation
 {
     internal class MsTest3MetadataProvider : CoreMetadataProvider
     {
-        public MsTest3MetadataProvider(LightBddConfiguration configuration)
-            : base(configuration) { }
+        private readonly TestSuite _testSuite;
+
+        public MsTest3MetadataProvider(LightBddConfiguration configuration, Assembly testAssembly)
+            : base(configuration)
+        {
+            _testSuite = TestSuite.Create(testAssembly);
+        }
 
         public override ScenarioDescriptor CaptureCurrentScenario()
         {
@@ -30,5 +36,7 @@ namespace LightBDD.MsTest3.Implementation
         {
             return null;
         }
+
+        protected override TestSuite GetTestSuite() => _testSuite;
     }
 }
