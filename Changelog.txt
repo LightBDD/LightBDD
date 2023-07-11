@@ -10,6 +10,7 @@ Breaking changes:
 + #290 changed ReportFormattablePath and ReportPathFormatter to use ITestRunResult
 + #290 changed IReportWriter to IReportGenerator
 + #290 changed ReportFileWriter to FileReportGenerator and FrameworkConfigurationExtensions.AddFileWriter() to AddFileReport()
++ #290 removed IFeatureAggregator interface
 
 Version 3.7.0
 ----------------------------------------
