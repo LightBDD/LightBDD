@@ -1,6 +1,16 @@
 LightBDD
 ===========================================
 
+vNext
+----------------------------------------
+Breaking changes:
++ #290 Renamed ReportWritersConfiguration class to ReportConfiguration and renamed ConfigurationExtensions.ReportWritersConfiguration() to ReportConfiguration()
++ #290 Reimplemented FeatureReportGenerator class
++ #290 changed IReportFormatter.Format() to use ITestRunResult
++ #290 changed ReportFormattablePath and ReportPathFormatter to use ITestRunResult
++ #290 changed IReportWriter to IReportGenerator
++ #290 changed ReportFileWriter to FileReportGenerator and FrameworkConfigurationExtensions.AddFileWriter() to AddFileReport()
+
 Version 3.7.0
 ----------------------------------------
 + #207 (LightBDD.Framework)(Change) Modernised Html Report

@@ -11,7 +11,7 @@ internal class TestRunResult : ITestRunResult
     public ITestRunInfo Info { get; }
     public ExecutionStatus OverallStatus { get; }
     public ExecutionTime ExecutionTime { get; }
-    public IEnumerable<IFeatureResult> GetFeatures() => _features;
+    public IReadOnlyList<IFeatureResult> Features =>_features;
 
     public TestRunResult(ITestRunInfo info, ExecutionTime executionTime, IEnumerable<IFeatureResult> features)
     {

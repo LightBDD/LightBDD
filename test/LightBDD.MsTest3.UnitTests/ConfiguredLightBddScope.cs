@@ -22,7 +22,7 @@ namespace LightBDD.MsTest3.UnitTests
 
         private static void OnConfigure(LightBddConfiguration configuration)
         {
-            configuration.ReportWritersConfiguration()
+            configuration.ReportConfiguration()
                 .Clear();
 
             configuration.ProgressNotifierConfiguration()

@@ -56,13 +56,13 @@
         }
 
         /// <summary>
-        /// Retrieves <see cref="ReportWritersConfiguration"/> from <paramref name="configuration"/> for further customizations.
+        /// Retrieves <see cref="ReportConfiguration"/> from <paramref name="configuration"/> for further customizations.
         /// </summary>
         /// <param name="configuration">Configuration object.</param>
         /// <returns>Configuration object.</returns>
-        public static ReportWritersConfiguration ReportWritersConfiguration(this LightBddConfiguration configuration)
+        public static ReportConfiguration ReportConfiguration(this LightBddConfiguration configuration)
         {
-            return configuration.Get<ReportWritersConfiguration>();
+            return configuration.Get<ReportConfiguration>();
         }
 
         /// <summary>

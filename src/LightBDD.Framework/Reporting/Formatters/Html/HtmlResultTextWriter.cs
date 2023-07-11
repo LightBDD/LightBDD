@@ -23,15 +23,15 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
         private readonly string _scripts = ReadResource("LightBDD.Framework.Reporting.Formatters.Html.Resources.scripts.js");
         private readonly string _favico = ReadBase64Resource("LightBDD.Framework.Reporting.Formatters.Html.Resources.lightbdd_small.ico");
 
-        private readonly IFeatureResult[] _features;
+        private readonly ITestRunResult _result;
 
         private readonly IDictionary<string, string> _categories;
 
-        public HtmlResultTextWriter(Stream outputStream, IFeatureResult[] features)
+        public HtmlResultTextWriter(Stream outputStream, ITestRunResult result)
         {
             _writer = new HtmlTextWriter(new StreamWriter(outputStream));
-            _features = features;
-            _categories = GroupCategories(features);
+            _result = result;
+            _categories = GroupCategories();
         }
 
         public void Write(HtmlReportFormatterOptions options)
@@ -73,9 +73,9 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 .Attribute(Html5Attribute.Href, $"data:{type};base64,{favicon}");
         }
 
-        private static Dictionary<string, string> GroupCategories(IEnumerable<IFeatureResult> features)
+        private Dictionary<string, string> GroupCategories()
         {
-            return features
+            return _result.Features
                 .SelectMany(f => f.GetScenarios())
                 .SelectMany(s => s.Info.Categories)
                 .Distinct()
@@ -107,26 +107,26 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
         private IHtmlNode WriteExecutionSummary()
         {
-            var bypassedScenarios = _features.CountScenariosWithStatus(ExecutionStatus.Bypassed);
-            var failedScenarios = _features.CountScenariosWithStatus(ExecutionStatus.Failed);
-            var ignoredScenarios = _features.CountScenariosWithStatus(ExecutionStatus.Ignored);
-            var timeSummary = _features.GetTestExecutionTimeSummary();
+            var bypassedScenarios = _result.Features.CountScenariosWithStatus(ExecutionStatus.Bypassed);
+            var failedScenarios = _result.Features.CountScenariosWithStatus(ExecutionStatus.Failed);
+            var ignoredScenarios = _result.Features.CountScenariosWithStatus(ExecutionStatus.Ignored);
 
             return Html.Tag(Html5Tag.Section).Class("execution-summary").Content(
                 Html.Tag(Html5Tag.H1).Content("Test execution summary"),
                 Html.Tag(Html5Tag.Div).Class("content").Content(
                     Html.Tag(Html5Tag.Table).Content(
                         GetKeyValueHeaderTableRow("Execution"),
+                        GetKeyValueTableRow("Project:", _result.Info.TestSuite.Name),
                         GetOverallStatus(),
-                        GetKeyValueTableRow("Start date:", timeSummary.Start.ToString("yyyy-MM-dd (UTC)")),
-                        GetKeyValueTableRow("Start time:", timeSummary.Start.ToString("HH:mm:ss")),
-                        GetKeyValueTableRow("End time:", timeSummary.End.ToString("HH:mm:ss")),
-                        GetKeyValueTableRow("Duration:", timeSummary.Duration.FormatPretty())),
+                        GetKeyValueTableRow("Start date:", _result.ExecutionTime.Start.ToString("yyyy-MM-dd (UTC)")),
+                        GetKeyValueTableRow("Start time:", _result.ExecutionTime.Start.ToString("HH:mm:ss")),
+                        GetKeyValueTableRow("End time:", _result.ExecutionTime.End.ToString("HH:mm:ss")),
+                        GetKeyValueTableRow("Duration:", _result.ExecutionTime.Duration.FormatPretty())),
                     Html.Tag(Html5Tag.Table).Content(
                         GetKeyValueHeaderTableRow("Content"),
-                        GetKeyValueTableRow("Features:", _features.Length.ToString()),
-                        GetKeyValueTableRow("Scenarios:", _features.CountScenarios()),
-                        GetKeyValueTableRow("Passed scenarios:", _features.CountScenariosWithStatus(ExecutionStatus.Passed)),
+                        GetKeyValueTableRow("Features:", _result.Features.Count.ToString()),
+                        GetKeyValueTableRow("Scenarios:", _result.Features.CountScenarios()),
+                        GetKeyValueTableRow("Passed scenarios:", _result.Features.CountScenariosWithStatus(ExecutionStatus.Passed)),
                         GetKeyValueTableRow("Bypassed scenarios:", bypassedScenarios, "bypassedAlert", "bypassedDetails", true),
                         GetKeyValueTableRow("Failed scenarios:", failedScenarios, "failedAlert", "failedDetails", true),
                         GetKeyValueTableRow("Ignored scenarios:", ignoredScenarios, "ignoredAlert", "ignoredDetails", true))));
@@ -134,7 +134,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
         private TagBuilder GetOverallStatus()
         {
-            var executionStatus = _features.SelectMany(f => f.GetScenarios()).Select(s => s.Status).OrderByDescending(x => x).DefaultIfEmpty(ExecutionStatus.NotRun).First();
+            var executionStatus = _result.Features.SelectMany(f => f.GetScenarios()).Select(s => s.Status).OrderByDescending(x => x).DefaultIfEmpty(ExecutionStatus.NotRun).First();
             if (executionStatus != ExecutionStatus.Failed)
                 executionStatus = ExecutionStatus.Passed;
             return Html.Tag(Html5Tag.Tr).Content(
@@ -216,29 +216,29 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 Tuple.Create("Average", sortableMinor, "sortTable('featuresSummary',17,true,this)"),
                 Tuple.Create("", hidden, "")
                 );
-            yield return Html.Tag(Html5Tag.Tbody).Content(_features.Select((t, index) => GetFeatureSummary(t, index + 1)));
+            yield return Html.Tag(Html5Tag.Tbody).Content(_result.Features.Select((t, index) => GetFeatureSummary(t, index + 1)));
 
             yield return GetFeaturesSummaryFooter();
         }
 
         private IHtmlNode GetFeaturesSummaryFooter()
         {
-            var timeSummary = _features.GetTestExecutionTimeSummary();
+            var timeSummary = _result.Features.GetTestExecutionTimeSummary();
             return Html.Tag(Html5Tag.Tfoot).Content(Html.Tag(Html5Tag.Tr).Content(
                 Html.Tag(Html5Tag.Td).Content("Totals"),
 
-                Html.Tag(Html5Tag.Td).Content(_features.CountScenarios().ToString()),
-                Html.Tag(Html5Tag.Td).Content(_features.CountScenariosWithStatus(ExecutionStatus.Passed).ToString()),
-                GetNumericTagWithOptionalClass(Html5Tag.Td, "bypassedAlert", _features.CountScenariosWithStatus(ExecutionStatus.Bypassed)),
-                GetNumericTagWithOptionalClass(Html5Tag.Td, "failedAlert", _features.CountScenariosWithStatus(ExecutionStatus.Failed)),
-                GetNumericTagWithOptionalClass(Html5Tag.Td, "ignoredAlert", _features.CountScenariosWithStatus(ExecutionStatus.Ignored)),
+                Html.Tag(Html5Tag.Td).Content(_result.Features.CountScenarios().ToString()),
+                Html.Tag(Html5Tag.Td).Content(_result.Features.CountScenariosWithStatus(ExecutionStatus.Passed).ToString()),
+                GetNumericTagWithOptionalClass(Html5Tag.Td, "bypassedAlert", _result.Features.CountScenariosWithStatus(ExecutionStatus.Bypassed)),
+                GetNumericTagWithOptionalClass(Html5Tag.Td, "failedAlert", _result.Features.CountScenariosWithStatus(ExecutionStatus.Failed)),
+                GetNumericTagWithOptionalClass(Html5Tag.Td, "ignoredAlert", _result.Features.CountScenariosWithStatus(ExecutionStatus.Ignored)),
 
-                Html.Tag(Html5Tag.Td).Content(_features.CountSteps().ToString()),
-                Html.Tag(Html5Tag.Td).Content(_features.CountStepsWithStatus(ExecutionStatus.Passed).ToString()),
-                GetNumericTagWithOptionalClass(Html5Tag.Td, "bypassedAlert", _features.CountStepsWithStatus(ExecutionStatus.Bypassed)),
-                GetNumericTagWithOptionalClass(Html5Tag.Td, "failedAlert", _features.CountStepsWithStatus(ExecutionStatus.Failed)),
-                GetNumericTagWithOptionalClass(Html5Tag.Td, "ignoredAlert", _features.CountStepsWithStatus(ExecutionStatus.Ignored)),
-                Html.Tag(Html5Tag.Td).Content(_features.CountStepsWithStatus(ExecutionStatus.NotRun).ToString()),
+                Html.Tag(Html5Tag.Td).Content(_result.Features.CountSteps().ToString()),
+                Html.Tag(Html5Tag.Td).Content(_result.Features.CountStepsWithStatus(ExecutionStatus.Passed).ToString()),
+                GetNumericTagWithOptionalClass(Html5Tag.Td, "bypassedAlert", _result.Features.CountStepsWithStatus(ExecutionStatus.Bypassed)),
+                GetNumericTagWithOptionalClass(Html5Tag.Td, "failedAlert", _result.Features.CountStepsWithStatus(ExecutionStatus.Failed)),
+                GetNumericTagWithOptionalClass(Html5Tag.Td, "ignoredAlert", _result.Features.CountStepsWithStatus(ExecutionStatus.Ignored)),
+                Html.Tag(Html5Tag.Td).Content(_result.Features.CountStepsWithStatus(ExecutionStatus.NotRun).ToString()),
 
                 Html.Tag(Html5Tag.Td).Content(timeSummary.Duration.FormatPretty()),
                 Html.Tag(Html5Tag.Td).Class("hidden").Content(timeSummary.Duration.Ticks.ToString()),
@@ -331,8 +331,8 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 GetCategoryFilterNodes(),
                 Html.Tag(Html5Tag.A).Class("shareable").Href("").Content("filtered link", false, false).Id("optionsLink").SpaceBefore());
 
-            for (var i = 0; i < _features.Length; ++i)
-                yield return GetFeatureDetails(_features[i], i + 1);
+            for (var i = 0; i < _result.Features.Count; ++i)
+                yield return GetFeatureDetails(_result.Features[i], i + 1);
         }
 
         private IHtmlNode GetCategoryFilterNodes()

@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 using LightBDD.Core.Reporting;
 using LightBDD.Core.Results;
 using LightBDD.Framework.Reporting.Formatters;
@@ -9,7 +10,7 @@ namespace LightBDD.Framework.Reporting
     /// <summary>
     /// Summary file writer class allows to save feature results by using associated result formatter and output path.
     /// </summary>
-    public class ReportFileWriter : IReportWriter
+    public class FileReportGenerator : IReportGenerator
     {
         private readonly ReportFormattablePath _path;
 
@@ -34,7 +35,7 @@ namespace LightBDD.Framework.Reporting
         /// <param name="formatter">Report formatter.</param>
         /// <param name="outputPath">Output path. If starts with <c>~</c>, it would be resolved to <c>AppContext.BaseDirectory</c>. It can contain string.Format() like parameters of {name:format} syntax.
         /// This constructor uses default <see cref="ReportPathFormatter"/> to format these parameters. See <see cref="ReportPathFormatter.CreateDefault"/>() for more details on available parameter types.</param>
-        public ReportFileWriter(IReportFormatter formatter, string outputPath)
+        public FileReportGenerator(IReportFormatter formatter, string outputPath)
             : this(formatter, outputPath, ReportPathFormatter.CreateDefault()) { }
 
         /// <summary>
@@ -44,7 +45,7 @@ namespace LightBDD.Framework.Reporting
         /// <param name="formatter">Report formatter.</param>
         /// <param name="outputPath">Output path. If starts with <c>~</c>, it would be resolved to <c>AppContext.BaseDirectory</c>. It can contain string.Format() like parameters of {name:format} syntax.</param>
         /// <param name="pathFormatter"><see cref="ReportPathFormatter"/> instance used to format <paramref name="outputPath"/>.</param>
-        public ReportFileWriter(IReportFormatter formatter, string outputPath, ReportPathFormatter pathFormatter)
+        public FileReportGenerator(IReportFormatter formatter, string outputPath, ReportPathFormatter pathFormatter)
         {
             OutputPath = outputPath;
             _path = pathFormatter.ToFormattablePath(outputPath);
@@ -52,16 +53,17 @@ namespace LightBDD.Framework.Reporting
         }
 
         /// <summary>
-        /// Saves formatted feature <c>results</c> to file specified in constructor.
+        /// Generates report using associated formatter and saves it on the output path specified in constructor.
         /// If output path refers to directory which does not exist, it will be created.
         /// </summary>
-        /// <param name="results">Results to save.</param>
-        public void Save(params IFeatureResult[] results)
+        /// <param name="result">Result to report on.</param>
+        public Task Generate(ITestRunResult result)
         {
-            var outputPath = _path.Resolve(results);
+            var outputPath = _path.Resolve(result);
             FilePathHelper.EnsureOutputDirectoryExists(outputPath);
-            using (var stream = File.Create(outputPath))
-                Formatter.Format(stream, results);
+            using var stream = File.Create(outputPath);
+            Formatter.Format(stream, result);
+            return Task.CompletedTask;
         }
     }
 }

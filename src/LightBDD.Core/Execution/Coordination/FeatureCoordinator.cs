@@ -6,7 +6,6 @@ using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Reporting;
-using LightBDD.Core.Reporting.Implementation;
 
 namespace LightBDD.Core.Execution.Coordination
 {
@@ -18,7 +17,7 @@ namespace LightBDD.Core.Execution.Coordination
     public abstract class FeatureCoordinator : IDisposable
     {
         private static readonly object Sync = new();
-        private readonly FeatureReportGeneratorV2 _reportGenerator;
+        private readonly FeatureReportGenerator _reportGenerator;
         private readonly TestRunCycle _testRunCycle;
 
         /// <summary>
@@ -104,7 +103,7 @@ namespace LightBDD.Core.Execution.Coordination
         protected FeatureCoordinator(IntegrationContext context)
         {
             Configuration = context.Configuration;
-            _reportGenerator = new FeatureReportGeneratorV2(Configuration);
+            _reportGenerator = new FeatureReportGenerator(Configuration);
             RunnerRepository = new FeatureRunnerRepository(context);
             ValueFormattingService = context.ValueFormattingService;
             _testRunCycle = new TestRunCycle(context, RunnerRepository);

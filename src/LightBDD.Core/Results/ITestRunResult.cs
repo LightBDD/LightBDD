@@ -23,7 +23,7 @@ public interface ITestRunResult
     /// <summary>
     /// Returns results for features covered by this test run, where the features are ordered by Name.
     /// </summary>
-    IEnumerable<IFeatureResult> GetFeatures();
+    IReadOnlyList<IFeatureResult> Features { get; }
 
     //setup and teardown results
 }

@@ -12,7 +12,7 @@ namespace LightBDD.NUnit3.UnitTests
         public static readonly ConcurrentQueue<string> CapturedNotifications = new();
         protected override void OnConfigure(LightBddConfiguration configuration)
         {
-            configuration.ReportWritersConfiguration()
+            configuration.ReportConfiguration()
                 .Clear();
 
             configuration.ProgressNotifierConfiguration()

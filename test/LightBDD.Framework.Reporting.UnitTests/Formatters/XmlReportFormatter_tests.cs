@@ -34,7 +34,7 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
         public void Should_format_xml()
         {
             var result = ReportFormatterTestData.GetFeatureResultWithDescription();
-            var text = FormatResults(result);
+            var text = FormatResult(result);
             TestContext.WriteLine(text);
 
             const string expectedText = @"<?xml version=""1.0"" encoding=""utf-8""?>
@@ -170,7 +170,7 @@ Step 2: Expected: True
         public void Should_format_xml_without_description_nor_label_nor_details()
         {
             var result = ReportFormatterTestData.GetFeatureResultWithoutDescriptionNorLabelNorDetails();
-            var text = FormatResults(result);
+            var text = FormatResult(result);
             TestContext.WriteLine(text);
 
             const string expectedText = @"<?xml version=""1.0"" encoding=""utf-8""?>
@@ -201,7 +201,7 @@ Step 2: Expected: True
         {
             var results = ReportFormatterTestData.GetMultipleFeatureResults();
 
-            var text = FormatResults(results);
+            var text = FormatResult(results);
             TestContext.WriteLine(text);
             const string expectedText = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <TestResults>
@@ -238,7 +238,7 @@ Step 2: Expected: True
         {
             var results = ReportFormatterTestData.GetFeatureWithUnsortedScenarios();
 
-            var text = FormatResults(results);
+            var text = FormatResult(results);
             TestContext.WriteLine(text);
             const string expectedText = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <TestResults>
@@ -297,7 +297,7 @@ Step 2: Expected: True
             tree.SetActual(actual);
 
             var results = ReportFormatterTestData.GetFeatureWithVerifiableTree(tree.Details);
-            var text = FormatResults(results);
+            var text = FormatResult(results);
             TestContext.WriteLine(text);
             const string expectedText = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <TestResults>
@@ -341,11 +341,11 @@ Step 2: Expected: True
         {
             XDocument.Parse(xml).Validate(_schema, (o, e) => Assert.Fail(e.Message));
         }
-        private string FormatResults(params IFeatureResult[] results)
+        private string FormatResult(ITestRunResult result)
         {
             using (var memory = new MemoryStream())
             {
-                _subject.Format(memory, results);
+                _subject.Format(memory, result);
                 return Encoding.UTF8.GetString(memory.ToArray());
             }
         }

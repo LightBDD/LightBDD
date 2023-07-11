@@ -22,8 +22,8 @@ namespace LightBDD.AcceptanceTests
     {
         protected override void OnConfigure(LightBddConfiguration configuration)
         {
-            configuration.ReportWritersConfiguration()
-                .Add(new ReportFileWriter(new PlainTextReportFormatter(), "~" + Path.DirectorySeparatorChar + "Reports" + Path.DirectorySeparatorChar + "FeaturesReport.txt"));
+            configuration.ReportConfiguration()
+                .Add(new FileReportGenerator(new PlainTextReportFormatter(), "~" + Path.DirectorySeparatorChar + "Reports" + Path.DirectorySeparatorChar + "FeaturesReport.txt"));
 
             configuration.DependencyContainerConfiguration().UseDefault(ConfigureContainer);
             configuration.ExecutionExtensionsConfiguration().EnableStepDecorator<ScreenshotCaptureOnFailure>();

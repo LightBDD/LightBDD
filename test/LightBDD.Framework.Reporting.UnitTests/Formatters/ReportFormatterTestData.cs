@@ -11,9 +11,10 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
     {
         private static DateTimeOffset _startDate = new(2014, 09, 23, 19, 21, 57, 55, TimeSpan.Zero);
 
-        public static IFeatureResult GetFeatureResultWithDescription()
+        public static ITestRunResult GetFeatureResultWithDescription()
         {
-            return TestResults.CreateFeatureResult("My feature", $"My feature{Environment.NewLine}long description", "Label 1",
+            return TestResults.CreateTestRunResults(
+                TestResults.CreateFeatureResult("My feature", $"My feature{Environment.NewLine}long description", "Label 1",
                 TestResults.CreateScenarioResult("name", "Label 2", _startDate.AddSeconds(1), new TimeSpan(0, 0, 1, 2, 100), new[] { "categoryA" },
                     TestResults.CreateStepResult(ExecutionStatus.Passed)
                         .WithExecutionTime(_startDate.AddSeconds(2), new TimeSpan(0, 1, 1))
@@ -50,10 +51,10 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
                     TestResults.CreateStepResult(1, "step3", ExecutionStatus.Bypassed, _startDate.AddSeconds(5), new TimeSpan(0, 0, 0, 2, 107), "bypass reason"),
                     TestResults.CreateStepResult(2, "step4", ExecutionStatus.Failed, _startDate.AddSeconds(6), new TimeSpan(0, 0, 0, 0, 50),
                         $"  Expected: True{Environment.NewLine}  But was: False"),
-                    TestResults.CreateStepResult(3, "step5", ExecutionStatus.NotRun)));
+                    TestResults.CreateStepResult(3, "step5", ExecutionStatus.NotRun))));
         }
 
-        public static IFeatureResult[] GetMultipleFeatureResults()
+        public static ITestRunResult GetMultipleFeatureResults()
         {
             var feature1 = TestResults.CreateFeatureResult("My feature", null, null,
             TestResults.CreateScenarioResult("scenario1", null, _startDate.AddSeconds(1), TimeSpan.FromMilliseconds(20), new[] { "categoryA" },
@@ -63,34 +64,34 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
                  TestResults.CreateScenarioResult("scenario1", null, _startDate.AddSeconds(4), TimeSpan.FromMilliseconds(20), new[] { "categoryB" },
                  TestResults.CreateStepResult(1, "step1", ExecutionStatus.Passed, _startDate.AddSeconds(5), TimeSpan.FromMilliseconds(20))));
 
-            return new[] { feature1, feature2 };
+            return TestResults.CreateTestRunResults(feature1, feature2 );
         }
 
-        public static IFeatureResult GetFeatureResultWithoutDescriptionNorLabelNorDetails()
+        public static ITestRunResult GetFeatureResultWithoutDescriptionNorLabelNorDetails()
         {
-            return TestResults.CreateFeatureResult("My feature", null, null,
+            return TestResults.CreateTestRunResults(TestResults.CreateFeatureResult("My feature", null, null,
                 TestResults.CreateScenarioResult("name", null, _startDate.AddSeconds(1), TimeSpan.FromMilliseconds(25), null,
                     TestResults.CreateStepResult(1, "step1", ExecutionStatus.Passed, _startDate.AddSeconds(2), TimeSpan.FromMilliseconds(20)),
-                    TestResults.CreateStepResult(2, "step2", ExecutionStatus.Ignored, _startDate.AddSeconds(3), TimeSpan.FromMilliseconds(5))));
+                    TestResults.CreateStepResult(2, "step2", ExecutionStatus.Ignored, _startDate.AddSeconds(3), TimeSpan.FromMilliseconds(5)))));
         }
 
-        public static IFeatureResult GetFeatureWithUnsortedScenarios()
+        public static ITestRunResult GetFeatureWithUnsortedScenarios()
         {
-            return TestResults.CreateFeatureResult("My Feature", null, null,
+            return TestResults.CreateTestRunResults(TestResults.CreateFeatureResult("My Feature", null, null,
                 TestResults.CreateScenarioResult("scenario C", "lab A", _startDate, TimeSpan.FromSeconds(2), null,
                     TestResults.CreateStepResult(1, "step", ExecutionStatus.Passed)),
                 TestResults.CreateScenarioResult("scenario A", "lab B", _startDate.AddMilliseconds(2), TimeSpan.FromSeconds(2), null,
                     TestResults.CreateStepResult(1, "step", ExecutionStatus.Passed)),
                 TestResults.CreateScenarioResult("scenario B", "lab C", _startDate, TimeSpan.FromSeconds(5), null,
-                    TestResults.CreateStepResult(1, "step", ExecutionStatus.Passed)));
+                    TestResults.CreateStepResult(1, "step", ExecutionStatus.Passed))));
         }
 
-        public static IFeatureResult GetFeatureWithVerifiableTree(ITreeParameterDetails tree)
+        public static ITestRunResult GetFeatureWithVerifiableTree(ITreeParameterDetails tree)
         {
-            return TestResults.CreateFeatureResult("My Feature", null, null,
+            return TestResults.CreateTestRunResults(TestResults.CreateFeatureResult("My Feature", null, null,
                 TestResults.CreateScenarioResult("scenario A", "lab B", _startDate.AddMilliseconds(2), TimeSpan.FromSeconds(2), null,
                     TestResults.CreateStepResult(1, "step", ExecutionStatus.Failed)
-                        .WithStepParameters(TestResults.CreateTestParameter("tree", tree))));
+                        .WithStepParameters(TestResults.CreateTestParameter("tree", tree)))));
         }
     }
 }

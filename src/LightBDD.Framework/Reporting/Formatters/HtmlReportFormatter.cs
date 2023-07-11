@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using LightBDD.Core.Results;
 using LightBDD.Framework.Reporting.Formatters.Html;
 
@@ -11,14 +12,11 @@ namespace LightBDD.Framework.Reporting.Formatters
     public class HtmlReportFormatter : IReportFormatter
     {
         private readonly HtmlReportFormatterOptions _options = new();
-        /// <summary>
-        /// Formats provided feature results and writes to the <paramref name="stream"/>.
-        /// </summary>
-        /// <param name="stream">Stream to write formatted results to.</param>
-        /// <param name="features">Feature results to format.</param>
-        public void Format(Stream stream, params IFeatureResult[] features)
+
+        /// <inheritdoc />
+        public void Format(Stream stream, ITestRunResult result)
         {
-            using var writer = new HtmlResultTextWriter(stream, features);
+            using var writer = new HtmlResultTextWriter(stream, result);
             writer.Write(_options);
         }
 

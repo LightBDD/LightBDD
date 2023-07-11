@@ -37,6 +37,7 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
             TestContext.WriteLine(text);
             var expectedText = $@"Test execution summary
 Execution
+Project: Random.Tests
 Overall status: Failed
 Start date: 2014-09-23 (UTC)
 Start time: 19:21:58
@@ -114,6 +115,7 @@ initialize();";
             TestContext.WriteLine(text);
             var expectedText = $@"Test execution summary
 Execution
+Project: Random.Tests
 Overall status: Passed
 Start date: 2014-09-23 (UTC)
 Start time: 19:21:58
@@ -144,11 +146,12 @@ initialize();";
         [Test]
         public void Should_format_multiple_features()
         {
-            var results = ReportFormatterTestData.GetMultipleFeatureResults();
-            var text = FormatAndExtractText(results);
+            var result = ReportFormatterTestData.GetMultipleFeatureResults();
+            var text = FormatAndExtractText(result);
             TestContext.WriteLine(text);
             var expectedText = $@"Test execution summary
 Execution
+Project: Random.Tests
 Overall status: Passed
 Start date: 2014-09-23 (UTC)
 Start time: 19:21:58
@@ -185,7 +188,7 @@ initialize();";
         public void Should_escape_html_characters_in_step_name()
         {
             var date = new DateTimeOffset(2019, 10, 21, 05, 06, 07, TimeSpan.Zero);
-            var feature = TestResults.CreateFeatureResult("My feature", null, null,
+            var result = TestResults.CreateTestRunResults(TestResults.CreateFeatureResult("My feature", null, null,
                 TestResults.CreateScenarioResult("scenario1", null, date, TimeSpan.FromSeconds(5), Array.Empty<string>(),
                     TestResults.CreateStepResult(ExecutionStatus.Passed)
                         .WithStepNameDetails(1, "ste<p>", "ste<p>", "ty<p>e")
@@ -193,12 +196,13 @@ initialize();";
                         .WithExecutionTime(date, TimeSpan.FromMilliseconds(20)),
                     TestResults.CreateStepResult(ExecutionStatus.Passed)
                         .WithStepNameDetails(2, "ste<p>2", "ste<p>2")
-                        .WithExecutionTime(date.AddMilliseconds(50), TimeSpan.FromMilliseconds(20))));
+                        .WithExecutionTime(date.AddMilliseconds(50), TimeSpan.FromMilliseconds(20)))));
 
-            var text = FormatAndExtractText(feature);
+            var text = FormatAndExtractText(result);
             TestContext.WriteLine(text);
             var expectedText = $@"Test execution summary
 Execution
+Project: Random.Tests
 Overall status: Passed
 Start date: 2019-10-21 (UTC)
 Start time: 05:06:07
@@ -228,11 +232,12 @@ initialize();";
         [Test]
         public void Should_format_scenarios_in_order()
         {
-            var results = ReportFormatterTestData.GetFeatureWithUnsortedScenarios();
-            var text = FormatAndExtractText(results);
+            var result = ReportFormatterTestData.GetFeatureWithUnsortedScenarios();
+            var text = FormatAndExtractText(result);
             TestContext.WriteLine(text);
             var expectedText = $@"Test execution summary
 Execution
+Project: Random.Tests
 Overall status: Passed
 Start date: 2014-09-23 (UTC)
 Start time: 19:21:57
@@ -316,8 +321,8 @@ $.Records.[3]=AB-4&lt;none&gt;";
 
             var tree = Tree.For(input);
 
-            var results = ReportFormatterTestData.GetFeatureWithVerifiableTree(tree.Details);
-            var text = FormatAndExtractTreeText("//div[@class=\"param tree\"]", results);
+            var result = ReportFormatterTestData.GetFeatureWithVerifiableTree(tree.Details);
+            var text = FormatAndExtractTreeText("//div[@class=\"param tree\"]", result);
             TestContext.WriteLine(text);
 
             var expectedText = @"$=&lt;object&gt;
@@ -348,8 +353,8 @@ $.Records.[2]=AB-3";
             var tree = Tree.ExpectEquivalent(input);
             tree.SetActual(input);
 
-            var results = ReportFormatterTestData.GetFeatureWithVerifiableTree(tree.Details);
-            var text = FormatAndExtractTreeText("//div[@class=\"param tree\"]", results);
+            var result = ReportFormatterTestData.GetFeatureWithVerifiableTree(tree.Details);
+            var text = FormatAndExtractTreeText("//div[@class=\"param tree\"]", result);
             TestContext.WriteLine(text);
 
             var expectedText = @"$=&lt;array:3&gt;
@@ -387,8 +392,8 @@ $.[2].[3]=3";
             var tree = Tree.ExpectEquivalent(input);
             tree.SetActual(input);
 
-            var results = ReportFormatterTestData.GetFeatureWithVerifiableTree(tree.Details);
-            var text = FormatAndExtractTreeText("//div[@class=\"param tree\"]", results);
+            var result = ReportFormatterTestData.GetFeatureWithVerifiableTree(tree.Details);
+            var text = FormatAndExtractTreeText("//div[@class=\"param tree\"]", result);
             TestContext.WriteLine(text);
 
             var expectedText = @"$=&lt;array:3&gt;
@@ -409,9 +414,9 @@ $.[2].Surname=Smith";
             return typeof(IBddRunner).GetTypeInfo().Assembly.GetName().Version.ToString(4);
         }
 
-        private string FormatAndExtractText(params IFeatureResult[] results)
+        private string FormatAndExtractText(ITestRunResult result)
         {
-            var formatted = FormatResults(results);
+            var formatted = FormatResult(result);
             var doc = new HtmlDocument();
             doc.LoadHtml(formatted);
             var builder = new HtmlToPlainTextFormatter();
@@ -420,9 +425,9 @@ $.[2].Surname=Smith";
             return builder.ToString();
         }
 
-        private string FormatAndExtractTreeText(string xpath, params IFeatureResult[] results)
+        private string FormatAndExtractTreeText(string xpath, ITestRunResult result)
         {
-            var formatted = FormatResults(results);
+            var formatted = FormatResult(result);
             var doc = new HtmlDocument();
             doc.LoadHtml(formatted);
             var builder = new HtmlTreeToPlainTextFormatter();
@@ -431,11 +436,11 @@ $.[2].Surname=Smith";
             return builder.ToString();
         }
 
-        private string FormatResults(params IFeatureResult[] results)
+        private string FormatResult(ITestRunResult result)
         {
             using (var memory = new MemoryStream())
             {
-                _subject.Format(memory, results);
+                _subject.Format(memory, result);
                 return Encoding.UTF8.GetString(memory.ToArray());
             }
         }
