@@ -125,7 +125,6 @@ namespace LightBDD.Core.Execution.Coordination
             UninstallSelf();
             var results = _testRunCycle.Finish();
             Task.Run(() => _reportGenerator.GenerateReports(results)).GetAwaiter().GetResult();
-            RunnerRepository.Dispose();
         }
 
         private void Initialize()

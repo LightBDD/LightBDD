@@ -12,6 +12,8 @@ LightBDD.Fixie3 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Fixie3?
 LightBDD.Autofac | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Autofac?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Autofac/)
 LightBDD.Extensions.DependencyInjection | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Extensions.DependencyInjection?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Extensions.DependencyInjection/)
 
+See latest release details on [What Is New](https://github.com/LightBDD/LightBDD/wiki/What-Is-New) wiki page!
+
 ## Project description
 **LightBDD** is a behaviour-driven development test framework offering ability to write tests that are easy to read, easy to track during execution and summarize in user friendly report, while allowing developers to use all of the standard development tools to maintain them.
 
@@ -155,7 +157,7 @@ For more information, please visit [Test Progress Notification](https://github.c
 ### Example HTML report generated after test execution:
 When all tests are finished, LightBDD generates the HTML report file, providing the summary and the details of the executed scenarios - the fragment of the report is presented below.
 
-![](https://raw.githubusercontent.com/wiki/LightBDD/LightBDD/images/scenario_report.png)
+![](https://raw.githubusercontent.com/wiki/LightBDD/LightBDD/images/scenario_report_v370.png)
 
 To read more, please see [Generating Reports](https://github.com/LightBDD/LightBDD/wiki/Generating-Reports) wiki page.
 

@@ -3,8 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
-using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility.Implementation;
 
 namespace LightBDD.Core.Extensibility
@@ -13,7 +11,7 @@ namespace LightBDD.Core.Extensibility
     /// Funner factory allowing to create <see cref="IFeatureRunner"/> instances and maintaining list of instantiated runners.
     /// This class should be used by projects integrating LightBDD with testing frameworks.
     /// </summary>
-    public class FeatureRunnerRepository : IDisposable
+    public class FeatureRunnerRepository
     {
         private readonly IntegrationContext _integrationContext;
         private readonly ConcurrentDictionary<Type, Lazy<IFeatureRunner>> _runners = new();
@@ -50,11 +48,5 @@ namespace LightBDD.Core.Extensibility
         /// All currently instantiated runners.
         /// </summary>
         public IEnumerable<IFeatureRunner> AllRunners => _runners.Values.Select(x => x.Value);
-
-        /// <inheritdoc />
-        public void Dispose()
-        {
-            //No longer needed.
-        }
     }
 }
