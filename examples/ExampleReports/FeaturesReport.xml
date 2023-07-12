@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TestResults>
-  <Summary TestExecutionStart="2023-06-30T21:04:08.3381779Z" TestExecutionEnd="2023-06-30T21:04:14.7522739Z" TestExecutionTime="PT6.414096S">
+  <Summary TestExecutionStart="2023-07-12T12:15:58.4184859Z" TestExecutionEnd="2023-07-12T12:16:04.6600067Z" TestExecutionTime="PT6.2415208S" OverallStatus="Failed">
+    <TestSuite Name="Example.LightBDD.NUnit3" Version="1.0.0.0" Description="" />
     <Features Count="12" />
     <Scenarios Count="27" Passed="14" Bypassed="1" Failed="8" Ignored="4" />
     <Steps Count="140" Passed="110" Bypassed="3" Failed="14" Ignored="8" NotRun="5" />
+    <LightBDDAssemblies>
+      <Assembly Name="LightBDD.NUnit3" Version="3.7.0.0" />
+      <Assembly Name="LightBDD.Core" Version="3.7.0.0" />
+    </LightBDDAssemblies>
   </Summary>
-  <Feature Name="Address book feature" RuntimeId="fef85e4e-093a-4e6a-bc9d-b30d29b6f6c8">
+  <Feature Name="Address book feature" RuntimeId="887c5a08-c56f-4fa3-86c3-c800029f401a">
     <Description>In order to maintain my product dispatch
 As an application user
 I want to add and browse my client postal addresses by client emails</Description>
-    <Scenario Status="Failed" Name="Adding contacts" ExecutionStart="2023-06-30T21:04:08.3528701Z" ExecutionTime="PT0.0272589S" RuntimeId="82502e2b-19fb-4a3b-8567-102266d5dafa">
+    <Scenario Status="Failed" Name="Adding contacts" ExecutionStart="2023-07-12T12:15:58.4620537Z" ExecutionTime="PT0.0289061S" RuntimeId="ab7e56b2-e1a6-438c-83e9-10bd245fa189">
       <Name Format="Adding contacts" />
-      <Step Status="Passed" Number="1" Name="GIVEN an empty address book" ExecutionStart="2023-06-30T21:04:08.3564798Z" ExecutionTime="PT0.0001897S" RuntimeId="23ad90a5-831f-492b-86a3-cbc28679de4e">
+      <Step Status="Passed" Number="1" Name="GIVEN an empty address book" ExecutionStart="2023-07-12T12:15:58.466959Z" ExecutionTime="PT0.0003044S" RuntimeId="a657738d-aa6a-4884-85ee-968f8f935479">
         <StepName StepType="GIVEN" Format="an empty address book" />
       </Step>
-      <Step Status="Passed" Number="2" Name="WHEN I associate contact &quot;&lt;$contact&gt;&quot; with address &quot;&lt;$address&gt;&quot; as alias &quot;Joey&quot;" ExecutionStart="2023-06-30T21:04:08.3566915Z" ExecutionTime="PT0.0178944S" RuntimeId="6a3ce43a-db34-4f4c-9cd9-a7735c29889e">
+      <Step Status="Passed" Number="2" Name="WHEN I associate contact &quot;&lt;$contact&gt;&quot; with address &quot;&lt;$address&gt;&quot; as alias &quot;Joey&quot;" ExecutionStart="2023-07-12T12:15:58.4673082Z" ExecutionTime="PT0.0174923S" RuntimeId="b370a390-c98f-4d97-aee7-f299babd6795">
         <StepName StepType="WHEN" Format="I associate contact &quot;{0}&quot; with address &quot;{1}&quot; as alias &quot;{2}&quot;">
           <Parameter IsEvaluated="true">&lt;$contact&gt;</Parameter>
           <Parameter IsEvaluated="true">&lt;$address&gt;</Parameter>
@@ -38,7 +43,7 @@ I want to add and browse my client postal addresses by client emails</Descriptio
           </Tree>
         </Parameter>
       </Step>
-      <Step Status="Passed" Number="3" Name="AND I associate contact &quot;&lt;$contact&gt;&quot; with address &quot;&lt;$address&gt;&quot; as alias &quot;Janek&quot;" ExecutionStart="2023-06-30T21:04:08.3751242Z" ExecutionTime="PT0.0000851S" RuntimeId="7cd89222-6cfc-437c-a2cc-aca66166d27d">
+      <Step Status="Passed" Number="3" Name="AND I associate contact &quot;&lt;$contact&gt;&quot; with address &quot;&lt;$address&gt;&quot; as alias &quot;Janek&quot;" ExecutionStart="2023-07-12T12:15:58.48535Z" ExecutionTime="PT0.0000928S" RuntimeId="268a01ff-c88d-496c-a9cf-1eb20e2d583c">
         <StepName StepType="AND" Format="I associate contact &quot;{0}&quot; with address &quot;{1}&quot; as alias &quot;{2}&quot;">
           <Parameter IsEvaluated="true">&lt;$contact&gt;</Parameter>
           <Parameter IsEvaluated="true">&lt;$address&gt;</Parameter>
@@ -62,10 +67,10 @@ I want to add and browse my client postal addresses by client emails</Descriptio
           </Tree>
         </Parameter>
       </Step>
-      <Step Status="Failed" Number="4" Name="THEN address book should contain contacts &quot;&lt;$contacts&gt;&quot;" ExecutionStart="2023-06-30T21:04:08.3752292Z" ExecutionTime="PT0.004752S" RuntimeId="3dfc344d-8848-4e1b-ae8b-6a9d2ebbdb6d">
+      <Step Status="Failed" Number="4" Name="THEN address book should contain contacts &quot;&lt;$contacts&gt;&quot;" ExecutionStart="2023-07-12T12:15:58.4854636Z" ExecutionTime="PT0.0053336S" RuntimeId="b5b3039d-0be1-4ba2-b56e-8e84094ac087">
         <StatusDetails>Step 4: System.InvalidOperationException : Parameter 'contacts' verification failed: $[1].Name: expected: equals 'Joel Jonnes', but got: 'Joe Jonnes'
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
         <StepName StepType="THEN" Format="address book should contain contacts &quot;{0}&quot;">
           <Parameter IsEvaluated="true">&lt;$contacts&gt;</Parameter>
         </StepName>
@@ -84,15 +89,15 @@ I want to add and browse my client postal addresses by client emails</Descriptio
         </Parameter>
       </Step>
       <StatusDetails>Step 4: System.InvalidOperationException : Parameter 'contacts' verification failed: $[1].Name: expected: equals 'Joel Jonnes', but got: 'Joe Jonnes'
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
     </Scenario>
-    <Scenario Status="Passed" Name="Matching addresses by email" ExecutionStart="2023-06-30T21:04:08.386777Z" ExecutionTime="PT0.0122501S" RuntimeId="ed3670cf-85b4-4e0e-97eb-6bd0873eca98">
+    <Scenario Status="Passed" Name="Matching addresses by email" ExecutionStart="2023-07-12T12:15:58.5021577Z" ExecutionTime="PT0.0143014S" RuntimeId="5206ada2-a14a-43ce-8247-888dd1f6fff9">
       <Name Format="Matching addresses by email" />
-      <Step Status="Passed" Number="1" Name="GIVEN an empty address book" ExecutionStart="2023-06-30T21:04:08.3968567Z" ExecutionTime="PT0.0000323S" RuntimeId="0b9985cd-92d8-4796-9773-9881e52f2285">
+      <Step Status="Passed" Number="1" Name="GIVEN an empty address book" ExecutionStart="2023-07-12T12:15:58.5140411Z" ExecutionTime="PT0.0000359S" RuntimeId="706776e1-2f40-47a8-a92d-2355c757309a">
         <StepName StepType="GIVEN" Format="an empty address book" />
       </Step>
-      <Step Status="Passed" Number="2" Name="WHEN I associate contact &quot;&lt;$contact&gt;&quot; with address &quot;&lt;$address&gt;&quot; as alias &quot;Joey&quot;" ExecutionStart="2023-06-30T21:04:08.3969108Z" ExecutionTime="PT0.0000979S" RuntimeId="65bb6b2c-7b71-412f-98da-398817e65842">
+      <Step Status="Passed" Number="2" Name="WHEN I associate contact &quot;&lt;$contact&gt;&quot; with address &quot;&lt;$address&gt;&quot; as alias &quot;Joey&quot;" ExecutionStart="2023-07-12T12:15:58.5141057Z" ExecutionTime="PT0.000103S" RuntimeId="0fc99768-1fa0-481e-a976-c8cd74b7a462">
         <StepName StepType="WHEN" Format="I associate contact &quot;{0}&quot; with address &quot;{1}&quot; as alias &quot;{2}&quot;">
           <Parameter IsEvaluated="true">&lt;$contact&gt;</Parameter>
           <Parameter IsEvaluated="true">&lt;$address&gt;</Parameter>
@@ -116,7 +121,7 @@ I want to add and browse my client postal addresses by client emails</Descriptio
           </Tree>
         </Parameter>
       </Step>
-      <Step Status="Passed" Number="3" Name="AND I associate contact &quot;&lt;$contact&gt;&quot; with address &quot;&lt;$address&gt;&quot; as alias &quot;Janek&quot;" ExecutionStart="2023-06-30T21:04:08.3970306Z" ExecutionTime="PT0.0000586S" RuntimeId="f31720f6-a072-43fd-be87-11843c1095c2">
+      <Step Status="Passed" Number="3" Name="AND I associate contact &quot;&lt;$contact&gt;&quot; with address &quot;&lt;$address&gt;&quot; as alias &quot;Janek&quot;" ExecutionStart="2023-07-12T12:15:58.5142338Z" ExecutionTime="PT0.0000697S" RuntimeId="cdf7abcd-e735-43fe-8cbc-4ad23f5b31ba">
         <StepName StepType="AND" Format="I associate contact &quot;{0}&quot; with address &quot;{1}&quot; as alias &quot;{2}&quot;">
           <Parameter IsEvaluated="true">&lt;$contact&gt;</Parameter>
           <Parameter IsEvaluated="true">&lt;$address&gt;</Parameter>
@@ -140,7 +145,7 @@ I want to add and browse my client postal addresses by client emails</Descriptio
           </Tree>
         </Parameter>
       </Step>
-      <Step Status="Passed" Number="4" Name="THEN address by email should match &quot;&lt;$match&gt;&quot;" ExecutionStart="2023-06-30T21:04:08.3971074Z" ExecutionTime="PT0.0018899S" RuntimeId="7d4c6c8c-1e16-41b9-b1a8-b325312f703c">
+      <Step Status="Passed" Number="4" Name="THEN address by email should match &quot;&lt;$match&gt;&quot;" ExecutionStart="2023-07-12T12:15:58.5143292Z" ExecutionTime="PT0.0021002S" RuntimeId="2b6e4987-3b67-47e9-ac61-c9107cb18015">
         <StepName StepType="THEN" Format="address by email should match &quot;{0}&quot;">
           <Parameter IsEvaluated="true">&lt;$match&gt;</Parameter>
         </StepName>
@@ -161,9 +166,9 @@ I want to add and browse my client postal addresses by client emails</Descriptio
         </Parameter>
       </Step>
     </Scenario>
-    <Scenario Status="Passed" Name="Persisting address book" ExecutionStart="2023-06-30T21:04:08.4001945Z" ExecutionTime="PT0.0247578S" RuntimeId="6a21fad5-6752-4d78-9a9b-6a28287cbeb5">
+    <Scenario Status="Passed" Name="Persisting address book" ExecutionStart="2023-07-12T12:15:58.5177002Z" ExecutionTime="PT0.0281452S" RuntimeId="23fae135-4afd-4ff4-98f2-2a997b2da422">
       <Name Format="Persisting address book" />
-      <Step Status="Passed" Number="1" Name="GIVEN an address book with contacts &quot;&lt;$contacts&gt;&quot;" ExecutionStart="2023-06-30T21:04:08.4032811Z" ExecutionTime="PT0.0002415S" RuntimeId="f565f6ff-319f-47de-8eea-99aa432e45e7">
+      <Step Status="Passed" Number="1" Name="GIVEN an address book with contacts &quot;&lt;$contacts&gt;&quot;" ExecutionStart="2023-07-12T12:15:58.5208905Z" ExecutionTime="PT0.0002625S" RuntimeId="ebf3c113-6905-420c-a611-94b93fe72ebf">
         <StepName StepType="GIVEN" Format="an address book with contacts &quot;{0}&quot;">
           <Parameter IsEvaluated="true">&lt;$contacts&gt;</Parameter>
         </StepName>
@@ -195,10 +200,10 @@ I want to add and browse my client postal addresses by client emails</Descriptio
           </Tree>
         </Parameter>
       </Step>
-      <Step Status="Passed" Number="2" Name="WHEN I persist book as json" ExecutionStart="2023-06-30T21:04:08.4035598Z" ExecutionTime="PT0.0133531S" RuntimeId="cf041066-718a-45b4-abc3-1a7d7468b6a5">
+      <Step Status="Passed" Number="2" Name="WHEN I persist book as json" ExecutionStart="2023-07-12T12:15:58.5211892Z" ExecutionTime="PT0.0157233S" RuntimeId="ab3d0871-ab03-42db-bb4c-8488d2df9bb2">
         <StepName StepType="WHEN" Format="I persist book as json" />
       </Step>
-      <Step Status="Passed" Number="3" Name="THEN address book should match persisted json &quot;&lt;$json&gt;&quot;" ExecutionStart="2023-06-30T21:04:08.4169322Z" ExecutionTime="PT0.0060769S" RuntimeId="4505bb69-4bc1-4bfb-b1ee-4241fe49fe63">
+      <Step Status="Passed" Number="3" Name="THEN address book should match persisted json &quot;&lt;$json&gt;&quot;" ExecutionStart="2023-07-12T12:15:58.5369582Z" ExecutionTime="PT0.0066464S" RuntimeId="7e9edf51-cb6c-42d2-9786-94b6d66401e1">
         <StepName StepType="THEN" Format="address book should match persisted json &quot;{0}&quot;">
           <Parameter IsEvaluated="true">&lt;$json&gt;</Parameter>
         </StepName>
@@ -232,7 +237,7 @@ I want to add and browse my client postal addresses by client emails</Descriptio
         </Parameter>
         <Comment>Underlying type: JsonElement</Comment>
       </Step>
-      <Step Status="Passed" Number="4" Name="AND address book should match persisted json &quot;&lt;$json&gt;&quot;" ExecutionStart="2023-06-30T21:04:08.423052Z" ExecutionTime="PT0.0018609S" RuntimeId="e0ff0a92-a4d4-4d73-967a-c8456b57dc32">
+      <Step Status="Passed" Number="4" Name="AND address book should match persisted json &quot;&lt;$json&gt;&quot;" ExecutionStart="2023-07-12T12:15:58.5436503Z" ExecutionTime="PT0.0021515S" RuntimeId="002e18cf-e80e-4fdc-b2e2-d81e070c27a7">
         <StepName StepType="AND" Format="address book should match persisted json &quot;{0}&quot;">
           <Parameter IsEvaluated="true">&lt;$json&gt;</Parameter>
         </StepName>
@@ -267,12 +272,12 @@ I want to add and browse my client postal addresses by client emails</Descriptio
         <Comment>Underlying type: ExpandoObject</Comment>
       </Step>
     </Scenario>
-    <Scenario Status="Passed" Name="Retrieving postal addresses" ExecutionStart="2023-06-30T21:04:08.4260324Z" ExecutionTime="PT0.0046383S" RuntimeId="764d75d8-c9fb-44b0-8529-d9881a632bc6">
+    <Scenario Status="Passed" Name="Retrieving postal addresses" ExecutionStart="2023-07-12T12:15:58.5470594Z" ExecutionTime="PT0.0049166S" RuntimeId="04efccb9-9a28-4937-8cbd-511dd992cc65">
       <Name Format="Retrieving postal addresses" />
-      <Step Status="Passed" Number="1" Name="GIVEN an empty address book" ExecutionStart="2023-06-30T21:04:08.4295101Z" ExecutionTime="PT0.000022S" RuntimeId="8f301a11-e1a1-4593-9c97-7af648fa7426">
+      <Step Status="Passed" Number="1" Name="GIVEN an empty address book" ExecutionStart="2023-07-12T12:15:58.5507622Z" ExecutionTime="PT0.0000187S" RuntimeId="6a2b9a2c-c326-4f3f-b5c5-990b82d1b8b1">
         <StepName StepType="GIVEN" Format="an empty address book" />
       </Step>
-      <Step Status="Passed" Number="2" Name="WHEN I associate contact &quot;&lt;$contact&gt;&quot; with address &quot;&lt;$address&gt;&quot; as alias &quot;Joey&quot;" ExecutionStart="2023-06-30T21:04:08.4295462Z" ExecutionTime="PT0.0000828S" RuntimeId="2485f653-cedb-451e-b191-8c9b016c9212">
+      <Step Status="Passed" Number="2" Name="WHEN I associate contact &quot;&lt;$contact&gt;&quot; with address &quot;&lt;$address&gt;&quot; as alias &quot;Joey&quot;" ExecutionStart="2023-07-12T12:15:58.5507921Z" ExecutionTime="PT0.0000873S" RuntimeId="a345e77f-f44c-4581-a99d-536d35814a87">
         <StepName StepType="WHEN" Format="I associate contact &quot;{0}&quot; with address &quot;{1}&quot; as alias &quot;{2}&quot;">
           <Parameter IsEvaluated="true">&lt;$contact&gt;</Parameter>
           <Parameter IsEvaluated="true">&lt;$address&gt;</Parameter>
@@ -296,7 +301,7 @@ I want to add and browse my client postal addresses by client emails</Descriptio
           </Tree>
         </Parameter>
       </Step>
-      <Step Status="Passed" Number="3" Name="AND I associate contact &quot;&lt;$contact&gt;&quot; with address &quot;&lt;$address&gt;&quot; as alias &quot;Janek&quot;" ExecutionStart="2023-06-30T21:04:08.4296514Z" ExecutionTime="PT0.0000564S" RuntimeId="e1f6ea86-6175-431f-a074-9aea6c4940a8">
+      <Step Status="Passed" Number="3" Name="AND I associate contact &quot;&lt;$contact&gt;&quot; with address &quot;&lt;$address&gt;&quot; as alias &quot;Janek&quot;" ExecutionStart="2023-07-12T12:15:58.5509007Z" ExecutionTime="PT0.0000573S" RuntimeId="18be52c3-deb2-4bab-86fc-166388affa62">
         <StepName StepType="AND" Format="I associate contact &quot;{0}&quot; with address &quot;{1}&quot; as alias &quot;{2}&quot;">
           <Parameter IsEvaluated="true">&lt;$contact&gt;</Parameter>
           <Parameter IsEvaluated="true">&lt;$address&gt;</Parameter>
@@ -320,7 +325,7 @@ I want to add and browse my client postal addresses by client emails</Descriptio
           </Tree>
         </Parameter>
       </Step>
-      <Step Status="Passed" Number="4" Name="THEN address book should contain postal addresses &quot;&lt;$addresses&gt;&quot;" ExecutionStart="2023-06-30T21:04:08.4297266Z" ExecutionTime="PT0.0009138S" RuntimeId="83f60140-4914-491a-b865-034ffdefb079">
+      <Step Status="Passed" Number="4" Name="THEN address book should contain postal addresses &quot;&lt;$addresses&gt;&quot;" ExecutionStart="2023-07-12T12:15:58.5509769Z" ExecutionTime="PT0.0009671S" RuntimeId="932df43c-b392-43fe-8079-2244c847af2a">
         <StepName StepType="THEN" Format="address book should contain postal addresses &quot;{0}&quot;">
           <Parameter IsEvaluated="true">&lt;$addresses&gt;</Parameter>
         </StepName>
@@ -342,68 +347,68 @@ I want to add and browse my client postal addresses by client emails</Descriptio
       </Step>
     </Scenario>
   </Feature>
-  <Feature Name="Basket feature" RuntimeId="2cbd9f32-05fe-4ad8-a172-0da1514449dc">
+  <Feature Name="Basket feature" RuntimeId="1d2d59d4-d6d8-47a7-8aa7-1f7bbcec8315">
     <Label Name="Story-4" />
     <Description>In order to buy products
 As a customer
 I want to add products to basket</Description>
-    <Scenario Status="Passed" Name="No product in stock" ExecutionStart="2023-06-30T21:04:08.3524903Z" ExecutionTime="PT1.8514434S" RuntimeId="69ec416b-13d2-4e4c-963d-50dbe45fd082">
+    <Scenario Status="Passed" Name="No product in stock" ExecutionStart="2023-07-12T12:15:58.4613611Z" ExecutionTime="PT1.3706155S" RuntimeId="9d4b74f4-0c51-411c-9924-addc0d440937">
       <Name Format="No product in stock" />
       <Label Name="Ticket-6" />
       <Category Name="Sales" />
-      <Step Status="Passed" Number="1" Name="GIVEN product is out of stock" ExecutionStart="2023-06-30T21:04:08.3526317Z" ExecutionTime="PT0.000051S" RuntimeId="dbf1fbed-1830-4029-8cd5-fc0cb3fe5409">
+      <Step Status="Passed" Number="1" Name="GIVEN product is out of stock" ExecutionStart="2023-07-12T12:15:58.4615918Z" ExecutionTime="PT0.0000807S" RuntimeId="700bdeeb-3e57-4aed-9e2e-ae9622d461d2">
         <StepName StepType="GIVEN" Format="product is out of stock" />
       </Step>
-      <Step Status="Passed" Number="2" Name="WHEN customer adds it to the basket" ExecutionStart="2023-06-30T21:04:08.3543946Z" ExecutionTime="PT1.8488969S" RuntimeId="7ad7da87-dabb-4c13-b789-df1825c81207">
+      <Step Status="Passed" Number="2" Name="WHEN customer adds it to the basket" ExecutionStart="2023-07-12T12:15:58.4616967Z" ExecutionTime="PT1.3696123S" RuntimeId="281be1f5-257e-41f9-8876-c43c5546984c">
         <StepName StepType="WHEN" Format="customer adds it to the basket" />
         <Comment>Transferring 'product' to the basket</Comment>
       </Step>
-      <Step Status="Passed" Number="3" Name="THEN the product addition should be unsuccessful" ExecutionStart="2023-06-30T21:04:10.20335Z" ExecutionTime="PT0.0003754S" RuntimeId="e467efdd-4d13-49d0-bc8e-771a20f491e9">
+      <Step Status="Passed" Number="3" Name="THEN the product addition should be unsuccessful" ExecutionStart="2023-07-12T12:15:59.8313819Z" ExecutionTime="PT0.0003848S" RuntimeId="4a5b6b56-f6e3-4093-8182-666120c8204d">
         <StepName StepType="THEN" Format="the product addition should be unsuccessful" />
       </Step>
-      <Step Status="Passed" Number="4" Name="AND the basket should not contain the product" ExecutionStart="2023-06-30T21:04:10.2037462Z" ExecutionTime="PT0.000136S" RuntimeId="a16f9e9c-2547-4f45-992f-1aa6348a8aac">
+      <Step Status="Passed" Number="4" Name="AND the basket should not contain the product" ExecutionStart="2023-07-12T12:15:59.8317852Z" ExecutionTime="PT0.0001438S" RuntimeId="926e7117-94c6-47e6-9f29-c316c7d17387">
         <StepName StepType="AND" Format="the basket should not contain the product" />
       </Step>
     </Scenario>
-    <Scenario Status="Ignored" Name="Successful addition" ExecutionStart="2023-06-30T21:04:10.2046108Z" ExecutionTime="PT1.816592S" RuntimeId="03790738-7a8f-4ff7-ab17-9f53cddcb2d1">
+    <Scenario Status="Ignored" Name="Successful addition" ExecutionStart="2023-07-12T12:15:59.8326503Z" ExecutionTime="PT1.1534463S" RuntimeId="a9f8c409-0c12-4538-84dc-a590ee78be54">
       <Name Format="Successful addition" />
       <Label Name="Ticket-7" />
       <Category Name="Sales" />
-      <Step Status="Passed" Number="1" Name="GIVEN product is in stock" ExecutionStart="2023-06-30T21:04:10.2047401Z" ExecutionTime="PT0.0001334S" RuntimeId="4c51978f-d396-4e91-ab30-215600e51333">
+      <Step Status="Passed" Number="1" Name="GIVEN product is in stock" ExecutionStart="2023-07-12T12:15:59.8327849Z" ExecutionTime="PT0.0001288S" RuntimeId="e9b0a6f5-c6a3-4f21-b220-3c607a2fd382">
         <StepName StepType="GIVEN" Format="product is in stock" />
         <Comment>Added 'product' to the stock</Comment>
       </Step>
-      <Step Status="Passed" Number="2" Name="WHEN customer adds it to the basket" ExecutionStart="2023-06-30T21:04:10.2048876Z" ExecutionTime="PT1.8154544S" RuntimeId="b9ebb379-9c3d-41e8-8375-085465d83eee">
+      <Step Status="Passed" Number="2" Name="WHEN customer adds it to the basket" ExecutionStart="2023-07-12T12:15:59.8329272Z" ExecutionTime="PT1.1525258S" RuntimeId="daffbc97-5f0c-41f6-a543-2769850de840">
         <StepName StepType="WHEN" Format="customer adds it to the basket" />
         <Comment>Transferring 'product' to the basket</Comment>
       </Step>
-      <Step Status="Passed" Number="3" Name="THEN the product addition should be successful" ExecutionStart="2023-06-30T21:04:12.020391Z" ExecutionTime="PT0.0000994S" RuntimeId="0154ce41-515e-4e5a-b606-3d428444596f">
+      <Step Status="Passed" Number="3" Name="THEN the product addition should be successful" ExecutionStart="2023-07-12T12:16:00.9854853Z" ExecutionTime="PT0.0000837S" RuntimeId="b099e076-6345-4a25-bdb3-8869d6e61ce2">
         <StepName StepType="THEN" Format="the product addition should be successful" />
       </Step>
-      <Step Status="Passed" Number="4" Name="AND the basket should contain the product" ExecutionStart="2023-06-30T21:04:12.020503Z" ExecutionTime="PT0.0001532S" RuntimeId="9036b3a8-bc43-44d0-8f3a-decae266bda0">
+      <Step Status="Passed" Number="4" Name="AND the basket should contain the product" ExecutionStart="2023-07-12T12:16:00.9855792Z" ExecutionTime="PT0.0000836S" RuntimeId="561170a6-70cf-4cce-abfa-c3f65a9051d7">
         <StepName StepType="AND" Format="the basket should contain the product" />
       </Step>
-      <Step Status="Ignored" Number="5" Name="AND the product should be removed from stock" ExecutionStart="2023-06-30T21:04:12.0206686Z" ExecutionTime="PT0.0004223S" RuntimeId="22601511-a685-4d55-85da-6c048418486d">
+      <Step Status="Ignored" Number="5" Name="AND the product should be removed from stock" ExecutionStart="2023-07-12T12:16:00.9856736Z" ExecutionTime="PT0.0003327S" RuntimeId="b42dc757-b590-49df-b8df-9b81bc45bce1">
         <StatusDetails>Step 5: Product removal from stock is not implemented yet</StatusDetails>
         <StepName StepType="AND" Format="the product should be removed from stock" />
       </Step>
       <StatusDetails>Step 5: Product removal from stock is not implemented yet</StatusDetails>
     </Scenario>
   </Feature>
-  <Feature Name="Calculator feature" RuntimeId="16feaa95-fdd7-4332-8b1a-dd1bbbcccb27">
+  <Feature Name="Calculator feature" RuntimeId="ed759bcc-8a64-4eb3-9b78-a8d119f0c439">
     <Label Name="Story-8" />
     <Description>In order to perform calculations correctly
 As a office assistant
 I want to use calculator for my calculations
 
 This example presents usage of MultiAssertAttribute.</Description>
-    <Scenario Status="Failed" Name="Adding numbers" ExecutionStart="2023-06-30T21:04:08.3381779Z" ExecutionTime="PT0.0391062S" RuntimeId="5dce5760-270c-4170-be24-5743e6636dfc">
+    <Scenario Status="Failed" Name="Adding numbers" ExecutionStart="2023-07-12T12:15:58.440549Z" ExecutionTime="PT0.0491009S" RuntimeId="1e3214e0-8436-4e59-91d5-9e288d9711d5">
       <Name Format="Adding numbers" />
       <Label Name="Ticket-13" />
-      <Step Status="Passed" Number="1" Name="GIVEN a calculator" ExecutionStart="2023-06-30T21:04:08.3508998Z" ExecutionTime="PT0.0014867S" RuntimeId="b6a122d0-b1f3-4a28-ae1e-132790b6eb30">
+      <Step Status="Passed" Number="1" Name="GIVEN a calculator" ExecutionStart="2023-07-12T12:15:58.4542472Z" ExecutionTime="PT0.0069412S" RuntimeId="8f12d3fd-6b8c-40d6-9867-81839e31d18c">
         <StepName StepType="GIVEN" Format="a calculator" />
       </Step>
-      <Step Status="Passed" Number="2" Name="THEN adding &quot;2&quot; to &quot;3&quot; should give &quot;5&quot;" ExecutionStart="2023-06-30T21:04:08.3544009Z" ExecutionTime="PT0.0033865S" RuntimeId="37df94b8-d759-47b1-8c98-8ef5a7ff4b81">
+      <Step Status="Passed" Number="2" Name="THEN adding &quot;2&quot; to &quot;3&quot; should give &quot;5&quot;" ExecutionStart="2023-07-12T12:15:58.4612175Z" ExecutionTime="PT0.0039265S" RuntimeId="fd19a079-f929-468a-9c0b-85cae6332ca9">
         <StepName StepType="THEN" Format="adding &quot;{0}&quot; to &quot;{1}&quot; should give &quot;{2}&quot;">
           <Parameter IsEvaluated="true">2</Parameter>
           <Parameter IsEvaluated="true">3</Parameter>
@@ -413,10 +418,10 @@ This example presents usage of MultiAssertAttribute.</Description>
           <Value Status="Success" Value="5" Expectation="equals '5'" Message="5" />
         </Parameter>
       </Step>
-      <Step Status="Failed" Number="3" Name="AND adding &quot;-3&quot; to &quot;2&quot; should give &quot;expected: equals '-1', but got: '1'&quot;" ExecutionStart="2023-06-30T21:04:08.3578281Z" ExecutionTime="PT0.019117S" RuntimeId="26af3d1d-ce51-4f7d-b6ad-c696712b5e16">
+      <Step Status="Failed" Number="3" Name="AND adding &quot;-3&quot; to &quot;2&quot; should give &quot;expected: equals '-1', but got: '1'&quot;" ExecutionStart="2023-07-12T12:15:58.4651938Z" ExecutionTime="PT0.0240578S" RuntimeId="80f2c75f-fe6c-4955-9008-f74a60cc8cc5">
         <StatusDetails>Step 3: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '-1', but got: '1'
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
         <StepName StepType="AND" Format="adding &quot;{0}&quot; to &quot;{1}&quot; should give &quot;{2}&quot;">
           <Parameter IsEvaluated="true">-3</Parameter>
           <Parameter IsEvaluated="true">2</Parameter>
@@ -426,7 +431,7 @@ This example presents usage of MultiAssertAttribute.</Description>
           <Value Status="Failure" Value="1" Expectation="equals '-1'" Message="expected: equals '-1', but got: '1'" />
         </Parameter>
       </Step>
-      <Step Status="Passed" Number="4" Name="AND adding &quot;0&quot; to &quot;1&quot; should give &quot;1&quot;" ExecutionStart="2023-06-30T21:04:08.3770057Z" ExecutionTime="PT0.000028S" RuntimeId="4f29a453-b2d7-4aa3-b52a-db015153a1cc">
+      <Step Status="Passed" Number="4" Name="AND adding &quot;0&quot; to &quot;1&quot; should give &quot;1&quot;" ExecutionStart="2023-07-12T12:15:58.4893248Z" ExecutionTime="PT0.0000354S" RuntimeId="6716b974-1ba0-4fa4-93f5-0e895c946846">
         <StepName StepType="AND" Format="adding &quot;{0}&quot; to &quot;{1}&quot; should give &quot;{2}&quot;">
           <Parameter IsEvaluated="true">0</Parameter>
           <Parameter IsEvaluated="true">1</Parameter>
@@ -436,10 +441,10 @@ This example presents usage of MultiAssertAttribute.</Description>
           <Value Status="Success" Value="1" Expectation="equals '1'" Message="1" />
         </Parameter>
       </Step>
-      <Step Status="Failed" Number="5" Name="AND adding &quot;-2&quot; to &quot;-1&quot; should give &quot;expected: equals '-3', but got: '3'&quot;" ExecutionStart="2023-06-30T21:04:08.3770447Z" ExecutionTime="PT0.00022S" RuntimeId="2a6cd435-5fb8-4cda-8b30-5e29b64a3db5">
+      <Step Status="Failed" Number="5" Name="AND adding &quot;-2&quot; to &quot;-1&quot; should give &quot;expected: equals '-3', but got: '3'&quot;" ExecutionStart="2023-07-12T12:15:58.4893727Z" ExecutionTime="PT0.0002535S" RuntimeId="2bb6c587-8e68-4e33-9ec1-212ba7873b18">
         <StatusDetails>Step 5: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '-3', but got: '3'
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
         <StepName StepType="AND" Format="adding &quot;{0}&quot; to &quot;{1}&quot; should give &quot;{2}&quot;">
           <Parameter IsEvaluated="true">-2</Parameter>
           <Parameter IsEvaluated="true">-1</Parameter>
@@ -450,28 +455,28 @@ This example presents usage of MultiAssertAttribute.</Description>
         </Parameter>
       </Step>
       <StatusDetails>Step 3: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '-1', but got: '1'
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 Step 5: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '-3', but got: '3'
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
     </Scenario>
-    <Scenario Status="Failed" Name="Composite operations" ExecutionStart="2023-06-30T21:04:08.3857017Z" ExecutionTime="PT0.0180287S" RuntimeId="b2c7b8a1-52f2-4719-ab3f-641b484f1239">
+    <Scenario Status="Failed" Name="Composite operations" ExecutionStart="2023-07-12T12:15:58.5010573Z" ExecutionTime="PT0.0206555S" RuntimeId="ef3c9cdd-04e1-40e1-b8bf-61e4b087c27c">
       <Name Format="Composite operations" />
       <Label Name="Ticket-13" />
-      <Step Status="Passed" Number="1" Name="GIVEN a calculator" ExecutionStart="2023-06-30T21:04:08.3875577Z" ExecutionTime="PT0.0000237S" RuntimeId="9b78a6e9-305a-4a4e-bc08-dd1397e8c948">
+      <Step Status="Passed" Number="1" Name="GIVEN a calculator" ExecutionStart="2023-07-12T12:15:58.5035339Z" ExecutionTime="PT0.0000282S" RuntimeId="5f5324d3-8a4c-4133-8b97-9e3f70bec406">
         <StepName StepType="GIVEN" Format="a calculator" />
       </Step>
-      <Step Status="Failed" Number="2" Name="THEN it should add numbers" ExecutionStart="2023-06-30T21:04:08.3875992Z" ExecutionTime="PT0.0105458S" RuntimeId="68e88c7c-9d71-4961-89b9-22630a621a53">
+      <Step Status="Failed" Number="2" Name="THEN it should add numbers" ExecutionStart="2023-07-12T12:15:58.5035963Z" ExecutionTime="PT0.0123104S" RuntimeId="584ee6e5-5b93-4446-bba6-5edbedd48f76">
         <StatusDetails>Step 2.2: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '-1', but got: '1'
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 Step 2.3: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '0', but got: '1'
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
         <StepName StepType="THEN" Format="it should add numbers" />
         <Comment>It is possible to add MultiAssertAttribute on composite step</Comment>
-        <SubStep Status="Passed" Number="1" Name="THEN adding &quot;2&quot; to &quot;3&quot; should give &quot;5&quot;" ExecutionStart="2023-06-30T21:04:08.3975602Z" ExecutionTime="PT0.0000291S" GroupPrefix="2." RuntimeId="b4a68292-1a71-4696-8199-915498b899e6">
+        <SubStep Status="Passed" Number="1" Name="THEN adding &quot;2&quot; to &quot;3&quot; should give &quot;5&quot;" ExecutionStart="2023-07-12T12:15:58.515311Z" ExecutionTime="PT0.0000268S" GroupPrefix="2." RuntimeId="2b45f19a-e784-45dc-ac2b-40840cb6f4bd">
           <StepName StepType="THEN" Format="adding &quot;{0}&quot; to &quot;{1}&quot; should give &quot;{2}&quot;">
             <Parameter IsEvaluated="true">2</Parameter>
             <Parameter IsEvaluated="true">3</Parameter>
@@ -481,10 +486,10 @@ Step 2.3: System.InvalidOperationException : Parameter 'result' verification fai
             <Value Status="Success" Value="5" Expectation="equals '5'" Message="5" />
           </Parameter>
         </SubStep>
-        <SubStep Status="Failed" Number="2" Name="AND adding &quot;2&quot; to &quot;-3&quot; should give &quot;expected: equals '-1', but got: '1'&quot;" ExecutionStart="2023-06-30T21:04:08.3976045Z" ExecutionTime="PT0.000227S" GroupPrefix="2." RuntimeId="9a961fa8-b43e-419a-a916-ab06f7b3e983">
+        <SubStep Status="Failed" Number="2" Name="AND adding &quot;2&quot; to &quot;-3&quot; should give &quot;expected: equals '-1', but got: '1'&quot;" ExecutionStart="2023-07-12T12:15:58.5153538Z" ExecutionTime="PT0.0002282S" GroupPrefix="2." RuntimeId="b769ce8f-ab1d-49ad-83cb-e1236719658f">
           <StatusDetails>Step 2.2: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '-1', but got: '1'
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
           <StepName StepType="AND" Format="adding &quot;{0}&quot; to &quot;{1}&quot; should give &quot;{2}&quot;">
             <Parameter IsEvaluated="true">2</Parameter>
             <Parameter IsEvaluated="true">-3</Parameter>
@@ -494,10 +499,10 @@ Step 2.3: System.InvalidOperationException : Parameter 'result' verification fai
             <Value Status="Failure" Value="1" Expectation="equals '-1'" Message="expected: equals '-1', but got: '1'" />
           </Parameter>
         </SubStep>
-        <SubStep Status="Failed" Number="3" Name="AND adding &quot;0&quot; to &quot;1&quot; should give &quot;expected: equals '0', but got: '1'&quot;" ExecutionStart="2023-06-30T21:04:08.3978979Z" ExecutionTime="PT0.0001572S" GroupPrefix="2." RuntimeId="8137b181-aebf-4ff5-81a5-3bc0e8ab587e">
+        <SubStep Status="Failed" Number="3" Name="AND adding &quot;0&quot; to &quot;1&quot; should give &quot;expected: equals '0', but got: '1'&quot;" ExecutionStart="2023-07-12T12:15:58.5156488Z" ExecutionTime="PT0.0001629S" GroupPrefix="2." RuntimeId="212f01d2-9131-40f4-a527-cab2b37acfa9">
           <StatusDetails>Step 2.3: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '0', but got: '1'
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
           <StepName StepType="AND" Format="adding &quot;{0}&quot; to &quot;{1}&quot; should give &quot;{2}&quot;">
             <Parameter IsEvaluated="true">0</Parameter>
             <Parameter IsEvaluated="true">1</Parameter>
@@ -508,11 +513,11 @@ Step 2.3: System.InvalidOperationException : Parameter 'result' verification fai
           </Parameter>
         </SubStep>
       </Step>
-      <Step Status="Ignored" Number="3" Name="AND it should multiply numbers" ExecutionStart="2023-06-30T21:04:08.3981663Z" ExecutionTime="PT0.0032432S" RuntimeId="e50781f2-b907-4138-956b-6a6846ac8c32">
+      <Step Status="Ignored" Number="3" Name="AND it should multiply numbers" ExecutionStart="2023-07-12T12:15:58.5159282Z" ExecutionTime="PT0.0033628S" RuntimeId="1621daad-1486-4e2e-a180-c2df28876bd2">
         <StatusDetails>Step 3.2: Negative numbers are not supported yet</StatusDetails>
         <StepName StepType="AND" Format="it should multiply numbers" />
         <Comment>This step does not have MultiAssertAttribute so will stop on first exception</Comment>
-        <SubStep Status="Passed" Number="1" Name="THEN multiplying &quot;2&quot; by &quot;3&quot; should give &quot;6&quot;" ExecutionStart="2023-06-30T21:04:08.4009634Z" ExecutionTime="PT0.0002074S" GroupPrefix="3." RuntimeId="41cb72ef-4c4b-4a88-b5db-e259c096aa26">
+        <SubStep Status="Passed" Number="1" Name="THEN multiplying &quot;2&quot; by &quot;3&quot; should give &quot;6&quot;" ExecutionStart="2023-07-12T12:15:58.5188137Z" ExecutionTime="PT0.0002332S" GroupPrefix="3." RuntimeId="70b5d0af-63fc-49f8-8977-5136ac86a67e">
           <StepName StepType="THEN" Format="multiplying &quot;{0}&quot; by &quot;{1}&quot; should give &quot;{2}&quot;">
             <Parameter IsEvaluated="true">2</Parameter>
             <Parameter IsEvaluated="true">3</Parameter>
@@ -522,7 +527,7 @@ Step 2.3: System.InvalidOperationException : Parameter 'result' verification fai
             <Value Status="Success" Value="6" Expectation="equals '6'" Message="6" />
           </Parameter>
         </SubStep>
-        <SubStep Status="Ignored" Number="2" Name="AND multiplying &quot;2&quot; by &quot;-3&quot; should give &quot;expected: equals '-6'&quot;" ExecutionStart="2023-06-30T21:04:08.4011862Z" ExecutionTime="PT0.0001138S" GroupPrefix="3." RuntimeId="6825f1ba-226a-4387-ad29-c8b71770b0a3">
+        <SubStep Status="Ignored" Number="2" Name="AND multiplying &quot;2&quot; by &quot;-3&quot; should give &quot;expected: equals '-6'&quot;" ExecutionStart="2023-07-12T12:15:58.5190632Z" ExecutionTime="PT0.0001139S" GroupPrefix="3." RuntimeId="3e79415e-5889-4191-988b-199c67230415">
           <StatusDetails>Step 3.2: Negative numbers are not supported yet</StatusDetails>
           <StepName StepType="AND" Format="multiplying &quot;{0}&quot; by &quot;{1}&quot; should give &quot;{2}&quot;">
             <Parameter IsEvaluated="true">2</Parameter>
@@ -533,7 +538,7 @@ Step 2.3: System.InvalidOperationException : Parameter 'result' verification fai
             <Value Status="NotProvided" Expectation="equals '-6'" Message="expected: equals '-6', but did not received anything" />
           </Parameter>
         </SubStep>
-        <SubStep Status="NotRun" Number="3" Name="AND multiplying &quot;1&quot; by &quot;1&quot; should give &quot;&lt;?&gt;&quot;" GroupPrefix="3." RuntimeId="df5cf3e5-c946-43a2-8ec3-1943e32ba1d3">
+        <SubStep Status="NotRun" Number="3" Name="AND multiplying &quot;1&quot; by &quot;1&quot; should give &quot;&lt;?&gt;&quot;" GroupPrefix="3." RuntimeId="b5f67457-33ee-4540-94ec-4df87a8c7fbb">
           <StepName StepType="AND" Format="multiplying &quot;{0}&quot; by &quot;{1}&quot; should give &quot;{2}&quot;">
             <Parameter IsEvaluated="true">1</Parameter>
             <Parameter IsEvaluated="true">1</Parameter>
@@ -541,12 +546,12 @@ Step 2.3: System.InvalidOperationException : Parameter 'result' verification fai
           </StepName>
         </SubStep>
       </Step>
-      <Step Status="Failed" Number="4" Name="AND it should divide numbers" ExecutionStart="2023-06-30T21:04:08.4014279Z" ExecutionTime="PT0.0022876S" RuntimeId="52a04420-178e-4f5c-9383-5bbf8cee0952">
+      <Step Status="Failed" Number="4" Name="AND it should divide numbers" ExecutionStart="2023-07-12T12:15:58.5193091Z" ExecutionTime="PT0.0023912S" RuntimeId="3c04a632-98f5-41b4-a6e7-cca7b910f1b8">
         <StatusDetails>Step 4.2: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '2', but got: '10'
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
         <StepName StepType="AND" Format="it should divide numbers" />
-        <SubStep Status="Passed" Number="1" Name="THEN dividing &quot;6&quot; by &quot;3&quot; should give &quot;2&quot;" ExecutionStart="2023-06-30T21:04:08.4033047Z" ExecutionTime="PT0.0001814S" GroupPrefix="4." RuntimeId="398f705d-38e9-4ebe-b5b8-bb10db85574d">
+        <SubStep Status="Passed" Number="1" Name="THEN dividing &quot;6&quot; by &quot;3&quot; should give &quot;2&quot;" ExecutionStart="2023-07-12T12:15:58.521261Z" ExecutionTime="PT0.0002095S" GroupPrefix="4." RuntimeId="10256ec5-82fc-418a-bc7c-fd9438e2e7c7">
           <StepName StepType="THEN" Format="dividing &quot;{0}&quot; by &quot;{1}&quot; should give &quot;{2}&quot;">
             <Parameter IsEvaluated="true">6</Parameter>
             <Parameter IsEvaluated="true">3</Parameter>
@@ -556,10 +561,10 @@ Step 2.3: System.InvalidOperationException : Parameter 'result' verification fai
             <Value Status="Success" Value="2" Expectation="equals '2'" Message="2" />
           </Parameter>
         </SubStep>
-        <SubStep Status="Failed" Number="2" Name="AND multiplying &quot;5&quot; by &quot;2&quot; should give &quot;expected: equals '2', but got: '10'&quot;" ExecutionStart="2023-06-30T21:04:08.4035007Z" ExecutionTime="PT0.0001933S" GroupPrefix="4." RuntimeId="1363ff1f-53c8-44d0-a3c4-d48489d208cc">
+        <SubStep Status="Failed" Number="2" Name="AND multiplying &quot;5&quot; by &quot;2&quot; should give &quot;expected: equals '2', but got: '10'&quot;" ExecutionStart="2023-07-12T12:15:58.521486Z" ExecutionTime="PT0.0001922S" GroupPrefix="4." RuntimeId="af485a34-251f-448f-a93d-d717a0a29242">
           <StatusDetails>Step 4.2: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '2', but got: '10'
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
           <StepName StepType="AND" Format="multiplying &quot;{0}&quot; by &quot;{1}&quot; should give &quot;{2}&quot;">
             <Parameter IsEvaluated="true">5</Parameter>
             <Parameter IsEvaluated="true">2</Parameter>
@@ -571,23 +576,23 @@ Step 2.3: System.InvalidOperationException : Parameter 'result' verification fai
         </SubStep>
       </Step>
       <StatusDetails>Step 2.2: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '-1', but got: '1'
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 Step 2.3: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '0', but got: '1'
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 Step 3.2: Negative numbers are not supported yet
 Step 4.2: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '2', but got: '10'
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
     </Scenario>
-    <Scenario Status="Failed" Name="Dividing numbers" ExecutionStart="2023-06-30T21:04:08.4049019Z" ExecutionTime="PT0.0042738S" RuntimeId="d777d492-3249-4497-bd82-28f0dfa178f6">
+    <Scenario Status="Failed" Name="Dividing numbers" ExecutionStart="2023-07-12T12:15:58.5229365Z" ExecutionTime="PT0.0050762S" RuntimeId="23600e32-1c8a-4981-a929-ff36bc78a878">
       <Name Format="Dividing numbers" />
       <Label Name="Ticket-13" />
-      <Step Status="Passed" Number="1" Name="GIVEN a calculator" ExecutionStart="2023-06-30T21:04:08.4086204Z" ExecutionTime="PT0.0000209S" RuntimeId="0af661ce-d9aa-4e53-89da-8fcecb441c1d">
+      <Step Status="Passed" Number="1" Name="GIVEN a calculator" ExecutionStart="2023-07-12T12:15:58.5271502Z" ExecutionTime="PT0.0000312S" RuntimeId="e3fb8d97-a742-4487-a31d-328c4004e1d3">
         <StepName StepType="GIVEN" Format="a calculator" />
       </Step>
-      <Step Status="Passed" Number="2" Name="THEN dividing &quot;6&quot; by &quot;2&quot; should give &quot;3&quot;" ExecutionStart="2023-06-30T21:04:08.4086528Z" ExecutionTime="PT0.0000198S" RuntimeId="84190f24-63c5-4ef9-8c21-e0400b6601ac">
+      <Step Status="Passed" Number="2" Name="THEN dividing &quot;6&quot; by &quot;2&quot; should give &quot;3&quot;" ExecutionStart="2023-07-12T12:15:58.5271972Z" ExecutionTime="PT0.0000388S" RuntimeId="a92176de-46ac-4cb6-ad47-501c5899ef6d">
         <StepName StepType="THEN" Format="dividing &quot;{0}&quot; by &quot;{1}&quot; should give &quot;{2}&quot;">
           <Parameter IsEvaluated="true">6</Parameter>
           <Parameter IsEvaluated="true">2</Parameter>
@@ -597,10 +602,10 @@ Step 4.2: System.InvalidOperationException : Parameter 'result' verification fai
           <Value Status="Success" Value="3" Expectation="equals '3'" Message="3" />
         </Parameter>
       </Step>
-      <Step Status="Failed" Number="3" Name="AND dividing &quot;2&quot; by &quot;0&quot; should give &quot;expected: equals '0', but got: '&lt;DivideByZeroException&gt;'&quot;" ExecutionStart="2023-06-30T21:04:08.4086815Z" ExecutionTime="PT0.0002881S" RuntimeId="7b94f65c-932c-4534-82b4-81d66b2da952">
+      <Step Status="Failed" Number="3" Name="AND dividing &quot;2&quot; by &quot;0&quot; should give &quot;expected: equals '0', but got: '&lt;DivideByZeroException&gt;'&quot;" ExecutionStart="2023-07-12T12:15:58.5272486Z" ExecutionTime="PT0.0004321S" RuntimeId="5f49fcce-10df-46ed-b8f6-027d200fc45d">
         <StatusDetails>Step 3: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '0', but got: '&lt;DivideByZeroException&gt;'
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
         <StepName StepType="AND" Format="dividing &quot;{0}&quot; by &quot;{1}&quot; should give &quot;{2}&quot;">
           <Parameter IsEvaluated="true">2</Parameter>
           <Parameter IsEvaluated="true">0</Parameter>
@@ -610,7 +615,7 @@ Step 4.2: System.InvalidOperationException : Parameter 'result' verification fai
           <Value Status="Exception" Value="&lt;DivideByZeroException&gt;" Expectation="equals '0'" Message="expected: equals '0', but got: '&lt;DivideByZeroException&gt;'" />
         </Parameter>
       </Step>
-      <Step Status="Passed" Number="4" Name="AND dividing &quot;2&quot; by &quot;3&quot; should give &quot;0&quot;" ExecutionStart="2023-06-30T21:04:08.4089894Z" ExecutionTime="PT0.0000187S" RuntimeId="c32edfc6-dbb1-41ea-a9e5-01557deda242">
+      <Step Status="Passed" Number="4" Name="AND dividing &quot;2&quot; by &quot;3&quot; should give &quot;0&quot;" ExecutionStart="2023-07-12T12:15:58.5277082Z" ExecutionTime="PT0.0000321S" RuntimeId="e009828e-afb0-42b5-8372-7540b72cd779">
         <StepName StepType="AND" Format="dividing &quot;{0}&quot; by &quot;{1}&quot; should give &quot;{2}&quot;">
           <Parameter IsEvaluated="true">2</Parameter>
           <Parameter IsEvaluated="true">3</Parameter>
@@ -620,10 +625,10 @@ Step 4.2: System.InvalidOperationException : Parameter 'result' verification fai
           <Value Status="Success" Value="0" Expectation="equals '0'" Message="0" />
         </Parameter>
       </Step>
-      <Step Status="Failed" Number="5" Name="AND dividing &quot;0&quot; by &quot;5&quot; should give &quot;expected: equals '1', but got: '0'&quot;" ExecutionStart="2023-06-30T21:04:08.4090165Z" ExecutionTime="PT0.0001407S" RuntimeId="aac003fd-c769-48a8-95c3-4eb2ef2dd7b8">
+      <Step Status="Failed" Number="5" Name="AND dividing &quot;0&quot; by &quot;5&quot; should give &quot;expected: equals '1', but got: '0'&quot;" ExecutionStart="2023-07-12T12:15:58.5277546Z" ExecutionTime="PT0.0002301S" RuntimeId="1b1b53a4-7147-47bd-b30c-87febf06f0a4">
         <StatusDetails>Step 5: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '1', but got: '0'
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
         <StepName StepType="AND" Format="dividing &quot;{0}&quot; by &quot;{1}&quot; should give &quot;{2}&quot;">
           <Parameter IsEvaluated="true">0</Parameter>
           <Parameter IsEvaluated="true">5</Parameter>
@@ -634,19 +639,19 @@ Step 4.2: System.InvalidOperationException : Parameter 'result' verification fai
         </Parameter>
       </Step>
       <StatusDetails>Step 3: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '0', but got: '&lt;DivideByZeroException&gt;'
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 Step 5: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '1', but got: '0'
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
     </Scenario>
-    <Scenario Status="Ignored" Name="Multiplying numbers" ExecutionStart="2023-06-30T21:04:08.4103349Z" ExecutionTime="PT0.004921S" RuntimeId="ed2d49be-a9f7-4fe6-b212-d5d170c289a3">
+    <Scenario Status="Ignored" Name="Multiplying numbers" ExecutionStart="2023-07-12T12:15:58.5298407Z" ExecutionTime="PT0.0061559S" RuntimeId="e06e2a4f-0cd3-42d3-b6db-887e2761cc77">
       <Name Format="Multiplying numbers" />
       <Label Name="Ticket-13" />
-      <Step Status="Passed" Number="1" Name="GIVEN a calculator" ExecutionStart="2023-06-30T21:04:08.4148458Z" ExecutionTime="PT0.00003S" RuntimeId="f737c902-fc8d-488a-a027-6b75ca5bd832">
+      <Step Status="Passed" Number="1" Name="GIVEN a calculator" ExecutionStart="2023-07-12T12:15:58.5354604Z" ExecutionTime="PT0.0000236S" RuntimeId="cb863624-bfec-41d8-82f6-1657693bd9a3">
         <StepName StepType="GIVEN" Format="a calculator" />
       </Step>
-      <Step Status="Passed" Number="2" Name="THEN multiplying &quot;6&quot; by &quot;2&quot; should give &quot;12&quot;" ExecutionStart="2023-06-30T21:04:08.4148917Z" ExecutionTime="PT0.0000259S" RuntimeId="8df99e7e-50ac-45bb-a81e-00aa88c7158b">
+      <Step Status="Passed" Number="2" Name="THEN multiplying &quot;6&quot; by &quot;2&quot; should give &quot;12&quot;" ExecutionStart="2023-07-12T12:15:58.5354967Z" ExecutionTime="PT0.0000354S" RuntimeId="74013e49-fd89-4595-82a1-aa6dd6c820f7">
         <StepName StepType="THEN" Format="multiplying &quot;{0}&quot; by &quot;{1}&quot; should give &quot;{2}&quot;">
           <Parameter IsEvaluated="true">6</Parameter>
           <Parameter IsEvaluated="true">2</Parameter>
@@ -656,7 +661,7 @@ Step 5: System.InvalidOperationException : Parameter 'result' verification faile
           <Value Status="Success" Value="12" Expectation="equals '12'" Message="12" />
         </Parameter>
       </Step>
-      <Step Status="Ignored" Number="3" Name="AND multiplying &quot;-1&quot; by &quot;2&quot; should give &quot;expected: equals '-2'&quot;" ExecutionStart="2023-06-30T21:04:08.4149299Z" ExecutionTime="PT0.0001357S" RuntimeId="04a3c164-d595-4e27-add3-ffc8e962fa98">
+      <Step Status="Ignored" Number="3" Name="AND multiplying &quot;-1&quot; by &quot;2&quot; should give &quot;expected: equals '-2'&quot;" ExecutionStart="2023-07-12T12:15:58.5355505Z" ExecutionTime="PT0.000189S" RuntimeId="05132eeb-a04c-455c-8910-42faf86705b1">
         <StatusDetails>Step 3: Negative numbers are not supported yet</StatusDetails>
         <StepName StepType="AND" Format="multiplying &quot;{0}&quot; by &quot;{1}&quot; should give &quot;{2}&quot;">
           <Parameter IsEvaluated="true">-1</Parameter>
@@ -667,7 +672,7 @@ Step 5: System.InvalidOperationException : Parameter 'result' verification faile
           <Value Status="NotProvided" Expectation="equals '-2'" Message="expected: equals '-2', but did not received anything" />
         </Parameter>
       </Step>
-      <Step Status="Passed" Number="4" Name="AND multiplying &quot;2&quot; by &quot;0&quot; should give &quot;0&quot;" ExecutionStart="2023-06-30T21:04:08.4150856Z" ExecutionTime="PT0.0000208S" RuntimeId="dcd4c14b-1397-4a6b-8157-8270bb1b9455">
+      <Step Status="Passed" Number="4" Name="AND multiplying &quot;2&quot; by &quot;0&quot; should give &quot;0&quot;" ExecutionStart="2023-07-12T12:15:58.5357575Z" ExecutionTime="PT0.0000275S" RuntimeId="80fba580-293f-4755-81d0-7b7089921281">
         <StepName StepType="AND" Format="multiplying &quot;{0}&quot; by &quot;{1}&quot; should give &quot;{2}&quot;">
           <Parameter IsEvaluated="true">2</Parameter>
           <Parameter IsEvaluated="true">0</Parameter>
@@ -677,7 +682,7 @@ Step 5: System.InvalidOperationException : Parameter 'result' verification faile
           <Value Status="Success" Value="0" Expectation="equals '0'" Message="0" />
         </Parameter>
       </Step>
-      <Step Status="Passed" Number="5" Name="AND multiplying &quot;2&quot; by &quot;3&quot; should give &quot;6&quot;" ExecutionStart="2023-06-30T21:04:08.4151188Z" ExecutionTime="PT0.0000155S" RuntimeId="2c0a55e3-9db1-4909-9416-2de282298e6e">
+      <Step Status="Passed" Number="5" Name="AND multiplying &quot;2&quot; by &quot;3&quot; should give &quot;6&quot;" ExecutionStart="2023-07-12T12:15:58.5357975Z" ExecutionTime="PT0.0000263S" RuntimeId="0f7cb75c-02eb-422f-bb36-15e746f9c1e0">
         <StepName StepType="AND" Format="multiplying &quot;{0}&quot; by &quot;{1}&quot; should give &quot;{2}&quot;">
           <Parameter IsEvaluated="true">2</Parameter>
           <Parameter IsEvaluated="true">3</Parameter>
@@ -687,7 +692,7 @@ Step 5: System.InvalidOperationException : Parameter 'result' verification faile
           <Value Status="Success" Value="6" Expectation="equals '6'" Message="6" />
         </Parameter>
       </Step>
-      <Step Status="Ignored" Number="6" Name="AND multiplying &quot;2&quot; by &quot;-3&quot; should give &quot;expected: equals '-6'&quot;" ExecutionStart="2023-06-30T21:04:08.4151464Z" ExecutionTime="PT0.000093S" RuntimeId="b40763f2-1ceb-4d8f-976e-55882892fbbd">
+      <Step Status="Ignored" Number="6" Name="AND multiplying &quot;2&quot; by &quot;-3&quot; should give &quot;expected: equals '-6'&quot;" ExecutionStart="2023-07-12T12:15:58.5358381Z" ExecutionTime="PT0.0001353S" RuntimeId="da34d133-f9db-4f63-aeb8-2108f12003e6">
         <StatusDetails>Step 6: Negative numbers are not supported yet</StatusDetails>
         <StepName StepType="AND" Format="multiplying &quot;{0}&quot; by &quot;{1}&quot; should give &quot;{2}&quot;">
           <Parameter IsEvaluated="true">2</Parameter>
@@ -702,78 +707,78 @@ Step 5: System.InvalidOperationException : Parameter 'result' verification faile
 Step 6: Negative numbers are not supported yet</StatusDetails>
     </Scenario>
   </Feature>
-  <Feature Name="Compact calculator scenarios" RuntimeId="e78866ea-e05c-4716-b961-7bbd51cee172">
+  <Feature Name="Compact calculator scenarios" RuntimeId="89086391-6e8b-4902-a494-bb8e1e8f1260">
     <Description>As LightBDD user,
 I want to be able to write compact scenarios,
 So that I can use LightBDD for more unit-test like tests as well</Description>
-    <Scenario Status="Passed" Name="Adding numbers" ExecutionStart="2023-06-30T21:04:08.3532837Z" ExecutionTime="PT0.0065763S" RuntimeId="7b9df716-2611-4c0a-9cbb-c1b2853477a8">
+    <Scenario Status="Passed" Name="Adding numbers" ExecutionStart="2023-07-12T12:15:58.4622882Z" ExecutionTime="PT0.0072411S" RuntimeId="a7b1728d-bc8c-4cf5-98c7-0b451ec7824b">
       <Name Format="Adding numbers" />
-      <Step Status="Passed" Number="1" Name="GIVEN calculator" ExecutionStart="2023-06-30T21:04:08.3533988Z" ExecutionTime="PT0.0001769S" RuntimeId="44948b0e-f105-49a8-9cd3-93df69679fc7">
+      <Step Status="Passed" Number="1" Name="GIVEN calculator" ExecutionStart="2023-07-12T12:15:58.4624128Z" ExecutionTime="PT0.0003713S" RuntimeId="2e4cfbcb-a4de-4d29-8a2b-acaaaf81889d">
         <StepName StepType="GIVEN" Format="calculator" />
       </Step>
-      <Step Status="Passed" Number="2" Name="WHEN I add two numbers" ExecutionStart="2023-06-30T21:04:08.3543885Z" ExecutionTime="PT0.000149S" RuntimeId="39c46ff1-355e-4c5b-8e7b-b68665a39dc4">
+      <Step Status="Passed" Number="2" Name="WHEN I add two numbers" ExecutionStart="2023-07-12T12:15:58.4628603Z" ExecutionTime="PT0.0001647S" RuntimeId="5bced7f4-690b-4580-85fd-6e713810e94a">
         <StepName StepType="WHEN" Format="I add two numbers" />
       </Step>
-      <Step Status="Passed" Number="3" Name="THEN I should get an expected result" ExecutionStart="2023-06-30T21:04:08.3545624Z" ExecutionTime="PT0.0052655S" RuntimeId="d280cbd6-f19d-4b63-9a0d-a31c97bd18a7">
+      <Step Status="Passed" Number="3" Name="THEN I should get an expected result" ExecutionStart="2023-07-12T12:15:58.463061Z" ExecutionTime="PT0.006417S" RuntimeId="c625ff16-3a5f-492d-bb68-8eea0d5fb6b7">
         <StepName StepType="THEN" Format="I should get an expected result" />
       </Step>
     </Scenario>
   </Feature>
-  <Feature Name="Contacts management" RuntimeId="1cd5b2ad-255d-4da6-9c47-d24652a17730">
+  <Feature Name="Contacts management" RuntimeId="15c2bf33-f748-4fce-86fd-55b206e88f13">
     <Label Name="Story-6" />
     <Description>In order to maintain my contact book
 As an application user
 I want to add, browse and remove my contacts</Description>
-    <Scenario Status="Passed" Name="Contact book should allow me to add multiple contacts" ExecutionStart="2023-06-30T21:04:08.3381948Z" ExecutionTime="PT0.0230846S" RuntimeId="98c763af-eb8d-406f-9b30-e555b33fe06e">
+    <Scenario Status="Passed" Name="Contact book should allow me to add multiple contacts" ExecutionStart="2023-07-12T12:15:58.4405385Z" ExecutionTime="PT0.0311478S" RuntimeId="2f89ab42-0c62-4bf8-ad70-2516605989a0">
       <Name Format="Contact book should allow me to add multiple contacts" />
       <Label Name="Ticket-8" />
-      <Step Status="Passed" Number="1" Name="GIVEN my contact book is empty" ExecutionStart="2023-06-30T21:04:08.3537964Z" ExecutionTime="PT0.0000691S" RuntimeId="e9d6a056-81f8-4911-9760-807158cbacde">
+      <Step Status="Passed" Number="1" Name="GIVEN my contact book is empty" ExecutionStart="2023-07-12T12:15:58.4632911Z" ExecutionTime="PT0.0000954S" RuntimeId="b3a03b6f-06cb-4caf-94d7-fa828e83bee3">
         <StepName StepType="GIVEN" Format="my contact book is empty" />
       </Step>
-      <Step Status="Passed" Number="2" Name="WHEN I add new contacts" ExecutionStart="2023-06-30T21:04:08.354344Z" ExecutionTime="PT0.0003791S" RuntimeId="7083d7d6-4cd2-4ada-a3f3-00c6db6321dc">
+      <Step Status="Passed" Number="2" Name="WHEN I add new contacts" ExecutionStart="2023-07-12T12:15:58.4634062Z" ExecutionTime="PT0.0005188S" RuntimeId="93dbc35a-0f76-4d9e-9c09-c4aa6f799b46">
         <StepName StepType="WHEN" Format="I add new contacts" />
       </Step>
-      <Step Status="Passed" Number="3" Name="THEN all contacts should be available in the contact book" ExecutionStart="2023-06-30T21:04:08.3547375Z" ExecutionTime="PT0.0065146S" RuntimeId="b2d01d80-bbf1-4a37-8548-6cfedf936aef">
+      <Step Status="Passed" Number="3" Name="THEN all contacts should be available in the contact book" ExecutionStart="2023-07-12T12:15:58.4639455Z" ExecutionTime="PT0.0076568S" RuntimeId="6f25c2f9-247e-4a03-b195-7c2e8600f324">
         <StepName StepType="THEN" Format="all contacts should be available in the contact book" />
       </Step>
     </Scenario>
-    <Scenario Status="Bypassed" Name="Contact book should allow me to remove all contacts" ExecutionStart="2023-06-30T21:04:08.3616668Z" ExecutionTime="PT0.0108614S" RuntimeId="934a09a0-9316-4875-a82f-c34854a5194c">
+    <Scenario Status="Bypassed" Name="Contact book should allow me to remove all contacts" ExecutionStart="2023-07-12T12:15:58.4723356Z" ExecutionTime="PT0.0138977S" RuntimeId="db80ed83-7d0b-43e8-8950-4210b8a86784">
       <Name Format="Contact book should allow me to remove all contacts" />
       <Label Name="Ticket-9" />
-      <Step Status="Passed" Number="1" Name="GIVEN my contact book is filled with many contacts" ExecutionStart="2023-06-30T21:04:08.3630961Z" ExecutionTime="PT0.0080474S" RuntimeId="dac2c748-b21b-44ea-9c0d-5f7401667a31">
+      <Step Status="Passed" Number="1" Name="GIVEN my contact book is filled with many contacts" ExecutionStart="2023-07-12T12:15:58.4745574Z" ExecutionTime="PT0.0102579S" RuntimeId="e07025c8-edf5-4306-9f1a-3b81d7f7e4d0">
         <StepName StepType="GIVEN" Format="my contact book is filled with many contacts" />
       </Step>
-      <Step Status="Bypassed" Number="2" Name="WHEN I clear it" ExecutionStart="2023-06-30T21:04:08.3711919Z" ExecutionTime="PT0.0008986S" RuntimeId="e04e87c8-8ab3-4396-9bcd-38f02890e1cd">
+      <Step Status="Bypassed" Number="2" Name="WHEN I clear it" ExecutionStart="2023-07-12T12:15:58.4848364Z" ExecutionTime="PT0.0008968S" RuntimeId="58973e9e-e386-42c8-ad17-7e3c4d7758f1">
         <StatusDetails>Step 2: Contact book clearing is not implemented yet. Contacts are removed one by one.</StatusDetails>
         <StepName StepType="WHEN" Format="I clear it" />
       </Step>
-      <Step Status="Passed" Number="3" Name="THEN the contact book should be empty" ExecutionStart="2023-06-30T21:04:08.3721147Z" ExecutionTime="PT0.0003934S" RuntimeId="cea9f931-8e5a-4480-b4b2-530b183932a6">
+      <Step Status="Passed" Number="3" Name="THEN the contact book should be empty" ExecutionStart="2023-07-12T12:15:58.4857505Z" ExecutionTime="PT0.0004637S" RuntimeId="5e8d15c5-f36a-4107-a7d6-a873acb59aae">
         <StepName StepType="THEN" Format="the contact book should be empty" />
       </Step>
       <StatusDetails>Step 2: Contact book clearing is not implemented yet. Contacts are removed one by one.</StatusDetails>
     </Scenario>
-    <Scenario Status="Passed" Name="Contact book should allow me to remove contacts" ExecutionStart="2023-06-30T21:04:08.3729726Z" ExecutionTime="PT0.0032195S" RuntimeId="b013427b-096a-478d-9664-db5cd02ff270">
+    <Scenario Status="Passed" Name="Contact book should allow me to remove contacts" ExecutionStart="2023-07-12T12:15:58.4866704Z" ExecutionTime="PT0.0032983S" RuntimeId="012db15c-6e92-48df-9ac0-3ef2c36f6f53">
       <Name Format="Contact book should allow me to remove contacts" />
       <Label Name="Ticket-9" />
-      <Step Status="Passed" Number="1" Name="GIVEN my contact book is filled with contacts" ExecutionStart="2023-06-30T21:04:08.3748749Z" ExecutionTime="PT0.0000757S" RuntimeId="3dca5535-6e91-4a44-85b3-0a762ab1dd51">
+      <Step Status="Passed" Number="1" Name="GIVEN my contact book is filled with contacts" ExecutionStart="2023-07-12T12:15:58.4887753Z" ExecutionTime="PT0.000082S" RuntimeId="2c40df57-f5b5-447d-9adb-c8639d0c7bcc">
         <StepName StepType="GIVEN" Format="my contact book is filled with contacts" />
       </Step>
-      <Step Status="Passed" Number="2" Name="WHEN I remove one contact" ExecutionStart="2023-06-30T21:04:08.3749689Z" ExecutionTime="PT0.0001352S" RuntimeId="895c3e9c-43b1-42dc-8dc8-74acfe6d20ad">
+      <Step Status="Passed" Number="2" Name="WHEN I remove one contact" ExecutionStart="2023-07-12T12:15:58.488878Z" ExecutionTime="PT0.0001321S" RuntimeId="1dc8d440-8edb-4eee-8080-521915d3fab6">
         <StepName StepType="WHEN" Format="I remove one contact" />
       </Step>
-      <Step Status="Passed" Number="3" Name="THEN the contact book should not contain removed contact any more" ExecutionStart="2023-06-30T21:04:08.3751176Z" ExecutionTime="PT0.0006542S" RuntimeId="21011ab3-445f-4255-ae59-33fb32a74304">
+      <Step Status="Passed" Number="3" Name="THEN the contact book should not contain removed contact any more" ExecutionStart="2023-07-12T12:15:58.4890231Z" ExecutionTime="PT0.0005244S" RuntimeId="d673183e-0a34-4b6b-9ad8-5bb89b483edd">
         <StepName StepType="THEN" Format="the contact book should not contain removed contact any more" />
       </Step>
-      <Step Status="Passed" Number="4" Name="AND the contact book should contains all other contacts" ExecutionStart="2023-06-30T21:04:08.37579Z" ExecutionTime="PT0.0003824S" RuntimeId="3a089da1-0ec1-40f0-a04c-37b71740ff2f">
+      <Step Status="Passed" Number="4" Name="AND the contact book should contains all other contacts" ExecutionStart="2023-07-12T12:15:58.489562Z" ExecutionTime="PT0.0003893S" RuntimeId="71dd6dcd-3793-4dfb-b766-7e8c5a84d2ac">
         <StepName StepType="AND" Format="the contact book should contains all other contacts" />
       </Step>
     </Scenario>
-    <Scenario Status="Passed" Name="Displaying contacts alphabetically" ExecutionStart="2023-06-30T21:04:08.3773822Z" ExecutionTime="PT0.0308838S" RuntimeId="275bf484-2178-4c67-9d2e-bdc63890cbb1">
+    <Scenario Status="Passed" Name="Displaying contacts alphabetically" ExecutionStart="2023-07-12T12:15:58.4913998Z" ExecutionTime="PT0.0355578S" RuntimeId="b0f5e918-d769-42cf-8e87-99a1fa98ca2e">
       <Name Format="Displaying contacts alphabetically" />
-      <Step Status="Passed" Number="1" Name="GIVEN my contact book is empty" ExecutionStart="2023-06-30T21:04:08.3801329Z" ExecutionTime="PT0.0000171S" RuntimeId="ab2ad6e9-a5a5-48f3-a415-675b897f7050">
+      <Step Status="Passed" Number="1" Name="GIVEN my contact book is empty" ExecutionStart="2023-07-12T12:15:58.4944444Z" ExecutionTime="PT0.0000268S" RuntimeId="d2aa2443-122b-442d-808b-eb1e7568b92e">
         <StepName StepType="GIVEN" Format="my contact book is empty" />
       </Step>
-      <Step Status="Passed" Number="2" Name="AND I added contacts &quot;&lt;$contacts&gt;&quot;" ExecutionStart="2023-06-30T21:04:08.3801609Z" ExecutionTime="PT0.0180813S" RuntimeId="a41f9032-d8b4-4acc-b308-5301930cc258">
+      <Step Status="Passed" Number="2" Name="AND I added contacts &quot;&lt;$contacts&gt;&quot;" ExecutionStart="2023-07-12T12:15:58.494486Z" ExecutionTime="PT0.0212167S" RuntimeId="35f4da4b-5f1a-4c58-9201-c501203919a2">
         <StepName StepType="AND" Format="I added contacts &quot;{0}&quot;">
           <Parameter IsEvaluated="true">&lt;$contacts&gt;</Parameter>
         </StepName>
@@ -805,10 +810,10 @@ I want to add, browse and remove my contacts</Description>
           </Table>
         </Parameter>
       </Step>
-      <Step Status="Passed" Number="3" Name="WHEN I request contacts sorted by name" ExecutionStart="2023-06-30T21:04:08.4003703Z" ExecutionTime="PT0.0002668S" RuntimeId="45bc587d-aae0-4da8-b0cf-05d48086d775">
+      <Step Status="Passed" Number="3" Name="WHEN I request contacts sorted by name" ExecutionStart="2023-07-12T12:15:58.5179875Z" ExecutionTime="PT0.0002791S" RuntimeId="a7ecb587-93af-444f-85cb-8cc311a55090">
         <StepName StepType="WHEN" Format="I request contacts sorted by name" />
       </Step>
-      <Step Status="Passed" Number="4" Name="THEN I should receive contacts &quot;&lt;$contacts&gt;&quot;" ExecutionStart="2023-06-30T21:04:08.4006541Z" ExecutionTime="PT0.0075595S" RuntimeId="89e42e9e-590d-41dd-b5d6-fbf3b3fd672e">
+      <Step Status="Passed" Number="4" Name="THEN I should receive contacts &quot;&lt;$contacts&gt;&quot;" ExecutionStart="2023-07-12T12:15:58.5182817Z" ExecutionTime="PT0.008606S" RuntimeId="51740902-48da-4e71-a677-fb88cee759fb">
         <StepName StepType="THEN" Format="I should receive contacts &quot;{0}&quot;">
           <Parameter IsEvaluated="true">&lt;$contacts&gt;</Parameter>
         </StepName>
@@ -841,9 +846,9 @@ I want to add, browse and remove my contacts</Description>
         </Parameter>
       </Step>
     </Scenario>
-    <Scenario Status="Failed" Name="Normalizing contact details" ExecutionStart="2023-06-30T21:04:08.4094632Z" ExecutionTime="PT0.0119834S" RuntimeId="ff12e8e9-f7e7-432b-b413-a68b9abfdb62">
+    <Scenario Status="Failed" Name="Normalizing contact details" ExecutionStart="2023-07-12T12:15:58.5290469Z" ExecutionTime="PT0.0143731S" RuntimeId="ecd07fe7-d1e7-40ca-9740-6875aa27f89a">
       <Name Format="Normalizing contact details" />
-      <Step Status="Passed" Number="1" Name="GIVEN I added contacts &quot;&lt;$contacts&gt;&quot;" ExecutionStart="2023-06-30T21:04:08.4118588Z" ExecutionTime="PT0.0001693S" RuntimeId="1d6f8003-5bba-4ae6-8cdb-997986e15b30">
+      <Step Status="Passed" Number="1" Name="GIVEN I added contacts &quot;&lt;$contacts&gt;&quot;" ExecutionStart="2023-07-12T12:15:58.5323475Z" ExecutionTime="PT0.0001599S" RuntimeId="a68c985d-2383-411f-b919-ab2a0480de55">
         <StepName StepType="GIVEN" Format="I added contacts &quot;{0}&quot;">
           <Parameter IsEvaluated="true">&lt;$contacts&gt;</Parameter>
         </StepName>
@@ -875,14 +880,14 @@ I want to add, browse and remove my contacts</Description>
           </Table>
         </Parameter>
       </Step>
-      <Step Status="Passed" Number="2" Name="WHEN I request contacts sorted by name" ExecutionStart="2023-06-30T21:04:08.4120747Z" ExecutionTime="PT0.0000184S" RuntimeId="e89f8090-c2df-415e-b6ab-d40525d9e4ed">
+      <Step Status="Passed" Number="2" Name="WHEN I request contacts sorted by name" ExecutionStart="2023-07-12T12:15:58.5326285Z" ExecutionTime="PT0.0000285S" RuntimeId="fde07262-2b76-4a60-93ab-b17794a23621">
         <StepName StepType="WHEN" Format="I request contacts sorted by name" />
       </Step>
-      <Step Status="Failed" Number="3" Name="THEN I should receive contacts &quot;&lt;$contacts&gt;&quot;" ExecutionStart="2023-06-30T21:04:08.4121059Z" ExecutionTime="PT0.0091757S" RuntimeId="96ad5b1a-a528-4af9-8168-755ffe4cc4e1">
+      <Step Status="Failed" Number="3" Name="THEN I should receive contacts &quot;&lt;$contacts&gt;&quot;" ExecutionStart="2023-07-12T12:15:58.5326703Z" ExecutionTime="PT0.0105755S" RuntimeId="8cfa9e61-2dc4-4855-963b-93a5057e797f">
         <StatusDetails>Step 3: System.InvalidOperationException : Parameter 'contacts' verification failed: [0].PhoneNumber: expected: matches '[0-9]{10,14}', but got: '112334455'
 		[3].Email: expected: matches '[a-z0-9.-]+@[a-z0-9.-]+', but got: 'jos#@mymail.com'
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
         <StepName StepType="THEN" Format="I should receive contacts &quot;{0}&quot;">
           <Parameter IsEvaluated="true">&lt;$contacts&gt;</Parameter>
         </StepName>
@@ -916,15 +921,15 @@ I want to add, browse and remove my contacts</Description>
       </Step>
       <StatusDetails>Step 3: System.InvalidOperationException : Parameter 'contacts' verification failed: [0].PhoneNumber: expected: matches '[0-9]{10,14}', but got: '112334455'
 		[3].Email: expected: matches '[a-z0-9.-]+@[a-z0-9.-]+', but got: 'jos#@mymail.com'
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
     </Scenario>
-    <Scenario Status="Failed" Name="Searching for contacts by phone" ExecutionStart="2023-06-30T21:04:08.4230287Z" ExecutionTime="PT0.0101334S" RuntimeId="d61c0927-f609-4b4b-b7f8-4e0e9ad2f47e">
+    <Scenario Status="Failed" Name="Searching for contacts by phone" ExecutionStart="2023-07-12T12:15:58.5452624Z" ExecutionTime="PT0.0110069S" RuntimeId="557228dd-3826-4dc3-9240-33c9dc06f9b7">
       <Name Format="Searching for contacts by phone" />
-      <Step Status="Passed" Number="1" Name="GIVEN my contact book is empty" ExecutionStart="2023-06-30T21:04:08.4258268Z" ExecutionTime="PT0.0000221S" RuntimeId="3e34b7d5-5867-4f15-88e9-a9655910ee7d">
+      <Step Status="Passed" Number="1" Name="GIVEN my contact book is empty" ExecutionStart="2023-07-12T12:15:58.5482599Z" ExecutionTime="PT0.000023S" RuntimeId="7cd5f428-cfb2-4f1e-a843-ecbb6d44a885">
         <StepName StepType="GIVEN" Format="my contact book is empty" />
       </Step>
-      <Step Status="Passed" Number="2" Name="AND I added contacts &quot;&lt;$contacts&gt;&quot;" ExecutionStart="2023-06-30T21:04:08.4258608Z" ExecutionTime="PT0.0001S" RuntimeId="e776b1e8-47c7-49e8-a2cf-ce1c43203bf3">
+      <Step Status="Passed" Number="2" Name="AND I added contacts &quot;&lt;$contacts&gt;&quot;" ExecutionStart="2023-07-12T12:15:58.5482966Z" ExecutionTime="PT0.0001263S" RuntimeId="10bac948-8393-4a02-9cf9-b9b42e1d0291">
         <StepName StepType="AND" Format="I added contacts &quot;{0}&quot;">
           <Parameter IsEvaluated="true">&lt;$contacts&gt;</Parameter>
         </StepName>
@@ -961,12 +966,12 @@ I want to add, browse and remove my contacts</Description>
           </Table>
         </Parameter>
       </Step>
-      <Step Status="Passed" Number="3" Name="WHEN I search for contacts by phone starting with &quot;111&quot;" ExecutionStart="2023-06-30T21:04:08.4259876Z" ExecutionTime="PT0.0002556S" RuntimeId="9409e133-f688-45ac-94ab-9ec3b4a54f35">
+      <Step Status="Passed" Number="3" Name="WHEN I search for contacts by phone starting with &quot;111&quot;" ExecutionStart="2023-07-12T12:15:58.5484579Z" ExecutionTime="PT0.0002769S" RuntimeId="f5abea61-bb51-416b-be5f-230d8108b21d">
         <StepName StepType="WHEN" Format="I search for contacts by phone starting with &quot;{0}&quot;">
           <Parameter IsEvaluated="true">111</Parameter>
         </StepName>
       </Step>
-      <Step Status="Failed" Number="4" Name="THEN I should receive contacts &quot;&lt;$contacts&gt;&quot;" ExecutionStart="2023-06-30T21:04:08.4262585Z" ExecutionTime="PT0.0067917S" RuntimeId="e8d8bc6e-7ff9-424c-b565-ba7db662e439">
+      <Step Status="Failed" Number="4" Name="THEN I should receive contacts &quot;&lt;$contacts&gt;&quot;" ExecutionStart="2023-07-12T12:15:58.5487528Z" ExecutionTime="PT0.0073883S" RuntimeId="83073f3c-db8f-4c2e-939b-2edf6338d500">
         <StatusDetails>Step 4: System.InvalidOperationException : Parameter 'contacts' verification failed: [1].Email: expected: equals 'john@hotmail.com', but got: 'john123@gmail.com'
 		[3].Name: missing value
 		[3].Email: missing value
@@ -974,8 +979,8 @@ I want to add, browse and remove my contacts</Description>
 		[4].Name: unexpected value
 		[4].Email: unexpected value
 		[4].PhoneNumber: unexpected value
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
         <StepName StepType="THEN" Format="I should receive contacts &quot;{0}&quot;">
           <Parameter IsEvaluated="true">&lt;$contacts&gt;</Parameter>
         </StepName>
@@ -1019,72 +1024,72 @@ I want to add, browse and remove my contacts</Description>
 		[4].Name: unexpected value
 		[4].Email: unexpected value
 		[4].PhoneNumber: unexpected value
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
     </Scenario>
   </Feature>
-  <Feature Name="Customer journey" RuntimeId="df296f25-bfb4-4e70-821a-6088c9430fdd">
+  <Feature Name="Customer journey" RuntimeId="06237cab-5138-4d90-ba56-1fe55f51ca53">
     <Label Name="Story-7" />
     <Description>In order to receive a product
 As an application user
 I want to go through entire customer journey</Description>
-    <Scenario Status="Ignored" Name="Ordering products" ExecutionStart="2023-06-30T21:04:08.3381865Z" ExecutionTime="PT4.3647638S" RuntimeId="2a818d3a-a4c8-4ac8-87d1-d16f3ae38c72">
+    <Scenario Status="Ignored" Name="Ordering products" ExecutionStart="2023-07-12T12:15:58.4405328Z" ExecutionTime="PT3.8907521S" RuntimeId="6b0713fc-c4f2-45f2-b7d3-1647ff49286d">
       <Name Format="Ordering products" />
       <Label Name="Ticket-12" />
-      <Step Status="Passed" Number="1" Name="GIVEN customer is logged in" ExecutionStart="2023-06-30T21:04:08.3454407Z" ExecutionTime="PT1.7638445S" RuntimeId="24e719ac-2a96-4c0e-a7b7-8929417ee9c7">
+      <Step Status="Passed" Number="1" Name="GIVEN customer is logged in" ExecutionStart="2023-07-12T12:15:58.4488351Z" ExecutionTime="PT1.1335984S" RuntimeId="b8eee3e7-db5d-400c-9b1e-50a80fe187ef">
         <StepName StepType="GIVEN" Format="customer is logged in" />
-        <SubStep Status="Passed" Number="1" Name="GIVEN the user is about to login" ExecutionStart="2023-06-30T21:04:08.3504736Z" ExecutionTime="PT0.0010489S" GroupPrefix="1." RuntimeId="6e75c0a9-ef73-4d05-b283-c2a9c8c3f4d8">
+        <SubStep Status="Passed" Number="1" Name="GIVEN the user is about to login" ExecutionStart="2023-07-12T12:15:58.4545372Z" ExecutionTime="PT0.0010686S" GroupPrefix="1." RuntimeId="e5597c6c-e1c9-48aa-b319-77219a3d6b31">
           <StepName StepType="GIVEN" Format="the user is about to login" />
         </SubStep>
-        <SubStep Status="Passed" Number="2" Name="AND the user entered valid login" ExecutionStart="2023-06-30T21:04:08.3543829Z" ExecutionTime="PT0.0000504S" GroupPrefix="1." RuntimeId="7759a71e-266c-4c8b-a824-0788d3a7f6db">
+        <SubStep Status="Passed" Number="2" Name="AND the user entered valid login" ExecutionStart="2023-07-12T12:15:58.4585627Z" ExecutionTime="PT0.000045S" GroupPrefix="1." RuntimeId="bbb113d9-386c-439b-90f2-7927eb2256d2">
           <StepName StepType="AND" Format="the user entered valid login" />
         </SubStep>
-        <SubStep Status="Passed" Number="3" Name="AND the user entered valid password" ExecutionStart="2023-06-30T21:04:08.3544504Z" ExecutionTime="PT0.0000507S" GroupPrefix="1." RuntimeId="950b03d2-3490-401e-8465-f8ac1e159924">
+        <SubStep Status="Passed" Number="3" Name="AND the user entered valid password" ExecutionStart="2023-07-12T12:15:58.4586249Z" ExecutionTime="PT0.0000304S" GroupPrefix="1." RuntimeId="3a8eb2ef-80f8-4468-bf3d-9c2049e26de1">
           <StepName StepType="AND" Format="the user entered valid password" />
         </SubStep>
-        <SubStep Status="Passed" Number="4" Name="WHEN the user clicks login button" ExecutionStart="2023-06-30T21:04:08.3545193Z" ExecutionTime="PT1.7546185S" GroupPrefix="1." RuntimeId="fff94934-64ff-4ac9-a1e5-9ba1968daf05">
+        <SubStep Status="Passed" Number="4" Name="WHEN the user clicks login button" ExecutionStart="2023-07-12T12:15:58.4586655Z" ExecutionTime="PT1.1236001S" GroupPrefix="1." RuntimeId="709b2c06-ee1f-4f9a-b772-108f431e9775">
           <StepName StepType="WHEN" Format="the user clicks login button" />
         </SubStep>
-        <SubStep Status="Passed" Number="5" Name="THEN the login operation should be successful" ExecutionStart="2023-06-30T21:04:10.1091994Z" ExecutionTime="PT0.0000594S" GroupPrefix="1." RuntimeId="b7e80267-868e-453d-9189-7dcc43117ef5">
+        <SubStep Status="Passed" Number="5" Name="THEN the login operation should be successful" ExecutionStart="2023-07-12T12:15:59.5823179Z" ExecutionTime="PT0.0000966S" GroupPrefix="1." RuntimeId="d567c902-5a23-4ebc-a368-e2e8e6a469bd">
           <StepName StepType="THEN" Format="the login operation should be successful" />
         </SubStep>
       </Step>
-      <Step Status="Bypassed" Number="2" Name="WHEN customer adds products to basket" ExecutionStart="2023-06-30T21:04:10.1093087Z" ExecutionTime="PT1.1098702S" RuntimeId="864c1103-863a-46e4-a467-e6923ccfb4e3">
+      <Step Status="Bypassed" Number="2" Name="WHEN customer adds products to basket" ExecutionStart="2023-07-12T12:15:59.5824454Z" ExecutionTime="PT1.730679S" RuntimeId="d0812f3a-4c42-4378-a910-f463a55bcbd9">
         <StatusDetails>Step 2.2: Until proper api is implemented, product is added directly to the DB.</StatusDetails>
         <StepName StepType="WHEN" Format="customer adds products to basket" />
-        <SubStep Status="Passed" Number="1" Name="GIVEN product &quot;wooden desk&quot; is in stock" ExecutionStart="2023-06-30T21:04:10.11128Z" ExecutionTime="PT0.0001973S" GroupPrefix="2." RuntimeId="bc1eaf29-0abd-43f7-8089-f750033e4f99">
+        <SubStep Status="Passed" Number="1" Name="GIVEN product &quot;wooden desk&quot; is in stock" ExecutionStart="2023-07-12T12:15:59.584484Z" ExecutionTime="PT0.000219S" GroupPrefix="2." RuntimeId="a3167058-76e1-4f13-b011-b70e31bc21c0">
           <StepName StepType="GIVEN" Format="product &quot;{0}&quot; is in stock">
             <Parameter IsEvaluated="true">wooden desk</Parameter>
           </StepName>
         </SubStep>
-        <SubStep Status="Bypassed" Number="2" Name="WHEN customer adds product &quot;wooden desk&quot; to the basket" ExecutionStart="2023-06-30T21:04:10.1115003Z" ExecutionTime="PT1.1073563S" GroupPrefix="2." RuntimeId="cfc78913-875d-404e-9821-a1cb91edfd23">
+        <SubStep Status="Bypassed" Number="2" Name="WHEN customer adds product &quot;wooden desk&quot; to the basket" ExecutionStart="2023-07-12T12:15:59.5847273Z" ExecutionTime="PT1.7280494S" GroupPrefix="2." RuntimeId="7c891aa0-c1e4-45d0-8f46-273d0edc7782">
           <StatusDetails>Step 2.2: Until proper api is implemented, product is added directly to the DB.</StatusDetails>
           <StepName StepType="WHEN" Format="customer adds product &quot;{0}&quot; to the basket">
             <Parameter IsEvaluated="true">wooden desk</Parameter>
           </StepName>
         </SubStep>
-        <SubStep Status="Passed" Number="3" Name="THEN the product addition should be successful" ExecutionStart="2023-06-30T21:04:11.2189275Z" ExecutionTime="PT0.000218S" GroupPrefix="2." RuntimeId="2f0b6429-1f6b-4540-bd53-2550d6e8861a">
+        <SubStep Status="Passed" Number="3" Name="THEN the product addition should be successful" ExecutionStart="2023-07-12T12:16:01.3128359Z" ExecutionTime="PT0.0002697S" GroupPrefix="2." RuntimeId="548a5e9a-ea51-4e8b-ad13-27d6d93a03e1">
           <StepName StepType="THEN" Format="the product addition should be successful" />
         </SubStep>
       </Step>
-      <Step Status="Passed" Number="3" Name="AND customer pays for products in basket" ExecutionStart="2023-06-30T21:04:11.2191895Z" ExecutionTime="PT1.4779696S" RuntimeId="7219b611-8100-471d-b936-559c57442794">
+      <Step Status="Passed" Number="3" Name="AND customer pays for products in basket" ExecutionStart="2023-07-12T12:16:01.3131393Z" ExecutionTime="PT1.0123358S" RuntimeId="49d800f8-07dd-4eaa-8554-8739c63c608a">
         <StepName StepType="AND" Format="customer pays for products in basket" />
-        <SubStep Status="Passed" Number="1" Name="WHEN customer requests to pay" ExecutionStart="2023-06-30T21:04:11.2196815Z" ExecutionTime="PT1.4773524S" GroupPrefix="3." RuntimeId="0a28576e-9d5f-431e-b264-3915f9f3ff82">
+        <SubStep Status="Passed" Number="1" Name="WHEN customer requests to pay" ExecutionStart="2023-07-12T12:16:01.3135125Z" ExecutionTime="PT1.0118245S" GroupPrefix="3." RuntimeId="8744ed47-ef26-4e95-8c54-5049e8c6d444">
           <StepName StepType="WHEN" Format="customer requests to pay" />
         </SubStep>
-        <SubStep Status="Passed" Number="2" Name="THEN payment should be successful" ExecutionStart="2023-06-30T21:04:12.6970629Z" ExecutionTime="PT0.0000828S" GroupPrefix="3." RuntimeId="b204ba3d-099f-4032-af1d-b589fdfdb8b7">
+        <SubStep Status="Passed" Number="2" Name="THEN payment should be successful" ExecutionStart="2023-07-12T12:16:02.3253663Z" ExecutionTime="PT0.0000848S" GroupPrefix="3." RuntimeId="b40f84dd-6579-4edb-95dd-d4edb426fb59">
           <StepName StepType="THEN" Format="payment should be successful" />
         </SubStep>
       </Step>
-      <Step Status="Ignored" Number="4" Name="THEN customer should receive order email" ExecutionStart="2023-06-30T21:04:12.697166Z" ExecutionTime="PT0.0057051S" RuntimeId="e2816d61-143f-43a7-8045-3f154b7f2042">
+      <Step Status="Ignored" Number="4" Name="THEN customer should receive order email" ExecutionStart="2023-07-12T12:16:02.325483Z" ExecutionTime="PT0.0057159S" RuntimeId="ec956810-4564-4129-a8fc-9c9c5188174a">
         <StatusDetails>Step 4.1: Not implemented yet</StatusDetails>
         <StepName StepType="THEN" Format="customer should receive order email" />
-        <SubStep Status="Ignored" Number="1" Name="THEN customer should receive invoice" ExecutionStart="2023-06-30T21:04:12.6994537Z" ExecutionTime="PT0.0033341S" GroupPrefix="4." RuntimeId="b242b4bc-7427-4fda-9266-644bc7d1a04a">
+        <SubStep Status="Ignored" Number="1" Name="THEN customer should receive invoice" ExecutionStart="2023-07-12T12:16:02.3275408Z" ExecutionTime="PT0.0035715S" GroupPrefix="4." RuntimeId="54992be5-da31-46e0-897d-3f3a162ea4e0">
           <StatusDetails>Step 4.1: Not implemented yet</StatusDetails>
           <StepName StepType="THEN" Format="customer should receive invoice" />
-          <FileAttachment Name="invoice-content" Path="1863ba90-116e-442e-8c1d-cffe5503f366.txt" />
+          <FileAttachment Name="invoice-content" Path="29d1a2ca-0da7-4632-b638-c73aef9185fb.txt" />
         </SubStep>
-        <SubStep Status="NotRun" Number="2" Name="AND customer should receive order confirmation" GroupPrefix="4." RuntimeId="13842047-be1d-4695-9eae-7a6a4bda51e6">
+        <SubStep Status="NotRun" Number="2" Name="AND customer should receive order confirmation" GroupPrefix="4." RuntimeId="4f37d2e8-0c54-4697-9414-0c2f30cb882d">
           <StepName StepType="AND" Format="customer should receive order confirmation" />
         </SubStep>
       </Step>
@@ -1092,46 +1097,46 @@ I want to go through entire customer journey</Description>
 Step 4.1: Not implemented yet</StatusDetails>
     </Scenario>
   </Feature>
-  <Feature Name="Invoice feature" RuntimeId="1b0f1bfc-42d1-41ef-8197-b1807d3ce8d8">
+  <Feature Name="Invoice feature" RuntimeId="3456fe9a-dd40-4c8d-9c15-7cd66fc08c78">
     <Label Name="Story-2" />
     <Description>In order to pay for products
 As a customer
 I want to receive invoice for bought items</Description>
-    <Scenario Status="Ignored" Name="Receiving invoice for products" ExecutionStart="2023-06-30T21:04:08.3381892Z" ExecutionTime="PT0.0187072S" RuntimeId="f3517a66-233b-4969-a189-91fea29aa76e">
+    <Scenario Status="Ignored" Name="Receiving invoice for products" ExecutionStart="2023-07-12T12:15:58.4405414Z" ExecutionTime="PT0.0200962S" RuntimeId="ab4a4c21-972a-49c1-bc64-2b3e4ce4fea9">
       <Name Format="Receiving invoice for products" />
       <Label Name="Ticket-4" />
       <Category Name="Sales" />
-      <Step Status="Passed" Number="1" Name="GIVEN product &quot;wooden desk&quot; is available in product storage" ExecutionStart="2023-06-30T21:04:08.3498981Z" ExecutionTime="PT0.0016517S" RuntimeId="e28d05fb-50d5-4460-b2b6-6dc4a398c931">
+      <Step Status="Passed" Number="1" Name="GIVEN product &quot;wooden desk&quot; is available in product storage" ExecutionStart="2023-07-12T12:15:58.4543084Z" ExecutionTime="PT0.0013289S" RuntimeId="1e9ac626-c080-4fb7-8a00-cb877b89451c">
         <StepName StepType="GIVEN" Format="product &quot;{0}&quot; is available in product storage">
           <Parameter IsEvaluated="true">wooden desk</Parameter>
         </StepName>
       </Step>
-      <Step Status="Passed" Number="2" Name="AND product &quot;wooden shelf&quot; is available in product storage" ExecutionStart="2023-06-30T21:04:08.3544051Z" ExecutionTime="PT0.0000328S" RuntimeId="8dc31d12-0d49-4c24-b917-48508c62e56e">
+      <Step Status="Passed" Number="2" Name="AND product &quot;wooden shelf&quot; is available in product storage" ExecutionStart="2023-07-12T12:15:58.4585654Z" ExecutionTime="PT0.0000191S" RuntimeId="4819a6e7-308f-47d3-8a2e-8b894c5abaab">
         <StepName StepType="AND" Format="product &quot;{0}&quot; is available in product storage">
           <Parameter IsEvaluated="true">wooden shelf</Parameter>
         </StepName>
       </Step>
-      <Step Status="Passed" Number="3" Name="WHEN customer buys product &quot;wooden desk&quot;" ExecutionStart="2023-06-30T21:04:08.3544546Z" ExecutionTime="PT0.0000627S" RuntimeId="d420e967-f8cb-4360-97be-f0b68933c697">
+      <Step Status="Passed" Number="3" Name="WHEN customer buys product &quot;wooden desk&quot;" ExecutionStart="2023-07-12T12:15:58.4585995Z" ExecutionTime="PT0.0000399S" RuntimeId="a24c516d-83bd-4a0c-b4dd-ef768b4efa3d">
         <StepName StepType="WHEN" Format="customer buys product &quot;{0}&quot;">
           <Parameter IsEvaluated="true">wooden desk</Parameter>
         </StepName>
       </Step>
-      <Step Status="Passed" Number="4" Name="AND customer buys product &quot;wooden shelf&quot;" ExecutionStart="2023-06-30T21:04:08.3545355Z" ExecutionTime="PT0.0000226S" RuntimeId="0ec12089-8020-407f-882d-d51bfc51d8f1">
+      <Step Status="Passed" Number="4" Name="AND customer buys product &quot;wooden shelf&quot;" ExecutionStart="2023-07-12T12:15:58.4586556Z" ExecutionTime="PT0.0000116S" RuntimeId="63e4cdc0-f7fa-4a04-8413-6acccb7de0c3">
         <StepName StepType="AND" Format="customer buys product &quot;{0}&quot;">
           <Parameter IsEvaluated="true">wooden shelf</Parameter>
         </StepName>
       </Step>
-      <Step Status="Ignored" Number="5" Name="THEN an invoice should be sent to the customer" ExecutionStart="2023-06-30T21:04:08.3545728Z" ExecutionTime="PT0.0013954S" RuntimeId="8b77ba9f-4be6-42fa-aa5f-800ca1f5b706">
+      <Step Status="Ignored" Number="5" Name="THEN an invoice should be sent to the customer" ExecutionStart="2023-07-12T12:15:58.4586783Z" ExecutionTime="PT0.0010362S" RuntimeId="966a1f27-ae50-4293-9a95-45cc06c7c344">
         <StatusDetails>Step 5: Not implemented yet</StatusDetails>
         <StepName StepType="THEN" Format="an invoice should be sent to the customer" />
       </Step>
-      <Step Status="NotRun" Number="6" Name="AND the invoice should contain product &quot;wooden desk&quot; with price of &quot;£62.00&quot;" RuntimeId="4bacec89-af39-4ff5-bf1c-801e66155e0c">
+      <Step Status="NotRun" Number="6" Name="AND the invoice should contain product &quot;wooden desk&quot; with price of &quot;£62.00&quot;" RuntimeId="85a4e018-0997-42e2-b5fb-911dcfbd1650">
         <StepName StepType="AND" Format="the invoice should contain product &quot;{0}&quot; with price of &quot;{1}&quot;">
           <Parameter IsEvaluated="true">wooden desk</Parameter>
           <Parameter IsEvaluated="true">£62.00</Parameter>
         </StepName>
       </Step>
-      <Step Status="NotRun" Number="7" Name="AND the invoice should contain product &quot;wooden shelf&quot; with price of &quot;£37.00&quot;" RuntimeId="21ec3bc8-51a4-48f2-b4ad-518cd06bd2f6">
+      <Step Status="NotRun" Number="7" Name="AND the invoice should contain product &quot;wooden shelf&quot; with price of &quot;£37.00&quot;" RuntimeId="f47d9778-cc8d-4fa6-8219-139078d87474">
         <StepName StepType="AND" Format="the invoice should contain product &quot;{0}&quot; with price of &quot;{1}&quot;">
           <Parameter IsEvaluated="true">wooden shelf</Parameter>
           <Parameter IsEvaluated="true">£37.00</Parameter>
@@ -1140,214 +1145,214 @@ I want to receive invoice for bought items</Description>
       <StatusDetails>Step 5: Not implemented yet</StatusDetails>
     </Scenario>
   </Feature>
-  <Feature Name="Invoice history feature" RuntimeId="50462038-90a1-4ef3-845e-ced735c1d14d">
+  <Feature Name="Invoice history feature" RuntimeId="c91dea80-8747-4888-b742-017aaaa3afb8">
     <Label Name="STORY-9" />
     <Description>In order to see all payment details
 As a customer
 I want to browse historical invoices
 
 Example usage of fluent scenarios</Description>
-    <Scenario Status="Passed" Name="Browsing invoices" ExecutionStart="2023-06-30T21:04:08.3381789Z" ExecutionTime="PT4.2975739S" RuntimeId="b5de95a3-7725-454a-8d8d-8bcae23b5d98">
+    <Scenario Status="Passed" Name="Browsing invoices" ExecutionStart="2023-07-12T12:15:58.4405303Z" ExecutionTime="PT4.1362822S" RuntimeId="42ae4361-5437-4375-9ee6-871bfb9912a4">
       <Name Format="Browsing invoices" />
       <Label Name="Ticket-14" />
-      <Step Status="Passed" Number="1" Name="GIVEN invoice &quot;Invoice-1&quot;" ExecutionStart="2023-06-30T21:04:08.3486646Z" ExecutionTime="PT1.3845164S" RuntimeId="93f23df9-984e-4975-bf90-050099760571">
+      <Step Status="Passed" Number="1" Name="GIVEN invoice &quot;Invoice-1&quot;" ExecutionStart="2023-07-12T12:15:58.4525396Z" ExecutionTime="PT1.4097868S" RuntimeId="e50cf72e-906f-492a-85d0-c08e5016872a">
         <StepName StepType="GIVEN" Format="invoice &quot;{0}&quot;">
           <Parameter IsEvaluated="true">Invoice-1</Parameter>
         </StepName>
       </Step>
-      <Step Status="Passed" Number="2" Name="AND invoice &quot;Invoice-2&quot;" ExecutionStart="2023-06-30T21:04:09.7332619Z" ExecutionTime="PT1.1970434S" RuntimeId="444893b5-73db-4d09-ab08-7c46b37e9f04">
+      <Step Status="Passed" Number="2" Name="AND invoice &quot;Invoice-2&quot;" ExecutionStart="2023-07-12T12:15:59.862374Z" ExecutionTime="PT1.2929758S" RuntimeId="183cd9ab-c8b4-4bb3-90ea-260098156540">
         <StepName StepType="AND" Format="invoice &quot;{0}&quot;">
           <Parameter IsEvaluated="true">Invoice-2</Parameter>
         </StepName>
       </Step>
-      <Step Status="Passed" Number="3" Name="WHEN I request all historical invoices" ExecutionStart="2023-06-30T21:04:10.9303755Z" ExecutionTime="PT1.7046736S" RuntimeId="6185e163-c001-4f13-b407-e7cd9c608475">
+      <Step Status="Passed" Number="3" Name="WHEN I request all historical invoices" ExecutionStart="2023-07-12T12:16:01.1553809Z" ExecutionTime="PT1.4208134S" RuntimeId="58412ecf-166d-42c5-a8ff-016d7af60196">
         <StepName StepType="WHEN" Format="I request all historical invoices" />
       </Step>
-      <Step Status="Passed" Number="4" Name="THEN I should see invoices &quot;Invoice-1, Invoice-2&quot;" ExecutionStart="2023-06-30T21:04:12.6350882Z" ExecutionTime="PT0.0006439S" RuntimeId="3233a0d0-aba6-45f5-b316-eab2642b6015">
+      <Step Status="Passed" Number="4" Name="THEN I should see invoices &quot;Invoice-1, Invoice-2&quot;" ExecutionStart="2023-07-12T12:16:02.5762376Z" ExecutionTime="PT0.0005551S" RuntimeId="cae798ae-9e53-477b-b601-dd9f33970e41">
         <StepName StepType="THEN" Format="I should see invoices &quot;{0}&quot;">
           <Parameter IsEvaluated="true">Invoice-1, Invoice-2</Parameter>
         </StepName>
       </Step>
     </Scenario>
   </Feature>
-  <Feature Name="Login feature" RuntimeId="065e971e-b59c-41a6-a3bd-23e0584e53f9">
+  <Feature Name="Login feature" RuntimeId="083c05ed-1482-4db2-a5b5-919661edbfe0">
     <Label Name="Story-1" />
     <Description>In order to access personal data
 As an user
 I want to login into system</Description>
-    <Scenario Status="Failed" Name="Anonymous login name should allow to log in" ExecutionStart="2023-06-30T21:04:08.3381836Z" ExecutionTime="PT1.7804809S" RuntimeId="c0014d2e-1c5a-4312-8805-ba9c5c41c932">
+    <Scenario Status="Failed" Name="Anonymous login name should allow to log in" ExecutionStart="2023-07-12T12:15:58.4405357Z" ExecutionTime="PT1.2914176S" RuntimeId="c202e6c4-f2ff-48b5-95bf-b9837e627bfb">
       <Name Format="Anonymous login name should allow to log in" />
       <Label Name="Ticket-3" />
       <Category Name="Security" />
-      <Step Status="Passed" Number="1" Name="GIVEN the user is about to login" ExecutionStart="2023-06-30T21:04:08.3454388Z" ExecutionTime="PT0.0070739S" RuntimeId="4be3589f-a044-4a9e-9a3e-02a4213f7698">
+      <Step Status="Passed" Number="1" Name="GIVEN the user is about to login" ExecutionStart="2023-07-12T12:15:58.4488372Z" ExecutionTime="PT0.012482S" RuntimeId="6783e16a-1c24-4a73-b35f-856e6c2634f1">
         <StepName StepType="GIVEN" Format="the user is about to login" />
       </Step>
-      <Step Status="Passed" Number="2" Name="AND the user entered anonymous login" ExecutionStart="2023-06-30T21:04:08.3543797Z" ExecutionTime="PT0.0007774S" RuntimeId="072c46d6-cd8b-48b7-87c8-894e8d02221b">
+      <Step Status="Passed" Number="2" Name="AND the user entered anonymous login" ExecutionStart="2023-07-12T12:15:58.4613399Z" ExecutionTime="PT0.0011727S" RuntimeId="90053c7d-19d2-4b77-8451-9349814f54e1">
         <StepName StepType="AND" Format="the user entered anonymous login" />
         <Comment>Presentation of failed scenario</Comment>
       </Step>
-      <Step Status="Passed" Number="3" Name="WHEN the user clicks login button" ExecutionStart="2023-06-30T21:04:08.3551736Z" ExecutionTime="PT1.7540231S" RuntimeId="425af541-d602-4573-9b21-5766f7d45f4c">
+      <Step Status="Passed" Number="3" Name="WHEN the user clicks login button" ExecutionStart="2023-07-12T12:15:58.4625518Z" ExecutionTime="PT1.2589845S" RuntimeId="fd58bed1-c59e-48c6-8a2b-65994ea793f3">
         <StepName StepType="WHEN" Format="the user clicks login button" />
       </Step>
-      <Step Status="Failed" Number="4" Name="THEN the login operation should be successful" ExecutionStart="2023-06-30T21:04:10.109227Z" ExecutionTime="PT0.0093461S" RuntimeId="61e47e58-0494-44ae-b6a9-1f4dc7b22048">
+      <Step Status="Failed" Number="4" Name="THEN the login operation should be successful" ExecutionStart="2023-07-12T12:15:59.7216027Z" ExecutionTime="PT0.0102405S" RuntimeId="c32a446b-d8d1-487f-ba54-6c95dedda871">
         <StatusDetails>Step 4: NUnit.Framework.AssertionException :   Login should succeeded
 	  Expected: True
 	  But was:  False
 	
-	at Example.LightBDD.NUnit3.Features.Login_feature.Then_the_login_operation_should_be_successful() in D:\dev\LightBDD\examples\Example.LightBDD.NUnit3\Features\Login_feature.Steps.cs:line 57
-	at LightBDD.Framework.Scenarios.Implementation.BasicStepCompiler.StepExecutor.Execute(Object context, Object[] args) in D:\dev\LightBDD\src\LightBDD.Framework\Scenarios\Implementation\BasicStepCompiler.cs:line 102</StatusDetails>
+	at Example.LightBDD.NUnit3.Features.Login_feature.Then_the_login_operation_should_be_successful() in d:\dev\LightBDD\examples\Example.LightBDD.NUnit3\Features\Login_feature.Steps.cs:line 57
+	at LightBDD.Framework.Scenarios.Implementation.BasicStepCompiler.StepExecutor.Execute(Object context, Object[] args) in d:\dev\LightBDD\src\LightBDD.Framework\Scenarios\Implementation\BasicStepCompiler.cs:line 102</StatusDetails>
         <StepName StepType="THEN" Format="the login operation should be successful" />
       </Step>
-      <Step Status="NotRun" Number="5" Name="AND a welcome message containing user name should be returned" RuntimeId="015e14d4-d0e4-4c59-ac06-3af54a34e61d">
+      <Step Status="NotRun" Number="5" Name="AND a welcome message containing user name should be returned" RuntimeId="b1e503f9-3b4f-452b-99ff-1d61773fa5a5">
         <StepName StepType="AND" Format="a welcome message containing user name should be returned" />
       </Step>
       <StatusDetails>Step 4: NUnit.Framework.AssertionException :   Login should succeeded
 	  Expected: True
 	  But was:  False
 	
-	at Example.LightBDD.NUnit3.Features.Login_feature.Then_the_login_operation_should_be_successful() in D:\dev\LightBDD\examples\Example.LightBDD.NUnit3\Features\Login_feature.Steps.cs:line 57
-	at LightBDD.Framework.Scenarios.Implementation.BasicStepCompiler.StepExecutor.Execute(Object context, Object[] args) in D:\dev\LightBDD\src\LightBDD.Framework\Scenarios\Implementation\BasicStepCompiler.cs:line 102</StatusDetails>
+	at Example.LightBDD.NUnit3.Features.Login_feature.Then_the_login_operation_should_be_successful() in d:\dev\LightBDD\examples\Example.LightBDD.NUnit3\Features\Login_feature.Steps.cs:line 57
+	at LightBDD.Framework.Scenarios.Implementation.BasicStepCompiler.StepExecutor.Execute(Object context, Object[] args) in d:\dev\LightBDD\src\LightBDD.Framework\Scenarios\Implementation\BasicStepCompiler.cs:line 102</StatusDetails>
     </Scenario>
-    <Scenario Status="Passed" Name="Successful login" ExecutionStart="2023-06-30T21:04:10.1192245Z" ExecutionTime="PT1.1616786S" RuntimeId="e4ab0108-587a-414e-b169-f246b45a1b26">
+    <Scenario Status="Passed" Name="Successful login" ExecutionStart="2023-07-12T12:15:59.7325325Z" ExecutionTime="PT1.174859S" RuntimeId="38743cc2-65d1-47ec-9e99-65bfa3370644">
       <Name Format="Successful login" />
       <Label Name="Ticket-1" />
       <Category Name="Security" />
-      <Step Status="Passed" Number="1" Name="GIVEN the user is about to login" ExecutionStart="2023-06-30T21:04:10.1193507Z" ExecutionTime="PT0.0000239S" RuntimeId="555b369d-9476-43b9-ac24-ca5ad4efe957">
+      <Step Status="Passed" Number="1" Name="GIVEN the user is about to login" ExecutionStart="2023-07-12T12:15:59.7326597Z" ExecutionTime="PT0.0000224S" RuntimeId="a89ca7bf-ac11-4087-929b-84b62dbd97c8">
         <StepName StepType="GIVEN" Format="the user is about to login" />
       </Step>
-      <Step Status="Passed" Number="2" Name="AND the user entered valid login" ExecutionStart="2023-06-30T21:04:10.1193869Z" ExecutionTime="PT0.0000473S" RuntimeId="d9d68756-eee9-48ad-b05d-522d38b01f1e">
+      <Step Status="Passed" Number="2" Name="AND the user entered valid login" ExecutionStart="2023-07-12T12:15:59.7326957Z" ExecutionTime="PT0.0000501S" RuntimeId="080bc6b7-edbb-42c8-8947-834a28758a21">
         <StepName StepType="AND" Format="the user entered valid login" />
       </Step>
-      <Step Status="Passed" Number="3" Name="AND the user entered valid password" ExecutionStart="2023-06-30T21:04:10.1194486Z" ExecutionTime="PT0.0000679S" RuntimeId="451cbcad-df51-4e71-b37d-3586030acad8">
+      <Step Status="Passed" Number="3" Name="AND the user entered valid password" ExecutionStart="2023-07-12T12:15:59.732759Z" ExecutionTime="PT0.0000697S" RuntimeId="3e75cca4-6240-46ab-b7a1-c0b1d7f8c7e8">
         <StepName StepType="AND" Format="the user entered valid password" />
       </Step>
-      <Step Status="Passed" Number="4" Name="WHEN the user clicks login button" ExecutionStart="2023-06-30T21:04:10.1195307Z" ExecutionTime="PT1.1609345S" RuntimeId="3033775b-bfae-46c1-bee4-f70f2d177476">
+      <Step Status="Passed" Number="4" Name="WHEN the user clicks login button" ExecutionStart="2023-07-12T12:15:59.7328414Z" ExecutionTime="PT1.1742311S" RuntimeId="2c948a87-ce6d-4578-8028-6a0836e911f3">
         <StepName StepType="WHEN" Format="the user clicks login button" />
       </Step>
-      <Step Status="Passed" Number="5" Name="THEN the login operation should be successful" ExecutionStart="2023-06-30T21:04:11.280505Z" ExecutionTime="PT0.000041S" RuntimeId="e2e60df5-5501-41fb-803a-88c41e4c317d">
+      <Step Status="Passed" Number="5" Name="THEN the login operation should be successful" ExecutionStart="2023-07-12T12:16:00.907105Z" ExecutionTime="PT0.0000383S" RuntimeId="9d64a7d4-ef00-40ac-935c-7c8c6a630721">
         <StepName StepType="THEN" Format="the login operation should be successful" />
       </Step>
-      <Step Status="Passed" Number="6" Name="AND a welcome message containing user name should be returned" ExecutionStart="2023-06-30T21:04:11.2805563Z" ExecutionTime="PT0.0003245S" RuntimeId="294b37f1-a401-421b-90ae-c53d8948d67d">
+      <Step Status="Passed" Number="6" Name="AND a welcome message containing user name should be returned" ExecutionStart="2023-07-12T12:16:00.9071503Z" ExecutionTime="PT0.000222S" RuntimeId="9c136114-c388-499f-9da6-32ea0cad6581">
         <StepName StepType="AND" Format="a welcome message containing user name should be returned" />
       </Step>
     </Scenario>
-    <Scenario Status="Passed" Name="Wrong login provided causes login to fail" ExecutionStart="2023-06-30T21:04:11.2866152Z" ExecutionTime="PT1.0813135S" RuntimeId="c8f59b90-84c3-4f0d-8388-a29b24302403">
+    <Scenario Status="Passed" Name="Wrong login provided causes login to fail" ExecutionStart="2023-07-12T12:16:00.9077632Z" ExecutionTime="PT1.7149896S" RuntimeId="2ed00e2e-d34b-45a2-aed0-532c23061dce">
       <Name Format="Wrong login provided causes login to fail" />
       <Label Name="Ticket-2" />
       <Category Name="Security" />
-      <Step Status="Passed" Number="1" Name="GIVEN the user is about to login" ExecutionStart="2023-06-30T21:04:11.2867436Z" ExecutionTime="PT0.0000215S" RuntimeId="6e98d2fd-6bba-4c06-9929-00077448b249">
+      <Step Status="Passed" Number="1" Name="GIVEN the user is about to login" ExecutionStart="2023-07-12T12:16:00.9079636Z" ExecutionTime="PT0.0000173S" RuntimeId="8faf14b3-16ae-4dd2-902d-1b1ad4d78bc9">
         <StepName StepType="GIVEN" Format="the user is about to login" />
       </Step>
-      <Step Status="Passed" Number="2" Name="AND the user entered invalid login" ExecutionStart="2023-06-30T21:04:11.2867822Z" ExecutionTime="PT0.0000616S" RuntimeId="f89cc16d-6489-43ab-a389-1fe43e2d59fc">
+      <Step Status="Passed" Number="2" Name="AND the user entered invalid login" ExecutionStart="2023-07-12T12:16:00.9133292Z" ExecutionTime="PT0.000083S" RuntimeId="205503c5-6163-4381-ad30-c4fd02046260">
         <StepName StepType="AND" Format="the user entered invalid login" />
       </Step>
-      <Step Status="Passed" Number="3" Name="AND the user entered valid password" ExecutionStart="2023-06-30T21:04:11.2868533Z" ExecutionTime="PT0.0000056S" RuntimeId="d558d3ce-ad53-41b9-b121-45c496d25575">
+      <Step Status="Passed" Number="3" Name="AND the user entered valid password" ExecutionStart="2023-07-12T12:16:00.9134342Z" ExecutionTime="PT0.0000072S" RuntimeId="9d14d801-2b22-4ec5-b6f3-2ea590ef565d">
         <StepName StepType="AND" Format="the user entered valid password" />
       </Step>
-      <Step Status="Passed" Number="4" Name="WHEN the user clicks login button" ExecutionStart="2023-06-30T21:04:11.2868638Z" ExecutionTime="PT1.0807905S" RuntimeId="43ef15bb-0ecf-4a52-b50d-05c216378330">
+      <Step Status="Passed" Number="4" Name="WHEN the user clicks login button" ExecutionStart="2023-07-12T12:16:00.9134458Z" ExecutionTime="PT1.7090075S" RuntimeId="90eede40-ca35-44e1-8443-a7e1b7d273f9">
         <StepName StepType="WHEN" Format="the user clicks login button" />
       </Step>
-      <Step Status="Passed" Number="5" Name="THEN the login operation should be unsuccessful" ExecutionStart="2023-06-30T21:04:12.3676874Z" ExecutionTime="PT0.0001442S" RuntimeId="75332bdf-824f-40eb-b767-787165bf88e2">
+      <Step Status="Passed" Number="5" Name="THEN the login operation should be unsuccessful" ExecutionStart="2023-07-12T12:16:02.6224892Z" ExecutionTime="PT0.000165S" RuntimeId="2c3b11a9-4672-45c5-9add-250de8b465f9">
         <StepName StepType="THEN" Format="the login operation should be unsuccessful" />
       </Step>
-      <Step Status="Passed" Number="6" Name="AND an invalid login or password error message should be returned" ExecutionStart="2023-06-30T21:04:12.3678457Z" ExecutionTime="PT0.0000701S" RuntimeId="fffbb5cb-285c-415e-bcbd-83e4c7ba67f9">
+      <Step Status="Passed" Number="6" Name="AND an invalid login or password error message should be returned" ExecutionStart="2023-07-12T12:16:02.6226658Z" ExecutionTime="PT0.000074S" RuntimeId="538d47ee-7f0d-418a-bc2f-72b9bbe4e072">
         <StepName StepType="AND" Format="an invalid login or password error message should be returned" />
       </Step>
     </Scenario>
-    <Scenario Status="Passed" Name="Wrong password provided causes login to fail" ExecutionStart="2023-06-30T21:04:12.3682253Z" ExecutionTime="PT1.3221515S" RuntimeId="6ffb7587-e13b-4c2b-9f4d-fdf736cc1bb6">
+    <Scenario Status="Passed" Name="Wrong password provided causes login to fail" ExecutionStart="2023-07-12T12:16:02.6230284Z" ExecutionTime="PT1.2432641S" RuntimeId="3591c1e1-c8cc-4f57-8e62-5cc2f06b0c5a">
       <Name Format="Wrong password provided causes login to fail" />
       <Label Name="Ticket-2" />
       <Category Name="Security" />
-      <Step Status="Passed" Number="1" Name="GIVEN the user is about to login" ExecutionStart="2023-06-30T21:04:12.3683689Z" ExecutionTime="PT0.0000181S" RuntimeId="f4fc11a4-12ba-47c3-9549-3c448c8b82db">
+      <Step Status="Passed" Number="1" Name="GIVEN the user is about to login" ExecutionStart="2023-07-12T12:16:02.6231487Z" ExecutionTime="PT0.0000171S" RuntimeId="baf55ca6-1179-4f5c-9023-cd5d7b35e5a4">
         <StepName StepType="GIVEN" Format="the user is about to login" />
       </Step>
-      <Step Status="Passed" Number="2" Name="AND the user entered valid login" ExecutionStart="2023-06-30T21:04:12.368402Z" ExecutionTime="PT0.0000058S" RuntimeId="6d3360e6-04fc-4f13-a811-0ec1a21e6a01">
+      <Step Status="Passed" Number="2" Name="AND the user entered valid login" ExecutionStart="2023-07-12T12:16:02.6231727Z" ExecutionTime="PT0.000004S" RuntimeId="9c2b3336-a990-4337-b109-dff5702cd41f">
         <StepName StepType="AND" Format="the user entered valid login" />
       </Step>
-      <Step Status="Passed" Number="3" Name="AND the user entered invalid password" ExecutionStart="2023-06-30T21:04:12.3684126Z" ExecutionTime="PT0.0000473S" RuntimeId="c7d4f169-5978-4bc4-bac4-d1e6cf3e71b7">
+      <Step Status="Passed" Number="3" Name="AND the user entered invalid password" ExecutionStart="2023-07-12T12:16:02.6231809Z" ExecutionTime="PT0.0000434S" RuntimeId="1fe54f52-f8f8-441f-8b74-71ac03c46c5f">
         <StepName StepType="AND" Format="the user entered invalid password" />
       </Step>
-      <Step Status="Passed" Number="4" Name="WHEN the user clicks login button" ExecutionStart="2023-06-30T21:04:12.3684683Z" ExecutionTime="PT1.3218209S" RuntimeId="77069dae-7968-4d83-9533-6d0c26f548e5">
+      <Step Status="Passed" Number="4" Name="WHEN the user clicks login button" ExecutionStart="2023-07-12T12:16:02.6232321Z" ExecutionTime="PT1.2429595S" RuntimeId="78781638-0d1f-40a4-930e-0df64e28981b">
         <StepName StepType="WHEN" Format="the user clicks login button" />
       </Step>
-      <Step Status="Passed" Number="5" Name="THEN the login operation should be unsuccessful" ExecutionStart="2023-06-30T21:04:13.6903243Z" ExecutionTime="PT0.0000149S" RuntimeId="0dab6e5c-ee35-4309-856f-a8f1b8db48c5">
+      <Step Status="Passed" Number="5" Name="THEN the login operation should be unsuccessful" ExecutionStart="2023-07-12T12:16:03.8662327Z" ExecutionTime="PT0.0000207S" RuntimeId="bb857c5a-8d37-4dfa-a99d-d9eaffca4c66">
         <StepName StepType="THEN" Format="the login operation should be unsuccessful" />
       </Step>
-      <Step Status="Passed" Number="6" Name="AND an invalid login or password error message should be returned" ExecutionStart="2023-06-30T21:04:13.6903451Z" ExecutionTime="PT0.0000113S" RuntimeId="b9b886a9-cb6f-4318-af80-3185e8a20205">
+      <Step Status="Passed" Number="6" Name="AND an invalid login or password error message should be returned" ExecutionStart="2023-07-12T12:16:03.8662599Z" ExecutionTime="PT0.0000156S" RuntimeId="7691ad3e-c31a-4b18-a43e-23ca8c962077">
         <StepName StepType="AND" Format="an invalid login or password error message should be returned" />
       </Step>
     </Scenario>
   </Feature>
-  <Feature Name="Payment feature" RuntimeId="9289e4ac-5088-4109-9502-8cd0583cc16c">
+  <Feature Name="Payment feature" RuntimeId="10af6275-1ca2-471e-9c19-3909703a8160">
     <Label Name="Story-5" />
     <Description>In order to get desired products
 As a customer
 I want to pay for products in basket</Description>
-    <Scenario Status="Passed" Name="Successful payment" ExecutionStart="2023-06-30T21:04:08.3381808Z" ExecutionTime="PT6.4140931S" RuntimeId="79b3c4ad-b3b8-4195-aad8-9473f13eb01a">
+    <Scenario Status="Passed" Name="Successful payment" ExecutionStart="2023-07-12T12:15:58.440529Z" ExecutionTime="PT6.2175374S" RuntimeId="671583cf-f276-4b77-b009-f6f3a8530f51">
       <Name Format="Successful payment" />
       <Label Name="Ticket-10" />
       <Label Name="Ticket-11" />
-      <Step Status="Passed" Number="1" Name="GIVEN customer has some products in basket" ExecutionStart="2023-06-30T21:04:08.3466503Z" ExecutionTime="PT1.4157047S" RuntimeId="87ab182a-1c5e-4dc0-96b2-20bb3e1c1d04">
+      <Step Status="Passed" Number="1" Name="GIVEN customer has some products in basket" ExecutionStart="2023-07-12T12:15:58.4502552Z" ExecutionTime="PT1.0385417S" RuntimeId="60f4544f-ea16-466f-b80e-fa067f37dcb3">
         <StepName StepType="GIVEN" Format="customer has some products in basket" />
       </Step>
-      <Step Status="Passed" Number="2" Name="AND customer has enough money to pay for products" ExecutionStart="2023-06-30T21:04:09.7623806Z" ExecutionTime="PT1.816753S" RuntimeId="4e58a880-572f-4210-997f-703315e17002">
+      <Step Status="Passed" Number="2" Name="AND customer has enough money to pay for products" ExecutionStart="2023-07-12T12:15:59.4888703Z" ExecutionTime="PT1.838967S" RuntimeId="581b09e6-7885-4ffc-a0bd-8feaf5af0df8">
         <StepName StepType="AND" Format="customer has enough money to pay for products" />
       </Step>
-      <Step Status="Passed" Number="3" Name="WHEN customer requests to pay" ExecutionStart="2023-06-30T21:04:11.5791682Z" ExecutionTime="PT1.4470774S" RuntimeId="303356b6-227d-4c17-a0a4-f81ec0303c64">
+      <Step Status="Passed" Number="3" Name="WHEN customer requests to pay" ExecutionStart="2023-07-12T12:16:01.3278514Z" ExecutionTime="PT1.6035164S" RuntimeId="85aa262e-e4fc-4e7e-ba18-df540bb388b0">
         <StepName StepType="WHEN" Format="customer requests to pay" />
       </Step>
-      <Step Status="Passed" Number="4" Name="THEN payment should be successful" ExecutionStart="2023-06-30T21:04:13.026277Z" ExecutionTime="PT1.7259627S" RuntimeId="db1e3bfe-96bc-4bb4-8ef5-bf8c4ba7a07c">
+      <Step Status="Passed" Number="4" Name="THEN payment should be successful" ExecutionStart="2023-07-12T12:16:02.931399Z" ExecutionTime="PT1.7266311S" RuntimeId="78d0d3c0-a72c-4b3a-88a7-33c21ec560d5">
         <StepName StepType="THEN" Format="payment should be successful" />
       </Step>
     </Scenario>
   </Feature>
-  <Feature Name="Product spedition feature" RuntimeId="5c6a65c7-893b-430a-bb47-549c49e75025">
+  <Feature Name="Product spedition feature" RuntimeId="d3a38bba-3905-4263-a6c1-eca5e4ad830d">
     <Label Name="Story-3" />
     <Description>In order to deliver products to customer effectively
 As a spedition manager
 I want to dispatch products to customer as soon as the payment is finalized</Description>
-    <Scenario Status="Passed" Name="Should dispatch product after payment is finalized" ExecutionStart="2023-06-30T21:04:08.3381922Z" ExecutionTime="PT0.0173912S" RuntimeId="47e1ac86-fa20-4c33-ad22-805bc5ac4a1a">
+    <Scenario Status="Passed" Name="Should dispatch product after payment is finalized" ExecutionStart="2023-07-12T12:15:58.4405444Z" ExecutionTime="PT0.0189431S" RuntimeId="74f51bf2-3653-4a65-a278-d53b9ae04e61">
       <Name Format="Should dispatch product after payment is finalized" />
       <Label Name="Ticket-5" />
       <Category Name="Delivery" />
       <Category Name="Sales" />
-      <Step Status="Passed" Number="1" Name="GIVEN There is an active customer with id &quot;ABC-123&quot;" ExecutionStart="2023-06-30T21:04:08.3491641Z" ExecutionTime="PT0.0022954S" RuntimeId="d94c4487-2e1d-48d5-af58-901d8bea28cf">
+      <Step Status="Passed" Number="1" Name="GIVEN There is an active customer with id &quot;ABC-123&quot;" ExecutionStart="2023-07-12T12:15:58.4530107Z" ExecutionTime="PT0.0026891S" RuntimeId="fd65a23a-45f4-43d4-9eb1-83c294792f43">
         <StepName StepType="GIVEN" Format="There is an active customer with id &quot;{0}&quot;">
           <Parameter IsEvaluated="true">ABC-123</Parameter>
         </StepName>
       </Step>
-      <Step Status="Passed" Number="2" Name="AND The customer has product &quot;wooden shelf&quot; in basket" ExecutionStart="2023-06-30T21:04:08.3544097Z" ExecutionTime="PT0.0000776S" RuntimeId="0ac2cf4f-6caa-4e93-b640-243abab39e50">
+      <Step Status="Passed" Number="2" Name="AND The customer has product &quot;wooden shelf&quot; in basket" ExecutionStart="2023-07-12T12:15:58.4585674Z" ExecutionTime="PT0.0000466S" RuntimeId="b68a380c-2365-4e16-b4d5-969bd78ef33d">
         <StepName StepType="AND" Format="The customer has product &quot;{0}&quot; in basket">
           <Parameter IsEvaluated="true">wooden shelf</Parameter>
         </StepName>
       </Step>
-      <Step Status="Passed" Number="3" Name="AND The customer has product &quot;wooden desk&quot; in basket" ExecutionStart="2023-06-30T21:04:08.3545071Z" ExecutionTime="PT0.0000259S" RuntimeId="7c1aef5e-2921-469d-bb4c-198e09256955">
+      <Step Status="Passed" Number="3" Name="AND The customer has product &quot;wooden desk&quot; in basket" ExecutionStart="2023-07-12T12:15:58.4586316Z" ExecutionTime="PT0.0000153S" RuntimeId="7b8072f4-e556-4e84-bbd6-d34afa53f516">
         <StepName StepType="AND" Format="The customer has product &quot;{0}&quot; in basket">
           <Parameter IsEvaluated="true">wooden desk</Parameter>
         </StepName>
       </Step>
-      <Step Status="Passed" Number="4" Name="WHEN The customer payment finalizes" ExecutionStart="2023-06-30T21:04:08.3545499Z" ExecutionTime="PT0.0000458S" RuntimeId="c793acb2-86ba-4fca-9e2d-ae3c863207d9">
+      <Step Status="Passed" Number="4" Name="WHEN The customer payment finalizes" ExecutionStart="2023-07-12T12:15:58.458661Z" ExecutionTime="PT0.0000329S" RuntimeId="1e568250-8399-41b4-a66d-adf9c5128dbf">
         <StepName StepType="WHEN" Format="The customer payment finalizes" />
       </Step>
-      <Step Status="Passed" Number="5" Name="THEN Product &quot;wooden shelf&quot; should be dispatched to the customer" ExecutionStart="2023-06-30T21:04:08.3546105Z" ExecutionTime="PT0.0000472S" RuntimeId="90d5d830-4786-4870-94f6-7bd2e101d8f8">
+      <Step Status="Passed" Number="5" Name="THEN Product &quot;wooden shelf&quot; should be dispatched to the customer" ExecutionStart="2023-07-12T12:15:58.4587094Z" ExecutionTime="PT0.000033S" RuntimeId="75b84673-5570-4e0b-be7a-df555cad9a0a">
         <StepName StepType="THEN" Format="Product &quot;{0}&quot; should be dispatched to the customer">
           <Parameter IsEvaluated="true">wooden shelf</Parameter>
         </StepName>
       </Step>
-      <Step Status="Passed" Number="6" Name="AND Product &quot;wooden desk&quot; should be dispatched to the customer" ExecutionStart="2023-06-30T21:04:08.3546697Z" ExecutionTime="PT0.0000153S" RuntimeId="b77a4e2a-067f-4961-b30f-6dcb25063f0e">
+      <Step Status="Passed" Number="6" Name="AND Product &quot;wooden desk&quot; should be dispatched to the customer" ExecutionStart="2023-07-12T12:15:58.4587566Z" ExecutionTime="PT0.0000088S" RuntimeId="f2e4351f-ac6d-497e-bd12-cdd80352b699">
         <StepName StepType="AND" Format="Product &quot;{0}&quot; should be dispatched to the customer">
           <Parameter IsEvaluated="true">wooden desk</Parameter>
         </StepName>
       </Step>
     </Scenario>
   </Feature>
-  <Feature Name="Record persistence feature" RuntimeId="36419be2-ed7b-4e97-bf40-c2b048a7c55c">
-    <Scenario Status="Failed" Name="Saving data" ExecutionStart="2023-06-30T21:04:08.338178Z" ExecutionTime="PT2.0584345S" RuntimeId="93270a71-9387-46ad-ba6e-0fab2a26d28a">
+  <Feature Name="Record persistence feature" RuntimeId="01e64f9d-096f-4584-ad04-21fdcd31d59e">
+    <Scenario Status="Failed" Name="Saving data" ExecutionStart="2023-07-12T12:15:58.4405469Z" ExecutionTime="PT2.0663689S" RuntimeId="3f81efd5-d26f-47df-b528-f21809237fe5">
       <Name Format="Saving data" />
-      <Step Status="Passed" Number="1" Name="GIVEN no saved records" ExecutionStart="2023-06-30T21:04:08.348579Z" ExecutionTime="PT0.0029112S" RuntimeId="9257fa8b-84d8-4b49-b895-f018ba62058f">
+      <Step Status="Passed" Number="1" Name="GIVEN no saved records" ExecutionStart="2023-07-12T12:15:58.4524706Z" ExecutionTime="PT0.0031972S" RuntimeId="8f071657-f0ae-4ef8-9c0d-97b935286ec7">
         <StepName StepType="GIVEN" Format="no saved records" />
       </Step>
-      <Step Status="Passed" Number="2" Name="WHEN I save records &quot;&lt;$records&gt;&quot;" ExecutionStart="2023-06-30T21:04:08.3543529Z" ExecutionTime="PT2.0372264S" RuntimeId="53b0918a-5b55-45ba-8144-ff83ec391bc9">
+      <Step Status="Passed" Number="2" Name="WHEN I save records &quot;&lt;$records&gt;&quot;" ExecutionStart="2023-07-12T12:15:58.4585605Z" ExecutionTime="PT2.0430177S" RuntimeId="7d7dc22f-f693-440e-a138-b266db17e907">
         <StepName StepType="WHEN" Format="I save records &quot;{0}&quot;">
           <Parameter IsEvaluated="true">&lt;$records&gt;</Parameter>
         </StepName>
@@ -1359,34 +1364,34 @@ I want to dispatch products to customer as soon as the payment is finalized</Des
           </Tree>
         </Parameter>
       </Step>
-      <Step Status="Failed" Number="3" Name="THEN the saved records should match expectation &quot;&lt;$expectation&gt;&quot;" ExecutionStart="2023-06-30T21:04:10.39166Z" ExecutionTime="PT0.004835S" RuntimeId="e424877c-ed84-4f18-b11f-77ffd191ec07">
+      <Step Status="Failed" Number="3" Name="THEN the saved records should match expectation &quot;&lt;$expectation&gt;&quot;" ExecutionStart="2023-07-12T12:16:00.5016976Z" ExecutionTime="PT0.0050772S" RuntimeId="ef6362ce-e9b4-4225-8462-eca828de39cc">
         <StatusDetails>Step 3: System.InvalidOperationException : Parameter 'expectation' verification failed: $[0].Name: expected: like 'Recr*', but got: 'Record 1'
-		$[1].Id: expected: equals '00000000-0000-0000-0000-000000000000', but got: 'e39bd1c3-70d2-4375-bbf2-6210b9fd530a'
-		$[1].ModifiedDate: expected: less than '06/30/2023 21:04:08 +00:00', but got: '06/30/2023 21:04:09 +00:00'
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
+		$[1].Id: expected: equals '00000000-0000-0000-0000-000000000000', but got: '5c447eec-da0c-4971-b1f7-db7a595d8e84'
+		$[1].ModifiedDate: expected: less than '07/12/2023 12:15:58 +00:00', but got: '07/12/2023 12:15:59 +00:00'
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
         <StepName StepType="THEN" Format="the saved records should match expectation &quot;{0}&quot;">
           <Parameter IsEvaluated="true">&lt;$expectation&gt;</Parameter>
         </StepName>
         <Parameter Name="expectation">
-          <Tree Status="Failure" Message="$[0].Name: expected: like 'Recr*', but got: 'Record 1'&#xD;&#xA;$[1].Id: expected: equals '00000000-0000-0000-0000-000000000000', but got: 'e39bd1c3-70d2-4375-bbf2-6210b9fd530a'&#xD;&#xA;$[1].ModifiedDate: expected: less than '06/30/2023 21:04:08 +00:00', but got: '06/30/2023 21:04:09 +00:00'">
+          <Tree Status="Failure" Message="$[0].Name: expected: like 'Recr*', but got: 'Record 1'&#xD;&#xA;$[1].Id: expected: equals '00000000-0000-0000-0000-000000000000', but got: '5c447eec-da0c-4971-b1f7-db7a595d8e84'&#xD;&#xA;$[1].ModifiedDate: expected: less than '07/12/2023 12:15:58 +00:00', but got: '07/12/2023 12:15:59 +00:00'">
             <Node Path="$" Status="Success" Value="&lt;array:2&gt;" Expectation="&lt;array:2&gt;" />
             <Node Path="$[0]" Status="Success" Value="&lt;object&gt;" Expectation="&lt;object&gt;" />
-            <Node Path="$[0].Id" Status="Success" Value="a2439ec0-9704-4abd-94d7-988d3a2dd8f4" Expectation="not equals '00000000-0000-0000-0000-000000000000'" />
-            <Node Path="$[0].ModifiedDate" Status="Success" Value="06/30/2023 21:04:08 +00:00" Expectation="greater or equal '06/30/2023 21:04:08 +00:00'" />
+            <Node Path="$[0].Id" Status="Success" Value="6d6fd68d-6ba5-4573-987a-f0db95299d20" Expectation="not equals '00000000-0000-0000-0000-000000000000'" />
+            <Node Path="$[0].ModifiedDate" Status="Success" Value="07/12/2023 12:15:58 +00:00" Expectation="greater or equal '07/12/2023 12:15:58 +00:00'" />
             <Node Path="$[0].Name" Status="Failure" Value="Record 1" Expectation="like 'Recr*'" Message="expected: like 'Recr*', but got: 'Record 1'" />
             <Node Path="$[1]" Status="Success" Value="&lt;object&gt;" Expectation="&lt;object&gt;" />
-            <Node Path="$[1].Id" Status="Failure" Value="e39bd1c3-70d2-4375-bbf2-6210b9fd530a" Expectation="equals '00000000-0000-0000-0000-000000000000'" Message="expected: equals '00000000-0000-0000-0000-000000000000', but got: 'e39bd1c3-70d2-4375-bbf2-6210b9fd530a'" />
-            <Node Path="$[1].ModifiedDate" Status="Failure" Value="06/30/2023 21:04:09 +00:00" Expectation="less than '06/30/2023 21:04:08 +00:00'" Message="expected: less than '06/30/2023 21:04:08 +00:00', but got: '06/30/2023 21:04:09 +00:00'" />
+            <Node Path="$[1].Id" Status="Failure" Value="5c447eec-da0c-4971-b1f7-db7a595d8e84" Expectation="equals '00000000-0000-0000-0000-000000000000'" Message="expected: equals '00000000-0000-0000-0000-000000000000', but got: '5c447eec-da0c-4971-b1f7-db7a595d8e84'" />
+            <Node Path="$[1].ModifiedDate" Status="Failure" Value="07/12/2023 12:15:59 +00:00" Expectation="less than '07/12/2023 12:15:58 +00:00'" Message="expected: less than '07/12/2023 12:15:58 +00:00', but got: '07/12/2023 12:15:59 +00:00'" />
             <Node Path="$[1].Name" Status="Success" Value="Record 2" Expectation="equals 'Record 2'" />
           </Tree>
         </Parameter>
       </Step>
       <StatusDetails>Step 3: System.InvalidOperationException : Parameter 'expectation' verification failed: $[0].Name: expected: like 'Recr*', but got: 'Record 1'
-		$[1].Id: expected: equals '00000000-0000-0000-0000-000000000000', but got: 'e39bd1c3-70d2-4375-bbf2-6210b9fd530a'
-		$[1].ModifiedDate: expected: less than '06/30/2023 21:04:08 +00:00', but got: '06/30/2023 21:04:09 +00:00'
-	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
+		$[1].Id: expected: equals '00000000-0000-0000-0000-000000000000', but got: '5c447eec-da0c-4971-b1f7-db7a595d8e84'
+		$[1].ModifiedDate: expected: less than '07/12/2023 12:15:58 +00:00', but got: '07/12/2023 12:15:59 +00:00'
+	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146</StatusDetails>
     </Scenario>
   </Feature>
 </TestResults>

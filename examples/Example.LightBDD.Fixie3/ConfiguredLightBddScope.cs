@@ -24,9 +24,9 @@ namespace Example.LightBDD.Fixie3
         protected override void OnConfigure(LightBddConfiguration configuration)
         {
             configuration
-                .ReportWritersConfiguration()
-                .AddFileWriter<XmlReportFormatter>("~\\Reports\\FeaturesReport.xml")
-                .AddFileWriter<PlainTextReportFormatter>("~\\Reports\\{TestDateTimeUtc:yyyy-MM-dd-HH_mm_ss}_FeaturesReport.txt");
+                .ReportConfiguration()
+                .AddFileReport<XmlReportFormatter>("~\\Reports\\FeaturesReport.xml")
+                .AddFileReport<PlainTextReportFormatter>("~\\Reports\\{TestDateTimeUtc:yyyy-MM-dd-HH_mm_ss}_FeaturesReport.txt");
         }
     }
 }
