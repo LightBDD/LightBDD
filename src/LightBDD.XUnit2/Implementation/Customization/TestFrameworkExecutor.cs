@@ -25,7 +25,8 @@ namespace LightBDD.XUnit2.Implementation.Customization
             var settings = new AssemblySettings
             {
                 EnableInterClassParallelization = enableInterClassParallelization,
-                UseXUnitSkipBehavior = ShallUseXUnitSkipBehavior(assembly)
+                UseXUnitSkipBehavior = ShallUseXUnitSkipBehavior(assembly),
+                Assembly = assembly
             };
             AssemblySettings.SetSettings(settings);
 

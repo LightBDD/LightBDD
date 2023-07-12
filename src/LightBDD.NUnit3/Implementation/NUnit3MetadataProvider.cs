@@ -4,14 +4,20 @@ using System.Linq;
 using System.Reflection;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
+using LightBDD.Core.Metadata;
 using NUnit.Framework;
 
 namespace LightBDD.NUnit3.Implementation
 {
     internal class NUnit3MetadataProvider : CoreMetadataProvider
     {
-        public NUnit3MetadataProvider(LightBddConfiguration configuration)
-            : base(configuration) { }
+        private readonly TestSuite _testSuite;
+
+        public NUnit3MetadataProvider(LightBddConfiguration configuration, Assembly testAssembly)
+            : base(configuration)
+        {
+            _testSuite = testAssembly != null ? TestSuite.Create(testAssembly) : TestSuite.NotProvided;
+        }
 
         public override ScenarioDescriptor CaptureCurrentScenario()
         {
@@ -31,5 +37,7 @@ namespace LightBDD.NUnit3.Implementation
         {
             return ExtractAttributePropertyValue<DescriptionAttribute>(featureType.GetTypeInfo(), a => a.Properties["Description"].Cast<string>().Single());
         }
+
+        protected override TestSuite GetTestSuite() => _testSuite;
     }
 }

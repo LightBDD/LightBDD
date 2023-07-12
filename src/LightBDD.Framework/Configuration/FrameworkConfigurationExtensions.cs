@@ -25,7 +25,7 @@ namespace LightBDD.Framework.Configuration
                 .RegisterFrameworkDefaultGeneralFormatters();
 
             configuration
-                .ReportWritersConfiguration()
+                .ReportConfiguration()
                 .RegisterFrameworkDefaultReportWriters()
                 .RegisterDefaultFileAttachmentManager();
 
@@ -51,16 +51,16 @@ namespace LightBDD.Framework.Configuration
         /// <summary>
         /// Applies default report generators to generate <c>~\\Reports\\FeaturesReport.html</c>(Win) <c>~/Reports/FeaturesReport.html</c>(Unix) reports.
         /// </summary>
-        public static ReportWritersConfiguration RegisterFrameworkDefaultReportWriters(this ReportWritersConfiguration configuration)
+        public static ReportConfiguration RegisterFrameworkDefaultReportWriters(this ReportConfiguration configuration)
         {
             return configuration
-                .Add(new ReportFileWriter(new HtmlReportFormatter(), $"~{Path.DirectorySeparatorChar}Reports{Path.DirectorySeparatorChar}FeaturesReport.html"));
+                .Add(new FileReportGenerator(new HtmlReportFormatter(), $"~{Path.DirectorySeparatorChar}Reports{Path.DirectorySeparatorChar}FeaturesReport.html"));
         }
 
         /// <summary>
         /// Applies default file attachment manager configuration to generate attachments in <c>~\\Reports\</c>(Win) <c>~/Reports/</c>(Unix) directory.
         /// </summary>
-        public static ReportWritersConfiguration RegisterDefaultFileAttachmentManager(this ReportWritersConfiguration configuration)
+        public static ReportConfiguration RegisterDefaultFileAttachmentManager(this ReportConfiguration configuration)
         {
             return configuration
                 .UpdateFileAttachmentsManager(new FileAttachmentsManager($"~{Path.DirectorySeparatorChar}Reports"));
@@ -99,30 +99,30 @@ namespace LightBDD.Framework.Configuration
         }
 
         /// <summary>
-        /// Adds <see cref="ReportFileWriter"/> instance configured to format report with <typeparamref name="TFormatter"/> and write it to <paramref name="outputPath"/>.
+        /// Adds <see cref="FileReportGenerator"/> instance configured to format report with <typeparamref name="TFormatter"/> and write it to <paramref name="outputPath"/>.
         /// </summary>
         /// <typeparam name="TFormatter">Type of report formatter.</typeparam>
         /// <param name="configuration">Configuration.</param>
         /// <param name="outputPath">Output path for the report.</param>
         /// <returns>Configuration.</returns>
-        public static ReportWritersConfiguration AddFileWriter<TFormatter>(this ReportWritersConfiguration configuration, string outputPath) where TFormatter : IReportFormatter, new()
+        public static ReportConfiguration AddFileReport<TFormatter>(this ReportConfiguration configuration, string outputPath) where TFormatter : IReportFormatter, new()
         {
-            return AddFileWriter<TFormatter>(configuration, outputPath, null);
+            return AddFileReport<TFormatter>(configuration, outputPath, null);
         }
 
         /// <summary>
-        /// Adds <see cref="ReportFileWriter"/> instance configured to format report with <typeparamref name="TFormatter"/> and write it to <paramref name="outputPath"/>.
+        /// Adds <see cref="FileReportGenerator"/> instance configured to format report with <typeparamref name="TFormatter"/> and write it to <paramref name="outputPath"/>.
         /// </summary>
         /// <typeparam name="TFormatter">Type of report formatter.</typeparam>
         /// <param name="configuration">Configuration.</param>
         /// <param name="outputPath">Output path for the report.</param>
         /// <param name="onConfigure">Action to configure the <typeparamref name="TFormatter"/> instance.</param>
         /// <returns>Configuration.</returns>
-        public static ReportWritersConfiguration AddFileWriter<TFormatter>(this ReportWritersConfiguration configuration, string outputPath, Action<TFormatter> onConfigure) where TFormatter : IReportFormatter, new()
+        public static ReportConfiguration AddFileReport<TFormatter>(this ReportConfiguration configuration, string outputPath, Action<TFormatter> onConfigure) where TFormatter : IReportFormatter, new()
         {
             var formatter = new TFormatter();
             onConfigure?.Invoke(formatter);
-            return configuration.Add(new ReportFileWriter(formatter, outputPath));
+            return configuration.Add(new FileReportGenerator(formatter, outputPath));
         }
 
         /// <summary>

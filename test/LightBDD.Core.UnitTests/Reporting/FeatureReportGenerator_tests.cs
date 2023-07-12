@@ -1,10 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Reporting;
 using LightBDD.Core.Results;
-using LightBDD.UnitTests.Helpers;
 using Moq;
 using NUnit.Framework;
+using Shouldly;
 
 namespace LightBDD.Core.UnitTests.Reporting
 {
@@ -12,52 +15,44 @@ namespace LightBDD.Core.UnitTests.Reporting
     public class FeatureReportGenerator_tests
     {
         [Test]
-        public void SummaryGenerator_should_be_thread_safe()
+        public async Task It_should_use_all_registered_generators()
         {
-            var writer = Mock.Of<IReportWriter>();
-            var generator = new FeatureReportGenerator(writer);
+            var result = Mock.Of<ITestRunResult>();
+            var cfg = new LightBddConfiguration();
+            var generators = new List<Mock<IReportGenerator>>();
 
-            var mocks = Enumerable.Range(0, 50).Select(i => Fake.Object<TestResults.TestFeatureResult>()).ToArray();
-            var allMocks = new List<IFeatureResult>();
-            for (var i = 0; i < 100; ++i)
-                allMocks.AddRange(mocks);
+            for (int i = 0; i < 3; ++i)
+            {
+                var gen = new Mock<IReportGenerator>();
+                gen.Setup(x => x.Generate(result)).Returns(Task.CompletedTask).Verifiable();
 
-            allMocks
-            .AsParallel()
-            .ForAll(generator.Aggregate);
+                cfg.ReportConfiguration().Add(gen.Object);
+                generators.Add(gen);
+            }
 
-            generator.Dispose();
-            Mock.Get(writer).Verify(w => w.Save(It.Is<IFeatureResult[]>(r => r.Length == allMocks.Count)));
+            var generator = new FeatureReportGenerator(cfg);
+            await generator.GenerateReports(result);
+
+            foreach (var mock in generators)
+                mock.Verify();
         }
 
         [Test]
-        public void It_should_aggregate_all_results_and_save_them_on_dispose()
+        public void It_should_generate_all_reports_and_throw_AggregateException_for_failed_ones()
         {
-            var summaryWriters = new[]
+            var result = Mock.Of<ITestRunResult>();
+            var cfg = new LightBddConfiguration();
+
+            for (int i = 0; i < 3; ++i)
             {
-                Mock.Of<IReportWriter>(),
-                Mock.Of<IReportWriter>()
-            };
-            var generator = new FeatureReportGenerator(summaryWriters);
+                var gen = new Mock<IReportGenerator>();
+                gen.Setup(x => x.Generate(result)).ThrowsAsync(new Exception($"{i}"));
+                cfg.ReportConfiguration().Add(gen.Object);
+            }
 
-            var results = new[]
-            {
-                TestResults.CreateFeatureResult("name2","desc","label1"),
-                TestResults.CreateFeatureResult("name1","desc","label1"),
-                TestResults.CreateFeatureResult("name4","desc","label1"),
-                TestResults.CreateFeatureResult("name3","desc","label1")
-            };
-
-            foreach (var result in results)
-                generator.Aggregate(result);
-
-            foreach (var summaryWriter in summaryWriters)
-                Mock.Get(summaryWriter).Verify(w => w.Save(It.IsAny<IFeatureResult[]>()), Times.Never);
-
-            generator.Dispose();
-
-            foreach (var summaryWriter in summaryWriters)
-                Mock.Get(summaryWriter).Verify(w => w.Save(It.Is<IFeatureResult[]>(f => f.SequenceEqual(results.OrderBy(r => r.Info.Name.ToString()).ToArray()))));
+            var generator = new FeatureReportGenerator(cfg);
+            var ex = Assert.ThrowsAsync<AggregateException>(() => generator.GenerateReports(result));
+            ex.InnerExceptions.Select(e => e.Message).ToArray().ShouldBeEquivalentTo(new[] { "0", "1", "2" });
         }
     }
 }

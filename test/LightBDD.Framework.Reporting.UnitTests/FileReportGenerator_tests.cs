@@ -8,17 +8,17 @@ using System.IO;
 namespace LightBDD.Framework.Reporting.UnitTests
 {
     [TestFixture]
-    public class ReportFileWriter_tests
+    public class FileReportGenerator_tests
     {
         [Test]
         public void It_should_use_appdomain_base_directory_if_output_starts_with_tilde()
         {
             var outputPath = "~" + Path.DirectorySeparatorChar + "output.txt";
 
-            var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), outputPath);
+            var generator = new FileReportGenerator(Mock.Of<IReportFormatter>(), outputPath);
             var expected = Path.GetFullPath(AppContext.BaseDirectory + Path.DirectorySeparatorChar + "output.txt");
-            Assert.That(writer.OutputPath, Is.EqualTo(outputPath));
-            Assert.That(writer.FullOutputPath, Is.EqualTo(expected));
+            Assert.That(generator.OutputPath, Is.EqualTo(outputPath));
+            Assert.That(generator.FullOutputPath, Is.EqualTo(expected));
         }
 
         [Test]
@@ -26,10 +26,10 @@ namespace LightBDD.Framework.Reporting.UnitTests
         {
             var outputPath = "output.txt";
 
-            var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), outputPath);
+            var generator = new FileReportGenerator(Mock.Of<IReportFormatter>(), outputPath);
             var expected = Path.GetFullPath(outputPath);
-            Assert.That(writer.OutputPath, Is.EqualTo(outputPath));
-            Assert.That(writer.FullOutputPath, Is.EqualTo(expected));
+            Assert.That(generator.OutputPath, Is.EqualTo(outputPath));
+            Assert.That(generator.FullOutputPath, Is.EqualTo(expected));
         }
 
         [Test]
@@ -37,10 +37,10 @@ namespace LightBDD.Framework.Reporting.UnitTests
         {
             var outputPath = "c:" + Path.DirectorySeparatorChar + "output.txt";
 
-            var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), outputPath);
+            var generator = new FileReportGenerator(Mock.Of<IReportFormatter>(), outputPath);
             var expected = Path.GetFullPath(outputPath);
-            Assert.That(writer.OutputPath, Is.EqualTo(outputPath));
-            Assert.That(writer.FullOutputPath, Is.EqualTo(expected));
+            Assert.That(generator.OutputPath, Is.EqualTo(outputPath));
+            Assert.That(generator.FullOutputPath, Is.EqualTo(expected));
         }
 
         [Test]
@@ -48,9 +48,9 @@ namespace LightBDD.Framework.Reporting.UnitTests
         {
             var outputPath = @"\\machine\c$\reports\output.txt";
 
-            var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), outputPath);
-            Assert.That(writer.OutputPath, Is.EqualTo(outputPath));
-            Assert.That(writer.FullOutputPath, Is.EqualTo(outputPath));
+            var generator = new FileReportGenerator(Mock.Of<IReportFormatter>(), outputPath);
+            Assert.That(generator.OutputPath, Is.EqualTo(outputPath));
+            Assert.That(generator.FullOutputPath, Is.EqualTo(outputPath));
         }
 
         [Test]
@@ -58,35 +58,31 @@ namespace LightBDD.Framework.Reporting.UnitTests
         {
             var outputPath = Path.DirectorySeparatorChar + "output.txt";
 
-            var writer = new ReportFileWriter(Mock.Of<IReportFormatter>(), outputPath);
+            var generator = new FileReportGenerator(Mock.Of<IReportFormatter>(), outputPath);
             var expected = Path.GetFullPath(outputPath);
-            Assert.That(writer.OutputPath, Is.EqualTo(outputPath));
-            Assert.That(writer.FullOutputPath, Is.EqualTo(expected));
+            Assert.That(generator.OutputPath, Is.EqualTo(outputPath));
+            Assert.That(generator.FullOutputPath, Is.EqualTo(expected));
         }
 
         [Test]
-        public void Save_should_use_formatter_to_write_data()
+        public void Generate_should_use_formatter_to_write_data()
         {
             var expectedFileContent = "text";
             var outputPath = "~" + Path.DirectorySeparatorChar + $"{Guid.NewGuid()}" + Path.DirectorySeparatorChar + "output.txt";
             var expectedPath = outputPath.Replace("~", AppContext.BaseDirectory);
 
             var formatter = Mock.Of<IReportFormatter>();
-            var results = new[]
-            {
-                Mock.Of<IFeatureResult>(),
-                Mock.Of<IFeatureResult>()
-            };
+            var result = Mock.Of<ITestRunResult>();
 
             Mock.Get(formatter)
-                .Setup(f => f.Format(It.IsAny<Stream>(), results))
-                .Callback((Stream stream, IFeatureResult[] r) =>
+                .Setup(f => f.Format(It.IsAny<Stream>(), result))
+                .Callback((Stream stream, ITestRunResult _) =>
                 {
-                    using (var writer = new StreamWriter(stream))
-                        writer.Write(expectedFileContent);
+                    using var writer = new StreamWriter(stream);
+                    writer.Write(expectedFileContent);
                 });
 
-            new ReportFileWriter(formatter, outputPath).Save(results);
+            new FileReportGenerator(formatter, outputPath).Generate(result);
 
             Assert.That(File.Exists(expectedPath), "File does not exists: {0}", expectedPath);
             Assert.That(File.ReadAllText(expectedPath), Is.EqualTo(expectedFileContent));

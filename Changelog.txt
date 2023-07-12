@@ -1,6 +1,26 @@
 LightBDD
 ===========================================
 
+vNext
+----------------------------------------
++ #290 (MsTest3)(breaking change) Updated LightBddScope.Initialize() to require either TestContext or Assembly parameter
++ #290 (Framework)(change) Updated Html / Xml and PlainText ReportFormatters to include details of TestRun
++ #290 (Integrations)(change) Updated Fixie3 / Xunit2 / Nunit3 / MsTest3 integrations to capture TestRunInfo details
++ #290 (Core)(new) Added ITestRunInfo and ITestRunResult interfaces to represent the entire LightBDD test run
++ #290 (Core)(new) Added TestRunStarting and TestRunFinished events
++ #290 (Core)(new) Added GetTestRunInfo() and  GetTestSuite() methods to CoreMetadataProvider
++ #290 (Framework)(new) Updated DefaultProgressNotifier / ParallelProgressNotifier to handle TestRunStarting / TestRunFinished  events
++ #290 (Framework)(breaking change) Replaced ReportFileWriter with FileReportGenerator 
++ #290 (Framework)(breaking change) Renamed FrameworkConfigurationExtensions.AddFileWriter() to AddFileReport()
++ #290 (Framework)(breaking change) Changed IReportFormatter.Format() to use ITestRunResult
++ #290 (Framework)(breaking change) Updated ReportFormattablePath and ReportPathFormatter to use ITestRunResult
++ #290 (Core)(breaking change) Updated FeatureRunnerRepository to no longer implement IDisposable interface
++ #290 (Core)(breaking change) Removed IFeatureAggregator interface
++ #290 (Core)(breaking change) Replaced IReportWriter interface with IReportGenerator 
++ #290 (Core)(breaking change) Renamed ReportWritersConfiguration class to ReportConfiguration 
++ #290 (Core)(breaking change) Renamed ConfigurationExtensions.ReportWritersConfiguration() to ReportConfiguration()
++ #290 (Framework)(change) Updated XmlReportFormatterSchema.xsd to include details of TestRun
+
 Version 3.7.0
 ----------------------------------------
 + #207 (LightBDD.Framework)(Change) Modernised Html Report

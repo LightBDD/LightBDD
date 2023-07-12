@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Reflection;
 using Fixie;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Formatting.ExceptionFormatting;
@@ -41,9 +42,9 @@ namespace LightBDD.Fixie3
         {
         }
 
-        internal void SetUp()
+        internal void SetUp(Assembly testAssembly)
         {
-            FixieFeatureCoordinator.InstallSelf(Configure());
+            FixieFeatureCoordinator.InstallSelf(Configure(), testAssembly);
             OnSetUp();
         }
 
@@ -76,7 +77,7 @@ namespace LightBDD.Fixie3
         void ITestProject.Configure(TestConfiguration configuration, TestEnvironment environment)
         {
             var categories = ArgsParser.ParseCategories(environment).ToArray();
-            configuration.Conventions.Add(new LightBddDiscoveryConvention(categories), new LightBddExecutionConvention(this));
+            configuration.Conventions.Add(new LightBddDiscoveryConvention(categories), new LightBddExecutionConvention(this, environment.Assembly));
         }
     }
 }

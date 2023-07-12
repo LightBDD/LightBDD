@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -12,7 +11,12 @@ namespace LightBDD.Framework.Reporting
     /// </summary>
     public class ReportFormattablePath
     {
-        private readonly Func<IFeatureResult[], object>[] _parameters;
+        /// <summary>
+        /// Parameter provider function.
+        /// </summary>
+        public delegate object ParameterProviderFunc(ITestRunResult result);
+
+        private readonly ParameterProviderFunc[] _parameters;
         /// <summary>
         /// Returns formattable path specified in constructor.
         /// </summary>
@@ -23,7 +27,7 @@ namespace LightBDD.Framework.Reporting
         /// </summary>
         /// <param name="formattablePath">Formattable path string with String.Format() syntax.</param>
         /// <param name="parameterProviders">Parameter providing functions.</param>
-        public ReportFormattablePath(string formattablePath, IEnumerable<Func<IFeatureResult[], object>> parameterProviders)
+        public ReportFormattablePath(string formattablePath, IEnumerable<ParameterProviderFunc> parameterProviders)
         {
             FormattablePath = formattablePath;
             _parameters = parameterProviders.ToArray();
@@ -32,11 +36,11 @@ namespace LightBDD.Framework.Reporting
         /// <summary>
         /// Resolves path by applying all the formats and resolving to a full path.
         /// </summary>
-        /// <param name="results">Feature results used in format.</param>
+        /// <param name="result">Test run result used in format.</param>
         /// <returns></returns>
-        public string Resolve(IFeatureResult[] results)
+        public string Resolve(ITestRunResult result)
         {
-            var formattedPath = string.Format(CultureInfo.InvariantCulture, FormattablePath, _parameters.Select(p => p.Invoke(results)).ToArray());
+            var formattedPath = string.Format(CultureInfo.InvariantCulture, FormattablePath, _parameters.Select(p => p.Invoke(result)).ToArray());
             return Path.GetFullPath(formattedPath);
         }
     }

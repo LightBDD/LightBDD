@@ -10,27 +10,28 @@ namespace LightBDD.Framework.Reporting
     /// Summary file path formatter allowing to specify formattable paths with parameters like current date/time or time when test were executed.
     /// Formatter accepts string.Format() like parameters of {name:format} syntax, where <c>name</c> is a parameter name while <c>format</c> is string.Format() parameter format string (it is always required).
     /// </summary>
+    //TODO: review and improve
     public class ReportPathFormatter
     {
-        private readonly List<KeyValuePair<string, Func<IFeatureResult[], object>>> _parameters = new();
+        private readonly List<KeyValuePair<string, ReportFormattablePath.ParameterProviderFunc>> _parameters = new();
 
         /// <summary>
         /// Creates default <see cref="ReportPathFormatter"/> that supports following format parameters:
         /// <list type="bullet">
-        /// <item><description>CurrentDateTimeUtc - equivalent to DateTime.UtcNow (DateTime type)</description></item>
-        /// <item><description>CurrentDateTime - equivalent to DateTime.Now (DateTime type)</description></item>
-        /// <item><description>TestDateTimeUtc - utc date/time when test execution started (DateTime type)</description></item>
-        /// <item><description>TestDateTime - local date/time when test execution started (DateTime type)</description></item>
+        /// <item><description>CurrentDateTimeUtc - equivalent to DateTime.UtcNow (DateTimeOffset type)</description></item>
+        /// <item><description>CurrentDateTime - equivalent to DateTime.Now (DateTimeOffset type)</description></item>
+        /// <item><description>TestDateTimeUtc - utc date/time when test execution started (DateTimeOffset type)</description></item>
+        /// <item><description>TestDateTime - local date/time when test execution started (DateTimeOffset type)</description></item>
         /// </list>
         /// </summary>
         /// <returns></returns>
         public static ReportPathFormatter CreateDefault()
         {
             return new ReportPathFormatter()
-                .Add("CurrentDateTimeUtc", r => DateTime.UtcNow)
-                .Add("CurrentDateTime", r => DateTime.Now)
-                .Add("TestDateTimeUtc", r => r.GetTestExecutionTimeSummary().Start.UtcDateTime)
-                .Add("TestDateTime", r => r.GetTestExecutionTimeSummary().Start.LocalDateTime);
+                .Add("CurrentDateTimeUtc", _ => DateTimeOffset.UtcNow)
+                .Add("CurrentDateTime", _ => DateTimeOffset.Now)
+                .Add("TestDateTimeUtc", r => r.ExecutionTime.Start.UtcDateTime)
+                .Add("TestDateTime", r => r.ExecutionTime.Start.LocalDateTime);
         }
 
         /// <summary>
@@ -39,9 +40,9 @@ namespace LightBDD.Framework.Reporting
         /// <param name="name">Parameter name</param>
         /// <param name="parameterFunction">Parameter function</param>
         /// <returns>Parameter object.</returns>
-        public ReportPathFormatter Add(string name, Func<IFeatureResult[], object> parameterFunction)
+        public ReportPathFormatter Add(string name, ReportFormattablePath.ParameterProviderFunc parameterFunction)
         {
-            _parameters.Add(new KeyValuePair<string, Func<IFeatureResult[], object>>(name, parameterFunction));
+            _parameters.Add(new KeyValuePair<string, ReportFormattablePath.ParameterProviderFunc>(name, parameterFunction));
             return this;
         }
 
@@ -55,7 +56,7 @@ namespace LightBDD.Framework.Reporting
         /// <returns>Formattable path.</returns>
         public ReportFormattablePath ToFormattablePath(string formattablePath)
         {
-            var parameters = new List<Func<IFeatureResult[], object>>();
+            var parameters = new List<ReportFormattablePath.ParameterProviderFunc>();
             foreach (var pair in _parameters.OrderByDescending(p => p.Key))
             {
                 var replaced = formattablePath.Replace("{" + pair.Key + ":", "{" + parameters.Count + ":");

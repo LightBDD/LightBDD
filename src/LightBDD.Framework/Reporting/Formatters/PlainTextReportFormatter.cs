@@ -19,18 +19,17 @@ namespace LightBDD.Framework.Reporting.Formatters
         #region IReportFormatter Members
 
         /// <summary>
-        /// Formats provided feature results and writes to the <paramref name="stream"/>.
+        /// Formats provided test run results and writes to the <paramref name="stream"/>.
         /// </summary>
         /// <param name="stream">Stream to write formatted results to.</param>
-        /// <param name="features">Feature results to format.</param>
-        public void Format(Stream stream, params IFeatureResult[] features)
+        /// <param name="result">Test run results to format.</param>
+        public void Format(Stream stream, ITestRunResult result)
         {
-            using (var writer = new StreamWriter(stream))
-            {
-                FormatSummary(writer, features);
-                foreach (var feature in features)
-                    FormatFeature(writer, feature);
-            }
+            using var writer = new StreamWriter(stream);
+
+            FormatSummary(writer, result);
+            foreach (var feature in result.Features)
+                FormatFeature(writer, feature);
         }
 
         #endregion
@@ -199,39 +198,45 @@ namespace LightBDD.Framework.Reporting.Formatters
                     break;
             }
         }
-
-        private static void FormatSummary(TextWriter writer, IFeatureResult[] features)
+        private static void FormatSummary(TextWriter writer, ITestRunResult testRun)
         {
-            var timeSummary = features.GetTestExecutionTimeSummary();
+            var features = testRun.Features;
 
             writer.WriteLine("Summary:");
             var summary = new Dictionary<string, object>
             {
-                {"Test execution start time", timeSummary.Start.ToString("yyyy-MM-dd HH:mm:ss UTC")},
-                {"Test execution end time", timeSummary.End.ToString("yyyy-MM-dd HH:mm:ss UTC")},
-                {"Test execution time", timeSummary.Duration.FormatPretty()},
-                {"Test execution time (aggregated)", timeSummary.Aggregated.FormatPretty()},
-                {"Number of features", features.Length},
-                {"Number of scenarios", features.CountScenarios()},
-                {"Passed scenarios", features.CountScenariosWithStatus(ExecutionStatus.Passed)},
-                {"Bypassed scenarios", features.CountScenariosWithStatus(ExecutionStatus.Bypassed)},
-                {"Failed scenarios", features.CountScenariosWithStatus(ExecutionStatus.Failed)},
-                {"Ignored scenarios", features.CountScenariosWithStatus(ExecutionStatus.Ignored)},
-                {"Number of steps", features.CountSteps()},
-                {"Passed steps", features.CountStepsWithStatus(ExecutionStatus.Passed)},
-                {"Bypassed steps", features.CountStepsWithStatus(ExecutionStatus.Bypassed)},
-                {"Failed steps", features.CountStepsWithStatus(ExecutionStatus.Failed)},
-                {"Ignored steps", features.CountStepsWithStatus(ExecutionStatus.Ignored)},
-                {"Not Run steps", features.CountStepsWithStatus(ExecutionStatus.NotRun)}
+                { "Test suite", testRun.Info.Name.ToString()},
+                { "Overall status", testRun.OverallStatus },
+                { "Execution start time", testRun.ExecutionTime.Start.ToString("yyyy-MM-dd HH:mm:ss UTC") },
+                { "Execution end time", testRun.ExecutionTime.End.ToString("yyyy-MM-dd HH:mm:ss UTC") },
+                { "Execution duration", testRun.ExecutionTime.Duration.FormatPretty() },
+                { "Number of features", features.Count },
+                { "Number of scenarios", features.CountScenarios() },
+                { "Passed scenarios", features.CountScenariosWithStatus(ExecutionStatus.Passed) },
+                { "Bypassed scenarios", features.CountScenariosWithStatus(ExecutionStatus.Bypassed) },
+                { "Failed scenarios", features.CountScenariosWithStatus(ExecutionStatus.Failed) },
+                { "Ignored scenarios", features.CountScenariosWithStatus(ExecutionStatus.Ignored) },
+                { "Number of steps", features.CountSteps() },
+                { "Passed steps", features.CountStepsWithStatus(ExecutionStatus.Passed) },
+                { "Bypassed steps", features.CountStepsWithStatus(ExecutionStatus.Bypassed) },
+                { "Failed steps", features.CountStepsWithStatus(ExecutionStatus.Failed) },
+                { "Ignored steps", features.CountStepsWithStatus(ExecutionStatus.Ignored) },
+                { "Not Run steps", features.CountStepsWithStatus(ExecutionStatus.NotRun) },
+                { "LightBDD versions", GetLightBddVersions(testRun)}
             };
 
             var maxLength = summary.Keys.Max(k => k.Length);
             var format = $"\t{{0,-{maxLength}}}: {{1}}";
-            foreach (var row in summary)
+            foreach (var row in summary.Where(r => r.Value != null))
             {
                 writer.Write(format, row.Key, row.Value);
                 writer.WriteLine();
             }
+        }
+
+        private static string GetLightBddVersions(ITestRunResult testRun)
+        {
+            return string.Join(", ", testRun.Info.LightBddAssemblies);
         }
     }
 }

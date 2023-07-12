@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,12 +25,13 @@ namespace LightBDD.AcceptanceTests.Features
         private readonly ResourceHandle<ChromeDriver> _driverHandle;
         private static string BaseDirectory => AppContext.BaseDirectory;
         private State<ChromeDriver> _driver;
-        private State<IFeatureResult[]> _features;
+        private State<ITestRunResult> _result;
 
         private string HtmlFileName { get; }
         public ChromeDriver Driver => _driver.GetValue(nameof(Driver));
         private ResultBuilder ResultBuilder { get; }
-        private IFeatureResult[] Features => _features.GetValue(nameof(Features));
+        private ITestRunResult Result => _result.GetValue(nameof(Result));
+        private IReadOnlyList<IFeatureResult> Features => Result.Features;
 
         public HtmlReportContext(ResourceHandle<ChromeDriver> driverHandle)
         {
@@ -66,9 +68,9 @@ namespace LightBDD.AcceptanceTests.Features
 
         public async Task Given_a_html_report_is_created()
         {
-            _features = ResultBuilder.Build();
-            var htmlText = FormatResults(Features.ToArray());
-            File.WriteAllText(HtmlFileName, htmlText);
+            _result = new(ResultBuilder.Build());
+            var htmlText = FormatResults(Result);
+            await File.WriteAllTextAsync(HtmlFileName, htmlText);
         }
 
         public async Task When_a_html_report_is_opened()
@@ -81,7 +83,7 @@ namespace LightBDD.AcceptanceTests.Features
         public async Task Then_all_features_should_be_VISIBLE([VisibleFormat] bool visible)
         {
             var actual = Driver.FindFeatures().Count(e => e.Displayed == visible);
-            Assert.That(actual, Is.EqualTo(Features.Length));
+            Assert.That(actual, Is.EqualTo(Features.Count));
         }
 
         public async Task Then_all_scenarios_should_be_VISIBLE([VisibleFormat] bool visible)
@@ -357,10 +359,10 @@ namespace LightBDD.AcceptanceTests.Features
             Assert.That(actual, Is.EqualTo(rows.Select(r => new[] { r.id, r.name, r.value }).ToArray()));
         }
 
-        private string FormatResults(params IFeatureResult[] results)
+        private string FormatResults(ITestRunResult result)
         {
             using var memory = new MemoryStream();
-            new HtmlReportFormatter().Format(memory, results);
+            new HtmlReportFormatter().Format(memory, result);
             return Encoding.UTF8.GetString(memory.ToArray());
         }
 

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using LightBDD.Core.Formatting.NameDecorators;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
+using LightBDD.Framework;
+using LightBDD.Framework.Reporting;
 
 namespace LightBDD.UnitTests.Helpers
 {
@@ -343,6 +346,27 @@ namespace LightBDD.UnitTests.Helpers
             }
         }
 
+        public class TestTestRunResult : ITestRunResult
+        {
+            ITestRunInfo ITestRunResult.Info => Info;
+            public ExecutionStatus OverallStatus { get; set; }
+            public TestExecutionTime ExecutionTime { get; set; } = new();
+            ExecutionTime ITestRunResult.ExecutionTime => ExecutionTime?.ToMockedType();
+            public TestTestRunInfo Info { get; set; } = new();
+            IReadOnlyList<IFeatureResult> ITestRunResult.Features => Features;
+            public TestFeatureResult[] Features { get; set; } = Array.Empty<TestFeatureResult>();
+        }
+
+        public class TestTestRunInfo : ITestRunInfo
+        {
+            private static readonly AssemblyInfo[] Versions = new[] { typeof(IBddRunner).Assembly, typeof(ITestRunInfo).Assembly }
+                .Select(AssemblyInfo.From).ToArray();
+
+            public INameInfo Name => new TestNameInfo { FormattedName = TestSuite.Name, NameFormat = TestSuite.Name };
+            public Guid RuntimeId { get; } = Guid.Parse("33333333-5555-3333-3333-333333333333");
+            public TestSuite TestSuite { get; set; } = TestSuite.Create("Random.Tests", new Version(1, 2, 3), "Foo bar");
+            public IReadOnlyList<AssemblyInfo> LightBddAssemblies => Versions;
+        }
         public class TestFeatureInfo : IFeatureInfo
         {
             INameInfo IMetadataInfo.Name => Name;
@@ -467,5 +491,16 @@ namespace LightBDD.UnitTests.Helpers
         }
 
         #endregion
+
+        public static ITestRunResult CreateTestRunResults(params TestFeatureResult[] features)
+        {
+            var summary = ExecutionTimeSummary.Calculate(features.SelectMany(f => f.GetScenarios()).Select(s => s.ExecutionTime));
+            return new TestTestRunResult
+            {
+                Features = features,
+                ExecutionTime = new TestExecutionTime { Start = summary.Start, Duration = summary.Duration },
+                OverallStatus = features.SelectMany(f => f.GetScenarios()).Max(s => s.Status) == ExecutionStatus.Failed ? ExecutionStatus.Failed : ExecutionStatus.Passed
+            };
+        }
     }
 }

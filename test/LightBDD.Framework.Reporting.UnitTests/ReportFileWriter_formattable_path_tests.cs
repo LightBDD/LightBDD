@@ -15,7 +15,7 @@ namespace LightBDD.Framework.Reporting.UnitTests
         private const string ExpectedContentText = "some expected text";
         private readonly DateTimeOffset _expectedExecutionStartOffset = DateTimeOffset.UtcNow;
         private Mock<IReportFormatter> _formatter;
-        private IFeatureResult _feature;
+        private ITestRunResult _testResult;
         private string _dirPath;
         private string _realDirPath;
 
@@ -25,14 +25,15 @@ namespace LightBDD.Framework.Reporting.UnitTests
         public void SetUp()
         {
             _formatter = new Mock<IReportFormatter>();
-            _feature = TestResults.CreateFeatureResult("name", "description", "label",
+            _testResult = TestResults.CreateTestRunResults(TestResults.CreateFeatureResult("name", "description", "label",
                 TestResults.CreateScenarioResult("abc", "def", _expectedExecutionStartOffset, TimeSpan.Zero, Array.Empty<string>(),
-                    TestResults.CreateStepResult(ExecutionStatus.Passed).WithStepNameDetails(1, "foo", "foo")));
-            _formatter.Setup(f => f.Format(It.IsAny<Stream>(), It.Is<IFeatureResult[]>(l => l.Contains(_feature)))).Callback(
-                (Stream s, IFeatureResult[] results) =>
+                    TestResults.CreateStepResult(ExecutionStatus.Passed).WithStepNameDetails(1, "foo", "foo"))));
+
+            _formatter.Setup(f => f.Format(It.IsAny<Stream>(), _testResult)).Callback(
+                (Stream s, ITestRunResult _) =>
                 {
-                    using (var writer = new StreamWriter(s))
-                        writer.Write(ExpectedContentText);
+                    using var writer = new StreamWriter(s);
+                    writer.Write(ExpectedContentText);
                 });
 
             _realDirPath = _dirPath = null;
@@ -52,7 +53,7 @@ namespace LightBDD.Framework.Reporting.UnitTests
         {
             GenerateRelativeDirPath();
             var filePath = PrepareFilePath("{TestDateTimeUtc:yyyy-MM-dd-HH_mm_ss}_{TestDateTime:yyyy-MM-dd-HH_mm_ss}_{CurrentDateTimeUtc:yyyy-MM-dd-HH_mm}_{CurrentDateTime:yyyy-MM-dd-HH_mm}");
-            new ReportFileWriter(_formatter.Object, filePath).Save(_feature);
+            new FileReportGenerator(_formatter.Object, filePath).Generate(_testResult);
             var utcNow = DateTime.UtcNow;
 
             var expectedFileName = $"{_expectedExecutionStartOffset.UtcDateTime:yyyy-MM-dd-HH_mm_ss}_{_expectedExecutionStartOffset.LocalDateTime:yyyy-MM-dd-HH_mm_ss}_{utcNow:yyyy-MM-dd-HH_mm}_{utcNow.ToLocalTime():yyyy-MM-dd-HH_mm}";
@@ -68,7 +69,7 @@ namespace LightBDD.Framework.Reporting.UnitTests
         {
             GenerateRelativeDirPathWithTilde();
             var filePath = PrepareFilePath("{TestDateTimeUtc:yyyy-MM-dd-HH_mm_ss}_{TestDateTime:yyyy-MM-dd-HH_mm_ss}_{CurrentDateTimeUtc:yyyy-MM-dd-HH_mm}_{CurrentDateTime:yyyy-MM-dd-HH_mm}");
-            new ReportFileWriter(_formatter.Object, filePath).Save(_feature);
+            new FileReportGenerator(_formatter.Object, filePath).Generate(_testResult);
             var utcNow = DateTime.UtcNow;
 
             var expectedFileName = $"{_expectedExecutionStartOffset.UtcDateTime:yyyy-MM-dd-HH_mm_ss}_{_expectedExecutionStartOffset.LocalDateTime:yyyy-MM-dd-HH_mm_ss}_{utcNow:yyyy-MM-dd-HH_mm}_{utcNow.ToLocalTime():yyyy-MM-dd-HH_mm}";

@@ -11,22 +11,22 @@ using NUnit.Framework;
 namespace LightBDD.Framework.Reporting.UnitTests.Configuration
 {
     [TestFixture]
-    public class ReportWritersConfiguration_tests
+    public class ReportConfiguration_tests
     {
         [Test]
         public void It_should_return_default_configuration()
         {
-            var configuration = new ReportWritersConfiguration().RegisterFrameworkDefaultReportWriters();
+            var configuration = new ReportConfiguration().RegisterFrameworkDefaultReportWriters();
             Assert.That(configuration.Count, Is.EqualTo(1));
 
             var featuresReportHtml = $"~{Path.DirectorySeparatorChar}Reports{Path.DirectorySeparatorChar}FeaturesReport.html";
 
-            AssertWriter(configuration, featuresReportHtml, typeof(HtmlReportFormatter), featuresReportHtml.Replace("~", AppContext.BaseDirectory));
+            AssertGenerator(configuration, featuresReportHtml, typeof(HtmlReportFormatter), featuresReportHtml.Replace("~", AppContext.BaseDirectory));
         }
 
-        private void AssertWriter(ReportWritersConfiguration configuration, string expectedRelativePath, Type expectedFormatterType, string expectedFullPath)
+        private void AssertGenerator(ReportConfiguration configuration, string expectedRelativePath, Type expectedFormatterType, string expectedFullPath)
         {
-            var writer = configuration.OfType<ReportFileWriter>().FirstOrDefault(w => w.OutputPath == expectedRelativePath);
+            var writer = configuration.OfType<FileReportGenerator>().FirstOrDefault(w => w.OutputPath == expectedRelativePath);
             Assert.That(writer, Is.Not.Null, $"Expected to find writer with path: {expectedRelativePath}");
 
             Assert.That(writer.FullOutputPath, Is.EqualTo(Path.GetFullPath(expectedFullPath)));
@@ -34,30 +34,30 @@ namespace LightBDD.Framework.Reporting.UnitTests.Configuration
         }
 
         [Test]
-        public void It_should_allow_clear_add_and_remove_writers()
+        public void It_should_allow_clear_add_and_remove_generators()
         {
-            var writer = Mock.Of<IReportWriter>();
-            var writer2 = Mock.Of<IReportWriter>();
-            var configuration = new ReportWritersConfiguration();
+            var gen1 = Mock.Of<IReportGenerator>();
+            var gen2 = Mock.Of<IReportGenerator>();
+            var configuration = new ReportConfiguration();
             Assert.That(configuration.Clear(), Is.Empty);
-            Assert.That(configuration.Add(writer).Add(writer2).ToArray(), Is.EqualTo(new[] { writer, writer2 }));
-            Assert.That(configuration.Remove(writer).ToArray(), Is.EqualTo(new[] { writer2 }));
+            Assert.That(configuration.Add(gen1).Add(gen2).ToArray(), Is.EqualTo(new[] { gen1, gen2 }));
+            Assert.That(configuration.Remove(gen1).ToArray(), Is.EqualTo(new[] { gen2 }));
         }
 
         [Test]
-        public void It_should_not_allow_null_writers()
+        public void It_should_not_allow_null_generators()
         {
-            var configuration = new ReportWritersConfiguration();
+            var configuration = new ReportConfiguration();
             Assert.Throws<ArgumentNullException>(() => configuration.Add(null));
         }
 
         [Test]
-        public void It_should_allow_adding_file_writer_with_extension_method()
+        public void It_should_allow_adding_file_report_with_extension_method()
         {
-            var writer = new ReportWritersConfiguration()
+            var writer = new ReportConfiguration()
                 .Clear()
-                .AddFileWriter<PlainTextReportFormatter>("file.txt")
-                .Cast<ReportFileWriter>()
+                .AddFileReport<PlainTextReportFormatter>("file.txt")
+                .Cast<FileReportGenerator>()
                 .SingleOrDefault();
 
             Assert.That(writer, Is.Not.Null);
@@ -68,12 +68,12 @@ namespace LightBDD.Framework.Reporting.UnitTests.Configuration
         [Test]
         public void Configuration_should_be_sealable()
         {
-            var writer = Mock.Of<IReportWriter>();
+            var writer = Mock.Of<IReportGenerator>();
             var lightBddConfig = new LightBddConfiguration();
-            var cfg = lightBddConfig.Get<ReportWritersConfiguration>().Add(writer);
+            var cfg = lightBddConfig.Get<ReportConfiguration>().Add(writer);
             lightBddConfig.Seal();
 
-            Assert.Throws<InvalidOperationException>(() => cfg.Add(Mock.Of<IReportWriter>()));
+            Assert.Throws<InvalidOperationException>(() => cfg.Add(Mock.Of<IReportGenerator>()));
             Assert.Throws<InvalidOperationException>(() => cfg.Clear());
             Assert.Throws<InvalidOperationException>(() => cfg.Remove(writer));
             Assert.Throws<InvalidOperationException>(() => cfg.UpdateFileAttachmentsManager(Mock.Of<IFileAttachmentsManager>()));
@@ -83,7 +83,7 @@ namespace LightBDD.Framework.Reporting.UnitTests.Configuration
         [Test]
         public void It_should_return_default_file_attachment_manager()
         {
-            var configuration = new ReportWritersConfiguration().RegisterDefaultFileAttachmentManager();
+            var configuration = new ReportConfiguration().RegisterDefaultFileAttachmentManager();
             var fileAttachmentsManager = configuration.GetFileAttachmentsManager();
             Assert.That(fileAttachmentsManager, Is.TypeOf<FileAttachmentsManager>());
 
@@ -95,7 +95,7 @@ namespace LightBDD.Framework.Reporting.UnitTests.Configuration
         public void It_should_allow_updating_FileAttachmentManager()
         {
             var manager = Mock.Of<IFileAttachmentsManager>();
-            var actual = new ReportWritersConfiguration().UpdateFileAttachmentsManager(manager)
+            var actual = new ReportConfiguration().UpdateFileAttachmentsManager(manager)
                 .GetFileAttachmentsManager();
             Assert.That(actual, Is.EqualTo(manager));
         }
@@ -103,14 +103,14 @@ namespace LightBDD.Framework.Reporting.UnitTests.Configuration
         [Test]
         public void It_should_not_allow_updating_FileAttachmentManager_with_null()
         {
-            var ex = Assert.Throws<ArgumentNullException>(() => new ReportWritersConfiguration().UpdateFileAttachmentsManager(null));
+            var ex = Assert.Throws<ArgumentNullException>(() => new ReportConfiguration().UpdateFileAttachmentsManager(null));
             Assert.That(ex.ParamName, Is.EqualTo("manager"));
         }
 
         [Test]
         public void GetFileAttachmentsManager_should_return_NoFileAttachmentsManager_by_default()
         {
-            Assert.That(new ReportWritersConfiguration().GetFileAttachmentsManager(), Is.TypeOf<NoFileAttachmentsManager>());
+            Assert.That(new ReportConfiguration().GetFileAttachmentsManager(), Is.TypeOf<NoFileAttachmentsManager>());
         }
     }
 }

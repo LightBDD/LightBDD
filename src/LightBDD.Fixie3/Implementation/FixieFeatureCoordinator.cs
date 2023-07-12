@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution.Coordination;
 using LightBDD.Core.Extensibility;
@@ -19,19 +20,19 @@ namespace LightBDD.Fixie3.Implementation
             return Instance;
         }
 
-        private FixieFeatureCoordinator(LightBddConfiguration configuration)
-            : base(CreateContext(configuration))
+        private FixieFeatureCoordinator(LightBddConfiguration configuration, Assembly testAssembly)
+            : base(CreateContext(configuration, testAssembly))
         {
         }
 
-        private static IntegrationContext CreateContext(LightBddConfiguration configuration)
+        private static IntegrationContext CreateContext(LightBddConfiguration configuration, Assembly testAssembly)
         {
-            return new DefaultIntegrationContext(configuration, new FixieMetadataProvider(configuration), MapExceptionToStatus);
+            return new DefaultIntegrationContext(configuration, new FixieMetadataProvider(configuration, testAssembly), MapExceptionToStatus);
         }
 
-        internal static void InstallSelf(LightBddConfiguration configuration)
+        internal static void InstallSelf(LightBddConfiguration configuration, Assembly testAssembly)
         {
-            Install(new FixieFeatureCoordinator(configuration));
+            Install(new FixieFeatureCoordinator(configuration, testAssembly));
         }
 
         private static ExecutionStatus MapExceptionToStatus(Exception ex)

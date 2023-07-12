@@ -30,22 +30,24 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
             var text = FormatResults(result);
             TestContext.WriteLine(text);
             const string expectedText = @"Summary:
-	Test execution start time       : 2014-09-23 19:21:58 UTC
-	Test execution end time         : 2014-09-23 19:23:00 UTC
-	Test execution time             : 1m 02s
-	Test execution time (aggregated): 1m 04s
-	Number of features              : 1
-	Number of scenarios             : 2
-	Passed scenarios                : 0
-	Bypassed scenarios              : 0
-	Failed scenarios                : 1
-	Ignored scenarios               : 1
-	Number of steps                 : 10
-	Passed steps                    : 3
-	Bypassed steps                  : 1
-	Failed steps                    : 2
-	Ignored steps                   : 2
-	Not Run steps                   : 2
+	Test suite          : Random.Tests
+	Overall status      : Failed
+	Execution start time: 2014-09-23 19:21:58 UTC
+	Execution end time  : 2014-09-23 19:23:00 UTC
+	Execution duration  : 1m 02s
+	Number of features  : 1
+	Number of scenarios : 2
+	Passed scenarios    : 0
+	Bypassed scenarios  : 0
+	Failed scenarios    : 1
+	Ignored scenarios   : 1
+	Number of steps     : 10
+	Passed steps        : 3
+	Bypassed steps      : 1
+	Failed steps        : 2
+	Ignored steps       : 2
+	Not Run steps       : 2
+	LightBDD versions   : LightBDD.Framework v3.7.0.0, LightBDD.Core v3.7.0.0
 
 Feature: My feature [Label 1]
 	My feature
@@ -109,22 +111,24 @@ Feature: My feature [Label 1]
             var text = FormatResults(result);
             TestContext.WriteLine(text);
             const string expectedText = @"Summary:
-	Test execution start time       : 2014-09-23 19:21:58 UTC
-	Test execution end time         : 2014-09-23 19:21:58 UTC
-	Test execution time             : 25ms
-	Test execution time (aggregated): 25ms
-	Number of features              : 1
-	Number of scenarios             : 1
-	Passed scenarios                : 0
-	Bypassed scenarios              : 0
-	Failed scenarios                : 0
-	Ignored scenarios               : 1
-	Number of steps                 : 2
-	Passed steps                    : 1
-	Bypassed steps                  : 0
-	Failed steps                    : 0
-	Ignored steps                   : 1
-	Not Run steps                   : 0
+	Test suite          : Random.Tests
+	Overall status      : Passed
+	Execution start time: 2014-09-23 19:21:58 UTC
+	Execution end time  : 2014-09-23 19:21:58 UTC
+	Execution duration  : 25ms
+	Number of features  : 1
+	Number of scenarios : 1
+	Passed scenarios    : 0
+	Bypassed scenarios  : 0
+	Failed scenarios    : 0
+	Ignored scenarios   : 1
+	Number of steps     : 2
+	Passed steps        : 1
+	Bypassed steps      : 0
+	Failed steps        : 0
+	Ignored steps       : 1
+	Not Run steps       : 0
+	LightBDD versions   : LightBDD.Framework v3.7.0.0, LightBDD.Core v3.7.0.0
 
 Feature: My feature
 
@@ -143,22 +147,24 @@ Feature: My feature
             var text = FormatResults(results);
             TestContext.WriteLine(text);
             const string expectedText = @"Summary:
-	Test execution start time       : 2014-09-23 19:21:58 UTC
-	Test execution end time         : 2014-09-23 19:22:01 UTC
-	Test execution time             : 3s 020ms
-	Test execution time (aggregated): 40ms
-	Number of features              : 2
-	Number of scenarios             : 2
-	Passed scenarios                : 2
-	Bypassed scenarios              : 0
-	Failed scenarios                : 0
-	Ignored scenarios               : 0
-	Number of steps                 : 2
-	Passed steps                    : 2
-	Bypassed steps                  : 0
-	Failed steps                    : 0
-	Ignored steps                   : 0
-	Not Run steps                   : 0
+	Test suite          : Random.Tests
+	Overall status      : Passed
+	Execution start time: 2014-09-23 19:21:58 UTC
+	Execution end time  : 2014-09-23 19:22:01 UTC
+	Execution duration  : 3s 020ms
+	Number of features  : 2
+	Number of scenarios : 2
+	Passed scenarios    : 2
+	Bypassed scenarios  : 0
+	Failed scenarios    : 0
+	Ignored scenarios   : 0
+	Number of steps     : 2
+	Passed steps        : 2
+	Bypassed steps      : 0
+	Failed steps        : 0
+	Ignored steps       : 0
+	Not Run steps       : 0
+	LightBDD versions   : LightBDD.Framework v3.7.0.0, LightBDD.Core v3.7.0.0
 
 Feature: My feature
 
@@ -183,22 +189,24 @@ Feature: My feature2
             var text = FormatResults(results);
             TestContext.WriteLine(text);
             const string expectedText = @"Summary:
-	Test execution start time       : 2014-09-23 19:21:57 UTC
-	Test execution end time         : 2014-09-23 19:22:02 UTC
-	Test execution time             : 5s
-	Test execution time (aggregated): 9s
-	Number of features              : 1
-	Number of scenarios             : 3
-	Passed scenarios                : 3
-	Bypassed scenarios              : 0
-	Failed scenarios                : 0
-	Ignored scenarios               : 0
-	Number of steps                 : 3
-	Passed steps                    : 3
-	Bypassed steps                  : 0
-	Failed steps                    : 0
-	Ignored steps                   : 0
-	Not Run steps                   : 0
+	Test suite          : Random.Tests
+	Overall status      : Passed
+	Execution start time: 2014-09-23 19:21:57 UTC
+	Execution end time  : 2014-09-23 19:22:02 UTC
+	Execution duration  : 5s
+	Number of features  : 1
+	Number of scenarios : 3
+	Passed scenarios    : 3
+	Bypassed scenarios  : 0
+	Failed scenarios    : 0
+	Ignored scenarios   : 0
+	Number of steps     : 3
+	Passed steps        : 3
+	Bypassed steps      : 0
+	Failed steps        : 0
+	Ignored steps       : 0
+	Not Run steps       : 0
+	LightBDD versions   : LightBDD.Framework v3.7.0.0, LightBDD.Core v3.7.0.0
 
 Feature: My Feature
 
@@ -239,22 +247,24 @@ Feature: My Feature
              var text = FormatResults(results);
             TestContext.WriteLine(text);
             const string expectedText = @"Summary:
-	Test execution start time       : 2014-09-23 19:21:57 UTC
-	Test execution end time         : 2014-09-23 19:21:59 UTC
-	Test execution time             : 2s
-	Test execution time (aggregated): 2s
-	Number of features              : 1
-	Number of scenarios             : 1
-	Passed scenarios                : 0
-	Bypassed scenarios              : 0
-	Failed scenarios                : 1
-	Ignored scenarios               : 0
-	Number of steps                 : 1
-	Passed steps                    : 0
-	Bypassed steps                  : 0
-	Failed steps                    : 1
-	Ignored steps                   : 0
-	Not Run steps                   : 0
+	Test suite          : Random.Tests
+	Overall status      : Failed
+	Execution start time: 2014-09-23 19:21:57 UTC
+	Execution end time  : 2014-09-23 19:21:59 UTC
+	Execution duration  : 2s
+	Number of features  : 1
+	Number of scenarios : 1
+	Passed scenarios    : 0
+	Bypassed scenarios  : 0
+	Failed scenarios    : 1
+	Ignored scenarios   : 0
+	Number of steps     : 1
+	Passed steps        : 0
+	Bypassed steps      : 0
+	Failed steps        : 1
+	Ignored steps       : 0
+	Not Run steps       : 0
+	LightBDD versions   : LightBDD.Framework v3.7.0.0, LightBDD.Core v3.7.0.0
 
 Feature: My Feature
 
@@ -278,11 +288,11 @@ Feature: My Feature
             Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
         }
 
-        private string FormatResults(params IFeatureResult[] results)
+        private string FormatResults(ITestRunResult result)
         {
             using (var memory = new MemoryStream())
             {
-                _subject.Format(memory, results);
+                _subject.Format(memory, result);
                 return Encoding.UTF8.GetString(memory.ToArray());
             }
         }

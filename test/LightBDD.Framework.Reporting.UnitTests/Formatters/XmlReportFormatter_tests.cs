@@ -34,15 +34,20 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
         public void Should_format_xml()
         {
             var result = ReportFormatterTestData.GetFeatureResultWithDescription();
-            var text = FormatResults(result);
+            var text = FormatResult(result);
             TestContext.WriteLine(text);
 
             const string expectedText = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <TestResults>
-  <Summary TestExecutionStart=""2014-09-23T19:21:58.055Z"" TestExecutionEnd=""2014-09-23T19:23:00.155Z"" TestExecutionTime=""PT1M2.1S"">
+  <Summary TestExecutionStart=""2014-09-23T19:21:58.055Z"" TestExecutionEnd=""2014-09-23T19:23:00.155Z"" TestExecutionTime=""PT1M2.1S"" OverallStatus=""Failed"">
+    <TestSuite Name=""Random.Tests"" Version=""1.2.3"" Description=""Foo bar"" />
     <Features Count=""1"" />
     <Scenarios Count=""2"" Passed=""0"" Bypassed=""0"" Failed=""1"" Ignored=""1"" />
     <Steps Count=""10"" Passed=""3"" Bypassed=""1"" Failed=""2"" Ignored=""2"" NotRun=""2"" />
+    <LightBDDAssemblies>
+      <Assembly Name=""LightBDD.Framework"" Version=""3.7.0.0"" />
+      <Assembly Name=""LightBDD.Core"" Version=""3.7.0.0"" />
+    </LightBDDAssemblies>
   </Summary>
   <Feature Name=""My feature"" RuntimeId=""33333333-3333-3333-3333-333333333333"">
     <Label Name=""Label 1"" />
@@ -170,15 +175,20 @@ Step 2: Expected: True
         public void Should_format_xml_without_description_nor_label_nor_details()
         {
             var result = ReportFormatterTestData.GetFeatureResultWithoutDescriptionNorLabelNorDetails();
-            var text = FormatResults(result);
+            var text = FormatResult(result);
             TestContext.WriteLine(text);
 
             const string expectedText = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <TestResults>
-  <Summary TestExecutionStart=""2014-09-23T19:21:58.055Z"" TestExecutionEnd=""2014-09-23T19:21:58.08Z"" TestExecutionTime=""PT0.025S"">
+  <Summary TestExecutionStart=""2014-09-23T19:21:58.055Z"" TestExecutionEnd=""2014-09-23T19:21:58.08Z"" TestExecutionTime=""PT0.025S"" OverallStatus=""Passed"">
+    <TestSuite Name=""Random.Tests"" Version=""1.2.3"" Description=""Foo bar"" />
     <Features Count=""1"" />
     <Scenarios Count=""1"" Passed=""0"" Bypassed=""0"" Failed=""0"" Ignored=""1"" />
     <Steps Count=""2"" Passed=""1"" Bypassed=""0"" Failed=""0"" Ignored=""1"" NotRun=""0"" />
+    <LightBDDAssemblies>
+      <Assembly Name=""LightBDD.Framework"" Version=""3.7.0.0"" />
+      <Assembly Name=""LightBDD.Core"" Version=""3.7.0.0"" />
+    </LightBDDAssemblies>
   </Summary>
   <Feature Name=""My feature"" RuntimeId=""33333333-3333-3333-3333-333333333333"">
     <Scenario Status=""Ignored"" Name=""name"" ExecutionStart=""2014-09-23T19:21:58.055Z"" ExecutionTime=""PT0.025S"" RuntimeId=""22222222-2222-2222-2222-222222222222"">
@@ -201,14 +211,19 @@ Step 2: Expected: True
         {
             var results = ReportFormatterTestData.GetMultipleFeatureResults();
 
-            var text = FormatResults(results);
+            var text = FormatResult(results);
             TestContext.WriteLine(text);
             const string expectedText = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <TestResults>
-  <Summary TestExecutionStart=""2014-09-23T19:21:58.055Z"" TestExecutionEnd=""2014-09-23T19:22:01.075Z"" TestExecutionTime=""PT3.02S"">
+  <Summary TestExecutionStart=""2014-09-23T19:21:58.055Z"" TestExecutionEnd=""2014-09-23T19:22:01.075Z"" TestExecutionTime=""PT3.02S"" OverallStatus=""Passed"">
+    <TestSuite Name=""Random.Tests"" Version=""1.2.3"" Description=""Foo bar"" />
     <Features Count=""2"" />
     <Scenarios Count=""2"" Passed=""2"" Bypassed=""0"" Failed=""0"" Ignored=""0"" />
     <Steps Count=""2"" Passed=""2"" Bypassed=""0"" Failed=""0"" Ignored=""0"" NotRun=""0"" />
+    <LightBDDAssemblies>
+      <Assembly Name=""LightBDD.Framework"" Version=""3.7.0.0"" />
+      <Assembly Name=""LightBDD.Core"" Version=""3.7.0.0"" />
+    </LightBDDAssemblies>
   </Summary>
   <Feature Name=""My feature"" RuntimeId=""33333333-3333-3333-3333-333333333333"">
     <Scenario Status=""Passed"" Name=""scenario1"" ExecutionStart=""2014-09-23T19:21:58.055Z"" ExecutionTime=""PT0.02S"" RuntimeId=""22222222-2222-2222-2222-222222222222"">
@@ -238,14 +253,19 @@ Step 2: Expected: True
         {
             var results = ReportFormatterTestData.GetFeatureWithUnsortedScenarios();
 
-            var text = FormatResults(results);
+            var text = FormatResult(results);
             TestContext.WriteLine(text);
             const string expectedText = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <TestResults>
-  <Summary TestExecutionStart=""2014-09-23T19:21:57.055Z"" TestExecutionEnd=""2014-09-23T19:22:02.055Z"" TestExecutionTime=""PT5S"">
+  <Summary TestExecutionStart=""2014-09-23T19:21:57.055Z"" TestExecutionEnd=""2014-09-23T19:22:02.055Z"" TestExecutionTime=""PT5S"" OverallStatus=""Passed"">
+    <TestSuite Name=""Random.Tests"" Version=""1.2.3"" Description=""Foo bar"" />
     <Features Count=""1"" />
     <Scenarios Count=""3"" Passed=""3"" Bypassed=""0"" Failed=""0"" Ignored=""0"" />
     <Steps Count=""3"" Passed=""3"" Bypassed=""0"" Failed=""0"" Ignored=""0"" NotRun=""0"" />
+    <LightBDDAssemblies>
+      <Assembly Name=""LightBDD.Framework"" Version=""3.7.0.0"" />
+      <Assembly Name=""LightBDD.Core"" Version=""3.7.0.0"" />
+    </LightBDDAssemblies>
   </Summary>
   <Feature Name=""My Feature"" RuntimeId=""33333333-3333-3333-3333-333333333333"">
     <Scenario Status=""Passed"" Name=""scenario A"" ExecutionStart=""2014-09-23T19:21:57.057Z"" ExecutionTime=""PT2S"" RuntimeId=""22222222-2222-2222-2222-222222222222"">
@@ -297,14 +317,19 @@ Step 2: Expected: True
             tree.SetActual(actual);
 
             var results = ReportFormatterTestData.GetFeatureWithVerifiableTree(tree.Details);
-            var text = FormatResults(results);
+            var text = FormatResult(results);
             TestContext.WriteLine(text);
             const string expectedText = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <TestResults>
-  <Summary TestExecutionStart=""2014-09-23T19:21:57.057Z"" TestExecutionEnd=""2014-09-23T19:21:59.057Z"" TestExecutionTime=""PT2S"">
+  <Summary TestExecutionStart=""2014-09-23T19:21:57.057Z"" TestExecutionEnd=""2014-09-23T19:21:59.057Z"" TestExecutionTime=""PT2S"" OverallStatus=""Failed"">
+    <TestSuite Name=""Random.Tests"" Version=""1.2.3"" Description=""Foo bar"" />
     <Features Count=""1"" />
     <Scenarios Count=""1"" Passed=""0"" Bypassed=""0"" Failed=""1"" Ignored=""0"" />
     <Steps Count=""1"" Passed=""0"" Bypassed=""0"" Failed=""1"" Ignored=""0"" NotRun=""0"" />
+    <LightBDDAssemblies>
+      <Assembly Name=""LightBDD.Framework"" Version=""3.7.0.0"" />
+      <Assembly Name=""LightBDD.Core"" Version=""3.7.0.0"" />
+    </LightBDDAssemblies>
   </Summary>
   <Feature Name=""My Feature"" RuntimeId=""33333333-3333-3333-3333-333333333333"">
     <Scenario Status=""Failed"" Name=""scenario A"" ExecutionStart=""2014-09-23T19:21:57.057Z"" ExecutionTime=""PT2S"" RuntimeId=""22222222-2222-2222-2222-222222222222"">
@@ -341,11 +366,11 @@ Step 2: Expected: True
         {
             XDocument.Parse(xml).Validate(_schema, (o, e) => Assert.Fail(e.Message));
         }
-        private string FormatResults(params IFeatureResult[] results)
+        private string FormatResult(ITestRunResult result)
         {
             using (var memory = new MemoryStream())
             {
-                _subject.Format(memory, results);
+                _subject.Format(memory, result);
                 return Encoding.UTF8.GetString(memory.ToArray());
             }
         }

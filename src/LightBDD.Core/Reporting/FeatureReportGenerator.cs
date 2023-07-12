@@ -1,50 +1,47 @@
 ﻿using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
-using LightBDD.Core.Execution.Coordination;
+using System.Threading.Tasks;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Results;
 
-namespace LightBDD.Core.Reporting
+namespace LightBDD.Core.Reporting;
+
+//TODO: LightBDD 4.x review testing strategy / internal access
+/// <summary>
+/// Feature report generator
+/// </summary>
+public class FeatureReportGenerator
 {
+    private readonly IReportGenerator[] _generators;
+
     /// <summary>
-    /// Class allowing to generate and save reports for executed features.
-    /// It supports multiple <see cref="IReportWriter"/> instances that can be specified in constructor.
+    /// Default constructor
     /// </summary>
-    public class FeatureReportGenerator : IFeatureAggregator
+    public FeatureReportGenerator(LightBddConfiguration configuration)
     {
-        private readonly IReportWriter[] _writers;
-        private readonly ConcurrentQueue<IFeatureResult> _results = new();
-        private bool _disposed;
-        /// <summary>
-        /// Constructor configuring report generator with <paramref name="writers"/> that would be used to write reports on generator disposal.
-        /// </summary>
-        /// <param name="writers"></param>
-        public FeatureReportGenerator(params IReportWriter[] writers)
+        _generators = configuration.ReportConfiguration().Cast<IReportGenerator>().ToArray();
+    }
+
+    /// <summary>
+    /// Generate reports for provided <paramref name="result"/>
+    /// </summary>
+    /// <param name="result">Test run result</param>
+    /// <exception cref="AggregateException">Thrown if any report generator failed</exception>
+    public async Task GenerateReports(ITestRunResult result)
+    {
+        var exceptions = new List<Exception>();
+
+        foreach (var reportGenerator in _generators)
         {
-            _writers = writers;
+            try
+            {
+                await reportGenerator.Generate(result);
+            }
+            catch (Exception ex) { exceptions.Add(ex); }
         }
 
-        /// <summary>
-        /// Aggregates given feature result.
-        /// </summary>
-        /// <param name="featureResult">Feature result to aggregate.</param>
-        public void Aggregate(IFeatureResult featureResult)
-        {
-            _results.Enqueue(featureResult);
-        }
-
-        /// <summary>
-        /// Writes all aggregated results and disposes the object.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_disposed)
-                return;
-            _disposed = true;
-
-            var results = _results.OrderBy(r => r.Info.Name.ToString(), StringComparer.OrdinalIgnoreCase).ToArray();
-            foreach (var writer in _writers)
-                writer.Save(results);
-        }
+        if (exceptions.Count > 0)
+            throw new AggregateException("Failed to generate reports", exceptions);
     }
 }

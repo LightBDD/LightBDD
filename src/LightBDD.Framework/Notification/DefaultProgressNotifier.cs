@@ -148,7 +148,23 @@ namespace LightBDD.Framework.Notification
                 case StepFileAttached stepFileAttached:
                     NotifyStepFileAttached(stepFileAttached.Step, stepFileAttached.Attachment);
                     break;
+                case TestRunStarting testRunStarting:
+                    NotifyTestRunStart(testRunStarting.TestRun);
+                    break;
+                case TestRunFinished testRunFinished:
+                    NotifyTestRunFinished(testRunFinished.Result);
+                    break;
             }
+        }
+
+        private void NotifyTestRunFinished(ITestRunResult result)
+        {
+            _onNotify($"TEST RUN FINISHED: {result.Info.Name} ({result.OverallStatus} after {result.ExecutionTime.Duration.FormatPretty()})");
+        }
+
+        private void NotifyTestRunStart(ITestRunInfo testRun)
+        {
+            _onNotify($"TEST RUN STARTING: {testRun.Name}");
         }
 
         private void NotifyStepFileAttached(IStepInfo step, FileAttachment attachment)

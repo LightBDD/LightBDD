@@ -6,11 +6,12 @@ using LightBDD.Core.Reporting;
 namespace LightBDD.Core.Configuration
 {
     /// <summary>
-    /// Configuration class allowing to customize report writers.
+    /// Configuration class allowing to customize report generation.
     /// </summary>
-    public class ReportWritersConfiguration : FeatureConfiguration, IEnumerable<IReportWriter>
+    //TODO: LightBDD 4.x revisit
+    public class ReportConfiguration : FeatureConfiguration, IEnumerable<IReportGenerator>
     {
-        private readonly List<IReportWriter> _writers = new();
+        private readonly List<IReportGenerator> _generators = new();
         private IFileAttachmentsManager _fileAttachmentsManager = NoFileAttachmentsManager.Instance;
 
         /// <summary>
@@ -19,40 +20,40 @@ namespace LightBDD.Core.Configuration
         public IFileAttachmentsManager GetFileAttachmentsManager() => _fileAttachmentsManager;
 
         /// <summary>
-        /// Adds <paramref name="writer"/> to report writers collection.
+        /// Adds <paramref name="generator"/> to report generator collection.
         /// </summary>
-        /// <param name="writer">Writer to add.</param>
+        /// <param name="generator">Generator to add.</param>
         /// <returns>Self.</returns>
-        /// <exception cref="ArgumentNullException">Throws when <paramref name="writer"/> is <c>null</c>.</exception>
-        public ReportWritersConfiguration Add(IReportWriter writer)
+        /// <exception cref="ArgumentNullException">Throws when <paramref name="generator"/> is <c>null</c>.</exception>
+        public ReportConfiguration Add(IReportGenerator generator)
         {
             ThrowIfSealed();
-            if (writer == null)
-                throw new ArgumentNullException(nameof(writer));
-            _writers.Add(writer);
+            if (generator == null)
+                throw new ArgumentNullException(nameof(generator));
+            _generators.Add(generator);
             return this;
         }
 
         /// <summary>
-        /// Removes specified, previously configured writer.
+        /// Removes specified, previously configured generator.
         /// </summary>
-        /// <param name="writer">Writer instance to remove.</param>
+        /// <param name="generator">Generator instance to remove.</param>
         /// <returns>Self.</returns>
-        public ReportWritersConfiguration Remove(IReportWriter writer)
+        public ReportConfiguration Remove(IReportGenerator generator)
         {
             ThrowIfSealed();
-            _writers.Remove(writer);
+            _generators.Remove(generator);
             return this;
         }
 
         /// <summary>
-        /// Removes all previously configured report writers.
+        /// Removes all previously configured report generators.
         /// </summary>
         /// <returns>Self.</returns>
-        public ReportWritersConfiguration Clear()
+        public ReportConfiguration Clear()
         {
             ThrowIfSealed();
-            _writers.Clear();
+            _generators.Clear();
             return this;
         }
 
@@ -61,7 +62,7 @@ namespace LightBDD.Core.Configuration
         /// </summary>
         /// <param name="manager">Manager to set</param>
         /// <returns></returns>
-        public ReportWritersConfiguration UpdateFileAttachmentsManager(IFileAttachmentsManager manager)
+        public ReportConfiguration UpdateFileAttachmentsManager(IFileAttachmentsManager manager)
         {
             ThrowIfSealed();
 
@@ -72,9 +73,9 @@ namespace LightBDD.Core.Configuration
 
         /// <summary>Returns an enumerator that iterates through the collection.</summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        public IEnumerator<IReportWriter> GetEnumerator()
+        public IEnumerator<IReportGenerator> GetEnumerator()
         {
-            return _writers.GetEnumerator();
+            return _generators.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

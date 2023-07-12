@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Framework.Configuration;
 using LightBDD.MsTest3.Configuration;
 using LightBDD.MsTest3.Implementation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.MsTest3
 {
@@ -22,20 +25,30 @@ namespace LightBDD.MsTest3
     public static class LightBddScope
     {
         /// <summary>
-        /// Initializes LightBddScope with default configuration.
+        /// Initializes LightBddScope for provided test assembly.
         /// </summary>
-        public static void Initialize()
+        /// <param name="testContext">Test context</param>
+        /// <param name="onConfigure">Optional configuration.</param>
+        public static void Initialize(TestContext testContext, Action<LightBddConfiguration> onConfigure = null)
         {
-            Initialize(cfg => { });
+            Initialize(GetTypeAssembly(testContext), onConfigure);
         }
 
         /// <summary>
-        /// Initializes LightBddScope with configuration customized with <paramref name="onConfigure"/> action.
+        /// Initializes LightBddScope for provided test assembly.
         /// </summary>
-        /// <param name="onConfigure">Action allowing to customize LightBDD configuration.</param>
-        public static void Initialize(Action<LightBddConfiguration> onConfigure)
+        /// <param name="testAssembly">Assembly for which the tests are executed</param>
+        /// <param name="onConfigure">Optional configuration.</param>
+        public static void Initialize(Assembly testAssembly, Action<LightBddConfiguration> onConfigure = null)
         {
-            MsTest3FeatureCoordinator.InstallSelf(Configure(onConfigure));
+            MsTest3FeatureCoordinator.InstallSelf(Configure(onConfigure), testAssembly);
+        }
+
+        private static Assembly GetTypeAssembly(TestContext testContext)
+        {
+            return AppDomain.CurrentDomain.GetAssemblies()
+                       .FirstOrDefault(assembly => assembly.GetType(testContext.FullyQualifiedTestClassName, false, true) != null)
+                   ?? throw new InvalidOperationException($"Unable to identify assembly for type: {testContext.FullyQualifiedTestClassName}");
         }
 
         /// <summary>
@@ -56,7 +69,7 @@ namespace LightBDD.MsTest3
             configuration.ExceptionHandlingConfiguration()
                 .UpdateExceptionDetailsFormatter(new DefaultExceptionFormatter().WithTestFrameworkDefaults().Format);
 
-            onConfigure(configuration);
+            onConfigure?.Invoke(configuration);
             return configuration;
         }
     }

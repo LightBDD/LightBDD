@@ -82,7 +82,7 @@ namespace LightBDD.Core.Extensibility
         /// <summary>
         /// Returns File Attachments Manager
         /// </summary>
-        public virtual IFileAttachmentsManager FileAttachmentsManager => Configuration.ReportWritersConfiguration().GetFileAttachmentsManager();
+        public virtual IFileAttachmentsManager FileAttachmentsManager => Configuration.ReportConfiguration().GetFileAttachmentsManager();
 
         /// <summary>
         /// Creates progress notifier.

@@ -14,7 +14,7 @@ namespace LightBDD.XUnit2.IntegrationTests.Helpers
                 .Clear()
                 .Append(ScenarioProgressCapture.Instance);
 
-            configuration.ReportWritersConfiguration()
+            configuration.ReportConfiguration()
                 .Clear();
         }
 

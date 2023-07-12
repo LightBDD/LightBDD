@@ -23,7 +23,7 @@ namespace LightBDD.AcceptanceTests.Helpers.Builders
             return builder;
         }
 
-        public IFeatureResult Build()
+        public TestResults.TestFeatureResult Build()
         {
             return TestResults.CreateFeatureResult(Name, "descr", "label", _scenarios.Select(s => s.Build()).ToArray());
         }

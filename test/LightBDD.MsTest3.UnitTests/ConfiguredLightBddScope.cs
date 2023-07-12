@@ -14,7 +14,7 @@ namespace LightBDD.MsTest3.UnitTests
         [AssemblyInitialize]
         public static void Setup(TestContext testContext)
         {
-            LightBddScope.Initialize(OnConfigure);
+            LightBddScope.Initialize(testContext, OnConfigure);
         }
 
         [AssemblyCleanup]
@@ -22,7 +22,7 @@ namespace LightBDD.MsTest3.UnitTests
 
         private static void OnConfigure(LightBddConfiguration configuration)
         {
-            configuration.ReportWritersConfiguration()
+            configuration.ReportConfiguration()
                 .Clear();
 
             configuration.ProgressNotifierConfiguration()

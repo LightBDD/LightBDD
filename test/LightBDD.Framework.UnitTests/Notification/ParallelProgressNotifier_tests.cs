@@ -50,6 +50,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         [Test]
         public void It_should_capture_meaningful_information()
         {
+            var testRunInfo = Fake.Object<TestResults.TestTestRunInfo>();
             var featureInfo = Fake.Object<TestResults.TestFeatureInfo>();
             var scenarioInfo = Fake.Object<TestResults.TestScenarioInfo>();
             var stepInfo = Fake.Object<TestResults.TestStepInfo>();
@@ -90,10 +91,12 @@ namespace LightBDD.Framework.UnitTests.Notification
             scenarioResult.Status = ExecutionStatus.Passed;
 
             var featureResult = Fake.Object<TestResults.TestFeatureResult>();
+            var testRunResult = Fake.Object<TestResults.TestTestRunResult>();
             var comment = Fake.String();
 
             var notifier = GetProgressNotifier();
             var eventTime = new EventTime();
+            notifier.Notify(new TestRunStarting(eventTime, testRunInfo));
             notifier.Notify(new FeatureStarting(eventTime, featureInfo));
             notifier.Notify(new ScenarioStarting(eventTime, scenarioInfo));
             notifier.Notify(new StepStarting(eventTime, stepInfo));
@@ -101,9 +104,10 @@ namespace LightBDD.Framework.UnitTests.Notification
             notifier.Notify(new StepFinished(eventTime, stepResult));
             notifier.Notify(new ScenarioFinished(eventTime, scenarioResult));
             notifier.Notify(new FeatureFinished(eventTime, featureResult));
+            notifier.Notify(new TestRunFinished(eventTime, testRunResult));
 
             var headerLength = "Fi=000,Fa=000,Pe=000 #   > ".Length;
-            var padding = new string(' ',headerLength);
+            var padding = new string(' ', headerLength);
 
             var expectedTable = $@"{padding}    table:
 {padding}    +-+---+----------+----------+
@@ -129,13 +133,15 @@ namespace LightBDD.Framework.UnitTests.Notification
 
             var expected = new[]
             {
+                $"Fi=000,Fa=000,Pe=000 #   > TEST RUN STARTING: {testRunInfo.Name}",
                 $"Fi=000,Fa=000,Pe=000 #   > FEATURE: [{string.Join("][", featureInfo.Labels)}] {featureInfo.Name}{Environment.NewLine}{padding}  {featureInfo.Description}",
                 $"Fi=000,Fa=000,Pe=001 #  1> SCENARIO: [{string.Join("][", scenarioInfo.Labels)}] {scenarioInfo.Name}",
                 $"Fi=000,Fa=000,Pe=001 #  1>   STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: {stepInfo.Name}...",
                 $"Fi=000,Fa=000,Pe=001 #  1>   STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: /* {comment} */",
                 $"Fi=000,Fa=000,Pe=001 #  1>   STEP {stepResult.Info.GroupPrefix}{stepResult.Info.Number}/{stepResult.Info.GroupPrefix}{stepResult.Info.Total}: {stepResult.Info.Name} ({stepResult.Status} after {stepResult.ExecutionTime.Duration.FormatPretty()}){Environment.NewLine}{expectedTable}{Environment.NewLine}{expectedTree}",
                 $"Fi=001,Fa=000,Pe=000 #  1>   SCENARIO RESULT: {scenarioResult.Status} after {scenarioResult.ExecutionTime.Duration.FormatPretty()}{Environment.NewLine}{padding}    {scenarioResult.StatusDetails}",
-                $"Fi=001,Fa=000,Pe=000 #   > FEATURE FINISHED: {featureResult.Info.Name}"
+                $"Fi=001,Fa=000,Pe=000 #   > FEATURE FINISHED: {featureResult.Info.Name}",
+                $"Fi=001,Fa=000,Pe=000 #   > TEST RUN FINISHED: {testRunResult.Info.Name} ({testRunResult.OverallStatus} after {testRunResult.ExecutionTime.Duration.FormatPretty()})"
             };
 
             Assert.That(CapturedItems.ToArray(), Is.EqualTo(expected));

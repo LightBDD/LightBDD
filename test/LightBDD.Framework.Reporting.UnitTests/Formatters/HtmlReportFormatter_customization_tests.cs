@@ -7,6 +7,7 @@ using LightBDD.Core.Configuration;
 using LightBDD.Core.Results;
 using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Reporting.Formatters;
+using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 
 namespace LightBDD.Framework.Reporting.UnitTests.Formatters;
@@ -52,8 +53,8 @@ public class HtmlReportFormatter_customization_tests
 
         var doc = GetHtml(formatter);
 
-        var found= doc.DocumentNode.SelectNodes("html/head/style").Any(n=>n.InnerText.Contains(expectedCssIcon));
-        Assert.That(found,Is.True);
+        var found = doc.DocumentNode.SelectNodes("html/head/style").Any(n => n.InnerText.Contains(expectedCssIcon));
+        Assert.That(found, Is.True);
     }
 
     /// <summary>
@@ -61,19 +62,19 @@ public class HtmlReportFormatter_customization_tests
     /// </summary>
     private IReportFormatter ConfigureFormatter(Action<HtmlReportFormatter> onConfigure)
     {
-        using var enumerator = new ReportWritersConfiguration()
+        using var enumerator = new ReportConfiguration()
              .Clear()
-             .AddFileWriter("foo.html", onConfigure)
+             .AddFileReport("foo.html", onConfigure)
              .GetEnumerator();
         enumerator.MoveNext();
-        var w = (ReportFileWriter)enumerator.Current;
+        var w = (FileReportGenerator)enumerator.Current;
 
         return w.Formatter;
     }
     private HtmlDocument GetHtml(IReportFormatter fmt)
     {
         using var memory = new MemoryStream();
-        fmt.Format(memory, Array.Empty<IFeatureResult>());
+        fmt.Format(memory, new TestResults.TestTestRunResult());
         var html = Encoding.UTF8.GetString(memory.ToArray());
         var doc = new HtmlDocument();
         doc.LoadHtml(html);

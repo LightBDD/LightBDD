@@ -68,7 +68,7 @@ namespace LightBDD.Framework.Extensibility
             ScenarioProgressNotifierProvider = configuration.ScenarioProgressNotifierConfiguration().NotifierProvider;
             ExecutionExtensions = configuration.ExecutionExtensionsConfiguration();
             DependencyContainer = configuration.DependencyContainerConfiguration().DependencyContainer;
-            FileAttachmentsManager = configuration.ReportWritersConfiguration().GetFileAttachmentsManager();
+            FileAttachmentsManager = configuration.ReportConfiguration().GetFileAttachmentsManager();
         }
 
         /// <inheritdoc />

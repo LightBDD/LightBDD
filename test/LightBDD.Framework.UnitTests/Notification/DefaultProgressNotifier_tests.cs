@@ -36,6 +36,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         [Test]
         public void It_should_capture_meaningful_information()
         {
+            var testRunInfo = Fake.Object<TestResults.TestTestRunInfo>();
             var featureInfo = Fake.Object<TestResults.TestFeatureInfo>();
             var scenarioInfo = Fake.Object<TestResults.TestScenarioInfo>();
             var stepInfo = Fake.Object<TestResults.TestStepInfo>();
@@ -77,8 +78,10 @@ namespace LightBDD.Framework.UnitTests.Notification
             var featureResult = Fake.Object<TestResults.TestFeatureResult>();
             var comment = Fake.String();
             var attachment = new FileAttachment(Fake.String(), Fake.String(), Fake.String());
+            var testRunResult = Fake.Object<TestResults.TestTestRunResult>();
 
             var eventTime = new EventTime();
+            _notifier.Notify(new TestRunStarting(eventTime, testRunInfo));
             _notifier.Notify(new FeatureStarting(eventTime, featureInfo));
             _notifier.Notify(new ScenarioStarting(eventTime, scenarioInfo));
             _notifier.Notify(new StepStarting(eventTime, stepInfo));
@@ -87,6 +90,7 @@ namespace LightBDD.Framework.UnitTests.Notification
             _notifier.Notify(new StepFinished(eventTime, stepResult));
             _notifier.Notify(new ScenarioFinished(eventTime, scenarioResult));
             _notifier.Notify(new FeatureFinished(eventTime, featureResult));
+            _notifier.Notify(new TestRunFinished(eventTime, testRunResult));
 
             var expectedTable = @"    table:
     +-+---+----------+----------+
@@ -112,6 +116,7 @@ namespace LightBDD.Framework.UnitTests.Notification
 
             var expected = new[]
             {
+                $"TEST RUN STARTING: {testRunInfo.Name}",
                 $"FEATURE: [{string.Join("][", featureInfo.Labels)}] {featureInfo.Name}{Environment.NewLine}  {featureInfo.Description}",
                 $"SCENARIO: [{string.Join("][", scenarioInfo.Labels)}] {scenarioInfo.Name}",
                 $"  STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: {stepInfo.Name}...",
@@ -119,7 +124,8 @@ namespace LightBDD.Framework.UnitTests.Notification
                 $"  STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: 🔗{attachment.Name}: {attachment.FilePath}",
                 $"  STEP {stepResult.Info.GroupPrefix}{stepResult.Info.Number}/{stepResult.Info.GroupPrefix}{stepResult.Info.Total}: {stepResult.Info.Name} ({stepResult.Status} after {stepResult.ExecutionTime.Duration.FormatPretty()}){Environment.NewLine}{expectedTable}{Environment.NewLine}{expectedTree}",
                 $"  SCENARIO RESULT: {scenarioResult.Status} after {scenarioResult.ExecutionTime.Duration.FormatPretty()}{Environment.NewLine}    {scenarioResult.StatusDetails}",
-                $"FEATURE FINISHED: {featureResult.Info.Name}"
+                $"FEATURE FINISHED: {featureResult.Info.Name}",
+                $"TEST RUN FINISHED: {testRunResult.Info.Name} ({testRunResult.OverallStatus} after {testRunResult.ExecutionTime.Duration.FormatPretty()})",
             };
 
             Assert.That(_captured.ToArray(), Is.EqualTo(expected));

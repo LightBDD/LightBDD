@@ -11,7 +11,7 @@ namespace $safeprojectname$
         [AssemblyInitialize]
         public static void Setup(TestContext testContext)
         {
-            LightBddScope.Initialize(OnConfigure);
+            LightBddScope.Initialize(testContext, OnConfigure);
 
             // code executed before any scenarios
         }
