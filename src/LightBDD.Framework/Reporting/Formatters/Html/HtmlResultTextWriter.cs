@@ -697,9 +697,9 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
             return sb.ToString();
         }
 
-        private static string GetLightBddVersion()
+        private string GetLightBddVersion()
         {
-            return typeof(IBddRunner).GetTypeInfo().Assembly.GetName().Version.ToString(4);
+            return typeof(IBddRunner).GetTypeInfo().Assembly.GetName().Version.ToString();
         }
     }
 }

@@ -184,7 +184,8 @@ namespace LightBDD.Core.UnitTests.Extensibility
             info.TestSuite.ShouldBeEquivalentTo(TestSuite.Create(GetType().Assembly));
             info.Name.ToString().ShouldBe("LightBDD.Core.UnitTests");
 
-            info.LightBddAssemblies.ShouldBe(new[] { typeof(TestMetadataProvider).Assembly, typeof(CoreMetadataProvider).Assembly });
+            var expected = new[] { typeof(TestMetadataProvider).Assembly, typeof(CoreMetadataProvider).Assembly }.Select(asm => new AssemblyVersion(asm)).ToArray();
+            info.LightBddVersions.ShouldBeEquivalentTo(expected);
         }
 
         [FeatureDescription("description")]

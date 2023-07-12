@@ -352,17 +352,20 @@ namespace LightBDD.UnitTests.Helpers
             public ExecutionStatus OverallStatus { get; set; }
             public TestExecutionTime ExecutionTime { get; set; } = new();
             ExecutionTime ITestRunResult.ExecutionTime => ExecutionTime?.ToMockedType();
-            public TestTestRunInfo Info { get; set; } = new ();
+            public TestTestRunInfo Info { get; set; } = new();
             IReadOnlyList<IFeatureResult> ITestRunResult.Features => Features;
             public TestFeatureResult[] Features { get; set; } = Array.Empty<TestFeatureResult>();
         }
 
         public class TestTestRunInfo : ITestRunInfo
         {
+            private static readonly AssemblyVersion[] Versions = new[] { typeof(IBddRunner).Assembly, typeof(ITestRunInfo).Assembly }
+                .Select(x => new AssemblyVersion(x)).ToArray();
+
             public INameInfo Name => new TestNameInfo { FormattedName = TestSuite.Name, NameFormat = TestSuite.Name };
             public Guid RuntimeId { get; } = Guid.Parse("33333333-5555-3333-3333-333333333333");
             public TestSuite TestSuite { get; set; } = TestSuite.Create("Random.Tests", new Version(1, 2, 3), "Foo bar");
-            public IReadOnlyList<Assembly> LightBddAssemblies { get; } = new[] { typeof(IBddRunner).Assembly, typeof(ITestRunInfo).Assembly };
+            public IReadOnlyList<AssemblyVersion> LightBddVersions => Versions;
         }
         public class TestFeatureInfo : IFeatureInfo
         {

@@ -47,7 +47,7 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
 	Failed steps        : 2
 	Ignored steps       : 2
 	Not Run steps       : 2
-	LightBDD versions   : LightBDD.Framework v3.7.0, LightBDD.Core v3.7.0
+	LightBDD versions   : LightBDD.Framework v3.7.0.0, LightBDD.Core v3.7.0.0
 
 Feature: My feature [Label 1]
 	My feature
@@ -128,7 +128,7 @@ Feature: My feature [Label 1]
 	Failed steps        : 0
 	Ignored steps       : 1
 	Not Run steps       : 0
-	LightBDD versions   : LightBDD.Framework v3.7.0, LightBDD.Core v3.7.0
+	LightBDD versions   : LightBDD.Framework v3.7.0.0, LightBDD.Core v3.7.0.0
 
 Feature: My feature
 
@@ -164,7 +164,7 @@ Feature: My feature
 	Failed steps        : 0
 	Ignored steps       : 0
 	Not Run steps       : 0
-	LightBDD versions   : LightBDD.Framework v3.7.0, LightBDD.Core v3.7.0
+	LightBDD versions   : LightBDD.Framework v3.7.0.0, LightBDD.Core v3.7.0.0
 
 Feature: My feature
 
@@ -206,7 +206,7 @@ Feature: My feature2
 	Failed steps        : 0
 	Ignored steps       : 0
 	Not Run steps       : 0
-	LightBDD versions   : LightBDD.Framework v3.7.0, LightBDD.Core v3.7.0
+	LightBDD versions   : LightBDD.Framework v3.7.0.0, LightBDD.Core v3.7.0.0
 
 Feature: My Feature
 
@@ -264,7 +264,7 @@ Feature: My Feature
 	Failed steps        : 1
 	Ignored steps       : 0
 	Not Run steps       : 0
-	LightBDD versions   : LightBDD.Framework v3.7.0, LightBDD.Core v3.7.0
+	LightBDD versions   : LightBDD.Framework v3.7.0.0, LightBDD.Core v3.7.0.0
 
 Feature: My Feature
 

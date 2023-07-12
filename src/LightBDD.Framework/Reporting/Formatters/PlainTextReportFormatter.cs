@@ -236,7 +236,7 @@ namespace LightBDD.Framework.Reporting.Formatters
 
         private static string GetLightBddVersions(ITestRunResult testRun)
         {
-            return string.Join(", ", testRun.Info.LightBddAssemblies.Select(a => $"{a.GetName().Name} v{a.GetName().Version?.ToString(3) ?? "1.0"}"));
+            return string.Join(", ", testRun.Info.LightBddVersions);
         }
     }
 }

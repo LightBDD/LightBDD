@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution.Implementation;
@@ -10,7 +9,7 @@ using LightBDD.Core.Reporting;
 namespace LightBDD.Core.Execution.Coordination
 {
     /// <summary>
-    /// Feature coordinator class holding <see cref="FeatureRunnerRepository"/> allowing to instantiate runners as well as <see cref="IFeatureAggregator"/> used for aggregate execution results on coordinator disposal.
+    /// Class responsible for coordination of LightBDD test run.
     /// The <see cref="Install"/> method allows to install instance that will be used in test execution cycle and begins the cycle.
     /// Calling <see cref="Dispose"/> method terminates the test execution cycle, triggering reports generation and disposal of the DI container.
     /// </summary>

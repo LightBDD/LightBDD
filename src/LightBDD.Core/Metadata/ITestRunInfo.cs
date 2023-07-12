@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace LightBDD.Core.Metadata;
 
@@ -15,5 +14,5 @@ public interface ITestRunInfo : IMetadataInfo
     /// <summary>
     /// List of LightBDD assemblies participating in tests
     /// </summary>
-    public IReadOnlyList<Assembly> LightBddAssemblies { get; }
+    public IReadOnlyList<AssemblyVersion> LightBddVersions { get; }
 }
