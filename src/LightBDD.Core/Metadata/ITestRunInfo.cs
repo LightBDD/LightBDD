@@ -14,5 +14,5 @@ public interface ITestRunInfo : IMetadataInfo
     /// <summary>
     /// List of LightBDD assemblies participating in tests
     /// </summary>
-    public IReadOnlyList<AssemblyVersion> LightBddVersions { get; }
+    public IReadOnlyList<AssemblyInfo> LightBddAssemblies { get; }
 }

@@ -37,7 +37,7 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
             TestContext.WriteLine(text);
             var expectedText = $@"Test execution summary
 Execution
-Project: Random.Tests
+Test suite: Random.Tests
 Overall status: Failed
 Start date: 2014-09-23 (UTC)
 Start time: 19:21:58
@@ -115,7 +115,7 @@ initialize();";
             TestContext.WriteLine(text);
             var expectedText = $@"Test execution summary
 Execution
-Project: Random.Tests
+Test suite: Random.Tests
 Overall status: Passed
 Start date: 2014-09-23 (UTC)
 Start time: 19:21:58
@@ -151,7 +151,7 @@ initialize();";
             TestContext.WriteLine(text);
             var expectedText = $@"Test execution summary
 Execution
-Project: Random.Tests
+Test suite: Random.Tests
 Overall status: Passed
 Start date: 2014-09-23 (UTC)
 Start time: 19:21:58
@@ -202,7 +202,7 @@ initialize();";
             TestContext.WriteLine(text);
             var expectedText = $@"Test execution summary
 Execution
-Project: Random.Tests
+Test suite: Random.Tests
 Overall status: Passed
 Start date: 2019-10-21 (UTC)
 Start time: 05:06:07
@@ -237,7 +237,7 @@ initialize();";
             TestContext.WriteLine(text);
             var expectedText = $@"Test execution summary
 Execution
-Project: Random.Tests
+Test suite: Random.Tests
 Overall status: Passed
 Start date: 2014-09-23 (UTC)
 Start time: 19:21:57

@@ -47,16 +47,15 @@ public class TestSuite
     /// </summary>
     public static TestSuite Create(Assembly assembly)
     {
-        var name = assembly.GetName();
-        var suiteName = name.Name ?? name.FullName;
+        var info = AssemblyInfo.From(assembly);
 
         var description = assembly.GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false)
             .OfType<AssemblyDescriptionAttribute>()
             .FirstOrDefault()?.Description;
 
-        if (description == null || string.Equals(description, suiteName, StringComparison.OrdinalIgnoreCase))
+        if (description == null || string.Equals(description, info.Name, StringComparison.OrdinalIgnoreCase))
             description = string.Empty;
 
-        return Create(suiteName, name.Version, description);
+        return Create(info.Name, info.Version, description);
     }
 }

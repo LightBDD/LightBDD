@@ -10,7 +10,7 @@ internal class TestRunInfo : ITestRunInfo
     public TestRunInfo(TestSuite testSuite, IReadOnlyList<Assembly> lightBddAssemblies)
     {
         TestSuite = testSuite;
-        LightBddVersions = lightBddAssemblies.Select(assembly => new AssemblyVersion(assembly)).ToArray();
+        LightBddAssemblies = lightBddAssemblies.Select(AssemblyInfo.From).ToArray();
         Name = new NameInfo(testSuite.Name, Array.Empty<INameParameterInfo>());
     }
 
@@ -18,5 +18,5 @@ internal class TestRunInfo : ITestRunInfo
     public INameInfo Name { get; }
     public Guid RuntimeId { get; } = Guid.NewGuid();
     public TestSuite TestSuite { get; }
-    public IReadOnlyList<AssemblyVersion> LightBddVersions { get; }
+    public IReadOnlyList<AssemblyInfo> LightBddAssemblies { get; }
 }

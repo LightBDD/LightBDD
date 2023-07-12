@@ -24,6 +24,4 @@ public interface ITestRunResult
     /// Returns results for features covered by this test run, where the features are ordered by Name.
     /// </summary>
     IReadOnlyList<IFeatureResult> Features { get; }
-
-    //setup and teardown results
 }

@@ -116,7 +116,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 Html.Tag(Html5Tag.Div).Class("content").Content(
                     Html.Tag(Html5Tag.Table).Content(
                         GetKeyValueHeaderTableRow("Execution"),
-                        GetKeyValueTableRow("Project:", _result.Info.TestSuite.Name),
+                        GetKeyValueTableRow("Test suite:", _result.Info.TestSuite.Name),
                         GetOverallStatus(),
                         GetKeyValueTableRow("Start date:", _result.ExecutionTime.Start.ToString("yyyy-MM-dd (UTC)")),
                         GetKeyValueTableRow("Start time:", _result.ExecutionTime.Start.ToString("HH:mm:ss")),

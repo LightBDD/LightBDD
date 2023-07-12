@@ -1,218 +1,238 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="2.1">
-  <xs:element name="TestResults">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="Summary" minOccurs="0" maxOccurs="1">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="Features" minOccurs="1" maxOccurs="1">
-                <xs:complexType>
-                  <xs:attribute name="Count" type="xs:int" use="required"/>
-                </xs:complexType>
-              </xs:element>
-              <xs:element name="Scenarios" minOccurs="1" maxOccurs="1">
-                <xs:complexType>
-                  <xs:attribute name="Count" type="xs:int" use="required" />
-                  <xs:attribute name="Passed" type="xs:int" use="required" />
-                  <xs:attribute name="Bypassed" type="xs:int" use="required" />
-                  <xs:attribute name="Failed" type="xs:int" use="required" />
-                  <xs:attribute name="Ignored" type="xs:int" use="required" />
-                </xs:complexType>
-              </xs:element>
-              <xs:element name="Steps" minOccurs="1" maxOccurs="1">
-                <xs:complexType>
-                  <xs:attribute name="Count" type="xs:int" use="required" />
-                  <xs:attribute name="Passed" type="xs:int" use="required" />
-                  <xs:attribute name="Bypassed" type="xs:int" use="required" />
-                  <xs:attribute name="Failed" type="xs:int" use="required" />
-                  <xs:attribute name="Ignored" type="xs:int" use="required" />
-                  <xs:attribute name="NotRun" type="xs:int" use="required" />
-                </xs:complexType>
-              </xs:element>
-            </xs:sequence>
-            <xs:attribute name="TestExecutionStart" type="xs:dateTime" use="required"/>
-            <xs:attribute name="TestExecutionEnd" type="xs:dateTime" use="required"/>
-            <xs:attribute name="TestExecutionTime" type="xs:duration" use="required"/>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="Feature" minOccurs="0" maxOccurs="unbounded">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="Label" minOccurs="0" maxOccurs="unbounded">
-                <xs:complexType>
-                  <xs:attribute name="Name" type="xs:string" use="required"/>
-                </xs:complexType>
-              </xs:element>
-              <xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
-              <xs:element name="Scenario" minOccurs="0" maxOccurs="unbounded">
-                <xs:complexType>
-                  <xs:sequence>
-                    <xs:element name="Name" minOccurs="0" maxOccurs="1">
-                      <xs:complexType>
-                        <xs:sequence>
-                          <xs:element name="Parameter" minOccurs="0" maxOccurs="unbounded">
-                            <xs:complexType>
-                              <xs:simpleContent>
-                                <xs:extension base="xs:string">
-                                  <xs:attribute name="IsEvaluated" type="xs:boolean" use="required">
-                                  </xs:attribute>
-                                </xs:extension>
-                              </xs:simpleContent>
-                            </xs:complexType>
-                          </xs:element>
-                        </xs:sequence>
-                        <xs:attribute name="Format" type="xs:string" use="required"/>
-                      </xs:complexType>
-                    </xs:element>
-                    <xs:element name="Label" minOccurs="0" maxOccurs="unbounded">
-                      <xs:complexType>
-                        <xs:attribute name="Name" type="xs:string" use="required"/>
-                      </xs:complexType>
-                    </xs:element>
-                    <xs:element name="Category" minOccurs="0" maxOccurs="unbounded">
-                      <xs:complexType>
-                        <xs:attribute name="Name" type="xs:string" use="required"/>
-                      </xs:complexType>
-                    </xs:element>
-                    <xs:element name="Step" type="Step" minOccurs="0" maxOccurs="unbounded"/>
-                    <xs:element name="StatusDetails" type="xs:string" minOccurs="0" maxOccurs="1"/>
-                  </xs:sequence>
-                  <xs:attribute name="Status" type="ResultStatus" use="required"/>
-                  <xs:attribute name="Name" type="xs:string" use="required"/>
-                  <xs:attribute name="Label" type="xs:string" use="optional"/>
-                  <xs:attribute name="ExecutionStart" type="xs:dateTime" use="required"/>
-                  <xs:attribute name="ExecutionTime" type="xs:duration" use="required"/>
-                  <xs:attribute name="RuntimeId" type="xs:string" use="optional"/>
-                </xs:complexType>
-              </xs:element>
-            </xs:sequence>
-            <xs:attribute name="Name" type="xs:string" use="required"/>
-            <xs:attribute name="Label" type="xs:string" use="optional"/>
-            <xs:attribute name="RuntimeId" type="xs:string" use="optional"/>
-          </xs:complexType>
-        </xs:element>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:simpleType name="ResultStatus">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Passed"/>
-      <xs:enumeration value="Bypassed"/>
-      <xs:enumeration value="Failed"/>
-      <xs:enumeration value="Ignored"/>
-      <xs:enumeration value="NotRun"/>
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:simpleType name="VerificationStatus">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="NotApplicable"/>
-      <xs:enumeration value="Success"/>
-      <xs:enumeration value="Failure"/>
-      <xs:enumeration value="Exception"/>
-      <xs:enumeration value="NotProvided"/>
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:simpleType name="TabularParameterRowType">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Matching"/>
-      <xs:enumeration value="Surplus"/>
-      <xs:enumeration value="Missing"/>
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:complexType name="ParameterValue">
-    <xs:attribute name="Index" type="xs:int" use="optional"/>
-    <xs:attribute name="Status" type="VerificationStatus" use="required"/>
-    <xs:attribute name="Value" type="xs:string" use="optional"/>
-    <xs:attribute name="Expectation" type="xs:string" use="optional"/>
-    <xs:attribute name="Message" type="xs:string" use="optional"/>
-  </xs:complexType>
-  <xs:complexType name="Step">
-    <xs:sequence>
-      <xs:element name="StatusDetails" type="xs:string" minOccurs="0" maxOccurs="1"/>
-      <xs:element name="StepName" minOccurs="0" maxOccurs="1">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="Parameter" minOccurs="0" maxOccurs="unbounded">
-              <xs:complexType>
-                <xs:simpleContent>
-                  <xs:extension base="xs:string">
-                    <xs:attribute name="IsEvaluated" type="xs:boolean" use="required">
-                    </xs:attribute>
-                  </xs:extension>
-                </xs:simpleContent>
-              </xs:complexType>
-            </xs:element>
-          </xs:sequence>
-          <xs:attribute name="StepType" type="xs:string" use="optional"/>
-          <xs:attribute name="Format" type="xs:string" use="required"/>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="Parameter" minOccurs="0" maxOccurs="unbounded">
-        <xs:complexType>
-          <xs:choice>
-            <xs:element name="Value" type="ParameterValue"/>
-            <xs:element name="Table">
-              <xs:complexType>
-                <xs:sequence>
-                  <xs:element name="Column" minOccurs="0" maxOccurs="unbounded">
-                    <xs:complexType>
-                      <xs:attribute name="Index" type="xs:int" use="required"/>
-                      <xs:attribute name="Name" type="xs:string" use="required"/>
-                      <xs:attribute name="IsKey" type="xs:boolean" use="required"/>
-                    </xs:complexType>
-                  </xs:element>
-                  <xs:element name="Row" minOccurs="0" maxOccurs="unbounded">
-                    <xs:complexType>
-                      <xs:sequence>
-                        <xs:element name="Value" minOccurs="0" maxOccurs="unbounded" type="ParameterValue"/>
-                      </xs:sequence>
-                      <xs:attribute name="Status" type="VerificationStatus" use="required"/>
-                      <xs:attribute name="Type" type="TabularParameterRowType" use="required"/>
-                      <xs:attribute name="Message" type="xs:string" use="optional"/>
-                    </xs:complexType>
-                  </xs:element>
-                </xs:sequence>
-                <xs:attribute name="Status" type="VerificationStatus" use="required"/>
-                <xs:attribute name="Message" type="xs:string" use="optional"/>
-              </xs:complexType>
-            </xs:element>
-            <xs:element name="Tree">
-	            <xs:complexType>
-		            <xs:sequence>
-			            <xs:element name="Node" minOccurs="0" maxOccurs="unbounded">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="2.2">
+	<xs:element name="TestResults">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Summary" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="TestSuite" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:attribute name="Name" type="xs:string" use="required" />
+									<xs:attribute name="Version" type="xs:string" use="required" />
+									<xs:attribute name="Description" type="xs:string" use="required" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Features" minOccurs="1" maxOccurs="1">
+								<xs:complexType>
+									<xs:attribute name="Count" type="xs:int" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Scenarios" minOccurs="1" maxOccurs="1">
+								<xs:complexType>
+									<xs:attribute name="Count" type="xs:int" use="required" />
+									<xs:attribute name="Passed" type="xs:int" use="required" />
+									<xs:attribute name="Bypassed" type="xs:int" use="required" />
+									<xs:attribute name="Failed" type="xs:int" use="required" />
+									<xs:attribute name="Ignored" type="xs:int" use="required" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Steps" minOccurs="1" maxOccurs="1">
+								<xs:complexType>
+									<xs:attribute name="Count" type="xs:int" use="required" />
+									<xs:attribute name="Passed" type="xs:int" use="required" />
+									<xs:attribute name="Bypassed" type="xs:int" use="required" />
+									<xs:attribute name="Failed" type="xs:int" use="required" />
+									<xs:attribute name="Ignored" type="xs:int" use="required" />
+									<xs:attribute name="NotRun" type="xs:int" use="required" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="LightBDDAssemblies" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Assembly" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="Name" type="xs:string" use="required"/>
+												<xs:attribute name="Version" type="xs:string" use="required"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="TestExecutionStart" type="xs:dateTime" use="required"/>
+						<xs:attribute name="TestExecutionEnd" type="xs:dateTime" use="required"/>
+						<xs:attribute name="TestExecutionTime" type="xs:duration" use="required"/>
+						<xs:attribute name="OverallStatus" type="ResultStatus" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Feature" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Label" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="Name" type="xs:string" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+							<xs:element name="Scenario" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Name" minOccurs="0" maxOccurs="1">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Parameter" minOccurs="0" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:simpleContent>
+																<xs:extension base="xs:string">
+																	<xs:attribute name="IsEvaluated" type="xs:boolean" use="required">
+																	</xs:attribute>
+																</xs:extension>
+															</xs:simpleContent>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+												<xs:attribute name="Format" type="xs:string" use="required"/>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="Label" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="Name" type="xs:string" use="required"/>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="Category" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="Name" type="xs:string" use="required"/>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="Step" type="Step" minOccurs="0" maxOccurs="unbounded"/>
+										<xs:element name="StatusDetails" type="xs:string" minOccurs="0" maxOccurs="1"/>
+									</xs:sequence>
+									<xs:attribute name="Status" type="ResultStatus" use="required"/>
+									<xs:attribute name="Name" type="xs:string" use="required"/>
+									<xs:attribute name="Label" type="xs:string" use="optional"/>
+									<xs:attribute name="ExecutionStart" type="xs:dateTime" use="required"/>
+									<xs:attribute name="ExecutionTime" type="xs:duration" use="required"/>
+									<xs:attribute name="RuntimeId" type="xs:string" use="optional"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="Name" type="xs:string" use="required"/>
+						<xs:attribute name="Label" type="xs:string" use="optional"/>
+						<xs:attribute name="RuntimeId" type="xs:string" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="ResultStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Passed"/>
+			<xs:enumeration value="Bypassed"/>
+			<xs:enumeration value="Failed"/>
+			<xs:enumeration value="Ignored"/>
+			<xs:enumeration value="NotRun"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VerificationStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NotApplicable"/>
+			<xs:enumeration value="Success"/>
+			<xs:enumeration value="Failure"/>
+			<xs:enumeration value="Exception"/>
+			<xs:enumeration value="NotProvided"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TabularParameterRowType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Matching"/>
+			<xs:enumeration value="Surplus"/>
+			<xs:enumeration value="Missing"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ParameterValue">
+		<xs:attribute name="Index" type="xs:int" use="optional"/>
+		<xs:attribute name="Status" type="VerificationStatus" use="required"/>
+		<xs:attribute name="Value" type="xs:string" use="optional"/>
+		<xs:attribute name="Expectation" type="xs:string" use="optional"/>
+		<xs:attribute name="Message" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="Step">
+		<xs:sequence>
+			<xs:element name="StatusDetails" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="StepName" minOccurs="0" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Parameter" minOccurs="0" maxOccurs="unbounded">
 							<xs:complexType>
-								<xs:attribute name="Path" type="xs:string" use="required"/>
+								<xs:simpleContent>
+									<xs:extension base="xs:string">
+										<xs:attribute name="IsEvaluated" type="xs:boolean" use="required">
+										</xs:attribute>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="StepType" type="xs:string" use="optional"/>
+					<xs:attribute name="Format" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Parameter" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="Value" type="ParameterValue"/>
+						<xs:element name="Table">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Column" minOccurs="0" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:attribute name="Index" type="xs:int" use="required"/>
+											<xs:attribute name="Name" type="xs:string" use="required"/>
+											<xs:attribute name="IsKey" type="xs:boolean" use="required"/>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="Row" minOccurs="0" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Value" minOccurs="0" maxOccurs="unbounded" type="ParameterValue"/>
+											</xs:sequence>
+											<xs:attribute name="Status" type="VerificationStatus" use="required"/>
+											<xs:attribute name="Type" type="TabularParameterRowType" use="required"/>
+											<xs:attribute name="Message" type="xs:string" use="optional"/>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
 								<xs:attribute name="Status" type="VerificationStatus" use="required"/>
-								<xs:attribute name="Value" type="xs:string" use="optional"/>
-								<xs:attribute name="Expectation" type="xs:string" use="optional"/>
 								<xs:attribute name="Message" type="xs:string" use="optional"/>
 							</xs:complexType>
-			            </xs:element>
-		            </xs:sequence>
-		            <xs:attribute name="Status" type="VerificationStatus" use="required"/>
-		            <xs:attribute name="Message" type="xs:string" use="optional"/>
-	            </xs:complexType>
-            </xs:element>
-          </xs:choice>
-          <xs:attribute name="Name" type="xs:string" use="required"/>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="Comment" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-        <xs:element name="FileAttachment" minOccurs="0" maxOccurs="unbounded">
-            <xs:complexType>
-                <xs:attribute name="Name" type="xs:string" use="required"/>
-                <xs:attribute name="Path" type="xs:string" use="required"/>
-            </xs:complexType>
-        </xs:element>
-      <xs:element name="SubStep" type="Step" minOccurs="0" maxOccurs="unbounded"/>
-    </xs:sequence>
-    <xs:attribute name="Status" type="ResultStatus" use="required"/>
-    <xs:attribute name="Number" type="xs:int" use="required"/>
-    <xs:attribute name="Name" type="xs:string" use="required"/>
-    <xs:attribute name="ExecutionStart" type="xs:dateTime" use="optional"/>
-    <xs:attribute name="ExecutionTime" type="xs:duration" use="optional"/>
-    <xs:attribute name="GroupPrefix" type="xs:string" use="optional"/>
-    <xs:attribute name="RuntimeId" type="xs:string" use="optional"/>
-  </xs:complexType>
+						</xs:element>
+						<xs:element name="Tree">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Node" minOccurs="0" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:attribute name="Path" type="xs:string" use="required"/>
+											<xs:attribute name="Status" type="VerificationStatus" use="required"/>
+											<xs:attribute name="Value" type="xs:string" use="optional"/>
+											<xs:attribute name="Expectation" type="xs:string" use="optional"/>
+											<xs:attribute name="Message" type="xs:string" use="optional"/>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="Status" type="VerificationStatus" use="required"/>
+								<xs:attribute name="Message" type="xs:string" use="optional"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:choice>
+					<xs:attribute name="Name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Comment" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="FileAttachment" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:attribute name="Name" type="xs:string" use="required"/>
+					<xs:attribute name="Path" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="SubStep" type="Step" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="Status" type="ResultStatus" use="required"/>
+		<xs:attribute name="Number" type="xs:int" use="required"/>
+		<xs:attribute name="Name" type="xs:string" use="required"/>
+		<xs:attribute name="ExecutionStart" type="xs:dateTime" use="optional"/>
+		<xs:attribute name="ExecutionTime" type="xs:duration" use="optional"/>
+		<xs:attribute name="GroupPrefix" type="xs:string" use="optional"/>
+		<xs:attribute name="RuntimeId" type="xs:string" use="optional"/>
+	</xs:complexType>
 </xs:schema>

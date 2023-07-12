@@ -359,13 +359,13 @@ namespace LightBDD.UnitTests.Helpers
 
         public class TestTestRunInfo : ITestRunInfo
         {
-            private static readonly AssemblyVersion[] Versions = new[] { typeof(IBddRunner).Assembly, typeof(ITestRunInfo).Assembly }
-                .Select(x => new AssemblyVersion(x)).ToArray();
+            private static readonly AssemblyInfo[] Versions = new[] { typeof(IBddRunner).Assembly, typeof(ITestRunInfo).Assembly }
+                .Select(AssemblyInfo.From).ToArray();
 
             public INameInfo Name => new TestNameInfo { FormattedName = TestSuite.Name, NameFormat = TestSuite.Name };
             public Guid RuntimeId { get; } = Guid.Parse("33333333-5555-3333-3333-333333333333");
             public TestSuite TestSuite { get; set; } = TestSuite.Create("Random.Tests", new Version(1, 2, 3), "Foo bar");
-            public IReadOnlyList<AssemblyVersion> LightBddVersions => Versions;
+            public IReadOnlyList<AssemblyInfo> LightBddAssemblies => Versions;
         }
         public class TestFeatureInfo : IFeatureInfo
         {

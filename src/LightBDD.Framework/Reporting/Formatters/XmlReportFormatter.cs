@@ -251,12 +251,15 @@ namespace LightBDD.Framework.Reporting.Formatters
         private static XElement ToSummaryXElement(ITestRunResult result)
         {
             var features = result.Features;
+
             var objects = new List<object>
             {
                 new XAttribute("TestExecutionStart", result.ExecutionTime.Start),
                 new XAttribute("TestExecutionEnd", result.ExecutionTime.End),
                 new XAttribute("TestExecutionTime", result.ExecutionTime.Duration),
-                new XElement("Features", new object[] {new XAttribute("Count", features.Count)}),
+                new XAttribute("OverallStatus", result.OverallStatus),
+                ToXElement(result.Info.TestSuite),
+                new XElement("Features", new XAttribute("Count", features.Count)),
                 new XElement("Scenarios", new XAttribute("Count", features.CountScenarios()),
                     new XAttribute("Passed", features.CountScenariosWithStatus(ExecutionStatus.Passed)),
                     new XAttribute("Bypassed", features.CountScenariosWithStatus(ExecutionStatus.Bypassed)),
@@ -267,10 +270,30 @@ namespace LightBDD.Framework.Reporting.Formatters
                     new XAttribute("Bypassed", features.CountStepsWithStatus(ExecutionStatus.Bypassed)),
                     new XAttribute("Failed", features.CountStepsWithStatus(ExecutionStatus.Failed)),
                     new XAttribute("Ignored", features.CountStepsWithStatus(ExecutionStatus.Ignored)),
-                    new XAttribute("NotRun", features.CountStepsWithStatus(ExecutionStatus.NotRun)))
+                    new XAttribute("NotRun", features.CountStepsWithStatus(ExecutionStatus.NotRun))),
+                ToXElement(result.Info.LightBddAssemblies)
             };
-
             return new XElement("Summary", objects);
+        }
+
+        private static XElement ToXElement(TestSuite suite)
+        {
+            return new XElement("TestSuite",
+                new XAttribute("Name", suite.Name),
+                new XAttribute("Version", suite.Version),
+                new XAttribute("Description", suite.Description));
+        }
+
+        private static XElement ToXElement(IReadOnlyList<AssemblyInfo> lightBddAssemblies)
+        {
+            return new XElement("LightBDDAssemblies", lightBddAssemblies.Select(ToXElement).Cast<object>().ToArray());
+        }
+
+        private static XElement ToXElement(AssemblyInfo assembly)
+        {
+            return new XElement("Assembly",
+                new XAttribute("Name", assembly.Name),
+                new XAttribute("Version", assembly.Version));
         }
     }
 }

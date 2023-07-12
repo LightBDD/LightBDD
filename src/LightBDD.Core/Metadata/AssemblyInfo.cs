@@ -4,18 +4,25 @@ using System.Reflection;
 namespace LightBDD.Core.Metadata;
 
 /// <summary>
-/// Assembly version class.
+/// Assembly information class.
 /// </summary>
-public class AssemblyVersion
+public class AssemblyInfo
 {
     /// <summary>
-    /// Constructor
+    /// Creates AssemblyInfo for given assembly
     /// </summary>
-    public AssemblyVersion(Assembly assembly)
+    public static AssemblyInfo From(Assembly assembly)
     {
         var name = assembly.GetName();
-        Name = name.Name;
-        Version = name.Version;
+        return new AssemblyInfo(
+            name.Name ?? name.FullName,
+            name.Version);
+    }
+
+    private AssemblyInfo(string name, Version version)
+    {
+        Name = name;
+        Version = version;
     }
 
     /// <summary>

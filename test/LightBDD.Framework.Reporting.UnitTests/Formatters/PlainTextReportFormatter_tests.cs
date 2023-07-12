@@ -30,7 +30,7 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
             var text = FormatResults(result);
             TestContext.WriteLine(text);
             const string expectedText = @"Summary:
-	Project             : Random.Tests
+	Test suite          : Random.Tests
 	Overall status      : Failed
 	Execution start time: 2014-09-23 19:21:58 UTC
 	Execution end time  : 2014-09-23 19:23:00 UTC
@@ -111,7 +111,7 @@ Feature: My feature [Label 1]
             var text = FormatResults(result);
             TestContext.WriteLine(text);
             const string expectedText = @"Summary:
-	Project             : Random.Tests
+	Test suite          : Random.Tests
 	Overall status      : Passed
 	Execution start time: 2014-09-23 19:21:58 UTC
 	Execution end time  : 2014-09-23 19:21:58 UTC
@@ -147,7 +147,7 @@ Feature: My feature
             var text = FormatResults(results);
             TestContext.WriteLine(text);
             const string expectedText = @"Summary:
-	Project             : Random.Tests
+	Test suite          : Random.Tests
 	Overall status      : Passed
 	Execution start time: 2014-09-23 19:21:58 UTC
 	Execution end time  : 2014-09-23 19:22:01 UTC
@@ -189,7 +189,7 @@ Feature: My feature2
             var text = FormatResults(results);
             TestContext.WriteLine(text);
             const string expectedText = @"Summary:
-	Project             : Random.Tests
+	Test suite          : Random.Tests
 	Overall status      : Passed
 	Execution start time: 2014-09-23 19:21:57 UTC
 	Execution end time  : 2014-09-23 19:22:02 UTC
@@ -247,7 +247,7 @@ Feature: My Feature
              var text = FormatResults(results);
             TestContext.WriteLine(text);
             const string expectedText = @"Summary:
-	Project             : Random.Tests
+	Test suite          : Random.Tests
 	Overall status      : Failed
 	Execution start time: 2014-09-23 19:21:57 UTC
 	Execution end time  : 2014-09-23 19:21:59 UTC

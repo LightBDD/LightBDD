@@ -205,7 +205,7 @@ namespace LightBDD.Framework.Reporting.Formatters
             writer.WriteLine("Summary:");
             var summary = new Dictionary<string, object>
             {
-                { "Project", testRun.Info.Name.ToString()},
+                { "Test suite", testRun.Info.Name.ToString()},
                 { "Overall status", testRun.OverallStatus },
                 { "Execution start time", testRun.ExecutionTime.Start.ToString("yyyy-MM-dd HH:mm:ss UTC") },
                 { "Execution end time", testRun.ExecutionTime.End.ToString("yyyy-MM-dd HH:mm:ss UTC") },
@@ -222,7 +222,7 @@ namespace LightBDD.Framework.Reporting.Formatters
                 { "Failed steps", features.CountStepsWithStatus(ExecutionStatus.Failed) },
                 { "Ignored steps", features.CountStepsWithStatus(ExecutionStatus.Ignored) },
                 { "Not Run steps", features.CountStepsWithStatus(ExecutionStatus.NotRun) },
-                { "LightBDD versions",GetLightBddVersions(testRun)}
+                { "LightBDD versions", GetLightBddVersions(testRun)}
             };
 
             var maxLength = summary.Keys.Max(k => k.Length);
@@ -236,7 +236,7 @@ namespace LightBDD.Framework.Reporting.Formatters
 
         private static string GetLightBddVersions(ITestRunResult testRun)
         {
-            return string.Join(", ", testRun.Info.LightBddVersions);
+            return string.Join(", ", testRun.Info.LightBddAssemblies);
         }
     }
 }
