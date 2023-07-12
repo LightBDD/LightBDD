@@ -18,7 +18,7 @@ namespace Example.LightBDD.MsTest3
     public class LightBddIntegration
     {
         [AssemblyInitialize]
-        public static void Setup(TestContext testContext) { LightBddScope.Initialize(OnConfigure); }
+        public static void Setup(TestContext testContext) { LightBddScope.Initialize(testContext, OnConfigure); }
         [AssemblyCleanup]
         public static void Cleanup() { LightBddScope.Cleanup(); }
 

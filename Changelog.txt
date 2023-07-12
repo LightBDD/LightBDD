@@ -3,6 +3,7 @@ LightBDD
 
 vNext
 ----------------------------------------
++ #290 (MsTest3)(breaking change) Updated LightBddScope.Initialize() to require either TestContext or Assembly parameter
 + #290 (Framework)(change) Updated Html / Xml and PlainText ReportFormatters to include details of TestRun
 + #290 (Integrations)(change) Updated Fixie3 / Xunit2 / Nunit3 / MsTest3 integrations to capture TestRunInfo details
 + #290 (Core)(new) Added ITestRunInfo and ITestRunResult interfaces to represent the entire LightBDD test run
