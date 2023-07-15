@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="..\Common.props" />
+    <PropertyGroup>
+        <Summary>LightBDD Test Runner</Summary>
+        <Description>Allows discovering and executing LightBDD tests</Description>
+        <TargetFrameworks>net6</TargetFrameworks>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <ProjectReference Include="..\LightBDD.Framework\LightBDD.Framework.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="xunit.core" Version="2.4.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Configuration\" />
+    </ItemGroup>
+</Project>
