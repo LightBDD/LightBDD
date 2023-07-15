@@ -10,9 +10,9 @@ namespace LightBDD.Core.Discovery;
 public class ScenarioCase
 {
     /// <summary>
-    /// Fixture type
+    /// Feature Fixture type
     /// </summary>
-    public TypeInfo FixtureType { get; private set; } = null!;
+    public TypeInfo FeatureFixtureType { get; private set; } = null!;
     /// <summary>
     /// Scenario method
     /// </summary>
@@ -31,7 +31,7 @@ public class ScenarioCase
     /// </summary>
     /// <param name="fixtureType">Fixture type</param>
     /// <param name="scenarioMethod">Scenario method</param>
-    public static ScenarioCase CreateParameterless(TypeInfo fixtureType, MethodInfo scenarioMethod) => new() { FixtureType = fixtureType, ScenarioMethod = scenarioMethod };
+    public static ScenarioCase CreateParameterless(TypeInfo fixtureType, MethodInfo scenarioMethod) => new() { FeatureFixtureType = fixtureType, ScenarioMethod = scenarioMethod };
 
     /// <summary>
     /// Creates parameterized scenario case
@@ -39,12 +39,12 @@ public class ScenarioCase
     /// <param name="fixtureType">Fixture type</param>
     /// <param name="scenarioMethod">Scenario method</param>
     /// <param name="scenarioArguments">Scenario method arguments</param>
-    public static ScenarioCase CreateParameterized(TypeInfo fixtureType, MethodInfo scenarioMethod, object[] scenarioArguments) => new() { FixtureType = fixtureType, ScenarioMethod = scenarioMethod, ScenarioArguments = scenarioArguments };
+    public static ScenarioCase CreateParameterized(TypeInfo fixtureType, MethodInfo scenarioMethod, object[] scenarioArguments) => new() { FeatureFixtureType = fixtureType, ScenarioMethod = scenarioMethod, ScenarioArguments = scenarioArguments };
 
     /// <summary>
     /// Creates parameterized scenario case with arguments provided at runtime.
     /// </summary>
     /// <param name="fixtureType">Fixture type</param>
     /// <param name="scenarioMethod">Scenario method</param>
-    public static ScenarioCase CreateParameterizedAtRuntime(TypeInfo fixtureType, MethodInfo scenarioMethod) => new() { FixtureType = fixtureType, ScenarioMethod = scenarioMethod, RequireArgumentResolutionAtRuntime = true };
+    public static ScenarioCase CreateParameterizedAtRuntime(TypeInfo fixtureType, MethodInfo scenarioMethod) => new() { FeatureFixtureType = fixtureType, ScenarioMethod = scenarioMethod, RequireArgumentResolutionAtRuntime = true };
 }

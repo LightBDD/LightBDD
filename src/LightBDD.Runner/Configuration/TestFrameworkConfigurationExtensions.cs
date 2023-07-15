@@ -1,4 +1,5 @@
-﻿using LightBDD.Core.Formatting.ExceptionFormatting;
+﻿using LightBDD.Core.Configuration;
+using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Framework.Configuration;
 using LightBDD.Runner.Implementation;
 

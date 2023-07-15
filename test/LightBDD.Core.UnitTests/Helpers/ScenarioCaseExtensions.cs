@@ -12,5 +12,5 @@ static class ScenarioCaseExtensions
         actual.Select(Format).ToArray().ShouldBe(expected.Select(Format).ToArray(), true);
     }
 
-    private static string Format(ScenarioCase s) => $"{s.FixtureType}|{s.ScenarioMethod}|{s.RequireArgumentResolutionAtRuntime}|{string.Join(",", s.ScenarioArguments)}";
+    private static string Format(ScenarioCase s) => $"{s.FeatureFixtureType}|{s.ScenarioMethod}|{s.RequireArgumentResolutionAtRuntime}|{string.Join(",", s.ScenarioArguments)}";
 }

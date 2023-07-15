@@ -1,11 +1,10 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Linq;
-using LightBDD.Core.Configuration;
 using LightBDD.Core.Notification;
-using LightBDD.Framework.Notification;
-using LightBDD.Framework.Notification.Implementation;
+using LightBDD.Core.Notification.Implementation;
 
-namespace LightBDD.Framework.Configuration
+namespace LightBDD.Core.Configuration
 {
     /// <summary>
     /// Configuration class allowing to customize scenario progress notification behavior.

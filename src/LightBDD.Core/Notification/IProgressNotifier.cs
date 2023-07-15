@@ -1,4 +1,5 @@
-﻿using LightBDD.Core.Notification.Events;
+﻿#nullable enable
+using LightBDD.Core.Notification.Events;
 
 namespace LightBDD.Core.Notification
 {
