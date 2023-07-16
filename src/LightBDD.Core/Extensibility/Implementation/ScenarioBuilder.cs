@@ -22,6 +22,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         private IEnumerable<StepDescriptor> _steps = Enumerable.Empty<StepDescriptor>();
         private ExecutionContextDescriptor _contextDescriptor = ExecutionContextDescriptor.NoContext;
         private IEnumerable<IScenarioDecorator> _scenarioDecorators = Enumerable.Empty<IScenarioDecorator>();
+        private IScenarioInfo _scenarioInfo;
 
         public ScenarioBuilder(IFeatureInfo featureInfo, object fixture, IntegrationContext integrationContext,
             ExceptionProcessor exceptionProcessor, Action<IScenarioResult> onScenarioFinished)
@@ -55,20 +56,26 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         public ICoreScenarioBuilder WithCapturedScenarioDetailsIfNotSpecified()
         {
-            return _name == null
-                ? WithCapturedScenarioDetails()
-                : this;
+            var metadataProvider = _context.IntegrationContext.MetadataProvider;
+            var scenario = metadataProvider.CaptureCurrentScenario();
+            if (_name == null) WithName(metadataProvider.GetScenarioName(scenario));
+            if (!_labels.Any()) WithLabels(metadataProvider.GetScenarioLabels(scenario.MethodInfo));
+            if (!_categories.Any()) WithCategories(metadataProvider.GetScenarioCategories(scenario.MethodInfo));
+            if (!_scenarioDecorators.Any()) WithScenarioDecorators(metadataProvider.GetScenarioDecorators(scenario));
+            return this;
         }
 
         public ICoreScenarioBuilder WithLabels(string[] labels)
         {
             _labels = labels ?? throw new ArgumentNullException(nameof(labels));
+            _scenarioInfo = null;
             return this;
         }
 
         public ICoreScenarioBuilder WithCategories(string[] categories)
         {
             _categories = categories ?? throw new ArgumentNullException(nameof(categories));
+            _scenarioInfo = null;
             return this;
         }
 
@@ -77,12 +84,14 @@ namespace LightBDD.Core.Extensibility.Implementation
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Unable to create scenario without name", nameof(name));
             _name = new NameInfo(name, Array.Empty<INameParameterInfo>());
+            _scenarioInfo = null;
             return this;
         }
 
         private ICoreScenarioBuilder WithName(INameInfo name)
         {
             _name = name ?? throw new ArgumentNullException(nameof(name));
+            _scenarioInfo = null;
             return this;
         }
 
@@ -107,10 +116,18 @@ namespace LightBDD.Core.Extensibility.Implementation
         public IRunnableScenario Build()
         {
             ValidateContext();
-            return new RunnableScenario(_context, new ScenarioInfo(_featureInfo, _name, _labels, _categories), _steps, _contextDescriptor, GetScenarioDecorators());
+            return new RunnableScenario(_context, _scenarioInfo ?? new ScenarioInfo(_featureInfo, _name, _labels, _categories), _steps, _contextDescriptor, GetScenarioDecorators());
         }
 
         public LightBddConfiguration Configuration => _context.IntegrationContext.Configuration;
+        public ICoreScenarioBuilder WithScenarioDetails(IScenarioInfo scenarioInfo)
+        {
+            _scenarioInfo = scenarioInfo;
+            _name = _scenarioInfo.Name;
+            _labels = scenarioInfo.Labels.ToArray();
+            _categories = scenarioInfo.Categories.ToArray();
+            return this;
+        }
 
         private IEnumerable<IScenarioDecorator> GetScenarioDecorators()
         {

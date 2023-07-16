@@ -14,7 +14,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
         private Func<object> _contextProvider;
         private bool _takeContextOwnership;
         private Func<IDependencyResolver, object> _contextResolver;
-        private Func<ICoreScenarioBuilder> _integrate;
+        private readonly Func<ICoreScenarioBuilder> _integrate;
         public TestSyntaxRunner(IBddRunner runner)
         {
             _integrate = () => runner.Integrate().Core;
@@ -68,7 +68,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             try
             {
                 NewScenario()
-                    .WithCapturedScenarioDetails()
+                    .WithCapturedScenarioDetailsIfNotSpecified()
                     .AddSteps(steps)
                     .Build()
                     .ExecuteAsync()
@@ -85,7 +85,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             try
             {
                 await NewScenario()
-                    .WithCapturedScenarioDetails()
+                    .WithCapturedScenarioDetailsIfNotSpecified()
                     .AddSteps(steps)
                     .Build()
                     .ExecuteAsync();

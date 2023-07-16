@@ -272,7 +272,7 @@ namespace LightBDD.Core.Extensibility
         /// <returns></returns>
         public ITestRunInfo GetTestRunInfo()
         {
-            return new TestRunInfo(GetTestSuite(), GetLightBDDAssemblies().ToArray());
+            return new TestRunInfo(GetTestSuite(), GetLightBDDAssemblies().Distinct().ToArray());
         }
 
         /// <summary>

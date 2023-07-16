@@ -75,13 +75,14 @@ namespace LightBDD.Core.Execution
         //TODO: simplify
         private async Task<IScenarioResult> ExecuteScenario(IFeatureInfo featureInfo, ScenarioCase scenario, Context ctx)
         {
-            IScenarioResult scenarioResult = null;
             object fixture = null;
+            var scenarioInfo = CreateScenarioInfo(featureInfo, scenario, ctx);
+            IScenarioResult scenarioResult = new ScenarioResult(scenarioInfo);
             try
             {
                 fixture = CreateInstance(scenario.FeatureFixtureType);
                 InitializeTestContextProvider(scenario);
-                ScenarioBuilderContext.SetCurrent(CreateScenarioBuilder(featureInfo, fixture, ctx, x => scenarioResult = x));
+                ScenarioBuilderContext.SetCurrent(CreateScenarioBuilder(featureInfo, fixture, ctx, x => scenarioResult = x).WithScenarioDetails(scenarioInfo));
                 var result = scenario.ScenarioMethod.Invoke(fixture, scenario.ScenarioArguments);
                 //TODO: improve?
                 if (result is Task taskResult)
@@ -89,7 +90,8 @@ namespace LightBDD.Core.Execution
             }
             catch (Exception ex)
             {
-                scenarioResult ??= CreateScenarioResult(featureInfo, scenario, ex);
+                if (scenarioResult.Status == ExecutionStatus.NotRun)
+                    scenarioResult = CreateScenarioResult(scenarioInfo, ex);
             }
             finally
             {
@@ -99,6 +101,14 @@ namespace LightBDD.Core.Execution
             }
 
             return scenarioResult;
+        }
+
+        private static ScenarioInfo CreateScenarioInfo(IFeatureInfo featureInfo, ScenarioCase scenario, Context ctx)
+        {
+            return new ScenarioInfo(featureInfo,
+                ctx.MetadataProvider.GetScenarioName(new ScenarioDescriptor(scenario.ScenarioMethod, scenario.ScenarioArguments)),
+                ctx.MetadataProvider.GetScenarioLabels(scenario.ScenarioMethod),
+                ctx.MetadataProvider.GetScenarioCategories(scenario.ScenarioMethod));
         }
 
         protected void InitializeTestContextProvider(ScenarioCase scenario)
@@ -119,11 +129,9 @@ namespace LightBDD.Core.Execution
             return Activator.CreateInstance(featureFixtureType);
         }
 
-        private static ScenarioResult CreateScenarioResult(IFeatureInfo featureInfo, ScenarioCase scenario, Exception ex)
+        private static ScenarioResult CreateScenarioResult(IScenarioInfo scenarioInfo, Exception ex)
         {
-            var result = new ScenarioResult(new ScenarioInfo(featureInfo,
-                new NameInfo(scenario.ScenarioMethod.Name, Array.Empty<INameParameterInfo>()),
-                Array.Empty<string>(), Array.Empty<string>()));
+            var result = new ScenarioResult(scenarioInfo);
             result.UpdateException(ex);
             result.UpdateScenarioResult(ExecutionStatus.Failed, ex.Message);
             return result;
