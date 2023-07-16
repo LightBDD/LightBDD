@@ -3,6 +3,7 @@ using LightBDD.Core.Formatting;
 using Moq;
 using NUnit.Framework;
 using System;
+using Shouldly;
 
 namespace LightBDD.Framework.UnitTests.Formatting.Configuration
 {
@@ -10,10 +11,10 @@ namespace LightBDD.Framework.UnitTests.Formatting.Configuration
     public class NameFormatterConfiguration_tests
     {
         [Test]
-        public void It_should_throw_if_formatter_was_not_set()
+        public void It_should_return_dummy_formatter_by_default()
         {
-            var ex = Assert.Throws<InvalidOperationException>(() => new NameFormatterConfiguration().GetFormatter());
-            Assert.That(ex.Message, Is.EqualTo("INameFormatter was not specified."));
+            var formatter = new NameFormatterConfiguration().GetFormatter();
+            formatter.FormatName("abc_def ghi").ShouldBe("abc_def ghi");
         }
 
         [Test]

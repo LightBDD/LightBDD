@@ -1,5 +1,6 @@
 ﻿using LightBDD.Core.Formatting;
 using System;
+using LightBDD.Core.Formatting.Implementation;
 
 namespace LightBDD.Core.Configuration
 {
@@ -8,7 +9,7 @@ namespace LightBDD.Core.Configuration
     /// </summary>
     public class NameFormatterConfiguration : FeatureConfiguration
     {
-        private INameFormatter _formatter;
+        private INameFormatter _formatter = NoNameFormatter.Instance;
 
         /// <summary>
         /// Returns formatter.
