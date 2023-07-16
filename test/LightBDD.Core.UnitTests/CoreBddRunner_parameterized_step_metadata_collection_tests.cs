@@ -20,25 +20,16 @@ namespace LightBDD.Core.UnitTests
     [TestFixture]
     public class CoreBddRunner_parameterized_step_metadata_collection_tests : Steps
     {
-        private IBddRunner _runner;
-        private IFeatureRunner _feature;
-
-        [SetUp]
-        public void SetUp()
-        {
-            _feature = TestableFeatureRunnerRepository.GetRunner(GetType());
-            _runner = _feature.GetBddRunner(this);
-        }
+        IScenarioResult ExecuteScenario(Action<ICoreScenarioBuilder> onRun) => TestableExecutionPipeline.Default.ExecuteScenario(this, onRun);
 
         [Test]
         public void It_should_capture_all_steps()
         {
-            _runner.Test().TestScenario(
+            var steps = ExecuteScenario(x => x.Test().TestScenario(
                 TestStep.CreateAsync(Given_step_with_parameter, "abc"),
                 TestStep.CreateAsync(When_step_with_parameter, 123),
-                TestStep.CreateAsync(Then_step_with_parameter, 3.15));
+                TestStep.CreateAsync(Then_step_with_parameter, 3.15))).GetSteps();
 
-            var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
                 new StepResultExpectation(1, 3, "GIVEN step with parameter \"abc\"", ExecutionStatus.Passed),
                 new StepResultExpectation(2, 3, "WHEN step with parameter \"123\"", ExecutionStatus.Passed),
@@ -49,16 +40,15 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_capture_steps_with_parameters_inserted_in_proper_places()
         {
-            _runner.Test().TestScenario(
+            var steps = ExecuteScenario(x => x.Test().TestScenario(
                 TestStep.CreateAsync(Method_with_replaced_parameter_PARAM_in_name, "abc"),
                 TestStep.CreateAsync(Method_with_inserted_parameter_param_in_name, "abc"),
                 TestStep.CreateAsync(Method_with_appended_parameter_at_the_end_of_name, "abc"),
                 TestStep.CreateAsync(ExtensionSteps.Extension_method_with_parameter_PARAM, "target", "abc"),
                 TestStep.CreateAsync(Method_with_param1_param2_param3, "abc", "def", "123"),
                 TestStep.CreateAsync(Method_with_appended_and_normal_param, "abc", "def", "123")
-                );
+                )).GetSteps();
 
-            var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
                 new StepResultExpectation(1, 6, "Method with replaced parameter \"abc\" in name", ExecutionStatus.Passed),
                 new StepResultExpectation(2, 6, "Method with inserted parameter param \"abc\" in name", ExecutionStatus.Passed),
@@ -72,13 +62,12 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_capture_steps_with_parameters()
         {
-            _runner.Test().TestScenario(
+            var steps = ExecuteScenario(x => x.Test().TestScenario(
                 TestStep.CreateAsync(Given_step_with_parameter, () => "abc"),
                 TestStep.CreateAsync(Given_step_with_parameter, () => (string)null),
                 TestStep.CreateAsync(When_step_with_parameter, () => 1),
-                TestStep.CreateAsync(Then_step_with_parameter, () => 3.14));
+                TestStep.CreateAsync(Then_step_with_parameter, () => 3.14))).GetSteps();
 
-            var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
                 new StepResultExpectation(1, 4, "GIVEN step with parameter \"abc\"", ExecutionStatus.Passed),
                 new StepResultExpectation(2, 4, "AND step with parameter \"<null>\"", ExecutionStatus.Passed),
@@ -90,17 +79,11 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_capture_steps_with_parameters_and_failing_parameter_evaluation()
         {
-            var ex = Assert.Throws<InvalidOperationException>(() =>
-            {
-                _runner.Test().TestScenario(
+            var steps = ExecuteScenario(x => x.Test().TestScenario(
                     TestStep.CreateAsync(Given_step_with_parameter, () => "def"),
                     TestStep.CreateAsync(When_step_with_parameter, ThrowingParameterInvocation),
-                    TestStep.CreateAsync(Then_step_with_parameter, () => 3.27));
-            });
+                    TestStep.CreateAsync(Then_step_with_parameter, () => 3.27))).GetSteps();
 
-            Assert.That(ex.Message, Is.EqualTo(ParameterExceptionReason));
-
-            var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
                 new StepResultExpectation(1, 3, "GIVEN step with parameter \"def\"", ExecutionStatus.Passed),
                 new StepResultExpectation(2, 3, "WHEN step with parameter \"<?>\"", ExecutionStatus.Failed, $"Step 2: {ParameterExceptionReason}"),
@@ -111,17 +94,11 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_capture_steps_with_parameters_and_failing_step()
         {
-            var ex = Assert.Throws<InvalidOperationException>(() =>
-            {
-                _runner.Test().TestScenario(
+            var steps = ExecuteScenario(x => x.Test().TestScenario(
                     TestStep.CreateAsync(Given_step_with_parameter, () => "abc"),
                     TestStep.CreateAsync(When_step_with_parameter_throwing_exception, () => 5),
-                    TestStep.CreateAsync(Then_step_with_parameter, () => 3.2));
-            });
+                    TestStep.CreateAsync(Then_step_with_parameter, () => 3.2))).GetSteps();
 
-            Assert.That(ex.Message, Is.EqualTo(ExceptionReason));
-
-            var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
                 new StepResultExpectation(1, 3, "GIVEN step with parameter \"abc\"", ExecutionStatus.Passed),
                 new StepResultExpectation(2, 3, "WHEN step with parameter \"5\" throwing exception", ExecutionStatus.Failed, $"Step 2: {ExceptionReason}"),
@@ -132,17 +109,11 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_capture_constant_parameters_even_if_step_was_not_executed()
         {
-            var ex = Assert.Throws<InvalidOperationException>(() =>
-            {
-                _runner.Test().TestScenario(
+            var steps = ExecuteScenario(x => x.Test().TestScenario(
                     TestStep.CreateAsync(Given_step_with_parameter, () => "def"),
                     TestStep.CreateAsync(When_step_with_parameter, ThrowingParameterInvocation),
-                    TestStep.CreateAsync(Then_step_with_parameter, 3.27));
-            });
+                    TestStep.CreateAsync(Then_step_with_parameter, 3.27))).GetSteps();
 
-            Assert.That(ex.Message, Is.EqualTo(ParameterExceptionReason));
-
-            var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
             StepResultExpectation.AssertEqual(steps,
                 new StepResultExpectation(1, 3, "GIVEN step with parameter \"def\"", ExecutionStatus.Passed),
                 new StepResultExpectation(2, 3, "WHEN step with parameter \"<?>\"", ExecutionStatus.Failed, $"Step 2: {ParameterExceptionReason}"),
@@ -153,8 +124,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void It_should_capture_step_initialization_issues_in_scenario_execution_results()
         {
-            Assert.Throws<InvalidOperationException>(() => _runner.Test().TestScenario(GetFailingStepDescriptors("some reason")));
-            var result = _feature.GetFeatureResult().GetScenarios().Single();
+            var result = ExecuteScenario(x => x.Test().TestScenario(GetFailingStepDescriptors("some reason")));
             Assert.That(result.Status, Is.EqualTo(ExecutionStatus.Failed));
             Assert.That(result.StatusDetails, Is.EqualTo("Scenario: Scenario steps initialization failed: some reason"));
         }
@@ -164,10 +134,8 @@ namespace LightBDD.Core.UnitTests
         {
             var expectedErrorMessage = "Unable to format 'param' parameter of step '1/1 Method with wrong formatter param \"<?>\"': Input string was not in a correct format.";
 
-            var ex = Assert.Throws<InvalidOperationException>(() => _runner.Test().TestScenario(TestStep.CreateAsync(Method_with_wrong_formatter_param, () => "abc")));
-            Assert.That(ex.Message, Is.EqualTo(expectedErrorMessage));
+            var result = ExecuteScenario(x => x.Test().TestScenario(TestStep.CreateAsync(Method_with_wrong_formatter_param, () => "abc")));
 
-            var result = _feature.GetFeatureResult().GetScenarios().Single();
             Assert.That(result.Status, Is.EqualTo(ExecutionStatus.Failed));
             Assert.That(result.StatusDetails, Is.EqualTo($"Step 1: {expectedErrorMessage}"));
 
@@ -179,7 +147,7 @@ namespace LightBDD.Core.UnitTests
         [MultiAssert]
         public void It_should_capture_inline_complex_parameters_by_value_and_all_others_by_parameter_reference()
         {
-            Assert.Throws<AggregateException>(() => _runner.Test().TestScenario(
+            var result = ExecuteScenario(x => x.Test().TestScenario(
                 TestStep.CreateAsync(Method_with_inserted_parameter_param_in_name, () => Table.For(1, 2, 3)),
                 TestStep.CreateAsync(Method_with_inserted_parameter_param_in_name, () => Table.ExpectData(1, 2, 3)),
                 TestStep.CreateAsync(Method_with_inserted_parameter_param_in_name, () => Tree.For("abc")),
@@ -187,7 +155,7 @@ namespace LightBDD.Core.UnitTests
                 TestStep.CreateAsync(Method_with_inserted_parameter_param_in_name, () => new Verifiable<string>(Expect.To.Equal("abc")))
             ));
 
-            var stepNames = _feature.GetFeatureResult().GetScenarios().Single().GetSteps().Select(s => s.Info.Name.ToString()).ToArray();
+            var stepNames = result.GetSteps().Select(s => s.Info.Name.ToString()).ToArray();
 
             Assert.That(stepNames, Is.EqualTo(new[]
             {

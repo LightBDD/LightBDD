@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
+using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework.Extensibility;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
@@ -13,8 +14,8 @@ namespace LightBDD.Core.UnitTests;
 [TestFixture]
 public class CoreBddRunner_execution_extension_setup_and_teardown_tests
 {
-    private IFeatureRunner _feature;
     private Fixture _fixture;
+    private ICoreScenarioBuilder CreateScenarioBuilder() => TestableExecutionPipeline.Default.CreateScenarioBuilder(_fixture);
 
     class Fixture : IScenarioSetUp, IScenarioTearDown
     {
@@ -54,14 +55,13 @@ public class CoreBddRunner_execution_extension_setup_and_teardown_tests
     [SetUp]
     public void SetUp()
     {
-        _feature = TestableFeatureRunnerRepository.GetRunner(typeof(Fixture));
         _fixture = new Fixture();
     }
 
     [Test]
     public void Runner_should_call_OnScenarioSetUp_and_OnScenarioTearDown_when_provided()
     {
-        _feature.GetBddRunner(_fixture).Test().TestScenario(_fixture.Pass);
+        CreateScenarioBuilder().Test().TestScenario(_fixture.Pass);
         Assert.That(_fixture.SetUpCalled, Is.True);
         Assert.That(_fixture.TearDownCalled, Is.True);
     }
@@ -69,7 +69,7 @@ public class CoreBddRunner_execution_extension_setup_and_teardown_tests
     [Test]
     public void Runner_should_call_OnScenarioTearDown_on_step_failure()
     {
-        Assert.Throws<IOException>(() => _feature.GetBddRunner(_fixture).Test().TestScenario(_fixture.Fail));
+        Assert.Throws<IOException>(() => CreateScenarioBuilder().Test().TestScenario(_fixture.Fail));
         Assert.That(_fixture.SetUpCalled, Is.True);
         Assert.That(_fixture.TearDownCalled, Is.True);
     }
@@ -78,7 +78,7 @@ public class CoreBddRunner_execution_extension_setup_and_teardown_tests
     public void Runner_should_call_OnScenarioTearDown_on_SetUp_failure_and_propagate_SetUp_exception_without_calling_steps()
     {
         _fixture.ThrowOnSetUp = true;
-        var ex = Assert.Throws<InvalidOperationException>(() => _feature.GetBddRunner(_fixture).Test().TestScenario(_fixture.Pass));
+        var ex = Assert.Throws<InvalidOperationException>(() => CreateScenarioBuilder().Test().TestScenario(_fixture.Pass));
         Assert.That(ex.Message, Is.EqualTo("OnSetUp"));
         Assert.That(_fixture.SetUpCalled, Is.True);
         Assert.That(_fixture.TearDownCalled, Is.True);
@@ -89,7 +89,7 @@ public class CoreBddRunner_execution_extension_setup_and_teardown_tests
     public void Runner_should_propagate_steps_and_TearDown_exceptions()
     {
         _fixture.ThrowOnTearDown = true;
-        var ex = Assert.Throws<AggregateException>(() => _feature.GetBddRunner(_fixture).Test().TestScenario(_fixture.Fail));
+        var ex = Assert.Throws<AggregateException>(() => CreateScenarioBuilder().Test().TestScenario(_fixture.Fail));
         Assert.That(ex.Message, Does.Contain("One or more errors occurred."));
         Assert.That(ex.InnerExceptions.Select(e => e.Message).ToArray(), Is.EquivalentTo(new[] { "IO", "OnTearDown" }));
         Assert.That(_fixture.SetUpCalled, Is.True);

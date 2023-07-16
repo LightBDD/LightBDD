@@ -36,7 +36,7 @@ namespace LightBDD.Core.Execution
 
         public async Task<ITestRunResult> Execute(IEnumerable<ScenarioCase> scenarios, CancellationToken cancellationToken = default)
         {
-            var ctx = new Context(_testAssembly, Configure(), cancellationToken);
+            using var ctx = (Context)CreateContext(cancellationToken);
             var testRunInfo = ctx.MetadataProvider.GetTestRunInfo();
 
             var testRunStartTime = ctx.Timer.GetTime();
@@ -48,6 +48,12 @@ namespace LightBDD.Core.Execution
             var result = new TestRunResult(testRunInfo, testRunEndTime.GetExecutionTime(testRunStartTime), results);
             ctx.ProgressNotifier.Notify(new TestRunFinished(testRunEndTime, result));
             return result;
+        }
+
+        //TODO: rework
+        protected IDisposable CreateContext(CancellationToken cancellationToken)
+        {
+            return new Context(_testAssembly, Configure(), cancellationToken);
         }
 
         private async Task<IFeatureResult> ExecuteFeature(IGrouping<TypeInfo, ScenarioCase> featureScenarios, Context ctx)
@@ -74,7 +80,8 @@ namespace LightBDD.Core.Execution
             try
             {
                 fixture = CreateInstance(scenario.FeatureFixtureType);
-                ScenarioBuilderContext.SetCurrent(new ScenarioBuilder(featureInfo, fixture, ctx.Integration, ctx.ExceptionProcessor, x => scenarioResult = x));
+                InitializeTestContextProvider(scenario);
+                ScenarioBuilderContext.SetCurrent(CreateScenarioBuilder(featureInfo, fixture, ctx, x => scenarioResult = x));
                 var result = scenario.ScenarioMethod.Invoke(fixture, scenario.ScenarioArguments);
                 //TODO: improve?
                 if (result is Task taskResult)
@@ -87,10 +94,24 @@ namespace LightBDD.Core.Execution
             finally
             {
                 ScenarioBuilderContext.SetCurrent(null);
+                TestContextProvider.Clear();
                 (fixture as IDisposable)?.Dispose();
             }
 
             return scenarioResult;
+        }
+
+        protected void InitializeTestContextProvider(ScenarioCase scenario)
+        {
+            //TODO: rework
+            TestContextProvider.Initialize(scenario.ScenarioMethod, scenario.ScenarioArguments);
+        }
+
+        protected ICoreScenarioBuilder CreateScenarioBuilder(IFeatureInfo featureInfo, object fixture, object context, Action<IScenarioResult> onScenarioFinished)
+        {
+            //TODO: rework
+            var ctx = (Context)context;
+            return new ScenarioBuilder(featureInfo, fixture, ctx.Integration, ctx.ExceptionProcessor, onScenarioFinished);
         }
 
         private object CreateInstance(TypeInfo featureFixtureType)
@@ -104,7 +125,7 @@ namespace LightBDD.Core.Execution
                 new NameInfo(scenario.ScenarioMethod.Name, Array.Empty<INameParameterInfo>()),
                 Array.Empty<string>(), Array.Empty<string>()));
             result.UpdateException(ex);
-            result.UpdateScenarioResult(ExecutionStatus.Failed,ex.Message);
+            result.UpdateScenarioResult(ExecutionStatus.Failed, ex.Message);
             return result;
         }
 
@@ -126,7 +147,7 @@ namespace LightBDD.Core.Execution
             return cfg;
         }
 
-        private class Context
+        private class Context : IDisposable
         {
             public Context(Assembly testAssembly, LightBddConfiguration configuration, CancellationToken cancellationToken)
             {
@@ -144,6 +165,11 @@ namespace LightBDD.Core.Execution
             public readonly IntegrationContext Integration;
             public readonly ExceptionProcessor ExceptionProcessor;
             public IProgressNotifier ProgressNotifier => Configuration.Get<ProgressNotifierConfiguration>().Notifier;
+
+            public void Dispose()
+            {
+                Configuration.DependencyContainerConfiguration().DependencyContainer.Dispose();
+            }
         }
 
         //TODO: remove
@@ -159,16 +185,16 @@ namespace LightBDD.Core.Execution
             public override CoreMetadataProvider MetadataProvider => _ctx.MetadataProvider;
             public override INameFormatter NameFormatter => _ctx.Configuration.NameFormatterConfiguration().GetFormatter();
             public override Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; } = MapExceptionToStatus;
-            public override IFeatureProgressNotifier FeatureProgressNotifier =>throw new NotImplementedException();
+            public override IFeatureProgressNotifier FeatureProgressNotifier => throw new NotImplementedException();
             public override Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider => throw new NotImplementedException();
             public override IExecutionExtensions ExecutionExtensions => _ctx.Configuration.ExecutionExtensionsConfiguration();
             public override LightBddConfiguration Configuration => _ctx.Configuration;
             public override IDependencyContainer DependencyContainer => _ctx.Configuration.DependencyContainerConfiguration().DependencyContainer;
             public override ValueFormattingService ValueFormattingService => MetadataProvider.ValueFormattingService;
+            protected override IProgressNotifier GetProgressNotifier() => _ctx.Configuration.Get<ProgressNotifierConfiguration>().Notifier;
             private static ExecutionStatus MapExceptionToStatus(Exception ex) => ex is IgnoreScenarioException ? ExecutionStatus.Ignored : ExecutionStatus.Failed;
         }
     }
-
 
     public class ScenarioBuilderContext
     {
@@ -195,7 +221,33 @@ namespace LightBDD.Core.Execution
 
         public override ScenarioDescriptor CaptureCurrentScenario()
         {
-            throw new NotImplementedException();
+            var current = TestContextProvider.Current;
+            return new ScenarioDescriptor(current.TestMethod, current.TestMethodArguments);
+        }
+    }
+
+    internal class TestContextProvider
+    {
+        private static readonly AsyncLocal<TestContextProvider?> Provider = new();
+        public MethodInfo TestMethod { get; }
+        public object[] TestMethodArguments { get; }
+
+        public static TestContextProvider Current => Provider.Value ?? throw new InvalidOperationException("No scenario is executed at this moment");
+
+        public static void Initialize(MethodInfo testMethod, object[] arguments)
+        {
+            Provider.Value = new TestContextProvider(testMethod, arguments);
+        }
+
+        public static void Clear()
+        {
+            Provider.Value = null;
+        }
+
+        private TestContextProvider(MethodInfo testMethod, object[] arguments)
+        {
+            TestMethod = testMethod;
+            TestMethodArguments = arguments;
         }
     }
 }
