@@ -8,6 +8,17 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
     public static class TestStep
     {
+        public static StepDescriptor CreateNamed(string name, Action step)
+        {
+            return new StepDescriptor(name,
+                async (ctx, args) =>
+                {
+                    await Task.Yield();
+                    step.Invoke();
+                    return DefaultStepResultDescriptor.Instance;
+                });
+        }
+
         public static StepDescriptor CreateAsync(Action step)
         {
             return new StepDescriptor(step.GetMethodInfo(),

@@ -11,6 +11,7 @@ namespace LightBDD.Core.UnitTests
     [ScenarioCategory("global1")]
     [ScenarioCategory("global2")]
     [TestFixture]
+    //migrated
     public class CoreBddRunner_scenario_metadata_collection_global_category_tests : Steps
     {
         private IBddRunner _runner;

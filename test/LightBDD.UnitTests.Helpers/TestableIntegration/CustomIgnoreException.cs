@@ -1,8 +1,10 @@
 using System;
+using LightBDD.Core.Execution;
 
 namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
-    public class CustomIgnoreException : Exception
+    //TODO: review
+    public class CustomIgnoreException : IgnoreScenarioException
     {
         public CustomIgnoreException(string reason) : base(reason) { }
     }

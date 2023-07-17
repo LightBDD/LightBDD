@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
@@ -12,7 +13,7 @@ namespace LightBDD.Core.UnitTests.Helpers
     internal class TestableCoreExecutionPipeline : ExecutionPipeline
     {
         public static readonly TestableCoreExecutionPipeline Default = new(typeof(TestableCoreExecutionPipeline).Assembly);
-        private TestableCoreExecutionPipeline(Assembly testAssembly, Action<LightBddConfiguration> onConfigure = null) : base(testAssembly, onConfigure)
+        private TestableCoreExecutionPipeline(Assembly testAssembly, Action<LightBddConfiguration> onConfigure = null) : base(testAssembly, SetTestDefaults + onConfigure)
         {
         }
 
@@ -21,6 +22,24 @@ namespace LightBDD.Core.UnitTests.Helpers
             var disco = new ScenarioDiscoverer();
             var scenarioCases = features.SelectMany(f => disco.DiscoverFor(f.GetTypeInfo())).ToArray();
             return await Execute(scenarioCases);
+        }
+
+        public async Task<IFeatureResult> ExecuteFeature(Type feature)
+        {
+            var result = await Execute(feature);
+            return result.Features.Single();
+        }
+
+        public async Task<IScenarioResult> ExecuteScenario<TFeature>(Expression<Func<TFeature, Task>> scenarioSelector)
+        {
+            var scenarios = new[] { ScenarioCase.CreateParameterless(typeof(TFeature).GetTypeInfo(), ParameterInfoHelper.GetMethodInfo(scenarioSelector)) };
+            var result = await Execute(scenarios);
+            return result.Features.Single().GetScenarios().Single();
+        }
+
+        private static void SetTestDefaults(LightBddConfiguration cfg)
+        {
+            cfg.ExceptionHandlingConfiguration().UpdateExceptionDetailsFormatter(ex => ex.Message);
         }
     }
 }

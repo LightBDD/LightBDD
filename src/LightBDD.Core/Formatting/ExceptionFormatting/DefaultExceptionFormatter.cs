@@ -9,6 +9,7 @@ namespace LightBDD.Core.Formatting.ExceptionFormatting
     /// <summary>
     /// Default implementation of exception formatter.
     /// </summary>
+    //TODO: review to push to Framework and simplifying TestableCoreExecutionPipeline
     public class DefaultExceptionFormatter
     {
         private readonly List<Regex> _excludeMembers = new();

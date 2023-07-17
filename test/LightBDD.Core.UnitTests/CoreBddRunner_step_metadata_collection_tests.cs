@@ -13,6 +13,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests
 {
     [TestFixture]
+    //migrated
     public class CoreBddRunner_step_metadata_collection_tests : Steps
     {
         IScenarioResult ExecuteScenario(Action<ICoreScenarioBuilder> onRun) => TestableExecutionPipeline.Default.ExecuteScenario(this, onRun);
