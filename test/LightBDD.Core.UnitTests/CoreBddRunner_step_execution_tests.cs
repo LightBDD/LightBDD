@@ -26,7 +26,7 @@ namespace LightBDD.Core.UnitTests
         [Test]
         public void Runner_should_execute_all_steps()
         {
-            TestableExecutionPipeline.Default.CreateScenarioBuilder(this).Test().TestScenario(
+            _runner.Test().TestScenario(
                 Given_step_one,
                 When_step_two,
                 Then_step_three);
