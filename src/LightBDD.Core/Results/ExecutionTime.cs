@@ -8,6 +8,10 @@ namespace LightBDD.Core.Results
     public class ExecutionTime
     {
         /// <summary>
+        /// No execution time.
+        /// </summary>
+        public static readonly ExecutionTime None = new ExecutionTime(DateTimeOffset.MinValue, TimeSpan.Zero);
+        /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="start">Execution start.</param>

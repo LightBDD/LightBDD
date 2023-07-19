@@ -34,19 +34,28 @@ namespace LightBDD.Core.Execution
             _onConfigure = onConfigure;
         }
 
-        public async Task<ITestRunResult> Execute(IEnumerable<ScenarioCase> scenarios, CancellationToken cancellationToken = default)
+        public async Task<ITestRunResult> Execute(IReadOnlyList<ScenarioCase> scenarios, CancellationToken cancellationToken = default)
         {
             using var ctx = (Context)CreateContext(cancellationToken);
             var testRunInfo = ctx.MetadataProvider.GetTestRunInfo();
             var testRunStartTime = ctx.Timer.GetTime();
+            OnBeforeTestRunStart(testRunStartTime, testRunInfo, scenarios);
             ctx.ProgressNotifier.Notify(new TestRunStarting(testRunStartTime, testRunInfo));
-
             var results = await Task.WhenAll(scenarios.GroupBy(s => s.FeatureFixtureType).Select(fixture => ExecuteFeature(fixture, ctx)));
 
             var testRunEndTime = ctx.Timer.GetTime();
             var result = new TestRunResult(testRunInfo, testRunEndTime.GetExecutionTime(testRunStartTime), results);
             ctx.ProgressNotifier.Notify(new TestRunFinished(testRunEndTime, result));
+            OnAfterTestRunFinish(testRunEndTime, result);
             return result;
+        }
+
+        protected virtual void OnAfterTestRunFinish(EventTime time, ITestRunResult result)
+        {
+        }
+
+        protected virtual void OnBeforeTestRunStart(EventTime time, ITestRunInfo testRunInfo, IReadOnlyList<ScenarioCase> scenarios)
+        {
         }
 
         //TODO: rework
@@ -59,16 +68,46 @@ namespace LightBDD.Core.Execution
         {
             var featureInfo = ctx.MetadataProvider.GetFeatureInfo(featureScenarios.Key);
             var featureStartTime = ctx.Timer.GetTime();
+            var scenarios = featureScenarios.ToArray();
+            OnBeforeFeatureStart(featureStartTime, featureScenarios.Key, featureInfo, scenarios);
             ctx.ProgressNotifier.Notify(new FeatureStarting(featureStartTime, featureInfo));
 
             var results = await Task.WhenAll(featureScenarios.SelectMany(s => ExpandParameterizedScenarios(s, ctx))
-                //group by methodinfo
-                .Select(s => ExecuteScenario(featureInfo, s, ctx)));
+                .GroupBy(s => s.ScenarioMethod)
+                .Select(s => ExecuteScenarioGroup(featureInfo, s, ctx)));
 
             var featureEndTime = ctx.Timer.GetTime();
-            var result = new FeatureResultV2(featureInfo, results);
+            var result = new FeatureResultV2(featureInfo, results.SelectMany(r => r).ToArray());
             ctx.ProgressNotifier.Notify(new FeatureFinished(featureEndTime, result));
+            OnAfterFeatureFinished(featureEndTime, result);
             return result;
+        }
+
+        protected virtual void OnAfterFeatureFinished(EventTime time, IFeatureResult result)
+        {
+        }
+
+        protected virtual void OnBeforeFeatureStart(EventTime time, TypeInfo featureType, IFeatureInfo featureInfo, ScenarioCase[] scenarios)
+        {
+        }
+
+        private async Task<IScenarioResult[]> ExecuteScenarioGroup(IFeatureInfo featureInfo, IGrouping<MethodInfo, ScenarioCase> scenarioCases, Context ctx)
+        {
+            var startTime = ctx.Timer.GetTime();
+            var scenarios = scenarioCases.ToArray();
+            OnBeforeScenarioGroup(startTime, scenarioCases.Key, scenarios);
+            var results = await Task.WhenAll(scenarios.Select(s => ExecuteScenario(featureInfo, s, ctx)));
+            var endTime = ctx.Timer.GetTime();
+            OnAfterScenarioGroup(endTime, results);
+            return results;
+        }
+
+        protected virtual void OnAfterScenarioGroup(EventTime endTime, IReadOnlyList<IScenarioResult> results)
+        {
+        }
+
+        protected virtual void OnBeforeScenarioGroup(EventTime time, MethodInfo scenarioMethod, IReadOnlyList<ScenarioCase> scenarios)
+        {
         }
 
         //TODO: simplify
@@ -77,9 +116,10 @@ namespace LightBDD.Core.Execution
             object fixture = null;
             var scenarioInfo = CreateScenarioInfo(featureInfo, scenario, ctx);
             IScenarioResult scenarioResult = new ScenarioResult(scenarioInfo);
+            EventTime startTime = ctx.Timer.GetTime();
             try
             {
-                ctx.ProgressNotifier.Notify(new ScenarioInitializing(ctx.Timer.GetTime(), scenarioInfo));
+                OnBeforeScenario(startTime, scenarioInfo, scenario);
                 fixture = CreateInstance(scenario.FeatureFixtureType);
                 InitializeTestContextProvider(scenario);
                 ScenarioBuilderContext.SetCurrent(CreateScenarioBuilder(featureInfo, fixture, ctx, x => scenarioResult = x)
@@ -99,9 +139,18 @@ namespace LightBDD.Core.Execution
                 ScenarioBuilderContext.SetCurrent(null);
                 TestContextProvider.Clear();
                 (fixture as IDisposable)?.Dispose();
+                OnAfterScenario(startTime, scenarioResult);
             }
 
             return scenarioResult;
+        }
+
+        protected virtual void OnBeforeScenario(EventTime time, IScenarioInfo scenarioInfo, ScenarioCase scenarioCase)
+        {
+        }
+
+        protected virtual void OnAfterScenario(EventTime time, IScenarioResult result)
+        {
         }
 
         private static ScenarioInfo CreateScenarioInfo(IFeatureInfo featureInfo, ScenarioCase scenario, Context ctx)

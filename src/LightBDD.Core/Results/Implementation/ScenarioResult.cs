@@ -26,7 +26,7 @@ namespace LightBDD.Core.Results.Implementation
         public IScenarioInfo Info { get; }
         public ExecutionStatus Status { get; private set; }
         public string StatusDetails { get; private set; }
-        public ExecutionTime ExecutionTime { get; private set; }
+        public ExecutionTime ExecutionTime { get; private set; } = ExecutionTime.None;
         public Exception ExecutionException { get; private set; }
 
         public IEnumerable<IStepResult> GetSteps()

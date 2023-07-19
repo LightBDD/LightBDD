@@ -9,7 +9,7 @@ namespace LightBDD.XUnit2
 {
     /// <summary>
     /// </summary>
-    [TestFrameworkDiscoverer($"LightBDD.Runner.Implementation.{nameof(LightBddFrameworkTypeDiscoverer)}", "LightBDD.Runner")]
+    [TestFrameworkDiscoverer($"LightBDD.XUnit2.Implementation.{nameof(LightBddFrameworkTypeDiscoverer)}", "LightBDD.Runner")]
     [AttributeUsage(AttributeTargets.Assembly)]
     public class LightBddScopeAttribute : Attribute, ITestFrameworkAttribute
     {
