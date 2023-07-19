@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using LightBDD.Framework.Configuration;
 using Xunit.Abstractions;
 using Xunit.Sdk;
-using xunit_utils;
 
 namespace LightBDD.XUnit2.Implementation;
 
@@ -23,7 +21,7 @@ internal class LightBddExecutor : TestFrameworkExecutor<ITestCase>
     {
         //TODO: handle exceptions
         var scope = GetLightBddScope();
-        using var messageBus = new MessageBus(new WrapMessageSink(executionMessageSink, "runner_exec"), executionOptions.StopOnTestFailOrDefault());
+        using var messageBus = new MessageBus(executionMessageSink, executionOptions.StopOnTestFailOrDefault());
 
         new ExecutionPipelineAdapter(messageBus, AssemblyInfo, scope.Configure)
             .Execute(testCases)
