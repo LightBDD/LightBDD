@@ -2,14 +2,14 @@ using System;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Framework.Configuration;
-using LightBDD.XUnit2.Implementation;
+using LightBDD.Runner.Implementation;
 using Xunit.Sdk;
 
-namespace LightBDD.XUnit2
+namespace LightBDD.Runner
 {
     /// <summary>
     /// </summary>
-    [TestFrameworkDiscoverer($"LightBDD.XUnit2.Implementation.{nameof(LightBddFrameworkTypeDiscoverer)}", "LightBDD.Runner")]
+    [TestFrameworkDiscoverer($"LightBDD.Runner.Implementation.{nameof(LightBddFrameworkTypeDiscoverer)}", "LightBDD.Runner")]
     [AttributeUsage(AttributeTargets.Assembly)]
     public class LightBddScopeAttribute : Attribute, ITestFrameworkAttribute
     {

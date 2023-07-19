@@ -4,7 +4,7 @@ using LightBDD.Core.Extensibility;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
 
-namespace LightBDD.XUnit2.Implementation;
+namespace LightBDD.Runner.Implementation;
 
 internal class BddRunnerAdapter : IBddRunner, IIntegratedScenarioBuilder<NoContext>
 {

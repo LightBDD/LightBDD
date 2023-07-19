@@ -1,9 +1,10 @@
 using Example.Domain.Domain;
 using LightBDD.Framework;
-using LightBDD.XUnit2;
+using LightBDD.Runner;
+using Shouldly;
 using Xunit;
 
-namespace Example.LightBDD.XUnit2.Features
+namespace Example.LightBDD.Runner.Features
 {
     public partial class Basket_feature : FeatureFixture
     {
@@ -32,28 +33,28 @@ namespace Example.LightBDD.XUnit2.Features
 
         private void Then_the_product_addition_should_be_successful()
         {
-            Assert.True(_transferResult);
+            _transferResult.ShouldBeTrue();
         }
 
         private void Then_the_basket_should_contain_the_product()
         {
-            Assert.Contains("product", _basket.Products);
+            _basket.Products.ShouldContain("product");
         }
 
         private void Then_the_product_addition_should_be_unsuccessful()
         {
-            Assert.False(_transferResult);
+            _transferResult.ShouldBeFalse();
         }
 
         private void Then_the_basket_should_not_contain_the_product()
         {
-            Assert.DoesNotContain("product", _basket.Products);
+            _basket.Products.ShouldNotContain("product");
         }
 
         private void Then_the_product_should_be_removed_from_stock()
         {
             StepExecution.Current.IgnoreScenario("Product removal from stock is not implemented yet");
-            Assert.DoesNotContain("product", _stock.Products);
+            _stock.Products.ShouldNotContain("product");
         }
 
         #region Setup/Teardown

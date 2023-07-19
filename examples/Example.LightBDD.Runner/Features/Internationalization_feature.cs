@@ -1,9 +1,8 @@
 ﻿using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
-using LightBDD.XUnit2;
-using Xunit;
+using LightBDD.Runner;
 
-namespace Example.LightBDD.XUnit2.Features
+namespace Example.LightBDD.Runner.Features
 {
     /// <summary>
     /// This feature class shows how to create parameterized scenarios: https://github.com/LightBDD/LightBDD/wiki/Scenario-Steps-Definition#parameterized-scenarios

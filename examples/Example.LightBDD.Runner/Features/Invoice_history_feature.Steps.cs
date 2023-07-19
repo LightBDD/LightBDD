@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Example.Domain.Helpers;
-using LightBDD.XUnit2;
+using LightBDD.Runner;
 
-namespace Example.LightBDD.XUnit2.Features
+namespace Example.LightBDD.Runner.Features
 {
     public partial class Invoice_history_feature : FeatureFixture
     {

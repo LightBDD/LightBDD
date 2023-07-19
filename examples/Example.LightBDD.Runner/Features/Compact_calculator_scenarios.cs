@@ -1,11 +1,12 @@
-﻿using Example.Domain.Domain;
+﻿using System.Threading.Tasks;
+using Example.Domain.Domain;
 using LightBDD.Framework;
-using LightBDD.XUnit2;
-using System.Threading.Tasks;
 using LightBDD.Framework.Scenarios;
+using LightBDD.Runner;
+using Shouldly;
 using Xunit;
 
-namespace Example.LightBDD.XUnit2.Features
+namespace Example.LightBDD.Runner.Features
 {
     [FeatureDescription(
 @"As LightBDD user,
@@ -22,7 +23,7 @@ So that I can use LightBDD for more unit-test like tests as well")]
             await Runner
                 .AddStep("Given calculator", _ => calc = new Calculator())
                 .AddStep("When I add two numbers", _ => result = calc.Add(3, 5))
-                .AddStep("Then I should get an expected result", _ => Assert.Equal(8, result))
+                .AddStep("Then I should get an expected result", _ => result.ShouldBe(8))
                 .RunAsync();
         }
     }

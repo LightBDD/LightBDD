@@ -3,7 +3,7 @@ using System.Threading;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace LightBDD.XUnit2.Implementation;
+namespace LightBDD.Runner.Implementation;
 
 internal class TestOutputHelpers
 {

@@ -4,9 +4,10 @@ using System.Linq;
 using Example.Domain.Domain;
 using LightBDD.Framework;
 using LightBDD.Framework.Parameters;
+using Shouldly;
 using Xunit;
 
-namespace Example.LightBDD.XUnit2.Features.Contexts
+namespace Example.LightBDD.Runner.Features.Contexts
 {
     public class ContactsManagementContext
     {
@@ -27,9 +28,7 @@ namespace Example.LightBDD.XUnit2.Features.Contexts
 
         public void Then_all_contacts_should_be_available_in_the_contact_book()
         {
-            Assert.Equal(
-                   _addedContacts,
-                   _contactBook.Contacts.ToArray());
+            _contactBook.Contacts.ToArray().ShouldBe(_addedContacts);
         }
 
         public void Given_my_contact_book_is_filled_with_contacts()
@@ -45,16 +44,12 @@ namespace Example.LightBDD.XUnit2.Features.Contexts
 
         public void Then_the_contact_book_should_not_contain_removed_contact_any_more()
         {
-            Assert.Equal(
-                 Enumerable.Empty<Contact>(),
-                 _contactBook.Contacts.Where(c => _removedContacts.Contains(c)).ToArray());
+            _contactBook.Contacts.Where(c => _removedContacts.Contains(c)).ShouldBeEmpty();
         }
 
         public void Then_the_contact_book_should_contains_all_other_contacts()
         {
-            Assert.Equal(
-                   _contactBook.Contacts.ToArray(),
-                   _addedContacts.Except(_removedContacts).ToArray());
+            _contactBook.Contacts.ToArray().ShouldBe(_addedContacts.Except(_removedContacts).ToArray());
         }
 
         public void Given_my_contact_book_is_filled_with_many_contacts()
@@ -78,7 +73,7 @@ namespace Example.LightBDD.XUnit2.Features.Contexts
 
         public void Then_the_contact_book_should_be_empty()
         {
-            Assert.Empty(_contactBook.Contacts);
+            _contactBook.Contacts.ShouldBeEmpty();
         }
 
         private void AddSomeContacts()

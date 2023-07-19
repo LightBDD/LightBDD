@@ -2,7 +2,7 @@ using System;
 using LightBDD.Core.Extensibility;
 using Xunit;
 
-namespace LightBDD.XUnit2
+namespace LightBDD.Runner
 {
     /// <summary>
     /// Scenario attribute that should be used for XUnit framework tests, as a replacement for [Fact] and [Theory] attributes.

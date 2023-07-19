@@ -13,7 +13,7 @@ using LightBDD.Framework.Reporting;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace LightBDD.XUnit2.Implementation;
+namespace LightBDD.Runner.Implementation;
 
 class ExecutionPipelineAdapter : ExecutionPipeline
 {

@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
-using LightBDD.XUnit2;
+using LightBDD.Runner;
 
-namespace Example.LightBDD.XUnit2.Features
+namespace Example.LightBDD.Runner.Features
 {
     /// <summary>
     /// This feature class presents usage of extended syntax in conjunction with asynchronous steps returning Task.

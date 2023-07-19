@@ -1,4 +1,4 @@
-namespace Example.LightBDD.XUnit2
+namespace Example.LightBDD.Runner
 {
     public static class Categories
     {

@@ -3,9 +3,9 @@ using LightBDD.Framework;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;
 using LightBDD.Framework.Scenarios;
-using LightBDD.XUnit2;
+using LightBDD.Runner;
 
-namespace Example.LightBDD.XUnit2.Features
+namespace Example.LightBDD.Runner.Features
 {
     [Label("Story-11")]
     [FeatureDescription(

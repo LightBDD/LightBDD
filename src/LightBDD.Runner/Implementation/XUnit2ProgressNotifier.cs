@@ -3,7 +3,7 @@ using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.Notification;
 using LightBDD.Framework.Notification;
 
-namespace LightBDD.XUnit2.Implementation
+namespace LightBDD.Runner.Implementation
 {
     internal class XUnit2ProgressNotifier
     {

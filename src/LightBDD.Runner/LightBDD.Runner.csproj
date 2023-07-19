@@ -5,7 +5,6 @@
         <Description>Allows discovering and executing LightBDD tests</Description>
         <TargetFrameworks>net6</TargetFrameworks>
         <Nullable>enable</Nullable>
-        <RootNamespace>LightBDD.XUnit2</RootNamespace>
     </PropertyGroup>
     
     <ItemGroup>

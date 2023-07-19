@@ -1,8 +1,8 @@
 ﻿using LightBDD.Core.Configuration;
 using LightBDD.Core.Formatting.ExceptionFormatting;
-using LightBDD.XUnit2.Implementation;
+using LightBDD.Runner.Implementation;
 
-namespace LightBDD.XUnit2
+namespace LightBDD.Runner
 {
     /// <summary>
     /// Extensions allowing to apply test framework default configuration.

@@ -1,9 +1,10 @@
 using Example.Domain.Services;
 using LightBDD.Framework;
-using LightBDD.XUnit2;
+using LightBDD.Runner;
+using Shouldly;
 using Xunit;
 
-namespace Example.LightBDD.XUnit2.Features
+namespace Example.LightBDD.Runner.Features
 {
     public partial class Login_feature : FeatureFixture
     {
@@ -53,23 +54,22 @@ namespace Example.LightBDD.XUnit2.Features
 
         private void Then_the_login_operation_should_be_successful()
         {
-            Assert.True(_loginResult.IsSuccessful, "Login should succeeded");
+            _loginResult.IsSuccessful.ShouldBeTrue("Login should succeeded");
         }
 
         private void Then_a_welcome_message_containing_user_name_should_be_returned()
         {
-            var expectedMessage = string.Format("Welcome {0}!", _validUserName);
-            Assert.Equal(expectedMessage, _loginResult.ResultMessage);
+            _loginResult.ResultMessage.ShouldBe($"Welcome {_validUserName}!");
         }
 
         private void Then_the_login_operation_should_be_unsuccessful()
         {
-            Assert.False(_loginResult.IsSuccessful);
+            _loginResult.IsSuccessful.ShouldBeFalse();
         }
 
         private void Then_an_invalid_login_or_password_error_message_should_be_returned()
         {
-            Assert.Equal("Invalid user name or password.", _loginResult.ResultMessage);
+            _loginResult.ResultMessage.ShouldBe("Invalid user name or password.");
         }
     }
 }

@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 using Example.Domain.Helpers;
 using LightBDD.Framework;
 using LightBDD.Framework.Reporting;
-using LightBDD.XUnit2;
+using LightBDD.Runner;
 
 #pragma warning disable 1998
 
-namespace Example.LightBDD.XUnit2.Features
+namespace Example.LightBDD.Runner.Features
 {
     public partial class Customer_journey
     {

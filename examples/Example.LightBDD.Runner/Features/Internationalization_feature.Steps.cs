@@ -1,7 +1,8 @@
-﻿using LightBDD.XUnit2;
+﻿using LightBDD.Runner;
+using Shouldly;
 using Xunit;
 
-namespace Example.LightBDD.XUnit2.Features
+namespace Example.LightBDD.Runner.Features
 {
     public partial class Internationalization_feature : FeatureFixture
     {
@@ -18,7 +19,7 @@ namespace Example.LightBDD.XUnit2.Features
 
         private void Then_header_should_display_LANG_language(string lang)
         {
-            Assert.Equal(lang, _selectedLanguage);
+            _selectedLanguage.ShouldBe(lang);
         }
 
         private void Then_page_title_should_be_translated()

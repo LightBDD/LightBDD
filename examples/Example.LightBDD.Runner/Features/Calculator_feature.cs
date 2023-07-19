@@ -1,8 +1,8 @@
 ﻿using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
-using LightBDD.XUnit2;
+using LightBDD.Runner;
 
-namespace Example.LightBDD.XUnit2.Features
+namespace Example.LightBDD.Runner.Features
 {
     /// <summary>
     /// This feature class presents usage of MultiAssertAttribute in conjunction with scenarios and composite steps.

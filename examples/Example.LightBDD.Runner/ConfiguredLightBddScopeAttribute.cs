@@ -1,8 +1,8 @@
-using Example.LightBDD.XUnit2;
+using Example.LightBDD.Runner;
 using LightBDD.Core.Configuration;
 using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Reporting.Formatters;
-using LightBDD.XUnit2;
+using LightBDD.Runner;
 
 /*
  * This is a way to enable LightBDD integration.
@@ -12,7 +12,7 @@ using LightBDD.XUnit2;
  */
 [assembly: ConfiguredLightBddScope]
 
-namespace Example.LightBDD.XUnit2
+namespace Example.LightBDD.Runner
 {
     /// <summary>
     /// This class extends LightBddScopeAttribute and allows to customize the default configuration of LightBDD.

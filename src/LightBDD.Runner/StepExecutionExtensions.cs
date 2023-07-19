@@ -2,7 +2,7 @@ using LightBDD.Core.Execution;
 using LightBDD.Core.Results;
 using LightBDD.Framework;
 
-namespace LightBDD.XUnit2
+namespace LightBDD.Runner
 {
     /// <summary>
     /// Extension class for <see cref="StepExecution"/> allowing to ignore currently running steps.

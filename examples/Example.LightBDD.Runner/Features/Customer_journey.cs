@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
-using LightBDD.XUnit2;
+using LightBDD.Runner;
 
 #pragma warning disable 1998
 
-namespace Example.LightBDD.XUnit2.Features
+namespace Example.LightBDD.Runner.Features
 {
     /// <summary>
     /// This feature class shows how to create asynchronous scenario from composite steps using basic syntax.

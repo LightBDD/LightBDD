@@ -1,12 +1,12 @@
-﻿using Example.Domain.Domain;
-using LightBDD.Framework.Parameters;
-using LightBDD.XUnit2;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
 using System.Text.RegularExpressions;
+using Example.Domain.Domain;
+using LightBDD.Framework.Parameters;
+using LightBDD.Runner;
 
-namespace Example.LightBDD.XUnit2.Features
+namespace Example.LightBDD.Runner.Features
 {
     public partial class User_management_feature : FeatureFixture
     {

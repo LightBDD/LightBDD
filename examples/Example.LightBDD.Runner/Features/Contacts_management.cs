@@ -1,12 +1,12 @@
 using Example.Domain.Domain;
-using Example.LightBDD.XUnit2.Features.Contexts;
+using Example.LightBDD.Runner.Features.Contexts;
 using LightBDD.Framework;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;
 using LightBDD.Framework.Scenarios;
-using LightBDD.XUnit2;
+using LightBDD.Runner;
 
-namespace Example.LightBDD.XUnit2.Features
+namespace Example.LightBDD.Runner.Features
 {
     /// <summary>
     /// This feature class presents the usage of contextual scenarios that are used in conjunction with extended step format.

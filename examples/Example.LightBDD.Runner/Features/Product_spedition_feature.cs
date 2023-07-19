@@ -1,9 +1,9 @@
-using Example.LightBDD.XUnit2.Features.Contexts;
+using Example.LightBDD.Runner.Features.Contexts;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
-using LightBDD.XUnit2;
+using LightBDD.Runner;
 
-namespace Example.LightBDD.XUnit2.Features
+namespace Example.LightBDD.Runner.Features
 {
     /// <summary>
     /// This feature class describes usage of contextual scenarios and extended syntax.
