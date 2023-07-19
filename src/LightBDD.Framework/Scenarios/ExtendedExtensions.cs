@@ -129,7 +129,7 @@ namespace LightBDD.Framework.Scenarios
                 var scenario = runner
                     .AddSteps(steps)
                     .Integrate().Core
-                    .WithCapturedScenarioDetails()
+                    .WithCapturedScenarioDetailsIfNotSpecified()
                     .Build();
 
                 scenario.ExecuteSync();
@@ -166,7 +166,7 @@ namespace LightBDD.Framework.Scenarios
                 var scenario = runner
                     .AddAsyncSteps(steps)
                     .Integrate().Core
-                    .WithCapturedScenarioDetails()
+                    .WithCapturedScenarioDetailsIfNotSpecified()
                     .Build();
 
                 await scenario.ExecuteAsync();

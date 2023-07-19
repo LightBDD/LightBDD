@@ -11,7 +11,7 @@ internal class LightBddDiscoverer : TestFrameworkDiscoverer
     public LightBddDiscoverer(IAssemblyInfo assemblyInfo, ISourceInformationProvider sourceProvider,
         IMessageSink diagnosticMessageSink) : base(assemblyInfo, sourceProvider, diagnosticMessageSink)
     {
-        _dummyCollection = new TestCollection(new TestAssembly(assemblyInfo), null, "LightBdd Collection");
+        _dummyCollection = DummyTestCollection.Create(new TestAssembly(assemblyInfo));
     }
 
     protected override ITestClass CreateTestClass(ITypeInfo @class)
@@ -25,7 +25,7 @@ internal class LightBddDiscoverer : TestFrameworkDiscoverer
         {
             if (!method.GetCustomAttributes(typeof(ScenarioAttribute)).Any()) continue;
 
-            ITestCase testCase = new LightBddTestCase(discoveryOptions, new TestMethod(testClass, method));
+            ITestCase testCase = new LightBddTestCase(DiagnosticMessageSink,discoveryOptions, new TestMethod(testClass, method));
             if (includeSourceInformation)
                 testCase.SourceInformation = SourceProvider.GetSourceInformation(testCase);
 

@@ -16,7 +16,8 @@ internal class TestRunInfo : ITestRunInfo
 
 
     public INameInfo Name { get; }
-    public Guid RuntimeId { get; } = Guid.NewGuid();
+    //TODO: use assembly full name
+    public string RuntimeId { get; } = Guid.NewGuid().ToString();
     public TestSuite TestSuite { get; }
     public IReadOnlyList<AssemblyInfo> LightBddAssemblies { get; }
 }

@@ -55,7 +55,7 @@ namespace LightBDD.Core.Extensibility
         /// <returns><see cref="IFeatureInfo"/> object.</returns>
         public IFeatureInfo GetFeatureInfo(Type featureType)
         {
-            return new FeatureInfo(GetFeatureName(featureType), GetFeatureLabels(featureType), GetFeatureDescription(featureType));
+            return new FeatureInfo(GetFeatureName(featureType), GetFeatureLabels(featureType), GetFeatureDescription(featureType),featureType);
         }
 
         /// <summary>
@@ -272,6 +272,7 @@ namespace LightBDD.Core.Extensibility
         /// <returns></returns>
         public ITestRunInfo GetTestRunInfo()
         {
+            //TODO: add assembly details
             return new TestRunInfo(GetTestSuite(), GetLightBDDAssemblies().Distinct().ToArray());
         }
 

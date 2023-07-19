@@ -38,7 +38,6 @@ namespace LightBDD.Core.Execution
         {
             using var ctx = (Context)CreateContext(cancellationToken);
             var testRunInfo = ctx.MetadataProvider.GetTestRunInfo();
-
             var testRunStartTime = ctx.Timer.GetTime();
             ctx.ProgressNotifier.Notify(new TestRunStarting(testRunStartTime, testRunInfo));
 
@@ -80,9 +79,11 @@ namespace LightBDD.Core.Execution
             IScenarioResult scenarioResult = new ScenarioResult(scenarioInfo);
             try
             {
+                ctx.ProgressNotifier.Notify(new ScenarioInitializing(ctx.Timer.GetTime(), scenarioInfo));
                 fixture = CreateInstance(scenario.FeatureFixtureType);
                 InitializeTestContextProvider(scenario);
-                ScenarioBuilderContext.SetCurrent(CreateScenarioBuilder(featureInfo, fixture, ctx, x => scenarioResult = x).WithScenarioDetails(scenarioInfo));
+                ScenarioBuilderContext.SetCurrent(CreateScenarioBuilder(featureInfo, fixture, ctx, x => scenarioResult = x)
+                    .WithScenarioDetails(scenarioInfo));
                 var result = scenario.ScenarioMethod.Invoke(fixture, scenario.ScenarioArguments);
                 //TODO: improve?
                 if (result is Task taskResult)
@@ -108,7 +109,8 @@ namespace LightBDD.Core.Execution
             return new ScenarioInfo(featureInfo,
                 ctx.MetadataProvider.GetScenarioName(new ScenarioDescriptor(scenario.ScenarioMethod, scenario.ScenarioArguments)),
                 ctx.MetadataProvider.GetScenarioLabels(scenario.ScenarioMethod),
-                ctx.MetadataProvider.GetScenarioCategories(scenario.ScenarioMethod));
+                ctx.MetadataProvider.GetScenarioCategories(scenario.ScenarioMethod),
+                scenario.RuntimeId);
         }
 
         protected void InitializeTestContextProvider(ScenarioCase scenario)

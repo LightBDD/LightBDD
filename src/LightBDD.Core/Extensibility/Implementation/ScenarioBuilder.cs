@@ -1,3 +1,4 @@
+#nullable enable
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution;
@@ -16,13 +17,14 @@ namespace LightBDD.Core.Extensibility.Implementation
     {
         private readonly IFeatureInfo _featureInfo;
         private readonly RunnableScenarioContext _context;
-        private INameInfo _name;
+        private INameInfo? _name;
         private string[] _labels = Array.Empty<string>();
         private string[] _categories = Array.Empty<string>();
         private IEnumerable<StepDescriptor> _steps = Enumerable.Empty<StepDescriptor>();
         private ExecutionContextDescriptor _contextDescriptor = ExecutionContextDescriptor.NoContext;
         private IEnumerable<IScenarioDecorator> _scenarioDecorators = Enumerable.Empty<IScenarioDecorator>();
-        private IScenarioInfo _scenarioInfo;
+        private IScenarioInfo? _scenarioInfo;
+        private string? _runtimeId;
 
         public ScenarioBuilder(IFeatureInfo featureInfo, object fixture, IntegrationContext integrationContext,
             ExceptionProcessor exceptionProcessor, Action<IScenarioResult> onScenarioFinished)
@@ -116,7 +118,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         public IRunnableScenario Build()
         {
             ValidateContext();
-            return new RunnableScenario(_context, _scenarioInfo ?? new ScenarioInfo(_featureInfo, _name, _labels, _categories), _steps, _contextDescriptor, GetScenarioDecorators());
+            return new RunnableScenario(_context, _scenarioInfo ?? new ScenarioInfo(_featureInfo, _name, _labels, _categories, _runtimeId ?? Guid.NewGuid().ToString()), _steps, _contextDescriptor, GetScenarioDecorators());
         }
 
         public LightBddConfiguration Configuration => _context.IntegrationContext.Configuration;
@@ -126,6 +128,13 @@ namespace LightBDD.Core.Extensibility.Implementation
             _name = _scenarioInfo.Name;
             _labels = scenarioInfo.Labels.ToArray();
             _categories = scenarioInfo.Categories.ToArray();
+            _runtimeId = scenarioInfo.RuntimeId;
+            return this;
+        }
+
+        public ICoreScenarioBuilder WithRuntimeId(string runtimeId)
+        {
+            _runtimeId = runtimeId;
             return this;
         }
 

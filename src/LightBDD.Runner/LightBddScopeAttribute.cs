@@ -13,9 +13,9 @@ namespace LightBDD.Runner
     [AttributeUsage(AttributeTargets.Assembly)]
     public class LightBddScopeAttribute : Attribute, ITestFrameworkAttribute
     {
-        internal LightBddConfiguration Configure()
+        internal void Configure(LightBddConfiguration configuration)
         {
-            var configuration = new LightBddConfiguration().WithFrameworkDefaults();
+            configuration.WithFrameworkDefaults();
 
             configuration.ProgressNotifierConfiguration()
                 .AppendFrameworkDefaultProgressNotifiers();
@@ -24,7 +24,6 @@ namespace LightBDD.Runner
                 .UpdateExceptionDetailsFormatter(new DefaultExceptionFormatter().WithTestFrameworkDefaults().Format);
             
             OnConfigure(configuration);
-            return configuration;
         }
         /// <summary>
         /// 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace LightBDD.Core.Metadata
@@ -20,5 +21,7 @@ namespace LightBDD.Core.Metadata
         /// Returns feature description or <c>null</c> if none provided.
         /// </summary>
         string Description { get; }
+
+        Type FeatureType { get; }
     }
 }

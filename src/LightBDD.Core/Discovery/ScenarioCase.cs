@@ -25,6 +25,10 @@ public class ScenarioCase
     /// Specifies if scenario arguments need to be provided at runtime.
     /// </summary>
     public bool RequireArgumentResolutionAtRuntime { get; private set; }
+    /// <summary>
+    /// Specifies scenario unique Id
+    /// </summary>
+    public string RuntimeId { get; private set; }
 
     /// <summary>
     /// Creates parameter-less scenario case
@@ -47,4 +51,13 @@ public class ScenarioCase
     /// <param name="fixtureType">Fixture type</param>
     /// <param name="scenarioMethod">Scenario method</param>
     public static ScenarioCase CreateParameterizedAtRuntime(TypeInfo fixtureType, MethodInfo scenarioMethod) => new() { FeatureFixtureType = fixtureType, ScenarioMethod = scenarioMethod, RequireArgumentResolutionAtRuntime = true };
+
+    /// <summary>
+    /// Sets external ID
+    /// </summary>
+    public ScenarioCase WithRuntimeId(string runtimeId)
+    {
+        RuntimeId = runtimeId;
+        return this;
+    }
 }

@@ -9,11 +9,10 @@ internal class LightBddTest : ITest
     /// Initializes a new instance of the <see cref="XunitTest"/> class.
     /// </summary>
     /// <param name="testCase">The test case this test belongs to.</param>
-    /// <param name="displayName">The display name for this test.</param>
-    public LightBddTest(ITestCase testCase, string displayName)
+    public LightBddTest(ITestCase testCase)
     {
         TestCase = testCase;
-        DisplayName = displayName;
+        DisplayName = testCase.DisplayName;
     }
 
     /// <inheritdoc/>

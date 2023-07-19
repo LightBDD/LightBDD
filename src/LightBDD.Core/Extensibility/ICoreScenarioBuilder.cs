@@ -94,5 +94,9 @@ namespace LightBDD.Core.Extensibility
         /// Configures scenario to have provided name.
         /// </summary>
         ICoreScenarioBuilder WithScenarioDetails(IScenarioInfo scenarioInfo);
+        /// <summary>
+        /// Configures scenario to have unique ID.
+        /// </summary>
+        ICoreScenarioBuilder WithRuntimeId(string runtimeId);
     }
 }

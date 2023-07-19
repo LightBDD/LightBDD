@@ -1,3 +1,4 @@
+using LightBDD.Core.Execution;
 using LightBDD.Core.Results;
 using LightBDD.Framework;
 using LightBDD.Runner.Implementation;
@@ -17,7 +18,7 @@ namespace LightBDD.Runner
         /// <param name="reason">Ignore reason.</param>
         public static void IgnoreScenario(this StepExecution execution, string reason)
         {
-            throw new IgnoreException(reason);
+            throw new IgnoreScenarioException(reason);
         }
     }
 }
