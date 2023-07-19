@@ -34,7 +34,7 @@ internal class LightBddExecutor : TestFrameworkExecutor<ITestCase>
     protected override void RunTestCases(IEnumerable<ITestCase> testCases, IMessageSink executionMessageSink, ITestFrameworkExecutionOptions executionOptions)
     {
         var scope = GetLightBddScope();
-        using var messageBus = new MessageBus(new WrapMessageSink(executionMessageSink, "exec"), executionOptions.StopOnTestFailOrDefault());
+        using var messageBus = new MessageBus(executionMessageSink, executionOptions.StopOnTestFailOrDefault());
 
         var cases = testCases.ToArray();
 

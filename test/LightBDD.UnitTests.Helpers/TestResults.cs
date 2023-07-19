@@ -81,7 +81,7 @@ namespace LightBDD.UnitTests.Helpers
 
         public static TestStepResult WithRuntimeId(this TestStepResult result, Guid id)
         {
-            result.Info.RuntimeId = id;
+            result.Info.RuntimeId = id.ToString();
             return result;
         }
 
@@ -297,7 +297,7 @@ namespace LightBDD.UnitTests.Helpers
         {
             IStepNameInfo IStepInfo.Name => Name;
             public IMetadataInfo Parent { get; set; }
-            public Guid RuntimeId { get; set; } = Guid.Parse("11111111-1111-1111-1111-111111111111");
+            public string RuntimeId { get; set; } = "11111111-1111-1111-1111-111111111111";
             public string GroupPrefix { get; set; }
             public TestStepNameInfo Name { get; set; }
             public int Number { get; set; }
@@ -312,6 +312,7 @@ namespace LightBDD.UnitTests.Helpers
             public ExecutionStatus Status { get; set; }
             public string StatusDetails { get; set; }
             public TestExecutionTime ExecutionTime { get; set; }
+            public Exception ExecutionException { get; } = null;
             ExecutionTime IScenarioResult.ExecutionTime => ExecutionTime?.ToMockedType();
             public IEnumerable<IStepResult> GetSteps()
             {
@@ -326,7 +327,7 @@ namespace LightBDD.UnitTests.Helpers
         {
             INameInfo IMetadataInfo.Name => Name;
             INameInfo IScenarioInfo.Name => Name;
-            public Guid RuntimeId { get; } = Guid.Parse("22222222-2222-2222-2222-222222222222");
+            public string RuntimeId { get; } = "22222222-2222-2222-2222-222222222222";
             public TestNameInfo Name { get; set; }
             public IFeatureInfo Parent { get; set; }
             IEnumerable<string> IScenarioInfo.Labels => Labels;
@@ -363,7 +364,7 @@ namespace LightBDD.UnitTests.Helpers
                 .Select(AssemblyInfo.From).ToArray();
 
             public INameInfo Name => new TestNameInfo { FormattedName = TestSuite.Name, NameFormat = TestSuite.Name };
-            public Guid RuntimeId { get; } = Guid.Parse("33333333-5555-3333-3333-333333333333");
+            public string RuntimeId { get; } = "33333333-5555-3333-3333-333333333333";
             public TestSuite TestSuite { get; set; } = TestSuite.Create("Random.Tests", new Version(1, 2, 3), "Foo bar");
             public IReadOnlyList<AssemblyInfo> LightBddAssemblies => Versions;
         }
@@ -371,11 +372,12 @@ namespace LightBDD.UnitTests.Helpers
         {
             INameInfo IMetadataInfo.Name => Name;
             INameInfo IFeatureInfo.Name => Name;
-            public Guid RuntimeId { get; } = Guid.Parse("33333333-3333-3333-3333-333333333333");
+            public string RuntimeId { get; } = "33333333-3333-3333-3333-333333333333";
             public TestNameInfo Name { get; set; }
             IEnumerable<string> IFeatureInfo.Labels => Labels;
             public string[] Labels { get; set; }
             public string Description { get; set; }
+            public Type FeatureType { get; set; } = typeof(TestFeatureInfo);
         }
 
         public class TestNameParameterInfo : INameParameterInfo
