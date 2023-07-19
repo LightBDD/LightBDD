@@ -2,9 +2,8 @@ using System;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility.Execution;
-using LightBDD.Runner.Implementation;
 
-namespace LightBDD.Runner
+namespace LightBDD.XUnit2
 {
     /// <summary>
     /// Attribute allowing to ignore scenario in declarative way. It can be applied on scenario method or step method as well as feature class.

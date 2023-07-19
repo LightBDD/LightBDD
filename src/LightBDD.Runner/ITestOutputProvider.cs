@@ -1,6 +1,6 @@
 using Xunit.Abstractions;
 
-namespace LightBDD.Runner
+namespace LightBDD.XUnit2
 {
     /// <summary>
     /// An interface allowing to retrieve <see cref="ITestOutputHelper"/> associated to the test class instance.

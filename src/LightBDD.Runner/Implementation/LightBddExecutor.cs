@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Discovery;
 using LightBDD.Core.Execution;
@@ -16,7 +15,7 @@ using LightBDD.Framework.Reporting;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace LightBDD.Runner.Implementation;
+namespace LightBDD.XUnit2.Implementation;
 
 internal class LightBddExecutor : TestFrameworkExecutor<ITestCase>
 {

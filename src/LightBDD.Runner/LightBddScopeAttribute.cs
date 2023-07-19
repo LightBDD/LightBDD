@@ -2,10 +2,10 @@ using System;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Framework.Configuration;
-using LightBDD.Runner.Implementation;
+using LightBDD.XUnit2.Implementation;
 using Xunit.Sdk;
 
-namespace LightBDD.Runner
+namespace LightBDD.XUnit2
 {
     /// <summary>
     /// </summary>

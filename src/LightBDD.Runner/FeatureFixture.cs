@@ -1,11 +1,10 @@
 ﻿using System;
-using LightBDD.Core.Execution;
 using LightBDD.Framework;
-using LightBDD.Framework.Extensibility;
-using LightBDD.Runner.Implementation;
+using LightBDD.XUnit2.Implementation;
 using Xunit.Abstractions;
 
-namespace LightBDD.Runner
+//TODO: update namespace
+namespace LightBDD.XUnit2
 {
     /// <summary>
     /// Base class for feature tests with XUnit framework.

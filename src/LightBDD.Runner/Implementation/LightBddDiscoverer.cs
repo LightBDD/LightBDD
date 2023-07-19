@@ -2,7 +2,7 @@ using System.Linq;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace LightBDD.Runner.Implementation;
+namespace LightBDD.XUnit2.Implementation;
 
 internal class LightBddDiscoverer : TestFrameworkDiscoverer
 {
