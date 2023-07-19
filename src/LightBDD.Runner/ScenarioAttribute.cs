@@ -1,4 +1,5 @@
 using System;
+using LightBDD.Core.Extensibility;
 using Xunit;
 
 namespace LightBDD.XUnit2
@@ -8,7 +9,7 @@ namespace LightBDD.XUnit2
     /// The ScenarioAttribute represents scenario test method.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
-    public class ScenarioAttribute : FactAttribute
+    public class ScenarioAttribute : FactAttribute, IScenarioAttribute
     {
     }
 }

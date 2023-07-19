@@ -10,8 +10,8 @@ internal class LightBddTestCase : XunitTestCase
     public LightBddTestCase()
     {
     }
-    public LightBddTestCase(IMessageSink diagnosticMessageSink, ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod)
-        : base(diagnosticMessageSink,discoveryOptions.MethodDisplayOrDefault(), discoveryOptions.MethodDisplayOptionsOrDefault(), testMethod)
+    public LightBddTestCase(IMessageSink diagnosticMessageSink, ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod, object[]? testMethodArguments = null)
+        : base(diagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(), discoveryOptions.MethodDisplayOptionsOrDefault(), testMethod, testMethodArguments)
     {
     }
 }
