@@ -304,8 +304,6 @@ namespace LightBDD.Core.Execution
             public override CoreMetadataProvider MetadataProvider => _ctx.MetadataProvider;
             public override INameFormatter NameFormatter => _ctx.Configuration.NameFormatterConfiguration().GetFormatter();
             public override Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; } = MapExceptionToStatus;
-            [Obsolete] public override IFeatureProgressNotifier FeatureProgressNotifier => throw new NotImplementedException();
-            [Obsolete] public override Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider => throw new NotImplementedException();
             public override IExecutionExtensions ExecutionExtensions => _ctx.Configuration.ExecutionExtensionsConfiguration();
             public override LightBddConfiguration Configuration => _ctx.Configuration;
             public override IDependencyContainer DependencyContainer => _ctx.Configuration.DependencyContainerConfiguration().DependencyContainer;

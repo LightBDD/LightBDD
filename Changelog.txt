@@ -34,6 +34,8 @@ vNext
 + #307 (Core)(change) Added ExecutionTime.None static field
 + #307 (Framework)(change) Updated scenario extensions to use WithCapturedScenarioDetailsIfNotSpecified() instead of WithCapturedScenarioDetails()
 + #307 (Framework)(change) Added ScenarioInlineCaseAttribute to allow scenario parameterization
++ #309 (all)(breaking change) Removed obsolete code
++ #309 (Framework)(breaking change) Moved ProgressNotifierConfiguration() method from LightBDD.Framework to LightBDD.Core
 
 Version 3.7.0
 ----------------------------------------

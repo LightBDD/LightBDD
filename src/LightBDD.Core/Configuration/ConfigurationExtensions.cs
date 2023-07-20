@@ -84,5 +84,15 @@
         {
             return configuration.Get<ValueFormattingConfiguration>();
         }
+
+        /// <summary>
+        /// Retrieves <see cref="ProgressNotifierConfiguration"/> from <paramref name="configuration"/> for further customizations.
+        /// </summary>
+        /// <param name="configuration">Configuration object.</param>
+        /// <returns>Configuration object.</returns>
+        public static ProgressNotifierConfiguration ProgressNotifierConfiguration(this LightBddConfiguration configuration)
+        {
+            return configuration.Get<ProgressNotifierConfiguration>();
+        }
     }
 }
