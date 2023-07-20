@@ -18,7 +18,7 @@ namespace LightBDD.Core.Metadata.Implementation
         public int Number { get; }
         public int Total { get; }
         public IStepNameInfo Name { get; private set; }
-        public Guid RuntimeId { get; } = Guid.NewGuid();
+        public string RuntimeId { get; } = Guid.NewGuid().ToString();
 
         public void UpdateName(INameParameterInfo[] parameters)
         {

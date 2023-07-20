@@ -1,3 +1,5 @@
+#nullable enable
+using System;
 using System.Collections.Generic;
 using LightBDD.Core.Metadata;
 
@@ -21,11 +23,17 @@ namespace LightBDD.Core.Results
         /// It will contain details for all bypassed, ignored or failed steps.
         /// It may be null if no additional details are provided.
         /// </summary>
-        string StatusDetails { get;  }
+        string? StatusDetails { get;  }
         /// <summary>
         /// Returns scenario execution time.
         /// </summary>
         ExecutionTime ExecutionTime { get; }
+
+        /// <summary>
+        /// Execution exception, if thrown during execution.
+        /// </summary>
+        Exception? ExecutionException { get; }
+
         /// <summary>
         /// Returns results of steps executed within this scenario.
         /// </summary>

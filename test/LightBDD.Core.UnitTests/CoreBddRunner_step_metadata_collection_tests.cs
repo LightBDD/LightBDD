@@ -4,6 +4,7 @@ using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
 using LightBDD.Framework.Extensibility;
+using LightBDD.ScenarioHelpers;
 using LightBDD.UnitTests.Helpers;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
@@ -11,6 +12,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests
 {
     [TestFixture]
+    //migrated
     public class CoreBddRunner_step_metadata_collection_tests : Steps
     {
         private IBddRunner _runner;

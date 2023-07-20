@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\LightBDD.Framework\LightBDD.Framework.csproj" />
+    <ProjectReference Include="..\LightBDD.ScenarioHelpers\LightBDD.ScenarioHelpers.csproj" />
   </ItemGroup>
 
   <ItemGroup>

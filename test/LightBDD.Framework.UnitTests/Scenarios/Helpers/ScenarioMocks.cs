@@ -71,14 +71,6 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
             return builder;
         }
 
-        public static Mock<ICoreScenarioBuilder> ExpectWithCapturedScenarioDetails(this Mock<ICoreScenarioBuilder> builder)
-        {
-            builder
-                .Setup(x => x.WithCapturedScenarioDetails()).Returns(builder.Object)
-                .Verifiable();
-            return builder;
-        }
-
         public static Capture<bool> ExpectBuild(this Mock<ICoreScenarioBuilder> builder)
         {
             var capture = new Capture<bool>();

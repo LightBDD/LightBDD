@@ -4,6 +4,7 @@ using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using LightBDD.ScenarioHelpers;
 
 namespace LightBDD.Core.UnitTests
 {

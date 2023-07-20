@@ -13,6 +13,7 @@ namespace LightBDD.Core.Execution
         /// <param name="scenario">Scenario</param>
         /// <exception cref="InvalidOperationException">Thrown if scenario did not finished upon return or scenario was already executed.</exception>
         /// <exception cref="ScenarioExecutionException">Thrown when any exception occurs during execution.</exception>
+        //TODO: remove
         public static void ExecuteSync(this IRunnableScenario scenario)
         {
             var task = scenario.ExecuteAsync();

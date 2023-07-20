@@ -6,17 +6,20 @@ namespace LightBDD.Core.Metadata.Implementation
 {
     internal class FeatureInfo : IFeatureInfo
     {
-        public FeatureInfo(INameInfo name, string[] labels, string description)
+        public FeatureInfo(INameInfo name, string[] labels, string description, Type featureType)
         {
             Name = name;
             Labels = labels;
             Description = description;
+            FeatureType = featureType;
         }
 
         public INameInfo Name { get; }
-        public Guid RuntimeId { get; } = Guid.NewGuid();
+        //TODO: revisit and perhaps encode
+        public string RuntimeId => FeatureType.FullName;
         public IEnumerable<string> Labels { get; }
         public string Description { get; }
+        public Type FeatureType { get; }
 
         public override string ToString()
         {

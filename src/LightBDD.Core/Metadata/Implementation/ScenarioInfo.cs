@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,16 +7,17 @@ namespace LightBDD.Core.Metadata.Implementation
 {
     internal class ScenarioInfo : IScenarioInfo
     {
-        public ScenarioInfo(IFeatureInfo parent, INameInfo name, string[] labels, string[] categories)
+        public ScenarioInfo(IFeatureInfo parent, INameInfo name, string[] labels, string[] categories, string? runtimeId)
         {
             Parent = parent;
             Name = name;
             Labels = labels;
             Categories = categories;
+            RuntimeId = runtimeId ?? Guid.NewGuid().ToString();
         }
 
         public INameInfo Name { get; }
-        public Guid RuntimeId { get; } = Guid.NewGuid();
+        public string RuntimeId { get; }
         public IFeatureInfo Parent { get; }
         public IEnumerable<string> Labels { get; }
         public IEnumerable<string> Categories { get; }

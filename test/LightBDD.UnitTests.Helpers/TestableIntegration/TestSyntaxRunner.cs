@@ -6,19 +6,24 @@ using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework;
+using LightBDD.ScenarioHelpers;
 
 namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
     public class TestSyntaxRunner
     {
-        private readonly IBddRunner _coreRunner;
         private Func<object> _contextProvider;
         private bool _takeContextOwnership;
         private Func<IDependencyResolver, object> _contextResolver;
-
+        private readonly Func<ICoreScenarioBuilder> _integrate;
         public TestSyntaxRunner(IBddRunner runner)
         {
-            _coreRunner = runner;
+            _integrate = () => runner.Integrate().Core;
+        }
+
+        public TestSyntaxRunner(ICoreScenarioBuilder scenarioBuilder)
+        {
+            _integrate = () => scenarioBuilder;
         }
 
         public void TestScenario(params Action[] steps)
@@ -64,7 +69,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             try
             {
                 NewScenario()
-                    .WithCapturedScenarioDetails()
+                    .WithCapturedScenarioDetailsIfNotSpecified()
                     .AddSteps(steps)
                     .Build()
                     .ExecuteAsync()
@@ -81,7 +86,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
             try
             {
                 await NewScenario()
-                    .WithCapturedScenarioDetails()
+                    .WithCapturedScenarioDetailsIfNotSpecified()
                     .AddSteps(steps)
                     .Build()
                     .ExecuteAsync();
@@ -94,7 +99,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
 
         private ICoreScenarioBuilder NewScenario()
         {
-            var scenarioRunner = _coreRunner.Integrate().Core;
+            var scenarioRunner = _integrate.Invoke();
             if (_contextProvider != null)
                 return scenarioRunner.WithContext(_contextProvider, _takeContextOwnership);
             if (_contextResolver != null)
@@ -129,9 +134,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
         {
             try
             {
-                await _coreRunner
-                    .Integrate()
-                    .Core
+                await _integrate.Invoke()
                     .WithName(name)
                     .AddSteps(steps)
                     .Build()

@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="..\Common.Tests.props" />
+    <PropertyGroup>
+        <TargetFrameworks>net6;net48</TargetFrameworks>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\LightBDD.Core\LightBDD.Core.csproj" />
+    </ItemGroup>
+
+</Project>

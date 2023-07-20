@@ -20,6 +20,20 @@ vNext
 + #290 (Core)(breaking change) Renamed ReportWritersConfiguration class to ReportConfiguration 
 + #290 (Core)(breaking change) Renamed ConfigurationExtensions.ReportWritersConfiguration() to ReportConfiguration()
 + #290 (Framework)(change) Updated XmlReportFormatterSchema.xsd to include details of TestRun
++ #307 (Core)(new) Added ScenarioDiscoverer to discover and ExecutionPipeline to execute LighBDD scenario cases
++ #307 (Runner)(new) Added LightBDD.Runner project using discovery and execution pipeline with xunit
++ #307 (Core)(new) Added IScenarioAttribute to be discoverable by ScenarioDiscoverer
++ #307 (Core)(new) Added IScenarioCaseSourceAttribute to be used by ScenarioDiscoverer and ExecutionPipeline to create parameterized scenarios
++ #307 (Core)(change) Updated NameFormatterConfiguration with default name formatter that returns names as is (overridden in LightBDD.Framework)
++ #307 (Core)(breaking change) Moved ProgressNotifierConfiguration from LightBDD.Framework to LightBDD.Core
++ #307 (Core)(new) Exposed IgnoreScenarioException to be used to ignore scenarios
++ #307 (Core)(change) Added IFeatureInfo.FeatureType property
++ #307 (Core)(new) Added ICoreScenarioBuilder.WithScenarioDetails() and WithRuntimeId() methods
++ #307 (Core)(breaking change) Changed IMetadataInfo.RuntimeId from Guid to string
++ #307 (Core)(breaking change) Moved NoProgressNotifier from LightBDD.Framework to LightBDD.Core
++ #307 (Core)(change) Added ExecutionTime.None static field
++ #307 (Framework)(change) Updated scenario extensions to use WithCapturedScenarioDetailsIfNotSpecified() instead of WithCapturedScenarioDetails()
++ #307 (Framework)(change) Added ScenarioInlineCaseAttribute to allow scenario parameterization
 
 Version 3.7.0
 ----------------------------------------

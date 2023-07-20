@@ -1,15 +1,16 @@
 ﻿using LightBDD.Core.Metadata;
-using LightBDD.Core.Notification;
 using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Results;
-#pragma warning disable 618
 
-namespace LightBDD.Framework.Notification
+namespace LightBDD.Core.Notification
 {
     /// <summary>
     /// Progress notifier implementation that does nothing when called.
     /// </summary>
-    public class NoProgressNotifier : IProgressNotifier, IFeatureProgressNotifier, IScenarioProgressNotifier
+    public class NoProgressNotifier : IProgressNotifier,
+#pragma warning disable CS0618
+        IFeatureProgressNotifier, IScenarioProgressNotifier
+#pragma warning restore CS0618
     {
         private NoProgressNotifier() { }
         /// <summary>

@@ -13,6 +13,7 @@ namespace LightBDD.Core.UnitTests.Execution;
 
 [TestFixture]
 [NonParallelizable]
+//migrated
 public class FeatureCoordinator_global_initialization_and_teardown_tests
 {
     class TestableFeatureCoordinator : FrameworkFeatureCoordinator

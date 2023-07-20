@@ -5,6 +5,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests
 {
     [TestFixture]
+    //migrated
     public class CoreBddRunner_feature_metadata_collection_tests
     {
         [FeatureDescription("Runner tests description")]

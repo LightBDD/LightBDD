@@ -4,6 +4,8 @@ using LightBDD.Core.Extensibility.Execution;
 using System;
 using System.Collections.Generic;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Metadata;
+using LightBDD.Core.Metadata.Implementation;
 
 namespace LightBDD.Core.Extensibility
 {
@@ -24,6 +26,7 @@ namespace LightBDD.Core.Extensibility
         /// Configures scenario details with values inferred by <see cref="CoreMetadataProvider"/>.
         /// </summary>
         /// <returns>Self.</returns>
+        //TODO: remove
         ICoreScenarioBuilder WithCapturedScenarioDetails();
         /// <summary>
         /// Configures scenario details with values inferred by <see cref="CoreMetadataProvider"/>, but only if scenario name has not been provided yet.
@@ -87,5 +90,14 @@ namespace LightBDD.Core.Extensibility
         /// Returns current <see cref="LightBddConfiguration"/> instance.
         /// </summary>
         LightBddConfiguration Configuration { get; }
+
+        /// <summary>
+        /// Configures scenario to have provided name.
+        /// </summary>
+        ICoreScenarioBuilder WithScenarioDetails(IScenarioInfo scenarioInfo);
+        /// <summary>
+        /// Configures scenario to have unique ID.
+        /// </summary>
+        ICoreScenarioBuilder WithRuntimeId(string runtimeId);
     }
 }

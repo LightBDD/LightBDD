@@ -65,7 +65,13 @@ namespace LightBDD.Core.Execution.Implementation
                 StopScenario(executionStartTime);
             }
 
-            ProcessExceptions();
+            RethrowExecutionException();
+        }
+
+        private void RethrowExecutionException()
+        {
+            if (_result.ExecutionException != null)
+                throw new ScenarioExecutionException(_result.ExecutionException);
         }
 
         private async Task RunScenarioAsync()
@@ -103,26 +109,19 @@ namespace LightBDD.Core.Execution.Implementation
                 await tearDown.OnScenarioTearDown();
         }
 
-        private void ProcessExceptions()
-        {
-            var exception = _exceptionCollector.CollectFor(_result.Status, _result.GetSteps());
-            if (exception == null)
-                return;
-
-            _result.UpdateException(exception);
-            throw new ScenarioExecutionException(exception);
-        }
-
         private void StopScenario(EventTime executionStartTime)
         {
             ScenarioExecutionContext.Current = null;
             DisposeScope();
 
             var executionStopTime = _scenarioContext.ExecutionTimer.GetTime();
-
             _result.UpdateResult(
                 _preparedSteps.Select(s => s.Result).ToArray(),
                 executionStopTime.GetExecutionTime(executionStartTime));
+
+            var exception = _exceptionCollector.CollectFor(_result.Status, _result.GetSteps());
+            if (exception != null)
+                _result.UpdateException(exception);
 
             _scenarioContext.ProgressNotifier.Notify(new ScenarioFinished(executionStopTime, _result));
             _scenarioContext.OnScenarioFinished?.Invoke(_result);

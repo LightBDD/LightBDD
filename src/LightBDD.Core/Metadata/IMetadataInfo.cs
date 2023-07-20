@@ -13,8 +13,8 @@ namespace LightBDD.Core.Metadata
         INameInfo Name { get; }
         /// <summary>
         /// Unique Id assigned at runtime to the metadata.
-        /// Please note that the same metadata will have different Ids in consecutive test runs.
+        /// Please note that the same metadata may have different Ids in consecutive test runs.
         /// </summary>
-        Guid RuntimeId { get; }
+        string RuntimeId { get; }
     }
 }

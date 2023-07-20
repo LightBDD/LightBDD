@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using LightBDD.Framework;
 using LightBDD.Framework.Extensibility;
+using LightBDD.ScenarioHelpers;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 

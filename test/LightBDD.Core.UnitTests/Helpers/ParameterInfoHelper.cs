@@ -1,5 +1,7 @@
 using System;
+using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace LightBDD.Core.UnitTests.Helpers
 {
@@ -20,6 +22,13 @@ namespace LightBDD.Core.UnitTests.Helpers
         public static MethodInfo GetMethodInfo(Action lambda)
         {
             return lambda.GetMethodInfo();
+        }
+
+        public static MethodInfo GetMethodInfo<T>(Expression<T> methodSelector)
+        {
+            if (methodSelector.Body is MethodCallExpression callExpression)
+                return callExpression.Method;
+            throw new InvalidOperationException($"Expected {nameof(methodSelector)} to be method call expression, got: {methodSelector}");
         }
     }
 }

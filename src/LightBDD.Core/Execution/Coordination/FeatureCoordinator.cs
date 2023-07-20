@@ -24,6 +24,10 @@ namespace LightBDD.Core.Execution.Coordination
         /// </summary>
         protected static FeatureCoordinator Instance { get; private set; }
         /// <summary>
+        /// Integration context
+        /// </summary>
+        public IntegrationContext IntegrationContext { get; }
+        /// <summary>
         /// Runner factory.
         /// </summary>
         public FeatureRunnerRepository RunnerRepository { get; }
@@ -101,6 +105,7 @@ namespace LightBDD.Core.Execution.Coordination
         /// <param name="context">Integration context.</param>
         protected FeatureCoordinator(IntegrationContext context)
         {
+            IntegrationContext = context;
             Configuration = context.Configuration;
             _reportGenerator = new FeatureReportGenerator(Configuration);
             RunnerRepository = new FeatureRunnerRepository(context);
