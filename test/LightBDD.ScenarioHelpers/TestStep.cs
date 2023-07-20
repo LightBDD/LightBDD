@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Results;
 
-namespace LightBDD.UnitTests.Helpers.TestableIntegration
+namespace LightBDD.ScenarioHelpers
 {
     public static class TestStep
     {

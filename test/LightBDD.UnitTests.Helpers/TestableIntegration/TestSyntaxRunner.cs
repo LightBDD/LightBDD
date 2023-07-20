@@ -6,6 +6,7 @@ using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework;
+using LightBDD.ScenarioHelpers;
 
 namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {

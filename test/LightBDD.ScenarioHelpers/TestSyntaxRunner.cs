@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
-using LightBDD.UnitTests.Helpers.TestableIntegration;
 
 namespace LightBDD.ScenarioHelpers
 {

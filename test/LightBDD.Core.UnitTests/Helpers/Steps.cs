@@ -1,5 +1,6 @@
 using System;
 using LightBDD.Framework;
+using LightBDD.ScenarioHelpers;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 
 namespace LightBDD.Core.UnitTests.Helpers

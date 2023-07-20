@@ -11,6 +11,7 @@ using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Formatting;
 using LightBDD.Framework.Parameters;
+using LightBDD.ScenarioHelpers;
 using LightBDD.UnitTests.Helpers;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;

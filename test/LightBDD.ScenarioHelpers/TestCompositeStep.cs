@@ -4,14 +4,14 @@ using System.Linq;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Results;
 
-namespace LightBDD.UnitTests.Helpers.TestableIntegration
+namespace LightBDD.ScenarioHelpers
 {
     public class TestCompositeStep : CompositeStepResultDescriptor
     {
         public TestCompositeStep(params StepDescriptor[] subSteps) : this(() => null, subSteps) { }
-        public TestCompositeStep(Func<object> contextProvider, params StepDescriptor[] subSteps)
+        public TestCompositeStep(Func<object?> contextProvider, params StepDescriptor[] subSteps)
             : base(new ExecutionContextDescriptor(contextProvider, false), subSteps) { }
-        public TestCompositeStep(Func<object> contextProvider, IEnumerable<StepDescriptor> subSteps)
+        public TestCompositeStep(Func<object?> contextProvider, IEnumerable<StepDescriptor> subSteps)
             : base(new ExecutionContextDescriptor(contextProvider, false), subSteps) { }
         public TestCompositeStep(ExecutionContextDescriptor contextDescriptor, params StepDescriptor[] subSteps)
             : base(contextDescriptor, subSteps) { }
