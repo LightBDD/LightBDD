@@ -9,6 +9,7 @@ using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Discovery;
 using LightBDD.Core.Execution.Implementation;
+using LightBDD.Core.Execution.Implementation.GlobalSetUp;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Extensibility.Implementation;
@@ -18,6 +19,7 @@ using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Notification.Events;
+using LightBDD.Core.Reporting;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Implementation;
 
@@ -55,11 +57,16 @@ namespace LightBDD.Core.Execution
             var testRunStartTime = ctx.Timer.GetTime();
             OnBeforeTestRunStart(testRunStartTime, testRunInfo, scenarios);
             ctx.ProgressNotifier.Notify(new TestRunStarting(testRunStartTime, testRunInfo));
+
+            await ctx.GlobalSetUp.SetUpAsync(ctx.DependencyContainer);
             var results = await Task.WhenAll(scenarios.GroupBy(s => s.FeatureFixtureType).Select(fixture => ExecuteFeature(fixture, ctx)));
+            await ctx.GlobalSetUp.TearDownAsync(ctx.DependencyContainer);
 
             var testRunEndTime = ctx.Timer.GetTime();
             var result = new TestRunResult(testRunInfo, testRunEndTime.GetExecutionTime(testRunStartTime), results);
             ctx.ProgressNotifier.Notify(new TestRunFinished(testRunEndTime, result));
+
+            await new FeatureReportGenerator(ctx.Configuration).GenerateReports(result);
             OnAfterTestRunFinish(testRunEndTime, result);
             return result;
         }
@@ -263,11 +270,13 @@ namespace LightBDD.Core.Execution
             //TODO: remove
             public readonly IntegrationContext Integration;
             public readonly ExceptionProcessor ExceptionProcessor;
+            public IDependencyContainer DependencyContainer => Configuration.Get<DependencyContainerConfiguration>().DependencyContainer;
+            public GlobalSetUpRegistry GlobalSetUp => Configuration.Get<ExecutionExtensionsConfiguration>().GlobalSetUpRegistry;
             public IProgressNotifier ProgressNotifier => Configuration.Get<ProgressNotifierConfiguration>().Notifier;
 
             public void Dispose()
             {
-                Configuration.DependencyContainerConfiguration().DependencyContainer.Dispose();
+                DependencyContainer.Dispose();
             }
         }
 
