@@ -1,38 +1,31 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution;
-using LightBDD.Framework.Execution.Coordination;
-using LightBDD.UnitTests.Helpers.TestableIntegration;
+using LightBDD.Core.ExecutionContext;
+using LightBDD.Core.Results;
+using LightBDD.Core.UnitTests.Helpers;
+using LightBDD.ScenarioHelpers;
 using NUnit.Framework;
-#pragma warning disable CS1998
+using Shouldly;
 
 namespace LightBDD.Core.UnitTests.Execution;
 
 [TestFixture]
-[NonParallelizable]
-//migrated
-public class FeatureCoordinator_global_initialization_and_teardown_tests
+[FixtureLifeCycle(LifeCycle.InstancePerTestCase)]
+public class ExecutionPipeline_global_setup_and_teardown_tests
 {
-    class TestableFeatureCoordinator : FrameworkFeatureCoordinator
+    class MyFeature
     {
-        public TestableFeatureCoordinator()
-            : this(TestableIntegrationContextBuilder.Default()) { }
-
-        public TestableFeatureCoordinator(TestableIntegrationContextBuilder builder)
-            : base(builder.Build())
-        {
-        }
-
-        public TestableFeatureCoordinator InstallSelf()
-        {
-            Install(this);
-            return this;
-        }
+        [TestScenario]
+        public Task MyScenario1() => TestScenarioBuilder.Current.TestScenario(
+            TestStep.CreateNamed("step", () => ScenarioExecutionContext.CurrentScenario.DependencyResolver.Resolve<Counter>().Next()));
     }
-
     class Counter
     {
         private int _counter = 0;
@@ -87,13 +80,8 @@ public class FeatureCoordinator_global_initialization_and_teardown_tests
         }
     }
 
-    private TestableFeatureCoordinator SetupCoordinator(Action<LightBddConfiguration> cfg = null)
-    {
-        return new TestableFeatureCoordinator(TestableIntegrationContextBuilder.Default().WithConfiguration(cfg));
-    }
-
     [Test]
-    public void Coordinator_should_run_global_SetUps_on_installation_and_TearDowns_on_disposal()
+    public async Task Coordinator_should_run_global_SetUps_on_installation_and_TearDowns_on_disposal()
     {
         var counter = new Counter();
         var dep1 = new InitializableDependency(counter);
@@ -134,8 +122,7 @@ public class FeatureCoordinator_global_initialization_and_teardown_tests
                 .RegisterGlobalSetUp("sync3", SyncSetUp3);
         }
 
-        using var coordinator = SetupCoordinator(Configure);
-        coordinator.InstallSelf();
+        await TestableCoreExecutionPipeline.Create(Configure).ExecuteFeature(typeof(MyFeature));
 
         Assert.That(dep1.InitializeSeq, Is.EqualTo(1));
         Assert.That(dep2.InitializeSeq, Is.EqualTo(2));
@@ -143,25 +130,18 @@ public class FeatureCoordinator_global_initialization_and_teardown_tests
         Assert.That(syncSetUpSeq, Is.EqualTo(4));
         Assert.That(syncSetUpSeq3, Is.EqualTo(5));
 
-        Assert.That(dep1.CleanUpSeq, Is.EqualTo(-1));
-        Assert.That(dep2.CleanUpSeq, Is.EqualTo(-1));
-        Assert.That(cleanUpSeq, Is.EqualTo(-1));
-        Assert.That(cleanUpSeq2, Is.EqualTo(-1));
-        Assert.That(syncCleanUpSeq, Is.EqualTo(-1));
-        Assert.That(syncCleanUpSeq2, Is.EqualTo(-1));
+        //scenario counter
 
-        coordinator.Dispose();
-
-        Assert.That(dep1.CleanUpSeq, Is.EqualTo(11));
-        Assert.That(dep2.CleanUpSeq, Is.EqualTo(10));
-        Assert.That(cleanUpSeq, Is.EqualTo(9));
-        Assert.That(cleanUpSeq2, Is.EqualTo(8));
-        Assert.That(syncCleanUpSeq, Is.EqualTo(7));
-        Assert.That(syncCleanUpSeq2, Is.EqualTo(6));
+        Assert.That(syncCleanUpSeq2, Is.EqualTo(7));
+        Assert.That(syncCleanUpSeq, Is.EqualTo(8));
+        Assert.That(cleanUpSeq2, Is.EqualTo(9));
+        Assert.That(cleanUpSeq, Is.EqualTo(10));
+        Assert.That(dep2.CleanUpSeq, Is.EqualTo(11));
+        Assert.That(dep1.CleanUpSeq, Is.EqualTo(12));
     }
 
     [Test]
-    public void Only_TearDowns_for_successful_SetUps_should_run()
+    public async Task Only_TearDowns_for_successful_SetUps_should_run()
     {
         var counter = new Counter();
         var dep1 = new InitializableDependency(counter);
@@ -199,11 +179,8 @@ public class FeatureCoordinator_global_initialization_and_teardown_tests
                 .RegisterGlobalTearDown("global4", GlobalCleanUp4);
         }
 
-        using (var coordinator = SetupCoordinator(Configure))
-        {
-            var ex = Assert.Throws<InvalidOperationException>(() => coordinator.InstallSelf());
-            Assert.That(ex.Message, Is.EqualTo("Global set up failed: Set up activity 'failing' failed: BOOM"));
-        }
+        var result = await TestableCoreExecutionPipeline.Create(Configure).Execute(typeof(MyFeature));
+        result.OverallStatus.ShouldBe(ExecutionStatus.Failed);
 
         Assert.That(dep1.InitializeSeq, Is.EqualTo(1));
         Assert.That(setUpSeq, Is.EqualTo(2));
@@ -215,5 +192,26 @@ public class FeatureCoordinator_global_initialization_and_teardown_tests
         Assert.That(dep2.CleanUpSeq, Is.EqualTo(-1));
         Assert.That(cleanUpSeq, Is.EqualTo(5));
         Assert.That(dep1.CleanUpSeq, Is.EqualTo(6));
+    }
+
+    [Test]
+    public async Task Failing_GlobalSetUp_should_fail_scenarios()
+    {
+        var counter = new Counter();
+        void Configure(LightBddConfiguration cfg)
+        {
+            cfg.DependencyContainerConfiguration()
+                .UseDefault(c =>
+                {
+                    c.RegisterInstance(counter);
+                });
+
+            cfg.ExecutionExtensionsConfiguration()
+                .RegisterGlobalSetUp("failing", () => throw new IOException("BOOM"));
+        }
+
+        var result = await TestableCoreExecutionPipeline.Create(Configure).Execute(typeof(MyFeature));
+        result.OverallStatus.ShouldBe(ExecutionStatus.Failed);
+        result.Features.Single().GetScenarios().Single().StatusDetails.ShouldBe("Scenario: Global set up failed: Set up activity 'failing' failed: BOOM");
     }
 }

@@ -67,5 +67,20 @@ namespace LightBDD.Core.Results.Implementation
             if (!string.IsNullOrWhiteSpace(details))
                 StatusDetails = $"Scenario: {details.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t")}";
         }
+
+        public static ScenarioResult CreateFailed(IScenarioInfo scenarioInfo, Exception ex)
+        {
+            var result = new ScenarioResult(scenarioInfo);
+            result.UpdateException(ex);
+            result.UpdateScenarioResult(ExecutionStatus.Failed, ex.Message);
+            return result;
+        }
+
+        public static ScenarioResult CreateIgnored(IScenarioInfo scenarioInfo, string message)
+        {
+            var result = new ScenarioResult(scenarioInfo);
+            result.UpdateScenarioResult(ExecutionStatus.Ignored, message);
+            return result;
+        }
     }
 }

@@ -58,7 +58,7 @@ namespace LightBDD.Core.Execution
             OnBeforeTestRunStart(testRunStartTime, testRunInfo, scenarios);
             ctx.ProgressNotifier.Notify(new TestRunStarting(testRunStartTime, testRunInfo));
 
-            await ctx.GlobalSetUp.SetUpAsync(ctx.DependencyContainer);
+            await RunGlobalSetUp(ctx);
             var results = await Task.WhenAll(scenarios.GroupBy(s => s.FeatureFixtureType).Select(fixture => ExecuteFeature(fixture, ctx)));
             await ctx.GlobalSetUp.TearDownAsync(ctx.DependencyContainer);
 
@@ -69,6 +69,18 @@ namespace LightBDD.Core.Execution
             await new FeatureReportGenerator(ctx.Configuration).GenerateReports(result);
             OnAfterTestRunFinish(testRunEndTime, result);
             return result;
+        }
+
+        private static async Task RunGlobalSetUp(Context ctx)
+        {
+            try
+            {
+                await ctx.GlobalSetUp.SetUpAsync(ctx.DependencyContainer);
+            }
+            catch (Exception ex)
+            {
+                ctx.GlobalSetUpException = ex;
+            }
         }
 
         /// <summary>
@@ -168,6 +180,12 @@ namespace LightBDD.Core.Execution
             try
             {
                 OnBeforeScenario(startTime, scenarioInfo, scenario);
+
+                if (ctx.GlobalSetUpException != null)
+                    return ScenarioResult.CreateFailed(scenarioInfo, ctx.GlobalSetUpException);
+                if (ctx.CancellationToken.IsCancellationRequested)
+                    return ScenarioResult.CreateIgnored(scenarioInfo, "Execution aborted");
+
                 fixture = CreateInstance(scenario.FeatureFixtureType);
                 TestContextProvider.Initialize(scenario.ScenarioMethod, scenario.ScenarioArguments);
                 ScenarioBuilderContext.SetCurrent(new ScenarioBuilder(featureInfo, fixture, ctx.Integration, ctx.ExceptionProcessor, x => scenarioResult = x)
@@ -181,7 +199,7 @@ namespace LightBDD.Core.Execution
             catch (Exception ex)
             {
                 if (scenarioResult.Status == ExecutionStatus.NotRun)
-                    scenarioResult = CreateScenarioResult(scenarioInfo, ex);
+                    scenarioResult = ScenarioResult.CreateFailed(scenarioInfo, ex);
             }
             finally
             {
@@ -227,14 +245,6 @@ namespace LightBDD.Core.Execution
             return Activator.CreateInstance(featureFixtureType) ?? throw new InvalidOperationException($"Failed to create instance of {featureFixtureType}");
         }
 
-        private static ScenarioResult CreateScenarioResult(IScenarioInfo scenarioInfo, Exception ex)
-        {
-            var result = new ScenarioResult(scenarioInfo);
-            result.UpdateException(ex);
-            result.UpdateScenarioResult(ExecutionStatus.Failed, ex.Message);
-            return result;
-        }
-
         private IEnumerable<ScenarioCase> ExpandParameterizedScenarios(ScenarioCase scenarioCase, Context ctx)
         {
             if (!scenarioCase.RequireArgumentResolutionAtRuntime)
@@ -273,6 +283,7 @@ namespace LightBDD.Core.Execution
             public IDependencyContainer DependencyContainer => Configuration.Get<DependencyContainerConfiguration>().DependencyContainer;
             public GlobalSetUpRegistry GlobalSetUp => Configuration.Get<ExecutionExtensionsConfiguration>().GlobalSetUpRegistry;
             public IProgressNotifier ProgressNotifier => Configuration.Get<ProgressNotifierConfiguration>().Notifier;
+            public Exception? GlobalSetUpException;
 
             public void Dispose()
             {

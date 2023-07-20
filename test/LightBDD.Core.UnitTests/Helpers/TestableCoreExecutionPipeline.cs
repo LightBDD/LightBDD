@@ -12,10 +12,13 @@ namespace LightBDD.Core.UnitTests.Helpers
 {
     internal class TestableCoreExecutionPipeline : ExecutionPipeline
     {
-        public static readonly TestableCoreExecutionPipeline Default = new(typeof(TestableCoreExecutionPipeline).Assembly);
+        public static readonly TestableCoreExecutionPipeline Default = Create();
+
         private TestableCoreExecutionPipeline(Assembly testAssembly, Action<LightBddConfiguration> onConfigure = null) : base(testAssembly, SetTestDefaults + onConfigure)
         {
         }
+
+        public static TestableCoreExecutionPipeline Create(Action<LightBddConfiguration> onConfigure = null) => new(typeof(TestableCoreExecutionPipeline).Assembly, onConfigure);
 
         public async Task<ITestRunResult> Execute(params Type[] features)
         {
