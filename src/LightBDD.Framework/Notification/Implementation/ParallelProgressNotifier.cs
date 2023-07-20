@@ -4,11 +4,10 @@ using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Results;
-#pragma warning disable 618
 
 namespace LightBDD.Framework.Notification.Implementation
 {
-    internal class ParallelProgressNotifier : IScenarioProgressNotifier, IFeatureProgressNotifier, IProgressNotifier
+    internal class ParallelProgressNotifier : IProgressNotifier
     {
         private readonly ProgressManager _manager;
         private readonly DefaultProgressNotifier _notifier;
@@ -31,68 +30,19 @@ namespace LightBDD.Framework.Notification.Implementation
             _onNotify(header + message.Replace(Environment.NewLine, Environment.NewLine + new string(' ', header.Length)));
         }
 
-        public void NotifyFeatureStart(IFeatureInfo feature)
-        {
-            _notifier.NotifyFeatureStart(feature);
-        }
-
-        public void NotifyFeatureFinished(IFeatureResult feature)
-        {
-            _notifier.NotifyFeatureFinished(feature);
-        }
-
-        public void NotifyScenarioStart(IScenarioInfo scenario)
-        {
-            _manager.StartNewScenario();
-            _notifier.NotifyScenarioStart(scenario);
-        }
-
-        public void NotifyScenarioFinished(IScenarioResult scenario)
-        {
-            _manager.CaptureScenarioResult(scenario.Status);
-            _notifier.NotifyScenarioFinished(scenario);
-            _manager.FinishScenario();
-        }
-
-        public void NotifyStepStart(IStepInfo step)
-        {
-            _notifier.NotifyStepStart(step);
-        }
-
-        public void NotifyStepFinished(IStepResult step)
-        {
-            _notifier.NotifyStepFinished(step);
-        }
-
-        public void NotifyStepComment(IStepInfo step, string comment)
-        {
-            _notifier.NotifyStepComment(step, comment);
-        }
-
+        //TODO: protect scenario finished from throwing exceptions
         public void Notify(ProgressEvent e)
         {
             switch (e)
             {
-                case FeatureFinished featureFinished:
-                    NotifyFeatureFinished(featureFinished.Result);
-                    break;
-                case FeatureStarting featureStarting:
-                    NotifyFeatureStart(featureStarting.Feature);
-                    break;
                 case ScenarioFinished scenarioFinished:
-                    NotifyScenarioFinished(scenarioFinished.Result);
+                    _manager.CaptureScenarioResult(scenarioFinished.Result.Status);
+                    _notifier.Notify(e);
+                    _manager.FinishScenario();
                     break;
-                case ScenarioStarting scenarioStarting:
-                    NotifyScenarioStart(scenarioStarting.Scenario);
-                    break;
-                case StepCommented stepCommented:
-                    NotifyStepComment(stepCommented.Step, stepCommented.Comment);
-                    break;
-                case StepFinished stepFinished:
-                    NotifyStepFinished(stepFinished.Result);
-                    break;
-                case StepStarting stepStarting:
-                    NotifyStepStart(stepStarting.Step);
+                case ScenarioStarting:
+                    _manager.StartNewScenario();
+                    _notifier.Notify(e);
                     break;
                 default:
                     _notifier.Notify(e);

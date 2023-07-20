@@ -7,24 +7,6 @@ namespace LightBDD.XUnit2.Implementation
 {
     internal class XUnit2ProgressNotifier
     {
-        [Obsolete]
-        public static IFeatureProgressNotifier CreateFeatureProgressNotifier()
-        {
-            return ParallelProgressNotifierProvider.Default.CreateFeatureProgressNotifier(Console.WriteLine);
-        }
-
-        [Obsolete]
-        public static IScenarioProgressNotifier CreateImmediateScenarioProgressNotifier()
-        {
-            return ParallelProgressNotifierProvider.Default.CreateScenarioProgressNotifier(Console.WriteLine);
-        }
-
-        [Obsolete]
-        public static IScenarioProgressNotifier CreateSummarizingScenarioProgressNotifier(ITestOutputProvider fixture)
-        {
-            return new DefaultProgressNotifier(fixture.TestOutput.WriteLine);
-        }
-
         public static IProgressNotifier[] CreateProgressNotifiers()
         {
             return new[]

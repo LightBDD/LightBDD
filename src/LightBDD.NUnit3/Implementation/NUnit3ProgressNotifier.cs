@@ -7,21 +7,8 @@ namespace LightBDD.NUnit3.Implementation
 {
     internal class NUnit3ProgressNotifier
     {
-        private static readonly DefaultProgressNotifier SummarizingProgressNotifier = new(WriteOutput);
-
-        [Obsolete]
-        public static IFeatureProgressNotifier CreateFeatureProgressNotifier()
-        {
-            return new DelegatingFeatureProgressNotifier(ParallelProgressNotifierProvider.Default.CreateFeatureProgressNotifier(WriteImmediateProgress));
-        }
-
-        [Obsolete]
-        public static IScenarioProgressNotifier CreateScenarioProgressNotifier()
-        {
-            return new DelegatingScenarioProgressNotifier(
-                ParallelProgressNotifierProvider.Default.CreateScenarioProgressNotifier(WriteImmediateProgress),
-                SummarizingProgressNotifier);
-        }
+        private static readonly IProgressNotifier SummarizingProgressNotifier = new DefaultProgressNotifier(WriteOutput);
+        private static readonly IProgressNotifier ImmediateProgressNotifier = ParallelProgressNotifierProvider.Default.CreateProgressNotifier(WriteImmediateProgress);
 
         private static void WriteOutput(string text)
         {
@@ -37,8 +24,7 @@ namespace LightBDD.NUnit3.Implementation
         {
             return new[]
             {
-                ParallelProgressNotifierProvider.Default.CreateProgressNotifier(WriteImmediateProgress),
-                new DefaultProgressNotifier(WriteOutput)
+                ImmediateProgressNotifier, SummarizingProgressNotifier
             };
         }
     }

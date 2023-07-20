@@ -185,31 +185,6 @@ namespace LightBDD.Core.UnitTests
             Assert.That(progressNotifier.Notifications, Is.EqualTo(expected), "Expected:\r\n{0}\r\n\r\nGot:\r\n{1}\r\n\r\n", string.Join("\r\n", expected), string.Join("\r\n", progressNotifier.Notifications));
         }
 
-        [Test]
-        [Obsolete]
-        public void It_should_instantiate_new_scenario_progress_notifier_for_each_scenario()
-        {
-            var notifiers = new List<CapturingProgressNotifier>();
-
-            Func<object, IScenarioProgressNotifier> captureNotifierCreation = fixture =>
-            {
-                var notifier = new CapturingProgressNotifier();
-                notifiers.Add(notifier);
-                return notifier;
-            };
-
-            var runner = new TestableFeatureRunnerRepository(NoProgressNotifier.Default, captureNotifierCreation).GetRunnerFor(GetType()).GetBddRunner(this);
-
-            runner.Test().TestNamedScenario("scenario1", TestStep.CreateSync(Given_step_one));
-            runner.Test().TestNamedScenario("scenario2", TestStep.CreateSync(Given_step_one));
-            runner.Test().TestNamedScenario("scenario3", TestStep.CreateSync(Given_step_one));
-
-            Assert.That(notifiers.Count, Is.EqualTo(3));
-            Assert.That(notifiers[0].Notifications.Count(n => n.StartsWith("Scenario Start: scenario1")), Is.EqualTo(1), "scenario1");
-            Assert.That(notifiers[1].Notifications.Count(n => n.StartsWith("Scenario Start: scenario2")), Is.EqualTo(1), "scenario2");
-            Assert.That(notifiers[2].Notifications.Count(n => n.StartsWith("Scenario Start: scenario3")), Is.EqualTo(1), "scenario3");
-        }
-
         void CaptureEvent<TEvent>(Mock<IProgressNotifier> notifier, Action<TEvent> callback) where TEvent : ProgressEvent
         {
             notifier.Setup(x => x.Notify(It.IsAny<TEvent>()))
@@ -275,9 +250,7 @@ namespace LightBDD.Core.UnitTests
             Assert.That(stepResults[8].Info, Is.SameAs(stepInfos[0]), "1");
         }
 
-#pragma warning disable 618
-        private class CapturingProgressNotifier : IProgressNotifier, IScenarioProgressNotifier, IFeatureProgressNotifier
-#pragma warning restore 618
+        private class CapturingProgressNotifier : IProgressNotifier
         {
             private readonly List<string> _notifications = new();
 

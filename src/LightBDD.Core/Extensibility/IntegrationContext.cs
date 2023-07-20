@@ -37,18 +37,6 @@ namespace LightBDD.Core.Extensibility
         public abstract Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; }
 
         /// <summary>
-        /// Returns feature progress notifier.
-        /// </summary>
-        [Obsolete]
-        public abstract IFeatureProgressNotifier FeatureProgressNotifier { get; }
-
-        /// <summary>
-        /// Returns scenario progress notifier provider method.
-        /// </summary>
-        [Obsolete]
-        public abstract Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider { get; }
-
-        /// <summary>
         /// Returns progress notifier.
         /// </summary>
         public IProgressNotifier ProgressNotifier => _progressNotifier ??= GetProgressNotifier();
@@ -85,10 +73,8 @@ namespace LightBDD.Core.Extensibility
         public virtual IFileAttachmentsManager FileAttachmentsManager => Configuration.ReportConfiguration().GetFileAttachmentsManager();
 
         /// <summary>
-        /// Creates progress notifier.
+        /// Returns progress notifier.
         /// </summary>
-#pragma warning disable 612
-        protected virtual IProgressNotifier GetProgressNotifier() => new NotificationAdapter(FeatureProgressNotifier, ScenarioProgressNotifierProvider);
-#pragma warning restore 612
+        protected virtual IProgressNotifier GetProgressNotifier() => Configuration.ProgressNotifierConfiguration().Notifier;
     }
 }

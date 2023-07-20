@@ -9,15 +9,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
         public TestableFeatureRunnerRepository() : this(TestableIntegrationContextBuilder.Default())
         {
         }
-
-        [Obsolete]
-        public TestableFeatureRunnerRepository(IFeatureProgressNotifier featureProgressNotifier,
-            Func<object, IScenarioProgressNotifier> scenarioProgressNotifier)
-            : this(TestableIntegrationContextBuilder.Default().WithFeatureProgressNotifier(featureProgressNotifier)
-                .WithScenarioProgressNotifierProvider(scenarioProgressNotifier))
-        {
-        }
-
+        
         public TestableFeatureRunnerRepository(IProgressNotifier progressNotifier)
             : this(TestableIntegrationContextBuilder.Default().WithProgressNotifier(progressNotifier))
         {

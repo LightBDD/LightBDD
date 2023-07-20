@@ -26,8 +26,7 @@ namespace LightBDD.Core.Configuration
         public ProgressNotifierConfiguration Append(params IProgressNotifier[] notifiers)
         {
             ThrowIfSealed();
-            if (notifiers == null)
-                throw new ArgumentNullException(nameof(notifiers));
+            VerifyNotifiers(notifiers);
             Notifier = DelegatingProgressNotifier.Compose(Enumerable.Repeat(Notifier, 1).Concat(notifiers));
             return this;
         }
@@ -41,6 +40,17 @@ namespace LightBDD.Core.Configuration
             ThrowIfSealed();
             Notifier = NoProgressNotifier.Default;
             return this;
+        }
+
+        private static void VerifyNotifiers(IProgressNotifier[] notifiers)
+        {
+            if (notifiers == null)
+                throw new ArgumentNullException(nameof(notifiers));
+            for (var index = 0; index < notifiers.Length; index++)
+            {
+                if (notifiers[index] == null)
+                    throw new ArgumentNullException(nameof(notifiers),$"Value {nameof(notifiers)}[{index}] cannot be null");
+            }
         }
     }
 }
