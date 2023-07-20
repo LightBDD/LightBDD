@@ -13,6 +13,7 @@ using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.ScenarioHelpers;
 using NUnit.Framework;
 using Shouldly;
+#pragma warning disable CS1998
 
 namespace LightBDD.Core.UnitTests.Execution;
 
