@@ -55,7 +55,7 @@ namespace LightBDD.Core.Extensibility
         /// <returns><see cref="IFeatureInfo"/> object.</returns>
         public IFeatureInfo GetFeatureInfo(Type featureType)
         {
-            return new FeatureInfo(GetFeatureName(featureType), GetFeatureLabels(featureType), GetFeatureDescription(featureType),featureType);
+            return new FeatureInfo(GetFeatureName(featureType), GetFeatureLabels(featureType), GetFeatureDescription(featureType), featureType);
         }
 
         /// <summary>

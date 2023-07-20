@@ -36,7 +36,7 @@ namespace LightBDD.Core.Execution
 
         public async Task<ITestRunResult> Execute(IReadOnlyList<ScenarioCase> scenarios, CancellationToken cancellationToken = default)
         {
-            using var ctx = (Context)CreateContext(cancellationToken);
+            using var ctx = new Context(_testAssembly, Configure(), cancellationToken);
             var testRunInfo = ctx.MetadataProvider.GetTestRunInfo();
             var testRunStartTime = ctx.Timer.GetTime();
             OnBeforeTestRunStart(testRunStartTime, testRunInfo, scenarios);
@@ -56,12 +56,6 @@ namespace LightBDD.Core.Execution
 
         protected virtual void OnBeforeTestRunStart(EventTime time, ITestRunInfo testRunInfo, IReadOnlyList<ScenarioCase> scenarios)
         {
-        }
-
-        //TODO: rework
-        protected IDisposable CreateContext(CancellationToken cancellationToken)
-        {
-            return new Context(_testAssembly, Configure(), cancellationToken);
         }
 
         private async Task<IFeatureResult> ExecuteFeature(IGrouping<TypeInfo, ScenarioCase> featureScenarios, Context ctx)
@@ -121,9 +115,10 @@ namespace LightBDD.Core.Execution
             {
                 OnBeforeScenario(startTime, scenarioInfo, scenario);
                 fixture = CreateInstance(scenario.FeatureFixtureType);
-                InitializeTestContextProvider(scenario);
-                ScenarioBuilderContext.SetCurrent(CreateScenarioBuilder(featureInfo, fixture, ctx, x => scenarioResult = x)
+                TestContextProvider.Initialize(scenario.ScenarioMethod, scenario.ScenarioArguments);
+                ScenarioBuilderContext.SetCurrent(new ScenarioBuilder(featureInfo, fixture, ctx.Integration, ctx.ExceptionProcessor, x => scenarioResult = x)
                     .WithScenarioDetails(scenarioInfo));
+
                 var result = scenario.ScenarioMethod.Invoke(fixture, scenario.ScenarioArguments);
                 //TODO: improve?
                 if (result is Task taskResult)
@@ -160,19 +155,6 @@ namespace LightBDD.Core.Execution
                 ctx.MetadataProvider.GetScenarioLabels(scenario.ScenarioMethod),
                 ctx.MetadataProvider.GetScenarioCategories(scenario.ScenarioMethod),
                 scenario.RuntimeId);
-        }
-
-        protected void InitializeTestContextProvider(ScenarioCase scenario)
-        {
-            //TODO: rework
-            TestContextProvider.Initialize(scenario.ScenarioMethod, scenario.ScenarioArguments);
-        }
-
-        protected ICoreScenarioBuilder CreateScenarioBuilder(IFeatureInfo featureInfo, object fixture, object context, Action<IScenarioResult> onScenarioFinished)
-        {
-            //TODO: rework
-            var ctx = (Context)context;
-            return new ScenarioBuilder(featureInfo, fixture, ctx.Integration, ctx.ExceptionProcessor, onScenarioFinished);
         }
 
         private object CreateInstance(TypeInfo featureFixtureType)

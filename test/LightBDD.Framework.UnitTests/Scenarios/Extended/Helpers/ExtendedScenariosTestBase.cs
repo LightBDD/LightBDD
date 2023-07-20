@@ -26,7 +26,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
         protected (List<StepDescriptor> scenarioCapture, Capture<bool> runCapture) ExpectExtendedScenarioRun()
         {
             var stepsCapture = Builder.ExpectAddSteps();
-            Builder.ExpectWithCapturedScenarioDetails();
+            Builder.ExpectWithCapturedScenarioDetailsIfNotSpecified();
             var runCapture = Builder.ExpectBuild();
             return (stepsCapture, runCapture);
         }

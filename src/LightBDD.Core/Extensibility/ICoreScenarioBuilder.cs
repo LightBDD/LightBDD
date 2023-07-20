@@ -26,6 +26,7 @@ namespace LightBDD.Core.Extensibility
         /// Configures scenario details with values inferred by <see cref="CoreMetadataProvider"/>.
         /// </summary>
         /// <returns>Self.</returns>
+        //TODO: remove
         ICoreScenarioBuilder WithCapturedScenarioDetails();
         /// <summary>
         /// Configures scenario details with values inferred by <see cref="CoreMetadataProvider"/>, but only if scenario name has not been provided yet.

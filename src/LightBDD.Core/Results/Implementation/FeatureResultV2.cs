@@ -4,6 +4,7 @@ using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Results.Implementation;
 
+//TODO: replace V1
 internal class FeatureResultV2 : IFeatureResult
 {
     private readonly IReadOnlyList<IScenarioResult> _scenarios;
