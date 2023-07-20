@@ -7,7 +7,10 @@ namespace LightBDD.Core.Notification
     /// <summary>
     /// Progress notifier implementation that does nothing when called.
     /// </summary>
-    public class NoProgressNotifier : IProgressNotifier, IFeatureProgressNotifier, IScenarioProgressNotifier
+    public class NoProgressNotifier : IProgressNotifier,
+#pragma warning disable CS0618
+        IFeatureProgressNotifier, IScenarioProgressNotifier
+#pragma warning restore CS0618
     {
         private NoProgressNotifier() { }
         /// <summary>

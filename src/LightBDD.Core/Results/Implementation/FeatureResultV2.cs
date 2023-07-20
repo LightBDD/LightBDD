@@ -18,5 +18,5 @@ internal class FeatureResultV2 : IFeatureResult
     public IFeatureInfo Info { get; }
     public IEnumerable<IScenarioResult> GetScenarios() { return _scenarios; }
 
-    public override string ToString() => Info.ToString();
+    public override string ToString() => $"{Info}";
 }

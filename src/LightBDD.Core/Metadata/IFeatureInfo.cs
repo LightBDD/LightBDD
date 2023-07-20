@@ -22,6 +22,9 @@ namespace LightBDD.Core.Metadata
         /// </summary>
         string Description { get; }
 
+        /// <summary>
+        /// Feature fixture type
+        /// </summary>
         Type FeatureType { get; }
     }
 }

@@ -8,8 +8,17 @@ using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Core.Discovery
 {
+    /// <summary>
+    /// Scenario discoverer allowing to discover LightBDD scenario test cases.
+    /// </summary>
     public class ScenarioDiscoverer
     {
+        /// <summary>
+        /// Discovers LightBDD scenario test cases within the specified assembly provided by <paramref name="assembly"/> parameter.
+        /// </summary>
+        /// <param name="assembly">Assembly to provide scenario test cases for.</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Collection of scenario cases</returns>
         public IEnumerable<ScenarioCase> DiscoverFor(Assembly assembly, CancellationToken cancellationToken = default)
         {
             foreach (var type in assembly.DefinedTypes)
@@ -21,11 +30,17 @@ namespace LightBDD.Core.Discovery
             }
         }
 
-        public IEnumerable<ScenarioCase> DiscoverFor(TypeInfo type, CancellationToken cancellationToken = default)
+        /// <summary>
+        /// Discovers LightBDD scenario test cases within the specified feature fixture type provided by <paramref name="featureFixtureType"/> parameter.
+        /// </summary>
+        /// <param name="featureFixtureType">Feature fixture type to provide scenario test cases for.</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Collection of scenario cases</returns>
+        public IEnumerable<ScenarioCase> DiscoverFor(TypeInfo featureFixtureType, CancellationToken cancellationToken = default)
         {
-            if (!IsValid(type))
+            if (!IsValid(featureFixtureType))
                 yield break;
-            foreach (var methodInfo in type.GetMethods(BindingFlags.Instance | BindingFlags.Public))
+            foreach (var methodInfo in featureFixtureType.GetMethods(BindingFlags.Instance | BindingFlags.Public))
             {
                 if (cancellationToken.IsCancellationRequested)
                     yield break;
@@ -34,7 +49,7 @@ namespace LightBDD.Core.Discovery
 
                 if (!methodInfo.GetParameters().Any())
                 {
-                    yield return ScenarioCase.CreateParameterless(type, methodInfo);
+                    yield return ScenarioCase.CreateParameterless(featureFixtureType, methodInfo);
                     continue;
                 }
 
@@ -51,11 +66,11 @@ namespace LightBDD.Core.Discovery
                     }
 
                     foreach (var arguments in scenarioCaseSource.GetCases())
-                        yield return ScenarioCase.CreateParameterized(type, methodInfo, arguments);
+                        yield return ScenarioCase.CreateParameterized(featureFixtureType, methodInfo, arguments);
                 }
 
                 if (hasRuntimeArguments)
-                    yield return ScenarioCase.CreateParameterizedAtRuntime(type, methodInfo);
+                    yield return ScenarioCase.CreateParameterizedAtRuntime(featureFixtureType, methodInfo);
             }
         }
 

@@ -23,17 +23,31 @@ using LightBDD.Core.Results.Implementation;
 
 namespace LightBDD.Core.Execution
 {
+    /// <summary>
+    /// Execution pipeline allowing execution of LightBDD features and their scenarios.
+    /// </summary>
     public class ExecutionPipeline
     {
         private readonly Assembly _testAssembly;
         private readonly Action<LightBddConfiguration>? _onConfigure;
 
+        /// <summary>
+        /// Constructor accepting the test assembly and action to customize configuration.
+        /// </summary>
+        /// <param name="testAssembly">Test assembly</param>
+        /// <param name="onConfigure">Optional action to customize configuration</param>
         public ExecutionPipeline(Assembly testAssembly, Action<LightBddConfiguration>? onConfigure = null)
         {
             _testAssembly = testAssembly;
             _onConfigure = onConfigure;
         }
 
+        /// <summary>
+        /// Executes scenarios provided by <paramref name="scenarios"/> parameter. The execution covers entire flow of LightBDD tests, including reporting.
+        /// </summary>
+        /// <param name="scenarios">Scenarios to execute</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Test results</returns>
         public async Task<ITestRunResult> Execute(IReadOnlyList<ScenarioCase> scenarios, CancellationToken cancellationToken = default)
         {
             using var ctx = new Context(_testAssembly, Configure(), cancellationToken);
@@ -50,10 +64,21 @@ namespace LightBDD.Core.Execution
             return result;
         }
 
+        /// <summary>
+        /// Method executed after entire test run is finished. Can be overridden to integrate with test engine.
+        /// </summary>
+        /// <param name="time">Event time</param>
+        /// <param name="result">Test results</param>
         protected virtual void OnAfterTestRunFinish(EventTime time, ITestRunResult result)
         {
         }
 
+        /// <summary>
+        /// Method executed before test run start. Can be overridden to integrate with test engine.
+        /// </summary>
+        /// <param name="time">Event time</param>
+        /// <param name="testRunInfo">Test run details</param>
+        /// <param name="scenarios">List of scenarios to execute</param>
         protected virtual void OnBeforeTestRunStart(EventTime time, ITestRunInfo testRunInfo, IReadOnlyList<ScenarioCase> scenarios)
         {
         }
@@ -63,7 +88,7 @@ namespace LightBDD.Core.Execution
             var featureInfo = ctx.MetadataProvider.GetFeatureInfo(featureScenarios.Key);
             var featureStartTime = ctx.Timer.GetTime();
             var scenarios = featureScenarios.ToArray();
-            OnBeforeFeatureStart(featureStartTime, featureScenarios.Key, featureInfo, scenarios);
+            OnBeforeFeatureStart(featureStartTime, featureInfo, scenarios);
             ctx.ProgressNotifier.Notify(new FeatureStarting(featureStartTime, featureInfo));
 
             var results = await Task.WhenAll(featureScenarios.SelectMany(s => ExpandParameterizedScenarios(s, ctx))
@@ -77,11 +102,22 @@ namespace LightBDD.Core.Execution
             return result;
         }
 
+        /// <summary>
+        /// Method executed after all scenarios for given feature are finished. Can be overridden to integrate with test engine.
+        /// </summary>
+        /// <param name="time">Event time</param>
+        /// <param name="result">Feature result</param>
         protected virtual void OnAfterFeatureFinished(EventTime time, IFeatureResult result)
         {
         }
 
-        protected virtual void OnBeforeFeatureStart(EventTime time, TypeInfo featureType, IFeatureInfo featureInfo, ScenarioCase[] scenarios)
+        /// <summary>
+        /// Method executed before feature scenarios execution. Can be overridden to integrate with test engine.
+        /// </summary>
+        /// <param name="time">Event time</param>
+        /// <param name="featureInfo">Feature details</param>
+        /// <param name="scenarios">Scenarios to run as part of this feature</param>
+        protected virtual void OnBeforeFeatureStart(EventTime time, IFeatureInfo featureInfo, ScenarioCase[] scenarios)
         {
         }
 
@@ -96,10 +132,21 @@ namespace LightBDD.Core.Execution
             return results;
         }
 
-        protected virtual void OnAfterScenarioGroup(EventTime endTime, IReadOnlyList<IScenarioResult> results)
+        /// <summary>
+        /// Method executed after all scenarios are executed within the group (fixture type-scenario method pair). Can be overridden to integrate with test engine.
+        /// </summary>
+        /// <param name="time">Event time</param>
+        /// <param name="results">List of scenario results</param>
+        protected virtual void OnAfterScenarioGroup(EventTime time, IReadOnlyList<IScenarioResult> results)
         {
         }
 
+        /// <summary>
+        /// Method executed before scenario group execution (fixture type-scenario method pair). Can be overridden to integrate with test engine.
+        /// </summary>
+        /// <param name="time">Event time</param>
+        /// <param name="scenarioMethod">Scenario method</param>
+        /// <param name="scenarios">Scenarios to execute</param>
         protected virtual void OnBeforeScenarioGroup(EventTime time, MethodInfo scenarioMethod, IReadOnlyList<ScenarioCase> scenarios)
         {
         }
@@ -107,7 +154,7 @@ namespace LightBDD.Core.Execution
         //TODO: simplify
         private async Task<IScenarioResult> ExecuteScenario(IFeatureInfo featureInfo, ScenarioCase scenario, Context ctx)
         {
-            object fixture = null;
+            object? fixture = null;
             var scenarioInfo = CreateScenarioInfo(featureInfo, scenario, ctx);
             IScenarioResult scenarioResult = new ScenarioResult(scenarioInfo);
             EventTime startTime = ctx.Timer.GetTime();
@@ -140,10 +187,21 @@ namespace LightBDD.Core.Execution
             return scenarioResult;
         }
 
+        /// <summary>
+        /// Method executed before feature scenario execution (and before construction of any dependencies related to scenario execution). Can be overridden to integrate with test engine.
+        /// </summary>
+        /// <param name="time">Event time</param>
+        /// <param name="scenarioInfo">Scenario details</param>
+        /// <param name="scenarioCase">Scenario case</param>
         protected virtual void OnBeforeScenario(EventTime time, IScenarioInfo scenarioInfo, ScenarioCase scenarioCase)
         {
         }
 
+        /// <summary>
+        /// Method executed after scenario execution and after scenario dependencies disposal. Can be overridden to integrate with test engine.
+        /// </summary>
+        /// <param name="time">Event time</param>
+        /// <param name="result">Scenario result</param>
         protected virtual void OnAfterScenario(EventTime time, IScenarioResult result)
         {
         }
@@ -159,7 +217,7 @@ namespace LightBDD.Core.Execution
 
         private object CreateInstance(TypeInfo featureFixtureType)
         {
-            return Activator.CreateInstance(featureFixtureType);
+            return Activator.CreateInstance(featureFixtureType) ?? throw new InvalidOperationException($"Failed to create instance of {featureFixtureType}");
         }
 
         private static ScenarioResult CreateScenarioResult(IScenarioInfo scenarioInfo, Exception ex)
@@ -226,69 +284,14 @@ namespace LightBDD.Core.Execution
             public override CoreMetadataProvider MetadataProvider => _ctx.MetadataProvider;
             public override INameFormatter NameFormatter => _ctx.Configuration.NameFormatterConfiguration().GetFormatter();
             public override Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; } = MapExceptionToStatus;
-            public override IFeatureProgressNotifier FeatureProgressNotifier => throw new NotImplementedException();
-            public override Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider => throw new NotImplementedException();
+            [Obsolete] public override IFeatureProgressNotifier FeatureProgressNotifier => throw new NotImplementedException();
+            [Obsolete] public override Func<object, IScenarioProgressNotifier> ScenarioProgressNotifierProvider => throw new NotImplementedException();
             public override IExecutionExtensions ExecutionExtensions => _ctx.Configuration.ExecutionExtensionsConfiguration();
             public override LightBddConfiguration Configuration => _ctx.Configuration;
             public override IDependencyContainer DependencyContainer => _ctx.Configuration.DependencyContainerConfiguration().DependencyContainer;
             public override ValueFormattingService ValueFormattingService => MetadataProvider.ValueFormattingService;
             protected override IProgressNotifier GetProgressNotifier() => _ctx.Configuration.Get<ProgressNotifierConfiguration>().Notifier;
             private static ExecutionStatus MapExceptionToStatus(Exception ex) => ex is IgnoreScenarioException ? ExecutionStatus.Ignored : ExecutionStatus.Failed;
-        }
-    }
-
-    public class ScenarioBuilderContext
-    {
-        private static readonly AsyncLocal<ICoreScenarioBuilder?> Builder = new();
-
-        public static ICoreScenarioBuilder Current => Builder.Value ?? throw new InvalidOperationException("No scenario is executed at this moment");
-
-        internal static void SetCurrent(ICoreScenarioBuilder? builder) => Builder.Value = builder;
-    }
-
-    internal class MetadataProvider : CoreMetadataProvider
-    {
-        private readonly TestSuite _testSuite;
-
-        public MetadataProvider(Assembly testAssembly, LightBddConfiguration configuration) : base(configuration)
-        {
-            _testSuite = TestSuite.Create(testAssembly);
-        }
-
-        protected override IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member) => Enumerable.Empty<string>();
-
-        protected override string? GetImplementationSpecificFeatureDescription(Type featureType) => null;
-        protected override TestSuite GetTestSuite() => _testSuite;
-
-        public override ScenarioDescriptor CaptureCurrentScenario()
-        {
-            var current = TestContextProvider.Current;
-            return new ScenarioDescriptor(current.TestMethod, current.TestMethodArguments);
-        }
-    }
-
-    internal class TestContextProvider
-    {
-        private static readonly AsyncLocal<TestContextProvider?> Provider = new();
-        public MethodInfo TestMethod { get; }
-        public object[] TestMethodArguments { get; }
-
-        public static TestContextProvider Current => Provider.Value ?? throw new InvalidOperationException("No scenario is executed at this moment");
-
-        public static void Initialize(MethodInfo testMethod, object[] arguments)
-        {
-            Provider.Value = new TestContextProvider(testMethod, arguments);
-        }
-
-        public static void Clear()
-        {
-            Provider.Value = null;
-        }
-
-        private TestContextProvider(MethodInfo testMethod, object[] arguments)
-        {
-            TestMethod = testMethod;
-            TestMethodArguments = arguments;
         }
     }
 }

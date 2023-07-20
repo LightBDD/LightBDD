@@ -117,8 +117,11 @@ namespace LightBDD.Core.Extensibility.Implementation
 
         public IRunnableScenario Build()
         {
-            ValidateContext();
-            return new RunnableScenario(_context, _scenarioInfo ?? new ScenarioInfo(_featureInfo, _name, _labels, _categories, _runtimeId ?? Guid.NewGuid().ToString()), _steps, _contextDescriptor, GetScenarioDecorators());
+            if (_name == null)
+                throw new InvalidOperationException("Scenario name is not provided.");
+            //TODO:review runtimeId
+            var scenarioInfo = _scenarioInfo ?? new ScenarioInfo(_featureInfo, _name, _labels, _categories, _runtimeId ?? Guid.NewGuid().ToString());
+            return new RunnableScenario(_context, scenarioInfo, _steps, _contextDescriptor, GetScenarioDecorators());
         }
 
         public LightBddConfiguration Configuration => _context.IntegrationContext.Configuration;
@@ -159,7 +162,7 @@ namespace LightBDD.Core.Extensibility.Implementation
 
             var totalSteps = descriptors.Length;
             var steps = new RunnableStep[totalSteps];
-            string previousStepTypeName = null;
+            string? previousStepTypeName = null;
 
             var extensions = _context.IntegrationContext.ExecutionExtensions;
             var stepContext = new RunnableStepContext(_context.ExceptionProcessor, _context.ProgressNotifier, container, context, ProvideSteps, shouldAbortSubStepExecutionFn, _context.ExecutionTimer, _context.FileAttachmentsManager);

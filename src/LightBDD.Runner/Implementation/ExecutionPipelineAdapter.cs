@@ -15,7 +15,7 @@ using Xunit.Sdk;
 
 namespace LightBDD.Runner.Implementation;
 
-class ExecutionPipelineAdapter : ExecutionPipeline
+internal class ExecutionPipelineAdapter : ExecutionPipeline
 {
     private readonly AsyncLocal<(ITestClass testClass, ITestCase[] cases)> _currentFeature = new();
     private readonly AsyncLocal<(ITestMethod testMethod, ITestCase[] cases)> _currentMethod = new();
@@ -42,7 +42,7 @@ class ExecutionPipelineAdapter : ExecutionPipeline
 
     protected override void OnBeforeScenario(EventTime time, IScenarioInfo scenarioInfo, ScenarioCase scenario)
     {
-        var testCase = _allCases[scenario.RuntimeId];
+        var testCase = _allCases[scenario.RuntimeId!];
         var test = new LightBddTest(testCase);
         _currentTest.Value = (testCase, test);
 
@@ -74,7 +74,7 @@ class ExecutionPipelineAdapter : ExecutionPipeline
     protected override void OnBeforeScenarioGroup(EventTime time, MethodInfo scenarioMethod, IReadOnlyList<ScenarioCase> scenarios)
     {
         //TODO: optimize
-        var cases = scenarios.Select(s => _allCases[s.RuntimeId]).ToArray();
+        var cases = scenarios.Select(s => _allCases[s.RuntimeId!]).ToArray();
         var testMethod = cases.First().TestMethod;
         _currentMethod.Value = (testMethod, cases);
         Send(new TestMethodStarting(cases, testMethod));
@@ -96,9 +96,9 @@ class ExecutionPipelineAdapter : ExecutionPipeline
         Send(new TestCollectionStarting(_allCases.Values, _collection));
     }
 
-    protected override void OnBeforeFeatureStart(EventTime time, TypeInfo featureType, IFeatureInfo featureInfo, ScenarioCase[] scenarios)
+    protected override void OnBeforeFeatureStart(EventTime time, IFeatureInfo featureInfo, ScenarioCase[] scenarios)
     {
-        var cases = scenarios.Select(s => _allCases[s.RuntimeId]).ToArray();
+        var cases = scenarios.Select(s => _allCases[s.RuntimeId!]).ToArray();
         var testClass = cases.First().TestMethod.TestClass;
         _currentFeature.Value = (testClass, cases);
         Send(new TestClassStarting(_currentFeature.Value.cases, _currentFeature.Value.testClass));
