@@ -2,11 +2,11 @@
 using LightBDD.Core.Results;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
-using LightBDD.Runner.Tests.Helpers;
+using LightBDD.Runner.IntegrationTests.Helpers;
 using Shouldly;
 using Xunit;
 
-namespace LightBDD.Runner.Tests
+namespace LightBDD.Runner.IntegrationTests
 {
     public class IntegrationTests
     {

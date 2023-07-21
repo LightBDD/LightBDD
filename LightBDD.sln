@@ -70,7 +70,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Runner", "src\Ligh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.ScenarioHelpers", "test\LightBDD.ScenarioHelpers\LightBDD.ScenarioHelpers.csproj", "{BBB29582-A5B9-4026-809B-E248722EE973}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.Runner.Tests", "test\LightBDD.Runner.Tests\LightBDD.Runner.Tests.csproj", "{97FD881B-DE5B-4929-8E5C-DAA9FBDADADE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Runner.IntegrationTests", "test\LightBDD.Runner.IntegrationTests\LightBDD.Runner.IntegrationTests.csproj", "{97FD881B-DE5B-4929-8E5C-DAA9FBDADADE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

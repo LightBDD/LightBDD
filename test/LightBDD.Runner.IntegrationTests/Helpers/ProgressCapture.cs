@@ -5,7 +5,7 @@ using LightBDD.Core.Notification;
 using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Results;
 
-namespace LightBDD.Runner.Tests.Helpers;
+namespace LightBDD.Runner.IntegrationTests.Helpers;
 
 public class ProgressCapture : IProgressNotifier
 {

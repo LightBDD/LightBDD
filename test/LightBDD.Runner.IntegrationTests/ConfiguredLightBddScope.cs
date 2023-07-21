@@ -1,12 +1,12 @@
 using LightBDD.Core.Configuration;
-using LightBDD.Runner.Tests;
-using LightBDD.Runner.Tests.Helpers;
+using LightBDD.Runner.IntegrationTests;
+using LightBDD.Runner.IntegrationTests.Helpers;
 using Xunit;
 
 [assembly: ConfiguredLightBddScope]
-[assembly: TestCollectionOrderer($"LightBDD.Runner.Tests.Helpers.{nameof(LightBddFirstOrderer)}", "LightBDD.Runner.Tests")]
+[assembly: TestCollectionOrderer($"LightBDD.Runner.IntegrationTests.Helpers.{nameof(LightBddFirstOrderer)}", "LightBDD.Runner.IntegrationTests")]
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
-namespace LightBDD.Runner.Tests
+namespace LightBDD.Runner.IntegrationTests
 {
     internal class ConfiguredLightBddScope : LightBddScopeAttribute
     {

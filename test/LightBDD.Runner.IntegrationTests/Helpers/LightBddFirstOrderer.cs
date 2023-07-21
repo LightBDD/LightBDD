@@ -3,7 +3,7 @@ using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace LightBDD.Runner.Tests.Helpers
+namespace LightBDD.Runner.IntegrationTests.Helpers
 {
     class LightBddFirstOrderer : ITestCollectionOrderer
     {
