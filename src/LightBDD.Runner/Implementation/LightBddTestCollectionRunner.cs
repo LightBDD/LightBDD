@@ -25,7 +25,7 @@ internal class LightBddTestCollectionRunner
         //TODO: handle exceptions
         var scope = GetLightBddScope();
 
-        var results = await new ExecutionPipelineAdapter(messageBus, _testAssembly, scope.Configure).Execute(testCases);
+        var results = await new ExecutionPipelineAdapter(messageBus, _testAssembly, testCollection, cancellationTokenSource, scope.Configure).Execute(testCases);
         return new RunSummary
         {
             Failed = results.Features.CountScenariosWithStatus(ExecutionStatus.Failed),

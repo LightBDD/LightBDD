@@ -21,21 +21,22 @@ internal class ExecutionPipelineAdapter : ExecutionPipeline
     private readonly AsyncLocal<(ITestMethod testMethod, ITestCase[] cases)> _currentMethod = new();
     private readonly AsyncLocal<(ITestCase testCase, ITest test)> _currentTest = new();
     private readonly IMessageBus _bus;
-    private readonly CancellationTokenSource _cts = new();
+    private readonly CancellationTokenSource _cancellationTokenSource;
     private readonly ITestCollection _collection;
     private Dictionary<string, IXunitTestCase> _allCases = new();
 
-    public ExecutionPipelineAdapter(IMessageBus bus, ITestAssembly testAssembly, Action<LightBddConfiguration>? onConfigure)
+    public ExecutionPipelineAdapter(IMessageBus bus, ITestAssembly testAssembly, ITestCollection collection, CancellationTokenSource cancellationTokenSource, Action<LightBddConfiguration>? onConfigure)
         : base(testAssembly.Assembly.ToRuntimeAssembly(), onConfigure)
     {
         _bus = bus;
-        _collection = LightBddTestCollection.Create(testAssembly);
+        _collection = collection;
+        _cancellationTokenSource = cancellationTokenSource;
     }
 
     public async Task<ITestRunResult> Execute(IEnumerable<IXunitTestCase> testCases)
     {
         _allCases = testCases.ToDictionary(c => c.UniqueID);
-        return await Execute(_allCases.Values.Select(ConvertTestCase).ToArray(), _cts.Token);
+        return await Execute(_allCases.Values.Select(ConvertTestCase).ToArray(), _cancellationTokenSource.Token);
     }
 
     protected override void OnBeforeScenario(EventTime time, IScenarioInfo scenarioInfo, ScenarioCase scenario)
@@ -130,10 +131,10 @@ internal class ExecutionPipelineAdapter : ExecutionPipeline
 
     private void Send(IMessageSinkMessage message)
     {
-        if (_cts.IsCancellationRequested)
+        if (_cancellationTokenSource.IsCancellationRequested)
             return;
 
         if (!_bus.QueueMessage(message))
-            _cts.Cancel();
+            _cancellationTokenSource.Cancel();
     }
 }
