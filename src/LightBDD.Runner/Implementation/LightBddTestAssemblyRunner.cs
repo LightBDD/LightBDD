@@ -15,7 +15,9 @@ internal class LightBddTestAssemblyRunner : XunitTestAssemblyRunner
 
     protected override Task<RunSummary> RunTestCollectionAsync(IMessageBus messageBus, ITestCollection testCollection, IEnumerable<IXunitTestCase> testCases, CancellationTokenSource cancellationTokenSource)
     {
-        if (testCollection.CollectionDefinition?.ToRuntimeType() == typeof(LightBddTestCollection))
+        //TODO: this is weak - review
+        if (testCollection.CollectionDefinition?.ToRuntimeType() == typeof(LightBddTestCollection)
+            || testCollection.DisplayName == LightBddTestCollection.Name)
             return new LightBddTestCollectionRunner(TestAssembly).RunAsync(messageBus, testCollection, testCases, cancellationTokenSource);
         return base.RunTestCollectionAsync(messageBus, testCollection, testCases, cancellationTokenSource);
     }
