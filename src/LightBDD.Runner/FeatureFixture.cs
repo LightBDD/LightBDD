@@ -1,6 +1,7 @@
 ﻿using System;
 using LightBDD.Framework;
 using LightBDD.Runner.Implementation;
+using Xunit;
 using Xunit.Abstractions;
 
 namespace LightBDD.Runner
@@ -9,6 +10,7 @@ namespace LightBDD.Runner
     /// Base class for feature tests with XUnit framework.
     /// It offers <see cref="Runner"/> property allowing to execute scenarios belonging to the feature class.
     /// </summary>
+    [Collection(LightBddTestCollection.Name)]
     public class FeatureFixture : ITestOutputProvider
     {
         /// <summary>

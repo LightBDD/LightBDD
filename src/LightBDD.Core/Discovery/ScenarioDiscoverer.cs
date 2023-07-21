@@ -44,34 +44,47 @@ namespace LightBDD.Core.Discovery
             {
                 if (cancellationToken.IsCancellationRequested)
                     yield break;
-                if (!IsValid(methodInfo))
-                    continue;
-
-                if (!methodInfo.GetParameters().Any())
-                {
-                    yield return ScenarioCase.CreateParameterless(featureFixtureType, methodInfo);
-                    continue;
-                }
-
-                var hasRuntimeArguments = false;
-                foreach (var scenarioCaseSource in methodInfo.GetCustomAttributes().OfType<IScenarioCaseSourceAttribute>())
-                {
-                    if (cancellationToken.IsCancellationRequested)
-                        yield break;
-
-                    if (!scenarioCaseSource.IsResolvableAtDiscovery)
-                    {
-                        hasRuntimeArguments = true;
-                        continue;
-                    }
-
-                    foreach (var arguments in scenarioCaseSource.GetCases())
-                        yield return ScenarioCase.CreateParameterized(featureFixtureType, methodInfo, arguments);
-                }
-
-                if (hasRuntimeArguments)
-                    yield return ScenarioCase.CreateParameterizedAtRuntime(featureFixtureType, methodInfo);
+                foreach (var scenarioCase in DiscoverFor(featureFixtureType, methodInfo, cancellationToken))
+                    yield return scenarioCase;
             }
+        }
+
+        /// <summary>
+        /// Discovers LightBDD scenario test cases within the specified feature fixture type provided by <paramref name="featureFixtureType"/> parameter and for specified method provided by <paramref name="scenarioMethod"/> parameter.
+        /// </summary>
+        /// <param name="featureFixtureType">Feature fixture type to provide scenario test cases for.</param>
+        /// <param name="scenarioMethod">Method to provide scenario test cases for.</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Collection of scenario cases</returns>
+        public IEnumerable<ScenarioCase> DiscoverFor(TypeInfo featureFixtureType, MethodInfo scenarioMethod, CancellationToken cancellationToken)
+        {
+            if (!IsValid(scenarioMethod))
+                yield break;
+
+            if (!scenarioMethod.GetParameters().Any())
+            {
+                yield return ScenarioCase.CreateParameterless(featureFixtureType, scenarioMethod);
+                yield break;
+            }
+
+            var hasRuntimeArguments = false;
+            foreach (var scenarioCaseSource in scenarioMethod.GetCustomAttributes().OfType<IScenarioCaseSourceAttribute>())
+            {
+                if (cancellationToken.IsCancellationRequested)
+                    yield break;
+
+                if (!scenarioCaseSource.IsResolvableAtDiscovery)
+                {
+                    hasRuntimeArguments = true;
+                    continue;
+                }
+
+                foreach (var arguments in scenarioCaseSource.GetCases())
+                    yield return ScenarioCase.CreateParameterized(featureFixtureType, scenarioMethod, arguments);
+            }
+
+            if (hasRuntimeArguments)
+                yield return ScenarioCase.CreateParameterizedAtRuntime(featureFixtureType, scenarioMethod);
         }
 
         private bool IsValid(MethodInfo methodInfo)

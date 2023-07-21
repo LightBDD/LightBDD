@@ -11,7 +11,7 @@ internal class TestOutputHelpers
 
     public static ITestOutputHelper Current => Helpers.Value ?? throw new InvalidOperationException("No scenario is executed at this moment");
 
-    public static void Install(MessageBus bus, ITest test)
+    public static void Install(IMessageBus bus, ITest test)
     {
         var helper = new TestOutputHelper();
         helper.Initialize(bus, test);

@@ -12,11 +12,11 @@ internal class LightBddTestFramework : TestFramework
 
     protected override ITestFrameworkDiscoverer CreateDiscoverer(IAssemblyInfo assemblyInfo)
     {
-        return new LightBddDiscoverer(assemblyInfo, SourceInformationProvider, DiagnosticMessageSink);
+        return new XunitTestFrameworkDiscoverer(assemblyInfo, SourceInformationProvider, DiagnosticMessageSink, new LightBddCollectionFactory(assemblyInfo, DiagnosticMessageSink));
     }
 
     protected override ITestFrameworkExecutor CreateExecutor(AssemblyName assemblyName)
     {
-        return new LightBddExecutor(assemblyName, SourceInformationProvider, DiagnosticMessageSink);
+        return new LightBddTestFrameworkExecutor(assemblyName, SourceInformationProvider, DiagnosticMessageSink);
     }
 }
