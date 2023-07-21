@@ -23,7 +23,7 @@ internal class ExecutionPipelineAdapter : ExecutionPipeline
     private readonly IMessageBus _bus;
     private readonly CancellationTokenSource _cts = new();
     private readonly ITestCollection _collection;
-    private Dictionary<string, ITestCase> _allCases = new();
+    private Dictionary<string, IXunitTestCase> _allCases = new();
 
     public ExecutionPipelineAdapter(IMessageBus bus, ITestAssembly testAssembly, Action<LightBddConfiguration>? onConfigure)
         : base(testAssembly.Assembly.ToRuntimeAssembly(), onConfigure)
@@ -32,7 +32,7 @@ internal class ExecutionPipelineAdapter : ExecutionPipeline
         _collection = LightBddTestCollection.Create(testAssembly);
     }
 
-    public async Task<ITestRunResult> Execute(IEnumerable<ITestCase> testCases)
+    public async Task<ITestRunResult> Execute(IEnumerable<IXunitTestCase> testCases)
     {
         _allCases = testCases.ToDictionary(c => c.UniqueID);
         return await Execute(_allCases.Values.Select(ConvertTestCase).ToArray(), _cts.Token);
@@ -41,7 +41,7 @@ internal class ExecutionPipelineAdapter : ExecutionPipeline
     protected override void OnBeforeScenario(EventTime time, IScenarioInfo scenarioInfo, ScenarioCase scenario)
     {
         var testCase = _allCases[scenario.RuntimeId!];
-        var test = new LightBddTest(testCase);
+        var test = new XunitTest(testCase, testCase.DisplayName);
         _currentTest.Value = (testCase, test);
 
         TestOutputHelpers.Install(_bus, test);
