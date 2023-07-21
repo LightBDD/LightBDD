@@ -36,6 +36,8 @@ vNext
 + #307 (Framework)(change) Added ScenarioInlineCaseAttribute to allow scenario parameterization
 + #309 (all)(breaking change) Removed obsolete code
 + #309 (Framework)(breaking change) Moved ProgressNotifierConfiguration() method from LightBDD.Framework to LightBDD.Core
++ #309 (Runner)(change) Reimplemented LightBDD.Runner to integrate with xunit on collection level and added support to net48
++ #309 (Core)(new) Added ScenarioDiscoverer.DiscoverFor() method accepting MethodInfo parameter
 
 Version 3.7.0
 ----------------------------------------

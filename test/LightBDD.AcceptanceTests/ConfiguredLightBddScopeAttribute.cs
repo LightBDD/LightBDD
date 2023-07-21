@@ -9,12 +9,9 @@ using LightBDD.Core.Dependencies;
 using LightBDD.Framework.Reporting;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.Framework.Resources;
-using LightBDD.NUnit3;
-using NUnit.Framework;
+using LightBDD.Runner;
 using OpenQA.Selenium.Chrome;
 
-[assembly: Parallelizable(ParallelScope.All)]
-[assembly: LevelOfParallelism(4)]
 [assembly: ConfiguredLightBddScope]
 namespace LightBDD.AcceptanceTests
 {
@@ -31,7 +28,8 @@ namespace LightBDD.AcceptanceTests
 
         private void ConfigureContainer(IDefaultContainerConfigurator config)
         {
-            config.RegisterType(InstanceScope.Single, _ => new ResourcePool<ChromeDriver>(CreateDriver));
+            //TODO: lift this limit when Runner gets support for execution modes (running tests limits)
+            config.RegisterType(InstanceScope.Single, _ => new ResourcePool<ChromeDriver>(CreateDriver, 4));
         }
 
         private async Task<ChromeDriver> CreateDriver(CancellationToken token)

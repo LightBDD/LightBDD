@@ -3,7 +3,7 @@
     <PropertyGroup>
         <Summary>LightBDD Test Runner</Summary>
         <Description>Allows discovering and executing LightBDD tests</Description>
-        <TargetFrameworks>net6</TargetFrameworks>
+        <TargetFrameworks>net6;net48</TargetFrameworks>
         <Nullable>enable</Nullable>
     </PropertyGroup>
     

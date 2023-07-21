@@ -4,8 +4,7 @@ using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
-using LightBDD.NUnit3;
-using NUnit.Framework;
+using LightBDD.Runner;
 
 namespace LightBDD.AcceptanceTests.Features
 {
@@ -13,7 +12,6 @@ namespace LightBDD.AcceptanceTests.Features
 @"In order to analyze scenario test execution summary effectively
 As a QA
 I want to have HTML report")]
-    [TestFixture]
     public class HTML_report_feature : FeatureFixture
     {
         [Scenario]
@@ -156,10 +154,10 @@ I want to have HTML report")]
         }
 
         [Scenario]
-        [TestCase(ExecutionStatus.Bypassed)]
-        [TestCase(ExecutionStatus.Passed)]
-        [TestCase(ExecutionStatus.Failed)]
-        [TestCase(ExecutionStatus.Ignored)]
+        [ScenarioInlineCase(ExecutionStatus.Bypassed)]
+        [ScenarioInlineCase(ExecutionStatus.Passed)]
+        [ScenarioInlineCase(ExecutionStatus.Failed)]
+        [ScenarioInlineCase(ExecutionStatus.Ignored)]
         public async Task Should_filter_by_status(ExecutionStatus status)
         {
             await Runner
@@ -186,10 +184,10 @@ I want to have HTML report")]
         }
 
         [Scenario]
-        [TestCase(ExecutionStatus.Bypassed)]
-        [TestCase(ExecutionStatus.Passed)]
-        [TestCase(ExecutionStatus.Failed)]
-        [TestCase(ExecutionStatus.Ignored)]
+        [ScenarioInlineCase(ExecutionStatus.Bypassed)]
+        [ScenarioInlineCase(ExecutionStatus.Passed)]
+        [ScenarioInlineCase(ExecutionStatus.Failed)]
+        [ScenarioInlineCase(ExecutionStatus.Ignored)]
         public async Task Should_filter_by_status_when_there_is_no_categories_filter_bar(ExecutionStatus status)
         {
             await Runner
@@ -372,11 +370,11 @@ I want to have HTML report")]
         }
 
         [Scenario]
-        [TestCase(ExecutionStatus.Bypassed, ExecutionStatus.Passed)]
-        [TestCase(ExecutionStatus.Passed, ExecutionStatus.Passed)]
-        [TestCase(ExecutionStatus.Failed, ExecutionStatus.Failed)]
-        [TestCase(ExecutionStatus.Ignored, ExecutionStatus.Passed)]
-        [TestCase(ExecutionStatus.NotRun, ExecutionStatus.Passed)]
+        [ScenarioInlineCase(ExecutionStatus.Bypassed, ExecutionStatus.Passed)]
+        [ScenarioInlineCase(ExecutionStatus.Passed, ExecutionStatus.Passed)]
+        [ScenarioInlineCase(ExecutionStatus.Failed, ExecutionStatus.Failed)]
+        [ScenarioInlineCase(ExecutionStatus.Ignored, ExecutionStatus.Passed)]
+        [ScenarioInlineCase(ExecutionStatus.NotRun, ExecutionStatus.Passed)]
         public async Task Should_determine_overall_status_to_EXPECTED_if_all_scenarios_have_status_STATUS(ExecutionStatus status, ExecutionStatus expected)
         {
             await Runner

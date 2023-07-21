@@ -20,30 +20,29 @@ internal class ExecutionPipelineAdapter : ExecutionPipeline
     private readonly AsyncLocal<(ITestClass testClass, ITestCase[] cases)> _currentFeature = new();
     private readonly AsyncLocal<(ITestMethod testMethod, ITestCase[] cases)> _currentMethod = new();
     private readonly AsyncLocal<(ITestCase testCase, ITest test)> _currentTest = new();
-    private readonly MessageBus _bus;
-    private readonly CancellationTokenSource _cts = new();
-    private readonly TestAssembly _testAssembly;
+    private readonly IMessageBus _bus;
+    private readonly CancellationTokenSource _cancellationTokenSource;
     private readonly ITestCollection _collection;
-    private Dictionary<string, ITestCase> _allCases = new();
+    private Dictionary<string, IXunitTestCase> _allCases = new();
 
-    public ExecutionPipelineAdapter(MessageBus bus, IAssemblyInfo testAssembly, Action<LightBddConfiguration>? onConfigure)
-        : base(testAssembly.ToRuntimeAssembly(), onConfigure)
+    public ExecutionPipelineAdapter(IMessageBus bus, ITestAssembly testAssembly, ITestCollection collection, CancellationTokenSource cancellationTokenSource, Action<LightBddConfiguration>? onConfigure)
+        : base(testAssembly.Assembly.ToRuntimeAssembly(), onConfigure)
     {
         _bus = bus;
-        _testAssembly = new TestAssembly(testAssembly);
-        _collection = DummyTestCollection.Create(_testAssembly);
+        _collection = collection;
+        _cancellationTokenSource = cancellationTokenSource;
     }
 
-    public async Task Execute(IEnumerable<ITestCase> testCases)
+    public async Task<ITestRunResult> Execute(IEnumerable<IXunitTestCase> testCases)
     {
         _allCases = testCases.ToDictionary(c => c.UniqueID);
-        await Execute(_allCases.Values.Select(ConvertTestCase).ToArray(), _cts.Token);
+        return await Execute(_allCases.Values.Select(ConvertTestCase).ToArray(), _cancellationTokenSource.Token);
     }
 
     protected override void OnBeforeScenario(EventTime time, IScenarioInfo scenarioInfo, ScenarioCase scenario)
     {
         var testCase = _allCases[scenario.RuntimeId!];
-        var test = new LightBddTest(testCase);
+        var test = new XunitTest(testCase, testCase.DisplayName);
         _currentTest.Value = (testCase, test);
 
         TestOutputHelpers.Install(_bus, test);
@@ -92,7 +91,6 @@ internal class ExecutionPipelineAdapter : ExecutionPipeline
 
     protected override void OnBeforeTestRunStart(EventTime time, ITestRunInfo testRunInfo, IReadOnlyList<ScenarioCase> scenarios)
     {
-        Send(new TestAssemblyStarting(_allCases.Values, _testAssembly, time.Start.DateTime, "", ""));
         Send(new TestCollectionStarting(_allCases.Values, _collection));
     }
 
@@ -121,7 +119,6 @@ internal class ExecutionPipelineAdapter : ExecutionPipeline
         var total = result.Features.Sum(f => f.GetScenarios().Count());
 
         Send(new TestCollectionFinished(_allCases.Values, _collection, GetDuration(result.ExecutionTime), total, failed, skipped));
-        Send(new TestAssemblyFinished(_allCases.Values, _testAssembly, GetDuration(result.ExecutionTime), total, failed, skipped));
     }
 
     private static decimal GetDuration(ExecutionTime t) => (decimal)t.Duration.TotalSeconds;
@@ -134,10 +131,10 @@ internal class ExecutionPipelineAdapter : ExecutionPipeline
 
     private void Send(IMessageSinkMessage message)
     {
-        if (_cts.IsCancellationRequested)
+        if (_cancellationTokenSource.IsCancellationRequested)
             return;
 
         if (!_bus.QueueMessage(message))
-            _cts.Cancel();
+            _cancellationTokenSource.Cancel();
     }
 }
