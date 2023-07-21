@@ -38,6 +38,7 @@ vNext
 + #309 (Framework)(breaking change) Moved ProgressNotifierConfiguration() method from LightBDD.Framework to LightBDD.Core
 + #309 (Runner)(change) Reimplemented LightBDD.Runner to integrate with xunit on collection level and added support to net48
 + #309 (Core)(new) Added ScenarioDiscoverer.DiscoverFor() method accepting MethodInfo parameter
++ #309 (integrations)(breaking change) Removed integrations not based on LightBDD.Runner
 
 Version 3.7.0
 ----------------------------------------
