@@ -8,5 +8,6 @@ namespace LightBDD.UnitTests.Helpers
         public static T Object<T>() where T : new() => RandomValue.Object<T>(Settings);
         public static string String() => RandomValue.String();
         public static int Int() => RandomValue.Int();
+        public static string[] StringArray() => new[] { String(), String() };
     }
 }
