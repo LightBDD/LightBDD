@@ -19,7 +19,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         public void Build_should_set_configured_feature_info()
         {
             var info = Fake.Object<TestResults.TestFeatureInfo>();
-            var scenario = TestableScenarioFactory.Default.Create(info).Build();
+            var scenario = TestableScenarioFactory.Default.CreateBuilder(info).Build();
             scenario.Result.Info.Parent.ShouldBeSameAs(info);
         }
 
@@ -28,7 +28,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         {
             //TODO: review option to construct name without need of using custom INameInfo implementations.
             var name = Fake.Object<TestResults.TestNameInfo>();
-            var scenario = TestableScenarioFactory.Default.Create()
+            var scenario = TestableScenarioFactory.Default.CreateBuilder()
                 .WithName(name)
                 .Build();
             scenario.Result.Info.Name.ShouldBe(name);
@@ -38,7 +38,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         public void Build_should_set_configured_labels()
         {
             var labels = Fake.StringArray();
-            var scenario = TestableScenarioFactory.Default.Create()
+            var scenario = TestableScenarioFactory.Default.CreateBuilder()
                 .WithLabels(labels)
                 .Build();
             scenario.Result.Info.Labels.ShouldBe(labels);
@@ -48,7 +48,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         public void Build_should_set_configured_categories()
         {
             var categories = Fake.StringArray();
-            var scenario = TestableScenarioFactory.Default.Create()
+            var scenario = TestableScenarioFactory.Default.CreateBuilder()
                 .WithCategories(categories)
                 .Build();
             scenario.Result.Info.Categories.ShouldBe(categories);
@@ -58,7 +58,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         public void Build_should_set_configured_runtimeId()
         {
             var runtimeId = Fake.String();
-            var scenario = TestableScenarioFactory.Default.Create()
+            var scenario = TestableScenarioFactory.Default.CreateBuilder()
                 .WithRuntimeId(runtimeId)
                 .Build();
             scenario.Result.Info.RuntimeId.ShouldBe(runtimeId);
@@ -67,7 +67,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [Test]
         public void Build_should_set_default_values_when_not_customized()
         {
-            var scenario = TestableScenarioFactory.Default.Create()
+            var scenario = TestableScenarioFactory.Default.CreateBuilder()
                 .Build();
             scenario.Result.Info.Categories.ShouldBeEmpty();
             scenario.Result.Info.Labels.ShouldBeEmpty();
@@ -78,7 +78,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [Test]
         public void Build_should_create_scenario_in_NotRun_status()
         {
-            var scenario = TestableScenarioFactory.Default.Create()
+            var scenario = TestableScenarioFactory.Default.CreateBuilder()
                 .Build();
             scenario.Result.Status.ShouldBe(ExecutionStatus.NotRun);
             scenario.Result.ExecutionException.ShouldBeNull();
@@ -97,7 +97,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
                 return Task.CompletedTask;
             }
 
-            var scenario = TestableScenarioFactory.Default.Create()
+            var scenario = TestableScenarioFactory.Default.CreateBuilder()
                 .WithScenarioEntryMethod(EntryMethod)
                 .Build();
             await scenario.RunAsync();
@@ -109,7 +109,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         {
             var d1 = new FakeDecorator();
             var d2 = new FakeDecorator();
-            var scenario = TestableScenarioFactory.Default.Create()
+            var scenario = TestableScenarioFactory.Default.CreateBuilder()
                 .WithScenarioDecorators(new[] { d1, d2 })
                 .Build();
 
@@ -122,7 +122,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [Test]
         public void Build_should_create_runnable_scenario()
         {
-            var scenario = TestableScenarioFactory.Default.Create()
+            var scenario = TestableScenarioFactory.Default.CreateBuilder()
                 .Build();
             Assert.DoesNotThrowAsync(scenario.RunAsync);
         }

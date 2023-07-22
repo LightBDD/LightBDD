@@ -66,6 +66,6 @@ internal class RunnableScenarioBuilder : IRunnableScenarioBuilder
     public IRunnableScenarioV2 Build()
     {
         var scenarioInfo = new ScenarioInfo(_featureInfo, _name, _labels, _categories, _runtimeId);
-        return new RunnableScenarioV2(scenarioInfo, _decorators, _entryMethod);
+        return new RunnableScenarioV2(_context, scenarioInfo, _decorators, _entryMethod);
     }
 }
