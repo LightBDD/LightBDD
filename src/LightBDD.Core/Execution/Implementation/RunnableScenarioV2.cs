@@ -27,7 +27,7 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario
         _integration = integration;
         _entryMethod = entryMethod;
         _result = new ScenarioResult(info);
-        _decoratedMethod = DecoratingExecutor.DecorateScenario(this, RunScenarioCore, decorators);
+        _decoratedMethod = DecoratingExecutor.DecorateScenario(this, () => AsyncStepSynchronizationContext.Execute(RunScenarioCore), decorators);
     }
 
     public async Task<IScenarioResult> RunAsync()

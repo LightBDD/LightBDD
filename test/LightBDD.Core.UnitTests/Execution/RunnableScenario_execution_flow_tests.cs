@@ -10,7 +10,7 @@ using IgnoreException = LightBDD.Core.Execution.IgnoreException;
 namespace LightBDD.Core.UnitTests.Execution
 {
     [TestFixture]
-    public class RunnableScenario_execution_tests
+    public class RunnableScenario_execution_flow_tests
     {
         [Test]
         public async Task Successful_run_should_result_with_passed_scenario()
