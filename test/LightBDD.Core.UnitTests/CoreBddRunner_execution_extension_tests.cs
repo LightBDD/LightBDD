@@ -397,7 +397,7 @@ namespace LightBDD.Core.UnitTests
                     case ExecutionStatus.Failed:
                         throw new InvalidOperationException("failure");
                     case ExecutionStatus.Bypassed:
-                        throw new StepBypassException("bypassed");
+                        throw new BypassException("bypassed");
                     case ExecutionStatus.Ignored:
                         throw new CustomIgnoreException("ignore");
                     default:

@@ -22,8 +22,7 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario
     public object Context { get; } = null;
     public object Fixture { get; } = null;
 
-    public RunnableScenarioV2(IntegrationContext integration, IScenarioInfo info,
-        IEnumerable<IScenarioDecorator> decorators, ScenarioEntryMethod entryMethod)
+    public RunnableScenarioV2(IntegrationContext integration, IScenarioInfo info, IEnumerable<IScenarioDecorator> decorators, ScenarioEntryMethod entryMethod)
     {
         _integration = integration;
         _entryMethod = entryMethod;
@@ -34,10 +33,17 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario
     public async Task<IScenarioResult> RunAsync()
     {
         var startTime = _integration.ExecutionTimer.GetTime();
-        await _decoratedMethod.Invoke();
-        var endTime = _integration.ExecutionTimer.GetTime();
+        try
+        {
+            await _decoratedMethod.Invoke();
+            _result.UpdateScenarioResultV2(ExecutionStatus.Passed);
+        }
+        catch (Exception ex)
+        {
+            ExceptionProcessor.UpdateStatus(_result.UpdateScenarioResultV2, ex, _integration.Configuration);
+        }
 
-        _result.UpdateScenarioResult(ExecutionStatus.Passed);
+        var endTime = _integration.ExecutionTimer.GetTime();
         _result.UpdateResult(Array.Empty<IStepResult>(), endTime.GetExecutionTime(startTime));
         return Result;
     }

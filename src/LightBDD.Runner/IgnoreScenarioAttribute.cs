@@ -37,7 +37,7 @@ namespace LightBDD.Runner
         /// </summary>
         public Task ExecuteAsync(IScenario scenario, Func<Task> scenarioInvocation)
         {
-            throw new IgnoreScenarioException(Reason);
+            throw new IgnoreException(Reason);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace LightBDD.Runner
         /// </summary>
         public Task ExecuteAsync(IStep step, Func<Task> stepInvocation)
         {
-            throw new IgnoreScenarioException(Reason);
+            throw new IgnoreException(Reason);
         }
     }
 }

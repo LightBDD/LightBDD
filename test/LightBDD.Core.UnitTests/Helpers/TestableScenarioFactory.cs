@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System;
 using System.Threading.Tasks;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Metadata;
@@ -16,7 +17,10 @@ internal class TestableScenarioFactory
 
     private TestableScenarioFactory()
     {
-        _factory = new RunnableScenarioFactory(TestableIntegrationContextBuilder.Default().Build());
+        _factory = new RunnableScenarioFactory(TestableIntegrationContextBuilder.Default()
+            //TODO: review
+            .WithConfiguration(x=>x.ExceptionHandlingConfiguration().UpdateExceptionDetailsFormatter(e=>$"{e.GetType().Namespace}.{e.GetType().Name}: {e.Message}"))
+            .Build());
     }
 
     public IRunnableScenarioBuilder CreateBuilder(IFeatureInfo? feature = null) => _factory.CreateFor(feature ?? Fake.Object<TestResults.TestFeatureInfo>());

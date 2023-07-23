@@ -253,7 +253,7 @@ namespace LightBDD.Core.Execution.Implementation
                 case StepExecutionException e:
                     _result.SetStatus(e.StepStatus);
                     break;
-                case ScenarioExecutionException { InnerException: StepBypassException }:
+                case ScenarioExecutionException { InnerException: BypassException }:
                     _result.SetStatus(ExecutionStatus.Bypassed, exception.InnerException.Message);
                     break;
                 case ScenarioExecutionException e:

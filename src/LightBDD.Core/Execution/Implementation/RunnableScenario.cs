@@ -134,7 +134,7 @@ namespace LightBDD.Core.Execution.Implementation
                 case StepExecutionException stepException:
                     _result.UpdateScenarioResult(stepException.StepStatus);
                     break;
-                case ScenarioExecutionException scenarioException when scenarioException.InnerException is StepBypassException:
+                case ScenarioExecutionException scenarioException when scenarioException.InnerException is BypassException:
                     _result.UpdateScenarioResult(ExecutionStatus.Bypassed, scenarioException.InnerException.Message);
                     break;
                 case ScenarioExecutionException scenarioException:

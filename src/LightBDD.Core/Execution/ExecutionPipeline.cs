@@ -309,7 +309,7 @@ namespace LightBDD.Core.Execution
             public override IDependencyContainer DependencyContainer => _ctx.Configuration.DependencyContainerConfiguration().DependencyContainer;
             public override ValueFormattingService ValueFormattingService => MetadataProvider.ValueFormattingService;
             protected override IProgressNotifier GetProgressNotifier() => _ctx.Configuration.Get<ProgressNotifierConfiguration>().Notifier;
-            private static ExecutionStatus MapExceptionToStatus(Exception ex) => ex is IgnoreScenarioException ? ExecutionStatus.Ignored : ExecutionStatus.Failed;
+            private static ExecutionStatus MapExceptionToStatus(Exception ex) => ex is IgnoreException ? ExecutionStatus.Ignored : ExecutionStatus.Failed;
         }
     }
 }

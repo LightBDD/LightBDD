@@ -12,7 +12,7 @@ namespace LightBDD.Core.UnitTests
         {
             var bypassReason = "reason";
 
-            var exception = Assert.Throws<StepBypassException>(() => StepExecution.Current.Bypass(bypassReason));
+            var exception = Assert.Throws<BypassException>(() => StepExecution.Current.Bypass(bypassReason));
             Assert.That(exception.Message, Is.EqualTo(bypassReason));
         }
     }
