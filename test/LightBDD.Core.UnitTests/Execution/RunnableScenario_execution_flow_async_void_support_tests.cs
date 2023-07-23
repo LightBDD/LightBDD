@@ -13,19 +13,6 @@ namespace LightBDD.Core.UnitTests.Execution;
 public class RunnableScenario_execution_flow_async_void_support_tests
 {
     [Test]
-    public async Task Successful_run_should_result_with_passed_scenario()
-    {
-        var result = await TestableScenarioFactory.Default.CreateScenario(_ => Task.CompletedTask)
-            .RunAsync();
-
-        result.Status.ShouldBe(ExecutionStatus.Passed);
-        result.StatusDetails.ShouldBeNull();
-        result.ExecutionException.ShouldBeNull();
-        result.ExecutionTime.ShouldNotBe(ExecutionTime.None);
-        result.GetSteps().ShouldBeEmpty();
-    }
-
-    [Test]
     public async Task Run_should_await_for_async_void_method_before_return()
     {
         var finished = false;

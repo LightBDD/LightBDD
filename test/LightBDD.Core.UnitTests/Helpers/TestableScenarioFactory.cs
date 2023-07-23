@@ -19,13 +19,13 @@ internal class TestableScenarioFactory
     {
         _factory = new RunnableScenarioFactory(TestableIntegrationContextBuilder.Default()
             //TODO: review
-            .WithConfiguration(x=>x.ExceptionHandlingConfiguration().UpdateExceptionDetailsFormatter(e=>$"{e.GetType().Namespace}.{e.GetType().Name}: {e.Message}"))
+            .WithConfiguration(x => x.ExceptionHandlingConfiguration().UpdateExceptionDetailsFormatter(e => $"{e.GetType().Namespace}.{e.GetType().Name}: {e.Message}"))
             .Build());
     }
 
     public IRunnableScenarioBuilder CreateBuilder(IFeatureInfo? feature = null) => _factory.CreateFor(feature ?? Fake.Object<TestResults.TestFeatureInfo>());
 
-    public IRunnableScenarioV2 CreateScenario(Func<ICoreScenarioBuilderV2,Task> entryMethod)
+    public IRunnableScenarioV2 CreateScenario(Func<ICoreScenarioBuilderV2, Task> entryMethod)
     {
         return CreateBuilder().WithScenarioEntryMethod((_, runner) => entryMethod.Invoke(runner)).Build();
     }

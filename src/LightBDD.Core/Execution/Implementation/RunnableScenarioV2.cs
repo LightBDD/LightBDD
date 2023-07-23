@@ -1,5 +1,7 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility;
@@ -16,11 +18,12 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario
     private readonly ScenarioEntryMethod _entryMethod;
     private readonly Func<Task> _decoratedMethod;
     private readonly ScenarioResult _result;
+    private readonly FixtureManager _fixtureManager = new();
     public IScenarioResult Result => _result;
-    public IScenarioInfo Info { get; } = null;
+    public IScenarioInfo Info => Result.Info;
     public IDependencyResolver DependencyResolver { get; } = null;
     public object Context { get; } = null;
-    public object Fixture { get; } = null;
+    public object Fixture => _fixtureManager.Fixture ?? throw new InvalidOperationException("Fixture not initialized");
 
     public RunnableScenarioV2(IntegrationContext integration, IScenarioInfo info, IEnumerable<IScenarioDecorator> decorators, ScenarioEntryMethod entryMethod)
     {
@@ -35,6 +38,7 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario
         var startTime = _integration.ExecutionTimer.GetTime();
         try
         {
+            await _fixtureManager.InitializeAsync(_result.Info.Parent.FeatureType);
             await _decoratedMethod.Invoke();
             _result.UpdateScenarioResultV2(ExecutionStatus.Passed);
         }
@@ -42,10 +46,19 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario
         {
             ExceptionProcessor.UpdateStatus(_result.UpdateScenarioResultV2, ex, _integration.Configuration);
         }
-
+        await CleanupScenario();
         var endTime = _integration.ExecutionTimer.GetTime();
         _result.UpdateResult(Array.Empty<IStepResult>(), endTime.GetExecutionTime(startTime));
         return Result;
+    }
+
+    private async Task CleanupScenario()
+    {
+        var collector = new ExceptionCollector();
+        await _fixtureManager.DisposeAsync(collector);
+        var exception = collector.Collect();
+        if (exception != null)
+            ExceptionProcessor.UpdateStatus(_result.UpdateScenarioResultV2, exception, _integration.Configuration);
     }
 
     public void ConfigureExecutionAbortOnSubStepException(Func<Exception, bool> shouldAbortExecutionFn)

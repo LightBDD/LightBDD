@@ -377,7 +377,7 @@ namespace LightBDD.UnitTests.Helpers
             IEnumerable<string> IFeatureInfo.Labels => Labels;
             public string[] Labels { get; set; }
             public string Description { get; set; }
-            public Type FeatureType { get; set; } = typeof(TestFeatureInfo);
+            public Type FeatureType { get; set; } = typeof(object);
         }
 
         public class TestNameParameterInfo : INameParameterInfo
