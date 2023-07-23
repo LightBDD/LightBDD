@@ -8,7 +8,6 @@ using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
 using LightBDD.Framework.Extensibility;
-using LightBDD.Framework.Notification;
 using LightBDD.ScenarioHelpers;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using Moq;
@@ -256,86 +255,26 @@ namespace LightBDD.Core.UnitTests
 
             public IEnumerable<string> Notifications => _notifications;
 
-            public void NotifyFeatureStart(IFeatureInfo feature)
-            {
-                _notifications.Add($"Feature Start: {FormatFeature(feature)}");
-            }
-
-            public void NotifyFeatureFinished(IFeatureResult feature)
-            {
-                _notifications.Add($"Feature Finish: {FormatFeature(feature.Info)} | Scenarios:{feature.GetScenarios().Count()}");
-            }
-
-            public void NotifyScenarioStart(IScenarioInfo scenario)
-            {
-                _notifications.Add($"Scenario Start: {FormatScenario(scenario)}");
-            }
-
-            public void NotifyScenarioFinished(IScenarioResult scenario)
-            {
-                _notifications.Add($"Scenario Finish: {FormatScenario(scenario.Info)} | Status:{scenario.Status} | ExecutionTimePresent:{scenario.ExecutionTime != null} | Steps:{scenario.GetSteps().Count()} | Details:{scenario.StatusDetails}");
-            }
-
-            public void NotifyStepStart(IStepInfo step)
-            {
-                _notifications.Add($"Step Start: {FormatStep(step)}");
-            }
-
-            public void NotifyStepFinished(IStepResult step)
-            {
-                _notifications.Add($"Step Finish: {FormatStep(step.Info)} | Status:{step.Status} | ExecutionTimePresent:{step.ExecutionTime != null} | Details:{step.StatusDetails}");
-            }
-
-            public void NotifyStepComment(IStepInfo step, string comment)
-            {
-                _notifications.Add($"Step {step.GroupPrefix}{step.Number}/{step.GroupPrefix}{step.Total} Comment: {comment}");
-            }
-
-            private string FormatFeature(IFeatureInfo feature)
-            {
-                return $"{feature.Name} [{string.Join(", ", feature.Labels)}]: {feature.Description}";
-            }
-
-            private string FormatScenario(IScenarioInfo scenario)
-            {
-                return $"{scenario.Name} [{string.Join(", ", scenario.Labels)}] <{string.Join(", ", scenario.Categories)}>";
-            }
-
-            private string FormatStep(IStepInfo step)
-            {
-                return $"{step.GroupPrefix}{step.Number}/{step.GroupPrefix}{step.Total} {step.Name}";
-            }
-
             public void Notify(ProgressEvent e)
             {
-                switch (e)
+                var message = e switch
                 {
-                    case FeatureFinished featureFinished:
-                        NotifyFeatureFinished(featureFinished.Result);
-                        break;
-                    case FeatureStarting featureStarting:
-                        NotifyFeatureStart(featureStarting.Feature);
-                        break;
-                    case ScenarioFinished scenarioFinished:
-                        NotifyScenarioFinished(scenarioFinished.Result);
-                        break;
-                    case ScenarioStarting scenarioStarting:
-                        NotifyScenarioStart(scenarioStarting.Scenario);
-                        break;
-                    case StepCommented stepCommented:
-                        NotifyStepComment(stepCommented.Step, stepCommented.Comment);
-                        break;
-                    case StepFinished stepFinished:
-                        NotifyStepFinished(stepFinished.Result);
-                        break;
-                    case StepStarting stepStarting:
-                        NotifyStepStart(stepStarting.Step);
-                        break;
-                    case StepFileAttached stepFileAttached:
-                        _notifications.Add($"Step {stepFileAttached.Step.GroupPrefix}{stepFileAttached.Step.Number}/{stepFileAttached.Step.GroupPrefix}{stepFileAttached.Step.Total} File Attachment - {stepFileAttached.Attachment.Name}: {stepFileAttached.Attachment.FilePath}");
-                        break;
-                }
+                    FeatureFinished ev => $"Feature Finish: {FormatFeature(ev.Result.Info)} | Scenarios:{ev.Result.GetScenarios().Count()}",
+                    FeatureStarting ev => $"Feature Start: {FormatFeature(ev.Feature)}",
+                    ScenarioFinished ev => $"Scenario Finish: {FormatScenario(ev.Result.Info)} | Status:{ev.Result.Status} | ExecutionTimePresent:{ev.Result.ExecutionTime != ExecutionTime.None} | Steps:{ev.Result.GetSteps().Count()} | Details:{ev.Result.StatusDetails}",
+                    ScenarioStarting ev => $"Scenario Start: {FormatScenario(ev.Scenario)}",
+                    StepCommented ev => $"Step {ev.Step.GroupPrefix}{ev.Step.Number}/{ev.Step.GroupPrefix}{ev.Step.Total} Comment: {ev.Comment}",
+                    StepFinished ev => $"Step Finish: {FormatStep(ev.Result.Info)} | Status:{ev.Result.Status} | ExecutionTimePresent:{ev.Result.ExecutionTime != null} | Details:{ev.Result.StatusDetails}",
+                    StepStarting ev => $"Step Start: {FormatStep(ev.Step)}",
+                    StepFileAttached ev => $"Step {ev.Step.GroupPrefix}{ev.Step.Number}/{ev.Step.GroupPrefix}{ev.Step.Total} File Attachment - {ev.Attachment.Name}: {ev.Attachment.FilePath}",
+                    _ => $"{e.GetType().Name}"
+                };
+                _notifications.Add(message);
             }
+
+            private string FormatFeature(IFeatureInfo feature) => $"{feature.Name} [{string.Join(", ", feature.Labels)}]: {feature.Description}";
+            private string FormatScenario(IScenarioInfo scenario) => $"{scenario.Name} [{string.Join(", ", scenario.Labels)}] <{string.Join(", ", scenario.Categories)}>";
+            private string FormatStep(IStepInfo step) => $"{step.GroupPrefix}{step.Number}/{step.GroupPrefix}{step.Total} {step.Name}";
         }
     }
 }

@@ -8,6 +8,7 @@ using LightBDD.Core.ExecutionContext.Implementation;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Metadata;
+using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Implementation;
 
@@ -42,6 +43,7 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario
         try
         {
             SetScenarioContext();
+            _integration.ProgressNotifier.Notify(new ScenarioStarting(startTime, Result.Info));
             await _fixtureManager.InitializeAsync(_result.Info.Parent.FeatureType);
             await _decoratedMethod.Invoke();
             _result.UpdateScenarioResultV2(ExecutionStatus.Passed);
@@ -55,6 +57,7 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario
         await CleanupScenario();
         var endTime = _integration.ExecutionTimer.GetTime();
         _result.UpdateResult(Array.Empty<IStepResult>(), endTime.GetExecutionTime(startTime));
+        _integration.ProgressNotifier.Notify(new ScenarioFinished(endTime, Result));
         return Result;
     }
 
