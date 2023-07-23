@@ -14,7 +14,7 @@ namespace LightBDD.Core.Execution.Implementation
 
         public void Capture(Exception exception)
         {
-            _executionExceptions.Enqueue(exception is ScenarioExecutionException ? exception.InnerException : exception);
+            _executionExceptions.Enqueue(exception is ScenarioExecutionException ? exception.InnerException! : exception);
         }
 
         public Exception? CollectFor(ExecutionStatus executionStatus, IEnumerable<IStepResult> subSteps)
