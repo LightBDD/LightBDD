@@ -65,7 +65,7 @@ public class RunnableScenario_fixture_management_tests
     }
 
     [Test]
-    public async Task It_should_capture_fixture_setup_failure_and_dispose_fixture()
+    public async Task It_should_capture_OnScenarioSetUp_failure_and_dispose_fixture()
     {
         FixtureWithBrokenScenarioSetUp.Capture.Value = new Holder<bool>();
 
@@ -87,9 +87,9 @@ public class RunnableScenario_fixture_management_tests
         result.ExecutionException.ShouldBeOfType<AggregateException>()
             .InnerExceptions.Select(e => e.Message).ShouldBe(new[]
             {
-                "OnScenarioTearDown() failed: boom",
-                "DisposeAsync() failed: boom!",
-                "Dispose() failed: boom!!"
+                "Fixture OnScenarioTearDown() failed: boom",
+                "Fixture DisposeAsync() failed: boom!",
+                "Fixture Dispose() failed: boom!!"
             });
         result.StatusDetails.ShouldStartWith("Scenario Failed: System.AggregateException: One or more errors occurred.");
     }

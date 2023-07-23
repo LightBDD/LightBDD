@@ -164,13 +164,11 @@ namespace LightBDD.Core.Execution.Implementation
         private void StartScenario(EventTime executionStartTime)
         {
             ScenarioExecutionContext.Current = new ScenarioExecutionContext();
-            ScenarioExecutionContext.Current.Get<CurrentScenarioProperty>().Fixture = _scenarioContext.FixtureObject;
-
+            ScenarioExecutionContext.Current.Get<CurrentScenarioProperty>().Scenario = this;
             _scenarioContext.ProgressNotifier.Notify(new ScenarioStarting(executionStartTime, Info));
 
             _scope = CreateContainerScope();
             Context = CreateExecutionContext();
-            ScenarioExecutionContext.Current.Get<CurrentScenarioProperty>().Scenario = this;
             PrepareSteps();
         }
 

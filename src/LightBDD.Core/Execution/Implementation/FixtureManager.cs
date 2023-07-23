@@ -54,19 +54,18 @@ internal class FixtureManager
         if (Fixture is IAsyncDisposable asyncDisposable)
             await collector.Capture(() => DisposeAsync(asyncDisposable));
         if (Fixture is IDisposable disposable)
-            await collector.Capture(() => Dispose(disposable));
+            collector.Capture(() => Dispose(disposable));
     }
 
-    private Task Dispose(IDisposable disposable)
+    private void Dispose(IDisposable disposable)
     {
         try
         {
             disposable.Dispose();
-            return Task.CompletedTask;
         }
         catch (Exception ex)
         {
-            throw new InvalidOperationException($"Dispose() failed: {ex.Message}", ex);
+            throw new InvalidOperationException($"Fixture Dispose() failed: {ex.Message}", ex);
         }
     }
 
@@ -78,7 +77,7 @@ internal class FixtureManager
         }
         catch (Exception ex)
         {
-            throw new InvalidOperationException($"DisposeAsync() failed: {ex.Message}", ex);
+            throw new InvalidOperationException($"Fixture DisposeAsync() failed: {ex.Message}", ex);
         }
     }
 
@@ -90,7 +89,7 @@ internal class FixtureManager
         }
         catch (Exception ex)
         {
-            throw new InvalidOperationException($"OnScenarioTearDown() failed: {ex.Message}", ex);
+            throw new InvalidOperationException($"Fixture OnScenarioTearDown() failed: {ex.Message}", ex);
         }
     }
 }

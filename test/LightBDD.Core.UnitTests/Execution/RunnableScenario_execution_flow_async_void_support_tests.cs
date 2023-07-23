@@ -72,7 +72,7 @@ public class RunnableScenario_execution_flow_async_void_support_tests
             DelayAndThrow();
             DelayAndThrow();
             throw new InvalidOperationException("test2");
-        };
+        }
 
         var result = await TestableScenarioFactory.Default.CreateScenario(EntryMethod).RunAsync();
         result.Status.ShouldBe(ExecutionStatus.Failed);

@@ -12,15 +12,12 @@ namespace LightBDD.Core.UnitTests.Helpers;
 
 internal class TestableScenarioFactory
 {
-    public static readonly TestableScenarioFactory Default = new();
+    public static readonly TestableScenarioFactory Default = Create();
     private readonly RunnableScenarioFactory _factory;
 
-    private TestableScenarioFactory()
+    private TestableScenarioFactory(RunnableScenarioFactory factory)
     {
-        _factory = new RunnableScenarioFactory(TestableIntegrationContextBuilder.Default()
-            //TODO: review
-            .WithConfiguration(x => x.ExceptionHandlingConfiguration().UpdateExceptionDetailsFormatter(e => $"{e.GetType().Namespace}.{e.GetType().Name}: {e.Message}"))
-            .Build());
+        _factory = factory;
     }
 
     public IRunnableScenarioBuilder CreateBuilder(IFeatureInfo? feature = null) => _factory.CreateFor(feature ?? Fake.Object<TestResults.TestFeatureInfo>());
@@ -28,5 +25,26 @@ internal class TestableScenarioFactory
     public IRunnableScenarioV2 CreateScenario(Func<ICoreScenarioBuilderV2, Task> entryMethod)
     {
         return CreateBuilder().WithScenarioEntryMethod((_, runner) => entryMethod.Invoke(runner)).Build();
+    }
+
+    public IRunnableScenarioV2 CreateScenario<TFixture>(Func<ICoreScenarioBuilderV2, Task> entryMethod)
+    {
+        var featureInfo = Fake.Object<TestResults.TestFeatureInfo>();
+        featureInfo.FeatureType = typeof(TFixture);
+        return CreateBuilder(featureInfo).WithScenarioEntryMethod((_, runner) => entryMethod.Invoke(runner)).Build();
+    }
+
+    public static TestableScenarioFactory Create(Action<LightBddConfiguration>? onConfigure = null)
+    {
+        void Configure(LightBddConfiguration x)
+        {
+            //TODO: review
+            x.ExceptionHandlingConfiguration().UpdateExceptionDetailsFormatter(e => $"{e.GetType().Namespace}.{e.GetType().Name}: {e.Message}");
+            onConfigure?.Invoke(x);
+        }
+
+        return new(new RunnableScenarioFactory(TestableIntegrationContextBuilder.Default()
+            .WithConfiguration(Configure)
+            .Build()));
     }
 }

@@ -59,7 +59,7 @@ namespace LightBDD.Core.ExecutionContext
         /// </summary>
         public static TFixture GetCurrentScenarioFixtureIfPresent<TFixture>() where TFixture : class
         {
-            var fixture = CurrentContext.Value?.Get<CurrentScenarioProperty>().Fixture;
+            var fixture = CurrentContext.Value?.Get<CurrentScenarioProperty>().Scenario?.Fixture;
 
             if (fixture == null)
                 return null;

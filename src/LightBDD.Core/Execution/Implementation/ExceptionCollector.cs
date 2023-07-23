@@ -46,6 +46,18 @@ namespace LightBDD.Core.Execution.Implementation
             }
         }
 
+        public void Capture(Action action)
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception ex)
+            {
+                _executionExceptions.Enqueue(ex);
+            }
+        }
+
         public Exception? Collect()
         {
             var exceptions = _executionExceptions.ToArray();
