@@ -8,5 +8,8 @@
     <ItemGroup>
         <ProjectReference Include="..\..\src\LightBDD.Core\LightBDD.Core.csproj" />
     </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Shouldly" Version="4.2.1" />
+    </ItemGroup>
 
 </Project>

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using LightBDD.Core.Results;
 using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Scenarios;
+using LightBDD.ScenarioHelpers;
 using LightBDD.UnitTests.Helpers;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 
