@@ -105,7 +105,7 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario, IRunStageCon
 
     private async Task RunScenarioCore()
     {
-        var stepsRunner = new ScenarioStepsRunner(this);
+        var stepsRunner = new StepGroupRunner(this, string.Empty);
         ScenarioExecutionContext.Current.Get<CurrentScenarioProperty>().StepsRunner = stepsRunner;
         try
         {

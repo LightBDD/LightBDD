@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
-using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution;
 
 namespace LightBDD.Core.Extensibility;
@@ -22,22 +21,11 @@ public interface ICoreScenarioStepsRunner
     ICoreScenarioStepsRunner AddSteps(IEnumerable<StepDescriptor> steps);
 
     /// <summary>
-    /// Configures scenario to be executed with context provided by <paramref name="contextProvider"/>.
+    /// Configures execution context for steps to execute.
     /// </summary>
-    /// <param name="contextProvider">Context provider function.</param>
-    /// <param name="takeOwnership">Specifies if scenario runner should take ownership of the context instance. If set to true and context instance implements <see cref="IDisposable"/>, it will be disposed after scenario finish.</param>
+    /// <param name="contextDescriptor">Descriptor.</param>
     /// <returns>Self.</returns>
-    /// <exception cref="ArgumentNullException">Throws when <paramref name="contextProvider"/> is <c>null</c>.</exception>
-    ICoreScenarioStepsRunner WithContext(Func<object> contextProvider, bool takeOwnership);
-
-    /// <summary>
-    /// Configures scenario to be executed with context provided by <paramref name="contextProvider"/>.
-    /// </summary>
-    /// <param name="contextProvider">Context provider function.</param>
-    /// <param name="scopeConfigurator"></param>
-    /// <returns>Self.</returns>
-    /// <exception cref="ArgumentNullException">Throws when <paramref name="contextProvider"/> is <c>null</c>.</exception>
-    ICoreScenarioStepsRunner WithContext(Func<IDependencyResolver, object> contextProvider, Action<ContainerConfigurator>? scopeConfigurator = null);
+    ICoreScenarioStepsRunner WithContext(ExecutionContextDescriptor contextDescriptor);
 
     /// <summary>
     /// Executes built scenario.

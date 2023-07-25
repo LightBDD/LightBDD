@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using LightBDD.Core.Dependencies;
 
@@ -16,7 +17,7 @@ namespace LightBDD.Core.Extensibility
         /// <summary>
         /// Returns container configurator function used to configure container used in the execution context scope.
         /// </summary>
-        public Action<ContainerConfigurator> ScopeConfigurator { get; }
+        public Action<ContainerConfigurator>? ScopeConfigurator { get; }
         /// <summary>
         /// Returns context resolver function used to create context.
         /// </summary>
@@ -25,10 +26,10 @@ namespace LightBDD.Core.Extensibility
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public ExecutionContextDescriptor(Func<IDependencyResolver, object> contextResolver, Action<ContainerConfigurator> scopeConfigurator)
+        public ExecutionContextDescriptor(Func<IDependencyResolver, object> contextResolver, Action<ContainerConfigurator>? scopeConfigurator = null)
         {
-            ScopeConfigurator = scopeConfigurator;
             ContextResolver = contextResolver ?? throw new ArgumentNullException(nameof(contextResolver));
+            ScopeConfigurator = scopeConfigurator;
         }
 
         /// <summary>
@@ -52,7 +53,7 @@ namespace LightBDD.Core.Extensibility
         {
             private readonly Func<object> _contextProvider;
             private readonly bool _takeOwnership;
-            private object _instance;
+            private object? _instance;
 
             public ContextWrapper(Func<object> contextProvider, bool takeOwnership)
             {

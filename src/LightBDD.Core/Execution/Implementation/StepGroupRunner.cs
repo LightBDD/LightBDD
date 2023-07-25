@@ -4,27 +4,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
-using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility;
-using LightBDD.Core.Metadata;
 using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Results;
 
 namespace LightBDD.Core.Execution.Implementation;
 
-internal class ScenarioStepsRunner : ICoreScenarioStepsRunner
+internal class StepGroupRunner : ICoreScenarioStepsRunner
 {
     private readonly IRunStageContext _parent;
+    private readonly string _groupPrefix;
     private IEnumerable<StepDescriptor> _stepDescriptors = Enumerable.Empty<StepDescriptor>();
     private ExecutionContextDescriptor _contextDescriptor = ExecutionContextDescriptor.NoContext;
-    private RunnableStep[] _steps = Array.Empty<RunnableStep>();
+    private RunnableStepV2[] _steps = Array.Empty<RunnableStepV2>();
     private object? _executionContext;
 
     public IStepResult[] GetResults() => _steps.Select(s => s.Result).ToArray();
 
-    public ScenarioStepsRunner(IRunStageContext parent)
+    public StepGroupRunner(IRunStageContext parent, string groupPrefix)
     {
         _parent = parent;
+        _groupPrefix = groupPrefix;
     }
 
     public ICoreScenarioStepsRunner AddSteps(IEnumerable<StepDescriptor> steps)
@@ -33,15 +33,9 @@ internal class ScenarioStepsRunner : ICoreScenarioStepsRunner
         return this;
     }
 
-    public ICoreScenarioStepsRunner WithContext(Func<object> contextProvider, bool takeOwnership)
+    public ICoreScenarioStepsRunner WithContext(ExecutionContextDescriptor contextDescriptor)
     {
-        _contextDescriptor = new ExecutionContextDescriptor(contextProvider, takeOwnership);
-        return this;
-    }
-
-    public ICoreScenarioStepsRunner WithContext(Func<IDependencyResolver, object> contextProvider, Action<ContainerConfigurator>? scopeConfigurator = null)
-    {
-        _contextDescriptor = new ExecutionContextDescriptor(contextProvider, scopeConfigurator);
+        _contextDescriptor = contextDescriptor;
         return this;
     }
 
@@ -59,14 +53,14 @@ internal class ScenarioStepsRunner : ICoreScenarioStepsRunner
     {
         try
         {
-            _steps = ProvideSteps(_parent.Info, _stepDescriptors, _executionContext!, _parent.DependencyContainer, string.Empty, _parent.ShouldAbortSubStepExecution);
+            _steps = ProvideSteps();
         }
         catch (Exception e)
         {
-            throw new InvalidOperationException($"Scenario steps initialization failed: {e.Message}", e);
+            throw new InvalidOperationException($"Step group initialization failed: {e.Message}", e);
         }
         if (_steps.Any(x => x.Result.ExecutionException != null))
-            throw new InvalidOperationException("Scenario steps initialization failed.");
+            throw new InvalidOperationException("Step group initialization failed.");
     }
 
     private object CreateExecutionContext()
@@ -77,31 +71,31 @@ internal class ScenarioStepsRunner : ICoreScenarioStepsRunner
         }
         catch (Exception e)
         {
-            throw new InvalidOperationException($"Scenario context initialization failed: {e.Message}", e);
+            throw new InvalidOperationException($"Step group context initialization failed: {e.Message}", e);
         }
     }
 
-    private RunnableStep[] ProvideSteps(IMetadataInfo parent, IEnumerable<StepDescriptor> stepDescriptors, object context, IDependencyContainer container, string groupPrefix, Func<Exception, bool> shouldAbortSubStepExecutionFn)
+    private RunnableStepV2[] ProvideSteps()
     {
-        var descriptors = stepDescriptors.ToArray();
+        var descriptors = _stepDescriptors.ToArray();
         if (!descriptors.Any())
             throw new InvalidOperationException("At least one step has to be provided");
 
         var metadataProvider = _parent.Engine.MetadataProvider;
 
         var totalSteps = descriptors.Length;
-        var steps = new RunnableStep[totalSteps];
+        var steps = new RunnableStepV2[totalSteps];
         string? previousStepTypeName = null;
 
         var extensions = _parent.Engine.ExecutionExtensions;
-        var stepContext = new RunnableStepContext(_parent.Engine.ExceptionProcessor, _parent.Engine.ProgressNotifier, container, context, ProvideSteps, shouldAbortSubStepExecutionFn, _parent.Engine.ExecutionTimer, _parent.Engine.FileAttachmentsManager);
+        var stepContext = new RunnableStepContextV2(_parent, _executionContext);
         for (var stepIndex = 0; stepIndex < totalSteps; ++stepIndex)
         {
             var descriptor = descriptors[stepIndex];
-            var stepInfo = new StepInfo(parent, metadataProvider.GetStepName(descriptor, previousStepTypeName), stepIndex + 1, totalSteps, groupPrefix);
+            var stepInfo = new StepInfo(_parent.Info, metadataProvider.GetStepName(descriptor, previousStepTypeName), stepIndex + 1, totalSteps, _groupPrefix);
             var arguments = descriptor.Parameters.Select(p => new MethodArgument(p, metadataProvider.GetValueFormattingServiceFor(p.ParameterInfo))).ToArray();
 
-            steps[stepIndex] = new RunnableStep(stepContext, stepInfo, descriptor, arguments, extensions.StepDecorators.Concat(metadataProvider.GetStepDecorators(descriptor)));
+            steps[stepIndex] = new RunnableStepV2(stepContext, stepInfo, descriptor, arguments, extensions.StepDecorators.Concat(metadataProvider.GetStepDecorators(descriptor)));
             previousStepTypeName = stepInfo.Name.StepTypeName?.OriginalName;
         }
 

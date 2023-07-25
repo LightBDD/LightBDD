@@ -11,9 +11,7 @@ namespace LightBDD.ScenarioHelpers;
 public class TestScenarioStepsRunner
 {
     private readonly ICoreScenarioStepsRunner _coreBuilder;
-    private Func<object>? _contextProvider;
-    private bool _takeContextOwnership;
-    private Func<IDependencyResolver, object>? _contextResolver;
+    private ExecutionContextDescriptor? _contextDescriptor;
 
     public TestScenarioStepsRunner(ICoreScenarioStepsRunner coreBuilder)
     {
@@ -38,10 +36,8 @@ public class TestScenarioStepsRunner
 
     private ICoreScenarioStepsRunner WithContextIfSet()
     {
-        if (_contextProvider != null)
-            return _coreBuilder.WithContext(_contextProvider, _takeContextOwnership);
-        if (_contextResolver != null)
-            return _coreBuilder.WithContext(_contextResolver);
+        if (_contextDescriptor != null)
+            return _coreBuilder.WithContext(_contextDescriptor);
         return _coreBuilder;
     }
     public async Task TestScenario(params Action[] steps)
@@ -61,14 +57,13 @@ public class TestScenarioStepsRunner
 
     public TestScenarioStepsRunner WithContext(Func<object> contextProvider, bool takeOwnership)
     {
-        _takeContextOwnership = takeOwnership;
-        _contextProvider = contextProvider;
+        _contextDescriptor = new ExecutionContextDescriptor(contextProvider, takeOwnership);
         return this;
     }
 
     public TestScenarioStepsRunner WithContext(Func<IDependencyResolver, object> contextResolver)
     {
-        _contextResolver = contextResolver;
+        _contextDescriptor = new ExecutionContextDescriptor(contextResolver, null);
         return this;
     }
 }
