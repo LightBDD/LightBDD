@@ -225,14 +225,14 @@ internal class RunnableStepV2 : IStep, IRunStageContext
                 _result.SetStatus(e.StepStatus);
                 break;
             case ScenarioExecutionException { InnerException: BypassException }:
-                _result.SetStatus(ExecutionStatus.Bypassed, exception.InnerException.Message);
+                _result.SetStatusV2(ExecutionStatus.Bypassed, exception.InnerException.Message);
                 break;
             case ScenarioExecutionException e:
-                _stepContext.ExceptionProcessor.UpdateResultsWithException(_result.SetStatus, e.InnerException);
+                _stepContext.ExceptionProcessor.UpdateResultsWithException(_result.SetStatusV2, e.InnerException!);
                 _exceptionCollector.Capture(e);
                 break;
             default:
-                _stepContext.ExceptionProcessor.UpdateResultsWithException(_result.SetStatus, exception);
+                _stepContext.ExceptionProcessor.UpdateResultsWithException(_result.SetStatusV2, exception);
                 _exceptionCollector.Capture(exception);
                 break;
         }

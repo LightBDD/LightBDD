@@ -39,6 +39,14 @@ namespace LightBDD.Core.Results.Implementation
                 : null;
         }
 
+        public void SetStatusV2(ExecutionStatus status, string details = null)
+        {
+            Status = status;
+            StatusDetails = !string.IsNullOrWhiteSpace(details)
+                ? $"Step {_info.GroupPrefix}{_info.Number} {status}: {details.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t")}"
+                : null;
+        }
+
         public void UpdateException(Exception exception)
         {
             ExecutionException = exception;

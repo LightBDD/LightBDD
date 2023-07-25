@@ -9,6 +9,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests
 {
     [TestFixture]
+    //migrated except disposals
     public class CoreBddRunner_step_execution_tests
     {
         private IBddRunner _runner;

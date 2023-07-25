@@ -33,6 +33,11 @@ namespace LightBDD.Core.Execution.Implementation
 
         public static void UpdateStatus(Action<ExecutionStatus, string?, Exception?> updateStatusFn, Exception exception, LightBddConfiguration cfg)
         {
+            if (exception is StepExecutionException ste)
+            {
+                updateStatusFn(ste.StepStatus, null, ste.InnerException);
+                return;
+            }
             if (exception is ScenarioExecutionException e)
                 exception = e.InnerException!;
 
