@@ -22,12 +22,12 @@ internal class TestableScenarioFactory
 
     public IRunnableScenarioBuilder CreateBuilder(IFeatureInfo? feature = null) => _factory.CreateFor(feature ?? Fake.Object<TestResults.TestFeatureInfo>());
 
-    public IRunnableScenarioV2 CreateScenario(Func<ICoreScenarioBuilderV2, Task> entryMethod)
+    public IRunnableScenarioV2 CreateScenario(Func<ICoreScenarioStepsRunner, Task> entryMethod)
     {
         return CreateBuilder().WithScenarioEntryMethod((_, runner) => entryMethod.Invoke(runner)).Build();
     }
 
-    public IRunnableScenarioV2 CreateScenario<TFixture>(Func<ICoreScenarioBuilderV2, Task> entryMethod)
+    public IRunnableScenarioV2 CreateScenario<TFixture>(Func<ICoreScenarioStepsRunner, Task> entryMethod)
     {
         var featureInfo = Fake.Object<TestResults.TestFeatureInfo>();
         featureInfo.FeatureType = typeof(TFixture);
@@ -36,15 +36,10 @@ internal class TestableScenarioFactory
 
     public static TestableScenarioFactory Create(Action<LightBddConfiguration>? onConfigure = null)
     {
-        void Configure(LightBddConfiguration x)
-        {
-            //TODO: review
-            x.ExceptionHandlingConfiguration().UpdateExceptionDetailsFormatter(e => $"{e.GetType().Namespace}.{e.GetType().Name}: {e.Message}");
-            onConfigure?.Invoke(x);
-        }
+        LightBddConfiguration cfg = new();
+        TestLightBddConfiguration.SetTestDefaults(cfg);
+        onConfigure?.Invoke(cfg);
 
-        return new(new RunnableScenarioFactory(TestableIntegrationContextBuilder.Default()
-            .WithConfiguration(Configure)
-            .Build()));
+        return new(new RunnableScenarioFactory(new EngineContext(typeof(TestableScenarioFactory).Assembly, cfg)));
     }
 }

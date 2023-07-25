@@ -14,7 +14,7 @@ namespace LightBDD.Core.UnitTests.Helpers
     {
         public static readonly TestableCoreExecutionPipeline Default = Create();
 
-        private TestableCoreExecutionPipeline(Assembly testAssembly, Action<LightBddConfiguration> onConfigure = null) : base(testAssembly, SetTestDefaults + onConfigure)
+        private TestableCoreExecutionPipeline(Assembly testAssembly, Action<LightBddConfiguration> onConfigure = null) : base(testAssembly, TestLightBddConfiguration.SetTestDefaults + onConfigure)
         {
         }
 
@@ -38,11 +38,6 @@ namespace LightBDD.Core.UnitTests.Helpers
             var scenarios = new[] { ScenarioCase.CreateParameterless(typeof(TFeature).GetTypeInfo(), ParameterInfoHelper.GetMethodInfo(scenarioSelector)) };
             var result = await Execute(scenarios);
             return result.Features.Single().GetScenarios().Single();
-        }
-
-        private static void SetTestDefaults(LightBddConfiguration cfg)
-        {
-            cfg.ExceptionHandlingConfiguration().UpdateExceptionDetailsFormatter(ex => ex.Message);
         }
     }
 }

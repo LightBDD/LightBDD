@@ -10,6 +10,12 @@ namespace LightBDD.Core.Results.Implementation
     internal class ScenarioResult : IScenarioResult
     {
         private IStepResult[] _steps = Array.Empty<IStepResult>();
+        public IScenarioInfo Info { get; }
+        public ExecutionStatus Status { get; private set; }
+        public string? StatusDetails { get; private set; }
+        public ExecutionTime ExecutionTime { get; private set; } = ExecutionTime.None;
+        public Exception? ExecutionException { get; private set; }
+
 
         public ScenarioResult(IScenarioInfo info)
         {
@@ -19,16 +25,20 @@ namespace LightBDD.Core.Results.Implementation
 
         public void UpdateResult(IStepResult[] steps, ExecutionTime executionTime)
         {
-            _steps = steps;
-            ExecutionTime = executionTime;
-            CaptureStatus();
+            UpdateResults(steps);
+            UpdateTime(executionTime);
         }
 
-        public IScenarioInfo Info { get; }
-        public ExecutionStatus Status { get; private set; }
-        public string? StatusDetails { get; private set; }
-        public ExecutionTime ExecutionTime { get; private set; } = ExecutionTime.None;
-        public Exception? ExecutionException { get; private set; }
+        public void UpdateTime(ExecutionTime executionTime)
+        {
+            ExecutionTime = executionTime;
+        }
+
+        public void UpdateResults(IStepResult[] steps)
+        {
+            _steps = steps;
+            CaptureStatus();
+        }
 
         public IEnumerable<IStepResult> GetSteps()
         {

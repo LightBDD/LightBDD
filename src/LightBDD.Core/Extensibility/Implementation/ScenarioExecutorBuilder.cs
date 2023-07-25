@@ -12,7 +12,7 @@ namespace LightBDD.Core.Extensibility.Implementation;
 
 internal class RunnableScenarioBuilder : IRunnableScenarioBuilder
 {
-    private readonly IntegrationContext _context;
+    private readonly EngineContext _context;
     private readonly IFeatureInfo _featureInfo;
     private string? _runtimeId;
     private INameInfo _name = NameInfo.NotSpecified;
@@ -21,7 +21,7 @@ internal class RunnableScenarioBuilder : IRunnableScenarioBuilder
     private IEnumerable<IScenarioDecorator> _decorators = Array.Empty<IScenarioDecorator>();
     private ScenarioEntryMethod _entryMethod = (_, _) => Task.CompletedTask;
 
-    public RunnableScenarioBuilder(IntegrationContext context, IFeatureInfo featureInfo)
+    public RunnableScenarioBuilder(EngineContext context, IFeatureInfo featureInfo)
     {
         _context = context;
         _featureInfo = featureInfo;

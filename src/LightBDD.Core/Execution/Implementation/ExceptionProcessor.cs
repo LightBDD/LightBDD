@@ -12,9 +12,15 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly Func<Exception, string> _exceptionFormatter;
 
         public ExceptionProcessor(IntegrationContext integrationContext)
+        : this(integrationContext.Configuration)
         {
             _exceptionToStatusMapper = integrationContext.ExceptionToStatusMapper;
-            _exceptionFormatter = integrationContext.Configuration.ExceptionHandlingConfiguration().ExceptionDetailsFormatter;
+        }
+
+        public ExceptionProcessor(LightBddConfiguration configuration)
+        {
+            _exceptionFormatter = configuration.ExceptionHandlingConfiguration().ExceptionDetailsFormatter;
+            _exceptionToStatusMapper = ex => ex is IgnoreException ? ExecutionStatus.Ignored : ExecutionStatus.Failed;
         }
 
         public ExecutionStatus UpdateResultsWithException(Action<ExecutionStatus, string> setStatus, Exception exception)

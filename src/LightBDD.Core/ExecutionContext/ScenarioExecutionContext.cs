@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Threading;
 using LightBDD.Core.Execution;
 using LightBDD.Core.ExecutionContext.Implementation;
+using LightBDD.Core.Extensibility;
 
 namespace LightBDD.Core.ExecutionContext
 {
@@ -67,5 +68,11 @@ namespace LightBDD.Core.ExecutionContext
             return fixture as TFixture
                    ?? throw new InvalidOperationException($"Expected fixture of type '{typeof(TFixture)}' while got '{fixture.GetType()}'.");
         }
+
+        /// <summary>
+        /// Returns current scenario steps runner.
+        /// <exception cref="InvalidOperationException">Thrown if no scenario is executed by current task or if scenario initialization is not complete.</exception>
+        /// </summary>
+        public static ICoreScenarioStepsRunner CurrentScenarioStepsRunner => Current.Get<CurrentScenarioProperty>().StepsRunner??throw new InvalidOperationException("The current task does not run any initialized scenario. Ensure that feature is used within task running fully initialized scenario.");
     }
 }

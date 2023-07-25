@@ -91,7 +91,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         public async Task Build_should_set_configured_entry_method()
         {
             var executed = false;
-            Task EntryMethod(object _, ICoreScenarioBuilderV2 __)
+            Task EntryMethod(object _, ICoreScenarioStepsRunner __)
             {
                 executed = true;
                 return Task.CompletedTask;

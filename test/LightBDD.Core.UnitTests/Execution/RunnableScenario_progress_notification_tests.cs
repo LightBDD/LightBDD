@@ -20,7 +20,7 @@ public class RunnableScenario_progress_notification_tests
     {
         CapturingProgressNotifier capturingNotifier = new();
 
-        Task ScenarioMethod(ICoreScenarioBuilderV2 _)
+        Task ScenarioMethod(ICoreScenarioStepsRunner _)
         {
             if (!successfulScenario)
                 throw new InvalidOperationException("failure");

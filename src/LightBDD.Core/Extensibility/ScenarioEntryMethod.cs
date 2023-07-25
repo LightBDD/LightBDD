@@ -9,4 +9,4 @@ namespace LightBDD.Core.Extensibility;
 /// <param name="fixture">Scenario feature fixture</param>
 /// <param name="coreScenarioBuilder">Scenario steps builder</param>
 /// <returns></returns>
-public delegate Task ScenarioEntryMethod(object fixture, ICoreScenarioBuilderV2 coreScenarioBuilder);
+public delegate Task ScenarioEntryMethod(object fixture, ICoreScenarioStepsRunner coreScenarioBuilder);

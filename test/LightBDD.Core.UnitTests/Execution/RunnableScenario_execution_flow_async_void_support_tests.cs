@@ -23,7 +23,7 @@ public class RunnableScenario_execution_flow_async_void_support_tests
             finished = true;
         }
 
-        Task EntryMethod(ICoreScenarioBuilderV2 _)
+        Task EntryMethod(ICoreScenarioStepsRunner _)
         {
             AsyncVoid();
             return Task.CompletedTask;
@@ -44,7 +44,7 @@ public class RunnableScenario_execution_flow_async_void_support_tests
             throw new InvalidOperationException("test");
         }
 
-        Task EntryMethod(ICoreScenarioBuilderV2 _)
+        Task EntryMethod(ICoreScenarioStepsRunner _)
         {
             DelayAndThrow();
             return Task.CompletedTask;
@@ -66,7 +66,7 @@ public class RunnableScenario_execution_flow_async_void_support_tests
             throw new InvalidOperationException("test");
         }
 
-        async Task EntryMethod(ICoreScenarioBuilderV2 _)
+        async Task EntryMethod(ICoreScenarioStepsRunner _)
         {
             await Task.Delay(100);
             DelayAndThrow();

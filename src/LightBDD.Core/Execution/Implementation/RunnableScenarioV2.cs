@@ -14,9 +14,8 @@ using LightBDD.Core.Results.Implementation;
 
 namespace LightBDD.Core.Execution.Implementation;
 
-internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario
+internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario, IRunStageContext
 {
-    private readonly IntegrationContext _integration;
     private readonly ScenarioEntryMethod _entryMethod;
     private readonly Func<Task> _decoratedMethod;
     private readonly ScenarioResult _result;
@@ -24,13 +23,17 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario
     private IDependencyContainer? _scenarioScope;
     public IScenarioResult Result => _result;
     public IScenarioInfo Info => Result.Info;
-    public IDependencyResolver DependencyResolver => _scenarioScope ?? _integration.DependencyContainer;
-    public object Context { get; } = new object();
+    public Func<Exception, bool> ShouldAbortSubStepExecution { get; private set; } = _ => true;
+    public IDependencyContainer DependencyContainer => _scenarioScope ?? throw new InvalidOperationException("Scenario not running");
+    public IDependencyResolver DependencyResolver => _scenarioScope ?? Engine.DependencyContainer;
+    public object Context => Fixture;
     public object Fixture => _fixtureManager.Fixture ?? throw new InvalidOperationException("Fixture not initialized");
+    public EngineContext Engine { get; }
+    IMetadataInfo IRunStageContext.Info => Info;
 
-    public RunnableScenarioV2(IntegrationContext integration, IScenarioInfo info, IEnumerable<IScenarioDecorator> decorators, ScenarioEntryMethod entryMethod)
+    public RunnableScenarioV2(EngineContext engine, IScenarioInfo info, IEnumerable<IScenarioDecorator> decorators, ScenarioEntryMethod entryMethod)
     {
-        _integration = integration;
+        Engine = engine;
         _entryMethod = entryMethod;
         _result = new ScenarioResult(info);
         _decoratedMethod = DecoratingExecutor.DecorateScenario(this, () => AsyncStepSynchronizationContext.Execute(RunScenarioCore), decorators);
@@ -38,26 +41,26 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario
 
     public async Task<IScenarioResult> RunAsync()
     {
-        var startTime = _integration.ExecutionTimer.GetTime();
-        _scenarioScope = _integration.DependencyContainer.BeginScope(LifetimeScope.Scenario);
+        var startTime = Engine.ExecutionTimer.GetTime();
+        _scenarioScope = Engine.DependencyContainer.BeginScope(LifetimeScope.Scenario);
         try
         {
             SetScenarioContext();
-            _integration.ProgressNotifier.Notify(new ScenarioStarting(startTime, Result.Info));
+            Engine.ProgressNotifier.Notify(new ScenarioStarting(startTime, Result.Info));
             await _fixtureManager.InitializeAsync(_result.Info.Parent.FeatureType);
             await _decoratedMethod.Invoke();
             _result.UpdateScenarioResultV2(ExecutionStatus.Passed);
         }
         catch (Exception ex)
         {
-            ExceptionProcessor.UpdateStatus(_result.UpdateScenarioResultV2, ex, _integration.Configuration);
+            ExceptionProcessor.UpdateStatus(_result.UpdateScenarioResultV2, ex, Engine.Configuration);
         }
 
         ResetScenarioContext();
         await CleanupScenario();
-        var endTime = _integration.ExecutionTimer.GetTime();
-        _result.UpdateResult(Array.Empty<IStepResult>(), endTime.GetExecutionTime(startTime));
-        _integration.ProgressNotifier.Notify(new ScenarioFinished(endTime, Result));
+        var endTime = Engine.ExecutionTimer.GetTime();
+        _result.UpdateTime(endTime.GetExecutionTime(startTime));
+        Engine.ProgressNotifier.Notify(new ScenarioFinished(endTime, Result));
         return Result;
     }
 
@@ -79,7 +82,7 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario
         collector.Capture(DisposeScenarioScope);
         var exception = collector.Collect();
         if (exception != null)
-            ExceptionProcessor.UpdateStatus(_result.UpdateScenarioResultV2, exception, _integration.Configuration);
+            ExceptionProcessor.UpdateStatus(_result.UpdateScenarioResultV2, exception, Engine.Configuration);
     }
 
     private void DisposeScenarioScope()
@@ -97,11 +100,21 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario
 
     public void ConfigureExecutionAbortOnSubStepException(Func<Exception, bool> shouldAbortExecutionFn)
     {
-
+        ShouldAbortSubStepExecution = shouldAbortExecutionFn;
     }
 
     private async Task RunScenarioCore()
     {
-        await _entryMethod.Invoke(Fixture, null!);
+        var stepsRunner = new ScenarioStepsRunner(this);
+        ScenarioExecutionContext.Current.Get<CurrentScenarioProperty>().StepsRunner = stepsRunner;
+        try
+        {
+            await _entryMethod.Invoke(Fixture, stepsRunner);
+        }
+        finally
+        {
+            ScenarioExecutionContext.Current.Get<CurrentScenarioProperty>().StepsRunner = null;
+            _result.UpdateResults(stepsRunner.GetResults());
+        }
     }
 }

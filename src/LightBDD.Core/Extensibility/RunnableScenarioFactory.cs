@@ -9,13 +9,13 @@ namespace LightBDD.Core.Extensibility
     /// </summary>
     public class RunnableScenarioFactory
     {
-        private readonly IntegrationContext _context;
+        private readonly EngineContext _context;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="context">Integration context</param>
-        public RunnableScenarioFactory(IntegrationContext context)
+        public RunnableScenarioFactory(EngineContext context)
         {
             _context = context;
         }

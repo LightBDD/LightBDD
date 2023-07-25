@@ -19,7 +19,7 @@ public class RunnableScenario_scenario_context_tests
     public async Task It_should_expose_scenario_context_for_scenario_method()
     {
         IScenarioInfo capturedInfo = null;
-        Task ScenarioMethod(ICoreScenarioBuilderV2 _)
+        Task ScenarioMethod(ICoreScenarioStepsRunner _)
         {
             var current = ScenarioExecutionContext.CurrentScenario;
             current.ShouldNotBeNull();
