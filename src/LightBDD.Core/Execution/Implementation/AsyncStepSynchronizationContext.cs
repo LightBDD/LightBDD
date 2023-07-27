@@ -132,5 +132,25 @@ namespace LightBDD.Core.Execution.Implementation
 
             await ctx.CompleteAsync();
         }
+
+        public static async Task<T> Execute<T>(Func<Task<T>> action)
+        {
+            var ctx = InstallNew();
+            try
+            {
+                return await action();
+            }
+            catch (Exception ex)
+            {
+                ctx._exceptions.Enqueue(ex);
+            }
+            finally
+            {
+                await ctx.CompleteAsync();
+            }
+
+            //unreachable as CompleteAsync would throw here
+            return default;
+        }
     }
 }

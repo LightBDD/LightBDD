@@ -63,7 +63,7 @@ internal class StepGroupRunner : ICoreScenarioStepsRunner
             throw new InvalidOperationException("Step group initialization failed.");
     }
 
-    private object CreateExecutionContext()
+    private object? CreateExecutionContext()
     {
         try
         {

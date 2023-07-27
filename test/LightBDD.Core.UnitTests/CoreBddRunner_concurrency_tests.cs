@@ -10,6 +10,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests
 {
     [TestFixture]
+    //not required
     public class CoreBddRunner_concurrency_tests : Steps
     {
         private readonly int _elementsCount = 1500;

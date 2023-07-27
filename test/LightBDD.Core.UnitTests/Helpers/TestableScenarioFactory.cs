@@ -6,7 +6,6 @@ using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Metadata;
 using LightBDD.UnitTests.Helpers;
-using LightBDD.UnitTests.Helpers.TestableIntegration;
 
 namespace LightBDD.Core.UnitTests.Helpers;
 

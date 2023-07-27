@@ -13,6 +13,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests
 {
     [TestFixture]
+    //migrated
     public class CoreBddRunner_asynchronous_step_execution_tests : Steps
     {
         private IBddRunner _runner;

@@ -18,6 +18,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests
 {
     [TestFixture]
+    //migrated
     public class CoreBddRunner_complex_parameter_step_execution_tests : Steps
     {
         private const string ExpectedText = "expected";

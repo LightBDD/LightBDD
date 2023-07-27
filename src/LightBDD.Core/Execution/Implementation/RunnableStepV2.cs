@@ -97,17 +97,16 @@ internal class RunnableStepV2 : IStep, IRunStageContext
             _result.SetSubSteps(stepGroupRunner.GetResults());
         }
     }
-    
+
     private async Task RunStepAsync()
     {
         IStepResultDescriptor result;
-        var ctx = AsyncStepSynchronizationContext.InstallNew();
         try
         {
             var args = PrepareArguments();
             try
             {
-                result = await _invocation.Invoke(Context, args);
+                result = await AsyncStepSynchronizationContext.Execute(() => _invocation.Invoke(Context, args));
             }
             finally
             {
@@ -125,8 +124,6 @@ internal class RunnableStepV2 : IStep, IRunStageContext
         finally
         {
             UpdateNameDetails();
-            ctx.RestoreOriginal();
-            await ctx.WaitForTasksAsync();
         }
 
         await InvokeSubStepsAsync(result);
