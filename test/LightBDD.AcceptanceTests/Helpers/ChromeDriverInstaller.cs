@@ -70,13 +70,34 @@ namespace LightBDD.AcceptanceTests.Helpers
 
         private async Task<string> GetChromeDriverDownloadUrl(string chromeVersion, CancellationToken cancellationToken)
         {
+            var expectedVersion = Version.Parse(chromeVersion);
+            var url = expectedVersion.Major >= 115
+                ? await GetChromeUrlFromNewRepo(chromeVersion, cancellationToken)
+                : await GetChromeUrlFromOldRepo(chromeVersion, cancellationToken);
+
+            return url ?? throw new Exception($"ChromeDriver version not found for Chrome version {chromeVersion}");
+        }
+
+        private async Task<string> GetChromeUrlFromNewRepo(string chromeVersion, CancellationToken cancellationToken)
+        {
             var versions = await _httpClient.GetFromJsonAsync<ChromeVersions>("https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json", cancellationToken);
             var matchPattern = $"{chromeVersion}.";
             var version = versions.Versions.Where(v => v.Version.StartsWith(matchPattern)).MaxBy(v => Version.Parse(v.Version));
+
             if (version != null && version.Downloads.TryGetValue("chromedriver", out var urls))
                 return urls.First(u => u.Platform == "win32").Url;
+            return null;
+        }
+        private async Task<string> GetChromeUrlFromOldRepo(string chromeVersion, CancellationToken cancellationToken)
+        {
+            var baseUrl = "https://chromedriver.storage.googleapis.com";
+            var chromeDriverVersionResponse = await _httpClient.GetAsync($"{baseUrl}/LATEST_RELEASE_{chromeVersion}", cancellationToken);
+            if (chromeDriverVersionResponse.IsSuccessStatusCode)
+                return $"{baseUrl}/{await chromeDriverVersionResponse.Content.ReadAsStringAsync(cancellationToken)}/chromedriver_win32.zip";
 
-            throw new Exception($"ChromeDriver version not found for Chrome version {chromeVersion}");
+            if (chromeDriverVersionResponse.StatusCode == HttpStatusCode.NotFound)
+                throw new Exception($"ChromeDriver version not found for Chrome version {chromeVersion}");
+            throw new Exception($"ChromeDriver version request failed with status code: {chromeDriverVersionResponse.StatusCode}, reason phrase: {chromeDriverVersionResponse.ReasonPhrase}");
         }
 
         private static string GetChromeVersion()
