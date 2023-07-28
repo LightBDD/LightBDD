@@ -186,7 +186,7 @@ namespace LightBDD.Core.Execution
                 if (ctx.CancellationToken.IsCancellationRequested)
                     return ScenarioResult.CreateIgnored(scenarioInfo, "Execution aborted");
 
-                fixture = CreateInstance(scenario.FeatureFixtureType);
+                fixture = ctx.Configuration.ExecutionExtensionsConfiguration().FixtureFactory.Create(scenario.FeatureFixtureType);
                 TestContextProvider.Initialize(scenario.ScenarioMethod, scenario.ScenarioArguments);
                 ScenarioBuilderContext.SetCurrent(new ScenarioBuilder(featureInfo, fixture, ctx.Integration, ctx.ExceptionProcessor, x => scenarioResult = x)
                     .WithScenarioDetails(scenarioInfo));
@@ -238,11 +238,6 @@ namespace LightBDD.Core.Execution
                 ctx.MetadataProvider.GetScenarioLabels(scenario.ScenarioMethod),
                 ctx.MetadataProvider.GetScenarioCategories(scenario.ScenarioMethod),
                 scenario.RuntimeId);
-        }
-
-        private object CreateInstance(TypeInfo featureFixtureType)
-        {
-            return Activator.CreateInstance(featureFixtureType) ?? throw new InvalidOperationException($"Failed to create instance of {featureFixtureType}");
         }
 
         private IEnumerable<ScenarioCase> ExpandParameterizedScenarios(ScenarioCase scenarioCase, Context ctx)

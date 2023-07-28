@@ -14,12 +14,12 @@ namespace LightBDD.Core.UnitTests.Execution;
 
 [TestFixture]
 [FixtureLifeCycle(LifeCycle.InstancePerTestCase)]
-public class RunnableScenario_execution_fixture_setup_and_teardown_tests
+public class RunnableScenario_fixture_setup_and_teardown_tests
 {
     private readonly Fixture _fixture = new();
     private readonly TestableScenarioFactory _factory;
 
-    public RunnableScenario_execution_fixture_setup_and_teardown_tests()
+    public RunnableScenario_fixture_setup_and_teardown_tests()
     {
         _factory = TestableScenarioFactory.Create(cfg => cfg.ExecutionExtensionsConfiguration().RegisterFixtureFactory(new FakeFixtureFactory(_fixture)));
     }
@@ -109,18 +109,6 @@ public class RunnableScenario_execution_fixture_setup_and_teardown_tests
         {
             throw new IOException("IO");
         }
-    }
-
-    class FakeFixtureFactory : IFixtureFactory
-    {
-        private readonly Fixture _fixture;
-
-        public FakeFixtureFactory(Fixture fixture)
-        {
-            _fixture = fixture;
-        }
-
-        public object Create(Type fixtureType) => _fixture;
     }
 }
 

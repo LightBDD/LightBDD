@@ -11,6 +11,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests;
 
 [TestFixture]
+//migrated
 public class CoreBddRunner_execution_extension_setup_and_teardown_tests
 {
     private IFeatureRunner _feature;

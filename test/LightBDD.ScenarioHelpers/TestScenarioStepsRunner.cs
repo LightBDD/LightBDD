@@ -40,20 +40,14 @@ public class TestScenarioStepsRunner
             return _coreBuilder.WithContext(_contextDescriptor);
         return _coreBuilder;
     }
-    public async Task TestScenario(params Action[] steps)
-    {
-        await TestScenario(steps.Select(TestStep.CreateAsync).ToArray());
-    }
+    public Task TestScenario(params Action[] steps) 
+        => TestScenario(steps.Select(TestStep.CreateAsync).ToArray());
 
-    public Task TestScenario(params Func<Task>[] steps)
-    {
-        return TestScenario(steps.Select(TestStep.Create).ToArray());
-    }
+    public Task TestScenario(params Func<Task>[] steps) 
+        => TestScenario(steps.Select(TestStep.Create).ToArray());
 
-    public async Task TestGroupScenario(params Func<TestCompositeStep>[] steps)
-    {
-        await TestScenario(steps.Select(TestStep.CreateComposite).ToArray());
-    }
+    public Task TestGroupScenario(params Func<TestCompositeStep>[] steps) 
+        => TestScenario(steps.Select(TestStep.CreateComposite).ToArray());
 
     public TestScenarioStepsRunner WithContext(Func<object> contextProvider, bool takeOwnership)
     {
