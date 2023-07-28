@@ -19,7 +19,7 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario, IRunStageCon
     private readonly ScenarioEntryMethod _entryMethod;
     private readonly Func<Task> _decoratedMethod;
     private readonly ScenarioResult _result;
-    private readonly FixtureManager _fixtureManager = new();
+    private readonly FixtureManager _fixtureManager;
     private IDependencyContainer? _scenarioScope;
     public IScenarioResult Result => _result;
     public IScenarioInfo Info => Result.Info;
@@ -34,6 +34,7 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario, IRunStageCon
     public RunnableScenarioV2(EngineContext engine, IScenarioInfo info, IEnumerable<IScenarioDecorator> decorators, ScenarioEntryMethod entryMethod)
     {
         Engine = engine;
+        _fixtureManager = new(engine.FixtureFactory);
         _entryMethod = entryMethod;
         _result = new ScenarioResult(info);
         _decoratedMethod = DecoratingExecutor.DecorateScenario(this, () => AsyncStepSynchronizationContext.Execute(RunScenarioCore), decorators);

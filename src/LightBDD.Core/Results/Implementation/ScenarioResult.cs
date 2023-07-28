@@ -84,7 +84,12 @@ namespace LightBDD.Core.Results.Implementation
             Status = status;
             ExecutionException = executionException;
             if (!string.IsNullOrWhiteSpace(details))
-                StatusDetails = $"Scenario {Status}: {details!.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t")}";
+            {
+                var formattedDetails = $"Scenario {Status}: {details!.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t")}";
+                StatusDetails = string.IsNullOrWhiteSpace(StatusDetails)
+                    ? formattedDetails
+                    : $"{formattedDetails}{Environment.NewLine}{StatusDetails}";
+            }
         }
 
         public static ScenarioResult CreateFailed(IScenarioInfo scenarioInfo, Exception ex)

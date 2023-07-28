@@ -33,6 +33,13 @@ internal class TestableScenarioFactory
         return CreateBuilder(featureInfo).WithScenarioEntryMethod((_, runner) => entryMethod.Invoke(runner)).Build();
     }
 
+    public IRunnableScenarioV2 CreateScenario<TFixture>(Func<TFixture, ICoreScenarioStepsRunner, Task> entryMethod)
+    {
+        var featureInfo = Fake.Object<TestResults.TestFeatureInfo>();
+        featureInfo.FeatureType = typeof(TFixture);
+        return CreateBuilder(featureInfo).WithScenarioEntryMethod((fixture, runner) => entryMethod.Invoke((TFixture)fixture, runner)).Build();
+    }
+
     public static TestableScenarioFactory Create(Action<LightBddConfiguration>? onConfigure = null)
     {
         LightBddConfiguration cfg = new();

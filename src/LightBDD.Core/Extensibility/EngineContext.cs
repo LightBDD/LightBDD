@@ -6,6 +6,7 @@ using LightBDD.Core.Execution;
 using LightBDD.Core.Notification;
 using System.Reflection;
 using LightBDD.Core.Extensibility.Execution;
+using LightBDD.Core.Extensibility.Implementation;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Reporting;
@@ -38,7 +39,6 @@ public class EngineContext
     internal IExecutionExtensions ExecutionExtensions => Configuration.ExecutionExtensionsConfiguration();
     internal IDependencyContainer DependencyContainer => Configuration.DependencyContainerConfiguration().DependencyContainer;
     internal ValueFormattingService ValueFormattingService => MetadataProvider.ValueFormattingService;
-    internal IProgressNotifier GetProgressNotifier() => Configuration.Get<ProgressNotifierConfiguration>().Notifier;
     internal IFileAttachmentsManager FileAttachmentsManager => Configuration.ReportConfiguration().GetFileAttachmentsManager();
-
+    internal IFixtureFactory FixtureFactory => Configuration.ExecutionExtensionsConfiguration().FixtureFactory;
 }

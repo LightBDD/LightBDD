@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Execution.Implementation.GlobalSetUp;
+using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
+using LightBDD.Core.Extensibility.Implementation;
 
 namespace LightBDD.Core.Configuration
 {
@@ -17,6 +19,7 @@ namespace LightBDD.Core.Configuration
 
         private readonly List<IScenarioDecorator> _scenarioExtensions = new();
         private readonly List<IStepDecorator> _stepExtensions = new();
+        private IFixtureFactory _fixtureFactory = ActivatorFixtureFactory.Instance;
 
         /// <summary>
         /// Collection of scenario execution extensions.
@@ -26,6 +29,11 @@ namespace LightBDD.Core.Configuration
         /// Collection of step execution extensions.
         /// </summary>
         public IEnumerable<IStepDecorator> StepDecorators => _stepExtensions;
+
+        /// <summary>
+        /// Fixture factory.
+        /// </summary>
+        public IFixtureFactory FixtureFactory => _fixtureFactory;
 
         /// <summary>
         /// Enables scenario decorator of specified type.
@@ -98,6 +106,7 @@ namespace LightBDD.Core.Configuration
         /// The <typeparamref name="TDependency" /> instance is resolved from DI container. Please note that it is resolved independently for set up and tear down methods, thus needs to be registered as singleton or scoped if the same instance is expected by both methods.
         /// </summary>
         /// <typeparam name="TDependency">Dependency type, that is registered in the DI container.</typeparam>
+        /// <returns>Self.</returns>
         public ExecutionExtensionsConfiguration RegisterGlobalSetUp<TDependency>() where TDependency : IGlobalResourceSetUp
         {
             ThrowIfSealed();
@@ -113,7 +122,7 @@ namespace LightBDD.Core.Configuration
         /// <param name="activityName">Name of the set up activity</param>
         /// <param name="setUp">Set up method</param>
         /// <param name="tearDown">Tear down method</param>
-        /// <returns></returns>
+        /// <returns>Self.</returns>
         public ExecutionExtensionsConfiguration RegisterGlobalSetUp(string activityName, Func<Task> setUp, Func<Task> tearDown = null)
         {
             ThrowIfSealed();
@@ -129,7 +138,7 @@ namespace LightBDD.Core.Configuration
         /// <param name="activityName">Name of the set up activity</param>
         /// <param name="setUp">Set up method</param>
         /// <param name="tearDown">Tear down method</param>
-        /// <returns></returns>
+        /// <returns>Self.</returns>
         public ExecutionExtensionsConfiguration RegisterGlobalSetUp(string activityName, Action setUp, Action tearDown = null)
         {
             ThrowIfSealed();
@@ -157,7 +166,7 @@ namespace LightBDD.Core.Configuration
         /// </summary>
         /// <param name="activityName">Name of the tear down activity</param>
         /// <param name="tearDown">Tear down method</param>
-        /// <returns></returns>
+        /// <returns>Self.</returns>
         public ExecutionExtensionsConfiguration RegisterGlobalTearDown(string activityName, Func<Task> tearDown)
         {
             ThrowIfSealed();
@@ -173,7 +182,7 @@ namespace LightBDD.Core.Configuration
         /// </summary>
         /// <param name="activityName">Name of the tear down activity</param>
         /// <param name="tearDown">Tear down method</param>
-        /// <returns></returns>
+        /// <returns>Self.</returns>
         public ExecutionExtensionsConfiguration RegisterGlobalTearDown(string activityName, Action tearDown)
         {
             ThrowIfSealed();
@@ -188,6 +197,19 @@ namespace LightBDD.Core.Configuration
                     return Task.CompletedTask;
                 });
 
+            return this;
+        }
+
+        /// <summary>
+        /// Registers fixture factory
+        /// </summary>
+        /// <param name="fixtureFactory">Fixture factory</param>
+        /// <returns>Self.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public ExecutionExtensionsConfiguration RegisterFixtureFactory(IFixtureFactory fixtureFactory)
+        {
+            ThrowIfSealed();
+            _fixtureFactory = fixtureFactory ?? throw new ArgumentNullException(nameof(fixtureFactory));
             return this;
         }
     }
