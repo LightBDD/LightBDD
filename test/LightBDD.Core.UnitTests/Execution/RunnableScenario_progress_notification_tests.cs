@@ -30,8 +30,7 @@ public class RunnableScenario_progress_notification_tests
         void OnConfigure(LightBddConfiguration cfg) => cfg.ProgressNotifierConfiguration().Append(capturingNotifier);
 
         var result = await TestableScenarioFactory.Create(OnConfigure)
-            .CreateScenario(ScenarioMethod)
-            .RunAsync();
+            .RunScenario(ScenarioMethod);
 
         capturingNotifier.Events.Select(e => e.GetType().Name).ShouldBe(new[]
         {

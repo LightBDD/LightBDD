@@ -29,13 +29,12 @@ namespace LightBDD.Core.UnitTests.Execution
         [Test]
         public async Task Runner_should_capture_complex_parameter_results()
         {
-            var scenarioResult = await TestableScenarioFactory.Default.CreateScenario(runner => runner.Test()
+            var scenarioResult = await TestableScenarioFactory.Default.RunScenario(runner => runner.Test()
                     .TestScenario(
                         TestStep.CreateAsync(Step_with_parameters,
                             Complex.Failed(),
                             Complex.NotProvided(),
-                            Complex.Exception())))
-                .RunAsync();
+                            Complex.Exception())));
 
             scenarioResult.Status.ShouldBe(ExecutionStatus.Failed);
 
@@ -52,14 +51,13 @@ namespace LightBDD.Core.UnitTests.Execution
         [TestCase(ParameterVerificationStatus.NotProvided)]
         public async Task Runner_should_fail_step_with_non_successful_parameters(ParameterVerificationStatus status)
         {
-            var scenarioResult = await TestableScenarioFactory.Default.CreateScenario(runner => runner.Test()
+            var scenarioResult = await TestableScenarioFactory.Default.RunScenario(runner => runner.Test()
                     .TestScenario(
                         TestStep.CreateAsync(Step_with_parameters,
                             new Complex(null, null, status, "msg1"),
                             new Complex(null, null, ParameterVerificationStatus.Success, "msg2"),
                             new Complex(null, null, status, "msg3")
-                        )))
-                .RunAsync();
+                        )));
 
             scenarioResult.Status.ShouldBe(ExecutionStatus.Failed);
             scenarioResult.ExecutionException.ShouldBeOfType<InvalidOperationException>()
@@ -73,12 +71,11 @@ namespace LightBDD.Core.UnitTests.Execution
         [Test]
         public async Task Runner_should_honor_ignored_steps()
         {
-            var scenarioResult = await TestableScenarioFactory.Default.CreateScenario(runner => runner.Test()
+            var scenarioResult = await TestableScenarioFactory.Default.RunScenario(runner => runner.Test()
                     .TestScenario(
                         TestStep.CreateAsync(Ignored_step_with_parameter,
                             new Complex(null, null, ParameterVerificationStatus.Failure, "msg")
-                        )))
-                .RunAsync();
+                        )));
 
             Assert.That(scenarioResult.GetSteps().Single().Status, Is.EqualTo(ExecutionStatus.Ignored));
         }
@@ -86,12 +83,11 @@ namespace LightBDD.Core.UnitTests.Execution
         [Test]
         public async Task Runner_should_honor_bypassed_steps()
         {
-            var scenarioResult = await TestableScenarioFactory.Default.CreateScenario(runner => runner.Test()
+            var scenarioResult = await TestableScenarioFactory.Default.RunScenario(runner => runner.Test()
                     .TestScenario(
                         TestStep.CreateAsync(Bypassed_step_with_parameter,
                             new Complex(null, null, ParameterVerificationStatus.Failure, "msg")
-                        )))
-                .RunAsync();
+                        )));
 
             Assert.That(scenarioResult.GetSteps().Single().Status, Is.EqualTo(ExecutionStatus.Bypassed));
         }
@@ -99,12 +95,11 @@ namespace LightBDD.Core.UnitTests.Execution
         [Test]
         public async Task Runner_should_process_failed_steps_first()
         {
-            var scenarioResult = await TestableScenarioFactory.Default.CreateScenario(runner => runner.Test()
+            var scenarioResult = await TestableScenarioFactory.Default.RunScenario(runner => runner.Test()
                     .TestScenario(
                         TestStep.CreateAsync(Failed_step_with_parameter,
                             new Complex(null, null, ParameterVerificationStatus.Failure, "msg")
-                        )))
-                .RunAsync();
+                        )));
 
             var result = scenarioResult.GetSteps().Single();
             Assert.That(result.Status, Is.EqualTo(ExecutionStatus.Failed));
@@ -114,12 +109,11 @@ namespace LightBDD.Core.UnitTests.Execution
         [Test]
         public async Task Runner_should_include_complex_parameters_for_failed_steps()
         {
-            var scenarioResult = await TestableScenarioFactory.Default.CreateScenario(runner => runner.Test()
+            var scenarioResult = await TestableScenarioFactory.Default.RunScenario(runner => runner.Test()
                     .TestScenario(
                         TestStep.CreateAsync(Failed_step_with_parameter,
                             new Complex(null, null, ParameterVerificationStatus.Failure, "msg")
-                        )))
-                .RunAsync();
+                        )));
 
             var result = scenarioResult.GetSteps().Single();
             var parameter = result.Parameters.SingleOrDefault();

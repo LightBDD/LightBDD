@@ -22,12 +22,11 @@ namespace LightBDD.Core.UnitTests.Execution
         [Test]
         public async Task Runner_should_execute_composite_steps_with_own_context_objects()
         {
-            await TestableScenarioFactory.Default.CreateScenario(r =>
+            await TestableScenarioFactory.Default.RunScenario(r =>
                     r.Test().TestGroupScenario(
                         StepGroupWithContext1,
                         StepGroupWithContext2,
-                        StepGroupWithoutContext))
-                .RunAsync();
+                        StepGroupWithoutContext));
 
             var stepGroups = _capturedSteps.GroupBy(x => x.context).ToArray();
             Assert.That(stepGroups.Length, Is.EqualTo(3), "There should be 3 different contexts");
@@ -49,8 +48,7 @@ namespace LightBDD.Core.UnitTests.Execution
         public async Task Runner_should_instantiate_context_just_before_run_so_its_failure_would_be_included_in_results()
         {
             var scenario = await TestableScenarioFactory.Default
-                .CreateScenario(r => r.Test().TestGroupScenario(StepGroupWithInvalidContext))
-                .RunAsync();
+                .RunScenario(r => r.Test().TestGroupScenario(StepGroupWithInvalidContext));
 
             Assert.That(scenario.Status, Is.EqualTo(ExecutionStatus.Failed));
             Assert.That(scenario.StatusDetails, Is.EqualTo("Step 1 Failed: System.InvalidOperationException: Step group context initialization failed: abc"));
@@ -69,8 +67,7 @@ namespace LightBDD.Core.UnitTests.Execution
             }
 
             await TestableScenarioFactory.Default
-                .CreateScenario(r => r.Test().TestGroupScenario(StepGroupWithDisposable))
-                .RunAsync();
+                .RunScenario(r => r.Test().TestGroupScenario(StepGroupWithDisposable));
             Mock.Get(context).Verify(x => x.Dispose(), Times.Exactly(shouldDispose ? 1 : 0));
         }
 
@@ -93,8 +90,7 @@ namespace LightBDD.Core.UnitTests.Execution
             }
 
             await TestableScenarioFactory.Default
-                .CreateScenario(r => r.Test().TestGroupScenario(StepGroupWithDisposable))
-                .RunAsync();
+                .RunScenario(r => r.Test().TestGroupScenario(StepGroupWithDisposable));
 
             Mock.Get(context).Verify(x => x.Dispose(), Times.Once);
         }
@@ -112,8 +108,7 @@ namespace LightBDD.Core.UnitTests.Execution
             }
 
             var scenario = await TestableScenarioFactory.Default
-                .CreateScenario(r => r.Test().TestGroupScenario(StepGroupWithDisposable))
-                .RunAsync();
+                .RunScenario(r => r.Test().TestGroupScenario(StepGroupWithDisposable));
 
             var ex = scenario.ExecutionException.ShouldBeOfType<InvalidOperationException>();
             Assert.That(ex.Message, Is.EqualTo($"Failed to dispose dependency 'ContextWrapper': Failed to dispose context '{context.GetType().Name}': foo"));
@@ -136,8 +131,7 @@ namespace LightBDD.Core.UnitTests.Execution
             }
 
             var scenario = await TestableScenarioFactory.Default
-                .CreateScenario(r => r.Test().TestGroupScenario(StepGroupWithDisposable))
-                .RunAsync();
+                .RunScenario(r => r.Test().TestGroupScenario(StepGroupWithDisposable));
 
             var ex = scenario.ExecutionException.ShouldBeOfType<AggregateException>();
             Assert.That(ex.InnerExceptions.Select(x => $"{x.GetType().Name}|{x.Message}").ToArray(),

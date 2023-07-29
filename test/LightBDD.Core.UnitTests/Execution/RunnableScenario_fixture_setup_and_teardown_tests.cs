@@ -28,8 +28,7 @@ public class RunnableScenario_fixture_setup_and_teardown_tests
     [Test]
     public async Task Runner_should_call_OnScenarioSetUp_and_OnScenarioTearDown_when_provided()
     {
-        await _factory.CreateScenario<Fixture>((fixture, runner) => runner.Test().TestScenario(fixture.Pass))
-            .RunAsync();
+        await _factory.RunScenario<Fixture>((fixture, runner) => runner.Test().TestScenario(fixture.Pass));
 
         Assert.NotNull(_fixture);
         Assert.That(_fixture.SetUpCalled, Is.True);
@@ -39,8 +38,7 @@ public class RunnableScenario_fixture_setup_and_teardown_tests
     [Test]
     public async Task Runner_should_call_OnScenarioTearDown_on_step_failure()
     {
-        await _factory.CreateScenario<Fixture>((fixture, runner) => runner.Test().TestScenario(fixture.Fail))
-            .RunAsync();
+        await _factory.RunScenario<Fixture>((fixture, runner) => runner.Test().TestScenario(fixture.Fail));
 
         Assert.NotNull(_fixture);
         Assert.That(_fixture.SetUpCalled, Is.True);
@@ -51,8 +49,7 @@ public class RunnableScenario_fixture_setup_and_teardown_tests
     public async Task Runner_should_call_OnScenarioTearDown_on_SetUp_failure_and_propagate_SetUp_exception_without_calling_steps()
     {
         _fixture.ThrowOnSetUp = true;
-        var result = await _factory.CreateScenario<Fixture>((fixture, runner) => runner.Test().TestScenario(fixture.Pass))
-            .RunAsync();
+        var result = await _factory.RunScenario<Fixture>((fixture, runner) => runner.Test().TestScenario(fixture.Pass));
 
         Assert.NotNull(_fixture);
         Assert.That(_fixture.SetUpCalled, Is.True);
@@ -66,8 +63,7 @@ public class RunnableScenario_fixture_setup_and_teardown_tests
     public async Task Runner_should_propagate_steps_and_TearDown_exceptions()
     {
         _fixture.ThrowOnTearDown = true;
-        var result = await _factory.CreateScenario<Fixture>((fixture, runner) => runner.Test().TestScenario(fixture.Fail))
-            .RunAsync();
+        var result = await _factory.RunScenario<Fixture>((fixture, runner) => runner.Test().TestScenario(fixture.Fail));
 
         Assert.NotNull(_fixture);
         Assert.That(_fixture.SetUpCalled, Is.True);

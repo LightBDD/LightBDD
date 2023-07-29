@@ -29,7 +29,7 @@ public class RunnableScenario_execution_flow_async_void_support_tests
             return Task.CompletedTask;
         }
 
-        var result = await TestableScenarioFactory.Default.CreateScenario(EntryMethod).RunAsync();
+        var result = await TestableScenarioFactory.Default.RunScenario(EntryMethod);
 
         finished.ShouldBe(true);
         result.Status.ShouldBe(ExecutionStatus.Passed);
@@ -50,7 +50,7 @@ public class RunnableScenario_execution_flow_async_void_support_tests
             return Task.CompletedTask;
         }
 
-        var result = await TestableScenarioFactory.Default.CreateScenario(EntryMethod).RunAsync();
+        var result = await TestableScenarioFactory.Default.RunScenario(EntryMethod);
         result.Status.ShouldBe(ExecutionStatus.Failed);
         var ex = result.ExecutionException.ShouldBeOfType<InvalidOperationException>();
 
@@ -74,7 +74,7 @@ public class RunnableScenario_execution_flow_async_void_support_tests
             throw new InvalidOperationException("test2");
         }
 
-        var result = await TestableScenarioFactory.Default.CreateScenario(EntryMethod).RunAsync();
+        var result = await TestableScenarioFactory.Default.RunScenario(EntryMethod);
         result.Status.ShouldBe(ExecutionStatus.Failed);
         var ex = result.ExecutionException.ShouldBeOfType<AggregateException>();
 

@@ -19,8 +19,7 @@ namespace LightBDD.Core.UnitTests.Execution
         public async Task Runner_should_capture_details_about_sub_step_initialization_failure()
         {
             var scenario = await TestableScenarioFactory.Default
-                .CreateScenario(r => r.Test().TestGroupScenario(Incorrect_step_group))
-                .RunAsync();
+                .RunScenario(r => r.Test().TestGroupScenario(Incorrect_step_group));
 
             StepResultExpectation.AssertEqual(scenario.GetSteps(),
                 new StepResultExpectation(1, 1, nameof(Incorrect_step_group), ExecutionStatus.Failed, "Step 1 Failed: System.InvalidOperationException: Step group initialization failed: abc"));
@@ -42,8 +41,7 @@ namespace LightBDD.Core.UnitTests.Execution
         public async Task Runner_should_execute_all_steps_within_group()
         {
             var scenario = await TestableScenarioFactory.Default
-                .CreateScenario(r => r.Test().TestGroupScenario(Passing_step_group))
-                .RunAsync();
+                .RunScenario(r => r.Test().TestGroupScenario(Passing_step_group));
             var steps = scenario.GetSteps().ToArray();
 
             StepResultExpectation.AssertEqual(steps,
@@ -60,8 +58,7 @@ namespace LightBDD.Core.UnitTests.Execution
         public async Task Runner_should_mark_step_failed_if_substep_fails()
         {
             var scenario = await TestableScenarioFactory.Default
-                .CreateScenario(r => r.Test().TestGroupScenario(Failing_step_group))
-                .RunAsync();
+                .RunScenario(r => r.Test().TestGroupScenario(Failing_step_group));
 
             var steps = scenario.GetSteps().ToArray();
             StepResultExpectation.AssertEqual(steps,
@@ -78,8 +75,7 @@ namespace LightBDD.Core.UnitTests.Execution
         public async Task Runner_should_mark_step_ignored_if_substep_is_ignored()
         {
             var scenario = await TestableScenarioFactory.Default
-                .CreateScenario(r => r.Test().TestGroupScenario(Ignored_step_group))
-                .RunAsync();
+                .RunScenario(r => r.Test().TestGroupScenario(Ignored_step_group));
 
             var steps = scenario.GetSteps().ToArray();
             StepResultExpectation.AssertEqual(steps,
@@ -96,8 +92,7 @@ namespace LightBDD.Core.UnitTests.Execution
         public async Task Runner_should_mark_step_bypassed_if_substep_is_bypassed()
         {
             var scenario = await TestableScenarioFactory.Default
-                .CreateScenario(r => r.Test().TestGroupScenario(Bypassed_step_group))
-                .RunAsync();
+                .RunScenario(r => r.Test().TestGroupScenario(Bypassed_step_group));
 
             var steps = scenario.GetSteps().ToArray();
 
@@ -115,8 +110,7 @@ namespace LightBDD.Core.UnitTests.Execution
         public async Task Runner_should_properly_associate_steps_to_the_group()
         {
             var scenario = await TestableScenarioFactory.Default
-                .CreateScenario(r => r.Test().TestGroupScenario(Passing_step_group, Composite_group))
-                .RunAsync();
+                .RunScenario(r => r.Test().TestGroupScenario(Passing_step_group, Composite_group));
 
             var steps = scenario.GetSteps().ToArray();
             StepResultExpectation.AssertEqual(steps,

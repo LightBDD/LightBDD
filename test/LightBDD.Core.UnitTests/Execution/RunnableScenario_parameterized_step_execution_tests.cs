@@ -1,36 +1,28 @@
-﻿using LightBDD.Framework;
-using LightBDD.Framework.Extensibility;
-using LightBDD.UnitTests.Helpers.TestableIntegration;
-using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.ScenarioHelpers;
+using NUnit.Framework;
+using Shouldly;
 
-namespace LightBDD.Core.UnitTests
+namespace LightBDD.Core.UnitTests.Execution
 {
     [TestFixture]
-    //migrated
-    public class CoreBddRunner_parameterized_step_execution_tests
+    [FixtureLifeCycle(LifeCycle.InstancePerTestCase)]
+    public class RunnableScenario_parameterized_step_execution_tests
     {
-        private IBddRunner _runner;
-        private List<Tuple<string, object>> _executedSteps;
-
-        [SetUp]
-        public void SetUp()
-        {
-            _runner = TestableFeatureRunnerRepository.GetRunner(GetType()).GetBddRunner(this);
-            _executedSteps = new List<Tuple<string, object>>();
-        }
+        private readonly List<Tuple<string, object>> _executedSteps = new();
 
         [Test]
-        public void Runner_should_call_steps_with_parameters()
+        public async Task Runner_should_call_steps_with_parameters()
         {
-            _runner.Test().TestScenario(
+            await TestableScenarioFactory.Default.RunScenario(r => r.Test().TestScenario(
                 TestStep.CreateAsync(Given_step_one, "abc"),
                 TestStep.CreateAsync(When_step_two, 123),
                 TestStep.CreateAsync(Then_step_three, 3.25),
                 TestStep.CreateAsync(Then_another_step, (double?)3.25),
-                TestStep.CreateAsync(Then_another_step, (double?)null));
+                TestStep.CreateAsync(Then_another_step, (double?)null)));
 
             var expected = new[]
             {
@@ -45,13 +37,13 @@ namespace LightBDD.Core.UnitTests
         }
 
         [Test]
-        public void Runner_should_evaluate_step_parameters_once()
+        public async Task Runner_should_evaluate_step_parameters_once()
         {
             var number = 0;
-            _runner.Test().TestScenario(
+            await TestableScenarioFactory.Default.RunScenario(r => r.Test().TestScenario(
                 TestStep.CreateAsync(Given_step_one, () => (++number).ToString()),
                 TestStep.CreateAsync(When_step_two, () => ++number),
-                TestStep.CreateAsync(Then_step_three, () => (double)++number));
+                TestStep.CreateAsync(Then_step_three, () => (double)++number)));
 
             var expected = new[]
             {
@@ -64,16 +56,14 @@ namespace LightBDD.Core.UnitTests
         }
 
         [Test]
-        public void Runner_should_evaluate_step_parameters_just_before_step_execution()
+        public async Task Runner_should_evaluate_step_parameters_just_before_step_execution()
         {
-            var ex = Assert.Throws<Exception>(() =>
-            {
-                _runner.Test().TestScenario(
-                    TestStep.CreateAsync(Given_step_one, () => "def"),
-                    TestStep.CreateAsync<int>(When_step_two, () => throw new Exception("reason")),
-                    TestStep.CreateAsync(Then_step_three, () => 3.14));
-            });
+            var result = await TestableScenarioFactory.Default.RunScenario(r => r.Test().TestScenario(
+                TestStep.CreateAsync(Given_step_one, () => "def"),
+                TestStep.CreateAsync<int>(When_step_two, () => throw new Exception("reason")),
+                TestStep.CreateAsync(Then_step_three, () => 3.14)));
 
+            var ex = result.ExecutionException.ShouldBeOfType<Exception>();
             Assert.That(ex.Message, Is.EqualTo("reason"));
 
             var expected = new[] { Tuple.Create(nameof(Given_step_one), (object)"def") };

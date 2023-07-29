@@ -40,8 +40,7 @@ namespace LightBDD.Core.UnitTests.Execution
         public async Task Runner_should_throw_only_first_ignore_exception_to_be_properly_handled_by_scenario_runner()
         {
             var scenario = await TestableScenarioFactory.Default
-                .CreateScenario(r => r.Test().TestGroupScenario(Multiassert_ignoring_steps))
-                .RunAsync();
+                .RunScenario(r => r.Test().TestGroupScenario(Multiassert_ignoring_steps));
             scenario.Status.ShouldBe(ExecutionStatus.Ignored);
             scenario.ExecutionException.ShouldBeOfType<CustomIgnoreException>();
         }
@@ -70,8 +69,7 @@ namespace LightBDD.Core.UnitTests.Execution
         public async Task Runner_should_throw_original_exception_if_there_is_no_need_to_aggregate_multiple_ones()
         {
             var scenario = await TestableScenarioFactory.Default
-                .CreateScenario(r => r.Test().TestGroupScenario(Multiassert_failing_composite))
-                .RunAsync();
+                .RunScenario(r => r.Test().TestGroupScenario(Multiassert_failing_composite));
 
             var ex = scenario.ExecutionException.ShouldBeOfType<AggregateException>();
             Assert.That(ex.InnerExceptions.Select(x => x.GetType()).ToArray(), Is.EqualTo(new[] { typeof(InvalidOperationException), typeof(InvalidOperationException) }));

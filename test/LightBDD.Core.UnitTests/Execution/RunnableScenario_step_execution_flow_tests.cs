@@ -21,7 +21,7 @@ public class RunnableScenario_step_execution_flow_tests : Steps
             When_step_two,
             Then_step_three);
 
-        var result = await TestableScenarioFactory.Default.CreateScenario(MyScenario).RunAsync();
+        var result = await TestableScenarioFactory.Default.RunScenario(MyScenario);
 
         StepResultExpectation.AssertEqual(result.GetSteps(),
             new(1, 3, nameof(Given_step_one), ExecutionStatus.Passed),
@@ -39,7 +39,7 @@ public class RunnableScenario_step_execution_flow_tests : Steps
             When_step_two_throwing_exception,
             Then_step_three);
 
-        var result = await TestableScenarioFactory.Default.CreateScenario(MyScenario).RunAsync();
+        var result = await TestableScenarioFactory.Default.RunScenario(MyScenario);
 
         StepResultExpectation.AssertEqual(result.GetSteps(),
             new(1, 3, nameof(Given_step_one), ExecutionStatus.Passed),
@@ -61,7 +61,7 @@ public class RunnableScenario_step_execution_flow_tests : Steps
             Then_step_three_should_be_ignored,
             Then_step_four);
 
-        var result = await TestableScenarioFactory.Default.CreateScenario(MyScenario).RunAsync();
+        var result = await TestableScenarioFactory.Default.RunScenario(MyScenario);
 
         StepResultExpectation.AssertEqual(result.GetSteps(),
             new(1, 4, nameof(Given_step_one), ExecutionStatus.Passed),

@@ -26,7 +26,7 @@ public class RunnableScenario_step_execution_async_void_flow_tests
 
         Task MyScenario(ICoreScenarioStepsRunner runner) => runner.Test().TestScenario(AsyncVoid);
 
-        var result = await TestableScenarioFactory.Default.CreateScenario(MyScenario).RunAsync();
+        var result = await TestableScenarioFactory.Default.RunScenario(MyScenario);
         finished.ShouldBe(true);
         result.Status.ShouldBe(ExecutionStatus.Passed);
     }
@@ -42,7 +42,7 @@ public class RunnableScenario_step_execution_async_void_flow_tests
 
         Task MyScenario(ICoreScenarioStepsRunner runner) => runner.Test().TestScenario(DelayAndThrow);
 
-        var result = await TestableScenarioFactory.Default.CreateScenario(MyScenario).RunAsync();
+        var result = await TestableScenarioFactory.Default.RunScenario(MyScenario);
         result.Status.ShouldBe(ExecutionStatus.Failed);
         var ex = result.ExecutionException.ShouldBeOfType<InvalidOperationException>();
 
@@ -68,7 +68,7 @@ public class RunnableScenario_step_execution_async_void_flow_tests
 
         Task MyScenario(ICoreScenarioStepsRunner runner) => runner.Test().TestScenario(AsyncVoidStep);
 
-        var result = await TestableScenarioFactory.Default.CreateScenario(MyScenario).RunAsync();
+        var result = await TestableScenarioFactory.Default.RunScenario(MyScenario);
         result.Status.ShouldBe(ExecutionStatus.Failed);
         var ex = result.ExecutionException.ShouldBeOfType<AggregateException>();
 

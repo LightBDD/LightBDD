@@ -29,7 +29,7 @@ public class RunnableScenario_scenario_context_tests
             current.Context.ShouldNotBeNull();
             return Task.CompletedTask;
         }
-        var result = await TestableScenarioFactory.Default.CreateScenario<MyFixture>(ScenarioMethod).RunAsync();
+        var result = await TestableScenarioFactory.Default.RunScenario<MyFixture>(ScenarioMethod);
         result.StatusDetails.ShouldBeNull();
         result.Status.ShouldBe(ExecutionStatus.Passed);
         capturedInfo.ShouldBe(result.Info);
@@ -47,7 +47,7 @@ public class RunnableScenario_scenario_context_tests
         Disposable1 capturedSingleton = null;
         Disposable2 capturedScoped = null;
         var factory = TestableScenarioFactory.Create(cfg => cfg.DependencyContainerConfiguration().UseDefault(ConfigureDi));
-        await factory.CreateScenario(_ =>
+        await factory.RunScenario(_ =>
         {
             capturedSingleton = ScenarioExecutionContext.CurrentScenario.DependencyResolver.Resolve<Disposable1>();
             capturedScoped = ScenarioExecutionContext.CurrentScenario.DependencyResolver.Resolve<Disposable2>();
@@ -56,7 +56,7 @@ public class RunnableScenario_scenario_context_tests
             capturedScoped.Disposed.ShouldBe(false);
 
             return Task.CompletedTask;
-        }).RunAsync();
+        });
 
         capturedSingleton.Disposed.ShouldBeFalse();
         capturedScoped.Disposed.ShouldBeTrue();
@@ -71,11 +71,11 @@ public class RunnableScenario_scenario_context_tests
         }
 
         var factory = TestableScenarioFactory.Create(cfg => cfg.DependencyContainerConfiguration().UseDefault(ConfigureDi));
-        var result = await factory.CreateScenario(_ =>
+        var result = await factory.RunScenario(_ =>
         {
             ScenarioExecutionContext.CurrentScenario.DependencyResolver.Resolve<FaultyDisposable>();
             return Task.CompletedTask;
-        }).RunAsync();
+        });
 
         result.Status.ShouldBe(ExecutionStatus.Failed);
         result.StatusDetails.ShouldBe("Scenario Failed: System.InvalidOperationException: DI Scope Dispose() failed: Failed to dispose dependency 'FaultyDisposable': I am faulty");

@@ -22,8 +22,7 @@ namespace LightBDD.Core.UnitTests.Execution
             var step2 = StepDescriptor.CreateInvalid(new Exception("reason1"));
             var step3 = StepDescriptor.CreateInvalid(new Exception("reason2"));
             var scenario = await TestableScenarioFactory.Default
-                .CreateScenario(r => r.Test().TestScenario(step1, step2, step3))
-                .RunAsync();
+                .RunScenario(r => r.Test().TestScenario(step1, step2, step3));
 
             //TODO: rework exception collection and handling
             var ex = scenario.ExecutionException.ShouldBeOfType<AggregateException>();
@@ -45,11 +44,10 @@ namespace LightBDD.Core.UnitTests.Execution
                 StepDescriptor.CreateInvalid(new Exception("reason2")));
 
             var scenario = await TestableScenarioFactory.Default
-                .CreateScenario(r => r.Test()
+                .RunScenario(r => r.Test()
                     .TestScenario(
                         TestStep.CreateComposite(Composite_step),
-                        TestStep.Create(Step_that_should_not_run)))
-                .RunAsync();
+                        TestStep.Create(Step_that_should_not_run)));
 
             //TODO: rework exception collection and handling
             var ex = scenario.ExecutionException.ShouldBeOfType<AggregateException>();
