@@ -20,6 +20,7 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario, IRunStageCon
     private readonly Func<Task> _decoratedMethod;
     private readonly ScenarioResult _result;
     private readonly FixtureManager _fixtureManager;
+    private readonly ExecutionStatusCollector _collector;
     private IDependencyContainer? _scenarioScope;
     public IScenarioResult Result => _result;
     public IScenarioInfo Info => Result.Info;
@@ -34,8 +35,9 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario, IRunStageCon
     public RunnableScenarioV2(EngineContext engine, IScenarioInfo info, IEnumerable<IScenarioDecorator> decorators, ScenarioEntryMethod entryMethod)
     {
         Engine = engine;
-        _fixtureManager = new(engine.FixtureFactory);
         _entryMethod = entryMethod;
+        _fixtureManager = new(engine.FixtureFactory);
+        _collector = new(engine.Configuration);
         _result = new ScenarioResult(info);
         _decoratedMethod = DecoratingExecutor.DecorateScenario(this, () => AsyncStepSynchronizationContext.Execute(RunScenarioCore), decorators);
     }
@@ -50,17 +52,17 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario, IRunStageCon
             Engine.ProgressNotifier.Notify(new ScenarioStarting(startTime, Result.Info));
             await _fixtureManager.InitializeAsync(_result.Info.Parent.FeatureType);
             await _decoratedMethod.Invoke();
-            _result.UpdateScenarioResultV2(ExecutionStatus.Passed);
         }
         catch (Exception ex)
         {
-            ExceptionProcessor.UpdateStatus(_result.UpdateScenarioResultV2, ex, Engine.Configuration);
+            _collector.Capture(ex);
         }
 
         ResetScenarioContext();
         await CleanupScenario();
         var endTime = Engine.ExecutionTimer.GetTime();
         _result.UpdateTime(endTime.GetExecutionTime(startTime));
+        _collector.UpdateResults(_result);
         Engine.ProgressNotifier.Notify(new ScenarioFinished(endTime, Result));
         return Result;
     }
@@ -78,12 +80,8 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario, IRunStageCon
 
     private async Task CleanupScenario()
     {
-        var collector = new ExceptionCollector();
-        await _fixtureManager.DisposeAsync(collector);
-        collector.Capture(DisposeScenarioScope);
-        var exception = collector.Collect();
-        if (exception != null)
-            ExceptionProcessor.UpdateStatus(_result.UpdateScenarioResultV2, exception, Engine.Configuration);
+        await _fixtureManager.DisposeAsync(_collector);
+        _collector.Capture(DisposeScenarioScope);
     }
 
     private void DisposeScenarioScope()
@@ -112,10 +110,14 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario, IRunStageCon
         {
             await _entryMethod.Invoke(Fixture, stepsRunner);
         }
+        catch (StepExecutionException)
+        {
+            //will be collected via results
+        }
         finally
         {
             ScenarioExecutionContext.Current.Get<CurrentScenarioProperty>().StepsRunner = null;
-            _result.UpdateResults(stepsRunner.GetResults());
+            _result.UpdateResultsV2(stepsRunner.GetResults());
         }
     }
 }

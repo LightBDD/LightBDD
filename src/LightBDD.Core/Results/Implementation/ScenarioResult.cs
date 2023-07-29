@@ -79,17 +79,11 @@ namespace LightBDD.Core.Results.Implementation
                 StatusDetails = $"Scenario: {details!.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t")}";
         }
 
-        public void UpdateScenarioResultV2(ExecutionStatus status, string? details = null, Exception? executionException = null)
+        public void SetScenarioResult(ExecutionStatus status, string? details = null, Exception? executionException = null)
         {
             Status = status;
             ExecutionException = executionException;
-            if (!string.IsNullOrWhiteSpace(details))
-            {
-                var formattedDetails = $"Scenario {Status}: {details!.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t")}";
-                StatusDetails = string.IsNullOrWhiteSpace(StatusDetails)
-                    ? formattedDetails
-                    : $"{formattedDetails}{Environment.NewLine}{StatusDetails}";
-            }
+            StatusDetails = details;
         }
 
         public static ScenarioResult CreateFailed(IScenarioInfo scenarioInfo, Exception ex)
@@ -105,6 +99,11 @@ namespace LightBDD.Core.Results.Implementation
             var result = new ScenarioResult(scenarioInfo);
             result.UpdateScenarioResult(ExecutionStatus.Ignored, message);
             return result;
+        }
+
+        public void UpdateResultsV2(IStepResult[] results)
+        {
+            _steps = results;
         }
     }
 }

@@ -26,9 +26,9 @@ namespace LightBDD.Core.UnitTests.Execution
                 .RunAsync();
 
             //TODO: rework exception collection and handling
-            /*var ex = scenario.ExecutionException.ShouldBeOfType<AggregateException>();
+            var ex = scenario.ExecutionException.ShouldBeOfType<AggregateException>();
             Assert.That(ex.InnerExceptions.Select(x => x.Message).ToArray(),
-                Is.EqualTo(new[] { "Scenario steps initialization failed.", "reason1", "reason2" }));*/
+                Is.EqualTo(new[] { "Step group initialization failed.", "reason1", "reason2" }));
 
             StepResultExpectation.AssertEqual(scenario.GetSteps(),
                 new StepResultExpectation(1, 3, nameof(Step_that_should_not_run), ExecutionStatus.NotRun),

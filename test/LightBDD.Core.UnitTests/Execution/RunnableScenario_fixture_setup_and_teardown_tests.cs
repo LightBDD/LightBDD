@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
@@ -72,8 +73,8 @@ public class RunnableScenario_fixture_setup_and_teardown_tests
         Assert.That(_fixture.SetUpCalled, Is.True);
         Assert.That(_fixture.TearDownCalled, Is.True);
 
-        result.ExecutionException.ShouldBeOfType<InvalidOperationException>()
-           .Message.ShouldBe("Fixture OnScenarioTearDown() failed: OnTearDown");
+        result.ExecutionException.ShouldBeOfType<AggregateException>()
+            .InnerExceptions.Select(e => e.Message).ShouldBe(new[] { "Fixture OnScenarioTearDown() failed: OnTearDown", "IO" });
     }
 
     class Fixture : IScenarioSetUp, IScenarioTearDown

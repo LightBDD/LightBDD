@@ -30,32 +30,5 @@ namespace LightBDD.Core.Execution.Implementation
             setStatus(status, details);
             return status;
         }
-
-        public static void UpdateStatus(Action<ExecutionStatus, string?, Exception?> updateStatusFn, Exception exception, LightBddConfiguration cfg)
-        {
-            if (exception is StepExecutionException ste)
-            {
-                updateStatusFn(ste.StepStatus, null, ste.InnerException);
-                return;
-            }
-            if (exception is ScenarioExecutionException e)
-                exception = e.InnerException!;
-
-            var status = MapStatus(exception);
-            if (status == ExecutionStatus.Failed)
-                updateStatusFn(status, cfg.ExceptionHandlingConfiguration().ExceptionDetailsFormatter(exception), exception);
-            else
-                updateStatusFn(status, exception.Message, null);
-        }
-
-        private static ExecutionStatus MapStatus(Exception exception)
-        {
-            return exception switch
-            {
-                BypassException => ExecutionStatus.Bypassed,
-                IgnoreException => ExecutionStatus.Ignored,
-                _ => ExecutionStatus.Failed
-            };
-        }
     }
 }

@@ -35,7 +35,7 @@ internal class FixtureManager
         }
     }
 
-    public async Task DisposeAsync(ExceptionCollector collector)
+    public async Task DisposeAsync(ExecutionStatusCollector collector)
     {
         if (Fixture == null)
             return;

@@ -32,7 +32,7 @@ namespace LightBDD.Core.UnitTests.Execution
                 .RunAsync();
             result.Status.ShouldBe(ExecutionStatus.Ignored);
             result.StatusDetails.ShouldBe("Scenario Ignored: reason");
-            result.ExecutionException.ShouldBeNull();
+            result.ExecutionException.ShouldBeOfType<IgnoreException>();
             result.ExecutionTime.ShouldNotBe(ExecutionTime.None);
             result.GetSteps().ShouldBeEmpty();
         }
@@ -44,7 +44,7 @@ namespace LightBDD.Core.UnitTests.Execution
                 .RunAsync();
             result.Status.ShouldBe(ExecutionStatus.Bypassed);
             result.StatusDetails.ShouldBe("Scenario Bypassed: reason");
-            result.ExecutionException.ShouldBeNull();
+            result.ExecutionException.ShouldBeOfType<BypassException>();
             result.ExecutionTime.ShouldNotBe(ExecutionTime.None);
             result.GetSteps().ShouldBeEmpty();
         }

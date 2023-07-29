@@ -12,6 +12,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests
 {
     [TestFixture]
+    //migrated
     public class CoreBddRunner_multiassert_step_execution_tests
     {
         #region Setup/Teardown
