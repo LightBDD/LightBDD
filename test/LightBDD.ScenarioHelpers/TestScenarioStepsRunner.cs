@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Dependencies;
@@ -20,7 +21,9 @@ public class TestScenarioStepsRunner
 
     public static TestScenarioStepsRunner Current => new(ScenarioExecutionContext.CurrentScenarioStepsRunner);
 
-    public async Task TestScenario(params StepDescriptor[] steps)
+    public Task TestScenario(params StepDescriptor[] steps) => TestScenario(steps.AsEnumerable());
+
+    public async Task TestScenario(IEnumerable<StepDescriptor> steps)
     {
         try
         {
@@ -40,13 +43,13 @@ public class TestScenarioStepsRunner
             return _coreBuilder.WithContext(_contextDescriptor);
         return _coreBuilder;
     }
-    public Task TestScenario(params Action[] steps) 
+    public Task TestScenario(params Action[] steps)
         => TestScenario(steps.Select(TestStep.CreateAsync).ToArray());
 
-    public Task TestScenario(params Func<Task>[] steps) 
+    public Task TestScenario(params Func<Task>[] steps)
         => TestScenario(steps.Select(TestStep.Create).ToArray());
 
-    public Task TestGroupScenario(params Func<TestCompositeStep>[] steps) 
+    public Task TestGroupScenario(params Func<TestCompositeStep>[] steps)
         => TestScenario(steps.Select(TestStep.CreateComposite).ToArray());
 
     public TestScenarioStepsRunner WithContext(Func<object> contextProvider, bool takeOwnership)
