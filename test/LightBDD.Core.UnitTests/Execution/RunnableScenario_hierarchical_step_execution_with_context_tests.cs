@@ -6,42 +6,28 @@ using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Results;
 using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
-using LightBDD.Framework;
-using LightBDD.Framework.Extensibility;
 using LightBDD.ScenarioHelpers;
-using LightBDD.UnitTests.Helpers.TestableIntegration;
 using Moq;
 using NUnit.Framework;
+using Shouldly;
 
-namespace LightBDD.Core.UnitTests
+namespace LightBDD.Core.UnitTests.Execution
 {
     [TestFixture]
-    //migrated
-    public class CoreBddRunner_hierarchical_step_execution_with_context_tests : Steps
+    [FixtureLifeCycle(LifeCycle.InstancePerTestCase)]
+    public class RunnableScenario_hierarchical_step_execution_with_context_tests : Steps
     {
-        #region Setup/Teardown
-
-        private IFeatureRunner _feature;
-        private IBddRunner _runner;
-        private List<(string step, object context)> _capturedSteps;
-
-        [SetUp]
-        public void SetUp()
-        {
-            _feature = TestableFeatureRunnerRepository.GetRunner(GetType());
-            _runner = _feature.GetBddRunner(this);
-            _capturedSteps = new List<(string step, object context)>();
-        }
-
-        #endregion
+        private readonly List<(string step, object context)> _capturedSteps = new();
 
         [Test]
-        public void Runner_should_execute_composite_steps_with_own_context_objects()
+        public async Task Runner_should_execute_composite_steps_with_own_context_objects()
         {
-            _runner.Test().TestGroupScenario(
-                StepGroupWithContext1,
-                StepGroupWithContext2,
-                StepGroupWithoutContext);
+            await TestableScenarioFactory.Default.CreateScenario(r =>
+                    r.Test().TestGroupScenario(
+                        StepGroupWithContext1,
+                        StepGroupWithContext2,
+                        StepGroupWithoutContext))
+                .RunAsync();
 
             var stepGroups = _capturedSteps.GroupBy(x => x.context).ToArray();
             Assert.That(stepGroups.Length, Is.EqualTo(3), "There should be 3 different contexts");
@@ -60,19 +46,20 @@ namespace LightBDD.Core.UnitTests
         }
 
         [Test]
-        public void Runner_should_instantiate_context_just_before_run_so_its_failure_would_be_included_in_results()
+        public async Task Runner_should_instantiate_context_just_before_run_so_its_failure_would_be_included_in_results()
         {
-            Assert.Throws<InvalidOperationException>(() => _runner.Test().TestGroupScenario(StepGroupWithInvalidContext));
+            var scenario = await TestableScenarioFactory.Default
+                .CreateScenario(r => r.Test().TestGroupScenario(StepGroupWithInvalidContext))
+                .RunAsync();
 
-            var scenario = _feature.GetFeatureResult().GetScenarios().Single();
             Assert.That(scenario.Status, Is.EqualTo(ExecutionStatus.Failed));
-            Assert.That(scenario.StatusDetails, Is.EqualTo("Step 1: Sub-steps context initialization failed: abc"));
+            Assert.That(scenario.StatusDetails, Is.EqualTo("Step 1 Failed: System.InvalidOperationException: Step group context initialization failed: abc"));
         }
 
         [Test]
         [TestCase(true)]
         [TestCase(false)]
-        public void Runner_should_dispose_context_depending_on_takeOwnership_flag(bool shouldDispose)
+        public async Task Runner_should_dispose_context_depending_on_takeOwnership_flag(bool shouldDispose)
         {
             var context = Mock.Of<IDisposable>();
 
@@ -81,18 +68,20 @@ namespace LightBDD.Core.UnitTests
                 return new TestCompositeStep(new ExecutionContextDescriptor(() => context, shouldDispose), MakeStep("step"));
             }
 
-            _runner.Test().TestGroupScenario(StepGroupWithDisposable);
+            await TestableScenarioFactory.Default
+                .CreateScenario(r => r.Test().TestGroupScenario(StepGroupWithDisposable))
+                .RunAsync();
             Mock.Get(context).Verify(x => x.Dispose(), Times.Exactly(shouldDispose ? 1 : 0));
         }
 
         [Test]
-        public void Runner_should_dispose_context_after_last_step()
+        public async Task Runner_should_dispose_context_after_last_step()
         {
             var context = Mock.Of<IDisposable>();
 
             Task<IStepResultDescriptor> VerifyNotDisposed(object ctx, object[] args)
             {
-                Mock.Get((IDisposable) ctx).Verify(x => x.Dispose(), Times.Never);
+                Mock.Get((IDisposable)ctx).Verify(x => x.Dispose(), Times.Never);
                 return Task.FromResult(DefaultStepResultDescriptor.Instance);
             }
             TestCompositeStep StepGroupWithDisposable()
@@ -103,12 +92,15 @@ namespace LightBDD.Core.UnitTests
                     new StepDescriptor("step2", VerifyNotDisposed));
             }
 
-            Assert.DoesNotThrow(()=>_runner.Test().TestGroupScenario(StepGroupWithDisposable));
+            await TestableScenarioFactory.Default
+                .CreateScenario(r => r.Test().TestGroupScenario(StepGroupWithDisposable))
+                .RunAsync();
+
             Mock.Get(context).Verify(x => x.Dispose(), Times.Once);
         }
 
         [Test]
-        public void Runner_should_propagate_context_disposal_exception()
+        public async Task Runner_should_propagate_context_disposal_exception()
         {
             var exception = new Exception("foo");
             var context = Mock.Of<IDisposable>();
@@ -119,15 +111,18 @@ namespace LightBDD.Core.UnitTests
                 return new TestCompositeStep(new ExecutionContextDescriptor(() => context, true), MakeStep("step"));
             }
 
-            var ex = Assert.Throws<InvalidOperationException>(() => _runner.Test().TestGroupScenario(StepGroupWithDisposable));
+            var scenario = await TestableScenarioFactory.Default
+                .CreateScenario(r => r.Test().TestGroupScenario(StepGroupWithDisposable))
+                .RunAsync();
 
+            var ex = scenario.ExecutionException.ShouldBeOfType<InvalidOperationException>();
             Assert.That(ex.Message, Is.EqualTo($"Failed to dispose dependency 'ContextWrapper': Failed to dispose context '{context.GetType().Name}': foo"));
-            Assert.That(ex.InnerException.InnerException, Is.SameAs(exception));
+            Assert.That(ex.InnerException?.InnerException, Is.SameAs(exception));
             Assert.That(ex.StackTrace, Is.Not.Null);
         }
 
         [Test]
-        public void Runner_should_propagate_context_disposal_exception_together_with_failing_scenario()
+        public async Task Runner_should_propagate_context_disposal_exception_together_with_failing_scenario()
         {
             var exception = new InvalidOperationException("foo");
             var context = Mock.Of<IDisposable>();
@@ -140,8 +135,11 @@ namespace LightBDD.Core.UnitTests
                     new StepDescriptor("step", (ctx, args) => throw new Exception("bar")));
             }
 
-            var ex = Assert.Throws<AggregateException>(() => _runner.Test().TestGroupScenario(StepGroupWithDisposable));
+            var scenario = await TestableScenarioFactory.Default
+                .CreateScenario(r => r.Test().TestGroupScenario(StepGroupWithDisposable))
+                .RunAsync();
 
+            var ex = scenario.ExecutionException.ShouldBeOfType<AggregateException>();
             Assert.That(ex.InnerExceptions.Select(x => $"{x.GetType().Name}|{x.Message}").ToArray(),
                 Is.EquivalentTo(new[]
                 {

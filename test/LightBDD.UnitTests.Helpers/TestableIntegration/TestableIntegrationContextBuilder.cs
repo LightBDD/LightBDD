@@ -48,7 +48,6 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
                 .WithProgressNotifier(NoProgressNotifier.Default)
                 .WithConfiguration(cfg =>
                 {
-                    cfg.ExecutionExtensionsConfiguration().EnableStepDecorator<StepCommentHelper>();
                     cfg.ExceptionHandlingConfiguration().UpdateExceptionDetailsFormatter(ex => ex.Message);
                 });
         }

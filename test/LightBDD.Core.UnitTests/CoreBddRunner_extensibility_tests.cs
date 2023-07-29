@@ -15,6 +15,7 @@ namespace LightBDD.Core.UnitTests
     [CustomCategory("some global category")]
     [ScenarioCategory("standard global category")]
     [TestFixture]
+    //not needed
     public class CoreBddRunner_extensibility_tests : Steps
     {
         [Test]

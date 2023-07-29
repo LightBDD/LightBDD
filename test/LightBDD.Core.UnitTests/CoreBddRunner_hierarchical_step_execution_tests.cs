@@ -17,6 +17,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests
 {
     [TestFixture]
+    //migrated
     public class CoreBddRunner_hierarchical_step_execution_tests : Steps
     {
         #region Setup/Teardown

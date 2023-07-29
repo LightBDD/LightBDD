@@ -17,6 +17,7 @@ namespace LightBDD.Core.UnitTests
 {
     [TestFixture]
     [Parallelizable(ParallelScope.None)]
+    //migrated
     public class CoreBddRunner_execution_extension_tests
     {
         private static readonly List<string> CapturedMessages = new();

@@ -1,4 +1,7 @@
 using System;
+using System.Threading.Tasks;
+using LightBDD.Core.ExecutionContext;
+using LightBDD.Core.Results;
 using LightBDD.Framework;
 using LightBDD.ScenarioHelpers;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
@@ -20,8 +23,8 @@ namespace LightBDD.Core.UnitTests.Helpers
         public void Setup_before_steps() { }
         public void When_step_two() { }
 
-        public void When_step_two_with_comment() { StepCommentHelper.Comment(CommentReason); }
-        public void When_step_two_with_attachment() { StepCommentHelper.AttachFile(AttachmentName, AttachmentFile); }
+        public void When_step_two_with_comment() { ScenarioExecutionContext.CurrentStep.Comment(CommentReason); }
+        public void When_step_two_with_attachment() { ScenarioExecutionContext.CurrentStep.AttachFile(_ => Task.FromResult(new FileAttachment(AttachmentName, AttachmentFile, $"base/{AttachmentFile}"))); }
         public void When_step_two_is_bypassed() { StepExecution.Current.Bypass(BypassReason); }
         public void When_step_two_throwing_exception() { throw new InvalidOperationException(ExceptionReason); }
         public void Then_step_three() { }
@@ -35,8 +38,8 @@ namespace LightBDD.Core.UnitTests.Helpers
 
         public void When_step_with_parameter_and_comments(int parameter)
         {
-            StepCommentHelper.Comment(CommentReason);
-            StepCommentHelper.Comment($"{parameter}");
+            ScenarioExecutionContext.CurrentStep.Comment(CommentReason);
+            ScenarioExecutionContext.CurrentStep.Comment($"{parameter}");
         }
         public void When_step_with_parameter_throwing_exception(int parameter) { throw new InvalidOperationException(ExceptionReason); }
         public void Then_step_with_parameter(double parameter) { }
