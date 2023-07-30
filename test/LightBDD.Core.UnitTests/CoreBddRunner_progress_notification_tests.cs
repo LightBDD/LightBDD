@@ -20,6 +20,7 @@ namespace LightBDD.Core.UnitTests
     [Label("label2")]
     [ScenarioCategory("category 1")]
     [TestFixture]
+    //migrated
     public class CoreBddRunner_progress_notification_tests : Steps
     {
         [Test]
