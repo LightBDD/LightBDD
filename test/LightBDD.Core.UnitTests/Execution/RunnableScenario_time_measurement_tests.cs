@@ -1,79 +1,59 @@
 using System;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Results;
-using LightBDD.Framework;
-using LightBDD.Framework.Extensibility;
+using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.ScenarioHelpers;
-using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
-namespace LightBDD.Core.UnitTests
+namespace LightBDD.Core.UnitTests.Execution
 {
     [TestFixture]
-    //migrated
-    public class CoreBddRunner_time_measurement_tests
+    public class RunnableScenario_time_measurement_tests
     {
-        private IBddRunner _runner;
         private static readonly TimeSpan UtcNowClockPrecision = TimeSpan.FromMilliseconds(30);
-        private IFeatureRunner _feature;
-        private IExecutionTimer _timer;
-
-        #region Setup/Teardown
-
-        [SetUp]
-        public void SetUp()
-        {
-            var repo = new TestableFeatureRunnerRepository();
-            _timer = repo.Context.ExecutionTimer;
-            _feature = repo.GetRunnerFor(GetType());
-            _runner = _feature.GetBddRunner(this);
-        }
-
-        #endregion
 
         [Test]
-        public void It_should_capture_execution_time_for_successful_scenario()
+        public async Task It_should_capture_execution_time_for_successful_scenario()
         {
-            AssertScenarioExecutionTime(() => _runner.Test().TestScenario(Step_one, Step_two));
+            await AssertScenarioExecutionTime(r => r.Test().TestScenario(Step_one, Step_two));
         }
 
         [Test]
-        public void It_should_capture_execution_time_for_failed_scenario()
+        public async Task It_should_capture_execution_time_for_failed_scenario()
         {
-            AssertScenarioExecutionTime(() => _runner.Test().TestScenario(Step_one, Step_throwing_exception, Step_two));
+            await AssertScenarioExecutionTime(r => r.Test().TestScenario(Step_one, Step_throwing_exception, Step_two));
         }
 
         [Test]
-        public void It_should_capture_execution_time_for_composite_steps()
+        public async Task It_should_capture_execution_time_for_composite_steps()
         {
-            AssertScenarioExecutionTime(() => _runner.Test().TestGroupScenario(Step_group_one, Step_group_two));
+            await AssertScenarioExecutionTime(r => r.Test().TestGroupScenario(Step_group_one, Step_group_two));
         }
 
-        private void AssertScenarioExecutionTime(Action runScenario)
+        private async Task AssertScenarioExecutionTime(Func<ICoreScenarioStepsRunner, Task> runScenario)
         {
-            var start = _timer.GetTime();
-            try { runScenario(); }
-            catch { }
+            var timer = DefaultExecutionTimer.StartNew();
+            var start = timer.GetTime();
+            var scenario = await TestableScenarioFactory.Default.RunScenario(runScenario);
 
-            var stop = _timer.GetTime();
+            var stop = timer.GetTime();
             var executionTime = stop.GetExecutionTime(start);
 
-            var result = _feature.GetFeatureResult().GetScenarios().Single();
-
             FormatTime("Measure time", executionTime);
-            FormatTime("Scenario time", result.ExecutionTime);
+            FormatTime("Scenario time", scenario.ExecutionTime);
 
-            Assert.That(result.ExecutionTime, Is.Not.Null);
-            Assert.That(result.ExecutionTime.Duration, Is.LessThanOrEqualTo(executionTime.Duration), "Scenario.ExecutionTime.Duration");
-            Assert.That(result.ExecutionTime.Start, Is
+            Assert.That(scenario.ExecutionTime, Is.Not.Null);
+            Assert.That(scenario.ExecutionTime.Duration, Is.LessThanOrEqualTo(executionTime.Duration), "Scenario.ExecutionTime.Duration");
+            Assert.That(scenario.ExecutionTime.Start, Is
                 .GreaterThanOrEqualTo(start.Time)
                 .And
                 .LessThan(executionTime.End.Add(UtcNowClockPrecision)), "Scenario.ExecutionTime.Start");
 
-            AssertStepsExecutionTimesAreDoneInOrder();
+            AssertStepsExecutionTimesAreDoneInOrder(scenario);
         }
 
         private static void FormatTime(string label, ExecutionTime time)
@@ -83,9 +63,8 @@ namespace LightBDD.Core.UnitTests
             TestContext.Out.WriteLine("{0}: {1:HH\\:mm\\:ss.fff} + {2} -> {3:HH\\:mm\\:ss.fff}", label, time.Start, time.Duration, time.End);
         }
 
-        private void AssertStepsExecutionTimesAreDoneInOrder()
+        private void AssertStepsExecutionTimesAreDoneInOrder(IScenarioResult scenario)
         {
-            var scenario = _feature.GetFeatureResult().GetScenarios().Single();
             var steps = scenario.GetSteps().ToArray();
             AssertStepTimes(steps, scenario.ExecutionTime);
         }
