@@ -27,12 +27,11 @@ internal class RunnableStepV2 : IStep, IRunStageContext
     private readonly StepResult _result;
     private readonly StepFunc _invocation;
     private readonly ExceptionCollector _exceptionCollector = new();
-    private IDependencyContainer _subStepScope;
     public IStepResult Result => _result;
     public EngineContext Engine => _stepContext.Engine;
     IMetadataInfo IRunStageContext.Info => Info;
     public Func<Exception, bool> ShouldAbortSubStepExecution { get; private set; } = _ => true;
-    public IDependencyContainer DependencyContainer => _subStepScope ?? throw new InvalidOperationException("Step does not execute sub-steps");
+    public IDependencyContainer DependencyContainer => _stepContext.Container;
     public IStepInfo Info => Result.Info;
     public IDependencyResolver DependencyResolver => _stepContext.Container;
     public object Context => _stepContext.Context;
@@ -82,7 +81,6 @@ internal class RunnableStepV2 : IStep, IRunStageContext
     {
         if (result is not CompositeStepResultDescriptor compositeDescriptor)
             return;
-        _subStepScope = _stepContext.Container.BeginScope(LifetimeScope.Local, compositeDescriptor.SubStepsContext.ScopeConfigurator);
         var stepGroupRunner = new StepGroupRunner(this, $"{Info.GroupPrefix}{Info.Number}.");
 
         try
@@ -191,7 +189,6 @@ internal class RunnableStepV2 : IStep, IRunStageContext
     private void StopStep(EventTime executionStartTime, bool stepStartNotified)
     {
         ScenarioExecutionContext.Current.Get<CurrentStepProperty>().RemoveCurrent(this);
-        DisposeComposite();
 
         var executionStopTime = _stepContext.ExecutionTimer.GetTime();
 
@@ -199,19 +196,6 @@ internal class RunnableStepV2 : IStep, IRunStageContext
         _result.IncludeSubStepDetails();
         if (stepStartNotified)
             _stepContext.ProgressNotifier.Notify(new StepFinished(executionStopTime, _result));
-    }
-
-    private void DisposeComposite()
-    {
-        try
-        {
-            _subStepScope?.Dispose();
-        }
-        catch (Exception exception)
-        {
-            _stepContext.ExceptionProcessor.UpdateResultsWithException(_result.SetStatus, exception);
-            _exceptionCollector.Capture(exception);
-        }
     }
 
     private void HandleException(Exception exception)

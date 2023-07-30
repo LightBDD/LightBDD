@@ -12,6 +12,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests
 {
     [TestFixture]
+    //migrated
     public class CoreBddRunner_step_execution_with_dependency_injection_tests
     {
         private IBddRunner _runner;

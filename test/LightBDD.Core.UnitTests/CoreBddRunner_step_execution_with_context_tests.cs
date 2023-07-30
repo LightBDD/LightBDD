@@ -15,6 +15,7 @@ using NUnit.Framework;
 namespace LightBDD.Core.UnitTests
 {
     [TestFixture]
+    //migrated
     public class CoreBddRunner_step_execution_with_context_tests
     {
         private IBddRunner _runner;
