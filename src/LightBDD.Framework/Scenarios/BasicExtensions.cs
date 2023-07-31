@@ -2,7 +2,9 @@
 using LightBDD.Framework.Scenarios.Implementation;
 using System;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
+using LightBDD.Framework.Implementation;
 
 namespace LightBDD.Framework.Scenarios
 {
@@ -110,13 +112,44 @@ namespace LightBDD.Framework.Scenarios
         {
             try
             {
-                var scenario = runner
+                runner
                     .AddSteps(steps)
                     .Integrate().Core
                     .WithCapturedScenarioDetailsIfNotSpecified()
-                    .Build();
+                    .RunSync();
+            }
+            catch (ScenarioExecutionException e)
+            {
+                e.GetOriginal().Throw();
+            }
+        }
 
-                scenario.ExecuteSync();
+        /// <summary>
+        /// Runs test scenario by executing given steps in specified order.<br/>
+        /// If given step throws, other are not executed.<br/>
+        /// The scenario name is determined from the current scenario test method.<br/>
+        /// Scenario labels are determined from <see cref="LabelAttribute"/> attributes applied on scenario method.<br/>
+        /// The step name is determined from corresponding action name.<br/>
+        /// Example usage:
+        /// <code>
+        /// Runner.RunScenario(
+        ///         Given_numbers_5_and_8,
+        ///         When_I_add_them,
+        ///         I_should_receive_number_13);
+        /// </code>
+        /// Expected step signature: <code>void Given_numbers_5_and_8() { /* ... */ }</code>
+        /// </summary>
+        /// <param name="runner">Runner.</param>
+        /// <param name="steps">List of steps to execute in order.</param>
+        public static async Task RunScenarioAsync(this IBddRunner runner, params Action[] steps)
+        {
+            try
+            {
+                await runner
+                    .AddSteps(steps)
+                    .Integrate().Core
+                    .WithCapturedScenarioDetailsIfNotSpecified()
+                    .RunAsync();
             }
             catch (ScenarioExecutionException e)
             {
@@ -149,13 +182,11 @@ namespace LightBDD.Framework.Scenarios
         {
             try
             {
-                var scenario = runner
+                await runner
                     .AddAsyncSteps(steps)
                     .Integrate().Core
                     .WithCapturedScenarioDetailsIfNotSpecified()
-                    .Build();
-
-                await scenario.ExecuteAsync();
+                    .RunAsync();
             }
             catch (ScenarioExecutionException e)
             {

@@ -10,6 +10,7 @@ using LightBDD.Core.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LightBDD.Core.Extensibility.Implementation
 {
@@ -44,6 +45,17 @@ namespace LightBDD.Core.Extensibility.Implementation
                 throw new ArgumentNullException(nameof(steps));
             _steps = _steps.Concat(steps);
             return this;
+        }
+
+        public ICoreScenarioStepsRunner WithContext(ExecutionContextDescriptor contextDescriptor)
+        {
+            _contextDescriptor = contextDescriptor;
+            return this;
+        }
+
+        public Task RunAsync()
+        {
+            return Build().ExecuteAsync();
         }
 
         public ICoreScenarioBuilder WithCapturedScenarioDetails()
@@ -122,6 +134,11 @@ namespace LightBDD.Core.Extensibility.Implementation
             //TODO:review runtimeId
             var scenarioInfo = _scenarioInfo ?? new ScenarioInfo(_featureInfo, _name, _labels, _categories, _runtimeId ?? Guid.NewGuid().ToString());
             return new RunnableScenario(_context, scenarioInfo, _steps, _contextDescriptor, GetScenarioDecorators());
+        }
+
+        ICoreScenarioStepsRunner ICoreScenarioStepsRunner.AddSteps(IEnumerable<StepDescriptor> steps)
+        {
+            return AddSteps(steps);
         }
 
         public LightBddConfiguration Configuration => _context.IntegrationContext.Configuration;

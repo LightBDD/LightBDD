@@ -4,11 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Results;
-using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Scenarios;
 using LightBDD.ScenarioHelpers;
-using LightBDD.UnitTests.Helpers;
-using LightBDD.UnitTests.Helpers.TestableIntegration;
+using LightBDD.Framework.UnitTests.Helpers;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Compact
 {
@@ -75,18 +73,16 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Compact
         [Test]
         public async Task It_should_parse_composite_names()
         {
-            var featureRunner = TestableFeatureRunnerRepository.GetRunner(GetType());
-            var runner = featureRunner.GetBddRunner(this);
 
             var expectedValue = "Some\r\nmultiline\tresponse";
 
-            await runner
+            var scenario = await TestableBddRunner.Default.RunScenario(r => r
                 .AddStep("Given my scenario with value [55]", _ => { })
                 .AddStep(" When I send My_Request<int> for it ", _ => { })
                 .AddAsyncStep($"Only then I should receive \"{expectedValue}\"", _ => Task.CompletedTask)
-                .RunAsync();
+                .RunAsync());
 
-            var steps = featureRunner.GetFeatureResult().GetScenarios().Single().GetSteps();
+            var steps = scenario.GetSteps();
 
             StepResultExpectation.AssertEqual(steps,
                 new StepResultExpectation(1, 3, "GIVEN my scenario with value [55]", ExecutionStatus.Passed),

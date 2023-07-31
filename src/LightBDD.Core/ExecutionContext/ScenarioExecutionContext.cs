@@ -73,6 +73,6 @@ namespace LightBDD.Core.ExecutionContext
         /// Returns current scenario steps runner.
         /// <exception cref="InvalidOperationException">Thrown if no scenario is executed by current task or if scenario initialization is not complete.</exception>
         /// </summary>
-        public static ICoreScenarioStepsRunner CurrentScenarioStepsRunner => Current.Get<CurrentScenarioProperty>().StepsRunner??throw new InvalidOperationException("The current task does not run any initialized scenario. Ensure that feature is used within task running fully initialized scenario.");
+        public static ICoreScenarioStepsRunner CurrentScenarioStepsRunner => Current.Get<CurrentScenarioProperty>().StepsRunner ?? throw new InvalidOperationException("The current task does not run any initialized scenario. Ensure that feature is used within task running fully initialized scenario.");
     }
 }

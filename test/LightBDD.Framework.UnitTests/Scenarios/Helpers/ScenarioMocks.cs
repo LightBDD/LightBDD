@@ -74,7 +74,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
         public static Capture<bool> ExpectBuild(this Mock<ICoreScenarioBuilder> builder)
         {
             var capture = new Capture<bool>();
-            
+
             var runnable = new Mock<IRunnableScenario>();
             runnable.Setup(x => x.ExecuteAsync())
                 .Returns(() =>
@@ -86,6 +86,21 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
             builder
                 .Setup(s => s.Build())
                 .Returns(runnable.Object)
+                .Verifiable();
+            return capture;
+        }
+
+        public static Capture<bool> ExpectRun(this Mock<ICoreScenarioBuilder> builder)
+        {
+            var capture = new Capture<bool>();
+
+            builder
+                .Setup(s => s.RunAsync())
+                .Returns(() =>
+                {
+                    capture.Value = true;
+                    return Task.CompletedTask;
+                })
                 .Verifiable();
             return capture;
         }
