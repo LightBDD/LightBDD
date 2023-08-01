@@ -1,9 +1,11 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution;
+using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Metadata;
@@ -14,17 +16,16 @@ namespace LightBDD.Framework.Implementation;
 //TODO: cleanup
 internal class BddRunnerV2 : IBddRunner, IIntegratedScenarioBuilder<NoContext>
 {
-    private readonly ICoreScenarioStepsRunner _coreRunner;
-    public ICoreScenarioBuilder Core { get; }
+    private Adapter? _core;
+    public ICoreScenarioBuilder Core => _core ?? throw new InvalidOperationException("Scenario Builder not created, use Integrate() first");
 
-    public BddRunnerV2(ICoreScenarioStepsRunner coreRunner)
+    public IIntegratedScenarioBuilder<NoContext> Integrate()
     {
-        _coreRunner = coreRunner;
-        Core = new Adapter(_coreRunner);
+        _core ??= new Adapter(ScenarioExecutionContext.CurrentScenarioStepsRunner);
+        return this;
     }
 
-    public IIntegratedScenarioBuilder<NoContext> Integrate() => this;
-    public Task RunAsync() => _coreRunner.RunAsync();
+    public Task RunAsync() => Core.RunAsync();
 
     class Adapter : ICoreScenarioBuilder
     {
@@ -67,11 +68,13 @@ internal class BddRunnerV2 : IBddRunner, IIntegratedScenarioBuilder<NoContext>
 
         public ICoreScenarioBuilder WithContext(Func<object> contextProvider, bool takeOwnership)
         {
+            WithContext(new ExecutionContextDescriptor(contextProvider, takeOwnership));
             return this;
         }
 
-        public ICoreScenarioBuilder WithContext(Func<IDependencyResolver, object> contextProvider, Action<ContainerConfigurator> scopeConfigurator = null)
+        public ICoreScenarioBuilder WithContext(Func<IDependencyResolver, object> contextProvider, Action<ContainerConfigurator>? scopeConfigurator = null)
         {
+            WithContext(new ExecutionContextDescriptor(contextProvider, scopeConfigurator));
             return this;
         }
 
@@ -97,8 +100,8 @@ internal class BddRunnerV2 : IBddRunner, IIntegratedScenarioBuilder<NoContext>
 
         ICoreScenarioBuilder ICoreScenarioBuilder.AddSteps(IEnumerable<StepDescriptor> steps)
         {
-             _coreRunner.AddSteps(steps);
-             return this;
+            _coreRunner.AddSteps(steps);
+            return this;
         }
 
         public ICoreScenarioStepsRunner WithContext(ExecutionContextDescriptor contextDescriptor)

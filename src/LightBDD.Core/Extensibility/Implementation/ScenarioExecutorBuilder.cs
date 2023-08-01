@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Execution.Implementation;
@@ -66,6 +67,7 @@ internal class RunnableScenarioBuilder : IRunnableScenarioBuilder
     public IRunnableScenarioV2 Build()
     {
         var scenarioInfo = new ScenarioInfo(_featureInfo, _name, _labels, _categories, _runtimeId);
-        return new RunnableScenarioV2(_context, scenarioInfo, _decorators, _entryMethod);
+        var scenarioDecorators = _context.ExecutionExtensions.ScenarioDecorators.Concat(_decorators);
+        return new RunnableScenarioV2(_context, scenarioInfo, scenarioDecorators, _entryMethod);
     }
 }

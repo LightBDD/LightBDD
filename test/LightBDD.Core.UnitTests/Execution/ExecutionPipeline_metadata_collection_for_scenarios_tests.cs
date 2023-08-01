@@ -114,7 +114,7 @@ public class ExecutionPipeline_metadata_collection_for_scenarios_tests
     {
         var scenario = await TestableCoreExecutionPipeline.Default.ExecuteScenario<MyFeature>(f => f.FailingScenario());
         Assert.That(scenario.Status, Is.EqualTo(ExecutionStatus.Failed));
-        Assert.That(scenario.StatusDetails, Is.EqualTo($"Step 2: System.InvalidOperationException: {Steps.ExceptionReason}"));
+        Assert.That(scenario.StatusDetails, Is.EqualTo($"Step 2 Failed: System.InvalidOperationException: {Steps.ExceptionReason}"));
     }
 
     [Test]
@@ -136,7 +136,7 @@ public class ExecutionPipeline_metadata_collection_for_scenarios_tests
     {
         var scenario = await TestableCoreExecutionPipeline.Default.ExecuteScenario<MyFeature>(f => f.BypassedThenFailedScenario());
         Assert.That(scenario.Status, Is.EqualTo(ExecutionStatus.Failed));
-        var expected = $"Step 2: {Steps.BypassReason}{Environment.NewLine}Step 3: System.InvalidOperationException: {Steps.ExceptionReason}";
+        var expected = $"Step 2 Bypassed: {Steps.BypassReason}{Environment.NewLine}Step 3 Failed: System.InvalidOperationException: {Steps.ExceptionReason}";
 
         Assert.That(scenario.StatusDetails, Is.EqualTo(expected));
     }

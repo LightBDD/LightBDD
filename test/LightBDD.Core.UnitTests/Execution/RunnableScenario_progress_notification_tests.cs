@@ -65,8 +65,8 @@ public class ExecutionPipeline_progress_notification_tests : Steps
             "Step 2/3 Comment: some comment",
             "Step Finish: 2/3 When_step_two_with_comment | Status:Passed | ExecutionTimePresent:True | Details:",
             "Step Start: 3/3 Then_step_three_should_throw_exception",
-            "Step Finish: 3/3 Then_step_three_should_throw_exception | Status:Failed | ExecutionTimePresent:True | Details:Step 3: System.InvalidOperationException: exception reason",
-            "Scenario Finish: Scenario_with_comment_and_failed_step | Status:Failed | ExecutionTimePresent:True | Steps:3 | Details:Step 3: System.InvalidOperationException: exception reason",
+            "Step Finish: 3/3 Then_step_three_should_throw_exception | Status:Failed | ExecutionTimePresent:True | Details:Step 3 Failed: System.InvalidOperationException: exception reason",
+            "Scenario Finish: Scenario_with_comment_and_failed_step | Status:Failed | ExecutionTimePresent:True | Steps:3 | Details:Step 3 Failed: System.InvalidOperationException: exception reason",
             "Feature Finish: MyFeature | Scenarios:1",
             "Test Run Finish: LightBDD.Core.UnitTests | Status:Failed | Features:1");
     }
@@ -115,12 +115,12 @@ public class ExecutionPipeline_progress_notification_tests : Steps
             "Step Start: 1.2.1/1.2.3 Given_step_one",
             "Step Finish: 1.2.1/1.2.3 Given_step_one | Status:Passed | ExecutionTimePresent:True | Details:",
             "Step Start: 1.2.2/1.2.3 When_step_two_is_bypassed",
-            "Step Finish: 1.2.2/1.2.3 When_step_two_is_bypassed | Status:Bypassed | ExecutionTimePresent:True | Details:Step 1.2.2: bypass reason",
+            "Step Finish: 1.2.2/1.2.3 When_step_two_is_bypassed | Status:Bypassed | ExecutionTimePresent:True | Details:Step 1.2.2 Bypassed: bypass reason",
             "Step Start: 1.2.3/1.2.3 Then_step_three",
             "Step Finish: 1.2.3/1.2.3 Then_step_three | Status:Passed | ExecutionTimePresent:True | Details:",
-            "Step Finish: 1.2/1.2 Bypassed_step_group | Status:Bypassed | ExecutionTimePresent:True | Details:Step 1.2.2: bypass reason",
-            "Step Finish: 1/1 Composite_group | Status:Bypassed | ExecutionTimePresent:True | Details:Step 1.2.2: bypass reason",
-            "Scenario Finish: Scenario_with_composite | Status:Bypassed | ExecutionTimePresent:True | Steps:1 | Details:Step 1.2.2: bypass reason",
+            "Step Finish: 1.2/1.2 Bypassed_step_group | Status:Bypassed | ExecutionTimePresent:True | Details:Step 1.2.2 Bypassed: bypass reason",
+            "Step Finish: 1/1 Composite_group | Status:Bypassed | ExecutionTimePresent:True | Details:Step 1.2.2 Bypassed: bypass reason",
+            "Scenario Finish: Scenario_with_composite | Status:Bypassed | ExecutionTimePresent:True | Steps:1 | Details:Step 1.2.2 Bypassed: bypass reason",
             "Feature Finish: MyFeature | Scenarios:1",
             "Test Run Finish: LightBDD.Core.UnitTests | Status:Passed | Features:1");
     }
@@ -135,7 +135,7 @@ public class ExecutionPipeline_progress_notification_tests : Steps
             "Scenario Start: Scenario_with_parameterized_steps",
             "Step Start: 1/3 Given_step_with_parameter [parameter: \"abc\"]",
             "Step Finish: 1/3 Given_step_with_parameter [parameter: \"abc\"] | Status:Passed | ExecutionTimePresent:True | Details:",
-            "Scenario Finish: Scenario_with_parameterized_steps | Status:Failed | ExecutionTimePresent:True | Steps:3 | Details:Step 2: System.InvalidOperationException: parameter exception",
+            "Scenario Finish: Scenario_with_parameterized_steps | Status:Failed | ExecutionTimePresent:True | Steps:3 | Details:Step 2 Failed: System.InvalidOperationException: parameter exception",
             "Feature Finish: MyFeature | Scenarios:1",
             "Test Run Finish: LightBDD.Core.UnitTests | Status:Failed | Features:1");
     }

@@ -9,17 +9,17 @@ using LightBDD.Core.Extensibility;
 
 namespace LightBDD.ScenarioHelpers;
 
-public class TestScenarioStepsRunner
+public class TestScenarioBuilder
 {
     private readonly ICoreScenarioStepsRunner _coreBuilder;
     private ExecutionContextDescriptor? _contextDescriptor;
 
-    public TestScenarioStepsRunner(ICoreScenarioStepsRunner coreBuilder)
+    public TestScenarioBuilder(ICoreScenarioStepsRunner coreBuilder)
     {
         _coreBuilder = coreBuilder;
     }
 
-    public static TestScenarioStepsRunner Current => new(ScenarioExecutionContext.CurrentScenarioStepsRunner);
+    public static TestScenarioBuilder Current => new(ScenarioExecutionContext.CurrentScenarioStepsRunner);
 
     public Task TestScenario(params StepDescriptor[] steps) => TestScenario(steps.AsEnumerable());
 
@@ -52,13 +52,13 @@ public class TestScenarioStepsRunner
     public Task TestGroupScenario(params Func<TestCompositeStep>[] steps)
         => TestScenario(steps.Select(TestStep.CreateComposite).ToArray());
 
-    public TestScenarioStepsRunner WithContext(Func<object> contextProvider, bool takeOwnership)
+    public TestScenarioBuilder WithContext(Func<object> contextProvider, bool takeOwnership)
     {
         _contextDescriptor = new ExecutionContextDescriptor(contextProvider, takeOwnership);
         return this;
     }
 
-    public TestScenarioStepsRunner WithContext(Func<IDependencyResolver, object> contextResolver)
+    public TestScenarioBuilder WithContext(Func<IDependencyResolver, object> contextResolver)
     {
         _contextDescriptor = new ExecutionContextDescriptor(contextResolver, null);
         return this;
@@ -68,5 +68,5 @@ public class TestScenarioStepsRunner
 
 public static class TestScenarioStepsRunnerExtensions
 {
-    public static TestScenarioStepsRunner Test(this ICoreScenarioStepsRunner runner) => new(runner);
+    public static TestScenarioBuilder Test(this ICoreScenarioStepsRunner runner) => new(runner);
 }

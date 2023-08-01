@@ -1,5 +1,6 @@
 ﻿using LightBDD.Core.ExecutionContext;
 using LightBDD.Framework.Implementation;
+using LightBDD.Framework.Scenarios;
 
 namespace LightBDD.Framework.Extensibility;
 
@@ -9,7 +10,9 @@ namespace LightBDD.Framework.Extensibility;
 public class BddRunnerContext
 {
     /// <summary>
-    /// Returns <see cref="IBddRunner"/> interface for currently executed scenario or throws an exception if no scenario is being run by the current task.
+    /// Returns <see cref="IBddRunner"/> interface for currently executed scenario.
+    /// The runner implementation uses deferred initialization, where currently executed scenario details will get obtained upon first call to <see cref="IScenarioBuilder{NoContext}.Integrate()"/>,
+    /// at which stage an exception will be thrown if no scenario is being run by the current task.
     /// </summary>
-    public static IBddRunner GetCurrent () => new BddRunnerV2(ScenarioExecutionContext.CurrentScenarioStepsRunner);
+    public static IBddRunner GetCurrent () => new BddRunnerV2();
 }

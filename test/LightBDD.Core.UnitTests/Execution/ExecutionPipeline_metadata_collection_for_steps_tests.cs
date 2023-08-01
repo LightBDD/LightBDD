@@ -77,7 +77,7 @@ public class ExecutionPipeline_metadata_collection_for_steps_tests
 
         StepResultExpectation.AssertEqual(scenario.GetSteps(),
                 new StepResultExpectation(1, 3, nameof(Steps.Given_step_one), ExecutionStatus.Passed),
-                new StepResultExpectation(2, 3, nameof(Steps.When_step_two_throwing_exception), ExecutionStatus.Failed, $"Step 2: System.InvalidOperationException: {Steps.ExceptionReason}"),
+                new StepResultExpectation(2, 3, nameof(Steps.When_step_two_throwing_exception), ExecutionStatus.Failed, $"Step 2 Failed: System.InvalidOperationException: {Steps.ExceptionReason}"),
                 new StepResultExpectation(3, 3, nameof(Steps.Then_step_three), ExecutionStatus.NotRun)
             );
     }
@@ -89,7 +89,7 @@ public class ExecutionPipeline_metadata_collection_for_steps_tests
 
         StepResultExpectation.AssertEqual(scenario.GetSteps(),
                 new StepResultExpectation(1, 3, nameof(Steps.Given_step_one), ExecutionStatus.Passed),
-                new StepResultExpectation(2, 3, nameof(Steps.When_step_two_is_bypassed), ExecutionStatus.Bypassed, $"Step 2: {Steps.BypassReason}"),
+                new StepResultExpectation(2, 3, nameof(Steps.When_step_two_is_bypassed), ExecutionStatus.Bypassed, $"Step 2 Bypassed: {Steps.BypassReason}"),
                 new StepResultExpectation(3, 3, nameof(Steps.Then_step_three), ExecutionStatus.Passed)
             );
     }

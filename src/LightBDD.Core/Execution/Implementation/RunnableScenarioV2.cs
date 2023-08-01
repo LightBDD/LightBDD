@@ -53,6 +53,10 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario, IRunStageCon
             await _fixtureManager.InitializeAsync(_result.Info.Parent.FeatureType);
             await _decoratedMethod.Invoke();
         }
+        catch (StepExecutionException)
+        {
+            //will be collected via results
+        }
         catch (Exception ex)
         {
             _collector.Capture(ex);
@@ -109,10 +113,6 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario, IRunStageCon
         try
         {
             await _entryMethod.Invoke(Fixture, stepsRunner);
-        }
-        catch (StepExecutionException)
-        {
-            //will be collected via results
         }
         finally
         {

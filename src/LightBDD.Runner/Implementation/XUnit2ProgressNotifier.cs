@@ -1,5 +1,4 @@
 ﻿using System;
-using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.Notification;
 using LightBDD.Framework.Notification;
 
@@ -16,6 +15,6 @@ namespace LightBDD.Runner.Implementation
             };
         }
 
-        private static void WriteTestOutput(string message) => ScenarioExecutionContext.GetCurrentScenarioFixtureIfPresent<ITestOutputProvider>()?.TestOutput.WriteLine(message);
+        private static void WriteTestOutput(string message) => TestOutputHelpers.TryGetCurrent()?.WriteLine(message);
     }
 }
