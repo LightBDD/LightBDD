@@ -4,7 +4,9 @@ using LightBDD.Framework.UnitTests.Scenarios.Helpers;
 using Moq;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using LightBDD.Framework.Scenarios;
+using Shouldly;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
 {
@@ -12,48 +14,50 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
     public class Contextual_runner_tests
     {
         private class MyContext { }
-        private Mock<ICoreScenarioBuilder> _builder;
+        private Mock<ICoreScenarioStepsRunner> _stepsRunner;
         private IBddRunner _runner;
 
         [SetUp]
         public void SetUp()
         {
-            _builder = ScenarioMocks.CreateScenarioBuilder();
-            _runner = ScenarioMocks.CreateBddRunner(_builder);
+            _stepsRunner = ScenarioMocks.CreateScenarioBuilder();
+            _runner = ScenarioMocks.CreateBddRunner(_stepsRunner);
         }
 
         [Test]
         public void It_should_allow_to_apply_context_instance()
         {
-            var capture = _builder.ExpectContext();
+            var capture = _stepsRunner.ExpectContext();
             var context = new object();
 
             _runner.WithContext(context);
 
-            _builder.Verify();
-            Assert.That(capture.Value.Invoke(), Is.SameAs(context));
+            _stepsRunner.Verify();
+            capture.Value.ContextResolver.Invoke(new FakeResolver(capture.Value))
+                .ShouldBeSameAs(context);
         }
 
         [Test]
         public void It_should_allow_to_apply_context_provider()
         {
-            var capture = _builder.ExpectContext();
+            var capture = _stepsRunner.ExpectContext();
 
             _runner.WithContext(() => TimeSpan.FromSeconds(5));
 
-            _builder.Verify();
-            Assert.That(capture.Value.Invoke(), Is.EqualTo(TimeSpan.FromSeconds(5)));
+            _stepsRunner.Verify();
+            capture.Value.ContextResolver.Invoke(new FakeResolver(capture.Value))
+                .ShouldBe(TimeSpan.FromSeconds(5));
         }
 
         [Test]
         public void It_should_allow_to_apply_context_resolved_with_DI_container()
         {
             var resolver = new Mock<IDependencyResolver>();
-            var capture = _builder.ExpectResolvedContext();
+            var capture = _stepsRunner.ExpectResolvedContext();
 
             _runner.WithContext<MyContext>();
 
-            _builder.Verify();
+            _stepsRunner.Verify();
             capture.Value.Invoke(resolver.Object);
             resolver.Verify(x => x.Resolve(typeof(MyContext)));
         }
@@ -65,7 +69,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
             resolver.Setup(r => r.Resolve(typeof(ConfigurableContext)))
                 .Returns(new ConfigurableContext { Dependency = "dep1" });
 
-            var capture = _builder.ExpectResolvedContext();
+            var capture = _stepsRunner.ExpectResolvedContext();
 
             _runner.WithContext<ConfigurableContext>(ctx => ctx.Text = "foo");
 
@@ -81,7 +85,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
             resolver.Setup(r => r.Resolve(typeof(ConfigurableContext)))
                 .Returns(new ConfigurableContext { Dependency = "dep1" });
 
-            var capture = _builder.ExpectResolvedContext();
+            var capture = _stepsRunner.ExpectResolvedContext();
 
             _runner.WithContext(
                 r => r.Resolve<ConfigurableContext>(),
@@ -96,6 +100,22 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
         {
             public string Text { get; set; }
             public string Dependency { get; set; }
+        }
+
+        class FakeResolver : ContainerConfigurator, IDependencyResolver
+        {
+            private readonly Dictionary<Type, object> _singletons = new();
+            public FakeResolver(ExecutionContextDescriptor descriptor)
+            {
+                descriptor.ScopeConfigurator?.Invoke(this);
+            }
+
+            public object Resolve(Type type) => _singletons[type];
+
+            public override void RegisterInstance(object instance, RegistrationOptions options)
+            {
+                _singletons[instance.GetType()] = instance;
+            }
         }
     }
 }

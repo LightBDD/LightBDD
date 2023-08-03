@@ -10,7 +10,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
     {
         public LightBddConfiguration Configuration { get; }
 
-        public MockBddRunner(LightBddConfiguration configuration, ICoreScenarioBuilder scenarioRunner)
+        public MockBddRunner(LightBddConfiguration configuration, ICoreScenarioStepsRunner scenarioRunner)
         {
             Configuration = configuration;
             Core = scenarioRunner;
@@ -22,7 +22,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
         {
             try
             {
-                await Core.Build().ExecuteAsync();
+                await Core.RunAsync();
             }
             catch (ScenarioExecutionException e)
             {
@@ -30,6 +30,6 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
             }
         }
 
-        public ICoreScenarioBuilder Core { get; }
+        public ICoreScenarioStepsRunner Core { get; }
     }
 }

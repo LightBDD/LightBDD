@@ -115,7 +115,6 @@ namespace LightBDD.Framework.Scenarios
                 runner
                     .AddSteps(steps)
                     .Integrate().Core
-                    .WithCapturedScenarioDetailsIfNotSpecified()
                     .RunSync();
             }
             catch (ScenarioExecutionException e)
@@ -148,7 +147,6 @@ namespace LightBDD.Framework.Scenarios
                 await runner
                     .AddSteps(steps)
                     .Integrate().Core
-                    .WithCapturedScenarioDetailsIfNotSpecified()
                     .RunAsync();
             }
             catch (ScenarioExecutionException e)
@@ -185,7 +183,6 @@ namespace LightBDD.Framework.Scenarios
                 await runner
                     .AddAsyncSteps(steps)
                     .Integrate().Core
-                    .WithCapturedScenarioDetailsIfNotSpecified()
                     .RunAsync();
             }
             catch (ScenarioExecutionException e)

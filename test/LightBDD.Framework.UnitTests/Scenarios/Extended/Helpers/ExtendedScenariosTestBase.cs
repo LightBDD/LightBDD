@@ -11,7 +11,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
 {
     public class ExtendedScenariosTestBase<T> : Steps
     {
-        protected Mock<ICoreScenarioBuilder> Builder;
+        protected Mock<ICoreScenarioStepsRunner> Builder;
         protected IBddRunner<T> Runner;
 
         [SetUp]
@@ -26,7 +26,6 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
         protected (List<StepDescriptor> scenarioCapture, Capture<bool> runCapture) ExpectExtendedScenarioRun()
         {
             var stepsCapture = Builder.ExpectAddSteps();
-            Builder.ExpectWithCapturedScenarioDetailsIfNotSpecified();
             var runCapture = Builder.ExpectRun();
             return (stepsCapture, runCapture);
         }

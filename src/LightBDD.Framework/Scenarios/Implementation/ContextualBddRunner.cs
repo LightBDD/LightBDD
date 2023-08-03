@@ -10,12 +10,12 @@ namespace LightBDD.Framework.Scenarios.Implementation
     {
         public ContextualBddRunner(IBddRunner coreRunner, Func<object> contextProvider, bool takeOwnership)
         {
-            Core = coreRunner.Integrate().Core.WithContext(contextProvider, takeOwnership);
+            Core = coreRunner.Integrate().Core.WithContext(new ExecutionContextDescriptor(contextProvider, takeOwnership));
         }
 
         public ContextualBddRunner(IBddRunner coreRunner, Func<IDependencyResolver, object> contextResolver)
         {
-            Core = coreRunner.Integrate().Core.WithContext(contextResolver);
+            Core = coreRunner.Integrate().Core.WithContext(new ExecutionContextDescriptor(contextResolver));
         }
 
         public IIntegratedScenarioBuilder<TContext> Integrate()
@@ -27,9 +27,7 @@ namespace LightBDD.Framework.Scenarios.Implementation
         {
             try
             {
-                await Core
-                    .WithCapturedScenarioDetailsIfNotSpecified()
-                    .RunAsync();
+                await Core.RunAsync();
             }
             catch (ScenarioExecutionException e)
             {
@@ -37,6 +35,6 @@ namespace LightBDD.Framework.Scenarios.Implementation
             }
         }
 
-        public ICoreScenarioBuilder Core { get; }
+        public ICoreScenarioStepsRunner Core { get; }
     }
 }

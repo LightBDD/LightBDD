@@ -11,7 +11,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers
 {
     public class BasicScenarioTestsBase
     {
-        protected Mock<ICoreScenarioBuilder> Builder;
+        protected Mock<ICoreScenarioStepsRunner> Builder;
         protected IBddRunner Runner;
 
         [SetUp]
@@ -24,7 +24,6 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Basic.Helpers
         protected (List<StepDescriptor> scenarioCapture, Capture<bool> runCapture) ExpectBasicScenarioRun()
         {
             var stepsCapture = Builder.ExpectAddSteps();
-            Builder.ExpectWithCapturedScenarioDetailsIfNotSpecified();
             var runCapture = Builder.ExpectRun();
             return (stepsCapture, runCapture);
         }

@@ -11,6 +11,6 @@ namespace LightBDD.Framework.Scenarios
         /// <summary>
         /// Returns core version of scenario builder.
         /// </summary>
-        ICoreScenarioBuilder Core { get; }
+        ICoreScenarioStepsRunner Core { get; }
     }
 }
