@@ -85,31 +85,6 @@ namespace LightBDD.ScenarioHelpers
             };
         }
 
-        public static StepDescriptor CreateSync<TArg>(Action<TArg> step, Func<TArg> argEvaluator)
-        {
-            Task<IStepResultDescriptor> StepInvocation(object ctx, object[] args)
-            {
-                step.Invoke((TArg)args[0]);
-                return Task.FromResult(DefaultStepResultDescriptor.Instance);
-            }
-
-            var parameter = ParameterDescriptor.FromInvocation(step.GetMethodInfo().GetParameters()[0], ctx => argEvaluator.Invoke());
-
-            return new StepDescriptor(step.GetMethodInfo(), StepInvocation, parameter);
-        }
-        public static StepDescriptor Create<TArg>(Func<TArg, Task> step, Func<TArg> argEvaluator)
-        {
-            Task<IStepResultDescriptor> StepInvocation(object ctx, object[] args)
-            {
-                step.Invoke((TArg)args[0]);
-                return Task.FromResult(DefaultStepResultDescriptor.Instance);
-            }
-
-            var parameter = ParameterDescriptor.FromInvocation(step.GetMethodInfo().GetParameters()[0], ctx => argEvaluator.Invoke());
-
-            return new StepDescriptor(step.GetMethodInfo(), StepInvocation, parameter);
-        }
-
         public static StepDescriptor CreateAsync<TArg>(Action<TArg> step, TArg arg)
         {
             async Task<IStepResultDescriptor> StepInvocation(object ctx, object[] args)
@@ -155,18 +130,6 @@ namespace LightBDD.ScenarioHelpers
             return new StepDescriptor(step.GetMethodInfo(), StepInvocation, p1, p2, p3);
         }
 
-        public static StepDescriptor CreateSync<TArg>(Action<TArg> step, TArg arg)
-        {
-            Task<IStepResultDescriptor> StepInvocation(object ctx, object[] args)
-            {
-                step.Invoke((TArg)args[0]);
-                return Task.FromResult(DefaultStepResultDescriptor.Instance);
-            }
-
-            var parameter = ParameterDescriptor.FromConstant(step.GetMethodInfo().GetParameters()[0], arg);
-
-            return new StepDescriptor(step.GetMethodInfo(), StepInvocation, parameter);
-        }
         public static StepDescriptor Create<TArg>(Func<TArg, Task> step, TArg arg)
         {
             Task<IStepResultDescriptor> StepInvocation(object ctx, object[] args)

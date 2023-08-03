@@ -44,7 +44,6 @@ public class EngineContext
     internal readonly ExceptionProcessor ExceptionProcessor;
     internal GlobalSetUpRegistry GlobalSetUp => Configuration.Get<ExecutionExtensionsConfiguration>().GlobalSetUpRegistry;
     internal IProgressNotifier ProgressNotifier => Configuration.Get<ProgressNotifierConfiguration>().Notifier;
-    internal INameFormatter NameFormatter => Configuration.NameFormatterConfiguration().GetFormatter();
     internal IExecutionExtensions ExecutionExtensions => Configuration.ExecutionExtensionsConfiguration();
     internal IDependencyContainer DependencyContainer => Configuration.DependencyContainerConfiguration().DependencyContainer;
     internal IFileAttachmentsManager FileAttachmentsManager => Configuration.ReportConfiguration().GetFileAttachmentsManager();

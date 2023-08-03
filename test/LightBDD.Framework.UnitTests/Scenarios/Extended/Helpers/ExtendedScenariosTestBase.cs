@@ -5,6 +5,8 @@ using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using LightBDD.Core.Configuration;
+using LightBDD.Framework.Configuration;
 using LightBDD.Framework.UnitTests.Scenarios.Helpers;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
@@ -18,7 +20,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
         public void SetUp()
         {
             Builder = ScenarioMocks.CreateScenarioBuilder();
-            var configuration = TestableIntegrationContextBuilder.Default().Build().Configuration;
+            var configuration = new LightBddConfiguration().WithFrameworkDefaults();
             Builder.SetupConfiguration(configuration);
             Runner = new MockBddRunner<T>(configuration, Builder.Object);
         }

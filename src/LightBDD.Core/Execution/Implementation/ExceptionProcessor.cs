@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using LightBDD.Core.Configuration;
-using LightBDD.Core.Extensibility;
 using LightBDD.Core.Results;
 
 namespace LightBDD.Core.Execution.Implementation
@@ -10,12 +9,6 @@ namespace LightBDD.Core.Execution.Implementation
     {
         private readonly Func<Exception, ExecutionStatus> _exceptionToStatusMapper;
         private readonly Func<Exception, string> _exceptionFormatter;
-
-        public ExceptionProcessor(IntegrationContext integrationContext)
-        : this(integrationContext.Configuration)
-        {
-            _exceptionToStatusMapper = integrationContext.ExceptionToStatusMapper;
-        }
 
         public ExceptionProcessor(LightBddConfiguration configuration)
         {

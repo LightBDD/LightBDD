@@ -9,6 +9,7 @@ namespace LightBDD.Core.ExecutionContext;
 /// <summary>
 /// Global execution context which is present when <see cref="ExecutionPipeline"/> executes tests on the current task flow.
 /// </summary>
+//TODO: test
 public class LightBddExecutionContext
 {
     private static readonly AsyncLocal<EngineContext?> Context = new();

@@ -47,6 +47,7 @@ namespace LightBDD.Core.Execution
         public async Task<ITestRunResult> Execute(IReadOnlyList<ScenarioCase> scenarios, CancellationToken cancellationToken = default)
         {
             using var ctx = new Context(_testAssembly, Configure(), cancellationToken);
+            LightBddExecutionContext.Install(ctx);
             var testRunInfo = ctx.MetadataProvider.GetTestRunInfo();
             var testRunStartTime = ctx.ExecutionTimer.GetTime();
             OnBeforeTestRunStart(testRunStartTime, testRunInfo, scenarios);
@@ -62,6 +63,7 @@ namespace LightBDD.Core.Execution
 
             await new FeatureReportGenerator(ctx.Configuration).GenerateReports(result);
             OnAfterTestRunFinish(testRunEndTime, result);
+            LightBddExecutionContext.Clear();
             return result;
         }
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using LightBDD.UnitTests.Helpers.TestableIntegration;
+using LightBDD.Core.Execution;
 using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests.Execution
@@ -15,7 +15,7 @@ namespace LightBDD.Core.UnitTests.Execution
             var start = DateTimeOffset.UtcNow;
             var watch = Stopwatch.StartNew();
 
-            var timer = TestableIntegrationContextBuilder.Default().Build().ExecutionTimer;
+            var timer = DefaultExecutionTimer.StartNew();
 
             await Task.Delay(100);
             var time = timer.GetTime();
@@ -30,7 +30,7 @@ namespace LightBDD.Core.UnitTests.Execution
         [Test]
         public async Task ExecutionTimer_should_provide_time_series_while_keeping_the_start_date_the_same()
         {
-            var timer = TestableIntegrationContextBuilder.Default().Build().ExecutionTimer;
+            var timer = DefaultExecutionTimer.StartNew();
 
             var time1 = timer.GetTime();
             await Task.Delay(50);

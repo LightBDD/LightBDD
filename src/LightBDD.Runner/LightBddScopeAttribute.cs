@@ -2,6 +2,7 @@ using System;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Framework.Configuration;
+using LightBDD.Runner.Configuration;
 using LightBDD.Runner.Implementation;
 using Xunit.Sdk;
 

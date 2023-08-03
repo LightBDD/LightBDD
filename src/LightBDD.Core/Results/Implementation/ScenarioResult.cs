@@ -23,12 +23,6 @@ namespace LightBDD.Core.Results.Implementation
             Status = ExecutionStatus.NotRun;
         }
 
-        public void UpdateResult(IStepResult[] steps, ExecutionTime executionTime)
-        {
-            UpdateResults(steps);
-            UpdateTime(executionTime);
-        }
-
         public void UpdateTime(ExecutionTime executionTime)
         {
             ExecutionTime = executionTime;
