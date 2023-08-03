@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility;
+using LightBDD.Core.Results;
 using LightBDD.Framework.Extensibility;
+using LightBDD.Framework.UnitTests.Helpers;
 using LightBDD.ScenarioHelpers;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
+using Shouldly;
 
 namespace LightBDD.Framework.UnitTests.Dependencies
 {
@@ -14,7 +18,7 @@ namespace LightBDD.Framework.UnitTests.Dependencies
     public class DependencyContainer_tests
     {
         [Test]
-        public void Steps_should_get_access_to_DI_container_via_GetDependencyResolver()
+        public async Task Steps_should_get_access_to_DI_container_via_GetDependencyResolver()
         {
             var resolvers = new List<IDependencyResolver>();
 
@@ -39,7 +43,7 @@ namespace LightBDD.Framework.UnitTests.Dependencies
                 return TestCompositeStep.Create(Step3, Step4);
             }
 
-            GetFeatureRunner().GetBddRunner(this).Test().TestScenario(TestStep.CreateSync(Step1), TestStep.CreateComposite(Step2));
+            await TestableBddRunner.Default.RunScenario(r => r.Test().TestScenario(TestStep.CreateSync(Step1), TestStep.CreateComposite(Step2)));
 
             Assert.That(resolvers.Count, Is.EqualTo(4));
             Assert.That(resolvers.Any(x => x == null), Is.False);
@@ -47,7 +51,7 @@ namespace LightBDD.Framework.UnitTests.Dependencies
         }
 
         [Test]
-        public void Each_scenario_should_have_own_context()
+        public async Task Each_scenario_should_have_own_context()
         {
             var disposables = new List<Disposable>();
 
@@ -59,7 +63,10 @@ namespace LightBDD.Framework.UnitTests.Dependencies
             }
 
             for (var i = 0; i < 4; ++i)
-                Assert.DoesNotThrow(() => GetFeatureRunner().GetBddRunner(this).Test().TestScenario(StepMethod));
+            {
+                var scenario = await TestableBddRunner.Default.RunScenario(r => r.Test().TestScenario(StepMethod));
+                scenario.Status.ShouldBe(ExecutionStatus.Passed);
+            }
 
             Assert.That(disposables.Count(x => x.IsDisposed), Is.EqualTo(4));
         }
@@ -72,13 +79,6 @@ namespace LightBDD.Framework.UnitTests.Dependencies
             }
 
             public bool IsDisposed { get; private set; }
-        }
-
-        private IFeatureRunner GetFeatureRunner()
-        {
-            var context = TestableIntegrationContextBuilder.Default();
-
-            return new TestableFeatureRunnerRepository(context).GetRunnerFor(GetType());
         }
     }
 }

@@ -12,7 +12,6 @@ using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.ExecutionContext.Implementation;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Metadata;
-using LightBDD.Core.Metadata.Implementation;
 using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Reporting;
 using LightBDD.Core.Results;

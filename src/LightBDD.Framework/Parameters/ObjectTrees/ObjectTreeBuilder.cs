@@ -1,8 +1,8 @@
 ﻿#nullable enable
 using System;
 using System.Linq;
+using LightBDD.Core.ExecutionContext;
 using LightBDD.Framework.Configuration;
-using LightBDD.Framework.Execution.Coordination;
 using LightBDD.Framework.Implementation;
 using LightBDD.Framework.Parameters.ObjectTrees.Mappers;
 
@@ -21,7 +21,8 @@ public class ObjectTreeBuilder
     /// <summary>
     /// Currently configured instance.
     /// </summary>
-    public static ObjectTreeBuilder Current => FrameworkFeatureCoordinator.TryGetInstance()?.Configuration.Get<ObjectTreeConfiguration>().Builder ?? Default;
+    //TODO: rework
+    public static ObjectTreeBuilder Current => LightBddExecutionContext.GetCurrentIfPresent()?.Configuration.ObjectTreeConfiguration().Builder ?? Default;
 
     /// <summary>
     /// Builder options.

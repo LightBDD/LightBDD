@@ -38,7 +38,8 @@ namespace LightBDD.Core.UnitTests.Execution
         {
             var timer = DefaultExecutionTimer.StartNew();
             var start = timer.GetTime();
-            var scenario = await TestableScenarioFactory.Default.RunScenario(runScenario);
+            //Used Create() to initialize timer within this test and avoid clock precision mismatch
+            var scenario = await TestableScenarioFactory.Create().RunScenario(runScenario);
 
             var stop = timer.GetTime();
             var executionTime = stop.GetExecutionTime(start);

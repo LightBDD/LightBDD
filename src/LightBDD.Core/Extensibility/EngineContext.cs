@@ -29,7 +29,16 @@ public class EngineContext
         MetadataProvider = new MetadataProvider(testAssembly, configuration);
         ExceptionProcessor = new ExceptionProcessor(configuration);
     }
-    internal readonly LightBddConfiguration Configuration;
+    /// <summary>
+    /// Returns instance of <see cref="LightBddConfiguration"/>.
+    /// </summary>
+    public LightBddConfiguration Configuration { get; }
+
+    /// <summary>
+    /// Returns instance of <see cref="ValueFormattingService"/>.
+    /// </summary>
+    public ValueFormattingService ValueFormattingService => MetadataProvider.ValueFormattingService;
+
     internal readonly IExecutionTimer ExecutionTimer = DefaultExecutionTimer.StartNew();
     internal readonly CoreMetadataProvider MetadataProvider;
     internal readonly ExceptionProcessor ExceptionProcessor;
@@ -38,7 +47,6 @@ public class EngineContext
     internal INameFormatter NameFormatter => Configuration.NameFormatterConfiguration().GetFormatter();
     internal IExecutionExtensions ExecutionExtensions => Configuration.ExecutionExtensionsConfiguration();
     internal IDependencyContainer DependencyContainer => Configuration.DependencyContainerConfiguration().DependencyContainer;
-    internal ValueFormattingService ValueFormattingService => MetadataProvider.ValueFormattingService;
     internal IFileAttachmentsManager FileAttachmentsManager => Configuration.ReportConfiguration().GetFileAttachmentsManager();
     internal IFixtureFactory FixtureFactory => Configuration.ExecutionExtensionsConfiguration().FixtureFactory;
 }

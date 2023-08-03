@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution;
+using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Trees;
-using LightBDD.Framework.Execution.Coordination;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Formatting.Values;
 using LightBDD.Framework.Parameters.ObjectTrees;
@@ -132,8 +132,8 @@ public class VerifiableTree : IComplexParameter, ISelfFormattable
     private static string FormatException(Exception? ex)
     {
         //TODO: refactor
-        var formatter = FrameworkFeatureCoordinator.TryGetInstance()?.Configuration.Get<ExceptionHandlingConfiguration>()
-            .ExceptionDetailsFormatter ?? new DefaultExceptionFormatter().Format;
+        var formatter = LightBddExecutionContext.GetCurrentIfPresent()?.Configuration.ExceptionHandlingConfiguration().ExceptionDetailsFormatter
+                        ?? new DefaultExceptionFormatter().Format;
         return formatter.Invoke(ex);
     }
 
