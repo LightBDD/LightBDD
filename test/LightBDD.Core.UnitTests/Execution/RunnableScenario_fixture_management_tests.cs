@@ -91,11 +91,10 @@ public class RunnableScenario_fixture_management_tests
                 "Fixture DisposeAsync() failed: boom!",
                 "Fixture Dispose() failed: boom!!"
             });
-        result.StatusDetails.ShouldStartWith("""
-            Scenario Failed: System.InvalidOperationException: Fixture OnScenarioTearDown() failed: boom
-            	System.InvalidOperationException: Fixture DisposeAsync() failed: boom!
-            	System.InvalidOperationException: Fixture Dispose() failed: boom!!
-            """);
+        result.StatusDetails.ShouldStartWith(
+            "Scenario Failed: System.InvalidOperationException: Fixture OnScenarioTearDown() failed: boom" + Environment.NewLine
+            + "\tSystem.InvalidOperationException: Fixture DisposeAsync() failed: boom!" + Environment.NewLine
+            + "\tSystem.InvalidOperationException: Fixture Dispose() failed: boom!!");
     }
 
     class Holder<T>
