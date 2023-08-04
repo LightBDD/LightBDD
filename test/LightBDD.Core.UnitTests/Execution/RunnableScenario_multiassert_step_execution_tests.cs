@@ -18,7 +18,7 @@ namespace LightBDD.Core.UnitTests.Execution
     {
         private void Passing_step() { }
         private void Failing_step() { throw new InvalidOperationException("failing"); }
-        private void Ignoring_step() { StepExecution.Current.IgnoreScenario("ignoring"); }
+        private void Ignoring_step() { StepExecution.Current.Ignore("ignoring"); }
 
         [MultiAssert]
         private TestCompositeStep Multiassert_ignoring_steps()
@@ -42,7 +42,7 @@ namespace LightBDD.Core.UnitTests.Execution
             var scenario = await TestableScenarioFactory.Default
                 .RunScenario(r => r.Test().TestGroupScenario(Multiassert_ignoring_steps));
             scenario.Status.ShouldBe(ExecutionStatus.Ignored);
-            scenario.ExecutionException.ShouldBeOfType<CustomIgnoreException>();
+            scenario.ExecutionException.ShouldBeOfType<Core.Execution.IgnoreException>();
         }
 
         [Test]

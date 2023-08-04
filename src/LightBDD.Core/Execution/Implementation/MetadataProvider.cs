@@ -19,8 +19,5 @@ internal class MetadataProvider : CoreMetadataProvider
         _testSuite = TestSuite.Create(testAssembly);
     }
 
-    protected override IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member) => Enumerable.Empty<string>();
-
-    protected override string? GetImplementationSpecificFeatureDescription(Type featureType) => null;
     protected override TestSuite GetTestSuite() => _testSuite;
 }

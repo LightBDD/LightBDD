@@ -131,7 +131,7 @@ namespace LightBDD.Core.UnitTests.Execution
         }
 
         private void Step_with_parameters(Complex arg1, Complex arg2, Complex arg3) { }
-        private void Ignored_step_with_parameter(Complex arg) { StepExecution.Current.IgnoreScenario("reason"); }
+        private void Ignored_step_with_parameter(Complex arg) { StepExecution.Current.Ignore("reason"); }
         private void Bypassed_step_with_parameter(Complex arg) { StepExecution.Current.Bypass("reason"); }
         private void Failed_step_with_parameter(Complex arg) { throw new Exception("exception reason"); }
 

@@ -53,7 +53,7 @@ namespace LightBDD.Runner.IntegrationTests
 
             [Scenario]
             [Label(nameof(Ignored_scenario_imperative_way))]
-            public void Ignored_scenario_imperative_way() => StepExecution.Current.IgnoreScenario("ignore reason");
+            public void Ignored_scenario_imperative_way() => StepExecution.Current.Ignore("ignore reason");
 
             [Scenario]
             [ScenarioInlineCase(1)]

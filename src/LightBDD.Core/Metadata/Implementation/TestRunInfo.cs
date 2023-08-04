@@ -7,7 +7,7 @@ namespace LightBDD.Core.Metadata.Implementation;
 
 internal class TestRunInfo : ITestRunInfo
 {
-    public TestRunInfo(TestSuite testSuite, IReadOnlyList<Assembly> lightBddAssemblies)
+    public TestRunInfo(TestSuite testSuite, IReadOnlyCollection<Assembly> lightBddAssemblies)
     {
         TestSuite = testSuite;
         LightBddAssemblies = lightBddAssemblies.Select(AssemblyInfo.From).ToArray();

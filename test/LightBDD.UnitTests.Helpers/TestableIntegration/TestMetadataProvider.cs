@@ -11,17 +11,6 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
     public class TestMetadataProvider : CoreMetadataProvider
     {
-        protected override IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member)
-        {
-            return ExtractAttributePropertyValues<CustomCategoryAttribute>(member, a => a.Name);
-        }
-
-        protected override string GetImplementationSpecificFeatureDescription(Type featureType)
-        {
-            return ExtractAttributePropertyValue<CustomFeatureDescriptionAttribute>(featureType.GetTypeInfo(),
-                a => a.Description);
-        }
-
         protected override TestSuite GetTestSuite()
         {
             return TestSuite.Create(TestExecutionContext.CurrentContext.CurrentTest.TypeInfo.Assembly);
@@ -45,6 +34,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
         {
             var configuration = new LightBddConfiguration();
             configuration.NameFormatterConfiguration().UpdateFormatter(DefaultNameFormatter.Instance);
+            configuration.MetadataConfiguration().RegisterEngineAssembly(typeof(TestMetadataProvider).Assembly);
             onConfigure(configuration);
             return configuration;
         }

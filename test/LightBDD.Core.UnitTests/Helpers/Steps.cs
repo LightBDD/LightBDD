@@ -29,10 +29,10 @@ namespace LightBDD.Core.UnitTests.Helpers
         public void When_step_two_throwing_exception() { throw new InvalidOperationException(ExceptionReason); }
         public void Then_step_three() { }
         public void Then_step_three_should_throw_exception() { throw new InvalidOperationException(ExceptionReason); }
-        public void When_step_two_ignoring_scenario() { StepExecution.Current.IgnoreScenario(IgnoreReason); }
+        public void When_step_two_ignoring_scenario() { StepExecution.Current.Ignore(IgnoreReason); }
         public void Then_step_four() { }
         public void Then_step_five() { }
-        public void Then_step_three_should_be_ignored() { StepExecution.Current.IgnoreScenario(IgnoreReason); }
+        public void Then_step_three_should_be_ignored() { StepExecution.Current.Ignore(IgnoreReason); }
         public void Given_step_with_parameter(string parameter) { }
         public void When_step_with_parameter(int parameter) { }
 

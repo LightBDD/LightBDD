@@ -21,6 +21,8 @@ namespace LightBDD.Core.Extensibility
     {
         private readonly NameParser _nameParser;
         private readonly StepTypeProcessor _stepTypeProcessor;
+        private readonly MetadataConfiguration _configuration;
+
         /// <summary>
         /// Returns <see cref="Formatting.Values.ValueFormattingService"/> .
         /// </summary>
@@ -42,6 +44,7 @@ namespace LightBDD.Core.Extensibility
             NameFormatter = configuration.NameFormatterConfiguration().GetFormatter();
             _nameParser = new NameParser(NameFormatter);
             _stepTypeProcessor = new StepTypeProcessor(NameFormatter, configuration.StepTypeConfiguration());
+            _configuration= configuration.MetadataConfiguration();
         }
 
         /// <summary>
@@ -49,7 +52,7 @@ namespace LightBDD.Core.Extensibility
         /// 
         /// The <see cref="IFeatureInfo.Name"/> is determined from the <paramref name="featureType"/> name.
         /// The <see cref="IFeatureInfo.Labels"/> are determined from attributes implementing <see cref="ILabelAttribute"/>, applied on <paramref name="featureType"/>.
-        /// The <see cref="IFeatureInfo.Description"/> is determined from attribute implementing <see cref="IFeatureDescriptionAttribute"/> in first instance, then by <see cref="GetImplementationSpecificFeatureDescription"/>() method. The value may be <c>null</c>.
+        /// The <see cref="IFeatureInfo.Description"/> is determined from attribute implementing <see cref="IFeatureDescriptionAttribute"/>. The value may be <c>null</c>.
         /// </summary>
         /// <param name="featureType">Feature type.</param>
         /// <returns><see cref="IFeatureInfo"/> object.</returns>
@@ -70,8 +73,7 @@ namespace LightBDD.Core.Extensibility
 
         /// <summary>
         /// Provides scenario categories for scenario represented by <paramref name="scenarioMethod"/>.
-        /// The categories are determined from attributes implementing <see cref="IScenarioCategoryAttribute"/>, applied on <paramref name="scenarioMethod"/> and type declaring the method,
-        /// as well as from <see cref="GetImplementationSpecificScenarioCategories"/>() executed on <paramref name="scenarioMethod"/> and type declaring the method.
+        /// The categories are determined from attributes implementing <see cref="IScenarioCategoryAttribute"/>, applied on <paramref name="scenarioMethod"/> and type declaring the method.
         /// 
         /// The categories specified on base classes will also be retrieved.
         /// </summary>
@@ -81,8 +83,6 @@ namespace LightBDD.Core.Extensibility
         {
             return ExtractAttributePropertyValues<IScenarioCategoryAttribute>(scenarioMethod, a => a.Category)
                 .Concat(ExtractAttributePropertyValues<IScenarioCategoryAttribute>(scenarioMethod.DeclaringType.GetTypeInfo(), a => a.Category))
-                .Concat(GetImplementationSpecificScenarioCategories(scenarioMethod))
-                .Concat(GetImplementationSpecificScenarioCategories(scenarioMethod.DeclaringType.GetTypeInfo()))
                 .Distinct()
                 .OrderBy(c => c)
                 .ToArray();
@@ -164,20 +164,6 @@ namespace LightBDD.Core.Extensibility
         }
 
         /// <summary>
-        /// Returns implementation specific scenario categories or empty collection if no categories are provided.
-        /// </summary>
-        /// <param name="member">Scenario method or feature test class to analyze.</param>
-        /// <returns>Scenario categories or empty collection.</returns>
-        protected abstract IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member);
-
-        /// <summary>
-        /// Returns implementation specific feature description or null if such is not provided.
-        /// </summary>
-        /// <param name="featureType">Feature type.</param>
-        /// <returns>Feature description or null.</returns>
-        protected abstract string GetImplementationSpecificFeatureDescription(Type featureType);
-
-        /// <summary>
         /// Provides value of attribute of type <typeparamref name="TAttribute"/> applied on <paramref name="member"/> or default if attribute is not applied.
         /// The attribute is searched in <paramref name="member"/> and it's ancestors.
         /// </summary>
@@ -249,15 +235,14 @@ namespace LightBDD.Core.Extensibility
         }
 
         /// <summary>
-        /// Provides feature description which is determined from attribute implementing <see cref="IFeatureDescriptionAttribute"/> in first instance, then by <see cref="GetImplementationSpecificFeatureDescription"/>() method.
+        /// Provides feature description which is determined from attribute implementing <see cref="IFeatureDescriptionAttribute"/>.
         /// Returns description or <c>null</c> if none is present.
         /// </summary>
         /// <param name="featureType">Feature type.</param>
         /// <returns>Feature description or <c>null</c>.</returns>
         protected string GetFeatureDescription(Type featureType)
         {
-            return ExtractAttributePropertyValue<IFeatureDescriptionAttribute>(featureType.GetTypeInfo(), a => a.Description)
-                   ?? GetImplementationSpecificFeatureDescription(featureType);
+            return ExtractAttributePropertyValue<IFeatureDescriptionAttribute>(featureType.GetTypeInfo(), a => a.Description);
         }
 
         /// <summary>
@@ -267,7 +252,7 @@ namespace LightBDD.Core.Extensibility
         public ITestRunInfo GetTestRunInfo()
         {
             //TODO: add assembly details
-            return new TestRunInfo(GetTestSuite(), GetLightBddAssemblies().Distinct().ToArray());
+            return new TestRunInfo(GetTestSuite(), _configuration.EngineAssemblies);
         }
 
         /// <summary>
@@ -301,18 +286,6 @@ namespace LightBDD.Core.Extensibility
         private IEnumerable<T> ConcatAndOrderAttributes<T>(params IEnumerable<T>[] sequences) where T : IOrderedAttribute
         {
             return sequences.SelectMany(sequence => sequence.OrderBy(orderable => orderable.Order));
-        }
-
-        private IEnumerable<Assembly> GetLightBddAssemblies()
-        {
-            var type = GetType();
-            while (type != null)
-            {
-                var assembly = type.Assembly;
-                if (assembly.FullName.StartsWith("LightBDD", StringComparison.OrdinalIgnoreCase))
-                    yield return assembly;
-                type = type.BaseType;
-            }
         }
     }
 }
