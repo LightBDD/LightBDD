@@ -1,5 +1,6 @@
 ﻿using System;
 using LightBDD.Framework;
+using LightBDD.Framework.Extensibility;
 using LightBDD.Runner.Implementation;
 using Xunit;
 using Xunit.Abstractions;
@@ -22,6 +23,6 @@ namespace LightBDD.Runner
         /// <summary>
         /// Returns <see cref="IBddRunner"/> allowing to execute scenarios belonging to the feature class.
         /// </summary>
-        protected IBddRunner Runner { get; } = BddRunnerAdapter.Instance;
+        protected IBddRunner Runner { get; } = BddRunnerContext.GetCurrent();
     }
 }

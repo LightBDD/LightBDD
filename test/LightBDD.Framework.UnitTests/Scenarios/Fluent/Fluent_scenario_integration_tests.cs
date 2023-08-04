@@ -1,9 +1,8 @@
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
-using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Scenarios;
+using LightBDD.Framework.UnitTests.Helpers;
 using LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers;
-using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
@@ -12,18 +11,11 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
     public class Fluent_scenario_integration_tests : Steps
     {
         private readonly ConcurrentQueue<int> _numbers = new();
-        private IBddRunner _runner;
-
-        [SetUp]
-        public void SetUp()
-        {
-            _runner = TestableFeatureRunnerRepository.GetRunner(GetType()).GetBddRunner(this);
-        }
 
         [Test]
         public async Task Full_integration_test()
         {
-            await _runner
+            await TestableBddRunner.Default.RunScenario(r => r
                 .AddAsyncSteps(Async_Task_Step_1)
                 .AddSteps(Void_Step_2)
                 .AddSteps(Async_Void_Step_3)
@@ -31,7 +23,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Fluent
                 .AddSteps(_ => Void_Step5())
                 .AddSteps(_ => Async_Void_Step6())
                 .AddSteps(Assert_Steps)
-                .RunAsync();
+                .RunAsync());
 
             Assert_Steps();
         }

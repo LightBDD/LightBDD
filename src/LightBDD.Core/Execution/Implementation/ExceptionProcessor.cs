@@ -1,6 +1,6 @@
+#nullable enable
 using System;
 using LightBDD.Core.Configuration;
-using LightBDD.Core.Extensibility;
 using LightBDD.Core.Results;
 
 namespace LightBDD.Core.Execution.Implementation
@@ -10,10 +10,10 @@ namespace LightBDD.Core.Execution.Implementation
         private readonly Func<Exception, ExecutionStatus> _exceptionToStatusMapper;
         private readonly Func<Exception, string> _exceptionFormatter;
 
-        public ExceptionProcessor(IntegrationContext integrationContext)
+        public ExceptionProcessor(LightBddConfiguration configuration)
         {
-            _exceptionToStatusMapper = integrationContext.ExceptionToStatusMapper;
-            _exceptionFormatter = integrationContext.Configuration.ExceptionHandlingConfiguration().ExceptionDetailsFormatter;
+            _exceptionFormatter = configuration.ExceptionHandlingConfiguration().ExceptionDetailsFormatter;
+            _exceptionToStatusMapper = ex => ex is IgnoreException ? ExecutionStatus.Ignored : ExecutionStatus.Failed;
         }
 
         public ExecutionStatus UpdateResultsWithException(Action<ExecutionStatus, string> setStatus, Exception exception)

@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,6 +10,12 @@ namespace LightBDD.Core.Results.Implementation
     internal class ScenarioResult : IScenarioResult
     {
         private IStepResult[] _steps = Array.Empty<IStepResult>();
+        public IScenarioInfo Info { get; }
+        public ExecutionStatus Status { get; private set; }
+        public string? StatusDetails { get; private set; }
+        public ExecutionTime ExecutionTime { get; private set; } = ExecutionTime.None;
+        public Exception? ExecutionException { get; private set; }
+
 
         public ScenarioResult(IScenarioInfo info)
         {
@@ -16,18 +23,16 @@ namespace LightBDD.Core.Results.Implementation
             Status = ExecutionStatus.NotRun;
         }
 
-        public void UpdateResult(IStepResult[] steps, ExecutionTime executionTime)
+        public void UpdateTime(ExecutionTime executionTime)
         {
-            _steps = steps;
             ExecutionTime = executionTime;
-            CaptureStatus();
         }
 
-        public IScenarioInfo Info { get; }
-        public ExecutionStatus Status { get; private set; }
-        public string StatusDetails { get; private set; }
-        public ExecutionTime ExecutionTime { get; private set; } = ExecutionTime.None;
-        public Exception ExecutionException { get; private set; }
+        public void UpdateResults(IStepResult[] steps)
+        {
+            _steps = steps;
+            CaptureStatus();
+        }
 
         public IEnumerable<IStepResult> GetSteps()
         {
@@ -61,11 +66,18 @@ namespace LightBDD.Core.Results.Implementation
             return sb.ToString();
         }
 
-        public void UpdateScenarioResult(ExecutionStatus status, string details = null)
+        public void UpdateScenarioResult(ExecutionStatus status, string? details = null)
         {
             Status = status;
             if (!string.IsNullOrWhiteSpace(details))
-                StatusDetails = $"Scenario: {details.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t")}";
+                StatusDetails = $"Scenario: {details!.Trim().Replace(Environment.NewLine, Environment.NewLine + "\t")}";
+        }
+
+        public void SetScenarioResult(ExecutionStatus status, string? details = null, Exception? executionException = null)
+        {
+            Status = status;
+            ExecutionException = executionException;
+            StatusDetails = details;
         }
 
         public static ScenarioResult CreateFailed(IScenarioInfo scenarioInfo, Exception ex)
@@ -81,6 +93,11 @@ namespace LightBDD.Core.Results.Implementation
             var result = new ScenarioResult(scenarioInfo);
             result.UpdateScenarioResult(ExecutionStatus.Ignored, message);
             return result;
+        }
+
+        public void UpdateResultsV2(IStepResult[] results)
+        {
+            _steps = results;
         }
     }
 }

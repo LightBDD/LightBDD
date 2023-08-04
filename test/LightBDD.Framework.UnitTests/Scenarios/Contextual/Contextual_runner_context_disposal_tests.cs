@@ -5,21 +5,24 @@ using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using LightBDD.Core.Configuration;
 using LightBDD.Framework.Scenarios;
+using Shouldly;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
 {
     [TestFixture]
+    [FixtureLifeCycle(LifeCycle.InstancePerTestCase)]
     public class Contextual_runner_context_disposal_tests
     {
-        private Mock<ICoreScenarioBuilder> _builder;
-        private IBddRunner _runner;
+        private readonly CapturingContextBuilder _builder = new();
+        private readonly IBddRunner _runner;
+        private readonly Mock<ContainerConfigurator> _configurator = new();
 
-        [SetUp]
-        public void SetUp()
+        public Contextual_runner_context_disposal_tests()
         {
-            _builder = ScenarioMocks.CreateScenarioBuilder();
-            _runner = ScenarioMocks.CreateBddRunner(_builder);
+            _runner = ScenarioMocks.CreateBddRunner(new[] { _builder });
         }
 
         [Test]
@@ -27,7 +30,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
         {
             _runner.WithContext(new object());
 
-            _builder.Verify(x => x.WithContext(It.IsAny<Func<object>>(), false));
+            VerifyExternalOwnership(true);
         }
 
         [Test]
@@ -35,7 +38,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
         {
             _runner.WithContext(new object(), true);
 
-            _builder.Verify(x => x.WithContext(It.IsAny<Func<object>>(), true));
+            VerifyExternalOwnership(false);
         }
 
         [Test]
@@ -43,7 +46,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
         {
             _runner.WithContext(() => new object());
 
-            _builder.Verify(x => x.WithContext(It.IsAny<Func<object>>(), true));
+            VerifyExternalOwnership(false);
         }
 
         [Test]
@@ -51,15 +54,52 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
         {
             _runner.WithContext(() => new object(), false);
 
-            _builder.Verify(x => x.WithContext(It.IsAny<Func<object>>(), false));
+            VerifyExternalOwnership(true);
         }
 
         [Test]
         public void Generic_WithContext_should_use_DI_container()
         {
             _runner.WithContext<List<string>>();
+            _builder.Descriptor.ScopeConfigurator.ShouldBeNull();
 
-            _builder.Verify(x => x.WithContext(It.IsAny<Func<IDependencyResolver, object>>(), null));
+            var expected = new List<string>();
+            var resolver = new Mock<IDependencyResolver>();
+            resolver.Setup(x => x.Resolve(typeof(List<string>))).Returns(expected);
+
+            var actual = _builder.Descriptor.ContextResolver.Invoke(resolver.Object);
+
+            actual.ShouldBeSameAs(expected);
+        }
+
+        private void VerifyExternalOwnership(bool expectedExternalOwnership)
+        {
+            _builder.Descriptor.ScopeConfigurator?.Invoke(_configurator.Object);
+            _configurator.Verify(c =>
+                c.RegisterInstance(It.IsAny<object>(), It.Is<RegistrationOptions>(x => VerifyExternalOwnership(expectedExternalOwnership, x))));
+        }
+
+        private static bool VerifyExternalOwnership(bool expectedExternalOwnership, RegistrationOptions x)
+        {
+            x.IsExternallyOwned.ShouldBe(expectedExternalOwnership);
+            return true;
+        }
+
+        class CapturingContextBuilder : ICoreScenarioStepsRunner
+        {
+            public ExecutionContextDescriptor Descriptor { get; private set; }
+
+            public ICoreScenarioStepsRunner AddSteps(IEnumerable<StepDescriptor> steps) => throw new NotImplementedException();
+
+            public ICoreScenarioStepsRunner WithContext(ExecutionContextDescriptor contextDescriptor)
+            {
+                Descriptor = contextDescriptor;
+                return this;
+            }
+
+            public Task RunAsync() => throw new NotImplementedException();
+
+            public LightBddConfiguration Configuration => throw new NotImplementedException();
         }
     }
 }

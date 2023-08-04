@@ -1,10 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using LightBDD.Core.Extensibility;
 using LightBDD.Core.Results;
+using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
-using LightBDD.Framework.Extensibility;
-using LightBDD.UnitTests.Helpers.TestableIntegration;
+using LightBDD.ScenarioHelpers;
 using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests.Reporting
@@ -12,25 +11,11 @@ namespace LightBDD.Core.UnitTests.Reporting
     [TestFixture]
     public class StepExecution_tests
     {
-        #region Setup/Teardown
-
-        private IFeatureRunner _feature;
-        private IBddRunner _runner;
-
-        [SetUp]
-        public void SetUp()
-        {
-            _feature = TestableFeatureRunnerRepository.GetRunner(GetType());
-            _runner = _feature.GetBddRunner(this);
-        }
-
-        #endregion
-
         [Test]
         public async Task AttachFile_should_attach_file_to_step_results()
         {
-            await _runner.Test().TestScenarioAsync(Step1_with_attachment, Step2_with_attachment);
-            var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps().ToArray();
+            var scenario = await TestableScenarioFactory.Default.RunScenario(r => r.Test().TestScenario(Step1_with_attachment, Step2_with_attachment));
+            var steps = scenario.GetSteps().ToArray();
 
             Assert.That(steps[0].FileAttachments.Select(a => $"{a.Name}|{a.FilePath}|{a.RelativePath}"), Is.EqualTo(new[] { "step1|path1|file1" }));
             Assert.That(steps[1].FileAttachments.Select(a => $"{a.Name}|{a.FilePath}|{a.RelativePath}"), Is.EqualTo(new[] { "step2_1|path2|file2", "step2_2|path3|file3" }));
@@ -38,7 +23,7 @@ namespace LightBDD.Core.UnitTests.Reporting
 
         private async Task Step1_with_attachment()
         {
-            await StepExecution.Current.AttachFile(_ => Task.FromResult(new FileAttachment("step1", "path1","file1")));
+            await StepExecution.Current.AttachFile(_ => Task.FromResult(new FileAttachment("step1", "path1", "file1")));
         }
 
         private async Task Step2_with_attachment()

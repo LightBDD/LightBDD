@@ -19,6 +19,7 @@ namespace LightBDD.Core.Execution
         /// <summary>
         /// Returns the context used by this scenario (or null if none were provided).
         /// </summary>
+        //TODO: remove as this is fixture on scenario
         object Context { get; }
         /// <summary>
         /// Returns feature fixture on which the scenario is executed.

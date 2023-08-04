@@ -3,21 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
-using LightBDD.Core.Dependencies;
 using LightBDD.Core.Discovery;
-using LightBDD.Core.Execution.Implementation;
-using LightBDD.Core.Execution.Implementation.GlobalSetUp;
+using LightBDD.Core.ExecutionContext;
+using LightBDD.Core.ExecutionContext.Implementation;
 using LightBDD.Core.Extensibility;
-using LightBDD.Core.Extensibility.Execution;
-using LightBDD.Core.Extensibility.Implementation;
-using LightBDD.Core.Formatting;
-using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Metadata;
-using LightBDD.Core.Metadata.Implementation;
-using LightBDD.Core.Notification;
 using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Reporting;
 using LightBDD.Core.Results;
@@ -53,8 +47,9 @@ namespace LightBDD.Core.Execution
         public async Task<ITestRunResult> Execute(IReadOnlyList<ScenarioCase> scenarios, CancellationToken cancellationToken = default)
         {
             using var ctx = new Context(_testAssembly, Configure(), cancellationToken);
+            LightBddExecutionContext.Install(ctx);
             var testRunInfo = ctx.MetadataProvider.GetTestRunInfo();
-            var testRunStartTime = ctx.Timer.GetTime();
+            var testRunStartTime = ctx.ExecutionTimer.GetTime();
             OnBeforeTestRunStart(testRunStartTime, testRunInfo, scenarios);
             ctx.ProgressNotifier.Notify(new TestRunStarting(testRunStartTime, testRunInfo));
 
@@ -62,12 +57,13 @@ namespace LightBDD.Core.Execution
             var results = await Task.WhenAll(scenarios.GroupBy(s => s.FeatureFixtureType).Select(fixture => ExecuteFeature(fixture, ctx)));
             await ctx.GlobalSetUp.TearDownAsync(ctx.DependencyContainer);
 
-            var testRunEndTime = ctx.Timer.GetTime();
+            var testRunEndTime = ctx.ExecutionTimer.GetTime();
             var result = new TestRunResult(testRunInfo, testRunEndTime.GetExecutionTime(testRunStartTime), results);
             ctx.ProgressNotifier.Notify(new TestRunFinished(testRunEndTime, result));
 
             await new FeatureReportGenerator(ctx.Configuration).GenerateReports(result);
             OnAfterTestRunFinish(testRunEndTime, result);
+            LightBddExecutionContext.Clear();
             return result;
         }
 
@@ -105,7 +101,7 @@ namespace LightBDD.Core.Execution
         private async Task<IFeatureResult> ExecuteFeature(IGrouping<TypeInfo, ScenarioCase> featureScenarios, Context ctx)
         {
             var featureInfo = ctx.MetadataProvider.GetFeatureInfo(featureScenarios.Key);
-            var featureStartTime = ctx.Timer.GetTime();
+            var featureStartTime = ctx.ExecutionTimer.GetTime();
             var scenarios = featureScenarios.ToArray();
             OnBeforeFeatureStart(featureStartTime, featureInfo, scenarios);
             ctx.ProgressNotifier.Notify(new FeatureStarting(featureStartTime, featureInfo));
@@ -114,7 +110,7 @@ namespace LightBDD.Core.Execution
                 .GroupBy(s => s.ScenarioMethod)
                 .Select(s => ExecuteScenarioGroup(featureInfo, s, ctx)));
 
-            var featureEndTime = ctx.Timer.GetTime();
+            var featureEndTime = ctx.ExecutionTimer.GetTime();
             var result = new FeatureResultV2(featureInfo, results.SelectMany(r => r).ToArray());
             ctx.ProgressNotifier.Notify(new FeatureFinished(featureEndTime, result));
             OnAfterFeatureFinished(featureEndTime, result);
@@ -142,12 +138,10 @@ namespace LightBDD.Core.Execution
 
         private async Task<IScenarioResult[]> ExecuteScenarioGroup(IFeatureInfo featureInfo, IGrouping<MethodInfo, ScenarioCase> scenarioCases, Context ctx)
         {
-            var startTime = ctx.Timer.GetTime();
             var scenarios = scenarioCases.ToArray();
-            OnBeforeScenarioGroup(startTime, scenarioCases.Key, scenarios);
+            OnBeforeScenarioGroup(ctx.ExecutionTimer.GetTime(), scenarioCases.Key, scenarios);
             var results = await Task.WhenAll(scenarios.Select(s => ExecuteScenario(featureInfo, s, ctx)));
-            var endTime = ctx.Timer.GetTime();
-            OnAfterScenarioGroup(endTime, results);
+            OnAfterScenarioGroup(ctx.ExecutionTimer.GetTime(), results);
             return results;
         }
 
@@ -173,40 +167,27 @@ namespace LightBDD.Core.Execution
         //TODO: simplify
         private async Task<IScenarioResult> ExecuteScenario(IFeatureInfo featureInfo, ScenarioCase scenario, Context ctx)
         {
-            object? fixture = null;
-            var scenarioInfo = CreateScenarioInfo(featureInfo, scenario, ctx);
-            IScenarioResult scenarioResult = new ScenarioResult(scenarioInfo);
-            EventTime startTime = ctx.Timer.GetTime();
+            var runnableScenario = CreateRunnableScenario(featureInfo, scenario, ctx);
+            var scenarioInfo = runnableScenario.Result.Info;
+            var scenarioResult = runnableScenario.Result;
             try
             {
-                OnBeforeScenario(startTime, scenarioInfo, scenario);
+                OnBeforeScenario(ctx.ExecutionTimer.GetTime(), scenarioInfo, scenario);
 
                 if (ctx.GlobalSetUpException != null)
-                    return ScenarioResult.CreateFailed(scenarioInfo, ctx.GlobalSetUpException);
-                if (ctx.CancellationToken.IsCancellationRequested)
-                    return ScenarioResult.CreateIgnored(scenarioInfo, "Execution aborted");
-
-                fixture = CreateInstance(scenario.FeatureFixtureType);
-                TestContextProvider.Initialize(scenario.ScenarioMethod, scenario.ScenarioArguments);
-                ScenarioBuilderContext.SetCurrent(new ScenarioBuilder(featureInfo, fixture, ctx.Integration, ctx.ExceptionProcessor, x => scenarioResult = x)
-                    .WithScenarioDetails(scenarioInfo));
-
-                var result = scenario.ScenarioMethod.Invoke(fixture, scenario.ScenarioArguments);
-                //TODO: improve?
-                if (result is Task taskResult)
-                    await taskResult;
+                    scenarioResult = ScenarioResult.CreateFailed(scenarioInfo, ctx.GlobalSetUpException);
+                else if (ctx.CancellationToken.IsCancellationRequested)
+                    scenarioResult = ScenarioResult.CreateIgnored(scenarioInfo, "Execution aborted");
+                else
+                    scenarioResult = await runnableScenario.RunAsync();
             }
             catch (Exception ex)
             {
-                if (scenarioResult.Status == ExecutionStatus.NotRun)
-                    scenarioResult = ScenarioResult.CreateFailed(scenarioInfo, ex);
+                scenarioResult = ScenarioResult.CreateFailed(scenarioInfo, ex);
             }
             finally
             {
-                ScenarioBuilderContext.SetCurrent(null);
-                TestContextProvider.Clear();
-                (fixture as IDisposable)?.Dispose();
-                OnAfterScenario(startTime, scenarioResult);
+                OnAfterScenario(ctx.ExecutionTimer.GetTime(), scenarioResult);
             }
 
             return scenarioResult;
@@ -231,18 +212,40 @@ namespace LightBDD.Core.Execution
         {
         }
 
-        private static ScenarioInfo CreateScenarioInfo(IFeatureInfo featureInfo, ScenarioCase scenario, Context ctx)
+        private static IRunnableScenarioV2 CreateRunnableScenario(IFeatureInfo featureInfo, ScenarioCase scenario, Context ctx)
         {
-            return new ScenarioInfo(featureInfo,
-                ctx.MetadataProvider.GetScenarioName(new ScenarioDescriptor(scenario.ScenarioMethod, scenario.ScenarioArguments)),
-                ctx.MetadataProvider.GetScenarioLabels(scenario.ScenarioMethod),
-                ctx.MetadataProvider.GetScenarioCategories(scenario.ScenarioMethod),
-                scenario.RuntimeId);
+            var descriptor = new ScenarioDescriptor(scenario.ScenarioMethod, scenario.ScenarioArguments);
+            return ctx.ScenarioFactory.CreateFor(featureInfo)
+                .WithName(ctx.MetadataProvider.GetScenarioName(descriptor))
+                .WithCategories(ctx.MetadataProvider.GetScenarioCategories(scenario.ScenarioMethod))
+                .WithLabels(ctx.MetadataProvider.GetScenarioLabels(scenario.ScenarioMethod))
+                .WithRuntimeId(scenario.RuntimeId ?? Guid.NewGuid().ToString())
+                .WithScenarioDecorators(ctx.MetadataProvider.GetScenarioDecorators(descriptor))
+                .WithScenarioEntryMethod((fixture, runner) => InvokeScenarioEntryMethod(scenario.ScenarioMethod, fixture, scenario.ScenarioArguments, runner))
+                .Build();
         }
 
-        private object CreateInstance(TypeInfo featureFixtureType)
+        //TODO: improve?
+        private static async Task InvokeScenarioEntryMethod(MethodInfo methodInfo, object fixture, object[] arguments, ICoreScenarioStepsRunner coreScenarioStepsRunner)
         {
-            return Activator.CreateInstance(featureFixtureType) ?? throw new InvalidOperationException($"Failed to create instance of {featureFixtureType}");
+            object? result;
+            try
+            {
+                ScenarioExecutionContext.Current.Get<CurrentScenarioProperty>().StepsRunner = coreScenarioStepsRunner;
+                result = methodInfo.Invoke(fixture, arguments);
+            }
+            catch (TargetInvocationException e) when (e.InnerException != null)
+            {
+                ExceptionDispatchInfo.Capture(e.InnerException).Throw();
+                throw;
+            }
+            finally
+            {
+                ScenarioExecutionContext.Current.Get<CurrentScenarioProperty>().StepsRunner = null;
+            }
+
+            if (result is Task taskResult)
+                await taskResult;
         }
 
         private IEnumerable<ScenarioCase> ExpandParameterizedScenarios(ScenarioCase scenarioCase, Context ctx)
@@ -263,53 +266,24 @@ namespace LightBDD.Core.Execution
             return cfg;
         }
 
-        private class Context : IDisposable
+        //TODO: review
+        private class Context : EngineContext, IDisposable
         {
             public Context(Assembly testAssembly, LightBddConfiguration configuration, CancellationToken cancellationToken)
+            : base(testAssembly, configuration)
             {
-                Configuration = configuration;
                 CancellationToken = cancellationToken;
-                MetadataProvider = new MetadataProvider(testAssembly, configuration);
-                Integration = new CoreIntegrationContext(this);
-                ExceptionProcessor = new ExceptionProcessor(Integration);
+                ScenarioFactory = new RunnableScenarioFactory(this);
             }
-            public readonly LightBddConfiguration Configuration;
+
+            public readonly RunnableScenarioFactory ScenarioFactory;
             public readonly CancellationToken CancellationToken;
-            public readonly IExecutionTimer Timer = DefaultExecutionTimer.StartNew();
-            public readonly CoreMetadataProvider MetadataProvider;
-            //TODO: remove
-            public readonly IntegrationContext Integration;
-            public readonly ExceptionProcessor ExceptionProcessor;
-            public IDependencyContainer DependencyContainer => Configuration.Get<DependencyContainerConfiguration>().DependencyContainer;
-            public GlobalSetUpRegistry GlobalSetUp => Configuration.Get<ExecutionExtensionsConfiguration>().GlobalSetUpRegistry;
-            public IProgressNotifier ProgressNotifier => Configuration.Get<ProgressNotifierConfiguration>().Notifier;
             public Exception? GlobalSetUpException;
 
             public void Dispose()
             {
                 DependencyContainer.Dispose();
             }
-        }
-
-        //TODO: remove
-        private class CoreIntegrationContext : IntegrationContext
-        {
-            private readonly Context _ctx;
-
-            public CoreIntegrationContext(Context ctx)
-            {
-                _ctx = ctx;
-            }
-
-            public override CoreMetadataProvider MetadataProvider => _ctx.MetadataProvider;
-            public override INameFormatter NameFormatter => _ctx.Configuration.NameFormatterConfiguration().GetFormatter();
-            public override Func<Exception, ExecutionStatus> ExceptionToStatusMapper { get; } = MapExceptionToStatus;
-            public override IExecutionExtensions ExecutionExtensions => _ctx.Configuration.ExecutionExtensionsConfiguration();
-            public override LightBddConfiguration Configuration => _ctx.Configuration;
-            public override IDependencyContainer DependencyContainer => _ctx.Configuration.DependencyContainerConfiguration().DependencyContainer;
-            public override ValueFormattingService ValueFormattingService => MetadataProvider.ValueFormattingService;
-            protected override IProgressNotifier GetProgressNotifier() => _ctx.Configuration.Get<ProgressNotifierConfiguration>().Notifier;
-            private static ExecutionStatus MapExceptionToStatus(Exception ex) => ex is IgnoreScenarioException ? ExecutionStatus.Ignored : ExecutionStatus.Failed;
         }
     }
 }

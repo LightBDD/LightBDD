@@ -23,10 +23,4 @@ internal class MetadataProvider : CoreMetadataProvider
 
     protected override string? GetImplementationSpecificFeatureDescription(Type featureType) => null;
     protected override TestSuite GetTestSuite() => _testSuite;
-
-    public override ScenarioDescriptor CaptureCurrentScenario()
-    {
-        var current = TestContextProvider.Current;
-        return new ScenarioDescriptor(current.TestMethod, current.TestMethodArguments);
-    }
 }

@@ -40,8 +40,8 @@ namespace LightBDD.Framework
         /// </list>
         /// </summary>
         /// <param name="reason">Bypass reason.</param>
-        /// <exception cref="StepBypassException">Bypass exception used to control scenario execution.</exception>
-        public void Bypass(string reason) => throw new StepBypassException(reason);
+        /// <exception cref="BypassException">Bypass exception used to control scenario execution.</exception>
+        public void Bypass(string reason) => throw new BypassException(reason);
 
         /// <summary>
         /// Comments currently executed step with a <paramref name="comment"/> text.

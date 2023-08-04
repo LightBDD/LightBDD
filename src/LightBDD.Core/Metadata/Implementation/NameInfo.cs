@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Formatting.NameDecorators;
@@ -6,9 +7,11 @@ namespace LightBDD.Core.Metadata.Implementation
 {
     internal class NameInfo : INameInfo
     {
+        public static readonly INameInfo NotSpecified = new NameInfo("<not specified>", Array.Empty<INameParameterInfo>());
         public string NameFormat { get; }
 
         public IEnumerable<INameParameterInfo> Parameters { get; }
+
 
         public NameInfo(string nameFormat, INameParameterInfo[] parameters)
         {

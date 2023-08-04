@@ -7,7 +7,7 @@ namespace LightBDD.Core.Metadata.Implementation
 {
     internal class ScenarioInfo : IScenarioInfo
     {
-        public ScenarioInfo(IFeatureInfo parent, INameInfo name, string[] labels, string[] categories, string? runtimeId)
+        public ScenarioInfo(IFeatureInfo parent, INameInfo name, IReadOnlyList<string> labels, IReadOnlyList<string> categories, string? runtimeId)
         {
             Parent = parent;
             Name = name;

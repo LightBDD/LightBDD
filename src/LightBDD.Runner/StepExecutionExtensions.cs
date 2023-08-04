@@ -17,7 +17,7 @@ namespace LightBDD.Runner
         /// <param name="reason">Ignore reason.</param>
         public static void IgnoreScenario(this StepExecution execution, string reason)
         {
-            throw new IgnoreScenarioException(reason);
+            throw new IgnoreException(reason);
         }
     }
 }

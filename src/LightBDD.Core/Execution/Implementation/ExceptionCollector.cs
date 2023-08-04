@@ -1,4 +1,6 @@
+#nullable enable
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Results;
@@ -7,14 +9,14 @@ namespace LightBDD.Core.Execution.Implementation
 {
     internal class ExceptionCollector
     {
-        private readonly List<Exception> _executionExceptions = new();
+        private readonly ConcurrentQueue<Exception> _executionExceptions = new();
 
         public void Capture(Exception exception)
         {
-            _executionExceptions.Add(exception is ScenarioExecutionException ? exception.InnerException : exception);
+            _executionExceptions.Enqueue(exception is ScenarioExecutionException ? exception.InnerException! : exception);
         }
 
-        public Exception CollectFor(ExecutionStatus executionStatus, IEnumerable<IStepResult> subSteps)
+        public Exception? CollectFor(ExecutionStatus executionStatus, IEnumerable<IStepResult> subSteps)
         {
             if (executionStatus < ExecutionStatus.Ignored)
                 return null;

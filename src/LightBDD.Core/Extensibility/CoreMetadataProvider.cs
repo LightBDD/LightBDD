@@ -261,19 +261,13 @@ namespace LightBDD.Core.Extensibility
         }
 
         /// <summary>
-        /// Provides currently executed scenario details, that later can be used to build scenario metadata.
-        /// </summary>
-        /// <returns><see cref="ScenarioDescriptor"/> object.</returns>
-        public abstract ScenarioDescriptor CaptureCurrentScenario();
-
-        /// <summary>
         /// Provides currently performed test run info.
         /// </summary>
         /// <returns></returns>
         public ITestRunInfo GetTestRunInfo()
         {
             //TODO: add assembly details
-            return new TestRunInfo(GetTestSuite(), GetLightBDDAssemblies().Distinct().ToArray());
+            return new TestRunInfo(GetTestSuite(), GetLightBddAssemblies().Distinct().ToArray());
         }
 
         /// <summary>
@@ -309,7 +303,7 @@ namespace LightBDD.Core.Extensibility
             return sequences.SelectMany(sequence => sequence.OrderBy(orderable => orderable.Order));
         }
 
-        private IEnumerable<Assembly> GetLightBDDAssemblies()
+        private IEnumerable<Assembly> GetLightBddAssemblies()
         {
             var type = GetType();
             while (type != null)

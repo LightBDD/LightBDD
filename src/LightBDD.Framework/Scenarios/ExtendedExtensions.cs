@@ -4,12 +4,14 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using LightBDD.Framework.Implementation;
 
 namespace LightBDD.Framework.Scenarios
 {
     /// <summary>
     /// Extensions class allowing to use extended syntax for defining and running LightBDD tests.
     /// </summary>
+    //TODO: review all scenario flavors and consider using only async Run methods
     public static class ExtendedExtensions
     {
         /// <summary>
@@ -126,13 +128,43 @@ namespace LightBDD.Framework.Scenarios
         {
             try
             {
-                var scenario = runner
+                runner
                     .AddSteps(steps)
                     .Integrate().Core
-                    .WithCapturedScenarioDetailsIfNotSpecified()
-                    .Build();
+                    .RunSync();
+            }
+            catch (ScenarioExecutionException e)
+            {
+                e.GetOriginal().Throw();
+            }
+        }
 
-                scenario.ExecuteSync();
+        /// <summary>
+        /// Runs test scenario by executing given steps in specified order.<br/>
+        /// If given step throws, other are not executed.<br/>
+        /// The scenario name is determined from the current scenario test method.<br/>
+        /// Scenario labels are determined from <see cref="LabelAttribute"/> attributes applied on scenario method.<br/>
+        /// The step name is determined from lambda parameter name reflecting action type keyword, corresponding action name and passed list of parameters to called method.<br/>
+        /// If scenario is executed with context, the context instance is provided with lambda parameter.<br/>
+        /// Example usage:
+        /// <code>
+        /// Runner.RunScenario(
+        ///         _ => Given_numbers(5, 8),
+        ///         _ => When_I_add_them(),
+        ///         _ => I_should_receive_number(13))
+        /// </code>
+        /// Expected step signature: <code>void Given_numbers(params int[] numbers) { /* ... */ }</code>
+        /// </summary>
+        /// <param name="runner">Runner.</param>
+        /// <param name="steps">List of steps to execute in order.</param>
+        public static async Task RunScenarioAsync<TContext>(this IBddRunner<TContext> runner, params Expression<Action<TContext>>[] steps)
+        {
+            try
+            {
+                await runner
+                    .AddSteps(steps)
+                    .Integrate().Core
+                    .RunAsync();
             }
             catch (ScenarioExecutionException e)
             {
@@ -163,13 +195,10 @@ namespace LightBDD.Framework.Scenarios
         {
             try
             {
-                var scenario = runner
+                await runner
                     .AddAsyncSteps(steps)
                     .Integrate().Core
-                    .WithCapturedScenarioDetailsIfNotSpecified()
-                    .Build();
-
-                await scenario.ExecuteAsync();
+                    .RunAsync();
             }
             catch (ScenarioExecutionException e)
             {

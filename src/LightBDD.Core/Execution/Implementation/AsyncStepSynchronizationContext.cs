@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace LightBDD.Core.Execution.Implementation
 {
+    //TODO: review after migration
     internal class AsyncStepSynchronizationContext : SynchronizationContext
     {
         private readonly SynchronizationContext _inner;
@@ -24,6 +25,12 @@ namespace LightBDD.Core.Execution.Implementation
             var ctx = new AsyncStepSynchronizationContext(Current ?? new SynchronizationContext());
             SetSynchronizationContext(ctx);
             return ctx;
+        }
+
+        public Task CompleteAsync()
+        {
+            RestoreOriginal();
+            return WaitForTasksAsync();
         }
 
         public void RestoreOriginal()
@@ -109,6 +116,41 @@ namespace LightBDD.Core.Execution.Implementation
             {
                 _context.RunWithSelf(_callback, state);
             }
+        }
+
+        public static async Task Execute(Func<Task> action)
+        {
+            var ctx = InstallNew();
+            try
+            {
+                await action();
+            }
+            catch (Exception ex)
+            {
+                ctx._exceptions.Enqueue(ex);
+            }
+
+            await ctx.CompleteAsync();
+        }
+
+        public static async Task<T> Execute<T>(Func<Task<T>> action)
+        {
+            var ctx = InstallNew();
+            try
+            {
+                return await action();
+            }
+            catch (Exception ex)
+            {
+                ctx._exceptions.Enqueue(ex);
+            }
+            finally
+            {
+                await ctx.CompleteAsync();
+            }
+
+            //unreachable as CompleteAsync would throw here
+            return default;
         }
     }
 }

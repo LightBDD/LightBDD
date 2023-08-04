@@ -44,7 +44,7 @@ namespace LightBDD.Core.UnitTests.Dependencies
             using (var container = CreateContainer())
             {
                 var ex = Assert.Throws<InvalidOperationException>(() => container.Resolve<NoCtorType>());
-                Assert.That(ex.Message, Is.EqualTo($"Unable to resolve type {typeof(NoCtorType)} from scope {LifetimeScope.Global}:{Environment.NewLine}Type '{typeof(NoCtorType)}' has to have have exactly one public constructor (number of public constructors: 0)."));
+                Assert.That(ex.Message, Is.EqualTo($"Unable to resolve type {typeof(NoCtorType)} from scope {LifetimeScope.Global}:{Environment.NewLine}Type '{typeof(NoCtorType)}' has to have exactly one public constructor (number of public constructors: 0)."));
             }
         }
 
@@ -74,7 +74,7 @@ namespace LightBDD.Core.UnitTests.Dependencies
             using (var container = CreateContainer())
             {
                 var ex = Assert.Throws<InvalidOperationException>(() => container.Resolve<MultiCtorType>());
-                Assert.That(ex.Message, Is.EqualTo($"Unable to resolve type {typeof(MultiCtorType)} from scope {LifetimeScope.Global}:{Environment.NewLine}Type '{typeof(MultiCtorType)}' has to have have exactly one public constructor (number of public constructors: 2)."));
+                Assert.That(ex.Message, Is.EqualTo($"Unable to resolve type {typeof(MultiCtorType)} from scope {LifetimeScope.Global}:{Environment.NewLine}Type '{typeof(MultiCtorType)}' has to have exactly one public constructor (number of public constructors: 2)."));
             }
         }
 
@@ -165,7 +165,7 @@ namespace LightBDD.Core.UnitTests.Dependencies
                 Assert.That(ex.Message.NormalizeNewLine(), Is.EqualTo($@"Unable to resolve type {typeof(Holder<ProblematicType>)} from scope #global:
 Unable to resolve type {typeof(ProblematicType)} from scope #global:
 Unable to resolve type {typeof(MultiCtorType)} from scope #global:
-Type '{typeof(MultiCtorType)}' has to have have exactly one public constructor (number of public constructors: 2).".NormalizeNewLine()));
+Type '{typeof(MultiCtorType)}' has to have exactly one public constructor (number of public constructors: 2).".NormalizeNewLine()));
             }
         }
 

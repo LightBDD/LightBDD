@@ -42,7 +42,7 @@ namespace LightBDD.Core.Dependencies.Implementation
             var ctors = typeInfo.DeclaredConstructors.Where(x => x.IsPublic).ToArray();
 
             if (ctors.Length != 1)
-                return _ => throw new InvalidOperationException($"Type '{type}' has to have have exactly one public constructor (number of public constructors: {ctors.Length}).");
+                return _ => throw new InvalidOperationException($"Type '{type}' has to have exactly one public constructor (number of public constructors: {ctors.Length}).");
 
             var ctor = ctors[0];
             return r => ctor.Invoke(ctor.GetParameters().Select(p => r.Resolve(p.ParameterType)).ToArray());

@@ -5,20 +5,22 @@ using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using LightBDD.Core.Configuration;
+using LightBDD.Framework.Configuration;
 using LightBDD.Framework.UnitTests.Scenarios.Helpers;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
 {
     public class ExtendedScenariosTestBase<T> : Steps
     {
-        protected Mock<ICoreScenarioBuilder> Builder;
+        protected Mock<ICoreScenarioStepsRunner> Builder;
         protected IBddRunner<T> Runner;
 
         [SetUp]
         public void SetUp()
         {
             Builder = ScenarioMocks.CreateScenarioBuilder();
-            var configuration = TestableIntegrationContextBuilder.Default().Build().Configuration;
+            var configuration = new LightBddConfiguration().WithFrameworkDefaults();
             Builder.SetupConfiguration(configuration);
             Runner = new MockBddRunner<T>(configuration, Builder.Object);
         }
@@ -26,8 +28,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers
         protected (List<StepDescriptor> scenarioCapture, Capture<bool> runCapture) ExpectExtendedScenarioRun()
         {
             var stepsCapture = Builder.ExpectAddSteps();
-            Builder.ExpectWithCapturedScenarioDetailsIfNotSpecified();
-            var runCapture = Builder.ExpectBuild();
+            var runCapture = Builder.ExpectRun();
             return (stepsCapture, runCapture);
         }
 

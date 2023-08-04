@@ -90,7 +90,7 @@ namespace LightBDD.Core.Extensibility
         public MethodBase MethodInfo { get; }
 
         /// <summary>
-        /// Returns step invocation function accepting scenario context object configured with <see cref="ICoreScenarioBuilder.WithContext(Func{object},bool)"/>() method and step parameters.
+        /// Returns step invocation function accepting scenario context object configured with <see cref="ICoreScenarioStepsRunner.WithContext"/> method and step parameters.
         /// </summary>
         public StepFunc StepInvocation { get; }
 

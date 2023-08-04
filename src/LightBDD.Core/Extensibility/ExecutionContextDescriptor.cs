@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using LightBDD.Core.Dependencies;
 
@@ -16,25 +17,25 @@ namespace LightBDD.Core.Extensibility
         /// <summary>
         /// Returns container configurator function used to configure container used in the execution context scope.
         /// </summary>
-        public Action<ContainerConfigurator> ScopeConfigurator { get; }
+        public Action<ContainerConfigurator>? ScopeConfigurator { get; }
         /// <summary>
         /// Returns context resolver function used to create context.
         /// </summary>
-        public Func<IDependencyResolver, object> ContextResolver { get; }
+        public Func<IDependencyResolver, object?> ContextResolver { get; }
 
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public ExecutionContextDescriptor(Func<IDependencyResolver, object> contextResolver, Action<ContainerConfigurator> scopeConfigurator)
+        public ExecutionContextDescriptor(Func<IDependencyResolver, object?> contextResolver, Action<ContainerConfigurator>? scopeConfigurator = null)
         {
-            ScopeConfigurator = scopeConfigurator;
             ContextResolver = contextResolver ?? throw new ArgumentNullException(nameof(contextResolver));
+            ScopeConfigurator = scopeConfigurator;
         }
 
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public ExecutionContextDescriptor(Func<object> contextProvider, bool takeOwnership)
+        public ExecutionContextDescriptor(Func<object?> contextProvider, bool takeOwnership)
         {
             var options = new RegistrationOptions().As<ContextWrapper>();
             if (!takeOwnership)
@@ -44,17 +45,17 @@ namespace LightBDD.Core.Extensibility
             ContextResolver = ResolveContextWrapper;
         }
 
-        private static object ResolveContextWrapper(IDependencyResolver resolver) => resolver.Resolve<ContextWrapper>().GetContext();
+        private static object? ResolveContextWrapper(IDependencyResolver resolver) => resolver.Resolve<ContextWrapper>().GetContext();
 
-        private static object ProvideNoContext(IDependencyResolver _) => null;
+        private static object? ProvideNoContext(IDependencyResolver _) => null;
 
         private class ContextWrapper : IDisposable
         {
-            private readonly Func<object> _contextProvider;
+            private readonly Func<object?> _contextProvider;
             private readonly bool _takeOwnership;
-            private object _instance;
+            private object? _instance;
 
-            public ContextWrapper(Func<object> contextProvider, bool takeOwnership)
+            public ContextWrapper(Func<object?> contextProvider, bool takeOwnership)
             {
                 _contextProvider = contextProvider;
                 _takeOwnership = takeOwnership;
@@ -62,7 +63,7 @@ namespace LightBDD.Core.Extensibility
 
             public void Dispose()
             {
-                if (!_takeOwnership || !(_instance is IDisposable disposable))
+                if (!_takeOwnership || _instance is not IDisposable disposable)
                     return;
 
                 try
@@ -75,7 +76,7 @@ namespace LightBDD.Core.Extensibility
                 }
             }
 
-            public object GetContext()
+            public object? GetContext()
             {
                 return _instance ??= _contextProvider();
             }

@@ -10,6 +10,7 @@ internal class TestOutputHelpers
     private static readonly AsyncLocal<ITestOutputHelper?> Helpers = new();
 
     public static ITestOutputHelper Current => Helpers.Value ?? throw new InvalidOperationException("No scenario is executed at this moment");
+    public static ITestOutputHelper? TryGetCurrent() => Helpers.Value;
 
     public static void Install(IMessageBus bus, ITest test)
     {

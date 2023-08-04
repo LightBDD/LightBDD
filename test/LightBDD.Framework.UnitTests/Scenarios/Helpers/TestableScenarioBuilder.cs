@@ -14,9 +14,8 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
         public TestableScenarioBuilder()
         {
             var builder = ScenarioMocks.CreateScenarioBuilder();
+            //TODO: review
             builder.SetupConfiguration(new LightBddConfiguration());
-            builder.ExpectBuild();
-
             Steps = builder.ExpectAddSteps();
             Core = builder.Object;
         }
@@ -28,7 +27,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
             throw new NotImplementedException();
         }
 
-        public ICoreScenarioBuilder Core { get; }
+        public ICoreScenarioStepsRunner Core { get; }
 
     }
 }

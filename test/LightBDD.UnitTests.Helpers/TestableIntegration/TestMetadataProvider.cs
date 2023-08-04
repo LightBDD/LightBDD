@@ -22,26 +22,22 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
                 a => a.Description);
         }
 
-        public override ScenarioDescriptor CaptureCurrentScenario()
-        {
-            return new ScenarioDescriptor(TestExecutionContext.CurrentContext.CurrentTest.Method.MethodInfo, null);
-        }
-
         protected override TestSuite GetTestSuite()
         {
             return TestSuite.Create(TestExecutionContext.CurrentContext.CurrentTest.TypeInfo.Assembly);
         }
 
-        public TestMetadataProvider() : base(Configure(_=>{}))
+        public TestMetadataProvider() : base(Configure(_ => { }))
         {
         }
 
-        public TestMetadataProvider(LightBddConfiguration configuration):
-            base(configuration){}
+        public TestMetadataProvider(LightBddConfiguration configuration) :
+            base(configuration)
+        { }
 
 
         public TestMetadataProvider(Action<LightBddConfiguration> onConfigure)
-            :base(Configure(onConfigure))
+            : base(Configure(onConfigure))
         {
         }
 
