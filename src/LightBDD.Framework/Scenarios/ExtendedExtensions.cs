@@ -11,6 +11,7 @@ namespace LightBDD.Framework.Scenarios
     /// <summary>
     /// Extensions class allowing to use extended syntax for defining and running LightBDD tests.
     /// </summary>
+    //TODO: review all scenario flavors and consider using only async Run methods
     public static class ExtendedExtensions
     {
         /// <summary>

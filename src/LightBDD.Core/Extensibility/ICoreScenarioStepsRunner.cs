@@ -36,5 +36,6 @@ public interface ICoreScenarioStepsRunner
     /// <summary>
     /// Returns configuration
     /// </summary>
+    //TODO: review if can be removed
     LightBddConfiguration Configuration { get; }
 }

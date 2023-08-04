@@ -39,6 +39,19 @@ vNext
 + #309 (Runner)(change) Reimplemented LightBDD.Runner to integrate with xunit on collection level and added support to net48
 + #309 (Core)(new) Added ScenarioDiscoverer.DiscoverFor() method accepting MethodInfo parameter
 + #309 (integrations)(breaking change) Removed integrations not based on LightBDD.Runner
++ #313 (Core)(New) Added RunnableScenarioFactory
++ #313 (Core)(New) Added IFixtureFactory and the ability to configure it via ExecutionExtensionsConfiguration
++ #313 (Core)(New) Added LightBddExecutionContext with access to EngineContext
++ #313 (Core)(New) Exposed DefaultExecutionTimer
++ #313 (Core)(breaking change) Split ICoreScenarioBuilder into ICoreScenarioStepsRunner and IRunnableScenarioBuilder
++ #313 (Core)(breaking change) Renamed IgnoreScenarioException to IgnoreException
++ #313 (Core)(breaking change) Renamed BypassStepException to BypassException
++ #313 (Core)(breaking change) Replaced IRunnableScenario with IRunnableScenarioV2
++ #313 (Core)(breaking change) Removed FeatureCoordinator, FeatureRunnerRepository, IFeatureRunner, IFeatureFixtureRunner
++ #313 (Core)(breaking change) Removed IntegrationContext class hierarchy
++ #313 (Core)(breaking change) Removed ScenarioBuilderContext
++ #313 (Framework)(New) Added BddRunnerContext to replace BddRunnerExtensions
++ #313 (Framework)(breaking change) Removed FrameworkFeatureCoordinator
 
 Version 3.7.0
 ----------------------------------------

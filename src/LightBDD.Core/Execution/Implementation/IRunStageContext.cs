@@ -6,6 +6,7 @@ using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Execution.Implementation;
 
+//TODO: review possibility of simplification
 internal interface IRunStageContext
 {
     public EngineContext Engine { get; }
