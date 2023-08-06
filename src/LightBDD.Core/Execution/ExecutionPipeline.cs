@@ -270,7 +270,7 @@ namespace LightBDD.Core.Execution
         private class Context : EngineContext, IDisposable
         {
             public Context(Assembly testAssembly, LightBddConfiguration configuration, CancellationToken cancellationToken)
-            : base(testAssembly, configuration)
+            : base(configuration)
             {
                 CancellationToken = cancellationToken;
                 ScenarioFactory = new RunnableScenarioFactory(this);
