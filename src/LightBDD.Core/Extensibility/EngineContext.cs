@@ -26,7 +26,7 @@ public class EngineContext
     public EngineContext(Assembly testAssembly, LightBddConfiguration configuration)
     {
         Configuration = configuration;
-        MetadataProvider = new MetadataProvider(testAssembly, configuration);
+        MetadataProvider = new CoreMetadataProvider(configuration);
         ExceptionProcessor = new ExceptionProcessor(configuration);
     }
     /// <summary>

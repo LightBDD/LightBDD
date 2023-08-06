@@ -48,7 +48,7 @@ namespace LightBDD.Core.Execution
         {
             using var ctx = new Context(_testAssembly, Configure(), cancellationToken);
             LightBddExecutionContext.Install(ctx);
-            var testRunInfo = ctx.MetadataProvider.GetTestRunInfo();
+            var testRunInfo = ctx.MetadataProvider.GetTestRunInfo(_testAssembly);
             var testRunStartTime = ctx.ExecutionTimer.GetTime();
             OnBeforeTestRunStart(testRunStartTime, testRunInfo, scenarios);
             ctx.ProgressNotifier.Notify(new TestRunStarting(testRunStartTime, testRunInfo));

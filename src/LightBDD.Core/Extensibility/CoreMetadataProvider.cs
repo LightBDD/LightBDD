@@ -17,7 +17,7 @@ namespace LightBDD.Core.Extensibility
     /// <summary>
     /// Metadata provider offering core implementation for providing feature, scenario and step metadata.
     /// </summary>
-    public abstract class CoreMetadataProvider
+    public class CoreMetadataProvider
     {
         private readonly NameParser _nameParser;
         private readonly StepTypeProcessor _stepTypeProcessor;
@@ -35,7 +35,7 @@ namespace LightBDD.Core.Extensibility
         /// <summary>
         /// Constructor.
         /// </summary>
-        protected CoreMetadataProvider(LightBddConfiguration configuration)
+        public CoreMetadataProvider(LightBddConfiguration configuration)
         {
             if (configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
@@ -248,19 +248,12 @@ namespace LightBDD.Core.Extensibility
         /// <summary>
         /// Provides currently performed test run info.
         /// </summary>
-        /// <returns></returns>
-        public ITestRunInfo GetTestRunInfo()
+        /// <returns><see cref="ITestRunInfo"/> object.</returns>
+        public ITestRunInfo GetTestRunInfo(Assembly testAssembly)
         {
             //TODO: add assembly details
-            return new TestRunInfo(GetTestSuite(), _configuration.EngineAssemblies);
+            return new TestRunInfo(TestSuite.Create(testAssembly), _configuration.EngineAssemblies);
         }
-
-        /// <summary>
-        /// Provides test suite containing currently executed tests.<br/>
-        /// The method needs to be overridden by integrations to provide proper details. Default implementation returns <seealso cref="TestSuite.NotProvided"/>.
-        /// </summary>
-        /// <returns></returns>
-        protected virtual TestSuite GetTestSuite() => TestSuite.NotProvided;
 
         /// <summary>
         /// Provides <see cref="INameInfo"/> object containing information about scenario name represented by <paramref name="scenarioDescriptor"/>.

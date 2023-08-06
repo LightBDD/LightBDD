@@ -16,7 +16,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         public void It_should_format_step_parameters_with_specified_formatter(string cultureInfo, double parameter, string expectedFormattedParameter)
         {
             var parameterInfo = ParameterInfoHelper.GetMethodParameter<double>(Step_with_parameter);
-            var metadataProvider = new TestMetadataProvider(cfg =>
+            var metadataProvider = TestMetadataProvider.Create(cfg =>
                 cfg.CultureInfoProviderConfiguration()
                     .UpdateCultureInfoProvider(new TestCultureInfoProvider(new CultureInfo(cultureInfo))));
             var formatter = metadataProvider.GetValueFormattingServiceFor(parameterInfo);
