@@ -27,7 +27,7 @@ namespace Example.LightBDD.Runner.Features
         private void Then_multiplying_X_by_Y_should_give_RESULT(int x, int y, Verifiable<int> result)
         {
             if (x < 0 || y < 0)
-                StepExecution.Current.IgnoreScenario("Negative numbers are not supported yet");
+                StepExecution.Current.Ignore("Negative numbers are not supported yet");
             result.SetActual(() => _calculator.Multiply(x, y));
         }
     }

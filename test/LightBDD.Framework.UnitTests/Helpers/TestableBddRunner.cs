@@ -19,7 +19,7 @@ namespace LightBDD.Framework.UnitTests.Helpers
             var cfg = new LightBddConfiguration().WithFrameworkDefaults();
             cfg.ProgressNotifierConfiguration().Clear();
 
-            _factory = new RunnableScenarioFactory(new EngineContext(typeof(TestableBddRunner).Assembly, cfg));
+            _factory = new RunnableScenarioFactory(new EngineContext(cfg));
         }
 
         public Task<IScenarioResult> RunScenario(Func<IBddRunner, Task> runner) =>

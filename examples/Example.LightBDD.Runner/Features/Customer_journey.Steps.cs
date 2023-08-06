@@ -17,7 +17,7 @@ namespace Example.LightBDD.Runner.Features
             public async Task Then_customer_should_receive_invoice()
             {
                 await StepExecution.Current.AttachFile(m => m.CreateFromText("invoice-content", "txt", "Example invoice content", Encoding.UTF8));
-                StepExecution.Current.IgnoreScenario("Not implemented yet");
+                StepExecution.Current.Ignore("Not implemented yet");
             }
 
             public async Task Then_customer_should_receive_order_confirmation()

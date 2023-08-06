@@ -2,7 +2,6 @@
 using System;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
-using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
@@ -26,7 +25,7 @@ internal class TestableScenarioFactory
         TestLightBddConfiguration.SetTestDefaults(cfg);
         onConfigure?.Invoke(cfg);
 
-        return new(new RunnableScenarioFactory(new EngineContext(typeof(TestableScenarioFactory).Assembly, cfg)));
+        return new(new RunnableScenarioFactory(new EngineContext(cfg)));
     }
 
     public IRunnableScenarioBuilder CreateBuilder(IFeatureInfo? feature = null) => _factory.CreateFor(feature ?? Fake.Object<TestResults.TestFeatureInfo>());

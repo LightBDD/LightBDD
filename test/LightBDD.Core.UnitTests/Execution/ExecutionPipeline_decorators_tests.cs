@@ -12,6 +12,7 @@ using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.ScenarioHelpers;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
+using IgnoreException = LightBDD.Core.Execution.IgnoreException;
 
 namespace LightBDD.Core.UnitTests.Execution
 {
@@ -304,7 +305,7 @@ namespace LightBDD.Core.UnitTests.Execution
                     case ExecutionStatus.Bypassed:
                         throw new BypassException("bypassed");
                     case ExecutionStatus.Ignored:
-                        throw new CustomIgnoreException("ignore");
+                        throw new IgnoreException("ignore");
                     default:
                         throw new NotImplementedException();
                 }

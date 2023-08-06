@@ -9,13 +9,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
     [TestFixture]
     public class CoreMetadataProvider_metadata_inheritance_tests
     {
-        private CoreMetadataProvider _metadataProvider;
-
-        [SetUp]
-        public void SetUp()
-        {
-            _metadataProvider = new TestMetadataProvider();
-        }
+        private readonly CoreMetadataProvider _metadataProvider = TestMetadataProvider.Default;
 
         [Test]
         public void Should_collect_categories_from_method_and_classes()

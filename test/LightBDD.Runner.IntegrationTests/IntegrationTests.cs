@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using LightBDD.Core.Configuration;
+using LightBDD.Core.Extensibility;
 using LightBDD.Core.Results;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
@@ -40,6 +42,18 @@ namespace LightBDD.Runner.IntegrationTests
                 });
         }
 
+        [Fact]
+        public void It_should_register_engine_assemblies()
+        {
+            ConfiguredLightBddScope.CapturedConfiguration.ShouldNotBeNull();
+            ConfiguredLightBddScope.CapturedConfiguration.MetadataConfiguration().EngineAssemblies.ShouldBe(new[]
+            {
+                typeof(ScenarioAttribute).Assembly,
+                typeof(IBddRunner).Assembly,
+                typeof(CoreMetadataProvider).Assembly
+            });
+        }
+
         public class Integration_scenarios : FeatureFixture
         {
             [Scenario]
@@ -53,7 +67,7 @@ namespace LightBDD.Runner.IntegrationTests
 
             [Scenario]
             [Label(nameof(Ignored_scenario_imperative_way))]
-            public void Ignored_scenario_imperative_way() => StepExecution.Current.IgnoreScenario("ignore reason");
+            public void Ignored_scenario_imperative_way() => StepExecution.Current.Ignore("ignore reason");
 
             [Scenario]
             [ScenarioInlineCase(1)]

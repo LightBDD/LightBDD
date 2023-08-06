@@ -4,10 +4,7 @@ using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Notification;
-using System.Reflection;
 using LightBDD.Core.Extensibility.Execution;
-using LightBDD.Core.Extensibility.Implementation;
-using LightBDD.Core.Formatting;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Reporting;
 
@@ -21,12 +18,11 @@ public class EngineContext
     /// <summary>
     /// Constructor
     /// </summary>
-    /// <param name="testAssembly">Test assembly</param>
     /// <param name="configuration">Configuration</param>
-    public EngineContext(Assembly testAssembly, LightBddConfiguration configuration)
+    public EngineContext(LightBddConfiguration configuration)
     {
         Configuration = configuration;
-        MetadataProvider = new MetadataProvider(testAssembly, configuration);
+        MetadataProvider = new CoreMetadataProvider(configuration);
         ExceptionProcessor = new ExceptionProcessor(configuration);
     }
     /// <summary>

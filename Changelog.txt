@@ -39,10 +39,10 @@ vNext
 + #309 (Runner)(change) Reimplemented LightBDD.Runner to integrate with xunit on collection level and added support to net48
 + #309 (Core)(new) Added ScenarioDiscoverer.DiscoverFor() method accepting MethodInfo parameter
 + #309 (integrations)(breaking change) Removed integrations not based on LightBDD.Runner
-+ #313 (Core)(New) Added RunnableScenarioFactory
-+ #313 (Core)(New) Added IFixtureFactory and the ability to configure it via ExecutionExtensionsConfiguration
-+ #313 (Core)(New) Added LightBddExecutionContext with access to EngineContext
-+ #313 (Core)(New) Exposed DefaultExecutionTimer
++ #313 (Core)(new) Added RunnableScenarioFactory
++ #313 (Core)(new) Added IFixtureFactory and the ability to configure it via ExecutionExtensionsConfiguration
++ #313 (Core)(new) Added LightBddExecutionContext with access to EngineContext
++ #313 (Core)(new) Exposed DefaultExecutionTimer
 + #313 (Core)(breaking change) Split ICoreScenarioBuilder into ICoreScenarioStepsRunner and IRunnableScenarioBuilder
 + #313 (Core)(breaking change) Renamed IgnoreScenarioException to IgnoreException
 + #313 (Core)(breaking change) Renamed BypassStepException to BypassException
@@ -50,21 +50,25 @@ vNext
 + #313 (Core)(breaking change) Removed FeatureCoordinator, FeatureRunnerRepository, IFeatureRunner, IFeatureFixtureRunner
 + #313 (Core)(breaking change) Removed IntegrationContext class hierarchy
 + #313 (Core)(breaking change) Removed ScenarioBuilderContext
-+ #313 (Framework)(New) Added BddRunnerContext to replace BddRunnerExtensions
++ #313 (Framework)(new) Added BddRunnerContext to replace BddRunnerExtensions
 + #313 (Framework)(breaking change) Removed FrameworkFeatureCoordinator
++ #321 (Core)(new) Added MetadataConfiguration with LightBddConfiguration.MetadataConfiguration() extension method
++ #321 (Core)(breaking change) Flattened CoreMetadataProvider hierarchy and changed GetTestRunInfo() to accept Assembly argument
++ #321 (Core)(breaking change) Removed CoreMetadataProvider.GetImplementationSpecificScenarioCategories() and GetImplementationSpecificFeatureDescription() methods and customization capability
++ #321 (Framework)(breaking change) Replaced StepExecution.IgnoreScenario() extension method from LightBddRunner with Ignore() method implemented directly on StepExecution
 
 Version 3.7.0
 ----------------------------------------
 + #207 (LightBDD.Framework)(Change) Modernised Html Report
-+ #207 (LightBDD.Framework)(New) Added ability to overrride CSS styles, Logo and Favicon with cfg.ReportWritersConfiguration().AddFileWriter<HtmlReportFormatter>() method
-+ #281 (LightBDD.Core)(New) Added IScenarioSetUp and IScenarioTearDown execution extension interfaces allowing to run scenario set up / tear down when implemented on fixture class
++ #207 (LightBDD.Framework)(new) Added ability to overrride CSS styles, Logo and Favicon with cfg.ReportWritersConfiguration().AddFileWriter<HtmlReportFormatter>() method
++ #281 (LightBDD.Core)(new) Added IScenarioSetUp and IScenarioTearDown execution extension interfaces allowing to run scenario set up / tear down when implemented on fixture class
 + #281 (LightBDD.Core)(Change) Exposed IScenario.Fixture property allowing scenario decorators accessing the fixture object
-+ #281 (LightBDD.Core)(New) Added ability to register global set up and tear down for resources and activities by using `ExecutionExtensionsConfiguration`
++ #281 (LightBDD.Core)(new) Added ability to register global set up and tear down for resources and activities by using `ExecutionExtensionsConfiguration`
 + #282 (LightBDD.Framework)(Change) Updated Html Report to have collapsible sub-steps being collapsed by default
 + #288 (LightBDD.Core)(Change) Format of non-inline step parameters with <$name> parameter reference
-+ #292 (LightBDD.Fixie3)(New) Created LightBDD.Fixie3 project with dependency on fixie 3.x
++ #292 (LightBDD.Fixie3)(new) Created LightBDD.Fixie3 project with dependency on fixie 3.x
 + #292 (LightBDD.Fixie2)(Change) Deprecated LightBDD.Fixie2 project in favor of LightBDD.Fixie3
-+ #293 (LightBDD.MsTest3)(New) Created LightBDD.MsTest3 project with dependency on MSTest.TestFramework 3.x
++ #293 (LightBDD.MsTest3)(new) Created LightBDD.MsTest3 project with dependency on MSTest.TestFramework 3.x
 + #293 (LightBDD.MsTest2)(Change) Deprecated LightBDD.MsTest2 project in favor of LightBDD.MsTest3
 + #294 (all)(Change) Updated net461 target framework to net462 (while leaving net461 coverage via .netstandard2.0 target framework)
 + #294 (LightBDD.XUnit2)(Change) Updated xunit package dependency version from 2.4.1 to 2.4.2
@@ -78,15 +82,15 @@ Version 3.6.1
 
 Version 3.6.0
 ----------------------------------------
-+ #241 (LightBDD.Framework)(New) Added WithInferredColumns(InferredColumnsOrder columnsOrder) method to IInputTableBuilder and IVerifiableDataTableBuilder with option to add inferred columns in name or declaration order
++ #241 (LightBDD.Framework)(new) Added WithInferredColumns(InferredColumnsOrder columnsOrder) method to IInputTableBuilder and IVerifiableDataTableBuilder with option to add inferred columns in name or declaration order
 + #264 (LightBDD.Framework)(Fix) Corrected Html Report to expand feature background with the content
 + #265 (LightBDD.Framework)(Fix) Fixed InputTable and VerifiableTable to include Item column if no other columns are present and fail if provided object count and instances do not match
-+ #265 (LightBDD.Core)(New) Added IFormatSymbols.EmptyValue property
-+ #265 (LightBDD.Core)(New) Added IValueFormattingService.Symbols property
++ #265 (LightBDD.Core)(new) Added IFormatSymbols.EmptyValue property
++ #265 (LightBDD.Core)(new) Added IValueFormattingService.Symbols property
 + #265 (LightBDD.Framework)(Change) Updated CollectionFormatter and DictionaryFormatter to format empty collections
-+ #268 (LightBDD.Framework)(New) Added InputTree<T> to provide detailed insights into the object structure upon progress and results rendering.
-+ #268 (LightBDD.Framework)(New) Added VerifiableTree<T> to provide detailed structural verification of actual versus expected object hierarchies
-+ #268 (LightBDD.Framework)(New) Added Tree class with a set of methods to create InputTree<T> and VerifiableTree<T> parameters
++ #268 (LightBDD.Framework)(new) Added InputTree<T> to provide detailed insights into the object structure upon progress and results rendering.
++ #268 (LightBDD.Framework)(new) Added VerifiableTree<T> to provide detailed structural verification of actual versus expected object hierarchies
++ #268 (LightBDD.Framework)(new) Added Tree class with a set of methods to create InputTree<T> and VerifiableTree<T> parameters
 + #268 (LightBDD.Framework)(Change) Equal() expectation supports now comparison of numeric types that have equivalent values, i.e. 5.0 (double) to 5 (int)
 + #268 (LightBDD.Framework)(Change) CastFrom() expectation support now conversions of numeric types that have equivalent values, i.e. 5.0 (double) to 5 (int)
 + #268 (LightBDD.Framework)(Change) InputTable value cells are rendered on Html Report with background color being consistent with color of non-verifiable parameters (pink)
@@ -104,9 +108,9 @@ Version 3.5.0
 + #255 (LightBDD.Framework) Added FileAttachmentManager implementation and registered it with ReportWritersConfiguration.RegisterDefaultFileAttachmentManager() extension method to create attachments in ~/Reports folder
 + #255 (LightBDD.Framework) Updated DefaultProgressNotifier to notify on StepFileAttached event
 + #255 (LightBDD.Framework) Updated HtmlResultTextWriter / PlainTextReportFormatter / XmlReportFormatter to include file attachments
-+ #225 (Core)(New) Introduced IProgressNotifier and processing events: FeatureStarting, FeatureFinished, ScenarioStarting, ScenarioFinished, StepStarting, StepFinished, StepCommented
-+ #225 (Core)(New) Extended ScenarioExecutionContext with GetCurrentScenarioFixtureIfPresent to return fixture object executing given scenario
-+ #225 (Framework)(New) Introduced ProgressNotifierConfiguration to configure IProgressNotifier instances and updated DefaultProgressNotifier, NoProgressNotifier to implement IProgressNotifier and added ParallelProgressNotifierProvider.CreateProgressNotifier() method
++ #225 (Core)(new) Introduced IProgressNotifier and processing events: FeatureStarting, FeatureFinished, ScenarioStarting, ScenarioFinished, StepStarting, StepFinished, StepCommented
++ #225 (Core)(new) Extended ScenarioExecutionContext with GetCurrentScenarioFixtureIfPresent to return fixture object executing given scenario
++ #225 (Framework)(new) Introduced ProgressNotifierConfiguration to configure IProgressNotifier instances and updated DefaultProgressNotifier, NoProgressNotifier to implement IProgressNotifier and added ParallelProgressNotifierProvider.CreateProgressNotifier() method
 + #225 (LightBDD.XUnit2/LightBDD.NUnit3/LightBDD.MsTest2/LightBDD.Fixie2)(Change) Updated projects to use IProgressNotifier configuration
 + #225 (Core/Framework)(Change) Obsoleted IScenarioProgressNotifier, IFeatureProgressNotifier, DelegatingScenarioProgressNotifier, DelegatingFeatureProgressNotifier and all methods using them
 
@@ -125,22 +129,22 @@ Version 3.4.0 (VSIX)
 
 Version 3.4.0
 ----------------------------------------
-+ #245 (Framework)(New) Implemented MessageListener to help testing message based services
++ #245 (Framework)(new) Implemented MessageListener to help testing message based services
 
 Version 3.3.1
 ----------------------------------------
 + #238 (Core)(Fix) Included parameter results in failed steps
-+ #231 (Framework)(New) Updated ResourcePool with constructor accepting async resource factory method
++ #231 (Framework)(new) Updated ResourcePool with constructor accepting async resource factory method
 
 Version 3.3.0
 ----------------------------------------
 + #221 (VSIX)(Change) Merged Project templates and updated TargetFramework to net5
-+ #219 (Core)(New) Added LifetimeScope and IDependencyContainerV2 with support for scope creation with explicit lifetime Ids such as Global, Scenario, Local
-+ #219 (Core)(New) Added InstanceScope and reimplemented DefaultDependencyContainer to support dependency registration with Single, Local, Transient and Scenario scope
-+ #219 (Core)(New) Added DependencyContainerConfiguration.UseDefault() allowing configuration of DefaultDependencyContainer
-+ #219 (Core)(New) Added ConfigureFallbackBehavior() to DefaultDependencyContainer configuration with FallbackResolveBehavior allowing to resolve unregistered types as transient instances or throw exception forcing explicit instantiation
++ #219 (Core)(new) Added LifetimeScope and IDependencyContainerV2 with support for scope creation with explicit lifetime Ids such as Global, Scenario, Local
++ #219 (Core)(new) Added InstanceScope and reimplemented DefaultDependencyContainer to support dependency registration with Single, Local, Transient and Scenario scope
++ #219 (Core)(new) Added DependencyContainerConfiguration.UseDefault() allowing configuration of DefaultDependencyContainer
++ #219 (Core)(new) Added ConfigureFallbackBehavior() to DefaultDependencyContainer configuration with FallbackResolveBehavior allowing to resolve unregistered types as transient instances or throw exception forcing explicit instantiation
 + #219 (Core)(Change) Updated core engine to initialize container with LifetimeScope.Global, start scenarios with LifetimeScope.Scenario and composite steps with LifetimeScope.Local scopes
-+ #143/#219 (Framework)(New) Added IBddRunner.WithContext() and ICompositeStepBuilder.WithContext() overloads allowing to create context using resolver and running additional configuration of the resolved instance with Action<TContext> onConfigure
++ #143/#219 (Framework)(new) Added IBddRunner.WithContext() and ICompositeStepBuilder.WithContext() overloads allowing to create context using resolver and running additional configuration of the resolved instance with Action<TContext> onConfigure
 + #219 (LightBDD.Autofac)(Change) Updated Autofac integration to implement IDependencyContainerV2 and support InstancePerMatchingLifetimeScope(LifetimeScope.Scenario) registrations
 + #219 (LightBDD.LightBDD.Extensions.DependencyInjection)(Change) Updated DependencyInjection integration to share container scope between scenario and composite steps by default and made it configurable with DiContainerOptions.EnableScopeNestingWithinScenarios()
 + #214 (all) Updated all projects to target netstandard2.0 and net461, retiring previous framework support
@@ -148,7 +152,7 @@ Version 3.3.0
 
 Version 3.2.0
 ----------------------------------------
-+ #206 (all)(New) Added explicit netstandard2.0 support to simplify dependency resolution
++ #206 (all)(new) Added explicit netstandard2.0 support to simplify dependency resolution
 + #210 (LightBDD.Fixie2)(Change) Updated Fixie version to 2.2.1
 + #210 (LightBDD.MsTest2)(Change) Updated MSTest.TestFramework version to 2.1.1
 + #210 (LightBDD.NUnit3)(Change) Updated NUnit version to 3.12.0
@@ -165,12 +169,12 @@ Summary:
 Details:
 + #181 (Framework)(Change) Improved compact steps formatting to exclude control characters, don't perform additional formatting and render properly in HTML reports
 + #181 (Core)(Change) Updated StepDescriptor with configurable IsNameFormattingRequired property, controlling if RawName should be formatted or not
-+ #182 (Core)(New) Implemented StepDescriptor.CreateInvalid(Exception ex) for creating step descriptors that failed to initialize
++ #182 (Core)(new) Implemented StepDescriptor.CreateInvalid(Exception ex) for creating step descriptors that failed to initialize
 + #182 (Core)(Change) Updated scenarios and composite-steps to fail fast if any of step-descriptor is invalid
 + #182 (Framework)(Change) Updated step compilers to create invalid descriptors instead of throwing upon parsing failure
 + #185 (LightBDD.XUnit2)(Fix) Updated LightBDD.XUnit2 to allow running scenarios with InlineDataAttribute having specified Skip property value
-+ #185 (LightBDD.XUnit2)(New) Updated LightBDD.XUnit2 to recognize Skip property on Scenario and InlineData attributes and include those scenarios in reports
-+ #185 (LightBDD.XUnit2)(New) Added UseXUnitSkipBehaviorAttribute to enforce default xunit behavior for skipped scenarios
++ #185 (LightBDD.XUnit2)(new) Updated LightBDD.XUnit2 to recognize Skip property on Scenario and InlineData attributes and include those scenarios in reports
++ #185 (LightBDD.XUnit2)(new) Added UseXUnitSkipBehaviorAttribute to enforce default xunit behavior for skipped scenarios
 + #187 (Autofac) Updated UseAutofac() to require specifying takeOwnership flag for passed container
 + #187 (LightBDD.Extensions.DependencyInjection) Updated UseContainer() to require specifying takeOwnership flag for passed provider
 
@@ -209,11 +213,11 @@ Version 3.0.0
 Version 2.5.0
 ----------------------------------------
 Summary:
-+ #60 (VSIX)(New) Implemented Project Templates in VSIX extension
-+ #61 (VSIX)(New) Implemented snippets for scenario and composite steps in VSIX extension
++ #60 (VSIX)(new) Implemented Project Templates in VSIX extension
++ #61 (VSIX)(new) Implemented snippets for scenario and composite steps in VSIX extension
 + #148 (Framework)(Fix) Expect.To.BeAnyTrue<T>() with no sub-expectations should fail
 + #153 (LightBDD.XUnit2)(Examples) Updated dotnet test examples for xunit2 to reflect the newest framework changes
-+ #156 (Framework)(New) Implemented compact step syntax allowing inline step definitions
++ #156 (Framework)(new) Implemented compact step syntax allowing inline step definitions
 + #160 (LightBDD.Fixie2)(Change) Updated Fixie dependency to v2.0.2 to detect tests in VS 15.8 and higher
 
 Version 2.4.3
@@ -226,27 +230,27 @@ Version 2.4.2
 Summary:
 + #127 (LightBDD.Core)(Fix) Fixed FeatureRunnerRepository to instantiate FeatureRunner once per feature type
 + #128 (LightBDD.MsTest2)(Change) Updated progress notifiers to work with scenarios executed in parallel
-+ #134 (LightBDD.Framework)(New) Added State<T> helper struct managing uninitialized shared state fields
-+ #135 (all)(New) Added sourcelink integration to all packages
++ #134 (LightBDD.Framework)(new) Added State<T> helper struct managing uninitialized shared state fields
++ #135 (all)(new) Added sourcelink integration to all packages
 + #137 (LightBDD.Framework)(Bug) Unable to specify absolute path to report location on Linux
 
 Version 2.4.1
 ----------------------------------------
 Summary:
-+ #122 (LightBDD.Extensions.DependencyInjection)(New) Provided integration with DI containers implementing Microsoft DI abstractions
++ #122 (LightBDD.Extensions.DependencyInjection)(new) Provided integration with DI containers implementing Microsoft DI abstractions
 + #123 (LightBDD.XUnit2)(Change) Improved experience with running parameterized scenarios
 
 Version 2.4.0
 ----------------------------------------
 Summary:
-+ #38 (all)(New) Added ability to specify verifiable parameters
-+ #38 (all)(New) Added Expect.To.* expectation expressions
-+ #59 (Core)(New) Added support for DI container
-+ #59 (Framework)(New) Implemented default DI container
-+ #59 (Autofac)(New) Added LightBDD.Autofac integration for Autofac DI container
-+ #67 (Fixie)(New) Added LightBdd.Fixie2 integration project with https://github.com/fixie/fixie
-+ #70 (all)(New) Added InlineTable<TRow>, VerifiableDataTable<TRow>, TableValidator<TRow> classes to represent tabular step method parameters and Table class to create them
-+ #117 (XUnit2)(New) Added experimental ClassCollectionBehavior attribute allowing inter-class test parallelization
++ #38 (all)(new) Added ability to specify verifiable parameters
++ #38 (all)(new) Added Expect.To.* expectation expressions
++ #59 (Core)(new) Added support for DI container
++ #59 (Framework)(new) Implemented default DI container
++ #59 (Autofac)(new) Added LightBDD.Autofac integration for Autofac DI container
++ #67 (Fixie)(new) Added LightBdd.Fixie2 integration project with https://github.com/fixie/fixie
++ #70 (all)(new) Added InlineTable<TRow>, VerifiableDataTable<TRow>, TableValidator<TRow> classes to represent tabular step method parameters and Table class to create them
++ #117 (XUnit2)(new) Added experimental ClassCollectionBehavior attribute allowing inter-class test parallelization
 + #120 (Framework)(Fix) StepExecution.Current.Comment() does not work after leaving sub-step in composite step
 
 Version 2.3.6
@@ -268,11 +272,11 @@ Summary:
 + #34 Enhanced scenario progress notification
 + #98 Lifted requirement for parameterized constructors in LightBDD.XUnit2 FeatureFixture
 Details:
-+ #34 (NUnit3)(New) Implemented immediate progress notification when executed with `dotnet test` or `nunit3-console.exe`
++ #34 (NUnit3)(new) Implemented immediate progress notification when executed with `dotnet test` or `nunit3-console.exe`
 + #34 (XUnit2)(Change) Simplified scenario summary printed in VisualStudio Test Explorer output / Resharper output and console output for LightBDD.XUnit2
-+ #34 (Framework)(New) Added ClearNotifiers() / AppendNotifiers() methods to FeatureProgressNotifierConfiguration in order to simplify combining different notifiers
-+ #34 (Framework)(New) Added ClearNotifierProviders() / AppendNotifierProviders() methods to ScenarioProgressNotifierConfiguration in order to simplify combining different notifiers
-+ #34 (all integrations)(New) Added AppendFrameworkDefaultProgressNotifiers() extensions to FeatureProgressNotifierConfiguration and ScenarioProgressNotifierConfiguration to allow re-applying integration specific notifiers after they has been cleared
++ #34 (Framework)(new) Added ClearNotifiers() / AppendNotifiers() methods to FeatureProgressNotifierConfiguration in order to simplify combining different notifiers
++ #34 (Framework)(new) Added ClearNotifierProviders() / AppendNotifierProviders() methods to ScenarioProgressNotifierConfiguration in order to simplify combining different notifiers
++ #34 (all integrations)(new) Added AppendFrameworkDefaultProgressNotifiers() extensions to FeatureProgressNotifierConfiguration and ScenarioProgressNotifierConfiguration to allow re-applying integration specific notifiers after they has been cleared
 + #98 (XUnit2)(Change) Added parameter-less constructor to FeatureFixture
 + #98 (VSIX)(Change) Updated LightBDD.XUnit2 feature tempaltes to generate classes without parameterized constructor
 
@@ -285,7 +289,7 @@ Summary:
 + #94 Added support for disposable scenario and step context instances
 Details:
 + #69 (Core)(Change) Exposed DefaultExceptionFormatter with ability to filter stack trace members and limit number of printed stack trace lines. Excluded async exception rethrow frames by default (reports and progress notifers)
-+ #69 (Core)(New) Introduced ScenarioExecutionException to be used to propagate scenario/step exceptions without recording LightBDD internal frames
++ #69 (Core)(new) Introduced ScenarioExecutionException to be used to propagate scenario/step exceptions without recording LightBDD internal frames
 + #69 (Framework)(Change) Simplified exception stack trace for basic/extended/fluent step syntax and sync/async runners
 + #69 (all integrations)(Change) Configured DefaultExceptionFormatter to exclude underlying test framework assertion frames from reports and progress notifiers
 + #69 (Core)(Change) Changed minimal required .NET Standard version from 1.1 to 1.3
@@ -322,17 +326,17 @@ Summary:
 + #18 Added MultiAssertAttribute that if applied on scenario or composite step, will make all sub-steps executed irrespectively of previous step status and report any exceptions at the end of all sub-steps execution
 + #17 Added fluent interface for defining and executing scenarios in basic and extended syntax.
 Details:
-+ (Core)(New) #42 Added IScenarioDecoratorAttribute, IStepDecoratorAttribute interfaces allowing to describe execution decorator attributes applicable on scenario or step methods
++ (Core)(new) #42 Added IScenarioDecoratorAttribute, IStepDecoratorAttribute interfaces allowing to describe execution decorator attributes applicable on scenario or step methods
 + (Core)(Change) #18 Added IScenarioDecorator/IStepDecorator interfaces in favor of IScenarioExecutionExtension/IStepExecutionExtension ones which are obsoleted now
 + (Framework)(Change) #17 Moved ICompositeStepBuilder<T> to LightBDD.Framework.Scenarios namespace
-+ (Core)(New) #20 Added IValueFormattingService allowing to format values of any type, based on format attributes, assembly-wide formatters, ISelfFormattable interface or ToString() method
-+ (Core)(New) #20 Added IValueFormatter, IConditionalValueFormatter interfaces allowing to assembly-wide formatters for scenario and step parameters
-+ (Core)(New) #20 Added ISelfFormattable interface allowing to define value formatting method on type level
-+ (Core)(New) #20 Added ValueFormattingConfiguration allowing to configure assembly-wide formatters for scenario/step parameters
++ (Core)(new) #20 Added IValueFormattingService allowing to format values of any type, based on format attributes, assembly-wide formatters, ISelfFormattable interface or ToString() method
++ (Core)(new) #20 Added IValueFormatter, IConditionalValueFormatter interfaces allowing to assembly-wide formatters for scenario and step parameters
++ (Core)(new) #20 Added ISelfFormattable interface allowing to define value formatting method on type level
++ (Core)(new) #20 Added ValueFormattingConfiguration allowing to configure assembly-wide formatters for scenario/step parameters
 + (Core)(Change) #20 Updated ParameterFormatterAttribute to implement IConditionalValueFormatter interface, and allowed to apply multiple format attributes on a single parameter to customize formatting of various types within complex types
 + (Framework)(Change) #20 Added SupportedType property to FormatAttribute allowing to narrow it's applicability
-+ (Framework)(New) #17 Added NewScenario() extension method for IBddRunner<T>, allowing to define scenarios is fluent way
-+ (Framework)(New) #17 Added AddSteps() extension method for IScenarioBuilder, allowing to add basic and extended steps to a fluent scenario builder
++ (Framework)(new) #17 Added NewScenario() extension method for IBddRunner<T>, allowing to define scenarios is fluent way
++ (Framework)(new) #17 Added AddSteps() extension method for IScenarioBuilder, allowing to add basic and extended steps to a fluent scenario builder
 
 
 Version 2.2.0
@@ -350,8 +354,8 @@ Details:
 + (Core)(Change) #23 Changed runner to use lambda parameter name as step type only if name is more than 1 character
 + (Core)(Change) #23 Added StepTypeConfiguration.UseLambdaNameAsStepType property allowing to control this behaviour
 + (Core)(Change) #23 Implemented sealable LightBddConfiguration allowing to make configuration read only
-+ (Core)(New) #19 Updated engine to support composite step execution and reporting
-+ (Framework)(New) #19 Added CompositeStep class that can be returned by step method
++ (Core)(new) #19 Updated engine to support composite step execution and reporting
++ (Framework)(new) #19 Added CompositeStep class that can be returned by step method
 + (Framework)(Change) #19 Updated Xml/Html/PlainText report writters to include composite step details
 + (Framework)(Change) #19 Updated progress notifiers include composite step details
 + (Core)(Change) #19 Updated XmlReportFormatterSchema.xsd to include GroupPrefix attribute and SubSteps elements on Step type
@@ -389,25 +393,25 @@ Details:
 + (Core)(Change) Reimplemented LightBDD.Core to support .NET Standard 1.1 and .NET Framework 4.5
 + (Core)(Change) Reimplemented consecutive step type name replacement
 + (Core)(Change) Reimplemented name and parameter formatting to support parameterizing for all names (features, scenarios, steps) as well as specified CultureInfo
-+ (Core)(New) Introduced IFeatureBddRunner to represent the feature itself (type) and contain it's results, and made IBddRunner/IFeatureFixtureRunner lightweight but fixture instance specific.
-+ (Core)(New) Splitted IProgressNotifier to IFeatureProgressNotifier nad IScenarioProgressNotifier. Modified behaviour of runner to create IScenarioProgressNotifier instance for each scenario.
-+ (Core)(New) Implemented LightBDDConfiguration mechanism and provided configuration mechanisms for all configurable LightBDD features
-+ (Framework)(New) Extracted non core classes from LightBDD.Core and formed LightBDD.Framework
++ (Core)(new) Introduced IFeatureBddRunner to represent the feature itself (type) and contain it's results, and made IBddRunner/IFeatureFixtureRunner lightweight but fixture instance specific.
++ (Core)(new) Splitted IProgressNotifier to IFeatureProgressNotifier nad IScenarioProgressNotifier. Modified behaviour of runner to create IScenarioProgressNotifier instance for each scenario.
++ (Core)(new) Implemented LightBDDConfiguration mechanism and provided configuration mechanisms for all configurable LightBDD features
++ (Framework)(new) Extracted non core classes from LightBDD.Core and formed LightBDD.Framework
 + (Framework)(Change) Reimplemented runner to provide IBddRunner interface with extensibility API based on extension methods
 + (Framework)(Change) Reimplemented basic, extended and contextual scenarios
 + (Framework)(Change) Reimplemented commenting feature to support async tests and being used via extension methods
 + (Framework/ all integrations)(Change) Implemented LightBDD scope and changed the way how LightBDD initializes and finalizes execution
 + (Framework)(Change) Reimplemented LightBDD.SummaryGeneration namespace as LightBDD.Reporting; added more detailed execution times information
 + (Framework)(Change) Merged FormattableSummaryFileWriter functionality to ReportFileWriter
-+ (Core/Framework)(New) Added RunScenarioActionsAsync to basic and extended scenarios to allow mixing void and async void actions
++ (Core/Framework)(new) Added RunScenarioActionsAsync to basic and extended scenarios to allow mixing void and async void actions
 + (XUnit 2)(Change) Reimplemented integration with XUnit 2 (.NET Standard 1.6 and .NET Framework 4.6)
-+ (XUnit 2)(New) Added ITestOutputProvider to XUnit 2 integration and made FeatureFixture implementing it.
++ (XUnit 2)(new) Added ITestOutputProvider to XUnit 2 integration and made FeatureFixture implementing it.
 + (MsTest)(Deprecation) Dropped support for MsTest in favor of MsTest 2
-+ (MsTest 2)(New) Implemented initial implementation of MsTest 2 (.NET Standard 1.6 and .NET Framework 4.6)
++ (MsTest 2)(new) Implemented initial implementation of MsTest 2 (.NET Standard 1.6 and .NET Framework 4.6)
 + (MbUnit)(Deprecation) Dropped support for MbUnit (as testing framework is dead)
 + (NUnit 2)(Deprecation) Dropped support for NUnit 2 in favor of NUnit 3
 + (NUnit 3)(Change) Reimplemented integration with NUnit 3 (.NET Standard 1.6 and .NET Framework 4.6)
-+ (all integrations)(New) Implemented ScenarioAttribute and made it required; Impelemnted FeatureFixtureAttribute and added it to FeatureFixure classes.
++ (all integrations)(new) Implemented ScenarioAttribute and made it required; Impelemnted FeatureFixtureAttribute and added it to FeatureFixure classes.
 + (all integrations) Added "~\\Reports\\FeaturesReport.html" to default report writers
 + (VSIX) (Change) Update item templates for LightBDD 2; dropped Project Templates
 + (all)(Change) Standardized namespaces to match to assembly name
@@ -426,7 +430,7 @@ Summary:
 + Extended SummaryFileWriter to support paths starting with ~ for result files, where ~ is resolved to CurrentDomain.BaseDirectory
 + Modifier SummaryWriterCollection to use "~\\FeaturesSummary.xml" path for default XmlResultFormatter
 Details:
-+ (NUnit3)(New)(Issue #9) Added support for NUnit3 testing framework
++ (NUnit3)(new)(Issue #9) Added support for NUnit3 testing framework
 + (Core)(Change) Extended SummaryFileWriter to support paths starting with ~ for result files, where ~ is resolved to CurrentDomain.BaseDirectory (that solves the issue with NUnit3 Resharper runner that does not honour working directory)
 + (Core)(Change) Modifier SummaryWriterCollection to use "~\\FeaturesSummary.xml" path for default XmlResultFormatter
 + (Core)(Change) Removed unreliable tests for FeatureCoordinator
@@ -441,17 +445,17 @@ Summary:
 + Added new implementations of IProgressNotifier interface
 
 Details:
-+ (Core)(New)(Issue #6) extended TestMetadataProvider with NormalizeStepTypeName() method that replaces step type of consecutive steps with same type to 'AND', making scenario like GIVEN, GIVEN, WHEN, THEN => GIVEN, AND, WHEN, THEN
-+ (Core)(New)(Issue #6) extended lightbdd section in app.config with <stepTypes predefined="given,when..." repeatedStepReplacement="and"/> element, allowing to configure TestMetadataProvider behavior
-+ (Core)(New)(Issue #7) extended StepExecution with Comment() and CommentFormat() methods, allowing to mark currently executed steps with comments
-+ (Core)(New)(Issue #7) extended IProgressNotifier/ConsoleProgressNotifier with NotifyStepComment() method to notify that comment has been added to step
-+ (Core)(New) added DelegatingProgressNotifier allowing to delegate notifications to multiple notifier instances
-+ (Core)(New) added SimplifiedConsoleProgressNotifier allowing to display a simplified progress on console, suitable for parallel test execution
-+ (XUnit)(New) added LightBDD.XUnit integration
-+ (XUnit)(New) added ScenarioAssert with Ignore() method, allowing to ignore not fully implemented scenarios at runtime (integrated with 'Ignored' status in LightBDD reports)
-+ (XUnit)(New) added ScenarioAttribute as a replacement for xUnit Fact/Theory attributes, allowing to mark tests with 'Skipped' status if ScenarioAssert.Ignore() method is used
-+ (XUnit)(New) added XUnitOutputProgressNotifier to include execution progress on the test window in Visual Studio
-+ (XUnit)(New) added FeatureFixture that uses XUnitOutputProgressNotifier and SimplifiedConsoleProgressNotifier by default
++ (Core)(new)(Issue #6) extended TestMetadataProvider with NormalizeStepTypeName() method that replaces step type of consecutive steps with same type to 'AND', making scenario like GIVEN, GIVEN, WHEN, THEN => GIVEN, AND, WHEN, THEN
++ (Core)(new)(Issue #6) extended lightbdd section in app.config with <stepTypes predefined="given,when..." repeatedStepReplacement="and"/> element, allowing to configure TestMetadataProvider behavior
++ (Core)(new)(Issue #7) extended StepExecution with Comment() and CommentFormat() methods, allowing to mark currently executed steps with comments
++ (Core)(new)(Issue #7) extended IProgressNotifier/ConsoleProgressNotifier with NotifyStepComment() method to notify that comment has been added to step
++ (Core)(new) added DelegatingProgressNotifier allowing to delegate notifications to multiple notifier instances
++ (Core)(new) added SimplifiedConsoleProgressNotifier allowing to display a simplified progress on console, suitable for parallel test execution
++ (XUnit)(new) added LightBDD.XUnit integration
++ (XUnit)(new) added ScenarioAssert with Ignore() method, allowing to ignore not fully implemented scenarios at runtime (integrated with 'Ignored' status in LightBDD reports)
++ (XUnit)(new) added ScenarioAttribute as a replacement for xUnit Fact/Theory attributes, allowing to mark tests with 'Skipped' status if ScenarioAssert.Ignore() method is used
++ (XUnit)(new) added XUnitOutputProgressNotifier to include execution progress on the test window in Visual Studio
++ (XUnit)(new) added FeatureFixture that uses XUnitOutputProgressNotifier and SimplifiedConsoleProgressNotifier by default
 + (Core)(Change)(Issue #6) extended TestMetadataProvider to determine a step type name (given, when, then, setup, and) basing on step name, if type is not provided explicitly (GetStepTypeNameFromFormattedStepName) (Issue #6)
 + (Core)(Change)(Issue #7) changed ConsoleProgressNotifier.NotifyStepFinished() to include name of finished step, allowing easy step tracking if progress is mixed with execution logs
 + (Core)(Change)(Issue #7) changed Html/Xml/PlainText result formatters to include step comments in reports and updated XmlResultFormatterSchema.xsd

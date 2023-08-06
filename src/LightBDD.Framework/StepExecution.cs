@@ -44,6 +44,13 @@ namespace LightBDD.Framework
         public void Bypass(string reason) => throw new BypassException(reason);
 
         /// <summary>
+        /// Aborts execution of current scenario, marking scenario ignored.
+        /// The currently executed step as well as scenario status becomes <see cref="ExecutionStatus.Ignored"/> in LightBDD reports, and the test itself become `Skipped/Ignored`.
+        /// </summary>
+        /// <param name="reason">Ignore reason.</param>
+        public void Ignore(string reason) => throw new IgnoreException(reason);
+
+        /// <summary>
         /// Comments currently executed step with a <paramref name="comment"/> text.
         /// The comment would be included in progress notification, as well as in execution reports.
         /// </summary>

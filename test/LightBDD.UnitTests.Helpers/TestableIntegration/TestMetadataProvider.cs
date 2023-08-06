@@ -1,52 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
+﻿#nullable enable
+using System;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Formatting;
-using NUnit.Framework.Internal;
-using TestSuite = LightBDD.Core.Metadata.TestSuite;
 
 namespace LightBDD.UnitTests.Helpers.TestableIntegration
 {
-    public class TestMetadataProvider : CoreMetadataProvider
+    public class TestMetadataProvider
     {
-        protected override IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member)
-        {
-            return ExtractAttributePropertyValues<CustomCategoryAttribute>(member, a => a.Name);
-        }
+        public static CoreMetadataProvider Default { get; } = Create();
 
-        protected override string GetImplementationSpecificFeatureDescription(Type featureType)
-        {
-            return ExtractAttributePropertyValue<CustomFeatureDescriptionAttribute>(featureType.GetTypeInfo(),
-                a => a.Description);
-        }
-
-        protected override TestSuite GetTestSuite()
-        {
-            return TestSuite.Create(TestExecutionContext.CurrentContext.CurrentTest.TypeInfo.Assembly);
-        }
-
-        public TestMetadataProvider() : base(Configure(_ => { }))
-        {
-        }
-
-        public TestMetadataProvider(LightBddConfiguration configuration) :
-            base(configuration)
-        { }
-
-
-        public TestMetadataProvider(Action<LightBddConfiguration> onConfigure)
-            : base(Configure(onConfigure))
-        {
-        }
-
-        private static LightBddConfiguration Configure(Action<LightBddConfiguration> onConfigure)
+        public static CoreMetadataProvider Create(Action<LightBddConfiguration>? onConfigure = null)
         {
             var configuration = new LightBddConfiguration();
             configuration.NameFormatterConfiguration().UpdateFormatter(DefaultNameFormatter.Instance);
-            onConfigure(configuration);
-            return configuration;
+            configuration.MetadataConfiguration().RegisterEngineAssembly(typeof(TestMetadataProvider).Assembly);
+            onConfigure?.Invoke(configuration);
+            return new CoreMetadataProvider(configuration);
         }
     }
 }

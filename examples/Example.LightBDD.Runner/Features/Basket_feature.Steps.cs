@@ -53,7 +53,7 @@ namespace Example.LightBDD.Runner.Features
 
         private void Then_the_product_should_be_removed_from_stock()
         {
-            StepExecution.Current.IgnoreScenario("Product removal from stock is not implemented yet");
+            StepExecution.Current.Ignore("Product removal from stock is not implemented yet");
             _stock.Products.ShouldNotContain("product");
         }
 

@@ -19,18 +19,13 @@ namespace LightBDD.Core.UnitTests.Extensibility
     [TestFixture]
     public class CoreMetadataProvider_tests
     {
-        private CoreMetadataProvider _metadataProvider;
+        private readonly CoreMetadataProvider _metadataProvider=TestMetadataProvider.Default;
 
-        [SetUp]
-        public void SetUp()
-        {
-            _metadataProvider = new TestMetadataProvider();
-        }
 
         [Test]
-        public void It_should_throw_if_nameFormatter_is_null()
+        public void It_should_throw_if_configuration_is_null()
         {
-            Assert.Throws<ArgumentNullException>(() => new TestMetadataProvider((LightBddConfiguration)null));
+            Assert.Throws<ArgumentNullException>(() => new CoreMetadataProvider(null));
         }
 
         [Test]
@@ -180,8 +175,9 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [Test]
         public void GetTestRunInfo_should_provide_information_about_test_run()
         {
-            var info = _metadataProvider.GetTestRunInfo();
-            info.TestSuite.ShouldBeEquivalentTo(TestSuite.Create(GetType().Assembly));
+            var assembly = GetType().Assembly;
+            var info = _metadataProvider.GetTestRunInfo(assembly);
+            info.TestSuite.ShouldBeEquivalentTo(TestSuite.Create(assembly));
             info.Name.ToString().ShouldBe("LightBDD.Core.UnitTests");
 
             var expected = new[] { typeof(TestMetadataProvider).Assembly, typeof(CoreMetadataProvider).Assembly }.Select(AssemblyInfo.From).ToArray();

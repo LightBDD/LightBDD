@@ -94,5 +94,15 @@
         {
             return configuration.Get<ProgressNotifierConfiguration>();
         }
+
+        /// <summary>
+        /// Retrieves <see cref="MetadataConfiguration"/> from <paramref name="configuration"/> for further customizations.
+        /// </summary>
+        /// <param name="configuration">Configuration object.</param>
+        /// <returns>Configuration object.</returns>
+        public static MetadataConfiguration MetadataConfiguration(this LightBddConfiguration configuration)
+        {
+            return configuration.Get<MetadataConfiguration>();
+        }
     }
 }

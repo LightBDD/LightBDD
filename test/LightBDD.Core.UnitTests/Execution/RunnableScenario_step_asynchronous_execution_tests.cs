@@ -70,7 +70,7 @@ public class RunnableScenario_step_asynchronous_execution_tests : Steps
             new(4, 4, nameof(Then_step_four), ExecutionStatus.NotRun));
 
         result.Status.ShouldBe(ExecutionStatus.Ignored);
-        result.ExecutionException.ShouldBeOfType<CustomIgnoreException>()
+        result.ExecutionException.ShouldBeOfType<Core.Execution.IgnoreException>()
             .Message.ShouldBe(IgnoreReason);
         result.StatusDetails.ShouldBe($"Step 2 Bypassed: {BypassReason}{Environment.NewLine}Step 3 Ignored: {IgnoreReason}");
     }

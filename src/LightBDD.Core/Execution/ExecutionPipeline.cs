@@ -48,7 +48,7 @@ namespace LightBDD.Core.Execution
         {
             using var ctx = new Context(_testAssembly, Configure(), cancellationToken);
             LightBddExecutionContext.Install(ctx);
-            var testRunInfo = ctx.MetadataProvider.GetTestRunInfo();
+            var testRunInfo = ctx.MetadataProvider.GetTestRunInfo(_testAssembly);
             var testRunStartTime = ctx.ExecutionTimer.GetTime();
             OnBeforeTestRunStart(testRunStartTime, testRunInfo, scenarios);
             ctx.ProgressNotifier.Notify(new TestRunStarting(testRunStartTime, testRunInfo));
@@ -270,7 +270,7 @@ namespace LightBDD.Core.Execution
         private class Context : EngineContext, IDisposable
         {
             public Context(Assembly testAssembly, LightBddConfiguration configuration, CancellationToken cancellationToken)
-            : base(testAssembly, configuration)
+            : base(configuration)
             {
                 CancellationToken = cancellationToken;
                 ScenarioFactory = new RunnableScenarioFactory(this);

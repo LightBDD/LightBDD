@@ -69,7 +69,7 @@ namespace LightBDD.Core.UnitTests.Metadata
             {
                 PredefinedStepType = type
             };
-            return new TestMetadataProvider().GetStepName(descriptor, "");
+            return TestMetadataProvider.Default.GetStepName(descriptor, "");
         }
 
         class TestDecorator : IStepNameDecorator
