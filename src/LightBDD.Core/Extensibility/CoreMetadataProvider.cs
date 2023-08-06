@@ -1,3 +1,4 @@
+#nullable enable
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Extensibility.Execution;
@@ -17,6 +18,7 @@ namespace LightBDD.Core.Extensibility
     /// <summary>
     /// Metadata provider offering core implementation for providing feature, scenario and step metadata.
     /// </summary>
+    //TODO: consider using DI and dropping dependency on configuration
     public class CoreMetadataProvider
     {
         private readonly NameParser _nameParser;
@@ -26,10 +28,12 @@ namespace LightBDD.Core.Extensibility
         /// <summary>
         /// Returns <see cref="Formatting.Values.ValueFormattingService"/> .
         /// </summary>
+        //TODO: consider removal
         public ValueFormattingService ValueFormattingService { get; }
         /// <summary>
         /// Returns <see cref="INameFormatter"/>.
         /// </summary>
+        //TODO: consider removal
         public INameFormatter NameFormatter { get; }
 
         /// <summary>
@@ -44,7 +48,7 @@ namespace LightBDD.Core.Extensibility
             NameFormatter = configuration.NameFormatterConfiguration().GetFormatter();
             _nameParser = new NameParser(NameFormatter);
             _stepTypeProcessor = new StepTypeProcessor(NameFormatter, configuration.StepTypeConfiguration());
-            _configuration= configuration.MetadataConfiguration();
+            _configuration = configuration.MetadataConfiguration();
         }
 
         /// <summary>
@@ -68,7 +72,7 @@ namespace LightBDD.Core.Extensibility
         /// <returns>Scenario labels.</returns>
         public string[] GetScenarioLabels(MethodBase scenarioMethod)
         {
-            return ExtractAttributePropertyValues<ILabelAttribute>(scenarioMethod, a => a.Label).OrderBy(l => l).ToArray();
+            return scenarioMethod.ExtractAttributePropertyValues<ILabelAttribute>(a => a.Label).OrderBy(l => l).ToArray();
         }
 
         /// <summary>
@@ -81,8 +85,8 @@ namespace LightBDD.Core.Extensibility
         /// <returns>Scenario categories.</returns>
         public string[] GetScenarioCategories(MethodBase scenarioMethod)
         {
-            return ExtractAttributePropertyValues<IScenarioCategoryAttribute>(scenarioMethod, a => a.Category)
-                .Concat(ExtractAttributePropertyValues<IScenarioCategoryAttribute>(scenarioMethod.DeclaringType.GetTypeInfo(), a => a.Category))
+            return scenarioMethod.ExtractAttributePropertyValues<IScenarioCategoryAttribute>(a => a.Category)
+                .Concat(scenarioMethod.DeclaringType.ExtractAttributePropertyValues<IScenarioCategoryAttribute>(a => a.Category))
                 .Distinct()
                 .OrderBy(c => c)
                 .ToArray();
@@ -103,7 +107,7 @@ namespace LightBDD.Core.Extensibility
         /// <param name="stepDescriptor">Step descriptor.</param>
         /// <param name="previousStepTypeName">Step type name of previous step, or <c>null</c> if current step is first one.</param>
         /// <returns><see cref="IStepNameInfo"/> object.</returns>
-        public IStepNameInfo GetStepName(StepDescriptor stepDescriptor, string previousStepTypeName)
+        public IStepNameInfo GetStepName(StepDescriptor stepDescriptor, string? previousStepTypeName)
         {
             var formattedStepName = stepDescriptor.IsNameFormattingRequired
                 ? _nameParser.GetNameFormat(stepDescriptor.MethodInfo, stepDescriptor.RawName, stepDescriptor.Parameters)
@@ -111,7 +115,7 @@ namespace LightBDD.Core.Extensibility
             return new StepNameInfo(
                 _stepTypeProcessor.GetStepTypeName(stepDescriptor.PredefinedStepType, ref formattedStepName, previousStepTypeName),
                 formattedStepName,
-                stepDescriptor.Parameters.Select(p => NameParameterInfo.Unknown).ToArray());
+                stepDescriptor.Parameters.Select(_ => NameParameterInfo.Unknown).ToArray());
         }
 
         /// <summary>
@@ -145,8 +149,8 @@ namespace LightBDD.Core.Extensibility
                 return Enumerable.Empty<IStepDecorator>();
 
             return ConcatAndOrderAttributes(
-                ExtractAttributes<IStepDecoratorAttribute>(stepDescriptor.MethodInfo.DeclaringType),
-                ExtractAttributes<IStepDecoratorAttribute>(stepDescriptor.MethodInfo));
+                stepDescriptor.MethodInfo.DeclaringType.ExtractAttributes<IStepDecoratorAttribute>(),
+                stepDescriptor.MethodInfo.ExtractAttributes<IStepDecoratorAttribute>());
         }
 
         /// <summary>
@@ -159,90 +163,8 @@ namespace LightBDD.Core.Extensibility
         public IEnumerable<IScenarioDecorator> GetScenarioDecorators(ScenarioDescriptor scenarioDescriptor)
         {
             return ConcatAndOrderAttributes(
-                ExtractAttributes<IScenarioDecoratorAttribute>(scenarioDescriptor.MethodInfo.DeclaringType),
-                ExtractAttributes<IScenarioDecoratorAttribute>(scenarioDescriptor.MethodInfo));
-        }
-
-        /// <summary>
-        /// Provides value of attribute of type <typeparamref name="TAttribute"/> applied on <paramref name="member"/> or default if attribute is not applied.
-        /// The attribute is searched in <paramref name="member"/> and it's ancestors.
-        /// </summary>
-        /// <param name="member">Member to analyze for specified attribute.</param>
-        /// <param name="valueExtractor">Attribute value extraction method.</param>
-        /// <typeparam name="TAttribute">Type of attribute to extract.</typeparam>
-        /// <returns>Attribute value or default.</returns>
-        /// <exception cref="InvalidOperationException">Throws when attribute is applied more than once.</exception>
-        protected static string ExtractAttributePropertyValue<TAttribute>(MemberInfo member, Func<TAttribute, string> valueExtractor)
-        {
-            return ExtractAttributePropertyValues(member, valueExtractor).SingleOrDefault();
-        }
-
-        /// <summary>
-        /// Provides values of all attributes of type <typeparamref name="TAttribute"/> applied on <paramref name="member"/> or empty collection if none are applied.
-        /// The attribute is searched in <paramref name="member"/> and it's ancestors.
-        /// </summary>
-        /// <param name="member">Member to analyze for specified attribute.</param>
-        /// <param name="valueExtractor">Attribute value extraction method.</param>
-        /// <typeparam name="TAttribute">Type of attribute to extract.</typeparam>
-        /// <returns>Values of all attributes or empty collection.</returns>
-        protected static IEnumerable<string> ExtractAttributePropertyValues<TAttribute>(MemberInfo member, Func<TAttribute, string> valueExtractor)
-        {
-            return ExtractAttributes<TAttribute>(member).Select(valueExtractor);
-        }
-
-        /// <summary>
-        /// Provides all attributes of type <typeparamref name="TAttribute"/> applied on <paramref name="member"/> or empty collection if none are applied.
-        /// The attribute is searched in <paramref name="member"/> and it's ancestors.
-        /// </summary>
-        /// <param name="member">Member to analyze for specified attribute.</param>
-        /// <typeparam name="TAttribute">Type of attribute to extract.</typeparam>
-        /// <returns>All attributes or empty collection.</returns>
-        protected static IEnumerable<TAttribute> ExtractAttributes<TAttribute>(MemberInfo member)
-        {
-            return member.GetCustomAttributes(true).OfType<TAttribute>();
-        }
-
-        /// <summary>
-        /// Provides all attributes of type <typeparamref name="TAttribute"/> applied on <paramref name="type"/> or empty collection if none are applied.
-        /// The attribute is searched in <paramref name="type"/>.
-        /// </summary>
-        /// <param name="type">Type to analyze for specified attribute.</param>
-        /// <typeparam name="TAttribute">Type of attribute to extract.</typeparam>
-        /// <returns>All attributes or empty collection.</returns>
-        protected static IEnumerable<TAttribute> ExtractAttributes<TAttribute>(Type type)
-        {
-            return type.GetTypeInfo().GetCustomAttributes(true).OfType<TAttribute>();
-        }
-
-        /// <summary>
-        /// Provides labels from  attributes implementing <see cref="ILabelAttribute"/>, applied on <paramref name="featureType"/>, or empty array if none are present.
-        /// </summary>
-        /// <param name="featureType">Feature type.</param>
-        /// <returns>Array of labels or empty array if none are present.</returns>
-        protected string[] GetFeatureLabels(Type featureType)
-        {
-            return ExtractAttributePropertyValues<ILabelAttribute>(featureType.GetTypeInfo(), a => a.Label).OrderBy(l => l).ToArray();
-        }
-
-        /// <summary>
-        /// Provides feature name which is determined from name of <paramref name="featureType"/>.
-        /// </summary>
-        /// <param name="featureType">Feature type.</param>
-        /// <returns>Feature name.</returns>
-        protected INameInfo GetFeatureName(Type featureType)
-        {
-            return new NameInfo(NameFormatter.FormatName(featureType.Name), Array.Empty<INameParameterInfo>());
-        }
-
-        /// <summary>
-        /// Provides feature description which is determined from attribute implementing <see cref="IFeatureDescriptionAttribute"/>.
-        /// Returns description or <c>null</c> if none is present.
-        /// </summary>
-        /// <param name="featureType">Feature type.</param>
-        /// <returns>Feature description or <c>null</c>.</returns>
-        protected string GetFeatureDescription(Type featureType)
-        {
-            return ExtractAttributePropertyValue<IFeatureDescriptionAttribute>(featureType.GetTypeInfo(), a => a.Description);
+                scenarioDescriptor.MethodInfo.DeclaringType.ExtractAttributes<IScenarioDecoratorAttribute>(),
+                scenarioDescriptor.MethodInfo.ExtractAttributes<IScenarioDecoratorAttribute>());
         }
 
         /// <summary>
@@ -276,7 +198,40 @@ namespace LightBDD.Core.Extensibility
             }
         }
 
-        private IEnumerable<T> ConcatAndOrderAttributes<T>(params IEnumerable<T>[] sequences) where T : IOrderedAttribute
+        /// <summary>
+        /// Provides labels from  attributes implementing <see cref="ILabelAttribute"/>, applied on <paramref name="featureType"/>, or empty array if none are present.
+        /// </summary>
+        /// <param name="featureType">Feature type.</param>
+        /// <returns>Array of labels or empty array if none are present.</returns>
+        private string[] GetFeatureLabels(Type featureType)
+        {
+            return featureType.GetTypeInfo().ExtractAttributePropertyValues<ILabelAttribute>(a => a.Label)
+                .OrderBy(l => l)
+                .ToArray();
+        }
+
+        /// <summary>
+        /// Provides feature name which is determined from name of <paramref name="featureType"/>.
+        /// </summary>
+        /// <param name="featureType">Feature type.</param>
+        /// <returns>Feature name.</returns>
+        private INameInfo GetFeatureName(Type featureType)
+        {
+            return new NameInfo(NameFormatter.FormatName(featureType.Name), Array.Empty<INameParameterInfo>());
+        }
+
+        /// <summary>
+        /// Provides feature description which is determined from attribute implementing <see cref="IFeatureDescriptionAttribute"/>.
+        /// Returns description or <c>null</c> if none is present.
+        /// </summary>
+        /// <param name="featureType">Feature type.</param>
+        /// <returns>Feature description or <c>null</c>.</returns>
+        private string GetFeatureDescription(Type featureType)
+        {
+            return featureType.ExtractAttributePropertyValue<IFeatureDescriptionAttribute>(a => a.Description);
+        }
+
+        private static IEnumerable<T> ConcatAndOrderAttributes<T>(params IEnumerable<T>[] sequences) where T : IOrderedAttribute
         {
             return sequences.SelectMany(sequence => sequence.OrderBy(orderable => orderable.Order));
         }
