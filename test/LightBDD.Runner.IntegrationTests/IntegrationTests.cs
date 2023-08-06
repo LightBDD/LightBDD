@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using LightBDD.Core.Configuration;
+using LightBDD.Core.Extensibility;
 using LightBDD.Core.Results;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
@@ -38,6 +40,18 @@ namespace LightBDD.Runner.IntegrationTests
                     "Parameterized scenario \"1\"",
                     "Parameterized scenario \"2\""
                 });
+        }
+
+        [Fact]
+        public void It_should_register_engine_assemblies()
+        {
+            ConfiguredLightBddScope.CapturedConfiguration.ShouldNotBeNull();
+            ConfiguredLightBddScope.CapturedConfiguration.MetadataConfiguration().EngineAssemblies.ShouldBe(new[]
+            {
+                typeof(ScenarioAttribute).Assembly,
+                typeof(IBddRunner).Assembly,
+                typeof(CoreMetadataProvider).Assembly
+            });
         }
 
         public class Integration_scenarios : FeatureFixture

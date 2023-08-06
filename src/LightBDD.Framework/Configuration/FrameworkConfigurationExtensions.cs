@@ -20,7 +20,6 @@ namespace LightBDD.Framework.Configuration
         /// <returns><paramref name="configuration"/>.</returns>
         public static LightBddConfiguration WithFrameworkDefaults(this LightBddConfiguration configuration)
         {
-            //TODO: test
             configuration.MetadataConfiguration()
                 .RegisterEngineAssembly(typeof(FrameworkConfigurationExtensions).Assembly);
 

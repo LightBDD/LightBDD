@@ -10,6 +10,8 @@ namespace LightBDD.Runner.IntegrationTests
 {
     internal class ConfiguredLightBddScope : LightBddScopeAttribute
     {
+        public static LightBddConfiguration? CapturedConfiguration { get; private set; }
+
         protected override void OnConfigure(LightBddConfiguration configuration)
         {
             configuration.ReportConfiguration()
@@ -18,6 +20,8 @@ namespace LightBDD.Runner.IntegrationTests
             configuration.ProgressNotifierConfiguration()
                 .Clear()
                 .Append(new ProgressCapture());
+
+            CapturedConfiguration = configuration;
         }
     }
 }

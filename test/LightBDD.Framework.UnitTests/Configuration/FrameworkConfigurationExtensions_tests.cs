@@ -1,8 +1,10 @@
 ﻿using System.Linq;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Formatting.Values;
 using NUnit.Framework;
+using Shouldly;
 
 namespace LightBDD.Framework.UnitTests.Configuration
 {
@@ -70,6 +72,17 @@ namespace LightBDD.Framework.UnitTests.Configuration
                     .GeneralFormatters
                     .Select(x => x.GetType())
                     .ToArray()));
+        }
+
+        [Test]
+        public void WithFrameworkDefaults_should_register_Framework_assembly_on_MetadataConfiguration()
+        {
+            new LightBddConfiguration().WithFrameworkDefaults()
+                .MetadataConfiguration().EngineAssemblies.ShouldBe(new[]
+                {
+                    typeof(IBddRunner).Assembly,
+                    typeof(CoreMetadataProvider).Assembly
+                });
         }
     }
 }
