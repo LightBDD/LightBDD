@@ -89,7 +89,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
 
         private static object ResolveInstance(CompositeStep stepGroup)
         {
-            var container = new DependencyContainerConfiguration().DependencyContainer.BeginScope(LifetimeScope.Local);
+            var container = new DependencyContainerConfiguration().DependencyContainer.BeginScope();
             return stepGroup.SubStepsContext.ContextResolver(container);
         }
     }

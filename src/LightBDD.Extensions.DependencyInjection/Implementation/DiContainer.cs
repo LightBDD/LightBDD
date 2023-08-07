@@ -8,14 +8,16 @@ namespace LightBDD.Extensions.DependencyInjection.Implementation
 {
     internal class DiContainer : IDependencyContainer
     {
+        private readonly LifetimeScope _lifetimeScope;
         private readonly IContainerScope _scope;
         private readonly ContainerOverrides _overrides;
         private readonly List<IDisposable> _disposables = new();
 
-        public DiContainer(IContainerScope scope, ContainerOverrides overrides)
+        public DiContainer(LifetimeScope lifetimeScope, IContainerScope scope, ContainerOverrides overrides)
         {
             overrides.RegisterInstance(this, new RegistrationOptions().ExternallyOwned().As<IDependencyContainer>().As<IDependencyResolver>());
 
+            _lifetimeScope = lifetimeScope;
             _scope = scope;
             _overrides = overrides;
             AddDisposable(_scope);
@@ -48,11 +50,16 @@ namespace LightBDD.Extensions.DependencyInjection.Implementation
             throw new AggregateException(exceptions);
         }
 
-        public IDependencyContainer BeginScope(LifetimeScope scope)
+        public IDependencyContainer BeginScope()
         {
             var overrides = new ContainerOverrides();
 
-            return new DiContainer(_scope.BeginScope(scope), overrides);
+            var nextScope = DetermineNextScope();
+            return new DiContainer(nextScope, _scope.BeginScope(nextScope), overrides);
+        }
+        private LifetimeScope DetermineNextScope()
+        {
+            return ReferenceEquals(_lifetimeScope, LifetimeScope.Global) ? LifetimeScope.Scenario : LifetimeScope.Local;
         }
 
         public void AddDisposable(IDisposable serviceProvider)

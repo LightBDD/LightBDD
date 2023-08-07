@@ -35,7 +35,7 @@ namespace LightBDD.Core.UnitTests.Dependencies
             using (var container = CreateContainer())
             {
                 //c => c.RegisterInstance(new Disposable(), new RegistrationOptions().As<string>())
-                var ex = Assert.Throws<InvalidOperationException>(() => container.BeginScope(LifetimeScope.Local));
+                var ex = Assert.Throws<InvalidOperationException>(() => container.BeginScope());
                 Assert.That(ex.Message, Is.EqualTo($"Type {typeof(Disposable)} is not assignable to {typeof(string)}"));
             }
         }
@@ -116,10 +116,10 @@ namespace LightBDD.Core.UnitTests.Dependencies
                     c.RegisterInstance(otherComplex, new RegistrationOptions());
                 }
                  */
-                using (var outerScope = container.BeginScope(LifetimeScope.Local))
+                using (var outerScope = container.BeginScope())
                 {
                     //c => c.RegisterInstance(innerDisposable, new RegistrationOptions())
-                    using (var innerScope = outerScope.BeginScope(LifetimeScope.Local))
+                    using (var innerScope = outerScope.BeginScope())
                     {
                         var complex = innerScope.Resolve<Complex>();
                         Assert.That(complex, Is.Not.Null);
@@ -188,7 +188,7 @@ Type '{typeof(MultiCtorType)}' has to have exactly one public constructor (numbe
             }))
             {
                 Assert.AreSame(container.Resolve<Disposable2>(), container.Resolve<Disposable2>());
-                using (var scenario = container.BeginScope(LifetimeScope.Scenario))
+                using (var scenario = container.BeginScope())
                 {
                     Assert.AreSame(container.Resolve<Disposable>(), scenario.Resolve<Disposable>());
                     Assert.AreSame(scenario.Resolve<Disposable1>(), scenario.Resolve<Disposable1>());
@@ -196,7 +196,7 @@ Type '{typeof(MultiCtorType)}' has to have exactly one public constructor (numbe
                     Assert.AreNotSame(container.Resolve<Disposable2>(), scenario.Resolve<Disposable2>());
                     Assert.AreNotSame(scenario.Resolve<Disposable3>(), scenario.Resolve<Disposable3>());
 
-                    using (var stepA = scenario.BeginScope(LifetimeScope.Local))
+                    using (var stepA = scenario.BeginScope())
                     {
                         Assert.AreSame(container.Resolve<Disposable>(), stepA.Resolve<Disposable>());
                         Assert.AreSame(scenario.Resolve<Disposable1>(), stepA.Resolve<Disposable1>());
@@ -204,7 +204,7 @@ Type '{typeof(MultiCtorType)}' has to have exactly one public constructor (numbe
                         Assert.AreSame(stepA.Resolve<Disposable2>(), stepA.Resolve<Disposable2>());
                         Assert.AreNotSame(stepA.Resolve<Disposable3>(), stepA.Resolve<Disposable3>());
 
-                        using (var stepB = stepA.BeginScope(LifetimeScope.Local))
+                        using (var stepB = stepA.BeginScope())
                         {
                             Assert.AreSame(container.Resolve<Disposable>(), stepB.Resolve<Disposable>());
                             Assert.AreSame(scenario.Resolve<Disposable1>(), stepB.Resolve<Disposable1>());
@@ -225,7 +225,7 @@ Type '{typeof(MultiCtorType)}' has to have exactly one public constructor (numbe
                 x.RegisterType<SlowDependency>(InstanceScope.Single, opt => opt.As<SlowDependency>().As<object>());
             }))
             {
-                using (var scenario = container.BeginScope(LifetimeScope.Local))
+                using (var scenario = container.BeginScope())
                 {
                     var all = await Task.WhenAll(Enumerable.Range(0, 10).Select(_ => Task.Run(() => scenario.Resolve<SlowDependency>()))
                         .Concat(Enumerable.Range(0, 10).Select(_ => Task.Run(() => container.Resolve<SlowDependency>()))));
@@ -257,7 +257,7 @@ Type '{typeof(MultiCtorType)}' has to have exactly one public constructor (numbe
                 d2 = container.Resolve<Disposable2>();
                 d3 = container.Resolve<Disposable3>();
 
-                using (var scope = container.BeginScope(LifetimeScope.Local))
+                using (var scope = container.BeginScope())
                 {
                     Assert.AreSame(d, scope.Resolve<Disposable>());
                     Assert.AreSame(d1, scope.Resolve<Disposable1>());
@@ -286,13 +286,13 @@ Type '{typeof(MultiCtorType)}' has to have exactly one public constructor (numbe
                 x.RegisterType(InstanceScope.Scenario, _ => new Disposable2(), opt => opt.ExternallyOwned());
             }))
             {
-                using (var scenarioScope = container.BeginScope(LifetimeScope.Scenario))
+                using (var scenarioScope = container.BeginScope())
                 {
                     d = scenarioScope.Resolve<Disposable>();
                     d1 = scenarioScope.Resolve<Disposable1>();
                     d2 = scenarioScope.Resolve<Disposable2>();
 
-                    using (var scope2 = scenarioScope.BeginScope(LifetimeScope.Local))
+                    using (var scope2 = scenarioScope.BeginScope())
                     {
                         Assert.AreSame(d, scope2.Resolve<Disposable>());
                         Assert.AreSame(d1, scope2.Resolve<Disposable1>());
@@ -328,7 +328,7 @@ Type '{typeof(MultiCtorType)}' has to have exactly one public constructor (numbe
                 Assert.AreSame(d1, container.Resolve<Disposable1>());
                 Assert.AreSame(d2, container.Resolve<Disposable2>());
 
-                using (var scope = container.BeginScope(LifetimeScope.Local))
+                using (var scope = container.BeginScope())
                 {
                     Assert.AreNotSame(d, scope.Resolve<Disposable>());
                     Assert.AreNotSame(d1, scope.Resolve<Disposable1>());
@@ -364,7 +364,7 @@ Type '{typeof(MultiCtorType)}' has to have exactly one public constructor (numbe
                 Assert.AreNotSame(d1, container.Resolve<Disposable1>());
                 Assert.AreNotSame(d2, container.Resolve<Disposable2>());
 
-                using (var scope = container.BeginScope(LifetimeScope.Local))
+                using (var scope = container.BeginScope())
                 {
                     var sd = scope.Resolve<Disposable>();
                     var sd1 = scope.Resolve<Disposable1>();
@@ -386,7 +386,7 @@ Type '{typeof(MultiCtorType)}' has to have exactly one public constructor (numbe
             using (var container = CreateContainer(opt => opt.ConfigureFallbackBehavior(FallbackResolveBehavior.ResolveTransient)))
             {
                 Assert.AreNotEqual(container.Resolve<Disposable>(), container.Resolve<Disposable>());
-                using (var inner = container.BeginScope(LifetimeScope.Local))
+                using (var inner = container.BeginScope())
                     Assert.AreNotEqual(container.Resolve<Disposable>(), inner.Resolve<Disposable>());
             }
         }
@@ -398,7 +398,7 @@ Type '{typeof(MultiCtorType)}' has to have exactly one public constructor (numbe
             using (var container = CreateContainer(opt => opt.ConfigureFallbackBehavior(FallbackResolveBehavior.ThrowException)))
             {
                 Assert.Throws<InvalidOperationException>(() => container.Resolve<Disposable>());
-                using (var inner = container.BeginScope(LifetimeScope.Local))
+                using (var inner = container.BeginScope())
                     Assert.Throws<InvalidOperationException>(() => inner.Resolve<Disposable>());
             }
         }
@@ -415,8 +415,8 @@ Type '{typeof(MultiCtorType)}' has to have exactly one public constructor (numbe
                 x.RegisterType<Disposable3>(InstanceScope.Local);
             }))
             {
-                using (var scenario = container.BeginScope(LifetimeScope.Scenario))
-                using (var step = scenario.BeginScope(LifetimeScope.Local))
+                using (var scenario = container.BeginScope())
+                using (var step = scenario.BeginScope())
                 {
                     var ex = Assert.Throws<InvalidOperationException>(() => step.Resolve<Disposable4>());
 
@@ -455,8 +455,8 @@ Container scope: #global
                 x.RegisterType<Complex>(InstanceScope.Transient);
             }))
             {
-                using (var scenario = container.BeginScope(LifetimeScope.Scenario))
-                using (var step = scenario.BeginScope(LifetimeScope.Local))
+                using (var scenario = container.BeginScope())
+                using (var step = scenario.BeginScope())
                 {
                     var ex = Assert.Throws<InvalidOperationException>(() => step.Resolve<Complex>());
                     Assert.That(ex.Message.NormalizeNewLine(), Is.EqualTo($@"Unable to resolve type {typeof(Complex)} from scope #local:

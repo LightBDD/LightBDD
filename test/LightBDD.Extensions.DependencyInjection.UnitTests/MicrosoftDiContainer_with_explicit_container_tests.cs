@@ -20,7 +20,7 @@ namespace LightBDD.Extensions.DependencyInjection.UnitTests
         {
             return CreateContainer(
                 services => services.AddTransient<Disposable>().AddSingleton<DisposableSingleton>(),
-                opt => opt.TakeOwnership(ShouldTakeOwnership));
+                opt => opt.TakeOwnership(ShouldTakeOwnership).EnableScopeNestingWithinScenarios(true));
         }
 
         private IDependencyContainer CreateContainer(Action<ServiceCollection> configure, Action<DiContainerOptions> options)
@@ -45,13 +45,13 @@ namespace LightBDD.Extensions.DependencyInjection.UnitTests
             {
                 singleton = container.Resolve<Disposable1>();
 
-                using (var scenario = container.BeginScope(LifetimeScope.Scenario))
+                using (var scenario = container.BeginScope())
                 {
                     Assert.AreSame(singleton, scenario.Resolve<Disposable1>());
                     Assert.AreNotSame(container.Resolve<Disposable>(), scenario.Resolve<Disposable>());
                     Assert.AreNotSame(container.Resolve<Disposable2>(), scenario.Resolve<Disposable2>());
 
-                    using (var scopeA = scenario.BeginScope(LifetimeScope.Local))
+                    using (var scopeA = scenario.BeginScope())
                     {
                         Assert.AreSame(singleton, scopeA.Resolve<Disposable1>());
                         Assert.AreNotSame(scenario.Resolve<Disposable>(), scopeA.Resolve<Disposable>());
@@ -59,7 +59,7 @@ namespace LightBDD.Extensions.DependencyInjection.UnitTests
 
                         Disposable scopeBDisposable;
                         Disposable2 scopeBDisposable2;
-                        using (var scopeB = scopeA.BeginScope(LifetimeScope.Local))
+                        using (var scopeB = scopeA.BeginScope())
                         {
                             Assert.AreSame(singleton, scopeB.Resolve<Disposable1>());
 
@@ -92,21 +92,21 @@ namespace LightBDD.Extensions.DependencyInjection.UnitTests
                 Disposable scopeBDisposable;
                 Disposable2 scopeBDisposable2;
 
-                using (var scenario = container.BeginScope(LifetimeScope.Scenario))
-                using (var scenario2 = container.BeginScope(LifetimeScope.Scenario))
+                using (var scenario = container.BeginScope())
+                using (var scenario2 = container.BeginScope())
                 {
                     Assert.AreSame(singleton, scenario.Resolve<Disposable1>());
                     Assert.AreNotSame(container.Resolve<Disposable>(), scenario.Resolve<Disposable>());
                     Assert.AreNotSame(container.Resolve<Disposable2>(), scenario.Resolve<Disposable2>());
                     Assert.AreNotSame(scenario.Resolve<Disposable2>(), scenario2.Resolve<Disposable2>());
 
-                    using (var scopeA = scenario.BeginScope(LifetimeScope.Local))
+                    using (var scopeA = scenario.BeginScope())
                     {
                         Assert.AreSame(singleton, scopeA.Resolve<Disposable1>());
                         Assert.AreNotSame(scenario.Resolve<Disposable>(), scopeA.Resolve<Disposable>());
                         Assert.AreSame(scenario.Resolve<Disposable2>(), scopeA.Resolve<Disposable2>());
 
-                        using (var scopeB = scopeA.BeginScope(LifetimeScope.Local))
+                        using (var scopeB = scopeA.BeginScope())
                         {
                             Assert.AreSame(singleton, scopeB.Resolve<Disposable1>());
 

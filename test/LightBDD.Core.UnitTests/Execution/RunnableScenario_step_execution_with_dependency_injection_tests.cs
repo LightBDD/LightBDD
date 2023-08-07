@@ -25,7 +25,7 @@ namespace LightBDD.Core.UnitTests.Execution
             _containerScope = new Mock<IDependencyContainer>();
             _scenarioScope = new Mock<IDependencyContainer>();
 
-            _containerScope.Setup(x => x.BeginScope(It.IsAny<LifetimeScope>()))
+            _containerScope.Setup(x => x.BeginScope())
                 .Returns(_scenarioScope.Object);
 
             _factory = TestableScenarioFactory.Create(cfg => cfg.DependencyContainerConfiguration().UseContainer(_containerScope.Object));
@@ -39,7 +39,7 @@ namespace LightBDD.Core.UnitTests.Execution
                 .TestScenario(Given_step_one));
             result.Status.ShouldBe(ExecutionStatus.Passed);
 
-            _containerScope.Verify(s => s.BeginScope(LifetimeScope.Scenario));
+            _containerScope.Verify(s => s.BeginScope());
             _scenarioScope.Verify(s => s.Resolve(typeof(MyScenarioScope)));
         }
 
@@ -51,7 +51,7 @@ namespace LightBDD.Core.UnitTests.Execution
                 .TestGroupScenario(Given_composite, Given_composite));
             result.Status.ShouldBe(ExecutionStatus.Passed);
 
-            _containerScope.Verify(s => s.BeginScope(LifetimeScope.Scenario), Times.Once);
+            _containerScope.Verify(s => s.BeginScope(), Times.Once);
             _scenarioScope.Verify(s => s.Resolve(typeof(MyStepScope)), Times.Exactly(2));
         }
 

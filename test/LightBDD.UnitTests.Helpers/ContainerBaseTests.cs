@@ -57,10 +57,10 @@ namespace LightBDD.UnitTests.Helpers
             using (var container = CreateContainer())
             {
                 outer = container.Resolve<Disposable>();
-                using (var scope = container.BeginScope(LifetimeScope.Local))
+                using (var scope = container.BeginScope())
                 {
                     inner = scope.Resolve<Disposable>();
-                    using (var deepestScope = scope.BeginScope(LifetimeScope.Local))
+                    using (var deepestScope = scope.BeginScope())
                         deepestInner = deepestScope.Resolve<Disposable>();
                     Assert.True(deepestInner.Disposed);
                     Assert.False(inner.Disposed);
@@ -78,7 +78,7 @@ namespace LightBDD.UnitTests.Helpers
         {
             using (var container = CreateContainer())
             {
-                using (var scope = container.BeginScope(LifetimeScope.Local))
+                using (var scope = container.BeginScope())
                 {
                     Assert.That(scope.Resolve<IDependencyContainer>(), Is.SameAs(scope));
                     Assert.That(scope.Resolve<IDependencyResolver>(), Is.SameAs(scope));

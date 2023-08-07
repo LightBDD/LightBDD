@@ -30,35 +30,30 @@ namespace LightBDD.Autofac.UnitTests
             using (var container = CreateContainer(x =>
             {
                 x.RegisterType<Disposable>().SingleInstance();
-                x.RegisterType<Disposable1>().InstancePerMatchingLifetimeScope(LifetimeScope.Scenario);
-                x.RegisterType<Disposable2>().InstancePerLifetimeScope();
-                x.RegisterType<Disposable3>().InstancePerDependency();
+                x.RegisterType<Disposable1>().InstancePerLifetimeScope();
+                x.RegisterType<Disposable2>().InstancePerDependency();
             }))
             {
-                Assert.AreSame(container.Resolve<Disposable2>(), container.Resolve<Disposable2>());
-                using (var scenario = container.BeginScope(LifetimeScope.Scenario))
+                Assert.AreSame(container.Resolve<Disposable1>(), container.Resolve<Disposable1>());
+                using (var scenario = container.BeginScope())
                 {
                     Assert.AreSame(container.Resolve<Disposable>(), scenario.Resolve<Disposable>());
                     Assert.AreSame(scenario.Resolve<Disposable1>(), scenario.Resolve<Disposable1>());
-                    Assert.AreSame(scenario.Resolve<Disposable2>(), scenario.Resolve<Disposable2>());
                     Assert.AreNotSame(container.Resolve<Disposable2>(), scenario.Resolve<Disposable2>());
-                    Assert.AreNotSame(scenario.Resolve<Disposable3>(), scenario.Resolve<Disposable3>());
 
-                    using (var stepA = scenario.BeginScope(LifetimeScope.Local))
+                    using (var stepA = scenario.BeginScope())
                     {
                         Assert.AreSame(container.Resolve<Disposable>(), stepA.Resolve<Disposable>());
-                        Assert.AreSame(scenario.Resolve<Disposable1>(), stepA.Resolve<Disposable1>());
-                        Assert.AreNotSame(scenario.Resolve<Disposable2>(), stepA.Resolve<Disposable2>());
-                        Assert.AreSame(stepA.Resolve<Disposable2>(), stepA.Resolve<Disposable2>());
-                        Assert.AreNotSame(stepA.Resolve<Disposable3>(), stepA.Resolve<Disposable3>());
+                        Assert.AreNotSame(scenario.Resolve<Disposable1>(), stepA.Resolve<Disposable1>());
+                        Assert.AreSame(stepA.Resolve<Disposable1>(), stepA.Resolve<Disposable1>());
+                        Assert.AreNotSame(stepA.Resolve<Disposable2>(), stepA.Resolve<Disposable2>());
 
-                        using (var stepB = stepA.BeginScope(LifetimeScope.Local))
+                        using (var stepB = stepA.BeginScope())
                         {
                             Assert.AreSame(container.Resolve<Disposable>(), stepB.Resolve<Disposable>());
-                            Assert.AreSame(scenario.Resolve<Disposable1>(), stepB.Resolve<Disposable1>());
-                            Assert.AreNotSame(stepA.Resolve<Disposable2>(), stepB.Resolve<Disposable2>());
-                            Assert.AreSame(stepB.Resolve<Disposable2>(), stepB.Resolve<Disposable2>());
-                            Assert.AreNotSame(stepB.Resolve<Disposable3>(), stepB.Resolve<Disposable3>());
+                            Assert.AreNotSame(stepA.Resolve<Disposable1>(), stepB.Resolve<Disposable1>());
+                            Assert.AreSame(stepB.Resolve<Disposable1>(), stepB.Resolve<Disposable1>());
+                            Assert.AreNotSame(stepB.Resolve<Disposable2>(), stepB.Resolve<Disposable2>());
                         }
                     }
                 }

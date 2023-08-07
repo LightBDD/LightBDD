@@ -20,18 +20,11 @@ namespace LightBDD.Autofac.Implementation
             ParentScope?.Dispose();
         }
 
-        public IDependencyContainer BeginScope(Action<ContainerConfigurator> configuration = null) =>
-            BeginScope(LifetimeScope.Local);
-
-        public IDependencyContainer BeginScope(LifetimeScope scope)
+        public IDependencyContainer BeginScope()
         {
             var innerScope = new AutofacContainer();
 
-            var autofacScope = scope.Equals(LifetimeScope.Local)
-                ? new object()
-                : scope;
-
-            innerScope.AutofacScope = AutofacScope.BeginLifetimeScope(autofacScope, builder =>
+            innerScope.AutofacScope = AutofacScope.BeginLifetimeScope(builder =>
             {
                 innerScope.RegisterSelf(builder);
             });

@@ -1,5 +1,6 @@
 ﻿using System;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Dependencies;
 using LightBDD.Extensions.DependencyInjection.Implementation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -33,7 +34,7 @@ namespace LightBDD.Extensions.DependencyInjection
             options?.Invoke(containerOptions);
 
             var scope = new NestingContainerScope(serviceProvider.CreateScope(), containerOptions.ShouldEnableScopeNestingWithinScenarios);
-            var container = new DiContainer(scope, new ContainerOverrides());
+            var container = new DiContainer(LifetimeScope.Global, scope, new ContainerOverrides());
 
             if (containerOptions.ShouldTakeOwnership)
             {

@@ -45,7 +45,7 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario, IRunStageCon
     public async Task<IScenarioResult> RunAsync()
     {
         var startTime = Engine.ExecutionTimer.GetTime();
-        _scenarioScope = Engine.DependencyContainer.BeginScope(LifetimeScope.Scenario);
+        _scenarioScope = Engine.DependencyContainer.BeginScope();
         try
         {
             SetScenarioContext();
