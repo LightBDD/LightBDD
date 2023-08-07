@@ -44,7 +44,7 @@ internal class StepGroupRunner : ICoreScenarioStepsRunner, IRunStageContext
 
     public async Task RunAsync()
     {
-        _subContext = _parent.DependencyContainer.BeginScope(LifetimeScope.Local, _contextDescriptor.ScopeConfigurator);
+        _subContext = _parent.DependencyContainer.BeginScope(LifetimeScope.Local);
         try
         {
             _executionContext = CreateExecutionContext();

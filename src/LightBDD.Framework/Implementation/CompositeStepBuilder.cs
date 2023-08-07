@@ -36,9 +36,9 @@ namespace LightBDD.Framework.Implementation
 
         LightBddConfiguration IIntegrableStepGroupBuilder.Configuration => Configuration;
 
-        public IIntegrableCompositeStepBuilder WithStepContext(Func<IDependencyResolver, object> contextProvider, Action<ContainerConfigurator> scopeConfigurator)
+        public IIntegrableCompositeStepBuilder WithStepContext(Func<IDependencyResolver, object> contextProvider)
         {
-            return WithStepContext(new ExecutionContextDescriptor(contextProvider, scopeConfigurator));
+            return WithStepContext(new ExecutionContextDescriptor(contextProvider));
         }
 
         public IIntegrableCompositeStepBuilder WithStepContext(Func<object> contextProvider, bool takeOwnership)

@@ -87,7 +87,7 @@ namespace LightBDD.Core.UnitTests.Execution
         private TestCompositeStep Given_composite()
         {
             return new TestCompositeStep(
-                new ExecutionContextDescriptor(r => r.Resolve<MyStepScope>(), null),
+                new ExecutionContextDescriptor(r => r.Resolve<MyStepScope>()),
                 TestStep.CreateSync(Given_step_one));
         }
     }

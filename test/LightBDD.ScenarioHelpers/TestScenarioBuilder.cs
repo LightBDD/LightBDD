@@ -60,7 +60,7 @@ public class TestScenarioBuilder
 
     public TestScenarioBuilder WithContext(Func<IDependencyResolver, object> contextResolver)
     {
-        _contextDescriptor = new ExecutionContextDescriptor(contextResolver, null);
+        _contextDescriptor = new ExecutionContextDescriptor(contextResolver);
         return this;
     }
 }
