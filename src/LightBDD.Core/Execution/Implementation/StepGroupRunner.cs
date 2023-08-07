@@ -69,7 +69,7 @@ internal class StepGroupRunner : ICoreScenarioStepsRunner, IRunStageContext
     {
         try
         {
-            return _contextDescriptor.ContextResolver(DependencyContainer);
+            return _contextDescriptor.ContextResolver(DependencyResolver);
         }
         catch (Exception e)
         {
@@ -107,5 +107,5 @@ internal class StepGroupRunner : ICoreScenarioStepsRunner, IRunStageContext
     public EngineContext Engine => _parent.Engine;
     public IMetadataInfo Info => _parent.Info;
     public Func<Exception, bool> ShouldAbortSubStepExecution => _parent.ShouldAbortSubStepExecution;
-    public IDependencyContainer DependencyContainer => _parent.DependencyContainer;
+    public IDependencyResolver DependencyResolver => _parent.DependencyResolver;
 }

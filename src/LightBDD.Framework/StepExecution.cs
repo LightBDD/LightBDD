@@ -65,6 +65,7 @@ namespace LightBDD.Framework
         /// Retrieves <see cref="IDependencyResolver"/> for currently executed scenario.
         /// Please note that for contextual scenarios or composite steps, it is better to specify <see cref="IDependencyResolver"/> in context constructor.
         /// </summary>
+        //TODO: remove in favor of ctor injection
         public IDependencyResolver GetScenarioDependencyResolver() => ScenarioExecutionContext.CurrentScenario.DependencyResolver;
 
         /// <summary>

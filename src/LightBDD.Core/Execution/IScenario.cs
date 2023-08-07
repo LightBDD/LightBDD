@@ -15,6 +15,7 @@ namespace LightBDD.Core.Execution
         /// <summary>
         /// Returns the dependency resolver used by this scenario.
         /// </summary>
+        //TODO: remove in favor of ctor injection
         IDependencyResolver DependencyResolver { get; }
         /// <summary>
         /// Returns the context used by this scenario (or null if none were provided).
