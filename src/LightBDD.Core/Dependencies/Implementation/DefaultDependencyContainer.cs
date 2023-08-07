@@ -209,9 +209,9 @@ namespace LightBDD.Core.Dependencies.Implementation
             throw new AggregateException("Failed to dispose dependencies", exceptions);
         }
 
-        public IDependencyContainer BeginScope(LifetimeScope scope, Action<ContainerConfigurator> configuration = null)
+        public IDependencyContainer BeginScope(LifetimeScope scope)
         {
-            return new DefaultDependencyContainer(this, scope, configuration);
+            return new DefaultDependencyContainer(this, scope, null);
         }
 
         private object EnlistDisposable(object item)

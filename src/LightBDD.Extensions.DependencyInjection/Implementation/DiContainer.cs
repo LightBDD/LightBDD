@@ -48,10 +48,9 @@ namespace LightBDD.Extensions.DependencyInjection.Implementation
             throw new AggregateException(exceptions);
         }
 
-        public IDependencyContainer BeginScope(LifetimeScope scope, Action<ContainerConfigurator> configuration = null)
+        public IDependencyContainer BeginScope(LifetimeScope scope)
         {
             var overrides = new ContainerOverrides();
-            configuration?.Invoke(overrides);
 
             return new DiContainer(_scope.BeginScope(scope), overrides);
         }

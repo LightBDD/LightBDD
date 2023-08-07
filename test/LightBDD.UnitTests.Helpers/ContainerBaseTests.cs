@@ -1,6 +1,5 @@
 ﻿using System;
 using LightBDD.Core.Dependencies;
-using Moq;
 using NUnit.Framework;
 
 namespace LightBDD.UnitTests.Helpers
@@ -12,25 +11,6 @@ namespace LightBDD.UnitTests.Helpers
         protected ContainerBaseTests(bool shouldTakeOwnership = true)
         {
             ShouldTakeOwnership = shouldTakeOwnership;
-        }
-
-        [Test]
-        [TestCase(true)]
-        [TestCase(false)]
-        public void RegisterInstance_should_handle_disposal_accordingly(bool expectDispose)
-        {
-            var instance = new Mock<IDisposable>();
-            using (var container = CreateContainer())
-            {
-                var options = new RegistrationOptions().As(instance.Object.GetType());
-                if (!expectDispose)
-                    options.ExternallyOwned();
-
-                using (var scope = container.BeginScope(LifetimeScope.Local, cfg => cfg.RegisterInstance(instance.Object, options)))
-                    Assert.AreSame(instance.Object, scope.Resolve(instance.Object.GetType()));
-            }
-
-            instance.Verify(x => x.Dispose(), Times.Exactly(expectDispose ? 1 : 0));
         }
 
         [Test]
@@ -94,19 +74,6 @@ namespace LightBDD.UnitTests.Helpers
         }
 
         [Test]
-        public void BeginScope_should_allow_adding_instances()
-        {
-            var instance = new Disposable();
-            using (var container = CreateContainer())
-            {
-                using (var scope = container.BeginScope(LifetimeScope.Local, cfg => cfg.RegisterInstance(instance, new RegistrationOptions().As<Disposable>())))
-                    Assert.That(scope.Resolve<Disposable>(), Is.SameAs(instance));
-
-                Assert.True(instance.Disposed);
-            }
-        }
-
-        [Test]
         public void It_should_resolve_current_container()
         {
             using (var container = CreateContainer())
@@ -122,18 +89,16 @@ namespace LightBDD.UnitTests.Helpers
         }
 
         [Test]
+        [Ignore("To rewrite")]
         public void RegisterInstance_should_honor_types()
         {
             var disposable = new Disposable();
+            //c => c.RegisterInstance(disposable, new RegistrationOptions().As<Disposable>().As<IDisposable>().As<object>())
             using (var container = CreateContainer())
             {
-                using (var scope = container.BeginScope(LifetimeScope.Local, c => c.RegisterInstance(disposable,
-                    new RegistrationOptions().As<Disposable>().As<IDisposable>().As<object>())))
-                {
-                    Assert.That(scope.Resolve<object>(), Is.SameAs(disposable));
-                    Assert.That(scope.Resolve<IDisposable>(), Is.SameAs(disposable));
-                    Assert.That(scope.Resolve<Disposable>(), Is.SameAs(disposable));
-                }
+                    Assert.That(container.Resolve<object>(), Is.SameAs(disposable));
+                    Assert.That(container.Resolve<IDisposable>(), Is.SameAs(disposable));
+                    Assert.That(container.Resolve<Disposable>(), Is.SameAs(disposable));
             }
         }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility;
@@ -30,13 +29,13 @@ namespace LightBDD.Core.UnitTests.Execution
             _stepGroupScope = new Mock<IDependencyContainer>();
             _stepScope = new Mock<IDependencyContainer>();
 
-            _containerScope.Setup(x => x.BeginScope(It.IsAny<LifetimeScope>(), It.IsAny<Action<ContainerConfigurator>>()))
+            _containerScope.Setup(x => x.BeginScope(It.IsAny<LifetimeScope>()))
                 .Returns(_scenarioScope.Object);
 
-            _scenarioScope.Setup(x => x.BeginScope(It.IsAny<LifetimeScope>(), It.IsAny<Action<ContainerConfigurator>>()))
+            _scenarioScope.Setup(x => x.BeginScope(It.IsAny<LifetimeScope>()))
                 .Returns(_stepGroupScope.Object);
 
-            _stepGroupScope.Setup(x => x.BeginScope(It.IsAny<LifetimeScope>(), It.IsAny<Action<ContainerConfigurator>>()))
+            _stepGroupScope.Setup(x => x.BeginScope(It.IsAny<LifetimeScope>()))
                 .Returns(_stepScope.Object);
 
             _factory = TestableScenarioFactory.Create(cfg => cfg.DependencyContainerConfiguration().UseContainer(_containerScope.Object));
@@ -50,8 +49,8 @@ namespace LightBDD.Core.UnitTests.Execution
                 .TestScenario(Given_step_one));
             result.Status.ShouldBe(ExecutionStatus.Passed);
 
-            _containerScope.Verify(s => s.BeginScope(LifetimeScope.Scenario, It.IsAny<Action<ContainerConfigurator>>()));
-            _scenarioScope.Verify(s => s.BeginScope(LifetimeScope.Local, It.IsAny<Action<ContainerConfigurator>>()));
+            _containerScope.Verify(s => s.BeginScope(LifetimeScope.Scenario));
+            _scenarioScope.Verify(s => s.BeginScope(LifetimeScope.Local));
             _stepGroupScope.Verify(s => s.Resolve(typeof(MyScenarioScope)));
         }
 
@@ -63,11 +62,11 @@ namespace LightBDD.Core.UnitTests.Execution
                 .TestGroupScenario(Given_composite, Given_composite));
             result.Status.ShouldBe(ExecutionStatus.Passed);
 
-            _containerScope.Verify(s => s.BeginScope(LifetimeScope.Scenario, It.IsAny<Action<ContainerConfigurator>>()),
+            _containerScope.Verify(s => s.BeginScope(LifetimeScope.Scenario),
                 Times.Once);
-            _scenarioScope.Verify(s => s.BeginScope(LifetimeScope.Local, It.IsAny<Action<ContainerConfigurator>>()),
+            _scenarioScope.Verify(s => s.BeginScope(LifetimeScope.Local),
                 Times.Exactly(1));
-            _stepGroupScope.Verify(s => s.BeginScope(LifetimeScope.Local, It.IsAny<Action<ContainerConfigurator>>()),
+            _stepGroupScope.Verify(s => s.BeginScope(LifetimeScope.Local),
                 Times.Exactly(2));
             _stepScope.Verify(s => s.Resolve(typeof(MyStepScope)), Times.Exactly(2));
         }
