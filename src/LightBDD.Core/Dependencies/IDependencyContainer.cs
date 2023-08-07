@@ -8,7 +8,7 @@ namespace LightBDD.Core.Dependencies
     public interface IDependencyContainer : IDependencyResolver, IDisposable
     {
         /// <summary>
-        /// Creates new scope based on the current container and the additional <paramref name="configuration"/> if specified.
+        /// Creates new scope based on the current container.
         /// The exact behavior of the new scopes will depend on the implementation, but there is a general expectation that objects resolved with the new scope should be disposed with scope disposal.
         /// The created scope should be disposed after use and should be disposed before the parent scope.
         /// </summary>
