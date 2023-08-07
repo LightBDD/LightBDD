@@ -12,8 +12,9 @@ namespace LightBDD.Core.Dependencies
         /// The exact behavior of the new scopes will depend on the implementation, but there is a general expectation that objects resolved with the new scope should be disposed with scope disposal.
         /// The created scope should be disposed after use and should be disposed before the parent scope.
         /// </summary>
+        /// <param name="scope">Container scope</param>
         /// <param name="configuration">An additional configuration that, if specified, should be applied on the scope.</param>
         /// <returns>New scope.</returns>
-        IDependencyContainer BeginScope(Action<ContainerConfigurator> configuration = null);
+        IDependencyContainer BeginScope(LifetimeScope scope, Action<ContainerConfigurator> configuration = null);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Dependencies;
 using LightBDD.Framework.Scenarios;
 using LightBDD.Framework.UnitTests.Scenarios.Helpers;
 using NUnit.Framework;
@@ -70,7 +71,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
         {
             var container = new DependencyContainerConfiguration().DependencyContainer;
             Testable actual;
-            using (var scope = container.BeginScope(step.SubStepsContext.ScopeConfigurator))
+            using (var scope = container.BeginScope(LifetimeScope.Local, step.SubStepsContext.ScopeConfigurator))
             {
                 actual = (Testable)step.SubStepsContext.ContextResolver(scope);
                 if (instance != null)

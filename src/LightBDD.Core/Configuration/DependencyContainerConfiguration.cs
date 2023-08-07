@@ -19,7 +19,7 @@ namespace LightBDD.Core.Configuration
         /// </summary>
         /// <param name="container">Container to use.</param>
         /// <returns>Self.</returns>
-        public DependencyContainerConfiguration UseContainer(IDependencyContainerV2 container)
+        public DependencyContainerConfiguration UseContainer(IDependencyContainer container)
         {
             ThrowIfSealed();
             DependencyContainer = container;

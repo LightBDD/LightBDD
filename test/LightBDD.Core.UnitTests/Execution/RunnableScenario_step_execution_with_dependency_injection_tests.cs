@@ -17,18 +17,18 @@ namespace LightBDD.Core.UnitTests.Execution
     //TODO: simplify scopes
     public class RunnableScenario_step_execution_with_dependency_injection_tests
     {
-        private readonly Mock<IDependencyContainerV2> _containerScope;
-        private readonly Mock<IDependencyContainerV2> _scenarioScope;
-        private readonly Mock<IDependencyContainerV2> _stepGroupScope;
-        private readonly Mock<IDependencyContainerV2> _stepScope;
+        private readonly Mock<IDependencyContainer> _containerScope;
+        private readonly Mock<IDependencyContainer> _scenarioScope;
+        private readonly Mock<IDependencyContainer> _stepGroupScope;
+        private readonly Mock<IDependencyContainer> _stepScope;
         private readonly TestableScenarioFactory _factory;
 
         public RunnableScenario_step_execution_with_dependency_injection_tests()
         {
-            _containerScope = new Mock<IDependencyContainerV2>();
-            _scenarioScope = new Mock<IDependencyContainerV2>();
-            _stepGroupScope = new Mock<IDependencyContainerV2>();
-            _stepScope = new Mock<IDependencyContainerV2>();
+            _containerScope = new Mock<IDependencyContainer>();
+            _scenarioScope = new Mock<IDependencyContainer>();
+            _stepGroupScope = new Mock<IDependencyContainer>();
+            _stepScope = new Mock<IDependencyContainer>();
 
             _containerScope.Setup(x => x.BeginScope(It.IsAny<LifetimeScope>(), It.IsAny<Action<ContainerConfigurator>>()))
                 .Returns(_scenarioScope.Object);

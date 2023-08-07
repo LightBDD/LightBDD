@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace LightBDD.Core.Dependencies.Implementation
 {
-    internal class DefaultDependencyContainer : IDependencyContainerV2
+    internal class DefaultDependencyContainer : IDependencyContainer
     {
         class Slot
         {
@@ -212,7 +212,7 @@ namespace LightBDD.Core.Dependencies.Implementation
         public IDependencyContainer BeginScope(Action<ContainerConfigurator> configuration = null) =>
             BeginScope(LifetimeScope.Local, configuration);
 
-        public IDependencyContainerV2 BeginScope(LifetimeScope scope, Action<ContainerConfigurator> configuration = null)
+        public IDependencyContainer BeginScope(LifetimeScope scope, Action<ContainerConfigurator> configuration = null)
         {
             return new DefaultDependencyContainer(this, scope, configuration);
         }

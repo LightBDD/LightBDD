@@ -4,7 +4,7 @@ using LightBDD.Core.Dependencies;
 
 namespace LightBDD.Autofac.Implementation
 {
-    internal class AutofacContainer : IDependencyContainerV2
+    internal class AutofacContainer : IDependencyContainer
     {
         public ILifetimeScope AutofacScope { get; set; }
         public ILifetimeScope ParentScope { get; set; }
@@ -23,7 +23,7 @@ namespace LightBDD.Autofac.Implementation
         public IDependencyContainer BeginScope(Action<ContainerConfigurator> configuration = null) =>
             BeginScope(LifetimeScope.Local, configuration);
 
-        public IDependencyContainerV2 BeginScope(LifetimeScope scope, Action<ContainerConfigurator> configuration = null)
+        public IDependencyContainer BeginScope(LifetimeScope scope, Action<ContainerConfigurator> configuration = null)
         {
             var innerScope = new AutofacContainer();
 

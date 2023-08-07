@@ -26,7 +26,7 @@ namespace LightBDD.UnitTests.Helpers
                 if (!expectDispose)
                     options.ExternallyOwned();
 
-                using (var scope = container.BeginScope(cfg => cfg.RegisterInstance(instance.Object, options)))
+                using (var scope = container.BeginScope(LifetimeScope.Local, cfg => cfg.RegisterInstance(instance.Object, options)))
                     Assert.AreSame(instance.Object, scope.Resolve(instance.Object.GetType()));
             }
 
@@ -77,10 +77,10 @@ namespace LightBDD.UnitTests.Helpers
             using (var container = CreateContainer())
             {
                 outer = container.Resolve<Disposable>();
-                using (var scope = container.BeginScope())
+                using (var scope = container.BeginScope(LifetimeScope.Local))
                 {
                     inner = scope.Resolve<Disposable>();
-                    using (var deepestScope = scope.BeginScope())
+                    using (var deepestScope = scope.BeginScope(LifetimeScope.Local))
                         deepestInner = deepestScope.Resolve<Disposable>();
                     Assert.True(deepestInner.Disposed);
                     Assert.False(inner.Disposed);
@@ -99,7 +99,7 @@ namespace LightBDD.UnitTests.Helpers
             var instance = new Disposable();
             using (var container = CreateContainer())
             {
-                using (var scope = container.BeginScope(cfg => cfg.RegisterInstance(instance, new RegistrationOptions().As<Disposable>())))
+                using (var scope = container.BeginScope(LifetimeScope.Local, cfg => cfg.RegisterInstance(instance, new RegistrationOptions().As<Disposable>())))
                     Assert.That(scope.Resolve<Disposable>(), Is.SameAs(instance));
 
                 Assert.True(instance.Disposed);
@@ -111,7 +111,7 @@ namespace LightBDD.UnitTests.Helpers
         {
             using (var container = CreateContainer())
             {
-                using (var scope = container.BeginScope())
+                using (var scope = container.BeginScope(LifetimeScope.Local))
                 {
                     Assert.That(scope.Resolve<IDependencyContainer>(), Is.SameAs(scope));
                     Assert.That(scope.Resolve<IDependencyResolver>(), Is.SameAs(scope));
@@ -127,7 +127,7 @@ namespace LightBDD.UnitTests.Helpers
             var disposable = new Disposable();
             using (var container = CreateContainer())
             {
-                using (var scope = container.BeginScope(c => c.RegisterInstance(disposable,
+                using (var scope = container.BeginScope(LifetimeScope.Local, c => c.RegisterInstance(disposable,
                     new RegistrationOptions().As<Disposable>().As<IDisposable>().As<object>())))
                 {
                     Assert.That(scope.Resolve<object>(), Is.SameAs(disposable));

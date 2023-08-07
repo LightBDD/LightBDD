@@ -33,7 +33,7 @@ namespace LightBDD.Core.UnitTests.Dependencies
         {
             using (var container = CreateContainer())
             {
-                var ex = Assert.Throws<InvalidOperationException>(() => container.BeginScope(c => c.RegisterInstance(new Disposable(), new RegistrationOptions().As<string>())));
+                var ex = Assert.Throws<InvalidOperationException>(() => container.BeginScope(LifetimeScope.Local, c => c.RegisterInstance(new Disposable(), new RegistrationOptions().As<string>())));
                 Assert.That(ex.Message, Is.EqualTo($"Type {typeof(Disposable)} is not assignable to {typeof(string)}"));
             }
         }
@@ -106,13 +106,14 @@ namespace LightBDD.Core.UnitTests.Dependencies
             var otherComplex = new OtherComplex(new Disposable());
             using (var container = CreateContainer())
             {
-                using (var outerScope = container.BeginScope(c =>
-                     {
-                         c.RegisterInstance(outerDisposable, new RegistrationOptions());
-                         c.RegisterInstance(otherComplex, new RegistrationOptions());
-                     }))
+                using (var outerScope = container.BeginScope(LifetimeScope.Local, c =>
                 {
-                    using (var innerScope = outerScope.BeginScope(c => c.RegisterInstance(innerDisposable, new RegistrationOptions())))
+                    c.RegisterInstance(outerDisposable, new RegistrationOptions());
+                    c.RegisterInstance(otherComplex, new RegistrationOptions());
+                }))
+                {
+                    using (var innerScope = outerScope.BeginScope(LifetimeScope.Local,
+                               c => c.RegisterInstance(innerDisposable, new RegistrationOptions())))
                     {
                         var complex = innerScope.Resolve<Complex>();
                         Assert.That(complex, Is.Not.Null);
@@ -218,7 +219,7 @@ Type '{typeof(MultiCtorType)}' has to have exactly one public constructor (numbe
                 x.RegisterType<SlowDependency>(InstanceScope.Single, opt => opt.As<SlowDependency>().As<object>());
             }))
             {
-                using (var scenario = container.BeginScope())
+                using (var scenario = container.BeginScope(LifetimeScope.Local))
                 {
                     var all = await Task.WhenAll(Enumerable.Range(0, 10).Select(_ => Task.Run(() => scenario.Resolve<SlowDependency>()))
                         .Concat(Enumerable.Range(0, 10).Select(_ => Task.Run(() => container.Resolve<SlowDependency>()))));
@@ -379,7 +380,7 @@ Type '{typeof(MultiCtorType)}' has to have exactly one public constructor (numbe
             using (var container = CreateContainer(opt => opt.ConfigureFallbackBehavior(FallbackResolveBehavior.ResolveTransient)))
             {
                 Assert.AreNotEqual(container.Resolve<Disposable>(), container.Resolve<Disposable>());
-                using (var inner = container.BeginScope())
+                using (var inner = container.BeginScope(LifetimeScope.Local))
                     Assert.AreNotEqual(container.Resolve<Disposable>(), inner.Resolve<Disposable>());
             }
         }
@@ -391,7 +392,7 @@ Type '{typeof(MultiCtorType)}' has to have exactly one public constructor (numbe
             using (var container = CreateContainer(opt => opt.ConfigureFallbackBehavior(FallbackResolveBehavior.ThrowException)))
             {
                 Assert.Throws<InvalidOperationException>(() => container.Resolve<Disposable>());
-                using (var inner = container.BeginScope())
+                using (var inner = container.BeginScope(LifetimeScope.Local))
                     Assert.Throws<InvalidOperationException>(() => inner.Resolve<Disposable>());
             }
         }

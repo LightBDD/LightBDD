@@ -6,7 +6,7 @@ using LightBDD.Core.Dependencies;
 
 namespace LightBDD.Extensions.DependencyInjection.Implementation
 {
-    internal class DiContainer : IDependencyContainerV2
+    internal class DiContainer : IDependencyContainer
     {
         private readonly IContainerScope _scope;
         private readonly ContainerOverrides _overrides;
@@ -48,10 +48,7 @@ namespace LightBDD.Extensions.DependencyInjection.Implementation
             throw new AggregateException(exceptions);
         }
 
-        public IDependencyContainer BeginScope(Action<ContainerConfigurator> configuration = null) =>
-            BeginScope(LifetimeScope.Local, configuration);
-
-        public IDependencyContainerV2 BeginScope(LifetimeScope scope, Action<ContainerConfigurator> configuration = null)
+        public IDependencyContainer BeginScope(LifetimeScope scope, Action<ContainerConfigurator> configuration = null)
         {
             var overrides = new ContainerOverrides();
             configuration?.Invoke(overrides);
