@@ -5,6 +5,7 @@ namespace LightBDD.Core.Dependencies
     /// <summary>
     /// Fallback resolve behavior for the types that are not explicitly registered in the container.
     /// </summary>
+    //TODO: review if needed
     public enum FallbackResolveBehavior
     {
         /// <summary>

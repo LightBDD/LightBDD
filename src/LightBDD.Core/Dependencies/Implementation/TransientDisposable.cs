@@ -24,7 +24,7 @@ internal class TransientDisposable : IAsyncDisposable
         }
         catch (Exception ex)
         {
-            throw new InvalidOperationException($"Failed to dispose transient dependency '{instance.GetType().Name}': {ex.Message}", ex);
+            throw new InvalidOperationException($"Failed to dispose transient dependency '{instance!.GetType().Name}': {ex.Message}", ex);
         }
     }
 }

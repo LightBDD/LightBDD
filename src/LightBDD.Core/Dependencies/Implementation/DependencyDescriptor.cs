@@ -5,31 +5,14 @@ using System.Reflection;
 
 namespace LightBDD.Core.Dependencies.Implementation
 {
-    class DependencyDescriptor
+    //TODO: rename
+    internal static class DependencyDescriptor
     {
-        private static ConcurrentDictionary<Type, Func<IDependencyResolver, object>> _ctorCache = new();
-        public Type Type { get; }
-        public Func<IDependencyResolver, object> ResolveFn { get; }
-        public RegistrationOptions Registration { get; }
-        public InstanceScope Scope { get; }
-        public bool InstantResolution { get; }
-
-        public DependencyDescriptor(Type type, Func<IDependencyResolver, object> resolveFn, RegistrationOptions registration, InstanceScope scope, bool instantResolution)
-        {
-            Type = type;
-            ResolveFn = resolveFn;
-            Registration = registration;
-            if (!registration.AsTypes.Any())
-                registration.As(type);
-            Scope = scope;
-            InstantResolution = instantResolution;
-        }
-
-        public override string ToString() => $"{Type} ({Scope})";
+        private static readonly ConcurrentDictionary<Type, Func<IDependencyResolver, object>> CtorCache = new();
 
         public static Func<IDependencyResolver, object> FindConstructor(Type type)
         {
-            return _ctorCache.GetOrAdd(type, CreateConstructorInitializer);
+            return CtorCache.GetOrAdd(type, CreateConstructorInitializer);
         }
 
         private static Func<IDependencyResolver, object> CreateConstructorInitializer(Type type)
