@@ -3,6 +3,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Dependencies;
+using LightBDD.Core.Dependencies.Implementation;
 
 namespace LightBDD.Core.Extensibility
 {
@@ -37,46 +38,9 @@ namespace LightBDD.Core.Extensibility
             if (!takeOwnership)
                 ContextResolver = _ => contextProvider();
             else
-                ContextResolver = r => r.Resolve<ContextWrapper>().WithInstance(contextProvider());
+                ContextResolver = r => r.Resolve<TransientDisposable>().WithInstance(contextProvider());
         }
 
         private static object? ProvideNoContext(IDependencyResolver _) => null;
-
-        private class ContextWrapper : IDisposable, IAsyncDisposable
-        {
-            private object? _instance;
-            public object? WithInstance(object? instance) => _instance = instance;
-
-            public void Dispose()
-            {
-                if (Interlocked.Exchange(ref _instance, null) is not IDisposable disposable)
-                    return;
-
-                try
-                {
-                    disposable.Dispose();
-                }
-                catch (Exception e)
-                {
-                    throw new InvalidOperationException($"Failed to dispose context '{disposable.GetType().Name}': {e.Message}", e);
-                }
-            }
-
-            //TODO: test
-            public async ValueTask DisposeAsync()
-            {
-                if (Interlocked.Exchange(ref _instance, null) is not IAsyncDisposable disposable)
-                    return;
-
-                try
-                {
-                    await disposable.DisposeAsync();
-                }
-                catch (Exception e)
-                {
-                    throw new InvalidOperationException($"Failed to dispose context '{disposable.GetType().Name}': {e.Message}", e);
-                }
-            }
-        }
     }
 }

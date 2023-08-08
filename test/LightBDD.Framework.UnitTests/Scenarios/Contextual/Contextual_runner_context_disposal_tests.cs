@@ -22,52 +22,52 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
         }
 
         [Test]
-        public void WithContext_accepting_instance_should_not_takeOwnership_by_default()
+        public async Task WithContext_accepting_instance_should_not_takeOwnership_by_default()
         {
             var expected = new Testable();
             _runner.WithContext(expected);
-            AssertRegistration(expected, false);
+            await AssertRegistration(expected, false);
         }
 
         [Test]
-        public void WithContext_accepting_instance_should_honor_takeOwnership_override()
+        public async Task WithContext_accepting_instance_should_honor_takeOwnership_override()
         {
             var expected = new Testable();
             _runner.WithContext(expected, true);
-            AssertRegistration(expected, true);
+            await AssertRegistration(expected, true);
         }
 
         [Test]
-        public void WithContext_accepting_instance_factory_should_takeOwnership_by_default()
+        public async Task WithContext_accepting_instance_factory_should_takeOwnership_by_default()
         {
             var expected = new Testable();
             _runner.WithContext(() => expected);
 
-            AssertRegistration(expected, true);
+            await AssertRegistration(expected, true);
         }
 
         [Test]
-        public void WithContext_accepting_instance_factory_should_honor_takeOwnership_override()
+        public async Task WithContext_accepting_instance_factory_should_honor_takeOwnership_override()
         {
             var expected = new Testable();
             _runner.WithContext(() => expected, false);
 
-            AssertRegistration(expected, false);
+            await AssertRegistration(expected, false);
         }
 
         [Test]
-        public void Generic_WithContext_should_use_DI_container()
+        public async Task Generic_WithContext_should_use_DI_container()
         {
             _runner.WithContext<Testable>();
 
-            AssertRegistration(null, true);
+            await AssertRegistration(null, true);
         }
 
-        private void AssertRegistration(Testable instance, bool shouldTakeOwnership)
+        private async Task AssertRegistration(Testable instance, bool shouldTakeOwnership)
         {
-            using var container = new DependencyContainerConfiguration().Build();
+            await using var container = new DependencyContainerConfiguration().Build();
             Testable actual;
-            using (var scope = container.BeginScope())
+            await using (var scope = container.BeginScope())
             {
                 actual = (Testable)_builder.Descriptor.ContextResolver(scope);
                 if (instance != null)

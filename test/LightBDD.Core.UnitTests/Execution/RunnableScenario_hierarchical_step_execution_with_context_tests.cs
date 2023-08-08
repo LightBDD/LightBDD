@@ -111,8 +111,8 @@ namespace LightBDD.Core.UnitTests.Execution
                 .RunScenario(r => r.Test().TestGroupScenario(StepGroupWithDisposable));
 
             var ex = scenario.ExecutionException.ShouldBeOfType<InvalidOperationException>();
-            Assert.That(ex.Message, Is.EqualTo($"DI Scope Dispose() failed: Failed to dispose dependency 'ContextWrapper': Failed to dispose context '{context.GetType().Name}': foo"));
-            Assert.That(ex.InnerException?.InnerException?.InnerException, Is.SameAs(exception));
+            Assert.That(ex.Message, Is.EqualTo($"DI Scope Dispose() failed: Failed to dispose transient dependency '{context.GetType().Name}': foo"));
+            Assert.That(ex.InnerException?.InnerException, Is.SameAs(exception));
             Assert.That(ex.StackTrace, Is.Not.Null);
         }
 
@@ -138,7 +138,7 @@ namespace LightBDD.Core.UnitTests.Execution
                 Is.EquivalentTo(new[]
                 {
                     $"{nameof(Exception)}|bar",
-                    $"{nameof(InvalidOperationException)}|DI Scope Dispose() failed: Failed to dispose dependency 'ContextWrapper': Failed to dispose context '{context.GetType().Name}': foo"
+                    $"{nameof(InvalidOperationException)}|DI Scope Dispose() failed: Failed to dispose transient dependency '{context.GetType().Name}': foo"
                 }));
         }
 

@@ -85,14 +85,15 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario, IRunStageCon
     private async Task CleanupScenario()
     {
         await _fixtureManager.DisposeAsync(_collector);
-        _collector.Capture(DisposeScenarioScope);
+        await _collector.Capture(DisposeScenarioScope);
     }
 
-    private void DisposeScenarioScope()
+    private async Task DisposeScenarioScope()
     {
         try
         {
-            _scenarioScope?.Dispose();
+            if (_scenarioScope != null)
+                await _scenarioScope.DisposeAsync();
             _scenarioScope = null;
         }
         catch (Exception ex)

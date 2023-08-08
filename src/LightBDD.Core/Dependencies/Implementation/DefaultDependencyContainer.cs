@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace LightBDD.Core.Dependencies.Implementation
 {
@@ -224,6 +225,12 @@ namespace LightBDD.Core.Dependencies.Implementation
             if (item is IDisposable disposable)
                 _disposable.Enqueue(disposable);
             return item;
+        }
+
+        public ValueTask DisposeAsync()
+        {
+            Dispose();
+            return default;
         }
     }
 }
