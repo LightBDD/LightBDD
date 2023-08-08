@@ -24,12 +24,22 @@ internal class DependencyContainer : IDependencyContainer
 
     public object Resolve(Type type)
     {
-        return _serviceProvider.GetService(type) ?? FallbackResolve(type);
+        if (type == typeof(IDependencyContainer) || type == typeof(IDependencyResolver))
+            return this;
+
+        return _serviceProvider.GetService(type) ?? CreateTransient(type);
     }
 
-    private object FallbackResolve(Type type)
+    private object CreateTransient(Type type)
     {
-        return EnlistDisposable(DependencyDescriptor.FindConstructor(type).Invoke(this));
+        try
+        {
+            return EnlistDisposable(DependencyDescriptor.FindConstructor(type).Invoke(this));
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException($"Unable to create transient instance of type '{type}':{Environment.NewLine}{ex.Message}", ex);
+        }
     }
 
     private object EnlistDisposable(object item)
@@ -44,15 +54,12 @@ internal class DependencyContainer : IDependencyContainer
         return new DependencyContainer(_serviceProvider.CreateAsyncScope());
     }
 
-    public void Dispose()
-    {
-        (_holdingScope as IDisposable)?.Dispose();
-    }
-
     public ValueTask DisposeAsync()
     {
         if (_holdingScope is IAsyncDisposable disposable)
             return disposable.DisposeAsync();
+
+        (_holdingScope as IDisposable)?.Dispose();
         return default;
     }
 }
