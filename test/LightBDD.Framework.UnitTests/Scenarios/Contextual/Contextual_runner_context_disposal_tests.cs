@@ -65,7 +65,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
 
         private void AssertRegistration(Testable instance, bool shouldTakeOwnership)
         {
-            var container = new DependencyContainerConfiguration().DependencyContainer;
+            using var container = new DependencyContainerConfiguration().Build();
             Testable actual;
             using (var scope = container.BeginScope())
             {

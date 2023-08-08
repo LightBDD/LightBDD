@@ -24,7 +24,7 @@ namespace LightBDD.Autofac.UnitTests
 
             return new DependencyContainerConfiguration()
                 .UseAutofac(builder.Build(), ShouldTakeOwnership)
-                .DependencyContainer;
+                .Build();
         }
     }
 }

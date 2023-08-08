@@ -21,7 +21,7 @@ namespace LightBDD.Autofac.UnitTests
             var builder = new ContainerBuilder();
             builder.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
             configurator(builder);
-            return new DependencyContainerConfiguration().UseAutofac(builder).DependencyContainer;
+            return new DependencyContainerConfiguration().UseAutofac(builder).Build();
         }
 
         [Test]

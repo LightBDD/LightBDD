@@ -483,7 +483,7 @@ Container scope: #global
         {
             return new DependencyContainerConfiguration()
                 .UseDefault(configurator)
-                .DependencyContainer;
+                .Build();
         }
 
         class SlowDependency

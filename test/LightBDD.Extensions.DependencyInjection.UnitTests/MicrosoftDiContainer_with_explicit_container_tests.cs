@@ -30,7 +30,7 @@ namespace LightBDD.Extensions.DependencyInjection.UnitTests
 
             return new DependencyContainerConfiguration()
                 .UseContainer(serviceCollection.BuildServiceProvider(), options)
-                .DependencyContainer;
+                .Build();
         }
 
         [Test]

@@ -9,10 +9,7 @@ namespace LightBDD.Core.Configuration
     /// </summary>
     public class DependencyContainerConfiguration : FeatureConfiguration
     {
-        /// <summary>
-        /// Returns configured <see cref="IDependencyContainer"/>.
-        /// </summary>
-        public IDependencyContainer DependencyContainer { get; private set; } = new DefaultDependencyContainer(LifetimeScope.Global);
+        private IDependencyContainer _dependencyContainer = new DefaultDependencyContainer(LifetimeScope.Global);
 
         /// <summary>
         /// Sets <paramref name="container"/> as a container to be used by LightBDD scenarios and steps.
@@ -22,7 +19,7 @@ namespace LightBDD.Core.Configuration
         public DependencyContainerConfiguration UseContainer(IDependencyContainer container)
         {
             ThrowIfSealed();
-            DependencyContainer = container;
+            _dependencyContainer = container;
             return this;
         }
 
@@ -43,6 +40,14 @@ namespace LightBDD.Core.Configuration
         public DependencyContainerConfiguration UseDefault(Action<IDefaultContainerConfigurator> configurator = null)
         {
             return UseContainer(new DefaultDependencyContainer(LifetimeScope.Global, configurator));
+        }
+
+        /// <summary>
+        /// Creates new instance of <see cref="IDependencyContainer"/> with applied all configurations.
+        /// </summary>
+        public IDependencyContainer Build()
+        {
+            return _dependencyContainer;
         }
     }
 }
