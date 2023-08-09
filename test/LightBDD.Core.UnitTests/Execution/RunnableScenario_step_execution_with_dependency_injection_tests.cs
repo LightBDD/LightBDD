@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
+using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.ScenarioHelpers;
-using Moq;
 using NUnit.Framework;
 using Shouldly;
 
@@ -14,81 +15,98 @@ namespace LightBDD.Core.UnitTests.Execution
 {
     [TestFixture]
     [FixtureLifeCycle(LifeCycle.InstancePerTestCase)]
-    //TODO: simplify scopes
     public class RunnableScenario_step_execution_with_dependency_injection_tests
     {
-        private readonly Mock<IDependencyContainerV2> _containerScope;
-        private readonly Mock<IDependencyContainerV2> _scenarioScope;
-        private readonly Mock<IDependencyContainerV2> _stepGroupScope;
-        private readonly Mock<IDependencyContainerV2> _stepScope;
-        private readonly TestableScenarioFactory _factory;
-
-        public RunnableScenario_step_execution_with_dependency_injection_tests()
-        {
-            _containerScope = new Mock<IDependencyContainerV2>();
-            _scenarioScope = new Mock<IDependencyContainerV2>();
-            _stepGroupScope = new Mock<IDependencyContainerV2>();
-            _stepScope = new Mock<IDependencyContainerV2>();
-
-            _containerScope.Setup(x => x.BeginScope(It.IsAny<LifetimeScope>(), It.IsAny<Action<ContainerConfigurator>>()))
-                .Returns(_scenarioScope.Object);
-
-            _scenarioScope.Setup(x => x.BeginScope(It.IsAny<LifetimeScope>(), It.IsAny<Action<ContainerConfigurator>>()))
-                .Returns(_stepGroupScope.Object);
-
-            _stepGroupScope.Setup(x => x.BeginScope(It.IsAny<LifetimeScope>(), It.IsAny<Action<ContainerConfigurator>>()))
-                .Returns(_stepScope.Object);
-
-            _factory = TestableScenarioFactory.Create(cfg => cfg.DependencyContainerConfiguration().UseContainer(_containerScope.Object));
-        }
 
         [Test]
         public async Task Runner_should_instantiate_scenario_context_within_scenario_scope()
         {
-            var result = await _factory.RunScenario(x => x.Test()
-                .WithContext(r => r.Resolve<MyScenarioScope>())
-                .TestScenario(Given_step_one));
+            MyScenarioContext captured = null;
+
+            var result = await TestableScenarioFactory.Default.RunScenario(x => x.Test()
+                .WithContext(r => captured = r.Resolve<MyScenarioContext>().VerifyNotDisposed())
+                .TestScenario(Scenario_step));
             result.Status.ShouldBe(ExecutionStatus.Passed);
 
-            _containerScope.Verify(s => s.BeginScope(LifetimeScope.Scenario, It.IsAny<Action<ContainerConfigurator>>()));
-            _scenarioScope.Verify(s => s.BeginScope(LifetimeScope.Local, It.IsAny<Action<ContainerConfigurator>>()));
-            _stepGroupScope.Verify(s => s.Resolve(typeof(MyScenarioScope)));
+            captured.ShouldNotBeNull();
+            captured.Disposed.ShouldBeTrue();
         }
 
         [Test]
-        public async Task Runner_should_instantiate_step_context_within_step_scope()
+        public async Task Runner_should_instantiate_step_context_within_scenario_scope()
         {
-            var result = await _factory.RunScenario(r => r.Test()
-                .WithContext(r => r.Resolve<MyScenarioScope>())
+            MyScenarioContext captured = null;
+            var result = await TestableScenarioFactory.Default.RunScenario(x => x.Test()
+                .WithContext(r => captured = r.Resolve<MyScenarioContext>().VerifyNotDisposed())
                 .TestGroupScenario(Given_composite, Given_composite));
             result.Status.ShouldBe(ExecutionStatus.Passed);
 
-            _containerScope.Verify(s => s.BeginScope(LifetimeScope.Scenario, It.IsAny<Action<ContainerConfigurator>>()),
-                Times.Once);
-            _scenarioScope.Verify(s => s.BeginScope(LifetimeScope.Local, It.IsAny<Action<ContainerConfigurator>>()),
-                Times.Exactly(1));
-            _stepGroupScope.Verify(s => s.BeginScope(LifetimeScope.Local, It.IsAny<Action<ContainerConfigurator>>()),
-                Times.Exactly(2));
-            _stepScope.Verify(s => s.Resolve(typeof(MyStepScope)), Times.Exactly(2));
+            captured.ShouldNotBeNull();
+            captured.Disposed.ShouldBeTrue();
+            captured.StepContexts.Distinct().Count().ShouldBe(2);
+            captured.StepContexts.ShouldAllBe(s => s.Disposed);
         }
 
-        class MyScenarioScope
+        class MyScenarioContext : IAsyncDisposable
         {
+            public readonly List<MyStepContext> StepContexts = new();
+
+            public MyScenarioContext VerifyNotDisposed()
+            {
+                if (Disposed)
+                    throw new Exception("Already disposed");
+                return this;
+            }
+
+            public ValueTask DisposeAsync()
+            {
+                Disposed = true;
+                return default;
+            }
+
+            public bool Disposed { get; private set; }
+            
+            public MyStepContext CaptureStepContext(MyStepContext step)
+            {
+                StepContexts.Add(step);
+                return step;
+            }
         }
 
-        class MyStepScope
+        class MyStepContext : IAsyncDisposable
         {
+            public MyStepContext VerifyNotDisposed()
+            {
+                if (Disposed)
+                    throw new Exception("Already disposed");
+                return this;
+            }
+
+            public ValueTask DisposeAsync()
+            {
+                Disposed = true;
+                return default;
+            }
+
+            public bool Disposed { get; private set; }
         }
 
-        private void Given_step_one()
+        private void Step_step()
         {
+            ((MyStepContext)ScenarioExecutionContext.CurrentStep.Context).VerifyNotDisposed();
+        }
+
+        private void Scenario_step()
+        {
+            ((MyScenarioContext)ScenarioExecutionContext.CurrentStep.Context).VerifyNotDisposed();
         }
 
         private TestCompositeStep Given_composite()
         {
+            var scenarioContext = (MyScenarioContext)ScenarioExecutionContext.CurrentStep.Context;
             return new TestCompositeStep(
-                new ExecutionContextDescriptor(r => r.Resolve<MyStepScope>(), null),
-                TestStep.CreateSync(Given_step_one));
+                new ExecutionContextDescriptor(r => scenarioContext.CaptureStepContext(r.Resolve<MyStepContext>().VerifyNotDisposed())),
+                TestStep.CreateSync(Step_step));
         }
     }
 }

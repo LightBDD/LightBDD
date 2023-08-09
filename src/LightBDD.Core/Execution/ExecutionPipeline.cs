@@ -46,7 +46,7 @@ namespace LightBDD.Core.Execution
         /// <returns>Test results</returns>
         public async Task<ITestRunResult> Execute(IReadOnlyList<ScenarioCase> scenarios, CancellationToken cancellationToken = default)
         {
-            using var ctx = new Context(_testAssembly, Configure(), cancellationToken);
+            await using var ctx = new Context(Configure(), cancellationToken);
             LightBddExecutionContext.Install(ctx);
             var testRunInfo = ctx.MetadataProvider.GetTestRunInfo(_testAssembly);
             var testRunStartTime = ctx.ExecutionTimer.GetTime();
@@ -267,9 +267,9 @@ namespace LightBDD.Core.Execution
         }
 
         //TODO: review
-        private class Context : EngineContext, IDisposable
+        private class Context : EngineContext, IAsyncDisposable
         {
-            public Context(Assembly testAssembly, LightBddConfiguration configuration, CancellationToken cancellationToken)
+            public Context(LightBddConfiguration configuration, CancellationToken cancellationToken)
             : base(configuration)
             {
                 CancellationToken = cancellationToken;
@@ -280,10 +280,7 @@ namespace LightBDD.Core.Execution
             public readonly CancellationToken CancellationToken;
             public Exception? GlobalSetUpException;
 
-            public void Dispose()
-            {
-                DependencyContainer.Dispose();
-            }
+            public ValueTask DisposeAsync() => DependencyContainer.DisposeAsync();
         }
     }
 }

@@ -24,6 +24,7 @@ public class EngineContext
         Configuration = configuration;
         MetadataProvider = new CoreMetadataProvider(configuration);
         ExceptionProcessor = new ExceptionProcessor(configuration);
+        DependencyContainer = Configuration.DependencyContainerConfiguration().Build();
     }
     /// <summary>
     /// Returns instance of <see cref="LightBddConfiguration"/>.
@@ -38,10 +39,10 @@ public class EngineContext
     internal readonly IExecutionTimer ExecutionTimer = DefaultExecutionTimer.StartNew();
     internal readonly CoreMetadataProvider MetadataProvider;
     internal readonly ExceptionProcessor ExceptionProcessor;
+    internal readonly IDependencyContainer DependencyContainer;
     internal GlobalSetUpRegistry GlobalSetUp => Configuration.Get<ExecutionExtensionsConfiguration>().GlobalSetUpRegistry;
     internal IProgressNotifier ProgressNotifier => Configuration.Get<ProgressNotifierConfiguration>().Notifier;
     internal IExecutionExtensions ExecutionExtensions => Configuration.ExecutionExtensionsConfiguration();
-    internal IDependencyContainer DependencyContainer => Configuration.DependencyContainerConfiguration().DependencyContainer;
     internal IFileAttachmentsManager FileAttachmentsManager => Configuration.ReportConfiguration().GetFileAttachmentsManager();
     internal IFixtureFactory FixtureFactory => Configuration.ExecutionExtensionsConfiguration().FixtureFactory;
 }

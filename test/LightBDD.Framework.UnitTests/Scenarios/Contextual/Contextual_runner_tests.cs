@@ -4,7 +4,6 @@ using LightBDD.Framework.UnitTests.Scenarios.Helpers;
 using Moq;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using LightBDD.Framework.Scenarios;
 using Shouldly;
 
@@ -33,7 +32,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
             _runner.WithContext(context);
 
             _stepsRunner.Verify();
-            capture.Value.ContextResolver.Invoke(new FakeResolver(capture.Value))
+            capture.Value.ContextResolver.Invoke(new FakeResolver())
                 .ShouldBeSameAs(context);
         }
 
@@ -45,7 +44,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
             _runner.WithContext(() => TimeSpan.FromSeconds(5));
 
             _stepsRunner.Verify();
-            capture.Value.ContextResolver.Invoke(new FakeResolver(capture.Value))
+            capture.Value.ContextResolver.Invoke(new FakeResolver())
                 .ShouldBe(TimeSpan.FromSeconds(5));
         }
 
@@ -102,20 +101,9 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
             public string Dependency { get; set; }
         }
 
-        class FakeResolver : ContainerConfigurator, IDependencyResolver
+        class FakeResolver : IDependencyResolver
         {
-            private readonly Dictionary<Type, object> _singletons = new();
-            public FakeResolver(ExecutionContextDescriptor descriptor)
-            {
-                descriptor.ScopeConfigurator?.Invoke(this);
-            }
-
-            public object Resolve(Type type) => _singletons[type];
-
-            public override void RegisterInstance(object instance, RegistrationOptions options)
-            {
-                _singletons[instance.GetType()] = instance;
-            }
+            public object Resolve(Type type) => Activator.CreateInstance(type);
         }
     }
 }

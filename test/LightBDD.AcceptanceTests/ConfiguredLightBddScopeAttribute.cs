@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using LightBDD.AcceptanceTests;
 using LightBDD.AcceptanceTests.Helpers;
 using LightBDD.Core.Configuration;
-using LightBDD.Core.Dependencies;
 using LightBDD.Framework.Reporting;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.Framework.Resources;
 using LightBDD.Runner;
+using Microsoft.Extensions.DependencyInjection;
 using OpenQA.Selenium.Chrome;
 
 [assembly: ConfiguredLightBddScope]
@@ -22,14 +22,14 @@ namespace LightBDD.AcceptanceTests
             configuration.ReportConfiguration()
                 .Add(new FileReportGenerator(new PlainTextReportFormatter(), "~" + Path.DirectorySeparatorChar + "Reports" + Path.DirectorySeparatorChar + "FeaturesReport.txt"));
 
-            configuration.DependencyContainerConfiguration().UseDefault(ConfigureContainer);
+            configuration.DependencyContainerConfiguration().ConfigureServices(ConfigureServices);
             configuration.ExecutionExtensionsConfiguration().EnableStepDecorator<ScreenshotCaptureOnFailure>();
         }
 
-        private void ConfigureContainer(IDefaultContainerConfigurator config)
+        private void ConfigureServices(IServiceCollection services)
         {
             //TODO: lift this limit when Runner gets support for execution modes (running tests limits)
-            config.RegisterType(InstanceScope.Single, _ => new ResourcePool<ChromeDriver>(CreateDriver, 4));
+            services.AddSingleton(_ => new ResourcePool<ChromeDriver>(CreateDriver, 4));
         }
 
         private async Task<ChromeDriver> CreateDriver(CancellationToken token)

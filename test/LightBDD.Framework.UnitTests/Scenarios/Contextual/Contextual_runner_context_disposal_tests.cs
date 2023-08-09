@@ -1,14 +1,11 @@
-﻿using LightBDD.Core.Dependencies;
-using LightBDD.Core.Extensibility;
+﻿using LightBDD.Core.Extensibility;
 using LightBDD.Framework.UnitTests.Scenarios.Helpers;
-using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Framework.Scenarios;
-using Shouldly;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
 {
@@ -18,7 +15,6 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
     {
         private readonly CapturingContextBuilder _builder = new();
         private readonly IBddRunner _runner;
-        private readonly Mock<ContainerConfigurator> _configurator = new();
 
         public Contextual_runner_context_disposal_tests()
         {
@@ -26,63 +22,68 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
         }
 
         [Test]
-        public void WithContext_accepting_instance_should_not_takeOwnership_by_default()
+        public async Task WithContext_accepting_instance_should_not_takeOwnership_by_default()
         {
-            _runner.WithContext(new object());
-
-            VerifyExternalOwnership(true);
+            var expected = new Testable();
+            _runner.WithContext(expected);
+            await AssertRegistration(expected, false);
         }
 
         [Test]
-        public void WithContext_accepting_instance_should_honor_takeOwnership_override()
+        public async Task WithContext_accepting_instance_should_honor_takeOwnership_override()
         {
-            _runner.WithContext(new object(), true);
-
-            VerifyExternalOwnership(false);
+            var expected = new Testable();
+            _runner.WithContext(expected, true);
+            await AssertRegistration(expected, true);
         }
 
         [Test]
-        public void WithContext_accepting_instance_factory_should_takeOwnership_by_default()
+        public async Task WithContext_accepting_instance_factory_should_takeOwnership_by_default()
         {
-            _runner.WithContext(() => new object());
+            var expected = new Testable();
+            _runner.WithContext(() => expected);
 
-            VerifyExternalOwnership(false);
+            await AssertRegistration(expected, true);
         }
 
         [Test]
-        public void WithContext_accepting_instance_factory_should_honor_takeOwnership_override()
+        public async Task WithContext_accepting_instance_factory_should_honor_takeOwnership_override()
         {
-            _runner.WithContext(() => new object(), false);
+            var expected = new Testable();
+            _runner.WithContext(() => expected, false);
 
-            VerifyExternalOwnership(true);
+            await AssertRegistration(expected, false);
         }
 
         [Test]
-        public void Generic_WithContext_should_use_DI_container()
+        public async Task Generic_WithContext_should_use_DI_container()
         {
-            _runner.WithContext<List<string>>();
-            _builder.Descriptor.ScopeConfigurator.ShouldBeNull();
+            _runner.WithContext<Testable>();
 
-            var expected = new List<string>();
-            var resolver = new Mock<IDependencyResolver>();
-            resolver.Setup(x => x.Resolve(typeof(List<string>))).Returns(expected);
-
-            var actual = _builder.Descriptor.ContextResolver.Invoke(resolver.Object);
-
-            actual.ShouldBeSameAs(expected);
+            await AssertRegistration(null, true);
         }
 
-        private void VerifyExternalOwnership(bool expectedExternalOwnership)
+        private async Task AssertRegistration(Testable instance, bool shouldTakeOwnership)
         {
-            _builder.Descriptor.ScopeConfigurator?.Invoke(_configurator.Object);
-            _configurator.Verify(c =>
-                c.RegisterInstance(It.IsAny<object>(), It.Is<RegistrationOptions>(x => VerifyExternalOwnership(expectedExternalOwnership, x))));
+            await using var container = new DependencyContainerConfiguration().Build();
+            Testable actual;
+            await using (var scope = container.BeginScope())
+            {
+                actual = (Testable)_builder.Descriptor.ContextResolver(scope);
+                if (instance != null)
+                    Assert.That(actual, Is.SameAs(instance));
+            }
+            Assert.That(actual.Disposed, Is.EqualTo(shouldTakeOwnership));
         }
 
-        private static bool VerifyExternalOwnership(bool expectedExternalOwnership, RegistrationOptions x)
+        class Testable : IDisposable
         {
-            x.IsExternallyOwned.ShouldBe(expectedExternalOwnership);
-            return true;
+            public void Dispose()
+            {
+                Disposed = true;
+            }
+
+            public bool Disposed { get; set; }
         }
 
         class CapturingContextBuilder : ICoreScenarioStepsRunner

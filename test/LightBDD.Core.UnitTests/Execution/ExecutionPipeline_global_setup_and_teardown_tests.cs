@@ -11,6 +11,7 @@ using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.ScenarioHelpers;
+using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using Shouldly;
 #pragma warning disable CS1998
@@ -106,11 +107,11 @@ public class ExecutionPipeline_global_setup_and_teardown_tests
         void Configure(LightBddConfiguration cfg)
         {
             cfg.DependencyContainerConfiguration()
-                .UseDefault(c =>
+                .ConfigureServices(c =>
                 {
-                    c.RegisterInstance(counter);
-                    c.RegisterInstance(dep1);
-                    c.RegisterInstance(dep2);
+                    c.AddSingleton(counter);
+                    c.AddSingleton(dep1);
+                    c.AddSingleton(dep2);
                 });
 
             cfg.ExecutionExtensionsConfiguration()
@@ -163,11 +164,11 @@ public class ExecutionPipeline_global_setup_and_teardown_tests
         void Configure(LightBddConfiguration cfg)
         {
             cfg.DependencyContainerConfiguration()
-                .UseDefault(c =>
+                .ConfigureServices(c =>
                 {
-                    c.RegisterInstance(counter);
-                    c.RegisterInstance(dep1);
-                    c.RegisterInstance(dep2);
+                    c.AddSingleton(counter);
+                    c.AddSingleton(dep1);
+                    c.AddSingleton(dep2);
                 });
 
             cfg.ExecutionExtensionsConfiguration()
@@ -202,9 +203,9 @@ public class ExecutionPipeline_global_setup_and_teardown_tests
         void Configure(LightBddConfiguration cfg)
         {
             cfg.DependencyContainerConfiguration()
-                .UseDefault(c =>
+                .ConfigureServices(c =>
                 {
-                    c.RegisterInstance(counter);
+                    c.AddSingleton(counter);
                 });
 
             cfg.ExecutionExtensionsConfiguration()

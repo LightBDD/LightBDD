@@ -1,6 +1,7 @@
 ﻿using System;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Dependencies.Implementation;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LightBDD.Core.Configuration
 {
@@ -9,40 +10,27 @@ namespace LightBDD.Core.Configuration
     /// </summary>
     public class DependencyContainerConfiguration : FeatureConfiguration
     {
-        /// <summary>
-        /// Returns configured <see cref="IDependencyContainer"/>.
-        /// </summary>
-        public IDependencyContainer DependencyContainer { get; private set; } = new DefaultDependencyContainer(LifetimeScope.Global);
+        private readonly IServiceCollection _services = new ServiceCollection()
+            .AddTransient<TransientDisposable>();
 
         /// <summary>
-        /// Sets <paramref name="container"/> as a container to be used by LightBDD scenarios and steps.
+        /// Configures services for the DI container.
         /// </summary>
-        /// <param name="container">Container to use.</param>
+        /// <param name="onConfigure">Configuration delegate</param>
         /// <returns>Self.</returns>
-        public DependencyContainerConfiguration UseContainer(IDependencyContainerV2 container)
+        public DependencyContainerConfiguration ConfigureServices(Action<IServiceCollection> onConfigure)
         {
             ThrowIfSealed();
-            DependencyContainer = container;
+            onConfigure?.Invoke(_services);
             return this;
         }
 
         /// <summary>
-        /// Configures the LightBDD to use it's default implementation of DI container.
-        /// If specified, the <paramref name="configurator"/> function is used to configure the container.<br/>
-        ///
-        /// The default DI container features are:<br/>
-        /// * automatic resolution of types (classes and structures) with 1 public constructor,<br/>
-        /// * customizable resolution of types using factory method,<br/>
-        /// * constructor dependency injections,<br/>
-        /// * single, scenario, local and transient <see cref="InstanceScope"/> registrations,<br/>
-        /// * disposal of dependencies implementing <see cref="IDisposable"/> interface,<br/>
-        /// * container <see cref="LifetimeScope"/> to manage instances within global, scenario, nested local scopes.
+        /// Creates new instance of <see cref="IDependencyContainer"/> with applied all configurations.
         /// </summary>
-        /// <param name="configurator">Configuration function.</param>
-        /// <returns>Self.</returns>
-        public DependencyContainerConfiguration UseDefault(Action<IDefaultContainerConfigurator> configurator = null)
+        public IDependencyContainer Build()
         {
-            return UseContainer(new DefaultDependencyContainer(LifetimeScope.Global, configurator));
+            return new DependencyContainer(_services.BuildServiceProvider(true));
         }
     }
 }

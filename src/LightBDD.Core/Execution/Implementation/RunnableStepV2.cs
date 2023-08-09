@@ -32,9 +32,8 @@ internal class RunnableStepV2 : IStep, IRunStageContext
     public EngineContext Engine => _stepContext.Engine;
     IMetadataInfo IRunStageContext.Info => Info;
     public Func<Exception, bool> ShouldAbortSubStepExecution { get; private set; } = _ => true;
-    public IDependencyContainer DependencyContainer => _stepContext.Container;
     public IStepInfo Info => Result.Info;
-    public IDependencyResolver DependencyResolver => _stepContext.Container;
+    public IDependencyResolver DependencyResolver => _stepContext.DependencyResolver;
     public object Context => _stepContext.Context;
 
     public RunnableStepV2(RunnableStepContextV2 stepContext, StepInfo info, StepDescriptor descriptor, MethodArgument[] arguments, IEnumerable<IStepDecorator> stepDecorators)

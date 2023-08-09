@@ -7,6 +7,7 @@ using LightBDD.Core.Extensibility;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
+using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using Shouldly;
 
@@ -38,15 +39,15 @@ public class RunnableScenario_scenario_context_tests
     [Test]
     public async Task It_should_use_scenario_DI_scope_for_resource_management()
     {
-        void ConfigureDi(IDefaultContainerConfigurator container)
+        void ConfigureDi(IServiceCollection serviceCollection)
         {
-            container.RegisterType<Disposable1>(InstanceScope.Single);
-            container.RegisterType<Disposable2>(InstanceScope.Scenario);
+            serviceCollection.AddSingleton<Disposable1>();
+            serviceCollection.AddScoped<Disposable2>();
         }
 
         Disposable1 capturedSingleton = null;
         Disposable2 capturedScoped = null;
-        var factory = TestableScenarioFactory.Create(cfg => cfg.DependencyContainerConfiguration().UseDefault(ConfigureDi));
+        var factory = TestableScenarioFactory.Create(cfg => cfg.DependencyContainerConfiguration().ConfigureServices(ConfigureDi));
         await factory.RunScenario(_ =>
         {
             capturedSingleton = ScenarioExecutionContext.CurrentScenario.DependencyResolver.Resolve<Disposable1>();
@@ -65,12 +66,12 @@ public class RunnableScenario_scenario_context_tests
     [Test]
     public async Task It_should_fail_scenario_on_DI_scope_disposal_failure()
     {
-        void ConfigureDi(IDefaultContainerConfigurator container)
+        void ConfigureDi(IServiceCollection serviceCollection)
         {
-            container.RegisterType<FaultyDisposable>(InstanceScope.Scenario);
+            serviceCollection.AddScoped<FaultyDisposable>();
         }
 
-        var factory = TestableScenarioFactory.Create(cfg => cfg.DependencyContainerConfiguration().UseDefault(ConfigureDi));
+        var factory = TestableScenarioFactory.Create(cfg => cfg.DependencyContainerConfiguration().ConfigureServices(ConfigureDi));
         var result = await factory.RunScenario(_ =>
         {
             ScenarioExecutionContext.CurrentScenario.DependencyResolver.Resolve<FaultyDisposable>();
@@ -78,7 +79,7 @@ public class RunnableScenario_scenario_context_tests
         });
 
         result.Status.ShouldBe(ExecutionStatus.Failed);
-        result.StatusDetails.ShouldBe("Scenario Failed: System.InvalidOperationException: DI Scope Dispose() failed: Failed to dispose dependency 'FaultyDisposable': I am faulty");
+        result.StatusDetails.ShouldBe("Scenario Failed: System.InvalidOperationException: DI Scope Dispose() failed: I am faulty");
     }
 
     class Disposable1 : IDisposable

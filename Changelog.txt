@@ -56,6 +56,14 @@ vNext
 + #321 (Core)(breaking change) Flattened CoreMetadataProvider hierarchy and changed GetTestRunInfo() to accept Assembly argument
 + #321 (Core)(breaking change) Removed CoreMetadataProvider.GetImplementationSpecificScenarioCategories() and GetImplementationSpecificFeatureDescription() methods and customization capability
 + #321 (Framework)(breaking change) Replaced StepExecution.IgnoreScenario() extension method from LightBddRunner with Ignore() method implemented directly on StepExecution
++ #323 (Core)(new) Updated IDependencyContainer to implement IAsyncDisposable interface, enabling async disposal of container and scopes
++ #323 (Core)(breaking change) Reworked DependencyContainerConfiguration to use IServiceCollection for dependency registration and DI container instantiation with Build() method
++ #323 (Core)(breaking change) Reimplemented DI integration to use Microsoft DI with a fallback transient resolution for unregistered types
++ #323 (Core)(breaking change) Removed step-level DI scopes, changing LightBDD to use only scenario-level scope for scenario execution
++ #323 (Core)(breaking change) Merged IDependencyContainerV2 into IDependencyContainer and simplified BeginScope() method
++ #323 (Core)(breaking change) Removed ContainerConfigurator from ExecutionContextDescriptor, IIntegrableCompositeStepBuilder and CompositeStepBuilder, removing capability to modify DI container for sub-scopes
++ #323 (Core)(breaking change) Removed ContainerConfigurator, FallbackResolveBehavior, IDefaultContainerConfigurator, InstanceScope, LifetimeScope, RegistrationOptions types
++ #323 (Integrations)(breaking change) Removed LightBDD.Autofac and LightBDD.Extensions.DependencyInjection integration projects
 
 Version 3.7.0
 ----------------------------------------

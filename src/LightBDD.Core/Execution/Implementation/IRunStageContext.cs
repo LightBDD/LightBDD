@@ -12,5 +12,5 @@ internal interface IRunStageContext
     public EngineContext Engine { get; }
     public IMetadataInfo Info { get; }
     public Func<Exception, bool> ShouldAbortSubStepExecution { get; }
-    public IDependencyContainer DependencyContainer { get; }
+    public IDependencyResolver DependencyResolver { get; }
 }

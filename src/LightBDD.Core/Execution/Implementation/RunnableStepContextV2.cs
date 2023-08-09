@@ -18,7 +18,7 @@ internal class RunnableStepContextV2
 
     public ExceptionProcessor ExceptionProcessor => _parent.Engine.ExceptionProcessor;
     public IProgressNotifier ProgressNotifier => _parent.Engine.ProgressNotifier;
-    public IDependencyContainer Container => _parent.DependencyContainer;
+    public IDependencyResolver DependencyResolver => _parent.DependencyResolver;
     public object Context { get; }
     public Func<Exception, bool> ShouldAbortSubStepExecution => _parent.ShouldAbortSubStepExecution;
     public IExecutionTimer ExecutionTimer => _parent.Engine.ExecutionTimer;

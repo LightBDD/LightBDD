@@ -20,7 +20,6 @@ internal class StepGroupRunner : ICoreScenarioStepsRunner, IRunStageContext
     private ExecutionContextDescriptor _contextDescriptor = ExecutionContextDescriptor.NoContext;
     private RunnableStepV2[] _steps = Array.Empty<RunnableStepV2>();
     private object? _executionContext;
-    private IDependencyContainer? _subContext;
 
     public IStepResult[] GetResults() => _steps.Select(s => s.Result).ToArray();
 
@@ -44,19 +43,10 @@ internal class StepGroupRunner : ICoreScenarioStepsRunner, IRunStageContext
 
     public async Task RunAsync()
     {
-        _subContext = _parent.DependencyContainer.BeginScope(LifetimeScope.Local, _contextDescriptor.ScopeConfigurator);
-        try
-        {
             _executionContext = CreateExecutionContext();
             PrepareSteps();
             foreach (var step in _steps)
                 await step.ExecuteAsync();
-        }
-        finally
-        {
-            //TODO: this hides exceptions from prepare steps and execute async - rework
-            _subContext?.Dispose();
-        }
     }
 
     public LightBddConfiguration Configuration => _parent.Engine.Configuration;
@@ -79,7 +69,7 @@ internal class StepGroupRunner : ICoreScenarioStepsRunner, IRunStageContext
     {
         try
         {
-            return _contextDescriptor.ContextResolver(DependencyContainer);
+            return _contextDescriptor.ContextResolver(DependencyResolver);
         }
         catch (Exception e)
         {
@@ -117,5 +107,5 @@ internal class StepGroupRunner : ICoreScenarioStepsRunner, IRunStageContext
     public EngineContext Engine => _parent.Engine;
     public IMetadataInfo Info => _parent.Info;
     public Func<Exception, bool> ShouldAbortSubStepExecution => _parent.ShouldAbortSubStepExecution;
-    public IDependencyContainer DependencyContainer => _subContext ?? throw new InvalidOperationException("Step group context is not initialized");
+    public IDependencyResolver DependencyResolver => _parent.DependencyResolver;
 }
