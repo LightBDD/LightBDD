@@ -85,7 +85,6 @@ namespace LightBDD.Core.UnitTests.Execution
                 .TestScenario(Given_step_one));
 
             var ex = scenario.ExecutionException.ShouldBeOfType<InvalidOperationException>();
-            //TODO: rethink the exception tree / message
             Assert.That(ex.Message, Is.EqualTo($"DI Scope Dispose() failed: Failed to dispose transient dependency '{context.GetType().Name}': foo"));
             Assert.That(ex.InnerException?.InnerException, Is.SameAs(exception));
             Assert.That(ex.StackTrace, Is.Not.Null);

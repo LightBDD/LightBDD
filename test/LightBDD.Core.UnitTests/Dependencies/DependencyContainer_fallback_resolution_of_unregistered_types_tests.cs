@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
@@ -15,7 +12,17 @@ namespace LightBDD.Core.UnitTests.Dependencies
     public class DependencyContainer_fallback_resolution_of_unregistered_types_tests
     {
         [Test]
-        public async Task Resolve_should_always_return_new_instance_and_dispose_upon_completion()
+        public async Task Container_should_use_transient_fallback_resolution_behavior_for_unregistered_types()
+        {
+            await using var container = CreateContainer();
+            Assert.AreNotEqual(container.Resolve<Disposable>(), container.Resolve<Disposable>());
+
+            await using var inner = container.BeginScope();
+            Assert.AreNotEqual(container.Resolve<Disposable>(), inner.Resolve<Disposable>());
+        }
+
+        [Test]
+        public async Task Resolve_should_always_return_new_instance_and_dispose_it_upon_completion()
         {
             Disposable instance1;
             Disposable instance2;
@@ -72,10 +79,10 @@ namespace LightBDD.Core.UnitTests.Dependencies
                 Assert.That(complex.Disposable, Is.Not.Null);
                 Assert.That(complex.OtherComplex, Is.Not.Null);
                 Assert.That(complex.OtherComplex.Disposable, Is.Not.Null);
-                Assert.That(complex.Value.Disposable, Is.Not.Null);
+                Assert.That(complex.AnotherComplex.Disposable, Is.Not.Null);
 
                 Assert.That(complex.Disposable, Is.Not.SameAs(complex.OtherComplex.Disposable));
-                Assert.That(complex.Disposable, Is.Not.SameAs(complex.Value.Disposable));
+                Assert.That(complex.Disposable, Is.Not.SameAs(complex.AnotherComplex.Disposable));
             }
             Assert.That(complex.Disposable.Disposed, Is.True);
             Assert.That(complex.OtherComplex.Disposable.Disposed, Is.True);
@@ -112,16 +119,6 @@ Type '{typeof(MultiCtorType)}' has to have exactly one public constructor (numbe
         }
 
         [Test]
-        public async Task Container_should_honor_transient_fallback_resolution_behavior()
-        {
-            await using var container = CreateContainer();
-            Assert.AreNotEqual(container.Resolve<Disposable>(), container.Resolve<Disposable>());
-
-            await using var inner = container.BeginScope();
-            Assert.AreNotEqual(container.Resolve<Disposable>(), inner.Resolve<Disposable>());
-        }
-
-        [Test]
         public void Dispose_should_throw_InvalidOperationException_on_disposal_failure()
         {
             var ex = Assert.ThrowsAsync<InvalidOperationException>(async () =>
@@ -147,7 +144,7 @@ Type '{typeof(MultiCtorType)}' has to have exactly one public constructor (numbe
 
         protected IDependencyContainer CreateContainer()
         {
-            return CreateContainer(x => {});
+            return CreateContainer(x => { });
         }
 
         private static IDependencyContainer CreateContainer(Action<IServiceCollection> configurator)
@@ -205,33 +202,34 @@ Type '{typeof(MultiCtorType)}' has to have exactly one public constructor (numbe
         {
         }
 
-        class Struct
-        {
-            public Struct(Disposable disposable)
-            {
-                Disposable = disposable;
-            }
-
-            public Disposable Disposable { get; }
-        }
-
         class Complex
         {
             public Disposable Disposable { get; }
             public OtherComplex OtherComplex { get; }
-            public Struct Value { get; }
+            public AnotherComplex AnotherComplex { get; }
 
-            public Complex(Disposable disposable, OtherComplex otherComplex, Struct value)
+            public Complex(Disposable disposable, OtherComplex otherComplex, AnotherComplex anotherComplex)
             {
                 Disposable = disposable;
                 OtherComplex = otherComplex;
-                Value = value;
+                AnotherComplex = anotherComplex;
             }
         }
+
         class OtherComplex
         {
             public Disposable Disposable { get; }
             public OtherComplex(Disposable disposable)
+            {
+                Disposable = disposable;
+            }
+        }
+
+        class AnotherComplex
+        {
+            public Disposable Disposable { get; }
+
+            public AnotherComplex(Disposable disposable)
             {
                 Disposable = disposable;
             }
