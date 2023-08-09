@@ -5,7 +5,6 @@ namespace LightBDD.Core.Dependencies
     /// <summary>
     /// Interface describing dependency container that is able to resolve dependencies as well as create inner scopes.
     /// </summary>
-    //TODO: drop IDisposable
     public interface IDependencyContainer : IDependencyResolver, IAsyncDisposable
     {
         /// <summary>

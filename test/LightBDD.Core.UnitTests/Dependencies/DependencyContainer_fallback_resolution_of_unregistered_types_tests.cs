@@ -145,16 +145,6 @@ Type '{typeof(MultiCtorType)}' has to have exactly one public constructor (numbe
             Assert.That(ex.Message, Is.EqualTo($"Failed to dispose transient dependency '{typeof(FaultyAsyncDisposable).Name}': boom!"));
         }
 
-        [Test]
-        [Ignore("rewrite")]
-        public async Task Container_should_honor_throw_fallback_resolution_behavior()
-        {
-            await using var container = CreateContainer(/*opt => opt.ConfigureFallbackBehavior(FallbackResolveBehavior.ThrowException)*/);
-            Assert.Throws<InvalidOperationException>(() => container.Resolve<Disposable>());
-            await using var inner = container.BeginScope();
-            Assert.Throws<InvalidOperationException>(() => inner.Resolve<Disposable>());
-        }
-
         protected IDependencyContainer CreateContainer()
         {
             return CreateContainer(x => {});

@@ -1,25 +1,25 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Reflection;
 
 namespace LightBDD.Core.Dependencies.Implementation
 {
-    //TODO: rename
-    internal static class DependencyDescriptor
+    internal static class TransientDependencyFactory
     {
         private static readonly ConcurrentDictionary<Type, Func<IDependencyResolver, object>> CtorCache = new();
 
-        public static Func<IDependencyResolver, object> FindConstructor(Type type)
+        public static object Create(Type type, IDependencyResolver resolver)
         {
-            return CtorCache.GetOrAdd(type, CreateConstructorInitializer);
+            return CtorCache.GetOrAdd(type, CreateConstructorInitializer).Invoke(resolver);
         }
 
         private static Func<IDependencyResolver, object> CreateConstructorInitializer(Type type)
         {
             var typeInfo = type.GetTypeInfo();
 
-            if (typeInfo.IsAbstract || (!typeInfo.IsClass && !typeInfo.IsValueType))
+            if (typeInfo.IsAbstract || typeInfo is { IsClass: false, IsValueType: false })
                 return _ => throw new InvalidOperationException($"Type '{type}' has to be non-abstract class or value type.");
 
             var ctors = typeInfo.DeclaredConstructors.Where(x => x.IsPublic).ToArray();

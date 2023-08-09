@@ -34,7 +34,7 @@ internal class DependencyContainer : IDependencyContainer
     {
         try
         {
-            return EnlistDisposable(DependencyDescriptor.FindConstructor(type).Invoke(this));
+            return EnlistDisposable(TransientDependencyFactory.Create(type, this));
         }
         catch (Exception ex)
         {
