@@ -5,9 +5,9 @@ namespace LightBDD.Core.Configuration
     /// <summary>
     /// A base class of FeatureConfiguration with sealed state detection.
     /// </summary>
-    public abstract class FeatureConfiguration : ISealableFeatureConfiguration
+    public abstract class FeatureConfiguration
     {
-        void ISealableFeatureConfiguration.Seal()
+        internal void Seal()
         {
             IsSealed = true;
         }

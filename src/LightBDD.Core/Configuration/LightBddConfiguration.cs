@@ -8,7 +8,7 @@ namespace LightBDD.Core.Configuration
     /// </summary>
     public class LightBddConfiguration
     {
-        private readonly ConcurrentDictionary<Type, IFeatureConfiguration> _configuration = new();
+        private readonly ConcurrentDictionary<Type, FeatureConfiguration> _configuration = new();
 
         /// <summary>
         /// Returns current feature configuration of requested type.
@@ -16,21 +16,21 @@ namespace LightBDD.Core.Configuration
         /// </summary>
         /// <typeparam name="TConfiguration">Feature configuration type.</typeparam>
         /// <returns>Feature configuration instance.</returns>
-        public TConfiguration Get<TConfiguration>() where TConfiguration : IFeatureConfiguration, new()
+        public TConfiguration Get<TConfiguration>() where TConfiguration : FeatureConfiguration, new()
         {
-            return SealIfNeeded((TConfiguration)_configuration.GetOrAdd(typeof(TConfiguration), t => new TConfiguration()));
+            return (TConfiguration)_configuration.GetOrAdd(typeof(TConfiguration), _ => SealIfNeeded(new TConfiguration()));
         }
 
-        private TConfiguration SealIfNeeded<TConfiguration>(TConfiguration config) where TConfiguration : IFeatureConfiguration
+        private TConfiguration SealIfNeeded<TConfiguration>(TConfiguration config) where TConfiguration : FeatureConfiguration
         {
             if (IsSealed)
-                (config as ISealableFeatureConfiguration)?.Seal();
+                config.Seal();
             return config;
         }
 
         /// <summary>
         /// Seals configuration making it immutable.
-        /// It calls <see cref="ISealableFeatureConfiguration.Seal"/>() method on all configuration items that implements the <see cref="ISealableFeatureConfiguration"/> interface.
+        /// It calls <see cref="FeatureConfiguration.Seal"/>() method on all configuration items that implements the <see cref="FeatureConfiguration"/> interface.
         /// Since this call, the <see cref="Get{TConfiguration}"/>() method will return only sealed configuration (current, and future default one).
         /// </summary>
         /// <returns>Self.</returns>
@@ -40,7 +40,7 @@ namespace LightBDD.Core.Configuration
                 return this;
             IsSealed = true;
             foreach (var value in _configuration.Values)
-                SealIfNeeded(value);
+                value.Seal();
             return this;
         }
 
