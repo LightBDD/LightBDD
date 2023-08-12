@@ -10,7 +10,7 @@ namespace LightBDD.Core.Formatting.ExceptionFormatting
     /// Default implementation of exception formatter.
     /// </summary>
     //TODO: review to push to Framework and simplifying TestableCoreExecutionPipeline
-    public class DefaultExceptionFormatter
+    public class DefaultExceptionFormatter : IExceptionFormatter
     {
         private readonly List<Regex> _excludeMembers = new();
         private int _stackTraceLinesLimit = 8;

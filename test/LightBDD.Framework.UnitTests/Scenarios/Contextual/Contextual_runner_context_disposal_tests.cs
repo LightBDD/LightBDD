@@ -65,7 +65,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
 
         private async Task AssertRegistration(Testable instance, bool shouldTakeOwnership)
         {
-            await using var container = new DependencyContainerConfiguration().Build();
+            await using var container = new LightBddConfiguration().BuildContainer();
             Testable actual;
             await using (var scope = container.BeginScope())
             {

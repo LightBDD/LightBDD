@@ -19,7 +19,6 @@ namespace LightBDD.Core.Configuration
 
         private readonly List<IScenarioDecorator> _scenarioExtensions = new();
         private readonly List<IStepDecorator> _stepExtensions = new();
-        private IFixtureFactory _fixtureFactory = ActivatorFixtureFactory.Instance;
 
         /// <summary>
         /// Collection of scenario execution extensions.
@@ -29,11 +28,6 @@ namespace LightBDD.Core.Configuration
         /// Collection of step execution extensions.
         /// </summary>
         public IEnumerable<IStepDecorator> StepDecorators => _stepExtensions;
-
-        /// <summary>
-        /// Fixture factory.
-        /// </summary>
-        public IFixtureFactory FixtureFactory => _fixtureFactory;
 
         /// <summary>
         /// Enables scenario decorator of specified type.
@@ -197,19 +191,6 @@ namespace LightBDD.Core.Configuration
                     return Task.CompletedTask;
                 });
 
-            return this;
-        }
-
-        /// <summary>
-        /// Registers fixture factory
-        /// </summary>
-        /// <param name="fixtureFactory">Fixture factory</param>
-        /// <returns>Self.</returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        public ExecutionExtensionsConfiguration RegisterFixtureFactory(IFixtureFactory fixtureFactory)
-        {
-            ThrowIfSealed();
-            _fixtureFactory = fixtureFactory ?? throw new ArgumentNullException(nameof(fixtureFactory));
             return this;
         }
     }

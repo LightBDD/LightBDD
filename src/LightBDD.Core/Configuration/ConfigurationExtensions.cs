@@ -1,4 +1,10 @@
-﻿namespace LightBDD.Core.Configuration
+﻿using System;
+using LightBDD.Core.Extensibility;
+using LightBDD.Core.Formatting;
+using LightBDD.Core.Formatting.ExceptionFormatting;
+using LightBDD.Core.Reporting;
+
+namespace LightBDD.Core.Configuration
 {
     /// <summary>
     /// Extension class allowing to configure core parts of LightBDD.
@@ -15,16 +21,11 @@
             return cfg.Get<StepTypeConfiguration>();
         }
 
-        /// <summary>
-        /// Returns culture info provider configuration.
-        /// </summary>
-        /// <param name="cfg">Configuration object.</param>
-        /// <returns>Culture info provider configuration.</returns>
-        public static CultureInfoProviderConfiguration CultureInfoProviderConfiguration(this LightBddConfiguration cfg)
-        {
-            return cfg.Get<CultureInfoProviderConfiguration>();
-        }
-
+        public static LightBddConfiguration ConfigureCultureInfoProvider(this LightBddConfiguration cfg, Action<FeatureConfigurer<ICultureInfoProvider>> onConfigure) => cfg.ConfigureFeature(onConfigure);
+        public static LightBddConfiguration ConfigureNameFormatter(this LightBddConfiguration cfg, Action<FeatureConfigurer<INameFormatter>> onConfigure) => cfg.ConfigureFeature(onConfigure);
+        public static LightBddConfiguration ConfigureExceptionFormatter(this LightBddConfiguration cfg, Action<FeatureConfigurer<IExceptionFormatter>> onConfigure) => cfg.ConfigureFeature(onConfigure);
+        public static LightBddConfiguration ConfigureFixtureFactory(this LightBddConfiguration cfg, Action<FeatureConfigurer<IFixtureFactory>> onConfigure) => cfg.ConfigureFeature(onConfigure);
+        public static LightBddConfiguration ConfigureFileAttachmentsManager(this LightBddConfiguration cfg, Action<FeatureConfigurer<IFileAttachmentsManager>> onConfigure) => cfg.ConfigureFeature(onConfigure);
         /// <summary>
         /// Return execution extensions configuration.
         /// </summary>
@@ -36,26 +37,6 @@
         }
 
         /// <summary>
-        /// Returns exception handling configuration.
-        /// </summary>
-        /// <param name="cfg"></param>
-        /// <returns></returns>
-        public static ExceptionHandlingConfiguration ExceptionHandlingConfiguration(this LightBddConfiguration cfg)
-        {
-            return cfg.Get<ExceptionHandlingConfiguration>();
-        }
-
-        /// <summary>
-        /// Retrieves <see cref="DependencyContainerConfiguration"/> from <paramref name="configuration"/> for further customizations.
-        /// </summary>
-        /// <param name="configuration">Configuration object.</param>
-        /// <returns>Configuration object.</returns>
-        public static DependencyContainerConfiguration DependencyContainerConfiguration(this LightBddConfiguration configuration)
-        {
-            return configuration.Get<DependencyContainerConfiguration>();
-        }
-
-        /// <summary>
         /// Retrieves <see cref="ReportConfiguration"/> from <paramref name="configuration"/> for further customizations.
         /// </summary>
         /// <param name="configuration">Configuration object.</param>
@@ -63,16 +44,6 @@
         public static ReportConfiguration ReportConfiguration(this LightBddConfiguration configuration)
         {
             return configuration.Get<ReportConfiguration>();
-        }
-
-        /// <summary>
-        /// Retrieves <see cref="NameFormatterConfiguration"/> from <paramref name="configuration"/> for further customizations.
-        /// </summary>
-        /// <param name="configuration">Configuration object.</param>
-        /// <returns>Configuration object.</returns>
-        public static NameFormatterConfiguration NameFormatterConfiguration(this LightBddConfiguration configuration)
-        {
-            return configuration.Get<NameFormatterConfiguration>();
         }
 
         /// <summary>

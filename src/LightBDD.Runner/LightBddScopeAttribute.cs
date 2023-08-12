@@ -24,8 +24,8 @@ namespace LightBDD.Runner
             configuration.ProgressNotifierConfiguration()
                 .AppendFrameworkDefaultProgressNotifiers();
 
-            configuration.ExceptionHandlingConfiguration()
-                .UpdateExceptionDetailsFormatter(new DefaultExceptionFormatter().WithTestFrameworkDefaults().Format);
+            configuration.ConfigureExceptionFormatter(x =>
+                x.Use(new DefaultExceptionFormatter().WithTestFrameworkDefaults()));
 
             OnConfigure(configuration);
         }

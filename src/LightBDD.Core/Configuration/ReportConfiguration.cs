@@ -12,12 +12,6 @@ namespace LightBDD.Core.Configuration
     public class ReportConfiguration : FeatureConfiguration, IEnumerable<IReportGenerator>
     {
         private readonly List<IReportGenerator> _generators = new();
-        private IFileAttachmentsManager _fileAttachmentsManager = NoFileAttachmentsManager.Instance;
-
-        /// <summary>
-        /// File Attachments Manager
-        /// </summary>
-        public IFileAttachmentsManager GetFileAttachmentsManager() => _fileAttachmentsManager;
 
         /// <summary>
         /// Adds <paramref name="generator"/> to report generator collection.
@@ -54,20 +48,6 @@ namespace LightBDD.Core.Configuration
         {
             ThrowIfSealed();
             _generators.Clear();
-            return this;
-        }
-
-        /// <summary>
-        /// Sets <paramref name="manager"/> as a default file attachments manager to be used by LightBDD. The manager can be retrieved by <see cref="GetFileAttachmentsManager"/> method call.
-        /// </summary>
-        /// <param name="manager">Manager to set</param>
-        /// <returns></returns>
-        public ReportConfiguration UpdateFileAttachmentsManager(IFileAttachmentsManager manager)
-        {
-            ThrowIfSealed();
-
-            _fileAttachmentsManager = manager ?? throw new ArgumentNullException(nameof(manager));
-
             return this;
         }
 

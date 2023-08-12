@@ -47,7 +47,7 @@ public class RunnableScenario_scenario_context_tests
 
         Disposable1 capturedSingleton = null;
         Disposable2 capturedScoped = null;
-        var factory = TestableScenarioFactory.Create(cfg => cfg.DependencyContainerConfiguration().ConfigureServices(ConfigureDi));
+        var factory = TestableScenarioFactory.Create(cfg => cfg.ConfigureDependencies(ConfigureDi));
         await factory.RunScenario(_ =>
         {
             capturedSingleton = ScenarioExecutionContext.CurrentScenario.DependencyResolver.Resolve<Disposable1>();
@@ -71,7 +71,7 @@ public class RunnableScenario_scenario_context_tests
             serviceCollection.AddScoped<FaultyDisposable>();
         }
 
-        var factory = TestableScenarioFactory.Create(cfg => cfg.DependencyContainerConfiguration().ConfigureServices(ConfigureDi));
+        var factory = TestableScenarioFactory.Create(cfg => cfg.ConfigureDependencies(ConfigureDi));
         var result = await factory.RunScenario(_ =>
         {
             ScenarioExecutionContext.CurrentScenario.DependencyResolver.Resolve<FaultyDisposable>();

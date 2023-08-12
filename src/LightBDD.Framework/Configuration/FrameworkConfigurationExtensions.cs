@@ -29,12 +29,11 @@ namespace LightBDD.Framework.Configuration
 
             configuration
                 .ReportConfiguration()
-                .RegisterFrameworkDefaultReportWriters()
-                .RegisterDefaultFileAttachmentManager();
+                .RegisterFrameworkDefaultReportWriters();
 
             configuration
-                .NameFormatterConfiguration()
-                .UpdateFormatter(DefaultNameFormatter.Instance);
+                .ConfigureNameFormatter(c => c.Use(DefaultNameFormatter.Instance))
+                .RegisterDefaultFileAttachmentManager();
 
             return configuration;
         }
@@ -63,10 +62,9 @@ namespace LightBDD.Framework.Configuration
         /// <summary>
         /// Applies default file attachment manager configuration to generate attachments in <c>~\\Reports\</c>(Win) <c>~/Reports/</c>(Unix) directory.
         /// </summary>
-        public static ReportConfiguration RegisterDefaultFileAttachmentManager(this ReportConfiguration configuration)
+        public static LightBddConfiguration RegisterDefaultFileAttachmentManager(this LightBddConfiguration configuration)
         {
-            return configuration
-                .UpdateFileAttachmentsManager(new FileAttachmentsManager($"~{Path.DirectorySeparatorChar}Reports"));
+            return configuration.ConfigureFileAttachmentsManager(x => x.Use(_ => new FileAttachmentsManager($"~{Path.DirectorySeparatorChar}Reports")));
         }
 
         /// <summary>

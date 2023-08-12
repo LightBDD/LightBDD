@@ -55,12 +55,12 @@ public class DependencyContainer_async_dispose_tests
         Assert.True(outer.Disposed);
     }
 
-    private IDependencyContainer CreateContainer() => new DependencyContainerConfiguration()
-        .ConfigureServices(c => c
+    private IDependencyContainer CreateContainer() => new LightBddConfiguration()
+        .ConfigureDependencies(c => c
             .AddSingleton<DisposableSingleton>()
             .AddScoped<DisposableScoped>()
             .AddTransient<DisposableTransient>())
-        .Build();
+        .BuildContainer();
 
     class DisposableSingleton : IAsyncDisposable
     {

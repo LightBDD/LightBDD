@@ -86,13 +86,13 @@ public class DependencyContainer_tests
     [Test]
     public async Task Resolve_should_be_thread_safe()
     {
-        await using var container = new DependencyContainerConfiguration()
-            .ConfigureServices(x =>
+        await using var container = new LightBddConfiguration()
+            .ConfigureDependencies(x =>
             {
                 x.AddSingleton<SlowDependency>();
                 x.AddSingleton<object>(x => x.GetRequiredService<SlowDependency>());
             })
-            .Build();
+            .BuildContainer();
 
         await using var scenario = container.BeginScope();
 
@@ -103,12 +103,12 @@ public class DependencyContainer_tests
         Assert.AreEqual(1, SlowDependency.Instances);
     }
 
-    private IDependencyContainer CreateContainer() => new DependencyContainerConfiguration()
-        .ConfigureServices(c => c
+    private IDependencyContainer CreateContainer() => new LightBddConfiguration()
+        .ConfigureDependencies(c => c
             .AddSingleton<DisposableSingleton>()
             .AddScoped<DisposableScoped>()
             .AddTransient<DisposableTransient>())
-        .Build();
+        .BuildContainer();
 
     class DisposableSingleton : IDisposable
     {

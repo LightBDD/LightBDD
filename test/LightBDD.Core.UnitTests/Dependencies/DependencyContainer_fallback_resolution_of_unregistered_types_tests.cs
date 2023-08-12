@@ -149,9 +149,7 @@ Type '{typeof(MultiCtorType)}' has to have exactly one public constructor (numbe
 
         private static IDependencyContainer CreateContainer(Action<IServiceCollection> configurator)
         {
-            return new DependencyContainerConfiguration()
-                .ConfigureServices(configurator)
-                .Build();
+            return new LightBddConfiguration().ConfigureDependencies(configurator).BuildContainer();
         }
 
         class FaultyDisposable : Disposable

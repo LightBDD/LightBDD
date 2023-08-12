@@ -37,7 +37,7 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario, IRunStageCon
         Engine = engine;
         _entryMethod = entryMethod;
         _fixtureManager = new(engine.FixtureFactory);
-        _collector = new(engine.Configuration);
+        _collector = new(engine.ExceptionFormatter);
         _result = new ScenarioResult(info);
         _decoratedMethod = DecoratingExecutor.DecorateScenario(this, () => AsyncStepSynchronizationContext.Execute(RunScenarioCore), decorators);
     }

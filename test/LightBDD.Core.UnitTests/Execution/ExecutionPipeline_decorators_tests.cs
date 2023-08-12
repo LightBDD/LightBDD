@@ -166,7 +166,7 @@ namespace LightBDD.Core.UnitTests.Execution
             Assert.That(scenario.StatusDetails, Is.EqualTo("Scenario Bypassed: bypassed"));
             Assert.That(scenario.ExecutionTime, Is.Not.Null);
             //TODO: this changed in relation to LightBDD 3.x - review
-            Assert.That(scenario.GetSteps(),Is.Empty);
+            Assert.That(scenario.GetSteps(), Is.Empty);
             //Assert.That(scenario.GetSteps().Single().Status, Is.EqualTo(ExecutionStatus.NotRun));
         }
 
@@ -228,7 +228,7 @@ namespace LightBDD.Core.UnitTests.Execution
 
             void OnConfigure(LightBddConfiguration cfg)
             {
-                cfg.ExecutionExtensionsConfiguration().RegisterFixtureFactory(new FakeFixtureFactory(fixture));
+                cfg.ConfigureFixtureFactory(x => x.Use(new FakeFixtureFactory(fixture)));
                 cfg.ExecutionExtensionsConfiguration().EnableScenarioDecorator(() => new DelegatingDecorator(scenario => capturedFixture = scenario.Fixture));
             }
 

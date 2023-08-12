@@ -5,6 +5,7 @@ using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Extensibility.Execution;
+using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Reporting;
 
@@ -21,11 +22,16 @@ public class EngineContext
     /// <param name="configuration">Configuration</param>
     public EngineContext(LightBddConfiguration configuration)
     {
+        DependencyContainer = configuration.BuildContainer();
         Configuration = configuration;
-        MetadataProvider = new CoreMetadataProvider(configuration);
-        ExceptionProcessor = new ExceptionProcessor(configuration);
-        DependencyContainer = Configuration.DependencyContainerConfiguration().Build();
+        MetadataProvider = DependencyContainer.Resolve<CoreMetadataProvider>();
+        ExceptionProcessor = DependencyContainer.Resolve<ExceptionProcessor>();
+        ExceptionFormatter = DependencyContainer.Resolve<IExceptionFormatter>();
+        ValueFormattingService = DependencyContainer.Resolve<IValueFormattingService>();
+        FixtureFactory = DependencyContainer.Resolve<IFixtureFactory>();
+        FileAttachmentsManager = DependencyContainer.Resolve<IFileAttachmentsManager>();
     }
+
     /// <summary>
     /// Returns instance of <see cref="LightBddConfiguration"/>.
     /// </summary>
@@ -34,15 +40,20 @@ public class EngineContext
     /// <summary>
     /// Returns instance of <see cref="ValueFormattingService"/>.
     /// </summary>
-    public ValueFormattingService ValueFormattingService => MetadataProvider.ValueFormattingService;
+    public IValueFormattingService ValueFormattingService { get; }
+
+    /// <summary>
+    /// Returns instance of <see cref="IExceptionFormatter"/>.
+    /// </summary>
+    public IExceptionFormatter ExceptionFormatter { get; }
 
     internal readonly IExecutionTimer ExecutionTimer = DefaultExecutionTimer.StartNew();
     internal readonly CoreMetadataProvider MetadataProvider;
     internal readonly ExceptionProcessor ExceptionProcessor;
     internal readonly IDependencyContainer DependencyContainer;
+    internal readonly IFixtureFactory FixtureFactory;
+    internal readonly IFileAttachmentsManager FileAttachmentsManager;
     internal GlobalSetUpRegistry GlobalSetUp => Configuration.Get<ExecutionExtensionsConfiguration>().GlobalSetUpRegistry;
     internal IProgressNotifier ProgressNotifier => Configuration.Get<ProgressNotifierConfiguration>().Notifier;
     internal IExecutionExtensions ExecutionExtensions => Configuration.ExecutionExtensionsConfiguration();
-    internal IFileAttachmentsManager FileAttachmentsManager => Configuration.ReportConfiguration().GetFileAttachmentsManager();
-    internal IFixtureFactory FixtureFactory => Configuration.ExecutionExtensionsConfiguration().FixtureFactory;
 }

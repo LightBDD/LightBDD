@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Reporting;
 using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Reporting.Formatters;
@@ -76,15 +78,14 @@ namespace LightBDD.Framework.Reporting.UnitTests.Configuration
             Assert.Throws<InvalidOperationException>(() => cfg.Add(Mock.Of<IReportGenerator>()));
             Assert.Throws<InvalidOperationException>(() => cfg.Clear());
             Assert.Throws<InvalidOperationException>(() => cfg.Remove(writer));
-            Assert.Throws<InvalidOperationException>(() => cfg.UpdateFileAttachmentsManager(Mock.Of<IFileAttachmentsManager>()));
             Assert.That(cfg.ToArray(), Is.Not.Empty);
         }
 
         [Test]
-        public void It_should_return_default_file_attachment_manager()
+        public async Task It_should_return_default_file_attachment_manager()
         {
-            var configuration = new ReportConfiguration().RegisterDefaultFileAttachmentManager();
-            var fileAttachmentsManager = configuration.GetFileAttachmentsManager();
+            await using var container = new LightBddConfiguration().RegisterDefaultFileAttachmentManager().BuildContainer();
+            var fileAttachmentsManager = container.Resolve<IFileAttachmentsManager>();
             Assert.That(fileAttachmentsManager, Is.TypeOf<FileAttachmentsManager>());
 
             var expectedPath = Path.Combine(AppContext.BaseDirectory, "Reports");
@@ -92,25 +93,11 @@ namespace LightBDD.Framework.Reporting.UnitTests.Configuration
         }
 
         [Test]
-        public void It_should_allow_updating_FileAttachmentManager()
+        public async Task GetFileAttachmentsManager_should_return_NoFileAttachmentsManager_by_default()
         {
-            var manager = Mock.Of<IFileAttachmentsManager>();
-            var actual = new ReportConfiguration().UpdateFileAttachmentsManager(manager)
-                .GetFileAttachmentsManager();
-            Assert.That(actual, Is.EqualTo(manager));
-        }
-
-        [Test]
-        public void It_should_not_allow_updating_FileAttachmentManager_with_null()
-        {
-            var ex = Assert.Throws<ArgumentNullException>(() => new ReportConfiguration().UpdateFileAttachmentsManager(null));
-            Assert.That(ex.ParamName, Is.EqualTo("manager"));
-        }
-
-        [Test]
-        public void GetFileAttachmentsManager_should_return_NoFileAttachmentsManager_by_default()
-        {
-            Assert.That(new ReportConfiguration().GetFileAttachmentsManager(), Is.TypeOf<NoFileAttachmentsManager>());
+            await using var container = new LightBddConfiguration().BuildContainer();
+            var fileAttachmentsManager = container.Resolve<IFileAttachmentsManager>();
+            Assert.That(fileAttachmentsManager, Is.TypeOf<NoFileAttachmentsManager>());
         }
     }
 }

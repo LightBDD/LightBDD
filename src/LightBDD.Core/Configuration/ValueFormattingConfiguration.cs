@@ -10,6 +10,7 @@ namespace LightBDD.Core.Configuration
     /// <summary>
     /// Configuration allowing to define explicit and general value formatters that would be used to format parameters of all scenarios and steps.
     /// </summary>
+    [InjectableConfiguration]
     public class ValueFormattingConfiguration : FeatureConfiguration
     {
         private readonly ConcurrentDictionary<Type, IValueFormatter> _explicitFormatters = new();

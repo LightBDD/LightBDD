@@ -22,7 +22,7 @@ namespace LightBDD.AcceptanceTests
             configuration.ReportConfiguration()
                 .Add(new FileReportGenerator(new PlainTextReportFormatter(), "~" + Path.DirectorySeparatorChar + "Reports" + Path.DirectorySeparatorChar + "FeaturesReport.txt"));
 
-            configuration.DependencyContainerConfiguration().ConfigureServices(ConfigureServices);
+            configuration.ConfigureDependencies(ConfigureServices);
             configuration.ExecutionExtensionsConfiguration().EnableStepDecorator<ScreenshotCaptureOnFailure>();
         }
 

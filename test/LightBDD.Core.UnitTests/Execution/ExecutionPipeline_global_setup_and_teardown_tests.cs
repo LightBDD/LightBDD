@@ -106,8 +106,7 @@ public class ExecutionPipeline_global_setup_and_teardown_tests
 
         void Configure(LightBddConfiguration cfg)
         {
-            cfg.DependencyContainerConfiguration()
-                .ConfigureServices(c =>
+            cfg.ConfigureDependencies(c =>
                 {
                     c.AddSingleton(counter);
                     c.AddSingleton(dep1);
@@ -163,8 +162,7 @@ public class ExecutionPipeline_global_setup_and_teardown_tests
 
         void Configure(LightBddConfiguration cfg)
         {
-            cfg.DependencyContainerConfiguration()
-                .ConfigureServices(c =>
+            cfg.ConfigureDependencies(c =>
                 {
                     c.AddSingleton(counter);
                     c.AddSingleton(dep1);
@@ -202,11 +200,7 @@ public class ExecutionPipeline_global_setup_and_teardown_tests
         var counter = new Counter();
         void Configure(LightBddConfiguration cfg)
         {
-            cfg.DependencyContainerConfiguration()
-                .ConfigureServices(c =>
-                {
-                    c.AddSingleton(counter);
-                });
+            cfg.ConfigureDependencies(c => c.AddSingleton(counter));
 
             cfg.ExecutionExtensionsConfiguration()
                 .RegisterGlobalSetUp("failing", () => throw new IOException("BOOM"));

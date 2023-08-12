@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Formatting;
 
@@ -13,10 +14,10 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
         public static CoreMetadataProvider Create(Action<LightBddConfiguration>? onConfigure = null)
         {
             var configuration = new LightBddConfiguration();
-            configuration.NameFormatterConfiguration().UpdateFormatter(DefaultNameFormatter.Instance);
+            configuration.ConfigureNameFormatter(x => x.Use(DefaultNameFormatter.Instance));
             configuration.MetadataConfiguration().RegisterEngineAssembly(typeof(TestMetadataProvider).Assembly);
             onConfigure?.Invoke(configuration);
-            return new CoreMetadataProvider(configuration);
+            return configuration.BuildContainer().Resolve<CoreMetadataProvider>();
         }
     }
 }
