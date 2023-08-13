@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution;
 
 namespace LightBDD.Core.Extensibility;
@@ -23,9 +24,9 @@ public interface ICoreScenarioStepsRunner
     /// <summary>
     /// Configures execution context for steps to execute.
     /// </summary>
-    /// <param name="contextDescriptor">Descriptor.</param>
+    /// <param name="contextProvider">Context provider.</param>
     /// <returns>Self.</returns>
-    ICoreScenarioStepsRunner WithContext(ExecutionContextDescriptor contextDescriptor);
+    ICoreScenarioStepsRunner WithContext(Resolvable<object?> contextProvider);
 
     /// <summary>
     /// Executes built scenario.

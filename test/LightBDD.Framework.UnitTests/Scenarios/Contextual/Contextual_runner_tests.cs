@@ -32,7 +32,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
             _runner.WithContext(context);
 
             _stepsRunner.Verify();
-            capture.Value.ContextResolver.Invoke(new FakeResolver())
+            capture.Value.Resolve(new FakeResolver())
                 .ShouldBeSameAs(context);
         }
 
@@ -44,7 +44,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
             _runner.WithContext(() => TimeSpan.FromSeconds(5));
 
             _stepsRunner.Verify();
-            capture.Value.ContextResolver.Invoke(new FakeResolver())
+            capture.Value.Resolve(new FakeResolver())
                 .ShouldBe(TimeSpan.FromSeconds(5));
         }
 

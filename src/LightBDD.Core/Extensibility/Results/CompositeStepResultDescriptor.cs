@@ -1,5 +1,6 @@
-using System;
+#nullable enable
 using System.Collections.Generic;
+using LightBDD.Core.Dependencies;
 
 namespace LightBDD.Core.Extensibility.Results
 {
@@ -15,9 +16,9 @@ namespace LightBDD.Core.Extensibility.Results
         /// </summary>
         /// <param name="subStepsContext">Context descriptor that will be used to instantiate context for the sub steps.</param>
         /// <param name="subSteps">Sub steps.</param>
-        public CompositeStepResultDescriptor(ExecutionContextDescriptor subStepsContext, IEnumerable<StepDescriptor> subSteps)
+        public CompositeStepResultDescriptor(Resolvable<object?> subStepsContext, IEnumerable<StepDescriptor> subSteps)
         {
-            SubStepsContext = subStepsContext ?? throw new ArgumentNullException(nameof(subStepsContext));
+            SubStepsContext = subStepsContext;
             SubSteps = subSteps;
         }
 
@@ -28,8 +29,8 @@ namespace LightBDD.Core.Extensibility.Results
         public IEnumerable<StepDescriptor> SubSteps { get; }
 
         /// <summary>
-        /// Returns context descriptor that will be used to instantiate context for the sub steps.
+        /// Returns context provider that will be used to instantiate context for the sub steps.
         /// </summary>
-        public ExecutionContextDescriptor SubStepsContext { get; }
+        public Resolvable<object?> SubStepsContext { get; }
     }
 }

@@ -105,7 +105,7 @@ namespace LightBDD.Core.UnitTests.Execution
         {
             var scenarioContext = (MyScenarioContext)ScenarioExecutionContext.CurrentStep.Context;
             return new TestCompositeStep(
-                new ExecutionContextDescriptor(r => scenarioContext.CaptureStepContext(r.Resolve<MyStepContext>().VerifyNotDisposed())),
+                Resolvable.Use<object>(r => scenarioContext.CaptureStepContext(r.Resolve<MyStepContext>().VerifyNotDisposed())),
                 TestStep.CreateSync(Step_step));
         }
     }

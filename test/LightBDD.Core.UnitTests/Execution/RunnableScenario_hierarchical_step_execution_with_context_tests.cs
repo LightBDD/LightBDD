@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Results;
 using LightBDD.Core.Results;
@@ -63,7 +64,7 @@ namespace LightBDD.Core.UnitTests.Execution
 
             TestCompositeStep StepGroupWithDisposable()
             {
-                return new TestCompositeStep(new ExecutionContextDescriptor(() => context, shouldDispose), MakeStep("step"));
+                return new TestCompositeStep(Resolvable.Use<object>(() => context, shouldDispose), MakeStep("step"));
             }
 
             await TestableScenarioFactory.Default
@@ -84,7 +85,7 @@ namespace LightBDD.Core.UnitTests.Execution
             TestCompositeStep StepGroupWithDisposable()
             {
                 return new TestCompositeStep(
-                    new ExecutionContextDescriptor(() => context, true),
+                    Resolvable.Use<object>(() => context, true),
                     new StepDescriptor("step1", VerifyNotDisposed),
                     new StepDescriptor("step2", VerifyNotDisposed));
             }
@@ -104,7 +105,7 @@ namespace LightBDD.Core.UnitTests.Execution
 
             TestCompositeStep StepGroupWithDisposable()
             {
-                return new TestCompositeStep(new ExecutionContextDescriptor(() => context, true), MakeStep("step"));
+                return new TestCompositeStep(Resolvable.Use<object>(() => context, true), MakeStep("step"));
             }
 
             var scenario = await TestableScenarioFactory.Default
@@ -126,7 +127,7 @@ namespace LightBDD.Core.UnitTests.Execution
             TestCompositeStep StepGroupWithDisposable()
             {
                 return new TestCompositeStep(
-                    new ExecutionContextDescriptor(() => context, true),
+                    Resolvable.Use<object>(() => context, true),
                     new StepDescriptor("step", (ctx, args) => throw new Exception("bar")));
             }
 
