@@ -30,6 +30,7 @@ public class EngineContext
         ValueFormattingService = DependencyContainer.Resolve<IValueFormattingService>();
         FixtureFactory = DependencyContainer.Resolve<IFixtureFactory>();
         FileAttachmentsManager = DependencyContainer.Resolve<IFileAttachmentsManager>();
+        ProgressDispatcher = DependencyContainer.Resolve<ProgressNotificationDispatcher>();
     }
 
     /// <summary>
@@ -53,7 +54,7 @@ public class EngineContext
     internal readonly IDependencyContainer DependencyContainer;
     internal readonly IFixtureFactory FixtureFactory;
     internal readonly IFileAttachmentsManager FileAttachmentsManager;
+    internal readonly ProgressNotificationDispatcher ProgressDispatcher;
     internal GlobalSetUpRegistry GlobalSetUp => Configuration.Get<ExecutionExtensionsConfiguration>().GlobalSetUpRegistry;
-    internal IProgressNotifier ProgressNotifier => Configuration.Get<ProgressNotifierConfiguration>().Notifier;
     internal IExecutionExtensions ExecutionExtensions => Configuration.ExecutionExtensionsConfiguration();
 }

@@ -19,7 +19,7 @@ namespace LightBDD.Runner.IntegrationTests
 
             configuration.ProgressNotifierConfiguration()
                 .Clear()
-                .Append(new ProgressCapture());
+                .Register(c => c.Use(new ProgressCapture()));
 
             CapturedConfiguration = configuration;
         }

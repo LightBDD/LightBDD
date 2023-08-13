@@ -51,7 +51,7 @@ namespace LightBDD.Core.Execution
             var testRunInfo = ctx.MetadataProvider.GetTestRunInfo(_testAssembly);
             var testRunStartTime = ctx.ExecutionTimer.GetTime();
             OnBeforeTestRunStart(testRunStartTime, testRunInfo, scenarios);
-            ctx.ProgressNotifier.Notify(new TestRunStarting(testRunStartTime, testRunInfo));
+            ctx.ProgressDispatcher.Notify(new TestRunStarting(testRunStartTime, testRunInfo));
 
             await RunGlobalSetUp(ctx);
             var results = await Task.WhenAll(scenarios.GroupBy(s => s.FeatureFixtureType).Select(fixture => ExecuteFeature(fixture, ctx)));
@@ -59,7 +59,7 @@ namespace LightBDD.Core.Execution
 
             var testRunEndTime = ctx.ExecutionTimer.GetTime();
             var result = new TestRunResult(testRunInfo, testRunEndTime.GetExecutionTime(testRunStartTime), results);
-            ctx.ProgressNotifier.Notify(new TestRunFinished(testRunEndTime, result));
+            ctx.ProgressDispatcher.Notify(new TestRunFinished(testRunEndTime, result));
 
             await new FeatureReportGenerator(ctx.Configuration).GenerateReports(result);
             OnAfterTestRunFinish(testRunEndTime, result);
@@ -104,7 +104,7 @@ namespace LightBDD.Core.Execution
             var featureStartTime = ctx.ExecutionTimer.GetTime();
             var scenarios = featureScenarios.ToArray();
             OnBeforeFeatureStart(featureStartTime, featureInfo, scenarios);
-            ctx.ProgressNotifier.Notify(new FeatureStarting(featureStartTime, featureInfo));
+            ctx.ProgressDispatcher.Notify(new FeatureStarting(featureStartTime, featureInfo));
 
             var results = await Task.WhenAll(featureScenarios.SelectMany(s => ExpandParameterizedScenarios(s, ctx))
                 .GroupBy(s => s.ScenarioMethod)
@@ -112,7 +112,7 @@ namespace LightBDD.Core.Execution
 
             var featureEndTime = ctx.ExecutionTimer.GetTime();
             var result = new FeatureResultV2(featureInfo, results.SelectMany(r => r).ToArray());
-            ctx.ProgressNotifier.Notify(new FeatureFinished(featureEndTime, result));
+            ctx.ProgressDispatcher.Notify(new FeatureFinished(featureEndTime, result));
             OnAfterFeatureFinished(featureEndTime, result);
             return result;
         }

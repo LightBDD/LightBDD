@@ -49,7 +49,7 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario, IRunStageCon
         try
         {
             SetScenarioContext();
-            Engine.ProgressNotifier.Notify(new ScenarioStarting(startTime, Result.Info));
+            Engine.ProgressDispatcher.Notify(new ScenarioStarting(startTime, Result.Info));
             await _fixtureManager.InitializeAsync(_result.Info.Parent.FeatureType);
             await _decoratedMethod.Invoke();
         }
@@ -67,7 +67,7 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario, IRunStageCon
         var endTime = Engine.ExecutionTimer.GetTime();
         _result.UpdateTime(endTime.GetExecutionTime(startTime));
         _collector.UpdateResults(_result);
-        Engine.ProgressNotifier.Notify(new ScenarioFinished(endTime, Result));
+        Engine.ProgressDispatcher.Notify(new ScenarioFinished(endTime, Result));
         return Result;
     }
 

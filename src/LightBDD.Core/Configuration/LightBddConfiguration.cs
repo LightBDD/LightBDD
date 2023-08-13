@@ -11,6 +11,7 @@ using LightBDD.Core.Formatting;
 using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Core.Formatting.Implementation;
 using LightBDD.Core.Formatting.Values;
+using LightBDD.Core.Notification;
 using LightBDD.Core.Reporting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -113,8 +114,10 @@ namespace LightBDD.Core.Configuration
             collection.AddTransient<TransientDisposable>();
             collection.AddSingleton<CoreMetadataProvider>();
             collection.AddSingleton<ExceptionProcessor>();
+            collection.AddSingleton<ProgressNotificationDispatcher>();
 
             collection.Add(_features.Values);
+            collection.Add(Get<ProgressNotifierConfiguration>().Notifiers);
             foreach (var cfg in _configuration.Values.Where(v => v.GetType().GetCustomAttributes<InjectableConfigurationAttribute>().Any()))
                 collection.AddSingleton(cfg.GetType(), cfg);
 

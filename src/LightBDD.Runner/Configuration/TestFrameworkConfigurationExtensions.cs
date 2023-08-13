@@ -25,7 +25,9 @@ namespace LightBDD.Runner.Configuration
         /// </summary>
         public static ProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this ProgressNotifierConfiguration configuration)
         {
-            return configuration.Append(XUnit2ProgressNotifier.CreateProgressNotifiers());
+            foreach (var notifier in XUnit2ProgressNotifier.CreateProgressNotifiers())
+                configuration.Register(c => c.Use(notifier));
+            return configuration;
         }
     }
 }

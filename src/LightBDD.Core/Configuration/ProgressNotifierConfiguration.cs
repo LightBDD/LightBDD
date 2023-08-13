@@ -1,56 +1,50 @@
 ﻿#nullable enable
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using LightBDD.Core.Notification;
-using LightBDD.Core.Notification.Implementation;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LightBDD.Core.Configuration
 {
     /// <summary>
     /// Configuration class allowing to customize scenario progress notification behavior.
     /// </summary>
+    //TODO: consider generalizing collection registrations
     public class ProgressNotifierConfiguration : FeatureConfiguration
     {
-        /// <summary>
-        /// Returns progress notifier.<br/>
-        /// By default it is configured to not report any notifications.
-        /// </summary>
-        public IProgressNotifier Notifier { get; private set; } = NoProgressNotifier.Default;
+        private readonly List<ServiceDescriptor> _notifiers = new();
 
         /// <summary>
-        /// Appends <paramref name="notifiers"/> to existing <see cref="Notifier"/> making all of them used during notification.
+        /// Returns <see cref="IProgressNotifier"/> registrations.<br/>
+        /// By default it is configured with no notifiers.
         /// </summary>
-        /// <param name="notifiers">Notifiers to append</param>
+        //TODO: review how these descriptors are registered. Consider hiding it. Consider also reworking global service collection to provide only one way to setup and clear specific registrations.
+        public IReadOnlyList<ServiceDescriptor> Notifiers => _notifiers;
+
+        /// <summary>
+        /// Registers <see cref="IProgressNotifier"/> described by <paramref name="configurer"/> to notifier collection, making all of them used during notification.
+        /// </summary>
+        /// <param name="configurer"><see cref="IProgressNotifier"/> configurer</param>
         /// <returns>Self</returns>
-        /// <exception cref="ArgumentNullException">Throws when <paramref name="notifiers"/> collection or any of it's item is null.</exception>
-        public ProgressNotifierConfiguration Append(params IProgressNotifier[] notifiers)
+        /// <exception cref="InvalidOperationException">Throws when configuration is sealed.</exception>
+        public ProgressNotifierConfiguration Register(Action<FeatureConfigurer<IProgressNotifier>> configurer)
         {
             ThrowIfSealed();
-            VerifyNotifiers(notifiers);
-            Notifier = DelegatingProgressNotifier.Compose(Enumerable.Repeat(Notifier, 1).Concat(notifiers));
+            var cfg = new FeatureConfigurer<IProgressNotifier>();
+            configurer.Invoke(cfg);
+            _notifiers.Add(cfg.GetDescriptor());
             return this;
         }
 
         /// <summary>
-        /// Clears <see cref="Notifier"/> to use instance that does not report any notifications.
+        /// Clears <see cref="Notifiers"/>.
         /// </summary>
         /// <returns>Self.</returns>
         public ProgressNotifierConfiguration Clear()
         {
             ThrowIfSealed();
-            Notifier = NoProgressNotifier.Default;
+            _notifiers.Clear();
             return this;
-        }
-
-        private static void VerifyNotifiers(IProgressNotifier[] notifiers)
-        {
-            if (notifiers == null)
-                throw new ArgumentNullException(nameof(notifiers));
-            for (var index = 0; index < notifiers.Length; index++)
-            {
-                if (notifiers[index] == null)
-                    throw new ArgumentNullException(nameof(notifiers),$"Value {nameof(notifiers)}[{index}] cannot be null");
-            }
         }
     }
 }

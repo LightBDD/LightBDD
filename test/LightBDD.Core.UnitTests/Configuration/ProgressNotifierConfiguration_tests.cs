@@ -1,10 +1,12 @@
+#nullable enable
 using System;
+using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Notification.Events;
 using Moq;
 using NUnit.Framework;
-using Shouldly;
 
 namespace LightBDD.Core.UnitTests.Configuration
 {
@@ -15,43 +17,36 @@ namespace LightBDD.Core.UnitTests.Configuration
         public void Should_initialize_object_with_default_values()
         {
             var configuration = new ProgressNotifierConfiguration();
-            Assert.That(configuration.Notifier, Is.InstanceOf<NoProgressNotifier>());
+            Assert.That(configuration.Notifiers, Is.Empty);
         }
 
         [Test]
-        public void Append_should_not_allow_null_notifier()
-        {
-            Assert.Throws<ArgumentNullException>(() => new ProgressNotifierConfiguration().Append(null!))
-                ?.Message.ShouldContain("notifiers");
-
-            Assert.Throws<ArgumentNullException>(() => new ProgressNotifierConfiguration().Append(((IProgressNotifier)null)!))
-                ?.Message.ShouldContain("Value notifiers[0] cannot be null");
-        }
-
-        [Test]
-        public void Clear_should_reset_it_to_NoProgressNotifier()
+        public void Clear_should_reset_Notifiers()
         {
             var configuration = new ProgressNotifierConfiguration()
-                .Append(Mock.Of<IProgressNotifier>())
+                .Register(c => c.Use(Mock.Of<IProgressNotifier>()))
                 .Clear();
-            Assert.That(configuration.Notifier, Is.InstanceOf<NoProgressNotifier>());
+            Assert.That(configuration.Notifiers, Is.Empty);
         }
 
         [Test]
-        public void Append_should_append_notifiers_to_existing_ones()
+        public async Task Append_should_append_notifiers_to_existing_ones()
         {
             var notifier1 = Mock.Of<IProgressNotifier>();
             var notifier2 = Mock.Of<IProgressNotifier>();
             var notifier3 = Mock.Of<IProgressNotifier>();
             var notifier4 = Mock.Of<IProgressNotifier>();
 
-            var configuration = new ProgressNotifierConfiguration()
-                .Append(notifier1, notifier2)
-                .Append(notifier3)
-                .Append(notifier4);
+            var cfg = new LightBddConfiguration();
+            cfg.ProgressNotifierConfiguration()
+                .Register(c => c.Use(notifier1))
+                .Register(c => c.Use(notifier2))
+                .Register(c => c.Use(notifier3))
+                .Register(c => c.Use(notifier4));
 
             var progressEvent = new ProgressEvent(default);
-            configuration.Notifier.Notify(progressEvent);
+            await using var container = cfg.BuildContainer();
+            container.Resolve<ProgressNotificationDispatcher>().Notify(progressEvent);
 
             Mock.Get(notifier1).Verify(x => x.Notify(progressEvent));
             Mock.Get(notifier2).Verify(x => x.Notify(progressEvent));
@@ -66,7 +61,7 @@ namespace LightBDD.Core.UnitTests.Configuration
             var cfg = root.Get<ProgressNotifierConfiguration>();
             root.Seal();
 
-            Assert.Throws<InvalidOperationException>(() => cfg.Append(Mock.Of<IProgressNotifier>()));
+            Assert.Throws<InvalidOperationException>(() => cfg.Register(c=>c.Use<IProgressNotifier>()));
             Assert.Throws<InvalidOperationException>(() => cfg.Clear());
         }
     }
