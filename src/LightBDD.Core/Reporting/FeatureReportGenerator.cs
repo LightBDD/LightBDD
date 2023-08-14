@@ -18,9 +18,9 @@ public class FeatureReportGenerator
     /// <summary>
     /// Default constructor
     /// </summary>
-    public FeatureReportGenerator(LightBddConfiguration configuration)
+    public FeatureReportGenerator(IEnumerable<IReportGenerator> generators)
     {
-        _generators = configuration.ReportConfiguration().Cast<IReportGenerator>().ToArray();
+        _generators = generators.ToArray();
     }
 
     /// <summary>

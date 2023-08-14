@@ -19,7 +19,7 @@ namespace LightBDD.Framework.Reporting.UnitTests.Configuration
         public void It_should_return_default_configuration()
         {
             var configuration = new ReportConfiguration().RegisterFrameworkDefaultReportWriters();
-            Assert.That(configuration.Count, Is.EqualTo(1));
+            Assert.That(configuration.Generators.Count, Is.EqualTo(1));
 
             var featuresReportHtml = $"~{Path.DirectorySeparatorChar}Reports{Path.DirectorySeparatorChar}FeaturesReport.html";
 
@@ -28,7 +28,9 @@ namespace LightBDD.Framework.Reporting.UnitTests.Configuration
 
         private void AssertGenerator(ReportConfiguration configuration, string expectedRelativePath, Type expectedFormatterType, string expectedFullPath)
         {
-            var writer = configuration.OfType<FileReportGenerator>().FirstOrDefault(w => w.OutputPath == expectedRelativePath);
+            var writer = configuration.Generators.Select(x => x.ImplementationFactory(Mock.Of<IServiceProvider>()))
+                .OfType<FileReportGenerator>()
+                .FirstOrDefault(w => w.OutputPath == expectedRelativePath);
             Assert.That(writer, Is.Not.Null, $"Expected to find writer with path: {expectedRelativePath}");
 
             Assert.That(writer.FullOutputPath, Is.EqualTo(Path.GetFullPath(expectedFullPath)));
@@ -36,29 +38,23 @@ namespace LightBDD.Framework.Reporting.UnitTests.Configuration
         }
 
         [Test]
-        public void It_should_allow_clear_add_and_remove_generators()
+        public void It_should_allow_clear_and_add_generators()
         {
             var gen1 = Mock.Of<IReportGenerator>();
             var gen2 = Mock.Of<IReportGenerator>();
-            var configuration = new ReportConfiguration();
-            Assert.That(configuration.Clear(), Is.Empty);
-            Assert.That(configuration.Add(gen1).Add(gen2).ToArray(), Is.EqualTo(new[] { gen1, gen2 }));
-            Assert.That(configuration.Remove(gen1).ToArray(), Is.EqualTo(new[] { gen2 }));
+            var configuration = new ReportConfiguration().RegisterFrameworkDefaultReportWriters();
+            Assert.That(configuration.Generators.Count, Is.EqualTo(1));
+            Assert.That(configuration.Clear().Generators, Is.Empty);
+            Assert.That(configuration.Add(c => c.Use(gen1)).Add(c => c.Use(gen2)).Generators.Count, Is.EqualTo(2));
         }
 
         [Test]
-        public void It_should_not_allow_null_generators()
-        {
-            var configuration = new ReportConfiguration();
-            Assert.Throws<ArgumentNullException>(() => configuration.Add(null));
-        }
-
-        [Test]
-        public void It_should_allow_adding_file_report_with_extension_method()
+        public void It_should_allow_adding_file_report()
         {
             var writer = new ReportConfiguration()
                 .Clear()
                 .AddFileReport<PlainTextReportFormatter>("file.txt")
+                .Generators.Select(x => x.ImplementationFactory(Mock.Of<IServiceProvider>()))
                 .Cast<FileReportGenerator>()
                 .SingleOrDefault();
 
@@ -70,15 +66,14 @@ namespace LightBDD.Framework.Reporting.UnitTests.Configuration
         [Test]
         public void Configuration_should_be_sealable()
         {
-            var writer = Mock.Of<IReportGenerator>();
+            var generator = Mock.Of<IReportGenerator>();
             var lightBddConfig = new LightBddConfiguration();
-            var cfg = lightBddConfig.Get<ReportConfiguration>().Add(writer);
+            var cfg = lightBddConfig.Get<ReportConfiguration>().Add(c => c.Use(generator));
             lightBddConfig.Seal();
 
-            Assert.Throws<InvalidOperationException>(() => cfg.Add(Mock.Of<IReportGenerator>()));
+            Assert.Throws<InvalidOperationException>(() => cfg.Add(c => c.Use(Mock.Of<IReportGenerator>())));
             Assert.Throws<InvalidOperationException>(() => cfg.Clear());
-            Assert.Throws<InvalidOperationException>(() => cfg.Remove(writer));
-            Assert.That(cfg.ToArray(), Is.Not.Empty);
+            Assert.That(cfg.Generators.ToArray(), Is.Not.Empty);
         }
 
         [Test]

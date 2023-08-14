@@ -118,6 +118,7 @@ namespace LightBDD.Core.Configuration
 
             collection.Add(_features.Values);
             collection.Add(Get<ProgressNotifierConfiguration>().Notifiers);
+            collection.Add(Get<ReportConfiguration>().Generators);
             foreach (var cfg in _configuration.Values.Where(v => v.GetType().GetCustomAttributes<InjectableConfigurationAttribute>().Any()))
                 collection.AddSingleton(cfg.GetType(), cfg);
 

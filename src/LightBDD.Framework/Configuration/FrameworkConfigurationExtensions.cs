@@ -55,8 +55,7 @@ namespace LightBDD.Framework.Configuration
         /// </summary>
         public static ReportConfiguration RegisterFrameworkDefaultReportWriters(this ReportConfiguration configuration)
         {
-            return configuration
-                .Add(new FileReportGenerator(new HtmlReportFormatter(), $"~{Path.DirectorySeparatorChar}Reports{Path.DirectorySeparatorChar}FeaturesReport.html"));
+            return configuration.AddFileReport<HtmlReportFormatter>($"~{Path.DirectorySeparatorChar}Reports{Path.DirectorySeparatorChar}FeaturesReport.html");
         }
 
         /// <summary>
@@ -91,7 +90,7 @@ namespace LightBDD.Framework.Configuration
         {
             var formatter = new TFormatter();
             onConfigure?.Invoke(formatter);
-            return configuration.Add(new FileReportGenerator(formatter, outputPath));
+            return configuration.Add(c => c.Use(_ => new FileReportGenerator(formatter, outputPath)));
         }
 
         /// <summary>

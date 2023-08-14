@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using LightBDD.AcceptanceTests;
 using LightBDD.AcceptanceTests.Helpers;
 using LightBDD.Core.Configuration;
+using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Reporting;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.Framework.Resources;
@@ -20,7 +21,7 @@ namespace LightBDD.AcceptanceTests
         protected override void OnConfigure(LightBddConfiguration configuration)
         {
             configuration.ReportConfiguration()
-                .Add(new FileReportGenerator(new PlainTextReportFormatter(), "~" + Path.DirectorySeparatorChar + "Reports" + Path.DirectorySeparatorChar + "FeaturesReport.txt"));
+                .AddFileReport<PlainTextReportFormatter>("~" + Path.DirectorySeparatorChar + "Reports" + Path.DirectorySeparatorChar + "FeaturesReport.txt");
 
             configuration.ConfigureDependencies(ConfigureServices);
             configuration.ExecutionExtensionsConfiguration().EnableStepDecorator<ScreenshotCaptureOnFailure>();

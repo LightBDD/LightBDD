@@ -61,7 +61,7 @@ namespace LightBDD.Core.Execution
             var result = new TestRunResult(testRunInfo, testRunEndTime.GetExecutionTime(testRunStartTime), results);
             ctx.ProgressDispatcher.Notify(new TestRunFinished(testRunEndTime, result));
 
-            await new FeatureReportGenerator(ctx.Configuration).GenerateReports(result);
+            await ctx.ReportGenerator.GenerateReports(result);
             OnAfterTestRunFinish(testRunEndTime, result);
             LightBddExecutionContext.Clear();
             return result;
