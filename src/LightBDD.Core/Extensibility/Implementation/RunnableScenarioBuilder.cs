@@ -67,7 +67,6 @@ internal class RunnableScenarioBuilder : IRunnableScenarioBuilder
     public IRunnableScenarioV2 Build()
     {
         var scenarioInfo = new ScenarioInfo(_featureInfo, _name, _labels, _categories, _runtimeId);
-        var scenarioDecorators = _context.ExecutionExtensions.ScenarioDecorators.Concat(_decorators);
-        return new RunnableScenarioV2(_context, scenarioInfo, scenarioDecorators, _entryMethod);
+        return new RunnableScenarioV2(_context, scenarioInfo, _decorators, _entryMethod);
     }
 }

@@ -7,7 +7,6 @@ namespace LightBDD.Core.Configuration
     /// <summary>
     /// Step type configuration allowing to define step types recognized by LightBDD.
     /// </summary>
-    [InjectableConfiguration]
     public class StepTypeConfiguration : FeatureConfiguration
     {
         /// <summary>

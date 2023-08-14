@@ -32,6 +32,7 @@ public class EngineContext
         FileAttachmentsManager = DependencyContainer.Resolve<IFileAttachmentsManager>();
         ProgressDispatcher = DependencyContainer.Resolve<ProgressNotificationDispatcher>();
         ReportGenerator = DependencyContainer.Resolve<FeatureReportGenerator>();
+        GlobalSetUp = DependencyContainer.Resolve<GlobalSetUpRegistry>();
     }
 
     /// <summary>
@@ -57,6 +58,5 @@ public class EngineContext
     internal readonly IFileAttachmentsManager FileAttachmentsManager;
     internal readonly ProgressNotificationDispatcher ProgressDispatcher;
     internal readonly FeatureReportGenerator ReportGenerator;
-    internal GlobalSetUpRegistry GlobalSetUp => Configuration.Get<ExecutionExtensionsConfiguration>().GlobalSetUpRegistry;
-    internal IExecutionExtensions ExecutionExtensions => Configuration.ExecutionExtensionsConfiguration();
+    internal readonly GlobalSetUpRegistry GlobalSetUp;
 }

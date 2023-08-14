@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Reporting;
 using LightBDD.Framework.Formatting;
 using LightBDD.Framework.Formatting.Values;
 using LightBDD.Framework.Reporting;
@@ -20,19 +21,19 @@ namespace LightBDD.Framework.Configuration
         /// <returns><paramref name="configuration"/>.</returns>
         public static LightBddConfiguration WithFrameworkDefaults(this LightBddConfiguration configuration)
         {
-            configuration.MetadataConfiguration()
+            configuration.ConfigureMetadata()
                 .RegisterEngineAssembly(typeof(FrameworkConfigurationExtensions).Assembly);
 
             configuration
-                .ValueFormattingConfiguration()
+                .ConfigureValueFormatting()
                 .RegisterFrameworkDefaultGeneralFormatters();
 
             configuration
-                .ReportConfiguration()
-                .RegisterFrameworkDefaultReportWriters();
+                .RegisterReportGenerators()
+                .RegisterFrameworkDefaultReportGenerators();
 
             configuration
-                .ConfigureNameFormatter(c => c.Use(DefaultNameFormatter.Instance))
+                .RegisterNameFormatter(c => c.Use(DefaultNameFormatter.Instance))
                 .RegisterDefaultFileAttachmentManager();
 
             return configuration;
@@ -53,7 +54,7 @@ namespace LightBDD.Framework.Configuration
         /// <summary>
         /// Applies default report generators to generate <c>~\\Reports\\FeaturesReport.html</c>(Win) <c>~/Reports/FeaturesReport.html</c>(Unix) reports.
         /// </summary>
-        public static ReportConfiguration RegisterFrameworkDefaultReportWriters(this ReportConfiguration configuration)
+        public static FeatureCollectionRegistrator<IReportGenerator> RegisterFrameworkDefaultReportGenerators(this FeatureCollectionRegistrator<IReportGenerator> configuration)
         {
             return configuration.AddFileReport<HtmlReportFormatter>($"~{Path.DirectorySeparatorChar}Reports{Path.DirectorySeparatorChar}FeaturesReport.html");
         }
@@ -63,7 +64,7 @@ namespace LightBDD.Framework.Configuration
         /// </summary>
         public static LightBddConfiguration RegisterDefaultFileAttachmentManager(this LightBddConfiguration configuration)
         {
-            return configuration.ConfigureFileAttachmentsManager(x => x.Use(_ => new FileAttachmentsManager($"~{Path.DirectorySeparatorChar}Reports")));
+            return configuration.RegisterFileAttachmentsManager(x => x.Use(_ => new FileAttachmentsManager($"~{Path.DirectorySeparatorChar}Reports")));
         }
 
         /// <summary>
@@ -73,7 +74,7 @@ namespace LightBDD.Framework.Configuration
         /// <param name="configuration">Configuration.</param>
         /// <param name="outputPath">Output path for the report.</param>
         /// <returns>Configuration.</returns>
-        public static ReportConfiguration AddFileReport<TFormatter>(this ReportConfiguration configuration, string outputPath) where TFormatter : IReportFormatter, new()
+        public static FeatureCollectionRegistrator<IReportGenerator> AddFileReport<TFormatter>(this FeatureCollectionRegistrator<IReportGenerator> configuration, string outputPath) where TFormatter : IReportFormatter, new()
         {
             return AddFileReport<TFormatter>(configuration, outputPath, null);
         }
@@ -86,11 +87,11 @@ namespace LightBDD.Framework.Configuration
         /// <param name="outputPath">Output path for the report.</param>
         /// <param name="onConfigure">Action to configure the <typeparamref name="TFormatter"/> instance.</param>
         /// <returns>Configuration.</returns>
-        public static ReportConfiguration AddFileReport<TFormatter>(this ReportConfiguration configuration, string outputPath, Action<TFormatter> onConfigure) where TFormatter : IReportFormatter, new()
+        public static FeatureCollectionRegistrator<IReportGenerator> AddFileReport<TFormatter>(this FeatureCollectionRegistrator<IReportGenerator> configuration, string outputPath, Action<TFormatter> onConfigure) where TFormatter : IReportFormatter, new()
         {
             var formatter = new TFormatter();
             onConfigure?.Invoke(formatter);
-            return configuration.Add(c => c.Use(_ => new FileReportGenerator(formatter, outputPath)));
+            return configuration.Add(_ => new FileReportGenerator(formatter, outputPath));
         }
 
         /// <summary>
@@ -100,7 +101,7 @@ namespace LightBDD.Framework.Configuration
         /// <returns>Configuration object.</returns>
         public static ObjectTreeConfiguration ObjectTreeConfiguration(this LightBddConfiguration configuration)
         {
-            return configuration.Get<ObjectTreeConfiguration>();
+            return configuration.ConfigureFeature<ObjectTreeConfiguration>();
         }
     }
 }

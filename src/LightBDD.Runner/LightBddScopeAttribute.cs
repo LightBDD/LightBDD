@@ -18,14 +18,13 @@ namespace LightBDD.Runner
         {
             configuration.WithFrameworkDefaults();
 
-            configuration.MetadataConfiguration()
+            configuration.ConfigureMetadata()
                 .RegisterEngineAssembly(typeof(LightBddScopeAttribute).Assembly);
 
-            configuration.ProgressNotifierConfiguration()
-                .AppendFrameworkDefaultProgressNotifiers();
+            configuration.RegisterProgressNotifiers()
+                .AddFrameworkDefaultProgressNotifiers();
 
-            configuration.ConfigureExceptionFormatter(x =>
-                x.Use(new DefaultExceptionFormatter().WithTestFrameworkDefaults()));
+            configuration.RegisterExceptionFormatter(x => x.Use(new DefaultExceptionFormatter().WithTestFrameworkDefaults()));
 
             OnConfigure(configuration);
         }

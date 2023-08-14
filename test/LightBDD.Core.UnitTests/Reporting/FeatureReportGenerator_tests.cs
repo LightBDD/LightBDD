@@ -27,7 +27,7 @@ namespace LightBDD.Core.UnitTests.Reporting
                 var gen = new Mock<IReportGenerator>();
                 gen.Setup(x => x.Generate(result)).Returns(Task.CompletedTask).Verifiable();
 
-                cfg.ReportConfiguration().Add(c => c.Use(gen.Object));
+                cfg.RegisterReportGenerators().Add(gen.Object);
                 generators.Add(gen);
             }
 
@@ -49,7 +49,7 @@ namespace LightBDD.Core.UnitTests.Reporting
             {
                 var gen = new Mock<IReportGenerator>();
                 gen.Setup(x => x.Generate(result)).ThrowsAsync(new Exception($"{i}"));
-                cfg.ReportConfiguration().Add(c => c.Use(gen.Object));
+                cfg.RegisterReportGenerators().Add(gen.Object);
             }
 
             await using var container = cfg.BuildContainer();

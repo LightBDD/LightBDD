@@ -6,7 +6,6 @@ namespace LightBDD.Core.Configuration
     /// <summary>
     /// LightBDD metadata configuration
     /// </summary>
-    [InjectableConfiguration]
     public class MetadataConfiguration : FeatureConfiguration
     {
         private readonly Stack<Assembly> _engineAssemblies = new(new[] { typeof(MetadataConfiguration).Assembly });

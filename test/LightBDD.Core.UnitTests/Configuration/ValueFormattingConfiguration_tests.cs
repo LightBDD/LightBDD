@@ -96,7 +96,7 @@ namespace LightBDD.Core.UnitTests.Configuration
         public void Configuration_should_be_sealable()
         {
             var lighbddConfig = new LightBddConfiguration();
-            var cfg = lighbddConfig.Get<ValueFormattingConfiguration>();
+            var cfg = lighbddConfig.ConfigureFeature<ValueFormattingConfiguration>();
 
             var generalFormatters = cfg.GeneralFormatters.ToArray();
             var strictFormatters = cfg.ExplicitFormatters.ToArray();

@@ -1,5 +1,6 @@
 ﻿using LightBDD.Core.Configuration;
 using LightBDD.Core.Formatting.ExceptionFormatting;
+using LightBDD.Core.Notification;
 using LightBDD.Runner.Implementation;
 
 namespace LightBDD.Runner.Configuration
@@ -23,10 +24,10 @@ namespace LightBDD.Runner.Configuration
         /// <summary>
         /// Appends LightBDD.XUnit2 default feature progress notifiers.
         /// </summary>
-        public static ProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this ProgressNotifierConfiguration configuration)
+        public static FeatureCollectionRegistrator<IProgressNotifier> AddFrameworkDefaultProgressNotifiers(this FeatureCollectionRegistrator<IProgressNotifier> configuration)
         {
             foreach (var notifier in XUnit2ProgressNotifier.CreateProgressNotifiers())
-                configuration.Register(c => c.Use(notifier));
+                configuration.Add(notifier);
             return configuration;
         }
     }

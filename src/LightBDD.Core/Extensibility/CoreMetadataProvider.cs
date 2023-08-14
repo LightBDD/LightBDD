@@ -25,9 +25,13 @@ namespace LightBDD.Core.Extensibility
         private readonly MetadataConfiguration _metadataConfiguration;
         private readonly ValueFormattingService _valueFormattingService;
         private readonly INameFormatter _nameFormatter;
+        private readonly IScenarioDecorator[] _scenarioDecorators;
+        private readonly IStepDecorator[] _stepDecorators;
 
-        public CoreMetadataProvider(ValueFormattingService valueFormattingService, INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration, MetadataConfiguration metadataMetadataConfiguration)
+        public CoreMetadataProvider(ValueFormattingService valueFormattingService, INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration, MetadataConfiguration metadataMetadataConfiguration, IEnumerable<IScenarioDecorator> scenarioDecorators, IEnumerable<IStepDecorator> stepDecorators)
         {
+            _scenarioDecorators = scenarioDecorators.ToArray();
+            _stepDecorators = stepDecorators.ToArray();
             _metadataConfiguration = metadataMetadataConfiguration;
             _valueFormattingService = valueFormattingService;
             _nameFormatter = nameFormatter;
@@ -130,11 +134,12 @@ namespace LightBDD.Core.Extensibility
         public IEnumerable<IStepDecorator> GetStepDecorators(StepDescriptor stepDescriptor)
         {
             if (stepDescriptor.MethodInfo == null)
-                return Enumerable.Empty<IStepDecorator>();
+                return _stepDecorators;
 
-            return ConcatAndOrderAttributes(
-                stepDescriptor.MethodInfo.DeclaringType.ExtractAttributes<IStepDecoratorAttribute>(),
-                stepDescriptor.MethodInfo.ExtractAttributes<IStepDecoratorAttribute>());
+            return _stepDecorators.Concat(
+                ConcatAndOrderAttributes(
+                    stepDescriptor.MethodInfo.DeclaringType.ExtractAttributes<IStepDecoratorAttribute>(),
+                    stepDescriptor.MethodInfo.ExtractAttributes<IStepDecoratorAttribute>()));
         }
 
         /// <summary>
@@ -146,9 +151,10 @@ namespace LightBDD.Core.Extensibility
         /// <returns>Collection of decorators or empty collection if none are present.</returns>
         public IEnumerable<IScenarioDecorator> GetScenarioDecorators(ScenarioDescriptor scenarioDescriptor)
         {
-            return ConcatAndOrderAttributes(
-                scenarioDescriptor.MethodInfo.DeclaringType.ExtractAttributes<IScenarioDecoratorAttribute>(),
-                scenarioDescriptor.MethodInfo.ExtractAttributes<IScenarioDecoratorAttribute>());
+            return _scenarioDecorators.Concat(
+                ConcatAndOrderAttributes(
+                    scenarioDescriptor.MethodInfo.DeclaringType.ExtractAttributes<IScenarioDecoratorAttribute>(),
+                    scenarioDescriptor.MethodInfo.ExtractAttributes<IScenarioDecoratorAttribute>()));
         }
 
         /// <summary>

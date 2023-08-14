@@ -262,7 +262,6 @@ namespace LightBDD.Core.Execution
         {
             var cfg = new LightBddConfiguration();
             _onConfigure?.Invoke(cfg);
-            cfg.Seal();
             return cfg;
         }
 

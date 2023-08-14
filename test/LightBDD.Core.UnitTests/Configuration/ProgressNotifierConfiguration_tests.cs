@@ -1,10 +1,13 @@
 #nullable enable
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Notification.Events;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using NUnit.Framework;
 
@@ -16,17 +19,20 @@ namespace LightBDD.Core.UnitTests.Configuration
         [Test]
         public void Should_initialize_object_with_default_values()
         {
-            var configuration = new ProgressNotifierConfiguration();
-            Assert.That(configuration.Notifiers, Is.Empty);
+            var configuration = new LightBddConfiguration();
+            Assert.That(GetDescriptors(configuration), Is.Empty);
         }
 
         [Test]
         public void Clear_should_reset_Notifiers()
         {
-            var configuration = new ProgressNotifierConfiguration()
-                .Register(c => c.Use(Mock.Of<IProgressNotifier>()))
+            var configuration = new LightBddConfiguration();
+
+            configuration.RegisterProgressNotifiers()
+                .Add(Mock.Of<IProgressNotifier>())
                 .Clear();
-            Assert.That(configuration.Notifiers, Is.Empty);
+
+            Assert.That(GetDescriptors(configuration), Is.Empty);
         }
 
         [Test]
@@ -38,11 +44,11 @@ namespace LightBDD.Core.UnitTests.Configuration
             var notifier4 = Mock.Of<IProgressNotifier>();
 
             var cfg = new LightBddConfiguration();
-            cfg.ProgressNotifierConfiguration()
-                .Register(c => c.Use(notifier1))
-                .Register(c => c.Use(notifier2))
-                .Register(c => c.Use(notifier3))
-                .Register(c => c.Use(notifier4));
+            cfg.RegisterProgressNotifiers()
+                .Add(notifier1)
+                .Add(notifier2)
+                .Add(notifier3)
+                .Add(notifier4);
 
             var progressEvent = new ProgressEvent(default);
             await using var container = cfg.BuildContainer();
@@ -58,11 +64,17 @@ namespace LightBDD.Core.UnitTests.Configuration
         public void Configuration_should_be_sealable()
         {
             var root = new LightBddConfiguration();
-            var cfg = root.Get<ProgressNotifierConfiguration>();
+            var cfg = root.RegisterProgressNotifiers()
+                .Add(Mock.Of<IProgressNotifier>());
             root.Seal();
 
-            Assert.Throws<InvalidOperationException>(() => cfg.Register(c=>c.Use<IProgressNotifier>()));
+            Assert.Throws<InvalidOperationException>(() => cfg.Add<IProgressNotifier>());
             Assert.Throws<InvalidOperationException>(() => cfg.Clear());
+        }
+
+        private static IEnumerable<ServiceDescriptor> GetDescriptors(LightBddConfiguration configuration)
+        {
+            return configuration.Services.Where(x => x.ServiceType == typeof(IProgressNotifier));
         }
     }
 }

@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Linq;
-using System.Reflection;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Dependencies.Implementation;
 using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Implementation;
-using LightBDD.Core.Formatting;
 using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Core.Formatting.Implementation;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Reporting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace LightBDD.Core.Configuration
 {
@@ -24,25 +20,39 @@ namespace LightBDD.Core.Configuration
     public class LightBddConfiguration
     {
         private readonly ConcurrentDictionary<Type, FeatureConfiguration> _configuration = new();
-        private readonly ConcurrentDictionary<Type, ServiceDescriptor> _features = new();
-        private readonly ServiceCollection _runtimeDependencies = new();
+        private readonly ServiceCollection _collection = new();
 
         public LightBddConfiguration()
         {
-            ConfigureFeature<ValueFormattingService>(x => x.Use<ValueFormattingService>());
-            ConfigureFeature<IValueFormattingService>(x => x.Use(p => p.GetRequiredService<ValueFormattingService>()));
-            ConfigureFeature<ICultureInfoProvider>(x => x.Use<DefaultCultureInfoProvider>());
-            ConfigureFeature<INameFormatter>(x => x.Use(NoNameFormatter.Instance));
-            ConfigureFeature<IExceptionFormatter>(x => x.Use<DefaultExceptionFormatter>());
-            ConfigureFeature<IFileAttachmentsManager>(x => x.Use(NoFileAttachmentsManager.Instance));
-            ConfigureFeature<IFixtureFactory>(x => x.Use(ActivatorFixtureFactory.Instance));
+            RegisterCoreDependencies();
+            RegisterCoreFeatures();
+            RegisterDefaultConfigurations();
+        }
 
-            Get<ExecutionExtensionsConfiguration>();
-            Get<MetadataConfiguration>();
-            Get<ProgressNotifierConfiguration>();
-            Get<ReportConfiguration>();
-            Get<StepTypeConfiguration>();
-            Get<ValueFormattingConfiguration>();
+        private void RegisterCoreDependencies()
+        {
+            _collection.AddTransient<TransientDisposable>();
+            _collection.AddSingleton<CoreMetadataProvider>();
+            _collection.AddSingleton<ExceptionProcessor>();
+            _collection.AddSingleton<ProgressNotificationDispatcher>();
+            _collection.AddSingleton<ValueFormattingService>();
+            _collection.AddSingleton<IValueFormattingService, ValueFormattingService>(p => p.GetRequiredService<ValueFormattingService>());
+        }
+
+        private void RegisterCoreFeatures()
+        {
+            this.RegisterCultureInfoProvider(c => c.Use<DefaultCultureInfoProvider>())
+                .RegisterNameFormatter(c => c.Use(NoNameFormatter.Instance))
+                .RegisterExceptionFormatter(c => c.Use<DefaultExceptionFormatter>())
+                .RegisterFileAttachmentsManager(c => c.Use(NoFileAttachmentsManager.Instance))
+                .RegisterFixtureFactory(c => c.Use(ActivatorFixtureFactory.Instance));
+        }
+
+        private void RegisterDefaultConfigurations()
+        {
+            this.ConfigureMetadata();
+            this.ConfigureStepTypes();
+            this.ConfigureValueFormatting();
         }
 
         /// <summary>
@@ -51,17 +61,15 @@ namespace LightBDD.Core.Configuration
         /// </summary>
         /// <typeparam name="TConfiguration">Feature configuration type.</typeparam>
         /// <returns>Feature configuration instance.</returns>
-        public TConfiguration Get<TConfiguration>() where TConfiguration : FeatureConfiguration, new()
+        public TConfiguration ConfigureFeature<TConfiguration>() where TConfiguration : FeatureConfiguration, new()
         {
-            return (TConfiguration)_configuration.GetOrAdd(typeof(TConfiguration), _ => SealIfNeeded(new TConfiguration()));
-        }
-
-        public LightBddConfiguration ConfigureFeature<TFeature>(Action<FeatureConfigurer<TFeature>> onConfigure) where TFeature : class
-        {
-            var cfg = new FeatureConfigurer<TFeature>();
-            onConfigure?.Invoke(cfg);
-            _features[typeof(TFeature)] = cfg.GetDescriptor();
-            return this;
+            return (TConfiguration)_configuration.GetOrAdd(typeof(TConfiguration), _ =>
+            {
+                ThrowIfSealed();
+                var cfg = new TConfiguration();
+                _collection.AddSingleton(cfg);
+                return cfg;
+            });
         }
 
         /// <summary>
@@ -73,27 +81,23 @@ namespace LightBDD.Core.Configuration
         public LightBddConfiguration ConfigureDependencies(Action<IServiceCollection> onConfigure)
         {
             ThrowIfSealed();
-            onConfigure?.Invoke(_runtimeDependencies);
+            onConfigure?.Invoke(_collection);
             return this;
         }
 
-        private TConfiguration SealIfNeeded<TConfiguration>(TConfiguration config) where TConfiguration : FeatureConfiguration
-        {
-            if (IsSealed)
-                config.Seal();
-            return config;
-        }
+        public IServiceCollection Services => _collection;
 
         /// <summary>
         /// Seals configuration making it immutable.
         /// It calls <see cref="FeatureConfiguration.Seal"/>() method on all configuration items that implements the <see cref="FeatureConfiguration"/> interface.
-        /// Since this call, the <see cref="Get{TConfiguration}"/>() method will return only sealed configuration (current, and future default one).
+        /// Since this call, the <see cref="ConfigureFeature{TConfiguration}"/>() method will return only sealed configuration (current, and future default one).
         /// </summary>
         /// <returns>Self.</returns>
         public LightBddConfiguration Seal()
         {
             if (IsSealed)
                 return this;
+            _collection.MakeReadOnly();
             IsSealed = true;
             foreach (var value in _configuration.Values)
                 value.Seal();
@@ -105,26 +109,16 @@ namespace LightBDD.Core.Configuration
         /// </summary>
         public bool IsSealed { get; private set; }
 
+        /// <summary>
+        /// Seals the configuration and builds <see cref="IDependencyContainer"/> based on this configuration.<br/>
+        /// Sealed configuration disables ability to register new dependencies via <see cref="ConfigureDependencies"/> and configuring new features via <see cref="ConfigureFeature{TConfiguration}"/>.<br/>
+        /// Every call to this method creates new instance of <see cref="IDependencyContainer"/>, which needs to be independently discarded
+        /// </summary>
+        /// <returns></returns>
         public IDependencyContainer BuildContainer()
         {
             Seal();
-
-            var collection = new ServiceCollection();
-
-            collection.AddTransient<TransientDisposable>();
-            collection.AddSingleton<CoreMetadataProvider>();
-            collection.AddSingleton<ExceptionProcessor>();
-            collection.AddSingleton<ProgressNotificationDispatcher>();
-
-            collection.Add(_features.Values);
-            collection.Add(Get<ProgressNotifierConfiguration>().Notifiers);
-            collection.Add(Get<ReportConfiguration>().Generators);
-            foreach (var cfg in _configuration.Values.Where(v => v.GetType().GetCustomAttributes<InjectableConfigurationAttribute>().Any()))
-                collection.AddSingleton(cfg.GetType(), cfg);
-
-            collection.Add(_runtimeDependencies);
-
-            return new DependencyContainer(collection.BuildServiceProvider(true));
+            return new DependencyContainer(_collection.BuildServiceProvider(true));
         }
 
         private void ThrowIfSealed()

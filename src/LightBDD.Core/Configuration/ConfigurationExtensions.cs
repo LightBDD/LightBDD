@@ -1,8 +1,11 @@
 ﻿using System;
 using LightBDD.Core.Extensibility;
+using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Formatting;
 using LightBDD.Core.Formatting.ExceptionFormatting;
+using LightBDD.Core.Notification;
 using LightBDD.Core.Reporting;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace LightBDD.Core.Configuration
 {
@@ -11,69 +14,48 @@ namespace LightBDD.Core.Configuration
     /// </summary>
     public static class ConfigurationExtensions
     {
+        public static LightBddConfiguration RegisterCultureInfoProvider(this LightBddConfiguration cfg, Action<FeatureRegistrator<ICultureInfoProvider>> onRegister) => cfg.RegisterFeature(onRegister);
+        public static LightBddConfiguration RegisterNameFormatter(this LightBddConfiguration cfg, Action<FeatureRegistrator<INameFormatter>> onRegister) => cfg.RegisterFeature(onRegister);
+        public static LightBddConfiguration RegisterExceptionFormatter(this LightBddConfiguration cfg, Action<FeatureRegistrator<IExceptionFormatter>> onRegister) => cfg.RegisterFeature(onRegister);
+        public static LightBddConfiguration RegisterFixtureFactory(this LightBddConfiguration cfg, Action<FeatureRegistrator<IFixtureFactory>> onRegister) => cfg.RegisterFeature(onRegister);
+        public static LightBddConfiguration RegisterFileAttachmentsManager(this LightBddConfiguration cfg, Action<FeatureRegistrator<IFileAttachmentsManager>> onRegister) => cfg.RegisterFeature(onRegister);
+        public static FeatureCollectionRegistrator<IScenarioDecorator> RegisterScenarioDecorators(this LightBddConfiguration cfg) => new(cfg);
+        public static FeatureCollectionRegistrator<IStepDecorator> RegisterStepDecorators(this LightBddConfiguration cfg) => new(cfg);
+        public static FeatureCollectionRegistrator<IReportGenerator> RegisterReportGenerators(this LightBddConfiguration cfg) => new(cfg);
+        public static FeatureCollectionRegistrator<IProgressNotifier> RegisterProgressNotifiers(this LightBddConfiguration cfg) => new(cfg);
+        public static GlobalSetupRegistrator RegisterGlobalSetUp(this LightBddConfiguration cfg) => new(cfg);
+
+        public static LightBddConfiguration RegisterFeature<T>(this LightBddConfiguration cfg, Action<FeatureRegistrator<T>> onRegister) where T : class
+        {
+            var reg = new FeatureRegistrator<T>();
+            onRegister.Invoke(reg);
+
+            cfg.Services.Replace(reg.GetDescriptor());
+            return cfg;
+        }
+
         /// <summary>
         /// Returns step type configuration.
         /// </summary>
         /// <param name="cfg">Configuration object.</param>
         /// <returns>Step type configuration.</returns>
-        public static StepTypeConfiguration StepTypeConfiguration(this LightBddConfiguration cfg)
-        {
-            return cfg.Get<StepTypeConfiguration>();
-        }
-
-        public static LightBddConfiguration ConfigureCultureInfoProvider(this LightBddConfiguration cfg, Action<FeatureConfigurer<ICultureInfoProvider>> onConfigure) => cfg.ConfigureFeature(onConfigure);
-        public static LightBddConfiguration ConfigureNameFormatter(this LightBddConfiguration cfg, Action<FeatureConfigurer<INameFormatter>> onConfigure) => cfg.ConfigureFeature(onConfigure);
-        public static LightBddConfiguration ConfigureExceptionFormatter(this LightBddConfiguration cfg, Action<FeatureConfigurer<IExceptionFormatter>> onConfigure) => cfg.ConfigureFeature(onConfigure);
-        public static LightBddConfiguration ConfigureFixtureFactory(this LightBddConfiguration cfg, Action<FeatureConfigurer<IFixtureFactory>> onConfigure) => cfg.ConfigureFeature(onConfigure);
-        public static LightBddConfiguration ConfigureFileAttachmentsManager(this LightBddConfiguration cfg, Action<FeatureConfigurer<IFileAttachmentsManager>> onConfigure) => cfg.ConfigureFeature(onConfigure);
-        /// <summary>
-        /// Return execution extensions configuration.
-        /// </summary>
-        /// <param name="cfg">Configuration object.</param>
-        /// <returns>Execution extensions configuration.</returns>
-        public static ExecutionExtensionsConfiguration ExecutionExtensionsConfiguration(this LightBddConfiguration cfg)
-        {
-            return cfg.Get<ExecutionExtensionsConfiguration>();
-        }
+        public static StepTypeConfiguration ConfigureStepTypes(this LightBddConfiguration cfg) 
+            => cfg.ConfigureFeature<StepTypeConfiguration>();
 
         /// <summary>
-        /// Retrieves <see cref="ReportConfiguration"/> from <paramref name="configuration"/> for further customizations.
+        /// Retrieves <see cref="ConfigureValueFormatting"/> from <paramref name="configuration"/> for further customizations.
         /// </summary>
         /// <param name="configuration">Configuration object.</param>
         /// <returns>Configuration object.</returns>
-        public static ReportConfiguration ReportConfiguration(this LightBddConfiguration configuration)
-        {
-            return configuration.Get<ReportConfiguration>();
-        }
+        public static ValueFormattingConfiguration ConfigureValueFormatting(this LightBddConfiguration configuration) 
+            => configuration.ConfigureFeature<ValueFormattingConfiguration>();
 
         /// <summary>
-        /// Retrieves <see cref="ValueFormattingConfiguration"/> from <paramref name="configuration"/> for further customizations.
+        /// Retrieves <see cref="ConfigureMetadata"/> from <paramref name="configuration"/> for further customizations.
         /// </summary>
         /// <param name="configuration">Configuration object.</param>
         /// <returns>Configuration object.</returns>
-        public static ValueFormattingConfiguration ValueFormattingConfiguration(this LightBddConfiguration configuration)
-        {
-            return configuration.Get<ValueFormattingConfiguration>();
-        }
-
-        /// <summary>
-        /// Retrieves <see cref="ProgressNotifierConfiguration"/> from <paramref name="configuration"/> for further customizations.
-        /// </summary>
-        /// <param name="configuration">Configuration object.</param>
-        /// <returns>Configuration object.</returns>
-        public static ProgressNotifierConfiguration ProgressNotifierConfiguration(this LightBddConfiguration configuration)
-        {
-            return configuration.Get<ProgressNotifierConfiguration>();
-        }
-
-        /// <summary>
-        /// Retrieves <see cref="MetadataConfiguration"/> from <paramref name="configuration"/> for further customizations.
-        /// </summary>
-        /// <param name="configuration">Configuration object.</param>
-        /// <returns>Configuration object.</returns>
-        public static MetadataConfiguration MetadataConfiguration(this LightBddConfiguration configuration)
-        {
-            return configuration.Get<MetadataConfiguration>();
-        }
+        public static MetadataConfiguration ConfigureMetadata(this LightBddConfiguration configuration) 
+            => configuration.ConfigureFeature<MetadataConfiguration>();
     }
 }

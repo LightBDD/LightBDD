@@ -105,8 +105,8 @@ namespace LightBDD.Core.UnitTests.Execution
         {
             void OnConfigure(LightBddConfiguration cfg)
             {
-                cfg.ExecutionExtensionsConfiguration().EnableScenarioDecorator(() => new MyCapturingDecorator("scenario-global"));
-                cfg.ExecutionExtensionsConfiguration().EnableStepDecorator(() => new MyCapturingDecorator("step-global"));
+                cfg.RegisterScenarioDecorators().Add(_ => new MyCapturingDecorator("scenario-global"));
+                cfg.RegisterStepDecorators().Add(_ => new MyCapturingDecorator("step-global"));
             }
 
             await TestableCoreExecutionPipeline.Create(OnConfigure)
@@ -228,8 +228,8 @@ namespace LightBDD.Core.UnitTests.Execution
 
             void OnConfigure(LightBddConfiguration cfg)
             {
-                cfg.ConfigureFixtureFactory(x => x.Use(new FakeFixtureFactory(fixture)));
-                cfg.ExecutionExtensionsConfiguration().EnableScenarioDecorator(() => new DelegatingDecorator(scenario => capturedFixture = scenario.Fixture));
+                cfg.RegisterFixtureFactory(x => x.Use(new FakeFixtureFactory(fixture)));
+                cfg.RegisterScenarioDecorators().Add(_ => new DelegatingDecorator(scenario => capturedFixture = scenario.Fixture));
             }
 
             await TestableCoreExecutionPipeline.Create(OnConfigure)

@@ -20,11 +20,11 @@ namespace LightBDD.AcceptanceTests
     {
         protected override void OnConfigure(LightBddConfiguration configuration)
         {
-            configuration.ReportConfiguration()
+            configuration.RegisterReportGenerators()
                 .AddFileReport<PlainTextReportFormatter>("~" + Path.DirectorySeparatorChar + "Reports" + Path.DirectorySeparatorChar + "FeaturesReport.txt");
 
             configuration.ConfigureDependencies(ConfigureServices);
-            configuration.ExecutionExtensionsConfiguration().EnableStepDecorator<ScreenshotCaptureOnFailure>();
+            configuration.RegisterStepDecorators().Add<ScreenshotCaptureOnFailure>();
         }
 
         private void ConfigureServices(IServiceCollection services)

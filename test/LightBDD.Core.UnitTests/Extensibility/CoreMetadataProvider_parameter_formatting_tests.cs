@@ -35,7 +35,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
 
         private static CoreMetadataProvider GetMetadataProvider()
         {
-            return TestMetadataProvider.Create(cfg => cfg.ValueFormattingConfiguration().RegisterFrameworkDefaultGeneralFormatters());
+            return TestMetadataProvider.Create(cfg => cfg.ConfigureValueFormatting().RegisterFrameworkDefaultGeneralFormatters());
         }
 
         [Test]
@@ -118,7 +118,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [Test]
         public void GetValueFormattingServiceFor_should_honor_custom_formatters_then_explicit_then_formattable_then_general_then_ToString()
         {
-            var testMetadataProvider = TestMetadataProvider.Create(cfg => cfg.ValueFormattingConfiguration()
+            var testMetadataProvider = TestMetadataProvider.Create(cfg => cfg.ConfigureValueFormatting()
                 .RegisterFrameworkDefaultGeneralFormatters()
                 .RegisterExplicit(typeof(bool), new FormatAttribute(">{0}<"))
                 .RegisterExplicit(typeof(int), new FormatAttribute("i{0}"))

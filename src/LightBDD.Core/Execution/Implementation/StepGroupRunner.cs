@@ -89,7 +89,6 @@ internal class StepGroupRunner : ICoreScenarioStepsRunner, IRunStageContext
         var steps = new RunnableStepV2[totalSteps];
         string? previousStepTypeName = null;
 
-        var extensions = _parent.Engine.ExecutionExtensions;
         var stepContext = new RunnableStepContextV2(this, _executionContext);
         for (var stepIndex = 0; stepIndex < totalSteps; ++stepIndex)
         {
@@ -97,7 +96,7 @@ internal class StepGroupRunner : ICoreScenarioStepsRunner, IRunStageContext
             var stepInfo = new StepInfo(_parent.Info, metadataProvider.GetStepName(descriptor, previousStepTypeName), stepIndex + 1, totalSteps, _groupPrefix);
             var arguments = descriptor.Parameters.Select(p => new MethodArgument(p, metadataProvider.GetValueFormattingServiceFor(p.ParameterInfo))).ToArray();
 
-            steps[stepIndex] = new RunnableStepV2(stepContext, stepInfo, descriptor, arguments, extensions.StepDecorators.Concat(metadataProvider.GetStepDecorators(descriptor)));
+            steps[stepIndex] = new RunnableStepV2(stepContext, stepInfo, descriptor, arguments, metadataProvider.GetStepDecorators(descriptor));
             previousStepTypeName = stepInfo.Name.StepTypeName?.OriginalName;
         }
 

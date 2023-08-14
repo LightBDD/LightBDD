@@ -113,7 +113,7 @@ public class ExecutionPipeline_global_setup_and_teardown_tests
                     c.AddSingleton(dep2);
                 });
 
-            cfg.ExecutionExtensionsConfiguration()
+            cfg.RegisterGlobalSetUp()
                 .RegisterGlobalSetUp<InitializableDependency>()
                 .RegisterGlobalSetUp<InitializableDependency2>()
                 .RegisterGlobalSetUp("global1", GlobalSetUp, GlobalCleanUp)
@@ -169,7 +169,7 @@ public class ExecutionPipeline_global_setup_and_teardown_tests
                     c.AddSingleton(dep2);
                 });
 
-            cfg.ExecutionExtensionsConfiguration()
+            cfg.RegisterGlobalSetUp()
                 .RegisterGlobalSetUp<InitializableDependency>()
                 .RegisterGlobalSetUp("global1", GlobalSetUp, GlobalCleanUp)
                 .RegisterGlobalSetUp("failing", () => throw new IOException("BOOM"))
@@ -202,7 +202,7 @@ public class ExecutionPipeline_global_setup_and_teardown_tests
         {
             cfg.ConfigureDependencies(c => c.AddSingleton(counter));
 
-            cfg.ExecutionExtensionsConfiguration()
+            cfg.RegisterGlobalSetUp()
                 .RegisterGlobalSetUp("failing", () => throw new IOException("BOOM"));
         }
 

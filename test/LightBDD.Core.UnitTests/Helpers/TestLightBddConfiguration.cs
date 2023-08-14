@@ -9,7 +9,7 @@ internal class TestLightBddConfiguration
     public static void SetTestDefaults(LightBddConfiguration cfg)
     {
         //TODO: review to avoid any overrides
-        cfg.ConfigureExceptionFormatter(x => x.Use(new TestExceptionFormatter()));
+        cfg.RegisterExceptionFormatter(x => x.Use(new TestExceptionFormatter()));
     }
     class TestExceptionFormatter : IExceptionFormatter
     {

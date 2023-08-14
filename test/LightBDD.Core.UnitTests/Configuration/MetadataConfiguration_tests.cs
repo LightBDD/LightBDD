@@ -36,7 +36,7 @@ public class MetadataConfiguration_tests
     public void Configuration_should_be_sealable()
     {
         var lightBddConfig = new LightBddConfiguration();
-        var cfg = lightBddConfig.Get<MetadataConfiguration>();
+        var cfg = lightBddConfig.ConfigureFeature<MetadataConfiguration>();
 
         var engineAssemblies = cfg.EngineAssemblies;
 

@@ -23,7 +23,7 @@ public class ExecutionPipeline_progress_notification_tests : Steps
 
     public ExecutionPipeline_progress_notification_tests()
     {
-        _pipeline = TestableCoreExecutionPipeline.Create(cfg => cfg.ProgressNotifierConfiguration().Clear().Register(c => c.Use(_progressNotifier)));
+        _pipeline = TestableCoreExecutionPipeline.Create(cfg => cfg.RegisterProgressNotifiers().Clear().Add(_progressNotifier));
     }
 
     class MyFeature : Steps

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
+using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Formatting.Values;
 using NUnit.Framework;
@@ -14,10 +15,10 @@ namespace LightBDD.Framework.UnitTests.Configuration
         [Test]
         public void WithFrameworkDefaults_should_enable_default_step_decorators()
         {
-            var configuration = new LightBddConfiguration().WithFrameworkDefaults().ExecutionExtensionsConfiguration();
+            var configuration = new LightBddConfiguration().WithFrameworkDefaults();
 
             Assert.That(configuration
-                    .StepDecorators
+                    .Services.Where(x => x.ServiceType == typeof(IStepDecorator))
                     .Select(x => x.GetType())
                     .ToArray(),
                 Is.Empty);
@@ -26,10 +27,10 @@ namespace LightBDD.Framework.UnitTests.Configuration
         [Test]
         public void WithFrameworkDefaults_should_enable_default_scenario_decorators()
         {
-            var configuration = new LightBddConfiguration().WithFrameworkDefaults().ExecutionExtensionsConfiguration();
+            var configuration = new LightBddConfiguration().WithFrameworkDefaults();
 
             Assert.That(configuration
-                    .ScenarioDecorators
+                    .Services.Where(x => x.ServiceType == typeof(IScenarioDecorator))
                     .Select(x => x.GetType())
                     .ToArray(),
                 Is.Empty);
@@ -38,9 +39,9 @@ namespace LightBDD.Framework.UnitTests.Configuration
         [Test]
         public void WithFrameworkDefaults_should_register_default_general_value_formatters()
         {
-            var configuration = new LightBddConfiguration().WithFrameworkDefaults().ValueFormattingConfiguration();
+            var configuration = new LightBddConfiguration().WithFrameworkDefaults().ConfigureValueFormatting();
 
-            var expected = new LightBddConfiguration().ValueFormattingConfiguration()
+            var expected = new LightBddConfiguration().ConfigureValueFormatting()
                 .RegisterGeneral(new DictionaryFormatter())
                 .RegisterGeneral(new CollectionFormatter());
 
@@ -57,10 +58,10 @@ namespace LightBDD.Framework.UnitTests.Configuration
         [Test]
         public void RegisterFrameworkDefaultGeneralFormatters_should_register_default_general_value_formatters()
         {
-            var configuration = new LightBddConfiguration().ValueFormattingConfiguration()
+            var configuration = new LightBddConfiguration().ConfigureValueFormatting()
                 .RegisterFrameworkDefaultGeneralFormatters();
 
-            var expected = new LightBddConfiguration().ValueFormattingConfiguration()
+            var expected = new LightBddConfiguration().ConfigureValueFormatting()
                 .RegisterGeneral(new DictionaryFormatter())
                 .RegisterGeneral(new CollectionFormatter());
 
@@ -78,7 +79,7 @@ namespace LightBDD.Framework.UnitTests.Configuration
         public void WithFrameworkDefaults_should_register_Framework_assembly_on_MetadataConfiguration()
         {
             new LightBddConfiguration().WithFrameworkDefaults()
-                .MetadataConfiguration().EngineAssemblies.ShouldBe(new[]
+                .ConfigureMetadata().EngineAssemblies.ShouldBe(new[]
                 {
                     typeof(IBddRunner).Assembly,
                     typeof(CoreMetadataProvider).Assembly
