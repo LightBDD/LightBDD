@@ -46,12 +46,12 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
             return capture;
         }
 
-        public static Capture<Resolvable<object>> ExpectContext(this Mock<ICoreScenarioStepsRunner> builder)
+        public static Capture<ExecutionContextDescriptor> ExpectContext(this Mock<ICoreScenarioStepsRunner> builder)
         {
-            var capture = new Capture<Resolvable<object>>();
+            var capture = new Capture<ExecutionContextDescriptor>();
             builder
-                .Setup(s => s.WithContext(It.IsAny<Resolvable<object>>()))
-                .Returns((Resolvable<object> d) =>
+                .Setup(s => s.WithContext(It.IsAny<ExecutionContextDescriptor>()))
+                .Returns((ExecutionContextDescriptor d) =>
                 {
                     capture.Value = d;
                     return builder.Object;
@@ -85,10 +85,10 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Helpers
         {
             var capture = new Capture<Func<IDependencyResolver, object>>();
             builder
-                .Setup(s => s.WithContext(It.IsAny<Resolvable<object>>()))
-                .Returns((Resolvable<object> d) =>
+                .Setup(s => s.WithContext(It.IsAny<ExecutionContextDescriptor>()))
+                .Returns((ExecutionContextDescriptor d) =>
                 {
-                    capture.Value = d.Resolve;
+                    capture.Value = d.ContextResolver;
                     return builder.Object;
                 })
                 .Verifiable();

@@ -68,7 +68,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
             Testable actual;
             await using (var scope = container.BeginScope())
             {
-                actual = (Testable)step.SubStepsContext.Resolve(scope);
+                actual = (Testable)step.SubStepsContext.ContextResolver(scope);
                 if (instance != null)
                     Assert.That(actual, Is.SameAs(instance));
             }

@@ -91,7 +91,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
         {
             //TODO: rework
             var container = new LightBddConfiguration().BuildContainer().BeginScope();
-            return stepGroup.SubStepsContext.Resolve(container);
+            return stepGroup.SubStepsContext.ContextResolver(container);
         }
     }
 }

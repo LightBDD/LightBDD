@@ -10,12 +10,12 @@ namespace LightBDD.Framework.Scenarios.Implementation
     {
         public ContextualBddRunner(IBddRunner coreRunner, Func<object> contextProvider, bool takeOwnership)
         {
-            Core = coreRunner.Integrate().Core.WithContext(Resolvable.Use(contextProvider, takeOwnership));
+            Core = coreRunner.Integrate().Core.WithContext(new ExecutionContextDescriptor(contextProvider, takeOwnership));
         }
 
         public ContextualBddRunner(IBddRunner coreRunner, Func<IDependencyResolver, object> contextResolver)
         {
-            Core = coreRunner.Integrate().Core.WithContext(Resolvable.Use(contextResolver));
+            Core = coreRunner.Integrate().Core.WithContext(new ExecutionContextDescriptor(contextResolver));
         }
 
         public IIntegratedScenarioBuilder<TContext> Integrate()

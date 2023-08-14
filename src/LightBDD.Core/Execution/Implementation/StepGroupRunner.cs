@@ -17,7 +17,7 @@ internal class StepGroupRunner : ICoreScenarioStepsRunner, IRunStageContext
     private readonly IRunStageContext _parent;
     private readonly string _groupPrefix;
     private IEnumerable<StepDescriptor> _stepDescriptors = Enumerable.Empty<StepDescriptor>();
-    private Resolvable<object?> _contextProvider = Resolvable<object?>.Null;
+    private ExecutionContextDescriptor _contextDescriptor = ExecutionContextDescriptor.NoContext;
     private RunnableStepV2[] _steps = Array.Empty<RunnableStepV2>();
     private object? _executionContext;
 
@@ -35,9 +35,9 @@ internal class StepGroupRunner : ICoreScenarioStepsRunner, IRunStageContext
         return this;
     }
 
-    public ICoreScenarioStepsRunner WithContext(Resolvable<object?> contextProvider)
+    public ICoreScenarioStepsRunner WithContext(ExecutionContextDescriptor contextDescriptor)
     {
-        _contextProvider = contextProvider;
+        _contextDescriptor = contextDescriptor;
         return this;
     }
 
@@ -69,7 +69,7 @@ internal class StepGroupRunner : ICoreScenarioStepsRunner, IRunStageContext
     {
         try
         {
-            return _contextProvider.Resolve(DependencyResolver);
+            return _contextDescriptor.ContextResolver(DependencyResolver);
         }
         catch (Exception e)
         {

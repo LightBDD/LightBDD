@@ -12,7 +12,7 @@ namespace LightBDD.ScenarioHelpers;
 public class TestScenarioBuilder
 {
     private readonly ICoreScenarioStepsRunner _coreBuilder;
-    private Resolvable<object?>? _contextDescriptor;
+    private ExecutionContextDescriptor? _contextDescriptor;
 
     public TestScenarioBuilder(ICoreScenarioStepsRunner coreBuilder)
     {
@@ -40,7 +40,7 @@ public class TestScenarioBuilder
     private ICoreScenarioStepsRunner WithContextIfSet()
     {
         if (_contextDescriptor != null)
-            return _coreBuilder.WithContext(_contextDescriptor.Value);
+            return _coreBuilder.WithContext(_contextDescriptor);
         return _coreBuilder;
     }
     public Task TestScenario(params Action[] steps)
@@ -52,15 +52,15 @@ public class TestScenarioBuilder
     public Task TestGroupScenario(params Func<TestCompositeStep>[] steps)
         => TestScenario(steps.Select(TestStep.CreateComposite).ToArray());
 
-    public TestScenarioBuilder WithContext(Func<object?> contextProvider, bool takeOwnership)
+    public TestScenarioBuilder WithContext(Func<object> contextProvider, bool takeOwnership)
     {
-        _contextDescriptor = Resolvable.Use(contextProvider, takeOwnership);
+        _contextDescriptor = new ExecutionContextDescriptor(contextProvider, takeOwnership);
         return this;
     }
 
-    public TestScenarioBuilder WithContext(Func<IDependencyResolver, object?> contextResolver)
+    public TestScenarioBuilder WithContext(Func<IDependencyResolver, object> contextResolver)
     {
-        _contextDescriptor = Resolvable.Use(contextResolver);
+        _contextDescriptor = new ExecutionContextDescriptor(contextResolver);
         return this;
     }
 }

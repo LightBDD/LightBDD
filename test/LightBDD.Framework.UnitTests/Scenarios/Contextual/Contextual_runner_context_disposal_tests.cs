@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
-using LightBDD.Core.Dependencies;
 using LightBDD.Framework.Scenarios;
 
 namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
@@ -70,7 +69,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
             Testable actual;
             await using (var scope = container.BeginScope())
             {
-                actual = (Testable)_builder.Provider.Resolve(scope);
+                actual = (Testable)_builder.Descriptor.ContextResolver(scope);
                 if (instance != null)
                     Assert.That(actual, Is.SameAs(instance));
             }
@@ -89,13 +88,13 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
 
         class CapturingContextBuilder : ICoreScenarioStepsRunner
         {
-            public Resolvable<object> Provider { get; private set; }
+            public ExecutionContextDescriptor Descriptor { get; private set; }
 
             public ICoreScenarioStepsRunner AddSteps(IEnumerable<StepDescriptor> steps) => throw new NotImplementedException();
 
-            public ICoreScenarioStepsRunner WithContext(Resolvable<object> contextProvider)
+            public ICoreScenarioStepsRunner WithContext(ExecutionContextDescriptor contextDescriptor)
             {
-                Provider = contextProvider;
+                Descriptor = contextDescriptor;
                 return this;
             }
 

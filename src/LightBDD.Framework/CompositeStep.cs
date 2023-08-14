@@ -1,6 +1,4 @@
-﻿#nullable enable
-using System.Collections.Generic;
-using LightBDD.Core.Dependencies;
+﻿using System.Collections.Generic;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Results;
 using LightBDD.Framework.Implementation;
@@ -26,7 +24,7 @@ namespace LightBDD.Framework
     /// </summary>
     public class CompositeStep : CompositeStepResultDescriptor
     {
-        internal CompositeStep(Resolvable<object?> contextDescriptor, IEnumerable<StepDescriptor> steps)
+        internal CompositeStep(ExecutionContextDescriptor contextDescriptor, IEnumerable<StepDescriptor> steps)
         : base(contextDescriptor, steps) { }
 
         /// <summary>

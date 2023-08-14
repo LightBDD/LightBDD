@@ -9,11 +9,7 @@ internal class TransientDisposable : IAsyncDisposable
 {
     private object? _disposable;
 
-    public T WithInstance<T>(T disposable)
-    {
-        _disposable = disposable;
-        return disposable;
-    }
+    public object? WithInstance(object? disposable) => _disposable = disposable;
 
     public async ValueTask DisposeAsync()
     {

@@ -1,5 +1,4 @@
-﻿#nullable enable
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Configuration;
@@ -15,11 +14,11 @@ namespace LightBDD.Framework.Implementation
         private static readonly IEnumerable<StepDescriptor> EmptySteps = Enumerable.Empty<StepDescriptor>();
 
         private IEnumerable<StepDescriptor> _steps = EmptySteps;
-        private Resolvable<object?>? _contextDescriptor;
+        private ExecutionContextDescriptor _contextDescriptor;
 
         public CompositeStep Build()
         {
-            return new CompositeStep(_contextDescriptor??Resolvable<object?>.Null, _steps);
+            return new CompositeStep(_contextDescriptor ?? ExecutionContextDescriptor.NoContext, _steps);
         }
 
         public IIntegrableCompositeStepBuilder Integrate()
@@ -37,22 +36,22 @@ namespace LightBDD.Framework.Implementation
 
         LightBddConfiguration IIntegrableStepGroupBuilder.Configuration => Configuration;
 
-        public IIntegrableCompositeStepBuilder WithStepContext(Func<IDependencyResolver, object?> contextProvider)
+        public IIntegrableCompositeStepBuilder WithStepContext(Func<IDependencyResolver, object> contextProvider)
         {
-            return WithStepContext(Resolvable.Use(contextProvider));
+            return WithStepContext(new ExecutionContextDescriptor(contextProvider));
         }
 
-        public IIntegrableCompositeStepBuilder WithStepContext(Func<object?> contextProvider, bool takeOwnership)
+        public IIntegrableCompositeStepBuilder WithStepContext(Func<object> contextProvider, bool takeOwnership)
         {
-            return WithStepContext(Resolvable.Use(contextProvider, takeOwnership));
+            return WithStepContext(new ExecutionContextDescriptor(contextProvider, takeOwnership));
         }
 
-        private IIntegrableCompositeStepBuilder WithStepContext(Resolvable<object?> contextProvider)
+        private IIntegrableCompositeStepBuilder WithStepContext(ExecutionContextDescriptor contextDescriptor)
         {
             if (_contextDescriptor != null || !ReferenceEquals(_steps, EmptySteps))
                 throw new InvalidOperationException("Step context can be specified only once, when no steps are specified yet.");
 
-            _contextDescriptor = contextProvider;
+            _contextDescriptor = contextDescriptor;
             return this;
         }
     }
