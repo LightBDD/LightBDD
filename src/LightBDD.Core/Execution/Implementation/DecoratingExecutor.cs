@@ -10,12 +10,12 @@ namespace LightBDD.Core.Execution.Implementation
     {
         private static IEnumerable<Func<IStep, Func<Task>, Task>> ToInvocations(IEnumerable<IStepDecorator> extensions)
         {
-            return extensions.Select(e => (Func<IStep, Func<Task>, Task>)e.ExecuteAsync).ToArray();
+            return extensions.Select(e => (Func<IStep, Func<Task>, Task>)e.ExecuteAsync);
         }
 
         private static IEnumerable<Func<IScenario, Func<Task>, Task>> ToInvocations(IEnumerable<IScenarioDecorator> extensions)
         {
-            return extensions.Select(e => (Func<IScenario, Func<Task>, Task>)e.ExecuteAsync).ToArray();
+            return extensions.Select(e => (Func<IScenario, Func<Task>, Task>)e.ExecuteAsync);
         }
 
         public static Func<Task> DecorateScenario(IScenario scenario, Func<Task> scenarioInvocation, IEnumerable<IScenarioDecorator> scenarioDecorators)

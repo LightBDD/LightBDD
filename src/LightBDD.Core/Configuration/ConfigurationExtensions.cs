@@ -57,5 +57,8 @@ namespace LightBDD.Core.Configuration
         /// <returns>Configuration object.</returns>
         public static MetadataConfiguration ConfigureMetadata(this LightBddConfiguration configuration) 
             => configuration.ConfigureFeature<MetadataConfiguration>();
+
+        public static ExecutionPipelineConfiguration ConfigureExecutionPipeline(this LightBddConfiguration configuration)
+            => configuration.ConfigureFeature<ExecutionPipelineConfiguration>();
     }
 }

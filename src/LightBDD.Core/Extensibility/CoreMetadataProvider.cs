@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using LightBDD.Core.Extensibility.Execution.Implementation;
 
 namespace LightBDD.Core.Extensibility
 {
@@ -23,16 +24,14 @@ namespace LightBDD.Core.Extensibility
         private readonly NameParser _nameParser;
         private readonly StepTypeProcessor _stepTypeProcessor;
         private readonly MetadataConfiguration _metadataConfiguration;
+        private readonly GlobalDecoratorsProvider _decoratorsProvider;
         private readonly ValueFormattingService _valueFormattingService;
         private readonly INameFormatter _nameFormatter;
-        private readonly IScenarioDecorator[] _scenarioDecorators;
-        private readonly IStepDecorator[] _stepDecorators;
 
-        public CoreMetadataProvider(ValueFormattingService valueFormattingService, INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration, MetadataConfiguration metadataMetadataConfiguration, IEnumerable<IScenarioDecorator> scenarioDecorators, IEnumerable<IStepDecorator> stepDecorators)
+        public CoreMetadataProvider(ValueFormattingService valueFormattingService, INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration, MetadataConfiguration metadataMetadataConfiguration, GlobalDecoratorsProvider decoratorsProvider)
         {
-            _scenarioDecorators = scenarioDecorators.ToArray();
-            _stepDecorators = stepDecorators.ToArray();
             _metadataConfiguration = metadataMetadataConfiguration;
+            _decoratorsProvider = decoratorsProvider;
             _valueFormattingService = valueFormattingService;
             _nameFormatter = nameFormatter;
             _nameParser = new NameParser(_nameFormatter);
@@ -133,10 +132,11 @@ namespace LightBDD.Core.Extensibility
         /// <returns>Collection of decorators or empty collection if none are present.</returns>
         public IEnumerable<IStepDecorator> GetStepDecorators(StepDescriptor stepDescriptor)
         {
+            var globalDecorators = _decoratorsProvider.ProvideStepDecorators();
             if (stepDescriptor.MethodInfo == null)
-                return _stepDecorators;
+                return globalDecorators;
 
-            return _stepDecorators.Concat(
+            return globalDecorators.Concat(
                 ConcatAndOrderAttributes(
                     stepDescriptor.MethodInfo.DeclaringType.ExtractAttributes<IStepDecoratorAttribute>(),
                     stepDescriptor.MethodInfo.ExtractAttributes<IStepDecoratorAttribute>()));
@@ -151,7 +151,7 @@ namespace LightBDD.Core.Extensibility
         /// <returns>Collection of decorators or empty collection if none are present.</returns>
         public IEnumerable<IScenarioDecorator> GetScenarioDecorators(ScenarioDescriptor scenarioDescriptor)
         {
-            return _scenarioDecorators.Concat(
+            return _decoratorsProvider.ProvideScenarioDecorators().Concat(
                 ConcatAndOrderAttributes(
                     scenarioDescriptor.MethodInfo.DeclaringType.ExtractAttributes<IScenarioDecoratorAttribute>(),
                     scenarioDescriptor.MethodInfo.ExtractAttributes<IScenarioDecoratorAttribute>()));

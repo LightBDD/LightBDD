@@ -58,14 +58,14 @@ public class DependencyContainer_tests
     }
 
     [Test]
-    public async Task It_should_resolve_current_container()
+    public async Task It_should_resolve_current_resolver()
     {
         await using var container = CreateContainer();
         await using var scope = container.BeginScope();
-        Assert.That(scope.Resolve<IDependencyContainer>(), Is.SameAs(scope));
-        Assert.That(scope.Resolve<IDependencyResolver>(), Is.SameAs(scope));
-        Assert.That(container.Resolve<IDependencyContainer>(), Is.SameAs(container));
-        Assert.That(container.Resolve<IDependencyResolver>(), Is.SameAs(container));
+        Assert.That(scope.Resolve<DisposableScoped>(), Is.SameAs(scope.Resolve<IDependencyResolver>().Resolve<DisposableScoped>()));
+        Assert.That(scope.Resolve<DisposableSingleton>(), Is.SameAs(scope.Resolve<IDependencyResolver>().Resolve<DisposableSingleton>()));
+        Assert.That(container.Resolve<DisposableSingleton>(), Is.SameAs(container.Resolve<IDependencyResolver>().Resolve<DisposableSingleton>()));
+        Assert.That(container.Resolve<DisposableSingleton>(), Is.SameAs(scope.Resolve<IDependencyResolver>().Resolve<DisposableSingleton>()));
     }
 
     [Test]

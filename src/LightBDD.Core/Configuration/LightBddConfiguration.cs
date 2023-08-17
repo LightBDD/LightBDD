@@ -4,6 +4,7 @@ using LightBDD.Core.Dependencies;
 using LightBDD.Core.Dependencies.Implementation;
 using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Extensibility;
+using LightBDD.Core.Extensibility.Execution.Implementation;
 using LightBDD.Core.Extensibility.Implementation;
 using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Core.Formatting.Implementation;
@@ -36,6 +37,7 @@ namespace LightBDD.Core.Configuration
             _collection.AddSingleton<ExceptionProcessor>();
             _collection.AddSingleton<ProgressNotificationDispatcher>();
             _collection.AddSingleton<ValueFormattingService>();
+            _collection.AddSingleton<GlobalDecoratorsProvider>();
             _collection.AddSingleton<IValueFormattingService, ValueFormattingService>(p => p.GetRequiredService<ValueFormattingService>());
         }
 
@@ -53,6 +55,7 @@ namespace LightBDD.Core.Configuration
             this.ConfigureMetadata();
             this.ConfigureStepTypes();
             this.ConfigureValueFormatting();
+            this.ConfigureExecutionPipeline();
         }
 
         /// <summary>
@@ -118,7 +121,7 @@ namespace LightBDD.Core.Configuration
         public IDependencyContainer BuildContainer()
         {
             Seal();
-            return new DependencyContainer(_collection.BuildServiceProvider(true));
+            return new DependencyContainer(_collection);
         }
 
         private void ThrowIfSealed()

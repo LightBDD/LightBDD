@@ -140,7 +140,7 @@ namespace LightBDD.Core.Execution
         {
             var scenarios = scenarioCases.ToArray();
             OnBeforeScenarioGroup(ctx.ExecutionTimer.GetTime(), scenarioCases.Key, scenarios);
-            var results = await Task.WhenAll(scenarios.Select(s => ExecuteScenario(featureInfo, s, ctx)));
+            var results = await Task.WhenAll(scenarios.Select(s => ctx.ExecutionScheduler.Schedule(() => ExecuteScenario(featureInfo, s, ctx))));
             OnAfterScenarioGroup(ctx.ExecutionTimer.GetTime(), results);
             return results;
         }
