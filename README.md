@@ -188,3 +188,4 @@ If you are interested about background of LightBDD creation or getting insight i
 
 ## Community Projects
 * [LightBdd.TabularAttributes](https://github.com/lemonlion/LightBdd.TabularAttributes) - Designed to be used with LightBdd Tabular Parameters to allow for specifying input and output data for tests via attributes, in a truth table format.
+* [LightBDD.ScenarioSync](https://github.com/khdevnet/LightBDD.ScenarioSync) - ScenarioSync for Azure DevOps, integrates the BDD process with Azure DevOps by connecting and synchronizing the LightBDD scenarios with Test Cases.
