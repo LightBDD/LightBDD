@@ -7,6 +7,7 @@ using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Discovery;
 using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.ExecutionContext.Implementation;
@@ -14,6 +15,7 @@ using LightBDD.Core.Extensibility;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Reporting;
+using LightBDD.Core.Reporting.Implementation;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Implementation;
 
@@ -61,10 +63,16 @@ namespace LightBDD.Core.Execution
             var result = new TestRunResult(testRunInfo, testRunEndTime.GetExecutionTime(testRunStartTime), results);
             ctx.ProgressDispatcher.Notify(new TestRunFinished(testRunEndTime, result));
 
-            await ctx.ReportGenerator.GenerateReports(result);
+            await GenerateReports(ctx, result);
             OnAfterTestRunFinish(testRunEndTime, result);
             LightBddExecutionContext.Clear();
             return result;
+        }
+
+        private static async Task GenerateReports(Context ctx, TestRunResult result)
+        {
+            await using var scope = ctx.DependencyContainer.BeginScope();
+            await scope.Resolve<FeatureReportGenerator>().GenerateReports(result);
         }
 
         private static async Task RunGlobalSetUp(Context ctx)

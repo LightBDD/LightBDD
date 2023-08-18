@@ -31,7 +31,6 @@ public class EngineContext
         FixtureFactory = DependencyContainer.Resolve<IFixtureFactory>();
         FileAttachmentsManager = DependencyContainer.Resolve<IFileAttachmentsManager>();
         ProgressDispatcher = DependencyContainer.Resolve<ProgressNotificationDispatcher>();
-        ReportGenerator = DependencyContainer.Resolve<FeatureReportGenerator>();
         GlobalSetUp = DependencyContainer.Resolve<GlobalSetUpRegistry>();
         ExecutionScheduler = DependencyContainer.Resolve<ScenarioExecutionScheduler>();
     }
@@ -58,7 +57,6 @@ public class EngineContext
     internal readonly IFixtureFactory FixtureFactory;
     internal readonly IFileAttachmentsManager FileAttachmentsManager;
     internal readonly ProgressNotificationDispatcher ProgressDispatcher;
-    internal readonly FeatureReportGenerator ReportGenerator;
     internal readonly GlobalSetUpRegistry GlobalSetUp;
     internal readonly ScenarioExecutionScheduler ExecutionScheduler;
 }

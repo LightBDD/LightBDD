@@ -2,16 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LightBDD.Core.Configuration;
 using LightBDD.Core.Results;
 
-namespace LightBDD.Core.Reporting;
+namespace LightBDD.Core.Reporting.Implementation;
 
-//TODO: LightBDD 4.x review testing strategy / internal access
 /// <summary>
 /// Feature report generator
 /// </summary>
-public class FeatureReportGenerator
+internal class FeatureReportGenerator
 {
     private readonly IReportGenerator[] _generators;
 
@@ -38,7 +36,10 @@ public class FeatureReportGenerator
             {
                 await reportGenerator.Generate(result);
             }
-            catch (Exception ex) { exceptions.Add(ex); }
+            catch (Exception ex)
+            {
+                exceptions.Add(ex);
+            }
         }
 
         if (exceptions.Count > 0)
