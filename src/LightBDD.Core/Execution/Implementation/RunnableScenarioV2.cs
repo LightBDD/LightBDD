@@ -25,7 +25,6 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario, IRunStageCon
     public IScenarioResult Result => _result;
     public IScenarioInfo Info => Result.Info;
     public Func<Exception, bool> ShouldAbortSubStepExecution { get; private set; } = _ => true;
-    public IDependencyContainer DependencyContainer => _scenarioScope ?? throw new InvalidOperationException("Scenario not running");
     public IDependencyResolver DependencyResolver => _scenarioScope ?? Engine.DependencyContainer;
     public object Context => Fixture;
     public object Fixture => _fixtureManager.Fixture ?? throw new InvalidOperationException("Fixture not initialized");

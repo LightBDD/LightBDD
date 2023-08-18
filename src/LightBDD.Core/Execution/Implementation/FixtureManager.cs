@@ -41,34 +41,6 @@ internal class FixtureManager
             return;
         if (Fixture is IScenarioTearDown tearDown)
             await collector.Capture(() => TearDown(tearDown));
-        if (Fixture is IAsyncDisposable asyncDisposable)
-            await collector.Capture(() => DisposeAsync(asyncDisposable));
-        if (Fixture is IDisposable disposable)
-            collector.Capture(() => Dispose(disposable));
-    }
-
-    private void Dispose(IDisposable disposable)
-    {
-        try
-        {
-            disposable.Dispose();
-        }
-        catch (Exception ex)
-        {
-            throw new InvalidOperationException($"Fixture Dispose() failed: {ex.Message}", ex);
-        }
-    }
-
-    private async Task DisposeAsync(IAsyncDisposable asyncDisposable)
-    {
-        try
-        {
-            await asyncDisposable.DisposeAsync();
-        }
-        catch (Exception ex)
-        {
-            throw new InvalidOperationException($"Fixture DisposeAsync() failed: {ex.Message}", ex);
-        }
     }
 
     private static async Task TearDown(IScenarioTearDown tearDown)

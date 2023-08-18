@@ -6,6 +6,7 @@ using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.UnitTests.Helpers;
+using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using Shouldly;
 
@@ -60,8 +61,8 @@ public class RunnableScenario_fixture_management_tests
         var feature = new TestResults.TestFeatureInfo { FeatureType = typeof(BrokenFixture) };
         var result = await TestableScenarioFactory.Default.CreateBuilder(feature).Build().RunAsync();
         result.Status.ShouldBe(ExecutionStatus.Failed);
-        result.ExecutionException.ShouldBeOfType<InvalidOperationException>().Message.ShouldBe("Initialization of BrokenFixture fixture failed: Something went wrong");
-        result.StatusDetails.ShouldBe("Scenario Failed: System.InvalidOperationException: Initialization of BrokenFixture fixture failed: Something went wrong");
+        result.ExecutionException.ShouldBeOfType<InvalidOperationException>().Message.ShouldBe($"Initialization of BrokenFixture fixture failed: Unable to create transient instance of type '{typeof(BrokenFixture)}':{Environment.NewLine}Something went wrong");
+        result.StatusDetails.ShouldBe($"Scenario Failed: System.InvalidOperationException: Initialization of BrokenFixture fixture failed: Unable to create transient instance of type '{typeof(BrokenFixture)}':{Environment.NewLine}\tSomething went wrong");
     }
 
     [Test]
@@ -88,18 +89,50 @@ public class RunnableScenario_fixture_management_tests
             .InnerExceptions.Select(e => e.Message).ShouldBe(new[]
             {
                 "Fixture OnScenarioTearDown() failed: boom",
-                "Fixture DisposeAsync() failed: boom!",
-                "Fixture Dispose() failed: boom!!"
+                "DI Scope Dispose() failed: Failed to dispose transient dependency 'FixtureWithBrokenCleanup': boom!"
             });
         result.StatusDetails.ShouldStartWith(
             "Scenario Failed: System.InvalidOperationException: Fixture OnScenarioTearDown() failed: boom" + Environment.NewLine
-            + "\tSystem.InvalidOperationException: Fixture DisposeAsync() failed: boom!" + Environment.NewLine
-            + "\tSystem.InvalidOperationException: Fixture Dispose() failed: boom!!");
+            + "\tSystem.InvalidOperationException: DI Scope Dispose() failed: Failed to dispose transient dependency 'FixtureWithBrokenCleanup': boom!");
+    }
+
+    [Test]
+    public async Task It_should_allow_creating_fixtures_with_DI_dependencies()
+    {
+        Dependency capture = null;
+        var result = await TestableScenarioFactory
+            .Create(cfg => cfg.ConfigureDependencies(x => x.AddScoped<Dependency>()))
+            .RunScenario<FixtureWithDependency>((f, _) =>
+            {
+                f.Dep.Disposed.ShouldBeFalse();
+                capture = f.Dep;
+                return Task.CompletedTask;
+            });
+
+        result.Status.ShouldBe(ExecutionStatus.Passed);
+        capture.ShouldNotBeNull();
+        capture.Disposed.ShouldBeTrue();
     }
 
     class Holder<T>
     {
         public T Value;
+    }
+
+    class Dependency : IDisposable
+    {
+        public bool Disposed { get; private set; }
+        public void Dispose() => Disposed = true;
+    }
+
+    class FixtureWithDependency
+    {
+        public Dependency Dep { get; }
+
+        public FixtureWithDependency(Dependency dep)
+        {
+            Dep = dep;
+        }
     }
 
     class FixtureWithBrokenScenarioSetUp : IScenarioSetUp, IDisposable

@@ -47,7 +47,7 @@ namespace LightBDD.Core.Configuration
                 .RegisterNameFormatter(c => c.Use(NoNameFormatter.Instance))
                 .RegisterExceptionFormatter(c => c.Use<DefaultExceptionFormatter>())
                 .RegisterFileAttachmentsManager(c => c.Use(NoFileAttachmentsManager.Instance))
-                .RegisterFixtureFactory(c => c.Use(ActivatorFixtureFactory.Instance));
+                .RegisterFixtureFactory(c => c.Use<DefaultFixtureFactory>());
         }
 
         private void RegisterDefaultConfigurations()

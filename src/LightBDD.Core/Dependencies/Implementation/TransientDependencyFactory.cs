@@ -3,6 +3,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 
 namespace LightBDD.Core.Dependencies.Implementation
 {
@@ -28,7 +29,21 @@ namespace LightBDD.Core.Dependencies.Implementation
                 return _ => throw new InvalidOperationException($"Type '{type}' has to have exactly one public constructor (number of public constructors: {ctors.Length}).");
 
             var ctor = ctors[0];
-            return r => ctor.Invoke(ctor.GetParameters().Select(p => r.Resolve(p.ParameterType)).ToArray());
+
+            object ConstructorInitializer(IDependencyResolver r)
+            {
+                try
+                {
+                    return ctor.Invoke(ctor.GetParameters().Select(p => r.Resolve(p.ParameterType)).ToArray());
+                }
+                catch (TargetInvocationException ex)
+                {
+                    ExceptionDispatchInfo.Capture(ex.InnerException ?? ex).Throw();
+                    throw;
+                }
+            }
+
+            return ConstructorInitializer;
         }
     }
 }

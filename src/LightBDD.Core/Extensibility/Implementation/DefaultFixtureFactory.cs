@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Reflection;
+using LightBDD.Core.Dependencies;
 
 namespace LightBDD.Core.Extensibility.Implementation;
 
-internal class ActivatorFixtureFactory : IFixtureFactory
+internal class DefaultFixtureFactory : IFixtureFactory
 {
-    public static readonly ActivatorFixtureFactory Instance = new();
+    private readonly IDependencyResolverProvider _provider;
 
-    private ActivatorFixtureFactory() { }
+    public DefaultFixtureFactory(IDependencyResolverProvider provider)
+    {
+        _provider = provider;
+    }
 
     public object Create(Type fixtureType)
     {
         try
         {
-            return Activator.CreateInstance(fixtureType) ?? throw new InvalidOperationException($"Initialization of {fixtureType.Name} fixture failed: Instance is null");
+            return _provider.GetCurrent().Resolve(fixtureType);
         }
         catch (TargetInvocationException ex) when (ex.InnerException != null)
         {
