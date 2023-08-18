@@ -24,7 +24,7 @@ namespace LightBDD.Runner.Configuration
         /// <summary>
         /// Appends LightBDD.XUnit2 default feature progress notifiers.
         /// </summary>
-        public static FeatureCollectionRegistrator<IProgressNotifier> AddFrameworkDefaultProgressNotifiers(this FeatureCollectionRegistrator<IProgressNotifier> configuration)
+        public static ProgressNotifierRegistrator AddFrameworkDefaultProgressNotifiers(this ProgressNotifierRegistrator configuration)
         {
             foreach (var notifier in XUnit2ProgressNotifier.CreateProgressNotifiers())
                 configuration.Add(notifier);

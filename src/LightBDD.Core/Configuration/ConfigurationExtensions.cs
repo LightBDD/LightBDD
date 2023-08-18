@@ -22,7 +22,7 @@ namespace LightBDD.Core.Configuration
         public static FeatureCollectionRegistrator<IScenarioDecorator> RegisterScenarioDecorators(this LightBddConfiguration cfg) => new(cfg);
         public static FeatureCollectionRegistrator<IStepDecorator> RegisterStepDecorators(this LightBddConfiguration cfg) => new(cfg);
         public static FeatureCollectionRegistrator<IReportGenerator> RegisterReportGenerators(this LightBddConfiguration cfg) => new(cfg);
-        public static FeatureCollectionRegistrator<IProgressNotifier> RegisterProgressNotifiers(this LightBddConfiguration cfg) => new(cfg);
+        public static ProgressNotifierRegistrator RegisterProgressNotifiers(this LightBddConfiguration cfg) => new(cfg);
         public static GlobalSetupRegistrator RegisterGlobalSetUp(this LightBddConfiguration cfg) => new(cfg);
 
         public static LightBddConfiguration RegisterFeature<T>(this LightBddConfiguration cfg, Action<FeatureRegistrator<T>> onRegister) where T : class
