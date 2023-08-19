@@ -19,7 +19,7 @@ namespace LightBDD.Framework.Parameters;
 public class InputTree<TData> : IComplexParameter, ISelfFormattable
 {
     private readonly InputTreeOptions _options;
-    private readonly ObjectTreeBuilder _treeBuilder = ObjectTreeBuilder.Current;
+    private readonly ObjectTreeBuilder _treeBuilder = ObjectTreeBuilder.GetConfigured();
     private IValueFormattingService _formattingService = ValueFormattingServices.Current;
     private ITreeParameterDetails? _details;
 

@@ -7,19 +7,27 @@ using LightBDD.Core.Configuration;
 using LightBDD.Core.Discovery;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Results;
+using LightBDD.Framework.Configuration;
 using LightBDD.ScenarioHelpers;
 
-namespace LightBDD.Core.UnitTests.Helpers
+namespace LightBDD.Framework.UnitTests.Helpers
 {
-    internal class TestableCoreExecutionPipeline : ExecutionPipeline
+    internal class TestableExecutionPipeline : ExecutionPipeline
     {
-        public static readonly TestableCoreExecutionPipeline Default = Create();
+        public static readonly TestableExecutionPipeline Default = Create();
 
-        private TestableCoreExecutionPipeline(Assembly testAssembly, Action<LightBddConfiguration> onConfigure = null) : base(testAssembly, TestLightBddConfiguration.SetTestDefaults + onConfigure)
+        private TestableExecutionPipeline(Assembly testAssembly, Action<LightBddConfiguration> onConfigure = null) : base(testAssembly, SetDefaults + onConfigure)
         {
         }
 
-        public static TestableCoreExecutionPipeline Create(Action<LightBddConfiguration> onConfigure = null) => new(typeof(TestableCoreExecutionPipeline).Assembly, onConfigure);
+        private static void SetDefaults(LightBddConfiguration cfg)
+        {
+            cfg.WithFrameworkDefaults();
+            cfg.RegisterReportGenerators().Clear();
+            cfg.RegisterProgressNotifiers().Clear();
+        }
+
+        public static TestableExecutionPipeline Create(Action<LightBddConfiguration> onConfigure = null) => new(typeof(TestableExecutionPipeline).Assembly, onConfigure);
 
         public async Task<ITestRunResult> Execute(params Type[] features)
         {

@@ -12,7 +12,7 @@ namespace LightBDD.Framework.UnitTests.Helpers
     internal class TestableBddRunner
     {
         private readonly RunnableScenarioFactory _factory;
-        public static TestableBddRunner Default = new();
+        public static readonly TestableBddRunner Default = new();
 
         public TestableBddRunner()
         {

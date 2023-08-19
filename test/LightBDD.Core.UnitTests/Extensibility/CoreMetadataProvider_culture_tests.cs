@@ -4,6 +4,7 @@ using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 using System.Globalization;
+using LightBDD.ScenarioHelpers;
 
 namespace LightBDD.Core.UnitTests.Extensibility
 {

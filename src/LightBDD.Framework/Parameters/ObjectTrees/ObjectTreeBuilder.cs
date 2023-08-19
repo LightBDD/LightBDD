@@ -13,16 +13,18 @@ namespace LightBDD.Framework.Parameters.ObjectTrees;
 /// </summary>
 public class ObjectTreeBuilder
 {
+    private static ObjectTreeBuilder? _configuredInstanceCache;
     /// <summary>
-    /// Default instance.
+    /// Returns builder instance with options configured upon LightBdd execution startup, or <see cref="ObjectTreeBuilderOptions.Default"/> if no tests are running.
     /// </summary>
-    public static readonly ObjectTreeBuilder Default = new(ObjectTreeBuilderOptions.Default);
+    public static ObjectTreeBuilder GetConfigured()
+    {
+        var options = LightBddExecutionContext.GetCurrentIfPresent()?.Configuration.ConfigureObjectTrees().Options;
+        if (_configuredInstanceCache != null && _configuredInstanceCache.Options == options)
+            return _configuredInstanceCache;
 
-    /// <summary>
-    /// Currently configured instance.
-    /// </summary>
-    //TODO: rework
-    public static ObjectTreeBuilder Current => LightBddExecutionContext.GetCurrentIfPresent()?.Configuration.ObjectTreeConfiguration().Builder ?? Default;
+        return _configuredInstanceCache = new(options ?? ObjectTreeBuilderOptions.Default);
+    }
 
     /// <summary>
     /// Builder options.

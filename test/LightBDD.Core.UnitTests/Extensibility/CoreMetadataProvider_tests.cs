@@ -10,6 +10,7 @@ using LightBDD.Core.Extensibility.Results;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
+using LightBDD.ScenarioHelpers;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 using Shouldly;

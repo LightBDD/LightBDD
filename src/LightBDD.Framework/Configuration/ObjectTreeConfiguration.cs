@@ -9,19 +9,19 @@ namespace LightBDD.Framework.Configuration;
 public class ObjectTreeConfiguration : FeatureConfiguration
 {
     /// <summary>
-    /// Configures new instance of <seealso cref="ObjectTreeBuilder"/> with provided options.
+    /// Updates <see cref="ObjectTreeBuilderOptions"/> used to instantiate <see cref="ObjectTreeBuilder"/>.
     /// </summary>
     /// <param name="options">Builder options</param>
     /// <returns>Self</returns>
-    public ObjectTreeConfiguration ConfigureBuilder(ObjectTreeBuilderOptions options)
+    public ObjectTreeConfiguration UpdateOptions(ObjectTreeBuilderOptions options)
     {
         ThrowIfSealed();
-        Builder = new ObjectTreeBuilder(options);
+        Options = options;
         return this;
     }
 
     /// <summary>
-    /// Returns configured builder.
+    /// Returns configured options.
     /// </summary>
-    public ObjectTreeBuilder Builder { get; private set; } = ObjectTreeBuilder.Default;
+    public ObjectTreeBuilderOptions Options { get; private set; } = ObjectTreeBuilderOptions.Default;
 }

@@ -23,7 +23,7 @@ namespace LightBDD.Framework.Parameters;
 public class VerifiableTree : IComplexParameter, ISelfFormattable
 {
     private readonly VerifiableTreeOptions _options;
-    private readonly ObjectTreeBuilder _treeBuilder = ObjectTreeBuilder.Current;
+    private readonly ObjectTreeBuilder _treeBuilder = ObjectTreeBuilder.GetConfigured();
     private readonly ObjectTreeNode _expectedTree;
     private ObjectTreeNode? _actualTree;
     private IValueFormattingService _formattingService = ValueFormattingServices.Current;

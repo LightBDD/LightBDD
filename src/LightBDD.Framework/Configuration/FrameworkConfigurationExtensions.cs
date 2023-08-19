@@ -21,6 +21,8 @@ namespace LightBDD.Framework.Configuration
         /// <returns><paramref name="configuration"/>.</returns>
         public static LightBddConfiguration WithFrameworkDefaults(this LightBddConfiguration configuration)
         {
+            configuration.ConfigureObjectTrees();
+
             configuration.ConfigureMetadata()
                 .RegisterEngineAssembly(typeof(FrameworkConfigurationExtensions).Assembly);
 
@@ -95,11 +97,11 @@ namespace LightBDD.Framework.Configuration
         }
 
         /// <summary>
-        /// Retrieves <see cref="ObjectTreeConfiguration"/> from <paramref name="configuration"/> for further customizations.
+        /// Retrieves <see cref="ConfigureObjectTrees"/> from <paramref name="configuration"/> for further customizations.
         /// </summary>
         /// <param name="configuration">Configuration object.</param>
         /// <returns>Configuration object.</returns>
-        public static ObjectTreeConfiguration ObjectTreeConfiguration(this LightBddConfiguration configuration)
+        public static ObjectTreeConfiguration ConfigureObjectTrees(this LightBddConfiguration configuration)
         {
             return configuration.ConfigureFeature<ObjectTreeConfiguration>();
         }

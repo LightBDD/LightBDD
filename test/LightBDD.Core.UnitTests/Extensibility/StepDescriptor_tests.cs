@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Results;
 using LightBDD.Core.UnitTests.Helpers;
+using LightBDD.ScenarioHelpers;
 using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests.Extensibility
