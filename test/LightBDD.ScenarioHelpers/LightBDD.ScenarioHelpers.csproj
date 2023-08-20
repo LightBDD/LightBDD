@@ -10,6 +10,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Shouldly" Version="4.2.1" />
+        <PackageReference Include="RandomTestValues" Version="2.1.1" />
     </ItemGroup>
 
 </Project>

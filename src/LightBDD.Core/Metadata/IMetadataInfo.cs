@@ -1,5 +1,3 @@
-using System;
-
 namespace LightBDD.Core.Metadata
 {
     /// <summary>

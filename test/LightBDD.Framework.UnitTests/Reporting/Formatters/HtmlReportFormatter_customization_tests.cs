@@ -5,15 +5,14 @@ using System.Text;
 using HtmlAgilityPack;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Reporting;
-using LightBDD.Core.Results;
 using LightBDD.Framework.Configuration;
+using LightBDD.Framework.Reporting;
 using LightBDD.Framework.Reporting.Formatters;
-using LightBDD.UnitTests.Helpers;
-using Microsoft.Extensions.DependencyInjection;
+using LightBDD.ScenarioHelpers;
 using Moq;
 using NUnit.Framework;
 
-namespace LightBDD.Framework.Reporting.UnitTests.Formatters;
+namespace LightBDD.Framework.UnitTests.Reporting.Formatters;
 
 public class HtmlReportFormatter_customization_tests
 {

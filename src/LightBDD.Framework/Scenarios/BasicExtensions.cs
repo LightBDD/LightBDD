@@ -2,7 +2,6 @@
 using LightBDD.Framework.Scenarios.Implementation;
 using System;
 using System.Linq;
-using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using LightBDD.Framework.Implementation;
 

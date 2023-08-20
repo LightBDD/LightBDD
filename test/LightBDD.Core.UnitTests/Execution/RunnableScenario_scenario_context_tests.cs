@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using LightBDD.Core.Configuration;
-using LightBDD.Core.Dependencies;
 using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Metadata;

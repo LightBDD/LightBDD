@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
-using LightBDD.Core.Dependencies;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Notification.Events;
 using Microsoft.Extensions.DependencyInjection;

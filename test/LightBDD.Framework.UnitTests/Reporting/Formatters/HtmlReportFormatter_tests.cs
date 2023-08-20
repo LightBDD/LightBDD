@@ -8,11 +8,11 @@ using HtmlAgilityPack;
 using LightBDD.Core.Results;
 using LightBDD.Framework.Parameters;
 using LightBDD.Framework.Reporting.Formatters;
-using LightBDD.Framework.Reporting.UnitTests.Formatters.Helpers;
-using LightBDD.UnitTests.Helpers;
+using LightBDD.Framework.UnitTests.Reporting.Formatters.Helpers;
+using LightBDD.ScenarioHelpers;
 using NUnit.Framework;
 
-namespace LightBDD.Framework.Reporting.UnitTests.Formatters
+namespace LightBDD.Framework.UnitTests.Reporting.Formatters
 {
     [TestFixture]
     public class HtmlReportFormatter_tests

@@ -6,7 +6,7 @@ using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Results;
 using LightBDD.Core.Formatting.NameDecorators;
 using LightBDD.Core.Metadata;
-using LightBDD.UnitTests.Helpers.TestableIntegration;
+using LightBDD.Core.UnitTests.Helpers;
 using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests.Metadata

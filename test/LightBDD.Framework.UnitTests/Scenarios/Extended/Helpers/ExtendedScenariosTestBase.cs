@@ -1,6 +1,5 @@
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
-using LightBDD.UnitTests.Helpers.TestableIntegration;
 using Moq;
 using NUnit.Framework;
 using System;

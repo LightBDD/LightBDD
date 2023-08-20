@@ -6,10 +6,10 @@ using System.Xml.Schema;
 using LightBDD.Core.Results;
 using LightBDD.Framework.Parameters;
 using LightBDD.Framework.Reporting.Formatters;
-using LightBDD.UnitTests.Helpers;
+using LightBDD.ScenarioHelpers;
 using NUnit.Framework;
 
-namespace LightBDD.Framework.Reporting.UnitTests.Formatters
+namespace LightBDD.Framework.UnitTests.Reporting.Formatters
 {
     [TestFixture]
     public class XmlReportFormatter_tests
@@ -21,7 +21,7 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
         public XmlReportFormatter_tests()
         {
             _schema = new XmlSchemaSet();
-            _schema.Add("", AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "XmlReportFormatterSchema.xsd");
+            _schema.Add("", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Reporting", "XmlReportFormatterSchema.xsd"));
         }
 
         [SetUp]
@@ -248,7 +248,7 @@ Step 2: Expected: True
             ValidateWithSchema(text);
         }
 
-         [Test]
+        [Test]
         public void Should_format_scenarios_in_order()
         {
             var results = ReportFormatterTestData.GetFeatureWithUnsortedScenarios();
@@ -358,7 +358,7 @@ Step 2: Expected: True
     </Scenario>
   </Feature>
 </TestResults>";
-            Assert.That(text.NormalizeNewLine().Replace("&#xD;",""), Is.EqualTo(expectedText.NormalizeNewLine().Replace("&#xD;", "")));
+            Assert.That(text.NormalizeNewLine().Replace("&#xD;", ""), Is.EqualTo(expectedText.NormalizeNewLine().Replace("&#xD;", "")));
             ValidateWithSchema(text);
         }
 

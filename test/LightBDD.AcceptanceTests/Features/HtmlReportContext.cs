@@ -12,7 +12,7 @@ using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.Framework.Resources;
-using LightBDD.UnitTests.Helpers;
+using LightBDD.ScenarioHelpers;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;

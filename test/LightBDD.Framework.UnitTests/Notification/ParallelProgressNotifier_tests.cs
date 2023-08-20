@@ -15,7 +15,7 @@ using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Framework.Notification;
 using LightBDD.Framework.Parameters;
-using LightBDD.UnitTests.Helpers;
+using LightBDD.ScenarioHelpers;
 using NUnit.Framework;
 
 namespace LightBDD.Framework.UnitTests.Notification

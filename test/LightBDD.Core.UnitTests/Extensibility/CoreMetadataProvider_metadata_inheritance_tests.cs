@@ -1,7 +1,7 @@
 using System.Linq;
 using LightBDD.Core.Extensibility;
+using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
-using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests.Extensibility

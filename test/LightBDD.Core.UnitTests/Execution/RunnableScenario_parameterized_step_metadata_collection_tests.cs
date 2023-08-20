@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Results;
-using LightBDD.Core.Formatting;
 using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
@@ -208,11 +207,6 @@ public class RunnableScenario_parameterized_step_metadata_collection_tests : Ste
     private void Method_with_wrong_formatter_param([Format("{0")] object param) { }
     private void Method_with_appended_and_normal_param(object appended1, object param, object appended2) { }
     private void Method_with_param1_param2_param3(object param3, object param1, object param2) { }
-
-    public class UnderscoreToSpaceFormatter : INameFormatter
-    {
-        public string FormatName(string name) => name.Replace('_', ' ');
-    }
 }
 
 static class ExtensionSteps

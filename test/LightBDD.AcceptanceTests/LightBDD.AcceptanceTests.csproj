@@ -6,11 +6,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\LightBDD.Runner\LightBDD.Runner.csproj" />
-    <ProjectReference Include="..\LightBDD.UnitTests.Helpers\LightBDD.UnitTests.Helpers.csproj" />
+    <ProjectReference Include="..\LightBDD.ScenarioHelpers\LightBDD.ScenarioHelpers.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.3" />
+    <PackageReference Include="NUnit" Version="3.13.3" />
     <PackageReference Include="Selenium.WebDriver" Version="4.10.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
         <PrivateAssets>all</PrivateAssets>

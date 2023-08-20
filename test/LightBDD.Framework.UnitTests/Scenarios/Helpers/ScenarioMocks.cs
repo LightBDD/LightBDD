@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
-using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Scenarios;
 using Moq;

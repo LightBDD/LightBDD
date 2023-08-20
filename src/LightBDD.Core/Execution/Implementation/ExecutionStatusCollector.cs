@@ -4,7 +4,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LightBDD.Core.Configuration;
 using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Implementation;

@@ -1,6 +1,6 @@
 using RandomTestValues;
 
-namespace LightBDD.UnitTests.Helpers
+namespace LightBDD.ScenarioHelpers
 {
     public class Fake
     {
