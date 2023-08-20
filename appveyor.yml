@@ -35,7 +35,6 @@ for:
       - image: Ubuntu
     fast_finish: true
   build_script:
-   - sh: sudo apt-get install -yq libcurl3
    - sh: dotnet restore
    - sh: dotnet test -c Release -f net6 test/LightBDD.Core.UnitTests/LightBDD.Core.UnitTests.csproj
    - sh: dotnet test -c Release -f net6 test/LightBDD.Framework.UnitTests/LightBDD.Framework.UnitTests.csproj
