@@ -21,7 +21,8 @@ namespace LightBDD.Framework.Reporting.UnitTests.Configuration
         public void It_should_return_default_configuration()
         {
             var configuration = new LightBddConfiguration();
-            configuration.RegisterReportGenerators().RegisterFrameworkDefaultReportGenerators();
+            configuration.Services.ConfigureReportGenerators()
+                .AddFrameworkDefaultReportGenerators();
 
             var featuresReportHtml = $"~{Path.DirectorySeparatorChar}Reports{Path.DirectorySeparatorChar}FeaturesReport.html";
 
@@ -44,13 +45,13 @@ namespace LightBDD.Framework.Reporting.UnitTests.Configuration
             var gen1 = Mock.Of<IReportGenerator>();
             var gen2 = Mock.Of<IReportGenerator>();
             var configuration = new LightBddConfiguration();
-            configuration.RegisterReportGenerators().RegisterFrameworkDefaultReportGenerators();
+            configuration.Services.ConfigureReportGenerators().AddFrameworkDefaultReportGenerators();
 
             Assert.That(GetReportGeneratorDescriptors(configuration).Count(), Is.EqualTo(1));
-            configuration.RegisterReportGenerators().Clear();
+            configuration.Services.ConfigureReportGenerators().Clear();
 
             Assert.That(GetReportGeneratorDescriptors(configuration), Is.Empty);
-            configuration.RegisterReportGenerators().Add(gen1).Add(gen2);
+            configuration.Services.ConfigureReportGenerators().Add(gen1).Add(gen2);
 
             Assert.That(GetReportGeneratorDescriptors(configuration).Count(), Is.EqualTo(2));
         }
@@ -60,7 +61,7 @@ namespace LightBDD.Framework.Reporting.UnitTests.Configuration
         {
             var cfg = new LightBddConfiguration();
 
-            cfg.RegisterReportGenerators()
+            cfg.Services.ConfigureReportGenerators()
                 .Clear()
                 .AddFileReport<PlainTextReportFormatter>("file.txt");
 
@@ -74,7 +75,10 @@ namespace LightBDD.Framework.Reporting.UnitTests.Configuration
         [Test]
         public async Task It_should_return_default_file_attachment_manager()
         {
-            await using var container = new LightBddConfiguration().RegisterDefaultFileAttachmentManager().BuildContainer();
+            var cfg = new LightBddConfiguration();
+            cfg.Services.ConfigureDefaultFileAttachmentManager();
+
+            await using var container = cfg.BuildContainer();
             var fileAttachmentsManager = container.Resolve<IFileAttachmentsManager>();
             Assert.That(fileAttachmentsManager, Is.TypeOf<FileAttachmentsManager>());
 

@@ -21,10 +21,11 @@ namespace LightBDD.Runner
             configuration.ForMetadata()
                 .RegisterEngineAssembly(typeof(LightBddScopeAttribute).Assembly);
 
-            configuration.RegisterProgressNotifiers()
+            configuration.Services.ConfigureProgressNotifiers()
                 .AddFrameworkDefaultProgressNotifiers();
 
-            configuration.RegisterExceptionFormatter(x => x.Use(new DefaultExceptionFormatter().WithTestFrameworkDefaults()));
+            configuration.Services
+                .ConfigureExceptionFormatter(x => x.Use(new DefaultExceptionFormatter().WithTestFrameworkDefaults()));
 
             OnConfigure(configuration);
         }

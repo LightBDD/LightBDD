@@ -7,6 +7,7 @@ using LightBDD.Framework.Formatting;
 using LightBDD.Framework.Formatting.Values;
 using LightBDD.Framework.Reporting;
 using LightBDD.Framework.Reporting.Formatters;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LightBDD.Framework.Configuration;
 
@@ -31,13 +32,12 @@ public static class FrameworkConfigurationExtensions
             .ForValueFormatting()
             .RegisterFrameworkDefaultGeneralFormatters();
 
-        configuration
-            .RegisterReportGenerators()
-            .RegisterFrameworkDefaultReportGenerators();
+        configuration.Services.ConfigureReportGenerators()
+            .AddFrameworkDefaultReportGenerators();
 
-        configuration
-            .RegisterNameFormatter(c => c.Use(DefaultNameFormatter.Instance))
-            .RegisterDefaultFileAttachmentManager();
+        configuration.Services
+            .ConfigureNameFormatter(c => c.Use(DefaultNameFormatter.Instance))
+            .ConfigureDefaultFileAttachmentManager();
 
         return configuration;
     }
@@ -57,7 +57,7 @@ public static class FrameworkConfigurationExtensions
     /// <summary>
     /// Applies default report generators to generate <c>~\\Reports\\FeaturesReport.html</c>(Win) <c>~/Reports/FeaturesReport.html</c>(Unix) reports.
     /// </summary>
-    public static ServiceCollectionRegistrator<IReportGenerator> RegisterFrameworkDefaultReportGenerators(this ServiceCollectionRegistrator<IReportGenerator> configuration)
+    public static ServiceCollectionRegistrator<IReportGenerator> AddFrameworkDefaultReportGenerators(this ServiceCollectionRegistrator<IReportGenerator> configuration)
     {
         return configuration.AddFileReport<HtmlReportFormatter>($"~{Path.DirectorySeparatorChar}Reports{Path.DirectorySeparatorChar}FeaturesReport.html");
     }
@@ -65,9 +65,9 @@ public static class FrameworkConfigurationExtensions
     /// <summary>
     /// Applies default file attachment manager configuration to generate attachments in <c>~\\Reports\</c>(Win) <c>~/Reports/</c>(Unix) directory.
     /// </summary>
-    public static LightBddConfiguration RegisterDefaultFileAttachmentManager(this LightBddConfiguration configuration)
+    public static IServiceCollection ConfigureDefaultFileAttachmentManager(this IServiceCollection collection)
     {
-        return configuration.RegisterFileAttachmentsManager(x => x.Use(_ => new FileAttachmentsManager($"~{Path.DirectorySeparatorChar}Reports")));
+        return collection.ConfigureFileAttachmentsManager(x => x.Use(_ => new FileAttachmentsManager($"~{Path.DirectorySeparatorChar}Reports")));
     }
 
     /// <summary>

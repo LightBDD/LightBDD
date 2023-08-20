@@ -25,7 +25,7 @@ public class ExecutionPipeline_progress_notification_tests : Steps
 
     public ExecutionPipeline_progress_notification_tests()
     {
-        _pipeline = TestableCoreExecutionPipeline.Create(cfg => cfg.RegisterProgressNotifiers().Clear().Add(_progressNotifier));
+        _pipeline = TestableCoreExecutionPipeline.Create(cfg => cfg.Services.ConfigureProgressNotifiers().Clear().Add(_progressNotifier));
     }
 
     class MyFeature : Steps
@@ -203,7 +203,7 @@ public class ExecutionPipeline_progress_notification_tests : Steps
         void OnConfigure(LightBddConfiguration cfg)
         {
             cfg.Services.AddSingleton(capture);
-            cfg.RegisterProgressNotifiers().Clear().Add<ProgressNotifierWithDependency>();
+            cfg.Services.ConfigureProgressNotifiers().Clear().Add<ProgressNotifierWithDependency>();
         }
 
         var result = await TestableCoreExecutionPipeline.Create(OnConfigure).ExecuteScenario<MyFeature>(f => f.Simple_scenario());

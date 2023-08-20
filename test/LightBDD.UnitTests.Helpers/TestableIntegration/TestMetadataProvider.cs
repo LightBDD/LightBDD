@@ -14,7 +14,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
         public static CoreMetadataProvider Create(Action<LightBddConfiguration>? onConfigure = null)
         {
             var configuration = new LightBddConfiguration();
-            configuration.RegisterNameFormatter(x => x.Use(DefaultNameFormatter.Instance));
+            configuration.Services.ConfigureNameFormatter(x => x.Use(DefaultNameFormatter.Instance));
             configuration.ForMetadata().RegisterEngineAssembly(typeof(TestMetadataProvider).Assembly);
             onConfigure?.Invoke(configuration);
             return configuration.BuildContainer().Resolve<CoreMetadataProvider>();

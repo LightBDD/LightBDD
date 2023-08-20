@@ -33,7 +33,7 @@ public class ExecutionPipeline_report_generation_tests
                 var gen = new Mock<IReportGenerator>();
                 gen.Setup(x => x.Generate(It.IsAny<ITestRunResult>())).Returns(Task.CompletedTask).Verifiable();
 
-                cfg.RegisterReportGenerators().Add(gen.Object);
+                cfg.Services.ConfigureReportGenerators().Add(gen.Object);
                 generators.Add(gen);
             }
         }
@@ -54,7 +54,7 @@ public class ExecutionPipeline_report_generation_tests
             {
                 var gen = new Mock<IReportGenerator>();
                 gen.Setup(x => x.Generate(It.IsAny<ITestRunResult>())).ThrowsAsync(new Exception($"{i}"));
-                cfg.RegisterReportGenerators().Add(gen.Object);
+                cfg.Services.ConfigureReportGenerators().Add(gen.Object);
             }
         }
 
@@ -70,9 +70,10 @@ public class ExecutionPipeline_report_generation_tests
         {
             cfg.Services.AddSingleton(capture);
             cfg.Services.AddTransient<Dependency>();
-            cfg.RegisterReportGenerators().Add<ReportGeneratorWithDependency>(ServiceLifetime.Singleton);
-            cfg.RegisterReportGenerators().Add<ReportGeneratorWithDependency>(ServiceLifetime.Scoped);
-            cfg.RegisterReportGenerators().Add<ReportGeneratorWithDependency>(ServiceLifetime.Transient);
+            cfg.Services.ConfigureReportGenerators()
+                .Add<ReportGeneratorWithDependency>(ServiceLifetime.Singleton)
+                .Add<ReportGeneratorWithDependency>(ServiceLifetime.Scoped)
+                .Add<ReportGeneratorWithDependency>(ServiceLifetime.Transient);
         }
 
         var result = await TestableCoreExecutionPipeline.Create(Configure)

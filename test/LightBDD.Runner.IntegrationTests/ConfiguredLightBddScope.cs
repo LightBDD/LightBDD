@@ -14,10 +14,10 @@ namespace LightBDD.Runner.IntegrationTests
 
         protected override void OnConfigure(LightBddConfiguration configuration)
         {
-            configuration.RegisterReportGenerators()
+            configuration.Services.ConfigureReportGenerators()
                 .Clear();
 
-            configuration.RegisterProgressNotifiers()
+            configuration.Services.ConfigureProgressNotifiers()
                 .Clear()
                 .Add(new ProgressCapture());
 

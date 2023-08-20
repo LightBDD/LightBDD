@@ -18,7 +18,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         {
             var parameterInfo = ParameterInfoHelper.GetMethodParameter<double>(Step_with_parameter);
             var metadataProvider = TestMetadataProvider.Create(cfg =>
-                cfg.RegisterCultureInfoProvider(x => x.Use(new TestCultureInfoProvider(new CultureInfo(cultureInfo)))));
+                cfg.Services.ConfigureCultureInfoProvider(x => x.Use(new TestCultureInfoProvider(new CultureInfo(cultureInfo)))));
             var formatter = metadataProvider.GetValueFormattingServiceFor(parameterInfo);
 
             Assert.That(formatter.FormatValue(parameter), Is.EqualTo(expectedFormattedParameter));

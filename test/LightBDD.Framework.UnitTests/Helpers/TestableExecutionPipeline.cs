@@ -23,8 +23,8 @@ namespace LightBDD.Framework.UnitTests.Helpers
         private static void SetDefaults(LightBddConfiguration cfg)
         {
             cfg.WithFrameworkDefaults();
-            cfg.RegisterReportGenerators().Clear();
-            cfg.RegisterProgressNotifiers().Clear();
+            cfg.Services.ConfigureReportGenerators().Clear();
+            cfg.Services.ConfigureProgressNotifiers().Clear();
         }
 
         public static TestableExecutionPipeline Create(Action<LightBddConfiguration> onConfigure = null) => new(typeof(TestableExecutionPipeline).Assembly, onConfigure);

@@ -43,11 +43,12 @@ namespace LightBDD.Core.Configuration
 
         private void RegisterCoreFeatures()
         {
-            this.RegisterCultureInfoProvider(c => c.Use<DefaultCultureInfoProvider>())
-                .RegisterNameFormatter(c => c.Use(NoNameFormatter.Instance))
-                .RegisterExceptionFormatter(c => c.Use<DefaultExceptionFormatter>())
-                .RegisterFileAttachmentsManager(c => c.Use(NoFileAttachmentsManager.Instance))
-                .RegisterFixtureFactory(c => c.Use<DefaultFixtureFactory>());
+            Services
+                .ConfigureCultureInfoProvider(c => c.Use<DefaultCultureInfoProvider>())
+                .ConfigureNameFormatter(c => c.Use(NoNameFormatter.Instance))
+                .ConfigureExceptionFormatter(c => c.Use<DefaultExceptionFormatter>())
+                .ConfigureFileAttachmentsManager(c => c.Use(NoFileAttachmentsManager.Instance))
+                .ConfigureFixtureFactory(c => c.Use<DefaultFixtureFactory>());
         }
 
         private void RegisterDefaultConfigurations()

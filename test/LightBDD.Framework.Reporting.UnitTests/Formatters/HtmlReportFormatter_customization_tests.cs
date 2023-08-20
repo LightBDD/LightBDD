@@ -67,7 +67,7 @@ public class HtmlReportFormatter_customization_tests
     private IReportFormatter ConfigureFormatter(Action<HtmlReportFormatter> onConfigure)
     {
         var cfg = new LightBddConfiguration();
-        cfg.RegisterReportGenerators()
+        cfg.Services.ConfigureReportGenerators()
             .Clear()
             .AddFileReport("foo.html", onConfigure);
 

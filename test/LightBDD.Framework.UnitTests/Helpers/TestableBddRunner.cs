@@ -17,7 +17,7 @@ namespace LightBDD.Framework.UnitTests.Helpers
         public TestableBddRunner()
         {
             var cfg = new LightBddConfiguration().WithFrameworkDefaults();
-            cfg.RegisterProgressNotifiers().Clear();
+            cfg.Services.ConfigureProgressNotifiers().Clear();
 
             _factory = new RunnableScenarioFactory(new EngineContext(cfg));
         }

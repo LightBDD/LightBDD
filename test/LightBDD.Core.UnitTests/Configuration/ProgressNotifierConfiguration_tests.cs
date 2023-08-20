@@ -28,7 +28,7 @@ namespace LightBDD.Core.UnitTests.Configuration
         {
             var configuration = new LightBddConfiguration();
 
-            configuration.RegisterProgressNotifiers()
+            configuration.Services.ConfigureProgressNotifiers()
                 .Add(Mock.Of<IProgressNotifier>())
                 .Clear();
 
@@ -44,7 +44,7 @@ namespace LightBDD.Core.UnitTests.Configuration
             var notifier4 = Mock.Of<IProgressNotifier>();
 
             var cfg = new LightBddConfiguration();
-            cfg.RegisterProgressNotifiers()
+            cfg.Services.ConfigureProgressNotifiers()
                 .Add(notifier1)
                 .Add(notifier2)
                 .Add(notifier3)
@@ -64,7 +64,7 @@ namespace LightBDD.Core.UnitTests.Configuration
         public void Configuration_should_be_sealable()
         {
             var root = new LightBddConfiguration();
-            var cfg = root.RegisterProgressNotifiers()
+            var cfg = root.Services.ConfigureProgressNotifiers()
                 .Add(Mock.Of<IProgressNotifier>());
             root.Seal();
 

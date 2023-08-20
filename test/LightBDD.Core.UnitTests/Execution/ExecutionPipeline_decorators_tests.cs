@@ -114,10 +114,10 @@ namespace LightBDD.Core.UnitTests.Execution
         {
             void OnConfigure(LightBddConfiguration cfg)
             {
-                cfg.RegisterScenarioDecorators()
+                cfg.Services.ConfigureScenarioDecorators()
                     .Add(_ => new MyCapturingDecorator("scenario-global1"))
                     .Add(_ => new MyCapturingDecorator("scenario-global2"));
-                cfg.RegisterStepDecorators()
+                cfg.Services.ConfigureStepDecorators()
                     .Add(_ => new MyCapturingDecorator("step-global1"))
                     .Add(_ => new MyCapturingDecorator("step-global2"));
             }
@@ -151,9 +151,9 @@ namespace LightBDD.Core.UnitTests.Execution
                 cfg.Services.AddSingleton<Dependency1>();
                 cfg.Services.AddScoped<Dependency2>();
                 cfg.Services.AddTransient<Dependency3>();
-                cfg.RegisterScenarioDecorators()
+                cfg.Services.ConfigureScenarioDecorators()
                     .Add<DecoratorWithDependencies>(ServiceLifetime.Scoped);
-                cfg.RegisterStepDecorators()
+                cfg.Services.ConfigureStepDecorators()
                     .Add<DecoratorWithDependencies>(ServiceLifetime.Transient);
                 cfg.ForExecutionPipeline()
                     .SetMaxConcurrentScenarios(1);
@@ -183,7 +183,7 @@ namespace LightBDD.Core.UnitTests.Execution
         {
             void OnConfigure(LightBddConfiguration cfg)
             {
-                cfg.RegisterScenarioDecorators().Add<FaultyDecorator>();
+                cfg.Services.ConfigureScenarioDecorators().Add<FaultyDecorator>();
             }
 
             var result = await TestableCoreExecutionPipeline.Create(OnConfigure)
@@ -197,8 +197,8 @@ namespace LightBDD.Core.UnitTests.Execution
         {
             void OnConfigure(LightBddConfiguration cfg)
             {
-                cfg.RegisterScenarioDecorators().Add<MultiAssertAttribute>();
-                cfg.RegisterStepDecorators().Add<FaultyDecorator>();
+                cfg.Services.ConfigureScenarioDecorators().Add<MultiAssertAttribute>();
+                cfg.Services.ConfigureStepDecorators().Add<FaultyDecorator>();
             }
 
             var result = await TestableCoreExecutionPipeline.Create(OnConfigure)
@@ -308,8 +308,8 @@ namespace LightBDD.Core.UnitTests.Execution
 
             void OnConfigure(LightBddConfiguration cfg)
             {
-                cfg.RegisterFixtureFactory(x => x.Use(new FakeFixtureFactory(fixture)));
-                cfg.RegisterScenarioDecorators().Add(_ => new DelegatingDecorator(scenario => capturedFixture = scenario.Fixture));
+                cfg.Services.ConfigureFixtureFactory(x => x.Use(new FakeFixtureFactory(fixture)));
+                cfg.Services.ConfigureScenarioDecorators().Add(_ => new DelegatingDecorator(scenario => capturedFixture = scenario.Fixture));
             }
 
             await TestableCoreExecutionPipeline.Create(OnConfigure)

@@ -2,6 +2,7 @@
 using System;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Notification;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LightBDD.Core.Configuration;
 
@@ -13,9 +14,10 @@ namespace LightBDD.Core.Configuration;
 public class ProgressNotifierRegistrator
 {
     private readonly ServiceCollectionRegistrator<IProgressNotifier> _registrator;
-    public ProgressNotifierRegistrator(LightBddConfiguration cfg)
+
+    internal ProgressNotifierRegistrator(IServiceCollection collection)
     {
-        _registrator = new(cfg.Services);
+        _registrator = new(collection);
     }
 
     public ProgressNotifierRegistrator Add<TImplementation>() where TImplementation : IProgressNotifier

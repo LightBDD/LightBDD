@@ -8,12 +8,9 @@ namespace LightBDD.Core.Configuration;
 
 public class GlobalSetupRegistrator
 {
-    private readonly LightBddConfiguration _cfg;
+    private readonly IServiceCollection _collection;
 
-    internal GlobalSetupRegistrator(LightBddConfiguration cfg)
-    {
-        _cfg = cfg;
-    }
+    internal GlobalSetupRegistrator(IServiceCollection collection) => _collection = collection;
 
     /// <summary>
     /// Registers <typeparamref name="TDependency"/> type to be used for global set up before any tests are run and tear down after all tests execution.<br/>
@@ -102,13 +99,13 @@ public class GlobalSetupRegistrator
 
     private GlobalSetupRegistrator RegisterResource<TDependency>() where TDependency : IGlobalResourceSetUp
     {
-        _cfg.Services.AddSingleton<IGlobalSetUp, GlobalResourceSetUp<TDependency>>();
+        _collection.AddSingleton<IGlobalSetUp, GlobalResourceSetUp<TDependency>>();
         return this;
     }
 
     private GlobalSetupRegistrator RegisterActivity(string name, Func<Task> setUp, Func<Task> tearDown)
     {
-        _cfg.Services.AddSingleton<IGlobalSetUp>(new GlobalActivitySetUp(name, setUp, tearDown));
+        _collection.AddSingleton<IGlobalSetUp>(new GlobalActivitySetUp(name, setUp, tearDown));
         return this;
     }
 }
