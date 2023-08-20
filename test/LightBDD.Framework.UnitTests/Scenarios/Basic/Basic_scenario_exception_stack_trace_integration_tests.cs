@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Scenarios;
 using LightBDD.Framework.UnitTests.Helpers;
 using LightBDD.ScenarioHelpers;

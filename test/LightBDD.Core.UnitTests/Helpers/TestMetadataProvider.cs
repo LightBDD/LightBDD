@@ -2,7 +2,6 @@
 using System;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
-using LightBDD.Framework.Formatting;
 
 namespace LightBDD.Core.UnitTests.Helpers
 {

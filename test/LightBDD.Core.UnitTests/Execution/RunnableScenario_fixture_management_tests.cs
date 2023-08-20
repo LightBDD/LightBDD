@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;

@@ -1,5 +1,4 @@
-﻿using LightBDD.Core.ExecutionContext;
-using LightBDD.Framework.Implementation;
+﻿using LightBDD.Framework.Implementation;
 using LightBDD.Framework.Scenarios;
 
 namespace LightBDD.Framework.Extensibility;

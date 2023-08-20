@@ -4,7 +4,6 @@ using LightBDD.Core.Execution.Implementation;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Notification;
-using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Reporting;

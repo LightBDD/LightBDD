@@ -1,4 +1,3 @@
-using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.UnitTests.Scenarios.Extended.Helpers;
 using NUnit.Framework;
 using System;

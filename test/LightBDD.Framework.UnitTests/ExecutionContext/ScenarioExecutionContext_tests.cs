@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using LightBDD.Core.ExecutionContext;
-using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Scenarios;
 using LightBDD.Framework.UnitTests.Helpers;
 using NUnit.Framework;

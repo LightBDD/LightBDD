@@ -1,9 +1,7 @@
 using System;
 using System.Linq;
-using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Notification.Events;
-using LightBDD.Core.Results;
 
 namespace LightBDD.Framework.Notification.Implementation
 {

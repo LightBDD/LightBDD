@@ -1,4 +1,3 @@
-using System;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.Extensibility;

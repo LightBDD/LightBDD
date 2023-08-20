@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LightBDD.Core.Dependencies;
 using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Results;

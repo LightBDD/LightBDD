@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution;
 using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.Formatting.ExceptionFormatting;

@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
-using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.ScenarioHelpers;

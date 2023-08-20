@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using LightBDD.Core.Results;
 using LightBDD.Framework.Reporting.Implementation;
 
 namespace LightBDD.Framework.Reporting

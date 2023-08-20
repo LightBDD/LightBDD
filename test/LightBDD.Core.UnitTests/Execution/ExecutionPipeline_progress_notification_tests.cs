@@ -11,7 +11,6 @@ using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.ScenarioHelpers;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using NUnit.Framework.Internal.Execution;
 using Shouldly;
 
 namespace LightBDD.Core.UnitTests.Execution;

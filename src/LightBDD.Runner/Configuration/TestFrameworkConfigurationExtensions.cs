@@ -1,6 +1,5 @@
 ﻿using LightBDD.Core.Configuration;
 using LightBDD.Core.Formatting.ExceptionFormatting;
-using LightBDD.Core.Notification;
 using LightBDD.Runner.Implementation;
 
 namespace LightBDD.Runner.Configuration

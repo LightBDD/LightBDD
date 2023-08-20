@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
-using LightBDD.Core.Extensibility;
 using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
-using LightBDD.Framework.Extensibility;
 using LightBDD.ScenarioHelpers;
 using NUnit.Framework;
 using Shouldly;
