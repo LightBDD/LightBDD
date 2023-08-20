@@ -6,6 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LightBDD.Core.Configuration;
 
+/// <summary>
+/// Type allowing to register global setup and tear down activities which are executed before and after all LightBDD scenarios.
+/// </summary>
 public class GlobalSetupRegistrator
 {
     private readonly IServiceCollection _collection;

@@ -12,6 +12,7 @@ using LightBDD.Core.Formatting.Values;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Reporting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace LightBDD.Core.Configuration
 {
@@ -72,9 +73,9 @@ namespace LightBDD.Core.Configuration
         {
             return (TFeatureConfiguration)_configuration.GetOrAdd(typeof(TFeatureConfiguration), _ =>
             {
-                ThrowIfSealed();
                 var cfg = new TFeatureConfiguration();
-                _collection.AddSingleton(cfg);
+                if (IsSealed)
+                    cfg.Seal();
                 return cfg;
             });
         }
@@ -109,20 +110,19 @@ namespace LightBDD.Core.Configuration
 
         /// <summary>
         /// Seals the configuration and builds <see cref="IDependencyContainer"/> based on this configuration.<br/>
-        /// Sealed configuration disables ability to register new dependencies via <see cref="ConfigureDependencies"/> and configuring new features via <see cref="Get{TFeatureConfiguration}"/>.<br/>
+        /// Sealed configuration disables ability to register new dependencies via <see cref="Services"/> and modifying feature configurations obtained via <see cref="Get{TFeatureConfiguration}"/>.<br/>
         /// Every call to this method creates new instance of <see cref="IDependencyContainer"/>, which needs to be independently discarded
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Built container</returns>
         public IDependencyContainer BuildContainer()
         {
             Seal();
-            return new DependencyContainer(_collection);
-        }
 
-        private void ThrowIfSealed()
-        {
-            if (IsSealed)
-                throw new InvalidOperationException("Feature configuration is sealed. Please update configuration only during LightBDD initialization.");
+            var collection = new ServiceCollection { _collection };
+            foreach (var cfg in _configuration.Values)
+                collection.Add(ServiceDescriptor.Singleton(cfg.GetType(), cfg));
+
+            return new DependencyContainer(collection);
         }
     }
 }

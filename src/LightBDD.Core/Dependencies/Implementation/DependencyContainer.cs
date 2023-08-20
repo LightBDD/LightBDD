@@ -2,7 +2,6 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace LightBDD.Core.Dependencies.Implementation;
 
@@ -14,9 +13,7 @@ internal class DependencyContainer : IDependencyContainer
 
     public DependencyContainer(IServiceCollection collection)
     {
-        collection = new ServiceCollection().Add(collection);
         _resolverProvider = new(this);
-
         collection.AddTransient<IDependencyResolver, DependencyResolver>();
         collection.AddSingleton<IDependencyResolverProvider>(_resolverProvider);
         _serviceProvider = collection.BuildServiceProvider(true);

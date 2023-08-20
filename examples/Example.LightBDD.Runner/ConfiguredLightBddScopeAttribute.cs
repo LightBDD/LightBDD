@@ -27,8 +27,8 @@ namespace Example.LightBDD.Runner
         /// </summary>
         protected override void OnConfigure(LightBddConfiguration configuration)
         {
-            configuration
-                .RegisterReportGenerators()
+            configuration.Services
+                .ConfigureReportGenerators()
                 .AddFileReport<XmlReportFormatter>("~\\Reports\\FeaturesReport.xml")
                 .AddFileReport<PlainTextReportFormatter>("~\\Reports\\{TestDateTimeUtc:yyyy-MM-dd-HH_mm_ss}_FeaturesReport.txt");
         }

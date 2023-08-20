@@ -28,6 +28,9 @@ namespace LightBDD.Core.Extensibility
         private readonly ValueFormattingService _valueFormattingService;
         private readonly INameFormatter _nameFormatter;
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public CoreMetadataProvider(ValueFormattingService valueFormattingService, INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration, MetadataConfiguration metadataMetadataConfiguration, GlobalDecoratorsProvider decoratorsProvider)
         {
             _metadataConfiguration = metadataMetadataConfiguration;
