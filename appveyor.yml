@@ -38,5 +38,4 @@ for:
    - sh: dotnet restore
    - sh: dotnet test -c Release -f net6 test/LightBDD.Core.UnitTests/LightBDD.Core.UnitTests.csproj
    - sh: dotnet test -c Release -f net6 test/LightBDD.Framework.UnitTests/LightBDD.Framework.UnitTests.csproj
-   - sh: dotnet test -c Release -f net6 test/LightBDD.Framework.Reporting.UnitTests/LightBDD.Framework.Reporting.UnitTests.csproj
    - sh: dotnet test -c Release -f net6 test/LightBDD.Runner.IntegrationTests/LightBDD.Runner.IntegrationTests.csproj

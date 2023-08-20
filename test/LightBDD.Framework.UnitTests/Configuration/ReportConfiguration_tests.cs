@@ -4,15 +4,15 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
-using LightBDD.Core.Dependencies;
 using LightBDD.Core.Reporting;
 using LightBDD.Framework.Configuration;
+using LightBDD.Framework.Reporting;
 using LightBDD.Framework.Reporting.Formatters;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using NUnit.Framework;
 
-namespace LightBDD.Framework.Reporting.UnitTests.Configuration
+namespace LightBDD.Framework.UnitTests.Configuration
 {
     [TestFixture]
     public class ReportConfiguration_tests

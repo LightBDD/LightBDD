@@ -1,11 +1,12 @@
-﻿using LightBDD.Core.Results;
+﻿using System;
+using System.IO;
+using LightBDD.Core.Results;
+using LightBDD.Framework.Reporting;
 using LightBDD.Framework.Reporting.Formatters;
 using Moq;
 using NUnit.Framework;
-using System;
-using System.IO;
 
-namespace LightBDD.Framework.Reporting.UnitTests
+namespace LightBDD.Framework.UnitTests.Reporting
 {
     [TestFixture]
     public class FileReportGenerator_tests

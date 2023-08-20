@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using HtmlAgilityPack;
 
-namespace LightBDD.Framework.Reporting.UnitTests.Formatters.Helpers;
+namespace LightBDD.Framework.UnitTests.Reporting.Formatters.Helpers;
 
 internal class HtmlTreeToPlainTextFormatter
 {

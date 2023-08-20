@@ -3,10 +3,11 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using LightBDD.Core.Results;
+using LightBDD.Framework.Reporting;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 
-namespace LightBDD.Framework.Reporting.UnitTests
+namespace LightBDD.Framework.UnitTests.Reporting
 {
     [TestFixture]
     [FixtureLifeCycle(LifeCycle.InstancePerTestCase)]

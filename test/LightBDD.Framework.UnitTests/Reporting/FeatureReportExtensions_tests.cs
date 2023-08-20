@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
 using LightBDD.Core.Results;
+using LightBDD.Framework.Reporting;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 
-namespace LightBDD.Framework.Reporting.UnitTests
+namespace LightBDD.Framework.UnitTests.Reporting
 {
     [TestFixture]
     public class FeatureReportExtensions_tests

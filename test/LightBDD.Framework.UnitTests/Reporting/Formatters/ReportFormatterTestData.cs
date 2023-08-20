@@ -5,7 +5,7 @@ using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Core.Results.Parameters.Trees;
 using LightBDD.UnitTests.Helpers;
 
-namespace LightBDD.Framework.Reporting.UnitTests.Formatters
+namespace LightBDD.Framework.UnitTests.Reporting.Formatters
 {
     internal static class ReportFormatterTestData
     {

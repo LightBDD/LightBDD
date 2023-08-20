@@ -2,12 +2,13 @@ using System;
 using System.IO;
 using System.Linq;
 using LightBDD.Core.Results;
+using LightBDD.Framework.Reporting;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.UnitTests.Helpers;
 using Moq;
 using NUnit.Framework;
 
-namespace LightBDD.Framework.Reporting.UnitTests
+namespace LightBDD.Framework.UnitTests.Reporting
 {
     [TestFixture]
     public class ReportFileWriter_formattable_path_tests

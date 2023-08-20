@@ -6,7 +6,7 @@ using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 
-namespace LightBDD.Framework.Reporting.UnitTests.Formatters
+namespace LightBDD.Framework.UnitTests.Reporting.Formatters
 {
     [TestFixture]
     public class PlainTextReportFormatter_tests
