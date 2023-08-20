@@ -1,10 +1,15 @@
+#nullable enable
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Notification;
 using LightBDD.Core.Notification.Events;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using NUnit.Framework;
-using Shouldly;
 
 namespace LightBDD.Core.UnitTests.Configuration
 {
@@ -14,44 +19,40 @@ namespace LightBDD.Core.UnitTests.Configuration
         [Test]
         public void Should_initialize_object_with_default_values()
         {
-            var configuration = new ProgressNotifierConfiguration();
-            Assert.That(configuration.Notifier, Is.InstanceOf<NoProgressNotifier>());
+            var configuration = new LightBddConfiguration();
+            Assert.That(GetDescriptors(configuration), Is.Empty);
         }
 
         [Test]
-        public void Append_should_not_allow_null_notifier()
+        public void Clear_should_reset_Notifiers()
         {
-            Assert.Throws<ArgumentNullException>(() => new ProgressNotifierConfiguration().Append(null!))
-                ?.Message.ShouldContain("notifiers");
+            var configuration = new LightBddConfiguration();
 
-            Assert.Throws<ArgumentNullException>(() => new ProgressNotifierConfiguration().Append(((IProgressNotifier)null)!))
-                ?.Message.ShouldContain("Value notifiers[0] cannot be null");
-        }
-
-        [Test]
-        public void Clear_should_reset_it_to_NoProgressNotifier()
-        {
-            var configuration = new ProgressNotifierConfiguration()
-                .Append(Mock.Of<IProgressNotifier>())
+            configuration.Services.ConfigureProgressNotifiers()
+                .Add(Mock.Of<IProgressNotifier>())
                 .Clear();
-            Assert.That(configuration.Notifier, Is.InstanceOf<NoProgressNotifier>());
+
+            Assert.That(GetDescriptors(configuration), Is.Empty);
         }
 
         [Test]
-        public void Append_should_append_notifiers_to_existing_ones()
+        public async Task Append_should_append_notifiers_to_existing_ones()
         {
             var notifier1 = Mock.Of<IProgressNotifier>();
             var notifier2 = Mock.Of<IProgressNotifier>();
             var notifier3 = Mock.Of<IProgressNotifier>();
             var notifier4 = Mock.Of<IProgressNotifier>();
 
-            var configuration = new ProgressNotifierConfiguration()
-                .Append(notifier1, notifier2)
-                .Append(notifier3)
-                .Append(notifier4);
+            var cfg = new LightBddConfiguration();
+            cfg.Services.ConfigureProgressNotifiers()
+                .Add(notifier1)
+                .Add(notifier2)
+                .Add(notifier3)
+                .Add(notifier4);
 
             var progressEvent = new ProgressEvent(default);
-            configuration.Notifier.Notify(progressEvent);
+            await using var container = cfg.BuildContainer();
+            container.Resolve<ProgressNotificationDispatcher>().Notify(progressEvent);
 
             Mock.Get(notifier1).Verify(x => x.Notify(progressEvent));
             Mock.Get(notifier2).Verify(x => x.Notify(progressEvent));
@@ -63,11 +64,17 @@ namespace LightBDD.Core.UnitTests.Configuration
         public void Configuration_should_be_sealable()
         {
             var root = new LightBddConfiguration();
-            var cfg = root.Get<ProgressNotifierConfiguration>();
+            var cfg = root.Services.ConfigureProgressNotifiers()
+                .Add(Mock.Of<IProgressNotifier>());
             root.Seal();
 
-            Assert.Throws<InvalidOperationException>(() => cfg.Append(Mock.Of<IProgressNotifier>()));
+            Assert.Throws<InvalidOperationException>(() => cfg.Add<IProgressNotifier>());
             Assert.Throws<InvalidOperationException>(() => cfg.Clear());
+        }
+
+        private static IEnumerable<ServiceDescriptor> GetDescriptors(LightBddConfiguration configuration)
+        {
+            return configuration.Services.Where(x => x.ServiceType == typeof(IProgressNotifier));
         }
     }
 }

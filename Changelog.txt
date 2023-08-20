@@ -64,6 +64,21 @@ vNext
 + #323 (Core)(breaking change) Removed ContainerConfigurator from ExecutionContextDescriptor, IIntegrableCompositeStepBuilder and CompositeStepBuilder, removing capability to modify DI container for sub-scopes
 + #323 (Core)(breaking change) Removed ContainerConfigurator, FallbackResolveBehavior, IDefaultContainerConfigurator, InstanceScope, LifetimeScope, RegistrationOptions types
 + #323 (Integrations)(breaking change) Removed LightBDD.Autofac and LightBDD.Extensions.DependencyInjection integration projects
++ #325 (Core)(new) Updated LightBddConfiguration to directly manage DI configuration, providing ability to register LightBdd feature implementations, configure features and register additional test dependencies
++ #325 (Core)(new) Enabled DI dependency support in Feature fixtures by reimplemeting IFixtureFactory implementation to use DI
++ #325 (Core)(new) Reworked Progress Notification to register all IProgressNotifier instances as singletons with support of DI dependencies
++ #325 (Core)(new) Reworked Report Generation to register all IReportGenerator instances with singletons, scoped or transient lifetime and with support of DI dependencies
++ #325 (Core)(new) Reworked Decorators to register all IScenarioDecorator and IStepDecorator instances with singletons, scoped or transient lifetime and with support of DI dependencies
++ #325 (Core)(new) Added IDependencyResolverProvider interface providing scoped IDependencyResolver access from singleton instances
++ #325 (Core)(new) Added ExecutionPipelineConfiguration with basic control over max number of concurrently executing LightBdd scenarios
++ #325 (Core)(new) Added Services property to LightBddConfiguration, allowing dependency registration on LightBDD DI container
++ #325 (Core)(new) Added IExceptionFormatter interface to handle exception formatting
++ #325 (Framework)(breaking change) Reworked ObjectTreeConfiguration to hold only ObjectTreeBuilderOptions
++ #325 (Framework)(breaking change) Reworked ObjectTreeBuilder to provide GetConfigured() method instead of Default and Current property
++ #325 (Core)(breaking change) Replaced CultureInfoProviderConfiguration, ExceptionHandlingConfiguration, ExecutionExtensionsConfiguration, NameFormatterConfiguration, ReportConfiguration with set of RegisterXXX() methods 
++ #325 (Core)(breaking change) Removed DependencyContainerConfiguration in favor of LightBddConfiguration direct support of DI
++ #325 (Core)(breaking change) Removed IFeatureConfiguration and ISealableFeatureConfiguration in favor to direct FeatureConfiguration usage
++ #325 (Core)(breaking change) Removed NoProgressNotifier as no longer needed
 
 Version 3.7.0
 ----------------------------------------

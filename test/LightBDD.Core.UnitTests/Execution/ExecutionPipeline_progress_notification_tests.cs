@@ -9,7 +9,9 @@ using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.ScenarioHelpers;
+using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
+using NUnit.Framework.Internal.Execution;
 using Shouldly;
 
 namespace LightBDD.Core.UnitTests.Execution;
@@ -23,7 +25,7 @@ public class ExecutionPipeline_progress_notification_tests : Steps
 
     public ExecutionPipeline_progress_notification_tests()
     {
-        _pipeline = TestableCoreExecutionPipeline.Create(cfg => cfg.ProgressNotifierConfiguration().Clear().Append(_progressNotifier));
+        _pipeline = TestableCoreExecutionPipeline.Create(cfg => cfg.Services.ConfigureProgressNotifiers().Clear().Add(_progressNotifier));
     }
 
     class MyFeature : Steps
@@ -48,6 +50,9 @@ public class ExecutionPipeline_progress_notification_tests : Steps
                 TestStep.CreateAsync(Given_step_with_parameter, () => "abc"),
                 TestStep.CreateAsync(When_step_with_parameter, ThrowingParameterInvocation),
                 TestStep.CreateAsync(Then_step_with_parameter, () => 2.22));
+
+        [TestScenario]
+        public Task Simple_scenario() => TestScenarioBuilder.Current.TestScenario(Given_step_one);
     }
 
     [Test]
@@ -188,6 +193,49 @@ public class ExecutionPipeline_progress_notification_tests : Steps
         Assert.That(stepResults[6].Info, Is.SameAs(stepInfos[8]), "1.2.3");
         Assert.That(stepResults[7].Info, Is.SameAs(stepInfos[5]), "1.2");
         Assert.That(stepResults[8].Info, Is.SameAs(stepInfos[0]), "1");
+    }
+
+    [Test]
+    public async Task It_should_support_progress_notifiers_with_DI_dependencies()
+    {
+        var capture = new EventCapture();
+
+        void OnConfigure(LightBddConfiguration cfg)
+        {
+            cfg.Services.AddSingleton(capture);
+            cfg.Services.ConfigureProgressNotifiers().Clear().Add<ProgressNotifierWithDependency>();
+        }
+
+        var result = await TestableCoreExecutionPipeline.Create(OnConfigure).ExecuteScenario<MyFeature>(f => f.Simple_scenario());
+        result.Status.ShouldBe(ExecutionStatus.Passed);
+
+        capture.ShouldBe(new[]
+        {
+            nameof(TestRunStarting),
+            nameof(FeatureStarting),
+            nameof(ScenarioStarting),
+            nameof(StepStarting),
+            nameof(StepFinished),
+            nameof(ScenarioFinished),
+            nameof(FeatureFinished),
+            nameof(TestRunFinished)
+        });
+    }
+
+    class EventCapture : List<string> { }
+    class ProgressNotifierWithDependency : IProgressNotifier
+    {
+        private readonly EventCapture _capture;
+
+        public ProgressNotifierWithDependency(EventCapture capture)
+        {
+            _capture = capture;
+        }
+
+        public void Notify(ProgressEvent e)
+        {
+            _capture.Add(e.GetType().Name);
+        }
     }
 
     void CaptureEvent<TEvent>(Action<TEvent> callback) where TEvent : ProgressEvent

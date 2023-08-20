@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Implementation;
 
@@ -14,11 +15,11 @@ namespace LightBDD.Core.Execution.Implementation;
 internal class ExecutionStatusCollector
 {
     private readonly ConcurrentQueue<Exception> _executionExceptions = new();
-    private readonly Func<Exception, string> _exceptionFormatter;
+    private readonly IExceptionFormatter _exceptionFormatter;
 
-    public ExecutionStatusCollector(LightBddConfiguration configuration)
+    public ExecutionStatusCollector(IExceptionFormatter exceptionFormatter)
     {
-        _exceptionFormatter = configuration.ExceptionHandlingConfiguration().ExceptionDetailsFormatter;
+        _exceptionFormatter = exceptionFormatter;
     }
 
     public void Capture(Exception exception)
@@ -81,7 +82,7 @@ internal class ExecutionStatusCollector
     {
         return exception is IgnoreException or BypassException
             ? exception.Message
-            : _exceptionFormatter(exception);
+            : _exceptionFormatter.Format(exception);
     }
 
     private Exception? Aggregate(ExecutionStatus overallStatus, Exception[] collected, IEnumerable<IStepResult> steps)

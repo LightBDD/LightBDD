@@ -183,7 +183,7 @@ internal class RunnableStepV2 : IStep, IRunStageContext
     {
         ScenarioExecutionContext.Current.Get<CurrentStepProperty>().Stash(this);
         EvaluateParameters();
-        _stepContext.ProgressNotifier.Notify(new StepStarting(executionStartTime, _result.Info));
+        _stepContext.ProgressDispatcher.Notify(new StepStarting(executionStartTime, _result.Info));
     }
 
     private void StopStep(EventTime executionStartTime, bool stepStartNotified)
@@ -195,7 +195,7 @@ internal class RunnableStepV2 : IStep, IRunStageContext
         _result.SetExecutionTime(executionStopTime.GetExecutionTime(executionStartTime));
         _result.IncludeSubStepDetails();
         if (stepStartNotified)
-            _stepContext.ProgressNotifier.Notify(new StepFinished(executionStopTime, _result));
+            _stepContext.ProgressDispatcher.Notify(new StepFinished(executionStopTime, _result));
     }
 
     private void HandleException(Exception exception)
@@ -254,7 +254,7 @@ internal class RunnableStepV2 : IStep, IRunStageContext
     public void Comment(string comment)
     {
         _result.AddComment(comment);
-        _stepContext.ProgressNotifier.Notify(new StepCommented(_stepContext.ExecutionTimer.GetTime(), _result.Info, comment));
+        _stepContext.ProgressDispatcher.Notify(new StepCommented(_stepContext.ExecutionTimer.GetTime(), _result.Info, comment));
     }
 
     public override string ToString()
@@ -266,6 +266,6 @@ internal class RunnableStepV2 : IStep, IRunStageContext
     {
         var attachment = await createAttachmentFn(_stepContext.FileAttachmentsManager);
         _result.AddAttachment(attachment);
-        _stepContext.ProgressNotifier.Notify(new StepFileAttached(_stepContext.ExecutionTimer.GetTime(), _result.Info, attachment));
+        _stepContext.ProgressDispatcher.Notify(new StepFileAttached(_stepContext.ExecutionTimer.GetTime(), _result.Info, attachment));
     }
 }

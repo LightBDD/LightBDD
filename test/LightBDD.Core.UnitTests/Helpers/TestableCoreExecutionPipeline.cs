@@ -7,6 +7,7 @@ using LightBDD.Core.Configuration;
 using LightBDD.Core.Discovery;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Results;
+using LightBDD.ScenarioHelpers;
 
 namespace LightBDD.Core.UnitTests.Helpers
 {

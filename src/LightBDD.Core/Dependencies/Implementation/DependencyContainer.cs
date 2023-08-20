@@ -7,59 +7,65 @@ namespace LightBDD.Core.Dependencies.Implementation;
 
 internal class DependencyContainer : IDependencyContainer
 {
-    private readonly object _holdingScope;
+    private readonly DependencyResolverProvider _resolverProvider;
     private readonly IServiceProvider _serviceProvider;
+    private readonly IDependencyResolver _resolver;
 
-    public DependencyContainer(IServiceProvider serviceProvider)
+    public DependencyContainer(IServiceCollection collection)
     {
-        _serviceProvider = serviceProvider;
-        _holdingScope = serviceProvider;
-    }
-
-    private DependencyContainer(AsyncServiceScope scope)
-    {
-        _serviceProvider = scope.ServiceProvider;
-        _holdingScope = scope;
+        _resolverProvider = new(this);
+        collection.AddTransient<IDependencyResolver, DependencyResolver>();
+        collection.AddSingleton<IDependencyResolverProvider>(_resolverProvider);
+        _serviceProvider = collection.BuildServiceProvider(true);
+        _resolver = _serviceProvider.GetRequiredService<IDependencyResolver>();
     }
 
     public object Resolve(Type type)
     {
-        if (type == typeof(IDependencyContainer) || type == typeof(IDependencyResolver))
-            return this;
-
-        return _serviceProvider.GetService(type) ?? CreateTransient(type);
-    }
-
-    private object CreateTransient(Type type)
-    {
-        try
-        {
-            return EnlistDisposable(TransientDependencyFactory.Create(type, this));
-        }
-        catch (Exception ex)
-        {
-            throw new InvalidOperationException($"Unable to create transient instance of type '{type}':{Environment.NewLine}{ex.Message}", ex);
-        }
-    }
-
-    private object EnlistDisposable(object item)
-    {
-        if (item is IAsyncDisposable or IDisposable)
-            return _serviceProvider.GetRequiredService<TransientDisposable>().WithInstance(item)!;
-        return item;
+        return _resolver.Resolve(type);
     }
 
     public IDependencyContainer BeginScope()
     {
-        return new DependencyContainer(_serviceProvider.CreateAsyncScope());
+        return new ScopedDependencyContainer(this, this, _serviceProvider.CreateAsyncScope());
     }
 
     public ValueTask DisposeAsync()
     {
-        if (_holdingScope is IAsyncDisposable disposable)
+        if (_serviceProvider is IAsyncDisposable disposable)
             return disposable.DisposeAsync();
 
-        (_holdingScope as IDisposable)?.Dispose();
+        (_serviceProvider as IDisposable)?.Dispose();
         return default;
+    }
+
+    private class ScopedDependencyContainer : IDependencyContainer
+    {
+        private readonly AsyncServiceScope _scope;
+        private readonly DependencyContainer _root;
+        private readonly IDependencyContainer _parent;
+        private readonly IDependencyResolver _resolver;
+
+        public ScopedDependencyContainer(DependencyContainer root, IDependencyContainer parent, AsyncServiceScope scope)
+        {
+            _root = root;
+            _parent = parent;
+            _scope = scope;
+            _root._resolverProvider.SetCurrent(this);
+            _resolver = scope.ServiceProvider.GetRequiredService<IDependencyResolver>();
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            _root._resolverProvider.SetCurrent(_parent);
+            await _scope.DisposeAsync();
+        }
+
+        public object Resolve(Type type) => _resolver.Resolve(type);
+
+        public IDependencyContainer BeginScope()
+        {
+            return new ScopedDependencyContainer(_root, this, _scope.ServiceProvider.CreateAsyncScope());
+        }
     }
 }

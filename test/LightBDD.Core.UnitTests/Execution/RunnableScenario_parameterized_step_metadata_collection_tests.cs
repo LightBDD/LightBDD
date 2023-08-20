@@ -22,7 +22,7 @@ namespace LightBDD.Core.UnitTests.Execution;
 public class RunnableScenario_parameterized_step_metadata_collection_tests : Steps
 {
     private static readonly TestableScenarioFactory ScenarioFactory = TestableScenarioFactory.Create(cfg =>
-        cfg.NameFormatterConfiguration().UpdateFormatter(new UnderscoreToSpaceFormatter()));
+        cfg.Services.ConfigureNameFormatter(c => c.Use<UnderscoreToSpaceFormatter>()));
 
     [Test]
     public async Task It_should_capture_all_steps()

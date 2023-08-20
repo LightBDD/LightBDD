@@ -39,15 +39,13 @@ public class RunnableScenario_scenario_context_tests
     [Test]
     public async Task It_should_use_scenario_DI_scope_for_resource_management()
     {
-        void ConfigureDi(IServiceCollection serviceCollection)
-        {
-            serviceCollection.AddSingleton<Disposable1>();
-            serviceCollection.AddScoped<Disposable2>();
-        }
-
         Disposable1 capturedSingleton = null;
         Disposable2 capturedScoped = null;
-        var factory = TestableScenarioFactory.Create(cfg => cfg.DependencyContainerConfiguration().ConfigureServices(ConfigureDi));
+
+        var factory = TestableScenarioFactory.Create(cfg => cfg.Services
+            .AddSingleton<Disposable1>()
+            .AddScoped<Disposable2>());
+
         await factory.RunScenario(_ =>
         {
             capturedSingleton = ScenarioExecutionContext.CurrentScenario.DependencyResolver.Resolve<Disposable1>();
@@ -66,12 +64,8 @@ public class RunnableScenario_scenario_context_tests
     [Test]
     public async Task It_should_fail_scenario_on_DI_scope_disposal_failure()
     {
-        void ConfigureDi(IServiceCollection serviceCollection)
-        {
-            serviceCollection.AddScoped<FaultyDisposable>();
-        }
+        var factory = TestableScenarioFactory.Create(cfg => cfg.Services.AddScoped<FaultyDisposable>());
 
-        var factory = TestableScenarioFactory.Create(cfg => cfg.DependencyContainerConfiguration().ConfigureServices(ConfigureDi));
         var result = await factory.RunScenario(_ =>
         {
             ScenarioExecutionContext.CurrentScenario.DependencyResolver.Resolve<FaultyDisposable>();

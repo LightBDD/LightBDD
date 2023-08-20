@@ -1,108 +1,31 @@
-﻿namespace LightBDD.Core.Configuration
+﻿namespace LightBDD.Core.Configuration;
+
+/// <summary>
+/// Extension class allowing to configure core parts of LightBDD.
+/// </summary>
+public static class ConfigurationExtensions
 {
     /// <summary>
-    /// Extension class allowing to configure core parts of LightBDD.
+    /// Provides configuration for step types.
     /// </summary>
-    public static class ConfigurationExtensions
-    {
-        /// <summary>
-        /// Returns step type configuration.
-        /// </summary>
-        /// <param name="cfg">Configuration object.</param>
-        /// <returns>Step type configuration.</returns>
-        public static StepTypeConfiguration StepTypeConfiguration(this LightBddConfiguration cfg)
-        {
-            return cfg.Get<StepTypeConfiguration>();
-        }
+    public static StepTypeConfiguration ForStepTypes(this LightBddConfiguration configuration)
+        => configuration.Get<StepTypeConfiguration>();
 
-        /// <summary>
-        /// Returns culture info provider configuration.
-        /// </summary>
-        /// <param name="cfg">Configuration object.</param>
-        /// <returns>Culture info provider configuration.</returns>
-        public static CultureInfoProviderConfiguration CultureInfoProviderConfiguration(this LightBddConfiguration cfg)
-        {
-            return cfg.Get<CultureInfoProviderConfiguration>();
-        }
+    /// <summary>
+    /// Provides configuration for value formatting.
+    /// </summary>
+    public static ValueFormattingConfiguration ForValueFormatting(this LightBddConfiguration configuration)
+        => configuration.Get<ValueFormattingConfiguration>();
 
-        /// <summary>
-        /// Return execution extensions configuration.
-        /// </summary>
-        /// <param name="cfg">Configuration object.</param>
-        /// <returns>Execution extensions configuration.</returns>
-        public static ExecutionExtensionsConfiguration ExecutionExtensionsConfiguration(this LightBddConfiguration cfg)
-        {
-            return cfg.Get<ExecutionExtensionsConfiguration>();
-        }
+    /// <summary>
+    /// Provides configuration for LightBDD metadata.
+    /// </summary>
+    public static MetadataConfiguration ForMetadata(this LightBddConfiguration configuration)
+        => configuration.Get<MetadataConfiguration>();
 
-        /// <summary>
-        /// Returns exception handling configuration.
-        /// </summary>
-        /// <param name="cfg"></param>
-        /// <returns></returns>
-        public static ExceptionHandlingConfiguration ExceptionHandlingConfiguration(this LightBddConfiguration cfg)
-        {
-            return cfg.Get<ExceptionHandlingConfiguration>();
-        }
-
-        /// <summary>
-        /// Retrieves <see cref="DependencyContainerConfiguration"/> from <paramref name="configuration"/> for further customizations.
-        /// </summary>
-        /// <param name="configuration">Configuration object.</param>
-        /// <returns>Configuration object.</returns>
-        public static DependencyContainerConfiguration DependencyContainerConfiguration(this LightBddConfiguration configuration)
-        {
-            return configuration.Get<DependencyContainerConfiguration>();
-        }
-
-        /// <summary>
-        /// Retrieves <see cref="ReportConfiguration"/> from <paramref name="configuration"/> for further customizations.
-        /// </summary>
-        /// <param name="configuration">Configuration object.</param>
-        /// <returns>Configuration object.</returns>
-        public static ReportConfiguration ReportConfiguration(this LightBddConfiguration configuration)
-        {
-            return configuration.Get<ReportConfiguration>();
-        }
-
-        /// <summary>
-        /// Retrieves <see cref="NameFormatterConfiguration"/> from <paramref name="configuration"/> for further customizations.
-        /// </summary>
-        /// <param name="configuration">Configuration object.</param>
-        /// <returns>Configuration object.</returns>
-        public static NameFormatterConfiguration NameFormatterConfiguration(this LightBddConfiguration configuration)
-        {
-            return configuration.Get<NameFormatterConfiguration>();
-        }
-
-        /// <summary>
-        /// Retrieves <see cref="ValueFormattingConfiguration"/> from <paramref name="configuration"/> for further customizations.
-        /// </summary>
-        /// <param name="configuration">Configuration object.</param>
-        /// <returns>Configuration object.</returns>
-        public static ValueFormattingConfiguration ValueFormattingConfiguration(this LightBddConfiguration configuration)
-        {
-            return configuration.Get<ValueFormattingConfiguration>();
-        }
-
-        /// <summary>
-        /// Retrieves <see cref="ProgressNotifierConfiguration"/> from <paramref name="configuration"/> for further customizations.
-        /// </summary>
-        /// <param name="configuration">Configuration object.</param>
-        /// <returns>Configuration object.</returns>
-        public static ProgressNotifierConfiguration ProgressNotifierConfiguration(this LightBddConfiguration configuration)
-        {
-            return configuration.Get<ProgressNotifierConfiguration>();
-        }
-
-        /// <summary>
-        /// Retrieves <see cref="MetadataConfiguration"/> from <paramref name="configuration"/> for further customizations.
-        /// </summary>
-        /// <param name="configuration">Configuration object.</param>
-        /// <returns>Configuration object.</returns>
-        public static MetadataConfiguration MetadataConfiguration(this LightBddConfiguration configuration)
-        {
-            return configuration.Get<MetadataConfiguration>();
-        }
-    }
+    /// <summary>
+    /// Provides configuration for execution pipeline.
+    /// </summary>
+    public static ExecutionPipelineConfiguration ForExecutionPipeline(this LightBddConfiguration configuration)
+        => configuration.Get<ExecutionPipelineConfiguration>();
 }

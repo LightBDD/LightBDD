@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
+using LightBDD.Core.UnitTests.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
@@ -58,14 +59,14 @@ public class DependencyContainer_tests
     }
 
     [Test]
-    public async Task It_should_resolve_current_container()
+    public async Task It_should_resolve_current_resolver()
     {
         await using var container = CreateContainer();
         await using var scope = container.BeginScope();
-        Assert.That(scope.Resolve<IDependencyContainer>(), Is.SameAs(scope));
-        Assert.That(scope.Resolve<IDependencyResolver>(), Is.SameAs(scope));
-        Assert.That(container.Resolve<IDependencyContainer>(), Is.SameAs(container));
-        Assert.That(container.Resolve<IDependencyResolver>(), Is.SameAs(container));
+        Assert.That(scope.Resolve<DisposableScoped>(), Is.SameAs(scope.Resolve<IDependencyResolver>().Resolve<DisposableScoped>()));
+        Assert.That(scope.Resolve<DisposableSingleton>(), Is.SameAs(scope.Resolve<IDependencyResolver>().Resolve<DisposableSingleton>()));
+        Assert.That(container.Resolve<DisposableSingleton>(), Is.SameAs(container.Resolve<IDependencyResolver>().Resolve<DisposableSingleton>()));
+        Assert.That(container.Resolve<DisposableSingleton>(), Is.SameAs(scope.Resolve<IDependencyResolver>().Resolve<DisposableSingleton>()));
     }
 
     [Test]
@@ -86,14 +87,12 @@ public class DependencyContainer_tests
     [Test]
     public async Task Resolve_should_be_thread_safe()
     {
-        await using var container = new DependencyContainerConfiguration()
-            .ConfigureServices(x =>
-            {
-                x.AddSingleton<SlowDependency>();
-                x.AddSingleton<object>(x => x.GetRequiredService<SlowDependency>());
-            })
-            .Build();
+        var cfg = new LightBddConfiguration();
+        cfg.Services
+            .AddSingleton<SlowDependency>()
+            .AddSingleton<object>(x => x.GetRequiredService<SlowDependency>());
 
+        await using var container = cfg.BuildContainer();
         await using var scenario = container.BeginScope();
 
         var all = await Task.WhenAll(Enumerable.Range(0, 10).Select(_ => Task.Run(() => (object)scenario.Resolve<SlowDependency>()))
@@ -103,12 +102,16 @@ public class DependencyContainer_tests
         Assert.AreEqual(1, SlowDependency.Instances);
     }
 
-    private IDependencyContainer CreateContainer() => new DependencyContainerConfiguration()
-        .ConfigureServices(c => c
+    private IDependencyContainer CreateContainer()
+    {
+        var cfg = new LightBddConfiguration();
+        cfg.Services
             .AddSingleton<DisposableSingleton>()
             .AddScoped<DisposableScoped>()
-            .AddTransient<DisposableTransient>())
-        .Build();
+            .AddTransient<DisposableTransient>();
+        return cfg
+            .BuildContainer();
+    }
 
     class DisposableSingleton : IDisposable
     {

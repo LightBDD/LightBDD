@@ -22,7 +22,7 @@ public class RunnableScenario_fixture_setup_and_teardown_tests
 
     public RunnableScenario_fixture_setup_and_teardown_tests()
     {
-        _factory = TestableScenarioFactory.Create(cfg => cfg.ExecutionExtensionsConfiguration().RegisterFixtureFactory(new FakeFixtureFactory(_fixture)));
+        _factory = TestableScenarioFactory.Create(cfg => cfg.Services.ConfigureFixtureFactory(x => x.Use(new FakeFixtureFactory(_fixture))));
     }
 
     [Test]

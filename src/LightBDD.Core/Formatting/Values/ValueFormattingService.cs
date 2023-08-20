@@ -23,15 +23,6 @@ namespace LightBDD.Core.Formatting.Values
         /// Constructor initializing instance with provided configuration.
         /// </summary>
         /// <param name="configuration">Configuration.</param>
-        public ValueFormattingService(LightBddConfiguration configuration) : this(
-            configuration.Get<ValueFormattingConfiguration>(),
-            configuration.CultureInfoProviderConfiguration().CultureInfoProvider)
-        { }
-
-        /// <summary>
-        /// Constructor initializing instance with provided configuration.
-        /// </summary>
-        /// <param name="configuration">Configuration.</param>
         /// <param name="cultureInfoProvider">CultureInfo provider.</param>
         public ValueFormattingService(ValueFormattingConfiguration configuration, ICultureInfoProvider cultureInfoProvider)
         {

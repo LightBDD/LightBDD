@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
+using LightBDD.Core.UnitTests.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
@@ -55,12 +56,16 @@ public class DependencyContainer_async_dispose_tests
         Assert.True(outer.Disposed);
     }
 
-    private IDependencyContainer CreateContainer() => new DependencyContainerConfiguration()
-        .ConfigureServices(c => c
+    private IDependencyContainer CreateContainer()
+    {
+        var cfg = new LightBddConfiguration();
+        cfg.Services
             .AddSingleton<DisposableSingleton>()
             .AddScoped<DisposableScoped>()
-            .AddTransient<DisposableTransient>())
-        .Build();
+            .AddTransient<DisposableTransient>();
+
+        return cfg.BuildContainer();
+    }
 
     class DisposableSingleton : IAsyncDisposable
     {

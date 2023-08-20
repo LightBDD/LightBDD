@@ -36,7 +36,15 @@ internal class ExecutionPipelineAdapter : ExecutionPipeline
     public async Task<ITestRunResult> Execute(IEnumerable<IXunitTestCase> testCases)
     {
         _allCases = testCases.ToDictionary(c => c.UniqueID);
-        return await Execute(_allCases.Values.Select(ConvertTestCase).ToArray(), _cancellationTokenSource.Token);
+        try
+        {
+            return await Execute(_allCases.Values.Select(ConvertTestCase).ToArray(), _cancellationTokenSource.Token);
+        }
+        catch (Exception ex)
+        {
+            Send(new TestCollectionCleanupFailure(_allCases.Values, _collection, ex));
+            throw;
+        }
     }
 
     protected override void OnBeforeScenario(EventTime time, IScenarioInfo scenarioInfo, ScenarioCase scenario)
@@ -117,7 +125,6 @@ internal class ExecutionPipelineAdapter : ExecutionPipeline
         var failed = result.Features.Sum(f => f.CountScenariosWithStatus(ExecutionStatus.Failed));
         var skipped = result.Features.Sum(f => f.CountScenariosWithStatus(ExecutionStatus.Ignored));
         var total = result.Features.Sum(f => f.GetScenarios().Count());
-
         Send(new TestCollectionFinished(_allCases.Values, _collection, GetDuration(result.ExecutionTime), total, failed, skipped));
     }
 

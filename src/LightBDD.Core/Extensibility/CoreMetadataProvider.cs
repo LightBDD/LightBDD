@@ -12,43 +12,33 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using LightBDD.Core.Extensibility.Execution.Implementation;
 
 namespace LightBDD.Core.Extensibility
 {
     /// <summary>
     /// Metadata provider offering core implementation for providing feature, scenario and step metadata.
     /// </summary>
-    //TODO: consider using DI and dropping dependency on configuration
     public class CoreMetadataProvider
     {
         private readonly NameParser _nameParser;
         private readonly StepTypeProcessor _stepTypeProcessor;
-        private readonly MetadataConfiguration _configuration;
+        private readonly MetadataConfiguration _metadataConfiguration;
+        private readonly GlobalDecoratorsProvider _decoratorsProvider;
+        private readonly ValueFormattingService _valueFormattingService;
+        private readonly INameFormatter _nameFormatter;
 
         /// <summary>
-        /// Returns <see cref="Formatting.Values.ValueFormattingService"/> .
+        /// Default constructor.
         /// </summary>
-        //TODO: consider removal
-        public ValueFormattingService ValueFormattingService { get; }
-        /// <summary>
-        /// Returns <see cref="INameFormatter"/>.
-        /// </summary>
-        //TODO: consider removal
-        public INameFormatter NameFormatter { get; }
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        public CoreMetadataProvider(LightBddConfiguration configuration)
+        public CoreMetadataProvider(ValueFormattingService valueFormattingService, INameFormatter nameFormatter, StepTypeConfiguration stepTypeConfiguration, MetadataConfiguration metadataMetadataConfiguration, GlobalDecoratorsProvider decoratorsProvider)
         {
-            if (configuration == null)
-                throw new ArgumentNullException(nameof(configuration));
-
-            ValueFormattingService = new ValueFormattingService(configuration);
-            NameFormatter = configuration.NameFormatterConfiguration().GetFormatter();
-            _nameParser = new NameParser(NameFormatter);
-            _stepTypeProcessor = new StepTypeProcessor(NameFormatter, configuration.StepTypeConfiguration());
-            _configuration = configuration.MetadataConfiguration();
+            _metadataConfiguration = metadataMetadataConfiguration;
+            _decoratorsProvider = decoratorsProvider;
+            _valueFormattingService = valueFormattingService;
+            _nameFormatter = nameFormatter;
+            _nameParser = new NameParser(_nameFormatter);
+            _stepTypeProcessor = new StepTypeProcessor(_nameFormatter, stepTypeConfiguration);
         }
 
         /// <summary>
@@ -133,7 +123,7 @@ namespace LightBDD.Core.Extensibility
                .Cast<IConditionalValueFormatter>()
                .ToArray();
 
-            return ValueFormattingService.WithFormattersOverride(declaredFormatters);
+            return _valueFormattingService.WithFormattersOverride(declaredFormatters);
         }
 
         /// <summary>
@@ -145,12 +135,14 @@ namespace LightBDD.Core.Extensibility
         /// <returns>Collection of decorators or empty collection if none are present.</returns>
         public IEnumerable<IStepDecorator> GetStepDecorators(StepDescriptor stepDescriptor)
         {
+            var globalDecorators = _decoratorsProvider.ProvideStepDecorators();
             if (stepDescriptor.MethodInfo == null)
-                return Enumerable.Empty<IStepDecorator>();
+                return globalDecorators;
 
-            return ConcatAndOrderAttributes(
-                stepDescriptor.MethodInfo.DeclaringType.ExtractAttributes<IStepDecoratorAttribute>(),
-                stepDescriptor.MethodInfo.ExtractAttributes<IStepDecoratorAttribute>());
+            return globalDecorators.Concat(
+                ConcatAndOrderAttributes(
+                    stepDescriptor.MethodInfo.DeclaringType.ExtractAttributes<IStepDecoratorAttribute>(),
+                    stepDescriptor.MethodInfo.ExtractAttributes<IStepDecoratorAttribute>()));
         }
 
         /// <summary>
@@ -162,9 +154,10 @@ namespace LightBDD.Core.Extensibility
         /// <returns>Collection of decorators or empty collection if none are present.</returns>
         public IEnumerable<IScenarioDecorator> GetScenarioDecorators(ScenarioDescriptor scenarioDescriptor)
         {
-            return ConcatAndOrderAttributes(
-                scenarioDescriptor.MethodInfo.DeclaringType.ExtractAttributes<IScenarioDecoratorAttribute>(),
-                scenarioDescriptor.MethodInfo.ExtractAttributes<IScenarioDecoratorAttribute>());
+            return _decoratorsProvider.ProvideScenarioDecorators().Concat(
+                ConcatAndOrderAttributes(
+                    scenarioDescriptor.MethodInfo.DeclaringType.ExtractAttributes<IScenarioDecoratorAttribute>(),
+                    scenarioDescriptor.MethodInfo.ExtractAttributes<IScenarioDecoratorAttribute>()));
         }
 
         /// <summary>
@@ -174,7 +167,7 @@ namespace LightBDD.Core.Extensibility
         public ITestRunInfo GetTestRunInfo(Assembly testAssembly)
         {
             //TODO: add assembly details
-            return new TestRunInfo(TestSuite.Create(testAssembly), _configuration.EngineAssemblies);
+            return new TestRunInfo(TestSuite.Create(testAssembly), _metadataConfiguration.EngineAssemblies);
         }
 
         /// <summary>
@@ -217,7 +210,7 @@ namespace LightBDD.Core.Extensibility
         /// <returns>Feature name.</returns>
         private INameInfo GetFeatureName(Type featureType)
         {
-            return new NameInfo(NameFormatter.FormatName(featureType.Name), Array.Empty<INameParameterInfo>());
+            return new NameInfo(_nameFormatter.FormatName(featureType.Name), Array.Empty<INameParameterInfo>());
         }
 
         /// <summary>

@@ -73,7 +73,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [TestCase(" \r\n\t")]
         public void Should_disable_normalization_if_replacementString_is_empty(string repeatedStepReplacement)
         {
-            var metadataProvider = TestMetadataProvider.Create(cfg => cfg.StepTypeConfiguration().UpdateRepeatedStepReplacement(repeatedStepReplacement));
+            var metadataProvider = TestMetadataProvider.Create(cfg => cfg.ForStepTypes().UpdateRepeatedStepReplacement(repeatedStepReplacement));
 
             var stepTypeName = "given";
 
@@ -88,7 +88,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
         [TestCase("then_something", null, "then something")]
         public void Should_allow_to_reconfigure_predefined_step_types(string formattedName, string expectedType, string expectedNameFormat)
         {
-            var metadataProvider = TestMetadataProvider.Create(cfg => cfg.StepTypeConfiguration().UpdatePredefinedStepTypes("call", "invoke"));
+            var metadataProvider = TestMetadataProvider.Create(cfg => cfg.ForStepTypes().UpdatePredefinedStepTypes("call", "invoke"));
 
             var descriptor = new StepDescriptor(formattedName, (o, a) => Task.FromResult(DefaultStepResultDescriptor.Instance))
             {

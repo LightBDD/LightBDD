@@ -10,6 +10,7 @@ using LightBDD.Core.Extensibility.Results;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
+using LightBDD.ScenarioHelpers;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 using Shouldly;
@@ -19,14 +20,7 @@ namespace LightBDD.Core.UnitTests.Extensibility
     [TestFixture]
     public class CoreMetadataProvider_tests
     {
-        private readonly CoreMetadataProvider _metadataProvider=TestMetadataProvider.Default;
-
-
-        [Test]
-        public void It_should_throw_if_configuration_is_null()
-        {
-            Assert.Throws<ArgumentNullException>(() => new CoreMetadataProvider(null));
-        }
+        private readonly CoreMetadataProvider _metadataProvider = TestMetadataProvider.Default;
 
         [Test]
         public void GetFeatureInfo_should_capture_feature_information_from_type()

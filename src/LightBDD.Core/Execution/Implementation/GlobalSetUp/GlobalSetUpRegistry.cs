@@ -8,7 +8,12 @@ namespace LightBDD.Core.Execution.Implementation.GlobalSetUp
 {
     internal class GlobalSetUpRegistry
     {
-        private readonly List<IGlobalSetUp> _global = new();
+        private readonly IGlobalSetUp[] _global;
+
+        public GlobalSetUpRegistry(IEnumerable<IGlobalSetUp> globalSetUps)
+        {
+            _global = globalSetUps.ToArray();
+        }
 
         public async Task SetUpAsync(IDependencyResolver resolver)
         {
@@ -40,16 +45,6 @@ namespace LightBDD.Core.Execution.Implementation.GlobalSetUp
 
             if (exceptions.Any())
                 throw new AggregateException($"Global clean up failed: {string.Join("\n", exceptions.Select(e => e.Message))}", exceptions);
-        }
-
-        public void RegisterResource<TDependency>() where TDependency : IGlobalResourceSetUp
-        {
-            _global.Add(new GlobalResourceSetUp<TDependency>());
-        }
-
-        public void RegisterActivity(string name, Func<Task> setUp, Func<Task> tearDown)
-        {
-            _global.Add(new GlobalActivitySetUp(name, setUp, tearDown));
         }
     }
 }

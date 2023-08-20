@@ -7,6 +7,7 @@ using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Discovery;
 using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.ExecutionContext.Implementation;
@@ -14,6 +15,7 @@ using LightBDD.Core.Extensibility;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Reporting;
+using LightBDD.Core.Reporting.Implementation;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Implementation;
 
@@ -51,7 +53,7 @@ namespace LightBDD.Core.Execution
             var testRunInfo = ctx.MetadataProvider.GetTestRunInfo(_testAssembly);
             var testRunStartTime = ctx.ExecutionTimer.GetTime();
             OnBeforeTestRunStart(testRunStartTime, testRunInfo, scenarios);
-            ctx.ProgressNotifier.Notify(new TestRunStarting(testRunStartTime, testRunInfo));
+            ctx.ProgressDispatcher.Notify(new TestRunStarting(testRunStartTime, testRunInfo));
 
             await RunGlobalSetUp(ctx);
             var results = await Task.WhenAll(scenarios.GroupBy(s => s.FeatureFixtureType).Select(fixture => ExecuteFeature(fixture, ctx)));
@@ -59,12 +61,18 @@ namespace LightBDD.Core.Execution
 
             var testRunEndTime = ctx.ExecutionTimer.GetTime();
             var result = new TestRunResult(testRunInfo, testRunEndTime.GetExecutionTime(testRunStartTime), results);
-            ctx.ProgressNotifier.Notify(new TestRunFinished(testRunEndTime, result));
+            ctx.ProgressDispatcher.Notify(new TestRunFinished(testRunEndTime, result));
 
-            await new FeatureReportGenerator(ctx.Configuration).GenerateReports(result);
+            await GenerateReports(ctx, result);
             OnAfterTestRunFinish(testRunEndTime, result);
             LightBddExecutionContext.Clear();
             return result;
+        }
+
+        private static async Task GenerateReports(Context ctx, TestRunResult result)
+        {
+            await using var scope = ctx.DependencyContainer.BeginScope();
+            await scope.Resolve<FeatureReportGenerator>().GenerateReports(result);
         }
 
         private static async Task RunGlobalSetUp(Context ctx)
@@ -104,7 +112,7 @@ namespace LightBDD.Core.Execution
             var featureStartTime = ctx.ExecutionTimer.GetTime();
             var scenarios = featureScenarios.ToArray();
             OnBeforeFeatureStart(featureStartTime, featureInfo, scenarios);
-            ctx.ProgressNotifier.Notify(new FeatureStarting(featureStartTime, featureInfo));
+            ctx.ProgressDispatcher.Notify(new FeatureStarting(featureStartTime, featureInfo));
 
             var results = await Task.WhenAll(featureScenarios.SelectMany(s => ExpandParameterizedScenarios(s, ctx))
                 .GroupBy(s => s.ScenarioMethod)
@@ -112,7 +120,7 @@ namespace LightBDD.Core.Execution
 
             var featureEndTime = ctx.ExecutionTimer.GetTime();
             var result = new FeatureResultV2(featureInfo, results.SelectMany(r => r).ToArray());
-            ctx.ProgressNotifier.Notify(new FeatureFinished(featureEndTime, result));
+            ctx.ProgressDispatcher.Notify(new FeatureFinished(featureEndTime, result));
             OnAfterFeatureFinished(featureEndTime, result);
             return result;
         }
@@ -140,7 +148,7 @@ namespace LightBDD.Core.Execution
         {
             var scenarios = scenarioCases.ToArray();
             OnBeforeScenarioGroup(ctx.ExecutionTimer.GetTime(), scenarioCases.Key, scenarios);
-            var results = await Task.WhenAll(scenarios.Select(s => ExecuteScenario(featureInfo, s, ctx)));
+            var results = await Task.WhenAll(scenarios.Select(s => ctx.ExecutionScheduler.Schedule(() => ExecuteScenario(featureInfo, s, ctx))));
             OnAfterScenarioGroup(ctx.ExecutionTimer.GetTime(), results);
             return results;
         }
@@ -262,7 +270,6 @@ namespace LightBDD.Core.Execution
         {
             var cfg = new LightBddConfiguration();
             _onConfigure?.Invoke(cfg);
-            cfg.Seal();
             return cfg;
         }
 

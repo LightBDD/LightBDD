@@ -23,7 +23,7 @@ namespace LightBDD.Framework.Parameters;
 public class VerifiableTree : IComplexParameter, ISelfFormattable
 {
     private readonly VerifiableTreeOptions _options;
-    private readonly ObjectTreeBuilder _treeBuilder = ObjectTreeBuilder.Current;
+    private readonly ObjectTreeBuilder _treeBuilder = ObjectTreeBuilder.GetConfigured();
     private readonly ObjectTreeNode _expectedTree;
     private ObjectTreeNode? _actualTree;
     private IValueFormattingService _formattingService = ValueFormattingServices.Current;
@@ -132,9 +132,9 @@ public class VerifiableTree : IComplexParameter, ISelfFormattable
     private static string FormatException(Exception? ex)
     {
         //TODO: refactor
-        var formatter = LightBddExecutionContext.GetCurrentIfPresent()?.Configuration.ExceptionHandlingConfiguration().ExceptionDetailsFormatter
-                        ?? new DefaultExceptionFormatter().Format;
-        return formatter.Invoke(ex);
+        var formatter = LightBddExecutionContext.GetCurrentIfPresent()?.ExceptionFormatter
+                        ?? new DefaultExceptionFormatter();
+        return formatter.Format(ex);
     }
 
     private ExpectationResult VerifyReferences(ObjectTreeReference expected, ObjectTreeReference actual)

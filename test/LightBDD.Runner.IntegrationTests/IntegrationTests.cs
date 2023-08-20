@@ -46,7 +46,7 @@ namespace LightBDD.Runner.IntegrationTests
         public void It_should_register_engine_assemblies()
         {
             ConfiguredLightBddScope.CapturedConfiguration.ShouldNotBeNull();
-            ConfiguredLightBddScope.CapturedConfiguration.MetadataConfiguration().EngineAssemblies.ShouldBe(new[]
+            ConfiguredLightBddScope.CapturedConfiguration.ForMetadata().EngineAssemblies.ShouldBe(new[]
             {
                 typeof(ScenarioAttribute).Assembly,
                 typeof(IBddRunner).Assembly,

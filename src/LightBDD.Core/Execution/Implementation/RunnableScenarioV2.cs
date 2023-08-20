@@ -25,7 +25,6 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario, IRunStageCon
     public IScenarioResult Result => _result;
     public IScenarioInfo Info => Result.Info;
     public Func<Exception, bool> ShouldAbortSubStepExecution { get; private set; } = _ => true;
-    public IDependencyContainer DependencyContainer => _scenarioScope ?? throw new InvalidOperationException("Scenario not running");
     public IDependencyResolver DependencyResolver => _scenarioScope ?? Engine.DependencyContainer;
     public object Context => Fixture;
     public object Fixture => _fixtureManager.Fixture ?? throw new InvalidOperationException("Fixture not initialized");
@@ -37,7 +36,7 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario, IRunStageCon
         Engine = engine;
         _entryMethod = entryMethod;
         _fixtureManager = new(engine.FixtureFactory);
-        _collector = new(engine.Configuration);
+        _collector = new(engine.ExceptionFormatter);
         _result = new ScenarioResult(info);
         _decoratedMethod = DecoratingExecutor.DecorateScenario(this, () => AsyncStepSynchronizationContext.Execute(RunScenarioCore), decorators);
     }
@@ -49,7 +48,7 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario, IRunStageCon
         try
         {
             SetScenarioContext();
-            Engine.ProgressNotifier.Notify(new ScenarioStarting(startTime, Result.Info));
+            Engine.ProgressDispatcher.Notify(new ScenarioStarting(startTime, Result.Info));
             await _fixtureManager.InitializeAsync(_result.Info.Parent.FeatureType);
             await _decoratedMethod.Invoke();
         }
@@ -67,7 +66,7 @@ internal class RunnableScenarioV2 : IRunnableScenarioV2, IScenario, IRunStageCon
         var endTime = Engine.ExecutionTimer.GetTime();
         _result.UpdateTime(endTime.GetExecutionTime(startTime));
         _collector.UpdateResults(_result);
-        Engine.ProgressNotifier.Notify(new ScenarioFinished(endTime, Result));
+        Engine.ProgressDispatcher.Notify(new ScenarioFinished(endTime, Result));
         return Result;
     }
 

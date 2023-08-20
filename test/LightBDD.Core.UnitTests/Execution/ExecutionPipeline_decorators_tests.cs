@@ -2,16 +2,21 @@
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Discovery;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
+using LightBDD.Framework;
 using LightBDD.ScenarioHelpers;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
+using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
 using IgnoreException = LightBDD.Core.Execution.IgnoreException;
 
 namespace LightBDD.Core.UnitTests.Execution
@@ -77,6 +82,8 @@ namespace LightBDD.Core.UnitTests.Execution
                 await TestScenarioBuilder.Current.TestScenario(Some_Step, Other_Step);
             }
 
+            [TestScenario]
+            public async Task Non_decorated_scenario() => await TestScenarioBuilder.Current.TestScenario(Non_decorated_step, Non_decorated_step);
 
             [MyThrowingDecorator(ExecutionStatus.Failed)]
             private void My_failed_step() { }
@@ -98,6 +105,8 @@ namespace LightBDD.Core.UnitTests.Execution
             internal void Some_step2()
             {
             }
+
+            internal void Non_decorated_step() { }
         }
 
         [Test]
@@ -105,8 +114,12 @@ namespace LightBDD.Core.UnitTests.Execution
         {
             void OnConfigure(LightBddConfiguration cfg)
             {
-                cfg.ExecutionExtensionsConfiguration().EnableScenarioDecorator(() => new MyCapturingDecorator("scenario-global"));
-                cfg.ExecutionExtensionsConfiguration().EnableStepDecorator(() => new MyCapturingDecorator("step-global"));
+                cfg.Services.ConfigureScenarioDecorators()
+                    .Add(_ => new MyCapturingDecorator("scenario-global1"))
+                    .Add(_ => new MyCapturingDecorator("scenario-global2"));
+                cfg.Services.ConfigureStepDecorators()
+                    .Add(_ => new MyCapturingDecorator("step-global1"))
+                    .Add(_ => new MyCapturingDecorator("step-global2"));
             }
 
             await TestableCoreExecutionPipeline.Create(OnConfigure)
@@ -115,16 +128,83 @@ namespace LightBDD.Core.UnitTests.Execution
 
             Assert.That(CapturedMessages.Value.ToArray(), Is.EqualTo(new[]
             {
-                $"scenario-global: {nameof(MyFeature.Decorated_scenario)}",
+                $"scenario-global1: {nameof(MyFeature.Decorated_scenario)}",
+                $"scenario-global2: {nameof(MyFeature.Decorated_scenario)}",
                 $"local1: {nameof(MyFeature.Decorated_scenario)}",
                 $"local2: {nameof(MyFeature.Decorated_scenario)}",
-                $"step-global: {nameof(MyFeature.Some_step1)}",
+                $"step-global1: {nameof(MyFeature.Some_step1)}",
+                $"step-global2: {nameof(MyFeature.Some_step1)}",
                 $"s1-ext1: {nameof(MyFeature.Some_step1)}",
                 $"s1-ext2: {nameof(MyFeature.Some_step1)}",
-                $"step-global: {nameof(MyFeature.Some_step2)}",
+                $"step-global1: {nameof(MyFeature.Some_step2)}",
+                $"step-global2: {nameof(MyFeature.Some_step2)}",
                 $"s2-ext1: {nameof(MyFeature.Some_step2)}",
                 $"s2-ext2: {nameof(MyFeature.Some_step2)}"
             }));
+        }
+
+        [Test]
+        public async Task Decorators_should_support_DI_resolution_from_scenario_scope()
+        {
+            void OnConfigure(LightBddConfiguration cfg)
+            {
+                cfg.Services.AddSingleton<Dependency1>();
+                cfg.Services.AddScoped<Dependency2>();
+                cfg.Services.AddTransient<Dependency3>();
+                cfg.Services.ConfigureScenarioDecorators()
+                    .Add<DecoratorWithDependencies>(ServiceLifetime.Scoped);
+                cfg.Services.ConfigureStepDecorators()
+                    .Add<DecoratorWithDependencies>(ServiceLifetime.Transient);
+                cfg.ForExecutionPipeline()
+                    .SetMaxConcurrentScenarios(1);
+            }
+
+            var methodInfo = typeof(MyFeature).GetMethod(nameof(MyFeature.Non_decorated_scenario));
+            var cases = Enumerable.Range(0, 2)
+                .Select(_ => ScenarioCase.CreateParameterless(typeof(MyFeature).GetTypeInfo(), methodInfo))
+                .ToArray();
+
+            var result = await TestableCoreExecutionPipeline.Create(OnConfigure).Execute(cases);
+            result.OverallStatus.ShouldBe(ExecutionStatus.Passed);
+
+            Assert.That(CapturedMessages.Value.ToArray(), Is.EqualTo(new[]
+            {
+                $"DecoratorWithDependencies: {nameof(MyFeature.Non_decorated_scenario)}: 1/1/1",
+                $"DecoratorWithDependencies: {nameof(MyFeature.Non_decorated_step)}: 1/1/2",
+                $"DecoratorWithDependencies: {nameof(MyFeature.Non_decorated_step)}: 1/1/3",
+                $"DecoratorWithDependencies: {nameof(MyFeature.Non_decorated_scenario)}: 1/2/4",
+                $"DecoratorWithDependencies: {nameof(MyFeature.Non_decorated_step)}: 1/2/5",
+                $"DecoratorWithDependencies: {nameof(MyFeature.Non_decorated_step)}: 1/2/6"
+            }));
+        }
+
+        [Test]
+        public async Task Faulty_scenario_decorators_should_fail_gracefully()
+        {
+            void OnConfigure(LightBddConfiguration cfg)
+            {
+                cfg.Services.ConfigureScenarioDecorators().Add<FaultyDecorator>();
+            }
+
+            var result = await TestableCoreExecutionPipeline.Create(OnConfigure)
+                .ExecuteScenario<MyFeature>(f => f.Non_decorated_scenario());
+            result.Status.ShouldBe(ExecutionStatus.Failed);
+            result.StatusDetails.ShouldBe("Scenario Failed: System.InvalidOperationException: Construction issue");
+        }
+
+        [Test]
+        public async Task Faulty_step_decorators_should_fail_gracefully()
+        {
+            void OnConfigure(LightBddConfiguration cfg)
+            {
+                cfg.Services.ConfigureScenarioDecorators().Add<MultiAssertAttribute>();
+                cfg.Services.ConfigureStepDecorators().Add<FaultyDecorator>();
+            }
+
+            var result = await TestableCoreExecutionPipeline.Create(OnConfigure)
+                .ExecuteScenario<MyFeature>(f => f.Non_decorated_scenario());
+            result.Status.ShouldBe(ExecutionStatus.Failed);
+            result.StatusDetails.ShouldBe($"Step 1 Failed: System.InvalidOperationException: Construction issue{Environment.NewLine}Step 2 Failed: System.InvalidOperationException: Construction issue");
         }
 
         [Test]
@@ -166,7 +246,7 @@ namespace LightBDD.Core.UnitTests.Execution
             Assert.That(scenario.StatusDetails, Is.EqualTo("Scenario Bypassed: bypassed"));
             Assert.That(scenario.ExecutionTime, Is.Not.Null);
             //TODO: this changed in relation to LightBDD 3.x - review
-            Assert.That(scenario.GetSteps(),Is.Empty);
+            Assert.That(scenario.GetSteps(), Is.Empty);
             //Assert.That(scenario.GetSteps().Single().Status, Is.EqualTo(ExecutionStatus.NotRun));
         }
 
@@ -228,8 +308,8 @@ namespace LightBDD.Core.UnitTests.Execution
 
             void OnConfigure(LightBddConfiguration cfg)
             {
-                cfg.ExecutionExtensionsConfiguration().RegisterFixtureFactory(new FakeFixtureFactory(fixture));
-                cfg.ExecutionExtensionsConfiguration().EnableScenarioDecorator(() => new DelegatingDecorator(scenario => capturedFixture = scenario.Fixture));
+                cfg.Services.ConfigureFixtureFactory(x => x.Use(new FakeFixtureFactory(fixture)));
+                cfg.Services.ConfigureScenarioDecorators().Add(_ => new DelegatingDecorator(scenario => capturedFixture = scenario.Fixture));
             }
 
             await TestableCoreExecutionPipeline.Create(OnConfigure)
@@ -346,6 +426,78 @@ namespace LightBDD.Core.UnitTests.Execution
                 _onCall(scenario);
                 return scenarioInvocation();
             }
+        }
+
+        private class DecoratorWithDependencies : IScenarioDecorator, IStepDecorator
+        {
+            private readonly Dependency1 _d1;
+            private readonly Dependency2 _d2;
+            private readonly Dependency3 _d3;
+
+            public DecoratorWithDependencies(Dependency1 d1, Dependency2 d2, Dependency3 d3)
+            {
+                _d1 = d1;
+                _d2 = d2;
+                _d3 = d3;
+            }
+
+            public Task ExecuteAsync(IScenario scenario, Func<Task> scenarioInvocation)
+            {
+                CapturedMessages.Value.Enqueue($"DecoratorWithDependencies: {scenario.Info.Name.ToString()}: {_d1}/{_d2}/{_d3}");
+                return scenarioInvocation();
+            }
+
+            public Task ExecuteAsync(IStep step, Func<Task> stepInvocation)
+            {
+                CapturedMessages.Value.Enqueue($"DecoratorWithDependencies: {step.Info.Name.ToString()}: {_d1}/{_d2}/{_d3}");
+                return stepInvocation();
+            }
+        }
+
+        private class FaultyDecorator : IScenarioDecorator, IStepDecorator
+        {
+            public FaultyDecorator() => throw new InvalidOperationException("Construction issue");
+            public Task ExecuteAsync(IScenario scenario, Func<Task> scenarioInvocation) => throw new NotImplementedException();
+            public Task ExecuteAsync(IStep step, Func<Task> stepInvocation) => throw new NotImplementedException();
+        }
+
+        private class Dependency1
+        {
+            private static int _counter = 0;
+            private readonly int _no;
+
+            public Dependency1()
+            {
+                _no = Interlocked.Increment(ref _counter);
+            }
+
+            public override string ToString() => _no.ToString();
+        }
+
+        private class Dependency2
+        {
+            private static int _counter = 0;
+            private readonly int _no;
+
+            public Dependency2()
+            {
+                _no = Interlocked.Increment(ref _counter);
+            }
+
+            public override string ToString() => _no.ToString();
+        }
+
+        private class Dependency3
+        {
+            private static int _counter = 0;
+            private readonly int _no;
+
+            public Dependency3()
+            {
+                _no = Interlocked.Increment(ref _counter);
+            }
+
+            public override string ToString() => _no.ToString();
         }
     }
 }

@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using HtmlAgilityPack;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Reporting;
 using LightBDD.Core.Results;
 using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.UnitTests.Helpers;
+using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using NUnit.Framework;
 
 namespace LightBDD.Framework.Reporting.UnitTests.Formatters;
@@ -60,16 +63,18 @@ public class HtmlReportFormatter_customization_tests
     /// <summary>
     /// Configures formatter using official configuration method
     /// </summary>
+    //TODO: review
     private IReportFormatter ConfigureFormatter(Action<HtmlReportFormatter> onConfigure)
     {
-        using var enumerator = new ReportConfiguration()
-             .Clear()
-             .AddFileReport("foo.html", onConfigure)
-             .GetEnumerator();
-        enumerator.MoveNext();
-        var w = (FileReportGenerator)enumerator.Current;
+        var cfg = new LightBddConfiguration();
+        cfg.Services.ConfigureReportGenerators()
+            .Clear()
+            .AddFileReport("foo.html", onConfigure);
 
-        return w.Formatter;
+        var g = (FileReportGenerator)cfg.Services.Single(x => x.ServiceType == typeof(IReportGenerator))
+            .ImplementationFactory(Mock.Of<IServiceProvider>());
+
+        return g.Formatter;
     }
     private HtmlDocument GetHtml(IReportFormatter fmt)
     {

@@ -1,9 +1,8 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Threading.Tasks;
 
-namespace LightBDD.Core.UnitTests.Helpers
+namespace LightBDD.ScenarioHelpers
 {
     public static class ParameterInfoHelper
     {
