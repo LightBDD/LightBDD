@@ -5,6 +5,7 @@ using LightBDD.Core.Notification.Events;
 
 namespace LightBDD.Core.Notification
 {
+    //TODO: make internal?
     public class ProgressNotificationDispatcher
     {
         private readonly IReadOnlyList<IProgressNotifier> _notifiers;

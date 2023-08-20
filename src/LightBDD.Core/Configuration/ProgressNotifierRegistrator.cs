@@ -12,10 +12,10 @@ namespace LightBDD.Core.Configuration;
 /// </summary>
 public class ProgressNotifierRegistrator
 {
-    private readonly FeatureCollectionRegistrator<IProgressNotifier> _registrator;
+    private readonly ServiceCollectionRegistrator<IProgressNotifier> _registrator;
     public ProgressNotifierRegistrator(LightBddConfiguration cfg)
     {
-        _registrator = new(cfg);
+        _registrator = new(cfg.Services);
     }
 
     public ProgressNotifierRegistrator Add<TImplementation>() where TImplementation : IProgressNotifier

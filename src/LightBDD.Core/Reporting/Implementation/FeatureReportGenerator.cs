@@ -6,26 +6,15 @@ using LightBDD.Core.Results;
 
 namespace LightBDD.Core.Reporting.Implementation;
 
-/// <summary>
-/// Feature report generator
-/// </summary>
 internal class FeatureReportGenerator
 {
     private readonly IReportGenerator[] _generators;
 
-    /// <summary>
-    /// Default constructor
-    /// </summary>
     public FeatureReportGenerator(IEnumerable<IReportGenerator> generators)
     {
         _generators = generators.ToArray();
     }
 
-    /// <summary>
-    /// Generate reports for provided <paramref name="result"/>
-    /// </summary>
-    /// <param name="result">Test run result</param>
-    /// <exception cref="AggregateException">Thrown if any report generator failed</exception>
     public async Task GenerateReports(ITestRunResult result)
     {
         var exceptions = new List<Exception>();

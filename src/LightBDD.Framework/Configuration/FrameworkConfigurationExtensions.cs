@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Dependencies;
 using LightBDD.Core.Reporting;
 using LightBDD.Framework.Formatting;
 using LightBDD.Framework.Formatting.Values;
@@ -56,7 +57,7 @@ namespace LightBDD.Framework.Configuration
         /// <summary>
         /// Applies default report generators to generate <c>~\\Reports\\FeaturesReport.html</c>(Win) <c>~/Reports/FeaturesReport.html</c>(Unix) reports.
         /// </summary>
-        public static FeatureCollectionRegistrator<IReportGenerator> RegisterFrameworkDefaultReportGenerators(this FeatureCollectionRegistrator<IReportGenerator> configuration)
+        public static ServiceCollectionRegistrator<IReportGenerator> RegisterFrameworkDefaultReportGenerators(this ServiceCollectionRegistrator<IReportGenerator> configuration)
         {
             return configuration.AddFileReport<HtmlReportFormatter>($"~{Path.DirectorySeparatorChar}Reports{Path.DirectorySeparatorChar}FeaturesReport.html");
         }
@@ -76,7 +77,7 @@ namespace LightBDD.Framework.Configuration
         /// <param name="configuration">Configuration.</param>
         /// <param name="outputPath">Output path for the report.</param>
         /// <returns>Configuration.</returns>
-        public static FeatureCollectionRegistrator<IReportGenerator> AddFileReport<TFormatter>(this FeatureCollectionRegistrator<IReportGenerator> configuration, string outputPath) where TFormatter : IReportFormatter, new()
+        public static ServiceCollectionRegistrator<IReportGenerator> AddFileReport<TFormatter>(this ServiceCollectionRegistrator<IReportGenerator> configuration, string outputPath) where TFormatter : IReportFormatter, new()
         {
             return AddFileReport<TFormatter>(configuration, outputPath, null);
         }
@@ -89,7 +90,7 @@ namespace LightBDD.Framework.Configuration
         /// <param name="outputPath">Output path for the report.</param>
         /// <param name="onConfigure">Action to configure the <typeparamref name="TFormatter"/> instance.</param>
         /// <returns>Configuration.</returns>
-        public static FeatureCollectionRegistrator<IReportGenerator> AddFileReport<TFormatter>(this FeatureCollectionRegistrator<IReportGenerator> configuration, string outputPath, Action<TFormatter> onConfigure) where TFormatter : IReportFormatter, new()
+        public static ServiceCollectionRegistrator<IReportGenerator> AddFileReport<TFormatter>(this ServiceCollectionRegistrator<IReportGenerator> configuration, string outputPath, Action<TFormatter> onConfigure) where TFormatter : IReportFormatter, new()
         {
             var formatter = new TFormatter();
             onConfigure?.Invoke(formatter);

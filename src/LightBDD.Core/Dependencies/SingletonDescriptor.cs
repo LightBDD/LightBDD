@@ -2,14 +2,13 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace LightBDD.Core.Configuration;
+namespace LightBDD.Core.Dependencies;
 
 /// <summary>
-/// Feature registrator allowing to select implementation of the <typeparamref name="TService"/> feature.<br/>
-/// As features are used across whole execution cycle, they are registered as singletons.
+/// Singleton descriptor allowing to select implementation for the <typeparamref name="TService"/> service.<br/>
 /// </summary>
-/// <typeparam name="TService"></typeparam>
-public class FeatureRegistrator<TService> where TService : class
+/// <typeparam name="TService">Service type</typeparam>
+public class SingletonDescriptor<TService> where TService : class
 {
     private ServiceDescriptor? _featureDescriptor;
 
@@ -18,7 +17,7 @@ public class FeatureRegistrator<TService> where TService : class
     /// </summary>
     /// <typeparam name="TImplementation">Implementation type to use</typeparam>
     /// <returns>Self.</returns>
-    public FeatureRegistrator<TService> Use<TImplementation>() where TImplementation : TService
+    public SingletonDescriptor<TService> Use<TImplementation>() where TImplementation : TService
     {
         _featureDescriptor = ServiceDescriptor.Describe(typeof(TService), typeof(TImplementation), ServiceLifetime.Singleton);
         return this;
@@ -29,7 +28,7 @@ public class FeatureRegistrator<TService> where TService : class
     /// </summary>
     /// <param name="instance">Instance to use</param>
     /// <returns>Self.</returns>
-    public FeatureRegistrator<TService> Use(TService instance)
+    public SingletonDescriptor<TService> Use(TService instance)
     {
         _featureDescriptor = ServiceDescriptor.Singleton(instance);
         return this;
@@ -40,7 +39,7 @@ public class FeatureRegistrator<TService> where TService : class
     /// </summary>
     /// <param name="implementationFactory">Implementation factory</param>
     /// <returns>Self.</returns>
-    public FeatureRegistrator<TService> Use(Func<IServiceProvider, TService> implementationFactory)
+    public SingletonDescriptor<TService> Use(Func<IServiceProvider, TService> implementationFactory)
     {
         _featureDescriptor = ServiceDescriptor.Describe(typeof(TService), implementationFactory, ServiceLifetime.Singleton);
         return this;
