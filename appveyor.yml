@@ -6,6 +6,7 @@ version: '{build}'
 skip_tags: false
 clone_depth: 1
 test: off
+skip_branch_with_pr: true
 
 for:
 -
