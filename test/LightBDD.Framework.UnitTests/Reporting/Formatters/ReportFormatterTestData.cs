@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Linq;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Core.Results.Parameters.Trees;
-using LightBDD.UnitTests.Helpers;
+using LightBDD.ScenarioHelpers;
 
 namespace LightBDD.Framework.UnitTests.Reporting.Formatters
 {
@@ -51,7 +52,8 @@ namespace LightBDD.Framework.UnitTests.Reporting.Formatters
                     TestResults.CreateStepResult(1, "step3", ExecutionStatus.Bypassed, _startDate.AddSeconds(5), new TimeSpan(0, 0, 0, 2, 107), "bypass reason"),
                     TestResults.CreateStepResult(2, "step4", ExecutionStatus.Failed, _startDate.AddSeconds(6), new TimeSpan(0, 0, 0, 0, 50),
                         $"  Expected: True{Environment.NewLine}  But was: False"),
-                    TestResults.CreateStepResult(3, "step5", ExecutionStatus.NotRun))));
+                    TestResults.CreateStepResult(3, "step5", ExecutionStatus.NotRun))))
+                .WithFrameworkAssemblies();
         }
 
         public static ITestRunResult GetMultipleFeatureResults()
@@ -64,7 +66,7 @@ namespace LightBDD.Framework.UnitTests.Reporting.Formatters
                  TestResults.CreateScenarioResult("scenario1", null, _startDate.AddSeconds(4), TimeSpan.FromMilliseconds(20), new[] { "categoryB" },
                  TestResults.CreateStepResult(1, "step1", ExecutionStatus.Passed, _startDate.AddSeconds(5), TimeSpan.FromMilliseconds(20))));
 
-            return TestResults.CreateTestRunResults(feature1, feature2 );
+            return TestResults.CreateTestRunResults(feature1, feature2 ).WithFrameworkAssemblies();
         }
 
         public static ITestRunResult GetFeatureResultWithoutDescriptionNorLabelNorDetails()
@@ -72,7 +74,8 @@ namespace LightBDD.Framework.UnitTests.Reporting.Formatters
             return TestResults.CreateTestRunResults(TestResults.CreateFeatureResult("My feature", null, null,
                 TestResults.CreateScenarioResult("name", null, _startDate.AddSeconds(1), TimeSpan.FromMilliseconds(25), null,
                     TestResults.CreateStepResult(1, "step1", ExecutionStatus.Passed, _startDate.AddSeconds(2), TimeSpan.FromMilliseconds(20)),
-                    TestResults.CreateStepResult(2, "step2", ExecutionStatus.Ignored, _startDate.AddSeconds(3), TimeSpan.FromMilliseconds(5)))));
+                    TestResults.CreateStepResult(2, "step2", ExecutionStatus.Ignored, _startDate.AddSeconds(3), TimeSpan.FromMilliseconds(5)))))
+                .WithFrameworkAssemblies();
         }
 
         public static ITestRunResult GetFeatureWithUnsortedScenarios()
@@ -83,7 +86,8 @@ namespace LightBDD.Framework.UnitTests.Reporting.Formatters
                 TestResults.CreateScenarioResult("scenario A", "lab B", _startDate.AddMilliseconds(2), TimeSpan.FromSeconds(2), null,
                     TestResults.CreateStepResult(1, "step", ExecutionStatus.Passed)),
                 TestResults.CreateScenarioResult("scenario B", "lab C", _startDate, TimeSpan.FromSeconds(5), null,
-                    TestResults.CreateStepResult(1, "step", ExecutionStatus.Passed))));
+                    TestResults.CreateStepResult(1, "step", ExecutionStatus.Passed))))
+                .WithFrameworkAssemblies();
         }
 
         public static ITestRunResult GetFeatureWithVerifiableTree(ITreeParameterDetails tree)
@@ -91,7 +95,15 @@ namespace LightBDD.Framework.UnitTests.Reporting.Formatters
             return TestResults.CreateTestRunResults(TestResults.CreateFeatureResult("My Feature", null, null,
                 TestResults.CreateScenarioResult("scenario A", "lab B", _startDate.AddMilliseconds(2), TimeSpan.FromSeconds(2), null,
                     TestResults.CreateStepResult(1, "step", ExecutionStatus.Failed)
-                        .WithStepParameters(TestResults.CreateTestParameter("tree", tree)))));
+                        .WithStepParameters(TestResults.CreateTestParameter("tree", tree)))))
+                .WithFrameworkAssemblies();
+        }
+
+        private static TestResults.TestTestRunResult WithFrameworkAssemblies(this TestResults.TestTestRunResult result)
+        {
+            result.Info.LightBddAssemblies = new[] { typeof(IBddRunner).Assembly, typeof(ITestRunInfo).Assembly }
+                .Select(AssemblyInfo.From).ToArray();
+            return result;
         }
     }
 }

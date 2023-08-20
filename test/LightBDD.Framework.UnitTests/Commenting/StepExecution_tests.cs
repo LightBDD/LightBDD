@@ -7,7 +7,6 @@ using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.UnitTests.Helpers;
 using LightBDD.ScenarioHelpers;
-using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
 namespace LightBDD.Framework.UnitTests.Commenting

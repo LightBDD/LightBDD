@@ -1,7 +1,6 @@
-using LightBDD.Framework;
 using LightBDD.ScenarioHelpers;
 
-namespace LightBDD.UnitTests.Helpers.TestableIntegration
+namespace LightBDD.Framework.UnitTests.Helpers
 {
     public static class TestSyntaxRunnerExtensions
     {

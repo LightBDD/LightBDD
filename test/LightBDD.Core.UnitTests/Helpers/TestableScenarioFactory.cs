@@ -5,7 +5,7 @@ using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results;
-using LightBDD.UnitTests.Helpers;
+using LightBDD.ScenarioHelpers;
 
 namespace LightBDD.Core.UnitTests.Helpers;
 

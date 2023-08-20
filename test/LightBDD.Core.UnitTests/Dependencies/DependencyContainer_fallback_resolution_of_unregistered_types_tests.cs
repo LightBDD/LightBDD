@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.UnitTests.Helpers;
-using LightBDD.UnitTests.Helpers;
+using LightBDD.ScenarioHelpers;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 

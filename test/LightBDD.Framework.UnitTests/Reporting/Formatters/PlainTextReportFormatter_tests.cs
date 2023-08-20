@@ -3,7 +3,7 @@ using System.Text;
 using LightBDD.Core.Results;
 using LightBDD.Framework.Parameters;
 using LightBDD.Framework.Reporting.Formatters;
-using LightBDD.UnitTests.Helpers;
+using LightBDD.ScenarioHelpers;
 using NUnit.Framework;
 
 namespace LightBDD.Framework.UnitTests.Reporting.Formatters

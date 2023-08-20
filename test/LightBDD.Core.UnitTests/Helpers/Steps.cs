@@ -4,7 +4,6 @@ using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.Results;
 using LightBDD.Framework;
 using LightBDD.ScenarioHelpers;
-using LightBDD.UnitTests.Helpers.TestableIntegration;
 
 namespace LightBDD.Core.UnitTests.Helpers
 {

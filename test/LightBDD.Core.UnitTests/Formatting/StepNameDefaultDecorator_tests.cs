@@ -1,6 +1,6 @@
 ﻿using LightBDD.Core.Formatting.NameDecorators;
 using LightBDD.Core.Metadata;
-using LightBDD.UnitTests.Helpers;
+using LightBDD.ScenarioHelpers;
 using Moq;
 using NUnit.Framework;
 

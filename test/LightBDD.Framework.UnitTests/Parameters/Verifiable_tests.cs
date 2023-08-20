@@ -5,7 +5,7 @@ using LightBDD.Core.Execution;
 using LightBDD.Core.Metadata;
 using LightBDD.Framework.Parameters;
 using LightBDD.Framework.UnitTests.Formatting;
-using LightBDD.UnitTests.Helpers;
+using LightBDD.ScenarioHelpers;
 using NUnit.Framework;
 
 namespace LightBDD.Framework.UnitTests.Parameters

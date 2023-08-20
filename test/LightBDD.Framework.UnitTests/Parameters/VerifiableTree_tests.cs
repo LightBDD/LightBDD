@@ -7,7 +7,7 @@ using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters.Trees;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;
-using LightBDD.UnitTests.Helpers;
+using LightBDD.ScenarioHelpers;
 using NUnit.Framework;
 using Shouldly;
 

@@ -10,7 +10,6 @@ using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Formatting;
 using LightBDD.ScenarioHelpers;
-using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
 namespace LightBDD.Core.UnitTests.Extensibility

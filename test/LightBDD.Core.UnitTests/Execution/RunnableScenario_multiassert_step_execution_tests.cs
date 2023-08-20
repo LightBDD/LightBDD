@@ -7,7 +7,6 @@ using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
 using LightBDD.Framework.Extensibility;
 using LightBDD.ScenarioHelpers;
-using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 using Shouldly;
 

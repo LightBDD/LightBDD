@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LightBDD.Core.Results;
 using LightBDD.Framework.Reporting;
-using LightBDD.UnitTests.Helpers;
+using LightBDD.ScenarioHelpers;
 using NUnit.Framework;
 
 namespace LightBDD.Framework.UnitTests.Reporting

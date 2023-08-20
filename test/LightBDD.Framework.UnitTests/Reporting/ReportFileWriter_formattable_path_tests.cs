@@ -4,7 +4,7 @@ using System.Linq;
 using LightBDD.Core.Results;
 using LightBDD.Framework.Reporting;
 using LightBDD.Framework.Reporting.Formatters;
-using LightBDD.UnitTests.Helpers;
+using LightBDD.ScenarioHelpers;
 using Moq;
 using NUnit.Framework;
 

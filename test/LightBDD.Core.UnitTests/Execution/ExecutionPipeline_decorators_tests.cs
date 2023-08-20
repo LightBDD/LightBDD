@@ -14,7 +14,6 @@ using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
 using LightBDD.ScenarioHelpers;
-using LightBDD.UnitTests.Helpers.TestableIntegration;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using IgnoreException = LightBDD.Core.Execution.IgnoreException;

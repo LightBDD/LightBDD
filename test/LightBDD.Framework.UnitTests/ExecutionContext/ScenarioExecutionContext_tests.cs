@@ -4,7 +4,6 @@ using LightBDD.Core.ExecutionContext;
 using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Scenarios;
 using LightBDD.Framework.UnitTests.Helpers;
-using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 
 namespace LightBDD.Framework.UnitTests.ExecutionContext

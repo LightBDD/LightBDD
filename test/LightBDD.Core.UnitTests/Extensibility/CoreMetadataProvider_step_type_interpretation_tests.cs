@@ -1,9 +1,9 @@
 ﻿using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Results;
-using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
 using System.Threading.Tasks;
+using LightBDD.Core.UnitTests.Helpers;
 
 namespace LightBDD.Core.UnitTests.Extensibility
 {

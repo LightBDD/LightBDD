@@ -1,11 +1,10 @@
 ﻿#nullable enable
 using System;
 using LightBDD.Core.Configuration;
-using LightBDD.Core.Dependencies;
 using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Formatting;
 
-namespace LightBDD.UnitTests.Helpers.TestableIntegration
+namespace LightBDD.Core.UnitTests.Helpers
 {
     public class TestMetadataProvider
     {

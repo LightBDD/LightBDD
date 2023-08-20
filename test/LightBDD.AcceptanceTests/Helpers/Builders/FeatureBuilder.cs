@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using LightBDD.Core.Results;
-using LightBDD.UnitTests.Helpers;
+using LightBDD.ScenarioHelpers;
 
 namespace LightBDD.AcceptanceTests.Helpers.Builders
 {

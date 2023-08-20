@@ -6,7 +6,6 @@ using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.ScenarioHelpers;
-using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
 using Shouldly;
 

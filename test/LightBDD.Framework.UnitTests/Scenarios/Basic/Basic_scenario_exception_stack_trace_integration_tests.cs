@@ -3,8 +3,7 @@ using System.Threading.Tasks;
 using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Scenarios;
 using LightBDD.Framework.UnitTests.Helpers;
-using LightBDD.UnitTests.Helpers;
-using LightBDD.UnitTests.Helpers.TestableIntegration;
+using LightBDD.ScenarioHelpers;
 using NUnit.Framework;
 using Shouldly;
 
