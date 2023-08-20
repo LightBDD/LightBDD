@@ -65,7 +65,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
         public void It_should_allow_configuring_context_on_instantiation()
         {
             var resolver = new Mock<IDependencyResolver>();
-            resolver.Setup(r => r.Resolve(typeof(ConfigurableContext)))
+            resolver.Setup(r => r.Resolve<ConfigurableContext>())
                 .Returns(new ConfigurableContext { Dependency = "dep1" });
 
             var capture = _stepsRunner.ExpectResolvedContext();
@@ -81,7 +81,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
         public void It_should_allow_configuring_context_on_instantiation_when_using_resolver()
         {
             var resolver = new Mock<IDependencyResolver>();
-            resolver.Setup(r => r.Resolve(typeof(ConfigurableContext)))
+            resolver.Setup(r => r.Resolve<ConfigurableContext>())
                 .Returns(new ConfigurableContext { Dependency = "dep1" });
 
             var capture = _stepsRunner.ExpectResolvedContext();
@@ -104,6 +104,7 @@ namespace LightBDD.Framework.UnitTests.Scenarios.Contextual
         class FakeResolver : IDependencyResolver
         {
             public object Resolve(Type type) => Activator.CreateInstance(type);
+            public TDependency Resolve<TDependency>() => (TDependency)Resolve(typeof(TDependency));
         }
     }
 }

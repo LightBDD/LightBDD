@@ -31,4 +31,6 @@ internal class DependencyResolver : IDependencyResolver
             throw new InvalidOperationException($"Unable to create transient instance of type '{type}':{Environment.NewLine}{ex.Message}", ex);
         }
     }
+
+    public TDependency Resolve<TDependency>() => (TDependency)Resolve(typeof(TDependency));
 }

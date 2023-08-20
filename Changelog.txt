@@ -3,6 +3,7 @@ LightBDD
 
 vNext
 ----------------------------------------
++ #188 (Core)(breaking change) Added IDepdendencyResolver.Resolve<TDependency>() method and removed DependencyResolverExtensions type
 + #290 (MsTest3)(breaking change) Updated LightBddScope.Initialize() to require either TestContext or Assembly parameter
 + #290 (Framework)(change) Updated Html / Xml and PlainText ReportFormatters to include details of TestRun
 + #290 (Integrations)(change) Updated Fixie3 / Xunit2 / Nunit3 / MsTest3 integrations to capture TestRunInfo details
