@@ -6,7 +6,6 @@ using LightBDD.AcceptanceTests;
 using LightBDD.AcceptanceTests.Helpers;
 using LightBDD.Core.Configuration;
 using LightBDD.Framework.Configuration;
-using LightBDD.Framework.Reporting;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.Framework.Resources;
 using LightBDD.Runner;
@@ -23,14 +22,10 @@ namespace LightBDD.AcceptanceTests
             configuration.Services.ConfigureReportGenerators()
                 .AddFileReport<PlainTextReportFormatter>("~" + Path.DirectorySeparatorChar + "Reports" + Path.DirectorySeparatorChar + "FeaturesReport.txt");
 
-            configuration.ConfigureDependencies(ConfigureServices);
             configuration.Services.ConfigureStepDecorators().Add<ScreenshotCaptureOnFailure>();
-        }
 
-        private void ConfigureServices(IServiceCollection services)
-        {
             //TODO: lift this limit when Runner gets support for execution modes (running tests limits)
-            services.AddSingleton(_ => new ResourcePool<ChromeDriver>(CreateDriver, 4));
+            configuration.Services.AddSingleton(_ => new ResourcePool<ChromeDriver>(CreateDriver, 4));
         }
 
         private async Task<ChromeDriver> CreateDriver(CancellationToken token)

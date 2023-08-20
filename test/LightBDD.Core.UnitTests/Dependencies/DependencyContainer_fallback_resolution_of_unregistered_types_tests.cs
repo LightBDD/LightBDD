@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
+using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.UnitTests.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
@@ -149,7 +150,9 @@ Type '{typeof(MultiCtorType)}' has to have exactly one public constructor (numbe
 
         private static IDependencyContainer CreateContainer(Action<IServiceCollection> configurator)
         {
-            return new LightBddConfiguration().ConfigureDependencies(configurator).BuildContainer();
+            var cfg = new LightBddConfiguration();
+            configurator?.Invoke(cfg.Services);
+            return cfg.BuildContainer();
         }
 
         class FaultyDisposable : Disposable

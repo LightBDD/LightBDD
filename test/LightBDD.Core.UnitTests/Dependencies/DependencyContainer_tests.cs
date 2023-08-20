@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
+using LightBDD.Core.UnitTests.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
@@ -86,14 +87,12 @@ public class DependencyContainer_tests
     [Test]
     public async Task Resolve_should_be_thread_safe()
     {
-        await using var container = new LightBddConfiguration()
-            .ConfigureDependencies(x =>
-            {
-                x.AddSingleton<SlowDependency>();
-                x.AddSingleton<object>(x => x.GetRequiredService<SlowDependency>());
-            })
-            .BuildContainer();
+        var cfg = new LightBddConfiguration();
+        cfg.Services
+            .AddSingleton<SlowDependency>()
+            .AddSingleton<object>(x => x.GetRequiredService<SlowDependency>());
 
+        await using var container = cfg.BuildContainer();
         await using var scenario = container.BeginScope();
 
         var all = await Task.WhenAll(Enumerable.Range(0, 10).Select(_ => Task.Run(() => (object)scenario.Resolve<SlowDependency>()))
@@ -103,12 +102,16 @@ public class DependencyContainer_tests
         Assert.AreEqual(1, SlowDependency.Instances);
     }
 
-    private IDependencyContainer CreateContainer() => new LightBddConfiguration()
-        .ConfigureDependencies(c => c
+    private IDependencyContainer CreateContainer()
+    {
+        var cfg = new LightBddConfiguration();
+        cfg.Services
             .AddSingleton<DisposableSingleton>()
             .AddScoped<DisposableScoped>()
-            .AddTransient<DisposableTransient>())
-        .BuildContainer();
+            .AddTransient<DisposableTransient>();
+        return cfg
+            .BuildContainer();
+    }
 
     class DisposableSingleton : IDisposable
     {

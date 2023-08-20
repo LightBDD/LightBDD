@@ -23,6 +23,9 @@ namespace LightBDD.Core.Configuration
         private readonly ConcurrentDictionary<Type, FeatureConfiguration> _configuration = new();
         private readonly ServiceCollection _collection = new();
 
+        /// <summary>
+        /// Default constructor that configures core features
+        /// </summary>
         public LightBddConfiguration()
         {
             RegisterCoreDependencies();
@@ -77,18 +80,9 @@ namespace LightBDD.Core.Configuration
         }
 
         /// <summary>
-        /// Configures runtime dependencies that can be used to instantiate scenarios, decorators, report generators and other types used by LightBDD during test execution.
+        /// Returns service collection that can be used to register further dependencies.<br/>
+        /// When configuration is sealed, the service collection is read-only.
         /// </summary>
-        /// <param name="onConfigure">On configure delegate</param>
-        /// <returns>Self.</returns>
-        /// <exception cref="InvalidOperationException">Thrown when configuration is sealed.</exception>
-        public LightBddConfiguration ConfigureDependencies(Action<IServiceCollection> onConfigure)
-        {
-            ThrowIfSealed();
-            onConfigure?.Invoke(_collection);
-            return this;
-        }
-
         public IServiceCollection Services => _collection;
 
         /// <summary>

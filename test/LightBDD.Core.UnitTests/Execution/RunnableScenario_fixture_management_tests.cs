@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
@@ -101,7 +102,7 @@ public class RunnableScenario_fixture_management_tests
     {
         Dependency capture = null;
         var result = await TestableScenarioFactory
-            .Create(cfg => cfg.ConfigureDependencies(x => x.AddScoped<Dependency>()))
+            .Create(cfg => cfg.Services.AddScoped<Dependency>())
             .RunScenario<FixtureWithDependency>((f, _) =>
             {
                 f.Dep.Disposed.ShouldBeFalse();
