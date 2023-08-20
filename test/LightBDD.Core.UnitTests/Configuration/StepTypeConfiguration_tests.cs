@@ -50,7 +50,7 @@ namespace LightBDD.Core.UnitTests.Configuration
         public void Configuration_should_be_sealable()
         {
             var lighbddConfig = new LightBddConfiguration();
-            var cfg = lighbddConfig.ConfigureFeature<StepTypeConfiguration>();
+            var cfg = lighbddConfig.Get<StepTypeConfiguration>();
 
             var repeatedStepReplacement = cfg.RepeatedStepReplacement;
             var predefinedStepTypes = cfg.PredefinedStepTypes;

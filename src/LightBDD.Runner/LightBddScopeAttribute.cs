@@ -18,7 +18,7 @@ namespace LightBDD.Runner
         {
             configuration.WithFrameworkDefaults();
 
-            configuration.ConfigureMetadata()
+            configuration.ForMetadata()
                 .RegisterEngineAssembly(typeof(LightBddScopeAttribute).Assembly);
 
             configuration.RegisterProgressNotifiers()

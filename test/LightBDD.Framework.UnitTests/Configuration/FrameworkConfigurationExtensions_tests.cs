@@ -39,9 +39,9 @@ namespace LightBDD.Framework.UnitTests.Configuration
         [Test]
         public void WithFrameworkDefaults_should_register_default_general_value_formatters()
         {
-            var configuration = new LightBddConfiguration().WithFrameworkDefaults().ConfigureValueFormatting();
+            var configuration = new LightBddConfiguration().WithFrameworkDefaults().ForValueFormatting();
 
-            var expected = new LightBddConfiguration().ConfigureValueFormatting()
+            var expected = new LightBddConfiguration().ForValueFormatting()
                 .RegisterGeneral(new DictionaryFormatter())
                 .RegisterGeneral(new CollectionFormatter());
 
@@ -58,10 +58,10 @@ namespace LightBDD.Framework.UnitTests.Configuration
         [Test]
         public void RegisterFrameworkDefaultGeneralFormatters_should_register_default_general_value_formatters()
         {
-            var configuration = new LightBddConfiguration().ConfigureValueFormatting()
+            var configuration = new LightBddConfiguration().ForValueFormatting()
                 .RegisterFrameworkDefaultGeneralFormatters();
 
-            var expected = new LightBddConfiguration().ConfigureValueFormatting()
+            var expected = new LightBddConfiguration().ForValueFormatting()
                 .RegisterGeneral(new DictionaryFormatter())
                 .RegisterGeneral(new CollectionFormatter());
 
@@ -79,7 +79,7 @@ namespace LightBDD.Framework.UnitTests.Configuration
         public void WithFrameworkDefaults_should_register_Framework_assembly_on_MetadataConfiguration()
         {
             new LightBddConfiguration().WithFrameworkDefaults()
-                .ConfigureMetadata().EngineAssemblies.ShouldBe(new[]
+                .ForMetadata().EngineAssemblies.ShouldBe(new[]
                 {
                     typeof(IBddRunner).Assembly,
                     typeof(CoreMetadataProvider).Assembly

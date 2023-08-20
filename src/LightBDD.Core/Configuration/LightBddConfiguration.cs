@@ -52,24 +52,24 @@ namespace LightBDD.Core.Configuration
 
         private void RegisterDefaultConfigurations()
         {
-            this.ConfigureMetadata();
-            this.ConfigureStepTypes();
-            this.ConfigureValueFormatting();
-            this.ConfigureExecutionPipeline();
+            this.ForMetadata();
+            this.ForStepTypes();
+            this.ForValueFormatting();
+            this.ForExecutionPipeline();
         }
 
         /// <summary>
-        /// Returns current feature configuration of requested type.
+        /// Returns feature configuration of requested type.
         /// If there was no configuration specified for given feature, the default configuration would be instantiated and returned for further customizations.
         /// </summary>
-        /// <typeparam name="TConfiguration">Feature configuration type.</typeparam>
+        /// <typeparam name="TFeatureConfiguration">Feature configuration type.</typeparam>
         /// <returns>Feature configuration instance.</returns>
-        public TConfiguration ConfigureFeature<TConfiguration>() where TConfiguration : FeatureConfiguration, new()
+        public TFeatureConfiguration Get<TFeatureConfiguration>() where TFeatureConfiguration : FeatureConfiguration, new()
         {
-            return (TConfiguration)_configuration.GetOrAdd(typeof(TConfiguration), _ =>
+            return (TFeatureConfiguration)_configuration.GetOrAdd(typeof(TFeatureConfiguration), _ =>
             {
                 ThrowIfSealed();
-                var cfg = new TConfiguration();
+                var cfg = new TFeatureConfiguration();
                 _collection.AddSingleton(cfg);
                 return cfg;
             });
@@ -93,7 +93,7 @@ namespace LightBDD.Core.Configuration
         /// <summary>
         /// Seals configuration making it immutable.
         /// It calls <see cref="FeatureConfiguration.Seal"/>() method on all configuration items that implements the <see cref="FeatureConfiguration"/> interface.
-        /// Since this call, the <see cref="ConfigureFeature{TConfiguration}"/>() method will return only sealed configuration (current, and future default one).
+        /// Since this call, the <see cref="Get{TFeatureConfiguration}"/>() method will return only sealed configuration (current, and future default one).
         /// </summary>
         /// <returns>Self.</returns>
         public LightBddConfiguration Seal()
@@ -114,7 +114,7 @@ namespace LightBDD.Core.Configuration
 
         /// <summary>
         /// Seals the configuration and builds <see cref="IDependencyContainer"/> based on this configuration.<br/>
-        /// Sealed configuration disables ability to register new dependencies via <see cref="ConfigureDependencies"/> and configuring new features via <see cref="ConfigureFeature{TConfiguration}"/>.<br/>
+        /// Sealed configuration disables ability to register new dependencies via <see cref="ConfigureDependencies"/> and configuring new features via <see cref="Get{TFeatureConfiguration}"/>.<br/>
         /// Every call to this method creates new instance of <see cref="IDependencyContainer"/>, which needs to be independently discarded
         /// </summary>
         /// <returns></returns>

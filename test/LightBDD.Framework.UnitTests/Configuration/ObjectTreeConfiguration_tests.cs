@@ -33,7 +33,7 @@ namespace LightBDD.Framework.UnitTests.Configuration
         {
             var cfg = new LightBddConfiguration();
             cfg.Seal();
-            Assert.Throws<InvalidOperationException>(() => cfg.ConfigureObjectTrees().UpdateOptions(ObjectTreeBuilderOptions.Default));
+            Assert.Throws<InvalidOperationException>(() => cfg.ForObjectTrees().UpdateOptions(ObjectTreeBuilderOptions.Default));
         }
 
         [Test]
@@ -44,7 +44,7 @@ namespace LightBDD.Framework.UnitTests.Configuration
 
             void OnConfigure(LightBddConfiguration x)
             {
-                x.ConfigureObjectTrees().UpdateOptions(options);
+                x.ForObjectTrees().UpdateOptions(options);
                 x.Services.AddSingleton(capture);
             }
 

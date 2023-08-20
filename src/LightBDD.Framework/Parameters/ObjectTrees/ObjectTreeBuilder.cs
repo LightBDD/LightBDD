@@ -19,7 +19,7 @@ public class ObjectTreeBuilder
     /// </summary>
     public static ObjectTreeBuilder GetConfigured()
     {
-        var options = LightBddExecutionContext.GetCurrentIfPresent()?.Configuration.ConfigureObjectTrees().Options;
+        var options = LightBddExecutionContext.GetCurrentIfPresent()?.Configuration.ForObjectTrees().Options;
         if (_configuredInstanceCache != null && _configuredInstanceCache.Options == options)
             return _configuredInstanceCache;
 

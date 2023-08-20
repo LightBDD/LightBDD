@@ -155,7 +155,7 @@ namespace LightBDD.Core.UnitTests.Execution
                     .Add<DecoratorWithDependencies>(ServiceLifetime.Scoped);
                 cfg.RegisterStepDecorators()
                     .Add<DecoratorWithDependencies>(ServiceLifetime.Transient);
-                cfg.ConfigureExecutionPipeline()
+                cfg.ForExecutionPipeline()
                     .SetMaxConcurrentScenarios(1);
             }
 

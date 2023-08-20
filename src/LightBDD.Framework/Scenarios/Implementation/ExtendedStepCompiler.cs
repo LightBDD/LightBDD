@@ -42,7 +42,7 @@ namespace LightBDD.Framework.Scenarios.Implementation
 
         private string GetStepTypeName(ParameterExpression contextParameter)
         {
-            return _configuration.ConfigureFeature<StepTypeConfiguration>().UseLambdaNameAsStepType(contextParameter.Name)
+            return _configuration.Get<StepTypeConfiguration>().UseLambdaNameAsStepType(contextParameter.Name)
                 ? contextParameter.Name
                 : null;
         }
