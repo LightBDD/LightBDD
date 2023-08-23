@@ -18,6 +18,7 @@ I want to pay for products in basket")]
     public partial class Payment_feature
     {
         [Scenario]
+        [ScenarioPriority(ScenarioPriority.High)]
         [Label("Ticket-10")]
         [Label("Ticket-11")]
         public async Task Successful_payment()
