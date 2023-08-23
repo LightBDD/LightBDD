@@ -23,9 +23,10 @@ namespace LightBDD.AcceptanceTests
                 .AddFileReport<PlainTextReportFormatter>("~" + Path.DirectorySeparatorChar + "Reports" + Path.DirectorySeparatorChar + "FeaturesReport.txt");
 
             configuration.Services.ConfigureStepDecorators().Add<ScreenshotCaptureOnFailure>();
+            configuration.Services.AddSingleton(_ => new ResourcePool<ChromeDriver>(CreateDriver));
 
-            //TODO: lift this limit when Runner gets support for execution modes (running tests limits)
-            configuration.Services.AddSingleton(_ => new ResourcePool<ChromeDriver>(CreateDriver, 4));
+            configuration.ForExecutionPipeline()
+                .SetMaxConcurrentScenarios(4);
         }
 
         private async Task<ChromeDriver> CreateDriver(CancellationToken token)

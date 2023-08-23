@@ -3,16 +3,12 @@ namespace LightBDD.Core.Metadata
     /// <summary>
     /// Interface describing metadata (such as feature, scenario or step)
     /// </summary>
-    public interface IMetadataInfo
+    public interface IMetadataInfo : IRuntimeObjectInfo
     {
         /// <summary>
         /// Returns name of the metadata.
         /// </summary>
         INameInfo Name { get; }
-        /// <summary>
-        /// Unique Id assigned at runtime to the metadata.
-        /// Please note that the same metadata may have different Ids in consecutive test runs.
-        /// </summary>
-        string RuntimeId { get; }
+
     }
 }

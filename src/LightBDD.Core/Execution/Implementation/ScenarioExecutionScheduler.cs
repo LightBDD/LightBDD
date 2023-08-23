@@ -20,7 +20,7 @@ namespace LightBDD.Core.Execution.Implementation
             try
             {
                 await _scenarioThrottler.WaitAsync();
-                return await scenarioFn();
+                return await Task.Run(scenarioFn);
             }
             finally
             {
