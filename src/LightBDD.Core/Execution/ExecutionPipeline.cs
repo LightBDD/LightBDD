@@ -72,7 +72,7 @@ namespace LightBDD.Core.Execution
             var runnableFeatures = PrepareFeatures(scenarios, ctx);
 
             await Task.WhenAll(runnableFeatures.SelectMany(f => f.GetRunnableCases())
-                .OrderBy(c => c.Priority)
+                .OrderByDescending(c => c.Priority)
                 .ThenBy(c => c.Scenario.FeatureFixtureType.Name)
                 .ThenBy(c => c.Scenario.ScenarioMethod.Name)
                 .Select(c => ctx.ExecutionScheduler.Schedule(c.Execute)));
@@ -392,10 +392,9 @@ namespace LightBDD.Core.Execution
                 _feature = feature;
                 Scenario = scenario;
                 _ctx = ctx;
+                Priority = ctx.MetadataProvider.GetScenarioPriority(scenario.ScenarioMethod);
             }
-
-            //TODO: implement
-            public int Priority { get; } = 10;
+            public int Priority { get; }
             public ScenarioCase Scenario { get; }
             public IScenarioResult? Result { get; private set; }
 

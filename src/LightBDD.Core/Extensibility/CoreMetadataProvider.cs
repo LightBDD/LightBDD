@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility.Execution.Implementation;
 
 namespace LightBDD.Core.Extensibility
@@ -227,6 +228,16 @@ namespace LightBDD.Core.Extensibility
         private static IEnumerable<T> ConcatAndOrderAttributes<T>(params IEnumerable<T>[] sequences) where T : IOrderedAttribute
         {
             return sequences.SelectMany(sequence => sequence.OrderBy(orderable => orderable.Order));
+        }
+
+        /// <summary>
+        /// Returns scenario priority taken from applied <see cref="IExecutionPriorityAttribute"/> attribute or 0 if none is provided.
+        /// </summary>
+        /// <param name="scenarioMethod">Scenario method</param>
+        /// <returns>Priority.</returns>
+        public int GetScenarioPriority(MethodInfo scenarioMethod)
+        {
+            return scenarioMethod.ExtractAttributes<IExecutionPriorityAttribute>().Select(x => x.Priority).FirstOrDefault();
         }
     }
 }

@@ -18,8 +18,7 @@ using Shouldly;
 namespace LightBDD.Core.UnitTests.Execution
 {
     [TestFixture]
-    [FixtureLifeCycle(LifeCycle.InstancePerTestCase)]
-    public class ExecutionPipeline_scheduling_tests
+    public class ExecutionPipeline_scheduling_concurrency_tests
     {
         class MyFeature<T>
         {
