@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using LightBDD.Core.Execution;
+using LightBDD.Core.Execution.Scheduling;
+using LightBDD.Core.Execution.Scheduling.Implementation;
 using LightBDD.Core.Extensibility.Execution.Implementation;
 
 namespace LightBDD.Core.Extensibility
@@ -238,6 +240,24 @@ namespace LightBDD.Core.Extensibility
         public int GetScenarioPriority(MethodInfo scenarioMethod)
         {
             return scenarioMethod.ExtractAttributes<IExecutionPriorityAttribute>().Select(x => x.Priority).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Returns type implementing <see cref="IScenarioExecutionScheduler"/> taken from applied <see cref="IScenarioExecutionSchedulerAttribute"/> or <see cref="ScenarioExecutionSchedulerTypes.SharedThreadPool"/> if none is provided.
+        /// </summary>
+        /// <param name="scenarioMethod">Scenario method</param>
+        /// <returns>Type implementing <see cref="IScenarioExecutionScheduler"/></returns>
+        public Type GetScenarioExecutionSchedulerType(MethodInfo scenarioMethod)
+        {
+            var schedulerType = scenarioMethod.ExtractAttributes<IScenarioExecutionSchedulerAttribute>().Select(x => x.SchedulerType).FirstOrDefault();
+
+            if (schedulerType == null)
+                return ScenarioExecutionSchedulerTypes.SharedThreadPool;
+
+            if (!typeof(IScenarioExecutionScheduler).IsAssignableFrom(schedulerType))
+                throw new InvalidOperationException($"Type '{schedulerType}' does not implement '{typeof(IScenarioExecutionScheduler)}'");
+
+            return schedulerType;
         }
     }
 }

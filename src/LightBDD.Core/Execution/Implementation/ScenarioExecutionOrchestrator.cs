@@ -2,25 +2,26 @@
 using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
+using LightBDD.Core.Execution.Scheduling;
 using LightBDD.Core.Results;
 
 namespace LightBDD.Core.Execution.Implementation
 {
-    internal class ScenarioExecutionScheduler
+    internal class ScenarioExecutionOrchestrator
     {
         private readonly SemaphoreSlim _scenarioThrottler;
 
-        public ScenarioExecutionScheduler(ExecutionPipelineConfiguration cfg)
+        public ScenarioExecutionOrchestrator(ExecutionPipelineConfiguration cfg)
         {
             _scenarioThrottler = new(Math.Max(1, cfg.MaxConcurrentScenarios));
         }
 
-        public async Task<IScenarioResult> Schedule(Func<Task<IScenarioResult>> scenarioFn)
+        public async Task<IScenarioResult> Execute(Func<Task<IScenarioResult>> scenarioFn, IScenarioExecutionScheduler scheduler)
         {
             try
             {
                 await _scenarioThrottler.WaitAsync();
-                return await Task.Run(scenarioFn);
+                return await scheduler.Schedule(scenarioFn);
             }
             finally
             {

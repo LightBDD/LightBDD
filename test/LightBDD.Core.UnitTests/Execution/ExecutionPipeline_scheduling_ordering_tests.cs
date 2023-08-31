@@ -1,19 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
-using LightBDD.Core.Discovery;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
 using LightBDD.Framework;
-using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using Shouldly;
 

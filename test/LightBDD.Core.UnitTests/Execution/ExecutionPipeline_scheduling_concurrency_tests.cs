@@ -11,6 +11,7 @@ using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
+using LightBDD.Framework;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using Shouldly;
@@ -31,6 +32,13 @@ namespace LightBDD.Core.UnitTests.Execution
 
             [TestScenario]
             public async Task NonBlockingScenario(int delayInMs)
+            {
+                await Task.Delay(delayInMs);
+            }
+
+            [TestScenario]
+            [RunOnDedicatedThread]
+            public async Task NonBlockingScenarioWithDedicatedThread(int delayInMs)
             {
                 await Task.Delay(delayInMs);
             }
@@ -108,6 +116,39 @@ namespace LightBDD.Core.UnitTests.Execution
             counter.Total.ShouldBe(scenarios.Length);
             counter.Max.ShouldBe(maxScenarios);
         }
+
+        [Test]
+        public async Task It_should_support_concurrent_execution_across_schedulers()
+        {
+            var delayInMs = 250;
+            var maxScenarios = 50;
+            var countPerScheduler = 45;
+            var counter = new RunCounter();
+            void Configure(LightBddConfiguration cfg)
+            {
+                cfg.ForExecutionPipeline().SetMaxConcurrentScenarios(maxScenarios);
+                cfg.Services.AddSingleton(counter);
+                cfg.Services.ConfigureScenarioDecorators().Add<CountingDecorator>();
+            }
+
+            var scenarios = CreateNonBlockingScenariosWithDedicatedThread<object>(countPerScheduler, delayInMs)
+                .Concat(CreateNonBlockingScenarios<object>(countPerScheduler, delayInMs))
+                .ToArray();
+
+            var result = await TestableCoreExecutionPipeline.Create(Configure).Execute(scenarios);
+            result.OverallStatus.ShouldBe(ExecutionStatus.Passed);
+
+            counter.Total.ShouldBe(scenarios.Length);
+            counter.Max.ShouldBe(maxScenarios);
+        }
+
+        private static IEnumerable<ScenarioCase> CreateNonBlockingScenariosWithDedicatedThread<T>(int totalScenarios, int delayInMs)
+        {
+            var nonBlockingScenario = typeof(MyFeature<T>).GetMethod(nameof(MyFeature<T>.NonBlockingScenarioWithDedicatedThread))!;
+            return Enumerable.Range(0, totalScenarios)
+                .Select(_ => ScenarioCase.CreateParameterized(typeof(MyFeature<T>).GetTypeInfo(), nonBlockingScenario, new object[] { delayInMs }));
+        }
+
 
         private static IEnumerable<ScenarioCase> CreateNonBlockingScenarios<T>(int totalScenarios, int delayInMs)
         {

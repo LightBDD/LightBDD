@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Dependencies.Implementation;
 using LightBDD.Core.Execution.Implementation;
+using LightBDD.Core.Execution.Scheduling.Implementation;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Execution.Implementation;
 using LightBDD.Core.Extensibility.Implementation;
@@ -43,6 +44,8 @@ namespace LightBDD.Core.Configuration
             _collection.AddSingleton<ValueFormattingService>();
             _collection.AddSingleton<GlobalDecoratorsProvider>();
             _collection.AddSingleton<IValueFormattingService, ValueFormattingService>(p => p.GetRequiredService<ValueFormattingService>());
+            _collection.AddSingleton<DedicatedThreadScenarioExecutionScheduler>();
+            _collection.AddSingleton<ThreadPoolScenarioExecutionScheduler>();
         }
 
         private void RegisterCoreFeatures()

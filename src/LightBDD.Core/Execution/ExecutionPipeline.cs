@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Discovery;
+using LightBDD.Core.Execution.Scheduling;
 using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.ExecutionContext.Implementation;
 using LightBDD.Core.Extensibility;
@@ -75,7 +76,7 @@ namespace LightBDD.Core.Execution
                 .OrderByDescending(c => c.Priority)
                 .ThenBy(c => c.Scenario.FeatureFixtureType.Name)
                 .ThenBy(c => c.Scenario.ScenarioMethod.Name)
-                .Select(c => ctx.ExecutionScheduler.Schedule(c.Execute)));
+                .Select(c => ctx.ExecutionOrchestrator.Execute(c.Execute, c.Scheduler)));
 
             return runnableFeatures.Select(r => r.Result!).ToArray();
         }
@@ -393,8 +394,10 @@ namespace LightBDD.Core.Execution
                 Scenario = scenario;
                 _ctx = ctx;
                 Priority = ctx.MetadataProvider.GetScenarioPriority(scenario.ScenarioMethod);
+                Scheduler = (IScenarioExecutionScheduler)ctx.DependencyContainer.Resolve(ctx.MetadataProvider.GetScenarioExecutionSchedulerType(scenario.ScenarioMethod));
             }
             public int Priority { get; }
+            public IScenarioExecutionScheduler Scheduler { get; }
             public ScenarioCase Scenario { get; }
             public IScenarioResult? Result { get; private set; }
 

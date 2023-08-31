@@ -31,7 +31,7 @@ public class EngineContext
         FileAttachmentsManager = DependencyContainer.Resolve<IFileAttachmentsManager>();
         ProgressDispatcher = DependencyContainer.Resolve<ProgressNotificationDispatcher>();
         GlobalSetUp = DependencyContainer.Resolve<GlobalSetUpRegistry>();
-        ExecutionScheduler = DependencyContainer.Resolve<ScenarioExecutionScheduler>();
+        ExecutionOrchestrator = DependencyContainer.Resolve<ScenarioExecutionOrchestrator>();
     }
 
     /// <summary>
@@ -57,5 +57,5 @@ public class EngineContext
     internal readonly IFileAttachmentsManager FileAttachmentsManager;
     internal readonly ProgressNotificationDispatcher ProgressDispatcher;
     internal readonly GlobalSetUpRegistry GlobalSetUp;
-    internal readonly ScenarioExecutionScheduler ExecutionScheduler;
+    internal readonly ScenarioExecutionOrchestrator ExecutionOrchestrator;
 }
