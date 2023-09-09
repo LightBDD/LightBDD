@@ -42,6 +42,13 @@ namespace LightBDD.Core.UnitTests.Execution
             {
                 await Task.Delay(delayInMs);
             }
+
+            [TestScenario]
+            [RunExclusively]
+            public async Task ScenarioWithExclusiveRunConstraint()
+            {
+                await Task.Yield();
+            }
         }
 
         [Test]
@@ -140,6 +147,30 @@ namespace LightBDD.Core.UnitTests.Execution
 
             counter.Total.ShouldBe(scenarios.Length);
             counter.Max.ShouldBe(maxScenarios);
+        }
+
+        [Test]
+        public async Task It_should_support_exclusive_run_constraint()
+        {
+            var maxScenarios = 50;
+            var counter = new RunCounter();
+            void Configure(LightBddConfiguration cfg)
+            {
+                cfg.ForExecutionPipeline().SetMaxConcurrentScenarios(maxScenarios);
+                cfg.Services.AddSingleton(counter);
+                cfg.Services.ConfigureScenarioDecorators().Add<CountingDecorator>();
+            }
+
+            var methodInfo = typeof(MyFeature<MyFeature<object>>).GetMethod(nameof(MyFeature<object>.ScenarioWithExclusiveRunConstraint))!;
+            var scenarios = Enumerable.Range(0, maxScenarios)
+                .Select(_ => ScenarioCase.CreateParameterless(typeof(MyFeature<MyFeature<object>>).GetTypeInfo(), methodInfo))
+                .ToArray();
+
+            var result = await TestableCoreExecutionPipeline.Create(Configure).Execute(scenarios);
+            result.OverallStatus.ShouldBe(ExecutionStatus.Passed);
+
+            counter.Total.ShouldBe(scenarios.Length);
+            counter.Max.ShouldBe(1);
         }
 
         private static IEnumerable<ScenarioCase> CreateNonBlockingScenariosWithDedicatedThread<T>(int totalScenarios, int delayInMs)

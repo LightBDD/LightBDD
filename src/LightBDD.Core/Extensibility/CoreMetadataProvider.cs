@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using LightBDD.Core.Execution;
+using LightBDD.Core.Execution.Constraints;
 using LightBDD.Core.Execution.Scheduling;
 using LightBDD.Core.Execution.Scheduling.Implementation;
 using LightBDD.Core.Extensibility.Execution.Implementation;
@@ -258,6 +259,15 @@ namespace LightBDD.Core.Extensibility
                 throw new InvalidOperationException($"Type '{schedulerType}' does not implement '{typeof(IScenarioExecutionScheduler)}'");
 
             return schedulerType;
+        }
+
+        /// <summary>
+        /// Returns true if scenario has <see cref="IScenarioRequireExclusiveRunAttribute"/> attribute applied
+        /// </summary>
+        /// <param name="scenarioMethod">Scenario method</param>
+        public bool HasScenarioExclusiveRunConstraint(MethodInfo scenarioMethod)
+        {
+            return scenarioMethod.ExtractAttributes<IScenarioRequireExclusiveRunAttribute>().Any();
         }
     }
 }

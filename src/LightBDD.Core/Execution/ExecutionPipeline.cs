@@ -71,14 +71,7 @@ namespace LightBDD.Core.Execution
         private async Task<IFeatureResult[]> RunScenarios(IReadOnlyList<ScenarioCase> scenarios, Context ctx)
         {
             var runnableFeatures = PrepareFeatures(scenarios, ctx);
-
-            await Task.WhenAll(runnableFeatures.SelectMany(f => f.GetRunnableCases())
-                .OrderByDescending(c => c.Priority)
-                .ThenBy(c => c.Scenario.FeatureFixtureType.Name)
-                .ThenBy(c => c.Scenario.ScenarioMethod.Name)
-                .Select(c => ctx.ExecutionOrchestrator.Execute(c.Execute, c.Scheduler)));
-
-            return runnableFeatures.Select(r => r.Result!).ToArray();
+            return await ctx.ExecutionOrchestrator.Execute(runnableFeatures);
         }
 
         private IReadOnlyList<RunnableFeature> PrepareFeatures(IReadOnlyList<ScenarioCase> scenarios, Context ctx)
@@ -245,7 +238,7 @@ namespace LightBDD.Core.Execution
         }
 
         //TODO: review
-        private class Context : EngineContext, IAsyncDisposable
+        internal class Context : EngineContext, IAsyncDisposable
         {
             public Context(LightBddConfiguration configuration, CancellationToken cancellationToken)
             : base(configuration)
@@ -261,7 +254,7 @@ namespace LightBDD.Core.Execution
             public ValueTask DisposeAsync() => DependencyContainer.DisposeAsync();
         }
 
-        class RunnableFeature
+        internal class RunnableFeature
         {
             private volatile bool _started;
             private volatile int _finished;
@@ -327,7 +320,7 @@ namespace LightBDD.Core.Execution
             }
         }
 
-        class RunnableScenarioGroup : IRuntimeObjectInfo
+        internal class RunnableScenarioGroup : IRuntimeObjectInfo
         {
             private readonly Context _ctx;
             private readonly List<RunnableScenarioCase> _scenarios = new();
@@ -383,7 +376,7 @@ namespace LightBDD.Core.Execution
             }
         }
 
-        class RunnableScenarioCase
+        internal class RunnableScenarioCase
         {
             private readonly IFeatureInfo _feature;
             private readonly Context _ctx;
@@ -395,8 +388,10 @@ namespace LightBDD.Core.Execution
                 _ctx = ctx;
                 Priority = ctx.MetadataProvider.GetScenarioPriority(scenario.ScenarioMethod);
                 Scheduler = (IScenarioExecutionScheduler)ctx.DependencyContainer.Resolve(ctx.MetadataProvider.GetScenarioExecutionSchedulerType(scenario.ScenarioMethod));
+                RequireExclusiveRun = ctx.MetadataProvider.HasScenarioExclusiveRunConstraint(scenario.ScenarioMethod);
             }
             public int Priority { get; }
+            public bool RequireExclusiveRun { get; }
             public IScenarioExecutionScheduler Scheduler { get; }
             public ScenarioCase Scenario { get; }
             public IScenarioResult? Result { get; private set; }

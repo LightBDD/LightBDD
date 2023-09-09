@@ -67,6 +67,23 @@ public class ExecutionPipeline_scheduling_ordering_tests
         public Task Low1() => Task.CompletedTask;
     }
 
+    class MyFeature3
+    {
+        [TestScenario]
+        [ScenarioPriority(ScenarioPriority.High)]
+        [RunExclusively]
+        public Task ExclusiveHigh() => Task.CompletedTask;
+
+        [TestScenario]
+        [ScenarioPriority(ScenarioPriority.Normal)]
+        public Task Normal() => Task.CompletedTask;
+
+        [TestScenario]
+        [ScenarioPriority(ScenarioPriority.Low)]
+        [RunExclusively]
+        public Task ExclusiveLow() => Task.CompletedTask;
+    }
+
     [Test]
     public async Task It_should_order_scenarios_by_priority_then_fixtures_then_names()
     {
@@ -95,6 +112,40 @@ public class ExecutionPipeline_scheduling_ordering_tests
             "MyFeature1_Low2",
             "MyFeature2_Low1",
             "MyFeature2_Low2"
+        });
+    }
+
+    [Test]
+    public async Task It_should_order_scenarios_scenarios_with_exclusive_run_constraint_to_be_run_after_unconstrained_ones()
+    {
+        var decorator = new CapturingDecorator();
+
+        void Configure(LightBddConfiguration cfg)
+        {
+            cfg.ForExecutionPipeline().SetMaxConcurrentScenarios(1);
+            cfg.Services.ConfigureScenarioDecorators().Add(decorator);
+        }
+
+        var result = await TestableCoreExecutionPipeline.Create(Configure).Execute(typeof(MyFeature3), typeof(MyFeature2), typeof(MyFeature1));
+        result.OverallStatus.ShouldBe(ExecutionStatus.Passed);
+
+        decorator.Captured.ShouldBe(new[]
+        {
+            "MyFeature1_High1",
+            "MyFeature1_High2",
+            "MyFeature2_High1",
+            "MyFeature2_High2",
+            "MyFeature1_Normal1",
+            "MyFeature1_Normal2",
+            "MyFeature2_Normal1",
+            "MyFeature2_Normal2",
+            "MyFeature3_Normal",
+            "MyFeature1_Low1",
+            "MyFeature1_Low2",
+            "MyFeature2_Low1",
+            "MyFeature2_Low2",
+            "MyFeature3_ExclusiveHigh",
+            "MyFeature3_ExclusiveLow"
         });
     }
 
