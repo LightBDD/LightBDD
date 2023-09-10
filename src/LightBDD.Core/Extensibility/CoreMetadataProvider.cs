@@ -12,6 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using LightBDD.Core.Execution;
+using LightBDD.Core.Execution.Constraints;
+using LightBDD.Core.Execution.Scheduling;
+using LightBDD.Core.Execution.Scheduling.Implementation;
 using LightBDD.Core.Extensibility.Execution.Implementation;
 
 namespace LightBDD.Core.Extensibility
@@ -227,6 +231,43 @@ namespace LightBDD.Core.Extensibility
         private static IEnumerable<T> ConcatAndOrderAttributes<T>(params IEnumerable<T>[] sequences) where T : IOrderedAttribute
         {
             return sequences.SelectMany(sequence => sequence.OrderBy(orderable => orderable.Order));
+        }
+
+        /// <summary>
+        /// Returns scenario priority taken from applied <see cref="IExecutionPriorityAttribute"/> attribute or 0 if none is provided.
+        /// </summary>
+        /// <param name="scenarioMethod">Scenario method</param>
+        /// <returns>Priority.</returns>
+        public int GetScenarioPriority(MethodInfo scenarioMethod)
+        {
+            return scenarioMethod.ExtractAttributes<IExecutionPriorityAttribute>().Select(x => x.Priority).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Returns type implementing <see cref="IScenarioExecutionScheduler"/> taken from applied <see cref="IScenarioExecutionSchedulerAttribute"/> or <see cref="ScenarioExecutionSchedulerTypes.SharedThreadPool"/> if none is provided.
+        /// </summary>
+        /// <param name="scenarioMethod">Scenario method</param>
+        /// <returns>Type implementing <see cref="IScenarioExecutionScheduler"/></returns>
+        public Type GetScenarioExecutionSchedulerType(MethodInfo scenarioMethod)
+        {
+            var schedulerType = scenarioMethod.ExtractAttributes<IScenarioExecutionSchedulerAttribute>().Select(x => x.SchedulerType).FirstOrDefault();
+
+            if (schedulerType == null)
+                return ScenarioExecutionSchedulerTypes.SharedThreadPool;
+
+            if (!typeof(IScenarioExecutionScheduler).IsAssignableFrom(schedulerType))
+                throw new InvalidOperationException($"Type '{schedulerType}' does not implement '{typeof(IScenarioExecutionScheduler)}'");
+
+            return schedulerType;
+        }
+
+        /// <summary>
+        /// Returns true if scenario has <see cref="IScenarioRequireExclusiveRunAttribute"/> attribute applied
+        /// </summary>
+        /// <param name="scenarioMethod">Scenario method</param>
+        public bool HasScenarioExclusiveRunConstraint(MethodInfo scenarioMethod)
+        {
+            return scenarioMethod.ExtractAttributes<IScenarioRequireExclusiveRunAttribute>().Any();
         }
     }
 }

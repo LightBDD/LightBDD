@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -17,9 +18,9 @@ namespace LightBDD.Runner.Implementation;
 
 internal class ExecutionPipelineAdapter : ExecutionPipeline
 {
-    private readonly AsyncLocal<(ITestClass testClass, ITestCase[] cases)> _currentFeature = new();
-    private readonly AsyncLocal<(ITestMethod testMethod, ITestCase[] cases)> _currentMethod = new();
-    private readonly AsyncLocal<(ITestCase testCase, ITest test)> _currentTest = new();
+    private readonly ConcurrentDictionary<string, (ITestClass testClass, IXunitTestCase[] cases)> _features = new();
+    private readonly ConcurrentDictionary<string, (ITestMethod testMethod, IXunitTestCase[] cases)> _methods = new();
+    private readonly ConcurrentDictionary<string, (ITestCase testCase, ITest test)> _tests = new();
     private readonly IMessageBus _bus;
     private readonly CancellationTokenSource _cancellationTokenSource;
     private readonly ITestCollection _collection;
@@ -47,22 +48,24 @@ internal class ExecutionPipelineAdapter : ExecutionPipeline
         }
     }
 
-    protected override void OnBeforeScenario(EventTime time, IScenarioInfo scenarioInfo, ScenarioCase scenario)
+    protected override void OnBeforeScenarioStart(EventTime time, IScenarioInfo scenarioInfo, ScenarioCase scenario)
     {
         var testCase = _allCases[scenario.RuntimeId!];
         var test = new XunitTest(testCase, testCase.DisplayName);
-        _currentTest.Value = (testCase, test);
+        _tests[scenarioInfo.RuntimeId] = (testCase, test);
 
         TestOutputHelpers.Install(_bus, test);
         Send(new TestCaseStarting(testCase));
         Send(new TestStarting(test));
     }
 
-    protected override void OnAfterScenario(EventTime time, IScenarioResult result)
+    protected override void OnAfterScenarioFinished(EventTime time, IScenarioResult result)
     {
-        var (testCase, test) = _currentTest.Value;
-        var duration = GetDuration(result.ExecutionTime);
+        if (!_tests.TryRemove(result.Info.RuntimeId, out var value))
+            throw new InvalidOperationException($"No test details for scenario: {result.Info.RuntimeId}");
 
+        var (testCase, test) = value;
+        var duration = GetDuration(result.ExecutionTime);
 
         var output = (TestOutputHelpers.Current as TestOutputHelper)?.Output;
         if (result.Status == ExecutionStatus.Failed)
@@ -78,18 +81,19 @@ internal class ExecutionPipelineAdapter : ExecutionPipeline
             result.Status == ExecutionStatus.Ignored ? 1 : 0));
     }
 
-    protected override void OnBeforeScenarioGroup(EventTime time, MethodInfo scenarioMethod, IReadOnlyList<ScenarioCase> scenarios)
+    protected override void OnBeforeScenarioGroupStart(EventTime time, IRuntimeObjectInfo runtimeInfo, IReadOnlyList<ScenarioCase> scenarios)
     {
         //TODO: optimize
         var cases = scenarios.Select(s => _allCases[s.RuntimeId!]).ToArray();
         var testMethod = cases.First().TestMethod;
-        _currentMethod.Value = (testMethod, cases);
+
+        _methods[runtimeInfo.RuntimeId] = (testMethod, cases);
         Send(new TestMethodStarting(cases, testMethod));
     }
 
-    protected override void OnAfterScenarioGroup(EventTime endTime, IReadOnlyList<IScenarioResult> results)
+    protected override void OnAfterScenarioGroupFinished(EventTime endTime, IRuntimeObjectInfo runtimeInfo, IReadOnlyList<IScenarioResult> results)
     {
-        var (testMethod, cases) = _currentMethod.Value;
+        var (testMethod, cases) = _methods[runtimeInfo.RuntimeId];
         var duration = (decimal)ExecutionTimeSummary.Calculate(results.Select(s => s.ExecutionTime)).Duration.TotalSeconds;
         var failed = results.Count(r => r.Status == ExecutionStatus.Failed);
         var skipped = results.Count(r => r.Status == ExecutionStatus.Ignored);
@@ -102,17 +106,19 @@ internal class ExecutionPipelineAdapter : ExecutionPipeline
         Send(new TestCollectionStarting(_allCases.Values, _collection));
     }
 
-    protected override void OnBeforeFeatureStart(EventTime time, IFeatureInfo featureInfo, ScenarioCase[] scenarios)
+    protected override void OnBeforeFeatureStart(EventTime time, IFeatureInfo featureInfo, IReadOnlyList<ScenarioCase> scenarios)
     {
         var cases = scenarios.Select(s => _allCases[s.RuntimeId!]).ToArray();
         var testClass = cases.First().TestMethod.TestClass;
-        _currentFeature.Value = (testClass, cases);
-        Send(new TestClassStarting(_currentFeature.Value.cases, _currentFeature.Value.testClass));
+        _features[featureInfo.RuntimeId]=(testClass, cases);
+        Send(new TestClassStarting(cases, testClass));
     }
 
     protected override void OnAfterFeatureFinished(EventTime time, IFeatureResult result)
     {
-        var (testClass, cases) = _currentFeature.Value;
+        if (!_features.TryRemove(result.Info.RuntimeId, out var value))
+            throw new InvalidOperationException($"No test details for feature: {result.Info.RuntimeId}");
+        var (testClass, cases) = value;
         var duration = (decimal)ExecutionTimeSummary.Calculate(result.GetScenarios().Select(s => s.ExecutionTime)).Duration.TotalSeconds;
         var failed = result.CountScenariosWithStatus(ExecutionStatus.Failed);
         var skipped = result.CountScenariosWithStatus(ExecutionStatus.Ignored);
