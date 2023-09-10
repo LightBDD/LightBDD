@@ -24,9 +24,11 @@ namespace LightBDD.Core.UnitTests.Execution
         class MyFeature<T>
         {
             [TestScenario]
-            public Task BlockingScenario(int delayInMs)
+            public Task BlockingScenario(SemaphoreSlim inSem, SemaphoreSlim outSem)
             {
-                Thread.Sleep(delayInMs);
+                inSem.Release();
+                Thread.Sleep(50);
+                outSem.Wait(TimeSpan.FromSeconds(5));
                 return Task.CompletedTask;
             }
 
@@ -54,9 +56,10 @@ namespace LightBDD.Core.UnitTests.Execution
         [Test]
         public async Task It_should_support_parallel_scenario_execution()
         {
-            var delayInMs = 250;
             var maxScenarios = 2;
-            var totalScenarios = 4;
+            var totalScenarios = 10;
+            var inSem = new SemaphoreSlim(0);
+            var outSem = new SemaphoreSlim(0);
             var counter = new RunCounter();
             void Configure(LightBddConfiguration cfg)
             {
@@ -65,9 +68,14 @@ namespace LightBDD.Core.UnitTests.Execution
                 cfg.Services.ConfigureScenarioDecorators().Add<CountingDecorator>();
             }
 
-            var scenarios = CreateBlockingScenarios<object>(totalScenarios, delayInMs).ToArray();
+            var scenarios = CreateBlockingScenarios(totalScenarios, inSem, outSem).ToArray();
+            var executeTask = TestableCoreExecutionPipeline.Create(Configure).Execute(scenarios);
 
-            var result = await TestableCoreExecutionPipeline.Create(Configure).Execute(scenarios);
+            for (int i = 0; i < maxScenarios; ++i)
+                await inSem.WaitAsync(TimeSpan.FromSeconds(5));
+            outSem.Release(totalScenarios);
+
+            var result = await executeTask;
             result.OverallStatus.ShouldBe(ExecutionStatus.Passed);
 
             counter.Total.ShouldBe(totalScenarios);
@@ -188,11 +196,11 @@ namespace LightBDD.Core.UnitTests.Execution
                 .Select(_ => ScenarioCase.CreateParameterized(typeof(MyFeature<T>).GetTypeInfo(), nonBlockingScenario, new object[] { delayInMs }));
         }
 
-        private static IEnumerable<ScenarioCase> CreateBlockingScenarios<T>(int totalScenarios, int delayInMs)
+        private static IEnumerable<ScenarioCase> CreateBlockingScenarios(int totalScenarios, SemaphoreSlim inSem, SemaphoreSlim outSem)
         {
-            var blockingScenario = typeof(MyFeature<T>).GetMethod(nameof(MyFeature<T>.BlockingScenario))!;
+            var blockingScenario = typeof(MyFeature<object>).GetMethod(nameof(MyFeature<object>.BlockingScenario))!;
             return Enumerable.Range(0, totalScenarios)
-                .Select(_ => ScenarioCase.CreateParameterized(typeof(MyFeature<T>).GetTypeInfo(), blockingScenario, new object[] { delayInMs }));
+                .Select(_ => ScenarioCase.CreateParameterized(typeof(MyFeature<object>).GetTypeInfo(), blockingScenario, new object[] { inSem, outSem }));
         }
 
         class CountingDecorator : IScenarioDecorator
