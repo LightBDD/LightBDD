@@ -38,6 +38,7 @@ internal class DedicatedThreadScenarioExecutionScheduler : IScenarioExecutionSch
         private readonly CancellationToken _cancellationToken;
         private readonly Thread _thread;
         private readonly BlockingCollection<Action> _actions = new();
+        private readonly SemaphoreSlim _completed = new(0);
         public event Action<SingleThreadScenarioRunner> OnFinish;
         public SingleThreadScenarioRunner(CancellationToken token)
         {
@@ -61,7 +62,7 @@ internal class DedicatedThreadScenarioExecutionScheduler : IScenarioExecutionSch
                 }
 
                 if (_actions.Count == 0)
-                    OnFinish?.Invoke(this);
+                    _completed.Release();
             }
         }
 
@@ -69,22 +70,40 @@ internal class DedicatedThreadScenarioExecutionScheduler : IScenarioExecutionSch
 
         public Task<T> Run<T>(Func<Task<T>> scenarioFn)
         {
-            var result = new TaskCompletionSource<T>();
+            var taskCompletionSource = new TaskCompletionSource<T>();
 
             async void RunAsAction()
             {
+                T result = default;
+                Exception exception = null;
                 try
                 {
-                    result.TrySetResult(await scenarioFn());
+                    result = await scenarioFn();
                 }
                 catch (Exception ex)
                 {
-                    result.TrySetException(ex);
+                    exception = ex;
                 }
+
+                try
+                {
+                    await _completed.WaitAsync(_cancellationToken);
+                }
+                catch
+                {
+                    // ignored
+                }
+
+                OnFinish?.Invoke(this);
+
+                if (exception != null)
+                    taskCompletionSource.TrySetException(exception);
+                else
+                    taskCompletionSource.TrySetResult(result);
             }
 
             _actions.Add(RunAsAction, _cancellationToken);
-            return result.Task;
+            return taskCompletionSource.Task;
         }
 
         public void Dispose() => _thread.Join();

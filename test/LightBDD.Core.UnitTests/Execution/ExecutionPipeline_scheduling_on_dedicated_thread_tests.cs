@@ -146,10 +146,7 @@ namespace LightBDD.Core.UnitTests.Execution
                 .Execute(scenarioCases);
 
             results.OverallStatus.ShouldBe(ExecutionStatus.Passed);
-
-            // There is a potential race condition in SingleThreadScenarioRunner where the OnFinish callback putting the runner back to the pool may be executed after scenario task being reported back as completed, which then may cause scheduling another scenario on the pool with empty runner list.
-            // At the point of writing this test this behavior seems to be acceptable.
-            capture.Distinct().Count().ShouldBeInRange(maxConcurrentScenarios, 2 * maxConcurrentScenarios);
+            capture.Distinct().Count().ShouldBe(maxConcurrentScenarios);
         }
 
         private void OnConfigure(LightBddConfiguration cfg)
