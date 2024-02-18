@@ -30,5 +30,10 @@ namespace LightBDD.MsTest3.Implementation
         {
             return null;
         }
+
+        protected override string GetImplementationSpecificScenarioDescription(ScenarioDescriptor scenarioDescriptor)
+        {
+            return null;
+        } 
     }
 }

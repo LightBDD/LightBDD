@@ -31,5 +31,10 @@ namespace LightBDD.NUnit3.Implementation
         {
             return ExtractAttributePropertyValue<DescriptionAttribute>(featureType.GetTypeInfo(), a => a.Properties["Description"].Cast<string>().Single());
         }
+
+        protected override string GetImplementationSpecificScenarioDescription(ScenarioDescriptor scenarioDescriptor)
+        {
+            return ExtractAttributePropertyValue<DescriptionAttribute>(scenarioDescriptor.MethodInfo, a => a.Properties["Description"].Cast<string>().Single());
+        }
     }
 }

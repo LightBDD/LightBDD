@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Fixie.TestAdapter" Version="3.3.0" />
+    <PackageReference Include="Fixie.TestAdapter" Version="3.4.0" />
     <PackageReference Include="Shouldly" Version="4.2.1" />
-    <PackageReference Include="Fixie" Version="3.3.0" />
+    <PackageReference Include="Fixie" Version="3.4.0" />
   </ItemGroup>
 
   <ItemGroup>

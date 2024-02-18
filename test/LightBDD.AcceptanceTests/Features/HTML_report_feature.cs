@@ -17,6 +17,9 @@ I want to have HTML report")]
     public class HTML_report_feature : FeatureFixture
     {
         [Scenario]
+        [ScenarioDescription(
+@"In order to effectively analyze result
+I want to be collapse feature details")]
         public async Task Should_collapse_feature_details()
         {
             await Runner

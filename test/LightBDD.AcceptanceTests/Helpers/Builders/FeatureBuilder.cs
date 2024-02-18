@@ -18,7 +18,7 @@ namespace LightBDD.AcceptanceTests.Helpers.Builders
 
         public ScenarioBuilder NewScenario(ExecutionStatus status)
         {
-            var builder = new ScenarioBuilder(status).WithSampleSteps();
+            var builder = new ScenarioBuilder(status).WithSampleSteps().WithDescription("descr");
             _scenarios.Add(builder);
             return builder;
         }

@@ -110,12 +110,22 @@ namespace LightBDD.UnitTests.Helpers
 
         public static TestScenarioResult CreateScenarioResult(string name, string label, DateTimeOffset executionStart, TimeSpan executionTime, string[] categories, params TestStepResult[] steps)
         {
-            return CreateScenarioResult(CreateNameInfo(name), label, executionStart, executionTime, categories, steps);
+            return CreateScenarioResult(CreateNameInfo(name), label, null, executionStart, executionTime, categories, steps);
+        }
+        
+        public static TestScenarioResult CreateScenarioResult(string name, string label, string description, DateTimeOffset executionStart, TimeSpan executionTime, string[] categories, params TestStepResult[] steps)
+        {
+            return CreateScenarioResult(CreateNameInfo(name), label, description, executionStart, executionTime, categories, steps);
         }
 
         public static TestScenarioResult CreateScenarioResult(TestNameInfo name, string label, DateTimeOffset executionStart, TimeSpan executionTime, string[] categories, params TestStepResult[] steps)
         {
-            var scenarioInfo = CreateScenarioInfo(name, label, categories);
+            return CreateScenarioResult(name, label, null, executionStart, executionTime, categories, steps);
+        }
+
+        public static TestScenarioResult CreateScenarioResult(TestNameInfo name, string label, string description,  DateTimeOffset executionStart, TimeSpan executionTime, string[] categories, params TestStepResult[] steps)
+        {
+            var scenarioInfo = CreateScenarioInfo(name, label, description, categories);
             foreach (var step in steps)
                 step.Info.Parent = scenarioInfo;
 
@@ -129,11 +139,12 @@ namespace LightBDD.UnitTests.Helpers
             };
         }
 
-        private static TestScenarioInfo CreateScenarioInfo(TestNameInfo name, string label, string[] categories)
+        private static TestScenarioInfo CreateScenarioInfo(TestNameInfo name, string label, string description, string[] categories)
         {
             return new TestScenarioInfo
             {
                 Name = name,
+                Description = description,
                 Labels = label != null ? new[] { label } : Array.Empty<string>(),
                 Categories = categories ?? Array.Empty<string>()
             };
@@ -330,6 +341,7 @@ namespace LightBDD.UnitTests.Helpers
             public string[] Labels { get; set; }
             IEnumerable<string> IScenarioInfo.Categories => Categories;
             public string[] Categories { get; set; }
+            public string Description { get; set; }
         }
 
         public class TestFeatureResult : IFeatureResult
