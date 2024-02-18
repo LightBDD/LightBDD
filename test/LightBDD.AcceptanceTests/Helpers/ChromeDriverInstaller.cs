@@ -2,13 +2,17 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestPlatform.PlatformAbstractions.Interfaces;
 using Microsoft.Win32;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace LightBDD.AcceptanceTests.Helpers
 {
@@ -21,8 +25,10 @@ namespace LightBDD.AcceptanceTests.Helpers
         private bool _installed;
         private readonly HttpClient _httpClient = new()
         {
-            BaseAddress = new Uri("https://chromedriver.storage.googleapis.com/")
+            BaseAddress = new Uri("https://storage.googleapis.com/chrome-for-testing-public/")
         };
+
+        private static readonly string KnownGoodVersionsUrl = "https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json";
 
         public static ChromeDriverInstaller Instance { get; } = new();
 
@@ -40,17 +46,22 @@ namespace LightBDD.AcceptanceTests.Helpers
                     return;
 
                 var chromeVersion = GetChromeVersion();
-                var chromeDriverVersion = await GetChromeDriverVersion(chromeVersion, cancellationToken);
+                var chromeDriverUrl = await GetChromeDriverUrl(chromeVersion, cancellationToken);
                 var (zipName, driverName) = GetDriverLocation();
                 var targetPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                     driverName);
 
-                await using (var zipFileStream = await _httpClient.GetStreamAsync($"{chromeDriverVersion}/{zipName}", cancellationToken))
+                await using (var zipFileStream = await _httpClient.GetStreamAsync(chromeDriverUrl, cancellationToken))
                 using (var zipArchive = new ZipArchive(zipFileStream, ZipArchiveMode.Read))
-                await using (var chromeDriverWriter = new FileStream(targetPath, FileMode.Create))
                 {
-                    await using var chromeDriverStream = zipArchive.GetEntry(driverName).Open();
-                    await chromeDriverStream.CopyToAsync(chromeDriverWriter, cancellationToken);
+                    var chromeDriveEntry = zipArchive.Entries.FirstOrDefault(e => e.Name.EndsWith(driverName))
+                        ?? throw new Exception($"ChromeDriver not found in {zipName}");
+
+                    await using (var chromeDriverWriter = new FileStream(targetPath, FileMode.Create))
+                    {
+                        await using var chromeDriverStream = chromeDriveEntry.Open();
+                        await chromeDriverStream.CopyToAsync(chromeDriverWriter, cancellationToken);
+                    }
                 }
 
                 _installed = true;
@@ -69,17 +80,6 @@ namespace LightBDD.AcceptanceTests.Helpers
             throw new PlatformNotSupportedException("Your operating system is not supported.");
         }
 
-        private async Task<string> GetChromeDriverVersion(string chromeVersion, CancellationToken cancellationToken)
-        {
-            var chromeDriverVersionResponse = await _httpClient.GetAsync($"LATEST_RELEASE_{chromeVersion}", cancellationToken);
-            if (chromeDriverVersionResponse.IsSuccessStatusCode)
-                return await chromeDriverVersionResponse.Content.ReadAsStringAsync(cancellationToken);
-
-            if (chromeDriverVersionResponse.StatusCode == HttpStatusCode.NotFound)
-                throw new Exception($"ChromeDriver version not found for Chrome version {chromeVersion}");
-            throw new Exception($"ChromeDriver version request failed with status code: {chromeDriverVersionResponse.StatusCode}, reason phrase: {chromeDriverVersionResponse.ReasonPhrase}");
-        }
-
         private static string GetChromeVersion()
         {
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -90,6 +90,45 @@ namespace LightBDD.AcceptanceTests.Helpers
 
             var chromeVersion = FileVersionInfo.GetVersionInfo(chromePath).FileVersion;
             return chromeVersion.Substring(0, chromeVersion.LastIndexOf('.'));
+        }
+
+
+        private async Task<string> GetChromeDriverUrl(string chromeVersion, CancellationToken cancellationToken)
+        {
+            JObject knownGoodVersions;
+
+            // Fetch the list of known good versions for all Chrome assets.
+            await using (var jsonStream = await _httpClient.GetStreamAsync(KnownGoodVersionsUrl, cancellationToken))
+            using (var sr = new StreamReader(jsonStream))
+            using (var jsonTextReader = new JsonTextReader(sr))
+            {
+                knownGoodVersions = new JsonSerializer().Deserialize<JObject>(jsonTextReader);
+            }
+
+            string url = null;
+            // Look for a matching ChromeDriver version
+            foreach (var version in knownGoodVersions.GetValue("versions").Children<JObject>())
+            {
+                if (version.Value<string>("version").StartsWith(chromeVersion))
+                {
+                    var downloads = version?.Value<JObject>("downloads");
+                    var chromeDriver = downloads?.Value<JArray>("chromedriver");
+
+                    if (chromeDriver != null)
+                    {
+                        foreach (var platform in chromeDriver)
+                        {
+                            if ("win64" == platform.Value<string>("platform"))
+                                url = platform.Value<string>("url");
+                        }
+                    }
+                }
+            }
+
+            if (url == null)
+                throw new Exception($"ChromeDriver version not found for Chrome version {chromeVersion}");
+            
+            return url;
         }
 
         public void Dispose()

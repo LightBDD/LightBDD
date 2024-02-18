@@ -460,6 +460,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                             Html.Tag(Html5Tag.Span).Content(scenario.Info.Labels.Select(GetLabel)).SkipEmpty(),
                             GetDuration(scenario.ExecutionTime),
                             GetSmallLink(scenarioId))),
+                        Html.Tag(Html5Tag.Div).Class("description").Content(scenario.Info.Description),
                     Html.Tag(Html5Tag.Div).Class("content").Content(
                         Html.Tag(Html5Tag.Div).Class("categories")
                             .Content(scenario.Info.Categories.Select(GetCategory))
