@@ -117,8 +117,8 @@ namespace LightBDD.Core.Execution.Coordination
                 return;
 
             IsDisposed = true;
-            UninstallSelf();
             CollectFeatureResults();
+            UninstallSelf();
             _featureAggregator.Dispose();
             RunnerRepository.Dispose();
         }
