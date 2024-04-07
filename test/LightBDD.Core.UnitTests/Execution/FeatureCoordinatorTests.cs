@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Linq;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Dependencies;
 using LightBDD.Core.Execution.Coordination;
+using LightBDD.Core.Extensibility;
+using LightBDD.Core.Reporting;
+using LightBDD.Core.Results;
 using LightBDD.Framework.Execution.Coordination;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using Moq;
@@ -30,6 +34,17 @@ namespace LightBDD.Core.UnitTests.Execution
             }
 
             public static FeatureCoordinator GetInstalled() => Instance;
+        }
+
+        class TestableConfigurationAwareReportWriter : LightBddConfigurationAware, IReportWriter
+        {
+            public void Save(params IFeatureResult[] results)
+            {
+                Assert.That(Configuration.ReportWritersConfiguration(), Does.Contain(this));
+                WasExecuted = true;
+            }
+
+            public bool WasExecuted { get; private set; }
         }
 
         [Test]
@@ -81,6 +96,18 @@ namespace LightBDD.Core.UnitTests.Execution
             new TestableFeatureCoordinator(contextBuilder).Dispose();
 
             container.Verify(x => x.Dispose());
+        }
+
+        [Test]
+        public void Disposal_of_coordinator_should_allow_execution_of_configuration_aware_report_formatters()
+        {
+            var writer = new TestableConfigurationAwareReportWriter();
+
+            using (var _ = new TestableFeatureCoordinator(TestableIntegrationContextBuilder.Default().WithConfiguration(c => c.ReportWritersConfiguration().Add(writer)))
+                .InstallSelf())
+            {
+            }
+            Assert.That(writer.WasExecuted, Is.True);
         }
     }
 }
