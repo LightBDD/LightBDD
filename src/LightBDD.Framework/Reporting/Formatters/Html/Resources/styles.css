@@ -17,9 +17,10 @@ section.features{display: flex;flex-direction: column;}
 .scenario{ border-radius: 0.5em;background-color: #ffffff;padding: 0.5rem;margin-bottom: 0.5rem;}
 .scenario:last-of-type{ margin-bottom: 0;}
 .toggleF:not(:checked) ~ .scenarios { display: none;}
-.toggleS:not(:checked) ~ .header ~ * { display: none;}
+.toggleS:not(:checked) ~ .header ~ .content { display: none;}
 .toggleSS:not(:checked) ~ .sub-steps { display: none;}
 .description{font-style: italic;color: #222222;white-space: pre-wrap;margin-top: 0.5rem;}
+.scenario .description {margin: 0.25rem 0 0.25rem 0;}
 span.label{background-color: hsl(202, 92%, 90%); color: hsl(202, 92%, 34%); padding: 0 0.3em; border-radius: 0.3em; font-size:smaller;white-space: nowrap;font-weight: normal;}
 span.category{background-color: hsl(24, 100%, 90%); color: hsl(24, 100%, 40%); padding: 0 0.3em; margin-right: 0.25em;white-space: nowrap;font-weight: normal;font-style: italic;}
 .status{width:21px;height:21px;display: flex;vertical-align: middle;text-align: center;font-family: 'Roboto Mono', monospace;font-size: 13px;font-weight: bold;line-height: 13px;align-items: center;justify-content: center;padding: 4px;margin-right: 5px;}

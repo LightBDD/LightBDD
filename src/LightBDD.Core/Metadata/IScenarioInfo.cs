@@ -24,5 +24,9 @@ namespace LightBDD.Core.Metadata
         /// Returns scenario categories or empty collection if none specified.
         /// </summary>
         IEnumerable<string> Categories { get; }
+        /// <summary>
+        /// Returns scenario description or <c>null</c> if none provided.
+        /// </summary>
+        string Description { get; }
     }
 }

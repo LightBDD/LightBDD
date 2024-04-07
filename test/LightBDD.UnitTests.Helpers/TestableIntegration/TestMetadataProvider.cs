@@ -21,6 +21,12 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
                 a => a.Description);
         }
 
+        protected override string GetImplementationSpecificScenarioDescription(ScenarioDescriptor scenarioDescriptor)
+        {
+            return ExtractAttributePropertyValue<CustomFeatureDescriptionAttribute>(scenarioDescriptor.MethodInfo,
+                a => a.Description);
+        }
+
         public override ScenarioDescriptor CaptureCurrentScenario()
         {
             return new ScenarioDescriptor(TestExecutionContext.CurrentContext.CurrentTest.Method.MethodInfo, null);
