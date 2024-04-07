@@ -103,7 +103,7 @@ namespace LightBDD.Framework.UnitTests.Notification
             notifier.Notify(new FeatureFinished(eventTime, featureResult));
 
             var headerLength = "Fi=000,Fa=000,Pe=000 #   > ".Length;
-            var padding = new string(' ',headerLength);
+            var padding = new string(' ', headerLength);
 
             var expectedTable = $@"{padding}    table:
 {padding}    +-+---+----------+----------+
@@ -130,7 +130,7 @@ namespace LightBDD.Framework.UnitTests.Notification
             var expected = new[]
             {
                 $"Fi=000,Fa=000,Pe=000 #   > FEATURE: [{string.Join("][", featureInfo.Labels)}] {featureInfo.Name}{Environment.NewLine}{padding}  {featureInfo.Description}",
-                $"Fi=000,Fa=000,Pe=001 #  1> SCENARIO: [{string.Join("][", scenarioInfo.Labels)}] {scenarioInfo.Name}",
+                $"Fi=000,Fa=000,Pe=001 #  1> SCENARIO: [{string.Join("][", scenarioInfo.Labels)}] {scenarioInfo.Name}{Environment.NewLine}{padding}  {scenarioInfo.Description}",
                 $"Fi=000,Fa=000,Pe=001 #  1>   STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: {stepInfo.Name}...",
                 $"Fi=000,Fa=000,Pe=001 #  1>   STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: /* {comment} */",
                 $"Fi=000,Fa=000,Pe=001 #  1>   STEP {stepResult.Info.GroupPrefix}{stepResult.Info.Number}/{stepResult.Info.GroupPrefix}{stepResult.Info.Total}: {stepResult.Info.Name} ({stepResult.Status} after {stepResult.ExecutionTime.Duration.FormatPretty()}){Environment.NewLine}{expectedTable}{Environment.NewLine}{expectedTree}",
@@ -186,6 +186,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         {
             var scenarioInfo = Fake.Object<TestResults.TestScenarioInfo>();
             scenarioInfo.Labels = Array.Empty<string>();
+            scenarioInfo.Description = null;
             GetProgressNotifier().Notify(new ScenarioStarting(new EventTime(), scenarioInfo));
 
             var expected = $"Fi=000,Fa=000,Pe=001 #  1> SCENARIO: {scenarioInfo.Name}";
@@ -199,6 +200,8 @@ namespace LightBDD.Framework.UnitTests.Notification
             var scenarioInfo2 = Fake.Object<TestResults.TestScenarioInfo>();
             scenarioInfo.Labels = Array.Empty<string>();
             scenarioInfo2.Labels = Array.Empty<string>();
+            scenarioInfo.Description = null;
+            scenarioInfo2.Description = null;
 
             var progressNotifier = GetProgressNotifier();
             progressNotifier.Notify(new ScenarioStarting(new EventTime(), scenarioInfo));
@@ -220,6 +223,8 @@ namespace LightBDD.Framework.UnitTests.Notification
             var scenarioInfo2 = Fake.Object<TestResults.TestScenarioInfo>();
             scenarioInfo.Labels = Array.Empty<string>();
             scenarioInfo2.Labels = Array.Empty<string>();
+            scenarioInfo.Description = null;
+            scenarioInfo2.Description = null;
 
             var scenarioResult = Fake.Object<TestResults.TestScenarioResult>();
             scenarioResult.Info = scenarioInfo;
@@ -254,6 +259,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         {
             var scenarioInfo = Fake.Object<TestResults.TestScenarioInfo>();
             scenarioInfo.Labels = Array.Empty<string>();
+            scenarioInfo.Description = null;
             var scenarioResult = Fake.Object<TestResults.TestScenarioResult>();
             scenarioResult.Info = scenarioInfo;
             scenarioResult.Status = ExecutionStatus.Passed;
@@ -279,6 +285,7 @@ namespace LightBDD.Framework.UnitTests.Notification
         {
             var scenarioInfo = Fake.Object<TestResults.TestScenarioInfo>();
             scenarioInfo.Labels = Array.Empty<string>();
+            scenarioInfo.Description = null;
             var scenarioResult = Fake.Object<TestResults.TestScenarioResult>();
             scenarioResult.Info = scenarioInfo;
             scenarioResult.Status = ExecutionStatus.Passed;
