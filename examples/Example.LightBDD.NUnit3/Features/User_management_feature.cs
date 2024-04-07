@@ -15,6 +15,7 @@ I want to be able to retrieve user data")]
     public partial class User_management_feature
     {
         [Scenario]
+        [ScenarioDescription("This scenario presents failures captured by Verifiable<T>")]
         public void Retrieving_user_details()
         {
             Runner.RunScenario(
@@ -38,6 +39,7 @@ I want to be able to retrieve user data")]
         }
 
         [Scenario]
+        [ScenarioDescription("This scenario presents failures captured by VerifiableTable")]
         public void User_search()
         {
             Runner.RunScenario(
@@ -56,6 +58,7 @@ I want to be able to retrieve user data")]
         }
 
         [Scenario]
+        [ScenarioDescription("This scenario presents failures captured by VerifiableTable with usage of Expect.To")]
         public void Validating_found_users()
         {
             Runner.RunScenario(

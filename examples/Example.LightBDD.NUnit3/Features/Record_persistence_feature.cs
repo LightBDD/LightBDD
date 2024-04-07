@@ -1,4 +1,5 @@
 ﻿using System;
+using LightBDD.Framework;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.Parameters;
 using LightBDD.Framework.Scenarios;
@@ -12,6 +13,7 @@ namespace Example.LightBDD.NUnit3.Features
     public partial class Record_persistence_feature
     {
         [Scenario]
+        [ScenarioDescription("This scenario presents failures captured by VerifiableTree using ExpectEquivalent mode")]
         public void Saving_data()
         {
             var testRunDate = DateTimeOffset.UtcNow;

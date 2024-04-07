@@ -40,6 +40,7 @@ I want to add products to basket")]
         [Scenario]
         [Label("Ticket-7")]
         [ScenarioCategory(Categories.Sales)]
+        [ScenarioDescription("This scenario presents how LightBDD reports ignored steps")]
         public async Task Successful_addition()
         {
             await Runner.AddSteps(
