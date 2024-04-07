@@ -61,6 +61,8 @@ My feature Label 1 link
 My feature
 long description
 ! name Label 2 (1m 02s) link
+My scenario
+long description
  categoryA
 ✓ 1. call step1 &quot;arg1&quot; (1m 01s)
 ! 2. step2 (1s 100ms)

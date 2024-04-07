@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility.Execution;
-using OpenQA.Selenium;
 
 namespace LightBDD.AcceptanceTests.Helpers
 {

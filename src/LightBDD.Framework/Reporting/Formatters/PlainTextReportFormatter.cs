@@ -105,6 +105,7 @@ namespace LightBDD.Framework.Reporting.Formatters
                 writer.Write("\t\t");
                 writer.Write(scenario.Info.Description.Replace(Environment.NewLine, Environment.NewLine + "\t\t"));
                 writer.WriteLine();
+                writer.WriteLine();
             }
 
             if (scenario.Info.Categories.Any())
@@ -112,8 +113,6 @@ namespace LightBDD.Framework.Reporting.Formatters
                 writer.Write("\t\tCategories: ");
                 writer.WriteLine(string.Join(", ", scenario.Info.Categories));
             }
-
-            writer.WriteLine();
 
             var commentBuilder = new StringBuilder();
             var attachmentBuilder = new StringBuilder();

@@ -28,7 +28,7 @@ High level features:
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MSTest.TestFramework" Version="3.2.1" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.0.4" />
   </ItemGroup>
 
 </Project>
