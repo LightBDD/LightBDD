@@ -51,6 +51,8 @@ long description</Description>
     <Scenario Status=""Ignored"" Name=""name"" ExecutionStart=""2014-09-23T19:21:58.055Z"" ExecutionTime=""PT1M2.1S"" RuntimeId=""22222222-2222-2222-2222-222222222222"">
       <Name Format=""name"" />
       <Label Name=""Label 2"" />
+      <Description>My scenario
+long description</Description>
       <Category Name=""categoryA"" />
       <Step Status=""Passed"" Number=""1"" Name=""call step1 &quot;arg1&quot;"" ExecutionStart=""2014-09-23T19:21:59.055Z"" ExecutionTime=""PT1M1S"" RuntimeId=""11111111-1111-1111-1111-111111111111"">
         <StepName StepType=""call"" Format=""step1 &quot;{0}&quot;"">

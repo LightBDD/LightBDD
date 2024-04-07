@@ -60,7 +60,11 @@ namespace LightBDD.Framework.Reporting.Formatters
                 new XAttribute("Name", scenario.Info.Name),
                 ToXElement(scenario.Info.Name)
             };
+
             objects.AddRange(scenario.Info.Labels.Select(label => new XElement("Label", new XAttribute("Name", label))));
+
+            if (!string.IsNullOrWhiteSpace(scenario.Info.Description))
+                objects.Add(new XElement("Description", scenario.Info.Description));
 
             if (scenario.ExecutionTime != null)
             {

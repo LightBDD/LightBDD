@@ -22,6 +22,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         private IEnumerable<StepDescriptor> _steps = Enumerable.Empty<StepDescriptor>();
         private ExecutionContextDescriptor _contextDescriptor = ExecutionContextDescriptor.NoContext;
         private IEnumerable<IScenarioDecorator> _scenarioDecorators = Enumerable.Empty<IScenarioDecorator>();
+        private string _description;
 
         public ScenarioBuilder(IFeatureInfo featureInfo, object fixture, IntegrationContext integrationContext,
             ExceptionProcessor exceptionProcessor, Action<IScenarioResult> onScenarioFinished)
@@ -50,7 +51,8 @@ namespace LightBDD.Core.Extensibility.Implementation
             return WithName(metadataProvider.GetScenarioName(scenario))
                 .WithLabels(metadataProvider.GetScenarioLabels(scenario.MethodInfo))
                 .WithCategories(metadataProvider.GetScenarioCategories(scenario.MethodInfo))
-                .WithScenarioDecorators(metadataProvider.GetScenarioDecorators(scenario));
+                .WithScenarioDecorators(metadataProvider.GetScenarioDecorators(scenario))
+                .WithDescription(metadataProvider.GetScenarioDescription(scenario));
         }
 
         public ICoreScenarioBuilder WithCapturedScenarioDetailsIfNotSpecified()
@@ -65,6 +67,7 @@ namespace LightBDD.Core.Extensibility.Implementation
             _labels = labels ?? throw new ArgumentNullException(nameof(labels));
             return this;
         }
+
 
         public ICoreScenarioBuilder WithCategories(string[] categories)
         {
@@ -104,10 +107,16 @@ namespace LightBDD.Core.Extensibility.Implementation
             return this;
         }
 
+        public ICoreScenarioBuilder WithDescription(string description)
+        {
+            _description = description;
+            return this;
+        }
+
         public IRunnableScenario Build()
         {
             ValidateContext();
-            return new RunnableScenario(_context, new ScenarioInfo(_featureInfo, _name, _labels, _categories), _steps, _contextDescriptor, GetScenarioDecorators());
+            return new RunnableScenario(_context, new ScenarioInfo(_featureInfo, _name, _labels, _categories, _description), _steps, _contextDescriptor, GetScenarioDecorators());
         }
 
         public LightBddConfiguration Configuration => _context.IntegrationContext.Configuration;

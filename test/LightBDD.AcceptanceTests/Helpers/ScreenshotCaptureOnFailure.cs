@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility.Execution;
-using OpenQA.Selenium;
 
 namespace LightBDD.AcceptanceTests.Helpers
 {
@@ -26,7 +25,7 @@ namespace LightBDD.AcceptanceTests.Helpers
         private static async Task TakeScreenshot(IStep step, IChromeDriverContext context)
         {
             var screenShotPath = $"{Guid.NewGuid()}.png";
-            context.Driver.GetScreenshot().SaveAsFile(screenShotPath, ScreenshotImageFormat.Png);
+            context.Driver.GetScreenshot().SaveAsFile(screenShotPath);
             await step.AttachFile(mgr => mgr.CreateFromFile("screenshot", screenShotPath));
         }
     }

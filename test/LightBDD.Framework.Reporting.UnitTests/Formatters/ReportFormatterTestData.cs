@@ -14,7 +14,7 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
         public static IFeatureResult GetFeatureResultWithDescription()
         {
             return TestResults.CreateFeatureResult("My feature", $"My feature{Environment.NewLine}long description", "Label 1",
-                TestResults.CreateScenarioResult("name", "Label 2", _startDate.AddSeconds(1), new TimeSpan(0, 0, 1, 2, 100), new[] { "categoryA" },
+                TestResults.CreateScenarioResult("name", "Label 2", $"My scenario{Environment.NewLine}long description", _startDate.AddSeconds(1), new TimeSpan(0, 0, 1, 2, 100), new[] { "categoryA" },
                     TestResults.CreateStepResult(ExecutionStatus.Passed)
                         .WithExecutionTime(_startDate.AddSeconds(2), new TimeSpan(0, 1, 1))
                         .WithStepNameDetails(1, "call step1 \"arg1\"", "step1 \"{0}\"", "call", "arg1")
