@@ -34,5 +34,10 @@ namespace LightBDD.XUnit2.Implementation
         {
             return null;
         }
+
+        protected override string GetImplementationSpecificScenarioDescription(ScenarioDescriptor scenarioDescriptor)
+        {
+            return null;
+        }
     }
 }

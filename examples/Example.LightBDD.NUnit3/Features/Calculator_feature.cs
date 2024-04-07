@@ -27,6 +27,7 @@ This example presents usage of MultiAssertAttribute.")]
         [Label("Ticket-13")]
         [Scenario]
         [MultiAssert]
+        [ScenarioDescription("This scenario presents usage of Verifiable<T> and MultiAssertAttribute")]
         public void Adding_numbers()
         {
             Runner.RunScenario(
@@ -43,6 +44,7 @@ This example presents usage of MultiAssertAttribute.")]
         [Label("Ticket-13")]
         [Scenario]
         [MultiAssert]
+        [ScenarioDescription("This scenario presents usage of Verifiable<T> and MultiAssertAttribute")]
         public void Dividing_numbers()
         {
             Runner.RunScenario(
@@ -63,6 +65,7 @@ This example presents usage of MultiAssertAttribute.")]
         [Label("Ticket-13")]
         [Scenario]
         [MultiAssert]
+        [ScenarioDescription("This scenario presents how steps are ignored when MultiAssertAttribute is applied")]
         public void Multiplying_numbers()
         {
             Runner.RunScenario(
@@ -82,6 +85,7 @@ This example presents usage of MultiAssertAttribute.")]
         [Label("Ticket-13")]
         [Scenario]
         [MultiAssert]
+        [ScenarioDescription("This scenario presents behavior of MultiAssertAttribute")]
         public void Composite_operations()
         {
             Runner.RunScenario(

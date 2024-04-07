@@ -100,6 +100,14 @@ namespace LightBDD.Framework.Reporting.Formatters
             }
             writer.WriteLine();
 
+            if (!string.IsNullOrWhiteSpace(scenario.Info.Description))
+            {
+                writer.Write("\t\t");
+                writer.Write(scenario.Info.Description.Replace(Environment.NewLine, Environment.NewLine + "\t\t"));
+                writer.WriteLine();
+                writer.WriteLine();
+            }
+
             if (scenario.Info.Categories.Any())
             {
                 writer.Write("\t\tCategories: ");

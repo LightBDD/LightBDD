@@ -35,7 +35,7 @@ namespace LightBDD.Framework.Notification
         /// <param name="scenario">Scenario info.</param>
         public void NotifyScenarioStart(IScenarioInfo scenario)
         {
-            _onNotify($"SCENARIO: {FormatLabels(scenario.Labels)}{scenario.Name}");
+            _onNotify($"SCENARIO: {FormatLabels(scenario.Labels)}{scenario.Name}{FormatDescription(scenario.Description)}");
         }
 
         /// <summary>

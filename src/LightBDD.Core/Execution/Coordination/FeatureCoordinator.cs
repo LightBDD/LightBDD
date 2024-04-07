@@ -18,6 +18,7 @@ namespace LightBDD.Core.Execution.Coordination
         /// Feature coordinator instance.
         /// </summary>
         protected static FeatureCoordinator Instance { get; private set; }
+        private bool _disposing = false;
         private readonly IFeatureAggregator _featureAggregator;
         /// <summary>
         /// Runner factory.
@@ -113,14 +114,21 @@ namespace LightBDD.Core.Execution.Coordination
         /// </summary>
         public void Dispose()
         {
-            if (IsDisposed)
+            if (IsDisposed || _disposing)
                 return;
 
-            IsDisposed = true;
-            UninstallSelf();
-            CollectFeatureResults();
-            _featureAggregator.Dispose();
-            RunnerRepository.Dispose();
+            _disposing = true;
+            try
+            {
+                CollectFeatureResults();
+                _featureAggregator.Dispose();
+                RunnerRepository.Dispose();
+            }
+            finally
+            {
+                UninstallSelf();
+                IsDisposed = true;
+            }
         }
 
         private void CollectFeatureResults()

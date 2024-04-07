@@ -52,6 +52,9 @@ Feature: My feature [Label 1]
 	long description
 
 	Scenario: name [Label 2] - Ignored (1m 02s)
+		My scenario
+		long description
+
 		Categories: categoryA
 		Step 1: call step1 ""arg1"" - Passed (1m 01s)
 		Step 2: step2 - Ignored (1s 100ms)

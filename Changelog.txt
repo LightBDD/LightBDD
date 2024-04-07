@@ -1,6 +1,12 @@
 LightBDD
 ===========================================
 
+Version 3.8.0
+----------------------------------------
++ #338 (LightBDD.Framework)(New) Added ScenarioDescriptionAttribute to decorate scenarios with description. Updated ReportFormatters and ProgressNotifiers to include it when provided.
++ #338 Updated XmlReportFormatterSchema.xsd to v2.2 with support for Scenario Description
++ #344 (LightBDD.Core)(Change) Allowed IReportFormatter and IGlobalResourceSetUp implementations to use LightBDDConfigurationAware base
+
 Version 3.7.0
 ----------------------------------------
 + #207 (LightBDD.Framework)(Change) Modernised Html Report

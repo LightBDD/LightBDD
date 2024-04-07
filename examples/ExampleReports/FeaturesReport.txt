@@ -1,8 +1,8 @@
 Summary:
-	Test execution start time       : 2023-07-02 22:59:15 UTC
-	Test execution end time         : 2023-07-02 22:59:21 UTC
-	Test execution time             : 6s 365ms
-	Test execution time (aggregated): 28s 243ms
+	Test execution start time       : 2024-04-07 19:51:36 UTC
+	Test execution end time         : 2024-04-07 19:51:42 UTC
+	Test execution time             : 6s 193ms
+	Test execution time (aggregated): 28s 127ms
 	Number of features              : 14
 	Number of scenarios             : 34
 	Passed scenarios                : 18
@@ -21,9 +21,11 @@ Feature: Address book feature
 	As an application user
 	I want to add and browse my client postal addresses by client emails
 
-	Scenario: Adding contacts - Failed (51ms)
+	Scenario: Adding contacts - Failed (74ms)
+		This scenario presents failures captured by VerifiableTree
+
 		Step 1: GIVEN an empty address book - Passed (2ms)
-		Step 2: WHEN I associate contact "<$contact>" with address "<$address>" as alias "Joey" - Passed (23ms)
+		Step 2: WHEN I associate contact "<$contact>" with address "<$address>" as alias "Joey" - Passed (30ms)
 		contact:
 		  $: <object>
 		  $.Email: joe67@email.com
@@ -47,7 +49,7 @@ Feature: Address book feature
 		  $.City: Kraków
 		  $.Country: Poland
 		  $.PostCode: 31-042
-		Step 4: THEN address book should contain contacts "<$contacts>" - Failed (3ms)
+		Step 4: THEN address book should contain contacts "<$contacts>" - Failed (6ms)
 		contacts:
 		= $: <array:2>
 		= $[0]: <object>
@@ -63,7 +65,7 @@ Feature: Address book feature
 				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
 				at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 
-	Scenario: Matching addresses by email - Passed (7ms)
+	Scenario: Matching addresses by email - Passed (8ms)
 		Step 1: GIVEN an empty address book - Passed (<1ms)
 		Step 2: WHEN I associate contact "<$contact>" with address "<$address>" as alias "Joey" - Passed (<1ms)
 		contact:
@@ -89,7 +91,7 @@ Feature: Address book feature
 		  $.City: Kraków
 		  $.Country: Poland
 		  $.PostCode: 31-042
-		Step 4: THEN address by email should match "<$match>" - Passed (1ms)
+		Step 4: THEN address by email should match "<$match>" - Passed (2ms)
 		match:
 		= $: <object>
 		= $['joe67@email.com']: <object>
@@ -103,7 +105,7 @@ Feature: Address book feature
 		= $['nowak33@email.com'].Address.City: Kraków
 		= $['nowak33@email.com'].Address.PostCode: 31-042
 
-	Scenario: Persisting address book - Passed (60ms)
+	Scenario: Persisting address book - Passed (69ms)
 		Step 1: GIVEN an address book with contacts "<$contacts>" - Passed (<1ms)
 		contacts:
 		  $: <array:2>
@@ -129,8 +131,8 @@ Feature: Address book feature
 		  $[1].Contact.Email: nowak33@email.com
 		  $[1].Contact.Name: Jan Nowak
 		  $[1].Contact.PhoneNumber: 123654789
-		Step 2: WHEN I persist book as json - Passed (15ms)
-		Step 3: THEN address book should match persisted json "<$json>" - Passed (6ms)
+		Step 2: WHEN I persist book as json - Passed (28ms)
+		Step 3: THEN address book should match persisted json "<$json>" - Passed (4ms)
 		json:
 		= $: <object>
 		= $.ContactsByEmail: <object>
@@ -156,7 +158,7 @@ Feature: Address book feature
 		= $.ContactsByEmail['nowak33@email.com'].Contact.Email: nowak33@email.com
 		= $.ContactsByEmail['nowak33@email.com'].Contact.Name: Jan Nowak
 		= $.ContactsByEmail['nowak33@email.com'].Contact.PhoneNumber: 123654789
-		Step 4: AND address book should match persisted json "<$json>" - Passed (33ms)
+		Step 4: AND address book should match persisted json "<$json>" - Passed (29ms)
 		json:
 		= $: <object>
 		= $.ContactsByEmail: <object>
@@ -186,7 +188,7 @@ Feature: Address book feature
 			Step 3: Underlying type: JsonElement
 			Step 4: Underlying type: ExpandoObject
 
-	Scenario: Retrieving postal addresses - Passed (5ms)
+	Scenario: Retrieving postal addresses - Passed (4ms)
 		Step 1: GIVEN an empty address book - Passed (<1ms)
 		Step 2: WHEN I associate contact "<$contact>" with address "<$address>" as alias "Joey" - Passed (<1ms)
 		contact:
@@ -231,19 +233,21 @@ Feature: Basket feature [Story-4]
 	As a customer
 	I want to add products to basket
 
-	Scenario: No product in stock [Ticket-6] - Passed (1s 900ms)
+	Scenario: No product in stock [Ticket-6] - Passed (1s 309ms)
 		Categories: Sales
-		Step 1: GIVEN product is out of stock - Passed (5ms)
-		Step 2: WHEN customer adds it to the basket - Passed (1s 876ms)
+		Step 1: GIVEN product is out of stock - Passed (6ms)
+		Step 2: WHEN customer adds it to the basket - Passed (1s 274ms)
 		Step 3: THEN the product addition should be unsuccessful - Passed (<1ms)
 		Step 4: AND the basket should not contain the product - Passed (<1ms)
 		Comments:
 			Step 2: Transferring 'product' to the basket
 
-	Scenario: Successful addition [Ticket-7] - Ignored (1s 551ms)
+	Scenario: Successful addition [Ticket-7] - Ignored (1s 960ms)
+		This scenario presents how LightBDD reports ignored steps
+
 		Categories: Sales
 		Step 1: GIVEN product is in stock - Passed (<1ms)
-		Step 2: WHEN customer adds it to the basket - Passed (1s 547ms)
+		Step 2: WHEN customer adds it to the basket - Passed (1s 959ms)
 		Step 3: THEN the product addition should be successful - Passed (<1ms)
 		Step 4: AND the basket should contain the product - Passed (<1ms)
 		Step 5: AND the product should be removed from stock - Ignored (<1ms)
@@ -260,10 +264,12 @@ Feature: Calculator feature [Story-8]
 	
 	This example presents usage of MultiAssertAttribute.
 
-	Scenario: Adding numbers [Ticket-13] - Failed (50ms)
-		Step 1: GIVEN a calculator - Passed (1ms)
-		Step 2: THEN adding "2" to "3" should give "5" - Passed (2ms)
-		Step 3: AND adding "-3" to "2" should give "expected: equals '-1', but got: '1'" - Failed (24ms)
+	Scenario: Adding numbers [Ticket-13] - Failed (72ms)
+		This scenario presents usage of Verifiable<T> and MultiAssertAttribute
+
+		Step 1: GIVEN a calculator - Passed (2ms)
+		Step 2: THEN adding "2" to "3" should give "5" - Passed (4ms)
+		Step 3: AND adding "-3" to "2" should give "expected: equals '-1', but got: '1'" - Failed (31ms)
 		Step 4: AND adding "0" to "1" should give "1" - Passed (<1ms)
 		Step 5: AND adding "-2" to "-1" should give "expected: equals '-3', but got: '3'" - Failed (<1ms)
 		Details:
@@ -274,13 +280,15 @@ Feature: Calculator feature [Story-8]
 				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
 				at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 
-	Scenario: Composite operations [Ticket-13] - Failed (14ms)
+	Scenario: Composite operations [Ticket-13] - Failed (15ms)
+		This scenario presents behavior of MultiAssertAttribute
+
 		Step 1: GIVEN a calculator - Passed (<1ms)
-		Step 2: THEN it should add numbers - Failed (6ms)
+		Step 2: THEN it should add numbers - Failed (4ms)
 			Step 2.1: THEN adding "2" to "3" should give "5" - Passed (<1ms)
 			Step 2.2: AND adding "2" to "-3" should give "expected: equals '-1', but got: '1'" - Failed (<1ms)
 			Step 2.3: AND adding "0" to "1" should give "expected: equals '0', but got: '1'" - Failed (<1ms)
-		Step 3: AND it should multiply numbers - Ignored (3ms)
+		Step 3: AND it should multiply numbers - Ignored (5ms)
 			Step 3.1: THEN multiplying "2" by "3" should give "6" - Passed (<1ms)
 			Step 3.2: AND multiplying "2" by "-3" should give "expected: equals '-6'" - Ignored (<1ms)
 			Step 3.3: AND multiplying "1" by "1" should give "<?>" - NotRun
@@ -302,10 +310,12 @@ Feature: Calculator feature [Story-8]
 			Step 2: It is possible to add MultiAssertAttribute on composite step
 			Step 3: This step does not have MultiAssertAttribute so will stop on first exception
 
-	Scenario: Dividing numbers [Ticket-13] - Failed (6ms)
+	Scenario: Dividing numbers [Ticket-13] - Failed (4ms)
+		This scenario presents usage of Verifiable<T> and MultiAssertAttribute
+
 		Step 1: GIVEN a calculator - Passed (<1ms)
 		Step 2: THEN dividing "6" by "2" should give "3" - Passed (<1ms)
-		Step 3: AND dividing "2" by "0" should give "expected: equals '0', but got: '<DivideByZeroException>'" - Failed (1ms)
+		Step 3: AND dividing "2" by "0" should give "expected: equals '0', but got: '<DivideByZeroException>'" - Failed (<1ms)
 		Step 4: AND dividing "2" by "3" should give "0" - Passed (<1ms)
 		Step 5: AND dividing "0" by "5" should give "expected: equals '1', but got: '0'" - Failed (<1ms)
 		Details:
@@ -316,7 +326,9 @@ Feature: Calculator feature [Story-8]
 				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
 				at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 
-	Scenario: Multiplying numbers [Ticket-13] - Ignored (5ms)
+	Scenario: Multiplying numbers [Ticket-13] - Ignored (6ms)
+		This scenario presents how steps are ignored when MultiAssertAttribute is applied
+
 		Step 1: GIVEN a calculator - Passed (<1ms)
 		Step 2: THEN multiplying "6" by "2" should give "12" - Passed (<1ms)
 		Step 3: AND multiplying "-1" by "2" should give "expected: equals '-2'" - Ignored (<1ms)
@@ -332,37 +344,39 @@ Feature: Compact calculator scenarios
 	I want to be able to write compact scenarios,
 	So that I can use LightBDD for more unit-test like tests as well
 
-	Scenario: Adding numbers - Passed (28ms)
+	Scenario: Adding numbers - Passed (41ms)
 		Step 1: GIVEN calculator - Passed (6ms)
 		Step 2: WHEN I add two numbers - Passed (<1ms)
-		Step 3: THEN I should get an expected result - Passed (4ms)
+		Step 3: THEN I should get an expected result - Passed (6ms)
 
 Feature: Contacts management [Story-6]
 	In order to maintain my contact book
 	As an application user
 	I want to add, browse and remove my contacts
 
-	Scenario: Contact book should allow me to add multiple contacts [Ticket-8] - Passed (30ms)
+	Scenario: Contact book should allow me to add multiple contacts [Ticket-8] - Passed (43ms)
 		Step 1: GIVEN my contact book is empty - Passed (5ms)
 		Step 2: WHEN I add new contacts - Passed (<1ms)
-		Step 3: THEN all contacts should be available in the contact book - Passed (6ms)
+		Step 3: THEN all contacts should be available in the contact book - Passed (8ms)
 
-	Scenario: Contact book should allow me to remove all contacts [Ticket-9] - Bypassed (16ms)
-		Step 1: GIVEN my contact book is filled with many contacts - Passed (13ms)
-		Step 2: WHEN I clear it - Bypassed (<1ms)
-		Step 3: THEN the contact book should be empty - Passed (<1ms)
+	Scenario: Contact book should allow me to remove all contacts [Ticket-9] - Bypassed (6ms)
+		This scenario presents how LightBDD reports bypassed steps
+
+		Step 1: GIVEN my contact book is filled with many contacts - Passed (1ms)
+		Step 2: WHEN I clear it - Bypassed (1ms)
+		Step 3: THEN the contact book should be empty - Passed (1ms)
 		Details:
 			Step 2: Contact book clearing is not implemented yet. Contacts are removed one by one.
 
-	Scenario: Contact book should allow me to remove contacts [Ticket-9] - Passed (3ms)
+	Scenario: Contact book should allow me to remove contacts [Ticket-9] - Passed (16ms)
 		Step 1: GIVEN my contact book is filled with contacts - Passed (<1ms)
 		Step 2: WHEN I remove one contact - Passed (<1ms)
-		Step 3: THEN the contact book should not contain removed contact any more - Passed (<1ms)
-		Step 4: AND the contact book should contains all other contacts - Passed (<1ms)
+		Step 3: THEN the contact book should not contain removed contact any more - Passed (1ms)
+		Step 4: AND the contact book should contains all other contacts - Passed (1ms)
 
-	Scenario: Displaying contacts alphabetically - Passed (29ms)
+	Scenario: Displaying contacts alphabetically - Passed (32ms)
 		Step 1: GIVEN my contact book is empty - Passed (<1ms)
-		Step 2: AND I added contacts "<$contacts>" - Passed (12ms)
+		Step 2: AND I added contacts "<$contacts>" - Passed (14ms)
 		contacts:
 		+-----------------+-----+------------+
 		|Email            |Name |PhoneNumber |
@@ -373,7 +387,7 @@ Feature: Contacts management [Story-6]
 		|ka321@gmail.com  |Kathy|111-555-330 |
 		+-----------------+-----+------------+
 		Step 3: WHEN I request contacts sorted by name - Passed (<1ms)
-		Step 4: THEN I should receive contacts "<$contacts>" - Passed (11ms)
+		Step 4: THEN I should receive contacts "<$contacts>" - Passed (9ms)
 		contacts:
 		+-+-----------------+-----+------------+
 		|#|Email            |Name |PhoneNumber |
@@ -384,7 +398,9 @@ Feature: Contacts management [Story-6]
 		|=|ka321@gmail.com  |Kathy|111-555-330 |
 		+-+-----------------+-----+------------+
 
-	Scenario: Normalizing contact details - Failed (11ms)
+	Scenario: Normalizing contact details - Failed (12ms)
+		This scenario presents failures captured by VerifiableTable
+
 		Step 1: GIVEN I added contacts "<$contacts>" - Passed (<1ms)
 		contacts:
 		+-------------------+-----+--------------+
@@ -396,7 +412,7 @@ Feature: Contacts management [Story-6]
 		|jos#@mymail.com    |Josh |12111333444   |
 		+-------------------+-----+--------------+
 		Step 2: WHEN I request contacts sorted by name - Passed (<1ms)
-		Step 3: THEN I should receive contacts "<$contacts>" - Failed (8ms)
+		Step 3: THEN I should receive contacts "<$contacts>" - Failed (10ms)
 		contacts:
 		+-+-----+-------------------------------------------------+--------------------------------+
 		|#|Name |Email                                            |PhoneNumber                     |
@@ -412,7 +428,9 @@ Feature: Contacts management [Story-6]
 				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
 				at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 
-	Scenario: Searching for contacts by phone - Failed (12ms)
+	Scenario: Searching for contacts by phone - Failed (15ms)
+		This scenario presents failures captured by VerifiableTree
+
 		Step 1: GIVEN my contact book is empty - Passed (<1ms)
 		Step 2: AND I added contacts "<$contacts>" - Passed (<1ms)
 		contacts:
@@ -426,7 +444,7 @@ Feature: Contacts management [Story-6]
 		|ka321@gmail.com  |Kathy|111-555-330 |
 		+-----------------+-----+------------+
 		Step 3: WHEN I search for contacts by phone starting with "111" - Passed (<1ms)
-		Step 4: THEN I should receive contacts "<$contacts>" - Failed (8ms)
+		Step 4: THEN I should receive contacts "<$contacts>" - Failed (11ms)
 		contacts:
 		+-+-------------+----------------------------------+------------------+
 		|#|Name         |Email                             |PhoneNumber       |
@@ -453,19 +471,19 @@ Feature: Customer journey [Story-7]
 	As an application user
 	I want to go through entire customer journey
 
-	Scenario: Ordering products [Ticket-12] - Ignored (5s 161ms)
-		Step 1: GIVEN customer is logged in - Passed (1s 743ms)
-			Step 1.1: GIVEN the user is about to login - Passed (1ms)
+	Scenario: Ordering products [Ticket-12] - Ignored (4s 877ms)
+		Step 1: GIVEN customer is logged in - Passed (1s 860ms)
+			Step 1.1: GIVEN the user is about to login - Passed (<1ms)
 			Step 1.2: AND the user entered valid login - Passed (<1ms)
 			Step 1.3: AND the user entered valid password - Passed (<1ms)
-			Step 1.4: WHEN the user clicks login button - Passed (1s 732ms)
+			Step 1.4: WHEN the user clicks login button - Passed (1s 848ms)
 			Step 1.5: THEN the login operation should be successful - Passed (<1ms)
-		Step 2: WHEN customer adds products to basket - Bypassed (1s 693ms)
+		Step 2: WHEN customer adds products to basket - Bypassed (1s 151ms)
 			Step 2.1: GIVEN product "wooden desk" is in stock - Passed (<1ms)
-			Step 2.2: WHEN customer adds product "wooden desk" to the basket - Bypassed (1s 690ms)
+			Step 2.2: WHEN customer adds product "wooden desk" to the basket - Bypassed (1s 149ms)
 			Step 2.3: THEN the product addition should be successful - Passed (<1ms)
-		Step 3: AND customer pays for products in basket - Passed (1s 706ms)
-			Step 3.1: WHEN customer requests to pay - Passed (1s 702ms)
+		Step 3: AND customer pays for products in basket - Passed (1s 834ms)
+			Step 3.1: WHEN customer requests to pay - Passed (1s 831ms)
 			Step 3.2: THEN payment should be successful - Passed (<1ms)
 		Step 4: THEN customer should receive order email - Ignored (5ms)
 			Step 4.1: THEN customer should receive invoice - Ignored (3ms)
@@ -474,28 +492,28 @@ Feature: Customer journey [Story-7]
 			Step 2.2: Until proper api is implemented, product is added directly to the DB.
 			Step 4.1: Not implemented yet
 		Attachments:
-			Step 4.1: invoice-content - 49b6cbfe-d18c-4165-a6ea-8d5a4a4a21be.txt
+			Step 4.1: invoice-content - 1850e4bb-8f51-4b93-a2ac-1a3e185885c9.txt
 
 Feature: Internationalization feature [Story-10]
 	In order to easily use the website
 	As a user
 	I want to see the website in my language
 
-	Scenario: Displaying home page in "DE" - Passed (6ms)
+	Scenario: Displaying home page in "DE" - Passed (17ms)
 		Step 1: GIVEN a customer with "DE" language selected - Passed (<1ms)
 		Step 2: WHEN the customer opens the home page - Passed (<1ms)
 		Step 3: THEN header should display "DE" language - Passed (<1ms)
 		Step 4: AND page title should be translated - Passed (<1ms)
 		Step 5: AND all menu items should be translated - Passed (<1ms)
 
-	Scenario: Displaying home page in "EN" - Passed (26ms)
-		Step 1: GIVEN a customer with "EN" language selected - Passed (4ms)
-		Step 2: WHEN the customer opens the home page - Passed (<1ms)
+	Scenario: Displaying home page in "EN" - Passed (40ms)
+		Step 1: GIVEN a customer with "EN" language selected - Passed (3ms)
+		Step 2: WHEN the customer opens the home page - Passed (1ms)
 		Step 3: THEN header should display "EN" language - Passed (2ms)
 		Step 4: AND page title should be translated - Passed (<1ms)
 		Step 5: AND all menu items should be translated - Passed (<1ms)
 
-	Scenario: Displaying home page in "PL" - Passed (3ms)
+	Scenario: Displaying home page in "PL" - Passed (4ms)
 		Step 1: GIVEN a customer with "PL" language selected - Passed (<1ms)
 		Step 2: WHEN the customer opens the home page - Passed (<1ms)
 		Step 3: THEN header should display "PL" language - Passed (<1ms)
@@ -507,10 +525,10 @@ Feature: Invoice feature [Story-2]
 	As a customer
 	I want to receive invoice for bought items
 
-	Scenario: Receiving invoice for products [Ticket-4] - Ignored (28ms)
+	Scenario: Receiving invoice for products [Ticket-4] - Ignored (42ms)
 		Categories: Sales
-		Step 1: GIVEN product "wooden desk" is available in product storage - Passed (2ms)
-		Step 2: AND product "wooden shelf" is available in product storage - Passed (<1ms)
+		Step 1: GIVEN product "wooden desk" is available in product storage - Passed (<1ms)
+		Step 2: AND product "wooden shelf" is available in product storage - Passed (2ms)
 		Step 3: WHEN customer buys product "wooden desk" - Passed (<1ms)
 		Step 4: AND customer buys product "wooden shelf" - Passed (<1ms)
 		Step 5: THEN an invoice should be sent to the customer - Ignored (3ms)
@@ -526,10 +544,10 @@ Feature: Invoice history feature [STORY-9]
 	
 	Example usage of fluent scenarios
 
-	Scenario: Browsing invoices [Ticket-14] - Passed (4s 832ms)
-		Step 1: GIVEN invoice "Invoice-1" - Passed (1s 257ms)
-		Step 2: AND invoice "Invoice-2" - Passed (1s 788ms)
-		Step 3: WHEN I request all historical invoices - Passed (1s 771ms)
+	Scenario: Browsing invoices [Ticket-14] - Passed (5s 715ms)
+		Step 1: GIVEN invoice "Invoice-1" - Passed (1s 938ms)
+		Step 2: AND invoice "Invoice-2" - Passed (1s 912ms)
+		Step 3: WHEN I request all historical invoices - Passed (1s 838ms)
 		Step 4: THEN I should see invoices "Invoice-1, Invoice-2" - Passed (<1ms)
 
 Feature: Login feature [Story-1]
@@ -537,12 +555,14 @@ Feature: Login feature [Story-1]
 	As an user
 	I want to login into system
 
-	Scenario: Anonymous login name should allow to log in [Ticket-3] - Failed (1s 469ms)
+	Scenario: Anonymous login name should allow to log in [Ticket-3] - Failed (1s 102ms)
+		This scenario presents how LightBDD reports failed steps
+
 		Categories: Security
-		Step 1: GIVEN the user is about to login - Passed (5ms)
-		Step 2: AND the user entered anonymous login - Passed (<1ms)
-		Step 3: WHEN the user clicks login button - Passed (1s 434ms)
-		Step 4: THEN the login operation should be successful - Failed (9ms)
+		Step 1: GIVEN the user is about to login - Passed (6ms)
+		Step 2: AND the user entered anonymous login - Passed (2ms)
+		Step 3: WHEN the user clicks login button - Passed (1s 052ms)
+		Step 4: THEN the login operation should be successful - Failed (11ms)
 		Step 5: AND a welcome message containing user name should be returned - NotRun
 		Details:
 			Step 4: NUnit.Framework.AssertionException :   Login should succeeded
@@ -554,30 +574,30 @@ Feature: Login feature [Story-1]
 		Comments:
 			Step 2: Presentation of failed scenario
 
-	Scenario: Successful login [Ticket-1] - Passed (1s 354ms)
+	Scenario: Successful login [Ticket-1] - Passed (1s 559ms)
 		Categories: Security
 		Step 1: GIVEN the user is about to login - Passed (<1ms)
 		Step 2: AND the user entered valid login - Passed (<1ms)
 		Step 3: AND the user entered valid password - Passed (<1ms)
-		Step 4: WHEN the user clicks login button - Passed (1s 353ms)
+		Step 4: WHEN the user clicks login button - Passed (1s 558ms)
 		Step 5: THEN the login operation should be successful - Passed (<1ms)
 		Step 6: AND a welcome message containing user name should be returned - Passed (<1ms)
 
-	Scenario: Wrong login provided causes login to fail [Ticket-2] - Passed (1s 029ms)
+	Scenario: Wrong login provided causes login to fail [Ticket-2] - Passed (1s 306ms)
 		Categories: Security
 		Step 1: GIVEN the user is about to login - Passed (<1ms)
 		Step 2: AND the user entered invalid login - Passed (<1ms)
 		Step 3: AND the user entered valid password - Passed (<1ms)
-		Step 4: WHEN the user clicks login button - Passed (1s 028ms)
+		Step 4: WHEN the user clicks login button - Passed (1s 305ms)
 		Step 5: THEN the login operation should be unsuccessful - Passed (<1ms)
 		Step 6: AND an invalid login or password error message should be returned - Passed (<1ms)
 
-	Scenario: Wrong password provided causes login to fail [Ticket-2] - Passed (1s 996ms)
+	Scenario: Wrong password provided causes login to fail [Ticket-2] - Passed (1s 356ms)
 		Categories: Security
 		Step 1: GIVEN the user is about to login - Passed (<1ms)
 		Step 2: AND the user entered valid login - Passed (<1ms)
 		Step 3: AND the user entered invalid password - Passed (<1ms)
-		Step 4: WHEN the user clicks login button - Passed (1s 995ms)
+		Step 4: WHEN the user clicks login button - Passed (1s 356ms)
 		Step 5: THEN the login operation should be unsuccessful - Passed (<1ms)
 		Step 6: AND an invalid login or password error message should be returned - Passed (<1ms)
 
@@ -586,20 +606,20 @@ Feature: Payment feature [Story-5]
 	As a customer
 	I want to pay for products in basket
 
-	Scenario: Successful payment [Ticket-10][Ticket-11] - Passed (6s 365ms)
-		Step 1: GIVEN customer has some products in basket - Passed (1s 680ms)
-		Step 2: AND customer has enough money to pay for products - Passed (1s 972ms)
-		Step 3: WHEN customer requests to pay - Passed (1s 101ms)
-		Step 4: THEN payment should be successful - Passed (1s 596ms)
+	Scenario: Successful payment [Ticket-10][Ticket-11] - Passed (6s 193ms)
+		Step 1: GIVEN customer has some products in basket - Passed (1s 515ms)
+		Step 2: AND customer has enough money to pay for products - Passed (1s 339ms)
+		Step 3: WHEN customer requests to pay - Passed (1s 496ms)
+		Step 4: THEN payment should be successful - Passed (1s 817ms)
 
 Feature: Product spedition feature [Story-3]
 	In order to deliver products to customer effectively
 	As a spedition manager
 	I want to dispatch products to customer as soon as the payment is finalized
 
-	Scenario: Should dispatch product after payment is finalized [Ticket-5] - Passed (25ms)
+	Scenario: Should dispatch product after payment is finalized [Ticket-5] - Passed (40ms)
 		Categories: Delivery, Sales
-		Step 1: GIVEN There is an active customer with id "ABC-123" - Passed (4ms)
+		Step 1: GIVEN There is an active customer with id "ABC-123" - Passed (3ms)
 		Step 2: AND The customer has product "wooden shelf" in basket - Passed (<1ms)
 		Step 3: AND The customer has product "wooden desk" in basket - Passed (<1ms)
 		Step 4: WHEN The customer payment finalizes - Passed (<1ms)
@@ -608,28 +628,30 @@ Feature: Product spedition feature [Story-3]
 
 Feature: Record persistence feature
 
-	Scenario: Saving data - Failed (2s 062ms)
+	Scenario: Saving data - Failed (2s 077ms)
+		This scenario presents failures captured by VerifiableTree using ExpectEquivalent mode
+
 		Step 1: GIVEN no saved records - Passed (3ms)
-		Step 2: WHEN I save records "<$records>" - Passed (2s 034ms)
+		Step 2: WHEN I save records "<$records>" - Passed (2s 037ms)
 		records:
 		  $: <array:2>
 		  $[0]: Record 1
 		  $[1]: Record 2
-		Step 3: THEN the saved records should match expectation "<$expectation>" - Failed (4ms)
+		Step 3: THEN the saved records should match expectation "<$expectation>" - Failed (5ms)
 		expectation:
 		= $: <array:2>
 		= $[0]: <object>
-		= $[0].Id: 728552ec-0812-4580-8df5-fa68d8afb06d
-		= $[0].ModifiedDate: 07/02/2023 22:59:15 +00:00
+		= $[0].Id: 175c35b8-1b67-43d7-acac-8a111c422d02
+		= $[0].ModifiedDate: 04/07/2024 19:51:36 +00:00
 		! $[0].Name: like 'Recr*'/Record 1
 		= $[1]: <object>
-		! $[1].Id: equals '00000000-0000-0000-0000-000000000000'/2ac5aaa0-9d4f-4088-b613-7aa5c7165b7f
-		! $[1].ModifiedDate: less than '07/02/2023 22:59:15 +00:00'/07/02/2023 22:59:16 +00:00
+		! $[1].Id: equals '00000000-0000-0000-0000-000000000000'/1c0cb382-8dff-4b07-a3c5-63d37db5fa7d
+		! $[1].ModifiedDate: less than '04/07/2024 19:51:36 +00:00'/04/07/2024 19:51:37 +00:00
 		= $[1].Name: Record 2
 		Details:
 			Step 3: System.InvalidOperationException : Parameter 'expectation' verification failed: $[0].Name: expected: like 'Recr*', but got: 'Record 1'
-					$[1].Id: expected: equals '00000000-0000-0000-0000-000000000000', but got: '2ac5aaa0-9d4f-4088-b613-7aa5c7165b7f'
-					$[1].ModifiedDate: expected: less than '07/02/2023 22:59:15 +00:00', but got: '07/02/2023 22:59:16 +00:00'
+					$[1].Id: expected: equals '00000000-0000-0000-0000-000000000000', but got: '1c0cb382-8dff-4b07-a3c5-63d37db5fa7d'
+					$[1].ModifiedDate: expected: less than '04/07/2024 19:51:36 +00:00', but got: '04/07/2024 19:51:37 +00:00'
 				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
 				at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 
@@ -638,18 +660,22 @@ Feature: User management feature [Story-11]
 	As an admin
 	I want to be able to retrieve user data
 
-	Scenario: Retrieving user details - Failed (50ms)
+	Scenario: Retrieving user details - Failed (72ms)
+		This scenario presents failures captured by Verifiable<T>
+
 		Step 1: GIVEN a user with id "124" name "Joe" surname "Johnson" and email "jj@gmail.com" - Passed (3ms)
 		Step 2: WHEN I request user details for id "124" - Passed (<1ms)
-		Step 3: THEN I should receive user with id "124" name "expected: equals 'Joe', but got: 'JOE'" surname "expected: equals 'Johnson', but got: 'JOHNSON'" and email "jj@gmail.com" - Failed (26ms)
+		Step 3: THEN I should receive user with id "124" name "expected: equals 'Joe', but got: 'JOE'" surname "expected: equals 'Johnson', but got: 'JOHNSON'" and email "jj@gmail.com" - Failed (36ms)
 		Details:
 			Step 3: System.InvalidOperationException : Parameter 'name' verification failed: expected: equals 'Joe', but got: 'JOE'
 				Parameter 'surname' verification failed: expected: equals 'Johnson', but got: 'JOHNSON'
 				at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
 				at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 
-	Scenario: User search - Failed (28ms)
-		Step 1: GIVEN users "<$users>" - Passed (11ms)
+	Scenario: User search - Failed (10ms)
+		This scenario presents failures captured by VerifiableTable
+
+		Step 1: GIVEN users "<$users>" - Passed (<1ms)
 		users:
 		+----------------+--+------+--------+
 		|Email           |Id|Name  |Surname |
@@ -659,8 +685,8 @@ Feature: User management feature [Story-11]
 		|ma31@bar.com    |3 |Marry |Davis   |
 		|monsmi22@bar.com|4 |Monica|Larsen  |
 		+----------------+--+------+--------+
-		Step 2: WHEN I search for users by surname pattern ".*sen" - Passed (6ms)
-		Step 3: THEN I should receive users "<$users>" - Failed (5ms)
+		Step 2: WHEN I search for users by surname pattern ".*sen" - Passed (4ms)
+		Step 3: THEN I should receive users "<$users>" - Failed (<1ms)
 		users:
 		+-+-----------------------+--------+-------------+-------------+
 		|#|Email                  |Id      |Name         |Surname      |
@@ -679,6 +705,8 @@ Feature: User management feature [Story-11]
 				at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 
 	Scenario: Validating found users - Failed (11ms)
+		This scenario presents failures captured by VerifiableTable with usage of Expect.To
+
 		Step 1: GIVEN users "<$users>" - Passed (<1ms)
 		users:
 		+-----------------+--+------+--------+
@@ -690,7 +718,7 @@ Feature: User management feature [Story-11]
 		|monsmi22@bar.com |4 |Monica|Larsen  |
 		+-----------------+--+------+--------+
 		Step 2: WHEN I search for users by surname pattern ".*sen" - Passed (<1ms)
-		Step 3: THEN I should receive users "<$users>" - Failed (5ms)
+		Step 3: THEN I should receive users "<$users>" - Failed (6ms)
 		users:
 		+-+------------------+------+--------+-----------------------------------------------------------------+
 		|#|Id                |Name  |Surname |Email                                                            |

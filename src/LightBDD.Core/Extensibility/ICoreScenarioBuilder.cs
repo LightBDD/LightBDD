@@ -77,6 +77,13 @@ namespace LightBDD.Core.Extensibility
         ICoreScenarioBuilder WithScenarioDecorators(IEnumerable<IScenarioDecorator> scenarioDecorators);
 
         /// <summary>
+        /// Configures scenario to with description.
+        /// </summary>
+        /// <param name="description">Description to set.</param>
+        /// <returns>Self.</returns>
+        ICoreScenarioBuilder WithDescription(string description);
+
+        /// <summary>
         /// Builds scenario.
         /// </summary>
         /// <returns>Scenario.</returns>

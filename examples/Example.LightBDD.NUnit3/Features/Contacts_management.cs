@@ -53,6 +53,7 @@ I want to add, browse and remove my contacts")]
 
         [Scenario]
         [Label("Ticket-9")]
+        [ScenarioDescription("This scenario presents how LightBDD reports bypassed steps")]
         public void Contact_book_should_allow_me_to_remove_all_contacts()
         {
             Runner.WithContext<ContactsManagementContext>().RunScenario(
@@ -62,6 +63,7 @@ I want to add, browse and remove my contacts")]
         }
 
         [Scenario]
+        [ScenarioDescription("This scenario presents failures captured by VerifiableTree")]
         public void Searching_for_contacts_by_phone()
         {
             Runner.WithContext<ContactsManagementContext>().RunScenario(
@@ -102,6 +104,7 @@ I want to add, browse and remove my contacts")]
         }
 
         [Scenario]
+        [ScenarioDescription("This scenario presents failures captured by VerifiableTable")]
         public void Normalizing_contact_details()
         {
             Runner.WithContext<ContactsManagementContext>().RunScenario(

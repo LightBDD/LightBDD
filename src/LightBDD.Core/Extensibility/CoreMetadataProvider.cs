@@ -178,6 +178,13 @@ namespace LightBDD.Core.Extensibility
         protected abstract string GetImplementationSpecificFeatureDescription(Type featureType);
 
         /// <summary>
+        /// Returns implementation specific scenario description or null if such is not provided.
+        /// </summary>
+        /// <param name="scenarioDescriptor">Scenario descriptor.</param>
+        /// <returns>Scenario description or null.</returns>
+        protected virtual string GetImplementationSpecificScenarioDescription(ScenarioDescriptor scenarioDescriptor) => null;
+
+        /// <summary>
         /// Provides value of attribute of type <typeparamref name="TAttribute"/> applied on <paramref name="member"/> or default if attribute is not applied.
         /// The attribute is searched in <paramref name="member"/> and it's ancestors.
         /// </summary>
@@ -285,6 +292,19 @@ namespace LightBDD.Core.Extensibility
             {
                 throw new InvalidOperationException($"Unable to obtain scenario name for method {scenarioDescriptor.MethodInfo.Name}: {e.Message}", e);
             }
+        }
+
+        /// <summary>
+        /// Provides scenario description which is determined from attribute implementing <see cref="IScenarioDescriptionAttribute"/> in first instance, then by <see cref="GetImplementationSpecificScenarioDescription"/>() method.
+        /// Returns description or <c>null</c> if none is present.
+        /// </summary>
+        /// <param name="scenarioDescriptor">Scenario descriptor.</param>
+        /// <returns>scenario description or <c>null</c>.</returns>
+        public string GetScenarioDescription(ScenarioDescriptor scenarioDescriptor)
+        {
+            
+            return ExtractAttributePropertyValue<IScenarioDescriptionAttribute>(scenarioDescriptor.MethodInfo, a => a.Description)
+                   ?? GetImplementationSpecificScenarioDescription(scenarioDescriptor);
         }
 
         private IEnumerable<T> ConcatAndOrderAttributes<T>(params IEnumerable<T>[] sequences) where T : IOrderedAttribute

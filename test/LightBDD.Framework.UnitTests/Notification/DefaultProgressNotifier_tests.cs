@@ -113,7 +113,7 @@ namespace LightBDD.Framework.UnitTests.Notification
             var expected = new[]
             {
                 $"FEATURE: [{string.Join("][", featureInfo.Labels)}] {featureInfo.Name}{Environment.NewLine}  {featureInfo.Description}",
-                $"SCENARIO: [{string.Join("][", scenarioInfo.Labels)}] {scenarioInfo.Name}",
+                $"SCENARIO: [{string.Join("][", scenarioInfo.Labels)}] {scenarioInfo.Name}{Environment.NewLine}  {scenarioInfo.Description}",
                 $"  STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: {stepInfo.Name}...",
                 $"  STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: /* {comment} */",
                 $"  STEP {stepInfo.GroupPrefix}{stepInfo.Number}/{stepInfo.GroupPrefix}{stepInfo.Total}: 🔗{attachment.Name}: {attachment.FilePath}",
@@ -172,7 +172,7 @@ namespace LightBDD.Framework.UnitTests.Notification
             scenarioInfo.Labels = Array.Empty<string>();
             _notifier.Notify(new ScenarioStarting(new EventTime(), scenarioInfo));
 
-            var expected = $"SCENARIO: {scenarioInfo.Name}";
+            var expected = $"SCENARIO: {scenarioInfo.Name}{Environment.NewLine}  {scenarioInfo.Description}";
             Assert.That(_captured.Single(), Is.EqualTo(expected));
         }
 
@@ -191,7 +191,7 @@ namespace LightBDD.Framework.UnitTests.Notification
 
             var expected = new[]
             {
-                $"SCENARIO: {scenarioInfo.Name}",
+                $"SCENARIO: {scenarioInfo.Name}{Environment.NewLine}  {scenarioInfo.Description}",
                 $"  SCENARIO RESULT: {scenarioResult.Status}{Environment.NewLine}    {scenarioResult.StatusDetails}"
             };
             Assert.That(_captured.ToArray(), Is.EqualTo(expected));
@@ -212,7 +212,7 @@ namespace LightBDD.Framework.UnitTests.Notification
 
             var expected = new[]
             {
-                $"SCENARIO: {scenarioInfo.Name}",
+                $"SCENARIO: {scenarioInfo.Name}{Environment.NewLine}  {scenarioInfo.Description}",
                 $"  SCENARIO RESULT: {scenarioResult.Status} after {scenarioResult.ExecutionTime.Duration.FormatPretty()}"
             };
             Assert.That(_captured.ToArray(), Is.EqualTo(expected));

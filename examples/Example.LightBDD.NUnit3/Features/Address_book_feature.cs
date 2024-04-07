@@ -20,6 +20,7 @@ I want to add and browse my client postal addresses by client emails")]
     public partial class Address_book_feature
     {
         [Scenario]
+        [ScenarioDescription("This scenario presents failures captured by VerifiableTree")]
         public void Adding_contacts()
         {
             Runner.RunScenario(

@@ -80,6 +80,7 @@ I want to login into system")]
         [Scenario]
         [Label("Ticket-3")]
         [ScenarioCategory(Categories.Security)]
+        [ScenarioDescription("This scenario presents how LightBDD reports failed steps")]
         public void Anonymous_login_name_should_allow_to_log_in()
         {
             Runner.RunScenario(

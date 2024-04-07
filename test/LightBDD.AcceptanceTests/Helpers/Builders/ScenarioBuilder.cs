@@ -11,6 +11,7 @@ namespace LightBDD.AcceptanceTests.Helpers.Builders
         public ExecutionStatus Status { get; }
         public string[] Categories { get; private set; }
         public string Name { get; private set; } = "scenario";
+        public string Description { get; private set; } = null;
 
         public ScenarioBuilder(ExecutionStatus status)
         {
@@ -29,6 +30,12 @@ namespace LightBDD.AcceptanceTests.Helpers.Builders
             return this;
         }
 
+        public ScenarioBuilder WithDescription(string description)
+        {
+            Description = description;
+            return this;
+        }
+
         public ScenarioBuilder WithSampleSteps()
         {
             _steps.Add(TestResults.CreateStepResult(1, "step1", ExecutionStatus.Passed, DateTimeOffset.Now, TimeSpan.FromSeconds(1)).WithRuntimeId(Guid.NewGuid()).WithSubSteps(
@@ -40,7 +47,7 @@ namespace LightBDD.AcceptanceTests.Helpers.Builders
 
         public TestResults.TestScenarioResult Build()
         {
-            return TestResults.CreateScenarioResult(Name, "label", DateTimeOffset.Now, TimeSpan.FromSeconds(2), Categories, _steps.ToArray());
+            return TestResults.CreateScenarioResult(Name, "label", Description, DateTimeOffset.Now, TimeSpan.FromSeconds(2), Categories, _steps.ToArray());
         }
 
         public TestResults.TestStepResult AddStep(string name, ExecutionStatus status)
