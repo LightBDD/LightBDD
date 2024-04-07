@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Execution;
+using LightBDD.Core.Extensibility;
 using LightBDD.Framework.Execution.Coordination;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
@@ -83,6 +84,25 @@ public class FeatureCoordinator_global_initialization_and_teardown_tests
         {
             await Task.Yield();
             CleanUpSeq = _counter.Next();
+        }
+    }
+
+    class ConfigurationAwareGlobalSetup : LightBddConfigurationAware, IGlobalResourceSetUp
+    {
+        public bool SetUpExecuted { get; private set; }
+        public bool TearDownExecuted { get; private set; }
+        public Task SetUpAsync()
+        {
+            Assert.DoesNotThrow(() => Configuration.NameFormatterConfiguration());
+            SetUpExecuted = true;
+            return Task.CompletedTask;
+        }
+
+        public Task TearDownAsync()
+        {
+            Assert.DoesNotThrow(() => Configuration.NameFormatterConfiguration());
+            TearDownExecuted = true;
+            return Task.CompletedTask;
         }
     }
 
@@ -214,5 +234,30 @@ public class FeatureCoordinator_global_initialization_and_teardown_tests
         Assert.That(dep2.CleanUpSeq, Is.EqualTo(-1));
         Assert.That(cleanUpSeq, Is.EqualTo(5));
         Assert.That(dep1.CleanUpSeq, Is.EqualTo(6));
+    }
+
+    [Test]
+    public void GlobalTearDown_should_support_configuration_aware_instances()
+    {
+        var setup = new ConfigurationAwareGlobalSetup();
+
+        void Configure(LightBddConfiguration cfg)
+        {
+            cfg.DependencyContainerConfiguration()
+                .UseDefault(c =>
+                {
+                    c.RegisterInstance(setup);
+                });
+
+            cfg.ExecutionExtensionsConfiguration()
+                .RegisterGlobalSetUp<ConfigurationAwareGlobalSetup>();
+        }
+
+        using (var coord = SetupCoordinator(Configure))
+        {
+            coord.InstallSelf();
+            Assert.That(setup.SetUpExecuted, Is.True);
+        }
+        Assert.That(setup.TearDownExecuted, Is.True);
     }
 }
