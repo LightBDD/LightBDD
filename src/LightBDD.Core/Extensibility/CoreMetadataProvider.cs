@@ -182,7 +182,7 @@ namespace LightBDD.Core.Extensibility
         /// </summary>
         /// <param name="scenarioDescriptor">Scenario descriptor.</param>
         /// <returns>Scenario description or null.</returns>
-        protected abstract string GetImplementationSpecificScenarioDescription(ScenarioDescriptor scenarioDescriptor);
+        protected virtual string GetImplementationSpecificScenarioDescription(ScenarioDescriptor scenarioDescriptor) => null;
 
         /// <summary>
         /// Provides value of attribute of type <typeparamref name="TAttribute"/> applied on <paramref name="member"/> or default if attribute is not applied.
