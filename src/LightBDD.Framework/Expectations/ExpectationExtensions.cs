@@ -349,6 +349,28 @@ namespace LightBDD.Framework.Expectations
         }
 
         /// <summary>
+        /// Creates expectation for values to be castable to <typeparamref name="T"/> type.
+        /// </summary>
+        /// <typeparam name="T">Expectation type</typeparam>
+        /// <param name="composer">Composer</param>
+        /// <returns>Expectation</returns>
+        public static Expectation<object> BeCastableTo<T>(this IExpectationComposer composer)
+        {
+            return composer.Compose(CastableExpectation<T>.Instance);
+        }
+
+        /// <summary>
+        /// Creates expectation for values to be of <typeparamref name="T"/> type.
+        /// </summary>
+        /// <typeparam name="T">Expectation type</typeparam>
+        /// <param name="composer">Composer</param>
+        /// <returns>Expectation</returns>
+        public static Expectation<object> BeOfType<T>(this IExpectationComposer composer)
+        {
+            return composer.Compose(TypeExpectation<T>.Instance);
+        }
+
+        /// <summary>
         /// Creates a base type expectation for given expectation, that internally will cast <typeparamref name="TBase"/> to <typeparamref name="TDerived"/> during evaluation.
         ///
         /// Example usage: <code>Expect.To.MatchRegex("[0-9]+").CastFrom(Expect.Type&lt;object&gt;)</code>
