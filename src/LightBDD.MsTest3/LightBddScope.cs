@@ -56,7 +56,14 @@ namespace LightBDD.MsTest3
             configuration.ExceptionHandlingConfiguration()
                 .UpdateExceptionDetailsFormatter(new DefaultExceptionFormatter().WithTestFrameworkDefaults().Format);
 
-            onConfigure(configuration);
+            try
+            {
+                onConfigure(configuration);
+            }
+            catch (Exception ex)
+            {
+                configuration.ExecutionExtensionsConfiguration().CaptureFrameworkInitializationException(ex);
+            }
             return configuration;
         }
     }

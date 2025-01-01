@@ -47,6 +47,8 @@ namespace LightBDD.Core.Execution.Implementation
 
         public async Task ExecuteAsync()
         {
+            VerifyFrameworkInitialization();
+
             if (Interlocked.Exchange(ref _alreadyRun, RunValue) != NotRunValue)
                 throw new InvalidOperationException("Scenario can be run only once");
 
@@ -66,6 +68,13 @@ namespace LightBDD.Core.Execution.Implementation
             }
 
             ProcessExceptions();
+        }
+
+        private void VerifyFrameworkInitialization()
+        {
+            var initializationExceptions = _scenarioContext.IntegrationContext.ExecutionExtensions.FrameworkInitializationExceptions;
+            if (initializationExceptions.Any())
+                throw new AggregateException("LightBDD initialization failed", initializationExceptions);
         }
 
         private async Task RunScenarioAsync()
