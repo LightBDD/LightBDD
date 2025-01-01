@@ -1,3 +1,4 @@
+using LightBDD.Core.ExecutionContext;
 using LightBDD.Framework;
 
 namespace LightBDD.UnitTests.Helpers.TestableIntegration
@@ -6,6 +7,7 @@ namespace LightBDD.UnitTests.Helpers.TestableIntegration
     {
         public static void IgnoreScenario(this StepExecution execution, string reason)
         {
+            ScenarioExecutionContext.ValidateScenarioScope();
             throw new CustomIgnoreException(reason);
         }
     }

@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
+using LightBDD.Core.Configuration;
+using LightBDD.Core.Execution;
 using LightBDD.Core.ExecutionContext;
+using LightBDD.Core.Extensibility.Execution;
 using LightBDD.Framework.Extensibility;
 using LightBDD.Framework.Scenarios;
 using LightBDD.UnitTests.Helpers.TestableIntegration;
 using NUnit.Framework;
+using Shouldly;
 
 namespace LightBDD.Framework.UnitTests.ExecutionContext
 {
@@ -88,6 +92,46 @@ namespace LightBDD.Framework.UnitTests.ExecutionContext
             Assert.That(exception.Message, Is.EqualTo("Current task is not executing any scenarios. Ensure that operation accessing ScenarioExecutionContext is called from task running scenario."));
         }
 
+        [Test]
+        public void ValidateStepScope_should_throw_if_not_run_from_step()
+        {
+            var runner = CreateRunner(b => b.WithConfiguration(c => c.ExecutionExtensionsConfiguration().EnableScenarioDecorator<OutOfStepValidator>()));
+            Assert.Throws<InvalidOperationException>(() => runner.RunScenario(Dummy_step))
+                !.Message.ShouldBe("Current task is not executing any scenario steps. Ensure that feature is used within task running scenario step.");
+        }
+
+        [Test]
+        public void ValidateScenarioScope_should_throw_if_not_run_from_scenario()
+        {
+            Assert.Throws<InvalidOperationException>(() => ScenarioExecutionContext.ValidateScenarioScope())
+                !.Message.ShouldBe($"Current task is not executing any scenarios. Ensure that operation accessing {nameof(ScenarioExecutionContext)} is called from task running scenario.");
+        }
+
+        [Test]
+        public void ValidateScenarioScope_should_pass_when_executed_in_step()
+        {
+            Assert.DoesNotThrow(() => CreateRunner().RunScenario(Scenario_scope_validator_step));
+        }
+
+        [Test]
+        public void ValidateStepScope_should_pass_when_executed_in_step()
+        {
+            Assert.DoesNotThrow(() => CreateRunner().RunScenario(Step_scope_validator_step));
+        }
+
+        public class OutOfStepValidator : IScenarioDecorator
+        {
+            public Task ExecuteAsync(IScenario scenario, Func<Task> scenarioInvocation)
+            {
+                ScenarioExecutionContext.ValidateStepScope();
+                return scenarioInvocation.Invoke();
+            }
+        }
+
+        private void Dummy_step() { }
+        private void Scenario_scope_validator_step() => ScenarioExecutionContext.ValidateScenarioScope();
+        private void Step_scope_validator_step() => ScenarioExecutionContext.ValidateStepScope();
+
         private static Task RunScenarioAsync(IBddRunner runner)
         {
             return runner.WithContext(new ExplicitContext()).RunScenarioAsync(
@@ -97,13 +141,13 @@ namespace LightBDD.Framework.UnitTests.ExecutionContext
                 ctx => ctx.Then_implicit_context_should_be_preserved_in_subtasks());
         }
 
-        private IBddRunner CreateRunner()
+        private IBddRunner CreateRunner(Action<TestableIntegrationContextBuilder> onConfigure = null)
         {
-            return new TestableFeatureRunnerRepository(TestableIntegrationContextBuilder.Default())
+            var builder = TestableIntegrationContextBuilder.Default();
+            onConfigure?.Invoke(builder);
+            return new TestableFeatureRunnerRepository(builder)
                 .GetRunnerFor(GetType())
                 .GetBddRunner(this);
         }
     }
-
-
 }
