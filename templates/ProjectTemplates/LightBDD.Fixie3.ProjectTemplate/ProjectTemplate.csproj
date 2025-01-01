@@ -4,7 +4,7 @@
     <TargetFramework>net6</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="LightBDD.Fixie3" Version="3.8.0" />
+    <PackageReference Include="LightBDD.Fixie3" Version="3.9.0" />
     <PackageReference Include="Fixie.TestAdapter" Version="3.3.0" />
   </ItemGroup>
 

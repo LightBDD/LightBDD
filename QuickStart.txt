@@ -1,7 +1,7 @@
 ﻿LightBDD Quick Start:
 #####################################
 
-Thanks for installing LightBDD version 3.8.0!
+Thanks for installing LightBDD version 3.9.0!
 
 If you are new LightBDD user, please feel free to explore the LightBDD Wiki page, especially Quick Start: https://github.com/LightBDD/LightBDD/wiki/Quick-Start
 If you just updated LightBDD from previous version, please read Wiki page about migrating LightBDD: https://github.com/LightBDD/LightBDD/wiki/Migrating-LightBDD-Versions
