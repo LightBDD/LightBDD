@@ -32,6 +32,17 @@ namespace LightBDD.Framework.UnitTests.Expectations
                 .WithNotMatchingValue("no1", "expected: like 'no###' ignore case, but got: 'no1'")
                 .WithNotMatchingValue("no1234", "expected: like 'no###' ignore case, but got: 'no1234'")
                 .WithNotMatchingValue("noabc", "expected: like 'no###' ignore case, but got: 'noabc'");
+
+            yield return new ExpectationScenario<string>("like '<p>*</p>'",
+                    x => x.BeLike("<p>*</p>"))
+                .WithMatchingValues("<p>some text</p>", "<p>some\nmultiline\r\ntext</p>")
+                .WithNotMatchingValue("<span>text</span>", "expected: like '<p>*</p>', but got: '<span>text</span>'")
+                .WithNotMatchingValue("<P>text</P>", "expected: like '<p>*</p>', but got: '<P>text</P>'");
+
+            yield return new ExpectationScenario<string>("like '<p>*</p>' ignore case",
+                    x => x.BeLikeIgnoreCase("<p>*</p>"))
+                .WithMatchingValues("<p>some text</p>", "<p>some\nmultiline\r\ntext</p>", "<P>text</P>")
+                .WithNotMatchingValue("<span>text</span>", "expected: like '<p>*</p>' ignore case, but got: '<span>text</span>'");
         }
     }
 }

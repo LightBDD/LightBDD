@@ -71,15 +71,15 @@ namespace LightBDD.Framework.UnitTests.Expectations.Helpers
         private void AssertSuccess(IExpectation<T> expectation, T value)
         {
             var result = expectation.Verify(value, ValueFormattingServices.Current);
-            Assert.True(result, $"{value}");
-            Assert.IsEmpty(result.Message, $"{value}");
+            Assert.True(result, $"{expectation}: {value}");
+            Assert.IsEmpty(result.Message, $"{expectation}: {value}");
         }
 
         private void AssertFailure(IExpectation<T> expectation, T value, string expectedMessage)
         {
             var result = expectation.Verify(value, ValueFormattingServices.Current);
-            Assert.False(result, $"{value}");
-            Assert.That(result.Message.Replace("\r", ""), Is.EqualTo(expectedMessage.Replace("\r", "")), $"{value}");
+            Assert.False(result, $"{expectation}: {value}");
+            Assert.That(result.Message.Replace("\r", ""), Is.EqualTo(expectedMessage.Replace("\r", "")), $"{expectation}: {value}");
         }
 
         private void AssertFormat(IExpectation<T> expectation, string format)
