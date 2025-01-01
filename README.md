@@ -5,12 +5,12 @@ Category|Badge
 --------|------
 Build | [![Build status](https://ci.appveyor.com/api/projects/status/xkd7qc950o07o3x8/branch/master?svg=true)](https://ci.appveyor.com/project/Suremaker/lightbdd/branch/master)
 Chat (gitter) | [![Join the chat at https://gitter.im/LightBDD/LightBDD](https://badges.gitter.im/LightBDD/LightBDD.svg)](https://gitter.im/LightBDD/LightBDD?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-LightBDD.NUnit3 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.NUnit3?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.NUnit3/)
-LightBDD.XUnit2 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.XUnit2?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.XUnit2/)
-LightBDD.MsTest3 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.MsTest3?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.MsTest3/)
-LightBDD.Fixie3 | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Fixie3?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Fixie3/)
-LightBDD.Autofac | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Autofac?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Autofac/)
-LightBDD.Extensions.DependencyInjection | [![NuGet Badge](https://buildstats.info/nuget/LightBDD.Extensions.DependencyInjection?includePreReleases=true)](https://www.nuget.org/packages/LightBDD.Extensions.DependencyInjection/)
+LightBDD.NUnit3 | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.NUnit3)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.NUnit3)](https://www.nuget.org/packages/LightBDD.NUnit3/)
+LightBDD.XUnit2 | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.XUnit2)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.XUnit2)](https://www.nuget.org/packages/LightBDD.XUnit2/)
+LightBDD.MsTest3 | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.MsTest3)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.MsTest3)](https://www.nuget.org/packages/LightBDD.MsTest3/)
+LightBDD.Fixie3 | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.Fixie3)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.Fixie3)](https://www.nuget.org/packages/LightBDD.Fixie3/)
+LightBDD.Autofac | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.Autofac)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.Autofac)](https://www.nuget.org/packages/LightBDD.Autofac/)
+LightBDD.Extensions.DependencyInjection | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.Extensions.DependencyInjection)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.Extensions.DependencyInjection)](https://www.nuget.org/packages/LightBDD.Extensions.DependencyInjection/)
 
 See latest release details on [What Is New](https://github.com/LightBDD/LightBDD/wiki/What-Is-New) wiki page!
 
