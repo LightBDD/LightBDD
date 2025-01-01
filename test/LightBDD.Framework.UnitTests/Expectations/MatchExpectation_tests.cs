@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using LightBDD.Framework.Expectations;
 using LightBDD.Framework.UnitTests.Expectations.Helpers;
 using NUnit.Framework;
@@ -20,7 +21,6 @@ namespace LightBDD.Framework.UnitTests.Expectations
                 .WithNotMatchingValue("afile1.txt", "expected: matches 'fi.e[0-9]+.txt', but got: 'afile1.txt'")
                 .WithNotMatchingValue("fine123.txt2", "expected: matches 'fi.e[0-9]+.txt', but got: 'fine123.txt2'");
 
-
             yield return new ExpectationScenario<string>(
                     "matches 'fi.e[0-9]+.txt' ignore case",
                     x => x.MatchIgnoreCase("fi.e[0-9]+.txt"))
@@ -34,6 +34,17 @@ namespace LightBDD.Framework.UnitTests.Expectations
                     "matches '.*some-text.*'",
                     x => x.Match(".*some-text.*"))
                 .WithMatchingValues("some-text", "awesome-texture");
+
+            yield return new ExpectationScenario<string>(
+                    "matches '<p>.*</p>'",
+                    x => x.Match("<p>.*</p>"))
+                .WithMatchingValues("<p>single line</p>")
+                .WithNotMatchingValue("<p>multi\nline</p>", "expected: matches '<p>.*</p>', but got: '<p>multi\nline</p>'");
+
+            yield return new ExpectationScenario<string>(
+                    "matches '<p>.*</p>'",
+                    x => x.Match("<p>.*</p>", RegexOptions.Singleline))
+                .WithMatchingValues("<p>multi\nline</p>", "<p>single line</p>");
         }
     }
 }

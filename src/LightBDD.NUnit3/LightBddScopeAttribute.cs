@@ -57,7 +57,14 @@ namespace LightBDD.NUnit3
             configuration.ExceptionHandlingConfiguration()
                 .UpdateExceptionDetailsFormatter(new DefaultExceptionFormatter().WithTestFrameworkDefaults().Format);
 
-            OnConfigure(configuration);
+            try
+            {
+                OnConfigure(configuration);
+            }
+            catch (Exception ex)
+            {
+                configuration.ExecutionExtensionsConfiguration().CaptureFrameworkInitializationException(ex);
+            }
             return configuration;
         }
 

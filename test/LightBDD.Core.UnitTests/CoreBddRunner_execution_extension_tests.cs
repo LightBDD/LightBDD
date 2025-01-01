@@ -296,6 +296,27 @@ namespace LightBDD.Core.UnitTests
             Assert.AreSame(this, scenarioFixture);
         }
 
+        [Test]
+        public void It_should_fail_scenario_if_framework_initialization_exceptions_are_captured()
+        {
+            var ex1 = new InvalidOperationException("Exception 1");
+            var ex2 = new Exception("Exception 2");
+            var featureRunner = CreateRunner(cfg =>
+            {
+                cfg.ExecutionExtensionsConfiguration()
+                    .CaptureFrameworkInitializationException(ex1)
+                    .CaptureFrameworkInitializationException(ex2);
+            });
+            var runner = featureRunner.GetBddRunner(this);
+
+            var ex = Assert.Throws<AggregateException>(() => runner
+                .Test()
+                .TestScenario(Some_step1));
+
+            Assert.That(ex!.Message, Does.StartWith("LightBDD initialization failed"));
+            Assert.That(ex.InnerExceptions, Is.EqualTo(new[] { ex1, ex2 }));
+        }
+
         [MyThrowingDecorator(ExecutionStatus.Failed)]
         private void My_failed_step() { }
 

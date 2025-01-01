@@ -157,7 +157,7 @@ namespace LightBDD.Framework.Expectations
         /// <param name="pattern">Expected pattern</param>
         public static Expectation<string> BeLike(this IExpectationComposer composer, string pattern)
         {
-            return BeLike(composer, pattern, RegexOptions.None, $"like '{pattern}'");
+            return BeLike(composer, pattern, RegexOptions.Singleline, $"like '{pattern}'");
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace LightBDD.Framework.Expectations
         /// <param name="pattern">Expected pattern</param>
         public static Expectation<string> BeLikeIgnoreCase(this IExpectationComposer composer, string pattern)
         {
-            return BeLike(composer, pattern, RegexOptions.IgnoreCase, $"like '{pattern}' ignore case");
+            return BeLike(composer, pattern, RegexOptions.IgnoreCase | RegexOptions.Singleline, $"like '{pattern}' ignore case");
         }
 
         private static Expectation<string> BeLike(IExpectationComposer composer, string pattern, RegexOptions options, string format)
@@ -191,7 +191,18 @@ namespace LightBDD.Framework.Expectations
         /// <param name="pattern">Expected pattern</param>
         public static Expectation<string> Match(this IExpectationComposer composer, string pattern)
         {
-            return Match(composer, pattern, RegexOptions.None, $"matches '{pattern}'");
+            return Match(composer, pattern, RegexOptions.None);
+        }
+
+        /// <summary>
+        /// Creates expectation for strings to match regex pattern specified by <paramref name="pattern"/> parameter.
+        /// </summary>
+        /// <param name="composer">Composer</param>
+        /// <param name="pattern">Expected pattern</param>
+        /// <param name="options">Regex options</param>
+        public static Expectation<string> Match(this IExpectationComposer composer, string pattern, RegexOptions options)
+        {
+            return Match(composer, pattern, options, $"matches '{pattern}'");
         }
 
         /// <summary>

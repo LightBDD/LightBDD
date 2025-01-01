@@ -85,6 +85,7 @@ namespace LightBDD.Core.UnitTests.Configuration
 
             Assert.Throws<InvalidOperationException>(() => cfg.EnableStepDecorator<StepDecorator2>());
             Assert.Throws<InvalidOperationException>(() => cfg.EnableScenarioDecorator<ScenarioDecorator2>());
+            Assert.Throws<InvalidOperationException>(() => cfg.CaptureFrameworkInitializationException(new Exception()));
 
             CollectionAssert.AreEquivalent(
                 new[] { typeof(ScenarioDecorator1) },
@@ -92,6 +93,19 @@ namespace LightBDD.Core.UnitTests.Configuration
             CollectionAssert.AreEquivalent(
                 new[] { typeof(StepDecorator1) },
                 cfg.StepDecorators.Select(e => e.GetType()).ToArray());
+        }
+
+        [Test]
+        public void CaptureFrameworkInitializationException_should_allow_capturing_exceptions()
+        {
+            var ex1 = new Exception("foo");
+            var ex2 = new InvalidOperationException("bar");
+            var actual = new ExecutionExtensionsConfiguration()
+                .CaptureFrameworkInitializationException(ex1)
+                .CaptureFrameworkInitializationException(ex2)
+                .FrameworkInitializationExceptions
+                .ToArray();
+            Assert.That(actual, Is.EquivalentTo(new[] { ex1, ex2 }));
         }
     }
 }
