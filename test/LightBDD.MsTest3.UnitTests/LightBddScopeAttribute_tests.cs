@@ -20,7 +20,7 @@ public class LightBddScopeAttribute_tests
         };
         
         typeof(LightBddScope).GetMethod("Configure", BindingFlags.Static | BindingFlags.NonPublic)
-            !.Invoke(null, [onConfigure]);
+            !.Invoke(null, new object[] { onConfigure });
 
         var exception = captured.ExecutionExtensionsConfiguration().FrameworkInitializationExceptions.FirstOrDefault();
         Assert.IsInstanceOfType<InvalidOperationException>(exception);
