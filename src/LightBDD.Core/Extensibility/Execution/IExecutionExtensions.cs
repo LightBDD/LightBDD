@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace LightBDD.Core.Extensibility.Execution
@@ -15,5 +16,10 @@ namespace LightBDD.Core.Extensibility.Execution
         /// Collection of step decorators.
         /// </summary>
         IEnumerable<IStepDecorator> StepDecorators { get; }
+
+        /// <summary>
+        /// Captured LightBDD framework initialization exceptions. If provided, all scenarios should fail.
+        /// </summary>
+        IReadOnlyCollection<Exception> FrameworkInitializationExceptions { get; }
     }
 }
