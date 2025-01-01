@@ -8,7 +8,7 @@ namespace LightBDD.Core.ExecutionContext.Implementation
     {
         private readonly Stack<IStep> _steps = new();
 
-        public IStep Step => _steps.Peek() ?? throw new InvalidOperationException("Current task is not executing any scenario steps. Ensure that feature is used within task running scenario step.");
+        public IStep Step => _steps.Count > 0 ? _steps.Peek() : null;
 
         public void Stash(IStep step)
         {
@@ -19,7 +19,7 @@ namespace LightBDD.Core.ExecutionContext.Implementation
         {
             var last = _steps.Pop();
             if (last != step)
-                throw new InvalidOperationException("$Expected {step} to be current step but got {last}. Please report this issue on LightBDD project page.");
+                throw new InvalidOperationException($"Expected {step} to be current step but got {last}. Please report this issue on LightBDD project page.");
         }
     }
 }

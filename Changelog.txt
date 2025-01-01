@@ -5,6 +5,7 @@ Version 3.9.0
 ----------------------------------------
 + #357 (LightBDD.Framework)(New) Implemented Expect.To.BeOfType() and Expect.To.BeCastableTo()
 + #352 (LightBDD.XUnit2)(Change) Obsoleted FeatureFixture constructor that accepts ITestOutputHelper in favour of parameterless ctor
++ #353 (LightBDD.Framework)(Change) Changed StepExecution.Current.Bypass() and StepExecution.Current.IgnoreScenario() to validate that they are called within running scenario
 
 Version 3.8.0
 ----------------------------------------
