@@ -4,6 +4,7 @@ LightBDD
 Version 3.9.0
 ----------------------------------------
 + #357 (LightBDD.Framework)(New) Implemented Expect.To.BeOfType() and Expect.To.BeCastableTo()
++ #352 (LightBDD.XUnit2)(Change) Obsoleted FeatureFixture constructor that accepts ITestOutputHelper in favour of parameterless ctor
 
 Version 3.8.0
 ----------------------------------------

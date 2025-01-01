@@ -29,13 +29,16 @@ namespace LightBDD.XUnit2
         /// <summary>
         /// Default constructor initializing <see cref="Runner"/> for feature class instance and configures <see cref="TestOutput"/> with default test output.
         /// </summary>
-        protected FeatureFixture() : this(TestContextProvider.Current?.OutputHelper)
+        protected FeatureFixture()
         {
+            _testOutput = TestContextProvider.Current?.OutputHelper;
+            Runner = FeatureRunnerProvider.GetRunnerFor(GetType()).GetBddRunner(this);
         }
 
         /// <summary>
         /// Constructor initializing <see cref="Runner"/> for feature class instance as well as configures <see cref="TestOutput"/> with <paramref name="output"/>.
         /// </summary>
+        [Obsolete($"Use parameterless constructor instead and retrieve {nameof(ITestOutputHelper)} via {nameof(TestOutput)} property.", true)]
         protected FeatureFixture(ITestOutputHelper output)
         {
             _testOutput = output;
