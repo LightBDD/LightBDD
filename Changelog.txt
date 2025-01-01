@@ -1,6 +1,10 @@
 LightBDD
 ===========================================
 
+Version 3.9.0
+----------------------------------------
++ #357 (LightBDD.Framework)(New) Implemented Expect.To.BeOfType() and Expect.To.BeCastableTo()
+
 Version 3.8.0
 ----------------------------------------
 + #338 (LightBDD.Framework)(New) Added ScenarioDescriptionAttribute to decorate scenarios with description. Updated ReportFormatters and ProgressNotifiers to include it when provided.

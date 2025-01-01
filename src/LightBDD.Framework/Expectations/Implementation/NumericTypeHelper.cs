@@ -5,7 +5,7 @@ namespace LightBDD.Framework.Expectations.Implementation;
 
 internal static class NumericTypeHelper
 {
-    public static bool IsNumeric(object o)
+    public static bool IsNumeric(object? o)
     {
         return o is double or float or decimal or byte or sbyte or int or uint or long or ulong or short or ushort;
     }
