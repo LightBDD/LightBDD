@@ -1,3 +1,4 @@
+using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.Results;
 using LightBDD.Framework;
 
@@ -16,6 +17,7 @@ namespace LightBDD.Fixie3
         /// <param name="reason">Ignore reason.</param>
         public static void IgnoreScenario(this StepExecution execution, string reason)
         {
+            ScenarioExecutionContext.ValidateScenarioScope();
             throw new IgnoreException(reason);
         }
     }

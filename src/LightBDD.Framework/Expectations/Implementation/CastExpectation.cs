@@ -14,14 +14,14 @@ namespace LightBDD.Framework.Expectations.Implementation
 
         public override ExpectationResult Verify(TBase value, IValueFormattingService formattingService)
         {
-            if (value is TDerived || value is null && CanCastFromNull())
+            if (CastHelper.IsAssignableTo<TDerived>(value))
                 return _expectation.Verify((TDerived)value, formattingService);
 
             if (NumericTypeHelper.IsNumeric(typeof(TDerived)) && NumericTypeHelper.IsNumeric(value))
             {
                 try
                 {
-                    if (TryConvert(value, out var derived))
+                    if (CastHelper.TryConvertWithoutPrecisionLoss<TDerived>(value, out var derived))
                         return _expectation.Verify(derived, formattingService);
                     return ExpectationResult.Failure($"value '{formattingService.FormatValue(value)}' of type '{value.GetType().Name}' cannot be cast to '{typeof(TDerived).Name}' without precision loss");
                 }
@@ -32,19 +32,6 @@ namespace LightBDD.Framework.Expectations.Implementation
             }
 
             return ExpectationResult.Failure($"value '{formattingService.FormatValue(value)}' of type '{value?.GetType().Name ?? "<null>"}' cannot be cast to '{typeof(TDerived).Name}'");
-        }
-
-        private static bool CanCastFromNull()
-        {
-            return !typeof(TDerived).IsValueType
-                || (typeof(TDerived).IsGenericType && typeof(TDerived).GetGenericTypeDefinition() == typeof(Nullable<>));
-        }
-
-        private static bool TryConvert(TBase value, out TDerived o)
-        {
-            o = (TDerived)Convert.ChangeType(value, typeof(TDerived));
-            var castBack = Convert.ChangeType(o, value.GetType());
-            return Equals(value, castBack);
         }
 
         public override string Format(IValueFormattingService formattingService)

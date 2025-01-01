@@ -17,6 +17,7 @@ namespace LightBDD.Core.Configuration
 
         private readonly List<IScenarioDecorator> _scenarioExtensions = new();
         private readonly List<IStepDecorator> _stepExtensions = new();
+        private readonly List<Exception> _initializationExceptions = new();
 
         /// <summary>
         /// Collection of scenario execution extensions.
@@ -26,6 +27,11 @@ namespace LightBDD.Core.Configuration
         /// Collection of step execution extensions.
         /// </summary>
         public IEnumerable<IStepDecorator> StepDecorators => _stepExtensions;
+
+        /// <summary>
+        /// Returns captured LightBDD framework initialization exceptions. If provided, all scenarios will fail.
+        /// </summary>
+        public IReadOnlyCollection<Exception> FrameworkInitializationExceptions => _initializationExceptions;
 
         /// <summary>
         /// Enables scenario decorator of specified type.
@@ -110,7 +116,7 @@ namespace LightBDD.Core.Configuration
         /// The <paramref name="setUp"/> delegate will be executed once, before any tests are run. If multiple set up methods are registered, they will be executed in the registration order.<br/>
         /// If <paramref name="tearDown"/> delegate is specified, it will be executed once after all tests are run, but only if <paramref name="setUp"/> has been successfully run. The tear down methods are executed in reverse registration order.
         /// </summary>
-        /// <param name="activityName">Name of the set up activity</param>
+        /// <param name="activityName">Name of the set-up activity</param>
         /// <param name="setUp">Set up method</param>
         /// <param name="tearDown">Tear down method</param>
         /// <returns></returns>
@@ -126,7 +132,7 @@ namespace LightBDD.Core.Configuration
         /// The <paramref name="setUp"/> delegate will be executed once, before any tests are run. If multiple set up methods are registered, they will be executed in the registration order.<br/>
         /// If <paramref name="tearDown"/> delegate is specified, it will be executed once after all tests are run, but only if <paramref name="setUp"/> has been successfully run. The tear down methods are executed in reverse registration order.
         /// </summary>
-        /// <param name="activityName">Name of the set up activity</param>
+        /// <param name="activityName">Name of the set-up activity</param>
         /// <param name="setUp">Set up method</param>
         /// <param name="tearDown">Tear down method</param>
         /// <returns></returns>
@@ -188,6 +194,18 @@ namespace LightBDD.Core.Configuration
                     return Task.CompletedTask;
                 });
 
+            return this;
+        }
+
+        /// <summary>
+        /// Captures LightBDD framework initialization exception, which will cause all scenarios to fail.
+        /// </summary>
+        /// <param name="exception">Exception to capture</param>
+        /// <returns>Self</returns>
+        public ExecutionExtensionsConfiguration CaptureFrameworkInitializationException(Exception exception)
+        {
+            ThrowIfSealed();
+            _initializationExceptions.Add(exception);
             return this;
         }
     }

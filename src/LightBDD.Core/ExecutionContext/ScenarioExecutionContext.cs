@@ -16,7 +16,7 @@ namespace LightBDD.Core.ExecutionContext
 
         /// <summary>
         /// Provides property value of <typeparamref name="TProperty"/> type that is stored in scenario context.
-        /// If such property does not exists yet, a new instance will be registered in context and returned.
+        /// If such property does not exist yet, a new instance will be registered in context and returned.
         /// </summary>
         /// <typeparam name="TProperty">Property type to retrieve.</typeparam>
         /// <returns>Property object.</returns>
@@ -45,13 +45,26 @@ namespace LightBDD.Core.ExecutionContext
         /// Returns currently executed step.
         /// <exception cref="InvalidOperationException">Thrown if no step is executed by current task.</exception>
         /// </summary>
-        public static IStep CurrentStep => Current.Get<CurrentStepProperty>().Step;
+        public static IStep CurrentStep => ValidateStepScope();
 
         /// <summary>
         /// Returns currently executed scenario.
         /// <exception cref="InvalidOperationException">Thrown if no scenario is executed by current task or if scenario initialization is not complete.</exception>
         /// </summary>
-        public static IScenario CurrentScenario => Current.Get<CurrentScenarioProperty>().Scenario ?? throw new InvalidOperationException("The current task does not run any initialized scenario. Ensure that feature is used within task running fully initialized scenario.");
+        public static IScenario CurrentScenario => ValidateScenarioScope();
+
+        /// <summary>
+        /// Validates that current task is in step execution scope
+        /// <exception cref="InvalidOperationException">Thrown if no step is executed by current task.</exception>
+        /// </summary>
+        /// <returns>Current Step</returns>
+        public static IStep ValidateStepScope() => Current.Get<CurrentStepProperty>().Step ?? throw new InvalidOperationException("Current task is not executing any scenario steps. Ensure that feature is used within task running scenario step.");
+        /// <summary>
+        /// Validates that current task is in scenario execution scope
+        /// <exception cref="InvalidOperationException">Thrown if no scenario is executed by current task or if scenario initialization is not complete.</exception>
+        /// </summary>
+        /// <returns>Current Step</returns>
+        public static IScenario ValidateScenarioScope() => Current.Get<CurrentScenarioProperty>().Scenario ?? throw new InvalidOperationException("The current task does not run any initialized scenario. Ensure that feature is used within task running fully initialized scenario.");
 
         /// <summary>
         /// Returns currently executed scenario fixture object if present or <c>null</c> if no scenario is currently executed.<br/>

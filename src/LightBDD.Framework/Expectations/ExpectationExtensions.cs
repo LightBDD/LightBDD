@@ -157,7 +157,7 @@ namespace LightBDD.Framework.Expectations
         /// <param name="pattern">Expected pattern</param>
         public static Expectation<string> BeLike(this IExpectationComposer composer, string pattern)
         {
-            return BeLike(composer, pattern, RegexOptions.None, $"like '{pattern}'");
+            return BeLike(composer, pattern, RegexOptions.Singleline, $"like '{pattern}'");
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace LightBDD.Framework.Expectations
         /// <param name="pattern">Expected pattern</param>
         public static Expectation<string> BeLikeIgnoreCase(this IExpectationComposer composer, string pattern)
         {
-            return BeLike(composer, pattern, RegexOptions.IgnoreCase, $"like '{pattern}' ignore case");
+            return BeLike(composer, pattern, RegexOptions.IgnoreCase | RegexOptions.Singleline, $"like '{pattern}' ignore case");
         }
 
         private static Expectation<string> BeLike(IExpectationComposer composer, string pattern, RegexOptions options, string format)
@@ -191,7 +191,18 @@ namespace LightBDD.Framework.Expectations
         /// <param name="pattern">Expected pattern</param>
         public static Expectation<string> Match(this IExpectationComposer composer, string pattern)
         {
-            return Match(composer, pattern, RegexOptions.None, $"matches '{pattern}'");
+            return Match(composer, pattern, RegexOptions.None);
+        }
+
+        /// <summary>
+        /// Creates expectation for strings to match regex pattern specified by <paramref name="pattern"/> parameter.
+        /// </summary>
+        /// <param name="composer">Composer</param>
+        /// <param name="pattern">Expected pattern</param>
+        /// <param name="options">Regex options</param>
+        public static Expectation<string> Match(this IExpectationComposer composer, string pattern, RegexOptions options)
+        {
+            return Match(composer, pattern, options, $"matches '{pattern}'");
         }
 
         /// <summary>
@@ -346,6 +357,28 @@ namespace LightBDD.Framework.Expectations
         public static Expectation<T> Or<T>(this IExpectation<T> expectation, Func<IExpectationComposer, IExpectation<T>> orExpectation)
         {
             return new OrExpectation<T>(string.Empty, expectation, orExpectation(Expect.To));
+        }
+
+        /// <summary>
+        /// Creates expectation for values to be castable to <typeparamref name="T"/> type.
+        /// </summary>
+        /// <typeparam name="T">Expectation type</typeparam>
+        /// <param name="composer">Composer</param>
+        /// <returns>Expectation</returns>
+        public static Expectation<object> BeCastableTo<T>(this IExpectationComposer composer)
+        {
+            return composer.Compose(CastableExpectation<T>.Instance);
+        }
+
+        /// <summary>
+        /// Creates expectation for values to be of <typeparamref name="T"/> type.
+        /// </summary>
+        /// <typeparam name="T">Expectation type</typeparam>
+        /// <param name="composer">Composer</param>
+        /// <returns>Expectation</returns>
+        public static Expectation<object> BeOfType<T>(this IExpectationComposer composer)
+        {
+            return composer.Compose(TypeExpectation<T>.Instance);
         }
 
         /// <summary>

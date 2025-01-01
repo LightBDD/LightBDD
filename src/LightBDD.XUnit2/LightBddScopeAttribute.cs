@@ -31,7 +31,7 @@ namespace LightBDD.XUnit2
         /// <summary>
         /// Returns XUnit diagnostic MessageSink.<br/>
         /// When accessed within <seealso cref="OnSetUp"/>, <seealso cref="OnConfigure"/>, <seealso cref="OnTearDown"/> or during test execution, the current XUnit diagnostic message sink is returned.<br/>
-        /// When accessed outside of mentioned scopes, the instance of <seealso cref="NullMessageSink"/> is returned.
+        /// When accessed outside mentioned scopes, the instance of <seealso cref="NullMessageSink"/> is returned.
         /// </summary>
         protected IMessageSink DiagnosticMessageSink { get; private set; } = NullDiagnosticMessageSink;
 
@@ -81,7 +81,14 @@ namespace LightBDD.XUnit2
             configuration.ExecutionExtensionsConfiguration()
                 .EnableScenarioDecorator<TestSkippedDecorator>();
 
-            OnConfigure(configuration);
+            try
+            {
+                OnConfigure(configuration);
+            }
+            catch (Exception ex)
+            {
+                configuration.ExecutionExtensionsConfiguration().CaptureFrameworkInitializationException(ex);
+            }
             return configuration;
         }
     }

@@ -35,13 +35,17 @@ namespace LightBDD.Framework
         /// The <see cref="Bypass"/>() method could be used in situations when:
         /// <list type="bullet">
         /// <item><description>It is not possible to implement given step at the moment (no required API is implemented yet), but all other steps are precise enough to prove that scenario is successful, i.e. situation when scenario checks overall and detailed cost of product and one of price component cannot be retrieved.</description></item>
-        /// <item><description>Step implementation does not exists, but it is possible to simulate it, so further steps can be executed, i.e. end-to-end tests, where the middle component does not exist yet.</description></item>
+        /// <item><description>Step implementation does not exist, but it is possible to simulate it, so further steps can be executed, i.e. end-to-end tests, where the middle component does not exist yet.</description></item>
         /// <item><description>The required API is not exposed yet, but it is possible to implement a workaround like direct data insert to database.</description></item>
         /// </list>
         /// </summary>
         /// <param name="reason">Bypass reason.</param>
         /// <exception cref="StepBypassException">Bypass exception used to control scenario execution.</exception>
-        public void Bypass(string reason) => throw new StepBypassException(reason);
+        public void Bypass(string reason)
+        {
+            ScenarioExecutionContext.ValidateScenarioScope();
+            throw new StepBypassException(reason);
+        }
 
         /// <summary>
         /// Comments currently executed step with a <paramref name="comment"/> text.
