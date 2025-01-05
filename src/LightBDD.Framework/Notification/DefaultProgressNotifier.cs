@@ -8,7 +8,8 @@ using LightBDD.Core.Notification.Events;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Core.Results.Parameters.Trees;
-using LightBDD.Framework.Reporting.Formatters;
+using LightBDD.Framework.Reporting.Formatters.PlainText;
+
 #pragma warning disable 618
 
 namespace LightBDD.Framework.Notification

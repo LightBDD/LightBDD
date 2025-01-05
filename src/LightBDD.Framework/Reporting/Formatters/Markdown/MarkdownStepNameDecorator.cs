@@ -1,8 +1,7 @@
-﻿using System;
-using LightBDD.Core.Formatting.NameDecorators;
+﻿using LightBDD.Core.Formatting.NameDecorators;
 using LightBDD.Core.Metadata;
 
-namespace LightBDD.Framework.Reporting.Formatters;
+namespace LightBDD.Framework.Reporting.Formatters.Markdown;
 
 internal class MarkdownStepNameDecorator : IStepNameDecorator
 {

@@ -1,9 +1,8 @@
 ﻿using System.IO;
-using System.Text;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters.Trees;
 
-namespace LightBDD.Framework.Reporting.Formatters;
+namespace LightBDD.Framework.Reporting.Formatters.Markdown;
 
 internal class MarkdownTreeRenderer
 {
@@ -30,30 +29,12 @@ internal class MarkdownTreeRenderer
                 writer.Write(MarkdownStepNameDecorator.Instance.GetVerificationStatus(node.VerificationStatus));
                 writer.Write(" ");
             }
-            writer.Write("| ");
-            writer.Write(node.Path);
-            writer.Write(" | ");
+            writer.Write($"| `{node.Path}` | ");
             if (node.VerificationStatus > ParameterVerificationStatus.Success)
-            {
-                writer.Write(Escape(node.Expectation));
-                writer.Write('/');
-            }
-            writer.Write(Escape(node.Value));
-            writer.WriteLine("|");
+                writer.Write($"{MarkdownFormatter.AsInlineBlock(node.Expectation)} / ");
+            writer.WriteLine($"{MarkdownFormatter.AsInlineBlock(node.Value)} |");
         }
         writer.WriteLine();
         writer.WriteLine("</div>");
-    }
-    public static string Render(ITreeParameterDetails tree)
-    {
-        var sb = new StringBuilder();
-        using (var writer = new StringWriter(sb))
-            Render(writer, tree);
-        return sb.ToString();
-    }
-
-    private static string Escape(string text)
-    {
-        return text.Replace("\r", "").Replace('\t', ' ').Replace("\n", " ").Replace("\b", "");
     }
 }

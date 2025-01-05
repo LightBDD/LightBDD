@@ -6,7 +6,7 @@ using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
 
-namespace LightBDD.Framework.Reporting.Formatters;
+namespace LightBDD.Framework.Reporting.Formatters.Markdown;
 
 internal class MarkdownTableRenderer
 {
@@ -39,11 +39,11 @@ internal class MarkdownTableRenderer
     {
         public TextCell(IValueResult result)
         {
-            Text = Escape(result.Value);
+            Text = MarkdownFormatter.AsInlineBlock(result.Value);
 
             if (result.VerificationStatus != ParameterVerificationStatus.NotApplicable &&
                 result.VerificationStatus != ParameterVerificationStatus.Success)
-                Text += "/" + Escape(result.Expectation);
+                Text += $" / {MarkdownFormatter.AsInlineBlock(result.Expectation)}";
         }
 
         public string Text { get; }
@@ -142,7 +142,7 @@ internal class MarkdownTableRenderer
 
         public TextColumn(string name)
         {
-            _name = Escape(name);
+            _name = MarkdownFormatter.EscapeToInline(name);
             EnsureFit(_name);
         }
 
@@ -155,10 +155,6 @@ internal class MarkdownTableRenderer
         {
             WritePadded(writer, _name, Size);
         }
-    }
-    private static string Escape(string text)
-    {
-        return text.Replace("\r", "").Replace('\t', ' ').Replace("\n", " ").Replace("\b", "");
     }
 
     private static void WritePadded(TextWriter writer, string text, int size)

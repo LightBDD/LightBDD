@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Text;
 using LightBDD.Core.Formatting;
-using LightBDD.Core.Formatting.NameDecorators;
 using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Core.Results.Parameters.Trees;
+using LightBDD.Framework.Reporting.Formatters.Markdown;
 
 namespace LightBDD.Framework.Reporting.Formatters;
 
@@ -82,7 +81,7 @@ public class MarkdownReportFormatter : IReportFormatter
                 first = false;
             }
 
-            writer.Write($"`{label}`");
+            writer.Write(MarkdownFormatter.AsInlineBlock(label));
         }
     }
 
@@ -93,7 +92,7 @@ public class MarkdownReportFormatter : IReportFormatter
         writer.Write($"### {GetStatus(scenario.Status)} Scenario: {scenario.Info.Name.Format(MarkdownStepNameDecorator.Instance)}");
         FormatLabels(writer, scenario.Info.Labels);
         if (scenario.Info.Categories.Any())
-            writer.Write($" :file_folder:{string.Join("", scenario.Info.Categories.Select(c => $"`{c}`"))}");
+            writer.Write($" :file_folder:{string.Join("", scenario.Info.Categories.Select(MarkdownFormatter.AsInlineBlock))}");
         if (scenario.ExecutionTime != null)
             WriteExecutionTime(writer, scenario.ExecutionTime);
         writer.WriteLine();
@@ -114,13 +113,11 @@ public class MarkdownReportFormatter : IReportFormatter
         FormatComments(writer, commentBuilder);
         FormatAttachments(writer, attachmentBuilder);
         writer.WriteLine("---");
-        writer.WriteLine("");
-        writer.WriteLine("");
     }
 
     private static void WriteExecutionTime(TextWriter writer, ExecutionTime executionTime)
     {
-        writer.Write($" :watch:`{executionTime.Duration.FormatPretty()}`");
+        writer.Write($" :watch:{MarkdownFormatter.AsInlineBlock(executionTime.Duration.FormatPretty())}");
     }
 
     private static string GetStatus(ExecutionStatus status)
@@ -147,20 +144,21 @@ public class MarkdownReportFormatter : IReportFormatter
 
     private static void CollectAttachments(IStepResult step, StringBuilder attachmentBuilder)
     {
+        if (!step.FileAttachments.Any())
+            return;
+        attachmentBuilder.Append("> Step ").Append(step.Info.GroupPrefix).Append(step.Info.Number).Append(": ");
+
         var first = true;
         foreach (var attachment in step.FileAttachments)
         {
             if (first)
-            {
-                attachmentBuilder.Append("Step ").Append(step.Info.GroupPrefix).Append(step.Info.Number)
-                    .Append(": ");
                 first = false;
-            }
             else
                 attachmentBuilder.Append(", ");
 
             attachmentBuilder.Append($"[:link: {attachment.Name}]({attachment.RelativePath})");
         }
+        attachmentBuilder.AppendLine();
     }
 
     private static void FormatComments(TextWriter writer, StringBuilder commentBuilder)
@@ -178,8 +176,9 @@ public class MarkdownReportFormatter : IReportFormatter
     {
         if (attachmentBuilder.Length == 0)
             return;
-        writer.WriteLine("**Attachments:**  ");
+        writer.WriteLine("> [!NOTE]");
         writer.Write(attachmentBuilder);
+        writer.WriteLine();
     }
 
     private static void FormatStep(TextWriter writer, IStepResult step, StringBuilder commentBuilder, StringBuilder attachmentBuilder, int intent = 1)
@@ -209,12 +208,10 @@ public class MarkdownReportFormatter : IReportFormatter
                 writer.WriteLine($"**${parameterResult.Name}**:");
                 new MarkdownTableRenderer(table).Render(writer);
                 writer.WriteLine();
-                writer.WriteLine();
                 break;
             case ITreeParameterDetails tree:
                 writer.WriteLine($"**${parameterResult.Name}**:");
                 MarkdownTreeRenderer.Render(writer, tree);
-                writer.WriteLine();
                 writer.WriteLine();
                 break;
         }
@@ -253,8 +250,8 @@ public class MarkdownReportFormatter : IReportFormatter
 
         var maxLength = summary.Max(k => k.key.Length);
 
-        writer.WriteLine("| Title | Value |");
-        writer.WriteLine("| ----: | :---- |");
+        writer.WriteLine("| Entry              | Value |");
+        writer.WriteLine("|              ----: | :---- |");
 
         var format = $"| {{0,-{maxLength}}} | {{1}} |";
         foreach (var row in summary)
@@ -262,5 +259,6 @@ public class MarkdownReportFormatter : IReportFormatter
             writer.Write(format, row.key, row.value);
             writer.WriteLine();
         }
+        writer.WriteLine();
     }
 }
