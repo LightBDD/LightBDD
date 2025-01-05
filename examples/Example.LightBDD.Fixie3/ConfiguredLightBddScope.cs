@@ -26,6 +26,7 @@ namespace Example.LightBDD.Fixie3
             configuration
                 .ReportWritersConfiguration()
                 .AddFileWriter<XmlReportFormatter>("~\\Reports\\FeaturesReport.xml")
+                .AddFileWriter<MarkdownReportFormatter>("~\\Reports\\FeaturesReport.md")
                 .AddFileWriter<PlainTextReportFormatter>("~\\Reports\\{TestDateTimeUtc:yyyy-MM-dd-HH_mm_ss}_FeaturesReport.txt");
         }
     }

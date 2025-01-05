@@ -8,6 +8,7 @@ using LightBDD.Core.Results;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
 using LightBDD.Core.Results.Parameters.Trees;
+using LightBDD.Framework.Reporting.Formatters.PlainText;
 
 namespace LightBDD.Framework.Reporting.Formatters
 {

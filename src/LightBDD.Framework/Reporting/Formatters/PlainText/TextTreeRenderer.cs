@@ -3,7 +3,7 @@ using System.Text;
 using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters.Trees;
 
-namespace LightBDD.Framework.Reporting.Formatters;
+namespace LightBDD.Framework.Reporting.Formatters.PlainText;
 
 internal class TextTreeRenderer
 {

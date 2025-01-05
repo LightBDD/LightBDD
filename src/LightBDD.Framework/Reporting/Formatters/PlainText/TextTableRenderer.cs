@@ -7,7 +7,7 @@ using LightBDD.Core.Metadata;
 using LightBDD.Core.Results.Parameters;
 using LightBDD.Core.Results.Parameters.Tabular;
 
-namespace LightBDD.Framework.Reporting.Formatters
+namespace LightBDD.Framework.Reporting.Formatters.PlainText
 {
     internal class TextTableRenderer
     {
