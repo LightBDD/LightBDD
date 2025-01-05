@@ -9,7 +9,7 @@ namespace LightBDD.Core.Extensibility
 {
     /// <summary>
     /// <see cref="ICoreScenarioBuilder"/> integration interface allowing to construct scenario for execution.
-    /// The interface is dedicated for projects extending LightBDD with user friendly API for running scenarios - it should not be used directly by regular LightBDD users.
+    /// The interface is dedicated for projects extending LightBDD with user-friendly API for running scenarios - it should not be used directly by regular LightBDD users.
     /// </summary>
     public interface ICoreScenarioBuilder
     {
@@ -82,6 +82,13 @@ namespace LightBDD.Core.Extensibility
         /// <param name="description">Description to set.</param>
         /// <returns>Self.</returns>
         ICoreScenarioBuilder WithDescription(string description);
+
+        /// <summary>
+        /// Configures scenario with original descriptor.
+        /// </summary>
+        /// <param name="descriptor">Scenario descriptor</param>
+        /// <returns>Self.</returns>
+        ICoreScenarioBuilder WithDescriptor(ScenarioDescriptor descriptor);
 
         /// <summary>
         /// Builds scenario.

@@ -1,6 +1,10 @@
 LightBDD
 ===========================================
 
+Version 3.10.0
+----------------------------------------
++ #350 (LightBDD.Core)(New) Added IScenario.Descriptor property providing access to scenario MethodInfo
+
 Version 3.9.0
 ----------------------------------------
 + #357 (LightBDD.Framework)(New) Implemented Expect.To.BeOfType() and Expect.To.BeCastableTo()
