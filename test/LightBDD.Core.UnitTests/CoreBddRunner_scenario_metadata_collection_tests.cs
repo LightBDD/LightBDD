@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Results;
 using LightBDD.Core.UnitTests.Helpers;
@@ -43,6 +44,20 @@ namespace LightBDD.Core.UnitTests
             Assert.That(scenario.Info.Name.ToString(), Is.EqualTo("It should capture scenario name with labels"));
             Assert.That(scenario.Info.Labels, Is.EqualTo(new[] { "Ticket-1", "Ticket-2" }));
             Assert.That(scenario.Info.Categories, Is.Empty);
+        }
+
+        [Test]
+        public void It_should_capture_scenario_descriptor()
+        {
+            Action expected = It_should_capture_scenario_descriptor;
+
+            ScenarioDescriptor descriptor = null;
+            void Capture_scenario_descriptor() => descriptor = ScenarioExecutionContext.CurrentScenario.Descriptor;
+
+            _runner.Test().TestScenario(Capture_scenario_descriptor);
+
+            Assert.That(descriptor, Is.Not.Null);
+            Assert.That(descriptor.MethodInfo, Is.EqualTo(expected.Method));
         }
 
         [Test]

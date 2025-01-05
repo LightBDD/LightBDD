@@ -1,4 +1,6 @@
+#nullable enable
 using LightBDD.Core.Dependencies;
+using LightBDD.Core.Extensibility;
 using LightBDD.Core.Metadata;
 
 namespace LightBDD.Core.Execution
@@ -19,10 +21,15 @@ namespace LightBDD.Core.Execution
         /// <summary>
         /// Returns the context used by this scenario (or null if none were provided).
         /// </summary>
-        object Context { get; }
+        object? Context { get; }
         /// <summary>
         /// Returns feature fixture on which the scenario is executed.
         /// </summary>
         object Fixture { get; }
+
+        /// <summary>
+        /// Returns scenario descriptor used to instantiate this scenario.
+        /// </summary>
+        ScenarioDescriptor? Descriptor { get; }
     }
 }
