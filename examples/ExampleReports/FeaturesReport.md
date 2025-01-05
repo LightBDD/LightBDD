@@ -2,8 +2,8 @@
 
 | Entry              | Value |
 |              ----: | :---- |
-| Execution Start    | 2025-01-05 20:09:09 UTC |
-| Execution Duration | 6s 086ms |
+| Execution Start    | 2025-01-05 20:26:20 UTC |
+| Execution Duration | 6s 594ms |
 | **Overall Status** | :red_circle: Failed |
 | Total Features     | 14 |
 | Total Scenarios    | 34 |
@@ -27,10 +27,10 @@
 > I want to add and browse my client postal addresses by client emails
 
 
-### :red_circle: Scenario: Adding contacts :watch:`55ms`
+### :red_circle: Scenario: Adding contacts :watch:`50ms`
 > This scenario presents failures captured by VerifiableTree
 
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN an empty address book :watch:`2ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN an empty address book :watch:`1ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: WHEN I associate contact "`<$contact>`" with address "`<$address>`" as alias "`Joey`" :watch:`25ms`
 **$contact**:
 <div style="overflow-x: auto;">
@@ -83,7 +83,7 @@
 
 </div>
 
-#### &nbsp;&nbsp;&nbsp; :red_circle: Step 4: THEN address book should contain contacts "`<$contacts>`❗" :watch:`6ms`
+#### &nbsp;&nbsp;&nbsp; :red_circle: Step 4: THEN address book should contain contacts "`<$contacts>`❗" :watch:`5ms`
 **$contacts**:
 <div style="overflow-x: auto;">
 
@@ -104,8 +104,8 @@
 > [!IMPORTANT]
 > <pre>
 > Step 4: System.InvalidOperationException : Parameter 'contacts' verification failed: $[1].Name: expected: equals 'Joel Jonnes', but got: 'Joe Jonnes'
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 > </pre>
 
 ---
@@ -165,7 +165,7 @@
 
 </div>
 
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 4: THEN address by email should match "`<$match>`☑" :watch:`1ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 4: THEN address by email should match "`<$match>`☑" :watch:`2ms`
 **$match**:
 <div style="overflow-x: auto;">
 
@@ -188,7 +188,7 @@
 ---
 
 
-### :white_check_mark: Scenario: Persisting address book :watch:`62ms`
+### :white_check_mark: Scenario: Persisting address book :watch:`31ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN an address book with contacts "`<$contacts>`" :watch:`<1ms`
 **$contacts**:
 <div style="overflow-x: auto;">
@@ -221,8 +221,8 @@
 
 </div>
 
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: WHEN I persist book as json :watch:`18ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: THEN address book should match persisted json "`<$json>`☑" :watch:`3ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: WHEN I persist book as json :watch:`20ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: THEN address book should match persisted json "`<$json>`☑" :watch:`5ms`
 **$json**:
 <div style="overflow-x: auto;">
 
@@ -255,7 +255,7 @@
 
 </div>
 
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 4: AND address book should match persisted json "`<$json>`☑" :watch:`34ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 4: AND address book should match persisted json "`<$json>`☑" :watch:`2ms`
 **$json**:
 <div style="overflow-x: auto;">
 
@@ -351,7 +351,7 @@
 
 </div>
 
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 4: THEN address book should contain postal addresses "`<$addresses>`☑" :watch:`<1ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 4: THEN address book should contain postal addresses "`<$addresses>`☑" :watch:`1ms`
 **$addresses**:
 <div style="overflow-x: auto;">
 
@@ -380,9 +380,9 @@
 > I want to add products to basket
 
 
-### :white_check_mark: Scenario: No product in stock :label:`Ticket-6` :file_folder:`Sales` :watch:`1s 545ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN product is out of stock :watch:`5ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: WHEN customer adds it to the basket :watch:`1s 522ms`
+### :white_check_mark: Scenario: No product in stock :label:`Ticket-6` :file_folder:`Sales` :watch:`1s 527ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN product is out of stock :watch:`7ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: WHEN customer adds it to the basket :watch:`1s 508ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: THEN the product addition should be unsuccessful :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 4: AND the basket should not contain the product :watch:`<1ms`
 > [!NOTE]
@@ -393,11 +393,11 @@
 ---
 
 
-### :warning: Scenario: Successful addition :label:`Ticket-7` :file_folder:`Sales` :watch:`1s 294ms`
+### :warning: Scenario: Successful addition :label:`Ticket-7` :file_folder:`Sales` :watch:`1s 113ms`
 > This scenario presents how LightBDD reports ignored steps
 
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN product is in stock :watch:`<1ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: WHEN customer adds it to the basket :watch:`1s 293ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: WHEN customer adds it to the basket :watch:`1s 112ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: THEN the product addition should be successful :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 4: AND the basket should contain the product :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp; :warning: Step 5: AND the product should be removed from stock :watch:`<1ms`
@@ -423,32 +423,32 @@
 > This example presents usage of MultiAssertAttribute.
 
 
-### :red_circle: Scenario: Adding numbers :label:`Ticket-13` :watch:`49ms`
+### :red_circle: Scenario: Adding numbers :label:`Ticket-13` :watch:`51ms`
 > This scenario presents usage of Verifiable<T> and MultiAssertAttribute
 
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN a calculator :watch:`2ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: THEN adding "`2`" to "`3`" should give "`5`☑" :watch:`3ms`
-#### &nbsp;&nbsp;&nbsp; :red_circle: Step 3: AND adding "`-3`" to "`2`" should give "`expected: equals '-1', but got: '1'`❗" :watch:`22ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN a calculator :watch:`<1ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: THEN adding "`2`" to "`3`" should give "`5`☑" :watch:`11ms`
+#### &nbsp;&nbsp;&nbsp; :red_circle: Step 3: AND adding "`-3`" to "`2`" should give "`expected: equals '-1', but got: '1'`❗" :watch:`21ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 4: AND adding "`0`" to "`1`" should give "`1`☑" :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp; :red_circle: Step 5: AND adding "`-2`" to "`-1`" should give "`expected: equals '-3', but got: '3'`❗" :watch:`<1ms`
 > [!IMPORTANT]
 > <pre>
 > Step 3: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '-1', but got: '1'
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 > Step 5: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '-3', but got: '3'
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 > </pre>
 
 ---
 
 
-### :red_circle: Scenario: Composite operations :label:`Ticket-13` :watch:`16ms`
+### :red_circle: Scenario: Composite operations :label:`Ticket-13` :watch:`13ms`
 > This scenario presents behavior of MultiAssertAttribute
 
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN a calculator :watch:`<1ms`
-#### &nbsp;&nbsp;&nbsp; :red_circle: Step 2: THEN it should add numbers :watch:`5ms`
+#### &nbsp;&nbsp;&nbsp; :red_circle: Step 2: THEN it should add numbers :watch:`4ms`
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :white_check_mark: Step 2.1: THEN adding "`2`" to "`3`" should give "`5`☑" :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :red_circle: Step 2.2: AND adding "`2`" to "`-3`" should give "`expected: equals '-1', but got: '1'`❗" :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :red_circle: Step 2.3: AND adding "`0`" to "`1`" should give "`expected: equals '0', but got: '1'`❗" :watch:`<1ms`
@@ -456,21 +456,21 @@
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :white_check_mark: Step 3.1: THEN multiplying "`2`" by "`3`" should give "`6`☑" :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :warning: Step 3.2: AND multiplying "`2`" by "`-3`" should give "`expected: equals '-6'`⚠" :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :white_circle: Step 3.3: AND multiplying "`1`" by "`1`" should give "`<?>`"
-#### &nbsp;&nbsp;&nbsp; :red_circle: Step 4: AND it should divide numbers :watch:`4ms`
+#### &nbsp;&nbsp;&nbsp; :red_circle: Step 4: AND it should divide numbers :watch:`2ms`
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :white_check_mark: Step 4.1: THEN dividing "`6`" by "`3`" should give "`2`☑" :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :red_circle: Step 4.2: AND multiplying "`5`" by "`2`" should give "`expected: equals '2', but got: '10'`❗" :watch:`<1ms`
 > [!IMPORTANT]
 > <pre>
 > Step 2.2: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '-1', but got: '1'
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 > Step 2.3: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '0', but got: '1'
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 > Step 3.2: Negative numbers are not supported yet
 > Step 4.2: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '2', but got: '10'
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 > </pre>
 
 > [!NOTE]
@@ -482,7 +482,7 @@
 ---
 
 
-### :red_circle: Scenario: Dividing numbers :label:`Ticket-13` :watch:`4ms`
+### :red_circle: Scenario: Dividing numbers :label:`Ticket-13` :watch:`5ms`
 > This scenario presents usage of Verifiable<T> and MultiAssertAttribute
 
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN a calculator :watch:`<1ms`
@@ -493,11 +493,11 @@
 > [!IMPORTANT]
 > <pre>
 > Step 3: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '0', but got: '<DivideByZeroException>'
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 > Step 5: System.InvalidOperationException : Parameter 'result' verification failed: expected: equals '1', but got: '0'
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 > </pre>
 
 ---
@@ -527,10 +527,10 @@
 > So that I can use LightBDD for more unit-test like tests as well
 
 
-### :white_check_mark: Scenario: Adding numbers :watch:`28ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN calculator :watch:`5ms`
+### :white_check_mark: Scenario: Adding numbers :watch:`32ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN calculator :watch:`7ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: WHEN I add two numbers :watch:`<1ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: THEN I should get an expected result :watch:`5ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: THEN I should get an expected result :watch:`14ms`
 ---
 
 
@@ -540,18 +540,18 @@
 > I want to add, browse and remove my contacts
 
 
-### :white_check_mark: Scenario: Contact book should allow me to add multiple contacts :label:`Ticket-8` :watch:`31ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN my contact book is empty :watch:`5ms`
+### :white_check_mark: Scenario: Contact book should allow me to add multiple contacts :label:`Ticket-8` :watch:`35ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN my contact book is empty :watch:`4ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: WHEN I add new contacts :watch:`<1ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: THEN all contacts should be available in the contact book :watch:`7ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: THEN all contacts should be available in the contact book :watch:`16ms`
 ---
 
 
-### :large_blue_diamond: Scenario: Contact book should allow me to remove all contacts :label:`Ticket-9` :watch:`24ms`
+### :large_blue_diamond: Scenario: Contact book should allow me to remove all contacts :label:`Ticket-9` :watch:`4ms`
 > This scenario presents how LightBDD reports bypassed steps
 
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN my contact book is filled with many contacts :watch:`19ms`
-#### &nbsp;&nbsp;&nbsp; :large_blue_diamond: Step 2: WHEN I clear it :watch:`2ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN my contact book is filled with many contacts :watch:`1ms`
+#### &nbsp;&nbsp;&nbsp; :large_blue_diamond: Step 2: WHEN I clear it :watch:`1ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: THEN the contact book should be empty :watch:`<1ms`
 > [!IMPORTANT]
 > <pre>
@@ -569,9 +569,9 @@
 ---
 
 
-### :white_check_mark: Scenario: Displaying contacts alphabetically :watch:`32ms`
+### :white_check_mark: Scenario: Displaying contacts alphabetically :watch:`39ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN my contact book is empty :watch:`<1ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: AND I added contacts "`<$contacts>`" :watch:`17ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: AND I added contacts "`<$contacts>`" :watch:`21ms`
 **$contacts**:
 <div style="overflow-x: auto;">
 
@@ -585,7 +585,7 @@
 </div>
 
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: WHEN I request contacts sorted by name :watch:`<1ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 4: THEN I should receive contacts "`<$contacts>`☑" :watch:`9ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 4: THEN I should receive contacts "`<$contacts>`☑" :watch:`12ms`
 **$contacts**:
 <div style="overflow-x: auto;">
 
@@ -601,7 +601,7 @@
 ---
 
 
-### :red_circle: Scenario: Normalizing contact details :watch:`10ms`
+### :red_circle: Scenario: Normalizing contact details :watch:`9ms`
 > This scenario presents failures captured by VerifiableTable
 
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN I added contacts "`<$contacts>`" :watch:`<1ms`
@@ -618,7 +618,7 @@
 </div>
 
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: WHEN I request contacts sorted by name :watch:`<1ms`
-#### &nbsp;&nbsp;&nbsp; :red_circle: Step 3: THEN I should receive contacts "`<$contacts>`❗" :watch:`5ms`
+#### &nbsp;&nbsp;&nbsp; :red_circle: Step 3: THEN I should receive contacts "`<$contacts>`❗" :watch:`6ms`
 **$contacts**:
 <div style="overflow-x: auto;">
 
@@ -635,14 +635,14 @@
 > <pre>
 > Step 3: System.InvalidOperationException : Parameter 'contacts' verification failed: [0].PhoneNumber: expected: matches '[0-9]{10,14}', but got: '112334455'
 > 		[3].Email: expected: matches '[a-z0-9.-]+@[a-z0-9.-]+', but got: 'jos#@mymail.com'
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 > </pre>
 
 ---
 
 
-### :red_circle: Scenario: Searching for contacts by phone :watch:`14ms`
+### :red_circle: Scenario: Searching for contacts by phone :watch:`17ms`
 > This scenario presents failures captured by VerifiableTree
 
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN my contact book is empty :watch:`<1ms`
@@ -660,8 +660,8 @@
 
 </div>
 
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: WHEN I search for contacts by phone starting with "`111`" :watch:`1ms`
-#### &nbsp;&nbsp;&nbsp; :red_circle: Step 4: THEN I should receive contacts "`<$contacts>`❗" :watch:`6ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: WHEN I search for contacts by phone starting with "`111`" :watch:`<1ms`
+#### &nbsp;&nbsp;&nbsp; :red_circle: Step 4: THEN I should receive contacts "`<$contacts>`❗" :watch:`7ms`
 **$contacts**:
 <div style="overflow-x: auto;">
 
@@ -684,8 +684,8 @@
 > 		[4].Name: unexpected value
 > 		[4].Email: unexpected value
 > 		[4].PhoneNumber: unexpected value
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 > </pre>
 
 ---
@@ -697,19 +697,19 @@
 > I want to go through entire customer journey
 
 
-### :warning: Scenario: Ordering products :label:`Ticket-12` :watch:`4s 624ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN customer is logged in :watch:`1s 079ms`
-#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :white_check_mark: Step 1.1: GIVEN the user is about to login :watch:`<1ms`
+### :warning: Scenario: Ordering products :label:`Ticket-12` :watch:`4s 350ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN customer is logged in :watch:`1s 758ms`
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :white_check_mark: Step 1.1: GIVEN the user is about to login :watch:`1ms`
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :white_check_mark: Step 1.2: AND the user entered valid login :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :white_check_mark: Step 1.3: AND the user entered valid password :watch:`<1ms`
-#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :white_check_mark: Step 1.4: WHEN the user clicks login button :watch:`1s 070ms`
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :white_check_mark: Step 1.4: WHEN the user clicks login button :watch:`1s 747ms`
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :white_check_mark: Step 1.5: THEN the login operation should be successful :watch:`<1ms`
-#### &nbsp;&nbsp;&nbsp; :large_blue_diamond: Step 2: WHEN customer adds products to basket :watch:`1s 528ms`
+#### &nbsp;&nbsp;&nbsp; :large_blue_diamond: Step 2: WHEN customer adds products to basket :watch:`1s 432ms`
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :white_check_mark: Step 2.1: GIVEN product "`wooden desk`" is in stock :watch:`<1ms`
-#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :large_blue_diamond: Step 2.2: WHEN customer adds product "`wooden desk`" to the basket :watch:`1s 525ms`
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :large_blue_diamond: Step 2.2: WHEN customer adds product "`wooden desk`" to the basket :watch:`1s 429ms`
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :white_check_mark: Step 2.3: THEN the product addition should be successful :watch:`<1ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: AND customer pays for products in basket :watch:`1s 997ms`
-#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :white_check_mark: Step 3.1: WHEN customer requests to pay :watch:`1s 994ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: AND customer pays for products in basket :watch:`1s 146ms`
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :white_check_mark: Step 3.1: WHEN customer requests to pay :watch:`1s 145ms`
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :white_check_mark: Step 3.2: THEN payment should be successful :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp; :warning: Step 4: THEN customer should receive order email :watch:`5ms`
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :warning: Step 4.1: THEN customer should receive invoice :watch:`3ms`
@@ -721,7 +721,7 @@
 > </pre>
 
 > [!NOTE]
-> Step 4.1: [:link: invoice-content](33c9c685-d17d-4751-a903-238571fc8f12.txt)
+> Step 4.1: [:link: invoice-content](ccc596a2-c0a8-4a43-abd1-62d4d05c4c84.txt)
 
 ---
 
@@ -732,7 +732,7 @@
 > I want to see the website in my language
 
 
-### :white_check_mark: Scenario: Displaying home page in "`DE`" :watch:`7ms`
+### :white_check_mark: Scenario: Displaying home page in "`DE`" :watch:`3ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN a customer with "`DE`" language selected :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: WHEN the customer opens the home page :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: THEN header should display "`DE`" language :watch:`<1ms`
@@ -741,10 +741,10 @@
 ---
 
 
-### :white_check_mark: Scenario: Displaying home page in "`EN`" :watch:`26ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN a customer with "`EN`" language selected :watch:`4ms`
+### :white_check_mark: Scenario: Displaying home page in "`EN`" :watch:`29ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN a customer with "`EN`" language selected :watch:`2ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: WHEN the customer opens the home page :watch:`<1ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: THEN header should display "`EN`" language :watch:`2ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: THEN header should display "`EN`" language :watch:`10ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 4: AND page title should be translated :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 5: AND all menu items should be translated :watch:`<1ms`
 ---
@@ -765,12 +765,12 @@
 > I want to receive invoice for bought items
 
 
-### :warning: Scenario: Receiving invoice for products :label:`Ticket-4` :file_folder:`Sales` :watch:`27ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN product "`wooden desk`" is available in product storage :watch:`2ms`
+### :warning: Scenario: Receiving invoice for products :label:`Ticket-4` :file_folder:`Sales` :watch:`28ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN product "`wooden desk`" is available in product storage :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: AND product "`wooden shelf`" is available in product storage :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: WHEN customer buys product "`wooden desk`" :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 4: AND customer buys product "`wooden shelf`" :watch:`<1ms`
-#### &nbsp;&nbsp;&nbsp; :warning: Step 5: THEN an invoice should be sent to the customer :watch:`3ms`
+#### &nbsp;&nbsp;&nbsp; :warning: Step 5: THEN an invoice should be sent to the customer :watch:`1ms`
 #### &nbsp;&nbsp;&nbsp; :white_circle: Step 6: AND the invoice should contain product "`wooden desk`" with price of "`£62.00`"
 #### &nbsp;&nbsp;&nbsp; :white_circle: Step 7: AND the invoice should contain product "`wooden shelf`" with price of "`£37.00`"
 > [!IMPORTANT]
@@ -789,10 +789,10 @@
 > Example usage of fluent scenarios
 
 
-### :white_check_mark: Scenario: Browsing invoices :label:`Ticket-14` :watch:`4s 729ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN invoice "`Invoice-1`" :watch:`1s 686ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: AND invoice "`Invoice-2`" :watch:`1s 685ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: WHEN I request all historical invoices :watch:`1s 342ms`
+### :white_check_mark: Scenario: Browsing invoices :label:`Ticket-14` :watch:`4s 297ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN invoice "`Invoice-1`" :watch:`1s 086ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: AND invoice "`Invoice-2`" :watch:`1s 750ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: WHEN I request all historical invoices :watch:`1s 448ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 4: THEN I should see invoices "`Invoice-1, Invoice-2`" :watch:`<1ms`
 ---
 
@@ -803,12 +803,12 @@
 > I want to login into system
 
 
-### :red_circle: Scenario: Anonymous login name should allow to log in :label:`Ticket-3` :file_folder:`Security` :watch:`1s 431ms`
+### :red_circle: Scenario: Anonymous login name should allow to log in :label:`Ticket-3` :file_folder:`Security` :watch:`1s 457ms`
 > This scenario presents how LightBDD reports failed steps
 
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN the user is about to login :watch:`5ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN the user is about to login :watch:`7ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: AND the user entered anonymous login :watch:`1ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: WHEN the user clicks login button :watch:`1s 397ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: WHEN the user clicks login button :watch:`1s 428ms`
 #### &nbsp;&nbsp;&nbsp; :red_circle: Step 4: THEN the login operation should be successful :watch:`9ms`
 #### &nbsp;&nbsp;&nbsp; :white_circle: Step 5: AND a welcome message containing user name should be returned
 > [!IMPORTANT]
@@ -817,8 +817,8 @@
 > 	  Expected: True
 > 	  But was:  False
 > 	
-> 	at Example.LightBDD.NUnit3.Features.Login_feature.Then_the_login_operation_should_be_successful() in D:\dev\LightBDD\examples\Example.LightBDD.NUnit3\Features\Login_feature.Steps.cs:line 57
-> 	at LightBDD.Framework.Scenarios.Implementation.BasicStepCompiler.StepExecutor.Execute(Object context, Object[] args) in D:\dev\LightBDD\src\LightBDD.Framework\Scenarios\Implementation\BasicStepCompiler.cs:line 102
+> 	at Example.LightBDD.NUnit3.Features.Login_feature.Then_the_login_operation_should_be_successful() in d:\dev\LightBDD\examples\Example.LightBDD.NUnit3\Features\Login_feature.Steps.cs:line 57
+> 	at LightBDD.Framework.Scenarios.Implementation.BasicStepCompiler.StepExecutor.Execute(Object context, Object[] args) in d:\dev\LightBDD\src\LightBDD.Framework\Scenarios\Implementation\BasicStepCompiler.cs:line 102
 > </pre>
 
 > [!NOTE]
@@ -829,7 +829,7 @@
 ---
 
 
-### :white_check_mark: Scenario: Successful login :label:`Ticket-1` :file_folder:`Security` :watch:`1s 485ms`
+### :white_check_mark: Scenario: Successful login :label:`Ticket-1` :file_folder:`Security` :watch:`1s 484ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN the user is about to login :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: AND the user entered valid login :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: AND the user entered valid password :watch:`<1ms`
@@ -839,21 +839,21 @@
 ---
 
 
-### :white_check_mark: Scenario: Wrong login provided causes login to fail :label:`Ticket-2` :file_folder:`Security` :watch:`1s 575ms`
+### :white_check_mark: Scenario: Wrong login provided causes login to fail :label:`Ticket-2` :file_folder:`Security` :watch:`1s 704ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN the user is about to login :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: AND the user entered invalid login :watch:`<1ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: AND the user entered valid password :watch:`<1ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 4: WHEN the user clicks login button :watch:`1s 574ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: AND the user entered valid password :watch:`2ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 4: WHEN the user clicks login button :watch:`1s 701ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 5: THEN the login operation should be unsuccessful :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 6: AND an invalid login or password error message should be returned :watch:`<1ms`
 ---
 
 
-### :white_check_mark: Scenario: Wrong password provided causes login to fail :label:`Ticket-2` :file_folder:`Security` :watch:`1s 215ms`
+### :white_check_mark: Scenario: Wrong password provided causes login to fail :label:`Ticket-2` :file_folder:`Security` :watch:`1s 945ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN the user is about to login :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: AND the user entered valid login :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: AND the user entered invalid password :watch:`<1ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 4: WHEN the user clicks login button :watch:`1s 214ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 4: WHEN the user clicks login button :watch:`1s 945ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 5: THEN the login operation should be unsuccessful :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 6: AND an invalid login or password error message should be returned :watch:`<1ms`
 ---
@@ -865,11 +865,11 @@
 > I want to pay for products in basket
 
 
-### :white_check_mark: Scenario: Successful payment :label:`Ticket-10``Ticket-11` :watch:`6s 086ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN customer has some products in basket :watch:`1s 407ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: AND customer has enough money to pay for products :watch:`1s 044ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: WHEN customer requests to pay :watch:`1s 840ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 4: THEN payment should be successful :watch:`1s 779ms`
+### :white_check_mark: Scenario: Successful payment :label:`Ticket-10``Ticket-11` :watch:`5s 925ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN customer has some products in basket :watch:`1s 580ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: AND customer has enough money to pay for products :watch:`1s 400ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: WHEN customer requests to pay :watch:`1s 131ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 4: THEN payment should be successful :watch:`1s 802ms`
 ---
 
 
@@ -879,8 +879,8 @@
 > I want to dispatch products to customer as soon as the payment is finalized
 
 
-### :white_check_mark: Scenario: Should dispatch product after payment is finalized :label:`Ticket-5` :file_folder:`Delivery``Sales` :watch:`24ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN There is an active customer with id "`ABC-123`" :watch:`3ms`
+### :white_check_mark: Scenario: Should dispatch product after payment is finalized :label:`Ticket-5` :file_folder:`Delivery``Sales` :watch:`20ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN There is an active customer with id "`ABC-123`" :watch:`2ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: AND The customer has product "`wooden shelf`" in basket :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: AND The customer has product "`wooden desk`" in basket :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 4: WHEN The customer payment finalizes :watch:`<1ms`
@@ -892,11 +892,11 @@
 ## Record persistence feature
 
 
-### :red_circle: Scenario: Saving data :watch:`2s 080ms`
+### :red_circle: Scenario: Saving data :watch:`2s 057ms`
 > This scenario presents failures captured by VerifiableTree using ExpectEquivalent mode
 
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN no saved records :watch:`4ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: WHEN I save records "`<$records>`" :watch:`2s 052ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN no saved records :watch:`3ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: WHEN I save records "`<$records>`" :watch:`2s 033ms`
 **$records**:
 <div style="overflow-x: auto;">
 
@@ -916,12 +916,12 @@
 |---| ---- | ----- |
 | ☑ | `$` | `<array:2>` |
 | ☑ | `$[0]` | `<object>` |
-| ☑ | `$[0].Id` | `bdef8c56-14ac-45ce-9173-a0fde7c443e2` |
-| ☑ | `$[0].ModifiedDate` | `01/05/2025 20:09:09 +00:00` |
+| ☑ | `$[0].Id` | `1f1e2505-44ec-4868-9c1f-c43fba570118` |
+| ☑ | `$[0].ModifiedDate` | `01/05/2025 20:26:20 +00:00` |
 | ❗ | `$[0].Name` | `like 'Recr*'` / `Record 1` |
 | ☑ | `$[1]` | `<object>` |
-| ❗ | `$[1].Id` | `equals '00000000-0000-0000-0000-000000000000'` / `418a0f5f-1b7e-46ae-ac72-0a76397b642e` |
-| ❗ | `$[1].ModifiedDate` | `less than '01/05/2025 20:09:09 +00:00'` / `01/05/2025 20:09:10 +00:00` |
+| ❗ | `$[1].Id` | `equals '00000000-0000-0000-0000-000000000000'` / `b490fca5-8ad2-4d61-921c-6e98b21b5dac` |
+| ❗ | `$[1].ModifiedDate` | `less than '01/05/2025 20:26:20 +00:00'` / `01/05/2025 20:26:21 +00:00` |
 | ☑ | `$[1].Name` | `Record 2` |
 
 </div>
@@ -929,10 +929,10 @@
 > [!IMPORTANT]
 > <pre>
 > Step 3: System.InvalidOperationException : Parameter 'expectation' verification failed: $[0].Name: expected: like 'Recr*', but got: 'Record 1'
-> 		$[1].Id: expected: equals '00000000-0000-0000-0000-000000000000', but got: '418a0f5f-1b7e-46ae-ac72-0a76397b642e'
-> 		$[1].ModifiedDate: expected: less than '01/05/2025 20:09:09 +00:00', but got: '01/05/2025 20:09:10 +00:00'
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
+> 		$[1].Id: expected: equals '00000000-0000-0000-0000-000000000000', but got: 'b490fca5-8ad2-4d61-921c-6e98b21b5dac'
+> 		$[1].ModifiedDate: expected: less than '01/05/2025 20:26:20 +00:00', but got: '01/05/2025 20:26:21 +00:00'
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 > </pre>
 
 ---
@@ -944,27 +944,27 @@
 > I want to be able to retrieve user data
 
 
-### :red_circle: Scenario: Retrieving user details :watch:`52ms`
+### :red_circle: Scenario: Retrieving user details :watch:`50ms`
 > This scenario presents failures captured by Verifiable<T>
 
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN a user with id "`124`" name "`Joe`" surname "`Johnson`" and email "`jj@gmail.com`" :watch:`2ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: WHEN I request user details for id "`124`" :watch:`<1ms`
-#### &nbsp;&nbsp;&nbsp; :red_circle: Step 3: THEN I should receive user with id "`124`☑" name "`expected: equals 'Joe', but got: 'JOE'`❗" surname "`expected: equals 'Johnson', but got: 'JOHNSON'`❗" and email "`jj@gmail.com`☑" :watch:`29ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: WHEN I request user details for id "`124`" :watch:`1ms`
+#### &nbsp;&nbsp;&nbsp; :red_circle: Step 3: THEN I should receive user with id "`124`☑" name "`expected: equals 'Joe', but got: 'JOE'`❗" surname "`expected: equals 'Johnson', but got: 'JOHNSON'`❗" and email "`jj@gmail.com`☑" :watch:`30ms`
 > [!IMPORTANT]
 > <pre>
 > Step 3: System.InvalidOperationException : Parameter 'name' verification failed: expected: equals 'Joe', but got: 'JOE'
 > 	Parameter 'surname' verification failed: expected: equals 'Johnson', but got: 'JOHNSON'
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 > </pre>
 
 ---
 
 
-### :red_circle: Scenario: User search :watch:`24ms`
+### :red_circle: Scenario: User search :watch:`18ms`
 > This scenario presents failures captured by VerifiableTable
 
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN users "`<$users>`" :watch:`9ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN users "`<$users>`" :watch:`<1ms`
 **$users**:
 <div style="overflow-x: auto;">
 
@@ -977,8 +977,8 @@
 
 </div>
 
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: WHEN I search for users by surname pattern "`.*sen`" :watch:`4ms`
-#### &nbsp;&nbsp;&nbsp; :red_circle: Step 3: THEN I should receive users "`<$users>`❗" :watch:`4ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: WHEN I search for users by surname pattern "`.*sen`" :watch:`5ms`
+#### &nbsp;&nbsp;&nbsp; :red_circle: Step 3: THEN I should receive users "`<$users>`❗" :watch:`7ms`
 **$users**:
 <div style="overflow-x: auto;">
 
@@ -997,14 +997,14 @@
 > 		[2].Id: unexpected value
 > 		[2].Name: unexpected value
 > 		[2].Surname: unexpected value
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 > </pre>
 
 ---
 
 
-### :red_circle: Scenario: Validating found users :watch:`9ms`
+### :red_circle: Scenario: Validating found users :watch:`8ms`
 > This scenario presents failures captured by VerifiableTable with usage of Expect.To
 
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN users "`<$users>`" :watch:`<1ms`
@@ -1021,7 +1021,7 @@
 </div>
 
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: WHEN I search for users by surname pattern "`.*sen`" :watch:`<1ms`
-#### &nbsp;&nbsp;&nbsp; :red_circle: Step 3: THEN I should receive users "`<$users>`❗" :watch:`5ms`
+#### &nbsp;&nbsp;&nbsp; :red_circle: Step 3: THEN I should receive users "`<$users>`❗" :watch:`4ms`
 **$users**:
 <div style="overflow-x: auto;">
 
@@ -1037,15 +1037,15 @@
 > <pre>
 > Step 3: System.InvalidOperationException : Parameter 'users' verification failed: [0].Id: expected: greater than '0', but got: '0'
 > 		[1].Email: expected: matches '[\w]+@([a-z]+)(\.[a-z]+)+' ignore case, but got: 'henry123@foo2.com'
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
-> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in D:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.VerifyParameterResults() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 174
+> 	at LightBDD.Core.Execution.Implementation.RunnableStep.RunStepAsync() in d:\dev\LightBDD\src\LightBDD.Core\Execution\Implementation\RunnableStep.cs:line 146
 > </pre>
 
 ---
 
 
-### :white_check_mark: Scenario: Validating user details :watch:`6ms`
+### :white_check_mark: Scenario: Validating user details :watch:`10ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 1: GIVEN a user with id "`124`" name "`Joe`" surname "`Johnson`" and email "`jj@gmail.com`" :watch:`<1ms`
 #### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 2: WHEN I request user details for id "`124`" :watch:`<1ms`
-#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: THEN I should receive user with id "`124`☑" name "`JOE`☑" surname "`JOHNSON`☑" and email "`jj@gmail.com`☑" :watch:`3ms`
+#### &nbsp;&nbsp;&nbsp; :white_check_mark: Step 3: THEN I should receive user with id "`124`☑" name "`JOE`☑" surname "`JOHNSON`☑" and email "`jj@gmail.com`☑" :watch:`<1ms`
 ---
