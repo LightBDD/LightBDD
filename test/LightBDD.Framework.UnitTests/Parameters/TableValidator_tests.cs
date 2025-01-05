@@ -90,6 +90,18 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
+        public void ResetActual_should_reset_table_and_allow_setting_another_value()
+        {
+            var table = CreateNotNullValidator();
+            table.SetActual(Array.Empty<Testable>());
+            table.ResetActual();
+            Assert.That(table.Details.VerificationStatus,Is.EqualTo(ParameterVerificationStatus.NotProvided));
+
+            Assert.DoesNotThrow(() => table.SetActual(Array.Empty<Testable>()));
+            Assert.That(table.Details.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Success));
+        }
+
+        [Test]
         public async Task SetActualAsync_should_capture_exception()
         {
             var table = CreateNotNullValidator();

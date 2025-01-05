@@ -23,6 +23,7 @@ namespace LightBDD.Core.Extensibility.Implementation
         private ExecutionContextDescriptor _contextDescriptor = ExecutionContextDescriptor.NoContext;
         private IEnumerable<IScenarioDecorator> _scenarioDecorators = Enumerable.Empty<IScenarioDecorator>();
         private string _description;
+        private ScenarioDescriptor _descriptor;
 
         public ScenarioBuilder(IFeatureInfo featureInfo, object fixture, IntegrationContext integrationContext,
             ExceptionProcessor exceptionProcessor, Action<IScenarioResult> onScenarioFinished)
@@ -52,7 +53,8 @@ namespace LightBDD.Core.Extensibility.Implementation
                 .WithLabels(metadataProvider.GetScenarioLabels(scenario.MethodInfo))
                 .WithCategories(metadataProvider.GetScenarioCategories(scenario.MethodInfo))
                 .WithScenarioDecorators(metadataProvider.GetScenarioDecorators(scenario))
-                .WithDescription(metadataProvider.GetScenarioDescription(scenario));
+                .WithDescription(metadataProvider.GetScenarioDescription(scenario))
+                .WithDescriptor(scenario);
         }
 
         public ICoreScenarioBuilder WithCapturedScenarioDetailsIfNotSpecified()
@@ -113,10 +115,16 @@ namespace LightBDD.Core.Extensibility.Implementation
             return this;
         }
 
+        public ICoreScenarioBuilder WithDescriptor(ScenarioDescriptor descriptor)
+        {
+            _descriptor = descriptor;
+            return this;
+        }
+
         public IRunnableScenario Build()
         {
             ValidateContext();
-            return new RunnableScenario(_context, new ScenarioInfo(_featureInfo, _name, _labels, _categories, _description), _steps, _contextDescriptor, GetScenarioDecorators());
+            return new RunnableScenario(_context, new ScenarioInfo(_featureInfo, _name, _labels, _categories, _description), _steps, _contextDescriptor, GetScenarioDecorators(), _descriptor);
         }
 
         public LightBddConfiguration Configuration => _context.IntegrationContext.Configuration;

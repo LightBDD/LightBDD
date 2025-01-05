@@ -57,6 +57,16 @@ public class VerifiableTree : IComplexParameter, ISelfFormattable
         _details = null;
     }
 
+
+    /// <summary>
+    /// Clears actual state allowing to specify it once more.
+    /// </summary>
+    public void ResetActual()
+    {
+        _actualTree = null;
+        _details = null;
+    }
+
     void IComplexParameter.SetValueFormattingService(IValueFormattingService formattingService)
     {
         _formattingService = formattingService;

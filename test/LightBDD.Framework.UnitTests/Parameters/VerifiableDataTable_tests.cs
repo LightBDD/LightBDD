@@ -644,6 +644,18 @@ namespace LightBDD.Framework.UnitTests.Parameters
         }
 
         [Test]
+        public void ResetActual_should_reset_table_and_allow_setting_another_value()
+        {
+            var table = new[] { 1 }.ToVerifiableDataTable();
+            table.SetActual(e => e);
+            table.ResetActual();
+            Assert.That(table.Details.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.NotProvided));
+
+            Assert.DoesNotThrow(() => table.SetActual(e=>e));
+            Assert.That(table.Details.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Success));
+        }
+
+        [Test]
         public async Task SetActualAsync_should_capture_exception()
         {
             var table = Enumerable.Empty<int>().ToVerifiableDataTable();
