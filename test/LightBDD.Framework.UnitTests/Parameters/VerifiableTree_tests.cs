@@ -71,6 +71,30 @@ public class VerifiableTree_tests
     }
 
     [Test]
+    public void SetActual_should_be_callable_once()
+    {
+        var expected = new { Name = "Bob" };
+        var tree = Tree.ExpectEquivalent(expected);
+        tree.SetActual(null);
+
+        var ex = Assert.Throws<InvalidOperationException>(() => tree.SetActual(expected));
+        Assert.That(ex.Message, Is.EqualTo("Actual value is already set"));
+    }
+
+    [Test]
+    public void ResetActual_should_reset_tree_and_allow_setting_another_value()
+    {
+        var expected = new { Name = "Bob" };
+        var tree = Tree.ExpectEquivalent(expected);
+        tree.SetActual(null);
+        tree.ResetActual();
+        Assert.That(tree.Details.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.NotProvided));
+
+        Assert.DoesNotThrow(() => tree.SetActual(expected));
+        Assert.That(tree.Details.VerificationStatus, Is.EqualTo(ParameterVerificationStatus.Success));
+    }
+
+    [Test]
     public void Tree_should_fail_on_unequal_objects()
     {
         var expected = new
