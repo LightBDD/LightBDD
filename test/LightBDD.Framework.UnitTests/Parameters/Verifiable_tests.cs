@@ -7,6 +7,7 @@ using LightBDD.Framework.Parameters;
 using LightBDD.Framework.UnitTests.Formatting;
 using LightBDD.UnitTests.Helpers;
 using NUnit.Framework;
+using Shouldly;
 
 namespace LightBDD.Framework.UnitTests.Parameters
 {
@@ -115,6 +116,18 @@ namespace LightBDD.Framework.UnitTests.Parameters
             Assert.That(ex.Message, Is.EqualTo("Actual value has been already specified"));
             ex = Assert.Throws<InvalidOperationException>(() => expectation.SetActual(Fake.Int()));
             Assert.That(ex.Message, Is.EqualTo("Actual value has been already specified"));
+        }
+
+        [Test]
+        public void ResetActual_should_reset_verifiable_and_allow_setting_another_value()
+        {
+            var value = Fake.Int();
+            Verifiable<int> expectation = value;
+            expectation.SetActual(value + 1);
+            expectation.ResetActual();
+            expectation.Status.ShouldBe(ParameterVerificationStatus.NotProvided);
+            Assert.DoesNotThrow(() => expectation.SetActual(value));
+            expectation.Status.ShouldBe(ParameterVerificationStatus.Success);
         }
 
         [Test]

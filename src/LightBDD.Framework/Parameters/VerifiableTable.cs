@@ -72,6 +72,15 @@ namespace LightBDD.Framework.Parameters
         }
 
         /// <summary>
+        /// Clears actual state allowing to specify it once more.
+        /// </summary>
+        public void ResetActual()
+        {
+            ActualRows = null;
+            _details = null;
+        }
+
+        /// <summary>
         /// Sets the actual rows specified by <paramref name="actualRowsProvider"/> parameter and verifies them against expectations.<br/>
         /// If evaluation of <paramref name="actualRowsProvider"/> throws, the exception will be included in the report, but won't be propagated out of this method.
         /// </summary>

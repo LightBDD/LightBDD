@@ -81,6 +81,18 @@ namespace LightBDD.Framework.Parameters
         }
 
         /// <summary>
+        /// Clears actual state allowing to specify it once more.
+        /// </summary>
+        public Verifiable<T> ResetActual()
+        {
+            _exception = null;
+            _actual = default;
+            _actualText = null;
+            _result = default;
+            return this;
+        }
+
+        /// <summary>
         /// Sets the actual value and performs the validation against the expectation, updating <see cref="Status"/> property.
         /// The value specified by <paramref name="value"/> parameter can be retrieved by <see cref="GetActual"/> method.
         ///
@@ -126,6 +138,7 @@ namespace LightBDD.Framework.Parameters
 
             return this;
         }
+
 
         /// <summary>
         /// Sets the actual value and performs the validation against the expectation, updating <see cref="Status"/> property.
