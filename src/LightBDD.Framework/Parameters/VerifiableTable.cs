@@ -72,11 +72,12 @@ namespace LightBDD.Framework.Parameters
         }
 
         /// <summary>
-        /// Resets the actual rows.
+        /// Clears actual state allowing to specify it once more.
         /// </summary>
         public void ResetActual()
         {
             ActualRows = null;
+            _details = null;
         }
 
         /// <summary>
