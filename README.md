@@ -3,6 +3,7 @@
 
 Category|Badge
 --------|------
+Sponsors | [![GitHub Sponsor](https://img.shields.io/github/sponsors/LightBDD?label=Sponsor&logo=GitHub)](https://github.com/sponsors/LightBDD)
 Build | [![Build status](https://ci.appveyor.com/api/projects/status/xkd7qc950o07o3x8/branch/master?svg=true)](https://ci.appveyor.com/project/Suremaker/lightbdd/branch/master)
 Chat (gitter) | [![Join the chat at https://gitter.im/LightBDD/LightBDD](https://badges.gitter.im/LightBDD/LightBDD.svg)](https://gitter.im/LightBDD/LightBDD?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 LightBDD.NUnit3 | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.NUnit3)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.NUnit3)](https://www.nuget.org/packages/LightBDD.NUnit3/)
@@ -13,6 +14,9 @@ LightBDD.Autofac | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.
 LightBDD.Extensions.DependencyInjection | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.Extensions.DependencyInjection)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.Extensions.DependencyInjection)](https://www.nuget.org/packages/LightBDD.Extensions.DependencyInjection/)
 
 See latest release details on [What Is New](https://github.com/LightBDD/LightBDD/wiki/What-Is-New) wiki page!
+
+## Sponsoring
+**LightBDD** has been developed as an open-source project for over 10 years. If you find it valuable for your projects and team work, please consider supporting it and becoming a [![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/LightBDD)
 
 ## Project description
 **LightBDD** is a behaviour-driven development test framework offering ability to write tests that are easy to read, easy to track during execution and summarize in user friendly report, while allowing developers to use all of the standard development tools to maintain them.
