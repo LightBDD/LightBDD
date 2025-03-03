@@ -77,9 +77,9 @@ public class IntegrationTests : FeatureFixture
         var scenario = new AsyncScenario();
 
         await Assert.That(() => Runner
-                .AddSteps(() => scenario.Async_void_step())
+                .AddSteps(scenario.Async_void_step)
                 .AddAsyncSteps(
-                    () => scenario.Assert_finished()
+                    scenario.Assert_finished
                 )
                 .RunAsync())
             .ThrowsNothing();

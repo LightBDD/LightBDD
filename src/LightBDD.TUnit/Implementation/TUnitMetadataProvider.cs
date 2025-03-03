@@ -28,17 +28,17 @@ namespace LightBDD.TUnit.Implementation
 
         protected override IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member)
         {
-            return ExtractAttributePropertyValues<CategoryAttribute>(member, a => a.Category);
+            return TestContext.Current?.TestDetails.Attributes.OfType<CategoryAttribute>().Select(x => x.Category) ?? [];
         }
 
         protected override string GetImplementationSpecificFeatureDescription(Type featureType)
         {
-            return ExtractAttributePropertyValue<DescriptionAttribute>(featureType.GetTypeInfo(), a => a.Description);
+            return TestContext.Current?.TestDetails.TestClass.Attributes.OfType<DescriptionAttribute>().FirstOrDefault()?.Description;
         }
 
         protected override string GetImplementationSpecificScenarioDescription(ScenarioDescriptor scenarioDescriptor)
         {
-            return ExtractAttributePropertyValue<DescriptionAttribute>(scenarioDescriptor.MethodInfo, a => a.Description);
+            return TestContext.Current?.TestDetails.TestMethod.Attributes.OfType<DescriptionAttribute>().FirstOrDefault()?.Description;
         }
     }
 }
