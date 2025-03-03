@@ -1,3 +1,8 @@
+using System;
+using System.Threading.Tasks;
+using LightBDD.Core.Execution;
+using LightBDD.Core.Extensibility.Execution;
+
 namespace LightBDD.TUnit
 {
     /// <summary>
@@ -6,7 +11,7 @@ namespace LightBDD.TUnit
     /// If applied on class level, all scenarios in this class will get ignored.
     /// It is recommended to use this attribute in favor of <see cref="SkipAttribute"/>.
     /// </summary>
-    public class IgnoreScenarioAttribute : SkipAttribute
+    public class IgnoreScenarioAttribute : SkipAttribute, IScenarioDecoratorAttribute, IStepDecoratorAttribute
     {
         /// <summary>
         /// Default constructor allowing to specify ignore reason.
@@ -19,6 +24,21 @@ namespace LightBDD.TUnit
         /// <summary>
         /// Order in which extensions should be applied, where instances of lower values would be executed first.
         /// </summary>
-        public new int Order { get; set; }
+        public int Order { get; set; }
+
+        public Task ExecuteAsync(IScenario scenario, Func<Task> scenarioInvocation)
+        {
+            Skip.Test(Reason);
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Stops execution of current step and scenario with ignored status.
+        /// </summary>
+        public Task ExecuteAsync(IStep step, Func<Task> stepInvocation)
+        {
+            Skip.Test(Reason);
+            return Task.CompletedTask;
+        }
     }
 }

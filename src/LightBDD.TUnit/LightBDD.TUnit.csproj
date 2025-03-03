@@ -33,7 +33,7 @@ High level features:
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="TUnit" Version="0.16.4" />
+    <PackageReference Include="TUnit" Version="0.16.8" />
   </ItemGroup>
 
 </Project>
