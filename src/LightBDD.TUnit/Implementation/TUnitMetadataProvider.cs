@@ -16,14 +16,14 @@ namespace LightBDD.TUnit.Implementation
 
         public override ScenarioDescriptor CaptureCurrentScenario()
         {
-            var context = TestContextProvider.Current;
-            var testMethod = context?.TestMethod;
+            var context = TestContext.Current;
+            var testMethod = context?.TestDetails.TestMethod.ReflectionInformation;
             if (testMethod == null || !testMethod.GetCustomAttributes<TestAttribute>().Any())
             {
                 throw new InvalidOperationException("Unable to locate Scenario name. Please ensure that scenario is executed from method with [Scenario] attribute and test class deriving from FeatureFixture or with [FeatureFixture] attribute.");
             }
 
-            return new ScenarioDescriptor(testMethod, context.TestMethodArguments);
+            return new ScenarioDescriptor(testMethod, context.TestDetails.TestMethodArguments);
         }
 
         protected override IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member)

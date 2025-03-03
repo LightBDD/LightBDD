@@ -10,7 +10,7 @@ using TUnit.Core.Interfaces;
 namespace LightBDD.TUnit
 {
     /// <summary>
-    /// An attribute allowing to initialize and finalize LightBDD in NUnit framework.
+    /// An attribute allowing to initialize and finalize LightBDD in TUnit framework.
     /// 
     /// The <c>[assembly:LightBddScope]</c> attribute has to be present in assembly containing LightBDD tests.
     /// It is possible to customize the LightBDD configuration by overriding the <see cref="OnConfigure"/>() method,

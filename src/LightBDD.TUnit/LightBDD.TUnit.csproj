@@ -13,7 +13,7 @@ High level features:
 * DI support;
 * inline and tabular parameters support.</Description>
     <TargetFrameworks>netstandard2.0;net8.0;net9.0</TargetFrameworks>
-    <PackageTags>$(PackageTags);nunit;nunit3</PackageTags>
+    <PackageTags>$(PackageTags);tunit</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,7 +33,7 @@ High level features:
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="TUnit" Version="0.16.3" />
+    <PackageReference Include="TUnit" Version="0.16.4" />
   </ItemGroup>
 
 </Project>

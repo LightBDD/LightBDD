@@ -5,7 +5,7 @@ using LightBDD.TUnit.Implementation;
 namespace LightBDD.TUnit
 {
     /// <summary>
-    /// Class allowing to instantiate <see cref="IFeatureRunner"/> that is being configured to work with NUnit framework.
+    /// Class allowing to instantiate <see cref="IFeatureRunner"/> that is being configured to work with TUnit framework.
     /// </summary>
     public static class FeatureRunnerProvider
     {

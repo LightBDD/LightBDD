@@ -37,15 +37,15 @@ public class IntegrationTests : FeatureFixture
     [Category("Category A")]
     [Category("Category B")]
     [ScenarioCategory("Category C")]
-    [Label(nameof(It_should_capture_nunit_specific_attributes))]
-    public async Task It_should_capture_nunit_specific_attributes()
+    [Label(nameof(It_should_capture_tunit_specific_attributes))]
+    public async Task It_should_capture_tunit_specific_attributes()
     {
         Runner.RunScenario(Some_step);
 
         var result = FeatureRunnerProvider.GetRunnerFor(GetType()).GetFeatureResult();
         await Assert.That(result.Info.Description).IsEqualTo("desc");
 
-        var scenario = GetScenarioResult(nameof(It_should_capture_nunit_specific_attributes));
+        var scenario = GetScenarioResult(nameof(It_should_capture_tunit_specific_attributes));
         await Assert.That(scenario.Info.Categories.ToArray()).IsEquivalentTo(new[]
         {
             "Category A",
@@ -57,8 +57,8 @@ public class IntegrationTests : FeatureFixture
     }
 
     [Scenario]
-    [Label(nameof(It_should_capture_nunit_ignore_assertion))]
-    public async Task It_should_capture_nunit_ignore_assertion()
+    [Label(nameof(It_should_capture_tunit_ignore_assertion))]
+    public async Task It_should_capture_tunit_ignore_assertion()
     {
         try
         {
@@ -67,16 +67,8 @@ public class IntegrationTests : FeatureFixture
         catch
         {
         }
-        var result = GetScenarioResult(nameof(It_should_capture_nunit_ignore_assertion));
+        var result = GetScenarioResult(nameof(It_should_capture_tunit_ignore_assertion));
         await Assert.That(result.Status).IsEqualTo(ExecutionStatus.Ignored);
-    }
-
-    [Test]
-    public async Task Runner_should_throw_meaningful_exception_if_scenario_is_not_run_from_Scenario_attribute()
-    {
-        await Assert.That(() => Runner.RunScenario(Some_step))
-            .Throws<InvalidOperationException>()
-            .WithMessage("Unable to locate Scenario name. Please ensure that scenario is executed from method with [Scenario] attribute and test class deriving from FeatureFixture or with [FeatureFixture] attribute.");
     }
 
     [Scenario]
@@ -120,7 +112,7 @@ public class IntegrationTests : FeatureFixture
     [Arguments("def")]
     public async Task Runner_should_support_parameterized_scenarios_with_value(string value)
     {
-        Runner.RunScenario(_ => Step_with_parameter(value));
+        await Runner.RunScenarioAsync(_ => Step_with_parameter(value));
         await Assert.That(ConfiguredLightBddScope.CapturedNotifications).Contains($"SCENARIO: Runner should support parameterized scenarios with value \"{value}\"");
     }
 

@@ -11,18 +11,18 @@ namespace LightBDD.TUnit.Configuration
     public static class TestFrameworkConfigurationExtensions
     {
         /// <summary>
-        /// Adds NUnit specific stack trace member exclusions.
+        /// Adds TUnit specific stack trace member exclusions.
         /// </summary>
         /// <param name="formatter">Formatter.</param>
         /// <returns>Formatter.</returns>
         public static DefaultExceptionFormatter WithTestFrameworkDefaults(this DefaultExceptionFormatter formatter)
         {
             return formatter
-                .WithMembersExcludedFromStackTrace("NUnit\\..*");
+                .WithMembersExcludedFromStackTrace("TUnit\\..*");
         }
 
         /// <summary>
-        /// Appends LightBDD.NUnit3 default scenario progress notifiers.
+        /// Appends LightBDD.TUnit default scenario progress notifiers.
         /// </summary>
         [Obsolete("Use " + nameof(ProgressNotifierConfiguration) + " instead", true)]
         public static ScenarioProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this ScenarioProgressNotifierConfiguration configuration)
@@ -31,7 +31,7 @@ namespace LightBDD.TUnit.Configuration
         }
 
         /// <summary>
-        /// Appends LightBDD.NUnit3 default feature progress notifiers.
+        /// Appends LightBDD.TUnit default feature progress notifiers.
         /// </summary>
         [Obsolete("Use " + nameof(ProgressNotifierConfiguration) + " instead", true)]
         public static FeatureProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this FeatureProgressNotifierConfiguration configuration)
@@ -40,7 +40,7 @@ namespace LightBDD.TUnit.Configuration
         }
 
         /// <summary>
-        /// Appends LightBDD.NUnit3 default progress notifiers.
+        /// Appends LightBDD.TUnit default progress notifiers.
         /// </summary>
         public static ProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this ProgressNotifierConfiguration configuration)
         {
