@@ -16,11 +16,11 @@ public class IntegrationTests : FeatureFixture
 {
     [Scenario]
     [Label(nameof(It_should_capture_scenario_name))]
-    public void It_should_capture_scenario_name()
+    public async Task It_should_capture_scenario_name()
     {
         Runner.RunScenario(Some_step);
         var result = GetScenarioResult(nameof(It_should_capture_scenario_name));
-        Assert.That(result.Info.Name.ToString()).IsEqualTo("It should capture scenario name");
+        await Assert.That(result.Info.Name.ToString()).IsEqualTo("It should capture scenario name");
     }
 
     [Scenario]
@@ -38,7 +38,7 @@ public class IntegrationTests : FeatureFixture
     [Category("Category B")]
     [ScenarioCategory("Category C")]
     [Label(nameof(It_should_capture_nunit_specific_attributes))]
-    public void It_should_capture_nunit_specific_attributes()
+    public async Task It_should_capture_nunit_specific_attributes()
     {
         Runner.RunScenario(Some_step);
 
@@ -58,7 +58,7 @@ public class IntegrationTests : FeatureFixture
 
     [Scenario]
     [Label(nameof(It_should_capture_nunit_ignore_assertion))]
-    public void It_should_capture_nunit_ignore_assertion()
+    public async Task It_should_capture_nunit_ignore_assertion()
     {
         try
         {
@@ -80,15 +80,16 @@ public class IntegrationTests : FeatureFixture
     }
 
     [Scenario]
-    public void Runner_should_support_async_void_scenarios()
+    public async Task Runner_should_support_async_void_scenarios()
     {
         var scenario = new AsyncScenario();
 
-        Assert.That(() => Runner
-            .AddSteps(
-                scenario.Async_void_step,
-                scenario.Assert_finished)
-            .RunAsync())
+        await Assert.That(() => Runner
+                .AddSteps(() => scenario.Async_void_step())
+                .AddAsyncSteps(
+                    () => scenario.Assert_finished()
+                )
+                .RunAsync())
             .ThrowsNothing();
     }
 
@@ -96,18 +97,20 @@ public class IntegrationTests : FeatureFixture
     {
         private bool _finished;
 
+#pragma warning disable TUnit0031
         public async void Async_void_step()
+#pragma warning restore TUnit0031
         {
             await Task.Delay(200);
             _finished = true;
         }
-        public void Assert_finished() => Assert.That(_finished).IsTrue();
+        public async Task Assert_finished() => await Assert.That(_finished).IsTrue();
     }
 
     [Scenario]
-    public void Runner_should_not_support_async_void_scenarios_if_executed_in_sync_mode()
+    public async Task Runner_should_not_support_async_void_scenarios_if_executed_in_sync_mode()
     {
-        Assert.That(() => Runner.RunScenario(Async_void_step))
+        await Assert.That(() => Runner.RunScenario(Async_void_step))
             .Throws<InvalidOperationException>()
             .WithMessage("Only steps being completed upon return can be run synchronously (all steps have to return completed task). Consider using Async scenario methods for async Task or async void steps.");
     }
@@ -115,40 +118,40 @@ public class IntegrationTests : FeatureFixture
     [Scenario]
     [Arguments("abc")]
     [Arguments("def")]
-    public void Runner_should_support_parameterized_scenarios_with_value(string value)
+    public async Task Runner_should_support_parameterized_scenarios_with_value(string value)
     {
         Runner.RunScenario(_ => Step_with_parameter(value));
-        Assert.That(ConfiguredLightBddScope.CapturedNotifications).Contains($"SCENARIO: Runner should support parameterized scenarios with value \"{value}\"");
+        await Assert.That(ConfiguredLightBddScope.CapturedNotifications).Contains($"SCENARIO: Runner should support parameterized scenarios with value \"{value}\"");
     }
 
     [Scenario]
     [IgnoreScenario("scenario reason")]
     [Label(nameof(Runner_should_ignore_scenario_with_IgnoreScenarioAttribute))]
-    public void Runner_should_ignore_scenario_with_IgnoreScenarioAttribute()
+    public async Task Runner_should_ignore_scenario_with_IgnoreScenarioAttribute()
     {
-        Assert.That(() => Runner.RunScenario(_ => Some_step()))
+        await Assert.That(() => Runner.RunScenario(_ => Some_step()))
             .Throws<SkipTestException>()
             .WithMessage("scenario reason");
         var result = GetScenarioResult(nameof(Runner_should_ignore_scenario_with_IgnoreScenarioAttribute));
 
-        Assert.That(result.Status).IsEqualTo(ExecutionStatus.Ignored);
-        Assert.That(result.StatusDetails).IsEqualTo("Scenario: scenario reason");
-        Assert.That(result.GetSteps().Single().Status).IsEqualTo(ExecutionStatus.NotRun);
+        await Assert.That(result.Status).IsEqualTo(ExecutionStatus.Ignored);
+        await Assert.That(result.StatusDetails).IsEqualTo("Scenario: scenario reason");
+        await Assert.That(result.GetSteps().Single().Status).IsEqualTo(ExecutionStatus.NotRun);
     }
 
     [Scenario]
     [Label(nameof(Runner_should_ignore_step_with_IgnoreScenarioAttribute))]
-    public void Runner_should_ignore_step_with_IgnoreScenarioAttribute()
+    public async Task Runner_should_ignore_step_with_IgnoreScenarioAttribute()
     {
-        Assert.That(() => Runner.RunScenario(_ => Declaratively_ignored_step()))
+        await Assert.That(() => Runner.RunScenario(_ => Declaratively_ignored_step()))
             .Throws<SkipTestException>()
             .WithMessage("step reason");
-        
+
         var result = GetScenarioResult(nameof(Runner_should_ignore_step_with_IgnoreScenarioAttribute));
 
-        Assert.That(result.Status).IsEqualTo(ExecutionStatus.Ignored);
-        Assert.That(result.GetSteps().Single().Status).IsEqualTo(ExecutionStatus.Ignored);
-        Assert.That(result.StatusDetails).IsEqualTo("Step 1: step reason");
+        await Assert.That(result.Status).IsEqualTo(ExecutionStatus.Ignored);
+        await Assert.That(result.GetSteps().Single().Status).IsEqualTo(ExecutionStatus.Ignored);
+        await Assert.That(result.StatusDetails).IsEqualTo("Step 1: step reason");
     }
 
     [IgnoreScenario("step reason")]
@@ -156,10 +159,10 @@ public class IntegrationTests : FeatureFixture
     {
     }
 
-    private void Step_with_parameter(string value)
+    private async Task Step_with_parameter(string value)
     {
-        Assert.That(value).IsNotNull();
-        Assert.That(value.Length).IsEqualTo(3);
+        await Assert.That(value).IsNotNull();
+        await Assert.That(value.Length).IsEqualTo(3);
     }
 
     private void Ignored_step()
@@ -179,5 +182,7 @@ public class IntegrationTests : FeatureFixture
             .Single(s => s.Info.Labels.Contains(scenarioId));
     }
 
+#pragma warning disable TUnit0031
     private async void Async_void_step() => await Task.Delay(200);
+#pragma warning restore TUnit0031
 }

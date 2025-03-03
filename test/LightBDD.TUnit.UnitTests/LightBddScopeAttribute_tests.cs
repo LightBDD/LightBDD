@@ -8,7 +8,7 @@ namespace LightBDD.TUnit.UnitTests;
 public class LightBddScopeAttribute_tests
 {
     [Test]
-    public void OnConfigure_failure_should_be_captured()
+    public async Task OnConfigure_failure_should_be_captured()
     {
         var scope = new TestableLightBddScopeAttribute();
 
@@ -16,8 +16,8 @@ public class LightBddScopeAttribute_tests
             !.Invoke(scope, null);
 
         var exception = scope.Captured.ExecutionExtensionsConfiguration().FrameworkInitializationExceptions.FirstOrDefault();
-        Assert.That(exception).IsTypeOf<InvalidOperationException>());
-        Assert.That(exception!.Message).IsEqualTo("I failed!"));
+        await Assert.That(exception).IsTypeOf<InvalidOperationException>();
+        await Assert.That(exception!.Message).IsEqualTo("I failed!");
     }
 
     class TestableLightBddScopeAttribute : LightBddScopeAttribute
