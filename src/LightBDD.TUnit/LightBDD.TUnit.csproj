@@ -14,6 +14,7 @@ High level features:
 * inline and tabular parameters support.</Description>
     <TargetFrameworks>netstandard2.0;net8.0;net9.0</TargetFrameworks>
     <PackageTags>$(PackageTags);tunit</PackageTags>
+    <OutputType>Library</OutputType>
   </PropertyGroup>
 
   <ItemGroup>

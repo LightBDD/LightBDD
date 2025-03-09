@@ -1,13 +1,10 @@
-﻿using System;
-using LightBDD.Core.Notification;
+﻿using LightBDD.Core.Notification;
 using LightBDD.Framework.Notification;
 
 namespace LightBDD.TUnit.Implementation
 {
     internal class TUnitProgressNotifier
     {
-        private static readonly DefaultProgressNotifier SummarizingProgressNotifier = new(WriteOutput);
-
         private static void WriteOutput(string text)
         {
             TestContext.Current?.OutputWriter.WriteLine(text);
