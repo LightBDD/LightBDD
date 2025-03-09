@@ -31,10 +31,10 @@ for:
 -
   matrix:
     only:
-      - image: Ubuntu
+      - image: Ubuntu2204
     fast_finish: true
   build_script:
-   - sh: sudo apt-get update && sudo apt-get install -yq libcurl3 dotnet-sdk-8.0
+   - sh: sudo apt-get install -yq libcurl3
    - sh: dotnet restore
    - sh: dotnet test -c Release -f net6 test/LightBDD.Core.UnitTests/LightBDD.Core.UnitTests.csproj
    - sh: dotnet test -c Release -f net6 test/LightBDD.Framework.UnitTests/LightBDD.Framework.UnitTests.csproj
@@ -43,3 +43,4 @@ for:
    - sh: dotnet test -c Release -f net6 test/LightBDD.NUnit3.UnitTests/LightBDD.NUnit3.UnitTests.csproj
    - sh: dotnet test -c Release -f net6 test/LightBDD.XUnit2.UnitTests/LightBDD.XUnit2.UnitTests.csproj
    - sh: dotnet test -c Release -f net6 test/LightBDD.Fixie3.UnitTests/LightBDD.Fixie3.UnitTests.csproj
+   - sh: dotnet test -c Release -f net8 test/LightBDD.TUnit.UnitTests/LightBDD.TUnit.UnitTests.csproj
