@@ -8,20 +8,6 @@ namespace LightBDD.TUnit.Implementation
     {
         private static readonly DefaultProgressNotifier SummarizingProgressNotifier = new(WriteOutput);
 
-        [Obsolete]
-        public static IFeatureProgressNotifier CreateFeatureProgressNotifier()
-        {
-            return new DelegatingFeatureProgressNotifier(ParallelProgressNotifierProvider.Default.CreateFeatureProgressNotifier(WriteImmediateProgress));
-        }
-
-        [Obsolete]
-        public static IScenarioProgressNotifier CreateScenarioProgressNotifier()
-        {
-            return new DelegatingScenarioProgressNotifier(
-                ParallelProgressNotifierProvider.Default.CreateScenarioProgressNotifier(WriteImmediateProgress),
-                SummarizingProgressNotifier);
-        }
-
         private static void WriteOutput(string text)
         {
             TestContext.Current?.OutputWriter.WriteLine(text);

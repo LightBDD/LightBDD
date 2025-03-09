@@ -2,6 +2,7 @@
   <Import Project="..\Common.Tests.props" />
   <PropertyGroup>
     <TargetFrameworks>net8.0;net48</TargetFrameworks>
+    <RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
   </PropertyGroup>
   
   <ItemGroup>
