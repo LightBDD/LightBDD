@@ -70,12 +70,12 @@ namespace LightBDD.TUnit
         /// <summary>Executed after each test is run</summary>
         /// <param name="sessionContext"></param>
         /// <param name="testContext">The test that has just been run.</param>
-        public ValueTask OnLastTestInTestSession(TestSessionContext sessionContext, TestContext testContext)
+        public async ValueTask OnLastTestInTestSession(TestSessionContext sessionContext, TestContext testContext)
         {
             
             try
             {
-                return OnTearDown();
+                await OnTearDown();
             }
             finally
             {
