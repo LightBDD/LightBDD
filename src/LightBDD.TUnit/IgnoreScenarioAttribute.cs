@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using LightBDD.Core.Execution;
 using LightBDD.Core.Extensibility.Execution;
@@ -24,8 +25,9 @@ namespace LightBDD.TUnit
         /// <summary>
         /// Order in which extensions should be applied, where instances of lower values would be executed first.
         /// </summary>
-        public int Order { get; set; }
+        public new int Order { get; set; }
 
+        /// <inheritdoc />
         public Task ExecuteAsync(IScenario scenario, Func<Task> scenarioInvocation)
         {
             Skip.Test(Reason);

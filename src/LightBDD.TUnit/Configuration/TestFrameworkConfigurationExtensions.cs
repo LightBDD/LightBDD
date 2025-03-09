@@ -22,24 +22,6 @@ namespace LightBDD.TUnit.Configuration
         }
 
         /// <summary>
-        /// Appends LightBDD.TUnit default scenario progress notifiers.
-        /// </summary>
-        [Obsolete("Use " + nameof(ProgressNotifierConfiguration) + " instead", true)]
-        public static ScenarioProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this ScenarioProgressNotifierConfiguration configuration)
-        {
-            return configuration.AppendNotifierProviders(TUnitProgressNotifier.CreateScenarioProgressNotifier);
-        }
-
-        /// <summary>
-        /// Appends LightBDD.TUnit default feature progress notifiers.
-        /// </summary>
-        [Obsolete("Use " + nameof(ProgressNotifierConfiguration) + " instead", true)]
-        public static FeatureProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this FeatureProgressNotifierConfiguration configuration)
-        {
-            return configuration.AppendNotifiers(TUnitProgressNotifier.CreateFeatureProgressNotifier());
-        }
-
-        /// <summary>
         /// Appends LightBDD.TUnit default progress notifiers.
         /// </summary>
         public static ProgressNotifierConfiguration AppendFrameworkDefaultProgressNotifiers(this ProgressNotifierConfiguration configuration)
