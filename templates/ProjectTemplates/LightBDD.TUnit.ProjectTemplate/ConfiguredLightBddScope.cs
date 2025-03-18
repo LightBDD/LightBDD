@@ -1,4 +1,5 @@
 ﻿using $safeprojectname$;
+using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.TUnit;
 
@@ -13,12 +14,12 @@ namespace $safeprojectname$
             // LightBDD configuration
         }
 
-        protected override void OnSetUp()
+        protected override async ValueTask OnSetUp()
         {
             // code executed before any scenarios
         }
 
-        protected override void OnTearDown()
+        protected override async ValueTask OnTearDown()
         {
             // code executed after all scenarios
         }
