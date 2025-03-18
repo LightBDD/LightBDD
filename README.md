@@ -10,6 +10,7 @@ LightBDD.NUnit3 | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.N
 LightBDD.XUnit2 | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.XUnit2)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.XUnit2)](https://www.nuget.org/packages/LightBDD.XUnit2/)
 LightBDD.MsTest3 | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.MsTest3)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.MsTest3)](https://www.nuget.org/packages/LightBDD.MsTest3/)
 LightBDD.Fixie3 | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.Fixie3)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.Fixie3)](https://www.nuget.org/packages/LightBDD.Fixie3/)
+LightBDD.TUnit | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.TUnit)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.TUnit)](https://www.nuget.org/packages/LightBDD.TUnit/)
 LightBDD.Autofac | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.Autofac)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.Autofac)](https://www.nuget.org/packages/LightBDD.Autofac/)
 LightBDD.Extensions.DependencyInjection | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.Extensions.DependencyInjection)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.Extensions.DependencyInjection)](https://www.nuget.org/packages/LightBDD.Extensions.DependencyInjection/)
 
@@ -32,7 +33,7 @@ See latest release details on [What Is New](https://github.com/LightBDD/LightBDD
 * Feature report generation in HTML, XML or Plain text format,
 * In-code LightBDD configuration allowing to customize all LightBDD features,
 * Productivity extensions for VisualStudio with Feature Class Templates, Project Templates and Code Snippets,
-* Integration with [NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/), [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/) and [Fixie](http://fixie.github.io/) frameworks,
+* Integration with [NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/), [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/), [Fixie](http://fixie.github.io/) and [TUnit](https://thomhurst.github.io/TUnit/) frameworks,
 * Async scenario and steps execution support,
 * Cross-platform support (.NET 5+ / .NET Framework / .NET Standard / .NET Core / [UWP](https://github.com/LightBDD/LightBDD/tree/3.4.2/examples/Example.LightBDD.MsTest2.UWP)).
 
