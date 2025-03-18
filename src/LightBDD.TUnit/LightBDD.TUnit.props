@@ -1,0 +1,5 @@
+<Project>
+    <ItemGroup>
+        <Using Include="TUnit.Core.TestAttribute" Alias="ScenarioAttribute" />
+    </ItemGroup>
+</Project>
