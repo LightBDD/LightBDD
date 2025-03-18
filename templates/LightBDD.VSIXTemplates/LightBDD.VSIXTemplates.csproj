@@ -140,6 +140,9 @@
     <ProjectReference Include="..\ItemTemplates\LightBDD.TUnit.FeatureTemplate\LightBDD.TUnit.FeatureTemplate.csproj">
       <Project>{2ea3c65d-fcea-46b9-a886-fe7ae4b546a6}</Project>
       <Name>LightBDD.TUnit.FeatureTemplate</Name>
+      <VSIXSubPath>ItemTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
     </ProjectReference>
     <ProjectReference Include="..\ItemTemplates\LightBDD.XUnit2.FeatureTemplate\LightBDD.XUnit2.FeatureTemplate.csproj">
       <Project>{8B8652D8-A72D-4D29-900D-9783BB753163}</Project>
@@ -179,6 +182,9 @@
     <ProjectReference Include="..\ProjectTemplates\LightBDD.TUnit.ProjectTemplate\LightBDD.TUnit.ProjectTemplate.csproj">
       <Project>{a1b34bec-8948-4699-a92c-fb965da589a2}</Project>
       <Name>LightBDD.TUnit.ProjectTemplate</Name>
+      <VSIXSubPath>ProjectTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
     </ProjectReference>
     <ProjectReference Include="..\ProjectTemplates\LightBDD.XUnit2.ProjectTemplate\LightBDD.XUnit2.ProjectTemplate.csproj">
       <Project>{1EBDCE2F-215D-4A19-ABC0-0EA09A512975}</Project>
