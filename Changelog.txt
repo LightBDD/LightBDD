@@ -1,6 +1,10 @@
 LightBDD
 ===========================================
 
+Version 3.11.0
+----------------------------------------
++ #373 (LightBDD.TUnit)(New) Added TUnit integration
+
 Version 3.10.0
 ----------------------------------------
 + #358 (LightBDD.Framework)(New) Added MarkdownReportFormatter as Github friendly report formatter
