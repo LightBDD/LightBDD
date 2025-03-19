@@ -6,17 +6,17 @@
   "name": "LightBDD.MsTest3 Project (CLI)",
   "description": "LightBDD.MsTest3.Project",
   "shortName": "LightBDD.MsTest3.Project",
-  "sourceName": "My_feature",
+  "sourceName": "$safeprojectname$",
   "tags": {
     "language": "C#",
     "type": "project"
   },
   "symbols": {
-    "namespace": {
+    "featurename": {
       "type": "parameter",
-      "description": "The namespace of the file.",
+      "description": "The feature name of the file.",
       "datatype": "text",
-      "replaces": "$safeprojectname$",
+      "replaces": "My_feature",
       "fileRename": "StringExtensions",
       "defaultValue": "FeatureTestClass"
     }
