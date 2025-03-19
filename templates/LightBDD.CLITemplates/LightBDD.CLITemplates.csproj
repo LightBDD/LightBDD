@@ -31,9 +31,21 @@
   </ItemGroup>
 
   <ItemGroup>  
-    <Content Include="..\ItemTemplates\**\*" Exclude="..\ItemTemplates\**\bin\**;..\ItemTemplates\**\obj\**;..\ItemTemplates\**\*.vstemplate;..\ItemTemplates\**\*.FeatureTemplate.csproj" />
-      <Content Include="..\ProjectTemplates\**\*" Exclude="..\ProjectTemplates\**\bin\**;..\ProjectTemplates\**\obj\**;..\ProjectTemplates\**\*.vstemplate;..\ProjectTemplates\**\*.ProjectTemplate.csproj" />
-      <Compile Remove="**\*" />  
+    <Content Include="..\ItemTemplates\**\*" Exclude="..\ItemTemplates\**\bin\**;
+             ..\ItemTemplates\**\obj\**;
+             ..\ItemTemplates\**\*.vstemplate;
+             ..\ItemTemplates\**\*.FeatureTemplate*;
+             ..\ProjectTemplates\**\.vs\**;">
+        <PackagePath>content\ItemTemplates\</PackagePath>
+    </Content>
+    <Content Include="..\ProjectTemplates\**\*" Exclude="..\ProjectTemplates\**\bin\**;
+             ..\ProjectTemplates\**\obj\**;
+             ..\ProjectTemplates\**\*.vstemplate;
+             ..\ProjectTemplates\**\*.ProjectTemplate*;
+             ..\ProjectTemplates\**\.vs\**;">
+        <PackagePath>content\ProjectTemplates\</PackagePath>
+    </Content>
+    <Compile Remove="**\*" />  
   </ItemGroup>
 
   <ItemGroup>
