@@ -35,7 +35,7 @@
              ..\ItemTemplates\**\obj\**;
              ..\ItemTemplates\**\*.vstemplate;
              ..\ItemTemplates\**\*.FeatureTemplate*;
-             ..\ProjectTemplates\**\.vs\**;">
+             ..\ItemTemplates\**\.vs\**;">
         <PackagePath>content\ItemTemplates\</PackagePath>
     </Content>
     <Content Include="..\ProjectTemplates\**\*" Exclude="..\ProjectTemplates\**\bin\**;
