@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "LightBDD",
+  "classifications": [ "LightBDD", "Fixie3" ],
+  "identity": "LightBDD.Fixie3.NetCore.ProjectTemplate",
+  "name": "LightBDD.Fixie3 Project (CLI)",
+  "description": "LightBDD.Fixie3.Project",
+  "shortName": "LightBDD.Fixie3.Project",
+  "sourceName": "$safeprojectname$",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "symbols": {
+    "featurename": {
+      "type": "parameter",
+      "description": "The feature name of the file.",
+      "datatype": "text",
+      "replaces": "My_feature",
+      "fileRename": "StringExtensions",
+      "defaultValue": "FeatureTestClass"
+    }
+  }
+}
