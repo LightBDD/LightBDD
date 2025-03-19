@@ -1,7 +1,7 @@
 {
   "$schema": "http://json.schemastore.org/template",
   "author": "LightBDD",
-  "classifications": [ "LightBDD" ],
+  "classifications": [ "LightBDD","Fixie3" ],
   "identity": "LightBDD.Fixie3.FeatureTemplate",
   "name": "LightBDD.Fixie3: Feature Test Class",
   "shortName": "LightBDD.Fixie3.Class",

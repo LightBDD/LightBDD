@@ -1,21 +1,22 @@
 {
   "$schema": "http://json.schemastore.org/template",
   "author": "LightBDD",
-  "classifications": [ "LightBDD", "xUnit" ],
-  "identity": "LightBDD.XUnit2.FeatureTemplate",
-  "name": "LightBDD.XUnit2: Feature Test Class",
-  "shortName": "LightBDD.XUnit2.Class",
-  "sourceName": "$safeitemname$",
+  "classifications": [ "LightBDD", "TUnit" ],
+  "identity": "LightBDD.TUnit.NetCore.ProjectTemplate",
+  "name": "LightBDD.TUnit Project (CLI)",
+  "description": "LightBDD.TUnit.Project",
+  "shortName": "LightBDD.TUnit.Project",
+  "sourceName": "My_feature",
   "tags": {
     "language": "C#",
-    "type": "item"
+    "type": "project"
   },
   "symbols": {
     "namespace": {
       "type": "parameter",
       "description": "The namespace of the file.",
       "datatype": "text",
-      "replaces": "$rootnamespace$",
+      "replaces": "$safeprojectname$",
       "fileRename": "StringExtensions",
       "defaultValue": "FeatureTestClass"
     }

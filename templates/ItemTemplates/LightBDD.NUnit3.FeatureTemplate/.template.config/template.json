@@ -1,9 +1,9 @@
 {
   "$schema": "http://json.schemastore.org/template",
   "author": "LightBDD",
-  "classifications": [ "LightBDD, NUnit" ],
+  "classifications": [ "LightBDD", "NUnit" ],
   "identity": "LightBDD.NUnit3.FeatureTemplate",
-  "name": "LightBDD.NUnit3: Feature Test Class",
+  "name": "LightBDD.NUnit3: Feature Test Class (CLI)",
   "shortName": "LightBDD.NUnit3.Class",
   "sourceName": "$safeitemname$",
   "tags": {

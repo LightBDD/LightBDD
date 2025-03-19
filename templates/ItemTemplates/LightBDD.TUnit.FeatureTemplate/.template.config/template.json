@@ -1,7 +1,7 @@
 {
   "$schema": "http://json.schemastore.org/template",
   "author": "LightBDD",
-  "classifications": [ "LightBDD, TUnit" ],
+  "classifications": [ "LightBDD", "TUnit" ],
   "identity": "LightBDD.TUnit.FeatureTemplate",
   "name": "LightBDD.TUnit: Feature Test Class",
   "shortName": "LightBDD.TUnit.Class",
