@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using LightBDD.Core.Results;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
-using TUnit.Assertions.AssertConditions.Throws;
 using TUnit.Core.Exceptions;
 
 namespace LightBDD.TUnit.UnitTests;
