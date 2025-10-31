@@ -29,7 +29,13 @@ namespace LightBDD.TUnit.Implementation
 
         protected override IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member)
         {
-            return TestContext.Current?.Metadata.TestDetails.Attributes.AttributesByType[typeof(CategoryAttribute)].OfType<CategoryAttribute>().Select(x => x.Category) ?? [];
+            if (TestContext.Current?.Metadata.TestDetails.Attributes.AttributesByType.TryGetValue(
+                    typeof(CategoryAttribute), out var categoryAttributes) is true)
+            {
+                return categoryAttributes.OfType<CategoryAttribute>().Select(x => x.Category);
+            }
+            
+            return [];
         }
 
         protected override string GetImplementationSpecificFeatureDescription(Type featureType)
