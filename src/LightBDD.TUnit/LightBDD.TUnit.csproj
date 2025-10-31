@@ -34,7 +34,7 @@ High level features:
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="TUnit" Version="0.16.8" />
+    <PackageReference Include="TUnit" Version="0.86.10" />
   </ItemGroup>
 
 </Project>
