@@ -116,7 +116,7 @@ public class ExecutionPipeline_scheduling_ordering_tests
     }
 
     [Test]
-    public async Task It_should_order_scenarios_scenarios_with_exclusive_run_constraint_to_be_run_after_unconstrained_ones()
+    public async Task It_should_order_scenarios_with_exclusive_run_constraint_to_be_run_after_unconstrained_ones()
     {
         var decorator = new CapturingDecorator();
 
