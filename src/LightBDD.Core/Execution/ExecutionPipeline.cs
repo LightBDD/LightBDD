@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Discovery;
+using LightBDD.Core.Execution.Scheduling;
 using LightBDD.Core.ExecutionContext;
 using LightBDD.Core.ExecutionContext.Implementation;
 using LightBDD.Core.Extensibility;
@@ -54,7 +55,7 @@ namespace LightBDD.Core.Execution
             ctx.ProgressDispatcher.Notify(new TestRunStarting(testRunStartTime, testRunInfo));
 
             await RunGlobalSetUp(ctx);
-            var results = await Task.WhenAll(scenarios.GroupBy(s => s.FeatureFixtureType).Select(fixture => ExecuteFeature(fixture, ctx)));
+            var results = await RunScenarios(scenarios, ctx);
             await ctx.GlobalSetUp.TearDownAsync(ctx.DependencyContainer);
 
             var testRunEndTime = ctx.ExecutionTimer.GetTime();
@@ -65,6 +66,40 @@ namespace LightBDD.Core.Execution
             OnAfterTestRunFinish(testRunEndTime, result);
             LightBddExecutionContext.Clear();
             return result;
+        }
+
+        private async Task<IFeatureResult[]> RunScenarios(IReadOnlyList<ScenarioCase> scenarios, Context ctx)
+        {
+            var runnableFeatures = PrepareFeatures(scenarios, ctx);
+            return await ctx.ExecutionOrchestrator.Execute(runnableFeatures);
+        }
+
+        private IReadOnlyList<RunnableFeature> PrepareFeatures(IReadOnlyList<ScenarioCase> scenarios, Context ctx)
+        {
+            var features = new List<RunnableFeature>();
+
+            foreach (var featureGrouping in scenarios.GroupBy(s => s.FeatureFixtureType))
+            {
+                var feature = new RunnableFeature(ctx.MetadataProvider.GetFeatureInfo(featureGrouping.Key), ctx);
+                feature.AddCallbacks(OnBeforeFeatureStart, OnAfterFeatureFinished);
+                features.Add(feature);
+
+                foreach (var scenarioGrouping in featureGrouping.GroupBy(s => s.ScenarioMethod))
+                {
+                    var scenarioGroup = new RunnableScenarioGroup(ctx);
+                    feature.Add(scenarioGroup);
+                    scenarioGroup.AddCallbacks(OnBeforeScenarioGroupStart, OnAfterScenarioGroupFinished);
+
+                    foreach (var scenarioCase in scenarioGrouping.SelectMany(g => ExpandParameterizedScenarios(g, ctx)))
+                    {
+                        var scenario = new RunnableScenarioCase(feature.Info, scenarioCase, ctx);
+                        scenarioGroup.Add(scenario);
+                        scenario.AddCallbacks(OnBeforeScenarioStart, OnAfterScenarioFinished);
+                    }
+                }
+            }
+
+            return features;
         }
 
         private static async Task GenerateReports(Context ctx, TestRunResult result)
@@ -104,25 +139,6 @@ namespace LightBDD.Core.Execution
         {
         }
 
-        private async Task<IFeatureResult> ExecuteFeature(IGrouping<TypeInfo, ScenarioCase> featureScenarios, Context ctx)
-        {
-            var featureInfo = ctx.MetadataProvider.GetFeatureInfo(featureScenarios.Key);
-            var featureStartTime = ctx.ExecutionTimer.GetTime();
-            var scenarios = featureScenarios.ToArray();
-            OnBeforeFeatureStart(featureStartTime, featureInfo, scenarios);
-            ctx.ProgressDispatcher.Notify(new FeatureStarting(featureStartTime, featureInfo));
-
-            var results = await Task.WhenAll(featureScenarios.SelectMany(s => ExpandParameterizedScenarios(s, ctx))
-                .GroupBy(s => s.ScenarioMethod)
-                .Select(s => ExecuteScenarioGroup(featureInfo, s, ctx)));
-
-            var featureEndTime = ctx.ExecutionTimer.GetTime();
-            var result = new FeatureResultV2(featureInfo, results.SelectMany(r => r).ToArray());
-            ctx.ProgressDispatcher.Notify(new FeatureFinished(featureEndTime, result));
-            OnAfterFeatureFinished(featureEndTime, result);
-            return result;
-        }
-
         /// <summary>
         /// Method executed after all scenarios for given feature are finished. Can be overridden to integrate with test engine.
         /// </summary>
@@ -138,25 +154,17 @@ namespace LightBDD.Core.Execution
         /// <param name="time">Event time</param>
         /// <param name="featureInfo">Feature details</param>
         /// <param name="scenarios">Scenarios to run as part of this feature</param>
-        protected virtual void OnBeforeFeatureStart(EventTime time, IFeatureInfo featureInfo, ScenarioCase[] scenarios)
+        protected virtual void OnBeforeFeatureStart(EventTime time, IFeatureInfo featureInfo, IReadOnlyList<ScenarioCase> scenarios)
         {
-        }
-
-        private async Task<IScenarioResult[]> ExecuteScenarioGroup(IFeatureInfo featureInfo, IGrouping<MethodInfo, ScenarioCase> scenarioCases, Context ctx)
-        {
-            var scenarios = scenarioCases.ToArray();
-            OnBeforeScenarioGroup(ctx.ExecutionTimer.GetTime(), scenarioCases.Key, scenarios);
-            var results = await Task.WhenAll(scenarios.Select(s => ctx.ExecutionScheduler.Schedule(() => ExecuteScenario(featureInfo, s, ctx))));
-            OnAfterScenarioGroup(ctx.ExecutionTimer.GetTime(), results);
-            return results;
         }
 
         /// <summary>
         /// Method executed after all scenarios are executed within the group (fixture type-scenario method pair). Can be overridden to integrate with test engine.
         /// </summary>
         /// <param name="time">Event time</param>
+        /// <param name="runtimeInfo">Scenario group info</param>
         /// <param name="results">List of scenario results</param>
-        protected virtual void OnAfterScenarioGroup(EventTime time, IReadOnlyList<IScenarioResult> results)
+        protected virtual void OnAfterScenarioGroupFinished(EventTime time, IRuntimeObjectInfo runtimeInfo, IReadOnlyList<IScenarioResult> results)
         {
         }
 
@@ -164,39 +172,10 @@ namespace LightBDD.Core.Execution
         /// Method executed before scenario group execution (fixture type-scenario method pair). Can be overridden to integrate with test engine.
         /// </summary>
         /// <param name="time">Event time</param>
-        /// <param name="scenarioMethod">Scenario method</param>
+        /// <param name="runtimeInfo">Scenario group info</param>
         /// <param name="scenarios">Scenarios to execute</param>
-        protected virtual void OnBeforeScenarioGroup(EventTime time, MethodInfo scenarioMethod, IReadOnlyList<ScenarioCase> scenarios)
+        protected virtual void OnBeforeScenarioGroupStart(EventTime time, IRuntimeObjectInfo runtimeInfo, IReadOnlyList<ScenarioCase> scenarios)
         {
-        }
-
-        //TODO: simplify
-        private async Task<IScenarioResult> ExecuteScenario(IFeatureInfo featureInfo, ScenarioCase scenario, Context ctx)
-        {
-            var runnableScenario = CreateRunnableScenario(featureInfo, scenario, ctx);
-            var scenarioInfo = runnableScenario.Result.Info;
-            var scenarioResult = runnableScenario.Result;
-            try
-            {
-                OnBeforeScenario(ctx.ExecutionTimer.GetTime(), scenarioInfo, scenario);
-
-                if (ctx.GlobalSetUpException != null)
-                    scenarioResult = ScenarioResult.CreateFailed(scenarioInfo, ctx.GlobalSetUpException);
-                else if (ctx.CancellationToken.IsCancellationRequested)
-                    scenarioResult = ScenarioResult.CreateIgnored(scenarioInfo, "Execution aborted");
-                else
-                    scenarioResult = await runnableScenario.RunAsync();
-            }
-            catch (Exception ex)
-            {
-                scenarioResult = ScenarioResult.CreateFailed(scenarioInfo, ex);
-            }
-            finally
-            {
-                OnAfterScenario(ctx.ExecutionTimer.GetTime(), scenarioResult);
-            }
-
-            return scenarioResult;
         }
 
         /// <summary>
@@ -205,7 +184,7 @@ namespace LightBDD.Core.Execution
         /// <param name="time">Event time</param>
         /// <param name="scenarioInfo">Scenario details</param>
         /// <param name="scenarioCase">Scenario case</param>
-        protected virtual void OnBeforeScenario(EventTime time, IScenarioInfo scenarioInfo, ScenarioCase scenarioCase)
+        protected virtual void OnBeforeScenarioStart(EventTime time, IScenarioInfo scenarioInfo, ScenarioCase scenarioCase)
         {
         }
 
@@ -214,21 +193,8 @@ namespace LightBDD.Core.Execution
         /// </summary>
         /// <param name="time">Event time</param>
         /// <param name="result">Scenario result</param>
-        protected virtual void OnAfterScenario(EventTime time, IScenarioResult result)
+        protected virtual void OnAfterScenarioFinished(EventTime time, IScenarioResult result)
         {
-        }
-
-        private static IRunnableScenarioV2 CreateRunnableScenario(IFeatureInfo featureInfo, ScenarioCase scenario, Context ctx)
-        {
-            var descriptor = new ScenarioDescriptor(scenario.ScenarioMethod, scenario.ScenarioArguments);
-            return ctx.ScenarioFactory.CreateFor(featureInfo)
-                .WithName(ctx.MetadataProvider.GetScenarioName(descriptor))
-                .WithCategories(ctx.MetadataProvider.GetScenarioCategories(scenario.ScenarioMethod))
-                .WithLabels(ctx.MetadataProvider.GetScenarioLabels(scenario.ScenarioMethod))
-                .WithRuntimeId(scenario.RuntimeId ?? Guid.NewGuid().ToString())
-                .WithScenarioDecorators(ctx.MetadataProvider.GetScenarioDecorators(descriptor))
-                .WithScenarioEntryMethod((fixture, runner) => InvokeScenarioEntryMethod(scenario.ScenarioMethod, fixture, scenario.ScenarioArguments, runner))
-                .Build();
         }
 
         //TODO: improve?
@@ -272,7 +238,7 @@ namespace LightBDD.Core.Execution
         }
 
         //TODO: review
-        private class Context : EngineContext, IAsyncDisposable
+        internal class Context : EngineContext, IAsyncDisposable
         {
             public Context(LightBddConfiguration configuration, CancellationToken cancellationToken)
             : base(configuration)
@@ -286,6 +252,199 @@ namespace LightBDD.Core.Execution
             public Exception? GlobalSetUpException;
 
             public ValueTask DisposeAsync() => DependencyContainer.DisposeAsync();
+        }
+
+        internal class RunnableFeature
+        {
+            private volatile bool _started;
+            private volatile int _finished;
+            private readonly Context _ctx;
+            private readonly List<RunnableScenarioGroup> _scenarioGroups = new();
+            public IFeatureInfo Info { get; set; }
+
+            private Action<EventTime, IFeatureInfo, IReadOnlyList<ScenarioCase>>? _onBeforeStart;
+            private Action<EventTime, IFeatureResult>? _onAfterFinished;
+
+
+            public RunnableFeature(IFeatureInfo featureInfo, Context ctx)
+            {
+                _ctx = ctx;
+                Info = featureInfo;
+            }
+
+            public void AddCallbacks(Action<EventTime, IFeatureInfo, IReadOnlyList<ScenarioCase>> onBeforeStart, Action<EventTime, IFeatureResult> onAfterFinished)
+            {
+                _onBeforeStart += onBeforeStart;
+                _onAfterFinished = onAfterFinished + _onAfterFinished;
+            }
+
+            private void HandleGroupStart(EventTime e, IRuntimeObjectInfo runtimeObjectInfo, IReadOnlyList<ScenarioCase> arg3)
+            {
+                if (_started)
+                    return;
+                lock (this)
+                {
+                    if (_started)
+                        return;
+                    try
+                    {
+                        //TODO: review
+                        _onBeforeStart?.Invoke(_ctx.ExecutionTimer.GetTime(), Info, _scenarioGroups.SelectMany(s => s.Scenarios).Select(s => s.Scenario).ToArray());
+                        _ctx.ProgressDispatcher.Notify(new FeatureStarting(e, Info));
+                    }
+                    finally
+                    {
+                        _started = true;
+                    }
+                }
+            }
+
+            private void HandleGroupFinished(EventTime e, IRuntimeObjectInfo runtimeObjectInfo, IReadOnlyList<IScenarioResult> arg3)
+            {
+                if (Interlocked.Increment(ref _finished) == _scenarioGroups.Count)
+                {
+                    Result = new FeatureResultV2(Info, _scenarioGroups.SelectMany(s => s.Scenarios).Select(s => s.Result!).ToArray());
+                    _ctx.ProgressDispatcher.Notify(new FeatureFinished(e, Result));
+                    _onAfterFinished?.Invoke(_ctx.ExecutionTimer.GetTime(), Result);
+                }
+            }
+
+            public IFeatureResult? Result { get; private set; }
+
+            public IEnumerable<RunnableScenarioCase> GetRunnableCases() => _scenarioGroups.SelectMany(g => g.Scenarios);
+
+            public void Add(RunnableScenarioGroup scenarioGroup)
+            {
+                scenarioGroup.AddCallbacks(HandleGroupStart, HandleGroupFinished);
+                _scenarioGroups.Add(scenarioGroup);
+            }
+        }
+
+        internal class RunnableScenarioGroup : IRuntimeObjectInfo
+        {
+            private readonly Context _ctx;
+            private readonly List<RunnableScenarioCase> _scenarios = new();
+            private Action<EventTime, IRuntimeObjectInfo, IReadOnlyList<ScenarioCase>>? _onBeforeStart;
+            private Action<EventTime, IRuntimeObjectInfo, IReadOnlyList<IScenarioResult>>? _onAfterFinished;
+            private volatile bool _started;
+            private volatile int _finished;
+            public string RuntimeId { get; } = Guid.NewGuid().ToString();
+            public IReadOnlyList<RunnableScenarioCase> Scenarios => _scenarios;
+
+
+            public RunnableScenarioGroup(Context ctx)
+            {
+                _ctx = ctx;
+            }
+
+            public void AddCallbacks(Action<EventTime, IRuntimeObjectInfo, IReadOnlyList<ScenarioCase>> onBeforeStart, Action<EventTime, IRuntimeObjectInfo, IReadOnlyList<IScenarioResult>> onAfterFinished)
+            {
+                _onBeforeStart += onBeforeStart;
+                _onAfterFinished = onAfterFinished + _onAfterFinished;
+            }
+
+            private void HandleScenarioStart(EventTime e, IScenarioInfo s, ScenarioCase c)
+            {
+                if (_started)
+                    return;
+                lock (this)
+                {
+                    if (_started)
+                        return;
+                    try
+                    {
+                        //TODO: review
+                        _onBeforeStart?.Invoke(_ctx.ExecutionTimer.GetTime(), this, Scenarios.Select(x => x.Scenario).ToArray());
+                    }
+                    finally
+                    {
+                        _started = true;
+                    }
+                }
+            }
+
+            private void HandleScenarioFinished(EventTime e, IScenarioResult r)
+            {
+                if (Interlocked.Increment(ref _finished) == _scenarios.Count)
+                    _onAfterFinished?.Invoke(_ctx.ExecutionTimer.GetTime(), this, _scenarios.Select(s => s.Result!).ToArray());
+            }
+
+            public void Add(RunnableScenarioCase scenario)
+            {
+                scenario.AddCallbacks(HandleScenarioStart, HandleScenarioFinished);
+                _scenarios.Add(scenario);
+            }
+        }
+
+        internal class RunnableScenarioCase
+        {
+            private readonly IFeatureInfo _feature;
+            private readonly Context _ctx;
+
+            public RunnableScenarioCase(IFeatureInfo feature, ScenarioCase scenario, Context ctx)
+            {
+                _feature = feature;
+                Scenario = scenario;
+                _ctx = ctx;
+                Priority = ctx.MetadataProvider.GetScenarioPriority(scenario.ScenarioMethod);
+                Scheduler = (IScenarioExecutionScheduler)ctx.DependencyContainer.Resolve(ctx.MetadataProvider.GetScenarioExecutionSchedulerType(scenario.ScenarioMethod));
+                RequireExclusiveRun = ctx.MetadataProvider.HasScenarioExclusiveRunConstraint(scenario.ScenarioMethod);
+            }
+            public int Priority { get; }
+            public bool RequireExclusiveRun { get; }
+            public IScenarioExecutionScheduler Scheduler { get; }
+            public ScenarioCase Scenario { get; }
+            public IScenarioResult? Result { get; private set; }
+
+            private Action<EventTime, IScenarioInfo, ScenarioCase>? _onBeforeStart;
+            private Action<EventTime, IScenarioResult>? _onAfterFinished;
+
+            public void AddCallbacks(Action<EventTime, IScenarioInfo, ScenarioCase> onBeforeStart, Action<EventTime, IScenarioResult> onAfterFinished)
+            {
+                _onBeforeStart += onBeforeStart;
+                _onAfterFinished = onAfterFinished + _onAfterFinished;
+            }
+
+            public async Task<IScenarioResult> Execute()
+            {
+                var runnableScenario = CreateRunnableScenario();
+                var scenarioInfo = runnableScenario.Result.Info;
+                Result = runnableScenario.Result;
+                try
+                {
+                    _onBeforeStart?.Invoke(_ctx.ExecutionTimer.GetTime(), scenarioInfo, Scenario);
+
+                    if (_ctx.GlobalSetUpException != null)
+                        Result = ScenarioResult.CreateFailed(scenarioInfo, _ctx.GlobalSetUpException);
+                    else if (_ctx.CancellationToken.IsCancellationRequested)
+                        Result = ScenarioResult.CreateIgnored(scenarioInfo, "Execution aborted");
+                    else
+                        Result = await runnableScenario.RunAsync();
+                }
+                catch (Exception ex)
+                {
+                    Result = ScenarioResult.CreateFailed(scenarioInfo, ex);
+                }
+                finally
+                {
+                    _onAfterFinished?.Invoke(_ctx.ExecutionTimer.GetTime(), Result);
+                }
+
+                return Result;
+            }
+
+            private IRunnableScenarioV2 CreateRunnableScenario()
+            {
+                var descriptor = new ScenarioDescriptor(Scenario.ScenarioMethod, Scenario.ScenarioArguments);
+                return _ctx.ScenarioFactory.CreateFor(_feature)
+                    .WithName(_ctx.MetadataProvider.GetScenarioName(descriptor))
+                    .WithCategories(_ctx.MetadataProvider.GetScenarioCategories(Scenario.ScenarioMethod))
+                    .WithLabels(_ctx.MetadataProvider.GetScenarioLabels(Scenario.ScenarioMethod))
+                    .WithRuntimeId(Scenario.RuntimeId ?? Guid.NewGuid().ToString())
+                    .WithScenarioDecorators(_ctx.MetadataProvider.GetScenarioDecorators(descriptor))
+                    .WithScenarioEntryMethod((fixture, runner) => InvokeScenarioEntryMethod(Scenario.ScenarioMethod, fixture, Scenario.ScenarioArguments, runner))
+                    .Build();
+            }
         }
     }
 }

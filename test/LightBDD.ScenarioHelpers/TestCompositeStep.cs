@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using LightBDD.Core.Extensibility;
 using LightBDD.Core.Extensibility.Results;
 
@@ -19,6 +20,11 @@ namespace LightBDD.ScenarioHelpers
         public static TestCompositeStep Create(params Action[] steps)
         {
             return new TestCompositeStep(steps.Select(TestStep.CreateSync).ToArray());
+        }
+
+        public static TestCompositeStep Create(params Func<Task>[] steps)
+        {
+            return new TestCompositeStep(steps.Select(TestStep.Create).ToArray());
         }
 
         public static TestCompositeStep CreateFromComposites(params Func<TestCompositeStep>[] steps)

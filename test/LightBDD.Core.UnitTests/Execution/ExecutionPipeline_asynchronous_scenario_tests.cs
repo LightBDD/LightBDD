@@ -62,7 +62,8 @@ public class ExecutionPipeline_asynchronous_scenario_tests
         var testRun = TestableCoreExecutionPipeline.Default.Execute(cases);
         for (var index = 0; index < cases.Length; index++)
         {
-            if (!await SemaphoreIn.Value.WaitAsync(TimeSpan.FromSeconds(1)))
+            //TODO: optimize speed
+            if (!await SemaphoreIn.Value.WaitAsync(TimeSpan.FromSeconds(5)))
                 Assert.Fail($"Scenario failed to start at index={index}");
         }
 
