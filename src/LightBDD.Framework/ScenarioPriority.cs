@@ -1,7 +1,7 @@
 namespace LightBDD.Framework;
 
 /// <summary>
-/// Enumerable defining scenario priority used to determine execution order.
+/// Enumeration defining scenario priority used to determine execution order.
 /// </summary>
 public enum ScenarioPriority
 {
