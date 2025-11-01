@@ -3,7 +3,6 @@ using LightBDD.Framework;
 using LightBDD.Framework.Extensibility;
 using LightBDD.Runner.Implementation;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace LightBDD.Runner
 {
