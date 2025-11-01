@@ -4,13 +4,14 @@ using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Framework.Configuration;
 using LightBDD.Runner.Configuration;
 using LightBDD.Runner.Implementation;
-using Xunit.Sdk;
+using Xunit;
+using Xunit.v3;
 
 namespace LightBDD.Runner
 {
     /// <summary>
     /// </summary>
-    [TestFrameworkDiscoverer($"LightBDD.Runner.Implementation.{nameof(LightBddFrameworkTypeDiscoverer)}", "LightBDD.Runner")]
+    [TestFramework($"LightBDD.Runner.Implementation.{nameof(LightBddTestFramework)}", "LightBDD.Runner")]
     [AttributeUsage(AttributeTargets.Assembly)]
     public class LightBddScopeAttribute : Attribute, ITestFrameworkAttribute
     {

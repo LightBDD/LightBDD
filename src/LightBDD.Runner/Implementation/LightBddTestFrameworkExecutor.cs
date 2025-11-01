@@ -1,25 +1,19 @@
-using System.Collections.Generic;
-using System.Reflection;
-using Xunit.Abstractions;
-using Xunit.Sdk;
+using System.Linq;
+using System.Threading.Tasks;
+using Xunit.v3;
 
 namespace LightBDD.Runner.Implementation;
 
 internal class LightBddTestFrameworkExecutor : XunitTestFrameworkExecutor
 {
-    private readonly IXunitTestCollectionFactory _collectionFactory;
-
-    public LightBddTestFrameworkExecutor(AssemblyName assemblyName, ISourceInformationProvider sourceInformationProvider, IMessageSink diagnosticMessageSink)
-        : base(assemblyName, sourceInformationProvider, diagnosticMessageSink)
+    public LightBddTestFrameworkExecutor(IXunitTestAssembly testAssembly)
+        : base(testAssembly)
     {
-        _collectionFactory = new LightBddCollectionFactory(AssemblyInfo, DiagnosticMessageSink);
     }
 
-    protected override ITestFrameworkDiscoverer CreateDiscoverer() => new XunitTestFrameworkDiscoverer(AssemblyInfo, SourceInformationProvider, DiagnosticMessageSink, _collectionFactory);
-
-    protected override async void RunTestCases(IEnumerable<IXunitTestCase> testCases, IMessageSink executionMessageSink, ITestFrameworkExecutionOptions executionOptions)
+    protected override async ValueTask<ITestEngineStatus> OnTestAssemblyExecutionFinished(ITestEngineStatus status)
     {
-        using var assemblyRunner = new LightBddTestAssemblyRunner(TestAssembly, testCases, DiagnosticMessageSink, executionMessageSink, executionOptions);
-        await assemblyRunner.RunAsync();
+        // Custom cleanup logic if needed
+        return await base.OnTestAssemblyExecutionFinished(status);
     }
 }

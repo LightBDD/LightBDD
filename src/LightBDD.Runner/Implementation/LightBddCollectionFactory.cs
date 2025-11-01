@@ -1,35 +1,39 @@
 using System.Linq;
 using Xunit;
-using Xunit.Abstractions;
-using Xunit.Sdk;
+using Xunit.v3;
 
 namespace LightBDD.Runner.Implementation;
 
 internal class LightBddCollectionFactory : IXunitTestCollectionFactory
 {
     private readonly IXunitTestCollectionFactory _default;
-    private readonly ITestCollection _collection;
+    private readonly IXunitTestCollection _collection;
     public string DisplayName => "LightBDD Collection Factory";
 
-    public LightBddCollectionFactory(IAssemblyInfo assemblyInfo, IMessageSink diagnosticMessageSink)
+    public LightBddCollectionFactory(IXunitTestAssembly testAssembly)
     {
-        var collectionBehaviourAttribute = assemblyInfo.GetCustomAttributes(typeof(CollectionBehaviorAttribute)).SingleOrDefault();
+        var collectionBehaviorAttribute = testAssembly.Assembly
+            .GetCustomAttributes(typeof(CollectionBehaviorAttribute))
+            .SingleOrDefault();
 
-        var testAssembly = new TestAssembly(assemblyInfo);
         _collection = LightBddTestCollection.Create(testAssembly);
-        _default = ExtensibilityPointFactory.GetXunitTestCollectionFactory(diagnosticMessageSink, collectionBehaviourAttribute, testAssembly);
+        _default = ExtensibilityPointFactory.GetTestCollectionFactory(collectionBehaviorAttribute, testAssembly);
     }
 
-    public ITestCollection Get(ITypeInfo testClass)
+    public IXunitTestCollection Get(System.Type testClass)
     {
         if (HasLightBddCollection(testClass))
             return _collection;
         return _default.Get(testClass);
     }
 
-    private bool HasLightBddCollection(ITypeInfo testClass)
+    private bool HasLightBddCollection(System.Type testClass)
     {
-        var collectionAttribute = testClass.GetCustomAttributes(typeof(CollectionAttribute)).FirstOrDefault();
-        return Equals(collectionAttribute?.GetConstructorArguments().First(), LightBddTestCollection.Name);
+        var collectionAttribute = testClass.GetCustomAttributes(typeof(CollectionAttribute), true).FirstOrDefault();
+        if (collectionAttribute is CollectionAttribute attr)
+        {
+            return attr.Name == LightBddTestCollection.Name;
+        }
+        return false;
     }
 }

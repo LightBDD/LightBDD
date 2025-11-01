@@ -2,7 +2,7 @@ using System;
 using LightBDD.Core.Extensibility;
 using LightBDD.Runner.Implementation;
 using Xunit;
-using Xunit.Sdk;
+using Xunit.v3;
 
 namespace LightBDD.Runner
 {

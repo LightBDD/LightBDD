@@ -1,34 +1,51 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using LightBDD.Core.Discovery;
-using Xunit.Abstractions;
-using Xunit.Sdk;
+using Xunit.v3;
 
 namespace LightBDD.Runner.Implementation;
 
 internal class LightBddTestCaseDiscoverer : IXunitTestCaseDiscoverer
 {
-    private readonly IMessageSink _diagnosticMessageSink;
     private readonly ScenarioDiscoverer _discoverer = new();
 
-    public LightBddTestCaseDiscoverer(IMessageSink diagnosticMessageSink)
+    public async ValueTask<IReadOnlyCollection<IXunitTestCase>> Discover(
+        IFactAttribute factAttribute,
+        IXunitTestMethod testMethod,
+        ITestFrameworkDiscoveryOptions discoveryOptions)
     {
-        _diagnosticMessageSink = diagnosticMessageSink;
-    }
-
-    public IEnumerable<IXunitTestCase> Discover(ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod, IAttributeInfo factAttribute)
-    {
-        var typeInfo = ((ReflectionTypeInfo)testMethod.TestClass.Class).Type.GetTypeInfo();
-
-        foreach (var scenario in _discoverer.DiscoverFor(typeInfo, testMethod.Method.ToRuntimeMethod(), CancellationToken.None))
+        var method = testMethod.Method;
+        var type = testMethod.TestClass.Class;
+        
+        var scenarios = _discoverer.DiscoverFor(type, method, CancellationToken.None);
+        
+        var testCases = new List<IXunitTestCase>();
+        
+        foreach (var scenario in scenarios)
         {
-            yield return new XunitTestCase(
-                _diagnosticMessageSink,
-                discoveryOptions.MethodDisplayOrDefault(),
-                discoveryOptions.MethodDisplayOptionsOrDefault(),
-                testMethod,
-                scenario.ScenarioArguments.ToNullIfEmpty());
+            var testCase = new XunitTestCase(
+                testMethod: testMethod,
+                testCaseDisplayName: scenario.ScenarioName ?? testMethod.TestMethodName,
+                uniqueID: null, // Will be auto-generated
+                @explicit: false,
+                skipExceptions: null,
+                skipReason: null,
+                skipType: null,
+                skipUnless: null,
+                skipWhen: null,
+                traits: null,
+                testMethodArguments: scenario.ScenarioArguments.ToNullIfEmpty(),
+                sourceFilePath: null,
+                sourceLineNumber: null,
+                timeout: null
+            );
+            
+            testCases.Add(testCase);
         }
+        
+        return await new ValueTask<IReadOnlyCollection<IXunitTestCase>>(testCases);
     }
 }

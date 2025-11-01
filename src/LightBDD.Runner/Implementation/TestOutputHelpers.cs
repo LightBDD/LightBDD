@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
-using Xunit.Abstractions;
-using Xunit.Sdk;
+using Xunit;
+using Xunit.v3;
 
 namespace LightBDD.Runner.Implementation;
 
@@ -12,10 +12,9 @@ internal class TestOutputHelpers
     public static ITestOutputHelper Current => Helpers.Value ?? throw new InvalidOperationException("No scenario is executed at this moment");
     public static ITestOutputHelper? TryGetCurrent() => Helpers.Value;
 
-    public static void Install(IMessageBus bus, ITest test)
+    public static void Install(IXunitTest test)
     {
         var helper = new TestOutputHelper();
-        helper.Initialize(bus, test);
         Helpers.Value = helper;
     }
 
