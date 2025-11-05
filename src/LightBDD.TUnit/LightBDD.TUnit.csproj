@@ -39,7 +39,7 @@ High level features:
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="TUnit" Version="0.86.10" />
+    <PackageReference Include="TUnit" Version="0.90.45" />
   </ItemGroup>
 
 </Project>
