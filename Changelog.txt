@@ -3,7 +3,7 @@ LightBDD
 
 Version 3.11.1
 ----------------------------------------
-+ #356 (LightBDD.TUnit)(New) Updated to latest TUnit
++ #391 (LightBDD.TUnit)(Change) Updated to latest TUnit package versions
 
 Version 3.11.0
 ----------------------------------------
