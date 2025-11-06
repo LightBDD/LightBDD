@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using LightBDD.Core.Configuration;
 using LightBDD.Core.Extensibility;
+using TUnit.Core.Extensions;
 using CategoryAttribute = TUnit.Core.CategoryAttribute;
 
 namespace LightBDD.TUnit.Implementation
@@ -17,28 +18,34 @@ namespace LightBDD.TUnit.Implementation
         public override ScenarioDescriptor CaptureCurrentScenario()
         {
             var context = TestContext.Current;
-            var testMethod = context?.TestDetails.TestMethod.ReflectionInformation;
+            var testMethod = context?.Metadata.TestDetails.Method.MethodMetadata.GetReflectionInfo();
             if (testMethod == null || !testMethod.GetCustomAttributes<TestAttribute>().Any())
             {
                 throw new InvalidOperationException("Unable to locate Scenario name. Please ensure that scenario is executed from method with [Scenario] attribute and test class deriving from FeatureFixture or with [FeatureFixture] attribute.");
             }
 
-            return new ScenarioDescriptor(testMethod, context.TestDetails.TestMethodArguments);
+            return new ScenarioDescriptor(testMethod, context.Metadata.TestDetails.TestMethodArguments);
         }
 
         protected override IEnumerable<string> GetImplementationSpecificScenarioCategories(MemberInfo member)
         {
-            return TestContext.Current?.TestDetails.Attributes.OfType<CategoryAttribute>().Select(x => x.Category) ?? [];
+            if (TestContext.Current?.Metadata.TestDetails.Attributes.AttributesByType.TryGetValue(
+                    typeof(CategoryAttribute), out var categoryAttributes) is true)
+            {
+                return categoryAttributes.OfType<CategoryAttribute>().Select(x => x.Category);
+            }
+            
+            return [];
         }
 
         protected override string GetImplementationSpecificFeatureDescription(Type featureType)
         {
-            return TestContext.Current?.TestDetails.TestClass.Attributes.OfType<DescriptionAttribute>().FirstOrDefault()?.Description;
+            return TestContext.Current?.Metadata.TestDetails.Class.ClassType.GetCustomAttributes<DescriptionAttribute>().FirstOrDefault()?.Description;
         }
 
         protected override string GetImplementationSpecificScenarioDescription(ScenarioDescriptor scenarioDescriptor)
         {
-            return TestContext.Current?.TestDetails.TestMethod.Attributes.OfType<DescriptionAttribute>().FirstOrDefault()?.Description;
+            return TestContext.Current?.Metadata.TestDetails.Method.MethodMetadata.GetCustomAttributes().OfType<DescriptionAttribute>().FirstOrDefault()?.Description;
         }
     }
 }

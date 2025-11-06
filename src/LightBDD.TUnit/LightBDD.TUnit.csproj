@@ -15,6 +15,7 @@ High level features:
     <TargetFrameworks>netstandard2.0;net8.0;net9.0</TargetFrameworks>
     <PackageTags>$(PackageTags);tunit</PackageTags>
     <OutputType>Library</OutputType>
+    <EnableTUnitPolyfills>false</EnableTUnitPolyfills>  
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,7 +35,11 @@ High level features:
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="TUnit" Version="0.16.8" />
+    <PackageReference Include="Polyfill" Version="8.9.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="TUnit" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

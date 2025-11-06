@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using LightBDD.Core.Results;
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
-using TUnit.Assertions.AssertConditions.Throws;
 using TUnit.Core.Exceptions;
 
 namespace LightBDD.TUnit.UnitTests;
@@ -113,7 +112,7 @@ public class IntegrationTests : FeatureFixture
     public async Task Runner_should_support_parameterized_scenarios_with_value(string value)
     {
         await Runner.RunScenarioAsync(_ => Step_with_parameter(value));
-        await Assert.That(ConfiguredLightBddScope.CapturedNotifications).Contains($"SCENARIO: Runner should support parameterized scenarios with value \"{value}\"");
+        await Assert.That(ConfiguredLightBddScope.CapturedNotifications).Contains(x => x.Contains($"SCENARIO: Runner should support parameterized scenarios with value \"{value}\""));
     }
 
     [Scenario]
