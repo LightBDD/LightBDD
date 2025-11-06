@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net8.0;net48</TargetFrameworks>
     <RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
+    <EnableTUnitPolyfills>false</EnableTUnitPolyfills>  
   </PropertyGroup>
   
   <ItemGroup>
@@ -14,7 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="TUnit" Version="0.16.8" />
+    <PackageReference Include="Polyfill" Version="8.9.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="TUnit" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
