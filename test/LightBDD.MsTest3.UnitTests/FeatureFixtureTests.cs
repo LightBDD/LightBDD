@@ -6,7 +6,7 @@ namespace LightBDD.MsTest3.UnitTests
     [TestClass]
     public class FeatureFixtureTests
     {
-        private class TestableFeatureFixture : FeatureFixture
+        public class TestableFeatureFixture : FeatureFixture
         {
             public IBddRunner GetRunner()
             {

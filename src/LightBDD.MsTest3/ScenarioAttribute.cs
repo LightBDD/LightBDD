@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using LightBDD.MsTest3.Implementation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -9,12 +11,20 @@ namespace LightBDD.MsTest3
     /// </summary>
     public class ScenarioAttribute : TestMethodAttribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScenarioAttribute"/> class.
+        /// </summary>
+        public ScenarioAttribute([CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = -1)
+            : base(callerFilePath, callerLineNumber)
+        {
+        }
+
         /// <summary>Performs scenario test.</summary>
         /// <param name="testMethod"> TestMethod for execution. </param>
         /// <returns> Test Results.</returns>
-        public override TestResult[] Execute(ITestMethod testMethod)
+        public override Task<TestResult[]> ExecuteAsync(ITestMethod testMethod)
         {
-            return base.Execute(new ScenarioTestMethod(testMethod));
+            return base.ExecuteAsync(new ScenarioTestMethod(testMethod));
         }
     }
 }

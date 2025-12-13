@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.MsTest3.Implementation
@@ -13,13 +14,13 @@ namespace LightBDD.MsTest3.Implementation
             _target = target;
         }
 
-        public TestResult Invoke(object[] arguments)
+        public async Task<TestResult> InvokeAsync(object[] arguments)
         {
             arguments ??= Arguments;
             try
             {
                 TestContextProvider.Initialize(_target.MethodInfo, arguments);
-                return _target.Invoke(arguments);
+                return await _target.InvokeAsync(arguments).ConfigureAwait(false);
             }
             finally
             {
@@ -27,14 +28,14 @@ namespace LightBDD.MsTest3.Implementation
             }
         }
 
-        public Attribute[] GetAllAttributes(bool inherit)
+        public Attribute[] GetAllAttributes()
         {
-            return _target.GetAllAttributes(inherit);
+            return _target.GetAllAttributes();
         }
 
-        public TAttributeType[] GetAttributes<TAttributeType>(bool inherit) where TAttributeType : Attribute
+        public TAttributeType[] GetAttributes<TAttributeType>() where TAttributeType : Attribute
         {
-            return _target.GetAttributes<TAttributeType>(inherit);
+            return _target.GetAttributes<TAttributeType>();
         }
 
         public string TestMethodName => _target.TestMethodName;

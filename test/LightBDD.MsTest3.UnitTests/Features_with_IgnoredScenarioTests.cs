@@ -14,7 +14,7 @@ namespace LightBDD.MsTest3.UnitTests
         [Label(nameof(Runner_should_ignore_scenario_in_this_class))]
         public void Runner_should_ignore_scenario_in_this_class()
         {
-            var ex = Assert.ThrowsException<AssertInconclusiveException>(() => Runner.RunScenario(_ => Some_step()));
+            var ex = Assert.ThrowsExactly<AssertInconclusiveException>(() => Runner.RunScenario(_ => Some_step()));
             StringAssert.Matches(ex.Message, new Regex("Assert.Inconclusive .*. all ignored"));
         }
 
