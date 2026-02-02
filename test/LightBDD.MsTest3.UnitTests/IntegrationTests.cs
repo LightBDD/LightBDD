@@ -140,7 +140,7 @@ namespace LightBDD.MsTest3.UnitTests
         [Label(nameof(Runner_should_ignore_scenario_with_IgnoreScenarioAttribute))]
         public void Runner_should_ignore_scenario_with_IgnoreScenarioAttribute()
         {
-            var ex = Assert.ThrowsException<AssertInconclusiveException>(() => Runner.RunScenario(_ => Some_step()));
+            var ex = Assert.ThrowsExactly<AssertInconclusiveException>(() => Runner.RunScenario(_ => Some_step()));
             StringAssert.Matches(ex.Message, new Regex("Assert.Inconclusive .*. scenario reason"));
             var result = GetScenarioResult(nameof(Runner_should_ignore_scenario_with_IgnoreScenarioAttribute));
 
@@ -153,7 +153,7 @@ namespace LightBDD.MsTest3.UnitTests
         [Label(nameof(Runner_should_ignore_step_with_IgnoreScenarioAttribute))]
         public void Runner_should_ignore_step_with_IgnoreScenarioAttribute()
         {
-            var ex = Assert.ThrowsException<AssertInconclusiveException>(() => Runner.RunScenario(_ => Declaratively_ignored_step()));
+            var ex = Assert.ThrowsExactly<AssertInconclusiveException>(() => Runner.RunScenario(_ => Declaratively_ignored_step()));
             StringAssert.Matches(ex.Message, new Regex("Assert.Inconclusive .*. step reason"));
             var result = GetScenarioResult(nameof(Runner_should_ignore_step_with_IgnoreScenarioAttribute));
 

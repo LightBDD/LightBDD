@@ -1,6 +1,11 @@
 LightBDD
 ===========================================
 
+Version 3.11.2
+----------------------------------------
++ #385 (LightBDD.MsTest3)(Change) Updated MsTest to latest 3.11.1 version
++ #385 (LightBDD.MsTest4)(Add) Added LightBDD.MsTest4 referencing MsTest v4.0.2
+
 Version 3.11.1
 ----------------------------------------
 + #391 (LightBDD.TUnit)(Change) Updated to latest TUnit package versions

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+# Visual Studio Version 18
+VisualStudioVersion = 18.2.11415.280 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{B150E26B-0134-45FE-B9DC-13893C360E7C}"
 EndProject
@@ -30,6 +30,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.TUnit.FeatureTemplate", "ItemTemplates\LightBDD.TUnit.FeatureTemplate\LightBDD.TUnit.FeatureTemplate.csproj", "{2EA3C65D-FCEA-46B9-A886-FE7AE4B546A6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.TUnit.ProjectTemplate", "ProjectTemplates\LightBDD.TUnit.ProjectTemplate\LightBDD.TUnit.ProjectTemplate.csproj", "{A1B34BEC-8948-4699-A92C-FB965DA589A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.MsTest4.FeatureTemplate", "ItemTemplates\LightBDD.MsTest4.FeatureTemplate\LightBDD.MsTest4.FeatureTemplate.csproj", "{A5CC5F6E-66A3-4DC6-A597-CCAEE6B070E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.MsTest4.ProjectTemplate", "ProjectTemplates\LightBDD.MsTest4.ProjectTemplate\LightBDD.MsTest4.ProjectTemplate.csproj", "{61CD4815-B4E2-4EC0-AF79-2A305D3AEBC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +85,14 @@ Global
 		{A1B34BEC-8948-4699-A92C-FB965DA589A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1B34BEC-8948-4699-A92C-FB965DA589A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1B34BEC-8948-4699-A92C-FB965DA589A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5CC5F6E-66A3-4DC6-A597-CCAEE6B070E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5CC5F6E-66A3-4DC6-A597-CCAEE6B070E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5CC5F6E-66A3-4DC6-A597-CCAEE6B070E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5CC5F6E-66A3-4DC6-A597-CCAEE6B070E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61CD4815-B4E2-4EC0-AF79-2A305D3AEBC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61CD4815-B4E2-4EC0-AF79-2A305D3AEBC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61CD4815-B4E2-4EC0-AF79-2A305D3AEBC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61CD4815-B4E2-4EC0-AF79-2A305D3AEBC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -98,6 +110,8 @@ Global
 		{2AC3866E-95A0-4DC8-9596-AA663F1E6DA9} = {9A20E430-60FA-4339-9E3B-A15A178D6F4C}
 		{2EA3C65D-FCEA-46B9-A886-FE7AE4B546A6} = {22EF8318-5FFC-4887-8168-9CA95C1D9769}
 		{A1B34BEC-8948-4699-A92C-FB965DA589A2} = {9A20E430-60FA-4339-9E3B-A15A178D6F4C}
+		{A5CC5F6E-66A3-4DC6-A597-CCAEE6B070E8} = {22EF8318-5FFC-4887-8168-9CA95C1D9769}
+		{61CD4815-B4E2-4EC0-AF79-2A305D3AEBC3} = {9A20E430-60FA-4339-9E3B-A15A178D6F4C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A7ADB8BC-BB30-4563-8B87-DB26374A85C9}

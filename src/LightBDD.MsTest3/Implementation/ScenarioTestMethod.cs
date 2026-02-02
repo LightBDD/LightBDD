@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightBDD.MsTest3.Implementation
@@ -20,6 +21,20 @@ namespace LightBDD.MsTest3.Implementation
             {
                 TestContextProvider.Initialize(_target.MethodInfo, arguments);
                 return _target.Invoke(arguments);
+            }
+            finally
+            {
+                TestContextProvider.Clear();
+            }
+        }
+
+        public async Task<TestResult> InvokeAsync(object[] arguments)
+        {
+            arguments ??= Arguments;
+            try
+            {
+                TestContextProvider.Initialize(_target.MethodInfo, arguments);
+                return await _target.InvokeAsync(arguments).ConfigureAwait(false);
             }
             finally
             {

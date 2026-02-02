@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using LightBDD.MsTest3.Implementation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

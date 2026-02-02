@@ -1,7 +1,7 @@
 ﻿<Project>
   <PropertyGroup>
-    <Copyright>Copyright © Wojciech Kotlarski 2013-2025</Copyright>
-    <VersionPrefix>3.11.1</VersionPrefix>
+    <Copyright>Copyright © Wojciech Kotlarski 2013-2026</Copyright>
+    <VersionPrefix>3.11.2</VersionPrefix>
     <Authors>Wojciech Kotlarski</Authors>
     <Company>https://github.com/LightBDD/LightBDD</Company>
     <PackageIcon>lightbdd.png</PackageIcon>
@@ -14,7 +14,7 @@
     <PackageOutputPath>$(SolutionDir)\output</PackageOutputPath>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>bdd;tdd;testing;framework;behavior driven development;acceptance criteria</PackageTags>
-    <PackageReleaseNotes>Release details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-3111</PackageReleaseNotes>
+    <PackageReleaseNotes>Release details on: https://github.com/LightBDD/LightBDD/wiki/What-Is-New#lightbdd-3112</PackageReleaseNotes>
     <IsPackable>true</IsPackable>
     <IsTestProject>false</IsTestProject>
     <IsTestingPlatformApplication>false</IsTestingPlatformApplication>
