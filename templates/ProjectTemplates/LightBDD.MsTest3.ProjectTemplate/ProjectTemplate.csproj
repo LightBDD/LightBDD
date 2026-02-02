@@ -4,7 +4,7 @@
     <TargetFramework>net6</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="LightBDD.MsTest3" Version="3.11.0" />
+    <PackageReference Include="LightBDD.MsTest3" Version="3.11.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.3" />
     <PackageReference Include="MSTest.TestAdapter" Version="4.0.2" />
     <PackageReference Include="MSTest.TestFramework" Version="4.0.2" />
