@@ -8,6 +8,7 @@ Build | [![Build status](https://ci.appveyor.com/api/projects/status/xkd7qc950o0
 Chat (gitter) | [![Join the chat at https://gitter.im/LightBDD/LightBDD](https://badges.gitter.im/LightBDD/LightBDD.svg)](https://gitter.im/LightBDD/LightBDD?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 LightBDD.NUnit3 | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.NUnit3)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.NUnit3)](https://www.nuget.org/packages/LightBDD.NUnit3/)
 LightBDD.XUnit2 | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.XUnit2)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.XUnit2)](https://www.nuget.org/packages/LightBDD.XUnit2/)
+LightBDD.MsTest4 | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.MsTest4)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.MsTest4)](https://www.nuget.org/packages/LightBDD.MsTest4/)
 LightBDD.MsTest3 | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.MsTest3)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.MsTest3)](https://www.nuget.org/packages/LightBDD.MsTest3/)
 LightBDD.Fixie3 | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.Fixie3)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.Fixie3)](https://www.nuget.org/packages/LightBDD.Fixie3/)
 LightBDD.TUnit | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.TUnit)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.TUnit)](https://www.nuget.org/packages/LightBDD.TUnit/)
