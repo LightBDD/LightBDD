@@ -133,6 +133,9 @@
     <ProjectReference Include="..\ItemTemplates\LightBDD.MsTest4.FeatureTemplate\LightBDD.MsTest4.FeatureTemplate.csproj">
       <Project>{a5cc5f6e-66a3-4dc6-a597-ccaee6b070e8}</Project>
       <Name>LightBDD.MsTest4.FeatureTemplate</Name>
+      <VSIXSubPath>ItemTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
     </ProjectReference>
     <ProjectReference Include="..\ItemTemplates\LightBDD.NUnit3.FeatureTemplate\LightBDD.NUnit3.FeatureTemplate.csproj">
       <Project>{987A36B6-417E-44C9-A8BE-CF5639CEE674}</Project>
@@ -179,6 +182,9 @@
     <ProjectReference Include="..\ProjectTemplates\LightBDD.MsTest4.ProjectTemplate\LightBDD.MsTest4.ProjectTemplate.csproj">
       <Project>{61cd4815-b4e2-4ec0-af79-2a305d3aebc3}</Project>
       <Name>LightBDD.MsTest4.ProjectTemplate</Name>
+      <VSIXSubPath>ProjectTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
     </ProjectReference>
     <ProjectReference Include="..\ProjectTemplates\LightBDD.NUnit3.ProjectTemplate\LightBDD.NUnit3.ProjectTemplate.csproj">
       <Project>{2AC3866E-95A0-4DC8-9596-AA663F1E6DA9}</Project>
