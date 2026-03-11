@@ -540,9 +540,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
         private static IHtmlNode GetScenarioStatus(IScenarioResult scenario)
         {
-            if (scenario.Status == ExecutionStatus.Ignored
-                && scenario.GetSteps().Any(s => s.Status == ExecutionStatus.Passed)
-                && !scenario.GetAllSteps().Any(s => s.Status == ExecutionStatus.NotRun))
+            if (scenario.Status == ExecutionStatus.Ignored && IsPassedIgnored(scenario.GetSteps()))
             {
                 return GetPassedIgnoredStatus();
             }
@@ -551,13 +549,35 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
 
         private static IHtmlNode GetStepStatus(IStepResult step)
         {
-            if (step.Status == ExecutionStatus.Ignored
-                && step.GetSubSteps().Any(s => s.Status == ExecutionStatus.Passed)
-                && !step.GetSubSteps().SelectMany(s => s.GetAllSteps()).Any(s => s.Status == ExecutionStatus.NotRun))
+            if (step.Status == ExecutionStatus.Ignored && IsPassedIgnored(step.GetSubSteps()))
             {
                 return GetPassedIgnoredStatus();
             }
             return GetStatus(step.Status);
+        }
+
+        private static bool IsPassedIgnored(IEnumerable<IStepResult> steps)
+        {
+            var hasPassed = false;
+            foreach (var step in steps)
+            {
+                if (HasNotRunRecursive(step))
+                    return false;
+                hasPassed = hasPassed || step.Status == ExecutionStatus.Passed;
+            }
+            return hasPassed;
+        }
+
+        private static bool HasNotRunRecursive(IStepResult step)
+        {
+            if (step.Status == ExecutionStatus.NotRun)
+                return true;
+            foreach (var sub in step.GetSubSteps())
+            {
+                if (HasNotRunRecursive(sub))
+                    return true;
+            }
+            return false;
         }
 
         private static IHtmlNode GetPassedIgnoredStatus()
