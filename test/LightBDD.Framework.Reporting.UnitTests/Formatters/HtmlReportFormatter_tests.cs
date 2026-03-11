@@ -135,7 +135,7 @@ Toggle: Features Scenarios Sub Steps
 Filter: Passed Bypassed Failed Ignored Not Run
  filtered link
 My feature link
-! name (25ms) link
+✓ name (25ms) link
 ✓ 1. step1 (20ms)
 ! 2. step2 (5ms)
 Generated with LightBDD v{GetExpectedLightBddVersion()}
@@ -406,6 +406,133 @@ $.[2].Surname=Smith";
             Assert.That(text.NormalizeNewLine(), Is.EqualTo(expectedText.NormalizeNewLine()));
         }
 
+        [Test]
+        public void Should_format_ignored_scenario_with_not_run_steps_as_ignored()
+        {
+            var result = ReportFormatterTestData.GetFeatureResultWithIgnoredScenario();
+
+            var text = FormatAndExtractText(result);
+            TestContext.WriteLine(text);
+
+            Assert.That(text, Does.Contain("! name (45ms)"));
+            Assert.That(text, Does.Not.Contain("✓ name"));
+        }
+
+        [Test]
+        public void Should_format_all_steps_ignored_scenario_as_ignored()
+        {
+            var result = ReportFormatterTestData.GetFeatureResultWithAllStepsIgnored();
+
+            var text = FormatAndExtractText(result);
+            TestContext.WriteLine(text);
+
+            Assert.That(text, Does.Contain("! name (10ms)"));
+            Assert.That(text, Does.Not.Contain("✓ name"));
+        }
+
+        [Test]
+        public void Should_use_passed_ignored_css_class_for_step_ignored_scenario()
+        {
+            var result = ReportFormatterTestData.GetFeatureResultWithoutDescriptionNorLabelNorDetails();
+            var html = FormatAndParseHtml(result);
+
+            var scenarioDiv = html.DocumentNode.SelectSingleNode("//div[contains(@class,'scenario ignored')]");
+            Assert.That(scenarioDiv.GetAttributeValue("class", ""), Is.EqualTo("scenario ignored"));
+
+            var statusSpan = scenarioDiv.SelectSingleNode(".//span[contains(@class,'status')]");
+            Assert.That(statusSpan.GetAttributeValue("class", ""), Is.EqualTo("status passed ignored"));
+            Assert.That(statusSpan.InnerText.Trim(), Is.EqualTo("\u2713"));
+        }
+
+        [Test]
+        public void Should_use_ignored_css_class_for_scenario_ignored_scenario()
+        {
+            var result = ReportFormatterTestData.GetFeatureResultWithIgnoredScenario();
+            var html = FormatAndParseHtml(result);
+
+            var scenarioDiv = html.DocumentNode.SelectSingleNode("//div[contains(@class,'scenario ignored')]");
+            Assert.That(scenarioDiv.GetAttributeValue("class", ""), Is.EqualTo("scenario ignored"));
+
+            var statusSpan = scenarioDiv.SelectSingleNode(".//span[contains(@class,'status')]");
+            Assert.That(statusSpan.GetAttributeValue("class", ""), Is.EqualTo("status ignored"));
+            Assert.That(statusSpan.InnerText.Trim(), Is.EqualTo("!"));
+        }
+
+        [Test]
+        public void Should_use_ignored_css_class_for_all_steps_ignored_scenario()
+        {
+            var result = ReportFormatterTestData.GetFeatureResultWithAllStepsIgnored();
+            var html = FormatAndParseHtml(result);
+
+            var scenarioDiv = html.DocumentNode.SelectSingleNode("//div[contains(@class,'scenario ignored')]");
+            var statusSpan = scenarioDiv.SelectSingleNode(".//span[contains(@class,'status')]");
+            Assert.That(statusSpan.GetAttributeValue("class", ""), Is.EqualTo("status ignored"));
+            Assert.That(statusSpan.InnerText.Trim(), Is.EqualTo("!"));
+        }
+
+        [Test]
+        public void Should_include_passed_ignored_css_rule_in_stylesheet()
+        {
+            var html = FormatAndParseHtml(ReportFormatterTestData.GetFeatureResultWithoutDescriptionNorLabelNorDetails());
+            var styles = html.DocumentNode.SelectNodes("//style");
+            var allCss = string.Join(" ", styles.Select(s => s.InnerText));
+
+            Assert.That(allCss, Does.Contain(".status.passed.ignored"));
+            Assert.That(allCss, Does.Contain("linear-gradient"));
+        }
+
+        [Test]
+        public void Should_use_ignored_css_class_for_scenario_ignored_in_composite_step()
+        {
+            var result = ReportFormatterTestData.GetFeatureResultWithIgnoredScenarioInCompositeStep();
+            var html = FormatAndParseHtml(result);
+
+            var scenarioDiv = html.DocumentNode.SelectSingleNode("//div[contains(@class,'scenario ignored')]");
+            Assert.That(scenarioDiv.GetAttributeValue("class", ""), Is.EqualTo("scenario ignored"));
+
+            var scenarioStatus = scenarioDiv.SelectSingleNode("./h3//span[contains(@class,'status')]");
+            Assert.That(scenarioStatus.GetAttributeValue("class", ""), Is.EqualTo("status ignored"));
+            Assert.That(scenarioStatus.InnerText.Trim(), Is.EqualTo("!"));
+
+            var stepStatuses = scenarioDiv.SelectNodes(".//div[@class='step']//span[contains(@class,'status')]");
+            Assert.That(stepStatuses[1].GetAttributeValue("class", ""), Is.EqualTo("status ignored"));
+            Assert.That(stepStatuses[1].InnerText.Trim(), Is.EqualTo("!"));
+        }
+
+        [Test]
+        public void Should_use_passed_ignored_css_class_for_step_ignored_in_composite_step()
+        {
+            var result = ReportFormatterTestData.GetFeatureResultWithIgnoredStepInCompositeStep();
+            var html = FormatAndParseHtml(result);
+
+            var scenarioDiv = html.DocumentNode.SelectSingleNode("//div[contains(@class,'scenario ignored')]");
+            Assert.That(scenarioDiv.GetAttributeValue("class", ""), Is.EqualTo("scenario ignored"));
+
+            var scenarioStatus = scenarioDiv.SelectSingleNode("./h3//span[contains(@class,'status')]");
+            Assert.That(scenarioStatus.GetAttributeValue("class", ""), Is.EqualTo("status passed ignored"));
+            Assert.That(scenarioStatus.InnerText.Trim(), Is.EqualTo("\u2713"));
+
+            var stepStatuses = scenarioDiv.SelectNodes(".//div[@class='step']//span[contains(@class,'status')]");
+            Assert.That(stepStatuses[1].GetAttributeValue("class", ""), Is.EqualTo("status passed ignored"));
+            Assert.That(stepStatuses[1].InnerText.Trim(), Is.EqualTo("\u2713"));
+        }
+
+        [Test]
+        public void Should_use_ignored_css_class_for_step_with_all_substeps_ignored()
+        {
+            var result = ReportFormatterTestData.GetFeatureResultWithAllSubStepsIgnoredInCompositeStep();
+            var html = FormatAndParseHtml(result);
+
+            var scenarioDiv = html.DocumentNode.SelectSingleNode("//div[contains(@class,'scenario ignored')]");
+
+            var scenarioStatus = scenarioDiv.SelectSingleNode("./h3//span[contains(@class,'status')]");
+            Assert.That(scenarioStatus.GetAttributeValue("class", ""), Is.EqualTo("status passed ignored"));
+
+            var stepStatuses = scenarioDiv.SelectNodes(".//div[@class='step']//span[contains(@class,'status')]");
+            Assert.That(stepStatuses[1].GetAttributeValue("class", ""), Is.EqualTo("status ignored"));
+            Assert.That(stepStatuses[1].InnerText.Trim(), Is.EqualTo("!"));
+        }
+
         private string GetExpectedLightBddVersion()
         {
             return typeof(IBddRunner).GetTypeInfo().Assembly.GetName().Version.ToString(4);
@@ -420,6 +547,14 @@ $.[2].Surname=Smith";
             builder.FormatNode(doc.DocumentNode.SelectSingleNode("//body"));
             Debug.WriteLine(builder.ToString());
             return builder.ToString();
+        }
+
+        private HtmlDocument FormatAndParseHtml(params IFeatureResult[] results)
+        {
+            var formatted = FormatResults(results);
+            var doc = new HtmlDocument();
+            doc.LoadHtml(formatted);
+            return doc;
         }
 
         private string FormatAndExtractTreeText(string xpath, params IFeatureResult[] results)

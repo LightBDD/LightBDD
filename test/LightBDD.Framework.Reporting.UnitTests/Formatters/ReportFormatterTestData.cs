@@ -74,6 +74,58 @@ namespace LightBDD.Framework.Reporting.UnitTests.Formatters
                     TestResults.CreateStepResult(2, "step2", ExecutionStatus.Ignored, _startDate.AddSeconds(3), TimeSpan.FromMilliseconds(5))));
         }
 
+        public static IFeatureResult GetFeatureResultWithIgnoredScenario()
+        {
+            return TestResults.CreateFeatureResult("My feature", null, null,
+                TestResults.CreateScenarioResult("name", null, _startDate.AddSeconds(1), TimeSpan.FromMilliseconds(45), null,
+                    TestResults.CreateStepResult(1, "step1", ExecutionStatus.Passed, _startDate.AddSeconds(2), TimeSpan.FromMilliseconds(20)),
+                    TestResults.CreateStepResult(2, "step2", ExecutionStatus.Ignored, _startDate.AddSeconds(3), TimeSpan.FromMilliseconds(5), "ignored reason"),
+                    TestResults.CreateStepResult(3, "step3", ExecutionStatus.NotRun)));
+        }
+
+        public static IFeatureResult GetFeatureResultWithAllStepsIgnored()
+        {
+            return TestResults.CreateFeatureResult("My feature", null, null,
+                TestResults.CreateScenarioResult("name", null, _startDate.AddSeconds(1), TimeSpan.FromMilliseconds(10), null,
+                    TestResults.CreateStepResult(1, "step1", ExecutionStatus.Ignored, _startDate.AddSeconds(2), TimeSpan.FromMilliseconds(5), "not ready"),
+                    TestResults.CreateStepResult(2, "step2", ExecutionStatus.Ignored, _startDate.AddSeconds(3), TimeSpan.FromMilliseconds(5), "not ready")));
+        }
+
+        public static IFeatureResult GetFeatureResultWithIgnoredScenarioInCompositeStep()
+        {
+            return TestResults.CreateFeatureResult("My feature", null, null,
+                TestResults.CreateScenarioResult("name", null, _startDate.AddSeconds(1), TimeSpan.FromMilliseconds(30), null,
+                    TestResults.CreateStepResult(1, "step1", ExecutionStatus.Passed, _startDate.AddSeconds(2), TimeSpan.FromMilliseconds(10)),
+                    TestResults.CreateStepResult(2, "step2", ExecutionStatus.Ignored, _startDate.AddSeconds(3), TimeSpan.FromMilliseconds(20), "ignored reason")
+                        .WithSubSteps(
+                            TestResults.CreateStepResult(1, "substep1", ExecutionStatus.Passed, _startDate.AddSeconds(3), TimeSpan.FromMilliseconds(5)).WithGroupPrefix("2."),
+                            TestResults.CreateStepResult(2, "substep2", ExecutionStatus.Ignored, _startDate.AddSeconds(3).AddMilliseconds(5), TimeSpan.FromMilliseconds(5), "ignored reason").WithGroupPrefix("2."),
+                            TestResults.CreateStepResult(3, "substep3", ExecutionStatus.NotRun).WithGroupPrefix("2."))));
+        }
+
+        public static IFeatureResult GetFeatureResultWithIgnoredStepInCompositeStep()
+        {
+            return TestResults.CreateFeatureResult("My feature", null, null,
+                TestResults.CreateScenarioResult("name", null, _startDate.AddSeconds(1), TimeSpan.FromMilliseconds(30), null,
+                    TestResults.CreateStepResult(1, "step1", ExecutionStatus.Passed, _startDate.AddSeconds(2), TimeSpan.FromMilliseconds(10)),
+                    TestResults.CreateStepResult(2, "step2", ExecutionStatus.Ignored, _startDate.AddSeconds(3), TimeSpan.FromMilliseconds(20), "step ignored")
+                        .WithSubSteps(
+                            TestResults.CreateStepResult(1, "substep1", ExecutionStatus.Passed, _startDate.AddSeconds(3), TimeSpan.FromMilliseconds(5)).WithGroupPrefix("2."),
+                            TestResults.CreateStepResult(2, "substep2", ExecutionStatus.Ignored, _startDate.AddSeconds(3).AddMilliseconds(5), TimeSpan.FromMilliseconds(5), "step ignored").WithGroupPrefix("2."),
+                            TestResults.CreateStepResult(3, "substep3", ExecutionStatus.Passed, _startDate.AddSeconds(3).AddMilliseconds(10), TimeSpan.FromMilliseconds(5)).WithGroupPrefix("2."))));
+        }
+
+        public static IFeatureResult GetFeatureResultWithAllSubStepsIgnoredInCompositeStep()
+        {
+            return TestResults.CreateFeatureResult("My feature", null, null,
+                TestResults.CreateScenarioResult("name", null, _startDate.AddSeconds(1), TimeSpan.FromMilliseconds(30), null,
+                    TestResults.CreateStepResult(1, "step1", ExecutionStatus.Passed, _startDate.AddSeconds(2), TimeSpan.FromMilliseconds(10)),
+                    TestResults.CreateStepResult(2, "step2", ExecutionStatus.Ignored, _startDate.AddSeconds(3), TimeSpan.FromMilliseconds(20), "all ignored")
+                        .WithSubSteps(
+                            TestResults.CreateStepResult(1, "substep1", ExecutionStatus.Ignored, _startDate.AddSeconds(3), TimeSpan.FromMilliseconds(5), "not ready").WithGroupPrefix("2."),
+                            TestResults.CreateStepResult(2, "substep2", ExecutionStatus.Ignored, _startDate.AddSeconds(3).AddMilliseconds(5), TimeSpan.FromMilliseconds(5), "not ready").WithGroupPrefix("2."))));
+        }
+
         public static IFeatureResult GetFeatureWithUnsortedScenarios()
         {
             return TestResults.CreateFeatureResult("My Feature", null, null,

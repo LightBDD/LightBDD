@@ -26,6 +26,7 @@ span.category{background-color: hsl(24, 100%, 90%); color: hsl(24, 100%, 40%); p
 .status{width:21px;height:21px;display: flex;vertical-align: middle;text-align: center;font-family: 'Roboto Mono', monospace;font-size: 13px;font-weight: bold;line-height: 13px;align-items: center;justify-content: center;padding: 4px;margin-right: 5px;}
 .status{border:0;box-sizing: border-box;border-radius: 50%;color:#ffffff;}
 .status.passed{background-color:#1daf26;}
+.status.passed.ignored{background:linear-gradient(to right, #1daf26, #fbc800);text-shadow:1px 0 #1daf26;color:#ffffff;}
 .status.failed{background-color:#cc0000;}
 .status.ignored{background-color:#fbc800;color: black;}
 .status.bypassed{background-color:#2e7bff;}

@@ -454,7 +454,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                     Html.Tag(Html5Tag.H3).Id(scenarioId).Class("header title").Content(
                         Html.Tag(Html5Tag.Label).For(toggleId).Class("controls").Content(
                             GetCheckBoxTag(),
-                            GetStatus(scenario.Status)),
+                            GetScenarioStatus(scenario)),
                         Html.Tag(Html5Tag.Span).Content(
                             Html.Text(scenario.Info.Name.Format(StepNameDecorator)),
                             Html.Tag(Html5Tag.Span).Content(scenario.Info.Labels.Select(GetLabel)).SkipEmpty(),
@@ -538,6 +538,36 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 .SpaceAfter();
         }
 
+        private static IHtmlNode GetScenarioStatus(IScenarioResult scenario)
+        {
+            if (scenario.Status == ExecutionStatus.Ignored
+                && scenario.GetSteps().Any(s => s.Status == ExecutionStatus.Passed)
+                && !scenario.GetAllSteps().Any(s => s.Status == ExecutionStatus.NotRun))
+            {
+                return GetPassedIgnoredStatus();
+            }
+            return GetStatus(scenario.Status);
+        }
+
+        private static IHtmlNode GetStepStatus(IStepResult step)
+        {
+            if (step.Status == ExecutionStatus.Ignored
+                && step.GetSubSteps().Any(s => s.Status == ExecutionStatus.Passed)
+                && !step.GetSubSteps().SelectMany(s => s.GetAllSteps()).Any(s => s.Status == ExecutionStatus.NotRun))
+            {
+                return GetPassedIgnoredStatus();
+            }
+            return GetStatus(step.Status);
+        }
+
+        private static IHtmlNode GetPassedIgnoredStatus()
+        {
+            return Html.Tag(Html5Tag.Span)
+                .Class("status passed ignored")
+                .Content(GetStatusValue(ExecutionStatus.Passed))
+                .SpaceAfter();
+        }
+
         private static IHtmlNode GetStep(IStepResult step)
         {
             var toggleId = step.Info.RuntimeId.ToString();
@@ -556,7 +586,7 @@ namespace LightBDD.Framework.Reporting.Formatters.Html
                 Html.Tag(Html5Tag.Div).Class("header").Content(
                     container.Class("controls").Content(
                         GetCheckBoxTag(!hasSubSteps),
-                        GetStatus(step.Status)),
+                        GetStepStatus(step)),
                     Html.Tag(Html5Tag.Span).Content(
                         Html.Text($"{WebUtility.HtmlEncode(step.Info.GroupPrefix)}{step.Info.Number}. {step.Info.Name.Format(StepNameDecorator)}").Trim(),
                         GetDuration(step.ExecutionTime))),

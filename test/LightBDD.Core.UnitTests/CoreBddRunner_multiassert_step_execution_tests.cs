@@ -43,6 +43,7 @@ namespace LightBDD.Core.UnitTests
         {
             return TestCompositeStep.Create(Step_ignoring_step, Step_ignoring_step, Passing_step);
         }
+
         [MultiAssert]
         public TestCompositeStep Multiassert_failing_composite()
         {
