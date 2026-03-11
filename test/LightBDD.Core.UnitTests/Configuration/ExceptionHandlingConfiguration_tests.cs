@@ -14,9 +14,23 @@ namespace LightBDD.Core.UnitTests.Configuration
         }
 
         [Test]
+        public void ExceptionMessageExtractor_should_return_default_value()
+        {
+            var config = new ExceptionHandlingConfiguration();
+            Assert.That(config.ExceptionMessageExtractor, Is.Not.Null);
+            Assert.That(config.ExceptionMessageExtractor(new Exception("hello")), Is.EqualTo("hello"));
+        }
+
+        [Test]
         public void It_should_not_allow_null_value()
         {
             Assert.Throws<ArgumentNullException>(() => new ExceptionHandlingConfiguration().UpdateExceptionDetailsFormatter(null));
+        }
+
+        [Test]
+        public void ExceptionMessageExtractor_should_not_allow_null_value()
+        {
+            Assert.Throws<ArgumentNullException>(() => new ExceptionHandlingConfiguration().UpdateExceptionMessageExtractor(null));
         }
 
         [Test]
@@ -28,6 +42,13 @@ namespace LightBDD.Core.UnitTests.Configuration
         }
 
         [Test]
+        public void ExceptionMessageExtractor_should_update_value()
+        {
+            var config = new ExceptionHandlingConfiguration().UpdateExceptionMessageExtractor(ex => "custom: " + ex.Message);
+            Assert.That(config.ExceptionMessageExtractor(new Exception("test")), Is.EqualTo("custom: test"));
+        }
+
+        [Test]
         public void Configuration_should_be_sealable()
         {
             var config = new LightBddConfiguration();
@@ -35,6 +56,7 @@ namespace LightBDD.Core.UnitTests.Configuration
             config.Seal();
 
             Assert.Throws<InvalidOperationException>(() => cfg.UpdateExceptionDetailsFormatter(ex => "abc"));
+            Assert.Throws<InvalidOperationException>(() => cfg.UpdateExceptionMessageExtractor(ex => "abc"));
         }
     }
 }

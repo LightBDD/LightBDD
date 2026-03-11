@@ -9,17 +9,19 @@ namespace LightBDD.Core.Execution.Implementation
     {
         private readonly Func<Exception, ExecutionStatus> _exceptionToStatusMapper;
         private readonly Func<Exception, string> _exceptionFormatter;
+        private readonly Func<Exception, string> _exceptionMessageExtractor;
 
         public ExceptionProcessor(IntegrationContext integrationContext)
         {
             _exceptionToStatusMapper = integrationContext.ExceptionToStatusMapper;
             _exceptionFormatter = integrationContext.Configuration.ExceptionHandlingConfiguration().ExceptionDetailsFormatter;
+            _exceptionMessageExtractor = integrationContext.Configuration.ExceptionHandlingConfiguration().ExceptionMessageExtractor;
         }
 
         public ExecutionStatus UpdateResultsWithException(Action<ExecutionStatus, string> setStatus, Exception exception)
         {
             var status = _exceptionToStatusMapper.Invoke(exception);
-            var details = status == ExecutionStatus.Failed ? _exceptionFormatter.Invoke(exception) : exception.Message;
+            var details = status == ExecutionStatus.Failed ? _exceptionFormatter.Invoke(exception) : _exceptionMessageExtractor.Invoke(exception);
             setStatus(status, details);
             return status;
         }
