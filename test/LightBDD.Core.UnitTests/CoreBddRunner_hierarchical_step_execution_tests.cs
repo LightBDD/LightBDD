@@ -118,6 +118,23 @@ namespace LightBDD.Core.UnitTests
         }
 
         [Test]
+        public void Runner_should_mark_step_ignored_if_substep_uses_IgnoreStep_and_continue_remaining_substeps()
+        {
+            Assert.DoesNotThrow(() => _runner.Test().TestGroupScenario(Ignored_step_step_group));
+
+            var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps().ToArray();
+
+            StepResultExpectation.AssertEqual(steps,
+                new StepResultExpectation(1, 1, "Ignored step step group", ExecutionStatus.Ignored, $"Step 1.2: {StepIgnoreReason}"));
+
+            StepResultExpectation.AssertEqual(steps[0].GetSubSteps(),
+                new StepResultExpectation("1.", 1, 3, "GIVEN step one", ExecutionStatus.Passed),
+                new StepResultExpectation("1.", 2, 3, "WHEN step two ignoring step", ExecutionStatus.Ignored, $"Step 1.2: {StepIgnoreReason}"),
+                new StepResultExpectation("1.", 3, 3, "THEN step three", ExecutionStatus.Passed)
+            );
+        }
+
+        [Test]
         public void Runner_should_properly_associate_steps_to_the_group()
         {
             Assert.DoesNotThrow(() => _runner.Test().TestGroupScenario(Passing_step_group, Composite_group));

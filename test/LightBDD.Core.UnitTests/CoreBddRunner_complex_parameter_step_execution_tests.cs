@@ -94,6 +94,16 @@ namespace LightBDD.Core.UnitTests
         }
 
         [Test]
+        public void Runner_should_honor_step_ignored_via_IgnoreStep()
+        {
+            _runner.Test().TestScenario(
+                TestStep.CreateAsync(Step_ignored_with_parameter,
+                    new Complex(null, null, ParameterVerificationStatus.Failure, "msg")
+                ));
+            Assert.That(GetStepResults().Single().Status, Is.EqualTo(ExecutionStatus.Ignored));
+        }
+
+        [Test]
         public void Runner_should_process_failed_steps_first()
         {
             Assert.Throws<Exception>(() => _runner.Test().TestScenario(
@@ -129,6 +139,7 @@ namespace LightBDD.Core.UnitTests
 
         private void Step_with_parameters(Complex arg1, Complex arg2, Complex arg3) { }
         private void Ignored_step_with_parameter(Complex arg) { StepExecution.Current.IgnoreScenario("reason"); }
+        private void Step_ignored_with_parameter(Complex arg) { StepExecution.Current.IgnoreStep("reason"); }
         private void Bypassed_step_with_parameter(Complex arg) { StepExecution.Current.Bypass("reason"); }
         private void Failed_step_with_parameter(Complex arg) { throw new Exception("exception reason"); }
 

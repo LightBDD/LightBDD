@@ -244,6 +244,25 @@ namespace LightBDD.Core.UnitTests
         }
 
         [Test]
+        public void It_should_IGNORE_step_and_continue_scenario_based_on_step_decorator_throwing_StepIgnoreException()
+        {
+            var featureRunner = CreateRunner(cfg => { });
+            featureRunner
+                .GetBddRunner(this)
+                .Test()
+                .TestScenario(My_step_ignored_step, Some_step1);
+
+            var scenario = featureRunner.GetFeatureResult().GetScenarios().Single();
+
+            Assert.That(scenario.Status, Is.EqualTo(ExecutionStatus.Ignored));
+            Assert.That(scenario.StatusDetails, Is.EqualTo("Step 1: step decorator ignore reason"));
+            Assert.That(scenario.ExecutionTime, Is.Not.Null);
+            var steps = scenario.GetSteps().ToArray();
+            Assert.That(steps[0].Status, Is.EqualTo(ExecutionStatus.Ignored));
+            Assert.That(steps[1].Status, Is.EqualTo(ExecutionStatus.Passed));
+        }
+
+        [Test]
         [MyRetryDecorator]
         public void It_should_clear_step_exceptions_on_retry()
         {
@@ -328,6 +347,9 @@ namespace LightBDD.Core.UnitTests
 
         [MyThrowingDecorator(ExecutionStatus.Ignored)]
         private void My_ignored_step() { }
+
+        [MyStepIgnoreDecorator("step decorator ignore reason")]
+        private void My_step_ignored_step() { }
 
         [MyThrowingDecorator(ExecutionStatus.Bypassed)]
         private void My_bypassed_step() { }
@@ -460,6 +482,24 @@ namespace LightBDD.Core.UnitTests
                 _onCall(scenario);
                 return scenarioInvocation();
             }
+        }
+
+        [AttributeUsage(AttributeTargets.Method)]
+        private class MyStepIgnoreDecorator : Attribute, IStepDecoratorAttribute
+        {
+            private readonly string _reason;
+
+            public MyStepIgnoreDecorator(string reason)
+            {
+                _reason = reason;
+            }
+
+            public Task ExecuteAsync(IStep step, Func<Task> stepInvocation)
+            {
+                throw new StepIgnoreException(_reason);
+            }
+
+            public int Order { get; set; }
         }
     }
 }

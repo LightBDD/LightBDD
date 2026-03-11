@@ -30,11 +30,18 @@ namespace LightBDD.Core.UnitTests
         public void Passing_step() { }
         public void Failing_step() { throw new InvalidOperationException("failing"); }
         public void Ignoring_step() { StepExecution.Current.IgnoreScenario("ignoring"); }
+        public void Step_ignoring_step() { StepExecution.Current.IgnoreStep("ignoring step"); }
 
         [MultiAssert]
         public TestCompositeStep Multiassert_ignoring_steps()
         {
             return TestCompositeStep.Create(Ignoring_step, Ignoring_step, Passing_step);
+        }
+
+        [MultiAssert]
+        public TestCompositeStep Multiassert_step_ignoring_steps()
+        {
+            return TestCompositeStep.Create(Step_ignoring_step, Step_ignoring_step, Passing_step);
         }
         [MultiAssert]
         public TestCompositeStep Multiassert_failing_composite()
@@ -118,6 +125,33 @@ namespace LightBDD.Core.UnitTests
             StepResultExpectation.AssertEqual(steps[2].GetSubSteps(),
                 new StepResultExpectation("3.", 1, 2, "Passing step", ExecutionStatus.Passed),
                 new StepResultExpectation("3.", 2, 2, "Passing step", ExecutionStatus.Passed)
+            );
+        }
+
+        [Test]
+        [MultiAssert]
+        public void Runner_should_continue_multiassert_substeps_when_IgnoreStep_is_used()
+        {
+            _runner.Test().TestGroupScenario(Multiassert_step_ignoring_steps, Passing_composite);
+
+            var scenario = _feature.GetFeatureResult().GetScenarios().Single();
+            Assert.That(scenario.Status, Is.EqualTo(ExecutionStatus.Ignored));
+
+            var steps = scenario.GetSteps().ToArray();
+            StepResultExpectation.AssertEqual(steps,
+                new StepResultExpectation(1, 2, "Multiassert step ignoring steps", ExecutionStatus.Ignored, $"Step 1.1: ignoring step{Environment.NewLine}Step 1.2: ignoring step"),
+                new StepResultExpectation(2, 2, "Passing composite", ExecutionStatus.Passed)
+                );
+
+            StepResultExpectation.AssertEqual(steps[0].GetSubSteps(),
+                new StepResultExpectation("1.", 1, 3, "Step ignoring step", ExecutionStatus.Ignored, "Step 1.1: ignoring step"),
+                new StepResultExpectation("1.", 2, 3, "Step ignoring step", ExecutionStatus.Ignored, "Step 1.2: ignoring step"),
+                new StepResultExpectation("1.", 3, 3, "Passing step", ExecutionStatus.Passed)
+            );
+
+            StepResultExpectation.AssertEqual(steps[1].GetSubSteps(),
+                new StepResultExpectation("2.", 1, 2, "Passing step", ExecutionStatus.Passed),
+                new StepResultExpectation("2.", 2, 2, "Passing step", ExecutionStatus.Passed)
             );
         }
     }

@@ -132,6 +132,50 @@ namespace LightBDD.Core.UnitTests
         }
 
         [Test]
+        public void It_should_capture_scenario_status_for_step_ignored_via_IgnoreStep()
+        {
+            _runner.Test().TestScenario(
+                Given_step_one,
+                When_step_two_ignoring_step,
+                Then_step_three);
+
+            Assert.That(_feature.GetFeatureResult().GetScenarios().Single().Status, Is.EqualTo(ExecutionStatus.Ignored));
+        }
+
+        [Test]
+        public void It_should_capture_failed_scenario_status_when_step_is_ignored_and_later_step_fails()
+        {
+            try
+            {
+                _runner.Test().TestScenario(
+                    Given_step_one,
+                    When_step_two_ignoring_step,
+                    Then_step_three_should_throw_exception);
+            }
+            catch { }
+
+            var scenario = _feature.GetFeatureResult().GetScenarios().Single();
+            Assert.That(scenario.Status, Is.EqualTo(ExecutionStatus.Failed));
+            var expected = "Step 2: " + StepIgnoreReason + Environment.NewLine +
+                           "Step 3: " + ExceptionReason;
+            Assert.That(scenario.StatusDetails, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void It_should_capture_ignored_scenario_status_when_step_is_ignored_and_another_is_bypassed()
+        {
+            _runner.Test().TestScenario(
+                Given_step_one,
+                When_step_two_ignoring_step,
+                Then_step_three,
+                Then_step_four);
+
+            var scenario = _feature.GetFeatureResult().GetScenarios().Single();
+            Assert.That(scenario.Status, Is.EqualTo(ExecutionStatus.Ignored));
+            Assert.That(scenario.StatusDetails, Is.EqualTo("Step 2: " + StepIgnoreReason));
+        }
+
+        [Test]
         public void It_should_capture_scenario_execution_status_details_from_all_steps()
         {
             try

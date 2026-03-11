@@ -21,5 +21,12 @@ namespace LightBDD.Core.UnitTests
             var exception = Assert.Throws<InvalidOperationException>(() => StepExecution.Current.IgnoreScenario("reason"));
             Assert.That(exception!.Message, Does.StartWith("Current task is not executing any scenarios."));
         }
+
+        [Test]
+        public void IgnoreStep_should_fail_when_called_outside_of_step()
+        {
+            var exception = Assert.Throws<InvalidOperationException>(() => StepExecution.Current.IgnoreStep("reason"));
+            Assert.That(exception!.Message, Does.StartWith("Current task is not executing any scenarios."));
+        }
     }
 }

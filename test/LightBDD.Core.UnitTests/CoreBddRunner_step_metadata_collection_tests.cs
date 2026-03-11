@@ -76,6 +76,40 @@ namespace LightBDD.Core.UnitTests
         }
 
         [Test]
+        public void It_should_capture_ignored_step_and_continue_scenario()
+        {
+            _runner.Test().TestScenario(
+                Given_step_one,
+                When_step_two_ignoring_step,
+                Then_step_three);
+
+            var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
+            StepResultExpectation.AssertEqual(steps,
+                    new StepResultExpectation(1, 3, "GIVEN step one", ExecutionStatus.Passed),
+                    new StepResultExpectation(2, 3, "WHEN step two ignoring step", ExecutionStatus.Ignored, $"Step 2: {StepIgnoreReason}"),
+                    new StepResultExpectation(3, 3, "THEN step three", ExecutionStatus.Passed)
+                );
+        }
+
+        [Test]
+        public void It_should_capture_multiple_ignored_steps_and_continue_scenario()
+        {
+            _runner.Test().TestScenario(
+                Given_step_one,
+                When_step_two_ignoring_step,
+                Then_step_three_ignoring_step,
+                Then_step_four);
+
+            var steps = _feature.GetFeatureResult().GetScenarios().Single().GetSteps();
+            StepResultExpectation.AssertEqual(steps,
+                    new StepResultExpectation(1, 4, "GIVEN step one", ExecutionStatus.Passed),
+                    new StepResultExpectation(2, 4, "WHEN step two ignoring step", ExecutionStatus.Ignored, $"Step 2: {StepIgnoreReason}"),
+                    new StepResultExpectation(3, 4, "THEN step three ignoring step", ExecutionStatus.Ignored, $"Step 3: {StepIgnoreReason}"),
+                    new StepResultExpectation(4, 4, "AND step four", ExecutionStatus.Passed)
+                );
+        }
+
+        [Test]
         public void It_should_infer_and_capture_default_step_types()
         {
             _runner.Test().TestScenario(

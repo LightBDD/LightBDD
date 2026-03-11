@@ -9,6 +9,7 @@ namespace LightBDD.Core.UnitTests.Helpers
         public const string BypassReason = "bypass reason";
         public const string ExceptionReason = "exception reason";
         public const string IgnoreReason = "ignore reason";
+        public const string StepIgnoreReason = "step ignore reason";
         public const string ParameterExceptionReason = "parameter exception";
         public const string CommentReason = "some comment";
         public const string AttachmentName = "attachment1";
@@ -26,9 +27,11 @@ namespace LightBDD.Core.UnitTests.Helpers
         public void Then_step_three() { }
         public void Then_step_three_should_throw_exception() { throw new InvalidOperationException(ExceptionReason); }
         public void When_step_two_ignoring_scenario() { StepExecution.Current.IgnoreScenario(IgnoreReason); }
+        public void When_step_two_ignoring_step() { StepExecution.Current.IgnoreStep(StepIgnoreReason); }
         public void Then_step_four() { }
         public void Then_step_five() { }
         public void Then_step_three_should_be_ignored() { StepExecution.Current.IgnoreScenario(IgnoreReason); }
+        public void Then_step_three_ignoring_step() { StepExecution.Current.IgnoreStep(StepIgnoreReason); }
         public void Given_step_with_parameter(string parameter) { }
         public void When_step_with_parameter(int parameter) { }
 
@@ -77,6 +80,14 @@ namespace LightBDD.Core.UnitTests.Helpers
             return TestCompositeStep.Create(
                 Given_step_one,
                 When_step_two_ignoring_scenario,
+                Then_step_three);
+        }
+
+        public TestCompositeStep Ignored_step_step_group()
+        {
+            return TestCompositeStep.Create(
+                Given_step_one,
+                When_step_two_ignoring_step,
                 Then_step_three);
         }
 

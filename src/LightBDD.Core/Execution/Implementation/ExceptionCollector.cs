@@ -26,6 +26,9 @@ namespace LightBDD.Core.Execution.Implementation
                         .Where(x => x != null))
                 .ToArray();
 
+            if (exceptions.Length == 0)
+                return null;
+
             return executionStatus == ExecutionStatus.Ignored || exceptions.Length == 1
                 ? exceptions.First()
                 : new AggregateException(exceptions);

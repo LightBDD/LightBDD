@@ -65,6 +65,23 @@ namespace LightBDD.Framework
         public IDependencyResolver GetScenarioDependencyResolver() => ScenarioExecutionContext.CurrentScenario.DependencyResolver;
 
         /// <summary>
+        /// Ignores currently executed step and continues execution of current scenario, allowing to execute all remaining steps.
+        /// The step code located after <c>StepExecution.Current.IgnoreStep()</c> call would not be executed.
+        /// <para>
+        /// The status of ignored step would be <see cref="ExecutionStatus.Ignored"/> and the overall status of scenario would be <see cref="ExecutionStatus.Ignored"/>,
+        /// unless any further step is failed.
+        /// </para>
+        /// <para>The <paramref name="reason"/> argument would be used as step <see cref="IStepResult.StatusDetails"/>, and it would be aggregated in overall scenario <see cref="IScenarioResult.StatusDetails"/> as well.</para>
+        /// </summary>
+        /// <param name="reason">Ignore reason.</param>
+        /// <exception cref="StepIgnoreException">Ignore exception used to control scenario execution.</exception>
+        public void IgnoreStep(string reason)
+        {
+            ScenarioExecutionContext.ValidateScenarioScope();
+            throw new StepIgnoreException(reason);
+        }
+
+        /// <summary>
         /// Adds the file attachment to the step.
         /// </summary>
         /// <param name="createAttachmentFn">Function creating file attachment by using provided attachments manager.</param>

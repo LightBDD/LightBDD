@@ -256,6 +256,9 @@ namespace LightBDD.Core.Execution.Implementation
                 case ScenarioExecutionException { InnerException: StepBypassException }:
                     _result.SetStatus(ExecutionStatus.Bypassed, exception.InnerException.Message);
                     break;
+                case ScenarioExecutionException { InnerException: StepIgnoreException }:
+                    _result.SetStatus(ExecutionStatus.Ignored, exception.InnerException.Message);
+                    break;
                 case ScenarioExecutionException e:
                     _stepContext.ExceptionProcessor.UpdateResultsWithException(_result.SetStatus, e.InnerException);
                     _exceptionCollector.Capture(e);
