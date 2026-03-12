@@ -78,6 +78,9 @@ namespace LightBDD.XUnit3
                 .UpdateExceptionDetailsFormatter(new DefaultExceptionFormatter().WithTestFrameworkDefaults().Format)
                 .UpdateExceptionMessageExtractor(StripDynamicSkipToken);
 
+            configuration.ExecutionExtensionsConfiguration()
+                .EnableScenarioDecorator<TestSkippedDecorator>();
+
             try
             {
                 OnConfigure(configuration);

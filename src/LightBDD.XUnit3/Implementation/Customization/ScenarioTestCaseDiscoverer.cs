@@ -7,8 +7,8 @@ namespace LightBDD.XUnit3.Implementation.Customization
 {
     internal class ScenarioTestCaseDiscoverer : IXunitTestCaseDiscoverer
     {
-        private readonly FactDiscoverer _factDiscoverer = new();
-        private readonly TheoryDiscoverer _theoryDiscoverer = new();
+        private readonly ScenarioFactDiscoverer _factDiscoverer = new();
+        private readonly ScenarioTheoryDiscoverer _theoryDiscoverer = new();
 
         public ValueTask<IReadOnlyCollection<IXunitTestCase>> Discover(
             ITestFrameworkDiscoveryOptions discoveryOptions,
