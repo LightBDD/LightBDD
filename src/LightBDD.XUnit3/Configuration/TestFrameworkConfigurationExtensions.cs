@@ -1,4 +1,3 @@
-using System;
 using LightBDD.Core.Formatting.ExceptionFormatting;
 using LightBDD.Framework.Configuration;
 using LightBDD.XUnit3.Implementation;
