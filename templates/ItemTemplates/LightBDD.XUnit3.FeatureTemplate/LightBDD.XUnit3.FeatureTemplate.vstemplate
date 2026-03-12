@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
+  <TemplateData>
+    <DefaultName>My_feature.cs</DefaultName>
+    <Name>LightBDD.XUnit3: Feature Test Class</Name>
+    <Description>LightBDD feature tests class representing set of acceptance tests for given feature (XUnit3 integration).</Description>
+    <Icon>lightbdd.ico</Icon>
+    <TemplateID>c3a8e1d2-5f4b-4c91-a6d7-8e2f9b0c1d3e</TemplateID>
+    <ProjectType>CSharp</ProjectType>
+    <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
+  </TemplateData>
+  <TemplateContent>
+    <References>
+    </References>
+    <ProjectItem SubType="Code" TargetFileName="$fileinputname$.cs" ReplaceParameters="true">Feature.cs</ProjectItem>
+    <ProjectItem SubType="Code" TargetFileName="$fileinputname$.cs\$fileinputname$.Steps.cs" ReplaceParameters="true">Feature.Steps.cs</ProjectItem>
+  </TemplateContent>
+</VSTemplate>
