@@ -158,6 +158,13 @@
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
     </ProjectReference>
+    <ProjectReference Include="..\ItemTemplates\LightBDD.XUnit3.FeatureTemplate\LightBDD.XUnit3.FeatureTemplate.csproj">
+      <Project>{A3B4C5D6-E7F8-9012-3456-789ABCDEF012}</Project>
+      <Name>LightBDD.XUnit3.FeatureTemplate</Name>
+      <VSIXSubPath>ItemTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
     <ProjectReference Include="..\ItemTemplates\LightBDD.Fixie3.FeatureTemplate\LightBDD.Fixie3.FeatureTemplate.csproj">
       <Project>{8B8652D8-A72D-4D29-900D-9783BB753164}</Project>
       <Name>LightBDD.Fixie3.FeatureTemplate</Name>
@@ -203,6 +210,13 @@
     <ProjectReference Include="..\ProjectTemplates\LightBDD.XUnit2.ProjectTemplate\LightBDD.XUnit2.ProjectTemplate.csproj">
       <Project>{1EBDCE2F-215D-4A19-ABC0-0EA09A512975}</Project>
       <Name>LightBDD.XUnit2.ProjectTemplate</Name>
+      <VSIXSubPath>ProjectTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectTemplates\LightBDD.XUnit3.ProjectTemplate\LightBDD.XUnit3.ProjectTemplate.csproj">
+      <Project>{B5C6D7E8-F901-2345-6789-ABCDEF012345}</Project>
+      <Name>LightBDD.XUnit3.ProjectTemplate</Name>
       <VSIXSubPath>ProjectTemplates</VSIXSubPath>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>

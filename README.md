@@ -8,6 +8,7 @@ Build | [![Build status](https://ci.appveyor.com/api/projects/status/xkd7qc950o0
 Chat (gitter) | [![Join the chat at https://gitter.im/LightBDD/LightBDD](https://badges.gitter.im/LightBDD/LightBDD.svg)](https://gitter.im/LightBDD/LightBDD?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 LightBDD.NUnit3 | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.NUnit3)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.NUnit3)](https://www.nuget.org/packages/LightBDD.NUnit3/)
 LightBDD.XUnit2 | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.XUnit2)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.XUnit2)](https://www.nuget.org/packages/LightBDD.XUnit2/)
+LightBDD.XUnit3 | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.XUnit3)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.XUnit3)](https://www.nuget.org/packages/LightBDD.XUnit3/)
 LightBDD.MsTest4 | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.MsTest4)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.MsTest4)](https://www.nuget.org/packages/LightBDD.MsTest4/)
 LightBDD.MsTest3 | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.MsTest3)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.MsTest3)](https://www.nuget.org/packages/LightBDD.MsTest3/)
 LightBDD.Fixie3 | [![NuGet Version](https://img.shields.io/nuget/vpre/LightBDD.Fixie3)![NuGet Downloads](https://img.shields.io/nuget/dt/LightBDD.Fixie3)](https://www.nuget.org/packages/LightBDD.Fixie3/)
@@ -34,7 +35,7 @@ See latest release details on [What Is New](https://github.com/LightBDD/LightBDD
 * Feature report generation in HTML, XML or Plain text format,
 * In-code LightBDD configuration allowing to customize all LightBDD features,
 * Productivity extensions for VisualStudio with Feature Class Templates, Project Templates and Code Snippets,
-* Integration with [NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/), [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/), [Fixie](http://fixie.github.io/) and [TUnit](https://thomhurst.github.io/TUnit/) frameworks,
+* Integration with [NUnit](http://www.nunit.org/), [xUnit](http://xunit.github.io/) (v2 and v3), [MsTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/), [Fixie](http://fixie.github.io/) and [TUnit](https://thomhurst.github.io/TUnit/) frameworks,
 * Async scenario and steps execution support,
 * Cross-platform support (.NET 5+ / .NET Framework / .NET Standard / .NET Core / [UWP](https://github.com/LightBDD/LightBDD/tree/3.4.2/examples/Example.LightBDD.MsTest2.UWP)).
 
@@ -172,6 +173,7 @@ The LightBDD is available on [NuGet](https://www.nuget.org/packages?q=LightBDD):
 
 * `PM> Install-Package LightBDD.NUnit3` for package using NUnit 3x
 * `PM> Install-Package LightBDD.XUnit2` for package using xUnit 2x
+* `PM> Install-Package LightBDD.XUnit3` for package using xUnit v3
 * `PM> Install-Package LightBDD.MsTest3` for package using MsTest.TestFramework
 * `PM> Install-Package LightBDD.Fixie3` for package using Fixie 3x
 
