@@ -76,8 +76,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.MsTest4.UnitTests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.XUnit3", "src\LightBDD.XUnit3\LightBDD.XUnit3.csproj", "{1D76A049-50EA-4268-9094-35565B0A7956}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{0C88DD14-F956-CE84-757C-A364CCF449FC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.XUnit3.UnitTests", "test\LightBDD.XUnit3.UnitTests\LightBDD.XUnit3.UnitTests.csproj", "{24E8DED6-3A44-4D2F-8A42-4599079B0C31}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.XUnit3.IntegrationTests", "test\LightBDD.XUnit3.IntegrationTests\LightBDD.XUnit3.IntegrationTests.csproj", "{8859E6A4-3A01-4670-B3E3-DE2D8DAC7731}"

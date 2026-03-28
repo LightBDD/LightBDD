@@ -13,7 +13,7 @@ public class LightBddScopeAttribute_tests
     {
         var scope = new FailingScope();
 
-        typeof(LightBddScopeAttribute).GetMethod("Configure", BindingFlags.Instance | BindingFlags.NonPublic)
+        typeof(LightBddScope).GetMethod("Configure", BindingFlags.Instance | BindingFlags.NonPublic)
             !.Invoke(scope, null);
 
         var exception = scope.Captured.ExecutionExtensionsConfiguration().FrameworkInitializationExceptions.FirstOrDefault();
@@ -21,7 +21,7 @@ public class LightBddScopeAttribute_tests
         Assert.Equal("I failed!", exception.Message);
     }
 
-    private class FailingScope : LightBddScopeAttribute
+    private class FailingScope : LightBddScope
     {
         public LightBddConfiguration Captured { get; private set; }
         protected override void OnConfigure(LightBddConfiguration configuration)

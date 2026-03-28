@@ -7,7 +7,7 @@ using Xunit.v3;
 
 namespace $safeprojectname$
 {
-    public class ConfiguredLightBddScope : LightBddScopeAttribute
+    public class ConfiguredLightBddScope : LightBddScope
     {
         protected override void OnConfigure(LightBddConfiguration configuration)
         {

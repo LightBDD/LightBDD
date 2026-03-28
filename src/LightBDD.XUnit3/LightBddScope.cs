@@ -13,11 +13,11 @@ namespace LightBDD.XUnit3
     /// <summary>
     /// A class allowing to initialize and finalize LightBDD in xUnit v3 framework.
     /// 
-    /// It has to be registered using <c>[assembly:TestPipelineStartup(typeof(MyScope))]</c> attribute, where <c>MyScope</c> derives from <see cref="LightBddScopeAttribute"/>.
+    /// It has to be registered using <c>[assembly:TestPipelineStartup(typeof(MyScope))]</c> attribute, where <c>MyScope</c> derives from <see cref="LightBddScope"/>.
     /// It is possible to customize the LightBDD configuration by overriding the <see cref="OnConfigure"/>() method,
     /// as well as execute code before any test and after all tests by overriding the <see cref="OnSetUp"/>() / <see cref="OnTearDown"/>() methods.
     /// </summary>
-    public class LightBddScopeAttribute : Attribute, ITestPipelineStartup
+    public class LightBddScope : ITestPipelineStartup
     {
         /// <summary>
         /// Called by xUnit v3 at the start of the test pipeline.

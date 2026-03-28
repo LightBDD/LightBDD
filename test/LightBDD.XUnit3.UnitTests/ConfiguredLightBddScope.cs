@@ -9,7 +9,7 @@ using Xunit.v3;
 [assembly: TestPipelineStartup(typeof(ConfiguredLightBddScope))]
 namespace LightBDD.XUnit3.UnitTests
 {
-    public class ConfiguredLightBddScope : LightBddScopeAttribute
+    public class ConfiguredLightBddScope : LightBddScope
     {
         public static readonly ConcurrentQueue<string> CapturedNotifications = new();
 

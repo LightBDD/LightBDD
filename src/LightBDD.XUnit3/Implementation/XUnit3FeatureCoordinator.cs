@@ -14,9 +14,9 @@ namespace LightBDD.XUnit3.Implementation
         public new static FeatureCoordinator GetInstance()
         {
             if (Instance == null)
-                throw new InvalidOperationException($"{nameof(LightBddScopeAttribute)} is not defined in the project. Please ensure that a class extending {nameof(LightBddScopeAttribute)} is registered at assembly level: [assembly:TestPipelineStartup(typeof(YourScope))]");
+                throw new InvalidOperationException($"{nameof(LightBddScope)} is not defined in the project. Please ensure that a class extending {nameof(LightBddScope)} is registered at assembly level: [assembly:TestPipelineStartup(typeof(YourScope))]");
             if (Instance.IsDisposed)
-                throw new InvalidOperationException($"LightBDD scenario test execution is already finished. Please ensure that no tests are executed outside of assembly execution scope specified by {nameof(LightBddScopeAttribute)} attribute.");
+                throw new InvalidOperationException($"LightBDD scenario test execution is already finished. Please ensure that no tests are executed outside of assembly execution scope specified by {nameof(LightBddScope)} attribute.");
             return Instance;
         }
 

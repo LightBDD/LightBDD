@@ -8,7 +8,7 @@ using Xunit.v3;
 /*
  * This is a way to enable LightBDD - xUnit v3 integration.
  * It is required to do it in all assemblies with LightBDD scenarios.
- * It is possible to either use [assembly:TestPipelineStartup(typeof(LightBddScopeAttribute))] directly to use LightBDD with default configuration, 
+ * It is possible to either use [assembly:TestPipelineStartup(typeof(LightBddScope))] directly to use LightBDD with default configuration, 
  * or customize it in a way that is shown below.
  */
 [assembly: TestPipelineStartup(typeof(ConfiguredLightBddScope))]
@@ -16,10 +16,10 @@ using Xunit.v3;
 namespace Example.LightBDD.XUnit3
 {
     /// <summary>
-    /// This class extends LightBddScopeAttribute and allows to customize the default configuration of LightBDD.
+    /// This class extends LightBddScope and allows to customize the default configuration of LightBDD.
     /// It is also possible here to override OnSetUp() and OnTearDown() methods to execute code that has to be run once, before or after all tests.
     /// </summary>
-    public class ConfiguredLightBddScope : LightBddScopeAttribute
+    public class ConfiguredLightBddScope : LightBddScope
     {
         /// <summary>
         /// This method allows to customize LightBDD behavior.

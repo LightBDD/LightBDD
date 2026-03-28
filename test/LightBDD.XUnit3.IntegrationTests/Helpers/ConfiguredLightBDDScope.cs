@@ -6,7 +6,7 @@ using Xunit.v3;
 [assembly: TestPipelineStartup(typeof(ConfiguredLightBDDScope))]
 namespace LightBDD.XUnit3.IntegrationTests.Helpers
 {
-    public class ConfiguredLightBDDScope : LightBddScopeAttribute
+    public class ConfiguredLightBDDScope : LightBddScope
     {
         protected override void OnConfigure(LightBddConfiguration configuration)
         {
