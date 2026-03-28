@@ -1,6 +1,12 @@
 LightBDD
 ===========================================
 
+Version 3.12
+----------------------------------------
++ #399 (LightBDD.Framework and intergrations)(Add) Added BypassStepIfAttribute, IgnoreScenarioIfAttribute for conditional ignore, bypass
++ #380 (LightBDD.XUnit3)(New) xunit3 runner integration for LightBDD
++ #183 (LightBDD.Framework)(Add) Make DefaultProgressNotifier Customisable And Introduce SimpleIndentedProgressNotifier
+
 Version 3.11.2
 ----------------------------------------
 + #385 (LightBDD.MsTest3)(Change) Updated MsTest to latest 3.11.1 version
