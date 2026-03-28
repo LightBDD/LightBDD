@@ -11,7 +11,7 @@ namespace LightBDD.XUnit3.Implementation
         {
             return new[]
             {
-                ParallelProgressNotifierProvider.Default.CreateProgressNotifier(Console.WriteLine),
+                ParallelProgressNotifierProvider.Default.CreateProgressNotifier(Console.Error.WriteLine), //immediate print
                 new DefaultProgressNotifier(WriteTestOutput)
             };
         }
