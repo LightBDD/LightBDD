@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.2.11415.280 d18.0
+VisualStudioVersion = 18.2.11415.280
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBDD.Core", "..\src\LightBDD.Core\LightBDD.Core.csproj", "{1404165C-13B2-43E2-A78D-6B271EB62FC8}"
 EndProject
@@ -42,6 +42,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.LightBDD.MsTest4", "Example.LightBDD.MsTest4\Example.LightBDD.MsTest4.csproj", "{AE26259A-6EE4-73B3-CBAD-B2134A2A6B9E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBDD.MsTest4", "..\src\LightBDD.MsTest4\LightBDD.MsTest4.csproj", "{8A772C04-DBA7-B7BA-3828-D0791F77240D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.LightBDD.XUnit3", "Example.LightBDD.XUnit3\Example.LightBDD.XUnit3.csproj", "{B820C285-3CB5-49EF-83A5-B6EC3F5EA3AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -327,6 +329,22 @@ Global
 		{8A772C04-DBA7-B7BA-3828-D0791F77240D}.Release|x64.Build.0 = Release|Any CPU
 		{8A772C04-DBA7-B7BA-3828-D0791F77240D}.Release|x86.ActiveCfg = Release|Any CPU
 		{8A772C04-DBA7-B7BA-3828-D0791F77240D}.Release|x86.Build.0 = Release|Any CPU
+		{B820C285-3CB5-49EF-83A5-B6EC3F5EA3AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B820C285-3CB5-49EF-83A5-B6EC3F5EA3AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B820C285-3CB5-49EF-83A5-B6EC3F5EA3AB}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{B820C285-3CB5-49EF-83A5-B6EC3F5EA3AB}.Debug|ARM.Build.0 = Debug|Any CPU
+		{B820C285-3CB5-49EF-83A5-B6EC3F5EA3AB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B820C285-3CB5-49EF-83A5-B6EC3F5EA3AB}.Debug|x64.Build.0 = Debug|Any CPU
+		{B820C285-3CB5-49EF-83A5-B6EC3F5EA3AB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B820C285-3CB5-49EF-83A5-B6EC3F5EA3AB}.Debug|x86.Build.0 = Debug|Any CPU
+		{B820C285-3CB5-49EF-83A5-B6EC3F5EA3AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B820C285-3CB5-49EF-83A5-B6EC3F5EA3AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B820C285-3CB5-49EF-83A5-B6EC3F5EA3AB}.Release|ARM.ActiveCfg = Release|Any CPU
+		{B820C285-3CB5-49EF-83A5-B6EC3F5EA3AB}.Release|ARM.Build.0 = Release|Any CPU
+		{B820C285-3CB5-49EF-83A5-B6EC3F5EA3AB}.Release|x64.ActiveCfg = Release|Any CPU
+		{B820C285-3CB5-49EF-83A5-B6EC3F5EA3AB}.Release|x64.Build.0 = Release|Any CPU
+		{B820C285-3CB5-49EF-83A5-B6EC3F5EA3AB}.Release|x86.ActiveCfg = Release|Any CPU
+		{B820C285-3CB5-49EF-83A5-B6EC3F5EA3AB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
