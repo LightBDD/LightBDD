@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "LightBDD",
+  "classifications": [ "LightBDD","Fixie3" ],
+  "identity": "LightBDD.Fixie3.FeatureTemplate",
+  "name": "LightBDD.Fixie3: Feature Test Class",
+  "shortName": "LightBDD.Fixie3.Class",
+  "sourceName": "$safeitemname$",
+  "tags": {
+    "language": "C#",
+    "type": "item"
+  },
+  "symbols": {
+    "namespace": {
+      "type": "parameter",
+      "description": "The namespace of the file.",
+      "datatype": "text",
+      "replaces": "$rootnamespace$",
+      "fileRename": "StringExtensions",
+      "defaultValue": "FeatureTestClass"
+    }
+  }
+}
