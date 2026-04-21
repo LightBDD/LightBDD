@@ -26,6 +26,11 @@ namespace LightBDD.MsTest4.Implementation
             return new DefaultProgressNotifier(WriteTestOutput);
         }
 
+        public static IProgressNotifier CreateSimpleIndentedNotifier()
+        {
+            return new SimpleIndentedProgressNotifier(WriteTestOutput);
+        }
+
         public static void WriteTestOutput(string message)
         {
             ScenarioExecutionContext.GetCurrentScenarioFixtureIfPresent<ITestContextProvider>()?.TestContext?.WriteLine(message);

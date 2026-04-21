@@ -22,5 +22,10 @@ namespace LightBDD.Fixie3.Implementation
         {
             return ParallelProgressNotifierProvider.Default.CreateProgressNotifier(Console.WriteLine);
         }
+
+        public static IProgressNotifier CreateSimpleIndentedNotifier()
+        {
+            return new SimpleIndentedProgressNotifier(Console.WriteLine);
+        }
     }
 }
