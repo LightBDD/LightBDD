@@ -46,5 +46,13 @@ namespace LightBDD.Fixie3.Configuration
         {
             return configuration.Append(FixieProgressNotifier.CreateProgressNotifier());
         }
+
+        /// <summary>
+        /// Appends a <see cref="LightBDD.Framework.Notification.SimpleIndentedProgressNotifier"/> pre-configured with the Fixie3 output sinks.
+        /// </summary>
+        public static ProgressNotifierConfiguration AppendSimpleIndentedNotifier(this ProgressNotifierConfiguration configuration)
+        {
+            return configuration.Append(FixieProgressNotifier.CreateSimpleIndentedNotifier());
+        }
     }
 }

@@ -41,5 +41,14 @@ namespace LightBDD.NUnit3.Implementation
                 new DefaultProgressNotifier(WriteOutput)
             };
         }
+
+        public static IProgressNotifier[] CreateSimpleIndentedNotifiers()
+        {
+            return new[]
+            {
+                ParallelProgressNotifierProvider.Default.CreateProgressNotifier(WriteImmediateProgress),
+                new SimpleIndentedProgressNotifier(WriteOutput)
+            };
+        }
     }
 }

@@ -46,5 +46,13 @@ namespace LightBDD.MsTest4.Configuration
         {
             return configuration.Append(MsTest4ProgressNotifier.CreateProgressNotifier());
         }
+
+        /// <summary>
+        /// Appends a <see cref="LightBDD.Framework.Notification.SimpleIndentedProgressNotifier"/> pre-configured with the MsTest4 output sinks.
+        /// </summary>
+        public static ProgressNotifierConfiguration AppendSimpleIndentedNotifier(this ProgressNotifierConfiguration configuration)
+        {
+            return configuration.Append(MsTest4ProgressNotifier.CreateSimpleIndentedNotifier());
+        }
     }
 }
