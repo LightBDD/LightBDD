@@ -1,6 +1,10 @@
 LightBDD
 ===========================================
 
+Version 3.12.1
+----------------------------------------
++ #407 (LightBDD.TUnit)(Change) Updated to latest TUnit package versions
+
 Version 3.12
 ----------------------------------------
 + #399 (LightBDD.Framework and intergrations)(Add) Added BypassStepIfAttribute, IgnoreScenarioIfAttribute for conditional ignore, bypass
