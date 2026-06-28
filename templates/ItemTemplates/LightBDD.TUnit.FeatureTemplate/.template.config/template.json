@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "LightBDD",
+  "classifications": [ "LightBDD", "TUnit" ],
+  "identity": "LightBDD.TUnit.FeatureTemplate",
+  "name": "LightBDD.TUnit: Feature Test Class",
+  "shortName": "LightBDD.TUnit.Class",
+  "sourceName": "$safeitemname$",
+  "tags": {
+    "language": "C#",
+    "type": "item"
+  },
+  "symbols": {
+    "namespace": {
+      "type": "parameter",
+      "description": "The namespace of the file.",
+      "datatype": "text",
+      "replaces": "$rootnamespace$",
+      "fileRename": "StringExtensions",
+      "defaultValue": "FeatureTestClass"
+    }
+  }
+}
