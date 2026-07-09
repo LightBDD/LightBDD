@@ -34,6 +34,15 @@ namespace LightBDD.XUnit2.Implementation
             };
         }
 
+        public static IProgressNotifier[] CreateSimpleIndentedNotifiers()
+        {
+            return new[]
+            {
+                ParallelProgressNotifierProvider.Default.CreateProgressNotifier(Console.WriteLine),
+                new SimpleIndentedProgressNotifier(WriteTestOutput)
+            };
+        }
+
         private static void WriteTestOutput(string message) => ScenarioExecutionContext.GetCurrentScenarioFixtureIfPresent<ITestOutputProvider>()?.TestOutput.WriteLine(message);
     }
 }

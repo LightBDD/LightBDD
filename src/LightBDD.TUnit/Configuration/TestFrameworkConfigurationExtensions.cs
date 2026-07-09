@@ -28,5 +28,13 @@ namespace LightBDD.TUnit.Configuration
         {
             return configuration.Append(TUnitProgressNotifier.CreateProgressNotifiers());
         }
+
+        /// <summary>
+        /// Appends a <see cref="LightBDD.Framework.Notification.SimpleIndentedProgressNotifier"/> pre-configured with the TUnit output sinks.
+        /// </summary>
+        public static ProgressNotifierConfiguration AppendSimpleIndentedNotifier(this ProgressNotifierConfiguration configuration)
+        {
+            return configuration.Append(TUnitProgressNotifier.CreateSimpleIndentedNotifiers());
+        }
     }
 }
