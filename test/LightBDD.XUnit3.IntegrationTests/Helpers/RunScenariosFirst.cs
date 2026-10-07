@@ -1,15 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
+using Xunit.Sdk;
 using Xunit.v3;
 
 namespace LightBDD.XUnit3.IntegrationTests.Helpers
 {
-    public class RunScenariosFirst : ITestCaseOrderer
+    public class RunScenariosFirst : ITestMethodOrderer
     {
-        IReadOnlyCollection<TTestCase> ITestCaseOrderer.OrderTestCases<TTestCase>(IReadOnlyCollection<TTestCase> testCases)
+        IReadOnlyCollection<TTestMethod> ITestMethodOrderer.OrderTestMethods<TTestMethod>(IReadOnlyCollection<TTestMethod> testMethods)
         {
-            return testCases
-                .OrderByDescending(x => (x as IXunitTestCase)?.TestMethodName?.StartsWith("Scenario") == true)
+            return testMethods
+                .OrderByDescending(x => x?.MethodName?.StartsWith("Scenario") == true)
                 .ToArray();
         }
     }
