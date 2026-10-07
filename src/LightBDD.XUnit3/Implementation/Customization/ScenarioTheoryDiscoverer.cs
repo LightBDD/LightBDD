@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -37,6 +38,7 @@ namespace LightBDD.XUnit3.Implementation.Customization
             ITheoryAttribute theoryAttribute)
         {
             var testCases = new List<IXunitTestCase>();
+            int? index = theoryAttribute.IncludeTestCaseIndex ? 0 : null;
 
             try
             {
@@ -65,27 +67,14 @@ namespace LightBDD.XUnit3.Implementation.Customization
                         foreach (var dataRow in dataRows)
                         {
                             var testMethodArguments = testMethod.ResolveMethodArguments(dataRow.GetData());
-
-                            var details = TestIntrospectionHelper.GetTestCaseDetailsForTheoryDataRow(
+                            index++;
+                            testCases.AddRange(await CreateTestCasesForDataRow(
                                 discoveryOptions,
                                 testMethod,
                                 theoryAttribute,
                                 dataRow,
-                                testMethodArguments);
-
-                            var testCase = new ScenarioTestCase(
-                                details.ResolvedTestMethod,
-                                details.TestCaseDisplayName,
-                                details.UniqueID,
-                                details.Explicit,
-                                originalSkipReason: details.SkipReason,
-                                traits: TestIntrospectionHelper.GetTraits(testMethod, dataRow),
-                                testMethodArguments: testMethodArguments,
-                                sourceFilePath: details.SourceFilePath,
-                                sourceLineNumber: details.SourceLineNumber,
-                                timeout: details.Timeout > 0 ? details.Timeout : null);
-
-                            testCases.Add(testCase);
+                                testMethodArguments,
+                                FormatTestCaseIndex(index)));
                         }
                     }
                 }
@@ -107,7 +96,8 @@ namespace LightBDD.XUnit3.Implementation.Customization
                     (IFactAttribute)theoryAttribute,
                     testMethodArguments: null,
                     timeout: null,
-                    baseDisplayName: null);
+                    baseDisplayName: null,
+                    displayNameIndex: FormatTestCaseIndex(index + 1));
 
                 testCases.Add(new ScenarioTestCase(
                     details.ResolvedTestMethod,
@@ -129,14 +119,16 @@ namespace LightBDD.XUnit3.Implementation.Customization
             IXunitTestMethod testMethod,
             ITheoryAttribute theoryAttribute,
             ITheoryDataRow dataRow,
-            object[] testMethodArguments)
+            object[] testMethodArguments,
+            string index)
         {
             var details = TestIntrospectionHelper.GetTestCaseDetailsForTheoryDataRow(
                 discoveryOptions,
                 testMethod,
                 theoryAttribute,
                 dataRow,
-                testMethodArguments);
+                testMethodArguments,
+                index);
 
             var testCase = new ScenarioTestCase(
                 details.ResolvedTestMethod,
@@ -146,11 +138,19 @@ namespace LightBDD.XUnit3.Implementation.Customization
                 originalSkipReason: details.SkipReason,
                 traits: TestIntrospectionHelper.GetTraits(testMethod, dataRow),
                 testMethodArguments: testMethodArguments,
+                testLabel: dataRow.Label,
+                disableParallelization: dataRow.DisableParallelization == true,
                 sourceFilePath: details.SourceFilePath,
                 sourceLineNumber: details.SourceLineNumber,
                 timeout: details.Timeout > 0 ? details.Timeout : null);
 
             return new ValueTask<IReadOnlyCollection<IXunitTestCase>>(new[] { testCase });
+        }
+
+        /// <summary>Copy of xUnit's StringExtensions.FormatTestCaseIndex, which xUnit marks as internal-use only.</summary>
+        private static string FormatTestCaseIndex(int? index)
+        {
+            return index > 0 ? "_" + index.Value.ToString("D3", CultureInfo.CurrentCulture) : null;
         }
 
         protected override ValueTask<IReadOnlyCollection<IXunitTestCase>> CreateTestCasesForTheory(

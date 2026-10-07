@@ -8,7 +8,7 @@ using Xunit;
 
 namespace LightBDD.XUnit3.IntegrationTests
 {
-    [TestCaseOrderer(typeof(RunScenariosFirst))]
+    [TestMethodOrderer(typeof(RunScenariosFirst))]
     public class Skipped_scenarios : FeatureFixture
     {
         [Fact]

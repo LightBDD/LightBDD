@@ -27,6 +27,8 @@ namespace LightBDD.XUnit3.Implementation.Customization
             string originalSkipReason,
             Dictionary<string, HashSet<string>> traits = null,
             object[] testMethodArguments = null,
+            string testLabel = null,
+            bool disableParallelization = false,
             string sourceFilePath = null,
             int? sourceLineNumber = null,
             int? timeout = null)
@@ -35,6 +37,8 @@ namespace LightBDD.XUnit3.Implementation.Customization
                 testCaseDisplayName,
                 uniqueID,
                 @explicit,
+                testLabel,
+                disableParallelization,
                 skipExceptions: null,
                 skipReason: null,
                 skipType: null,

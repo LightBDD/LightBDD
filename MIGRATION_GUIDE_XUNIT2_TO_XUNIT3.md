@@ -19,7 +19,7 @@ Remove the old packages and add the new ones.
 **After (xUnit v3):**
 ```xml
 <PackageReference Include="LightBDD.XUnit3" Version="..." />
-<PackageReference Include="xunit.v3" Version="3.2.2" />
+<PackageReference Include="xunit.v3" Version="4.0.1" />
 <PackageReference Include="xunit.runner.visualstudio" Version="3.1.0" />
 <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
 ```
